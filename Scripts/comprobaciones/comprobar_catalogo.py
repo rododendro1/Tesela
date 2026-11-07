@@ -33,9 +33,10 @@ TEXTO = {f: re.sub(r"//.*", "", f.read_text(encoding="utf-8")) for f in FICHEROS
 
 
 def cuerpo_de_lista(nombre):
-    """Texto entre corchetes de `public` o `package static let nombre: [TipoDeEscala] = [ … ]`."""
+    """Texto entre corchetes de `public` o `package static let nombre: [TipoDeEscala] = [ … ]` (no de otras listas
+    con el mismo nombre, como `ManoGuidoniana.hexacordos`, que es de `Hexacordo`)."""
     for texto in TEXTO.values():
-        m = re.search(r"(?:public|package) static let " + nombre + r"\b[^=\n]*=\s*\[", texto)
+        m = re.search(r"(?:public|package) static let " + nombre + r"\s*(?::\s*\[TipoDeEscala\])?\s*=\s*\[", texto)
         if m:
             i, nivel, j = m.end(), 1, m.end()
             while nivel:

@@ -177,6 +177,12 @@ extension NombresDeEscalas {
         .tradicional(.cuernoAlpino, "Alpeetako adarra"),
         .tradicional(.gaitaEscocesa, "Eskoziako gaita"),
         .tradicional(.georgiana, "georgiarra"),
+        .tradicional(.doricoConFicta, "doria fictarekin"),
+        .tradicional(.mixolidioConFicta, "mixolidia fictarekin"),
+        .tradicional(.lidioConSiBemol, "lidia si bemolarekin"),
+        .tradicional(.tetracordoDiatonicoDeVicentino, "Vicentinoren tetrakorde diatonikoa"),
+        .tradicional(.tetracordoCromaticoDeVicentino, "Vicentinoren tetrakorde kromatikoa"),
+        .tradicional(.tetracordoEnarmonicoDeVicentino, "Vicentinoren tetrakorde enarmonikoa"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

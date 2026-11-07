@@ -42,6 +42,7 @@ EXCEPCIONES = {
     "Korea",    # alemán: el nombre del país
     "Vietnam",  # alemán: el nombre del país
     "Thailand",  # alemán: el nombre del país
+    "Renaissance",  # alemán y francés: la misma palabra
     "Archytas",  # alemán: el nombre del teórico (FuenteTeorica)
     "Eratosthenes",  # alemán: el nombre del teórico
     "Aristides Quintilianus",  # alemán: el nombre del teórico

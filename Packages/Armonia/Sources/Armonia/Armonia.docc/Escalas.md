@@ -229,11 +229,22 @@ usan microtonos):
   cents (Do Re Mi Sol La en doce notas).
 - **Los 8 modos gregorianos**, con sus nombres latinos (protus authenticus, protus plagalis…), cada uno desde su
   final. Ver «Modos gregorianos», más abajo. Y los tres hexacordos de Guido de Arezzo (hexachordum naturale,
-  durum y molle: Ut Re Mi Fa Sol La desde Do, Sol y Fa). Y los cuatro que añadió Glareano en el Dodecachordon
+  durum y molle: Ut Re Mi Fa Sol La desde Do, Sol y Fa), y su gamut en ``ManoGuidoniana``. Y los cuatro que añadió Glareano en el Dodecachordon
   (1547): aeolius e hypoaeolius (9 y 10, en La) e ionicus e hypoionicus (11 y 12, en Do).
 - **Los Andes**: la pentatónica andina (menor) y la tritónica andina (Do Mi♭ Sol).
 - **Brasil**: los tres modos del Nordeste (el baião, el forró, los repentistas): mixolídio, lídio y dórico
   nordestinos.
+- **El Renacimiento**: los modos como se cantaban con *musica ficta*, las alteraciones que los cantores añadían
+  sin escribirlas: el dórico con ficta (sube con el Do♯ de la cadencia y baja con Do y Si♭, por «una nota super la
+  semper est canendum fa»), el mixolidio con ficta (sube con Fa♯, baja con Fa) y el lidio con si bemol (los modos 5
+  y 6 como se cantaban); y la *musica recta*, las notas de los hexacordos en una octava (Do Re Mi Fa Sol La Si♭ Si).
+  Su versión microtonal es la del mesotónico de ¼ de coma de Aron (1523), y tienen también los de 2/7 de Zarlino
+  (1558) y ⅓ de Salinas (1577). Los doce modos de Glareano y de los gregorianos llevan de alias su número en la
+  numeración de Zarlino, que empieza en Do («modo 3 de Zarlino» es el protus authenticus). El dórico, el lidio y la
+  musica recta tienen además la afinación justa del monocordio de Ramos de Pareja (1482), tomada desde su final. Y
+  los tres géneros de Vicentino (1555), en las 31 diesis de su archicémbalo: el diatónico (Mi Fa Sol La), el
+  cromático (Mi Fa Fa♯ La) y el enarmónico (Mi Fa♭ Fa La, con el Fa♭ una diesis sobre Mi). Los nombres se traducen,
+  salvo la musica recta.
 - **Vietnam**: dos pentatónicas de la cítara đàn tranh, con los cents que midieron Keefe, Burns y Nguyen: la del
   modo Bắc (Do Re Fa Sol La) y la del vọng cổ, del modo Oán (Do Mi Fa Sol La, con el Mi y el La bajos).
 - **El folklore europeo**: el dórico ucraniano (Do Re Mi♭ Fa♯ Sol La Si♭), la escala podhalańska de los górales
@@ -333,7 +344,7 @@ Subtradicion.carnatica.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles
 `fuente` dice qué teórico definió una escala: el autor de unas razones (los géneros de Arquitas, Dídimo, Eratóstenes y
 Ptolomeo), de unas partes del tono (los colores de Aristóxeno), de unas especies (las harmoniai de Arístides
 Quintiliano) o de un sistema (los hexacordos de Guido d'Arezzo, los modos que añadió Glareano, los shudūd de Ṣafī
-al-Dīn, las cinco notas del Guanzi y los doce lü del Lüshi chunqiu). Vale `nil` en las que no son de un autor concreto, como las siete harmoniai o los modos gregorianos.
+al-Dīn, las cinco notas del Guanzi, los doce lü del Lüshi chunqiu y los géneros de Vicentino). Vale `nil` en las que no son de un autor concreto, como las siete harmoniai o los modos gregorianos.
 
 ```swift
 TipoDeEscala.tetracordoDiatonicoTenso.fuente            // .ptolomeo
@@ -358,7 +369,7 @@ TipoDeEscala.mayor.nombreCompleto               // "mayor"
 Las categorías se agrupan en cuatro clases (`ClaseDeEscala`), según qué es la escala: un modo que se toca (un rāga,
 un maqam, un dromos…), una escala madre de la que salen otras (los mēḷa, los thāṭ, los grāma y los laras), un
 fragmento de menos de una octava (los tetracordos y los géneros griegos, los ajnas árabes, los çeşni turcos y los
-hexacordos de Guido) o la afinación de un instrumento (las
+hexacordos de Guido y los géneros de Vicentino) o la afinación de un instrumento (las
 babilónicas, las africanas, las del sudeste asiático y los doce lü chinos). Sirve, por ejemplo, para dejar fuera los fragmentos al buscar entre todas.
 
 ```swift
@@ -368,7 +379,7 @@ TipoDeEscala.melakarta(15)?.clase                 // .escalaMadre
 TipoDeEscala.tetracordoDiatonico.clase            // .fragmento
 TipoDeEscala.jinsHijaz.categoria                  // .jins
 TipoDeEscala.menorNatural.clase                   // nil
-TipoDeEscala.tradicionales(clase: .fragmento).count   // 45
+TipoDeEscala.tradicionales(clase: .fragmento).count   // 48
 TipoDeEscala.tradicionales(clase: .afinacion).count   // 18
 ```
 
@@ -383,7 +394,7 @@ makamlar, salvo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, 
 los 72 moria de la Comisión Patriarcal de 1881 (`.moria72`); y los diez thāṭ y Yaman, en los 22 śruti indios
 (`.sruti`), cada uno una razón justa, como los grāma y las mūrchanā; el tetracordo enarmónico griego, en cuartos de
 tono (Mi Fa𝄳 Fa La), con las harmoniai enarmónicas y las de Arístides; el gamelan, los xilófonos africanos y el piphat y el pinpeat, en cents, con la octava en
-partes iguales; y los géneros de Arquitas, Ptolomeo, Dídimo y Eratóstenes, los colores de Aristóxeno, los adwār de Ṣafī al-Dīn y las escalas chinas, en cents (`.razones`), igual que las mūrchanā con
+partes iguales; y los géneros de Arquitas, Ptolomeo, Dídimo y Eratóstenes, los colores de Aristóxeno, los adwār de Ṣafī al-Dīn, las escalas chinas y las del Renacimiento, en cents (`.razones`), igual que las mūrchanā con
 el Pa de 40/27, que no es uno de los 22 śruti. Los thāṭ siguen el ṣaḍja-grāma de Bharata como lo reconstruye E. J. Arnold
 (Kāfī: Sa, Re 10/9, ga 32/27, ma 4/3, Pa, Dha 5/3, ni 16/9), con el re y el dha pitagóricos (256/243, 128/81) en
 Bhairav, Bhairavī y Toḍī, y Toḍī como lo miden Bel y otros. Los que en su propia teoría no tienen microtonos (Ḥijāz,
@@ -512,6 +523,20 @@ Los ocho están también en el catálogo de escalas, en `TipoDeEscala.tradiciona
 ```swift
 ModoGregoriano(2)!.tipoDeEscala.nombre           // "protus plagalis"
 try TipoDeEscala(leyendo: "hipodórico").nombre    // "protus plagalis"
+```
+
+### La mano guidoniana
+
+``ManoGuidoniana`` es el gamut de la solmisación: las veinte posiciones de Γ ut (Sol2) a ee la (Mi5), con los siete
+hexacordos que se solapan en ellas (duros en Sol, naturales en Do y blandos en Fa). Cada posición se nombra por su
+letra y por sus sílabas, del hexacordo más grave al más agudo, como en los tratados; la décima tiene dos notas, Si♭ y
+Si («b fa ♮ mi»). Pasar de un hexacordo a otro en una nota común es una mutación.
+
+```swift
+ManoGuidoniana.gamut.count                                     // 20
+ManoGuidoniana.nombre(de: Altura(.do, octava: 3))              // "C fa ut"
+ManoGuidoniana.silabas(de: Altura(.sol, octava: 3))            // ["sol", "re", "ut"]
+ManoGuidoniana.nombre(de: Altura(Nota(.si, .bemol), octava: 3)) // "b fa ♮ mi"
 ```
 
 ## Escalas que suben y bajan distinto

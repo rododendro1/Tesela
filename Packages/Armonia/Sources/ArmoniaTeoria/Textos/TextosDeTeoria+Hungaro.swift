@@ -248,6 +248,7 @@ extension TextosDeTeoria {
         tradicionEuropa: "Európai népzene",
         tradicionVietnam: "Vietnám",
         tradicionBrasil: "Brazília",
+        tradicionRenacimiento: "Reneszánsz",
         // Subtradicion.swift
         subtradicionCarnatica: "Karnatikus",
         subtradicionIndostanica: "Hindusztáni",
@@ -281,6 +282,7 @@ extension TextosDeTeoria {
         fuenteSafiAlDin: "Szafí ad-Dín",
         fuenteGuanzi: "Kuan-ce",
         fuenteLushiChunqiu: "Lü-si csun-csiu",
+        fuenteVicentino: "Vicentino",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).

@@ -268,6 +268,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let tradicionEuropa: String
     let tradicionVietnam: String
     let tradicionBrasil: String
+    let tradicionRenacimiento: String
 
     // MARK: Subtradicion.swift
     let subtradicionCarnatica: String
@@ -304,6 +305,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let fuenteSafiAlDin: String
     let fuenteGuanzi: String
     let fuenteLushiChunqiu: String
+    let fuenteVicentino: String
 
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».

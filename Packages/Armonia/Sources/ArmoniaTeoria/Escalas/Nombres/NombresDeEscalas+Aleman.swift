@@ -177,6 +177,12 @@ extension NombresDeEscalas {
         .tradicional(.cuernoAlpino, "Alphorn"),
         .tradicional(.gaitaEscocesa, "schottischer Dudelsack"),
         .tradicional(.georgiana, "georgisch"),
+        .tradicional(.doricoConFicta, "dorisch mit Ficta"),
+        .tradicional(.mixolidioConFicta, "mixolydisch mit Ficta"),
+        .tradicional(.lidioConSiBemol, "lydisch mit B"),
+        .tradicional(.tetracordoDiatonicoDeVicentino, "diatonischer Tetrachord des Vicentino"),
+        .tradicional(.tetracordoCromaticoDeVicentino, "chromatischer Tetrachord des Vicentino"),
+        .tradicional(.tetracordoEnarmonicoDeVicentino, "enharmonischer Tetrachord des Vicentino"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "Rāga"),

@@ -306,7 +306,9 @@ import Testing
             Set(TipoDeEscala.hitzazkiar.equivalentes.map(\.nombre)).isSuperset(of: [
                 "Bhairav", "Māyāmālavagauḷa", "doble armónica", "Ḥijāzkār",
             ]))
-        #expect(TipoDeEscala.menorMelodica.equivalentes.isEmpty)
+        // La menor melódica (sube con 6ª y 7ª mayores, baja como la natural) solo tiene las notas del dórico con
+        // ficta del Renacimiento, que sube con Si y Do♯ y baja con Si♭ y Do.
+        #expect(TipoDeEscala.menorMelodica.equivalentes.map(\.nombre) == ["dórico con ficta"])
         // La búsqueda por índice da lo mismo que antes: los nombres habituales primero.
         #expect((try? TipoDeEscala(leyendo: "Dorian"))?.nombre == "dórico")
         #expect((try? TipoDeEscala(leyendo: "jazz minor"))?.nombre == "menor melódica de jazz")
@@ -920,6 +922,76 @@ import Testing
         #expect((try? Escala(leyendo: "Do 十二律"))?.tipo.nombre == "Shí'èr lǜ")
         #expect((try? Escala(leyendo: "Do 六律"))?.tipo.nombre == "Yánglǜ")
         #expect((try? Escala(leyendo: "Do 六吕"))?.tipo.nombre == "Yīnlǜ")
+        // En ruso y griego, transcritos; en los demás idiomas, en pinyin.
+        let ruso = Notacion.espanolCompacto.conTextos(en: .ruso)
+        #expect(TipoDeEscala.shierLu.nombre(en: ruso) == "Шиэр люй")
+        #expect(TipoDeEscala.yinlu.nombre(en: Notacion.espanolCompacto.conTextos(en: .griego)) == "Γινλιου")
+        #expect(TipoDeEscala.yanglu.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Yánglǜ")
+    }
+
+    /// Los modos con musica ficta del Renacimiento y la musica recta, en tres mesotónicos y en la afinación justa de
+    /// Ramos de Pareja.
+    @Test func elRenacimiento() throws {
+        #expect(
+            TipoDeEscala.escalasRenacentistas.map(\.nombre) == [
+                "dórico con ficta", "mixolidio con ficta", "lidio con si bemol", "musica recta",
+            ])
+        #expect(TipoDeEscala.escalasRenacentistas.allSatisfy { $0.tradicion == .renacimiento })
+        #expect(TipoDeEscala.doricoConFicta.afinacionSugerida == .mesotonico)
+        let dorico = Escala(.re, .doricoConFicta)
+        #expect(dorico.notas.map(\.description) == ["Re", "Mi", "Fa", "Sol", "La", "Si", "Do♯"])
+        #expect(
+            dorico.notas(sentido: .descendente).map(\.description) == ["Re", "Mi", "Fa", "Sol", "La", "Si♭", "Do"])
+        #expect(
+            Escala(.do, .musicaRecta).notas.map(\.description) == ["Do", "Re", "Mi", "Fa", "Sol", "La", "Si♭", "Si"])
+        #expect(TipoDeEscala.lidioConSiBemol.intervalos == TipoDeEscala.mayor.intervalos)
+        // Cada afinación, la de su mesotónico: ¼ de coma (Aron), 2/7 (Zarlino) y ⅓ (Salinas), al cent.
+        let temperamentos = [4.0, 3.5, 3.0].map { TemperamentoRegular.mesotonico(fraccionDeComa: $0) }
+        for tipo in TipoDeEscala.escalasRenacentistas {
+            let ramos: [String?] = tipo == .mixolidioConFicta ? [] : ["Ramos de Pareja, 1482"]
+            #expect(tipo.afinaciones.map(\.fuente) == [nil, "Zarlino, 1558", "Salinas, 1577"] + ramos)
+            for (afinacion, temperamento) in zip(tipo.afinaciones, temperamentos) {
+                for sentido in [SentidoDelIntervalo.ascendente, .descendente] {
+                    let pares = zip(afinacion.cents(sentido: sentido), afinacion.intervalos(sentido: sentido))
+                    for (cents, intervalo) in pares {
+                        #expect(abs(cents - temperamento.cents(de: intervalo)) <= 0.5, Comment(rawValue: tipo.nombre))
+                    }
+                }
+            }
+        }
+        // Ramos: las razones de su monocordio desde Do (10/9, 5/4, 4/3, 3/2, 5/3, 16/9, 15/8), tomadas desde la final.
+        let razones: [Double] = [1, 10 / 9, 5 / 4, 4 / 3, 3 / 2, 5 / 3, 16 / 9, 15 / 8]
+        let recta = try #require(TipoDeEscala.musicaRecta.afinaciones.last)
+        for (cents, razon) in zip(recta.cents(sentido: .ascendente), razones) {
+            #expect(abs(cents - 1200 * log2(razon)) <= 0.5)
+        }
+        // En el dórico, la cuarta Re–Sol es la del lobo, 27/20; el Do♯ es 135/128 sobre Do.
+        let doricoDeRamos = try #require(TipoDeEscala.doricoConFicta.afinaciones.last)
+        #expect(doricoDeRamos.cents(sentido: .ascendente)[3] == 520)
+        #expect(abs(doricoDeRamos.cents(sentido: .ascendente)[6] - 1200 * log2(135.0 / 64 / (10.0 / 9))) <= 0.5)
+        // Zarlino numera los doce modos desde Do.
+        #expect((try? TipoDeEscala(leyendo: "modo 1 de Zarlino"))?.nombre == "ionicus")
+        #expect((try? TipoDeEscala(leyendo: "modo 3 de Zarlino"))?.nombre == "protus authenticus")
+        #expect((try? TipoDeEscala(leyendo: "modo 12 de Zarlino"))?.nombre == "hypoaeolius")
+    }
+
+    /// Los tres géneros de Vicentino, en diesis de sus 31 partes: 3 + 5 + 5, 3 + 2 + 8 y 1 + 2 + 10.
+    @Test func losGenerosDeVicentino() throws {
+        #expect(TipoDeEscala.generosDeVicentino.allSatisfy { $0.tradicion == .renacimiento && $0.fuente == .vicentino })
+        #expect(TipoDeEscala.generosDeVicentino.allSatisfy { $0.categoria == .tetracordo })
+        let notas = TipoDeEscala.generosDeVicentino.map { Escala(.mi, $0).notas.map(\.description) }
+        #expect(notas == [["Mi", "Fa", "Sol", "La"], ["Mi", "Fa", "Fa♯", "La"], ["Mi", "Fa♭", "Fa", "La"]])
+        let diesis = 1200.0 / 31
+        for (tipo, partes) in zip(TipoDeEscala.generosDeVicentino, [[0, 3, 8, 13], [0, 3, 5, 13], [0, 1, 3, 13]]) {
+            let cents = try #require(tipo.microtonal).cents
+            for (c, p) in zip(cents, partes) {
+                #expect(abs(c - Double(p) * diesis) <= 0.5, Comment(rawValue: tipo.nombre))
+            }
+        }
+        let ingles = Notacion.espanolCompacto.conTextos(en: .ingles)
+        #expect(TipoDeEscala.tetracordoEnarmonicoDeVicentino.nombre(en: ingles) == "Vicentino's enharmonic tetrachord")
+        #expect(TipoDeEscala.doricoConFicta.nombre(en: ingles) == "Dorian with ficta")
+        #expect(TipoDeEscala.musicaRecta.nombre(en: ingles) == "musica recta")
     }
 
     /// Las chinas suenan por sanfen sunyi: cada nota, a un número de quintas pitagóricas de gōng.

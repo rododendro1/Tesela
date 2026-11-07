@@ -248,6 +248,7 @@ extension TextosDeTeoria {
         tradicionEuropa: "Folclòre europèu",
         tradicionVietnam: "Vietnam",
         tradicionBrasil: "Brasil",
+        tradicionRenacimiento: "Renaissença",
         // Subtradicion.swift
         subtradicionCarnatica: "Carnatica",
         subtradicionIndostanica: "Indostanica",
@@ -281,6 +282,7 @@ extension TextosDeTeoria {
         fuenteSafiAlDin: "Ṣafī al-Dīn",
         fuenteGuanzi: "Guanzi",
         fuenteLushiChunqiu: "Lüshi chunqiu",
+        fuenteVicentino: "Vicentino",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
         enLaTonalidad: { tonalidad in "en " + tonalidad }

@@ -527,7 +527,7 @@ import Hexagonos
         comprobarIgual(TipoDeEscala.tetracordoDiatonico.clase, .fragmento, doc, 3)
         comprobarIgual(TipoDeEscala.jinsHijaz.categoria, .jins, doc, 4)
         comprobar(TipoDeEscala.menorNatural.clase, #"nil"#, doc, 5)
-        comprobar(TipoDeEscala.tradicionales(clase: .fragmento).count, #"45"#, doc, 6)
+        comprobar(TipoDeEscala.tradicionales(clase: .fragmento).count, #"48"#, doc, 6)
         comprobar(TipoDeEscala.tradicionales(clase: .afinacion).count, #"18"#, doc, 7)
     }
 
@@ -593,6 +593,15 @@ import Hexagonos
     @Test func escalas16() throws {
         // Sources/Armonia/Armonia.docc/Escalas.md, bloque 16
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 16)
+        comprobar(ManoGuidoniana.gamut.count, #"20"#, doc, 0)
+        comprobar(ManoGuidoniana.nombre(de: Altura(.do, octava: 3)), #""C fa ut""#, doc, 1)
+        comprobar(ManoGuidoniana.silabas(de: Altura(.sol, octava: 3)), #"["sol", "re", "ut"]"#, doc, 2)
+        comprobar(ManoGuidoniana.nombre(de: Altura(Nota(.si, .bemol), octava: 3)), #""b fa ♮ mi""#, doc, 3)
+    }
+
+    @Test func escalas17() throws {
+        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 17
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 17)
         comprobar(TipoDeEscala.menorMelodica.esDireccional, #"true"#, doc, 0)
         comprobarIgual(TipoDeEscala.menorMelodica.formaDescendente, .menorNatural, doc, 1)
         comprobar(Escala(.la, .menorMelodica).alturas(octava: 4, sentido: .descendente), #"La5 Sol5 Fa5 … La4"#, doc, 2)
@@ -601,25 +610,25 @@ import Hexagonos
         _ = TipoDeEscala.bilahari.intervalosEnAmbasDirecciones
     }
 
-    @Test func escalas17() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 17
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 17)
+    @Test func escalas18() throws {
+        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 18
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 18)
         comprobar(TipoDeEscala.kafi.esIdentico(a: .dorico), #"false"#, doc, 0)
         comprobar(TipoDeEscala.kafi.equivalentes.contains(.dorico), #"true"#, doc, 1)
         comprobar(TipoDeEscala.rast == .mayor, #"false"#, doc, 2)
     }
 
-    @Test func escalas18() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 18
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 18)
+    @Test func escalas19() throws {
+        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 19
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 19)
         comprobar(TipoDeEscala.propio(TipoDeEscala.kafi.intervalos).nombre, #""dórico""#, doc, 0)
         comprobar(TipoDeEscala.kafi.equivalentes.first?.nombre, #""dórico""#, doc, 1)
         comprobar(try TipoDeEscala(leyendo: "Hijaz").nombre, #""Ḥijāz""#, doc, 2)
     }
 
-    @Test func escalas19() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 19
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 19)
+    @Test func escalas20() throws {
+        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 20
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 20)
         comprobar(Arpegio(Acorde("Do7")).alturas(octava: 4).map(\.midi) == [60, 64, 67, 70, 72], #"true"#, doc, 0)
         comprobar(Arpegio(Acorde("Do"), patron: .alberti).alturas(octava: 3).map(\.midi) == [48, 55, 52, 55], #"true"#, doc, 1)
         comprobar(Escala("Do mayor").arpegio(grado: 5, cuatriada: true)?.acorde == Acorde("Sol7"), #"true"#, doc, 2)
@@ -630,9 +639,9 @@ import Hexagonos
         _ = dibujo
     }
 
-    @Test func escalas20() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 20
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 20)
+    @Test func escalas21() throws {
+        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 21
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 21)
         comprobar(Escala(.do, .mayor).notasAEvitar(sobre: Acorde("Do7M")) == [.fa], #"true"#, doc, 0)
         comprobar(Escala(.re, .dorico).notas(sobre: Acorde("Rem7")).map(\.cifra) == ["1", "9", "♭3", "11", "5", "13", "♭7"], #"true"#, doc, 1)
         comprobar(Escala(.sol, .frigioDominante).tensiones(sobre: Acorde("Sol7")) == [Nota(.la, .bemol), Nota(.mi, .bemol)], #"true"#, doc, 2)
@@ -643,16 +652,16 @@ import Hexagonos
         comprobar(Acorde("Do7(#11)").escalasCompatibles().first == Escala(.do, .lidioDominante), #"true"#, doc, 7)
     }
 
-    @Test func escalas21() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 21
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 21)
+    @Test func escalas22() throws {
+        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 22
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 22)
         comprobar(Escala(.do, .mayor).acordesQueCaben(grado: 1).contains(Acorde(.do, .mayorSexta)), #"true"#, doc, 0)
         comprobar(Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor), #"true"#, doc, 1)
     }
 
-    @Test func escalas22() throws {
-        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 22
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 22)
+    @Test func escalas23() throws {
+        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 23
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 23)
         comprobar(Escala(.re, .dorico).notaCaracteristica == .si, #"true"#, doc, 0)
         comprobar(Escala(.re, .dorico).acordesCaracteristicos == [Acorde("Mim"), Acorde("Sol")], #"true"#, doc, 1)
         comprobar(Escala(.sol, .mixolidio).cadenciaModal == [Acorde("Fa"), Acorde("Sol")], #"true"#, doc, 2)

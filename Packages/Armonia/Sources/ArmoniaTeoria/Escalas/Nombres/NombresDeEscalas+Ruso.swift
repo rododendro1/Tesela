@@ -126,6 +126,9 @@ extension NombresDeEscalas {
         .tradicional(.qingyue, "Цинъюэ"),
         .tradicional(.yayue, "Яюэ"),
         .tradicional(.yanyue, "Яньюэ"),
+        .tradicional(.shierLu, "Шиэр люй"),
+        .tradicional(.yanglu, "Янлюй"),
+        .tradicional(.yinlu, "Иньлюй"),
         // Corea
         .tradicional(.pyongjo, "Пхёнджо"),
         .tradicional(.kyemyonjo, "Кемёнджо"),
@@ -412,6 +415,12 @@ extension NombresDeEscalas {
         .tradicional(.cuernoAlpino, "альпийский рог"),
         .tradicional(.gaitaEscocesa, "шотландская волынка"),
         .tradicional(.georgiana, "грузинская"),
+        .tradicional(.doricoConFicta, "дорийский с фиктой"),
+        .tradicional(.mixolidioConFicta, "миксолидийский с фиктой"),
+        .tradicional(.lidioConSiBemol, "лидийский с си-бемолем"),
+        .tradicional(.tetracordoDiatonicoDeVicentino, "диатонический тетрахорд Вичентино"),
+        .tradicional(.tetracordoCromaticoDeVicentino, "хроматический тетрахорд Вичентино"),
+        .tradicional(.tetracordoEnarmonicoDeVicentino, "энгармонический тетрахорд Вичентино"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "рага"),
