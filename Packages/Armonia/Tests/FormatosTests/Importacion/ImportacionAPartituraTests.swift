@@ -4,6 +4,7 @@ import Testing
 @testable import Elementos
 @testable import Formatos
 @testable import Partituras
+@testable import Polifonia
 @testable import Teoria
 
 /// De la pieza importada a una partitura, que se dibuja y se exporta otra vez.

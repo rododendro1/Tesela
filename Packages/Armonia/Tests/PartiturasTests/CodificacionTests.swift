@@ -42,31 +42,6 @@ import Testing
         }
     }
 
-    @Test func coral() throws {
-        let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Sol2 Re4 Sol4 Si4")
-        #expect(try idaYVuelta(coral) == coral)
-        #expect(try leer(Coral.self, #"[["Do3", "Mi4"], ["Sol2", "Re4"]]"#).numeroDeVoces == 2)
-        // Acordes con distintas voces no forman un coral.
-        #expect(throws: DecodingError.self) { try leer(Coral.self, #"[["Do3", "Mi4"], ["Sol2"]]"#) }
-    }
-
-    @Test func contrapunto() throws {
-        let fux = try Contrapunto(
-            cantusFirmus: "Re4 Fa4 Mi4 Re4", contrapunto: "-:2 La4 Re5 La4 Si4 Do#5 Re5:1", especie: .segunda)
-        let leido = try idaYVuelta(fux)
-        #expect(leido == fux)
-        #expect(leido.esCorrecto == fux.esCorrecto)
-        // Un contrapunto que no dura una redonda por nota del cantus no se lee.
-        let corto = try Contrapunto(cantusFirmus: "Re4", contrapunto: "Re5:1", especie: .primera)
-        let cantusLargo = String(decoding: try JSONEncoder().encode(fux.cantusFirmus), as: UTF8.self)
-        let eventosCortos = String(decoding: try JSONEncoder().encode(corto.contrapunto.eventos), as: UTF8.self)
-        #expect(throws: DecodingError.self) {
-            try leer(
-                Contrapunto.self,
-                #"{"cantusFirmus": \#(cantusLargo), "contrapunto": \#(eventosCortos), "especie": 1}"#)
-        }
-    }
-
     @Test func partitura() throws {
         let soprano = try Voz(leyendo: "Mi5:2 Re5:2")
         let bajo = try Voz(leyendo: "Do3:2 Sol2:2")

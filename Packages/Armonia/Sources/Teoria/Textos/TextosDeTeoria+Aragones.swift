@@ -88,26 +88,6 @@ extension TextosDeTeoria {
         tipoSextaAumentadaFrancesa: "sexta aumentada francesa",
         tipoSextaAumentadaAlemana: "sexta aumentada alemana",
 
-        // Coral.swift
-        entreLasVoces: { nombres in "entre " + nombres.joined(separator: " y ") },
-        enLaVoz: { primera in "en \(primera)" },
-        enLosAcordes: { pasos in "(acordes \(pasos))" },
-        enElAcorde: { acorde in "(acorde \(acorde + 1))" },
-        quintasParalelas: "Quintas paralelas",
-        octavasParalelas: "Octavas paralelas",
-        quintasDirectas: "Quintas directas",
-        octavasDirectas: "Octavas directas",
-        cruceDeVoces: "Cruce de voces",
-        superposicion: "Superposición",
-        separacionExcesiva: "Más d\'una octava",
-        saltoNoMelodico: "Salto no melodico",
-        fueraDeTesitura: "Difuera de tesitura",
-        vozBajo: "baixo",
-        vozTenor: "tenor",
-        vozContralto: "contralto",
-        vozSoprano: "soprano",
-        vozNumero: { numero in "voz \(numero)" },
-
         // Escala.swift
         gradoTonica: "tonica",
         gradoSupertonica: "supertonica",
@@ -152,8 +132,6 @@ extension TextosDeTeoria {
         papelTensionDisponible: "tensión",
         papelNotaAEvitar: "nota a evitar",
         modoDe: { modo, escala in "modo \(modo) de \(escala)" },
-        // NotaExtrana.swift
-        nombresDeNotasExtranas: ["nota de paso", "bordadura", "apoyatura", "retardo", "anticipación", "escapada", "nota pedal", "nota libre"],
         // EsquemaArmonico.swift
         nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "blues de 12 compases", "progresión por quintas", "romanesca", "canon de Pachelbel", "monte", "fonte", "ponte"],
         // Rearmonizacion.swift

@@ -1,4 +1,5 @@
 import Elementos
+import Teoria
 
 // Conducción de voces: las reglas de la armonía a cuatro voces sobre una sucesión de acordes.
 
@@ -43,15 +44,15 @@ public struct FaltaDeConduccion: Hashable, Sendable, CustomStringConvertible {
     public func descripcion(en notacion: Notacion) -> String {
         let nombres = voces.map { Coral.nombreDeVoz($0, de: numeroDeVoces, en: notacion) }
         let primera = nombres.first ?? ""
-        let entre = TextosDeTeoria.en(notacion) { $0.entreLasVoces(nombres) }
-        let en = TextosDeTeoria.en(notacion) { $0.enLaVoz(primera) }
+        let entre = TextosDePolifonia.en(notacion) { $0.entreLasVoces(nombres) }
+        let en = TextosDePolifonia.en(notacion) { $0.enLaVoz(primera) }
         let lugar: String
         switch tipo {
         case .quintasParalelas, .octavasParalelas, .quintasDirectas, .octavasDirectas, .superposicion, .saltoNoMelodico:
             let pasos = "\(acorde + 1) → \(acorde + 2)"
-            lugar = TextosDeTeoria.en(notacion) { $0.enLosAcordes(pasos) }
+            lugar = TextosDePolifonia.en(notacion) { $0.enLosAcordes(pasos) }
         case .cruceDeVoces, .separacionExcesiva, .fueraDeTesitura:
-            lugar = TextosDeTeoria.en(notacion) { $0.enElAcorde(acorde) }
+            lugar = TextosDePolifonia.en(notacion) { $0.enElAcorde(acorde) }
         }
         switch tipo {
         case .saltoNoMelodico, .fueraDeTesitura:
@@ -66,23 +67,23 @@ extension FaltaDeConduccion.Tipo: Nombrable, CustomStringConvertible {
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .quintasParalelas:
-            return TextosDeTeoria.en(notacion, \.quintasParalelas)
+            return TextosDePolifonia.en(notacion, \.quintasParalelas)
         case .octavasParalelas:
-            return TextosDeTeoria.en(notacion, \.octavasParalelas)
+            return TextosDePolifonia.en(notacion, \.octavasParalelas)
         case .quintasDirectas:
-            return TextosDeTeoria.en(notacion, \.quintasDirectas)
+            return TextosDePolifonia.en(notacion, \.quintasDirectas)
         case .octavasDirectas:
-            return TextosDeTeoria.en(notacion, \.octavasDirectas)
+            return TextosDePolifonia.en(notacion, \.octavasDirectas)
         case .cruceDeVoces:
-            return TextosDeTeoria.en(notacion, \.cruceDeVoces)
+            return TextosDePolifonia.en(notacion, \.cruceDeVoces)
         case .superposicion:
-            return TextosDeTeoria.en(notacion, \.superposicion)
+            return TextosDePolifonia.en(notacion, \.superposicion)
         case .separacionExcesiva:
-            return TextosDeTeoria.en(notacion, \.separacionExcesiva)
+            return TextosDePolifonia.en(notacion, \.separacionExcesiva)
         case .saltoNoMelodico:
-            return TextosDeTeoria.en(notacion, \.saltoNoMelodico)
+            return TextosDePolifonia.en(notacion, \.saltoNoMelodico)
         case .fueraDeTesitura:
-            return TextosDeTeoria.en(notacion, \.fueraDeTesitura)
+            return TextosDePolifonia.en(notacion, \.fueraDeTesitura)
         }
     }
 
@@ -266,14 +267,14 @@ public struct Coral: Hashable, Sendable {
     package static func nombreDeVoz(_ voz: Int, de total: Int, en notacion: Notacion) -> String {
         if total == 4 {
             return [
-                TextosDeTeoria.traduccion(\.vozBajo),
-                TextosDeTeoria.traduccion(\.vozTenor),
-                TextosDeTeoria.traduccion(\.vozContralto),
-                TextosDeTeoria.traduccion(\.vozSoprano),
+                TextosDePolifonia.traduccion(\.vozBajo),
+                TextosDePolifonia.traduccion(\.vozTenor),
+                TextosDePolifonia.traduccion(\.vozContralto),
+                TextosDePolifonia.traduccion(\.vozSoprano),
             ][voz].en(notacion)
         }
         let numero = voz + 1
-        return TextosDeTeoria.en(notacion) { $0.vozNumero(numero) }
+        return TextosDePolifonia.en(notacion) { $0.vozNumero(numero) }
     }
 }
 

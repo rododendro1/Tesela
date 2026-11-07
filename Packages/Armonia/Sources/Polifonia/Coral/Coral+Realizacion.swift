@@ -1,4 +1,5 @@
 import Elementos
+import Teoria
 
 // Realización a cuatro voces: escribir una sucesión de acordes como coral (bajo, tenor, contralto y
 // soprano) sin faltas de conducción.

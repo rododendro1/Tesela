@@ -5,23 +5,6 @@
 
 extension TextosDePartituras {
     static let italiano = TextosDePartituras(
-        // Contrapunto.swift
-        enElCompas: { n in "(battuta \(n))" },
-        enLosCompases: { pasos in "(battute \(pasos))" },
-        ritmoDeLaEspecie: "Ritmo estraneo alla specie",
-        comienzoImperfecto: "Inizio senza consonanza perfetta",
-        finalImperfecto: "Finale senza unisono né ottava",
-        finalSinGradoConjunto: "Finale non raggiunto per grado congiunto",
-        disonanciaEnParteFuerte: "Dissonanza in battere",
-        disonanciaMalTratada: "Dissonanza mal trattata",
-        retardoMalResuelto: "Ritardo mal risolto",
-        unisono: "Unisono a metà esercizio",
-        saltoSinCompensar: "Salto non compensato",
-        notaRepetida: "Nota ripetuta",
-        especieConElContrapuntoEncima: { n in "Specie \(n), con il contrappunto sopra il cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Specie \(n), con il contrappunto sotto il cantus firmus" },
-        sinFaltas: "Nessun errore.",
-
         // Duracion.swift
         cuadrada: "breve",
         redonda: "semibreve",

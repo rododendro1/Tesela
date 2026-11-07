@@ -5,23 +5,6 @@
 
 extension TextosDePartituras {
     static let occitano = TextosDePartituras(
-        // Contrapunto.swift
-        enElCompas: { n in "(mesura \(n))" },
-        enLosCompases: { pasos in "(mesuras \(pasos))" },
-        ritmoDeLaEspecie: "Ritme estrangièr a l'espècia",
-        comienzoImperfecto: "Començament sens consonància perfiecha",
-        finalImperfecto: "Final sens unisson ni octava",
-        finalSinGradoConjunto: "Final sens gra conjunt",
-        disonanciaEnParteFuerte: "Dissonància en temps fòrt",
-        disonanciaMalTratada: "Dissonància mal tractada",
-        retardoMalResuelto: "Retard mal resolgut",
-        unisono: "Unisson al mitan de l'exercici",
-        saltoSinCompensar: "Saut sens compensar",
-        notaRepetida: "Nòta repetida",
-        especieConElContrapuntoEncima: { n in "Espècia \(n), amb lo contrapunt dessús lo cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Espècia \(n), amb lo contrapunt dejós lo cantus firmus" },
-        sinFaltas: "Sens fautas.",
-
         // Duracion.swift
         cuadrada: "quadrada",
         redonda: "redonda",

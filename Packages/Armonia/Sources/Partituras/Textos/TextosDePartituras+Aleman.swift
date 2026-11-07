@@ -5,23 +5,6 @@
 
 extension TextosDePartituras {
     static let aleman = TextosDePartituras(
-        // Contrapunto.swift
-        enElCompas: { n in "(Takt \(n))" },
-        enLosCompases: { pasos in "(Takte \(pasos))" },
-        ritmoDeLaEspecie: "Rhythmus passt nicht zur Gattung",
-        comienzoImperfecto: "Beginn ohne vollkommene Konsonanz",
-        finalImperfecto: "Schluss ohne Einklang oder Oktave",
-        finalSinGradoConjunto: "Schluss nicht schrittweise erreicht",
-        disonanciaEnParteFuerte: "Dissonanz auf schwerer Zeit",
-        disonanciaMalTratada: "Falsch behandelte Dissonanz",
-        retardoMalResuelto: "Falsch aufgelöster Vorhalt",
-        unisono: "Einklang mitten im Satz",
-        saltoSinCompensar: "Nicht ausgeglichener Sprung",
-        notaRepetida: "Tonwiederholung",
-        especieConElContrapuntoEncima: { n in "Gattung \(n), Kontrapunkt über dem Cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Gattung \(n), Kontrapunkt unter dem Cantus firmus" },
-        sinFaltas: "Keine Fehler.",
-
         // Duracion.swift
         cuadrada: "Doppelganze",
         redonda: "Ganze",

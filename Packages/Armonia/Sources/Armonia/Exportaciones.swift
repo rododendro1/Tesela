@@ -7,5 +7,6 @@
 @_exported import Elementos
 @_exported import Formatos
 @_exported import Partituras
+@_exported import Polifonia
 @_exported import Teoria
 @_exported import Trastes

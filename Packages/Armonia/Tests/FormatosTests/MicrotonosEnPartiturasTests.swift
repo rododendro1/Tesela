@@ -4,6 +4,7 @@ import Testing
 @testable import Elementos
 @testable import Formatos
 @testable import Partituras
+@testable import Polifonia
 @testable import Teoria
 
 // Los microtonos en las partituras: los desvíos de cada nota, cómo los escribe cada formato y los signos del

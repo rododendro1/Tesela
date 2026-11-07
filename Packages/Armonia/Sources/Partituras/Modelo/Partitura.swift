@@ -2,8 +2,8 @@ import Elementos
 import Teoria
 
 // La partitura: lo que se escribe en cualquier formato (MusicXML, MEI, LilyPond, GUIDO, ABC, MIDI) y se dibuja en
-// SVG. Una voz, un coral, una progresión analizada y un contrapunto saben hacer la suya (`voz.partitura(…)`,
-// `coral.partitura(…)`…, en Formatos), y cada formato tiene un solo escritor, que la lee entera:
+// SVG. Una voz, un coral, una progresión analizada y un contrapunto saben hacer la suya (`voz.partitura(…)`, en
+// Formatos; `coral.partitura(…)`, en Polifonia), y cada formato tiene un solo escritor, que la lee entera:
 // `voz.partitura().musicXML()`, `coral.partitura(duracion: .blanca).midi()`.
 
 // MARK: - Encabezado

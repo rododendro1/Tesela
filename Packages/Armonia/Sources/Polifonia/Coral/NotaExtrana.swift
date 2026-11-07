@@ -1,4 +1,5 @@
 import Elementos
+import Teoria
 
 // Las notas extrañas a la armonía: las de una melodía que no son del acorde que suena con ellas, y por qué están
 // ahí (de paso, bordadura, apoyatura, retardo, anticipación, escapada, pedal). Se clasifican por cómo se llega a
@@ -37,7 +38,7 @@ extension NotaExtrana: Nombrable {
     /// «nota de paso», «bordadura», «apoyatura», «retardo»…; «passing tone», «neighbor tone», «appoggiatura»,
     /// «suspension»…
     public func nombre(en notacion: Notacion) -> String {
-        let nombres = TextosDeTeoria.en(notacion, \.nombresDeNotasExtranas)
+        let nombres = TextosDePolifonia.en(notacion, \.nombresDeNotasExtranas)
         return nombres[NotaExtrana.allCases.firstIndex(of: self)!]
     }
 }

@@ -5,23 +5,6 @@
 
 extension TextosDePartituras {
     static let hungaro = TextosDePartituras(
-        // Contrapunto.swift
-        enElCompas: { n in "(\(n). ütem)" },
-        enLosCompases: { pasos in "(ütemek: \(pasos))" },
-        ritmoDeLaEspecie: "A fajtától eltérő ritmus",
-        comienzoImperfecto: "Kezdés tökéletes konszonancia nélkül",
-        finalImperfecto: "Befejezés prím vagy oktáv nélkül",
-        finalSinGradoConjunto: "A befejezést nem lépés vezeti be",
-        disonanciaEnParteFuerte: "Disszonancia súlyos ütemrészen",
-        disonanciaMalTratada: "Helytelenül kezelt disszonancia",
-        retardoMalResuelto: "Rosszul feloldott késleltetés",
-        unisono: "Prím a darab közepén",
-        saltoSinCompensar: "Kiegyenlítetlen ugrás",
-        notaRepetida: "Ismételt hang",
-        especieConElContrapuntoEncima: { n in "\(n). fajta, ellenpont a cantus firmus fölött" },
-        especieConElContrapuntoDebajo: { n in "\(n). fajta, ellenpont a cantus firmus alatt" },
-        sinFaltas: "Nincs hiba.",
-
         // Duracion.swift
         cuadrada: "brevis",
         redonda: "egész hang",

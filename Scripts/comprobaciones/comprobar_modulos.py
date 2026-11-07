@@ -1,28 +1,30 @@
 #!/usr/bin/env python3
 """Comprueba que los módulos de `Sources/` respetan las capas del diseño.
 
-La biblioteca se reparte en seis módulos, más `Armonia`, que los reexporta:
+La biblioteca se reparte en siete módulos, más `Armonia`, que los reexporta:
 
     Elementos            Fundamentos, Texto, Postonal
     Teoria            Acordes, Escalas, Tonalidad   (se necesitan entre sí: van juntas), Afinacion
     Diagramas  Color, Dibujo, Redes (con Neorriemanniana)
-    Partituras         Modelo, Dibujo, Contrapunto
-    Formatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond (sobre Partitura)
+    Partituras         Modelo, Dibujo
+    Polifonia          Coral (armonización a cuatro voces, bajo cifrado), Contrapunto (especies), sobre Partitura
+    Formatos          MusicXML, MXL, MEI, ABC, MIDI y LilyPond (sobre Partitura y Polifonia)
     Trastes           Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes, sobre Partitura)
-    Armonia                  solo reexporta los seis (no Hexagonos: quien lo use, lo importa)
+    Armonia                  solo reexporta los siete (no Hexagonos: quien lo use, lo importa)
 
 Fuera del paquete, Diagramas usa `Hexagonos` (la geometría de las rejillas hexagonales), que no depende
 de nada; `Armonia` no lo reexporta.
 
 Un módulo solo puede usar los de su izquierda: Teoría usa Elementos; Diagramas y Partitura usan Teoría y
-Elementos, y no se usan entre sí; Formatos y Trastes usan además Partitura (lo que se toca en el mástil se escribe en
-una partitura, con su tablatura), y no se usan entre sí. SwiftPM no impide por sí solo importar un módulo que no está
+Elementos, y no se usan entre sí; Polifonia usa además Partitura (el contrapunto se escribe con figuras y compases, y
+el coral se pasa a partitura); Formatos usa Partitura y Polifonia (exporta corales y contrapuntos), y Trastes, Partitura
+(lo que se toca en el mástil se escribe en una partitura, con su tablatura); Formatos y Trastes no se usan entre sí. SwiftPM no impide por sí solo importar un módulo que no está
 declarado como dependencia si otra ruta lo compila antes, así que se comprueba aquí:
 
   1. las dependencias declaradas en Package.swift son exactamente las permitidas;
   2. ningún fichero importa un módulo `Armonia*` que no sea una dependencia permitida;
   3. ningún fichero nombra un tipo declarado en un módulo que no puede usar (aproximación por nombre);
-  4. `Armonia` reexporta los seis módulos, y `Sources/Armonia` no tiene más código que eso;
+  4. `Armonia` reexporta los siete módulos, y `Sources/Armonia` no tiene más código que eso;
   5. las pruebas de cada módulo (`Tests/<Módulo>Tests`) dependen e importan solo ese módulo y los que puede usar,
      más `ApoyoDePruebas`; las que cruzan capas van en `Tests/ArmoniaTests`.
 
@@ -40,7 +42,8 @@ PERMITIDO = {
     "Teoria": {"Elementos"},
     "Diagramas": {"Elementos", "Teoria", "Hexagonos"},
     "Partituras": {"Elementos", "Teoria"},
-    "Formatos": {"Elementos", "Teoria", "Partituras"},
+    "Polifonia": {"Elementos", "Teoria", "Partituras"},
+    "Formatos": {"Elementos", "Teoria", "Partituras", "Polifonia"},
     "Trastes": {"Elementos", "Teoria", "Partituras"},
 }
 PARAGUAS = "Armonia"

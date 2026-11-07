@@ -1,14 +1,15 @@
 // swift-tools-version:6.0
 import PackageDescription
 
-// La biblioteca se reparte en seis módulos por capas, y `Armonia` los reexporta: quien escribe
+// La biblioteca se reparte en siete módulos por capas, y `Armonia` los reexporta: quien escribe
 // `import Armonia` ve la misma API de siempre. Lo que antes era interno y se usa entre capas es
 // `package`: visible dentro de este paquete y no en la API pública.
 //
 //     Elementos   Fundamentos, Texto, Postonal
 //     Teoria      Acordes, Escalas, Tonalidad, Afinacion
 //     Diagramas   Color, Dibujo, Redes
-//     Partituras  Modelo, Dibujo, Contrapunto
+//     Partituras  Modelo, Dibujo
+//     Polifonia   Coral (armonización a cuatro voces, bajo cifrado), Contrapunto (especies), sobre Partituras
 //     Formatos    MusicXML, MXL, MEI, ABC, MIDI y LilyPond: exportar e importar
 //     Trastes     Encordado, Mastil, Digitacion (instrumentos de cuerda con trastes), sobre Partituras
 //
@@ -22,8 +23,8 @@ let hexagonos: Target.Dependency = .product(name: "Hexagonos", package: "Hexagon
 
 /// Todos los módulos de la biblioteca, para las pruebas que cruzan capas.
 let modulos: [Target.Dependency] = [
-    "Armonia", "Elementos", "Teoria", "Diagramas", "Partituras", "Formatos",
-    "Trastes", hexagonos,
+    "Armonia", "Elementos", "Teoria", "Diagramas", "Partituras", "Polifonia",
+    "Formatos", "Trastes", hexagonos,
 ]
 
 let package = Package(
@@ -39,6 +40,7 @@ let package = Package(
         .library(name: "Teoria", targets: ["Teoria"]),
         .library(name: "Diagramas", targets: ["Diagramas"]),
         .library(name: "Partituras", targets: ["Partituras"]),
+        .library(name: "Polifonia", targets: ["Polifonia"]),
         .library(name: "Formatos", targets: ["Formatos"]),
         .library(name: "Trastes", targets: ["Trastes"]),
     ],
@@ -52,14 +54,15 @@ let package = Package(
             name: "Diagramas",
             dependencies: ["Elementos", "Teoria", .product(name: "Hexagonos", package: "Hexagonos")]),
         .target(name: "Partituras", dependencies: ["Elementos", "Teoria"]),
-        .target(name: "Formatos", dependencies: ["Elementos", "Teoria", "Partituras"]),
+        .target(name: "Polifonia", dependencies: ["Elementos", "Teoria", "Partituras"]),
+        .target(name: "Formatos", dependencies: ["Elementos", "Teoria", "Partituras", "Polifonia"]),
         .target(name: "Trastes", dependencies: ["Elementos", "Teoria", "Partituras"]),
-        // El módulo paraguas: reexporta los seis y guarda la documentación (DocC).
+        // El módulo paraguas: reexporta los siete y guarda la documentación (DocC).
         .target(
             name: "Armonia",
             dependencies: [
-                "Elementos", "Teoria", "Diagramas", "Partituras", "Formatos",
-                "Trastes",
+                "Elementos", "Teoria", "Diagramas", "Partituras", "Polifonia",
+                "Formatos", "Trastes",
             ]),
         // Las pruebas de cada módulo dependen solo de él y de los que puede usar, como el módulo mismo: una prueba de
         // Elementos que necesitara Teoría no compila. Ven lo `internal` con `@testable import`.
@@ -72,9 +75,12 @@ let package = Package(
             name: "PartiturasTests",
             dependencies: ["Elementos", "Teoria", "Partituras", "ApoyoDePruebas"]),
         .testTarget(
+            name: "PolifoniaTests",
+            dependencies: ["Elementos", "Teoria", "Partituras", "Polifonia", "ApoyoDePruebas"]),
+        .testTarget(
             name: "FormatosTests",
             dependencies: [
-                "Elementos", "Teoria", "Partituras", "Formatos", "ApoyoDePruebas",
+                "Elementos", "Teoria", "Partituras", "Polifonia", "Formatos", "ApoyoDePruebas",
             ]),
         .testTarget(
             name: "TrastesTests",

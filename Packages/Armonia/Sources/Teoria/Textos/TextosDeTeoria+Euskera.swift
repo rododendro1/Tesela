@@ -88,26 +88,6 @@ extension TextosDeTeoria {
         tipoSextaAumentadaFrancesa: "seigarren gehitu frantsesa",
         tipoSextaAumentadaAlemana: "seigarren gehitu alemana",
 
-        // Coral.swift
-        entreLasVoces: { nombres in nombres.joined(separator: " eta ") },
-        enLaVoz: { primera in primera },
-        enLosAcordes: { pasos in "(\(pasos) akordeak)" },
-        enElAcorde: { acorde in "(\(acorde + 1). akordea)" },
-        quintasParalelas: "Bosgarren paraleloak",
-        octavasParalelas: "Zortzidun paraleloak",
-        quintasDirectas: "Bosgarren zuzenak",
-        octavasDirectas: "Zortzidun zuzenak",
-        cruceDeVoces: "Ahotsen gurutzatzea",
-        superposicion: "Gainjartzea",
-        separacionExcesiva: "Zortzidun bat baino gehiago",
-        saltoNoMelodico: "Jauzi ez-melodikoa",
-        fueraDeTesitura: "Tesituratik kanpo",
-        vozBajo: "baxua",
-        vozTenor: "tenorra",
-        vozContralto: "altua",
-        vozSoprano: "sopranoa",
-        vozNumero: { numero in "\(numero). ahotsa" },
-
         // Escala.swift
         gradoTonica: "tonika",
         gradoSupertonica: "supertonika",
@@ -155,8 +135,6 @@ extension TextosDeTeoria {
         papelTensionDisponible: "tentsioa",
         papelNotaAEvitar: "saihesteko nota",
         modoDe: { modo, escala in "\(escala): \(modo). modua" },
-        // NotaExtrana.swift
-        nombresDeNotasExtranas: ["igarotze-nota", "brodadura", "apoiatura", "atzerapena", "aurrerapena", "ihes-nota", "pedal-nota", "nota askea"],
         // EsquemaArmonico.swift
         nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "12 konpaseko bluesa", "boskoen progresioa", "romanesca", "Pachelbelen kanona", "monte", "fonte", "ponte"],
         // Rearmonizacion.swift

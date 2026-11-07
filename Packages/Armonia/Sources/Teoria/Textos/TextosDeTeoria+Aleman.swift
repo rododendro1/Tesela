@@ -88,26 +88,6 @@ extension TextosDeTeoria {
         tipoSextaAumentadaFrancesa: "französischer übermäßiger Sextakkord",
         tipoSextaAumentadaAlemana: "deutscher übermäßiger Sextakkord",
 
-        // Coral.swift
-        entreLasVoces: { nombres in "zwischen " + nombres.joined(separator: " und ") },
-        enLaVoz: { primera in (primera.hasPrefix("Stimme") ? "in \(primera)" : "im \(primera)") },
-        enLosAcordes: { pasos in "(Akkorde \(pasos))" },
-        enElAcorde: { acorde in "(Akkord \(acorde + 1))" },
-        quintasParalelas: "Quintparallelen",
-        octavasParalelas: "Oktavparallelen",
-        quintasDirectas: "Verdeckte Quinten",
-        octavasDirectas: "Verdeckte Oktaven",
-        cruceDeVoces: "Stimmkreuzung",
-        superposicion: "Stimmüberschreitung",
-        separacionExcesiva: "Mehr als eine Oktave",
-        saltoNoMelodico: "Unmelodischer Sprung",
-        fueraDeTesitura: "Außerhalb des Stimmumfangs",
-        vozBajo: "Bass",
-        vozTenor: "Tenor",
-        vozContralto: "Alt",
-        vozSoprano: "Sopran",
-        vozNumero: { numero in "Stimme \(numero)" },
-
         // Escala.swift
         gradoTonica: "Tonika",
         gradoSupertonica: "Supertonika",
@@ -152,8 +132,6 @@ extension TextosDeTeoria {
         papelTensionDisponible: "Spannungston",
         papelNotaAEvitar: "Avoid-Ton",
         modoDe: { modo, escala in "\(modo). Modus von \(escala)" },
-        // NotaExtrana.swift
-        nombresDeNotasExtranas: ["Durchgangston", "Wechselnote", "freier Vorhalt", "Vorhalt", "Antizipation", "Echappée", "Orgelpunkt", "freie Dissonanz"],
         // EsquemaArmonico.swift
         nombresDeEsquemas: ["ii–V–I", "ii–V", "Turnaround", "Backdoor", "12-taktiger Blues", "Quintfallsequenz", "Romanesca", "Pachelbel-Kanon", "Monte", "Fonte", "Ponte"],
         // Rearmonizacion.swift

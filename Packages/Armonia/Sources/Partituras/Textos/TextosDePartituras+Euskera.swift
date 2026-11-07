@@ -5,23 +5,6 @@
 
 extension TextosDePartituras {
     static let euskera = TextosDePartituras(
-        // Contrapunto.swift
-        enElCompas: { n in "(\(n). konpasa)" },
-        enLosCompases: { pasos in "(\(pasos) konpasak)" },
-        ritmoDeLaEspecie: "Espeziez kanpoko erritmoa",
-        comienzoImperfecto: "Hasiera kontsonantzia perfekturik gabe",
-        finalImperfecto: "Amaiera unisonorik eta zortzidunik gabe",
-        finalSinGradoConjunto: "Amaiera gradu jarraiturik gabe",
-        disonanciaEnParteFuerte: "Disonantzia zati sendoan",
-        disonanciaMalTratada: "Gaizki tratatutako disonantzia",
-        retardoMalResuelto: "Gaizki ebatzitako atzerapena",
-        unisono: "Unisonoa ariketaren erdian",
-        saltoSinCompensar: "Konpentsatu gabeko jauzia",
-        notaRepetida: "Nota errepikatua",
-        especieConElContrapuntoEncima: { n in "\(n). espeziea, kontrapuntua cantus firmusaren gainean" },
-        especieConElContrapuntoDebajo: { n in "\(n). espeziea, kontrapuntua cantus firmusaren azpian" },
-        sinFaltas: "Akatsik gabe.",
-
         // Duracion.swift
         cuadrada: "karratua",
         redonda: "biribila",
