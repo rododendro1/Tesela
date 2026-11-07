@@ -53,11 +53,31 @@ public enum SistemaDeNombres: String, Hashable, Sendable, CaseIterable, Codable 
     /// cadena de quintas. Se leen también en hanja, con el nombre entero (黃鍾) o con su sílaba (黃), como en el
     /// jeongganbo.
     case luCoreanos
+    /// El jianpu, la notación por números de China: 1 2 3 4 5 6 7 desde la tónica, con la alteración delante (♯4, ♭7).
+    /// Es móvil.
+    case jianpu
+    /// El gongche (工尺谱), la notación china con caracteres: 上 尺 工 凡 六 五 乙 (shàng chě gōng fán liù wǔ yǐ) desde
+    /// la tónica, con 上 como do, como se usa hoy. Es móvil; las alteraciones van con signos detrás.
+    case gongche
+    /// Las cinco notas chinas (五声, wǔshēng) y las dos que se les añaden: 宫 商 角 徵 羽 (gōng shāng jué zhǐ yǔ) desde
+    /// gōng, con 清角 (qīngjué) en el cuarto, 变徵 (biànzhǐ) en el cuarto aumentado, 闰 (rùn) en la séptima menor y
+    /// 变宫 (biàngōng) en la mayor. Es móvil: la tónica que se da es gōng, también en los modos que no empiezan en él.
+    case wusheng
+    /// Los swaras carnáticos, los dieciséis nombres de doce alturas: Sa, Ri₁ Ri₂ Ri₃, Ga₁ Ga₂ Ga₃, Ma₁ Ma₂, Pa, Da₁
+    /// Da₂ Da₃, Ni₁ Ni₂ Ni₃. Es móvil. Dos nombres pueden sonar igual y escribirse distinto, como Re♯ y Mi♭: Ri₂ es la
+    /// 2.ª mayor y Ga₁, la 3.ª disminuida.
+    case carnatico
+    /// El tonic sol-fa de Curwen: d r m f s l t desde la tónica, con las alteraciones con signos detrás. Es móvil. El
+    /// do móvil cromático, con sus sílabas (di, ri, me…), está en `SolfeoRelativo`.
+    case tonicSolFa
+    /// Las notas de forma (shape notes) de cuatro sílabas, las del Sacred Harp: fa sol la fa sol la mi desde la tónica.
+    /// Es móvil. Como fa, sol y la nombran dos grados, al leerlos se toma el más bajo (fa es el primero, no el cuarto).
+    case notasDeForma
 
     /// Si cada nota tiene su nombre (`.fija`) o el nombre depende de la tónica (`.movil`).
     public var familia: FamiliaDeNombres {
         switch self {
-        case .sargam: return .movil
+        case .sargam, .jianpu, .gongche, .wusheng, .carnatico, .tonicSolFa, .notasDeForma: return .movil
         case .bizantino, .japones, .coreano, .guidoniano, .luChinos, .luJaponeses, .luCoreanos: return .fija
         }
     }
@@ -74,6 +94,12 @@ public enum SistemaDeNombres: String, Hashable, Sendable, CaseIterable, Codable 
         case .luChinos: return ["lu chinos", "lu", "shier lu", "doce lu", "chinese lu"]
         case .luJaponeses: return ["lu japoneses", "juni ritsu", "japanese lu"]
         case .luCoreanos: return ["lu coreanos", "yulmyeong", "korean lu"]
+        case .jianpu: return ["jianpu", "numerada", "numbered"]
+        case .gongche: return ["gongche", "gongchepu"]
+        case .wusheng: return ["wusheng", "cinco notas", "pentatonica china", "gong shang jue zhi yu"]
+        case .carnatico: return ["carnatico", "carnatic", "swaras carnaticos"]
+        case .tonicSolFa: return ["tonic sol fa", "sol fa", "curwen"]
+        case .notasDeForma: return ["notas de forma", "shape notes", "fasola", "sacred harp"]
         }
     }
 
@@ -140,8 +166,16 @@ extension SistemaDeNombres {
         /// bemol), que llevan detrás lo que las separa del nombre (nada en kana y en hangul, un espacio en latino). Lo
         /// que pasa de la doble, con signos detrás.
         case prefijos((Grafia) -> [String])
-        /// Las del sargam: el komal y el tivra con nombre propio, y lo demás con signos detrás.
-        case sargam
+        /// Algunas con nombre propio (en el sargam, el komal y el tivra: ga, Ma; en el carnático, Ri₁ y Ri₃), y lo
+        /// demás con signos detrás.
+        case propias((Grafia) -> [NombrePropio])
+    }
+
+    /// El nombre propio de un grado alterado: el grado (de 0 a 6), su alteración y cómo se escribe.
+    struct NombrePropio {
+        let indice: Int
+        let alteracion: Int
+        let nombre: String
     }
 }
 
@@ -175,11 +209,16 @@ extension SistemaDeNombres {
             switch alteraciones {
             case .signos:
                 break
-            case .sargam:
-                if let propia = SistemaDeNombres.alteracionPropiaDelSargam(indice, alteracion) {
-                    // El komal o el tivra, que tienen nombre propio: ga, Ma.
-                    base = SistemaDeNombres.nombreDelSargam(base, propia, grafia: grafia)
-                    alteracion -= propia
+            case .propias(let propias):
+                // La alteración con nombre propio del mismo sentido que más se acerque sin pasarse: en el carnático,
+                // Ga₁ (−2) para el Mi𝄫 y Ga₂ (−1) para el Mi♭; en el sargam, ga (−1) y un bemol más para el Mi𝄫.
+                let candidatas = propias(grafia).filter { propia in
+                    propia.indice == indice && propia.alteracion.signum() == alteracion.signum()
+                        && abs(propia.alteracion) <= abs(alteracion)
+                }
+                if let propia = candidatas.max(by: { abs($0.alteracion) < abs($1.alteracion) }) {
+                    base = propia.nombre
+                    alteracion -= propia.alteracion
                 }
             case .prefijos(let prefijos):
                 let conPrefijo = max(-2, min(2, alteracion))
@@ -205,25 +244,6 @@ extension SistemaDeNombres {
         case -1: return 1
         case 2: return 2
         default: return 3
-        }
-    }
-
-    /// La alteración que el sargam nombra en el grado `indice` (de 0, Sā, a 6, Ni), si `alteracion` la incluye: −1
-    /// (komal) en Re, Ga, Dha y Ni, y +1 (tivra) en Ma; `nil` en los demás casos.
-    private static func alteracionPropiaDelSargam(_ indice: Int, _ alteracion: Int) -> Int? {
-        switch indice {
-        case 1, 2, 5, 6: return alteracion < 0 ? -1 : nil
-        case 3: return alteracion > 0 ? 1 : nil
-        default: return nil
-        }
-    }
-
-    /// El nombre del komal o del tivra de un grado del sargam: re, ga, dha, ni; Ma. En devanagari, con la raya de
-    /// debajo (U+0952) o el trazo de encima (U+0951).
-    private static func nombreDelSargam(_ natural: String, _ alteracion: Int, grafia: Grafia) -> String {
-        switch grafia {
-        case .original: return natural + (alteracion < 0 ? "\u{0952}" : "\u{0951}")
-        case .transliterada, .ascii: return alteracion < 0 ? natural.lowercased() : natural.conMayusculaInicial
         }
     }
 }
@@ -253,7 +273,12 @@ extension SistemaDeNombres {
         for prefijo in prefijosDeLectura where escalares.starts(with: prefijo.escalares) {
             let tras = Array(escalares.dropFirst(prefijo.escalares.count))
             let candidatos = formasDeLectura.filter { tras.starts(with: $0.escalares) }
-            guard let forma = candidatos.max(by: { $0.escalares.count < $1.escalares.count }) else { continue }
+            // El más largo y, entre los igual de largos, el primero: en las notas de forma, fa es el primer grado.
+            var elegida: FormaDeLectura?
+            for candidato in candidatos where candidato.escalares.count > (elegida?.escalares.count ?? -1) {
+                elegida = candidato
+            }
+            guard let forma = elegida else { continue }
             var resto = String(String.UnicodeScalarView(tras.dropFirst(forma.escalares.count)))
             var alteracion = prefijo.alteracion
             // En devanagari, la raya de debajo (komal) y el trazo de encima (tivra) van tras la sílaba.
@@ -279,15 +304,21 @@ extension SistemaDeNombres {
         let alteracion: Int
     }
 
-    /// Las formas de los nombres que se leen: los de las tres grafías y los de `otrasFormas` (en el sargam, el
-    /// komal y el tivra).
+    /// Las formas de los nombres que se leen: los de las tres grafías, con sus nombres propios (en el sargam, el komal
+    /// y el tivra), y los de `otrasFormas`.
     private var formasDeLectura: [FormaDeLectura] {
         var formas: [(String, Nota)] = []
         for grafia in Grafia.allCases {
             switch disposicion {
-            case .siete(let naturales, _):
+            case .siete(let naturales, let alteraciones):
                 for (indice, nombre) in naturales(grafia).enumerated() {
                     formas.append((nombre, Nota(NotaNatural(rawValue: indice) ?? .do)))
+                }
+                if case .propias(let propias) = alteraciones {
+                    for propia in propias(grafia) {
+                        let natural = NotaNatural(rawValue: propia.indice) ?? .do
+                        formas.append((propia.nombre, Nota(natural, Alteracion(propia.alteracion))))
+                    }
                 }
             case .doce(let nombres, let primera, let desdeQuinta):
                 for (indice, nombre) in nombres(grafia).enumerated() {

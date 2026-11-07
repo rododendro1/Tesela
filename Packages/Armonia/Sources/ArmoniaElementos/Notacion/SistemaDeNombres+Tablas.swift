@@ -26,7 +26,20 @@ extension SistemaDeNombres {
                     case .ascii: return ["Sa", "Re", "Ga", "ma", "Pa", "Dha", "Ni"]
                     }
                 },
-                alteraciones: .sargam)
+                alteraciones: .propias({ grafia in
+                    // El komal y el tivra: en devanagari, con la raya de debajo (U+0952) y el trazo de encima (U+0951).
+                    switch grafia {
+                    case .original:
+                        return SistemaDeNombres.propias([
+                            (1, -1, "रे\u{0952}"), (2, -1, "ग\u{0952}"), (3, 1, "म\u{0951}"), (5, -1, "ध\u{0952}"),
+                            (6, -1, "नि\u{0952}"),
+                        ])
+                    case .transliterada, .ascii:
+                        return SistemaDeNombres.propias([
+                            (1, -1, "re"), (2, -1, "ga"), (3, 1, "Ma"), (5, -1, "dha"), (6, -1, "ni"),
+                        ])
+                    }
+                }))
         case .japones:
             return .siete(
                 naturales: { grafia in
@@ -101,7 +114,60 @@ extension SistemaDeNombres {
                         ]
                 },
                 primera: 3, desdeQuinta: -3)
+        case .jianpu:
+            return .siete(
+                naturales: { _ in ["1", "2", "3", "4", "5", "6", "7"] },
+                alteraciones: .prefijos({ grafia in grafia == .ascii ? ["#", "b", "##", "bb"] : ["♯", "♭", "𝄪", "𝄫"] }))
+        case .gongche:
+            return .siete(
+                naturales: { grafia in
+                    switch grafia {
+                    case .original: return ["上", "尺", "工", "凡", "六", "五", "乙"]
+                    case .transliterada: return ["shàng", "chě", "gōng", "fán", "liù", "wǔ", "yǐ"]
+                    case .ascii: return ["shang", "che", "gong", "fan", "liu", "wu", "yi"]
+                    }
+                },
+                alteraciones: .signos)
+        case .wusheng:
+            return .siete(
+                naturales: { grafia in
+                    switch grafia {
+                    case .original: return ["宫", "商", "角", "清角", "徵", "羽", "变宫"]
+                    case .transliterada: return ["gōng", "shāng", "jué", "qīngjué", "zhǐ", "yǔ", "biàngōng"]
+                    case .ascii: return ["gong", "shang", "jue", "qingjue", "zhi", "yu", "biangong"]
+                    }
+                },
+                alteraciones: .propias({ grafia in
+                    switch grafia {
+                    case .original: return SistemaDeNombres.propias([(3, 1, "变徵"), (6, -1, "闰")])
+                    case .transliterada: return SistemaDeNombres.propias([(3, 1, "biànzhǐ"), (6, -1, "rùn")])
+                    case .ascii: return SistemaDeNombres.propias([(3, 1, "bianzhi"), (6, -1, "run")])
+                    }
+                }))
+        case .carnatico:
+            return .siete(
+                naturales: { grafia in
+                    let (uno, dos, tres) = grafia == .ascii ? ("1", "2", "3") : ("₁", "₂", "₃")
+                    return ["Sa", "Ri" + dos, "Ga" + tres, "Ma" + uno, "Pa", "Da" + dos, "Ni" + tres]
+                },
+                alteraciones: .propias({ grafia in
+                    let (uno, dos, tres) = grafia == .ascii ? ("1", "2", "3") : ("₁", "₂", "₃")
+                    return SistemaDeNombres.propias([
+                        (1, -1, "Ri" + uno), (1, 1, "Ri" + tres), (2, -2, "Ga" + uno), (2, -1, "Ga" + dos),
+                        (3, 1, "Ma" + dos), (5, -1, "Da" + uno), (5, 1, "Da" + tres), (6, -2, "Ni" + uno),
+                        (6, -1, "Ni" + dos),
+                    ])
+                }))
+        case .tonicSolFa:
+            return .siete(naturales: { _ in ["d", "r", "m", "f", "s", "l", "t"] }, alteraciones: .signos)
+        case .notasDeForma:
+            return .siete(naturales: { _ in ["fa", "sol", "la", "fa", "sol", "la", "mi"] }, alteraciones: .signos)
         }
+    }
+
+    /// Los nombres propios de una lista de (grado, alteración, nombre).
+    private static func propias(_ lista: [(Int, Int, String)]) -> [NombrePropio] {
+        lista.map { NombrePropio(indice: $0.0, alteracion: $0.1, nombre: $0.2) }
     }
 
     /// Los nombres que se leen además de los de las tres grafías, con su nota (o su grado, en el sargam).
@@ -111,13 +177,22 @@ extension SistemaDeNombres {
             // La otra transliteración de Βου, la que sigue la letra.
             return [("Bou", Nota(.mi))]
         case .sargam:
-            // El komal y el tivra transliterados, y Sa y Pa en minúscula, que no se confunden con nada.
-            return [
-                ("re", Nota(.re, .bemol)), ("ga", Nota(.mi, .bemol)), ("dha", Nota(.la, .bemol)),
-                ("ni", Nota(.si, .bemol)), ("Ma", Nota(.fa, .sostenido)), ("sa", Nota(.do)), ("pa", Nota(.sol)),
-            ]
-        case .japones, .coreano, .guidoniano:
+            // Sa y Pa en minúscula, que no se confunden con nada.
+            return [("sa", Nota(.do)), ("pa", Nota(.sol))]
+        case .japones, .coreano, .guidoniano, .jianpu, .gongche, .tonicSolFa, .notasDeForma:
             return []
+        case .wusheng:
+            // En caracteres tradicionales.
+            return [("宮", Nota(.do)), ("變宮", Nota(.si)), ("變徵", Nota(.fa, .sostenido)), ("閏", Nota(.si, .bemol))]
+        case .carnatico:
+            // Abreviados, con la inicial: S R1 R2 R3 G1… N3, como se suelen escribir.
+            return [
+                ("S", Nota(.do)), ("R1", Nota(.re, .bemol)), ("R2", Nota(.re)), ("R3", Nota(.re, .sostenido)),
+                ("G1", Nota(.mi, .dobleBemol)), ("G2", Nota(.mi, .bemol)), ("G3", Nota(.mi)), ("M1", Nota(.fa)),
+                ("M2", Nota(.fa, .sostenido)), ("P", Nota(.sol)), ("D1", Nota(.la, .bemol)), ("D2", Nota(.la)),
+                ("D3", Nota(.la, .sostenido)), ("N1", Nota(.si, .dobleBemol)), ("N2", Nota(.si, .bemol)),
+                ("N3", Nota(.si)),
+            ]
         case .luChinos:
             // En caracteres tradicionales, y con la ü escrita como v, como se teclea el pinyin.
             let tradicionales = ["黃鐘", "大呂", "太簇", "夾鐘", "姑洗", "仲呂", "蕤賓", "林鐘", "夷則", "南呂", "無射", "應鐘"]

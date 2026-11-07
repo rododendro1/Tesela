@@ -982,6 +982,11 @@ import Hexagonos
         comprobar(SistemaDeNombres.luChinos.nombre(de: Nota("Reb")), #""dàlǚ""#, doc, 8)
         comprobar(SistemaDeNombres.luJaponeses.nombre(de: Nota("Re"), grafia: .original), #""壱越""#, doc, 9)
         comprobar(try SistemaDeNombres.luCoreanos.leer("黃"), #"Mi♭"#, doc, 10)
+        comprobar(SistemaDeNombres.jianpu.nombre(de: Nota("Fa#")), #""♯4""#, doc, 11)
+        comprobar(SistemaDeNombres.gongche.nombre(de: Nota("Re")), #""chě""#, doc, 12)
+        comprobar(try SistemaDeNombres.wusheng.leer("變徵"), #"Fa♯"#, doc, 13)
+        comprobar(try SistemaDeNombres.carnatico.leer("G2"), #"Mi♭"#, doc, 14)
+        comprobar(SistemaDeNombres.tonicSolFa.nombre(de: Nota("Sib"), tonica: Nota("Fa")), #""f""#, doc, 15)
     }
 
     @Test func notacionYPartitura7() throws {
