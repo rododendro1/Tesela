@@ -11,7 +11,18 @@
   coma de Aron, el primero, y los de 2/7 de Zarlino (1558) y ⅓ de Salinas (1577).
 - Los ocho modos gregorianos y los cuatro de Glareano se leen también por su número de Zarlino (1571), que empieza
   en Do: «modo 1 de Zarlino» es el ionicus, «modo 3 de Zarlino», el protus authenticus.
-- Los nombres de las cuatro escalas en los demás idiomas llegarán aparte; hasta entonces, en español.
+- Sus nombres en los demás idiomas («Dorian with ficta», «dòric amb ficta», «lydisch mit B»…), salvo la musica
+  recta, que se queda en latín.
+- El monocordio de Ramos de Pareja (Musica practica, 1482), con las razones justas que da Forster (Re 10/9, Mi 5/4,
+  La 5/3, Si♭ 16/9…), como cuarta afinación del dórico con ficta, del lidio con si bemol y de la musica recta,
+  tomada desde la final: en el dórico, la cuarta Re–Sol es la del lobo, 27/20 (520 cents). El mixolidio no la
+  lleva, porque las fuentes no dan el Fa♯ de Ramos.
+- Los tres géneros de Vicentino (L'antica musica, 1555), tetracordos en las 31 diesis de su archicémbalo:
+  `tetracordoDiatonicoDeVicentino` (3 + 5 + 5, Mi Fa Sol La), `tetracordoCromaticoDeVicentino` (3 + 2 + 8, Mi Fa
+  Fa♯ La) y `tetracordoEnarmonicoDeVicentino` (1 + 2 + 10, Mi Fa♭ Fa La). Con una fuente nueva,
+  `FuenteTeorica.vicentino`, y sus nombres en los quince idiomas.
+- `ManoGuidoniana`: el gamut de Guido, las veinte posiciones de Γ ut (Sol2) a ee la (Mi5) con sus nombres («C fa
+  ut», «b fa ♮ mi»), los siete hexacordos que se solapan en ellas, las sílabas de cada altura y las mutaciones.
 
 ### Los doce lü y el sanfen sunyi de las escalas chinas
 

@@ -36,8 +36,8 @@ extension TipoDeEscala {
     /// afinaciones de África y del sudeste asiático, los modos gregorianos, más géneros y harmoniai griegos y los
     /// hexacordos de Guido, las escalas populares de Europa, los modos de Glareano, las de Vietnam, los modos
     /// nordestinos de Brasil, los colores de Aristóxeno, los adwār de Ṣafī al-Dīn, los lü chinos y los modos con
-    /// musica ficta del Renacimiento. El orden de las listas decide qué nombre gana en la búsqueda: las nuevas van al
-    /// final.
+    /// musica ficta y los géneros de Vicentino del Renacimiento. El orden de las listas decide qué nombre gana en la
+    /// búsqueda: las nuevas van al final.
     public static let tradicionales: [TipoDeEscala] = listasTradicionales.flatMap(\.tipos)
 
     /// Las listas de `tradicionales`, cada una con su tradición, en el orden en que tienen prioridad: de aquí salen
@@ -58,6 +58,7 @@ extension TipoDeEscala {
         .init(.gregoriano, hexacordos), .init(.europa, europeas), .init(.gregoriano, modosDeGlareano),
         .init(.vietnam, vietnamitas), .init(.brasil, brasilenas), .init(.greciaAntigua, coloresDeAristoxeno),
         .init(.mundoArabe, adwar), .init(.china, lus), .init(.renacimiento, escalasRenacentistas),
+        .init(.renacimiento, generosDeVicentino),
     ]
 }
 

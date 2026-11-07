@@ -138,6 +138,12 @@ extension NombresDeEscalas {
         .tradicional(.tetracordoDiatonicoIgual, "tetracordu diatónicu igual"),
         .tradicional(.doricoUcraniano, "dóricu ucranianu"),
         .tradicional(.cuernoAlpino, "cuernu alpín"),
+        .tradicional(.doricoConFicta, "dóricu con ficta"),
+        .tradicional(.mixolidioConFicta, "mixolidiu con ficta"),
+        .tradicional(.lidioConSiBemol, "lidiu con si bemol"),
+        .tradicional(.tetracordoDiatonicoDeVicentino, "tetracordu diatónicu de Vicentino"),
+        .tradicional(.tetracordoCromaticoDeVicentino, "tetracordu cromáticu de Vicentino"),
+        .tradicional(.tetracordoEnarmonicoDeVicentino, "tetracordu enarmónicu de Vicentino"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

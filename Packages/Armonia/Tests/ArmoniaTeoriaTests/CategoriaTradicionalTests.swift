@@ -49,11 +49,13 @@ import Testing
         let nuevas =
             TipoDeEscala.generosDeDidimoYEratostenes + TipoDeEscala.harmoniaiCromaticas
             + TipoDeEscala.harmoniaiEnarmonicas + TipoDeEscala.harmoniaiDeAristides + TipoDeEscala.coloresDeAristoxeno
+            + TipoDeEscala.generosDeVicentino
         #expect((tetracordos.count + harmoniai.count) == TipoDeEscala.griegasAntiguas.count + nuevas.count)
         #expect(
             tetracordos
                 == TipoDeEscala.tetracordosGriegos + TipoDeEscala.generosDeArquitasYPtolomeo
-                + TipoDeEscala.generosDeDidimoYEratostenes + TipoDeEscala.coloresDeAristoxeno)
+                + TipoDeEscala.generosDeDidimoYEratostenes + TipoDeEscala.coloresDeAristoxeno
+                + TipoDeEscala.generosDeVicentino)
         #expect(
             harmoniai
                 == TipoDeEscala.harmoniai + TipoDeEscala.harmoniaiCromaticas + TipoDeEscala.harmoniaiEnarmonicas
@@ -199,7 +201,7 @@ import Testing
         #expect(
             fragmentos
                 == griegos + TipoDeEscala.ajnas + TipoDeEscala.cesniler + TipoDeEscala.generosDeDidimoYEratostenes
-                + TipoDeEscala.hexacordos + TipoDeEscala.coloresDeAristoxeno)
+                + TipoDeEscala.hexacordos + TipoDeEscala.coloresDeAristoxeno + TipoDeEscala.generosDeVicentino)
         #expect(fragmentos.allSatisfy { (3...6).contains($0.intervalos.count) })
         let afinaciones = TipoDeEscala.tradicionales(clase: .afinacion)
         #expect(
