@@ -915,7 +915,8 @@ import Testing
             let saltos = zip(pasos.dropFirst(), pasos).map { $0 - $1 }
             #expect(saltos.sorted() == [180, 204, 204, 204, 204, 204], Comment(rawValue: tipo.nombre))
         }
-        #expect(Escala(Nota(.do, .sostenido), .yinlu).notas.map(\.description) == ["Do♯", "Re♯", "Mi♯", "Sol", "La", "Si"])
+        #expect(
+            Escala(Nota(.do, .sostenido), .yinlu).notas.map(\.description) == ["Do♯", "Re♯", "Mi♯", "Sol", "La", "Si"])
         #expect((try? Escala(leyendo: "Do 十二律"))?.tipo.nombre == "Shí'èr lǜ")
         #expect((try? Escala(leyendo: "Do 六律"))?.tipo.nombre == "Yánglǜ")
         #expect((try? Escala(leyendo: "Do 六吕"))?.tipo.nombre == "Yīnlǜ")
