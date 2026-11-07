@@ -104,9 +104,9 @@ public struct Cadencia: Hashable, Sendable, CustomStringConvertible {
         guard acordes.count >= 2 else { return [] }
         return (0..<(acordes.count - 1)).compactMap { i in
             let final = esFinal && i + 2 == acordes.count
-            guard let tipo = tipo(acordes[i], acordes[i + 1], final: final) else { return nil }
+            guard let hallado = tipo(acordes[i], acordes[i + 1], final: final) else { return nil }
             return Cadencia(
-                tipo: tipo, acorde: inicio + i, tonalidad: tonalidad, acordes: [acordes[i], acordes[i + 1]])
+                tipo: hallado, acorde: inicio + i, tonalidad: tonalidad, acordes: [acordes[i], acordes[i + 1]])
         }
     }
 

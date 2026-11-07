@@ -49,9 +49,9 @@ extension LineaDeComandos {
     }
 
     static func intervalo(_ a: String, _ b: String, _ notacion: Notacion) throws -> String {
-        let intervalo = try intervalo(a, b)
-        let semitonos = Mensaje.semitonos(intervalo.semitonos).texto(en: notacion)
-        return "\(intervalo.nombre(en: notacion)) (\(intervalo.texto(en: notacion)), \(semitonos))"
+        let medido = try intervalo(a, b)
+        let semitonos = Mensaje.semitonos(medido.semitonos).texto(en: notacion)
+        return "\(medido.nombre(en: notacion)) (\(medido.texto(en: notacion)), \(semitonos))"
     }
 
     /// El intervalo de una nota a otra: entre las alturas si las dos llevan octava (Do4 Mi5 es una décima), y si no,
@@ -64,22 +64,23 @@ extension LineaDeComandos {
     }
 
     static func describir(tonalidad: Tonalidad, _ notacion: Notacion) -> String {
-        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let armadura: String
         switch tonalidad.armadura {
-        case 0: armadura = t(.sinAlteraciones)
+        case 0: armadura = traducir(.sinAlteraciones)
         default:
             let signos = tonalidad.notasDeLaArmadura.map { $0.nombre(en: notacion) }.joined(separator: " ")
-            armadura = "\(signos) (\(t(.alteraciones(abs(tonalidad.armadura), sostenidos: tonalidad.armadura > 0))))"
+            let alteraciones = traducir(.alteraciones(abs(tonalidad.armadura), sostenidos: tonalidad.armadura > 0))
+            armadura = "\(signos) (\(alteraciones))"
         }
         let acordes = zip(tonalidad.cifradosRomanos(cuatriadas: true), tonalidad.armonizar(cuatriadas: true))
             .map { "\($0) \($1.cifrado(en: notacion))" }.joined(separator: " · ")
         return [
             tonalidad.nombre(en: notacion),
-            "  \(t(.armadura)): " + armadura,
-            "  \(t(.relativa)): " + tonalidad.relativa.nombre(en: notacion)
-                + " · \(t(.homonima)): " + tonalidad.homonima.nombre(en: notacion),
-            "  \(t(.acordes)): " + acordes,
+            "  \(traducir(.armadura)): " + armadura,
+            "  \(traducir(.relativa)): " + tonalidad.relativa.nombre(en: notacion)
+                + " · \(traducir(.homonima)): " + tonalidad.homonima.nombre(en: notacion),
+            "  \(traducir(.acordes)): " + acordes,
         ].joined(separator: "\n")
     }
 
@@ -187,36 +188,36 @@ extension LineaDeComandos {
 
     /// `conjunto 0 4 7`: el conjunto con sus notas, sus formas, sus vectores y sus ejes de simetría.
     static func describir(conjunto: ConjuntoDeClasesDeAltura, _ notacion: Notacion) -> String {
-        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let datos = DatosDeConjunto(conjunto, notacion: notacion)
         func lista(_ numeros: [Int]) -> String { "[" + numeros.map(String.init).joined(separator: ", ") + "]" }
         let ejes = conjunto.ejesDeSimetria.map(\.description).joined(separator: " · ")
         return [
             [lista(datos.clases), datos.forte].compactMap { $0 }.joined(separator: "  "),
-            "  \(t(.notas)): " + datos.notas.joined(separator: " "),
-            "  \(t(.formaNormal)): \(lista(datos.formaNormal))",
-            "  \(t(.formaPrima)): \(lista(datos.formaPrima))",
-            "  \(t(.vectorIntervalico)): \(lista(datos.vectorIntervalico))",
-            "  \(t(.vectorDeIndice)): \(lista(datos.vectorDeIndice))",
-            "  \(t(.ejesDeSimetria)): " + (ejes.isEmpty ? "—" : ejes),
+            "  \(traducir(.notas)): " + datos.notas.joined(separator: " "),
+            "  \(traducir(.formaNormal)): \(lista(datos.formaNormal))",
+            "  \(traducir(.formaPrima)): \(lista(datos.formaPrima))",
+            "  \(traducir(.vectorIntervalico)): \(lista(datos.vectorIntervalico))",
+            "  \(traducir(.vectorDeIndice)): \(lista(datos.vectorDeIndice))",
+            "  \(traducir(.ejesDeSimetria)): " + (ejes.isEmpty ? "—" : ejes),
         ].joined(separator: "\n")
     }
 
     /// `serie 0 e 7 4 2 9 3 8 t 1 5 6`: la serie con sus notas, sus intervalos, sus hexacordos, sus formas
     /// combinatorias y la matriz, con las P a la izquierda, las R a la derecha, las I arriba y las RI abajo.
     static func describir(serie: SerieDodecafonica, _ notacion: Notacion) -> String {
-        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         // Los datos de `--json` (`DatosDeSerie`), en texto.
         let datos = DatosDeSerie(serie, notacion: notacion)
-        var intervalos = "  \(t(.intervalos)): " + datos.intervalos.map(String.init).joined(separator: " ")
-        if datos.deTodosLosIntervalos { intervalos += "  (\(t(.deTodosLosIntervalos)))" }
+        var intervalos = "  \(traducir(.intervalos)): " + datos.intervalos.map(String.init).joined(separator: " ")
+        if datos.deTodosLosIntervalos { intervalos += "  (\(traducir(.deTodosLosIntervalos)))" }
         var lineas = [
             datos.clases.map(SerieDodecafonica.cifra).joined(separator: " "),
-            "  \(t(.notas)): " + datos.notas.joined(separator: " "),
+            "  \(traducir(.notas)): " + datos.notas.joined(separator: " "),
             intervalos,
-            "  \(t(.hexacordos)): " + datos.hexacordos.joined(separator: " · "),
-            "  \(t(.formasCombinatorias)): " + datos.formasCombinatorias.joined(separator: " "),
-            "  " + t(.formasDistintas(datos.formasDistintas)),
+            "  \(traducir(.hexacordos)): " + datos.hexacordos.joined(separator: " · "),
+            "  \(traducir(.formasCombinatorias)): " + datos.formasCombinatorias.joined(separator: " "),
+            "  " + traducir(.formasDistintas(datos.formasDistintas)),
             "",
         ]
         func celda(_ texto: String) -> String { texto + String(repeating: " ", count: max(1, 5 - texto.count)) }

@@ -128,7 +128,7 @@ public struct Arpegio: Hashable, Sendable {
             return resultado
         }
         var sube: [Altura] = []
-        for o in 0..<octavas { sube += base.map { subida($0, o * vuelta) } }
+        for octava in 0..<octavas { sube += base.map { subida($0, octava * vuelta) } }
         if conOctava { sube.append(subida(primera, octavas * vuelta)) }
 
         switch patron {
@@ -141,9 +141,9 @@ public struct Arpegio: Hashable, Sendable {
         case .alberti:
             guard base.count >= 3 else { return sube }
             var alberti: [Altura] = []
-            for o in 0..<octavas {
-                let v = o * vuelta
-                alberti += [subida(primera, v), subida(ultima, v), subida(base[1], v), subida(ultima, v)]
+            for octava in 0..<octavas {
+                let octavasArriba = octava * vuelta
+                alberti += [primera, ultima, base[1], ultima].map { subida($0, octavasArriba) }
             }
             return alberti
         case .quebrado:

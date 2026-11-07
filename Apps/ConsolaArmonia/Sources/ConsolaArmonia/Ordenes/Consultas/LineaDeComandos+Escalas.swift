@@ -202,9 +202,9 @@ extension LineaDeComandos {
     /// La escala con los datos de `--json` (`DatosDeEscala`) y, además, sus microtonos y, si se piden, todos los
     /// acordes que caben en ella.
     static func describir(escala: Escala, conTodosSusAcordes: Bool = false, _ notacion: Notacion) -> String {
-        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let datos = DatosDeEscala(escala, notacion: notacion)
-        var lineas = [datos.nombre, "  \(t(.notas)): " + datos.notas.joined(separator: " ")]
+        var lineas = [datos.nombre, "  \(traducir(.notas)): " + datos.notas.joined(separator: " ")]
         // De qué escala es modo: Re dórico → modo 2 de Do mayor.
         if let modo = datos.modo { lineas.append("  " + modo) }
         // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.
@@ -216,17 +216,17 @@ extension LineaDeComandos {
             func cents(_ notas: [NotaMicrotonal]) -> String {
                 notas.map { "\(Int($0.cents.rounded()))" }.joined(separator: " ")
             }
-            lineas.append("  \(t(.microtonos)): " + nombres(subida))
+            lineas.append("  \(traducir(.microtonos)): " + nombres(subida))
             lineas.append("  ¢: " + cents(subida))
             if bajada != subida {
-                lineas.append("  \(t(.microtonos)) ↓: " + nombres(bajada))
+                lineas.append("  \(traducir(.microtonos)) ↓: " + nombres(bajada))
                 lineas.append("  ¢ ↓: " + cents(bajada))
             }
         }
         // Los acordes de cada grado, si la escala es heptatónica y todos forman un acorde conocido.
         if let acordes = datos.acordes {
             let pares = acordes.map { "\($0.grado) \($0.cifrado)" }
-            lineas.append("  \(t(.acordes)): " + pares.joined(separator: " · "))
+            lineas.append("  \(traducir(.acordes)): " + pares.joined(separator: " · "))
         }
         let grados = conTodosSusAcordes ? PresentacionDeEscalaYAcorde.acordesQueCaben(escala, en: notacion) : []
         if !grados.isEmpty {
@@ -353,7 +353,7 @@ extension LineaDeComandos {
     /// cinco notas. `--comparar` deja el catálogo y pone las escalas que se le dan en una tabla, una por fila, y
     /// `--mapa` lo dibuja en un mapa de brillo (SVG).
     static func escalas(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let grupos: [GrupoDeEscalas]
         let orden: OrdenDeEscalas?
         switch try catalogoDeEscalas(argumentos, notacion) {
@@ -366,7 +366,7 @@ extension LineaDeComandos {
             lineas.append("\(grupo.titulo) (\(grupo.tipos.count))")
             for tipo in grupo.tipos {
                 let notas = Escala(.do, tipo).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
-                let microtonos = tipo.microtonal == nil ? "" : " · " + t(.microtonos)
+                let microtonos = tipo.microtonal == nil ? "" : " · " + traducir(.microtonos)
                 // Ordenadas por brillo, con su brillo por quintas: «lidio: Do Re Mi Fa♯ Sol La Si · +3».
                 let brillo =
                     orden == .brillo
@@ -391,7 +391,7 @@ extension LineaDeComandos {
 
     /// Lee los argumentos de `escalas` y da sus grupos, para el texto y para `--json`.
     static func catalogoDeEscalas(_ argumentos: [String], _ notacion: Notacion) throws -> CatalogoPedido {
-        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var entrada = Argumentos(argumentos)
         // `--comparar Do mayor, Do dórico, Do lidio`: las escalas en una tabla, con lo que se mide de cada una.
         if let texto = try entrada.valorConPalabras(.comparar) {
@@ -533,10 +533,12 @@ extension LineaDeComandos {
         if tradicion == nil && categoria == nil && fuente == nil {
             if let usoPedido {
                 let delUso = TipoDeEscala.occidentales(uso: usoPedido).filter(cumple)
-                if !delUso.isEmpty { grupos.append((t(.habituales) + " · " + usoPedido.nombre(en: notacion), delUso)) }
+                if !delUso.isEmpty {
+                    grupos.append((traducir(.habituales) + " · " + usoPedido.nombre(en: notacion), delUso))
+                }
             } else {
                 let habituales = TipoDeEscala.occidentales.filter(cumple)
-                if !habituales.isEmpty { grupos.append((t(.habituales), habituales)) }
+                if !habituales.isEmpty { grupos.append((traducir(.habituales), habituales)) }
             }
         }
         for tipo in TipoDeEscala.tradicionales where usoPedido == nil && cumple(tipo) {
@@ -563,7 +565,7 @@ extension LineaDeComandos {
                             "armonia identificar --escalas " + entrada.unidos,
                             "armonia identify --scales " + entrada.unidos
                         ).en(notacion))
-                } : t(.ningunaEscala)
+                } : traducir(.ningunaEscala)
             return .ninguna(ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1))
         }
         // Con `--orden`, cada grupo de la más brillante a la más oscura, o de menos a más notas; a igualdad, en el

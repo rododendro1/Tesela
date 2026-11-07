@@ -39,8 +39,8 @@ public struct MovimientoDeVoz: Hashable, Sendable, CustomStringConvertible {
     public init(desde: Nota, hasta: Nota) {
         self.desde = desde
         self.hasta = hasta
-        let d = modulo(hasta.claseDeAltura - desde.claseDeAltura, 12)
-        semitonos = d > 6 ? d - 12 : d
+        let distancia = modulo(hasta.claseDeAltura - desde.claseDeAltura, 12)
+        semitonos = distancia > 6 ? distancia - 12 : distancia
     }
 
     /// "Fa→Mi"; con otra notación, `texto(en:)`.
@@ -122,14 +122,14 @@ extension Acorde {
         -> PasoParsimonioso?
     {
         var variantes: [[Nota]] = [notas]
-        for (indice, d) in zip(grupo, direccion) {
+        for (indice, sentido) in zip(grupo, direccion) {
             let base = notas[indice].pasosDeQuinta
-            let opciones = [Nota(pasosDeQuinta: base + 7 * d), Nota(pasosDeQuinta: base - 5 * d)]
-            variantes = variantes.flatMap { v in
-                opciones.map { o -> [Nota] in
-                    var w = v
-                    w[indice] = o
-                    return w
+            let opciones = [Nota(pasosDeQuinta: base + 7 * sentido), Nota(pasosDeQuinta: base - 5 * sentido)]
+            variantes = variantes.flatMap { variante in
+                opciones.map { opcion -> [Nota] in
+                    var nueva = variante
+                    nueva[indice] = opcion
+                    return nueva
                 }
             }
         }

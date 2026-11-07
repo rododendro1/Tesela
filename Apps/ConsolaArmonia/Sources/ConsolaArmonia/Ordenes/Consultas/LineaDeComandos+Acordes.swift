@@ -100,13 +100,13 @@ extension LineaDeComandos {
         let datos = DatosDeAcorde(acorde, notacion: notacion)
         var lineas = ["\(datos.cifrado): \(datos.nombre)"]
         let notas = datos.notas.joined(separator: " ")
-        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         if datos.tieneOtroBajo {
-            let bajo = t(.bajo(datos.bajo))
-            let inversion = datos.inversion.map { t(.inversion($0)) } ?? t(.bajoAjeno)
-            lineas.append("  \(t(.notas)): \(notas)  (\(bajo), \(inversion))")
+            let bajo = traducir(.bajo(datos.bajo))
+            let inversion = datos.inversion.map { traducir(.inversion($0)) } ?? traducir(.bajoAjeno)
+            lineas.append("  \(traducir(.notas)): \(notas)  (\(bajo), \(inversion))")
         } else {
-            lineas.append("  \(t(.notas)): \(notas)")
+            lineas.append("  \(traducir(.notas)): \(notas)")
         }
         lineas.append("  " + datos.componentes.map { "\($0.nota) \($0.papel)" }.joined(separator: " · "))
         return lineas.joined(separator: "\n")
@@ -239,7 +239,7 @@ extension LineaDeComandos {
     }
 
     static func describir(arpegio: Arpegio, _ notacion: Notacion) -> String {
-        let t = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let notas = arpegio.alturas(octava: 4).map { $0.nombre(en: notacion) }.joined(separator: " ")
         // El patrón, o el recorrido por grados si es propio: «Do (1-5-3-8)».
         let recorrido =
@@ -247,13 +247,13 @@ extension LineaDeComandos {
             ? arpegio.patron.nombre(en: notacion) : arpegio.grados.map(String.init).joined(separator: "-")
         var lineas = [
             "\(arpegio.nombre(en: notacion)) (\(recorrido))",
-            "  \(t(.notas)): \(notas)",
+            "  \(traducir(.notas)): \(notas)",
         ]
         // Las escalas del acorde, de las que tienen menos notas a evitar a las que más; con ocho basta para orientarse.
         let escalas = arpegio.acorde.escalasCompatibles()
         if !escalas.isEmpty {
             let nombres = escalas.prefix(8).map { $0.nombre(en: notacion) }.joined(separator: ", ")
-            lineas.append("  \(t(.escalas)): \(nombres)" + (escalas.count > 8 ? "…" : ""))
+            lineas.append("  \(traducir(.escalas)): \(nombres)" + (escalas.count > 8 ? "…" : ""))
         }
         return lineas.joined(separator: "\n")
     }

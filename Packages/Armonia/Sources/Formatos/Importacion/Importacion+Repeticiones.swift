@@ -42,8 +42,9 @@ struct CompasLeido: Hashable {
 extension CompasLeido {
     /// Lo que dice una indicación escrita: «D.C. al Fine», «D.S. al Coda», «Fine», «To Coda».
     mutating func leer(indicacion texto: String) {
-        let t = texto.lowercased().trimmingCharacters(in: .whitespacesAndNewlines.union(.punctuationCharacters))
-        let sinPuntos = t.replacingOccurrences(of: ".", with: "").replacingOccurrences(of: " ", with: "")
+        let normalizado = texto.lowercased()
+            .trimmingCharacters(in: .whitespacesAndNewlines.union(.punctuationCharacters))
+        let sinPuntos = normalizado.replacingOccurrences(of: ".", with: "").replacingOccurrences(of: " ", with: "")
         if sinPuntos.hasPrefix("dc") || sinPuntos.hasPrefix("dacapo") {
             daCapo = true
         } else if sinPuntos.hasPrefix("ds") || sinPuntos.hasPrefix("dalsegno") {
