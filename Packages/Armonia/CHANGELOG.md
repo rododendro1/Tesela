@@ -2,6 +2,19 @@
 
 ## Sin publicar
 
+### Nombres de nota de otras tradiciones: bizantino y sargam
+
+- `SistemaDeNombres`, los nombres de nota de otras tradiciones, que no son un idioma: los textos siguen en el idioma
+  que se elija. Dos para empezar: el bizantino (Ni Pa Vou Ga Di Ke Zo, Νη Πα Βου Γα Δι Κε Ζω), fijo, con Ni en Do como
+  en los echoi, y el sargam (Sā Re Ga ma Pa Dha Ni, सा रे ग म प ध नि), móvil, con Sā en la tónica que se dé, el komal en
+  minúscula (re, ga, dha, ni) y el Ma tivra en mayúscula.
+- Cada sistema se escribe en tres grafías (`Grafia`): la original, la transliterada (con IAST en el sargam: Sā) y la
+  ASCII; `nombre(de:tonica:grafia:)` escribe y `leer(_:tonica:)` lee las tres. En el sargam la lectura distingue las
+  mayúsculas (re es el komal, Re el natural); en el bizantino, no.
+- `Escala.nombres(en:grafia:)`: las notas de una escala en un sistema, el sargam desde su tónica (Re dórico es Sā Re
+  ga ma Pa Dha ni). `NotaMicrotonal.nombre(en:tonica:grafia:)`: con el ajuste microtonal detrás, como los echoi en
+  moria (Pa Vou⁻² Ga Di Ke Zo⁻² Ni).
+
 ### Los doce lü y el sanfen sunyi de las escalas chinas
 
 - Tres escalas chinas nuevas: los doce lü (`TipoDeEscala.shierLu`, 十二律, «Shí'èr lǜ»), una afinación desde
