@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.0 (2026-11-07)
 
 ### Orden interno: voces importadas, formatos por la extensión y la consola
 

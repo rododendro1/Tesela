@@ -24,23 +24,16 @@ extension Notacion {
         return .espanolCompacto
     }
 
-    /// La notación guardada con esa clave; si no existe, el español con ♯ y ♭. Lee también las claves de antes
-    /// de las notaciones compactas («espanolUnicode», «inglesUnicode») y la del alemán de antes de la 0.3.0
-    /// («aleman», que era Fis y por eso lleva a `.compacta(.aleman)`).
+    /// La notación guardada con esa clave; si no existe, el español con ♯ y ♭.
     public static func desde(clave: String) -> Notacion {
         let partes = clave.split(separator: "+", maxSplits: 1).map(String.init)
-        let clave = partes.first.map { clavesAntiguas[$0] ?? $0 }
+        let clave = partes.first
         let notas = (allCases + deOtrasTradiciones).first { $0.clave == clave } ?? .espanolCompacto
         guard partes.count == 2, let textos = Idioma.allCases.first(where: { $0.clave == partes[1] }) else {
             return notas
         }
         return notas.conTextos(en: textos)
     }
-
-    /// Las claves que se guardaban antes con otro nombre, con la de ahora.
-    private static let clavesAntiguas = [
-        "espanolUnicode": "espanolCompacto", "inglesUnicode": "inglesCompacto", "aleman": "alemanCompacto",
-    ]
 
     /// La notación guardada con esa clave, con la octava como subíndice (La₄) si `octavasEnSubindice` y con cifras
     /// (La4) si es `false`. Si es `nil` (no se ha tocado el ajuste), como la escriba la notación: en subíndice en las

@@ -19,9 +19,6 @@ import Testing
         #expect(Notacion.desde(clave: "espanolCompacto", octavasEnSubindice: nil).octavas == .subindices)
         #expect(Notacion.desde(clave: "espanol", octavasEnSubindice: nil).octavas == .cifras)
         #expect(Notacion.desde(clave: "inglesASCII") == .inglesASCII)
-        // Las claves de antes de las notaciones compactas se siguen leyendo.
-        #expect(Notacion.desde(clave: "espanolUnicode") == .espanolCompacto)
-        #expect(Notacion.desde(clave: "inglesUnicode+catalan") == Notacion.inglesCompacto.conTextos(en: .catalan))
         #expect(Notacion.espanolCompacto.clave == "espanolCompacto")
         #expect(Notacion.inglesCompacto.clave == "inglesCompacto")
         #expect(Notacion.desde(clave: "inglesASCII+catalan") == Notacion.inglesASCII.conTextos(en: .catalan))
@@ -35,9 +32,7 @@ import Testing
         #expect(Notacion.compacta(.aleman).titulo == "Deutsch (Fis)")
         #expect(Notacion.conPalabras(.aleman).clave == "alemanPalabras")
         #expect(Notacion.desde(clave: "alemanPalabras") == .conPalabras(.aleman))
-        // «aleman» era Fis antes de la 0.3.0, y se sigue leyendo así.
-        #expect(Notacion.desde(clave: "aleman") == .compacta(.aleman))
-        #expect(Notacion.desde(clave: "aleman+espanol") == Notacion.compacta(.aleman).conTextos(en: .espanol))
+        #expect(Notacion.desde(clave: "alemanCompacto+espanol") == Notacion.compacta(.aleman).conTextos(en: .espanol))
         #expect(Notacion.compacta(.aleman).clave == "alemanCompacto")
         #expect(Notacion.desde(clave: "alemanCompacto") == .compacta(.aleman))
         #expect(Notacion.espanolASCII.clave == "espanolASCII")
@@ -90,6 +85,9 @@ import Testing
     @Test func unaClaveDesconocidaDaElEspanol() {
         #expect(Notacion.desde(clave: "") == .espanolCompacto)
         #expect(Notacion.desde(clave: "klingon") == .espanolCompacto)
+        // Las claves que se leían hasta la 0.3.7 («espanolUnicode», «aleman») ya no son de ninguna notación.
+        #expect(Notacion.desde(clave: "espanolUnicode") == .espanolCompacto)
+        #expect(Notacion.desde(clave: "aleman") == .espanolCompacto)
         // Un ajuste antiguo guardado como índice no rompe nada.
         #expect(Notacion.desde(clave: "3") == .espanolCompacto)
     }
