@@ -279,3 +279,20 @@ extension LineaDeComandosTests {
         #expect(resultado("musicxml acordes --archivo " + texto).codigo == 1)
     }
 }
+
+extension LineaDeComandosTests {
+    /// Las opciones de las partituras se leen también en inglés y con tilde.
+    @Test func opcionesDePartiturasEnIngles() {
+        #expect(
+            salida("musicxml melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4 --anacrusa 4 --titulo Mi canción --clave fa")
+                == salida("musicxml melody C4:4 D4:8 E4:8 F4:2 --time 3/4 --pickup 4 --title Mi canción --clef fa"))
+        #expect(
+            salida("mei coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --cifrados --analisis --duracion 2")
+                == salida("mei chorale C3 E4 G4 C5, G2 D4 G4 B4 --chord-symbols --analysis --duration 2"))
+        #expect(
+            salida("abc arpegios Do Lam --patron alberti --figura 16")
+                == salida("abc arpeggios C Am --pattern alberti --figure 16"))
+        #expect(salida("abc melodia Do4:4 --título Él") == salida("abc melodia Do4:4 --titulo Él"))
+        #expect(LineaDeComandos.ejecutar(["midi", "melody", "C4:4", "--chord-symbols"]).codigo == 2)
+    }
+}

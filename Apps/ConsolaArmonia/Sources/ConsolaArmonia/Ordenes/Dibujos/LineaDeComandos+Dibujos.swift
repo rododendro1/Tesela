@@ -69,6 +69,8 @@ extension LineaDeComandos {
         }
         let argumentos = try conLaSuborden(lectura.restantes, entre: subordenesDeLosDibujos, sinNada: subordenDeNotas)
         guard let primero = argumentos.first else { throw ErrorDeUso.faltanNotasDelDibujo(orden: orden) }
+        // Tras la suborden (`acorde`, `escala`…, que se puede escribir como opción), ninguna opción más.
+        try Argumentos(Array(argumentos.dropFirst())).sinOpcionesDesconocidas()
         let resto = argumentos.dropFirst().joined(separator: " ")
         let contenido: ContenidoDeRed
         var alturas: [Altura]?
@@ -151,7 +153,7 @@ extension LineaDeComandos {
             guard let elegida = manoDePiano(texto) else { throw ErrorDeUso.manoDesconocida(texto) }
             mano = elegida
         }
-        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDelTeclado }
         let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
         let svg = PresentacionDeEstudioDeEscala.teclado(de: escala, mano: mano, octavas: octavas, en: notacion)
@@ -162,7 +164,7 @@ extension LineaDeComandos {
     static func reloj(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         let quintas = argumentos.quitarMarca(.quintas)
-        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDelReloj }
         let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
         let svg = PresentacionDeEstudioDeEscala.reloj(
@@ -178,7 +180,7 @@ extension LineaDeComandos {
         var argumentos = Argumentos(
             try conLaSuborden(argumentos, entre: [.acorde, .acordes, .tonalidad], sinNada: ["escala", "scale"]))
         if let cifrado = try argumentos.valor(.acorde, siFalta: .faltaElAcordeDeLaHoja) {
-            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            try argumentos.sinOpcionesDesconocidas()
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaElAcordeDeLaHoja }
             let acorde = try Acorde(leyendoEnLaOrden: cifrado)
             return bien(PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, en: notacion))
@@ -189,7 +191,7 @@ extension LineaDeComandos {
             let doce = argumentos.quitarMarca(.doce)
             let contra = try argumentos.valorConPalabras(.comparar)
             guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaValor("en") }
-            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            try argumentos.sinOpcionesDesconocidas()
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanLosAcordesDeLaHoja }
             let analisis = try PresentacionDeAnalisis.analizar(
                 argumentos.restantes.joined(separator: " "), en: tonalidad, notacion: notacion)
@@ -211,14 +213,14 @@ extension LineaDeComandos {
             return bien(PresentacionDeAnalisis.hojaDeEstudio(analisis, en: notacion))
         }
         if let texto = try argumentos.valorConPalabras(.tonalidad, siFalta: .faltaTonalidad) {
-            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            try argumentos.sinOpcionesDesconocidas()
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
             let tonalidad = try Tonalidad(leyendoEnLaOrden: texto)
             return bien(PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, en: notacion))
         }
         // `hoja Do mayor --comparar Do dórico`: las dos escalas nota a nota, en el pentagrama y en el reloj.
         let otra = try argumentos.valorConPalabras(.comparar)
-        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDeLaHoja }
         let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
         if let otra {
@@ -273,13 +275,13 @@ extension LineaDeComandos {
         case "escala":
             return try pentagramaDeEscala(&argumentos, opciones, octava, notacion)
         case "acorde":
-            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            try argumentos.sinOpcionesDesconocidas()
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
             svg = try Acorde(leyendoEnLaOrden: argumentos.unidos).svgPentagrama(octava: octava, opciones: opciones)
         case "acordes":
             let romanos = argumentos.quitarMarca(.romanos)
             let conBajoCifrado = argumentos.quitarMarca(.bajoCifrado)
-            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            try argumentos.sinOpcionesDesconocidas()
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
             let acordes = try argumentos.restantes.map { try Acorde(leyendoEnLaOrden: $0) }
             // En posición cerrada, desde el Do de la octava (el central, si no se da), en dos octavas.
@@ -297,7 +299,7 @@ extension LineaDeComandos {
         case "bajo":
             // Un bajo caminante en clave de fa; con --tab, con la tablatura del bajo debajo.
             let tab = argumentos.quitarMarca(.tab)
-            if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+            try argumentos.sinOpcionesDesconocidas()
             let acordes = try argumentos.restantes.map { try Acorde(leyendoEnLaOrden: $0) }
             guard let bajo = PresentacionDeAnalisis.bajoCaminante(acordes, en: notacion) else {
                 throw ErrorDeUso.faltaLoQueDibujaElPentagrama
@@ -332,7 +334,7 @@ extension LineaDeComandos {
             acordes = try texto.split(separator: " ").map { try Acorde(leyendoEnLaOrden: String($0)) }
             opciones.marcas.notasAjenas = true
         }
-        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
         let voz = try Voz(leyendo: argumentos.unidos)
         // El primer evento que empieza en cada compás lleva el acorde de ese compás.
@@ -416,7 +418,7 @@ extension LineaDeComandos {
         }
         var mastil = Mastil(.guitarra, numeroDeTrastes: 15)
         try leerMastil(&argumentos, en: &mastil)
-        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
         let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
         let sentido: SentidoDelIntervalo = bajando ? .descendente : .ascendente
@@ -506,7 +508,7 @@ extension LineaDeComandos {
         try leerMastil(&argumentos, en: &mastil)
         var recorrido = RecorridoDeArpegio()
         try leerRecorrido(&argumentos, en: &recorrido)
-        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
         if tab {
             // En el mástil: el arpegio del acorde en su primera posición, de la nota más grave a la más aguda.

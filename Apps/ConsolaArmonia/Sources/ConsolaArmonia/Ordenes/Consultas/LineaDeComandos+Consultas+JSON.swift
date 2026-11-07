@@ -344,7 +344,7 @@ extension LineaDeComandos {
         if let primera = textos.first, !Argumentos.pareceUnaOpcion(primera) {
             throw ErrorDeUso.sinSalidaJSON("tradiciones " + primera)
         }
-        if let opcion = Argumentos(textos).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+        try Argumentos(textos).sinOpcionesDesconocidas()
         return catalogoDeTradiciones().map { ficha in
             TradicionJSON(
                 clave: ficha.claves.espanol, nombre: ficha.tradicion.nombre(en: notacion),

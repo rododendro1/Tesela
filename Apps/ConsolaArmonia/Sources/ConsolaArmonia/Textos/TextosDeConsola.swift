@@ -17,8 +17,14 @@ struct TextosDeConsola: TextosTraducidos {
     let descripcionAnalizarArchivo: String
     let sintaxisArmonizar: String
     let descripcionArmonizar: String
+    let sintaxisArmonizarArchivo: String
+    let descripcionArmonizarArchivo: String
     let sintaxisRealizar: String
     let descripcionRealizar: String
+    let sintaxisRealizarArchivo: String
+    let descripcionRealizarArchivo: String
+    let sintaxisRealizarBajoCifrado: String
+    let descripcionRealizarBajoCifrado: String
     let sintaxisRevisar: String
     let descripcionRevisar: String
     let sintaxisRevisarArchivo: String
@@ -27,8 +33,12 @@ struct TextosDeConsola: TextosTraducidos {
     let descripcionContrapunto: String
     let sintaxisProponerContrapunto: String
     let descripcionProponerContrapunto: String
+    let sintaxisContrapuntoAVariasVoces: String
+    let descripcionContrapuntoAVariasVoces: String
     let sintaxisTransponer: String
     let descripcionTransponer: String
+    let sintaxisTransponerArchivo: String
+    let descripcionTransponerArchivo: String
     let sintaxisRearmonizar: String
     let descripcionRearmonizar: String
 
@@ -259,6 +269,7 @@ struct TextosDeConsola: TextosTraducidos {
     let faltaLoQueSeGraba: String
     let motorDesconocido: @Sendable (String) -> String
     let formatoDeGrabadoDesconocido: @Sendable (String) -> String
+    let formatoDePartituraDesconocido: @Sendable (String) -> String
     let nadaQueGrabar: @Sendable (String) -> String
 
     // MARK: LineaDeComandos+Grabado.swift

@@ -7,7 +7,7 @@ import Foundation
 extension LineaDeComandos {
     /// `intervalo <nota> <nota>`: el intervalo entre dos notas.
     static func consultarIntervalo(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        if let opcion = Argumentos(resto).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+        try Argumentos(resto).sinOpcionesDesconocidas()
         guard resto.count == 2 else { throw ErrorDeUso.dosNotas }
         return bien(try intervalo(resto[0], resto[1], notacion))
     }
@@ -16,7 +16,7 @@ extension LineaDeComandos {
     static func consultarTonalidad(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(resto)
         let modulaciones = argumentos.quitarOpcionConPalabras(.modulaciones)
-        if let opcion = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
         let tonalidad = try Tonalidad(leyendoEnLaOrden: argumentos.unidos)
         var lineas = [describir(tonalidad: tonalidad, notacion)]
@@ -36,14 +36,14 @@ extension LineaDeComandos {
 
     /// `conjunto <clases>`: el conjunto de clases de altura, con su forma prima y su vector.
     static func consultarConjunto(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        if let opcion = Argumentos(resto).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+        try Argumentos(resto).sinOpcionesDesconocidas()
         guard !resto.isEmpty else { throw ErrorDeUso.faltaConjunto }
         return bien(describir(conjunto: try ConjuntoDeClasesDeAltura(leyendo: resto.joined(separator: " ")), notacion))
     }
 
     /// `serie <doce notas>`: la serie dodecafónica y su matriz.
     static func consultarSerie(_ resto: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        if let opcion = Argumentos(resto).opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+        try Argumentos(resto).sinOpcionesDesconocidas()
         guard !resto.isEmpty else { throw ErrorDeUso.faltaSerie }
         return bien(describir(serie: try SerieDodecafonica(leyendo: resto.joined(separator: " ")), notacion))
     }
@@ -96,7 +96,7 @@ extension LineaDeComandos {
         guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let archivo = try acordes.valor(.archivo)
         let ventana = try acordes.valor(.ventana).map { try Duracion(leyendo: $0) }
-        if let opcion = acordes.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(opcion) }
+        try acordes.sinOpcionesDesconocidas()
         let analisis: AnalisisPresentado
         if let archivo {
             guard acordes.restantes.isEmpty else { throw ErrorDeUso.archivoConAcordes }

@@ -41,7 +41,7 @@ extension LineaDeComandos {
             descripcion: TextosDeConsola.traduccion(\.descripcionMusicxmlMelodia),
             ejemplo: ejemplo(
                 "armonia musicxml melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4 > melodia.musicxml",
-                "armonia musicxml melody C4:4 D4:8 E4:8 F4:2 --compas 3/4 > melody.musicxml")),
+                "armonia musicxml melody C4:4 D4:8 E4:8 F4:2 --time 3/4 > melody.musicxml")),
         // musicxml coral <acordes> [opciones]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisMusicxmlCoral),
@@ -67,7 +67,7 @@ extension LineaDeComandos {
             descripcion: TextosDeConsola.traduccion(\.descripcionMusicxmlArpegios),
             ejemplo: ejemplo(
                 "armonia musicxml arpegios Do Lam Fa Sol7 --patron alberti --duracion 2 > arpegios.musicxml",
-                "armonia musicxml arpeggios C Am F G7 --patron alberti --duracion 2 > arpeggios.musicxml"),
+                "armonia musicxml arpeggios C Am F G7 --pattern alberti --duration 2 > arpeggios.musicxml"),
             notas: TextosDeConsola.traduccion(\.notasMusicxmlArpegios),
             opciones: [.patronDePartitura, .figuraDePartitura, .duracion, .enlazar]),
         // musicxml escala <escala> [opciones]
@@ -94,7 +94,7 @@ extension LineaDeComandos {
             descripcion: TextosDeConsola.traduccion(\.descripcionMeiMelodia),
             ejemplo: ejemplo(
                 "armonia mei coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --cifrados > coral.mei",
-                "armonia mei chorale C3 E4 G4 C5, G2 D4 G4 B4 --cifrados > chorale.mei"))
+                "armonia mei chorale C3 E4 G4 C5, G2 D4 G4 B4 --chord-symbols > chorale.mei"))
     ]
 
     static let ayudaDeLilypond: [EntradaDeAyuda] = [
@@ -114,7 +114,7 @@ extension LineaDeComandos {
             descripcion: TextosDeConsola.traduccion(\.descripcionGuidoMelodia),
             ejemplo: ejemplo(
                 "armonia guido coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4 --cifrados > coral.gmn",
-                "armonia guido chorale C3 E4 G4 C5, G2 D4 G4 B4 --cifrados > chorale.gmn"))
+                "armonia guido chorale C3 E4 G4 C5, G2 D4 G4 B4 --chord-symbols > chorale.gmn"))
     ]
 
     static let ayudaDeAbc: [EntradaDeAyuda] = [
@@ -124,7 +124,7 @@ extension LineaDeComandos {
             descripcion: TextosDeConsola.traduccion(\.descripcionAbcMelodia),
             ejemplo: ejemplo(
                 "armonia abc melodia Sol4:4 Do5:2 Re5:8 Mi5:8 --compas 3/4 --anacrusa 4 > melodia.abc",
-                "armonia abc melody G4:4 C5:2 D5:8 E5:8 --compas 3/4 --anacrusa 4 > melody.abc"))
+                "armonia abc melody G4:4 C5:2 D5:8 E5:8 --time 3/4 --pickup 4 > melody.abc"))
     ]
 
     static let ayudaDeMidi: [EntradaDeAyuda] = [

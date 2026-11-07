@@ -216,3 +216,32 @@ public struct ContrapuntoAVariasVoces: Hashable, Sendable {
         }
     }
 }
+
+// MARK: - Idiomas
+
+extension FaltaEntreVoces {
+    /// "Quintas paralelas (compases 1 → 2): voz 1 y voz 2", con el cantus firmus por su nombre: "Unísono en medio del
+    /// ejercicio (compás 3): cantus firmus y voz 2".
+    public func descripcion(en notacion: Notacion) -> String {
+        let nombres = voces.map { v in
+            v == 0 ? "cantus firmus" : TextosDePolifonia.traduccion { $0.vozDelContrapunto(v) }.en(notacion)
+        }
+        return falta.descripcion(en: notacion) + ": " + nombres.joined(separator: " / ")
+    }
+}
+
+extension ContrapuntoAVariasVoces {
+    /// Cuántas voces suenan (con el cantus) y una falta por línea, o «Sin faltas.»:
+    ///
+    ///     Contrapunto a 3 voces
+    ///     Quintas paralelas (compases 1 → 2): voz 1 / voz 2
+    public func informe(en notacion: Notacion = .espanolCompacto) -> String {
+        let n = voces.count + 1
+        let faltas = self.faltas
+        let lineas =
+            faltas.isEmpty
+            ? [TextosDePolifonia.en(notacion, \.sinFaltas)] : faltas.map { $0.descripcion(en: notacion) }
+        return ([TextosDePolifonia.traduccion { $0.contrapuntoAVariasVoces(n) }.en(notacion)] + lineas)
+            .joined(separator: "\n")
+    }
+}

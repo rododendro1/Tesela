@@ -37,7 +37,7 @@ extension LineaDeComandos {
     /// Las palabras de la orden, sin opciones: lanza el `ErrorDeUso` si queda alguna opción sin leer o si no hay
     /// ninguna palabra.
     static func palabras(_ argumentos: Argumentos, siFaltan error: ErrorDeUso) throws -> [String] {
-        if let desconocida = argumentos.opcionDesconocida { throw ErrorDeUso.opcionDesconocida(desconocida) }
+        try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw error }
         return argumentos.restantes
     }

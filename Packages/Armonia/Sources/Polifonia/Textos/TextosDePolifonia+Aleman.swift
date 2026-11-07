@@ -43,6 +43,8 @@ extension TextosDePolifonia {
         notaRepetida: "Tonwiederholung",
         especieConElContrapuntoEncima: { n in "Gattung \(n), Kontrapunkt über dem Cantus firmus" },
         especieConElContrapuntoDebajo: { n in "Gattung \(n), Kontrapunkt unter dem Cantus firmus" },
+        contrapuntoAVariasVoces: { n in "\(n)-stimmiger Kontrapunkt" },
+        vozDelContrapunto: { n in "Stimme \(n)" },
         sinFaltas: "Keine Fehler."
     )
 }

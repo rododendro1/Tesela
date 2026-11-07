@@ -139,6 +139,24 @@ extension LineaDeComandos {
         var hayFaltas: Bool { !faltas.isEmpty }
     }
 
+    /// `contrapunto <cantus> / <voz> / <voz> --json`: las faltas de cada voz con el cantus y entre ellas. En `voces`
+    /// de una falta, 0 es el cantus firmus y 1, 2… las demás, en el orden en que se escriben.
+    struct ContrapuntoAVariasVocesJSON: Encodable, ConFaltas {
+        struct Falta: Encodable {
+            let tipo: String
+            let texto: String
+            let compases: [Int]
+            let voces: [Int]
+        }
+
+        /// Cuántas voces suenan, con el cantus.
+        let voces: Int
+        /// La especie de cada voz que se añade.
+        let especies: [Int]
+        let faltas: [Falta]
+        var hayFaltas: Bool { !faltas.isEmpty }
+    }
+
     /// `contrapunto <cantus> --proponer --json`: los contrapuntos propuestos, del mejor al peor.
     struct PropuestasDeContrapuntoJSON: Encodable, ConFaltas {
         let propuestas: [ContrapuntoJSON]
@@ -148,6 +166,17 @@ extension LineaDeComandos {
     /// `contrapunto Re4 Fa4 Mi4 Re4 / La4 La4 Do#5 Re5 --json`: sale con código 3 si hay faltas. Con `--proponer`, las
     /// propuestas (`PropuestasDeContrapuntoJSON`).
     static func contrapuntoJSON(_ textos: [String], _ notacion: Notacion) throws -> any Encodable {
+        if let varias = try contrapuntoAVariasVoces(textos) {
+            return ContrapuntoAVariasVocesJSON(
+                voces: varias.voces.count + 1,
+                especies: varias.voces.map(\.especie.rawValue),
+                faltas: varias.faltas.map {
+                    ContrapuntoAVariasVocesJSON.Falta(
+                        tipo: clave(de: $0.falta.tipo), texto: $0.descripcion(en: notacion),
+                        compases: [$0.falta.compases.lowerBound + 1, $0.falta.compases.upperBound + 1],
+                        voces: $0.voces)
+                })
+        }
         let ejercicios = try ejerciciosDeContrapunto(textos)
         let leidos = ejercicios.lista.map { ejercicio in
             ContrapuntoJSON(

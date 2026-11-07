@@ -43,6 +43,8 @@ extension TextosDePolifonia {
         notaRepetida: "Nota errepikatua",
         especieConElContrapuntoEncima: { n in "\(n). espeziea, kontrapuntua cantus firmusaren gainean" },
         especieConElContrapuntoDebajo: { n in "\(n). espeziea, kontrapuntua cantus firmusaren azpian" },
+        contrapuntoAVariasVoces: { n in "\(n) ahotseko kontrapuntua" },
+        vozDelContrapunto: { n in "\(n). ahotsa" },
         sinFaltas: "Akatsik gabe."
     )
 }

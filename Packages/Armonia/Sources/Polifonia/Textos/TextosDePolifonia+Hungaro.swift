@@ -43,6 +43,8 @@ extension TextosDePolifonia {
         notaRepetida: "Ismételt hang",
         especieConElContrapuntoEncima: { n in "\(n). fajta, ellenpont a cantus firmus fölött" },
         especieConElContrapuntoDebajo: { n in "\(n). fajta, ellenpont a cantus firmus alatt" },
+        contrapuntoAVariasVoces: { n in "\(n) szólamú ellenpont" },
+        vozDelContrapunto: { n in "\(n). szólam" },
         sinFaltas: "Nincs hiba."
     )
 }

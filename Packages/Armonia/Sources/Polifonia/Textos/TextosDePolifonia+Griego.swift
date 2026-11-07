@@ -43,6 +43,8 @@ extension TextosDePolifonia {
         notaRepetida: "Επαναλαμβανόμενη νότα",
         especieConElContrapuntoEncima: { n in "Είδος \(n), αντίστιξη πάνω από το cantus firmus" },
         especieConElContrapuntoDebajo: { n in "Είδος \(n), αντίστιξη κάτω από το cantus firmus" },
+        contrapuntoAVariasVoces: { n in "Αντίστιξη \(n) φωνών" },
+        vozDelContrapunto: { n in "φωνή \(n)" },
         sinFaltas: "Χωρίς λάθη."
     )
 }
