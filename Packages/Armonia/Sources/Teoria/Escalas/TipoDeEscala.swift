@@ -377,7 +377,7 @@ extension TipoDeEscala {
         .doricoQuintaDisminuida, .frigioCuartaDisminuida, .lidioTerceraMenor, .mixolidioSegundaMenor,
         .lidioAumentadoSegundaAumentada, .locrioSeptimaDisminuida,
         .dobleArmonica, .menorHungara, .mayorHungara, .napolitanaMenor, .napolitanaMayor,
-        .enigmatica, .persa, .mayorLocria, .lidioMenor, .prometeo,
+        .enigmatica, .persa, .mayorLocria, .lidioMenor, .prometeo, .prometeoNapolitano,
         .disminuidaSemitonoTono, .aumentada, .bluesMayor, .egipcia, .cromatica,
         .cromaticaConCincoBemoles, .cromaticaConTresBemoles, .cromaticaConDosBemoles, .cromaticaConUnBemol,
         .cromaticaConCincoSostenidos,

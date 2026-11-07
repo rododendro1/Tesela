@@ -2,6 +2,11 @@
 
 ## Sin publicar
 
+### Escalas
+
+- Nueva escala `TipoDeEscala.prometeoNapolitano` (Do Re♭ Mi Fa♯ La Si♭), con su nombre en los doce idiomas.
+- La enigmática se lee también como «de Verdi», y la disminuida semitono-tono, como «de Stravinski».
+
 ### Doce idiomas: sin el asturiano, el aragonés y el occitano
 
 - **Cambio incompatible:** `Idioma` ya no tiene `.asturiano`, `.aragones` ni `.occitano`, y `Traducido` (y

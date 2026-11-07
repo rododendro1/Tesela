@@ -420,6 +420,7 @@ import Testing
         #expect(notas(.mayorLocria) == "Do Re Mi Fa Sol♭ La♭ Si♭")
         #expect(notas(.lidioMenor) == "Do Re Mi Fa♯ Sol La♭ Si♭")
         #expect(notas(.prometeo) == "Do Re Mi Fa♯ La Si♭")
+        #expect(notas(.prometeoNapolitano) == "Do Re♭ Mi Fa♯ La Si♭")
         #expect(notas(.disminuidaSemitonoTono) == "Do Re♭ Mi♭ Mi Fa♯ Sol La Si♭")
         #expect(notas(.aumentada) == "Do Mi♭ Mi Sol Sol♯ Si")
         #expect(notas(.bluesMayor) == "Do Re Mi♭ Mi Sol La")
@@ -450,6 +451,9 @@ import Testing
         #expect(Escala("Do modo 2 de Messiaen").tipo == .disminuidaSemitonoTono)
         #expect(Escala("Do gitana menor").tipo == .menorHungara)
         #expect(Escala("Do Skriabin").tipo == .prometeo)
+        #expect(Escala("Do Prometeo napolitano").tipo == .prometeoNapolitano)
+        #expect(Escala("Do de Verdi").tipo == .enigmatica)
+        #expect(Escala("Do Stravinski").tipo == .disminuidaSemitonoTono)
 
         // Con el mismo contenido que escalas de otras tradiciones.
         #expect(TipoDeEscala.dobleArmonica == .bhairav)

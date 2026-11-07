@@ -55,6 +55,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
             .quintaAumentada, .sextaAumentada, .septimaMayor,
         ],
+        alias: ["de Verdi", "Verdi"],
         usos: [.clasica])
     /// Do Re♭ Mi Fa Sol♭ La♭ Si.
     public static let persa = TipoDeEscala(
@@ -90,6 +91,14 @@ extension TipoDeEscala {
         ],
         alias: ["mística", "de Prometeo", "Skriabin"], variantes: ["Scriabin"],
         usos: [.sigloXX])
+    /// El Prometeo con la segunda menor (Do Re♭ Mi Fa♯ La Si♭), el otro modo de Skriabin.
+    public static let prometeoNapolitano = TipoDeEscala(
+        nombre: "Prometeo napolitano",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
+            .sextaMayor, .septimaMenor,
+        ],
+        usos: [.sigloXX])
 
     // Simétricas y otras.
 
@@ -103,7 +112,7 @@ extension TipoDeEscala {
         ],
         alias: [
             "disminuida dominante", "dominante disminuida", "modo 2 de Messiaen", "disminuida auxiliar blues",
-            "de Rimski-Kórsakov", "Rimski-Kórsakov",
+            "de Rimski-Kórsakov", "Rimski-Kórsakov", "de Stravinski", "Stravinski",
         ],
         variantes: ["Rimsky-Korsakov"],
         usos: [.jazz, .sigloXX])
