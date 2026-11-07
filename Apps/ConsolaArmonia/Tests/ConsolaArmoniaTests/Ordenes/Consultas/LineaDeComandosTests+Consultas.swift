@@ -141,7 +141,7 @@ extension LineaDeComandosTests {
         #expect(salida("escalas --uso siglo-xx").contains("  modo 3 de Messiaen: "))
         #expect(salida("scales --use jazz --ingles").hasPrefix("common · jazz ("))
         // Con un texto, busca dentro del uso; con una tradición, no hay ninguna.
-        #expect(salida("escalas bebop --uso jazz").hasPrefix("habituales · jazz (5)\n"))
+        #expect(salida("escalas bebop --uso jazz").hasPrefix("habituales · jazz (7)\n"))
         #expect(resultado("escalas", "--uso", "jazz", "--tradicion", "japon").codigo == 1)
         #expect(resultado("escalas", "--uso", "jaz").error.contains("«jazz»"))
         #expect(resultado("escalas", "--uso").codigo == 2)

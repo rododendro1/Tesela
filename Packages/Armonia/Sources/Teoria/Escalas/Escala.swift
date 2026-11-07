@@ -17,7 +17,7 @@ public struct Escala: Hashable, Sendable {
     /// Lee textos como "Re dórico", "Fa# menor armónica", "Sib mayor", "La menor",
     /// o en inglés: "D dorian", "F# harmonic minor", "Bb major".
     /// Si no se puede leer, el error indica dónde y por qué.
-    /// También lee la tónica en catalán, gallego, euskera, portugués, francés, occitano o italiano,
+    /// También lee la tónica en catalán, gallego, euskera, portugués, francés o italiano,
     /// con el tipo en español o en esas lenguas: "re bemoll dòric", "fa sostido menor", "re doriarra",
     /// "fá sustenido dórico", "ré bémol dorien", "fa diesis lidio". Con la tónica en ruso o en griego,
     /// el tipo va en esa lengua (los más comunes) o en inglés: "ре дорийский", "λα αρμονική ελάσσονα",
@@ -343,7 +343,7 @@ extension Escala {
 
 // MARK: - Idiomas
 //
-// Nombres de los grados de la escala en los quince idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+// Nombres de los grados de la escala en los doce idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
 
 // MARK: - NombreDeGrado
 

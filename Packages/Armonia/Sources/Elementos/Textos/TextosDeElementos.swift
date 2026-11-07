@@ -3,7 +3,7 @@
 // MARK: - Textos de Elementos
 //
 // Un idioma por fichero: `TextosDeElementos+Espanol.swift`, `TextosDeElementos+Ingles.swift`… Cada uno da todos los
-// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los quince y
+// campos, sin valores por omisión, así que un texto nuevo no compila hasta que está en los doce y
 // un idioma nuevo es un fichero más (y su fila en `traducidos`).
 
 /// Los textos de Elementos en un idioma.
@@ -66,7 +66,7 @@ struct TextosDeElementos: TextosTraducidos {
     // MARK: Gramática (Intervalo.swift, ErrorDeLectura.swift)
     /// El nombre de un intervalo con su calidad y su número: «3ª mayor», «major third».
     let nombreDeIntervalo: @Sendable (_ calidad: String, _ ordinal: String) -> String
-    /// La calidad del unísono, que en francés, occitano e italiano es masculino: «unisson augmenté».
+    /// La calidad del unísono, que en francés e italiano es masculino: «unisson augmenté».
     let unisonoEnMasculino: @Sendable (String) -> String
     /// Los nombres de los intervalos del unísono a la doble octava; vacío si se escriben con número.
     let ordinales: [String]
@@ -75,9 +75,9 @@ struct TextosDeElementos: TextosTraducidos {
     /// Los dos puntos de un mensaje: «: », y « : » en francés.
     let dosPuntos: String
 
-    /// Los textos en los quince idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
+    /// Los textos en los doce idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeElementos>(
-        espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
-        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
+        espanol, ingles, ca: catalan, gl: gallego, eu: euskera, pt: portugues,
+        fr: frances, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
 }

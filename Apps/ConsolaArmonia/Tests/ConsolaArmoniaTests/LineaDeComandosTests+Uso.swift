@@ -220,7 +220,7 @@ extension LineaDeComandosTests {
         let categorias = try #require(india["categorias"] as? [[String: Any]])
         #expect(categorias.contains { $0["clave"] as? String == "melakarta" && $0["escalas"] as? Int == 72 })
         #expect(LineaDeComandos.ejecutar(["tradiciones", "japon", "--json"]).codigo == 2)
-        // El nombre de cada tradición, en los quince idiomas.
+        // El nombre de cada tradición, en los doce idiomas.
         for tradicion in Tradicion.allCases {
             let nombres = Idioma.allCases.map { tradicion.nombre(en: .delIdioma($0)) }
             #expect(nombres.allSatisfy { !$0.isEmpty })

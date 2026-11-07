@@ -137,10 +137,10 @@ package struct NombresDeEscalas: Sendable {
         tradicionales[tipo.identidad]?.nombre ?? porTipo[tipo]?.nombre
     }
 
-    /// Los nombres en los quince idiomas.
+    /// Los nombres en los doce idiomas.
     package static let traducidos = Traducido<NombresDeEscalas>(
-        espanol, ingles, ca: catalan, gl: gallego, ast: asturiano, an: aragones, eu: euskera, pt: portugues,
-        fr: frances, oc: occitano, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
+        espanol, ingles, ca: catalan, gl: gallego, eu: euskera, pt: portugues,
+        fr: frances, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro)
 
     /// Los nombres en un idioma.
     package static func de(_ idioma: Idioma) -> NombresDeEscalas { traducidos.texto(en: idioma) }
@@ -165,19 +165,9 @@ extension NombresDeEscalas {
         return indice
     }
 
-    /// Catalán, gallego, euskera, portugués, francés, italiano, occitano, aragonés y asturiano, para leerlos con la
-    /// tónica en esas lenguas o en español ("re dòric", "re doriarra", "ré dórico", "ré dorien", "re dorico").
-    /// Los occitanos, aragoneses y asturianos que se escriben como en inglés ("dorian") no están: "Re dorian"
-    /// mezclaría idiomas.
-    static let indicePeninsular: [String: TipoDeEscala] = {
-        var indice = unidos([.catalan, .gallego, .euskera, .portugues, .frances, .italiano])
-        for idioma in [Idioma.occitano, .aragones, .asturiano] {
-            for (clave, tipo) in de(idioma).indice where indice[clave] == nil && TipoDeEscala.indiceInternacional[clave] == nil {
-                indice[clave] = tipo
-            }
-        }
-        return indice
-    }()
+    /// Catalán, gallego, euskera, portugués, francés e italiano, para leerlos con la tónica en esas lenguas o en
+    /// español ("re dòric", "re doriarra", "ré dórico", "ré dorien", "re dorico").
+    static let indicePeninsular: [String: TipoDeEscala] = unidos([.catalan, .gallego, .euskera, .portugues, .frances, .italiano])
 
     /// Ruso y griego, con las otras formas de los más comunes ("ре ионийский", "λα αιολικός").
     static let indiceRusoGriego: [String: TipoDeEscala] = unidos([.ruso, .griego])

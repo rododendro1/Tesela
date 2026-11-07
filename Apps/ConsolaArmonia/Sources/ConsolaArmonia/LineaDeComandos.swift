@@ -399,7 +399,7 @@ public enum LineaDeComandos {
     static var nombresDeLasEscrituras: [String] { escriturasConPalabras + escriturasCompactas + ["ascii"] }
 
     /// La notación de `ARMONIA_IDIOMA`: la de su idioma, como `--idioma`; con `sistema` (o `system`), la del idioma
-    /// de `LC_ALL`, `LC_MESSAGES` o `LANG` (el primero que haya), o la española si no es ninguno de los quince
+    /// de `LC_ALL`, `LC_MESSAGES` o `LANG` (el primero que haya), o la española si no es ninguno de los doce
     /// (`C`, `POSIX`); sin la variable, la española. Un idioma que no se conoce es un error de uso.
     static func notacionDelEntorno(_ entorno: [String: String]) -> Result<Notacion, ErrorDeUso> {
         guard let valor = entorno["ARMONIA_IDIOMA"]?.trimmingCharacters(in: .whitespaces), !valor.isEmpty else {
@@ -415,7 +415,7 @@ public enum LineaDeComandos {
         return .success(notacion)
     }
 
-    /// La notación de `--idioma`: es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu, o el nombre del idioma.
+    /// La notación de `--idioma`: es, en, ca, gl, eu, pt, fr, it, de, el, ru o hu, o el nombre del idioma.
     static func notacionDelIdioma(_ texto: String) -> Notacion? {
         (try? Idioma(leyendo: texto)).map(Notacion.delIdioma)
     }

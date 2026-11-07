@@ -46,7 +46,7 @@ import Testing
         #expect(Intervalo.terceraMayor.descendente.sentido == .descendente)
         #expect(Intervalo.terceraMayor.descendente.ascendente == .terceraMayor)
         #expect(abs(Intervalo.quintaJusta.cents() - (700)) <= 1e-9)
-        // Las multiplicidades de más de tres, y el unísono en masculino en occitano.
+        // Las multiplicidades de más de tres, y el unísono en masculino en francés.
         for idioma in Idioma.allCases {
             let notacion = Notacion.delIdioma(idioma)
             #expect(
@@ -54,10 +54,7 @@ import Testing
                     != Intervalo(numero: 4, calidad: .aumentada(3))?.nombre(en: notacion),
                 Comment(rawValue: idioma.codigo))
         }
-        #expect(Intervalo(numero: 1, calidad: .aumentada(1))?.nombre(en: .conPalabras(.occitano)) == "unisson aumentat")
-        #expect(
-            Intervalo(numero: 1, calidad: .aumentada(2))?.nombre(en: .conPalabras(.occitano))
-                == "unisson doblament aumentat")
+        #expect(Intervalo(numero: 1, calidad: .aumentada(1))?.nombre(en: .conPalabras(.frances)) == "unisson augmenté")
         #expect(Intervalo(numero: 1, calidad: .disminuida(1)) == nil)
         #expect(Intervalo.ordinalEnCifras(5, en: .griego) == "5η")
         #expect(Intervalo.ordinalEnCifras(5, en: .ruso) == "5-я")

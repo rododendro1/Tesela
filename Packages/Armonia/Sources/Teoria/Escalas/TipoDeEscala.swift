@@ -221,8 +221,7 @@ extension Escala {
 extension TipoDeEscala {
     /// Nombre en español ("dórico"), inglés ("dorian"), catalán ("dòric"), gallego ("dórico"),
     /// euskera ("doriarra"), portugués ("dórico"), francés ("dorien"), italiano ("dorico"), alemán
-    /// ("dorisch"), occitano ("dorian"), ruso ("дорийский"), griego ("δώριος"), aragonés ("dórico") o
-    /// asturiano ("dóricu"). Un tipo
+    /// ("dorisch"), ruso ("дорийский"), o griego ("δώριος"). Un tipo
     /// sin nombre conocido en ese idioma (como un modo de una escala propia) usa su nombre español.
     public func nombre(en notacion: Notacion) -> String {
         // El español es el del propio tipo (un tipo propio puede coincidir en intervalos con uno del catálogo).
@@ -374,15 +373,16 @@ extension TipoDeEscala {
         .doricoSegundaMenor, .lidioAumentado, .lidioDominante, .mixolidioSextaMenor,
         .locrioSegundaNatural, .alterada,
         .pentatonicaMayor, .pentatonicaMenor, .blues, .tonosEnteros, .disminuida,
-        .bebopDominante, .bebopMayor, .bebopDorico,
+        .bebopDominante, .bebopMayor, .bebopDorico, .bebopLocrio, .bebopLidio,
         .doricoQuintaDisminuida, .frigioCuartaDisminuida, .lidioTerceraMenor, .mixolidioSegundaMenor,
         .lidioAumentadoSegundaAumentada, .locrioSeptimaDisminuida,
         .dobleArmonica, .menorHungara, .mayorHungara, .napolitanaMenor, .napolitanaMayor,
-        .enigmatica, .persa, .mayorLocria, .lidioMenor, .prometeo,
+        .enigmatica, .persa, .mayorLocria, .lidioMenor, .prometeo, .prometeoNapolitano,
         .disminuidaSemitonoTono, .aumentada, .bluesMayor, .egipcia, .cromatica,
         .cromaticaConCincoBemoles, .cromaticaConTresBemoles, .cromaticaConDosBemoles, .cromaticaConUnBemol,
         .cromaticaConCincoSostenidos,
-        .bebopMenorMelodica, .bebopMenorArmonica, .flamenca, .petrushka,
+        .bebopMenorMelodica, .bebopMenorArmonica, .flamenca, .petrushka, .tritonoDeDosSemitonos,
+        .hexatonicaDeArmonicos,
         .messiaen3, .messiaen4, .messiaen5, .messiaen6, .messiaen7,
         .lidioSegundaSextaAumentadas, .ultrafrigio, .oriental, .jonicoSegundaQuintaAumentadas,
         .locrioTerceraSeptimaDisminuidas,
@@ -391,6 +391,7 @@ extension TipoDeEscala {
         .lidioSextaAumentada, .mixolidioAumentado, .eolicoCuartaAumentada, .locrioDominante, .jonicoSegundaAumentada,
         .ultralocrioTerceraDisminuida,
         .pentatonicaDominante, .pentatonicaMenorSexta, .pentatonicaMayorSextaMenor, .pentatonicaMenorQuintaDisminuida,
+        .pentatonicaMayorTerceraMenor, .pentatonicaMenorSextaMenor,
         .bluesDeNueveNotas, .bluesMenorConSegunda, .hexacordo, .argelina,
         .jonicoSinCuarta, .mixolidioSinTercera, .doricoSinSexta, .eolicoSinSegunda, .hexatonicaDeDosTriadas,
         .hexatonicaMenorDeDosTriadas, .mayorRumana,

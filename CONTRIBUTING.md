@@ -40,7 +40,7 @@ cd Packages/Interfaz && swift test       # la interfaz (en Linux, solo la parte 
   módulo o un paquete, sigue el apartado «Añadir un paquete o una app» de [DESARROLLO.md](DESARROLLO.md):
   El `Package.swift` de la raíz no se edita a mano: tras cambiar uno de `Packages/`, regenéralo con
   `python3 Scripts/generadores/generar_paquete_raiz.py` (el CI comprueba que está al día).
-- **Textos traducidos.** Un texto nuevo de la interfaz o del motor va en los quince idiomas.
+- **Textos traducidos.** Un texto nuevo de la interfaz o del motor va en los doce idiomas.
   `Scripts/comprobaciones/comprobar_traducciones.py` avisa de los que faltan.
 - **Documentación.** La API pública lleva comentario de documentación. Los enlaces de DocC (``Tipo/miembro`` y
   `<doc:Articulo>`) tienen que apuntar a algo que exista, y los ejemplos de código de los artículos se prueban:

@@ -55,6 +55,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
             .quintaAumentada, .sextaAumentada, .septimaMayor,
         ],
+        alias: ["de Verdi", "Verdi"],
         usos: [.clasica])
     /// Do Re♭ Mi Fa Sol♭ La♭ Si.
     public static let persa = TipoDeEscala(
@@ -90,6 +91,14 @@ extension TipoDeEscala {
         ],
         alias: ["mística", "de Prometeo", "Skriabin"], variantes: ["Scriabin"],
         usos: [.sigloXX])
+    /// El Prometeo con la segunda menor (Do Re♭ Mi Fa♯ La Si♭), el otro modo de Skriabin.
+    public static let prometeoNapolitano = TipoDeEscala(
+        nombre: "Prometeo napolitano",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
+            .sextaMayor, .septimaMenor,
+        ],
+        usos: [.sigloXX])
 
     // Simétricas y otras.
 
@@ -103,7 +112,7 @@ extension TipoDeEscala {
         ],
         alias: [
             "disminuida dominante", "dominante disminuida", "modo 2 de Messiaen", "disminuida auxiliar blues",
-            "de Rimski-Kórsakov", "Rimski-Kórsakov",
+            "de Rimski-Kórsakov", "Rimski-Kórsakov", "de Stravinski", "Stravinski",
         ],
         variantes: ["Rimsky-Korsakov"],
         usos: [.jazz, .sigloXX])
@@ -274,6 +283,23 @@ extension TipoDeEscala {
         ],
         alias: ["de Petrushka", "de tritono", "tritono"], variantes: ["Petrouchka"],
         usos: [.sigloXX])
+    /// Dos tricordos cromáticos a distancia de tritono (Do Re♭ Re Fa♯ Sol La♭). Tiene las notas del modo 5 de
+    /// Messiaen, desde su cuarto grado.
+    public static let tritonoDeDosSemitonos = TipoDeEscala(
+        nombre: "tritono de dos semitonos",
+        intervalos: [
+            .unisono, .segundaMenor, .segundaMayor, .cuartaAumentada,
+            .quintaJusta, .sextaMenor,
+        ],
+        usos: [.sigloXX])
+    /// La «escala de armónicos» de los catálogos en inglés (Do Mi♭ Mi Fa Sol La), con las dos terceras.
+    public static let hexatonicaDeArmonicos = TipoDeEscala(
+        nombre: "hexatónica de armónicos",
+        intervalos: [
+            .unisono, .terceraMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor,
+        ],
+        usos: [.sigloXX])
 }
 
 // MARK: - Escalas de jazz: bebop menores, pentatónicas del jazz y blues ampliadas.
@@ -336,6 +362,16 @@ extension TipoDeEscala {
     public static let pentatonicaMenorQuintaDisminuida = TipoDeEscala(
         nombre: "pentatónica menor ♭5",
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaDisminuida, .septimaMenor],
+        usos: [.jazz])
+    /// Do Re Mi♭ Sol La: la mayor con la 3ª menor. Tiene las notas del kumoijōshi japonés y del Śivarañjanī indio.
+    public static let pentatonicaMayorTerceraMenor = TipoDeEscala(
+        nombre: "pentatónica mayor ♭3",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMayor],
+        usos: [.jazz])
+    /// Do Mi♭ Fa Sol La♭: la menor con la 6ª menor en lugar de la 7ª.
+    public static let pentatonicaMenorSextaMenor = TipoDeEscala(
+        nombre: "pentatónica menor ♭6",
+        intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
         usos: [.jazz])
     /// Do Mi Fa Sol Si♭: la de los acordes de séptima de dominante con 4ª.
     public static let pentatonicaMixolidia = TipoDeEscala(

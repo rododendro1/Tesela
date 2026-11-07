@@ -8,7 +8,7 @@ import Testing
 @testable import Teoria
 @testable import Trastes
 
-/// Las notaciones y los textos en catalán, gallego, euskera, portugués, aragonés y asturiano.
+/// Las notaciones y los textos en catalán, gallego, euskera, y portugués.
 @Suite struct NotacionesPeninsularesTests {
     @Test func catalanGallegoEuskera() {
         let casos: [(String, String, String, String)] = [
@@ -98,14 +98,14 @@ import Testing
         #expect(Intervalo.terceraMayor.nombre(en: .conPalabras(.aleman)) == "große Terz")
         // Los catálogos también.
         #expect(Acorde("Sol7").nombre(en: .conPalabras(.euskera)) == "sol dominanteko zazpigarrena, oinarrizko egoera")
-        // Todas las traducciones tienen los quince textos, y cada notación toma el de su idioma.
+        // Todas las traducciones tienen los doce textos, y cada notación toma el de su idioma.
         let t = Traduccion(
-            "es", "en", ca: "ca", gl: "gl", ast: "ast", an: "an", eu: "eu", pt: "pt",
-            fr: "fr", oc: "oc", it: "it", de: "de", el: "el", ru: "ru", hu: "hu")
+            "es", "en", ca: "ca", gl: "gl", eu: "eu", pt: "pt", fr: "fr", it: "it", de: "de", el: "el", ru: "ru",
+            hu: "hu")
         #expect(
             Notacion.allCases.map(t.en) == [
-                "es", "es", "es", "en", "en", "en", "ca", "ca", "gl", "gl", "ast", "ast", "an", "an", "eu", "eu", "pt",
-                "pt", "fr", "fr", "oc", "oc", "it", "it", "de", "de", "el", "el", "ru", "ru", "hu", "hu",
+                "es", "es", "es", "en", "en", "en", "ca", "ca", "gl", "gl", "eu", "eu", "pt", "pt", "fr", "fr", "it",
+                "it", "de", "de", "el", "el", "ru", "ru", "hu", "hu",
             ])
         #expect(Idioma.allCases.count == Idioma.allCases.count)
     }
@@ -122,7 +122,6 @@ import Testing
         #expect(Acorde("Do/Re").nombre(en: .conPalabras(.euskera)) == "do maiorra, baxua re dela")
         #expect(Acorde("Do/Re").nombre(en: .conPalabras(.catalan)) == "do major, amb el baix en re")
         #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.aleman)) == "Dominantseptakkord auf G, erste Umkehrung")
-        #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.occitano)) == "sòl setena de dominanta, primièra inversion")
         #expect(
             Acorde("Sol7/Si").nombre(en: .conPalabras(.griego))
                 == "συγχορδία έβδομης δεσπόζουσας στο σολ, πρώτη αναστροφή")
@@ -201,34 +200,4 @@ import Testing
         #expect(EstiloDeCifrado(notacion: .conPalabras(.portugues)).notacion == .conPalabras(.portugues))
     }
 
-    /// Las notas, los textos y los catálogos en aragonés y asturiano.
-    @Test func aragonesYAsturiano() throws {
-        #expect(Nota("Fa#").nombre(en: .conPalabras(.aragones)) == "fa sosteniu")
-        #expect(Nota("Sib").nombre(en: .conPalabras(.asturiano)) == "si bemol")
-        #expect(Nota("Fa#").nombreCompacto(en: .conPalabras(.asturiano)) == "Fa♯")
-        #expect(Nota("fa sosteníu") == Nota("Fa#"))
-        #expect(try (Altura(leyendo: "fa sosteniu 3")) == Altura("Fa#3"))
-        #expect(Tonalidad("fa sosteníu mayor") == Tonalidad("Fa# mayor"))
-        #expect(Intervalo.terceraMayor.nombre(en: .conPalabras(.aragones)) == "3ª mayor")
-        #expect(Intervalo.quintaJusta.nombre(en: .conPalabras(.asturiano)) == "5ª xusta")
-        #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.asturiano)) == "sol séptima de dominante, primer inversión")
-        #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.aragones)) == "sol séptima de dominant, primera inversión")
-        #expect(Escala(.re, .dorico).nombre(en: .conPalabras(.asturiano)) == "re dóricu")
-        #expect(Escala(.mi, .frigio).nombre(en: .conPalabras(.aragones)) == "mi frichio")
-        #expect((try? Escala(leyendo: "re dóricu")) == Escala(.re, .dorico))
-        #expect(Tonalidad(.do).lugar(en: .conPalabras(.asturiano)) == "en do mayor")
-        #expect(InstrumentoDePartitura.violonchelo.nombre(en: .conPalabras(.asturiano)) == "violonchelu")
-        #expect(try Encordado(leyendo: "baxu") == .bajoElectrico)
-        #expect(
-            ErrorDeLectura(texto: "", posicion: 0, motivo: .textoVacio).explicacion(en: .conPalabras(.asturiano))
-                == "el testu ta baleru")
-        // Las escalas del catálogo se vuelven a leer con su nombre en los dos idiomas.
-        for tipo in TipoDeEscala.occidentales where !TipoDeEscala.nombresTradicionales.contains(tipo.nombre) {
-            let escala = Escala(.re, tipo)
-            for notacion in [Notacion.conPalabras(.aragones), .conPalabras(.asturiano)] {
-                let nombre = escala.nombre(en: notacion)
-                #expect((try? Escala(leyendo: nombre)) == escala, "\(nombre) (\(tipo.nombre))")
-            }
-        }
-    }
 }

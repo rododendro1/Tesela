@@ -3,7 +3,7 @@ import Testing
 @testable import Elementos
 @testable import Teoria
 
-/// Lo que escriben `cifrado(en:)` y `nombre(en:)` se lee de vuelta con `leyendo:en:`, en los quince idiomas.
+/// Lo que escriben `cifrado(en:)` y `nombre(en:)` se lee de vuelta con `leyendo:en:`, en los doce idiomas.
 @Suite struct LecturaEnUnaNotacionTests {
     static let notaciones = Idioma.allCases.flatMap { [Notacion.compacta($0), .conPalabras($0)] }
     static let tonicas = (-7...7).map { Nota(pasosDeQuinta: $0) }
@@ -53,7 +53,7 @@ import Testing
         #expect(try Escala(leyendo: "B dorisch", en: .compacta(.aleman)) == Escala("Sib dórico"))
         #expect(try Tonalidad(leyendo: "B-Dur", en: .compacta(.aleman)) == Tonalidad("Sib mayor"))
         #expect(try Acorde(leyendo: "Rém7", en: .compacta(.frances)) == Acorde("Rem7"))
-        #expect(try Escala(leyendo: "re dorian", en: .conPalabras(.occitano)) == Escala("Re dórico"))
+        #expect(try Escala(leyendo: "re dòric", en: .conPalabras(.catalan)) == Escala("Re dórico"))
         #expect(try Nota(leyendo: "Mi𝄫", en: .compacta(.catalan)) == Nota(.mi, .dobleBemol))
     }
 

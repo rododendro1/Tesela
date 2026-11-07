@@ -46,7 +46,7 @@ import Testing
         #expect(TipoDeEscala.bilaval.equivalentes.first?.nombre == "mayor")
     }
 
-    /// Cada tradición tiene nombre en los quince idiomas, y en español es también su `nombre`.
+    /// Cada tradición tiene nombre en los doce idiomas, y en español es también su `nombre`.
     @Test func losNombresDeLasTradicionesSeTraducen() {
         for tradicion in Tradicion.allCases {
             #expect(tradicion.nombre(en: .espanolCompacto) == tradicion.nombre)
@@ -87,7 +87,7 @@ import Testing
         #expect(Subtradicion.java.nombre(en: Notacion.espanolCompacto.conTextos(en: .ruso)) == "Ява")
     }
 
-    /// Cada subtradición tiene nombre en los quince idiomas y se codifica por su nombre de caso.
+    /// Cada subtradición tiene nombre en los doce idiomas y se codifica por su nombre de caso.
     @Test func lasSubtradicionesSeTraducenYSeCodifican() throws {
         for subtradicion in Subtradicion.allCases {
             #expect(subtradicion.nombre(en: .espanolCompacto) == subtradicion.nombre)

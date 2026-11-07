@@ -1,4 +1,5 @@
-# Léxico por idioma para construir los alias de los tipos de escala. Orden de idiomas: LANGS.
+# Léxico por idioma para construir los alias de los tipos de escala. Orden de idiomas: LANGS. El asturiano,
+# el aragonés y el occitano ya no están en el motor: sus columnas se quedan para no descuadrar las demás.
 LANGS = ["Catalan", "Gallego", "Asturiano", "Aragones", "Euskera", "Portugues", "Frances", "Occitano", "Italiano", "Aleman"]
 
 # Modos: (masculino, femenino). Euskera: la raíz (sin -rra) se usa delante de un adjetivo.

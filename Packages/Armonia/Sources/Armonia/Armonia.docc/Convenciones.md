@@ -71,7 +71,7 @@ El texto se acepta en español (`Do`, `Sib`, `Fa#`, `Solx`, `Mi♭♭`) o con le
 - Fuera de esos dos casos, nunca participios, gerundios ni preposiciones como nombre (`invertido`, `anadiendo`,
   `conBajo`): las operaciones musicales van en infinitivo (`invertir`, `transponer`).
 - **Leer texto que viene de fuera: `init(leyendo:)`, que lanza.** El error dice el texto, el carácter y el motivo en
-  los quince idiomas (`ErrorAlLeer`). Lo que se escribe a mano en el código es un literal o un inicializador que
+  los doce idiomas (`ErrorAlLeer`). Lo que se escribe a mano en el código es un literal o un inicializador que
   detiene el programa con un valor imposible, y `init?(comprobando:)` es su versión para valores de fuera, con `nil`.
 - **Tipos: sustantivo con su complemento, siempre con preposición.** `TipoDeAcorde`,
   `Nota`, `CalidadDeIntervalo`, `EstiloDeCifrado`, `PapelEnAcorde`, `PosicionEnElPentagrama`.

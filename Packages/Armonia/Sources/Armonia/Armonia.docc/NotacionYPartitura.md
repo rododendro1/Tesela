@@ -26,7 +26,7 @@ cómo se escribe.
 ## Otras lenguas
 
 Además del español y el inglés, `Notacion` tiene `.conPalabras(.aleman)` y `.compacta(.aleman)`, `.conPalabras(.frances)`, `.conPalabras(.italiano)`,
-`.conPalabras(.catalan)`, `.conPalabras(.gallego)`, `.conPalabras(.euskera)`, `.conPalabras(.portugues)`, `.conPalabras(.occitano)`, `.conPalabras(.ruso)` y `.conPalabras(.griego)`. El alemán, como el español
+`.conPalabras(.catalan)`, `.conPalabras(.gallego)`, `.conPalabras(.euskera)`, `.conPalabras(.portugues)`, `.conPalabras(.ruso)` y `.conPalabras(.griego)`. El alemán, como el español
 y el inglés, escribe las alteraciones con palabras (`.conPalabras(.aleman)`: C Kreuz, E Be, con B para el Si♭) o de forma compacta
 (`.compacta(.aleman)`: Cis, Es, con la octava en subíndice); en los cifrados y las tonalidades, las dos escriben
 a la alemana (Cis7, Fis-Dur), y se leen las dos formas:
@@ -41,11 +41,8 @@ a la alemana (Cis7, Fis-Dur), y se leen las dos formas:
 | `.conPalabras(.gallego)` | do sostido | mi bemol | si bemol | si | fa sostido maior | la menor |
 | `.conPalabras(.euskera)` | do diesa | mi bemol | si bemol | si | fa diesa maiorra | la minorra |
 | `.conPalabras(.portugues)` | dó sustenido | mi bemol | si bemol | si | fá sustenido maior | lá menor |
-| `.conPalabras(.occitano)` | do dièsi | mi bemòl | si bemòl | si | fa dièsi major | la menor |
 | `.conPalabras(.ruso)` | до-диез | ми-бемоль | си-бемоль | си | фа-диез мажор | ля минор |
 | `.conPalabras(.griego)` | ντο δίεση | μι ύφεση | σι ύφεση | σι | φα δίεση μείζονα | λα ελάσσονα |
-| `.conPalabras(.aragones)` | do sosteniu | mi bemol | si bemol | si | fa sosteniu mayor | la menor |
-| `.conPalabras(.asturiano)` | do sosteníu | mi bemol | si bemol | si | fa sosteníu mayor | la menor |
 
 ```swift
 Nota("Sib").nombre(en: .compacta(.aleman))    // "B"
@@ -69,13 +66,10 @@ Escala("ré dórico")                                 // Re dórico
 Nota("Fa#").nombre(en: .conPalabras(.ruso))                       // "фа-диез"
 Tonalidad("Re mayor").nombre(en: .conPalabras(.griego))           // "ρε μείζονα"
 Acorde("Sibm7").cifrado(en: .conPalabras(.griego))                // "Σι♭m7"
-Altura("sòl dièsi 2")                               // Sol♯2
-Nota("Fa#").nombre(en: .conPalabras(.asturiano))                  // "fa sosteníu"
-Altura("fa sosteniu 3")                             // Fa♯3
 Tonalidad("ля минор")                               // La menor
 ```
 
-- En catalán, gallego, asturiano, aragonés, euskera, portugués, francés, occitano, italiano, griego y ruso
+- En catalán, gallego, euskera, portugués, francés, italiano, griego y ruso
   los nombres van
   en minúscula y con las alteraciones en palabras (en euskera, con el adjetivo detrás: diesa
   bikoitza; en ruso, unidas con guion: фа-диез); en los cifrados se usa la forma compacta
@@ -85,8 +79,8 @@ Tonalidad("ля минор")                               // La menor
   es «Ré♭₄». La notación de cada idioma (`Notacion.delIdioma(_:)`) sigue siendo la de palabras.
 - Las octavas son siempre las científicas (Do4 = do central), también en francés, donde a menudo
   se numera de otra forma.
-- Las lecturas genéricas (`init(leyendo:)`) aceptan español, inglés, catalán, gallego, asturiano,
-  aragonés, euskera, portugués, occitano, griego y ruso, que no se confunden entre sí: `Altura("fa sostido 3")`,
+- Las lecturas genéricas (`init(leyendo:)`) aceptan español, inglés, catalán, gallego,
+  euskera, portugués, griego y ruso, que no se confunden entre sí: `Altura("fa sostido 3")`,
   `Escala("re bemoll dòric")`, `Altura("fá sustenido 3")`, `Nota("си-бемоль")`, `Nota("σι ύφεση")`. El
   alemán, el francés y el italiano se leen con `leyendo:en:`, porque «B» no significa lo mismo en inglés que
   en alemán: `Nota(leyendo:en:)`, `Altura(leyendo:en:)`, `Acorde(leyendo:en:)`, `Escala(leyendo:en:)` y
@@ -98,12 +92,12 @@ Tonalidad("ля минор")                               // La menor
   «Sol7/B», que da el error `.idiomasMezclados`).
 - Los textos del motor (mensajes de error, intervalos, calidades, papeles en el acorde, grados,
   claves, figuras, cadencias y faltas de conducción) están en español, inglés, catalán, gallego,
-  asturiano, aragonés, euskera, portugués, francés, occitano, italiano, alemán, griego y ruso. Es lo que indica
-  `notacion.textos`, y cada texto es una `Traduccion` con los quince idiomas.
+  euskera, portugués, francés, italiano, alemán, griego, ruso y húngaro. Es lo que indica
+  `notacion.textos`, y cada texto es una `Traduccion` con los doce idiomas.
 - Los nombres de los catálogos (tipos de acorde y de escala, instrumentos) siguen el mismo
   `textos`. Los nombres tradicionales de escala (rāga, maqam, pentatónicas japonesas…)
   se escriben igual en todos los idiomas, y una escala se lee también con su nombre en catalán,
-  gallego, euskera, portugués, occitano u alemán (`Escala("re doriarra")`, `Escala("dó maior")`).
+  gallego, euskera, portugués o alemán (`Escala("re doriarra")`, `Escala("dó maior")`).
 
 ```swift
 Intervalo.terceraMayor.nombre(en: .conPalabras(.catalan))        // "3a major"
@@ -116,12 +110,9 @@ Intervalo.terceraMayor.nombre(en: .conPalabras(.frances))        // "tierce maje
 Cadencia.Tipo.rota.nombre(en: .conPalabras(.italiano))           // "cadenza d'inganno"
 Escala(.re, .dorico).nombre(en: .conPalabras(.frances))          // "ré dorien"
 Acorde("Sol7/Si").nombre(en: .conPalabras(.portugues))         // "sol sétima de dominante, primeira inversão"
-Escala(.re, .dorico).nombre(en: .conPalabras(.asturiano))        // "re dóricu"
-Acorde("Sol7/Si").nombre(en: .conPalabras(.asturiano))         // "sol séptima de dominante, primer inversión"
 Intervalo.terceraMayor.nombre(en: .conPalabras(.aleman))         // "große Terz"
 Cadencia.Tipo.rota.nombre(en: .conPalabras(.aleman))             // "Trugschluss"
 Acorde("Sol7/Si").nombre(en: .conPalabras(.aleman))            // "Dominantseptakkord auf G, erste Umkehrung"
-Intervalo.terceraMayor.nombre(en: .conPalabras(.occitano))       // "tèrça majora"
 Intervalo.terceraMayor.nombre(en: .conPalabras(.ruso))           // "большая терция"
 Escala(.re, .dorico).nombre(en: .conPalabras(.ruso))             // "ре дорийский"
 Intervalo.terceraMayor.nombre(en: .conPalabras(.griego))         // "μεγάλη τρίτη"
@@ -496,7 +487,7 @@ Todos los errores del motor, también `ErrorDeLecturaDeFichero` y `ErrorDeLectur
 para mostrar cualquiera basta `catch let error as any ErrorDeArmonia` y `error.descripcion(en:)`.
 
 El mensaje está en español (`description`, `explicacion`) y también en inglés, catalán, gallego,
-euskera, portugués, francés, occitano, italiano, alemán, griego y ruso: `descripcion(en:)` y
+euskera, portugués, francés, italiano, alemán, griego, ruso y húngaro: `descripcion(en:)` y
 `explicacion(en:)` usan el idioma de los textos de la notación (`notacion.textos`), como los
 nombres de intervalos.
 

@@ -57,7 +57,7 @@ extension TextosDeElementos {
         faltanEnLaSerie: { clases in "λείπουν \(clases)" },
         repetidasEnLaSerie: { clases in "επαναλαμβάνονται \(clases)" },
         // ErrorDeLectura.swift (idiomas)
-        idiomaNoReconocido: { n, o in "το «\(n)» δεν είναι καμία από τις δεκαπέντε γλώσσες: \(o)" },
+        idiomaNoReconocido: { n, o in "το «\(n)» δεν είναι καμία από τις δώδεκα γλώσσες: \(o)" },
 
         // Gramática (Intervalo.swift, ErrorDeLectura.swift)
         nombreDeIntervalo: { calidad, ordinal in "\(calidad) \(ordinal)" },

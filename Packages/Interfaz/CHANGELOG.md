@@ -1,5 +1,12 @@
 # Cambios
 
+## Sin publicar
+
+- Las apps están en doce idiomas: el selector de notación ya no tiene el asturiano, el aragonés ni el occitano, y
+  las apps ya no declaran `ast`, `an` ni `oc` (`Idiomas.plist` y las carpetas `.lproj`). Con una de esas notaciones
+  guardada, las apps vuelven al español con ♯ y ♭; con el sistema en uno de esos idiomas, toman el siguiente idioma
+  del sistema que conozcan o, si no hay ninguno, el español.
+
 ## 0.4.0 (2026-11-07)
 
 - El selector de notación tiene una sección «Otras tradiciones» con los sistemas fijos de nombres de nota (bizantino,

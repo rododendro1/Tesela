@@ -33,7 +33,7 @@ public struct Altura: Hashable, Sendable {
     /// Lee textos como "Do4", "Fa#3", "Sib-1", "C#5", "Fa sostenido 3", "B flat 4", y también con la octava en
     /// subíndice: "La₄", "Do♯₃", "Si♭₋₁".
     /// Si no se puede leer, el error indica dónde y por qué.
-    /// También acepta los nombres en catalán, gallego, asturiano, aragonés, euskera, portugués, occitano, griego y
+    /// También acepta los nombres en catalán, gallego, euskera, portugués, griego y
     /// ruso:
     /// "re bemoll 4", "fa sostido 3", "fá sustenido 3", "фа-диез 3", "σι ύφεση 4".
     public init(leyendo texto: String) throws {

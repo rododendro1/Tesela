@@ -259,7 +259,7 @@ import Testing
         #expect(salida("tonalidad Mib mayor --idioma gl").contains("(3 bemois)"))
         #expect(salida("--idioma en acorde C/G") == salida("acorde C/G --ingles"))
         #expect(salida("acorde Do --language es") == salida("acorde Do"))
-        // La ayuda, en los quince idiomas.
+        // La ayuda, en los doce idiomas.
         #expect(salida("ayuda --todo --idioma ca").hasPrefix("armonia: "))
         #expect(salida("ayuda --todo --idioma ca") == (ayudaEn(.catalan) + "\n"))
         #expect(salida("ayuda --todo --idioma gl") == (ayudaEn(.gallego) + "\n"))
@@ -268,18 +268,18 @@ import Testing
         #expect(salida("ayuda --todo --idioma fr") == (ayudaEn(.frances) + "\n"))
         #expect(salida("ayuda --todo --idioma italiano") == (ayudaEn(.italiano) + "\n"))
         #expect(salida("ayuda --todo --idioma de") == (ayudaEn(.aleman) + "\n"))
-        #expect(salida("ayuda --todo --idioma oc") == (ayudaEn(.occitano) + "\n"))
         #expect(salida("ayuda --todo --idioma ru") == (ayudaEn(.ruso) + "\n"))
         #expect(salida("ayuda --todo --idioma hu") == (ayudaEn(.hungaro) + "\n"))
         #expect(salida("ayuda --todo --idioma magyar").hasPrefix("armonia: zeneelmélet a parancssorban."))
         #expect(salida("tonalidad Mib mayor --idioma hu").contains("Esz-dúr"))
         #expect(salida("ayuda --todo --idioma el") == (ayudaEn(.griego) + "\n"))
-        #expect(salida("ayuda --todo --idioma an") == (ayudaEn(.aragones) + "\n"))
-        #expect(salida("ayuda --todo --idioma asturianu") == (ayudaEn(.asturiano) + "\n"))
-        #expect(ayudaEn(.asturiano).hasPrefix("armonia: teoría musical dende la llinia"))
         #expect(ayudaEn(.aleman).hasPrefix("armonia: Musiktheorie"))
         #expect(ayudaEn(.ruso).contains("armonia chord G7/B"))
-        #expect(ayudaEn(.occitano).contains("armonia acorde Sol7/Si"))
+        #expect(ayudaEn(.frances).contains("armonia acorde Sol7/Si"))
+        // Los idiomas que se quitaron ya no se aceptan.
+        for codigo in ["ast", "an", "oc"] {
+            #expect(resultado("acorde", "Do", "--idioma", codigo).codigo == 2, Comment(rawValue: codigo))
+        }
         // Una distinta por idioma, y la de cada idioma es la del mapa.
         #expect(Set(Idioma.allCases.map { ayudaEn($0) }).count == Idioma.allCases.count)
         #expect(Set(Idioma.allCases.map { ayudaEn($0) }) == Set(LineaDeComandos.ayudas.values))
@@ -300,13 +300,10 @@ import Testing
         #expect(
             resultado("acorde", "Do", "--idioma", "xx").error
                 .hasPrefix(
-                    "armonia: idioma desconocido: «xx» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu)"))
+                    "armonia: idioma desconocido: «xx» (es, en, ca, gl, eu, pt, fr, it, de, el, ru o hu)"))
         #expect(salida("acorde Sol7/Si --idioma de").hasPrefix("G7/H: Dominantseptakkord\n"))
         #expect(salida("acorde Sol7/Si --idioma ru").hasPrefix("Соль7/Си: доминантсептаккорд\n"))
         #expect(salida("escala Re dórico --idioma el").hasPrefix("ρε δώριος"))
-        #expect(salida("escala Re dórico --idioma ast").hasPrefix("re dóricu"))
-        #expect(salida("acorde Sol7/Si --idioma an").contains("(baixo si, primera inversión)"))
-        #expect(salida("digitaciones C --instrumento baxu --idioma ast").contains("baxu"))
         #expect(
             resultado("acorde", "Do", "--idioma").error
                 == "armonia: falta el valor de --idioma\nPrueba «armonia ayuda».\n")
@@ -360,8 +357,7 @@ import Testing
         #expect(salida("help --all --ingles").contains("--writing"))
     }
 
-    /// Con --idioma ca, gl, eu, pt, fr, it, de, el o ru, los errores de uso no dejan nada en español (el
-    /// occitano no entra: también dice «las» y «los»).
+    /// Con --idioma ca, gl, eu, pt, fr, it, de, el o ru, los errores de uso no dejan nada en español.
     @Test func erroresEnCatalanGallegoEuskera() {
         let enEspanol = ["Prueba", "hace falta", "hacen falta", "desconocid", " es un", " sin ", " las ", " los "]
         for (idioma, antes, despues) in [

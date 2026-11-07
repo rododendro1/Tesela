@@ -74,7 +74,7 @@ import Testing
         #expect(!enMenor.esPlagalMenor)
     }
 
-    @Test func enLosQuinceIdiomas() throws {
+    @Test func enLosDoceIdiomas() throws {
         let frigia = try #require(Tonalidad(.la, .menor).analizar(["Lam", "Rem/Fa", "Mi"]).cadencias.first)
         let plagal = try #require(Tonalidad(.do).analizar(["Do", "Fam", "Do"]).cadencias.first)
         for idioma in Idioma.allCases {

@@ -54,7 +54,7 @@ public enum FuenteTeorica: String, Sendable, Codable, CaseIterable {
     /// En español, también `nombre` (de `Nombrable`).
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
 
-    /// El nombre en los quince idiomas, de los `TextosDeTeoria`.
+    /// El nombre en los doce idiomas, de los `TextosDeTeoria`.
     private var traduccion: Traduccion {
         switch self {
         case .arquitas: TextosDeTeoria.traduccion(\.fuenteArquitas)

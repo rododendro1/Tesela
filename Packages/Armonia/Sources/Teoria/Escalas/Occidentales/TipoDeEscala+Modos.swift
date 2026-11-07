@@ -139,6 +139,22 @@ extension TipoDeEscala {
         ],
         alias: ["bebop menor"],
         usos: [.jazz])
+    /// El locrio con la 5ª justa de paso (Do Re♭ Mi♭ Fa Sol♭ Sol La♭ Si♭), la del acorde semidisminuido.
+    public static let bebopLocrio = TipoDeEscala(
+        nombre: "bebop locrio",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
+            .quintaDisminuida, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        usos: [.jazz])
+    /// El lidio con la 5ª aumentada de paso (Do Re Mi Fa♯ Sol Sol♯ La Si), como la bebop mayor.
+    public static let bebopLidio = TipoDeEscala(
+        nombre: "bebop lidio",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
+            .quintaJusta, .quintaAumentada, .sextaMayor, .septimaMayor,
+        ],
+        usos: [.jazz])
 
     // Modos de la mayor armónica (2.º a 7.º grado).
     public static let doricoQuintaDisminuida = TipoDeEscala(

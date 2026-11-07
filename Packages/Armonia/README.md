@@ -275,14 +275,14 @@ Sources/
 
 Los nombres que dependen del idioma están en el fichero de cada tipo, al final, tras `// MARK: - Idiomas`
 (`grep -rl 'MARK: - Idiomas' Sources` los lista): en el núcleo, `Nota.swift` (letras, alteraciones
-y nombres de nota en las quince lenguas de las notaciones), `Intervalo.swift` (calidades de
+y nombres de nota en las doce lenguas de las notaciones), `Intervalo.swift` (calidades de
 intervalo, intervalos y consonancias) y `ErrorDeLectura.swift` (los mensajes de error generales y los de las
 notas); en las demás capas, los errores de lectura de cada una (`ErrorDeLecturaDeTeoria.swift`,
 `ErrorDeLecturaDePartitura.swift`), los modos y las tonalidades, los papeles en el acorde, las calidades de tríada, los grados, las claves,
-las figuras, las duraciones y los colores. Los textos usan `Traduccion`, que pide los quince idiomas:
-español, inglés, catalán, gallego, asturiano, aragonés, euskera, portugués, francés, occitano, italiano, alemán,
-griego y ruso. Los nombres que son datos de un catálogo (tipos de acorde y de escala, instrumentos)
-siguen junto a su catálogo, en los quince idiomas (los de las escalas en los que no son español ni inglés,
+las figuras, las duraciones y los colores. Los textos usan `Traduccion`, que pide los doce idiomas:
+español, inglés, catalán, gallego, euskera, portugués, francés, italiano, alemán,
+griego, ruso y húngaro. Los nombres que son datos de un catálogo (tipos de acorde y de escala, instrumentos)
+siguen junto a su catálogo, en los doce idiomas (los de las escalas en los que no son español ni inglés,
 un fichero por idioma en `Teoria/Escalas/Nombres/`, `NombresDeEscalas+Catalan.swift`…, con los alias y las variantes con que también se leen;
 `Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno, y `Scripts/generadores/nombres_de_escalas/` tiene las herramientas con que se sembraron).
 

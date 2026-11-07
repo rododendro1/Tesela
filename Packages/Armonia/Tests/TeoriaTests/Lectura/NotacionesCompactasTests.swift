@@ -24,7 +24,7 @@ import Testing
             #expect(Notacion(escritura: .compacta(idioma)).tipografia == .conDobles, Comment(rawValue: idioma.codigo))
         }
         let conSignos = EscrituraDeNotas.allCases.filter { $0.esCompacta && $0.escrituraDeLaAlteracion == .signos }
-        #expect(conSignos.count == 13)
+        #expect(conSignos.count == 10)
         #expect(Set(conSignos.map(\.tipografia)) == [.conDobles])
         #expect(Nota("Sibb").nombre(en: .espanolCompacto) == "Si𝄫")
         #expect(Nota("Do###").nombre(en: .compacta(.frances)) == "Do𝄪♯")
@@ -41,8 +41,8 @@ import Testing
     @Test func alturasConSubindice() {
         #expect(Altura("Fa#4").nombre(en: .compacta(.catalan)) == "Fa♯₄")
         #expect(Altura("Sib3").nombre(en: .compacta(.gallego)) == "Si♭₃")
-        #expect(Notacion.compacta(.occitano).octavas == .subindices)
-        #expect(Notacion.conPalabras(.occitano).octavas == .cifras)
+        #expect(Notacion.compacta(.euskera).octavas == .subindices)
+        #expect(Notacion.conPalabras(.euskera).octavas == .cifras)
     }
 
     @Test func leerEnCompacto() throws {
@@ -62,7 +62,7 @@ import Testing
             #expect(!EscrituraDeNotas.conPalabras(idioma).esCompacta, "\(idioma)")
             #expect(EscrituraDeNotas.allCases.contains(compacta), "\(idioma)")
         }
-        #expect(EscrituraDeNotas.allCases.count == 32)
+        #expect(EscrituraDeNotas.allCases.count == 26)
         // La notación de cada idioma sigue siendo la de siempre.
         #expect(Notacion.delIdioma(.catalan) == .conPalabras(.catalan))
         #expect(Notacion.delIdioma(.frances) == .conPalabras(.frances))

@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: teoria musical des de la línia d'ordres.
 
-        Ús: armonia <ordre> <arguments> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
+        Ús: armonia <ordre> <arguments> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu]
 
         Ordres (les ordres i les opcions s'escriuen en castellà o en anglès):
         """,
@@ -331,7 +331,7 @@ extension TextosDeConsola {
         pruebaLaAyuda: "Prova «armonia ayuda».",
         ordenDesconocida: { orden in "ordre desconeguda: «\(orden)»" },
         opcionDesconocida: { opcion in "opció desconeguda: «\(opcion)»" },
-        idiomaDesconocido: { idioma in "idioma desconegut: «\(idioma)» (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru o hu)" },
+        idiomaDesconocido: { idioma in "idioma desconegut: «\(idioma)» (es, en, ca, gl, eu, pt, fr, it, de, el, ru o hu)" },
         terminalDesconocida: { t in "terminal desconegut: «\(t)» (bash, zsh o fish)" },
         escrituraNoValida: { escritura in "escriptura no vàlida: «\(escritura)» (palabras/words o compacto/compact; ascii o unicode, només amb es i en)" },
         sistemaDesconocido: { sistema, lista in "sistema de noms desconegut: «\(sistema)» (\(lista))" },

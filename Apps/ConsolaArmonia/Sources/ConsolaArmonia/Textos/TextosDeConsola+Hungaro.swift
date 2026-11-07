@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: zeneelmélet a parancssorban.
 
-        Használat: armonia <parancs> <argumentumok> [--ingles | --idioma es|en|ca|gl|ast|an|eu|pt|fr|oc|it|de|el|ru|hu]
+        Használat: armonia <parancs> <argumentumok> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu]
 
         Parancsok (a parancsok és az opciók spanyolul vagy angolul íródnak):
         """,
@@ -331,7 +331,7 @@ extension TextosDeConsola {
         pruebaLaAyuda: "Próbáld ki: „armonia help”.",
         ordenDesconocida: { orden in "ismeretlen parancs: „\(orden)”" },
         opcionDesconocida: { opcion in "ismeretlen opció: „\(opcion)”" },
-        idiomaDesconocido: { idioma in "ismeretlen nyelv: „\(idioma)” (es, en, ca, gl, ast, an, eu, pt, fr, oc, it, de, el, ru vagy hu)" },
+        idiomaDesconocido: { idioma in "ismeretlen nyelv: „\(idioma)” (es, en, ca, gl, eu, pt, fr, it, de, el, ru vagy hu)" },
         terminalDesconocida: { t in "ismeretlen parancsértelmező: „\(t)” (bash, zsh vagy fish)" },
         escrituraNoValida: { escritura in "érvénytelen írásmód: „\(escritura)” (palabras/words vagy compacto/compact; ascii vagy unicode, csak es és en mellett)" },
         sistemaDesconocido: { sistema, lista in "ismeretlen névrendszer: „\(sistema)” (\(lista))" },

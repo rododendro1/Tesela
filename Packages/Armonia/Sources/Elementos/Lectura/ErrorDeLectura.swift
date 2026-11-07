@@ -3,7 +3,7 @@ import Foundation
 /// Error al leer una nota, una altura, un intervalo, un conjunto de clases, una serie dodecafónica o un idioma, o un
 /// texto vacío o con caracteres de más.
 ///
-/// Indica el texto, el carácter donde se detuvo la lectura y el motivo, en los quince idiomas de los
+/// Indica el texto, el carácter donde se detuvo la lectura y el motivo, en los doce idiomas de los
 /// textos (`Traduccion`). Los cifrados, las escalas y la partitura tienen el suyo en su capa
 /// (`ErrorDeLecturaDeTeoria`, `ErrorDeLecturaDePartitura`); todos cumplen `ErrorAlLeer`:
 ///
@@ -32,7 +32,7 @@ public struct ErrorDeLectura: ErrorAlLeer {
         case faltaElCierre(String)
         /// Una serie que no tiene las doce clases una vez cada una: las que faltan y las que se repiten.
         case serieNoDodecafonica(faltan: [Int], repetidas: [Int])
-        /// Ni el código ni el nombre de uno de los quince idiomas, con los códigos que sí.
+        /// Ni el código ni el nombre de uno de los doce idiomas, con los códigos que sí.
         case idiomaNoReconocido(String, opciones: [String])
     }
 
@@ -50,7 +50,7 @@ public struct ErrorDeLectura: ErrorAlLeer {
 
 // MARK: - Idiomas
 //
-// Los mensajes de `ErrorDeLectura` en los quince idiomas de los textos (`Traduccion`): los generales (texto vacío,
+// Los mensajes de `ErrorDeLectura` en los doce idiomas de los textos (`Traduccion`): los generales (texto vacío,
 // caracteres que sobran) aquí, y los de las notas en TextosDeNotas, una función por motivo, para que un motivo nuevo
 // no compile hasta que tiene su texto. Los de los acordes, las escalas y la partitura están en su capa
 // (`ErrorDeLecturaDeTeoria`, `ErrorDeLecturaDePartitura`).
@@ -60,7 +60,7 @@ extension ErrorDeLectura.Motivo {
         explicacionTraducida(notacion).en(notacion)
     }
 
-    /// La explicación en los quince idiomas de los textos. La notación solo hace falta para los
+    /// La explicación en los doce idiomas de los textos. La notación solo hace falta para los
     /// nombres de calidades e intervalos en inglés, que siguen su vocabulario.
     private func explicacionTraducida(_ notacion: Notacion) -> Traduccion {
         typealias TextosDeNotas = ErrorDeLectura.TextosDeNotas
@@ -96,7 +96,7 @@ extension ErrorDeLectura.Motivo {
     }
 }
 
-// Los mensajes de `ErrorDeLectura` al leer las notas, las alteraciones, las octavas y los intervalos, en los quince idiomas de los textos.
+// Los mensajes de `ErrorDeLectura` al leer las notas, las alteraciones, las octavas y los intervalos, en los doce idiomas de los textos.
 
 extension ErrorDeLectura {
     enum TextosDeNotas {

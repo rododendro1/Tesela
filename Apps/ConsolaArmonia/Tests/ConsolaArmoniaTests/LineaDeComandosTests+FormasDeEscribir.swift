@@ -108,7 +108,7 @@ extension LineaDeComandosTests {
     }
 
     @Test func seLeeEnLaNotacionElegida() {
-        #expect(salida("escala re dorian --idioma oc") == salida("escala Re dórico --idioma oc"))
+        #expect(salida("escala re dòric --idioma ca") == salida("escala Re dórico --idioma ca"))
         #expect(salida("acorde B7/D --idioma de") == salida("acorde Sib7/Re --idioma de"))
         #expect(salida("acorde Do7 --idioma de") == salida("acorde C7 --idioma de"))
         #expect(salida("tonalidad B-Dur --idioma de") == salida("tonalidad Sib mayor --idioma de"))

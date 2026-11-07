@@ -90,7 +90,7 @@ import Testing
         #expect(dorico?.description == "modo 2 de Do mayor")
     }
 
-    @Test func enLosQuinceIdiomas() {
+    @Test func enLosDoceIdiomas() {
         let modo = Escala(.re, .dorico).escalaMadre
         for idioma in Idioma.allCases {
             let notacion = Notacion.delIdioma(idioma)

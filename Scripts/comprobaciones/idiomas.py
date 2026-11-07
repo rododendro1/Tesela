@@ -1,4 +1,4 @@
-"""Los quince idiomas del motor, para los scripts: su código ISO 639 y cómo se llaman sus ficheros de textos
+"""Los doce idiomas del motor, para los scripts: su código ISO 639 y cómo se llaman sus ficheros de textos
 (`TextosDeX+Euskera.swift`), en el orden de `Idioma` (Elementos/Notacion/Notacion.swift).
 
 `comprobar()` lee los casos de `Idioma` y los códigos de sus filas en `ReglasDeIdioma` y dice si esta lista
@@ -12,8 +12,8 @@ NOTACION = RAIZ / "Packages/Armonia/Sources/Elementos/Notacion/Notacion.swift"
 REGLAS = RAIZ / "Packages/Armonia/Sources/Elementos/Notacion/ReglasDeIdioma.swift"
 
 # (código, nombre del fichero de textos), en el orden de los casos de `Idioma`.
-IDIOMAS = [("es", "Espanol"), ("en", "Ingles"), ("ca", "Catalan"), ("gl", "Gallego"), ("ast", "Asturiano"),
-           ("an", "Aragones"), ("eu", "Euskera"), ("pt", "Portugues"), ("fr", "Frances"), ("oc", "Occitano"),
+IDIOMAS = [("es", "Espanol"), ("en", "Ingles"), ("ca", "Catalan"), ("gl", "Gallego"),
+           ("eu", "Euskera"), ("pt", "Portugues"), ("fr", "Frances"),
            ("it", "Italiano"), ("de", "Aleman"), ("el", "Griego"), ("ru", "Ruso"),
            ("hu", "Hungaro")]
 

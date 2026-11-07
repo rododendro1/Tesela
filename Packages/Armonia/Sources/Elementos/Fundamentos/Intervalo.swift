@@ -393,7 +393,7 @@ extension Consonancia: Nombrable {}
 
 // MARK: - Idiomas
 //
-// Las calidades de intervalo, los intervalos y las consonancias en los quince idiomas de los textos
+// Las calidades de intervalo, los intervalos y las consonancias en los doce idiomas de los textos
 // (`Notacion.textos`). Las notas y las alteraciones, en `Nota.swift`.
 
 // MARK: - CalidadDeIntervalo
@@ -434,7 +434,7 @@ extension Intervalo {
     public func nombre(en notacion: Notacion) -> String {
         let ordinal = Intervalo.ordinal(numero, en: notacion.textos)
         let calidad = self.calidad.nombre(en: notacion)
-        // El unísono es masculino en francés, occitano e italiano: "unisson augmenté".
+        // El unísono es masculino en francés e italiano: "unisson augmenté".
         let concordada = numero == 1 ? TextosDeElementos.en(notacion, { $0.unisonoEnMasculino(calidad) }) : calidad
         let nombre = TextosDeElementos.en(notacion) { $0.nombreDeIntervalo(concordada, ordinal) }
         return sentido == .descendente ? Intervalo.plantillaDescendente.en(notacion).rellenada(con: nombre) : nombre

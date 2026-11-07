@@ -37,11 +37,11 @@ Packages/
 │                   y el paraguas `Armonia`: notas, acordes, escalas, tonalidad, Tonnetz, MusicXML, MEI, LilyPond, ABC, MIDI, pentagramas en SVG,
 │                   y los mástiles, afinaciones, digitaciones de acordes y escalas por posiciones (guitarra, bajo, ukelele…)
 ├── Interfaz/       Componentes SwiftUI (DiagramaDeMastil, DiagramaDePentagrama, DiagramaDeTonnetz, DiagramaDeRejilla, VistaSVG, tema) y lo que comparten las apps:
-│                   el selector de notación y su ajuste (en el entorno), los textos de la interfaz en quince
+│                   el selector de notación y su ajuste (en el entorno), los textos de la interfaz en doce
 │                   lo que enseña cada vista, el cálculo en segundo plano y el menú para exportar
 ├── Exposicion/     Lo que enseñan las apps y la línea de comandos, sin SwiftUI: el análisis, el coral, la
 │                   transposición, la tablatura, la escucha, los ficheros para exportar y los textos de la
-│                   interfaz en quince idiomas
+│                   interfaz en doce idiomas
 └── Hexagonos/      Rejillas hexagonales: coordenadas axiales, cúbicas, desplazadas y dobladas, vecinos, distancias,
                     líneas, regiones, rotaciones y el paso a píxeles; el motor la usa para el Tonnetz,
                     la tabla armónica y los teclados isomórficos
@@ -51,7 +51,7 @@ Scripts/
 ├── datos/            Los casos que comparten las comprobaciones en Python y las pruebas en Swift (normalizar.tsv)
 └── compilar_todo.sh  Todo, por capas, como el CI
 Config/             Ajustes de compilación de las apps (Local.xcconfig, el de tu equipo, no se guarda en git), su
-                    manifiesto de privacidad (PrivacyInfo.xcprivacy) y sus quince idiomas (Idiomas.plist; cada
+                    manifiesto de privacidad (PrivacyInfo.xcprivacy) y sus doce idiomas (Idiomas.plist; cada
                     app tiene además sus carpetas Idiomas/<idioma>.lproj)
 project.yml         Definición del proyecto de Xcode (XcodeGen)
 Package.swift       Los paquetes juntos, para usarlos desde otro proyecto por URL (generado)
