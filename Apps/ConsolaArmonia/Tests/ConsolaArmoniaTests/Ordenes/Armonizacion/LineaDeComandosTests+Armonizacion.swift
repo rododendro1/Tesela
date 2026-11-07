@@ -82,4 +82,48 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.ejecutar(["contrapunto", "Re4", "Fa4", "/", "La4"]).codigo == 1)
         #expect(salida("ayuda --todo").contains("contrapunto <cantus> / <contrapunto> [--especie 1]"))
     }
+
+    @Test func revisarUnArchivo() throws {
+        let escrito = "Do3 Sol3 Mi4 Do5, Re3 La3 Fa4 Re5"
+        let coral = try Coral(leyendo: escrito)
+        let xml = try fichero(Data(coral.partitura(duracion: .blanca).musicXML().utf8), extension: "musicxml")
+        let midi = try fichero(coral.partitura().midi(), extension: "mid")
+        #expect(conFaltas("revisar --archivo " + xml) == conFaltas("revisar " + escrito))
+        #expect(conFaltas("check --file " + midi) == conFaltas("revisar " + escrito))
+        func resultado(_ orden: String) -> ResultadoDeOrden {
+            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+        }
+        #expect(resultado("revisar --archivo \(xml) --json").codigo == 3)
+        // Un fichero que no se puede leer es un error de lectura; con acordes detrás, de uso.
+        #expect(resultado("revisar --archivo /no/existe.musicxml").codigo == 1)
+        #expect(resultado("revisar --archivo /no/existe.musicxml --json").codigo == 1)
+        #expect(resultado("revisar --archivo \(xml) Do3 Mi4 Sol4 Do5").codigo == 2)
+        #expect(resultado("revisar --archivo").codigo == 2)
+    }
+
+    @Test func proponerUnContrapunto() throws {
+        let cantus = "Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4"
+        let propuesta = salida("contrapunto \(cantus) --proponer")
+        let lineas = propuesta.split(separator: "\n").map(String.init)
+        #expect(lineas.count == 3)
+        #expect(lineas.dropFirst() == ["Especie 1, con el contrapunto encima del cantus firmus", "Sin faltas."])
+        // La propuesta pasa la revisión del contrapunto escrito.
+        let notas = lineas[0].replacingOccurrences(of: "₄", with: "4").replacingOccurrences(of: "₅", with: "5")
+        #expect(salida("contrapunto \(cantus) / \(notas)").hasSuffix("Sin faltas.\n"))
+        #expect(salida("contrapunto \(cantus) --proponer --debajo").contains("debajo del cantus firmus"))
+        #expect(salida("counterpoint \(cantus) --propose --proposals 3 --ingles").hasPrefix("1. "))
+        #expect(salida("contrapunto \(cantus) --proponer --propuestas 3").contains("\n\n3. "))
+        func resultado(_ orden: String) -> ResultadoDeOrden {
+            LineaDeComandos.ejecutar(orden.split(separator: " ").map(String.init))
+        }
+        let json = resultado("contrapunto \(cantus) --proponer --propuestas 2 --json")
+        #expect(json.codigo == 0)
+        #expect(json.salida.contains("\"propuestas\""))
+        #expect(json.salida.contains("\"contrapunto\""))
+        #expect(!resultado("contrapunto \(cantus) / \(notas) --json").salida.contains("\"contrapunto\""))
+        #expect(resultado("contrapunto --proponer").codigo == 2)
+        #expect(resultado("contrapunto \(cantus) / \(notas) --proponer").codigo == 2)
+        #expect(resultado("contrapunto \(cantus) --proponer --propuestas 0").codigo == 2)
+        #expect(salida("ayuda contrapunto").contains("--proponer"))
+    }
 }

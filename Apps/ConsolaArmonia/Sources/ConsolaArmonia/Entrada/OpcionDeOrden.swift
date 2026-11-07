@@ -93,6 +93,7 @@ extension OpcionDeOrden {
     static let conIntervalo = valor("--con-intervalo", "--with-interval")
     static let conPaso = valor("--con-paso", "--with-step")
     static let conduccion = marca("--conduccion", "--voice-leading")
+    static let debajo = marca("--debajo", "--below")
     static let dedos = marca("--dedos", "--fingers")
     static let dedosDeLaDigitacion = valor("--dedos", "--fingers")
     static let desde = valor("--desde", "--from")
@@ -138,6 +139,7 @@ extension OpcionDeOrden {
     /// La digitación de piano de `escala`.
     static let piano = marca("--dedos", "--fingers")
     static let progresiones = marca("--progresiones", "--progressions")
+    static let proponer = marca("--proponer", "--propose")
     static let propuestas = valor("--propuestas", "--proposals")
     static let quintas = marca("--quintas", "--fifths")
     static let regulares = marca("--regulares", "--maximally-even")

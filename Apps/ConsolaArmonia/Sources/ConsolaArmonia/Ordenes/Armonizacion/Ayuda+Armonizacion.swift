@@ -80,7 +80,13 @@ extension LineaDeComandos {
             descripcion: TextosDeConsola.traduccion(\.descripcionRevisar),
             ejemplo: ejemplo(
                 "armonia revisar Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4",
-                "armonia check C3 E4 G4 C5, G2 D4 G4 B4"))
+                "armonia check C3 E4 G4 C5, G2 D4 G4 B4")),
+        // revisar --archivo <fichero>
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisRevisarArchivo),
+            descripcion: TextosDeConsola.traduccion(\.descripcionRevisarArchivo),
+            ejemplo: ejemplo("armonia revisar --archivo coral.musicxml", "armonia check --file chorale.musicxml"),
+            opciones: [.archivo]),
     ]
 
     static let ayudaDeContrapunto: [EntradaDeAyuda] = [
@@ -91,7 +97,15 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia contrapunto Re4 Fa4 Mi4 Re4 / -:2 La4 Re5 La4 Si4 Do#5 Re5:1 --especie 2",
                 "armonia counterpoint D4 F4 E4 D4 / -:2 A4 D5 A4 B4 C#5 D5:1 --species 2"),
-            opciones: [.especie])
+            opciones: [.especie]),
+        // contrapunto <cantus> --proponer [--debajo] [--propuestas 1]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisProponerContrapunto),
+            descripcion: TextosDeConsola.traduccion(\.descripcionProponerContrapunto),
+            ejemplo: ejemplo(
+                "armonia contrapunto Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4 --proponer",
+                "armonia counterpoint D4 F4 E4 D4 G4 F4 A4 G4 F4 E4 D4 --propose"),
+            opciones: [.proponer, .debajo, .propuestas]),
     ]
 
     static let ayudaDeTransponer: [EntradaDeAyuda] = [

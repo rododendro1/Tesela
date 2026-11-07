@@ -21,8 +21,12 @@ struct TextosDeConsola: TextosTraducidos {
     let descripcionRealizar: String
     let sintaxisRevisar: String
     let descripcionRevisar: String
+    let sintaxisRevisarArchivo: String
+    let descripcionRevisarArchivo: String
     let sintaxisContrapunto: String
     let descripcionContrapunto: String
+    let sintaxisProponerContrapunto: String
+    let descripcionProponerContrapunto: String
     let sintaxisTransponer: String
     let descripcionTransponer: String
     let sintaxisRearmonizar: String
@@ -206,6 +210,7 @@ struct TextosDeConsola: TextosTraducidos {
     let archivoNoEscrito: @Sendable (String) -> String
     let archivoConAcordes: String
     let archivoSinAcordes: String
+    let sinContrapuntoPosible: String
     let faltaTransporte: @Sendable (String) -> String
     let faltanAcordesDeLaRearmonizacion: @Sendable (String) -> String
 
