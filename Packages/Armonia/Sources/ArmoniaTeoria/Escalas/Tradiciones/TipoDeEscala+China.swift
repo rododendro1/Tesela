@@ -22,27 +22,27 @@ extension TipoDeEscala {
     public static let gong = TipoDeEscala(
         nombre: "Gōng", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         variantes: ["宫", "宮"],
-        categoria: .diao, afinaciones: [.init(.razones, pasos: [0, 204, 408, 702, 906])], fuente: .guanzi)
+        categoria: .diao, fuente: .guanzi, afinaciones: [.init(.razones, pasos: [0, 204, 408, 702, 906])])
     /// 商: desde el 2.º grado (Re Mi Sol La Do).
     public static let shang = TipoDeEscala(
         nombre: "Shāng", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
         variantes: ["商"],
-        categoria: .diao, afinaciones: [.init(.razones, pasos: [0, 204, 498, 702, 996])], fuente: .guanzi)
+        categoria: .diao, fuente: .guanzi, afinaciones: [.init(.razones, pasos: [0, 204, 498, 702, 996])])
     /// 角: desde el 3.º grado (Mi Sol La Do Re).
     public static let jue = TipoDeEscala(
         nombre: "Jué", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .sextaMenor, .septimaMenor],
         variantes: ["Jiao", "角"],
-        categoria: .diao, afinaciones: [.init(.razones, pasos: [0, 294, 498, 792, 996])], fuente: .guanzi)
+        categoria: .diao, fuente: .guanzi, afinaciones: [.init(.razones, pasos: [0, 294, 498, 792, 996])])
     /// 徵: desde el 5.º grado (Sol La Do Re Mi).
     public static let zhi = TipoDeEscala(
         nombre: "Zhǐ", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         variantes: ["徵", "徴"],
-        categoria: .diao, afinaciones: [.init(.razones, pasos: [0, 204, 498, 702, 906])], fuente: .guanzi)
+        categoria: .diao, fuente: .guanzi, afinaciones: [.init(.razones, pasos: [0, 204, 498, 702, 906])])
     /// 羽: la pentatónica menor (La Do Re Mi Sol).
     public static let yu = TipoDeEscala(
         nombre: "Yǔ", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
         variantes: ["羽"],
-        categoria: .diao, afinaciones: [.init(.razones, pasos: [0, 294, 498, 702, 996])], fuente: .guanzi)
+        categoria: .diao, fuente: .guanzi, afinaciones: [.init(.razones, pasos: [0, 294, 498, 702, 996])])
     /// 清乐, la escala «pura»: gōng con 4.º y 7.º grados (la escala mayor).
     public static let qingyue = TipoDeEscala(
         nombre: "Qīngyuè",
@@ -92,14 +92,13 @@ extension TipoDeEscala {
             .cuartaAumentada, .quintaJusta, .quintaAumentada, .sextaMayor, .sextaAumentada, .septimaMayor,
         ],
         alias: ["doce lü"], variantes: ["十二律"],
-        categoria: .afinacion,
+        categoria: .afinacion, fuente: .lushiChunqiu,
         afinaciones: [
             .init(.razones, pasos: [0, 114, 204, 318, 408, 522, 612, 702, 816, 906, 1020, 1110]),
             .init(
                 .razones, pasos: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100],
                 fuente: "Zhu Zaiyu, 1584"),
-        ],
-        fuente: .lushiChunqiu)
+        ])
     /// 六律, los seis lü yang, de huángzhōng: huángzhōng, tàicù, gūxiǎn, ruíbīn, yízé y wúyì (Do Re Mi Fa♯ Sol♯ La♯).
     public static let yanglu = TipoDeEscala(
         nombre: "Yánglǜ",
