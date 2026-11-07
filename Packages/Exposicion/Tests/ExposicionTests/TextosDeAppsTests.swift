@@ -260,4 +260,21 @@ import Testing
         #expect(Notacion.inglesASCII.cifradoDeEjemplo("Xyz") == "Xyz")
         #expect(Notacion.inglesASCII.alturasDeEjemplo("Mi4 Xyz, Do4") == "E4 Xyz, C4")
     }
+
+    /// Los títulos de los menús de exportar y de las tareas del coral, en cada idioma.
+    @Test func losTitulosDeLosMenus() {
+        #expect(FicheroParaExportar.Formato.musicXML.titulo(en: .espanolCompacto) == "Partitura MusicXML")
+        #expect(FicheroParaExportar.Formato.musicXML.titulo(en: .inglesASCII) == "MusicXML score")
+        #expect(FicheroParaExportar.Formato.midi.titulo(en: .conPalabras(.ruso)) == "MIDI")
+        #expect(PresentacionDeCoral.Tarea.armonizar.titulo(en: .espanolCompacto) == "Armonizar")
+        #expect(PresentacionDeCoral.Tarea.revisar.titulo(en: .inglesASCII) == "Check")
+        for idioma in Idioma.allCases {
+            let notacion = Notacion.delIdioma(idioma)
+            let formatos = FicheroParaExportar.Formato.allCases.map { $0.titulo(en: notacion) }
+            #expect(Set(formatos).count == formatos.count, "\(idioma)")
+            #expect(!formatos.contains(""), "\(idioma)")
+            let tareas = PresentacionDeCoral.Tarea.allCases.map { $0.titulo(en: notacion) }
+            #expect(Set(tareas).count == tareas.count, "\(idioma)")
+        }
+    }
 }
