@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+### Nombres móviles: jianpu, gongche, wǔshēng, carnático, tonic sol-fa y notas de forma
+
+- Seis sistemas móviles más en `SistemaDeNombres`, que cuentan los grados desde la tónica: el jianpu (1 2 3 4 5 6 7,
+  con la alteración delante: ♯4, ♭7), el gongche (上 尺 工 凡 六 五 乙), los cinco tonos chinos con sus dos
+  añadidos (宫 商 角 清角 徵 羽 变宫, y 变徵 y 闰 para Fa♯ y Si♭), el carnático con sus doce svarasthanas (Sa Ri₁ Ri₂
+  Ga₂ Ga₃ Ma₁ Ma₂ Pa Da₁ Da₂ Ni₂ Ni₃; Ri₃ y Ga₁, Da₃ y Ni₁ son la misma altura con otro nombre), el tonic sol-fa
+  (d r m f s l t) y las notas de forma del Sacred Harp (fa sol la fa sol la mi).
+- Las alteraciones con nombre propio se generalizan: el komal y el tivra del sargam y las svarasthanas carnáticas se
+  escriben con su nombre, y se lee también la forma abreviada (R1, G3, N2).
+
 ### Más nombres de nota: japoneses, coreanos, de Guido y los doce lü
 
 - Seis sistemas fijos más en `SistemaDeNombres`: el japonés (ハ ニ ホ ヘ ト イ ロ, con la alteración delante: 嬰ヘ,

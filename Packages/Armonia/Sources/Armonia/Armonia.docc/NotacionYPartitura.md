@@ -181,6 +181,11 @@ en minúscula (re, ga, dha, ni) y el Ma tivra en mayúscula; en japonés y en co
 escritura, transliterado (con IAST en el sargam y pinyin en los lü chinos) o en ASCII (``Grafia``), y se lee en las
 tres.
 
+Son también móviles el jianpu chino (1 2 3 4 5 6 7, con la alteración delante: ♭7), el gongche (上 尺 工 凡 六 五 乙),
+los cinco tonos 宫 商 角 徵 羽 con sus añadidos (清角, 变徵, 闰, 变宫), el carnático con sus svarasthanas (Ri₁ Ri₂ Ri₃,
+Ga₁ Ga₂ Ga₃…, que se leen también abreviadas: R1, G3), el tonic sol-fa (d r m f s l t) y las notas de forma del Sacred
+Harp (fa sol la fa sol la mi).
+
 ```swift
 SistemaDeNombres.bizantino.nombre(de: Nota("Fa#"))                     // "Ga♯"
 SistemaDeNombres.bizantino.nombre(de: Nota("Re"), grafia: .original)   // "Πα"
@@ -193,6 +198,11 @@ SistemaDeNombres.coreano.nombre(de: Nota("Sib"), grafia: .original)    // "내�
 SistemaDeNombres.luChinos.nombre(de: Nota("Reb"))                      // "dàlǚ"
 SistemaDeNombres.luJaponeses.nombre(de: Nota("Re"), grafia: .original) // "壱越"
 try SistemaDeNombres.luCoreanos.leer("黃")                             // Mi♭
+SistemaDeNombres.jianpu.nombre(de: Nota("Fa#"))                        // "♯4"
+SistemaDeNombres.gongche.nombre(de: Nota("Re"))                        // "chě"
+try SistemaDeNombres.wusheng.leer("變徵")                               // Fa♯
+try SistemaDeNombres.carnatico.leer("G2")                              // Mi♭
+SistemaDeNombres.tonicSolFa.nombre(de: Nota("Sib"), tonica: Nota("Fa")) // "f"
 ```
 
 ## Alteraciones

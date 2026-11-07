@@ -15,7 +15,11 @@ import Testing
         #expect(SistemaDeNombres(nombre: "Jūni-ritsu") == .luJaponeses)
         #expect(SistemaDeNombres(nombre: "luChinos") == .luChinos)
         #expect(SistemaDeNombres(nombre: "iroha") == .japones)
-        #expect(SistemaDeNombres.allCases.filter { $0.familia == .movil } == [.sargam])
+        #expect(
+            SistemaDeNombres.allCases.filter { $0.familia == .movil }
+                == [.sargam, .jianpu, .gongche, .wusheng, .carnatico, .tonicSolFa, .notasDeForma])
+        #expect(SistemaDeNombres(nombre: "shape notes") == .notasDeForma)
+        #expect(SistemaDeNombres(nombre: "Tonic sol-fa") == .tonicSolFa)
     }
 
     @Test func japones() throws {
@@ -187,8 +191,75 @@ import Testing
         #expect(throws: ErrorDeLectura.self) { try sargam.leer("Vou") }
     }
 
+    @Test func jianpu() throws {
+        let jianpu = SistemaDeNombres.jianpu
+        let dorico: [Nota] = ["Re", "Mi", "Fa", "Sol", "La", "Si", "Do"]
+        #expect(jianpu.nombres(de: dorico, tonica: Nota("Re")) == ["1", "2", "♭3", "4", "5", "6", "♭7"])
+        #expect(jianpu.nombre(de: Nota("Fa#")) == "♯4")
+        #expect(jianpu.nombre(de: Nota("Fa#"), grafia: .ascii) == "#4")
+        #expect(jianpu.nombre(de: Nota("Sibb"), grafia: .ascii) == "bb7")
+        #expect(try jianpu.leer("b7") == Nota("Sib"))
+        #expect(try jianpu.leer("♯4", tonica: Nota("Sol")) == Nota("Do#"))
+        #expect(try jianpu.leer("4#") == Nota("Fa#"))
+    }
+
+    @Test func gongche() throws {
+        let gongche = SistemaDeNombres.gongche
+        let mayor: [Nota] = ["Sol", "La", "Si", "Do", "Re", "Mi", "Fa#"]
+        #expect(
+            gongche.nombres(de: mayor, tonica: Nota("Sol"), grafia: .original) == ["上", "尺", "工", "凡", "六", "五", "乙"])
+        #expect(gongche.nombre(de: Nota("Re")) == "chě")
+        #expect(try gongche.leer("liu") == Nota("Sol"))
+        #expect(try gongche.leer("凡♯") == Nota("Fa#"))
+    }
+
+    @Test func wusheng() throws {
+        let wusheng = SistemaDeNombres.wusheng
+        let pentatonica: [Nota] = ["Do", "Re", "Mi", "Sol", "La"]
+        #expect(wusheng.nombres(de: pentatonica, grafia: .original) == ["宫", "商", "角", "徵", "羽"])
+        #expect(wusheng.nombres(de: pentatonica) == ["gōng", "shāng", "jué", "zhǐ", "yǔ"])
+        // Las otras cuatro: qīngjué, biànzhǐ, rùn y biàngōng.
+        let otras: [Nota] = ["Fa", "Fa#", "Sib", "Si"]
+        #expect(wusheng.nombres(de: otras, grafia: .original) == ["清角", "变徵", "闰", "变宫"])
+        #expect(wusheng.nombres(de: otras, grafia: .ascii) == ["qingjue", "bianzhi", "run", "biangong"])
+        #expect(try wusheng.leer("zhi", tonica: Nota("Fa")) == Nota("Do"))
+        #expect(try wusheng.leer("變徵") == Nota("Fa#"))
+        #expect(try wusheng.leer("jue") == Nota("Mi"))
+        #expect(try wusheng.leer("qīngjué") == Nota("Fa"))
+    }
+
+    @Test func carnatico() throws {
+        let carnatico = SistemaDeNombres.carnatico
+        let doce: [Nota] = ["Do", "Reb", "Re", "Re#", "Mibb", "Mib", "Mi", "Fa", "Fa#", "Sol", "Lab", "La", "La#"]
+        #expect(
+            carnatico.nombres(de: doce)
+                == ["Sa", "Ri₁", "Ri₂", "Ri₃", "Ga₁", "Ga₂", "Ga₃", "Ma₁", "Ma₂", "Pa", "Da₁", "Da₂", "Da₃"])
+        let septimas: [Nota] = ["Sibb", "Sib", "Si"]
+        #expect(carnatico.nombres(de: septimas, grafia: .ascii) == ["Ni1", "Ni2", "Ni3"])
+        // Ri₂ y Ga₁ suenan igual y se escriben distinto, como Re y Mi𝄫.
+        #expect(try carnatico.leer("Ri2") == Nota("Re"))
+        #expect(try carnatico.leer("Ga₁") == Nota("Mibb"))
+        #expect(try carnatico.leer("G2") == Nota("Mib"))
+        #expect(try carnatico.leer("M2", tonica: Nota("Re")) == Nota("Sol#"))
+        #expect(try carnatico.leer("S") == Nota("Do"))
+    }
+
+    @Test func tonicSolFaYNotasDeForma() throws {
+        let mayor: [Nota] = ["Do", "Re", "Mi", "Fa", "Sol", "La", "Si"]
+        #expect(SistemaDeNombres.tonicSolFa.nombres(de: mayor) == ["d", "r", "m", "f", "s", "l", "t"])
+        #expect(SistemaDeNombres.tonicSolFa.nombre(de: Nota("Sib"), tonica: Nota("Fa"), grafia: .ascii) == "f")
+        #expect(try SistemaDeNombres.tonicSolFa.leer("s", tonica: Nota("Re")) == Nota("La"))
+        let formas = SistemaDeNombres.notasDeForma
+        #expect(formas.nombres(de: mayor) == ["fa", "sol", "la", "fa", "sol", "la", "mi"])
+        // Fa, sol y la nombran dos grados: al leerlos, el más bajo.
+        #expect(try formas.leer("fa") == Nota("Do"))
+        #expect(try formas.leer("la") == Nota("Mi"))
+        #expect(try formas.leer("mi", tonica: Nota("Sol")) == Nota("Fa#"))
+    }
+
     @Test func idaYVuelta() throws {
-        for sistema in SistemaDeNombres.allCases {
+        // Las notas de forma no vuelven: fa, sol y la son dos grados cada una.
+        for sistema in SistemaDeNombres.allCases where sistema != .notasDeForma {
             for grafia in Grafia.allCases {
                 for tonica in [Nota("Do"), Nota("Re"), Nota("Sib")] {
                     for quintas in -14...14 {
