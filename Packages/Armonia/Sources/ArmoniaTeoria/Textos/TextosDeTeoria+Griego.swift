@@ -248,6 +248,7 @@ extension TextosDeTeoria {
         tradicionEuropa: "Ευρωπαϊκή λαϊκή μουσική",
         tradicionVietnam: "Βιετνάμ",
         tradicionBrasil: "Βραζιλία",
+        tradicionRenacimiento: "Αναγέννηση",
         // Subtradicion.swift
         subtradicionCarnatica: "Καρνατική",
         subtradicionIndostanica: "Ινδουστανική",

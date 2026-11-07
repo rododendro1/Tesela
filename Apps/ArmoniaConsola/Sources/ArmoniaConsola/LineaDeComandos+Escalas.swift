@@ -249,6 +249,7 @@ extension LineaDeComandos {
         (.mesopotamia, "mesopotamia", "mesopotamia"), (.africa, "africa", "africa"),
         (.sudesteAsiatico, "sudeste-asiatico", "southeast-asia"), (.gregoriano, "gregoriano", "gregorian"),
         (.europa, "europa", "europe"), (.vietnam, "vietnam", "vietnam"), (.brasil, "brasil", "brazil"),
+        (.renacimiento, "renacimiento", "renaissance"),
     ]
 
     /// Cómo se escribe cada uso en `--uso`, en español y en inglés (se aceptan los dos en cualquier idioma):

@@ -306,7 +306,9 @@ import Testing
             Set(TipoDeEscala.hitzazkiar.equivalentes.map(\.nombre)).isSuperset(of: [
                 "Bhairav", "Māyāmālavagauḷa", "doble armónica", "Ḥijāzkār",
             ]))
-        #expect(TipoDeEscala.menorMelodica.equivalentes.isEmpty)
+        // La menor melódica (sube con 6ª y 7ª mayores, baja como la natural) solo tiene las notas del dórico con
+        // ficta del Renacimiento, que sube con Si y Do♯ y baja con Si♭ y Do.
+        #expect(TipoDeEscala.menorMelodica.equivalentes.map(\.nombre) == ["dórico con ficta"])
         // La búsqueda por índice da lo mismo que antes: los nombres habituales primero.
         #expect((try? TipoDeEscala(leyendo: "Dorian"))?.nombre == "dórico")
         #expect((try? TipoDeEscala(leyendo: "jazz minor"))?.nombre == "menor melódica de jazz")
@@ -925,6 +927,40 @@ import Testing
         #expect(TipoDeEscala.shierLu.nombre(en: ruso) == "Шиэр люй")
         #expect(TipoDeEscala.yinlu.nombre(en: Notacion.espanolCompacto.conTextos(en: .griego)) == "Γινλιου")
         #expect(TipoDeEscala.yanglu.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Yánglǜ")
+    }
+
+    /// Los modos con musica ficta del Renacimiento y la musica recta, en tres mesotónicos.
+    @Test func elRenacimiento() throws {
+        #expect(
+            TipoDeEscala.escalasRenacentistas.map(\.nombre) == [
+                "dórico con ficta", "mixolidio con ficta", "lidio con si bemol", "musica recta",
+            ])
+        #expect(TipoDeEscala.escalasRenacentistas.allSatisfy { $0.tradicion == .renacimiento })
+        #expect(TipoDeEscala.doricoConFicta.afinacionSugerida == .mesotonico)
+        let dorico = Escala(.re, .doricoConFicta)
+        #expect(dorico.notas.map(\.description) == ["Re", "Mi", "Fa", "Sol", "La", "Si", "Do♯"])
+        #expect(
+            dorico.notas(sentido: .descendente).map(\.description) == ["Re", "Mi", "Fa", "Sol", "La", "Si♭", "Do"])
+        #expect(
+            Escala(.do, .musicaRecta).notas.map(\.description) == ["Do", "Re", "Mi", "Fa", "Sol", "La", "Si♭", "Si"])
+        #expect(TipoDeEscala.lidioConSiBemol.intervalos == TipoDeEscala.mayor.intervalos)
+        // Cada afinación, la de su mesotónico: ¼ de coma (Aron), 2/7 (Zarlino) y ⅓ (Salinas), al cent.
+        let temperamentos = [4.0, 3.5, 3.0].map { TemperamentoRegular.mesotonico(fraccionDeComa: $0) }
+        for tipo in TipoDeEscala.escalasRenacentistas {
+            #expect(tipo.afinaciones.map(\.fuente) == [nil, "Zarlino, 1558", "Salinas, 1577"])
+            for (afinacion, temperamento) in zip(tipo.afinaciones, temperamentos) {
+                for sentido in [SentidoDelIntervalo.ascendente, .descendente] {
+                    let pares = zip(afinacion.cents(sentido: sentido), afinacion.intervalos(sentido: sentido))
+                    for (cents, intervalo) in pares {
+                        #expect(abs(cents - temperamento.cents(de: intervalo)) <= 0.5, Comment(rawValue: tipo.nombre))
+                    }
+                }
+            }
+        }
+        // Zarlino numera los doce modos desde Do.
+        #expect((try? TipoDeEscala(leyendo: "modo 1 de Zarlino"))?.nombre == "ionicus")
+        #expect((try? TipoDeEscala(leyendo: "modo 3 de Zarlino"))?.nombre == "protus authenticus")
+        #expect((try? TipoDeEscala(leyendo: "modo 12 de Zarlino"))?.nombre == "hypoaeolius")
     }
 
     /// Las chinas suenan por sanfen sunyi: cada nota, a un número de quintas pitagóricas de gōng.

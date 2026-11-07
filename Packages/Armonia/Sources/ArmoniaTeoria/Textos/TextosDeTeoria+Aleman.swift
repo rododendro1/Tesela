@@ -248,6 +248,7 @@ extension TextosDeTeoria {
         tradicionEuropa: "Europäische Volksmusik",
         tradicionVietnam: "Vietnam",
         tradicionBrasil: "Brasilien",
+        tradicionRenacimiento: "Renaissance",
         // Subtradicion.swift
         subtradicionCarnatica: "Karnatisch",
         subtradicionIndostanica: "Hindustanisch",
