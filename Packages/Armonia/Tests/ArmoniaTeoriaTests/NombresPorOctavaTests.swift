@@ -85,7 +85,7 @@ import Testing
         let bilaval = try #require(Escala(.do, .bilaval).notasMicrotonales())
         #expect(
             bilaval.compactMap { $0.nombreDelSruti() }
-                == ["tīvrā", "chandovatī", "raudrī", "vajrikā", "kṣiti", "sandīpanī", "ugrā"])
+                == ["tīvrā", "chandovatī", "raudrī", "vajrikā", "kṣiti", "ālāpinī", "ugrā"])
         let bayati = try #require(Escala(.re, .bayati).notasMicrotonales())
         #expect(bayati.first?.nombreDelSruti() == nil)
     }
