@@ -129,7 +129,8 @@ import Testing
         // Todos los tipos conocidos tienen nombre propio en cada idioma.
         for (_, nombre) in TipoDeAcorde.nombresConocidos {
             #expect(
-                !(nombre.texto(en: .catalan).isEmpty || nombre.texto(en: .gallego).isEmpty || nombre.texto(en: .euskera).isEmpty),
+                !(nombre.texto(en: .catalan).isEmpty || nombre.texto(en: .gallego).isEmpty
+                    || nombre.texto(en: .euskera).isEmpty),
                 Comment(rawValue: nombre.texto(en: .espanol)))
         }
 

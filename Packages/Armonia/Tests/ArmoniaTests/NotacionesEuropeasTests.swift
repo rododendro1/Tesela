@@ -231,7 +231,8 @@ import Testing
         #expect(Acorde("Do/Re").nombre(en: .conPalabras(.italiano)) == "do maggiore, con il basso in re")
         for (_, nombre) in TipoDeAcorde.nombresConocidos {
             #expect(
-                !(nombre.texto(en: .portugues).isEmpty || nombre.texto(en: .frances).isEmpty || nombre.texto(en: .italiano).isEmpty),
+                !(nombre.texto(en: .portugues).isEmpty || nombre.texto(en: .frances).isEmpty
+                    || nombre.texto(en: .italiano).isEmpty),
                 Comment(rawValue: nombre.texto(en: .espanol)))
         }
 
