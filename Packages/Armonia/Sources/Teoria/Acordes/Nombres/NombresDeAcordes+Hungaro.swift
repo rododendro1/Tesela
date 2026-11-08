@@ -1,0 +1,39 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+// Los nombres de los acordes del catálogo en húngaro. Qué es cada campo, en `NombresDeAcordes.swift`.
+
+extension NombresDeAcordes {
+    static let hungaro = NombresDeAcordes([
+        .init(.mayor, "dúr"),
+        .init(.menor, "moll"),
+        .init(.disminuido, "szűkített"),
+        .init(.aumentado, "bővített"),
+        .init(.sus2, "felfüggesztett szekund"),
+        .init(.sus4, "felfüggesztett kvart"),
+        .init(.potencia, "kvintakkord"),
+        .init(.dominanteSeptima, "domináns szeptimakkord"),
+        .init(.mayorSeptimaMayor, "nagy szeptimakkord"),
+        .init(.menorSeptima, "moll szeptimakkord"),
+        .init(.semidisminuido, "félszűkített szeptimakkord"),
+        .init(.disminuidoSeptima, "szűkített szeptimakkord"),
+        .init(.menorSeptimaMayor, "moll nagy szeptimakkord"),
+        .init(.aumentadoSeptima, "bővített szeptimakkord"),
+        .init(.aumentadoSeptimaMayor, "bővített nagy szeptimakkord"),
+        .init(.sus4Septima, "domináns szeptimakkord felfüggesztett kvarttal"),
+        .init(.mayorSexta, "dúr hozzáadott szexttel"),
+        .init(.menorSexta, "moll hozzáadott szexttel"),
+        .init(.mayorSextaNovena, "dúr hozzáadott szexttel és nónával"),
+        .init(.dominanteNovena, "domináns nónakkord"),
+        .init(.mayorSeptimaMayorNovena, "nagy nónakkord"),
+        .init(.menorSeptimaNovena, "moll nónakkord"),
+        .init(.mayorNovenaAnadida, "dúr hozzáadott nónával"),
+        .init(.dominanteUndecima, "domináns undecimakkord"),
+        .init(.menorSeptimaUndecima, "moll undecimakkord"),
+        .init(.dominanteDecimotercera, "domináns tercdecimakkord"),
+        .init(.menorSeptimaDecimotercera, "moll tercdecimakkord"),
+        .init(.dominanteNovenaMenor, "domináns szeptimakkord kis nónával"),
+        .init(.sextaAumentadaItaliana, "olasz bővített szextakkord"),
+        .init(.sextaAumentadaFrancesa, "francia bővített szextakkord"),
+        .init(.sextaAumentadaAlemana, "német bővített szextakkord"),
+    ])
+}

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Comprueba las traducciones de los textos del motor en los trece idiomas.
 
-Los textos están de dos maneras: en un `Traduccion(…)` con los trece juntos, o en los ficheros por
+Los textos están de tres maneras: en un `Traduccion(…)` con los trece juntos; en los ficheros por
 idioma de cada módulo (`Textos/TextosDeX+Espanol.swift`, `…+Ingles.swift`…), donde cada campo de
-`TextosDeX` tiene su texto en cada fichero. El compilador ya obliga a dar los trece, pero no impide
+`TextosDeX` tiene su texto en cada fichero, y en los nombres de los acordes del catálogo
+(`Acordes/Nombres/NombresDeAcordes+Ingles.swift`…, con el español en la declaración del acorde). El compilador ya obliga a dar los trece, pero no impide
 copiar uno que no toca. Se miran los textos literales (los que se montan con código no se pueden leer
 aquí) y se avisa de cuatro cosas:
 
@@ -106,6 +107,30 @@ def traducciones():
     for (estructura, campo), textos in sorted(por_campo.items()):
         if len(textos) == len(IDIOMAS):
             yield f"{estructura}.{campo}", textos
+    yield from nombres_de_acordes()
+
+
+# Los acordes del catálogo: el español en su declaración (`public static let mayor = AcordeConNombre(nombre: "…"`),
+# y los demás idiomas en una fila de `NombresDeAcordes+Idioma.swift` (`.init(.mayor, "major"`).
+ACORDES = RAIZ / "Packages/Armonia/Sources/Teoria/Acordes"
+_ACORDE = re.compile(r"public static let (\w+) = AcordeConNombre\(\s*nombre: " + _TEXTO)
+_FILA_DE_ACORDE = re.compile(r"^ {8}\.init\(\.(\w+), " + _TEXTO, re.M)
+
+
+def nombres_de_acordes():
+    por_acorde = defaultdict(dict)
+    for fichero in sorted((ACORDES / "Catalogo").glob("*.swift")):
+        for m in _ACORDE.finditer(fichero.read_text(encoding="utf-8")):
+            por_acorde[m.group(1)]["es"] = m.group(2)
+    for fichero in sorted((ACORDES / "Nombres").glob("NombresDeAcordes+*.swift")):
+        idioma = CODIGO_DEL_FICHERO.get(fichero.stem.split("+")[1])
+        if idioma is None:
+            continue
+        for m in _FILA_DE_ACORDE.finditer(fichero.read_text(encoding="utf-8")):
+            por_acorde[m.group(1)].setdefault(idioma, m.group(2))
+    for acorde, textos in sorted(por_acorde.items()):
+        if len(textos) == len(IDIOMAS):
+            yield f"NombresDeAcordes.{acorde}", textos
 
 
 def main() -> int:

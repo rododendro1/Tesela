@@ -1,0 +1,39 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+// Los nombres de los acordes del catálogo en catalán. Qué es cada campo, en `NombresDeAcordes.swift`.
+
+extension NombresDeAcordes {
+    static let catalan = NombresDeAcordes([
+        .init(.mayor, "major"),
+        .init(.menor, "menor"),
+        .init(.disminuido, "disminuït"),
+        .init(.aumentado, "augmentat"),
+        .init(.sus2, "suspès de segona"),
+        .init(.sus4, "suspès de quarta"),
+        .init(.potencia, "quinta (acord de potència)"),
+        .init(.dominanteSeptima, "sèptima de dominant"),
+        .init(.mayorSeptimaMayor, "sèptima major"),
+        .init(.menorSeptima, "menor sèptima"),
+        .init(.semidisminuido, "semidisminuït"),
+        .init(.disminuidoSeptima, "sèptima disminuïda"),
+        .init(.menorSeptimaMayor, "menor amb sèptima major"),
+        .init(.aumentadoSeptima, "augmentat amb sèptima menor"),
+        .init(.aumentadoSeptimaMayor, "augmentat amb sèptima major"),
+        .init(.sus4Septima, "sèptima suspesa"),
+        .init(.mayorSexta, "sexta"),
+        .init(.menorSexta, "menor sexta"),
+        .init(.mayorSextaNovena, "sexta i novena"),
+        .init(.dominanteNovena, "novena de dominant"),
+        .init(.mayorSeptimaMayorNovena, "novena major"),
+        .init(.menorSeptimaNovena, "menor novena"),
+        .init(.mayorNovenaAnadida, "novena afegida"),
+        .init(.dominanteUndecima, "onzena"),
+        .init(.menorSeptimaUndecima, "menor onzena"),
+        .init(.dominanteDecimotercera, "tretzena"),
+        .init(.menorSeptimaDecimotercera, "menor tretzena"),
+        .init(.dominanteNovenaMenor, "sèptima amb novena menor"),
+        .init(.sextaAumentadaItaliana, "sexta augmentada italiana"),
+        .init(.sextaAumentadaFrancesa, "sexta augmentada francesa"),
+        .init(.sextaAumentadaAlemana, "sexta augmentada alemanya"),
+    ])
+}

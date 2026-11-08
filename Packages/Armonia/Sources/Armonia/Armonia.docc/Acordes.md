@@ -60,6 +60,22 @@ Acorde.identificar(notas: ["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.ci
 La francesa también es `Re7(♭5)/La♭`, que sale antes al identificarla; el análisis en una
 tonalidad las reconoce escritas de cualquier forma (véase «Tonalidad»).
 
+## Acordes con nombre
+
+Un ``AcordeConNombre`` es una entrada del catálogo de acordes: un nombre, otros nombres y las notas desde la más
+grave, con su ortografía. A diferencia de `TipoDeAcorde`, que es solo contenido, varios acordes con nombre pueden
+tener el mismo tipo, y uno puede no tener ninguno, si sus notas no se leen por terceras. El catálogo
+(``AcordeConNombre/catalogo``) tiene por ahora los tipos que ya tenían nombre, en los trece idiomas, y de ahí sale el
+nombre de un tipo:
+
+```swift
+AcordeConNombre.dominanteSeptima.nombre                        // "séptima de dominante"
+AcordeConNombre.dominanteSeptima.tipo?.cifrado                 // "7"
+AcordeConNombre.dominanteSeptima.notas(sobre: .sol)            // [Sol, Si, Re, Fa]
+TipoDeAcorde.dominanteSeptima.acordeConNombre == .dominanteSeptima   // true
+AcordeConNombre.sextaAumentadaAlemana.estilos                  // [clasica]
+```
+
 ## Identificación desde alturas (MIDI)
 
 Un teclado o un archivo MIDI solo da alturas. `Acorde.candidatos(midi:)` y

@@ -72,9 +72,10 @@ public struct TipoDeAcorde: Sendable {
     public func cifrado(en notacion: Notacion) -> String { cifrado(estilo: EstiloDeCifrado(notacion: notacion)) }
 
     /// "séptima de dominante", "dominant seventh", "sèptima de dominant", "dominanteko zazpigarrena"
-    /// si es un tipo conocido; si no, "acorde 7(♭9,♯11)", "7(b9,#11) chord", "7(♭9,♯11) akordea"…
+    /// si tiene nombre en el catálogo (`acordeConNombre`); si no, "acorde 7(♭9,♯11)", "7(b9,#11) chord",
+    /// "7(♭9,♯11) akordea"…
     public func nombre(en notacion: Notacion) -> String {
-        if let conocido = TipoDeAcorde.nombresConocidos[pasosDeQuinta] { return conocido.en(notacion) }
+        if let conocido = acordeConNombre { return conocido.nombre(en: notacion) }
         // En inglés, alemán, griego y ruso, el cifrado en el estilo de la notación ("7(b9,#11)").
         let (latino, propio) = (cifrado, cifrado(en: notacion))
         let vacio = cifrado.isEmpty
@@ -179,88 +180,13 @@ public struct TipoDeAcorde: Sendable {
         .mayorNovenaAnadida, .dominanteUndecima, .menorSeptimaUndecima, .dominanteDecimotercera,
     ]
 
-    /// Nombres en los trece idiomas de los textos (`Traduccion`) de los tipos habituales, indexados
-    /// por su conjunto de quintas.
-    /// Se construye sin crear `TipoDeAcorde` para no depender de otras constantes estáticas.
-    package static let nombresConocidos: [Set<Int>: Traduccion] = {
-        let tabla: [([Intervalo], Traduccion)] = [
-            ([.terceraMayor, .quintaJusta], TextosDeTeoria.traduccion(\.tipoMayor)),
-            ([.terceraMenor, .quintaJusta], TextosDeTeoria.traduccion(\.tipoMenor)),
-            ([.terceraMenor, .quintaDisminuida], TextosDeTeoria.traduccion(\.tipoDisminuido)),
-            ([.terceraMayor, .quintaAumentada], TextosDeTeoria.traduccion(\.tipoAumentado)),
-            ([.segundaMayor, .quintaJusta], TextosDeTeoria.traduccion(\.tipoSuspendidoDeSegunda)),
-            ([.cuartaJusta, .quintaJusta], TextosDeTeoria.traduccion(\.tipoSuspendidoDeCuarta)),
-            ([.quintaJusta], TextosDeTeoria.traduccion(\.tipoQuintaAcordeDePotencia)),
-            ([.terceraMayor, .quintaJusta, .septimaMenor], TextosDeTeoria.traduccion(\.tipoSeptimaDeDominante)),
-            ([.terceraMayor, .quintaJusta, .septimaMayor], TextosDeTeoria.traduccion(\.tipoSeptimaMayor)),
-            ([.terceraMenor, .quintaJusta, .septimaMenor], TextosDeTeoria.traduccion(\.tipoMenorSeptima)),
-            ([.terceraMenor, .quintaDisminuida, .septimaMenor], TextosDeTeoria.traduccion(\.tipoSemidisminuido)),
-            (
-                [.terceraMenor, .quintaDisminuida, .septimaDisminuida],
-                TextosDeTeoria.traduccion(\.tipoSeptimaDisminuida)
-            ),
-            ([.terceraMenor, .quintaJusta, .septimaMayor], TextosDeTeoria.traduccion(\.tipoMenorConSeptimaMayor)),
-            (
-                [.terceraMayor, .quintaAumentada, .septimaMenor],
-                TextosDeTeoria.traduccion(\.tipoAumentadoConSeptimaMenor)
-            ),
-            (
-                [.terceraMayor, .quintaAumentada, .septimaMayor],
-                TextosDeTeoria.traduccion(\.tipoAumentadoConSeptimaMayor)
-            ),
-            ([.cuartaJusta, .quintaJusta, .septimaMenor], TextosDeTeoria.traduccion(\.tipoSeptimaSuspendida)),
-            ([.terceraMayor, .quintaJusta, .sextaMayor], TextosDeTeoria.traduccion(\.tipoSexta)),
-            ([.terceraMenor, .quintaJusta, .sextaMayor], TextosDeTeoria.traduccion(\.tipoMenorSexta)),
-            (
-                [.terceraMayor, .quintaJusta, .sextaMayor, .segundaMayor],
-                TextosDeTeoria.traduccion(\.tipoSextaYNovena)
-            ),
-            (
-                [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor],
-                TextosDeTeoria.traduccion(\.tipoNovenaDeDominante)
-            ),
-            (
-                [.terceraMayor, .quintaJusta, .septimaMayor, .segundaMayor],
-                TextosDeTeoria.traduccion(\.tipoNovenaMayor)
-            ),
-            (
-                [.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor],
-                TextosDeTeoria.traduccion(\.tipoMenorNovena)
-            ),
-            ([.terceraMayor, .quintaJusta, .segundaMayor], TextosDeTeoria.traduccion(\.tipoNovenaAnadida)),
-            (
-                [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta],
-                TextosDeTeoria.traduccion(\.tipoUndecima)
-            ),
-            (
-                [.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta],
-                TextosDeTeoria.traduccion(\.tipoMenorUndecima)
-            ),
-            (
-                [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMayor, .sextaMayor],
-                TextosDeTeoria.traduccion(\.tipoDecimotercera)
-            ),
-            (
-                [.terceraMenor, .quintaJusta, .septimaMenor, .segundaMayor, .cuartaJusta, .sextaMayor],
-                TextosDeTeoria.traduccion(\.tipoMenorDecimotercera)
-            ),
-            (
-                [.terceraMayor, .quintaJusta, .septimaMenor, .segundaMenor],
-                TextosDeTeoria.traduccion(\.tipoSeptimaConNovenaMenor)
-            ),
-            ([.terceraMayor, .sextaAumentada], TextosDeTeoria.traduccion(\.tipoSextaAumentadaItaliana)),
-            (
-                [.terceraMayor, .cuartaAumentada, .sextaAumentada],
-                TextosDeTeoria.traduccion(\.tipoSextaAumentadaFrancesa)
-            ),
-            (
-                [.terceraMayor, .quintaJusta, .sextaAumentada],
-                TextosDeTeoria.traduccion(\.tipoSextaAumentadaAlemana)
-            ),
-        ]
-        var diccionario: [Set<Int>: Traduccion] = [:]
-        for (intervalos, nombre) in tabla {
-            diccionario[Set(intervalos.map(\.pasosDeQuinta)).union([0])] = nombre
+    /// Los tipos con nombre, indexados por su conjunto de quintas: el primer acorde de `AcordeConNombre.catalogo` con
+    /// esas notas. Se construye con los pasos de quinta del acorde, sin crear `TipoDeAcorde`, para no depender de
+    /// otras constantes estáticas.
+    package static let nombresConocidos: [Set<Int>: AcordeConNombre] = {
+        var diccionario: [Set<Int>: AcordeConNombre] = [:]
+        for acorde in AcordeConNombre.catalogo where diccionario[acorde.pasosDeQuinta] == nil {
+            diccionario[acorde.pasosDeQuinta] = acorde
         }
         return diccionario
     }()

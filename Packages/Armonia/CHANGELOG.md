@@ -13,7 +13,12 @@
   no está en 4/4 lleva ahora el compás delante.
 - La documentación de `RepresentableComoTexto` explica por qué `Escala` tiene su propio `Codable` (un modo sin nombre
   no se puede volver a leer de su texto) y por qué `Arpegio` no lo cumple.
-
+- `AcordeConNombre`, el principio del catálogo de acordes: un nombre, sus alias y variantes, las notas desde la más
+  grave con su ortografía (`intervalos`, `notas(sobre:)`), su tipo por terceras si lo tiene (`tipo`), sus estilos y sus
+  referencias. `AcordeConNombre.catalogo` tiene los 31 tipos que ya tenían nombre (la tríada mayor, la séptima de
+  dominante, las sextas aumentadas…), y `TipoDeAcorde.acordeConNombre` da el de un tipo. Los nombres no cambian.
+- Los nombres de los tipos de acorde pasan de `TextosDeTeoria` a `Acordes/Nombres/`, un fichero por idioma, como los
+  de las escalas. `comprobar_traducciones.py` también los revisa.
 - En la consola, las órdenes y las opciones se leen con tildes o sin ellas, todas: `armonia cuadrícula`,
   `--estadísticas`, `--límite`, `--tríadas`, `--inglés`… (antes solo unas pocas, como `--compás` o `--patrón`). Los
   errores dicen la opción como se escribió.

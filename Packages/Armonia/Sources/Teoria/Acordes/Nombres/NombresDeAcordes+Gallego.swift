@@ -1,0 +1,39 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+// Los nombres de los acordes del catálogo en gallego. Qué es cada campo, en `NombresDeAcordes.swift`.
+
+extension NombresDeAcordes {
+    static let gallego = NombresDeAcordes([
+        .init(.mayor, "maior"),
+        .init(.menor, "menor"),
+        .init(.disminuido, "diminuído"),
+        .init(.aumentado, "aumentado"),
+        .init(.sus2, "suspendido de segunda"),
+        .init(.sus4, "suspendido de cuarta"),
+        .init(.potencia, "quinta (acorde de potencia)"),
+        .init(.dominanteSeptima, "sétima de dominante"),
+        .init(.mayorSeptimaMayor, "sétima maior"),
+        .init(.menorSeptima, "menor sétima"),
+        .init(.semidisminuido, "semidiminuído"),
+        .init(.disminuidoSeptima, "sétima diminuída"),
+        .init(.menorSeptimaMayor, "menor con sétima maior"),
+        .init(.aumentadoSeptima, "aumentado con sétima menor"),
+        .init(.aumentadoSeptimaMayor, "aumentado con sétima maior"),
+        .init(.sus4Septima, "sétima suspendida"),
+        .init(.mayorSexta, "sexta"),
+        .init(.menorSexta, "menor sexta"),
+        .init(.mayorSextaNovena, "sexta e novena"),
+        .init(.dominanteNovena, "novena de dominante"),
+        .init(.mayorSeptimaMayorNovena, "novena maior"),
+        .init(.menorSeptimaNovena, "menor novena"),
+        .init(.mayorNovenaAnadida, "novena engadida"),
+        .init(.dominanteUndecima, "undécima"),
+        .init(.menorSeptimaUndecima, "menor undécima"),
+        .init(.dominanteDecimotercera, "décimo terceira"),
+        .init(.menorSeptimaDecimotercera, "menor décimo terceira"),
+        .init(.dominanteNovenaMenor, "sétima con novena menor"),
+        .init(.sextaAumentadaItaliana, "sexta aumentada italiana"),
+        .init(.sextaAumentadaFrancesa, "sexta aumentada francesa"),
+        .init(.sextaAumentadaAlemana, "sexta aumentada alemá"),
+    ])
+}
