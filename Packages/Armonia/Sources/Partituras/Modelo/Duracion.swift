@@ -301,7 +301,7 @@ extension Duracion {
         let figura = escritura.figura.nombre(en: notacion)
         let puntillos = escritura.puntillos
         guard puntillos > 0 else { return figura }
-        return Duracion.conPuntillos.en(notacion)[puntillos - 1].rellenada(con: figura)
+        return Duracion.conPuntillos.en(notacion)[puntillos - 1](figura)
     }
 }
 

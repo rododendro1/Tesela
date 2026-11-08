@@ -8,7 +8,7 @@ extension TextosDePolifonia {
         // Coral.swift
         entreLasVoces: { nombres in "mellan " + nombres.joined(separator: " och ") },
         enLaVoz: { primera in "i \(primera)" },
-        enLosAcordes: { pasos in "(ackord \(pasos))" },
+        enLosAcordes: "(ackord {1})",
         enElAcorde: { acorde in "(ackord \(acorde + 1))" },
         quintasParalelas: "Kvintparalleller",
         octavasParalelas: "Oktavparalleller",
@@ -23,14 +23,14 @@ extension TextosDePolifonia {
         vozTenor: "tenor",
         vozContralto: "alt",
         vozSoprano: "sopran",
-        vozNumero: { numero in "stämma \(numero)" },
+        vozNumero: "stämma {1}",
 
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["genomgångston", "växelton", "fri förhållning", "förhållning", "föregripning", "échappée", "orgelpunkt", "fri dissonans"],
 
         // Contrapunto.swift
-        enElCompas: { n in "(takt \(n))" },
-        enLosCompases: { pasos in "(takter \(pasos))" },
+        enElCompas: "(takt {1})",
+        enLosCompases: "(takter {1})",
         ritmoDeLaEspecie: "Rytmen passar inte arten",
         comienzoImperfecto: "Början utan fullkomlig konsonans",
         finalImperfecto: "Slut utan prim eller oktav",
@@ -41,10 +41,10 @@ extension TextosDePolifonia {
         unisono: "Prim mitt i satsen",
         saltoSinCompensar: "Okompenserat språng",
         notaRepetida: "Tonupprepning",
-        especieConElContrapuntoEncima: { n in "Art \(n), kontrapunkt över cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Art \(n), kontrapunkt under cantus firmus" },
-        contrapuntoAVariasVoces: { n in "\(n)-stämmig kontrapunkt" },
-        vozDelContrapunto: { n in "stämma \(n)" },
+        especieConElContrapuntoEncima: "Art {1}, kontrapunkt över cantus firmus",
+        especieConElContrapuntoDebajo: "Art {1}, kontrapunkt under cantus firmus",
+        contrapuntoAVariasVoces: "{1}-stämmig kontrapunkt",
+        vozDelContrapunto: "stämma {1}",
         sinFaltas: "Inga fel."
     )
 }

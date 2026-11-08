@@ -11,7 +11,7 @@ extension TextosDeDiagramas {
 
         // DibujoSVG.swift
         conjunto: "Ensemble ",
-        cicloDesde: { nombre, cifrado in "\(nombre) depuis \(cifrado)" },
+        cicloDesde: "{1} depuis {2}",
         primeraClase: "première classe",
         primeraNota: "première note",
         leyendaNota: "note",
@@ -42,10 +42,10 @@ extension TextosDeDiagramas {
         cuadriculaEnOctavas: "Grille en octaves",
         cuadriculaSecuencial: "Grille séquentielle",
         // FormatoUIL.swift
-        uilNoValido: { texto in "UIL non valide : « \(texto) ». On attend L,G,D;R<degrés>[M], par exemple 2,7,5;R30M." },
-        intervalosIncoherentes: { menor, mayor, diferencia in "Intervalles incohérents : \(menor),\(mayor),\(diferencia). Ils doivent vérifier 0 < L ≤ D et G = L + D." },
-        giroNoValido: { grados in "Une rotation de \(grados)° n'est pas un multiple de 30°." },
-        afinacionNoSoportada: { tonos in "Seuls les claviers à 12 notes se dessinent, pas à \(tonos)." },
-        cizallaNoSoportada: { cizalla in "Le cisaillement S\(cizalla) n'est pas pris en charge." }
+        uilNoValido: "UIL non valide : « {1} ». On attend L,G,D;R<degrés>[M], par exemple 2,7,5;R30M.",
+        intervalosIncoherentes: "Intervalles incohérents : {1},{2},{3}. Ils doivent vérifier 0 < L ≤ D et G = L + D.",
+        giroNoValido: "Une rotation de {1}° n'est pas un multiple de 30°.",
+        afinacionNoSoportada: "Seuls les claviers à 12 notes se dessinent, pas à {1}.",
+        cizallaNoSoportada: "Le cisaillement S{1} n'est pas pris en charge."
     )
 }

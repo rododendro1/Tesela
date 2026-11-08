@@ -17,10 +17,10 @@ extension TextosDeTeoria {
         afinacionJusta: "ren stämning",
 
         // Acorde.swift
-        conBajoEn: { acorde, bajo in "\(acorde), med \(bajo) i basen" },
+        conBajoEn: "{1}, med {2} i basen",
         nombresDeLasInversiones: ["grundläge", "första omvändningen", "andra omvändningen", "tredje omvändningen",
                                   "fjärde omvändningen", "femte omvändningen", "sjätte omvändningen"],
-        inversionConNumero: "_:e omvändningen",
+        inversionConNumero: "{1}:e omvändningen",
 
         // CicloNeorriemanniano.swift
         cicloHexatonico: "hexatonisk cykel",
@@ -104,7 +104,7 @@ extension TextosDeTeoria {
         funcionDominante: "dominant",
 
         // Cadencia.swift
-        cadenciaEnLosAcordes: { pasos in "ackord \(pasos)" },
+        cadenciaEnLosAcordes: "ackord {1}",
         cadenciaAutentica: "autentisk kadens",
         cadenciaPlagal: "plagal kadens",
         cadenciaRota: "bedräglig kadens",
@@ -117,7 +117,7 @@ extension TextosDeTeoria {
         pivote: "pivåackord",
         directa: " (direkt)",
         // Arpegio.swift
-        arpegioDe: { acorde in "Arpeggio: \(acorde)" },
+        arpegioDe: "Arpeggio: {1}",
         patronAscendente: "uppåt",
         patronDescendente: "nedåt",
         patronIdaYVuelta: "upp och ned",
@@ -153,39 +153,39 @@ extension TextosDeTeoria {
         secuenciaTriadas: "i treklanger",
         secuenciaCuatriadas: "i fyrklanger",
         // ErrorDeLecturaDeTeoria.swift (acordes)
-        simboloNoReconocido: { simbolo in "”\(simbolo)” hör inte till något känt ackordsymbol" },
-        tensionNoValida: { tension in "”\(tension)” är ingen giltig spänningston (♭/♯ går med 5, 9, 11 och 13, add med 2, 4, 6, 9, 11 och 13)" },
-        numeroDeAcordeNoValido: { numero in "”\(numero)” är inget ackordnummer (5, 6, 7, 9, 11 eller 13)" },
-        numeroRepetido: { numero in "”\(numero)” står efter ett annat nummer; fler tillägg skrivs inom parentes, som i 7(9)" },
+        simboloNoReconocido: "”{1}” hör inte till något känt ackordsymbol",
+        tensionNoValida: "”{1}” är ingen giltig spänningston (♭/♯ går med 5, 9, 11 och 13, add med 2, 4, 6, 9, 11 och 13)",
+        numeroDeAcordeNoValido: "”{1}” är inget ackordnummer (5, 6, 7, 9, 11 eller 13)",
+        numeroRepetido: "”{1}” står efter ett annat nummer; fler tillägg skrivs inom parentes, som i 7(9)",
         disminuidoYSemidisminuido: "förminskad (°) och halvförminskad (ø) kan inte kombineras",
         quintaConCalidad: "powerackordet (5) har ingen ters och tillåter därför varken m, °, ø eller +",
         fundamentalNoOmitible: "grundtonen kan inte utelämnas",
-        gradoNoOmitible: { grado in "”omit\(grado)” är ogiltigt (3, 5, 7, 9, 11 och 13 kan utelämnas)" },
+        gradoNoOmitible: "”omit{1}” är ogiltigt (3, 5, 7, 9, 11 och 13 kan utelämnas)",
         faltaLaFundamental: "grundtonen saknas",
         intervaloSinPapel: { intervalo, notacion in "den \(intervalo.nombre(en: .conPalabras(.sueco))) har ingen funktion i ett tersackord" },
         terceraMayorYMenor: "det har både en stor och en liten ters (♯9 skrivs som överstigande nona, inte som liten ters)",
         variasSeptimas: "det har mer än en septima",
         septimaDisminuidaFueraDelDisminuido: "den förminskade septiman finns bara i det förminskade ackordet (med liten ters och förminskad kvint)",
         noEsPorTerceras: "det är inget tersackord",
-        bajoNoValido: { bajo in "”\(bajo)” är inget tonnamn för basen" },
-        idiomasMezclados: { nombre in "”\(nombre)” är skrivet på ett annat språk än grundtonen: antingen allt med stavelser (Sol7/Si) eller allt med bokstäver (G7/B)" },
+        bajoNoValido: "”{1}” är inget tonnamn för basen",
+        idiomasMezclados: "”{1}” är skrivet på ett annat språk än grundtonen: antingen allt med stavelser (Sol7/Si) eller allt med bokstäver (G7/B)",
         // ErrorDeLecturaDeTeoria.swift (escalas)
-        modoNoReconocido: { nombre in "”\(nombre)” är inget tonsläkte: en tonart är dur eller moll (använd Escala för de andra modusarna)" },
+        modoNoReconocido: "”{1}” är inget tonsläkte: en tonart är dur eller moll (använd Escala för de andra modusarna)",
         faltaElTipoDeEscala: "skalans typ saknas (dur, dorisk, harmonisk moll…)",
-        tipoDeEscalaNoReconocido: { nombre in "”\(nombre)” är ingen känd skaltyp" },
+        tipoDeEscalaNoReconocido: "”{1}” är ingen känd skaltyp",
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "alla ackord måste ha lika många stämmor, minst två",
         vocesDeDistintaLongitud: "alla stämmor måste ha lika många toner",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
-        nombreNoReconocido: { n, o in "”\(n)” är inget av dessa: \(o)" },
-        numeroFueraDeRango: { t, d, h in "”\(t)” är inget tal från \(d) till \(h)" },
-        trasteNoValido: { t, u in "”\(t)” är inget band: x (dämpad sträng) eller ett tal från 0 till \(u) väntades" },
-        cuerdasDistintas: { e, l in "var och en av de \(e) strängarna behöver ett band (eller x), och det finns \(l)" },
+        nombreNoReconocido: "”{1}” är inget av dessa: {2}",
+        numeroFueraDeRango: "”{1}” är inget tal från {2} till {3}",
+        trasteNoValido: "”{1}” är inget band: x (dämpad sträng) eller ett tal från 0 till {2} väntades",
+        cuerdasDistintas: "var och en av de {1} strängarna behöver ett band (eller x), och det finns {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
-        cifradoRomanoNoValido: { cifrado in "”\(cifrado)” är ingen stegbeteckning: en romersk siffra från I till VII med sin kvalitet och sina siffror (V7, ii65, ♭VI, vii°7/V)" },
-        destinoNoTonicalizable: { destino in "”\(destino)” kan inte stå efter snedstrecket: det måste vara en dur- eller molltreklang i grundläge (V/V, vii°7/ii)" },
-        cifrasNoValidas: { cifras in "”\(cifras)” är ingen generalbas: siffror från 1 till 9 med högst ett förtecken (6, 64, 7, ♯6, 4+)" },
-        cifrasSinAcorde: { cifras in "siffrorna ”\(cifras)” ger inget ackord över den här basen" },
+        cifradoRomanoNoValido: "”{1}” är ingen stegbeteckning: en romersk siffra från I till VII med sin kvalitet och sina siffror (V7, ii65, ♭VI, vii°7/V)",
+        destinoNoTonicalizable: "”{1}” kan inte stå efter snedstrecket: det måste vara en dur- eller molltreklang i grundläge (V/V, vii°7/ii)",
+        cifrasNoValidas: "”{1}” är ingen generalbas: siffror från 1 till 9 med högst ett förtecken (6, 64, 7, ♯6, 4+)",
+        cifrasSinAcorde: "siffrorna ”{1}” ger inget ackord över den här basen",
         // UsoDeEscala.swift
         usoClasica: "klassisk",
         usoJazz: "jazz",
@@ -266,7 +266,7 @@ extension TextosDeTeoria {
         fuenteLushiChunqiu: "Lüshi chunqiu",
         fuenteVicentino: "Vicentino",
         // Gramática (Acorde.swift, Tonalidad.swift)
-        acordeSobre: { tipo, raiz in "\(tipo) på \(raiz)" },
+        acordeSobre: "{1} på {2}",
         enLaTonalidad: { tonalidad in "i " + tonalidad }
     )
 }

@@ -14,7 +14,7 @@ extension TextosDeFormatos {
         musicXMLComprimido: "Сжатый MusicXML (.mxl) повреждён или не читается: экспортируйте его без сжатия (.musicxml).",
         midiDanado: "Файл MIDI повреждён или обрезан.",
         midiConTiempoSMPTE: "Файл MIDI считает время в кадрах SMPTE, а не в тиках на четверть.",
-        xmlDanado: { linea in "Файл XML повреждён (строка \(linea))." },
+        xmlDanado: "Файл XML повреждён (строка {1}).",
         noEsMusicXMLPorPartes: "XML не является ни партитурой MusicXML по партиям (score-partwise), ни MEI.",
         sinNotas: "В файле нет ни одной ноты.",
         sinAcordes: "В файле не звучит ни одного аккорда."

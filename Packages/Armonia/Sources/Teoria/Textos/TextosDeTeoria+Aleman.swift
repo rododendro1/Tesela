@@ -17,10 +17,10 @@ extension TextosDeTeoria {
         afinacionJusta: "reine Stimmung",
 
         // Acorde.swift
-        conBajoEn: { acorde, bajo in "\(acorde), mit \(bajo) im Bass" },
+        conBajoEn: "{1}, mit {2} im Bass",
         nombresDeLasInversiones: ["Grundstellung", "erste Umkehrung", "zweite Umkehrung", "dritte Umkehrung",
                                   "vierte Umkehrung", "fünfte Umkehrung", "sechste Umkehrung"],
-        inversionConNumero: "_. Umkehrung",
+        inversionConNumero: "{1}. Umkehrung",
 
         // CicloNeorriemanniano.swift
         cicloHexatonico: "hexatonischer Zyklus",
@@ -104,7 +104,7 @@ extension TextosDeTeoria {
         funcionDominante: "Dominante",
 
         // Cadencia.swift
-        cadenciaEnLosAcordes: { pasos in "Akkorde \(pasos)" },
+        cadenciaEnLosAcordes: "Akkorde {1}",
         cadenciaAutentica: "authentischer Schluss",
         cadenciaPlagal: "plagaler Schluss",
         cadenciaRota: "Trugschluss",
@@ -117,7 +117,7 @@ extension TextosDeTeoria {
         pivote: "Drehakkord",
         directa: " (direkt)",
         // Arpegio.swift
-        arpegioDe: { acorde in "Arpeggio: \(acorde)" },
+        arpegioDe: "Arpeggio: {1}",
         patronAscendente: "aufwärts",
         patronDescendente: "abwärts",
         patronIdaYVuelta: "auf und ab",
@@ -150,39 +150,39 @@ extension TextosDeTeoria {
         secuenciaTriadas: "in Dreiklängen",
         secuenciaCuatriadas: "in Vierklängen",
         // ErrorDeLecturaDeTeoria.swift (acordes)
-        simboloNoReconocido: { simbolo in "„\(simbolo)“ gehört zu keinem bekannten Akkordsymbol" },
-        tensionNoValida: { tension in "„\(tension)“ ist keine gültige Tension (♭/♯ gehen mit 5, 9, 11 und 13, add mit 2, 4, 6, 9, 11 und 13)" },
-        numeroDeAcordeNoValido: { numero in "„\(numero)“ ist keine Akkordzahl (5, 6, 7, 9, 11 oder 13)" },
-        numeroRepetido: { numero in "„\(numero)“ steht nach einer anderen Zahl; weitere Optionen kommen in Klammern, wie in 7(9)" },
+        simboloNoReconocido: "„{1}“ gehört zu keinem bekannten Akkordsymbol",
+        tensionNoValida: "„{1}“ ist keine gültige Tension (♭/♯ gehen mit 5, 9, 11 und 13, add mit 2, 4, 6, 9, 11 und 13)",
+        numeroDeAcordeNoValido: "„{1}“ ist keine Akkordzahl (5, 6, 7, 9, 11 oder 13)",
+        numeroRepetido: "„{1}“ steht nach einer anderen Zahl; weitere Optionen kommen in Klammern, wie in 7(9)",
         disminuidoYSemidisminuido: "vermindert (°) und halbvermindert (ø) lassen sich nicht kombinieren",
         quintaConCalidad: "der Powerchord (5) hat keine Terz und erlaubt daher weder m noch °, ø oder +",
         fundamentalNoOmitible: "der Grundton kann nicht weggelassen werden",
-        gradoNoOmitible: { grado in "„omit\(grado)“ ist ungültig (weglassen lassen sich 3, 5, 7, 9, 11 und 13)" },
+        gradoNoOmitible: "„omit{1}“ ist ungültig (weglassen lassen sich 3, 5, 7, 9, 11 und 13)",
         faltaLaFundamental: "der Grundton fehlt",
         intervaloSinPapel: { intervalo, notacion in "die \(intervalo.nombre(en: .conPalabras(.aleman))) hat in einem Terzakkord keine Funktion" },
         terceraMayorYMenor: "er hat zugleich eine große und eine kleine Terz (♯9 wird als übermäßige None geschrieben, nicht als kleine Terz)",
         variasSeptimas: "er hat mehr als eine Septime",
         septimaDisminuidaFueraDelDisminuido: "die verminderte Septime kommt nur im verminderten Akkord vor (mit kleiner Terz und verminderter Quinte)",
         noEsPorTerceras: "es ist kein Terzakkord",
-        bajoNoValido: { bajo in "„\(bajo)“ ist kein Notenname für den Bass" },
-        idiomasMezclados: { nombre in "„\(nombre)“ ist in einer anderen Sprache geschrieben als der Grundton: entweder alles mit Silben (Sol7/Si) oder alles mit Buchstaben (G7/B)" },
+        bajoNoValido: "„{1}“ ist kein Notenname für den Bass",
+        idiomasMezclados: "„{1}“ ist in einer anderen Sprache geschrieben als der Grundton: entweder alles mit Silben (Sol7/Si) oder alles mit Buchstaben (G7/B)",
         // ErrorDeLecturaDeTeoria.swift (escalas)
-        modoNoReconocido: { nombre in "„\(nombre)“ ist kein Tongeschlecht: eine Tonart ist Dur oder Moll (für die anderen Modi nimm Escala)" },
+        modoNoReconocido: "„{1}“ ist kein Tongeschlecht: eine Tonart ist Dur oder Moll (für die anderen Modi nimm Escala)",
         faltaElTipoDeEscala: "die Skalenart fehlt (Dur, dorisch, harmonisch Moll…)",
-        tipoDeEscalaNoReconocido: { nombre in "„\(nombre)“ ist keine bekannte Skalenart" },
+        tipoDeEscalaNoReconocido: "„{1}“ ist keine bekannte Skalenart",
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "alle Akkorde müssen gleich viele Stimmen haben, mindestens zwei",
         vocesDeDistintaLongitud: "alle Stimmen müssen gleich viele Töne haben",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
-        nombreNoReconocido: { n, o in "„\(n)“ ist keiner von diesen: \(o)" },
-        numeroFueraDeRango: { t, d, h in "„\(t)“ ist keine Zahl von \(d) bis \(h)" },
-        trasteNoValido: { t, u in "„\(t)“ ist kein Bund: erlaubt sind x (gedämpfte Saite) oder eine Zahl von 0 bis \(u)" },
-        cuerdasDistintas: { e, l in "für jede der \(e) Saiten braucht es einen Bund (oder x), und es sind \(l)" },
+        nombreNoReconocido: "„{1}“ ist keiner von diesen: {2}",
+        numeroFueraDeRango: "„{1}“ ist keine Zahl von {2} bis {3}",
+        trasteNoValido: "„{1}“ ist kein Bund: erlaubt sind x (gedämpfte Saite) oder eine Zahl von 0 bis {2}",
+        cuerdasDistintas: "für jede der {1} Saiten braucht es einen Bund (oder x), und es sind {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
-        cifradoRomanoNoValido: { cifrado in "„\(cifrado)“ ist keine Stufenbezeichnung: eine römische Zahl von I bis VII mit ihrer Qualität und ihren Ziffern (V7, ii65, ♭VI, vii°7/V)" },
-        destinoNoTonicalizable: { destino in "„\(destino)“ kann nicht nach dem Schrägstrich stehen: Es muss ein Dur- oder Molldreiklang in Grundstellung sein (V/V, vii°7/ii)" },
-        cifrasNoValidas: { cifras in "„\(cifras)“ ist kein Generalbass: Zahlen von 1 bis 9 mit höchstens einem Vorzeichen (6, 64, 7, ♯6, 4+)" },
-        cifrasSinAcorde: { cifras in "die Ziffern „\(cifras)“ ergeben über diesem Bass keinen Akkord" },
+        cifradoRomanoNoValido: "„{1}“ ist keine Stufenbezeichnung: eine römische Zahl von I bis VII mit ihrer Qualität und ihren Ziffern (V7, ii65, ♭VI, vii°7/V)",
+        destinoNoTonicalizable: "„{1}“ kann nicht nach dem Schrägstrich stehen: Es muss ein Dur- oder Molldreiklang in Grundstellung sein (V/V, vii°7/ii)",
+        cifrasNoValidas: "„{1}“ ist kein Generalbass: Zahlen von 1 bis 9 mit höchstens einem Vorzeichen (6, 64, 7, ♯6, 4+)",
+        cifrasSinAcorde: "die Ziffern „{1}“ ergeben über diesem Bass keinen Akkord",
         // UsoDeEscala.swift
         usoClasica: "klassisch",
         usoJazz: "Jazz",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         fuenteLushiChunqiu: "Lüshi chunqiu",
         fuenteVicentino: "Vicentino",
         // Gramática (Acorde.swift, Tonalidad.swift)
-        acordeSobre: { tipo, raiz in "\(tipo) auf \(raiz)" },
+        acordeSobre: "{1} auf {2}",
         enLaTonalidad: { tonalidad in "in " + tonalidad }
     )
 }

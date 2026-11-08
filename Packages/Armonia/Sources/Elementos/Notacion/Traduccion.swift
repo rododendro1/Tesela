@@ -173,12 +173,6 @@ extension Traducido: Sendable where Valor: Sendable {}
 public typealias Traduccion = Traducido<String>
 
 extension String {
-    /// Una plantilla de texto con `_` en el sitio de un valor: `"inversión _".rellenada(con: "7")` es
-    /// "inversión 7". Sirve para que el valor vaya delante o detrás según el idioma.
-    package func rellenada(con valor: String) -> String {
-        split(separator: "_", omittingEmptySubsequences: false).joined(separator: valor)
-    }
-
     /// El texto con el artículo húngaro delante: «az» si empieza por vocal o por una cifra que se lee con vocal
     /// (1 egy, 5 öt, 1000 ezer), y «a» si no: «a basszus», «az alt», «az 5. szólam», «a 3. szólam».
     package var conArticuloHungaro: String {

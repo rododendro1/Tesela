@@ -10,7 +10,7 @@ extension TextosDeDiagramas {
 
         // DibujoSVG.swift
         conjunto: "Multzoa ",
-        cicloDesde: { nombre, cifrado in "\(nombre) \(cifrado)-tik" },
+        cicloDesde: "{1} {2}-tik",
         primeraClase: "lehen klasea",
         primeraNota: "lehen nota",
         leyendaNota: "nota",
@@ -41,10 +41,10 @@ extension TextosDeDiagramas {
         cuadriculaEnOctavas: "Laukisarea zortziduretan",
         cuadriculaSecuencial: "Laukisare sekuentziala",
         // FormatoUIL.swift
-        uilNoValido: { texto in "UIL baliogabea: «\(texto)». L,G,D;R<graduak>[M] espero da, adibidez 2,7,5;R30M." },
-        intervalosIncoherentes: { menor, mayor, diferencia in "Tarte koherentegabeak: \(menor),\(mayor),\(diferencia). 0 < L ≤ D eta G = L + D bete behar dituzte." },
-        giroNoValido: { grados in "\(grados)°-ko biraketa ez da 30°-ren multiploa." },
-        afinacionNoSoportada: { tonos in "12 notako teklatuak bakarrik marrazten dira, ez \(tonos) notakoak." },
-        cizallaNoSoportada: { cizalla in "S\(cizalla) ebakidura ez dago onartuta." }
+        uilNoValido: "UIL baliogabea: «{1}». L,G,D;R<graduak>[M] espero da, adibidez 2,7,5;R30M.",
+        intervalosIncoherentes: "Tarte koherentegabeak: {1},{2},{3}. 0 < L ≤ D eta G = L + D bete behar dituzte.",
+        giroNoValido: "{1}°-ko biraketa ez da 30°-ren multiploa.",
+        afinacionNoSoportada: "12 notako teklatuak bakarrik marrazten dira, ez {1} notakoak.",
+        cizallaNoSoportada: "S{1} ebakidura ez dago onartuta."
     )
 }

@@ -16,8 +16,8 @@ extension TextosDePartituras {
         semifusa: "sixty-fourth note",
         garrapatea: "hundred twenty-eighth note",
         cero: "zero",
-        fraccionDeRedonda: { fraccion in "\(fraccion) of a whole note" },
-        conPuntillos: ["dotted _", "double-dotted _", "triple-dotted _", "quadruple-dotted _"],
+        fraccionDeRedonda: "{1} of a whole note",
+        conPuntillos: ["dotted {1}", "double-dotted {1}", "triple-dotted {1}", "quadruple-dotted {1}"],
 
         // Pentagrama.swift
         claveDeSol: "treble clef",
@@ -62,8 +62,8 @@ extension TextosDePartituras {
         instrumentoGlockenspiel: "glockenspiel",
         instrumentoCelesta: "celesta",
         // ErrorDeLecturaDePartitura.swift
-        duracionNoValida: { texto in "\"\(texto)\" is not a duration: expected a note value (1, 2, 4, 8, 16…, dotted: 4.) or a fraction of a whole note (3/8, 1/12)" },
-        compasNoValido: { texto in "\"\(texto)\" is not a time signature: expected numerator/denominator with a power-of-2 denominator (4/4, 6/8, 7/8), C or ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "the counterpoint must last as long as the cantus firmus: \(redondas) whole notes, one per note" }
+        duracionNoValida: "\"{1}\" is not a duration: expected a note value (1, 2, 4, 8, 16…, dotted: 4.) or a fraction of a whole note (3/8, 1/12)",
+        compasNoValido: "\"{1}\" is not a time signature: expected numerator/denominator with a power-of-2 denominator (4/4, 6/8, 7/8), C or ¢",
+        contrapuntoDeOtraDuracion: "the counterpoint must last as long as the cantus firmus: {1} whole notes, one per note"
     )
 }

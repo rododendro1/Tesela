@@ -12,7 +12,7 @@ struct TextosDePolifonia: TextosTraducidos {
     // MARK: Coral.swift
     let entreLasVoces: @Sendable ([String]) -> String
     let enLaVoz: @Sendable (String) -> String
-    let enLosAcordes: @Sendable (String) -> String
+    let enLosAcordes: Plantilla  // {1} pasos
     let enElAcorde: @Sendable (Int) -> String
     let quintasParalelas: String
     let octavasParalelas: String
@@ -27,7 +27,7 @@ struct TextosDePolifonia: TextosTraducidos {
     let vozTenor: String
     let vozContralto: String
     let vozSoprano: String
-    let vozNumero: @Sendable (Int) -> String
+    let vozNumero: Plantilla  // {1} numero
 
     // MARK: NotaExtrana.swift
     /// En el orden de `NotaExtrana.allCases`: nota de paso, bordadura, apoyatura, retardo, anticipación, escapada,
@@ -35,8 +35,8 @@ struct TextosDePolifonia: TextosTraducidos {
     let nombresDeNotasExtranas: [String]
 
     // MARK: Contrapunto.swift
-    let enElCompas: @Sendable (Int) -> String
-    let enLosCompases: @Sendable (String) -> String
+    let enElCompas: Plantilla  // {1} n
+    let enLosCompases: Plantilla  // {1} pasos
     let ritmoDeLaEspecie: String
     let comienzoImperfecto: String
     let finalImperfecto: String
@@ -47,12 +47,12 @@ struct TextosDePolifonia: TextosTraducidos {
     let unisono: String
     let saltoSinCompensar: String
     let notaRepetida: String
-    let especieConElContrapuntoEncima: @Sendable (Int) -> String
-    let especieConElContrapuntoDebajo: @Sendable (Int) -> String
+    let especieConElContrapuntoEncima: Plantilla  // {1} n
+    let especieConElContrapuntoDebajo: Plantilla  // {1} n
     /// La cabecera del informe de `ContrapuntoAVariasVoces`, con cuántas voces suenan (con el cantus).
-    let contrapuntoAVariasVoces: @Sendable (Int) -> String
+    let contrapuntoAVariasVoces: Plantilla  // {1} n
     /// Una voz de `ContrapuntoAVariasVoces`, contada desde 1 (el cantus firmus se nombra aparte).
-    let vozDelContrapunto: @Sendable (Int) -> String
+    let vozDelContrapunto: Plantilla  // {1} n
     let sinFaltas: String
 
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su

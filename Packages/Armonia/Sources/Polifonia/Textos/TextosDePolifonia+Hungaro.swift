@@ -8,7 +8,7 @@ extension TextosDePolifonia {
         // Coral.swift
         entreLasVoces: { nombres in nombres.map(\.conArticuloHungaro).joined(separator: " és ") + " között" },
         enLaVoz: { primera in primera.conArticuloHungaro + "ban" },
-        enLosAcordes: { pasos in "(akkordok: \(pasos))" },
+        enLosAcordes: "(akkordok: {1})",
         enElAcorde: { acorde in "(\(acorde + 1). akkord)" },
         quintasParalelas: "Párhuzamos kvintek",
         octavasParalelas: "Párhuzamos oktávok",
@@ -23,14 +23,14 @@ extension TextosDePolifonia {
         vozTenor: "tenor",
         vozContralto: "alt",
         vozSoprano: "szoprán",
-        vozNumero: { numero in "\(numero). szólam" },
+        vozNumero: "{1}. szólam",
 
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["átmenőhang", "váltóhang", "appoggiatura", "késleltetés", "anticipáció", "szökőhang", "orgonapont", "szabad hang"],
 
         // Contrapunto.swift
-        enElCompas: { n in "(\(n). ütem)" },
-        enLosCompases: { pasos in "(ütemek: \(pasos))" },
+        enElCompas: "({1}. ütem)",
+        enLosCompases: "(ütemek: {1})",
         ritmoDeLaEspecie: "A fajtától eltérő ritmus",
         comienzoImperfecto: "Kezdés tökéletes konszonancia nélkül",
         finalImperfecto: "Befejezés prím vagy oktáv nélkül",
@@ -41,10 +41,10 @@ extension TextosDePolifonia {
         unisono: "Prím a darab közepén",
         saltoSinCompensar: "Kiegyenlítetlen ugrás",
         notaRepetida: "Ismételt hang",
-        especieConElContrapuntoEncima: { n in "\(n). fajta, ellenpont a cantus firmus fölött" },
-        especieConElContrapuntoDebajo: { n in "\(n). fajta, ellenpont a cantus firmus alatt" },
-        contrapuntoAVariasVoces: { n in "\(n) szólamú ellenpont" },
-        vozDelContrapunto: { n in "\(n). szólam" },
+        especieConElContrapuntoEncima: "{1}. fajta, ellenpont a cantus firmus fölött",
+        especieConElContrapuntoDebajo: "{1}. fajta, ellenpont a cantus firmus alatt",
+        contrapuntoAVariasVoces: "{1} szólamú ellenpont",
+        vozDelContrapunto: "{1}. szólam",
         sinFaltas: "Nincs hiba."
     )
 }

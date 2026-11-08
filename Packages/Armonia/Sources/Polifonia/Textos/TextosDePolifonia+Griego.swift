@@ -8,7 +8,7 @@ extension TextosDePolifonia {
         // Coral.swift
         entreLasVoces: { nombres in "— " + nombres.joined(separator: " και ") },
         enLaVoz: { primera in "— \(primera)" },
-        enLosAcordes: { pasos in "(συγχορδίες \(pasos))" },
+        enLosAcordes: "(συγχορδίες {1})",
         enElAcorde: { acorde in "(συγχορδία \(acorde + 1))" },
         quintasParalelas: "Παράλληλες πέμπτες",
         octavasParalelas: "Παράλληλες οκτάβες",
@@ -23,14 +23,14 @@ extension TextosDePolifonia {
         vozTenor: "τενόρος",
         vozContralto: "άλτο",
         vozSoprano: "σοπράνο",
-        vozNumero: { numero in "φωνή \(numero)" },
+        vozNumero: "φωνή {1}",
 
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["διαβατική νότα", "γειτονική νότα", "αποτζιατούρα", "καθυστέρηση", "πρόληψη", "νότα διαφυγής", "νότα πεντάλ", "ελεύθερη νότα"],
 
         // Contrapunto.swift
-        enElCompas: { n in "(μέτρο \(n))" },
-        enLosCompases: { pasos in "(μέτρα \(pasos))" },
+        enElCompas: "(μέτρο {1})",
+        enLosCompases: "(μέτρα {1})",
         ritmoDeLaEspecie: "Ρυθμός ξένος προς το είδος",
         comienzoImperfecto: "Αρχή χωρίς τέλεια συνήχηση",
         finalImperfecto: "Τέλος χωρίς ταυτοφωνία ή οκτάβα",
@@ -41,10 +41,10 @@ extension TextosDePolifonia {
         unisono: "Ταυτοφωνία στη μέση της άσκησης",
         saltoSinCompensar: "Πήδημα χωρίς αντιστάθμιση",
         notaRepetida: "Επαναλαμβανόμενη νότα",
-        especieConElContrapuntoEncima: { n in "Είδος \(n), αντίστιξη πάνω από το cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Είδος \(n), αντίστιξη κάτω από το cantus firmus" },
-        contrapuntoAVariasVoces: { n in "Αντίστιξη \(n) φωνών" },
-        vozDelContrapunto: { n in "φωνή \(n)" },
+        especieConElContrapuntoEncima: "Είδος {1}, αντίστιξη πάνω από το cantus firmus",
+        especieConElContrapuntoDebajo: "Είδος {1}, αντίστιξη κάτω από το cantus firmus",
+        contrapuntoAVariasVoces: "Αντίστιξη {1} φωνών",
+        vozDelContrapunto: "φωνή {1}",
         sinFaltas: "Χωρίς λάθη."
     )
 }

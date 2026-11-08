@@ -14,7 +14,7 @@ struct TextosDeDiagramas: TextosTraducidos {
 
     // MARK: DibujoSVG.swift
     let conjunto: String
-    let cicloDesde: @Sendable (String, String) -> String
+    let cicloDesde: Plantilla  // {1} nombre, {2} cifrado
     let primeraClase: String
     let primeraNota: String
     let leyendaNota: String
@@ -47,11 +47,11 @@ struct TextosDeDiagramas: TextosTraducidos {
     let cuadriculaSecuencial: String
 
     // MARK: FormatoUIL.swift
-    let uilNoValido: @Sendable (_ texto: String) -> String
-    let intervalosIncoherentes: @Sendable (_ menor: Int, _ mayor: Int, _ diferencia: Int) -> String
-    let giroNoValido: @Sendable (_ grados: Int) -> String
-    let afinacionNoSoportada: @Sendable (_ tonos: Int) -> String
-    let cizallaNoSoportada: @Sendable (_ cizalla: Int) -> String
+    let uilNoValido: Plantilla  // {1} texto
+    let intervalosIncoherentes: Plantilla  // {1} menor, {2} mayor, {3} diferencia
+    let giroNoValido: Plantilla  // {1} grados
+    let afinacionNoSoportada: Plantilla  // {1} tonos
+    let cizallaNoSoportada: Plantilla  // {1} cizalla
 
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.

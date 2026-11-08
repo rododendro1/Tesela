@@ -17,10 +17,10 @@ extension TextosDeTeoria {
         afinacionJusta: "tiszta hangolás",
 
         // Acorde.swift
-        conBajoEn: { acorde, bajo in "\(acorde), \(bajo) a basszusban" },
+        conBajoEn: "{1}, {2} a basszusban",
         nombresDeLasInversiones: ["alaphelyzet", "első fordítás", "második fordítás", "harmadik fordítás",
                                   "negyedik fordítás", "ötödik fordítás", "hatodik fordítás"],
-        inversionConNumero: "_. fordítás",
+        inversionConNumero: "{1}. fordítás",
 
         // CicloNeorriemanniano.swift
         cicloHexatonico: "hexatonikus ciklus",
@@ -104,7 +104,7 @@ extension TextosDeTeoria {
         funcionDominante: "domináns",
 
         // Cadencia.swift
-        cadenciaEnLosAcordes: { pasos in "akkordok: \(pasos)" },
+        cadenciaEnLosAcordes: "akkordok: {1}",
         cadenciaAutentica: "autentikus zárlat",
         cadenciaPlagal: "plagális zárlat",
         cadenciaRota: "megszakított zárlat",
@@ -117,7 +117,7 @@ extension TextosDeTeoria {
         pivote: "közvetítő akkord",
         directa: " (közvetlen)",
         // Arpegio.swift
-        arpegioDe: { acorde in "\(acorde) akkordfelbontás" },
+        arpegioDe: "{1} akkordfelbontás",
         patronAscendente: "felfelé",
         patronDescendente: "lefelé",
         patronIdaYVuelta: "fel és le",
@@ -150,39 +150,39 @@ extension TextosDeTeoria {
         secuenciaTriadas: "hármashangzatokban",
         secuenciaCuatriadas: "négyeshangzatokban",
         // ErrorDeLecturaDeTeoria.swift (acordes)
-        simboloNoReconocido: { simbolo in "„\(simbolo)” nem ismert akkordjelzés része" },
-        tensionNoValida: { tension in "„\(tension)” nem érvényes feszültséghang (a ♭ és a ♯ az 5, 9, 11 és 13 mellé, az add a 2, 4, 6, 9, 11 és 13 mellé kerülhet)" },
-        numeroDeAcordeNoValido: { numero in "„\(numero)” nem akkordszám (5, 6, 7, 9, 11 vagy 13)" },
-        numeroRepetido: { numero in "„\(numero)” egy másik szám után áll; a további hangok zárójelbe kerülnek, mint a 7(9)-ben" },
+        simboloNoReconocido: "„{1}” nem ismert akkordjelzés része",
+        tensionNoValida: "„{1}” nem érvényes feszültséghang (a ♭ és a ♯ az 5, 9, 11 és 13 mellé, az add a 2, 4, 6, 9, 11 és 13 mellé kerülhet)",
+        numeroDeAcordeNoValido: "„{1}” nem akkordszám (5, 6, 7, 9, 11 vagy 13)",
+        numeroRepetido: "„{1}” egy másik szám után áll; a további hangok zárójelbe kerülnek, mint a 7(9)-ben",
         disminuidoYSemidisminuido: "a szűkített (°) és a félszűkített (ø) nem kombinálható",
         quintaConCalidad: "a kvintakkordnak (5) nincs terce, ezért nem kaphat m, °, ø vagy + jelet",
         fundamentalNoOmitible: "az alaphang nem hagyható el",
-        gradoNoOmitible: { grado in "„omit\(grado)” érvénytelen (a 3, 5, 7, 9, 11 és 13 hagyható el)" },
+        gradoNoOmitible: "„omit{1}” érvénytelen (a 3, 5, 7, 9, 11 és 13 hagyható el)",
         faltaLaFundamental: "hiányzik az alaphang",
         intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: notacion).conArticuloHungaro) nem tölt be szerepet egy tercépítkezésű akkordban" },
         terceraMayorYMenor: "egyszerre van benne nagy és kis terc (a ♯9 bővített nónaként íródik, nem kis tercként)",
         variasSeptimas: "egynél több szeptim van benne",
         septimaDisminuidaFueraDelDisminuido: "a szűkített szeptim csak a szűkített akkordban fordul elő (kis terccel és szűkített kvinttel)",
         noEsPorTerceras: "nem tercépítkezésű akkord",
-        bajoNoValido: { bajo in "„\(bajo)” nem hangnév a basszus számára" },
-        idiomasMezclados: { nombre in "„\(nombre)” más nyelven van írva, mint az alaphang: vagy minden szótagokkal (Sol7/Si), vagy minden betűkkel (G7/B)" },
+        bajoNoValido: "„{1}” nem hangnév a basszus számára",
+        idiomasMezclados: "„{1}” más nyelven van írva, mint az alaphang: vagy minden szótagokkal (Sol7/Si), vagy minden betűkkel (G7/B)",
         // ErrorDeLecturaDeTeoria.swift (escalas)
-        modoNoReconocido: { nombre in "„\(nombre)” nem hangnemi mód: a hangnem dúr vagy moll (a többi módhoz használd az Escala típust)" },
+        modoNoReconocido: "„{1}” nem hangnemi mód: a hangnem dúr vagy moll (a többi módhoz használd az Escala típust)",
         faltaElTipoDeEscala: "hiányzik a skála típusa (dúr, dór, összhangzatos moll…)",
-        tipoDeEscalaNoReconocido: { nombre in "„\(nombre)” nem ismert skálatípus" },
+        tipoDeEscalaNoReconocido: "„{1}” nem ismert skálatípus",
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "minden akkordnak ugyanannyi szólamból kell állnia, legalább kettőből",
         vocesDeDistintaLongitud: "minden szólamnak ugyanannyi hangból kell állnia",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
-        nombreNoReconocido: { n, o in "„\(n)” egyik sem ezek közül: \(o)" },
-        numeroFueraDeRango: { t, d, h in "„\(t)” nem \(d) és \(h) közötti szám" },
-        trasteNoValido: { t, u in "„\(t)” nem bund: x (tompított húr) vagy 0 és \(u) közötti szám kell" },
-        cuerdasDistintas: { e, l in "mind a \(e) húrhoz kell egy bund (vagy x), és \(l) van" },
+        nombreNoReconocido: "„{1}” egyik sem ezek közül: {2}",
+        numeroFueraDeRango: "„{1}” nem {2} és {3} közötti szám",
+        trasteNoValido: "„{1}” nem bund: x (tompított húr) vagy 0 és {2} közötti szám kell",
+        cuerdasDistintas: "mind a {1} húrhoz kell egy bund (vagy x), és {2} van",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
-        cifradoRomanoNoValido: { cifrado in "„\(cifrado)” nem fokjelzés: egy római szám I-től VII-ig, a minőségével és a számaival (V7, ii65, ♭VI, vii°7/V)" },
-        destinoNoTonicalizable: { destino in "„\(destino)” nem állhat a perjel után: dúr vagy moll alaphelyzetű hármashangzatnak kell lennie (V/V, vii°7/ii)" },
-        cifrasNoValidas: { cifras in "„\(cifras)” nem számozott basszus: számok 1-től 9-ig, mindegyik legfeljebb egy módosítójellel (6, 64, 7, ♯6, 4+)" },
-        cifrasSinAcorde: { cifras in "a(z) „\(cifras)” számok ezen a basszuson nem adnak akkordot" },
+        cifradoRomanoNoValido: "„{1}” nem fokjelzés: egy római szám I-től VII-ig, a minőségével és a számaival (V7, ii65, ♭VI, vii°7/V)",
+        destinoNoTonicalizable: "„{1}” nem állhat a perjel után: dúr vagy moll alaphelyzetű hármashangzatnak kell lennie (V/V, vii°7/ii)",
+        cifrasNoValidas: "„{1}” nem számozott basszus: számok 1-től 9-ig, mindegyik legfeljebb egy módosítójellel (6, 64, 7, ♯6, 4+)",
+        cifrasSinAcorde: "a(z) „{1}” számok ezen a basszuson nem adnak akkordot",
         // UsoDeEscala.swift
         usoClasica: "klasszikus",
         usoJazz: "jazz",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         fuenteLushiChunqiu: "Lü-si csun-csiu",
         fuenteVicentino: "Vicentino",
         // Gramática (Acorde.swift, Tonalidad.swift)
-        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        acordeSobre: "{2} {1}",
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).
         enLaTonalidad: { tonalidad in tonalidad + "ban" }
     )

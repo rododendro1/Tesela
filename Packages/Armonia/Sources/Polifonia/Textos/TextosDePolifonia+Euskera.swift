@@ -8,7 +8,7 @@ extension TextosDePolifonia {
         // Coral.swift
         entreLasVoces: { nombres in nombres.joined(separator: " eta ") },
         enLaVoz: { primera in primera },
-        enLosAcordes: { pasos in "(\(pasos) akordeak)" },
+        enLosAcordes: "({1} akordeak)",
         enElAcorde: { acorde in "(\(acorde + 1). akordea)" },
         quintasParalelas: "Bosgarren paraleloak",
         octavasParalelas: "Zortzidun paraleloak",
@@ -23,14 +23,14 @@ extension TextosDePolifonia {
         vozTenor: "tenorra",
         vozContralto: "altua",
         vozSoprano: "sopranoa",
-        vozNumero: { numero in "\(numero). ahotsa" },
+        vozNumero: "{1}. ahotsa",
 
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["igarotze-nota", "brodadura", "apoiatura", "atzerapena", "aurrerapena", "ihes-nota", "pedal-nota", "nota askea"],
 
         // Contrapunto.swift
-        enElCompas: { n in "(\(n). konpasa)" },
-        enLosCompases: { pasos in "(\(pasos) konpasak)" },
+        enElCompas: "({1}. konpasa)",
+        enLosCompases: "({1} konpasak)",
         ritmoDeLaEspecie: "Espeziez kanpoko erritmoa",
         comienzoImperfecto: "Hasiera kontsonantzia perfekturik gabe",
         finalImperfecto: "Amaiera unisonorik eta zortzidunik gabe",
@@ -41,10 +41,10 @@ extension TextosDePolifonia {
         unisono: "Unisonoa ariketaren erdian",
         saltoSinCompensar: "Konpentsatu gabeko jauzia",
         notaRepetida: "Nota errepikatua",
-        especieConElContrapuntoEncima: { n in "\(n). espeziea, kontrapuntua cantus firmusaren gainean" },
-        especieConElContrapuntoDebajo: { n in "\(n). espeziea, kontrapuntua cantus firmusaren azpian" },
-        contrapuntoAVariasVoces: { n in "\(n) ahotseko kontrapuntua" },
-        vozDelContrapunto: { n in "\(n). ahotsa" },
+        especieConElContrapuntoEncima: "{1}. espeziea, kontrapuntua cantus firmusaren gainean",
+        especieConElContrapuntoDebajo: "{1}. espeziea, kontrapuntua cantus firmusaren azpian",
+        contrapuntoAVariasVoces: "{1} ahotseko kontrapuntua",
+        vozDelContrapunto: "{1}. ahotsa",
         sinFaltas: "Akatsik gabe."
     )
 }

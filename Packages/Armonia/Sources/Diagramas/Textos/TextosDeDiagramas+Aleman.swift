@@ -11,7 +11,7 @@ extension TextosDeDiagramas {
 
         // DibujoSVG.swift
         conjunto: "Menge ",
-        cicloDesde: { nombre, cifrado in "\(nombre) ab \(cifrado)" },
+        cicloDesde: "{1} ab {2}",
         primeraClase: "erste Tonklasse",
         primeraNota: "erste Note",
         leyendaNota: "Note",
@@ -42,10 +42,10 @@ extension TextosDeDiagramas {
         cuadriculaEnOctavas: "Oktavraster",
         cuadriculaSecuencial: "Sequenzielles Raster",
         // FormatoUIL.swift
-        uilNoValido: { texto in "Ungültiges UIL: „\(texto)“. Erwartet wird L,G,D;R<Grad>[M], zum Beispiel 2,7,5;R30M." },
-        intervalosIncoherentes: { menor, mayor, diferencia in "Widersprüchliche Intervalle: \(menor),\(mayor),\(diferencia). Es muss 0 < L ≤ D und G = L + D gelten." },
-        giroNoValido: { grados in "Eine Drehung um \(grados)° ist kein Vielfaches von 30°." },
-        afinacionNoSoportada: { tonos in "Es lassen sich nur Tastaturen mit 12 Tönen zeichnen, nicht mit \(tonos)." },
-        cizallaNoSoportada: { cizalla in "Die Scherung S\(cizalla) wird nicht unterstützt." }
+        uilNoValido: "Ungültiges UIL: „{1}“. Erwartet wird L,G,D;R<Grad>[M], zum Beispiel 2,7,5;R30M.",
+        intervalosIncoherentes: "Widersprüchliche Intervalle: {1},{2},{3}. Es muss 0 < L ≤ D und G = L + D gelten.",
+        giroNoValido: "Eine Drehung um {1}° ist kein Vielfaches von 30°.",
+        afinacionNoSoportada: "Es lassen sich nur Tastaturen mit 12 Tönen zeichnen, nicht mit {1}.",
+        cizallaNoSoportada: "Die Scherung S{1} wird nicht unterstützt."
     )
 }

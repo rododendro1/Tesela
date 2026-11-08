@@ -17,10 +17,10 @@ extension TextosDeTeoria {
         afinacionJusta: "φυσικό κούρδισμα",
 
         // Acorde.swift
-        conBajoEn: { acorde, bajo in "\(acorde), με μπάσο το \(bajo)" },
+        conBajoEn: "{1}, με μπάσο το {2}",
         nombresDeLasInversiones: ["θεμελιώδης κατάσταση", "πρώτη αναστροφή", "δεύτερη αναστροφή", "τρίτη αναστροφή",
                                   "τέταρτη αναστροφή", "πέμπτη αναστροφή", "έκτη αναστροφή"],
-        inversionConNumero: "αναστροφή _",
+        inversionConNumero: "αναστροφή {1}",
 
         // CicloNeorriemanniano.swift
         cicloHexatonico: "εξατονικός κύκλος",
@@ -104,7 +104,7 @@ extension TextosDeTeoria {
         funcionDominante: "δεσπόζουσα",
 
         // Cadencia.swift
-        cadenciaEnLosAcordes: { pasos in "συγχορδίες \(pasos)" },
+        cadenciaEnLosAcordes: "συγχορδίες {1}",
         cadenciaAutentica: "αυθεντική πτώση",
         cadenciaPlagal: "πλάγια πτώση",
         cadenciaRota: "απατηλή πτώση",
@@ -117,7 +117,7 @@ extension TextosDeTeoria {
         pivote: "κοινή συγχορδία",
         directa: " (άμεση)",
         // Arpegio.swift
-        arpegioDe: { acorde in "Αρπέζ \(acorde)" },
+        arpegioDe: "Αρπέζ {1}",
         patronAscendente: "ανιούσα",
         patronDescendente: "κατιούσα",
         patronIdaYVuelta: "πάνω-κάτω",
@@ -150,39 +150,39 @@ extension TextosDeTeoria {
         secuenciaTriadas: "σε τρίφωνα",
         secuenciaCuatriadas: "σε τετράφωνα",
         // ErrorDeLecturaDeTeoria.swift (acordes)
-        simboloNoReconocido: { simbolo in "το «\(simbolo)» δεν ανήκει σε κανένα γνωστό σύμβολο συγχορδίας" },
-        tensionNoValida: { tension in "το «\(tension)» δεν είναι έγκυρη τάση (τα ♭/♯ μπαίνουν με 5, 9, 11 και 13, και το add με 2, 4, 6, 9, 11 και 13)" },
-        numeroDeAcordeNoValido: { numero in "το «\(numero)» δεν είναι αριθμός συγχορδίας (5, 6, 7, 9, 11 ή 13)" },
-        numeroRepetido: { numero in "το «\(numero)» έρχεται μετά από άλλον αριθμό· οι πρόσθετες τάσεις μπαίνουν σε παρένθεση, όπως στο 7(9)" },
+        simboloNoReconocido: "το «{1}» δεν ανήκει σε κανένα γνωστό σύμβολο συγχορδίας",
+        tensionNoValida: "το «{1}» δεν είναι έγκυρη τάση (τα ♭/♯ μπαίνουν με 5, 9, 11 και 13, και το add με 2, 4, 6, 9, 11 και 13)",
+        numeroDeAcordeNoValido: "το «{1}» δεν είναι αριθμός συγχορδίας (5, 6, 7, 9, 11 ή 13)",
+        numeroRepetido: "το «{1}» έρχεται μετά από άλλον αριθμό· οι πρόσθετες τάσεις μπαίνουν σε παρένθεση, όπως στο 7(9)",
         disminuidoYSemidisminuido: "το ελαττωμένο (°) και το ημιελαττωμένο (ø) δεν συνδυάζονται",
         quintaConCalidad: "η συγχορδία πέμπτης (5) δεν έχει τρίτη, οπότε δεν δέχεται m, °, ø ή +",
         fundamentalNoOmitible: "η θεμέλια δεν μπορεί να παραλειφθεί",
-        gradoNoOmitible: { grado in "το «omit\(grado)» δεν είναι έγκυρο (παραλείπονται μόνο τα 3, 5, 7, 9, 11 και 13)" },
+        gradoNoOmitible: "το «omit{1}» δεν είναι έγκυρο (παραλείπονται μόνο τα 3, 5, 7, 9, 11 και 13)",
         faltaLaFundamental: "λείπει η θεμέλια",
         intervaloSinPapel: { intervalo, notacion in "η \(intervalo.nombre(en: .conPalabras(.griego))) δεν έχει ρόλο σε συγχορδία κατά τρίτες" },
         terceraMayorYMenor: "έχει ταυτόχρονα μεγάλη και μικρή τρίτη (η ♯9 γράφεται ως αυξημένη ένατη, όχι ως μικρή τρίτη)",
         variasSeptimas: "έχει περισσότερες από μία έβδομες",
         septimaDisminuidaFueraDelDisminuido: "η ελαττωμένη έβδομη εμφανίζεται μόνο στην ελαττωμένη συγχορδία (με μικρή τρίτη και ελαττωμένη πέμπτη)",
         noEsPorTerceras: "δεν είναι συγχορδία κατά τρίτες",
-        bajoNoValido: { bajo in "το «\(bajo)» δεν είναι όνομα νότας για το μπάσο" },
-        idiomasMezclados: { nombre in "το «\(nombre)» είναι γραμμένο σε άλλη γλώσσα από τη θεμέλια: γράψ' τα όλα με συλλαβές (Sol7/Si) ή όλα με γράμματα (G7/B)" },
+        bajoNoValido: "το «{1}» δεν είναι όνομα νότας για το μπάσο",
+        idiomasMezclados: "το «{1}» είναι γραμμένο σε άλλη γλώσσα από τη θεμέλια: γράψ' τα όλα με συλλαβές (Sol7/Si) ή όλα με γράμματα (G7/B)",
         // ErrorDeLecturaDeTeoria.swift (escalas)
-        modoNoReconocido: { nombre in "το «\(nombre)» δεν είναι τρόπος τονικότητας: μια τονικότητα είναι μείζονα ή ελάσσονα (για τους άλλους τρόπους, χρησιμοποίησε Escala)" },
+        modoNoReconocido: "το «{1}» δεν είναι τρόπος τονικότητας: μια τονικότητα είναι μείζονα ή ελάσσονα (για τους άλλους τρόπους, χρησιμοποίησε Escala)",
         faltaElTipoDeEscala: "λείπει το είδος της κλίμακας (μείζονα, δώριος, αρμονική ελάσσονα…)",
-        tipoDeEscalaNoReconocido: { nombre in "το «\(nombre)» δεν είναι γνωστό είδος κλίμακας" },
+        tipoDeEscalaNoReconocido: "το «{1}» δεν είναι γνωστό είδος κλίμακας",
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "όλες οι συγχορδίες πρέπει να έχουν τον ίδιο αριθμό φωνών, και τουλάχιστον δύο",
         vocesDeDistintaLongitud: "όλες οι φωνές πρέπει να έχουν τον ίδιο αριθμό νοτών",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
-        nombreNoReconocido: { n, o in "το «\(n)» δεν είναι κανένα από αυτά: \(o)" },
-        numeroFueraDeRango: { t, d, h in "το «\(t)» δεν είναι αριθμός από \(d) έως \(h)" },
-        trasteNoValido: { t, u in "το «\(t)» δεν είναι τάστο: πρέπει να είναι x (σβησμένη χορδή) ή αριθμός από 0 έως \(u)" },
-        cuerdasDistintas: { e, l in "χρειάζεται ένα τάστο (ή x) για καθεμία από τις \(e) χορδές, και υπάρχουν \(l)" },
+        nombreNoReconocido: "το «{1}» δεν είναι κανένα από αυτά: {2}",
+        numeroFueraDeRango: "το «{1}» δεν είναι αριθμός από {2} έως {3}",
+        trasteNoValido: "το «{1}» δεν είναι τάστο: πρέπει να είναι x (σβησμένη χορδή) ή αριθμός από 0 έως {2}",
+        cuerdasDistintas: "χρειάζεται ένα τάστο (ή x) για καθεμία από τις {1} χορδές, και υπάρχουν {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
-        cifradoRomanoNoValido: { cifrado in "το «\(cifrado)» δεν είναι ρωμαϊκό σύμβολο βαθμίδας: ένας αριθμός από το I έως το VII με την ποιότητα και τα ψηφία του (V7, ii65, ♭VI, vii°7/V)" },
-        destinoNoTonicalizable: { destino in "το «\(destino)» δεν μπορεί να ακολουθεί την κάθετο: πρέπει να είναι μείζονα ή ελάσσονα τριφωνία σε θεμελιώδη κατάσταση (V/V, vii°7/ii)" },
-        cifrasNoValidas: { cifras in "το «\(cifras)» δεν είναι αριθμημένο μπάσο: αριθμοί από το 1 έως το 9, ο καθένας με το πολύ μία αλλοίωση (6, 64, 7, ♯6, 4+)" },
-        cifrasSinAcorde: { cifras in "τα ψηφία «\(cifras)» δεν σχηματίζουν καμία συγχορδία πάνω σε αυτό το μπάσο" },
+        cifradoRomanoNoValido: "το «{1}» δεν είναι ρωμαϊκό σύμβολο βαθμίδας: ένας αριθμός από το I έως το VII με την ποιότητα και τα ψηφία του (V7, ii65, ♭VI, vii°7/V)",
+        destinoNoTonicalizable: "το «{1}» δεν μπορεί να ακολουθεί την κάθετο: πρέπει να είναι μείζονα ή ελάσσονα τριφωνία σε θεμελιώδη κατάσταση (V/V, vii°7/ii)",
+        cifrasNoValidas: "το «{1}» δεν είναι αριθμημένο μπάσο: αριθμοί από το 1 έως το 9, ο καθένας με το πολύ μία αλλοίωση (6, 64, 7, ♯6, 4+)",
+        cifrasSinAcorde: "τα ψηφία «{1}» δεν σχηματίζουν καμία συγχορδία πάνω σε αυτό το μπάσο",
         // UsoDeEscala.swift
         usoClasica: "κλασική",
         usoJazz: "τζαζ",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         fuenteLushiChunqiu: "Λιούσι τσουντσιού",
         fuenteVicentino: "Βιτσεντίνο",
         // Gramática (Acorde.swift, Tonalidad.swift)
-        acordeSobre: { tipo, raiz in "\(tipo) στο \(raiz)" },
+        acordeSobre: "{1} στο {2}",
         enLaTonalidad: { tonalidad in "σε " + tonalidad }
     )
 }

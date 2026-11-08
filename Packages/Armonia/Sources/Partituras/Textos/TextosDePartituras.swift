@@ -20,8 +20,8 @@ struct TextosDePartituras: TextosTraducidos {
     let semifusa: String
     let garrapatea: String
     let cero: String
-    let fraccionDeRedonda: @Sendable (String) -> String
-    let conPuntillos: [String]
+    let fraccionDeRedonda: Plantilla  // {1} fraccion
+    let conPuntillos: [Plantilla]  // {1} figura; con uno, dos, tres y cuatro puntillos
 
     // MARK: Pentagrama.swift
     let claveDeSol: String
@@ -69,9 +69,9 @@ struct TextosDePartituras: TextosTraducidos {
     let instrumentoCelesta: String
 
     // MARK: ErrorDeLecturaDePartitura.swift
-    let duracionNoValida: @Sendable (String) -> String
-    let compasNoValido: @Sendable (String) -> String
-    let contrapuntoDeOtraDuracion: @Sendable (Int) -> String
+    let duracionNoValida: Plantilla  // {1} texto
+    let compasNoValido: Plantilla  // {1} texto
+    let contrapuntoDeOtraDuracion: Plantilla  // {1} redondas
 
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.

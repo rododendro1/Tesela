@@ -11,7 +11,7 @@ extension TextosDeDiagramas {
 
         // DibujoSVG.swift
         conjunto: "Conjunt ",
-        cicloDesde: { nombre, cifrado in "\(nombre) des de \(cifrado)" },
+        cicloDesde: "{1} des de {2}",
         primeraClase: "primera classe",
         primeraNota: "primera nota",
         leyendaNota: "nota",
@@ -42,10 +42,10 @@ extension TextosDeDiagramas {
         cuadriculaEnOctavas: "Quadrícula en octaves",
         cuadriculaSecuencial: "Quadrícula seqüencial",
         // FormatoUIL.swift
-        uilNoValido: { texto in "UIL no vàlid: «\(texto)». S'espera L,G,D;R<graus>[M], per exemple 2,7,5;R30M." },
-        intervalosIncoherentes: { menor, mayor, diferencia in "Intervals incoherents: \(menor),\(mayor),\(diferencia). Han de complir 0 < L ≤ D i G = L + D." },
-        giroNoValido: { grados in "El gir de \(grados)° no és múltiple de 30°." },
-        afinacionNoSoportada: { tonos in "Només es dibuixen teclats de 12 notes, no de \(tonos)." },
-        cizallaNoSoportada: { cizalla in "La cisalla S\(cizalla) no està suportada." }
+        uilNoValido: "UIL no vàlid: «{1}». S'espera L,G,D;R<graus>[M], per exemple 2,7,5;R30M.",
+        intervalosIncoherentes: "Intervals incoherents: {1},{2},{3}. Han de complir 0 < L ≤ D i G = L + D.",
+        giroNoValido: "El gir de {1}° no és múltiple de 30°.",
+        afinacionNoSoportada: "Només es dibuixen teclats de 12 notes, no de {1}.",
+        cizallaNoSoportada: "La cisalla S{1} no està suportada."
     )
 }

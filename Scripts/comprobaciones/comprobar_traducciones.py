@@ -5,12 +5,14 @@ Los textos están de dos maneras: en un `Traduccion(…)` con los trece juntos, 
 idioma de cada módulo (`Textos/TextosDeX+Espanol.swift`, `…+Ingles.swift`…), donde cada campo de
 `TextosDeX` tiene su texto en cada fichero. El compilador ya obliga a dar los trece, pero no impide
 copiar uno que no toca. Se miran los textos literales (los que se montan con código no se pueden leer
-aquí) y se avisa de tres cosas:
+aquí) y se avisa de cuatro cosas:
 
   1. un texto en alemán, ruso o griego idéntico al inglés (y distinto del español), que suele ser
      un texto que se quedó sin traducir;
   2. un texto en ruso sin letras cirílicas o en griego sin letras griegas, aunque tenga palabras;
-  3. una misma frase en español (de dos palabras o más) traducida de dos maneras en un idioma.
+  3. una misma frase en español (de dos palabras o más) traducida de dos maneras en un idioma;
+  4. una plantilla («no se puede leer «{1}» (carácter {2})») con otros huecos que en español: en un
+     idioma falta un `{n}`, sobra o tiene otro número.
 
 Las órdenes y las opciones de la línea de comandos (`armonia …`, `--…`) y las sintaxis de la ayuda
 se escriben igual en todos los idiomas, así que no cuentan. Los textos que son iguales a propósito
@@ -61,9 +63,13 @@ _TRADUCCION = re.compile(
 )
 
 
+_HUECO = re.compile(r"\{(\d+)\}")
+
+
 def sin_codigo(texto: str) -> str:
     """El texto sin interpolaciones, órdenes ni opciones de la línea de comandos."""
     texto = re.sub(r"\\\([^)]*\)", "", texto)
+    texto = re.sub(r"\{\d+\}", "", texto)
     texto = re.sub(r"armonia [^\n]*", "", texto)
     return re.sub(r"--\S+", "", texto)
 
@@ -71,7 +77,8 @@ def sin_codigo(texto: str) -> str:
 # Los ficheros por idioma: `TextosDeTrastes+Euskera.swift` tiene los textos en euskera.
 FICHEROS_DE_IDIOMA = CODIGO_DEL_FICHERO
 _FICHERO_DE_IDIOMA = re.compile(r"/Textos/(TextosDe\w+)\+(\w+)\.swift$")
-# Un campo de una línea: `nombre: "texto",` o, si lleva valores, `nombre: { a, b in "texto" },`.
+# Un campo de una línea: `nombre: "texto",` (una `Plantilla` lleva huecos `{1}`) o, si se monta con
+# código, `nombre: { a, b in "texto" },`.
 _CAMPO = re.compile(r"^ {8}(\w+): (?:\{ [\w, ]+ in )?" + _TEXTO + r"(?: \})?,?$", re.M)
 
 
@@ -121,7 +128,12 @@ def main() -> int:
                     and not re.search(letras, texto, re.I)):
                 errores.append(f"{lugar}: en {idioma}, «{textos[idioma]}» no tiene letras de su alfabeto")
         espanol = textos["es"]
-        if " " in espanol and "\\(" not in espanol:
+        huecos = sorted(set(_HUECO.findall(espanol)))
+        for idioma in IDIOMAS[1:]:
+            suyos = sorted(set(_HUECO.findall(textos[idioma])))
+            if suyos != huecos:
+                errores.append(f"{lugar}: en {idioma}, los huecos son {suyos or 'ninguno'} y en español {huecos or 'ninguno'}")
+        if " " in espanol and "\\(" not in espanol and not huecos:
             for idioma in IDIOMAS[1:]:
                 frases[espanol][idioma].setdefault(textos[idioma], lugar)
 

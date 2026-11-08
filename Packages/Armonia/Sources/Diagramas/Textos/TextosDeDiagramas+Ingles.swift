@@ -11,7 +11,7 @@ extension TextosDeDiagramas {
 
         // DibujoSVG.swift
         conjunto: "Set ",
-        cicloDesde: { nombre, cifrado in "\(nombre) from \(cifrado)" },
+        cicloDesde: "{1} from {2}",
         primeraClase: "first pitch class",
         primeraNota: "first note",
         leyendaNota: "note",
@@ -42,10 +42,10 @@ extension TextosDeDiagramas {
         cuadriculaEnOctavas: "Grid in octaves",
         cuadriculaSecuencial: "Sequential grid",
         // FormatoUIL.swift
-        uilNoValido: { texto in "Invalid UIL: \"\(texto)\". Expected L,G,D;R<degrees>[M], for example 2,7,5;R30M." },
-        intervalosIncoherentes: { menor, mayor, diferencia in "Inconsistent intervals: \(menor),\(mayor),\(diferencia). They must satisfy 0 < L ≤ D and G = L + D." },
-        giroNoValido: { grados in "A rotation of \(grados)° is not a multiple of 30°." },
-        afinacionNoSoportada: { tonos in "Only 12-note keyboards can be drawn, not \(tonos)-note ones." },
-        cizallaNoSoportada: { cizalla in "Shear S\(cizalla) is not supported." }
+        uilNoValido: "Invalid UIL: \"{1}\". Expected L,G,D;R<degrees>[M], for example 2,7,5;R30M.",
+        intervalosIncoherentes: "Inconsistent intervals: {1},{2},{3}. They must satisfy 0 < L ≤ D and G = L + D.",
+        giroNoValido: "A rotation of {1}° is not a multiple of 30°.",
+        afinacionNoSoportada: "Only 12-note keyboards can be drawn, not {1}-note ones.",
+        cizallaNoSoportada: "Shear S{1} is not supported."
     )
 }

@@ -11,7 +11,7 @@ extension TextosDeDiagramas {
 
         // DibujoSVG.swift
         conjunto: "Halmaz ",
-        cicloDesde: { nombre, cifrado in "\(nombre), kezdete: \(cifrado)" },
+        cicloDesde: "{1}, kezdete: {2}",
         primeraClase: "első hangosztály",
         primeraNota: "első hang",
         leyendaNota: "hang",
@@ -42,10 +42,10 @@ extension TextosDeDiagramas {
         cuadriculaEnOctavas: "Oktávrács",
         cuadriculaSecuencial: "Sorfolytonos rács",
         // FormatoUIL.swift
-        uilNoValido: { texto in "Érvénytelen UIL: „\(texto)”. A várt alak L,G,D;R<fok>[M], például 2,7,5;R30M." },
-        intervalosIncoherentes: { menor, mayor, diferencia in "Ellentmondó hangközök: \(menor),\(mayor),\(diferencia). Teljesülnie kell: 0 < L ≤ D és G = L + D." },
-        giroNoValido: { grados in "A \(grados)°-os elforgatás nem többszöröse a 30°-nak." },
-        afinacionNoSoportada: { tonos in "Csak 12 hangú billentyűzet rajzolható, \(tonos) hangú nem." },
-        cizallaNoSoportada: { cizalla in "Az S\(cizalla) nyírás nem támogatott." }
+        uilNoValido: "Érvénytelen UIL: „{1}”. A várt alak L,G,D;R<fok>[M], például 2,7,5;R30M.",
+        intervalosIncoherentes: "Ellentmondó hangközök: {1},{2},{3}. Teljesülnie kell: 0 < L ≤ D és G = L + D.",
+        giroNoValido: "A {1}°-os elforgatás nem többszöröse a 30°-nak.",
+        afinacionNoSoportada: "Csak 12 hangú billentyűzet rajzolható, {1} hangú nem.",
+        cizallaNoSoportada: "Az S{1} nyírás nem támogatott."
     )
 }
