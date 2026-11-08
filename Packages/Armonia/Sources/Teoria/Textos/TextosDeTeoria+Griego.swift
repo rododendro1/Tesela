@@ -263,6 +263,11 @@ extension TextosDeTeoria {
         fuenteGuanzi: "Γκουάνζι",
         fuenteLushiChunqiu: "Λιούσι τσουντσιού",
         fuenteVicentino: "Βιτσεντίνο",
+        fuenteChrysanthos: "Χρύσανθος",
+        fuenteRamosDePareja: "Ράμος ντε Παρέχα",
+        fuenteZarlino: "Τσαρλίνο",
+        fuenteSalinas: "Σαλίνας",
+        fuenteZhuZaiyu: "Τζου Τσάιγιου",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{1} στο {2}",
         enLaTonalidad: { tonalidad in "σε " + tonalidad }

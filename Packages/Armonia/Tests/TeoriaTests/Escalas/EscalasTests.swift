@@ -918,7 +918,7 @@ import Testing
             return Int((cents < 0 ? cents + 1200 : cents).rounded())
         }
         let afinaciones = TipoDeEscala.shierLu.afinaciones
-        #expect(afinaciones.map(\.fuente) == [nil, "Zhu Zaiyu, 1584"])
+        #expect(afinaciones.map(\.fuente) == [nil, .zhuZaiyu])
         #expect(afinaciones[0].pasos == pitagoricos)
         #expect(afinaciones[0].pasos[5] - 498 == 24)
         #expect(afinaciones[1].desvios.allSatisfy { $0 == 0 })
@@ -961,8 +961,8 @@ import Testing
         // Cada afinación, la de su mesotónico: ¼ de coma (Aron), 2/7 (Zarlino) y ⅓ (Salinas), al cent.
         let temperamentos = [4.0, 3.5, 3.0].map { TemperamentoRegular.mesotonico(fraccionDeComa: $0) }
         for tipo in TipoDeEscala.escalasRenacentistas {
-            let ramos: [String?] = tipo == .mixolidioConFicta ? [] : ["Ramos de Pareja, 1482"]
-            #expect(tipo.afinaciones.map(\.fuente) == [nil, "Zarlino, 1558", "Salinas, 1577"] + ramos)
+            let ramos: [FuenteTeorica?] = tipo == .mixolidioConFicta ? [] : [.ramosDePareja]
+            #expect(tipo.afinaciones.map(\.fuente) == [nil, .zarlino, .salinas] + ramos)
             for (afinacion, temperamento) in zip(tipo.afinaciones, temperamentos) {
                 for sentido in [SentidoDelIntervalo.ascendente, .descendente] {
                     let pares = zip(afinacion.cents(sentido: sentido), afinacion.intervalos(sentido: sentido))

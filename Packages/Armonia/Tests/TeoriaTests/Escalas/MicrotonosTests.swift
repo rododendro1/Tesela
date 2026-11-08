@@ -40,7 +40,7 @@ import Testing
     @Test func variasAfinacionesPorEscala() throws {
         let afinaciones = TipoDeEscala.echosProtos.afinaciones
         #expect(afinaciones.map(\.sistema) == [.moria72, .razones])
-        #expect(afinaciones.map(\.fuente) == [nil, "Chrysanthos, 1832"])
+        #expect(afinaciones.map(\.fuente) == [nil, .chrysanthos])
         #expect(TipoDeEscala.echosProtos.microtonal == afinaciones.first)
         #expect(afinaciones[1].desvios == [12, -29, -6, 6, 18, -24, 0])
         #expect(TipoDeEscala.echosDefteros.afinaciones.count == 1)

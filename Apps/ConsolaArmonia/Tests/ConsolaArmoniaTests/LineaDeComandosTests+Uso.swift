@@ -210,6 +210,9 @@ extension LineaDeComandosTests {
         #expect(salida("escalas --fuente glareano --tradicion gregoriano").contains("ionicus"))
         #expect(salida("escalas --fuente guido --categoria hexacordo").hasPrefix("Canto gregoriano · hexacordo (3)\n"))
         #expect(resultado("escalas", "--fuente", "ptolomeu").error.contains("«ptolomeo»"))
+        // Y las que afinó: Zarlino no definió las escalas del Renacimiento, pero las midió.
+        #expect(salida("escalas --fuente zarlino").hasPrefix("Renacimiento · "))
+        #expect(salida("escalas --fuente chrysanthos").contains("(6)"))
         #expect(resultado("escalas", "--fuente", "pitagoras").codigo == 2)
         #expect(resultado("tradiciones", "--foo").codigo == 2)
         // En JSON, las claves de --tradicion y --categoria y los números.

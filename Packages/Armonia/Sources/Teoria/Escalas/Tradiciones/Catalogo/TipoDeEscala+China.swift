@@ -97,7 +97,7 @@ extension TipoDeEscala {
             .init(.razones, pasos: [0, 114, 204, 318, 408, 522, 612, 702, 816, 906, 1020, 1110]),
             .init(
                 .razones, pasos: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100],
-                fuente: "Zhu Zaiyu, 1584"),
+                fuente: .zhuZaiyu),
         ])
     /// 六律, los seis lü yang, de huángzhōng: huángzhōng, tàicù, gūxiǎn, ruíbīn, yízé y wúyì (Do Re Mi Fa♯ Sol♯ La♯).
     public static let yanglu = TipoDeEscala(

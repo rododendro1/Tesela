@@ -53,7 +53,7 @@ Una escala con microtonos (``TipoDeEscalaMicrotonal``, en <doc:Escalas>) se pued
 `Escala.afinacion(la4:microtonal:sentido:)` da una ``AfinacionDeEscala``, que afina cada nota de la escala con lo
 que se aparta de su nota temperada y deja las demás en temperamento igual. La nota se busca por su nombre y, si no
 está, por su altura (Re♯ suena como el Mi♭ de la escala). Una escala puede tener varias afinaciones, cada una de un
-autor (`TipoDeEscala.afinaciones`, con su `fuente`): los echoi diatónicos, en los 72 moria de la Comisión
+autor (`TipoDeEscala.afinaciones`, con su `fuente`, una ``FuenteTeorica``): los echoi diatónicos, en los 72 moria de la Comisión
 Patriarcal (1881) y en los 68 de Chrysanthos (1832).
 
 ```swift
@@ -62,7 +62,7 @@ bayati.desviacion(de: "Mib4")                              // 50: el Mi𝄳
 bayati.desviacion(de: "Mi4")                               // 0: no es de la escala
 Escala(.re, .bayati).afinacion(la4: 442)?.frecuencia(de: "La4")   // 442
 TipoDeEscala.echosProtos.afinaciones.count                 // 2
-TipoDeEscala.echosProtos.afinaciones[1].fuente             // "Chrysanthos, 1832"
+TipoDeEscala.echosProtos.afinaciones[1].fuente             // .chrysanthos
 let chrysanthos = TipoDeEscala.echosProtos.afinaciones[1]
 Escala(.re, .echosProtos).afinacion(microtonal: chrysanthos)?.desviacion(de: "Mi4")   // −29
 Escala(.do, .mayor).afinacion()                            // nil: no tiene microtonos

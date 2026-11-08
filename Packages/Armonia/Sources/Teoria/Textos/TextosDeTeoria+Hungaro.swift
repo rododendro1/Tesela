@@ -263,6 +263,11 @@ extension TextosDeTeoria {
         fuenteGuanzi: "Kuan-ce",
         fuenteLushiChunqiu: "Lü-si csun-csiu",
         fuenteVicentino: "Vicentino",
+        fuenteChrysanthos: "Khrüszanthosz",
+        fuenteRamosDePareja: "Ramos de Pareja",
+        fuenteZarlino: "Zarlino",
+        fuenteSalinas: "Salinas",
+        fuenteZhuZaiyu: "Csu Caj-jü",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{2} {1}",
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).

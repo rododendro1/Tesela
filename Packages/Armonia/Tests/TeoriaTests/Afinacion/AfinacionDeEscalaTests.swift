@@ -35,7 +35,7 @@ import Testing
     @Test func otraAfinacionDeLaMismaEscala() throws {
         let chrysanthos = TipoDeEscala.echosProtos.afinaciones[1]
         let protos = try #require(Escala(.re, .echosProtos).afinacion(microtonal: chrysanthos))
-        #expect(protos.microtonal.fuente == "Chrysanthos, 1832")
+        #expect(protos.microtonal.fuente == .chrysanthos)
         #expect(redondear(["Re4", "Mi4", "Fa4", "Do5"].map { protos.desviacion(de: $0) }) == [12, -29, -6, 0])
         #expect(Escala(.re, .echosProtos).afinacion(microtonal: TipoDeEscala.bayati.microtonal) == nil)
     }

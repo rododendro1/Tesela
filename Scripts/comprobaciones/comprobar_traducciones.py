@@ -49,6 +49,7 @@ EXCEPCIONES = {
     "Eratosthenes",  # alemán: el nombre del teórico
     "Aristides Quintilianus",  # alemán: el nombre del teórico
     "Glarean",  # alemán: el nombre del teórico
+    "Chrysanthos",  # alemán: el nombre del teórico
     "Ukraine",  # alemán: el nombre del país
     "Myanmar",  # alemán: el nombre del país
     "Mandinka",  # alemán: el nombre del pueblo

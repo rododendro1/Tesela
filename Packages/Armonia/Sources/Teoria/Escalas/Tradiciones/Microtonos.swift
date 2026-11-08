@@ -83,14 +83,15 @@ public struct TipoDeEscalaMicrotonal: Hashable, Sendable {
     public let pasos: [Int]
     /// Lo mismo al bajar, si la escala baja con otras notas; `nil` si baja como sube.
     public let pasosDescendentes: [Int]?
-    /// De quién es esta afinación, cuando la escala tiene más de una: el autor y el año («Chrysanthos, 1832»), que
-    /// no se traducen. `nil` en la primera, la de su teoría de hoy, que dice ya su `sistema`.
-    public let fuente: String?
+    /// De quién es esta afinación, cuando la escala tiene más de una: el teórico que la midió (`.chrysanthos`,
+    /// `.zarlino`), que se nombra en cada idioma. `nil` en la primera, la de su teoría de hoy, que dice ya su
+    /// `sistema`.
+    public let fuente: FuenteTeorica?
 
     /// Una escala con microtonos; si `pasosDescendentes` es igual que `pasos`, se guarda `nil`.
     public init(
         _ temperada: TipoDeEscala, _ sistema: SistemaMicrotonal, pasos: [Int], pasosDescendentes: [Int]? = nil,
-        fuente: String? = nil
+        fuente: FuenteTeorica? = nil
     ) {
         self.temperada = temperada
         self.sistema = sistema
