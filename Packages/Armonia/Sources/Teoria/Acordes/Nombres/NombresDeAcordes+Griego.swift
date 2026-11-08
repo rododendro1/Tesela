@@ -35,5 +35,13 @@ extension NombresDeAcordes {
         .init(.sextaAumentadaItaliana, "ιταλική συγχορδία αυξημένης έκτης"),
         .init(.sextaAumentadaFrancesa, "γαλλική συγχορδία αυξημένης έκτης"),
         .init(.sextaAumentadaAlemana, "γερμανική συγχορδία αυξημένης έκτης"),
+        .init(.tristan, "συγχορδία του Τριστάνου"),
+        .init(.mistico, "μυστική συγχορδία", alias: ["συγχορδία του Προμηθέα"]),
+        .init(.petrushka, "συγχορδία του Πετρούσκα"),
+        .init(.farben, "συγχορδία των Farben"),
+        .init(.soWhat, "συγχορδία So What"),
+        .init(.hendrix, "συγχορδία του Χέντριξ"),
+        .init(.mu, "συγχορδία mu"),
+        .init(.porCuartas, "συγχορδία τετάρτων"),
     ])
 }

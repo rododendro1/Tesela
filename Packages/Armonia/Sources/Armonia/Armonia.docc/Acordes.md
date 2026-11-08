@@ -65,8 +65,8 @@ tonalidad las reconoce escritas de cualquier forma (véase «Tonalidad»).
 Un ``AcordeConNombre`` es una entrada del catálogo de acordes: un nombre, otros nombres y las notas desde la más
 grave, con su ortografía. A diferencia de `TipoDeAcorde`, que es solo contenido, varios acordes con nombre pueden
 tener el mismo tipo, y uno puede no tener ninguno, si sus notas no se leen por terceras. El catálogo
-(``AcordeConNombre/catalogo``) tiene por ahora los tipos que ya tenían nombre, en los trece idiomas, y de ahí sale el
-nombre de un tipo:
+(``AcordeConNombre/catalogo``), con sus nombres en los trece idiomas, tiene dos partes. Los genéricos
+(``AcordeConNombre/genericos``) son los tipos que tienen nombre, y de ellos sale el nombre de un tipo:
 
 ```swift
 AcordeConNombre.dominanteSeptima.nombre                        // "séptima de dominante"
@@ -74,6 +74,17 @@ AcordeConNombre.dominanteSeptima.tipo?.cifrado                 // "7"
 AcordeConNombre.dominanteSeptima.notas(sobre: .sol)            // [Sol, Si, Re, Fa]
 TipoDeAcorde.dominanteSeptima.acordeConNombre == .dominanteSeptima   // true
 AcordeConNombre.sextaAumentadaAlemana.estilos                  // [clasica]
+```
+
+Los de nombre propio (``AcordeConNombre/conNombrePropio``) son acordes de una obra o de un estilo, con la obra donde
+se leen: el de Tristán, el místico de Skriabin, el de Petrushka, el de «Farben», el So What, el de Hendrix, el mu y
+el acorde por cuartas. No dan nombre a su tipo, pero ``TipoDeAcorde/acordesConNombre`` los encuentra:
+
+```swift
+AcordeConNombre.tristan.notas(sobre: .fa)                      // [Fa, Si, Re♯, Sol♯]
+AcordeConNombre.tristan.referencias.map(\.cita)              // ["Rothgeb 1995"]
+AcordeConNombre.petrushka.tipo                                 // nil
+TipoDeAcorde.mayorNovenaAnadida.acordesConNombre               // [novena añadida, acorde mu]
 ```
 
 ## Identificación desde alturas (MIDI)

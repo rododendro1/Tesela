@@ -13,8 +13,16 @@ import Elementos
 ///     AcordeConNombre.dominanteSeptima.tipo?.cifrado                  // "7"
 ///     TipoDeAcorde.dominanteSeptima.acordeConNombre?.nombre           // "séptima de dominante"
 ///
-/// El catálogo (`catalogo`) tiene por ahora los tipos que tenían nombre (la tríada mayor, la séptima de dominante,
-/// las sextas aumentadas…). Sus nombres en los otros idiomas están en `Acordes/Nombres/`, un fichero por idioma.
+/// El catálogo (`catalogo`) tiene dos partes. Los genéricos (`genericos`) son los tipos que tienen nombre (la tríada
+/// mayor, la séptima de dominante, las sextas aumentadas…) y dan nombre a su `TipoDeAcorde`. Los de nombre propio
+/// (`conNombrePropio`) son acordes concretos de una obra o de un estilo: el de Tristán, el místico de Skriabin, el de
+/// Petrushka, el So What… No dan nombre a su tipo, si lo tienen (el de Hendrix es un 7(♯9) sin quinta cualquiera), y
+/// alguno no lo tiene, porque sus notas no se leen por terceras. Los nombres en los otros idiomas están en `Acordes/Nombres/`, un
+/// fichero por idioma.
+///
+///     AcordeConNombre.tristan.notas(sobre: .fa)          // [Fa, Si, Re♯, Sol♯]
+///     AcordeConNombre.petrushka.tipo                     // nil
+///     TipoDeAcorde.mayorNovenaAnadida.acordesConNombre   // [novena añadida, acorde mu]
 ///
 /// Dos acordes con nombre son iguales si se llaman igual y tienen las mismas notas en el mismo orden. Los estilos y
 /// las referencias no cuentan.
@@ -128,8 +136,14 @@ package struct FichaDeAcorde: Sendable {
 // MARK: - Desde el tipo
 
 extension TipoDeAcorde {
-    /// El acorde del catálogo con el que se nombra este tipo, si tiene nombre: el primero de
-    /// `AcordeConNombre.catalogo` con sus mismas notas. `TipoDeAcorde.dominanteSeptima.acordeConNombre` es
+    /// El acorde genérico del catálogo con el que se nombra este tipo, si tiene nombre: el primero de
+    /// `AcordeConNombre.genericos` con sus mismas notas. `TipoDeAcorde.dominanteSeptima.acordeConNombre` es
     /// `AcordeConNombre.dominanteSeptima`; un tipo como 7(♭9,♯11) no tiene.
     public var acordeConNombre: AcordeConNombre? { TipoDeAcorde.nombresConocidos[pasosDeQuinta] }
+
+    /// Todos los acordes del catálogo con las notas de este tipo, el genérico primero: add9 es la novena añadida y el
+    /// acorde mu, y 7(♯9) sin quinta, el acorde de Hendrix.
+    public var acordesConNombre: [AcordeConNombre] {
+        AcordeConNombre.catalogo.filter { $0.pasosDeQuinta == pasosDeQuinta }
+    }
 }

@@ -5,11 +5,12 @@ import Testing
 
 /// Las referencias bibliográficas del catálogo (`Referencia`, `TipoDeEscala.referencias`).
 @Suite struct ReferenciasTests {
-    /// Todas las obras citadas, por las escalas, sus listas, sus fuentes y sus afinaciones.
+    /// Todas las obras citadas, por las escalas, sus listas, sus fuentes y sus afinaciones, y por los acordes.
     private var citadas: [Referencia] {
         TipoDeEscala.catalogo.flatMap(\.referencias)
             + TipoDeEscala.listasTradicionales.flatMap(\.referencias)
             + FuenteTeorica.allCases.compactMap(\.referencia)
+            + AcordeConNombre.catalogo.flatMap(\.referencias)
     }
 
     @Test func cadaObraEstaUnaVezEnElCatalogoYSeCita() {

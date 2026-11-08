@@ -35,5 +35,13 @@ extension NombresDeAcordes {
         .init(.sextaAumentadaItaliana, "olasz bővített szextakkord"),
         .init(.sextaAumentadaFrancesa, "francia bővített szextakkord"),
         .init(.sextaAumentadaAlemana, "német bővített szextakkord"),
+        .init(.tristan, "Trisztán-akkord"),
+        .init(.mistico, "misztikus akkord", alias: ["Prométheusz-akkord"]),
+        .init(.petrushka, "Petruska-akkord"),
+        .init(.farben, "Farben-akkord"),
+        .init(.soWhat, "So What-akkord"),
+        .init(.hendrix, "Hendrix-akkord"),
+        .init(.mu, "mu-akkord"),
+        .init(.porCuartas, "kvartakkord"),
     ])
 }

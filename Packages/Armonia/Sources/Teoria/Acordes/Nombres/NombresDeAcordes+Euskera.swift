@@ -35,5 +35,13 @@ extension NombresDeAcordes {
         .init(.sextaAumentadaItaliana, "seigarren gehitu italiarra"),
         .init(.sextaAumentadaFrancesa, "seigarren gehitu frantsesa"),
         .init(.sextaAumentadaAlemana, "seigarren gehitu alemana"),
+        .init(.tristan, "Tristan akordea"),
+        .init(.mistico, "akorde mistikoa", alias: ["Prometeo akordea"]),
+        .init(.petrushka, "Petrushka akordea"),
+        .init(.farben, "Farben akordea"),
+        .init(.soWhat, "So What akordea"),
+        .init(.hendrix, "Hendrix akordea"),
+        .init(.mu, "mu akordea"),
+        .init(.porCuartas, "laugarrenezko akordea"),
     ])
 }

@@ -35,5 +35,13 @@ extension NombresDeAcordes {
         .init(.sextaAumentadaItaliana, "Italian augmented sixth"),
         .init(.sextaAumentadaFrancesa, "French augmented sixth"),
         .init(.sextaAumentadaAlemana, "German augmented sixth"),
+        .init(.tristan, "Tristan chord"),
+        .init(.mistico, "mystic chord", alias: ["Prometheus chord"]),
+        .init(.petrushka, "Petrushka chord"),
+        .init(.farben, "Farben chord"),
+        .init(.soWhat, "So What chord"),
+        .init(.hendrix, "Hendrix chord"),
+        .init(.mu, "mu chord", alias: ["mu major"]),
+        .init(.porCuartas, "quartal chord"),
     ])
 }
