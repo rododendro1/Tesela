@@ -4,13 +4,13 @@ extension LineaDeComandos {
     /// Los dibujos del Tonnetz, de la tabla armónica y de los teclados de cuadrícula, en el orden en que salen en la
     /// ayuda.
     static let ordenesDeDibujos: [Orden] = [
-        Orden(nombres: ["tonnetz"], ayuda: ayudaDeTonnetz) { try tonnetz($0, $1) },
-        Orden(nombres: ["tabla", "harmonic-table"], ayuda: ayudaDeTabla) { try tablaArmonica($0, $1) },
-        Orden(nombres: ["teclado", "keyboard"], ayuda: ayudaDeTeclado) { try teclado($0, $1) },
-        Orden(nombres: ["cuadricula", "grid"], ayuda: ayudaDeCuadricula) { try cuadricula($0, $1) },
-        Orden(nombres: ["reloj", "clock"], ayuda: ayudaDeReloj) { try reloj($0, $1) },
-        Orden(nombres: ["hoja", "sheet"], ayuda: ayudaDeHoja) { try hoja($0, $1) },
-        Orden(nombres: ["pentagrama", "staff"], ayuda: ayudaDePentagrama) { try pentagrama($0, $1) },
+        Orden(nombres: ["tonnetz"], ayuda: ayudaDeTonnetz) { try tonnetz($0, $1.notacion) },
+        Orden(nombres: ["tabla", "harmonic-table"], ayuda: ayudaDeTabla) { try tablaArmonica($0, $1.notacion) },
+        Orden(nombres: ["teclado", "keyboard"], ayuda: ayudaDeTeclado) { try teclado($0, $1.notacion) },
+        Orden(nombres: ["cuadricula", "grid"], ayuda: ayudaDeCuadricula) { try cuadricula($0, $1.notacion) },
+        Orden(nombres: ["reloj", "clock"], ayuda: ayudaDeReloj) { try reloj($0, $1.notacion) },
+        Orden(nombres: ["hoja", "sheet"], ayuda: ayudaDeHoja) { try hoja($0, $1.notacion) },
+        Orden(nombres: ["pentagrama", "staff"], ayuda: ayudaDePentagrama) { try pentagrama($0, $1.notacion) },
     ]
 
     static let ayudaDeTeclado: [EntradaDeAyuda] = [

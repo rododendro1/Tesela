@@ -4,35 +4,37 @@ extension LineaDeComandos {
     /// Las consultas: acordes, notas, intervalos, escalas y tonalidades, en el orden en que salen en la ayuda.
     static let ordenesDeConsultas: [Orden] = [
         Orden(
-            nombres: ["acorde", "chord"], ayuda: ayudaDeAcorde, json: { try acordeJSON($0, $1) },
-            ejecutar: { try acorde($0, $1) }),
+            nombres: ["acorde", "chord"], ayuda: ayudaDeAcorde, json: { try acordeJSON($0, $1.notacion) },
+            ejecutar: { try acorde($0, $1.notacion) }),
         Orden(
-            nombres: ["identificar", "identify"], ayuda: ayudaDeIdentificar, json: { try identificarJSON($0, $1) },
+            nombres: ["identificar", "identify"], ayuda: ayudaDeIdentificar,
+            json: { try identificarJSON($0, $1.notacion) },
             ejecutar: { try identificarConOpciones($0, $1) }),
         Orden(
-            nombres: ["arpegio", "arpeggio"], ayuda: ayudaDeArpegio, json: { try arpegioJSON($0, $1) },
-            ejecutar: { try arpegio($0, $1) }),
+            nombres: ["arpegio", "arpeggio"], ayuda: ayudaDeArpegio, json: { try arpegioJSON($0, $1.notacion) },
+            ejecutar: { try arpegio($0, $1.notacion) }),
         Orden(
-            nombres: ["intervalo", "interval"], ayuda: ayudaDeIntervalo, json: { try intervaloJSON($0, $1) },
-            ejecutar: { try consultarIntervalo($0, $1) }),
+            nombres: ["intervalo", "interval"], ayuda: ayudaDeIntervalo, json: { try intervaloJSON($0, $1.notacion) },
+            ejecutar: { try consultarIntervalo($0, $1.notacion) }),
         Orden(
-            nombres: ["escala", "scale"], ayuda: ayudaDeEscala, json: { try escalaJSON($0, $1) },
+            nombres: ["escala", "scale"], ayuda: ayudaDeEscala, json: { try escalaJSON($0, $1.notacion) },
             ejecutar: { try escala($0, $1) }),
         Orden(
-            nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas, json: { try escalasJSON($0, $1) },
-            ejecutar: { try escalas($0, $1) }),
+            nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas, json: { try escalasJSON($0, $1.notacion) },
+            ejecutar: { try escalas($0, $1.notacion) }),
         Orden(
-            nombres: ["tradiciones", "traditions"], ayuda: ayudaDeTradiciones, json: { try tradicionesJSON($0, $1) },
-            ejecutar: { try tradiciones($0, $1) }),
+            nombres: ["tradiciones", "traditions"], ayuda: ayudaDeTradiciones,
+            json: { try tradicionesJSON($0, $1.notacion) },
+            ejecutar: { try tradiciones($0, $1.notacion) }),
         Orden(
-            nombres: ["tonalidad", "key"], ayuda: ayudaDeTonalidad, json: { try tonalidadJSON($0, $1) },
-            ejecutar: { try consultarTonalidad($0, $1) }),
+            nombres: ["tonalidad", "key"], ayuda: ayudaDeTonalidad, json: { try tonalidadJSON($0, $1.notacion) },
+            ejecutar: { try consultarTonalidad($0, $1.notacion) }),
         Orden(
-            nombres: ["conjunto", "set"], ayuda: ayudaDeConjunto, json: { try conjuntoJSON($0, $1) },
-            ejecutar: { try consultarConjunto($0, $1) }),
+            nombres: ["conjunto", "set"], ayuda: ayudaDeConjunto, json: { try conjuntoJSON($0, $1.notacion) },
+            ejecutar: { try consultarConjunto($0, $1.notacion) }),
         Orden(
-            nombres: ["serie", "row"], ayuda: ayudaDeSerie, json: { try serieJSON($0, $1) },
-            ejecutar: { try consultarSerie($0, $1) }),
+            nombres: ["serie", "row"], ayuda: ayudaDeSerie, json: { try serieJSON($0, $1.notacion) },
+            ejecutar: { try consultarSerie($0, $1.notacion) }),
     ]
 
     static let ayudaDeAcorde: [EntradaDeAyuda] = [

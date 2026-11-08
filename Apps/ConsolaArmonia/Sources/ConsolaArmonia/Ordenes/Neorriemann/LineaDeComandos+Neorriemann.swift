@@ -14,7 +14,7 @@ extension LineaDeComandos {
         let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
         let acordes = try argumentos.leidos
         guard acordes.count == 1 else { throw ErrorDeUso.unAcordeDeVecinos }
-        let acorde = try Acorde(leyendoEnLaOrden: acordes[0])
+        let acorde = try Acorde(leyendo: acordes[0], enLaOrden: notacion)
         let pasos =
             tipos.map { $0.contains(acorde.tipo) ? acorde.vecinosParsimoniosos(voces: voces, tipos: $0) : [] }
             ?? acorde.vecinosParsimoniosos(voces: voces)
@@ -34,8 +34,8 @@ extension LineaDeComandos {
         let tipos = argumentos.quitarMarca(.ampliada) ? TipoDeAcorde.familiaDeSeptimasAmpliada : nil
         let acordes = try argumentos.leidos
         guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeCamino }
-        let origen = try Acorde(leyendoEnLaOrden: acordes[0])
-        let destino = try Acorde(leyendoEnLaOrden: acordes[1])
+        let origen = try Acorde(leyendo: acordes[0], enLaOrden: notacion)
+        let destino = try Acorde(leyendo: acordes[1], enLaOrden: notacion)
         guard let camino = origen.caminoParsimonioso(hasta: destino, voces: voces, tipos: tipos) else {
             throw ErrorDeUso.caminoSinConexion
         }
@@ -56,14 +56,15 @@ extension LineaDeComandos {
     }
 
     /// Lee lo que pide `plr`; el camino se da ya como sus pasos.
-    static func pedidoDePLR(_ argumentos: [String]) throws -> PedidoDePLR {
+    static func pedidoDePLR(_ argumentos: [String], en notacion: Notacion) throws -> PedidoDePLR {
         try Argumentos(argumentos).sinOpcionesDesconocidas()
         guard let primera = argumentos.first?.lowercased() else { throw ErrorDeUso.faltanPasosDePLR }
         let resto = Array(argumentos.dropFirst())
         if OpcionDeOrden.camino.seEscribe("--" + primera) {
             guard resto.count == 2 else { throw ErrorDeUso.faltanPasosDePLR }
-            let origen = try Acorde(leyendoEnLaOrden: resto[0])
-            guard let camino = origen.caminoNeorriemanniano(hasta: try Acorde(leyendoEnLaOrden: resto[1])) else {
+            let origen = try Acorde(leyendo: resto[0], enLaOrden: notacion)
+            guard let camino = origen.caminoNeorriemanniano(hasta: try Acorde(leyendo: resto[1], enLaOrden: notacion))
+            else {
                 throw ErrorDeUso.plrSoloTriadas(camino: true)
             }
             return .pasos(origen, camino)
@@ -72,12 +73,12 @@ extension LineaDeComandos {
             guard let triada = resto.last, resto.count >= 2,
                 let ciclo = try? CicloNeorriemanniano(leyendo: resto.dropLast().joined(separator: " "))
             else { throw ErrorDeUso.cicloMalEscrito(orden: "plr") }
-            let origen = try Acorde(leyendoEnLaOrden: triada)
+            let origen = try Acorde(leyendo: triada, enLaOrden: notacion)
             guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.cicloSoloTriadas(orden: "plr") }
             return .ciclo(origen, ciclo)
         }
         guard resto.count >= 1 else { throw ErrorDeUso.faltanPasosDePLR }
-        let origen = try Acorde(leyendoEnLaOrden: argumentos[0])
+        let origen = try Acorde(leyendo: argumentos[0], enLaOrden: notacion)
         guard Tonnetz.Triada(origen) != nil else { throw ErrorDeUso.plrSoloTriadas(camino: false) }
         return .pasos(origen, try TransformacionNeorriemanniana.secuencia(leyendo: resto.joined(separator: " ")))
     }
@@ -86,7 +87,7 @@ extension LineaDeComandos {
     /// el ciclo entero.
     static func plr(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let (origen, pasos): (Acorde, [TransformacionNeorriemanniana])
-        switch try pedidoDePLR(argumentos) {
+        switch try pedidoDePLR(argumentos, en: notacion) {
         case .ciclo(let triada, let ciclo):
             // Do –P→ Dom –L→ La♭ … –L→ Do, con la ortografía más sencilla.
             let acordes = triada.ciclo(ciclo)!

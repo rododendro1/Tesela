@@ -28,8 +28,8 @@ cd Packages/Interfaz && swift test       # la interfaz (en Linux, solo la parte 
 
 - **Pruebas.** Todo cambio de comportamiento lleva su prueba en el paquete que cambia. El CI mide la cobertura en
   Linux y la deja en el resumen de cada ejecución, y falla si el porcentaje de funciones o de líneas probadas de un
-  paquete baja de su mínimo (en el job `cobertura` de `.github/workflows/ci.yml`). Si tu cambio lo sube, sube también
-  el mínimo. Lo que lee ficheros de fuera tiene además pruebas con ficheros estropeados al azar
+  paquete o de la consola baja de su mínimo (en el job `cobertura` de `.github/workflows/ci.yml`). Si tu cambio lo
+  sube, sube también el mínimo. Lo que lee ficheros de fuera tiene además pruebas con ficheros estropeados al azar
   (`ImportacionAlAzarTests`): si tocas esa lectura, añade ahí los casos nuevos. Un lector nuevo va también en
   `Herramientas/FuzzArmonia`, que el CI pasa con libFuzzer cada semana (mira «Fuzzing» en [DESARROLLO.md](DESARROLLO.md)).
 - **Dibujos.** Los SVG del pentagrama, el Tonnetz, la tabla armónica y los teclados se comparan con los guardados en

@@ -58,7 +58,9 @@ extension LineaDeComandos {
     /// Lee los argumentos comunes de `tonnetz`, `tabla` y `cuadricula`: `--margen N` y lo que se dibuja (notas,
     /// `acorde`, `escala`, `clases`, `recorrido`, `camino` o `ciclo`), como en la app Tonnetz. Con
     /// `conOctavas`, unas notas con número de octava se leen como alturas (`Do3 Sol3 Mi4`), que se dan también aparte.
-    static func leerDibujo(_ argumentos: [String], orden: String, conOctavas: Bool = true) throws -> (
+    static func leerDibujo(
+        _ argumentos: [String], orden: String, conOctavas: Bool = true, en notacion: Notacion
+    ) throws -> (
         contenido: ContenidoDeRed, alturas: [Altura]?, margen: Int?
     ) {
         var lectura = Argumentos(argumentos)
@@ -77,20 +79,20 @@ extension LineaDeComandos {
         switch primero {
         case OpcionDeOrden.acorde:
             guard !resto.isEmpty else { throw ErrorDeUso.faltaAcordeDelDibujo(orden: orden) }
-            contenido = .acorde(try Acorde(leyendoEnLaOrden: resto))
+            contenido = .acorde(try Acorde(leyendo: resto, enLaOrden: notacion))
         case OpcionDeOrden.escala:
             guard !resto.isEmpty else { throw ErrorDeUso.faltaEscalaDelDibujo(orden: orden) }
-            contenido = .escala(try Escala(leyendoEnLaOrden: resto))
+            contenido = .escala(try Escala(leyendo: resto, enLaOrden: notacion))
         case OpcionDeOrden.clases:
             // Como `armonia conjunto`: «0 4 7», «047», «01t», «Do Mi Sol» o «3-11».
             guard !resto.isEmpty else { throw ErrorDeUso.faltanClasesDelDibujo(orden: orden) }
             contenido = .clases(try ConjuntoDeClasesDeAltura(leyendo: resto).clases)
         case OpcionDeOrden.recorrido:
-            let acordes = try argumentos.dropFirst().map { try Acorde(leyendoEnLaOrden: $0) }
+            let acordes = try argumentos.dropFirst().map { try Acorde(leyendo: $0, enLaOrden: notacion) }
             guard !acordes.isEmpty else { throw ErrorDeUso.faltanTriadasDelRecorrido(orden: orden) }
             contenido = .recorrido(acordes)
         case OpcionDeOrden.camino:
-            let acordes = try argumentos.dropFirst().map { try Acorde(leyendoEnLaOrden: $0) }
+            let acordes = try argumentos.dropFirst().map { try Acorde(leyendo: $0, enLaOrden: notacion) }
             guard acordes.count == 2 else { throw ErrorDeUso.caminoSoloTriadas(orden: orden) }
             contenido = .camino(acordes[0], acordes[1])
         case OpcionDeOrden.ciclo:
@@ -100,15 +102,15 @@ extension LineaDeComandos {
             else {
                 throw ErrorDeUso.cicloMalEscrito(orden: orden)
             }
-            contenido = .ciclo(ciclo, try Acorde(leyendoEnLaOrden: partes.last!))
+            contenido = .ciclo(ciclo, try Acorde(leyendo: partes.last!, enLaOrden: notacion))
         default:
             if primero.hasPrefix("--") { throw ErrorDeUso.opcionDesconocida(primero) }
             if conOctavas, argumentos.contains(where: { $0.contains(where: \.isNumber) }) {
-                let leidas = try argumentos.map { try Altura(leyendoEnLaOrden: $0) }
+                let leidas = try argumentos.map { try Altura(leyendo: $0, enLaOrden: notacion) }
                 alturas = leidas
                 contenido = .notas(leidas.map(\.nota))
             } else {
-                contenido = .notas(try argumentos.map { try Nota(leyendoEnLaOrden: $0) })
+                contenido = .notas(try argumentos.map { try Nota(leyendo: $0, enLaOrden: notacion) })
             }
         }
         return (contenido, alturas, margen)
@@ -127,7 +129,7 @@ extension LineaDeComandos {
 
     /// `tonnetz Do Mi Sol`, `tonnetz acorde Domaj7`, `tonnetz ciclo hexatonico Do`…
     static func tonnetz(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let (contenido, _, margen) = try leerDibujo(argumentos, orden: "tonnetz", conOctavas: false)
+        let (contenido, _, margen) = try leerDibujo(argumentos, orden: "tonnetz", conOctavas: false, en: notacion)
         let tonnetz = try red(Tonnetz.self, de: contenido, orden: "tonnetz")
         return bien(tonnetz.svg(opciones: .init(notacion: notacion), margen: margen).trimmingCharacters(in: "\n"))
     }
@@ -135,7 +137,7 @@ extension LineaDeComandos {
     /// `tabla Do Mi Sol`, `tabla Do3 Sol3 Mi4` (con octava, alturas), `tabla acorde Domaj7`,
     /// `tabla ciclo octatonico Do`…
     static func tablaArmonica(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let (contenido, alturas, margen) = try leerDibujo(argumentos, orden: "tabla")
+        let (contenido, alturas, margen) = try leerDibujo(argumentos, orden: "tabla", en: notacion)
         // Con un número de octava, las alturas como en el instrumento; sin él, las notas.
         let tabla = try alturas.map { TablaArmonica($0) } ?? red(TablaArmonica.self, de: contenido, orden: "tabla")
         return bien(tabla.svg(opciones: .init(notacion: notacion), margen: margen).trimmingCharacters(in: "\n"))
@@ -159,9 +161,11 @@ extension LineaDeComandos {
         else {
             throw ErrorDeUso.opcionesDeCuadricula
         }
-        let origen = try origenEscrito.isEmpty ? rejilla.origenPorDefecto : Altura(leyendoEnLaOrden: origenEscrito).midi
+        let origen =
+            try origenEscrito.isEmpty
+            ? rejilla.origenPorDefecto : Altura(leyendo: origenEscrito, enLaOrden: notacion).midi
 
-        let contenido = try leerDibujo(lectura.restantes, orden: "cuadricula").contenido
+        let contenido = try leerDibujo(lectura.restantes, orden: "cuadricula", en: notacion).contenido
         // Las notas de un camino o un ciclo son las de sus tríadas en el Tonnetz: sin tríadas, no hay nada que dibujar.
         switch contenido {
         case .camino, .ciclo: _ = try red(Tonnetz.self, de: contenido, orden: "cuadricula")

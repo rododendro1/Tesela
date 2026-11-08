@@ -4,25 +4,27 @@ extension LineaDeComandos {
     /// Las transformaciones neorriemannianas y la conducción de voces, en el orden en que salen en la ayuda.
     static let ordenesDeNeorriemann: [Orden] = [
         Orden(
-            nombres: ["vecinos", "neighbors", "neighbours"], ayuda: ayudaDeVecinos, json: { try vecinosJSON($0, $1) },
-            ejecutar: { try vecinos($0, $1) }),
+            nombres: ["vecinos", "neighbors", "neighbours"], ayuda: ayudaDeVecinos,
+            json: { try vecinosJSON($0, $1.notacion) },
+            ejecutar: { try vecinos($0, $1.notacion) }),
         Orden(
             nombres: ["camino-parsimonioso", "smooth-path"],
-            ayuda: ayudaDeConduccionParsimoniosa, json: { try caminoParsimoniosoJSON($0, $1) },
-            ejecutar: { try caminoParsimonioso($0, $1) }),
+            ayuda: ayudaDeConduccionParsimoniosa, json: { try caminoParsimoniosoJSON($0, $1.notacion) },
+            ejecutar: { try caminoParsimonioso($0, $1.notacion) }),
         Orden(
             nombres: ["conduccion-minima", "minimal-voice-leading"],
-            ayuda: ayudaDeConduccionMinima, json: { try conduccionMinimaJSON($0, $1) },
-            ejecutar: { resto, notacion in
+            ayuda: ayudaDeConduccionMinima, json: { try conduccionMinimaJSON($0, $1.notacion) },
+            ejecutar: { resto, contexto in
+                let notacion = contexto.notacion
                 try Argumentos(resto).sinOpcionesDesconocidas()
                 guard resto.count == 2 else { throw ErrorDeUso.dosAcordesDeConduccion }
-                let conduccion = try Acorde(leyendoEnLaOrden: resto[0]).conduccionMinima(
-                    hasta: try Acorde(leyendoEnLaOrden: resto[1]))
+                let conduccion = try Acorde(leyendo: resto[0], enLaOrden: notacion).conduccionMinima(
+                    hasta: try Acorde(leyendo: resto[1], enLaOrden: notacion))
                 return bien(conduccion.texto(en: notacion))
             }),
         Orden(
-            nombres: ["plr", "neoriemannian"], ayuda: ayudaDePlr, json: { try plrJSON($0, $1) },
-            ejecutar: { try plr($0, $1) }),
+            nombres: ["plr", "neoriemannian"], ayuda: ayudaDePlr, json: { try plrJSON($0, $1.notacion) },
+            ejecutar: { try plr($0, $1.notacion) }),
     ]
 
     static let ayudaDeVecinos: [EntradaDeAyuda] = [

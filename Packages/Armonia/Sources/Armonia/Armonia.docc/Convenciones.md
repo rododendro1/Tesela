@@ -8,8 +8,8 @@ Lo que comparten varios tipos se declara una sola vez, en `Protocolos.swift`:
 
 | Protocolo | Requisito | Lo que aporta | Tipos |
 |---|---|---|---|
-| `RepresentableComoTexto` | `init(leyendo:)`, `texto(en:)` | literal de texto, `Codable`, `texto` | `Alteracion`, `Nota`, `Altura`, `Intervalo`, `TipoDeAcorde`, `Acorde`, `Escala`, `Tonalidad`, `Duracion`, `Compas`, `Evento`, `Coral`, `SerieDodecafonica`, `ConjuntoDeClasesDeAltura` |
-| `Nombrable` | `nombre(en:)` | el mismo nombre en cualquier `Notacion` | los anteriores salvo `Compas` y `Evento`, y casi todo lo que tiene nombre: `NotaNatural`, `CalidadDeIntervalo`, `Consonancia`, `TipoDeEscala`, `NombreDeGrado`, `Clave`, `Figura`, `InstrumentoDePartitura`, `PapelEnAcorde`, `CalidadDeTriada`, `Encordado`, `Arpegio`… |
+| `RepresentableComoTexto` | `init(leyendo:)`, `texto(en:)` | literal de texto, `Codable`, `texto` | `Alteracion`, `Nota`, `Altura`, `Intervalo`, `TipoDeAcorde`, `Acorde`, `Escala`, `Tonalidad`, `Duracion`, `Compas`, `Evento`, `Voz`, `Coral`, `SerieDodecafonica`, `ConjuntoDeClasesDeAltura` |
+| `Nombrable` | `nombre(en:)` | el mismo nombre en cualquier `Notacion` | los anteriores salvo `Compas`, `Evento` y `Voz`, y casi todo lo que tiene nombre: `NotaNatural`, `CalidadDeIntervalo`, `Consonancia`, `TipoDeEscala`, `NombreDeGrado`, `Clave`, `Figura`, `InstrumentoDePartitura`, `PapelEnAcorde`, `CalidadDeTriada`, `Encordado`, `Arpegio`… |
 | `Transponible` | `transponer(_:)` | operadores `+` y `−`, `transponer(_:veces:)`, `secuencia(_:veces:)` | `Nota`, `Altura`, `Acorde`, `Escala`, `Tonalidad`, `Melodia`, `Evento`, `Voz`, `Coral`, `RitmoArmonico`, `ConjuntoDeClasesDeAltura`, `SerieDodecafonica` |
 | `ConClasesDeAltura` | `conjuntoDeClasesDeAltura` | `numeroDeForte`, `vectorIntervalico`, `esDeLaMismaClase(que:)` | `Acorde`, `Escala`, `Tonalidad`, `Melodia`, `ConjuntoDeClasesDeAltura` |
 
@@ -40,9 +40,10 @@ Escala(.la, .menorArmonica).cifradosRomanos(referencia: .menorNatural)
 ```
 
 Literales y `Codable` llegan a través de `RepresentableComoTexto`. Solo `Escala` tiene su propio `Codable`, con la tónica y
-los intervalos, porque una escala de un modo sin nombre no se puede volver a leer de su texto. `Voz` y `Arpegio` no lo cumplen, porque su texto pierde
-algo siempre (el compás y la anacrusa de la voz; el patrón y las octavas del arpegio). Un literal no válido detiene la ejecución con el
-mensaje del error de lectura (es un error de programación). Para texto que viene del usuario, usa `init(leyendo:)`,
+los intervalos, porque una escala de un modo sin nombre no se puede volver a leer de su texto. La `Voz` lleva en su texto
+el compás, si no es 4/4, y la anacrusa entre paréntesis: `"3/4 (4) Sol4:4 Do5:2 Re5:4"`. `Arpegio` no lo cumple, porque
+su texto pierde siempre el patrón y las octavas. Un literal no válido detiene la ejecución con el mensaje del error de
+lectura (es un error de programación). Para texto que viene del usuario, usa `init(leyendo:)`,
 que dice dónde y por qué falla, o `try?` si basta con `nil`:
 
 ```swift

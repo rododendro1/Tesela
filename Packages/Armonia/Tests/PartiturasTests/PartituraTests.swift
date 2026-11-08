@@ -208,11 +208,45 @@ import Testing
         #expect(voz.transponer(.segundaMayor).melodia.alturas.first == Altura("Re4"))
         #expect(voz.melodia.alturas.count == 2)
         let unida = Voz(melodia: ["Do4", "Mi4", "Sol4"], ritmo: [.negra, .negra, .blanca], compas: "3/4")
-        #expect(unida?.texto(en: .ascii(.ingles)) == "C4:4 E4:4 G4:2")
+        #expect(unida?.texto(en: .ascii(.ingles)) == "3/4 C4:4 E4:4 G4:2")
         #expect(Voz(melodia: ["Do4", "Mi4"], ritmo: [.negra]) == nil)
         // Se codifica en JSON y vuelve igual.
         let datos = try JSONEncoder().encode(voz)
         #expect(try (JSONDecoder().decode(Voz.self, from: datos)) == voz)
+    }
+
+    /// El texto de una voz lleva su compás, si no es 4/4, y su anacrusa; se vuelve a leer igual en cualquier
+    /// notación, y así se codifica.
+    @Test func vozConCompasYAnacrusa() throws {
+        let voz = try Voz(leyendo: "Sol4:4 Do5:2 Re5:4", compas: "3/4", anacrusa: .negra)
+        #expect(voz.texto(en: .deCodificacion) == "3/4 (4) Sol4:4 Do5:2 Re5:4")
+        #expect("\(voz)" == "3/4 (4) Sol4:4 Do5:2 Re5:4")
+        for notacion in [Notacion.compacta(.espanol), .ascii(.ingles), .ascii(.aleman)] {
+            #expect(try Voz(leyendo: voz.texto(en: notacion)) == voz, "\(notacion)")
+        }
+        let json = String(decoding: try JSONEncoder().encode(voz), as: UTF8.self)
+        #expect(json == #""3\/4 (4) Sol4:4 Do5:2 Re5:4""#)
+        #expect(try JSONDecoder().decode(Voz.self, from: Data(json.utf8)) == voz)
+        // En 4/4 y sin anacrusa, solo los eventos; la descripción lleva siempre el compás.
+        let sinCabecera = try Voz(leyendo: "Do4:2 Re4:2")
+        #expect(sinCabecera.texto(en: .deCodificacion) == "Do4:2 Re4:2")
+        #expect("\(sinCabecera)" == "4/4 Do4:2 Re4:2")
+        #expect(try Voz(leyendo: "(8) Do4:8 Re4:1").anacrusa == .corchea)
+        #expect(try Voz(leyendo: "6/8 Do4:4.").compas == Compas(6, 8))
+        // Lo que lleva el texto cuenta más que lo que se da.
+        #expect(try Voz(leyendo: "2/4 Do4:2", compas: "3/4").compas == Compas(2, 4))
+        // La anacrusa va después del compás, cada uno una vez, y una duración que no lo es se señala en su sitio.
+        #expect(throws: (any Error).self) { try Voz(leyendo: "(4) 3/4 Do4:4") }
+        #expect(throws: (any Error).self) { try Voz(leyendo: "3/4 3/4 Do4:4") }
+        #expect(throws: (any Error).self) { try Voz(leyendo: "Do4:4 3/4") }
+        do {
+            _ = try Voz(leyendo: "3/4 (x) Do4:4")
+            Issue.record("debía fallar")
+        } catch let error as any ErrorAlLeer {
+            #expect(error.posicion == 5)
+        }
+        // Un JSON que no es una voz no se lee.
+        #expect(throws: DecodingError.self) { try JSONDecoder().decode(Voz.self, from: Data(#""3/4 Do4""#.utf8)) }
     }
 
     /// Al imprimir, una duración da su nombre; `texto` da la forma corta que se lee.

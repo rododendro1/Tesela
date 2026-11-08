@@ -19,7 +19,7 @@ extension LineaDeComandos {
         }
         try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDelTeclado }
-        let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
+        let escala = try Escala(leyendo: argumentos.unidos, enLaOrden: notacion)
         let svg = PresentacionDeEstudioDeEscala.teclado(de: escala, mano: mano, octavas: octavas, en: notacion)
         return bien(svg.trimmingCharacters(in: "\n"))
     }
@@ -30,7 +30,7 @@ extension LineaDeComandos {
         let quintas = argumentos.quitarMarca(.quintas)
         try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDelReloj }
-        let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
+        let escala = try Escala(leyendo: argumentos.unidos, enLaOrden: notacion)
         let svg = PresentacionDeEstudioDeEscala.reloj(
             de: escala, orden: quintas ? .quintas : .cromatico, en: notacion)
         return bien(svg.trimmingCharacters(in: "\n"))

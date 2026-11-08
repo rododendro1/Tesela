@@ -10,9 +10,11 @@ extension LineaDeComandos {
     /// sus sustituciones (en la tonalidad de `--en` o en la suya) y la conducción hasta otro acorde.
     static func acorde(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(textos)
-        guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
+        guard let tonalidad = try argumentos.quitarTonalidad(en: notacion) else {
+            throw ErrorDeUso.faltaTonalidadTrasEn
+        }
         var otro: Acorde?
-        if let texto = try argumentos.valor(.comparar) { otro = try Acorde(leyendoEnLaOrden: texto) }
+        if let texto = try argumentos.valor(.comparar) { otro = try Acorde(leyendo: texto, enLaOrden: notacion) }
         let pedido = RelacionesPedidas(
             bebop: argumentos.quitarMarca(.bebop),
             pentatonicas: argumentos.quitarMarca(.pentatonicas),
@@ -24,7 +26,7 @@ extension LineaDeComandos {
         try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifrado }
         let bloques = try argumentos.restantes.map { texto in
-            let acorde = try Acorde(leyendoEnLaOrden: texto)
+            let acorde = try Acorde(leyendo: texto, enLaOrden: notacion)
             return ([describir(acorde: acorde, notacion)] + relaciones(de: acorde, pedido, notacion))
                 .joined(separator: "\n")
         }
@@ -112,7 +114,8 @@ extension LineaDeComandos {
 
     /// `identificar Do Mi Sol Si Fa# [--escalas]` o `identificar --archivo melodia.mid`: los acordes que forman
     /// unas notas o, con `--escalas` o con un fichero, las escalas que las contienen.
-    static func identificarConOpciones(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+    static func identificarConOpciones(_ textos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {
+        let notacion = contexto.notacion
         var argumentos = Argumentos(textos)
         let conEscalas = argumentos.quitarMarca(.escalas)
         let archivo = try argumentos.valor(.archivo)
@@ -120,7 +123,7 @@ extension LineaDeComandos {
         let encontradas: [EscalaEncontrada]
         if let archivo {
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.archivoConNotas }
-            let datos = try Self.datos(deArchivo: archivo)
+            let datos = try Self.datos(deArchivo: archivo, contexto)
             let pieza = try PiezaImportada(leyendo: datos)
             encontradas = PresentacionDeEstudioDeEscala.escalas(de: pieza, en: notacion)
         } else {
@@ -128,7 +131,8 @@ extension LineaDeComandos {
             guard conEscalas else { return bien(try identificar(argumentos.restantes, notacion)) }
             // Con octava o sin ella, solo cuentan las notas.
             let notas = try argumentos.restantes.map { texto in
-                try (try? Altura(leyendoEnLaOrden: texto))?.nota ?? Nota(leyendoEnLaOrden: texto)
+                try (try? Altura(leyendo: texto, enLaOrden: notacion))?.nota
+                    ?? Nota(leyendo: texto, enLaOrden: notacion)
             }
             encontradas = PresentacionDeEstudioDeEscala.escalas(conLasNotas: notas, en: notacion)
         }
@@ -154,12 +158,12 @@ extension LineaDeComandos {
     /// `arpegio Do7 --patron alberti`: las notas del arpegio desde la octava 4 y las escalas que encajan con el
     /// acorde (Do7 → Do mixolidio…).
     static func arpegio(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        bien(try arpegios(textos).map { describir(arpegio: $0, notacion) }.joined(separator: "\n\n"))
+        bien(try arpegios(textos, en: notacion).map { describir(arpegio: $0, notacion) }.joined(separator: "\n\n"))
     }
 
     /// Los arpegios de `arpegio`, uno por acorde, para el texto y para `--json`. Lanza el `ErrorDeUso` si una opción
     /// está mal escrita.
-    static func arpegios(_ textos: [String]) throws -> [Arpegio] {
+    static func arpegios(_ textos: [String], en notacion: Notacion) throws -> [Arpegio] {
         var argumentos = Argumentos(textos)
         var patron = Arpegio.Patron.ascendente
         if let texto = try argumentos.valor(.patron) {
@@ -172,11 +176,13 @@ extension LineaDeComandos {
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifradoDelArpegio }
         var arpegios: [Arpegio] = []
         for texto in argumentos.restantes {
-            let acorde = try Acorde(leyendoEnLaOrden: texto)
+            let acorde = try Acorde(leyendo: texto, enLaOrden: notacion)
             var inicio = 0
             if let desde = recorrido.desde {
                 let delGrado = Int(desde).flatMap { Arpegio.indice(delGrado: $0, en: acorde) }
-                let deLaNota = (try? Nota(leyendoEnLaOrden: desde)).flatMap { Arpegio.indice(de: $0, en: acorde) }
+                let deLaNota = (try? Nota(leyendo: desde, enLaOrden: notacion)).flatMap {
+                    Arpegio.indice(de: $0, en: acorde)
+                }
                 guard let indice = delGrado ?? deLaNota else { throw ErrorDeUso.desdeNoValido(desde) }
                 inicio = indice
             }

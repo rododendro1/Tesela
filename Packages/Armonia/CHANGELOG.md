@@ -7,14 +7,24 @@
   `let triada: ConjuntoDeClasesDeAltura = "3-11"`), la serie y el conjunto tienen `texto(en:)`, y los tres se
   codifican como su texto, como los demás: `"Do3 Sol3 Mi4 Do5 | Sol2 Re4 Sol4 Si4"`, `"0 e 7 4 2 9 3 8 t 1 5 6"` y
   `"[0, 3, 7]"`, en lugar de `[["Do3", …], …]` y `[0, 11, 7, …]`. Lo guardado con la versión anterior ya no se lee.
+- **Cambio incompatible:** `Voz` es `RepresentableComoTexto`: su texto lleva delante el compás, si no es 4/4, y la
+  anacrusa entre paréntesis (`"3/4 (4) Sol4:4 Do5:2 Re5:4"`), `Voz(leyendo:)` los lee, y se codifica como ese texto en
+  lugar de `{"eventos": …, "compas": …, "anacrusa": …}` (también dentro de `Partitura`). `texto(en:)` de una voz que
+  no está en 4/4 lleva ahora el compás delante.
 - La documentación de `RepresentableComoTexto` explica por qué `Escala` tiene su propio `Codable` (un modo sin nombre
-  no se puede volver a leer de su texto) y por qué `Voz` y `Arpegio` no lo cumplen.
+  no se puede volver a leer de su texto) y por qué `Arpegio` no lo cumple.
 
 - En la consola, las órdenes y las opciones se leen con tildes o sin ellas, todas: `armonia cuadrícula`,
   `--estadísticas`, `--límite`, `--tríadas`, `--inglés`… (antes solo unas pocas, como `--compás` o `--patrón`). Los
   errores dicen la opción como se escribió.
 - `armonia neighbours` y `--neighbours`, con la ortografía británica, como `analyse` o `harmonise`.
 - El comentario de `ErrorAlLeer` explica por qué `ErrorDeLecturaDeUIL` y `ErrorDeLecturaDeFichero` no lo son.
+- Dentro de la consola, cada orden recibe lo que antes leía de valores de tarea (`@TaskLocal`): la notación, la
+  entrada estándar, el sistema móvil y la orden en curso van en un `ContextoDeOrden` que se le pasa. No cambia lo que
+  escribe ninguna orden. Las órdenes de escala se parten en dos ficheros: `escala`, y el catálogo (`escalas`,
+  `tradiciones`).
+- El CI mide también la cobertura de la consola, con sus mínimos, y el mínimo de líneas de `Exposicion` sube a 98,5 %
+  y el de funciones baja a 96 %, que cambia con solo mover código a una clausura.
 
 ### Orden interno: plantillas públicas y la cabecera de los escritores
 

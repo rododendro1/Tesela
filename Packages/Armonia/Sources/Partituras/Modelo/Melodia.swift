@@ -150,7 +150,10 @@ extension Melodia: Transponible, ConClasesDeAltura {}
 ///     voz.segundos(tempo: Tempo(90))
 ///     voz.melodia                  // Do4 Re4 Mi4 Fa4 Sol4
 ///     voz.ritmo                    // [4, 8, 8, 2., 4]
-public struct Voz: Hashable, Sendable, Codable {
+///
+/// Su texto lleva delante el compás, si no es 4/4, y la anacrusa entre paréntesis, si la hay: "3/4 (4) Sol4:4 Do5:2
+/// Re5:4", en 3/4 con una negra de anacrusa. Así se lee, se escribe y se codifica.
+public struct Voz: Hashable, Sendable {
     public var eventos: [Evento]
     public var compas: Compas
     /// Duración del compás incompleto inicial (0 si no hay anacrusa).
@@ -172,14 +175,41 @@ public struct Voz: Hashable, Sendable, Codable {
         self.init(zip(melodia.alturas, ritmo).map { Evento($0, $1) }, compas: compas, anacrusa: anacrusa)
     }
 
-    /// Lee eventos separados por espacios: "Do4:4 Re4:8 Mi4:8 -:4 Do4+Mi4:2~ Do4+Mi4:4".
+    /// Lee eventos separados por espacios: "Do4:4 Re4:8 Mi4:8 -:4 Do4+Mi4:2~ Do4+Mi4:4", en 4/4 y sin anacrusa si
+    /// el texto no los lleva delante ("3/4 (4) Sol4:4 …").
+    public init(leyendo texto: String) throws {
+        try self.init(leyendo: texto, compas: .compasillo, anacrusa: .cero)
+    }
+
+    /// Lee eventos separados por espacios en un compás y con una anacrusa; el compás y la anacrusa que lleve el
+    /// texto delante ("3/4 (4) Sol4:4 …") cuentan más que los que se dan.
     public init(leyendo texto: String, compas: Compas = .compasillo, anacrusa: Duracion = .cero) throws {
         var eventos: [Evento] = []
+        var (compas, anacrusa) = (compas, anacrusa)
+        var (conCompas, conAnacrusa) = (false, false)
         var inicio = 0
         for trozo in texto.split(separator: " ", omittingEmptySubsequences: false) {
             defer { inicio += trozo.count + 1 }
             guard !trozo.isEmpty else { continue }
-            do { eventos.append(try Evento(leyendo: String(trozo))) } catch let e as any ErrorAlLeer {
+            do {
+                // Antes del primer evento (todos llevan «:»), el compás y la anacrusa, cada uno una vez.
+                if eventos.isEmpty, !trozo.contains(":") {
+                    if !conAnacrusa, trozo.hasPrefix("("), trozo.hasSuffix(")"), trozo.count > 2 {
+                        do {
+                            anacrusa = try Duracion(leyendo: String(trozo.dropFirst().dropLast()))
+                        } catch let e as any ErrorAlLeer {
+                            throw e.situado(en: String(trozo), posicion: 1 + (e.posicion ?? 0))
+                        }
+                        conAnacrusa = true
+                        continue
+                    }
+                    if !conCompas, !conAnacrusa, let leido = try? Compas(leyendo: String(trozo)) {
+                        (compas, conCompas) = (leido, true)
+                        continue
+                    }
+                }
+                eventos.append(try Evento(leyendo: String(trozo)))
+            } catch let e as any ErrorAlLeer {
                 throw e.situado(en: texto, posicion: inicio + (e.posicion ?? 0))
             }
         }
@@ -398,17 +428,24 @@ public struct Voz: Hashable, Sendable, Codable {
         return Voz(religados, compas: compas)
     }
 
-    /// Los eventos como texto, en español: "Do₄:4 Re₄:8 Mi₄:8".
+    /// La voz como texto, en español: "Do₄:4 Re₄:8 Mi₄:8"; en 3/4, "3/4 Do₄:4 Re₄:8 Mi₄:8".
     public var texto: String { texto(en: .compacta(.espanol)) }
+}
 
-    /// Los eventos como texto, separados por espacios: "Do4:4 Re4:8 Mi4:8".
+extension Voz: RepresentableComoTexto {
+    /// Los eventos, separados por espacios, con el compás delante si no es 4/4 y la anacrusa entre paréntesis si la
+    /// hay: "Do4:4 Re4:8 Mi4:8", "3/4 (4) Sol4:4 Do5:2 Re5:4".
     public func texto(en notacion: Notacion) -> String {
-        eventos.map { $0.texto(en: notacion) }.joined(separator: " ")
+        let cabecera =
+            (compas == .compasillo ? [] : [compas.description])
+            + (anacrusa > .cero ? ["(" + anacrusa.texto(en: notacion) + ")"] : [])
+        return (cabecera + eventos.map { $0.texto(en: notacion) }).joined(separator: " ")
     }
 }
 
 extension Voz: CustomStringConvertible {
-    public var description: String { "\(compas) " + texto(en: .deCodificacion) }
+    /// El texto con el compás siempre delante: "4/4 Do4:4 Re4:8 Mi4:8".
+    public var description: String { (compas == .compasillo ? "4/4 " : "") + texto(en: .deCodificacion) }
 }
 
 extension Voz: Transponible {}

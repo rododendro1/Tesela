@@ -19,8 +19,7 @@ import Foundation
 /// pueda perder algo al escribirse lo dice en su `texto(en:)` y se codifica con su estructura, con su propio
 /// `Codable`, como `Escala`: un modo sin nombre no se puede volver a leer de su texto.
 ///
-/// No lo son los que pierden algo siempre: `Voz` (su texto no lleva el compás ni la anacrusa) y `Arpegio` (se lee
-/// solo el acorde, sin el patrón ni las octavas).
+/// No lo es el que pierde algo siempre: `Arpegio`, que se lee solo el acorde, sin el patrón ni las octavas.
 public protocol RepresentableComoTexto: Codable, ExpressibleByStringLiteral where StringLiteralType == String {
     /// Lee un texto. Si no se puede, lanza un `ErrorAlLeer` (`ErrorDeLectura` o el de su capa) con la posición y
     /// el motivo.

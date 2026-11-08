@@ -7,8 +7,9 @@ import Foundation
 extension LineaDeComandos {
     /// `armonizar Mi4 Re4 Do4`: las mejores armonizaciones y, si las notas llevan octava, el coral a
     /// cuatro voces con la melodía en el soprano.
-    static func armonizar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let coral = try coralArmonizado(argumentos, notacion)
+    static func armonizar(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {
+        let notacion = contexto.notacion
+        let coral = try coralArmonizado(argumentos, contexto)
         guard !coral.avisos.contains(.sinArmonizacion) else {
             return bien(CoralPresentado.Aviso.sinArmonizacion.texto(en: notacion))
         }
@@ -29,18 +30,19 @@ extension LineaDeComandos {
     }
 
     /// La armonización de `armonizar`, para el texto y para `--json`.
-    static func coralArmonizado(_ argumentos: [String], _ notacion: Notacion) throws -> CoralPresentado {
+    static func coralArmonizado(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> CoralPresentado {
+        let notacion = contexto.notacion
         var argumentos = Argumentos(argumentos)
         guard let propuestas = argumentos.quitarNumero(.propuestas, en: 1...20, porDefecto: 3) else {
             throw ErrorDeUso.propuestasFueraDeRango
         }
-        guard let dada = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
+        guard let dada = try argumentos.quitarTonalidad(en: notacion) else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let archivo = try argumentos.valor(.archivo)
         try argumentos.sinOpcionesDesconocidas()
         // Con `--archivo`, la melodía del fichero (su voz más aguda), con su ritmo, en su tonalidad si la dice.
         if let archivo {
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.archivoConNotas }
-            let pieza = try PiezaImportada(leyendo: try datos(deArchivo: archivo))
+            let pieza = try PiezaImportada(leyendo: try datos(deArchivo: archivo, contexto))
             return try PresentacionDeCoral.armonizar(
                 try pieza.melodia().texto, en: dada ?? pieza.tonalidad, propuestas: propuestas,
                 notacion: notacion)
@@ -51,8 +53,9 @@ extension LineaDeComandos {
     }
 
     /// `realizar Do Fa Sol7 Do`: los acordes escritos a cuatro voces, sin faltas.
-    static func realizar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let coral = try coralRealizado(argumentos, notacion)
+    static func realizar(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {
+        let notacion = contexto.notacion
+        let coral = try coralRealizado(argumentos, contexto)
         guard !coral.avisos.contains(.sinRealizacion) else {
             return bien(CoralPresentado.Aviso.sinRealizacion.texto(en: notacion))
         }
@@ -60,9 +63,12 @@ extension LineaDeComandos {
     }
 
     /// La realización de `realizar`, para el texto y para `--json`.
-    static func coralRealizado(_ argumentos: [String], _ notacion: Notacion) throws -> CoralPresentado {
+    static func coralRealizado(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> CoralPresentado {
+        let notacion = contexto.notacion
         var argumentos = Argumentos(argumentos)
-        guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
+        guard let tonalidad = try argumentos.quitarTonalidad(en: notacion) else {
+            throw ErrorDeUso.faltaTonalidadTrasEn
+        }
         let archivo = try argumentos.valor(.archivo)
         let ventana = try argumentos.valor(.ventana).map { try Duracion(leyendo: $0) }
         let conBajoCifrado = argumentos.quitarMarca(.bajoCifrado)
@@ -75,7 +81,7 @@ extension LineaDeComandos {
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanAcordesDeLaRealizacion }
             let texto = argumentos.unidos
             let bajos = try argumentos.restantes.map {
-                try Nota(leyendoEnLaOrden: String($0.split(separator: ":", maxSplits: 1).first ?? ""))
+                try Nota(leyendo: String($0.split(separator: ":", maxSplits: 1).first ?? ""), enLaOrden: notacion)
             }
             guard let enTono = tonalidad ?? Tonalidad.candidatos(notas: bajos).first?.valor else {
                 throw ErrorDeUso.faltaTonalidad
@@ -86,7 +92,7 @@ extension LineaDeComandos {
         // Con `--archivo`, los acordes del fichero (por sus cambios de armonía, o en ventanas de `--ventana`).
         if let archivo {
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.archivoConAcordes }
-            let pieza = try PiezaImportada(leyendo: try datos(deArchivo: archivo))
+            let pieza = try PiezaImportada(leyendo: try datos(deArchivo: archivo, contexto))
             guard let analisis = pieza.analisis(en: tonalidad, ventana: ventana) else {
                 throw ErrorDeUso.archivoSinAcordes
             }
@@ -98,20 +104,22 @@ extension LineaDeComandos {
 
     /// `revisar Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4`: las faltas de conducción, una por línea. Con alguna, el código
     /// de salida es 3.
-    static func revisar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let coral = try coralRevisado(argumentos, notacion)
+    static func revisar(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {
+        let notacion = contexto.notacion
+        let coral = try coralRevisado(argumentos, contexto)
         let texto = coral.avisos.map { $0.texto(en: notacion) }.joined(separator: "\n")
         return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: faltas(de: coral).isEmpty ? 0 : 3)
     }
 
     /// El coral de `revisar`, con sus faltas en los avisos: el escrito o, con `--archivo`, el de un fichero.
-    static func coralRevisado(_ argumentos: [String], _ notacion: Notacion) throws -> CoralPresentado {
+    static func coralRevisado(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> CoralPresentado {
+        let notacion = contexto.notacion
         var argumentos = Argumentos(argumentos)
         let archivo = try argumentos.valor(.archivo)
         try argumentos.sinOpcionesDesconocidas()
         if let archivo {
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.archivoConAcordes }
-            let pieza = try PiezaImportada(leyendo: try datos(deArchivo: archivo))
+            let pieza = try PiezaImportada(leyendo: try datos(deArchivo: archivo, contexto))
             return PresentacionDeCoral.revisar(try pieza.coral(), en: notacion)
         }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanAcordesDeLasVoces }
@@ -214,7 +222,8 @@ extension LineaDeComandos {
     ///
     /// Con `--archivo`, el fichero transportado, como partitura: en el formato de `--formato` o, si no se da, en el
     /// del fichero (MusicXML si no es MIDI, MEI ni ABC).
-    static func transponer(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+    static func transponer(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {
+        let notacion = contexto.notacion
         var leidos = Argumentos(argumentos)
         guard let archivo = try leidos.valor(.archivo) else { return bien(try transporte(argumentos, notacion).texto) }
         let formatoEscrito = try leidos.valor(.formato)
@@ -229,13 +238,13 @@ extension LineaDeComandos {
         } else {
             formato = FormatoDePartitura(ruta: archivo) ?? .musicXML
         }
-        let pieza = try PiezaImportada(leyendo: try datos(deArchivo: archivo))
+        let pieza = try PiezaImportada(leyendo: try datos(deArchivo: archivo, contexto))
         let primero = leidos.restantes[0]
         let intervalo: Intervalo
         if let leido = try? Intervalo(leyendo: primero) {
             intervalo = leido
         } else {
-            let destino = try Nota(leyendoEnLaOrden: primero)
+            let destino = try Nota(leyendo: primero, enLaOrden: notacion)
             intervalo = (pieza.tonalidadEstimada?.tonica ?? destino).intervaloMasCorto(hasta: destino)
         }
         let datos = pieza.transponer(intervalo).partitura().exportar(como: formato)
@@ -261,7 +270,7 @@ extension LineaDeComandos {
         if let leido = try? Intervalo(leyendo: primero) {
             intervalo = leido
         } else {
-            let destino = try Nota(leyendoEnLaOrden: primero)
+            let destino = try Nota(leyendo: primero, enLaOrden: notacion)
             let origen = PresentacionDeTransposicion.tonalidad(de: texto, contenido: contenido)?.tonica ?? destino
             intervalo = origen.intervaloMasCorto(hasta: destino)
         }
@@ -274,10 +283,10 @@ extension LineaDeComandos {
     /// acorde, con su número en la progresión.
     static func rearmonizar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var acordes = Argumentos(argumentos)
-        guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
+        guard let tonalidad = try acordes.quitarTonalidad(en: notacion) else { throw ErrorDeUso.faltaTonalidadTrasEn }
         try acordes.sinOpcionesDesconocidas()
         guard !acordes.restantes.isEmpty else { throw ErrorDeUso.faltanAcordesDeLaRearmonizacion }
-        let leidos = try acordes.restantes.map { try Acorde(leyendoEnLaOrden: $0) }
+        let leidos = try acordes.restantes.map { try Acorde(leyendo: $0, enLaOrden: notacion) }
         guard let resultado = PresentacionDeRearmonizacion.proponer(leidos, en: tonalidad, notacion: notacion) else {
             throw ErrorDeUso.faltanAcordesDeLaRearmonizacion
         }
