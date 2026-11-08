@@ -1,5 +1,16 @@
 # Cambios
 
+## Sin publicar
+
+### Orden interno: plantillas públicas y la cabecera de los escritores
+
+- `Plantilla`, el texto con huecos `{1}`, `{2}`… de los textos traducidos, es pública: la usan también los textos de
+  la consola y de las apps.
+- Los escritores de partituras (MusicXML, MEI, LilyPond, GUIDO y ABC) guardan el compás, la anacrusa, la tonalidad, el
+  tempo, el título, la parte y las claves en una `CabeceraDePartitura`, y el rótulo de la tonalidad del análisis es un
+  `Rotulo`. No cambia ningún fichero exportado.
+- La entrada del catálogo de escalas por identidad es un tipo (`EntradaDelCatalogo`), no una tupla.
+
 ## 0.4.1 (2026-11-08)
 
 ### El apartado de escalas, reorganizado

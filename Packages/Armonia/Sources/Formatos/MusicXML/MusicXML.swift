@@ -46,34 +46,17 @@ package struct EscritorMusicXML: EscritorDePartitura {
         package var letras: [String] = []
     }
 
-    package let compas: Compas
-    package let anacrusa: Duracion
-    package let tonalidad: Tonalidad?
-    package let tempo: Tempo?
-    package let titulo: String?
-    package let parte: String
-    package let claves: [Clave]
+    package let cabecera: CabeceraDePartitura
     package var lineas: [Linea] = []
     package var tablaturas: [PentagramaDeTablatura] = []
 
     /// Los pentagramas de la parte: los de las claves y, debajo, los de tablatura.
     private var numeroDePentagramas: Int { claves.count + tablaturas.count }
 
-    package init(
-        compas: Compas, anacrusa: Duracion, tonalidad: Tonalidad?, tempo: Tempo?,
-        titulo: String?, parte: String, claves: [Clave]
-    ) {
-        self.compas = compas
-        self.anacrusa = anacrusa
-        self.tonalidad = tonalidad
-        self.tempo = tempo
-        self.titulo = titulo
-        self.parte = parte
-        self.claves = claves
-    }
+    package init(cabecera: CabeceraDePartitura) { self.cabecera = cabecera }
 
     /// Un texto debajo del primer pentagrama de la línea, al principio (la tonalidad del análisis).
-    package var rotulo: (texto: String, pentagrama: Int)?
+    package var rotulo: Rotulo?
 
     package mutating func anadir(
         _ voz: Voz, pentagrama: Int, numero: Int, plica: String?,

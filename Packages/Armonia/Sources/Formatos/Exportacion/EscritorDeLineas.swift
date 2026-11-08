@@ -31,11 +31,7 @@ extension EscritorDeLineas {
 // MARK: - Escritor de texto
 
 /// Un escritor de un formato de texto: ver `EscritorABC`, `EscritorLilyPond` y `EscritorGUIDO`.
-package protocol EscritorDeTexto: EscritorDeLineas {
-    var compas: Compas { get }
-    var anacrusa: Duracion { get }
-    var claves: [Clave] { get }
-}
+package protocol EscritorDeTexto: EscritorDeLineas {}
 
 extension EscritorDeTexto {
     /// La clave de un pentagrama (contados desde 1); la de sol si no tiene.

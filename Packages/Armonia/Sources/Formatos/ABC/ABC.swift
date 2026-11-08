@@ -16,33 +16,16 @@ import Teoria
 
 /// Reúne varias voces, cada una en un pentagrama, y escribe la pieza en ABC (una voz `V:` por línea).
 package struct EscritorABC: EscritorDeTexto {
-    package let compas: Compas
-    package let anacrusa: Duracion
-    package let tonalidad: Tonalidad?
-    package let tempo: Tempo?
-    package let titulo: String?
-    package let parte: String
-    package let claves: [Clave]
+    package let cabecera: CabeceraDePartitura
     package var lineas: [Exportacion.LineaAnotada] = []
-    package var rotulo: (texto: String, pentagrama: Int)?
+    package var rotulo: Rotulo?
 
     /// La duración de `L:`, a la que se refieren las de las notas: la negra.
     private static let unidad = Duracion.negra
     /// Compases por renglón.
     private static let compasesPorRenglon = 4
 
-    package init(
-        compas: Compas, anacrusa: Duracion, tonalidad: Tonalidad?, tempo: Tempo?,
-        titulo: String?, parte: String, claves: [Clave]
-    ) {
-        self.compas = compas
-        self.anacrusa = anacrusa
-        self.tonalidad = tonalidad
-        self.tempo = tempo
-        self.titulo = titulo
-        self.parte = parte
-        self.claves = claves
-    }
+    package init(cabecera: CabeceraDePartitura) { self.cabecera = cabecera }
 
     package var documento: String {
         var abc = "X:1\nT:\(EscritorABC.texto(titulo ?? ""))\n"

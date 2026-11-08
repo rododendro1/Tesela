@@ -19,28 +19,11 @@ import Teoria
 /// Reúne varias voces, cada una en una secuencia `[ … ]` con su `\staff`, y escribe el segmento `{ … }` del fichero
 /// `.gmn`.
 package struct EscritorGUIDO: EscritorDeTexto {
-    package let compas: Compas
-    package let anacrusa: Duracion
-    package let tonalidad: Tonalidad?
-    package let tempo: Tempo?
-    package let titulo: String?
-    package let parte: String
-    package let claves: [Clave]
+    package let cabecera: CabeceraDePartitura
     package var lineas: [Exportacion.LineaAnotada] = []
-    package var rotulo: (texto: String, pentagrama: Int)?
+    package var rotulo: Rotulo?
 
-    package init(
-        compas: Compas, anacrusa: Duracion, tonalidad: Tonalidad?, tempo: Tempo?,
-        titulo: String?, parte: String, claves: [Clave]
-    ) {
-        self.compas = compas
-        self.anacrusa = anacrusa
-        self.tonalidad = tonalidad
-        self.tempo = tempo
-        self.titulo = titulo
-        self.parte = parte
-        self.claves = claves
-    }
+    package init(cabecera: CabeceraDePartitura) { self.cabecera = cabecera }
 
     package var documento: String {
         // Sin voces, un pentagrama con un compás de silencio.
