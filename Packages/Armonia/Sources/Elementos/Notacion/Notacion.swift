@@ -371,12 +371,12 @@ public enum EscrituraDeNotas: Hashable, Sendable, CaseIterable {
 /// 2. Su fila en ``ReglasDeIdioma``: su código, cómo se llama, las sílabas, cómo se le pega la alteración, los modos,
 ///    las abreviaturas de los intervalos y el plural.
 /// 3. Su fila en `Scripts/comprobaciones/idiomas.py`.
-/// 4. Un campo en `Traducido`, con su argumento en los inicializadores y su caso en `texto(en:)`.
+/// 4. Su argumento en el inicializador de `Traducido`, en el orden de `allCases`.
 /// 5. Un fichero de textos por módulo en cada carpeta `Textos/`, que `comprobar_traducciones` busca.
 ///
-/// Los nombres de nota y los datos del idioma no tienen más `switch` sobre `Idioma` que el de las reglas y el de
-/// `Traducido`. Ninguno tiene `default`, así que el compilador señala lo que falta, y cada `TextosDeX` sin el idioma
-/// nuevo deja de compilar.
+/// Los nombres de nota y los datos del idioma no tienen más `switch` sobre `Idioma` que el de las reglas, sin
+/// `default`, así que el compilador señala lo que falta; `Traducido` guarda sus valores en el orden de `allCases`, y
+/// cada `TextosDeX` sin el argumento del idioma nuevo deja de compilar.
 public enum Idioma: String, Hashable, Sendable, CaseIterable, Codable {
     case espanol
     case ingles

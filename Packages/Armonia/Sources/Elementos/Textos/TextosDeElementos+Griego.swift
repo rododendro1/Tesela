@@ -46,7 +46,7 @@ extension TextosDeElementos {
         unisonoDisminuido: "δεν υπάρχει ελαττωμένη πρώτη: από ντο σε ντο ύφεση είναι κατιούσα αυξημένη πρώτη (γράψε -A1)",
         reglaDeLasJustas: "η πρώτη, η τέταρτη, η πέμπτη και η όγδοη είναι καθαρές, αυξημένες ή ελαττωμένες",
         reglaDeLasMayores: "η δεύτερη, η τρίτη, η έκτη και η έβδομη είναι μεγάλες, μικρές, αυξημένες ή ελαττωμένες",
-        intervaloInexistente: { numero, calidad, notacion, regla in "δεν υπάρχει \(calidad.nombre(en: .conPalabras(.griego))) \(Intervalo.ordinal(numero, en: .griego)): \(regla.griego)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "δεν υπάρχει \(calidad.nombre(en: .conPalabras(.griego))) \(Intervalo.ordinal(numero, en: .griego)): \(regla.texto(en: .griego))" },
         alteracionNoReconocida: { signo in "το «\(signo)» δεν είναι αλλοίωση (αναμενόταν ♯, ♭, 𝄪, 𝄫, #, b, x ή ♮)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

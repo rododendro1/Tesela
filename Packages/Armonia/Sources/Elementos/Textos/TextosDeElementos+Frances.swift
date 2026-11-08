@@ -46,7 +46,7 @@ extension TextosDeElementos {
         unisonoDisminuido: "l'unisson diminué n'existe pas : de do à do♭, il y a un unisson augmenté descendant (écrivez -1A)",
         reglaDeLasJustas: "l'unisson, la quarte, la quinte et l'octave sont justes, augmentées ou diminuées",
         reglaDeLasMayores: "la seconde, la tierce, la sixte et la septième sont majeures, mineures, augmentées ou diminuées",
-        intervaloInexistente: { numero, calidad, notacion, regla in "il n'existe pas de \(numero)e \(calidad.nombre(en: .conPalabras(.frances))) : \(regla.frances)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "il n'existe pas de \(numero)e \(calidad.nombre(en: .conPalabras(.frances))) : \(regla.texto(en: .frances))" },
         alteracionNoReconocida: { signo in "« \(signo) » n'est pas une altération (♯, ♭, 𝄪, 𝄫, #, b, x ou ♮ attendu)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

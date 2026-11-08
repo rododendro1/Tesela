@@ -46,7 +46,7 @@ extension TextosDeElementos {
         unisonoDisminuido: "não existe o uníssono diminuto: de Dó a Dó♭ há um uníssono aumentado descendente (escreva -1A)",
         reglaDeLasJustas: "o uníssono, a 4ª, a 5ª e a 8ª são justas, aumentadas ou diminutas",
         reglaDeLasMayores: "a 2ª, a 3ª, a 6ª e a 7ª são maiores, menores, aumentadas ou diminutas",
-        intervaloInexistente: { numero, calidad, notacion, regla in "não existe a \(numero)ª \(calidad.nombre(en: .conPalabras(.portugues))): \(regla.portugues)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "não existe a \(numero)ª \(calidad.nombre(en: .conPalabras(.portugues))): \(regla.texto(en: .portugues))" },
         alteracionNoReconocida: { signo in "«\(signo)» não é uma alteração (esperava-se ♯, ♭, 𝄪, 𝄫, #, b, x ou ♮)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

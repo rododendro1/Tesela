@@ -46,7 +46,7 @@ extension TextosDeElementos {
         unisonoDisminuido: "l'unisono diminuito non esiste: da Do a Do♭ c'è un unisono aumentato discendente (scrivilo -1A)",
         reglaDeLasJustas: "l'unisono, la 4ª, la 5ª e l'8ª sono giuste, aumentate o diminuite",
         reglaDeLasMayores: "la 2ª, la 3ª, la 6ª e la 7ª sono maggiori, minori, aumentate o diminuite",
-        intervaloInexistente: { numero, calidad, notacion, regla in "non esiste la \(numero)ª \(calidad.nombre(en: .conPalabras(.italiano))): \(regla.italiano)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "non esiste la \(numero)ª \(calidad.nombre(en: .conPalabras(.italiano))): \(regla.texto(en: .italiano))" },
         alteracionNoReconocida: { signo in "«\(signo)» non è un'alterazione (si aspettava ♯, ♭, 𝄪, 𝄫, #, b, x o ♮)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

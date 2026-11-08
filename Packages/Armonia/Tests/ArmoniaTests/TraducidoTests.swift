@@ -10,6 +10,17 @@ import Testing
 @testable import Trastes
 
 @Suite struct TraducidoTests {
+    /// Cada idioma lee su valor: el del inicializador, en el orden de `Idioma.allCases`.
+    @Test func cadaIdiomaEnSuSitio() {
+        let codigos = Traduccion(
+            "es", "en", ca: "ca", gl: "gl", eu: "eu", pt: "pt", fr: "fr", it: "it", de: "de",
+            el: "el", ru: "ru", hu: "hu", sv: "sv")
+        for idioma in Idioma.allCases { #expect(codigos.texto(en: idioma) == idioma.codigo) }
+        #expect(Traducido(porIdioma: { $0 }).todos == Idioma.allCases)
+        #expect(codigos.map { $0.uppercased() }.texto(en: .sueco) == "SV")
+        #expect(Traducido(cadaIdioma: { $0.idiomaDeLasNotas }).todos == Idioma.allCases)
+    }
+
     @Test func unValorPorIdioma() {
         let numeros = Traducido<[String]>(
             ["uno", "dos"], ["one", "two"], ca: ["un", "dos"], gl: ["un", "dous"], eu: ["bat", "bi"],

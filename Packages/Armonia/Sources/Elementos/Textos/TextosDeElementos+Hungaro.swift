@@ -46,7 +46,7 @@ extension TextosDeElementos {
         unisonoDisminuido: "szűkített prím nincs: C-ből Cesz-be lefelé bővített prím vezet (írd így: -A1)",
         reglaDeLasJustas: "a prím, a kvart, a kvint és az oktáv tiszta, bővített vagy szűkített",
         reglaDeLasMayores: "a szekund, a terc, a szext és a szeptim nagy, kis, bővített vagy szűkített",
-        intervaloInexistente: { numero, calidad, notacion, regla in "nincs \(calidad.nombre(en: notacion)) \(Intervalo.ordinal(numero, en: .hungaro)): \(regla.hungaro)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "nincs \(calidad.nombre(en: notacion)) \(Intervalo.ordinal(numero, en: .hungaro)): \(regla.texto(en: .hungaro))" },
         alteracionNoReconocida: { signo in "„\(signo)” nem módosítójel (♯, ♭, 𝄪, 𝄫, #, b, x vagy ♮ várható)" },
 
         // ErrorDeLectura.swift (conjuntos y series)
