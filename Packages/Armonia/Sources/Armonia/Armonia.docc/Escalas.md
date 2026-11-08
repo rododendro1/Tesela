@@ -393,6 +393,24 @@ TipoDeEscala.tradicionales(clase: .fragmento).count   // 48
 TipoDeEscala.tradicionales(clase: .afinacion).count   // 18
 ```
 
+### Referencias
+
+`referencias` dice dónde se lee una escala de otra tradición: las obras (``Referencia``) que cita su declaración,
+las de su lista, la del teórico que la definió (`fuente`) y las de sus afinaciones. Cada obra es una constante
+(`Referencia.west1992`, `.touma1996`…; todas en `Referencia.catalogo`), y una cita es la obra con las páginas que
+se citan (`.west1992.paginas("160–172")`). `fuente` dice quién definió la escala; `referencias`, dónde la hemos
+leído. Los títulos no se traducen. `Referencia.bibtex(_:)` y `Referencia.cslJSON(_:)` las escriben en BibTeX y en
+CSL-JSON (el formato de Zotero y de Pandoc).
+
+```swift
+TipoDeEscala.bayati.referencias.map(\.cita)               // ["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019"]
+TipoDeEscala.tetracordoDiatonicoTenso.referencias.first == .barker1989   // true
+Referencia.west1992.paginas("160–172").cita              // "West 1992: 160–172"
+Referencia.west1992.descripcion                          // "West, M. L. (1992). Ancient Greek Music. Oxford: Clarendon Press."
+FuenteTeorica.zarlino.referencia == .zarlino1558         // true
+TipoDeEscala.mayor.referencias.isEmpty                   // true
+```
+
 ### Microtonos
 
 Algunas escalas aproximadas tienen también su versión microtonal, `microtonal` (un ``TipoDeEscalaMicrotonal``):

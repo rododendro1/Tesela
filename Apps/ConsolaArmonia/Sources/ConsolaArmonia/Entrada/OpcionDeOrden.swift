@@ -81,6 +81,7 @@ extension OpcionDeOrden {
     static let bajando = marca("--bajando", "--descending")
     static let bajo = marca("--bajo", "--walking-bass")
     static let bajoCifrado = marca("--bajo-cifrado", "--figured-bass")
+    static let bibtex = marca("--bibtex")
     static let barrido = marca("--barrido", "--sweep")
     static let bebop = marca("--bebop")
     static let caged = marca("--caged")

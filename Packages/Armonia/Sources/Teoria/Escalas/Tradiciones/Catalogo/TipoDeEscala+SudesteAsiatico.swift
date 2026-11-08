@@ -19,7 +19,7 @@ extension TipoDeEscala {
         intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["tailandesa"], variantes: ["ปี่พาทย์"],
         categoria: .afinacion, regiones: [.tailandia],
-        afinaciones: [.equiheptatonica])
+        afinaciones: [.equiheptatonica], referencias: [.morton1976])
     /// Pinpeat (siete partes iguales de 171 cents): Do Re Mi♭ Fa Sol La Si♭ en doce notas.
     public static let pinpeat = TipoDeEscala(
         nombre: "Pinpeat",

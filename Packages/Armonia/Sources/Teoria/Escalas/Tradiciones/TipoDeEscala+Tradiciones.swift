@@ -45,20 +45,38 @@ extension TipoDeEscala {
     /// `tradicionales`. La tradición de cada escala está en su ficha, y una prueba comprueba que es la de su lista.
     /// Una lista nueva se apunta aquí, al final, y una tradición nueva necesita al menos una.
     static let listasTradicionales: [ListaTradicional] = [
-        .init(.india, thaats), .init(.grecia, dromoi), .init(.india, melakartas), .init(.india, janyas),
-        .init(.india, gramas), .init(.india, murchanas), .init(.china, chinas), .init(.japon, japonesas),
-        .init(.etiopia, etiopes), .init(.mundoArabe, maqamat), .init(.indonesia, indonesias),
-        .init(.indonesia, pathets), .init(.klezmer, klezmer), .init(.india, ragasIndostanicos), .init(.persia, dastgah),
-        .init(.corea, coreanas), .init(.andes, andinas), .init(.greciaAntigua, tetracordosGriegos),
-        .init(.greciaAntigua, generosDeArquitasYPtolomeo), .init(.greciaAntigua, harmoniai), .init(.turquia, makamlar),
-        .init(.azerbaiyan, mugamlar), .init(.bizancio, echoi), .init(.mesopotamia, mesopotamicas),
-        .init(.mundoArabe, ajnas), .init(.turquia, cesniler), .init(.africa, africanas),
-        .init(.sudesteAsiatico, sudesteAsiaticas), .init(.gregoriano, modosGregorianos),
-        .init(.greciaAntigua, generosDeDidimoYEratostenes), .init(.greciaAntigua, harmoniaiCromaticas),
-        .init(.greciaAntigua, harmoniaiEnarmonicas), .init(.greciaAntigua, harmoniaiDeAristides),
-        .init(.gregoriano, hexacordos), .init(.europa, europeas), .init(.gregoriano, modosDeGlareano),
-        .init(.vietnam, vietnamitas), .init(.brasil, brasilenas), .init(.greciaAntigua, coloresDeAristoxeno),
-        .init(.mundoArabe, adwar), .init(.china, lus), .init(.renacimiento, escalasRenacentistas),
+        .init(.india, thaats, referencias: [.jairazbhoy1971, .kaufmann1968]), .init(.grecia, dromoi),
+        .init(.india, melakartas, referencias: [.kaufmann1976]), .init(.india, janyas, referencias: [.kaufmann1976]),
+        .init(.india, gramas, referencias: [.rowell1992]), .init(.india, murchanas, referencias: [.rowell1992]),
+        .init(.china, chinas), .init(.japon, japonesas, referencias: [.malm1959]),
+        .init(.etiopia, etiopes, referencias: [.kebede1971]),
+        .init(.mundoArabe, maqamat, referencias: [.maqamWorld, .touma1996, .farraj2019]),
+        .init(.indonesia, indonesias, referencias: [.surjodiningrat1972, .tenzer2000]),
+        .init(.indonesia, pathets, referencias: [.surjodiningrat1972, .tenzer2000]),
+        .init(.klezmer, klezmer, referencias: [.rubin2020]),
+        .init(.india, ragasIndostanicos, referencias: [.jairazbhoy1971, .kaufmann1968]),
+        .init(.persia, dastgah, referencias: [.farhat1990]),
+        .init(.corea, coreanas), .init(.andes, andinas, referencias: [.harcourt1925]),
+        .init(.greciaAntigua, tetracordosGriegos, referencias: [.chalmers1993, .west1992]),
+        .init(.greciaAntigua, generosDeArquitasYPtolomeo, referencias: [.chalmers1993, .west1992]),
+        .init(.greciaAntigua, harmoniai, referencias: [.west1992]),
+        .init(.turquia, makamlar, referencias: [.tdvIslamAnsiklopedisi, .signell1977]),
+        .init(.azerbaiyan, mugamlar, referencias: [.hacibeyov1945]), .init(.bizancio, echoi),
+        .init(.mesopotamia, mesopotamicas, referencias: [.kilmer1971, .gurney1994, .west1994]),
+        .init(.mundoArabe, ajnas, referencias: [.maqamWorld, .touma1996]),
+        .init(.turquia, cesniler, referencias: [.signell1977]), .init(.africa, africanas),
+        .init(.sudesteAsiatico, sudesteAsiaticas),
+        .init(.gregoriano, modosGregorianos, referencias: [.apel1958, .powers2001]),
+        .init(.greciaAntigua, generosDeDidimoYEratostenes, referencias: [.chalmers1993, .west1992]),
+        .init(.greciaAntigua, harmoniaiCromaticas, referencias: [.west1992]),
+        .init(.greciaAntigua, harmoniaiEnarmonicas, referencias: [.west1992]),
+        .init(.greciaAntigua, harmoniaiDeAristides, referencias: [.west1992, .mathiesen1999]),
+        .init(.gregoriano, hexacordos, referencias: [.apel1958]), .init(.europa, europeas),
+        .init(.gregoriano, modosDeGlareano),
+        .init(.vietnam, vietnamitas, referencias: [.tranVanKhe1962]), .init(.brasil, brasilenas),
+        .init(.greciaAntigua, coloresDeAristoxeno, referencias: [.chalmers1993, .west1992]),
+        .init(.mundoArabe, adwar, referencias: [.wright1978]), .init(.china, lus, referencias: [.barbour1951]),
+        .init(.renacimiento, escalasRenacentistas, referencias: [.barbour1951]),
         .init(.renacimiento, generosDeVicentino),
     ]
 }
@@ -67,9 +85,12 @@ extension TipoDeEscala {
 struct ListaTradicional: Sendable {
     let tradicion: Tradicion
     let tipos: [TipoDeEscala]
+    /// Las obras donde se leen todas sus escalas: van en las `referencias` de cada una.
+    let referencias: [Referencia]
 
-    init(_ tradicion: Tradicion, _ tipos: [TipoDeEscala]) {
+    init(_ tradicion: Tradicion, _ tipos: [TipoDeEscala], referencias: [Referencia] = []) {
         self.tradicion = tradicion
         self.tipos = tipos
+        self.referencias = referencias
     }
 }

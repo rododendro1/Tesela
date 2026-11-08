@@ -87,12 +87,15 @@ public struct TipoDeEscalaMicrotonal: Hashable, Sendable {
     /// `.zarlino`), que se nombra en cada idioma. `nil` en la primera, la de su teoría de hoy, que dice ya su
     /// `sistema`.
     public let fuente: FuenteTeorica?
+    /// Dónde se leen estos microtonos: las obras que se citan y la de su `fuente` (su tratado).
+    public let referencias: [Referencia]
 
     /// Una escala con microtonos; si `pasosDescendentes` es igual que `pasos`, se guarda `nil`.
     public init(
         _ temperada: TipoDeEscala, _ sistema: SistemaMicrotonal, pasos: [Int], pasosDescendentes: [Int]? = nil,
-        fuente: FuenteTeorica? = nil
+        fuente: FuenteTeorica? = nil, referencias: [Referencia] = []
     ) {
+        self.referencias = Referencia.unicas(referencias + [fuente?.referencia].compactMap { $0 })
         self.temperada = temperada
         self.sistema = sistema
         self.pasos = pasos

@@ -38,14 +38,17 @@ package struct FichaDeEscala: Sendable {
         let pasos: [Int]
         let pasosDescendentes: [Int]?
         let fuente: FuenteTeorica?
+        let referencias: [Referencia]
 
         package init(
-            _ sistema: SistemaMicrotonal, pasos: [Int], pasosDescendentes: [Int]? = nil, fuente: FuenteTeorica? = nil
+            _ sistema: SistemaMicrotonal, pasos: [Int], pasosDescendentes: [Int]? = nil, fuente: FuenteTeorica? = nil,
+            referencias: [Referencia] = []
         ) {
             self.sistema = sistema
             self.pasos = pasos
             self.pasosDescendentes = pasosDescendentes
             self.fuente = fuente
+            self.referencias = referencias
         }
     }
 
@@ -66,12 +69,16 @@ package struct FichaDeEscala: Sendable {
     package let afinaciones: [Afinacion]
     /// El teórico que definió la escala (los géneros de Ptolomeo, los colores de Aristóxeno…); `nil` en las demás.
     package let fuente: FuenteTeorica?
+    /// Dónde se lee la escala, además de las obras de su lista en `listasTradicionales` y la de su fuente.
+    package let referencias: [Referencia]
 
     package init(
         tradicion: Tradicion? = nil, estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [],
         categoria: CategoriaTradicional? = nil,
-        padre: IdentidadDeEscala? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil
+        padre: IdentidadDeEscala? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil,
+        referencias: [Referencia] = []
     ) {
+        self.referencias = referencias
         let estilos = estilos.isEmpty ? (categoria.flatMap(EstiloDeEscala.de).map { [$0] } ?? []) : estilos
         self.estilos = EstiloDeEscala.allCases.filter { estilos.contains($0) }
         self.regiones = RegionDeEscala.allCases.filter { regiones.contains($0) }
@@ -105,21 +112,37 @@ extension TipoDeEscala {
     /// La ficha de la escala del catálogo con la misma `identidad` (`FichaDeEscala.vacia` si no es del catálogo).
     package var fichaDelCatalogo: FichaDeEscala { TipoDeEscala.delCatalogo[identidad]?.tipo.ficha ?? .vacia }
 
-    /// La escala del catálogo con la misma identidad y sus versiones microtonales.
-    package typealias EntradaDelCatalogo = (tipo: TipoDeEscala, afinaciones: [TipoDeEscalaMicrotonal])
+    /// La escala del catálogo con la misma identidad, sus versiones microtonales y sus referencias.
+    package typealias EntradaDelCatalogo = (
+        tipo: TipoDeEscala, afinaciones: [TipoDeEscalaMicrotonal], referencias: [Referencia]
+    )
 
     /// Identidad → escala del catálogo. Si dos escalas tuvieran la misma identidad, vale la primera de `catalogo`.
     package static let delCatalogo: [IdentidadDeEscala: EntradaDelCatalogo] = {
+        var deSuLista: [IdentidadDeEscala: [Referencia]] = [:]
+        for lista in listasTradicionales {
+            for tipo in lista.tipos { deSuLista[tipo.identidad, default: []] += lista.referencias }
+        }
         var tabla: [IdentidadDeEscala: EntradaDelCatalogo] = [:]
         for tipo in catalogo where tabla[tipo.identidad] == nil {
             let afinaciones = tipo.ficha.afinaciones.map {
                 TipoDeEscalaMicrotonal(
-                    tipo, $0.sistema, pasos: $0.pasos, pasosDescendentes: $0.pasosDescendentes, fuente: $0.fuente)
+                    tipo, $0.sistema, pasos: $0.pasos, pasosDescendentes: $0.pasosDescendentes, fuente: $0.fuente,
+                    referencias: $0.referencias)
             }
-            tabla[tipo.identidad] = (tipo: tipo, afinaciones: afinaciones)
+            let referencias = Referencia.unicas(
+                tipo.ficha.referencias + [tipo.ficha.fuente?.referencia].compactMap { $0 }
+                    + (deSuLista[tipo.identidad] ?? []) + afinaciones.flatMap(\.referencias))
+            tabla[tipo.identidad] = (tipo: tipo, afinaciones: afinaciones, referencias: referencias)
         }
         return tabla
     }()
+
+    /// Dónde se lee la escala: las obras que cita su declaración, la de su fuente, las de su lista y las de sus
+    /// afinaciones, sin repetir. Vacío en las occidentales y en las propias.
+    ///
+    ///     TipoDeEscala.bayati.referencias.map(\.cita)   // ["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019"]
+    public var referencias: [Referencia] { TipoDeEscala.delCatalogo[identidad]?.referencias ?? [] }
 
     /// Una copia con estos estilos: para las escalas del catálogo que salen de una función (las cromáticas).
     package func con(estilos: [EstiloDeEscala]) -> TipoDeEscala {

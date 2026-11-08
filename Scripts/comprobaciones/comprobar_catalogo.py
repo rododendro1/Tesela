@@ -19,6 +19,11 @@ Comprueba:
      (el primero taparía al segundo al leer).
   6. toda lista de `Tradiciones/` está en `listasTradicionales` (si no, sus escalas no se buscan ni tienen tradición).
 
+Y avisa, sin fallar, de las escalas de otras tradiciones que no tienen ninguna referencia bibliográfica: ni la suya
+(`referencias: […]`), ni la de su lista en `listasTradicionales`, ni la de su fuente o la de sus afinaciones
+(`fuente: .zarlino`, salvo Guido, que no tiene obra). Que cada obra del catálogo se cite y que ninguna se repita lo
+comprueban las pruebas (`ReferenciasTests`).
+
 Uso:  python3 Scripts/comprobaciones/comprobar_catalogo.py      (sale con 1 si hay algún problema)
 Es una lectura del texto, no del compilador: se limita al estilo con que está escrito el catálogo.
 """
@@ -85,7 +90,9 @@ for texto in TEXTO.values():
         while nivel:
             nivel += (texto[j] == "[") - (texto[j] == "]")
             j += 1
-        apuntadas = set(re.findall(r"\.init\(\.\w+, (\w+)\)", texto[m.end():j - 1]))
+        cuerpo = texto[m.end():j - 1]
+        apuntadas = set(re.findall(r"\.init\(\.\w+, (\w+)[,)]", cuerpo))
+        con_referencias = set(re.findall(r"\.init\(\.\w+, (\w+), referencias:", cuerpo))
 if not apuntadas:
     sys.exit("No encuentro `listasTradicionales`: ¿cambió el estilo del catálogo?")
 for f, texto in TEXTO.items():
@@ -194,7 +201,32 @@ for f, texto in TEXTO.items():
         for a in alias_redundantes(nombre[-1] if nombre else "", re.findall(CADENA, cuerpo)):
             errores.append(f"{f.name}: el alias «{a}» de «{nombre[-1] if nombre else '?'}» es solo una forma normalizada: se deduce solo")
 
+# Avisos: las escalas de otras tradiciones sin ninguna referencia.
+def declaracion(nombre):
+    """El texto de `static let nombre = TipoDeEscala(…)`, hasta su paréntesis."""
+    for texto in TEXTO.values():
+        m = re.search(r"static let `?" + nombre + r"`? = TipoDeEscala\(", texto)
+        if m:
+            i, nivel = m.end(), 1
+            while nivel:
+                nivel += (texto[i] == "(") - (texto[i] == ")")
+                i += 1
+            return texto[m.end():i - 1]
+    return ""
+
+
+avisos = []
+for lista in sorted(apuntadas - con_referencias):
+    sin = [n for n in re.findall(r"\.(\w+)", cuerpo_de_lista(lista) or "")
+           if not re.search(r"referencias:|fuente: \.(?!guido\b)\w+", declaracion(n))]
+    if sin:
+        avisos.append(f"`{lista}`: {len(sin)} sin referencias ({', '.join(sin[:6])}{'…' if len(sin) > 6 else ''})")
+
 print(f"{len(definidas)} escalas declaradas, {len(todos)} en `occidentales`, {len(listas) - 2} listas de tradición")
+if avisos:
+    print(f"{len(avisos)} lista(s) con escalas sin referencias (aviso, no falla):")
+    for a in avisos:
+        print("  -", a)
 if errores:
     print(f"{len(errores)} problema(s):")
     for e in errores:

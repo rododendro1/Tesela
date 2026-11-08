@@ -2,6 +2,24 @@
 
 ## Sin publicar
 
+### Referencias bibliográficas de las escalas
+
+- `Referencia`, nueva: una obra (libro, artículo, capítulo, tesis, tratado o web) con sus autores, su título, su año,
+  su editorial o su revista y su DOI o su URL, o una cita de sus páginas (`Referencia.west1992.paginas("160–172")`).
+  `cita` da la forma breve («West 1992: 160–172») y `descripcion`, la completa. Los títulos no se traducen.
+- `Referencia.catalogo`: las 41 obras que cita el catálogo, cada una con su constante (`.west1992`, `.touma1996`,
+  `.kaufmann1976`, `.signell1977`…), de los tratados (Zarlino, Salinas, Chrysanthos, Glareano) a la bibliografía de
+  cada tradición.
+- `TipoDeEscala.referencias`: dónde se lee una escala de otra tradición. Son las obras que cita su declaración, las de
+  su lista, la de su fuente (`FuenteTeorica.referencia`, nueva: Barker para los griegos, el tratado de cada autor del
+  Renacimiento) y las de sus afinaciones (`TipoDeEscalaMicrotonal.referencias`, nueva). Las tienen todas las listas
+  salvo los dromoi, las escalas de Brasil, Corea y Europa, tres echoi, tres escalas chinas y tres afinaciones de
+  África y del sudeste asiático, que `comprobar_catalogo.py` muestra como aviso.
+- `Referencia.bibtex(_:)` y `Referencia.cslJSON(_:)` escriben las obras en BibTeX y en CSL-JSON.
+- En la línea de comandos, `armonia escala` da la línea «referencias: Maqam World; Touma 1996; Farraj & Abu Shumays
+  2019», `escala --json` la clave `referencias` (clave, cita, descripción, DOI o URL) y `escala … --bibtex` solo las
+  obras en BibTeX.
+
 ### La tradición, en la ficha de cada escala
 
 - La tradición de una escala del catálogo está en su ficha y ya no sale de la lista en que se apunta: se deduce de su

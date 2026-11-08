@@ -13,12 +13,12 @@ extension TipoDeEscala {
     public static let ritsu = TipoDeEscala(
         nombre: "Ritsu", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         variantes: ["律"],
-        categoria: .escala, estilos: [.gagaku])
+        categoria: .escala, estilos: [.gagaku], referencias: [.garfias1975])
     /// 呂: la otra pentatónica del gagaku (Re Mi Fa♯ La Si).
     public static let ryo = TipoDeEscala(
         nombre: "Ryo", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         variantes: ["呂"],
-        categoria: .escala, estilos: [.gagaku])
+        categoria: .escala, estilos: [.gagaku], referencias: [.garfias1975])
     /// 陽音階, la escala yō de la música popular, sin semitonos (Re Mi Sol La Si).
     public static let yo = TipoDeEscala(
         nombre: "Yō", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
