@@ -7,9 +7,10 @@
 ///     argumentos.quitarMarca(.diagrama)                   // true
 ///     try argumentos.valor(.instrumento)                  // "ukelele"
 struct OpcionDeOrden: Hashable, Sendable {
-    /// Los nombres que se enseñan y se completan: primero el español y luego el inglés.
+    /// Los nombres con que se lee, se enseña y se completa: primero el español y luego el inglés, sin tildes
+    /// (`--patron`). Con tilde se lee igual (`seEscribe(_:)`).
     let nombres: [String]
-    /// Otros que se leen igual, pero no se enseñan ni se completan: los que llevan tilde (`--patrón`).
+    /// Otras grafías que se leen igual, pero no se enseñan ni se completan: la británica (`--neighbours`).
     let ocultos: [String]
     /// Si la sigue un valor, o si es una marca que no lleva nada detrás.
     let llevaValor: Bool
@@ -24,11 +25,14 @@ struct OpcionDeOrden: Hashable, Sendable {
         OpcionDeOrden(nombres: nombres, ocultos: ocultos, llevaValor: true)
     }
 
-    /// Todos los nombres con que se lee.
-    var leidos: [String] { nombres + ocultos }
-
     /// Para elegir con un `switch` por lo que se ha escrito: `case OpcionDeOrden.acorde:`.
-    static func ~= (opcion: OpcionDeOrden, texto: String) -> Bool { opcion.leidos.contains(texto) }
+    static func ~= (opcion: OpcionDeOrden, texto: String) -> Bool { opcion.seEscribe(texto) }
+
+    /// Si lo escrito es uno de sus nombres, con tildes o sin ellas: `--patrón` es `--patron`.
+    func seEscribe(_ texto: String) -> Bool { leidos.contains(Argumentos.sinTildes(texto)) }
+
+    /// Todos los nombres con que se lee, sin tildes.
+    var leidos: [String] { nombres + ocultos }
 }
 
 extension OpcionDeOrden {
@@ -38,7 +42,7 @@ extension OpcionDeOrden {
     static let textos = valor("--textos", "--texts")
     static let escritura = valor("--escritura", "--writing")
     static let sistema = valor("--sistema", "--system")
-    static let grafia = valor("--grafia", "--script", ocultos: ["--grafía"])
+    static let grafia = valor("--grafia", "--script")
     static let fuente = valor("--fuente", "--source")
     static let subindices = marca("--subindices", "--subscripts")
     static let cifras = marca("--cifras", "--digits")
@@ -59,23 +63,23 @@ extension OpcionDeOrden {
     static let en = valor("--en", "--in")
 
     // MARK: Las de las partituras (las lee `Argumentos.quitarOpcionesConTexto`)
-    static let compas = valor("--compas", "--time", ocultos: ["--compás"])
+    static let compas = valor("--compas", "--time")
     static let anacrusa = valor("--anacrusa", "--pickup")
     static let claveDePartitura = valor("--clave", "--clef")
     static let tempo = valor("--tempo")
-    static let titulo = valor("--titulo", "--title", ocultos: ["--título"])
-    static let duracion = valor("--duracion", "--duration", ocultos: ["--duración"])
+    static let titulo = valor("--titulo", "--title")
+    static let duracion = valor("--duracion", "--duration")
     static let figuraDePartitura = valor("--figura", "--figure")
-    static let patronDePartitura = valor("--patron", "--pattern", ocultos: ["--patrón"])
+    static let patronDePartitura = valor("--patron", "--pattern")
     static let cifrados = marca("--cifrados", "--chord-symbols")
-    static let analisis = marca("--analisis", "--analysis", ocultos: ["--análisis"])
+    static let analisis = marca("--analisis", "--analysis")
     static let programa = valor("--programa", "--program")
 
     // MARK: Las demás, por orden alfabético
     static let acordes = marca("--acordes", "--chords")
     static let ajenas = marca("--ajenas", "--non-chord")
     static let ampliada = marca("--ampliada", "--extended")
-    static let aproximacion = valor("--aproximacion", "--approach", ocultos: ["--aproximación"])
+    static let aproximacion = valor("--aproximacion", "--approach")
     static let archivo = valor("--archivo", "--file")
     static let arpegio = marca("--arpegio", "--arpeggio")
     static let bajando = marca("--bajando", "--descending")
@@ -87,7 +91,7 @@ extension OpcionDeOrden {
     static let caged = marca("--caged")
     static let cambiarClave = marca("--cambiar-clave", "--clef-changes")
     static let capo = valor("--capo")
-    static let categoria = valor("--categoria", "--category", ocultos: ["--categoría"])
+    static let categoria = valor("--categoria", "--category")
     static let clave = valor("--clave", "--clef")
     static let comparar = valor("--comparar", "--compare")
     static let completo = marca("--completo", "--complete")
@@ -135,7 +139,7 @@ extension OpcionDeOrden {
     static let orden = valor("--orden", "--sort")
     static let origen = valor("--origen", "--origin")
     static let parecidas = marca("--parecidas", "--closest")
-    static let patron = valor("--patron", "--pattern", ocultos: ["--patrón"])
+    static let patron = valor("--patron", "--pattern")
     static let pentatonicas = marca("--pentatonicas", "--pentatonics")
     /// La digitación de piano de `escala`.
     static let piano = marca("--dedos", "--fingers")
@@ -158,15 +162,15 @@ extension OpcionDeOrden {
     static let tensiones = valor("--tensiones", "--tensions")
     static let tonalidad = valor("--tonalidad", "--key")
     static let tonalidades = marca("--tonalidades", "--keys")
-    static let tonica = marca("--tonica", "--tonic", ocultos: ["--tónica"])
-    static let tradicion = valor("--tradicion", "--tradition", ocultos: ["--tradición"])
+    static let tonica = marca("--tonica", "--tonic")
+    static let tradicion = valor("--tradicion", "--tradition")
     static let traste = valor("--traste", "--fret")
     static let tresillos = marca("--tresillos", "--triplets")
     static let triadas = marca("--triadas", "--triads")
     static let uso = valor("--uso", "--use")
-    static let vecinas = marca("--vecinas", "--neighbors")
+    static let vecinas = marca("--vecinas", "--neighbors", ocultos: ["--neighbours"])
     /// `escalas --vecinas Re dórico`, `--parecidas`, `--escalera`: como las marcas de `escala`, pero con la escala detrás.
-    static let vecinasDe = valor("--vecinas", "--neighbors")
+    static let vecinasDe = valor("--vecinas", "--neighbors", ocultos: ["--neighbours"])
     static let parecidasA = valor("--parecidas", "--closest")
     static let escaleraDe = valor("--escalera", "--brightness-ladder")
     static let ventana = valor("--ventana", "--window")

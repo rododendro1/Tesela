@@ -8,7 +8,7 @@ import Testing
 
 @Suite struct DatosDeConsultasTests {
     @Test func unAcordeInvertido() {
-        let datos = DatosDeAcorde(Acorde("Sol7/Si"), notacion: .compacta(.espanol))
+        let datos = DatosDeAcorde(Acorde("Sol7/Si"), en: .compacta(.espanol))
         #expect(datos.cifrado == "Sol7/Si")
         #expect(datos.fundamental == "Sol")
         #expect(datos.bajo == "Si")
@@ -16,7 +16,7 @@ import Testing
         #expect(datos.tieneOtroBajo)
         #expect(datos.clases.count == 4)
         #expect(datos.componentes.count == datos.notas.count)
-        #expect(!DatosDeAcorde(Acorde("Do"), notacion: .compacta(.espanol)).tieneOtroBajo)
+        #expect(!DatosDeAcorde(Acorde("Do"), en: .compacta(.espanol)).tieneOtroBajo)
     }
 
     @Test func losAcordesDeUnasNotas() throws {
@@ -28,14 +28,14 @@ import Testing
     }
 
     @Test func unaEscalaConLosAcordesDeSusGrados() throws {
-        let datos = DatosDeEscala(try Escala(leyendo: "Re dórico"), notacion: .compacta(.espanol))
+        let datos = DatosDeEscala(try Escala(leyendo: "Re dórico"), en: .compacta(.espanol))
         #expect(datos.notas.count == 7)
         #expect(datos.acordes?.count == 7)
         #expect(datos.acordes?.first?.cifrado == "Rem7")
     }
 
     @Test func unConjunto() {
-        let datos = DatosDeConjunto(ConjuntoDeClasesDeAltura([0, 4, 7]), notacion: .compacta(.espanol))
+        let datos = DatosDeConjunto(ConjuntoDeClasesDeAltura([0, 4, 7]), en: .compacta(.espanol))
         #expect(datos.forte == "3-11")
         #expect(datos.formaPrima == [0, 3, 7])
         // El análisis postonal de las apps sale de los mismos datos.
@@ -46,7 +46,7 @@ import Testing
 
     @Test func unaSerieComoLaVeLaApp() throws {
         let serie = try SerieDodecafonica(leyendo: "5 4 0 9 7 2 8 1 3 6 t e")
-        let datos = DatosDeSerie(serie, notacion: .compacta(.espanol))
+        let datos = DatosDeSerie(serie, en: .compacta(.espanol))
         #expect(datos.matriz.count == 12)
         #expect(datos.notas.count == 12)
         let presentada = try PresentacionDeSerie.presentar(
@@ -57,11 +57,11 @@ import Testing
     }
 
     @Test func seLeenComoSeEscriben() throws {
-        let escala = DatosDeEscala(try Escala(leyendo: "Do mayor"), notacion: .compacta(.espanol))
+        let escala = DatosDeEscala(try Escala(leyendo: "Do mayor"), en: .compacta(.espanol))
         let datos = try JSONEncoder().encode(escala)
         #expect(try JSONDecoder().decode(DatosDeEscala.self, from: datos) == escala)
         // Lo que es `nil` no sale.
-        let pentatonica = DatosDeEscala(try Escala(leyendo: "Do pentatónica mayor"), notacion: .compacta(.espanol))
+        let pentatonica = DatosDeEscala(try Escala(leyendo: "Do pentatónica mayor"), en: .compacta(.espanol))
         #expect(pentatonica.acordes == nil)
         #expect(!String(decoding: try JSONEncoder().encode(pentatonica), as: UTF8.self).contains("\"acordes\""))
     }

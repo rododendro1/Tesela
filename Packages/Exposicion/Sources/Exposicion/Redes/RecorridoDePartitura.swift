@@ -6,7 +6,7 @@ import Foundation
 /// o menores dice qué transformaciones P, L y R llevan de una a otra por el camino más corto. No usa SwiftUI, así que
 /// se prueba en Linux.
 ///
-///     let recorrido = RecorridoDePartitura(progresion, notacion: .compacta(.espanol))
+///     let recorrido = RecorridoDePartitura(progresion, en: .compacta(.espanol))
 ///     recorrido.pasos.map(\.transformacion)   // ["", "R", "L", "–", …]
 public struct RecorridoDePartitura: Hashable, Sendable {
     /// Un acorde de la pieza.
@@ -28,7 +28,7 @@ public struct RecorridoDePartitura: Hashable, Sendable {
     public let sonido: Escucha
 
     /// El recorrido por la progresión importada, escrito en la notación.
-    public init(_ progresion: ProgresionImportada, notacion: Notacion) {
+    public init(_ progresion: ProgresionImportada, en notacion: Notacion) {
         titulo = progresion.titulo
         let acordes = progresion.acordes
         let pasos = progresion.ritmo.acordes.enumerated().map { i, conDuracion in
@@ -45,7 +45,7 @@ public struct RecorridoDePartitura: Hashable, Sendable {
 
     /// Lee un fichero. Lanza `ErrorDeLecturaDeFichero` si no se puede leer o no suena ningún acorde.
     public static func leer(_ datos: Data, en notacion: Notacion) throws -> RecorridoDePartitura {
-        RecorridoDePartitura(try ImportacionDeProgresion.leer(datos), notacion: notacion)
+        RecorridoDePartitura(try ImportacionDeProgresion.leer(datos), en: notacion)
     }
 
     /// «R», «PL», «=» o «–»: ver `Paso.transformacion`. Basta que las tríadas suenen igual (Do♯ y Re♭ son la misma),

@@ -207,7 +207,7 @@ extension LineaDeComandos {
             _, notacion in
             bien(indiceDeAyuda(en: notacion.textos, grafia: notacion.grafiaDeLosTextos))
         },
-        Orden(nombres: ["--version", "version", "versión"], ayuda: ayudaDeLaVersion, leeLaEntrada: false) { _, _ in
+        Orden(nombres: ["--version", "version"], ayuda: ayudaDeLaVersion, leeLaEntrada: false) { _, _ in
             bien("armonia " + version)
         },
     ]

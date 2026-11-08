@@ -10,7 +10,7 @@ import Armonia
 
 /// Un acorde: su cifrado, su nombre, sus notas y el papel de cada una.
 ///
-///     let datos = DatosDeAcorde(Acorde("Sol7/Si"), notacion: .compacta(.espanol))
+///     let datos = DatosDeAcorde(Acorde("Sol7/Si"), en: .compacta(.espanol))
 ///     datos.inversion   // 1
 public struct DatosDeAcorde: Hashable, Sendable, Codable {
     /// Una nota del acorde con su papel: «Si tercera».
@@ -30,7 +30,7 @@ public struct DatosDeAcorde: Hashable, Sendable, Codable {
     public let componentes: [Componente]
 
     /// Los datos del acorde, escritos en la notación.
-    public init(_ acorde: Acorde, notacion: Notacion) {
+    public init(_ acorde: Acorde, en notacion: Notacion) {
         cifrado = acorde.cifrado(en: notacion)
         nombre = acorde.tipo.nombre(en: notacion)
         fundamental = acorde.fundamental.nombre(en: notacion)
@@ -54,7 +54,7 @@ public struct DatosDeCandidato: Hashable, Sendable, Codable {
     /// Las notas del acorde que no están entre las tocadas.
     public let omitidas: [String]
 
-    public init(_ candidato: Candidato<Acorde>, notacion: Notacion) {
+    public init(_ candidato: Candidato<Acorde>, en notacion: Notacion) {
         cifrado = candidato.valor.cifrado(en: notacion)
         nombre = candidato.valor.tipo.nombre(en: notacion)
         omitidas = candidato.omitidas.map { $0.nombre(en: notacion) }
@@ -74,7 +74,7 @@ public struct DatosDeCandidato: Hashable, Sendable, Codable {
         } else {
             candidatos = Acorde.candidatos(notas: try textos.map { try Nota(leyendo: $0) })
         }
-        return candidatos.prefix(limite).map { DatosDeCandidato($0, notacion: notacion) }
+        return candidatos.prefix(limite).map { DatosDeCandidato($0, en: notacion) }
     }
 }
 
@@ -95,7 +95,7 @@ public struct DatosDeEscala: Hashable, Sendable, Codable {
     public let acordes: [AcordeDelGrado]?
 
     /// Los datos de la escala, escritos en la notación.
-    public init(_ escala: Escala, notacion: Notacion) {
+    public init(_ escala: Escala, en notacion: Notacion) {
         nombre = escala.nombre(en: notacion)
         notas = escala.notas.map { $0.nombre(en: notacion) }
         clases = escala.notas.map(\.claseDeAltura)
@@ -112,7 +112,7 @@ public struct DatosDeEscala: Hashable, Sendable, Codable {
 
 /// Un conjunto de clases de altura: sus notas, sus formas y sus vectores.
 ///
-///     let datos = DatosDeConjunto(ConjuntoDeClasesDeAltura([0, 4, 7]), notacion: .compacta(.espanol))
+///     let datos = DatosDeConjunto(ConjuntoDeClasesDeAltura([0, 4, 7]), en: .compacta(.espanol))
 ///     datos.forte        // "3-11"
 ///     datos.formaPrima   // [0, 3, 7]
 public struct DatosDeConjunto: Hashable, Sendable, Codable {
@@ -126,7 +126,7 @@ public struct DatosDeConjunto: Hashable, Sendable, Codable {
     public let vectorDeIndice: [Int]
 
     /// Los datos del conjunto de clases, con las notas escritas en la notación.
-    public init(_ conjunto: ConjuntoDeClasesDeAltura, notacion: Notacion) {
+    public init(_ conjunto: ConjuntoDeClasesDeAltura, en notacion: Notacion) {
         clases = conjunto.clases
         notas = conjunto.notas().map { $0.nombre(en: notacion) }
         forte = conjunto.numeroDeForte
@@ -153,7 +153,7 @@ public struct DatosDeSerie: Hashable, Sendable, Codable {
     public let matriz: [[Int]]
 
     /// Los datos de la serie, con las notas escritas en la notación.
-    public init(_ serie: SerieDodecafonica, notacion: Notacion) {
+    public init(_ serie: SerieDodecafonica, en notacion: Notacion) {
         let nombres = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: notacion)
         let mitades = serie.hexacordos
         clases = serie.clases

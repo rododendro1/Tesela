@@ -2,6 +2,11 @@
 
 ## Sin publicar
 
+- **Cambio incompatible:** `DatosDeAcorde`, `DatosDeCandidato`, `DatosDeEscala`, `DatosDeConjunto`, `DatosDeSerie`
+  y `RecorridoDePartitura` toman la notación con `en:`, como las demás presentaciones (antes `notacion:`).
+- **Cambio incompatible:** `PentagramaPresentado` y `PresentacionDeTablatura` ya no ponen la notación española si no
+  se da: hay que pasarla, para que nada salga en español en una app en otro idioma.
+
 - **Cambio incompatible:** los textos de `TextosDeApps` que solo llevaban valores (`campoDeCifrado`, `trastes`,
   `cuerdas`, `soloEn`, `cambianAcordes`…) son plantillas con huecos `{1}` (`Plantilla`) en lugar de funciones. Se
   siguen llamando igual (`textos.trastes(5, 8)`), pero ya no se pueden pasar como función.

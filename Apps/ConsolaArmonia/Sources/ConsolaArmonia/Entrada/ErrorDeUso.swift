@@ -11,7 +11,7 @@ import Exposicion
 
 /// Una orden mal escrita: lo que falta o sobra, con un ejemplo de cómo se escribe. Las órdenes lo lanzan, y
 /// `ejecutar` lo escribe con `uso(_:_:)`.
-enum ErrorDeUso: Error {
+enum ErrorDeUso: ErrorDeArmonia {
     // Generales
     case ordenDesconocida(String)
     case opcionDesconocida(String)
@@ -169,10 +169,14 @@ enum ErrorDeUso: Error {
     /// `cuadricula` con una opción sin valor o con uno que no se lee: unos ejes, una rejilla, una altura o un giro.
     case opcionesDeCuadricula
 
-    /// El mensaje completo: el error, lo que se quiso escribir si se parece a una orden o una opción conocida, y la
-    /// línea que remite a la ayuda, la de la orden si se está ejecutando una (`LineaDeComandos.OrdenEnCurso`).
-    func texto(en notacion: Notacion) -> String {
-        var lineas = ["armonia: " + traduccion.en(notacion)]
+    /// Lo que falta o sobra, en el idioma de los textos de la notación, como cualquier `ErrorDeArmonia`.
+    func descripcion(en notacion: Notacion) -> String { traduccion.en(notacion) }
+
+    /// El mensaje que escribe la terminal: el error, lo que se quiso escribir si se parece a una orden o una opción
+    /// conocida, y la línea que remite a la ayuda, la de la orden si se está ejecutando una
+    /// (`LineaDeComandos.OrdenEnCurso`).
+    func mensajeDeUso(en notacion: Notacion) -> String {
+        var lineas = ["armonia: " + descripcion(en: notacion)]
         if let propuesta {
             lineas.append(TextosDeConsola.traduccion { $0.quisoDecir(propuesta) }.en(notacion))
         }

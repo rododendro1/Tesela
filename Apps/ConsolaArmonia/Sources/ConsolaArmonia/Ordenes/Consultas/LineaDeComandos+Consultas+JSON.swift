@@ -14,7 +14,7 @@ extension LineaDeComandos {
     /// `acorde Sol7 Do --json`: cada acorde con sus notas, una lista aunque sea uno solo.
     static func acordeJSON(_ textos: [String], _ notacion: Notacion) throws -> [DatosDeAcorde] {
         try palabras(Argumentos(textos), siFaltan: .faltaCifrado).map {
-            DatosDeAcorde(try Acorde(leyendoEnLaOrden: $0), notacion: notacion)
+            DatosDeAcorde(try Acorde(leyendoEnLaOrden: $0), en: notacion)
         }
     }
 
@@ -140,7 +140,7 @@ extension LineaDeComandos {
         let pedido = try pedidoDeEscala(textos)
         if pedido.bibtex { throw ErrorDeUso.sinSalidaJSON("escala --bibtex") }
         let escala = pedido.escala
-        var datos = EscalaJSON(DatosDeEscala(escala, notacion: notacion))
+        var datos = EscalaJSON(DatosDeEscala(escala, en: notacion))
         let referencias = escala.tipo.referencias
         if !referencias.isEmpty {
             datos.referencias = referencias.map {
@@ -357,13 +357,13 @@ extension LineaDeComandos {
     /// `conjunto 0 4 7 --json`: el conjunto con sus formas y sus vectores.
     static func conjuntoJSON(_ textos: [String], _ notacion: Notacion) throws -> DatosDeConjunto {
         let texto = try palabras(Argumentos(textos), siFaltan: .faltaConjunto).joined(separator: " ")
-        return DatosDeConjunto(try ConjuntoDeClasesDeAltura(leyendo: texto), notacion: notacion)
+        return DatosDeConjunto(try ConjuntoDeClasesDeAltura(leyendo: texto), en: notacion)
     }
 
     /// `serie 0 e 7 4 2 9 3 8 t 1 5 6 --json`: la serie con sus intervalos, sus hexacordos, sus formas y la matriz.
     static func serieJSON(_ textos: [String], _ notacion: Notacion) throws -> DatosDeSerie {
         let texto = try palabras(Argumentos(textos), siFaltan: .faltaSerie).joined(separator: " ")
-        return DatosDeSerie(try SerieDodecafonica(leyendo: texto), notacion: notacion)
+        return DatosDeSerie(try SerieDodecafonica(leyendo: texto), en: notacion)
     }
 
     // MARK: El catálogo de escalas

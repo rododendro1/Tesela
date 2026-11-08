@@ -4,7 +4,7 @@
 
     /// El Tonnetz de unas notas, un acorde o una escala, dibujado por el motor.
     ///
-    ///     DiagramaDeTonnetz(Tonnetz(try Acorde(leyendo: "Dom7")))
+    ///     DiagramaDeTonnetz(Tonnetz(try Acorde(leyendo: "Dom7")), notacion: .compacta(.espanol))
     ///     DiagramaDeTonnetz(Tonnetz(Escala(.re, .dorico)), notacion: .ascii(.ingles))
     public struct DiagramaDeTonnetz: View {
         public let tonnetz: Tonnetz
@@ -12,7 +12,7 @@
         public let leyenda: Bool
 
         /// El Tonnetz con sus notas en la notación y, si `leyenda`, la explicación de los ejes.
-        public init(_ tonnetz: Tonnetz, notacion: Notacion = .compacta(.espanol), leyenda: Bool = true) {
+        public init(_ tonnetz: Tonnetz, notacion: Notacion, leyenda: Bool = true) {
             self.tonnetz = tonnetz
             self.notacion = notacion
             self.leyenda = leyenda

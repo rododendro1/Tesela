@@ -41,7 +41,7 @@ extension LineaDeComandos {
     static func pedidoDeEscala(_ textos: [String]) throws -> PedidoDeEscala {
         // `--dedos piano` es `--dedos`, la digitación de piano.
         var textos = textos
-        if let i = textos.firstIndex(where: OpcionDeOrden.piano.leidos.contains), textos.indices.contains(i + 1),
+        if let i = textos.firstIndex(where: OpcionDeOrden.piano.seEscribe), textos.indices.contains(i + 1),
             instrumentosDeLosDedos.piano.contains(textos[i + 1].lowercased())
         {
             textos.remove(at: i + 1)
@@ -208,7 +208,7 @@ extension LineaDeComandos {
     /// acordes que caben en ella.
     static func describir(escala: Escala, conTodosSusAcordes: Bool = false, _ notacion: Notacion) -> String {
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
-        let datos = DatosDeEscala(escala, notacion: notacion)
+        let datos = DatosDeEscala(escala, en: notacion)
         var lineas = [datos.nombre, "  \(traducir(.notas)): " + datos.notas.joined(separator: " ")]
         // Con un sistema móvil (--sistema sargam), los grados con sus nombres, desde la tónica: Sā Re ga ma Pa Dha ni.
         if let movil = SistemaMovil.actual {

@@ -14,6 +14,19 @@ import Testing
         #expect(!ausente)
     }
 
+    @Test func conTildesOSinEllas() {
+        var argumentos = Argumentos(["Do", "--estadísticas", "--límite", "3", "--simetría"])
+        let estadisticas = argumentos.quitarMarca(.estadisticas)
+        #expect(estadisticas)
+        let limite = argumentos.quitarOpcion(.limite)
+        #expect(limite == .valor("3"))
+        // Lo que no se conoce se dice como se escribió.
+        #expect(argumentos.opcionDesconocida == "--simetría")
+        #expect(Argumentos.sinTildes("--conducción-mínima") == "--conduccion-minima")
+        #expect(Argumentos.sinTildes("--pequeño") == "--pequeño")
+        #expect(OpcionDeOrden.vecinas.seEscribe("--neighbours"))
+    }
+
     @Test func opciones() {
         var argumentos = Argumentos(["Sol7", "--instrument", "ukelele", "--limite"])
         #expect(argumentos.quitarOpcion(.instrumento) == .valor("ukelele"))
@@ -35,13 +48,13 @@ import Testing
         // Sin valor, `faltaValor` con el nombre que se escribió, o el error que se pida.
         var copia = argumentos
         let sinNada = fallo { _ = try copia.valor(.limite) }
-        #expect(sinNada == "faltaValor(\"limite\")")
+        #expect(sinNada == ErrorDeUso.faltaValor("limite").description)
         copia = argumentos
         let elPedido = fallo { _ = try copia.valor(.limite, siFalta: .faltaLimite) }
-        #expect(elPedido == "faltaLimite")
+        #expect(elPedido == ErrorDeUso.faltaLimite.description)
         copia = argumentos
         let sinPalabras = fallo { _ = try copia.valorConPalabras(.limite) }
-        #expect(sinPalabras == "faltaValor(\"limite\")")
+        #expect(sinPalabras == ErrorDeUso.faltaValor("limite").description)
         #expect(copia.restantes == ["Sol7"])
     }
 

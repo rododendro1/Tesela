@@ -81,20 +81,24 @@ import Testing
     @Test func laDescripcionVaDeGraveAAgudo() {
         let marcas = [PosicionEnElMastil(cuerda: 1, traste: 3), PosicionEnElMastil(cuerda: 0, traste: 0)]
         #expect(
-            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [], cuerdas: 6)
+            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [], cuerdas: 6, en: .compacta(.espanol))
                 == "cuerda 6, traste 0; cuerda 5, traste 3")
         #expect(
-            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5], cuerdas: 6)
+            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5], cuerdas: 6, en: .compacta(.espanol))
                 == "cuerda 6, traste 0; cuerda 5, traste 3; cuerdas apagadas: 1")
     }
 
     @Test func laDescripcionSeAcortaSiHayMuchasMarcas() {
         let muchas = (0...12).map { PosicionEnElMastil(cuerda: 0, traste: $0) }
-        #expect(PresentacionDeMastil.descripcion(marcas: muchas, apagadas: [], cuerdas: 6) == "13 marcas")
+        #expect(
+            PresentacionDeMastil.descripcion(marcas: muchas, apagadas: [], cuerdas: 6, en: .compacta(.espanol))
+                == "13 marcas")
     }
 
     @Test func sinMarcas() {
-        #expect(PresentacionDeMastil.descripcion(marcas: [], apagadas: [], cuerdas: 6) == "Sin marcas")
+        #expect(
+            PresentacionDeMastil.descripcion(marcas: [], apagadas: [], cuerdas: 6, en: .compacta(.espanol))
+                == "Sin marcas")
     }
 
     // MARK: Tocar el mástil

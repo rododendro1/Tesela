@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- **Cambio incompatible:** `DiagramaDePentagrama`, `DiagramaDeMastil` y `DiagramaDeTonnetz` ya no ponen la
+  notación española si no se da: hay que pasarla, para que nada salga en español en una app en otro idioma.
+
 - `selectorDePartituras(isPresented:alAbrir:)`: el selector de ficheros para abrir un MIDI, MusicXML, MEI o ABC, con
   el permiso de los ficheros de fuera de la app, que comparten la vista de análisis y el Tonnetz.
 

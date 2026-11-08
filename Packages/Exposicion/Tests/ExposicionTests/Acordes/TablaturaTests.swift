@@ -11,7 +11,8 @@ import Testing
         let acordes = [Acorde("Re"), Acorde("La")]
         let formas = acordes.compactMap { mastil.digitaciones(de: $0, limite: 1).first }
         #expect(formas.count == 2)
-        let xml = PresentacionDeTablatura.musicXML(digitaciones: formas, acordes: acordes, titulo: "Con capo")
+        let xml = PresentacionDeTablatura.musicXML(
+            digitaciones: formas, acordes: acordes, titulo: "Con capo", en: .compacta(.espanol))
         #expect(xml.contains("<sign>TAB</sign>"))
         #expect(xml.contains("<capo>2</capo>"))
         #expect(xml.contains("<staff-lines>6</staff-lines>"))
@@ -39,7 +40,8 @@ import Testing
         let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         let acorde = Acorde("Sib")
         let posicion = try #require(mastil.arpegios(de: acorde).first)
-        let xml = PresentacionDeTablatura.musicXML(arpegio: posicion, acorde: acorde, titulo: "Arpegio")
+        let xml = PresentacionDeTablatura.musicXML(
+            arpegio: posicion, acorde: acorde, titulo: "Arpegio", en: .compacta(.espanol))
         #expect(!xml.contains("<capo>"))
         let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
         #expect(pieza.notas.map(\.altura.midi) == posicion.alturas.map(\.midi))
@@ -56,32 +58,38 @@ import Testing
         let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
         let escala = Escala(.fa, .mayor)
         let posicion = try #require(mastil.posicionesCAGED(de: escala).first)
-        let corcheas = PresentacionDeTablatura.musicXML(posicion: posicion, escala: escala, titulo: "Fa mayor")
+        let corcheas = PresentacionDeTablatura.musicXML(
+            posicion: posicion, escala: escala, titulo: "Fa mayor", en: .compacta(.espanol))
         let pieza = try PiezaImportada(musicXML: Data(corcheas.utf8))
         #expect(pieza.notas.map(\.altura.midi) == posicion.posiciones.map { mastil.altura(en: $0).midi })
         // Con la ortografía de la escala: Si♭ y no La♯.
         #expect(!(pieza.notas.contains { $0.altura.nota == Nota.la.sostenido }))
         // Sin la escala, las notas se escriben como salen.
-        let sinEscala = PresentacionDeTablatura.musicXML(posicion: posicion, titulo: "Posición")
+        let sinEscala = PresentacionDeTablatura.musicXML(
+            posicion: posicion, titulo: "Posición", en: .compacta(.espanol))
         #expect(sinEscala.contains("<type>eighth</type>"))
         for (figura, tipo) in [
             (Figura.cuadrada, "whole"), (.redonda, "whole"), (.blanca, "half"), (.negra, "quarter"),
             (.semicorchea, "16th"),
         ] {
-            let xml = PresentacionDeTablatura.musicXML(posicion: posicion, figura: figura, titulo: "Figuras")
+            let xml = PresentacionDeTablatura.musicXML(
+                posicion: posicion, figura: figura, titulo: "Figuras", en: .compacta(.espanol))
             #expect(xml.contains("<type>\(tipo)</type>"), "\(figura)")
         }
         // La fusa, como semicorchea: cuatro por negra.
-        let fusas = PresentacionDeTablatura.musicXML(posicion: posicion, figura: .fusa, titulo: "Fusas")
+        let fusas = PresentacionDeTablatura.musicXML(
+            posicion: posicion, figura: .fusa, titulo: "Fusas", en: .compacta(.espanol))
         #expect(fusas.contains("<type>16th</type>") && !fusas.contains("<type>32nd</type>"))
         let arpegio = try #require(mastil.arpegios(de: Acorde("Do")).first)
-        let sinAcorde = PresentacionDeTablatura.musicXML(arpegio: arpegio, figura: .negra, titulo: "Do")
+        let sinAcorde = PresentacionDeTablatura.musicXML(
+            arpegio: arpegio, figura: .negra, titulo: "Do", en: .compacta(.espanol))
         #expect(sinAcorde.contains("<type>quarter</type>"))
     }
 
     @Test func sinDigitacionesSinAcordesYConAlteraciones() throws {
         // Sin digitaciones, un compás de silencio; el título se escapa.
-        let vacia = PresentacionDeTablatura.musicXML(digitaciones: [], titulo: "Do & <Re> \"Mi\"")
+        let vacia = PresentacionDeTablatura.musicXML(
+            digitaciones: [], titulo: "Do & <Re> \"Mi\"", en: .compacta(.espanol))
         #expect(vacia.contains("<rest"))
         #expect(vacia.contains("Do &amp; &lt;Re&gt; &quot;Mi&quot;"))
         // Una afinación con alteraciones (Fa♯ y Si♭) y una digitación sin cuerdas pisadas.
@@ -90,7 +98,8 @@ import Testing
         let mastil = Mastil(encordado, numeroDeTrastes: 12)
         let muda = Digitacion(mastil: mastil, trastes: [nil, nil])
         let tocada = Digitacion(mastil: mastil, trastes: [0, 1])
-        let xml = PresentacionDeTablatura.musicXML(digitaciones: [muda, tocada], titulo: "Rara")
+        let xml = PresentacionDeTablatura.musicXML(
+            digitaciones: [muda, tocada], titulo: "Rara", en: .compacta(.espanol))
         #expect(xml.contains("<tuning-alter>1</tuning-alter>"))
         #expect(xml.contains("<tuning-alter>-1</tuning-alter>"))
         #expect(xml.contains("<rest"))

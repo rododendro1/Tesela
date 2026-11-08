@@ -6,7 +6,7 @@ import Testing
 
 @Suite struct PresentacionDePentagramaTests {
     @Test func laEscalaDaSuDibujoYSuFichero() {
-        let pentagrama = PentagramaPresentado(Escala("Re dórico"))
+        let pentagrama = PentagramaPresentado(Escala("Re dórico"), notacion: .compacta(.espanol))
         #expect(pentagrama.svg.hasPrefix("<svg"))
         #expect(pentagrama.fichero.formato == .svg)
         #expect(pentagrama.fichero.nombreDeFichero == "Pentagrama Re dórico.svg")
@@ -15,11 +15,13 @@ import Testing
     }
 
     @Test func elAcordeLlevaElCifradoYLasNotasSolasSiSePide() {
-        let pentagrama = PentagramaPresentado(Acorde("Sol7"))
+        let pentagrama = PentagramaPresentado(Acorde("Sol7"), notacion: .compacta(.espanol))
         #expect(pentagrama.svg.contains(">Sol7</text>"))
         #expect(pentagrama.descripcion == "Sol7: Sol, Si, Re, Fa")
         #expect(!pentagrama.svg.contains("Sol₄ Si₄"))
-        #expect(PentagramaPresentado(Acorde("Sol7"), nombresDeLasNotas: true).svg.contains("Sol₄ Si₄"))
+        #expect(
+            PentagramaPresentado(Acorde("Sol7"), notacion: .compacta(.espanol), nombresDeLasNotas: true).svg.contains(
+                "Sol₄ Si₄"))
     }
 
     @Test func laNotacionSeSigue() {
@@ -31,12 +33,12 @@ import Testing
         #expect(PentagramaPresentado.relacionDeAspecto(deSVG: #"<svg viewBox="0 -3 20 10">"#) == 2)
         #expect(PentagramaPresentado.relacionDeAspecto(deSVG: "<svg>") == 4)
         #expect(PentagramaPresentado.relacionDeAspecto(deSVG: #"<svg viewBox="0 0 0 0">"#) == 4)
-        let medida = PentagramaPresentado(Escala("Do mayor")).relacionDeAspecto
+        let medida = PentagramaPresentado(Escala("Do mayor"), notacion: .compacta(.espanol)).relacionDeAspecto
         #expect(medida > 1)
     }
 
     @Test func elArpegioVaNotaANota() {
-        let pentagrama = PentagramaPresentado(Arpegio(Acorde("Do"), patron: .alberti))
+        let pentagrama = PentagramaPresentado(Arpegio(Acorde("Do"), patron: .alberti), notacion: .compacta(.espanol))
         #expect(pentagrama.descripcion.hasSuffix(": Do₄, Sol₄, Mi₄, Sol₄"), Comment(rawValue: pentagrama.descripcion))
         #expect(pentagrama.fichero.nombreDeFichero.hasPrefix("Pentagrama Arpegio de Do"))
         #expect(pentagrama.svg.hasPrefix("<svg"))
@@ -44,13 +46,15 @@ import Testing
 
     @Test func laNotaQueSuenaSeResalta() {
         let arpegio = Arpegio(Acorde("Do"))
-        let normal = PentagramaPresentado(arpegio)
+        let normal = PentagramaPresentado(arpegio, notacion: .compacta(.espanol))
         #expect(!normal.svg.contains("#E8590C"))
-        let resaltada = PentagramaPresentado(arpegio, resaltada: 2)
+        let resaltada = PentagramaPresentado(arpegio, notacion: .compacta(.espanol), resaltada: 2)
         // Solo la tercera nota (Sol4) cambia de color.
         #expect((resaltada.svg.components(separatedBy: "<g fill=\"#E8590C\"><title>").count - 1) == 1)
         #expect(resaltada.svg.contains("<g fill=\"#E8590C\"><title>Sol₄</title>"))
-        #expect(PentagramaPresentado(Escala("Do mayor"), resaltada: 0).svg.contains("<title>Do₄") == true)
+        #expect(
+            PentagramaPresentado(Escala("Do mayor"), notacion: .compacta(.espanol), resaltada: 0).svg.contains(
+                "<title>Do₄") == true)
     }
 
     /// El arpegio que suena en tresillos de corchea se dibuja así, con la nota que suena resaltada y la armadura de
@@ -59,11 +63,12 @@ import Testing
         let figura = Duracion.corchea.grupoIrregular(3, en: 2)
         let arpegio = PresentacionDeArpegios.arpegio(
             Arpegio(Acorde("Mi7")), figura: figura, en: .compacta(.espanol))
-        let pentagrama = PentagramaPresentado(arpegio.voz, titulo: "Mi7", resaltada: 1)
+        let pentagrama = PentagramaPresentado(arpegio.voz, titulo: "Mi7", notacion: .compacta(.espanol), resaltada: 1)
         #expect(pentagrama.descripcion == "Mi7: Mi₄, Sol♯₄, Si₄, Re₅, Mi₅")
         #expect(pentagrama.fichero.nombreDeFichero == "Pentagrama Mi7.svg")
         #expect(pentagrama.svg.contains("<g fill=\"#E8590C\"><title>Sol♯₄</title>"))
-        let enLaMenor = PentagramaPresentado(arpegio.voz, titulo: "Mi7", tonalidad: Tonalidad(.la, .menor))
+        let enLaMenor = PentagramaPresentado(
+            arpegio.voz, titulo: "Mi7", tonalidad: Tonalidad(.la, .menor), notacion: .compacta(.espanol))
         #expect(enLaMenor.svg != pentagrama.svg)
     }
 
@@ -74,20 +79,23 @@ import Testing
 
 @Suite struct PresentacionDePentagramaMasTests {
     @Test func elAcordeConBajoEmpiezaPorElBajoYElFicheroNoLlevaBarras() {
-        let pentagrama = PentagramaPresentado(Acorde("Sol7/Si"))
+        let pentagrama = PentagramaPresentado(Acorde("Sol7/Si"), notacion: .compacta(.espanol))
         #expect(pentagrama.descripcion == "Sol7/Si: Si, Re, Fa, Sol")
         #expect(pentagrama.fichero.nombreDeFichero == "Pentagrama Sol7-Si.svg")
     }
 
     @Test func laOctavaCambiaLasAlturas() {
-        #expect(PentagramaPresentado(Escala("Re dórico"), octava: 3).descripcion.hasPrefix("Re dórico: Re₃, Mi₃"))
         #expect(
-            PentagramaPresentado(Escala("Re dórico"), octava: 3).svg != PentagramaPresentado(Escala("Re dórico")).svg)
+            PentagramaPresentado(Escala("Re dórico"), octava: 3, notacion: .compacta(.espanol)).descripcion.hasPrefix(
+                "Re dórico: Re₃, Mi₃"))
+        #expect(
+            PentagramaPresentado(Escala("Re dórico"), octava: 3, notacion: .compacta(.espanol)).svg
+                != PentagramaPresentado(Escala("Re dórico"), notacion: .compacta(.espanol)).svg)
     }
 
     @Test func elSentidoCambiaElDibujo() {
-        let subida = PentagramaPresentado(Escala("Do mayor"), sentido: .ascendente)
-        let bajada = PentagramaPresentado(Escala("Do mayor"), sentido: .descendente)
+        let subida = PentagramaPresentado(Escala("Do mayor"), sentido: .ascendente, notacion: .compacta(.espanol))
+        let bajada = PentagramaPresentado(Escala("Do mayor"), sentido: .descendente, notacion: .compacta(.espanol))
         #expect(subida.svg != bajada.svg)
         // La descripción dice las notas de la escala, no el orden del dibujo.
         #expect(subida.descripcion == bajada.descripcion)
@@ -102,7 +110,8 @@ import Testing
 
     @Test func laProporcionEsLaDeSuDibujo() {
         for pentagrama in [
-            PentagramaPresentado(Escala("La menor melódica")), PentagramaPresentado(Acorde("Do")),
+            PentagramaPresentado(Escala("La menor melódica"), notacion: .compacta(.espanol)),
+            PentagramaPresentado(Acorde("Do"), notacion: .compacta(.espanol)),
         ] {
             #expect(pentagrama.relacionDeAspecto == PentagramaPresentado.relacionDeAspecto(deSVG: pentagrama.svg))
             #expect(pentagrama.relacionDeAspecto != 4, "el SVG del motor lleva viewBox")

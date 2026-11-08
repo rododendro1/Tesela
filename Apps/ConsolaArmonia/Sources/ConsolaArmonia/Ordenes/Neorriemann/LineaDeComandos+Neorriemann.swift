@@ -60,7 +60,7 @@ extension LineaDeComandos {
         try Argumentos(argumentos).sinOpcionesDesconocidas()
         guard let primera = argumentos.first?.lowercased() else { throw ErrorDeUso.faltanPasosDePLR }
         let resto = Array(argumentos.dropFirst())
-        if OpcionDeOrden.camino.leidos.contains("--" + primera) {
+        if OpcionDeOrden.camino.seEscribe("--" + primera) {
             guard resto.count == 2 else { throw ErrorDeUso.faltanPasosDePLR }
             let origen = try Acorde(leyendoEnLaOrden: resto[0])
             guard let camino = origen.caminoNeorriemanniano(hasta: try Acorde(leyendoEnLaOrden: resto[1])) else {
@@ -68,7 +68,7 @@ extension LineaDeComandos {
             }
             return .pasos(origen, camino)
         }
-        if OpcionDeOrden.ciclo.leidos.contains("--" + primera) {
+        if OpcionDeOrden.ciclo.seEscribe("--" + primera) {
             guard let triada = resto.last, resto.count >= 2,
                 let ciclo = try? CicloNeorriemanniano(leyendo: resto.dropLast().joined(separator: " "))
             else { throw ErrorDeUso.cicloMalEscrito(orden: "plr") }

@@ -154,7 +154,7 @@ extension LineaDeComandos {
     /// cantus, cada una con su especie (una para todas, o una por voz, separadas por comas). `nil` si solo hay una.
     static func contrapuntoAVariasVoces(_ textos: [String]) throws -> ContrapuntoAVariasVoces? {
         var argumentos = Argumentos(textos)
-        guard !argumentos.restantes.contains(where: OpcionDeOrden.proponer.leidos.contains) else { return nil }
+        guard !argumentos.restantes.contains(where: OpcionDeOrden.proponer.seEscribe) else { return nil }
         let especies = try argumentos.valor(.especie, siFalta: .especieFueraDeRango)
         try argumentos.sinOpcionesDesconocidas()
         let partes = argumentos.unidos.split(separator: "/", omittingEmptySubsequences: false)
@@ -248,7 +248,7 @@ extension LineaDeComandos {
         _ argumentos: [String], _ notacion: Notacion
     ) throws -> (intervalo: Intervalo, contenido: PresentacionDeTransposicion.Contenido, texto: String) {
         let argumentos = Argumentos(argumentos)
-        if argumentos.restantes.contains(where: OpcionDeOrden.archivo.leidos.contains) {
+        if argumentos.restantes.contains(where: OpcionDeOrden.archivo.seEscribe) {
             throw ErrorDeUso.sinSalidaJSON("transponer --archivo")
         }
         try argumentos.sinOpcionesDesconocidas()
