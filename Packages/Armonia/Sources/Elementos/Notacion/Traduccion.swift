@@ -23,19 +23,9 @@
 /// Como en ``Traduccion``, los trece valores son obligatorios y van en el mismo orden, así que una lista por
 /// idioma se revisa junto a las demás en vez de repartida por los `case` de un `switch`.
 public struct Traducido<Valor> {
-    public let espanol: Valor
-    public let ingles: Valor
-    public let catalan: Valor
-    public let gallego: Valor
-    public let euskera: Valor
-    public let portugues: Valor
-    public let frances: Valor
-    public let italiano: Valor
-    public let aleman: Valor
-    public let griego: Valor
-    public let ruso: Valor
-    public let hungaro: Valor
-    public let sueco: Valor
+    /// Un valor por idioma, en el orden de `Idioma.allCases`. Así, un idioma nuevo no toca nada de aquí salvo la
+    /// etiqueta de su argumento en el inicializador, que es donde el compilador pide el valor de cada idioma.
+    private let valores: [Valor]
 
     /// El valor en cada idioma: el español y el inglés primero y los demás por su código ISO 639.
     public init(
@@ -43,19 +33,15 @@ public struct Traducido<Valor> {
         pt portugues: Valor, fr frances: Valor, it italiano: Valor, de aleman: Valor, el griego: Valor, ru ruso: Valor,
         hu hungaro: Valor, sv sueco: Valor
     ) {
-        self.espanol = espanol
-        self.ingles = ingles
-        self.catalan = catalan
-        self.gallego = gallego
-        self.euskera = euskera
-        self.portugues = portugues
-        self.frances = frances
-        self.italiano = italiano
-        self.aleman = aleman
-        self.griego = griego
-        self.ruso = ruso
-        self.hungaro = hungaro
-        self.sueco = sueco
+        self.init(valores: [
+            espanol, ingles, catalan, gallego, euskera, portugues, frances, italiano, aleman, griego, ruso, hungaro,
+            sueco,
+        ])
+    }
+
+    private init(valores: [Valor]) {
+        precondition(valores.count == Idioma.allCases.count, "un valor por idioma, en el orden de Idioma.allCases")
+        self.valores = valores
     }
 
     /// El valor de cada idioma, calculado con su notación habitual (`Notacion.delIdioma`): para los textos que ya
@@ -64,12 +50,7 @@ public struct Traducido<Valor> {
     ///     let inversion = Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) })
     ///     inversion.en(.conPalabras(.aleman))    // "erste Umkehrung"
     public init(cadaIdioma valor: (Notacion) -> Valor) {
-        self.init(
-            valor(.delIdioma(.espanol)), valor(.delIdioma(.ingles)), ca: valor(.delIdioma(.catalan)),
-            gl: valor(.delIdioma(.gallego)), eu: valor(.delIdioma(.euskera)), pt: valor(.delIdioma(.portugues)),
-            fr: valor(.delIdioma(.frances)), it: valor(.delIdioma(.italiano)), de: valor(.delIdioma(.aleman)),
-            el: valor(.delIdioma(.griego)), ru: valor(.delIdioma(.ruso)), hu: valor(.delIdioma(.hungaro)),
-            sv: valor(.delIdioma(.sueco)))
+        self.init(valores: Idioma.allCases.map { valor(.delIdioma($0)) })
     }
 
     /// El valor de cada idioma, calculado a partir del idioma: para los datos que no dependen de cómo se escriben
@@ -78,51 +59,22 @@ public struct Traducido<Valor> {
     ///     let codigos = Traducido(porIdioma: { $0.codigo })
     ///     codigos.texto(en: .euskera)    // "eu"
     public init(porIdioma valor: (Idioma) -> Valor) {
-        self.init(
-            valor(.espanol), valor(.ingles), ca: valor(.catalan), gl: valor(.gallego), eu: valor(.euskera),
-            pt: valor(.portugues), fr: valor(.frances), it: valor(.italiano), de: valor(.aleman), el: valor(.griego),
-            ru: valor(.ruso), hu: valor(.hungaro), sv: valor(.sueco))
+        self.init(valores: Idioma.allCases.map(valor))
     }
 
     /// Los trece valores, en el orden del inicializador.
-    package var todos: [Valor] {
-        [
-            espanol, ingles, catalan, gallego, euskera, portugues, frances, italiano,
-            aleman, griego, ruso, hungaro, sueco,
-        ]
-    }
+    package var todos: [Valor] { valores }
 
     /// El valor en el idioma de los textos de la notación (`Notacion.textos`). Los textos y las listas de textos,
     /// también en su grafía (`Notacion.grafiaDeLosTextos`), con las versiones de abajo.
     public func en(_ notacion: Notacion) -> Valor { texto(en: notacion.textos) }
 
     /// El valor en un idioma.
-    public func texto(en idioma: Idioma) -> Valor {
-        switch idioma {
-        case .espanol: return espanol
-        case .ingles: return ingles
-        case .catalan: return catalan
-        case .gallego: return gallego
-        case .euskera: return euskera
-        case .portugues: return portugues
-        case .frances: return frances
-        case .italiano: return italiano
-        case .aleman: return aleman
-        case .griego: return griego
-        case .ruso: return ruso
-        case .hungaro: return hungaro
-        case .sueco: return sueco
-        }
-    }
+    public func texto(en idioma: Idioma) -> Valor { valores[idioma.posicion] }
 
     /// El mismo cambio en los trece idiomas.
     public func map<Otro>(_ cambio: (Valor) throws -> Otro) rethrows -> Traducido<Otro> {
-        Traducido<Otro>(
-            try cambio(espanol), try cambio(ingles), ca: try cambio(catalan), gl: try cambio(gallego),
-            eu: try cambio(euskera),
-            pt: try cambio(portugues), fr: try cambio(frances),
-            it: try cambio(italiano), de: try cambio(aleman),
-            el: try cambio(griego), ru: try cambio(ruso), hu: try cambio(hungaro), sv: try cambio(sueco))
+        Traducido<Otro>(valores: try valores.map(cambio))
     }
 }
 
@@ -195,6 +147,13 @@ extension Traducido where Valor == [String] {
     public func texto(en idioma: Idioma, grafia: Grafia) -> [String] {
         texto(en: idioma).map { Transliteracion.texto($0, en: grafia) }
     }
+}
+
+extension Idioma {
+    /// La posición del idioma en `allCases`: la de su valor en un `Traducido`.
+    fileprivate var posicion: Int { Self.posiciones[self] ?? 0 }
+
+    private static let posiciones = Dictionary(uniqueKeysWithValues: allCases.enumerated().map { ($1, $0) })
 }
 
 extension Traducido: Equatable where Valor: Equatable {}

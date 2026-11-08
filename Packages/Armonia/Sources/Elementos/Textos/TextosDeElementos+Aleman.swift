@@ -46,7 +46,7 @@ extension TextosDeElementos {
         unisonoDisminuido: "eine verminderte Prime gibt es nicht: von C nach Ces ist es eine übermäßige Prime abwärts (schreib -A1)",
         reglaDeLasJustas: "Prime, Quarte, Quinte und Oktave sind rein, übermäßig oder vermindert",
         reglaDeLasMayores: "Sekunde, Terz, Sexte und Septime sind groß, klein, übermäßig oder vermindert",
-        intervaloInexistente: { numero, calidad, notacion, regla in "es gibt keine \(calidad.nombre(en: .conPalabras(.aleman))) \(Intervalo.ordinal(numero, en: .aleman)): \(regla.aleman)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "es gibt keine \(calidad.nombre(en: .conPalabras(.aleman))) \(Intervalo.ordinal(numero, en: .aleman)): \(regla.texto(en: .aleman))" },
         alteracionNoReconocida: { signo in "„\(signo)“ ist kein Vorzeichen (erwartet ♯, ♭, 𝄪, 𝄫, #, b, x oder ♮)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

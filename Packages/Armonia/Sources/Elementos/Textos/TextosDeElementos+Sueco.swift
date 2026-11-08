@@ -46,7 +46,7 @@ extension TextosDeElementos {
         unisonoDisminuido: "det finns ingen förminskad prim: från C till Cess är det en överstigande prim nedåt (skriv -A1)",
         reglaDeLasJustas: "prim, kvart, kvint och oktav är rena, överstigande eller förminskade",
         reglaDeLasMayores: "sekund, ters, sext och septima är stora, små, överstigande eller förminskade",
-        intervaloInexistente: { numero, calidad, notacion, regla in "det finns ingen \(calidad.nombre(en: .conPalabras(.sueco))) \(Intervalo.ordinal(numero, en: .sueco)): \(regla.sueco)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "det finns ingen \(calidad.nombre(en: .conPalabras(.sueco))) \(Intervalo.ordinal(numero, en: .sueco)): \(regla.texto(en: .sueco))" },
         alteracionNoReconocida: { signo in "”\(signo)” är inget förtecken (♯, ♭, 𝄪, 𝄫, #, b, x eller ♮ väntades)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

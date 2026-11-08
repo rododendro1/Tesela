@@ -46,7 +46,7 @@ extension TextosDeElementos {
         unisonoDisminuido: "there is no diminished unison: from C to C♭ is a descending augmented unison (write it -A1)",
         reglaDeLasJustas: "unisons, 4ths, 5ths and octaves are perfect, augmented or diminished",
         reglaDeLasMayores: "2nds, 3rds, 6ths and 7ths are major, minor, augmented or diminished",
-        intervaloInexistente: { numero, calidad, notacion, regla in "there is no \(calidad.nombre(en: notacion)) \(Intervalo.ordinalEnCifras(numero, en: .ingles)): \(regla.ingles)" },
+        intervaloInexistente: { numero, calidad, notacion, regla in "there is no \(calidad.nombre(en: notacion)) \(Intervalo.ordinalEnCifras(numero, en: .ingles)): \(regla.texto(en: .ingles))" },
         alteracionNoReconocida: { signo in "\"\(signo)\" is not an accidental (expected ♯, ♭, 𝄪, 𝄫, #, b, x or ♮)" },
 
         // ErrorDeLectura.swift (conjuntos y series)

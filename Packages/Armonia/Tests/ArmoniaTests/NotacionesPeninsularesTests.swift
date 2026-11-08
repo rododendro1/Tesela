@@ -129,8 +129,9 @@ import Testing
         // Todos los tipos conocidos tienen nombre propio en cada idioma.
         for (_, nombre) in TipoDeAcorde.nombresConocidos {
             #expect(
-                !(nombre.catalan.isEmpty || nombre.gallego.isEmpty || nombre.euskera.isEmpty),
-                Comment(rawValue: nombre.espanol))
+                !(nombre.texto(en: .catalan).isEmpty || nombre.texto(en: .gallego).isEmpty
+                    || nombre.texto(en: .euskera).isEmpty),
+                Comment(rawValue: nombre.texto(en: .espanol)))
         }
 
         #expect(Escala(.re, .dorico).nombre(en: .conPalabras(.catalan)) == "re dòric")

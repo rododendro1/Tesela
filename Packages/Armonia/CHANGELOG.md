@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### `Traducido`, con una tabla
+
+- **Cambio incompatible:** `Traducido` guarda sus trece valores en una tabla, en el orden de `Idioma.allCases`, y ya
+  no tiene un campo público por idioma (`.espanol`, `.ruso`…): se leen con `texto(en:)` (`regla.texto(en: .ruso)`).
+  Los inicializadores no cambian. Un idioma nuevo ya no toca `texto(en:)`, `map` ni los inicializadores
+  `cadaIdioma:` y `porIdioma:`, solo la etiqueta de su argumento.
+
 ### Notación: grafía, escritura como `enum` y construcción simétrica
 
 Cambios incompatibles en `Notacion`, todos en esta versión. Lo guardado con `Codable` se sigue leyendo.
