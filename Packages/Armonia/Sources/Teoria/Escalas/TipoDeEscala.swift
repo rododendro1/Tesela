@@ -228,7 +228,7 @@ extension TipoDeEscala {
         if notacion.textos == .espanol { return nombre }
         // Los nombres propios de otras tradiciones (Kafi, Hitzaz…) son los mismos en todos los idiomas, salvo
         // los que se traducen (las escalas andinas, los tetracordos…): se buscan por su nombre, no por el tipo.
-        return NombresDeEscalas.de(notacion.textos).nombre(de: self) ?? nombre
+        return notacion.enSuAlfabeto(NombresDeEscalas.de(notacion.textos).nombre(de: self) ?? nombre)
     }
 }
 

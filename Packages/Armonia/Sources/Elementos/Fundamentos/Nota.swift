@@ -259,7 +259,9 @@ public struct Nota: Hashable, Sendable {
     /// No distingue mayúsculas ni tildes. En español e inglés, igual que `init(leyendo:)`; en los demás idiomas se
     /// leen las dos formas, con palabras y compacta: «F Kreuz» y «Fis», «ré bémol» y «Ré♭».
     public init(leyendo texto: String, en notacion: Notacion) throws {
-        let notacion = notacion.notas
+        // En el alfabeto latino se lee lo mismo: las tablas del ruso y del griego tienen también los nombres
+        // transliterados (solʹ, fa-diez; fa díesi).
+        let notacion = notacion.notas.conAlfabeto(.propio)
         // Los de otra tradición, en cualquiera de las grafías de su sistema: «Γα♯», «ga#», «嬰ヘ».
         if let sistema = notacion.escritura.sistema {
             self = try sistema.leer(texto)
@@ -298,6 +300,13 @@ public struct Nota: Hashable, Sendable {
                 tabla[nombre.nombreCompacto(en: notacion).claveDeBusqueda] = nombre
                 // Y como lo escribe la notación compacta, con 𝄫 y 𝄪: «Mi𝄫», no solo «Mi♭♭».
                 tabla[nombre.nombre(en: .compacta(notacion.idiomaDeLasNotas)).claveDeBusqueda] = nombre
+                // En ruso y en griego, también como se escriben en el alfabeto latino: «solʹ», «fa díesi».
+                if [Idioma.ruso, .griego].contains(notacion.idiomaDeLasNotas) {
+                    for escrito in [nombre.nombre(en: notacion), nombre.nombreCompacto(en: notacion)] {
+                        let latino = Transliteracion.latina(escrito).claveDeBusqueda
+                        if tabla[latino] == nil { tabla[latino] = nombre }
+                    }
+                }
             }
             tablas[notacion] = tabla
         }
@@ -389,7 +398,7 @@ extension NotaNatural {
         if let sistema = notacion.escritura.sistema {
             return sistema.naturales(en: notacion.escritura.grafia)[rawValue]
         }
-        return notacion.idiomaDeLasNotas.reglas.naturales[rawValue]
+        return notacion.enSuAlfabeto(notacion.idiomaDeLasNotas.reglas.naturales[rawValue])
     }
 }
 
@@ -397,7 +406,9 @@ extension NotaNatural {
 
 extension Alteracion {
     /// Nombre en cada idioma: "double sharp", "Doppelkreuz", "double dièse", "doppio diesis"…
-    public func nombre(en notacion: Notacion) -> String {
+    public func nombre(en notacion: Notacion) -> String { notacion.enSuAlfabeto(nombreEnSuAlfabeto(en: notacion)) }
+
+    private func nombreEnSuAlfabeto(en notacion: Notacion) -> String {
         let idioma = notacion.idiomaDeLasNotas
         if semitonos == 0 { return Alteracion.palabraNatural.texto(en: idioma) }
         let base = (esSostenido ? Alteracion.palabraSostenido : Alteracion.palabraBemol).texto(en: idioma)

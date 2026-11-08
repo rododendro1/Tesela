@@ -2,6 +2,7 @@
 
 ## Sin publicar
 
+- `TextosDeApps.alfabetoLatino`, el texto del interruptor del alfabeto latino, en los trece idiomas.
 - Los textos de las apps (`TextosDeApps`) están también en sueco.
 
 ## 0.3.7 (2026-11-07)

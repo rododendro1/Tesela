@@ -87,6 +87,24 @@ import Testing
         #expect(Set(Idioma.allCases.map(\.clave)).count == Idioma.allCases.count)
     }
 
+    /// En ruso y en griego, el alfabeto latino se guarda con «@latino» detrás de la clave.
+    @Test func alfabetoLatino() {
+        let ruso = Notacion.conPalabras(.ruso).conAlfabeto(.latino)
+        #expect(ruso.clave == "ruso@latino")
+        #expect(Notacion.desde(clave: "ruso@latino") == ruso)
+        #expect(ruso.titulo == "Russkij (fa-diez)")
+        #expect(ruso.admiteAlfabetoLatino)
+        let griegoEnEspanol = Notacion.conPalabras(.griego).conTextos(en: .espanol).conAlfabeto(.latino)
+        #expect(Notacion.desde(clave: griegoEnEspanol.clave) == griegoEnEspanol)
+        #expect(Notacion.espanolCompacto.conTextos(en: .ruso).admiteAlfabetoLatino)
+        // Cambiar las notas o los textos conserva el alfabeto; en un idioma que ya es latino, no se guarda.
+        #expect(ruso.conNotas(.conPalabras(.griego)) == Notacion.conPalabras(.griego).conAlfabeto(.latino))
+        #expect(ruso.conTextosElegidos(.espanol).alfabeto == .latino)
+        #expect(!Notacion.compacta(.aleman).admiteAlfabetoLatino)
+        #expect(Notacion.compacta(.aleman).conAlfabeto(.latino).clave == Notacion.compacta(.aleman).clave)
+        #expect(ruso.texto(\.alfabetoLatino) == "Latinskij alfavit")
+    }
+
     @Test func unaClaveDesconocidaDaElEspanol() {
         #expect(Notacion.desde(clave: "") == .espanolCompacto)
         #expect(Notacion.desde(clave: "klingon") == .espanolCompacto)

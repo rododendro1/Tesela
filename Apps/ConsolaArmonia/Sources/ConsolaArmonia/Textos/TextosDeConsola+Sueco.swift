@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: musikteori på kommandoraden.
 
-        Användning: armonia <kommando> <argument> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv]
+        Användning: armonia <kommando> <argument> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv|ru-latn|el-latn]
 
         Kommandon (kommandon och alternativ skrivs på spanska eller engelska):
         """,

@@ -135,7 +135,7 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     /// «hexacordo», «harmonía», «modo gregoriano», «afinación» y «escala», y en ruso y griego se transcriben las demás.
     public func nombre(en notacion: Notacion) -> String {
         if notacion.textos == .espanol { return nombre }
-        return NombresDeEscalas.de(notacion.textos).nombre(de: self) ?? nombre
+        return notacion.enSuAlfabeto(NombresDeEscalas.de(notacion.textos).nombre(de: self) ?? nombre)
     }
 }
 

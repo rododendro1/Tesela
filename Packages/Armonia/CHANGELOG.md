@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Alfabeto latino
+
+- El ruso y el griego se escriben también en el alfabeto latino: `Notacion.alfabeto` (`.propio` o `.latino`) y
+  `conAlfabeto(_:)`. Con `.latino`, las notas, los nombres y los textos salen transliterados, el cirílico con ISO 9
+  (solʹ, fa-diez, bolʹšaâ terciâ) y el griego con ELOT 743 (fa díesi, megáli tríti), y se leen en los dos alfabetos
+  (`Escala(leyendo: "fa-diez dorijskij", en:)`). `Transliteracion.latina(_:)` translitera cualquier texto, y
+  `Notacion.enSuAlfabeto(_:)`, los que se componen fuera del motor. Una `Notacion` guardada solo lleva `alfabeto`
+  si es el latino, y lo guardado antes se lee con el propio.
+- En la línea de comandos, `--idioma ru-latn` y `--idioma el-latn` (también en `--textos` y en `ARMONIA_IDIOMA`)
+  dan la salida, la ayuda y los mensajes en el alfabeto latino.
+
 ### Sueco
 
 - **Cambio incompatible:** el sueco es el idioma número trece: `Idioma.sueco` (código «sv»), con sus `ReglasDeIdioma`

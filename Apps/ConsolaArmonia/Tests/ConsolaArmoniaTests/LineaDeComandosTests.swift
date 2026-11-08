@@ -276,6 +276,22 @@ import Testing
         #expect(salida("ayuda --todo --idioma svenska").hasPrefix("armonia: "))
         #expect(salida("tonalidad Mib mayor --idioma sv").contains("Ess-dur"))
         #expect(salida("escala Fiss dorisk --idioma sv").contains("2:a modus av E dur"))
+        // El ruso y el griego en el alfabeto latino (ISO 9 y ELOT 743): todo lo que se escribe, también la ayuda.
+        #expect(
+            salida("acorde Sol7/Si --idioma ru-latn").hasPrefix("Solʹ7/Si: dominantseptakkord\n  noty: solʹ si re fa"))
+        #expect(salida("intervalo Do Mi --idioma el-latn").hasPrefix("megáli tríti"))
+        #expect(salida("escala fa-diez dorijskij --idioma ru-latn").hasPrefix("fa-diez dorijskij\n"))
+        #expect(salida("acorde Sol7 --idioma ru --textos el-latn").contains("synchordía"))
+        for idioma in ["ru-latn", "el-latn", "ru-Latn"] {
+            for orden in [
+                "ayuda --todo", "ayuda", "tonalidad Mib menor", "escala Re dorico --acordes", "acorde Do7 --nombres",
+            ] {
+                let texto = salida(orden + " --idioma " + idioma)
+                #expect(!texto.isEmpty, "\(orden) \(idioma)")
+                #expect(!texto.unicodeScalars.contains { (0x0370...0x04FF).contains($0.value) }, "\(orden) \(idioma)")
+            }
+        }
+        #expect(resultado("acorde", "Xx", "--idioma", "ru-latn").error.hasPrefix("armonia: Ne udaëtsâ"))
         #expect(salida("ayuda --todo --idioma el") == (ayudaEn(.griego) + "\n"))
         #expect(ayudaEn(.aleman).hasPrefix("armonia: Musiktheorie"))
         #expect(ayudaEn(.ruso).contains("armonia chord G7/B"))

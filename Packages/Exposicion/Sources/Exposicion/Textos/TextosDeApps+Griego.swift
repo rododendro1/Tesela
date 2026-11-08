@@ -80,6 +80,7 @@ extension TextosDeApps {
         textos: "Κείμενα",
         comoLasNotas: "Όπως οι νότες",
         octavaEnSubindice: "Οκτάβα ως δείκτης (Λα₄)",
+        alfabetoLatino: "Λατινικό αλφάβητο",
         octavas: "Οκτάβες",
         conLaOctavaFinal: "Με την τελική οκτάβα",
         figura: "Ρυθμική αξία",

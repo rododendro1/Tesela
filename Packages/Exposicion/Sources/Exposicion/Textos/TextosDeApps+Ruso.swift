@@ -80,6 +80,7 @@ extension TextosDeApps {
         textos: "Тексты",
         comoLasNotas: "Как ноты",
         octavaEnSubindice: "Октава нижним индексом (Ля₄)",
+        alfabetoLatino: "Латинский алфавит",
         octavas: "Октавы",
         conLaOctavaFinal: "С завершающей октавой",
         figura: "Длительность",

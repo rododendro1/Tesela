@@ -80,6 +80,7 @@ extension TextosDeApps {
         textos: "Testuak",
         comoLasNotas: "Notak bezala",
         octavaEnSubindice: "Zortziduna azpiindizean (La₄)",
+        alfabetoLatino: "Alfabeto latinoa",
         octavas: "Zortzidunak",
         conLaOctavaFinal: "Azken zortzidunarekin",
         figura: "Irudia",

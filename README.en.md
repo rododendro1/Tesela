@@ -1,8 +1,8 @@
 # Tesela
 
 Music theory in Swift: a harmony engine, two apps for iOS and macOS, and a command-line tool, `armonia`. Everything
-speaks thirteen languages, English among them. The code and its documentation are written in Spanish; this page is a
-short English summary.
+speaks thirteen languages, English among them, and Russian and Greek can also be written in the Latin alphabet. The code
+and its documentation are written in Spanish; this page is a short English summary.
 
 [Español](README.md) · [Documentation (DocC)](https://rododendro1.github.io/Tesela/)
 

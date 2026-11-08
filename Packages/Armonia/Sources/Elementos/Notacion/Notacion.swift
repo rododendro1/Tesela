@@ -28,8 +28,10 @@
 /// | `.compacta(.aleman)` | Fis | große Terz | Dominantseptakkord | Fis dorisch |
 /// | `.conPalabras(.griego)` | φα δίεση | μεγάλη τρίτη | συγχορδία έβδομης δεσπόζουσας | φα δίεση δώριος |
 /// | `.compacta(.griego)` | Φα♯ | μεγάλη τρίτη | συγχορδία έβδομης δεσπόζουσας | Φα♯ δώριος |
+/// | `.conPalabras(.griego).conAlfabeto(.latino)` | fa díesi | megáli tríti | synchordía évdomis despózousas | fa díesi dórios |
 /// | `.conPalabras(.ruso)` | фа-диез | большая терция | доминантсептаккорд | фа-диез дорийский |
 /// | `.compacta(.ruso)` | Фа♯ | большая терция | доминантсептаккорд | Фа♯ дорийский |
+/// | `.conPalabras(.ruso).conAlfabeto(.latino)` | fa-diez | bolʹšaâ terciâ | dominantseptakkord | fa-diez dorijskij |
 /// | `.conPalabras(.hungaro)` | F kereszt | nagy terc | domináns szeptimakkord | F kereszt dór |
 /// | `.compacta(.hungaro)` | Fisz | nagy terc | domináns szeptimakkord | Fisz dór |
 /// | `.conPalabras(.sueco)` | F kors | stor ters | dominantseptimackord | F kors dorisk |
@@ -44,6 +46,9 @@
 /// notas, y `conTextos(en:)` los cambia: `Notacion.conPalabras(.ruso).conTextos(en: .espanol)` escribe
 /// «соль séptima de dominante, primera inversión».
 ///
+/// El ruso y el griego se escriben también en el alfabeto latino, con `conAlfabeto(.latino)`: el cirílico con la
+/// transliteración ISO 9 y el griego con la ELOT 743 (``Transliteracion``). Se leen igual en los dos alfabetos.
+///
 /// La octava de las alturas se escribe con cifras (La4) o como subíndice (La₄). Las notaciones compactas
 /// (`.espanolCompacto`, `.compacta(.aleman)`, `.compacta(.frances)`…) la escriben como subíndice y las demás con cifras;
 /// `conOctavas(_:)` la cambia.
@@ -55,13 +60,21 @@ public struct Notacion: Hashable, Sendable, CaseIterable, Codable {
     /// Cómo se escribe la octava de las alturas: con cifras (La4) o como subíndice (La₄). Si no se elige, la de
     /// la escritura (``EscrituraDeNotas/octavas``): subíndice en las compactas y cifras en las demás.
     public let octavas: EscrituraDeLaOctava
+    /// El alfabeto de las notas y de los textos: el del idioma (`.propio`) o, en ruso y en griego, el latino, con
+    /// la transliteración ISO 9 o ELOT 743 (``Transliteracion``): solʹ, bolʹšaâ terciâ; megáli tríti.
+    public let alfabeto: Alfabeto
 
     /// Las notas escritas como `escritura`, con los textos en `textos` o, si no se da, en el idioma de las
-    /// notas, y la octava escrita como `octavas` o, si no se da, como la escriba la escritura.
-    public init(escritura: EscrituraDeNotas, textos: Idioma? = nil, octavas: EscrituraDeLaOctava? = nil) {
+    /// notas, la octava escrita como `octavas` o, si no se da, como la escriba la escritura, y todo en el
+    /// `alfabeto` del idioma o en el latino.
+    public init(
+        escritura: EscrituraDeNotas, textos: Idioma? = nil, octavas: EscrituraDeLaOctava? = nil,
+        alfabeto: Alfabeto = .propio
+    ) {
         self.escritura = escritura
         self.textos = textos ?? escritura.idioma
         self.octavas = octavas ?? escritura.octavas
+        self.alfabeto = alfabeto
     }
 
     /// Español con las alteraciones en palabras: Do, Fa sostenido, Si bemol; en los cifrados, Fa♯7, Si♭m.
@@ -114,18 +127,48 @@ public struct Notacion: Hashable, Sendable, CaseIterable, Codable {
     /// La misma notación de las notas con los textos en otro idioma: `Notacion.conPalabras(.ruso).conTextos(en:
     /// .espanol)`.
     public func conTextos(en idioma: Idioma) -> Notacion {
-        Notacion(escritura: escritura, textos: idioma, octavas: octavas)
+        Notacion(escritura: escritura, textos: idioma, octavas: octavas, alfabeto: alfabeto)
     }
 
     /// La misma notación con la octava escrita de otra forma: `Notacion.espanolCompacto.conOctavas(.cifras)`
     /// escribe La4 y Fa♯3, y `Notacion.espanolASCII.conOctavas(.subindices)`, La₄ y Fa#₃.
     public func conOctavas(_ octavas: EscrituraDeLaOctava) -> Notacion {
-        Notacion(escritura: escritura, textos: textos, octavas: octavas)
+        Notacion(escritura: escritura, textos: textos, octavas: octavas, alfabeto: alfabeto)
+    }
+
+    /// La misma notación en otro alfabeto: `Notacion.conPalabras(.ruso).conAlfabeto(.latino)` escribe «fa-diez» y
+    /// «bolʹšaâ terciâ», y `Notacion.compacta(.griego).conAlfabeto(.latino)`, «Fa♯» y «megáli tríti».
+    public func conAlfabeto(_ alfabeto: Alfabeto) -> Notacion {
+        Notacion(escritura: escritura, textos: textos, octavas: octavas, alfabeto: alfabeto)
+    }
+
+    /// ¿Escribe en un alfabeto que no es el latino y hay que transliterar? Solo con `.latino` y notas o textos en
+    /// ruso o en griego.
+    package var translitera: Bool {
+        alfabeto == .latino
+            && [Idioma.ruso, .griego].contains { $0 == textos || $0 == escritura.idioma }
+    }
+
+    /// El texto en el alfabeto de la notación: transliterado (``Transliteracion/latina(_:)``) si es `.latino`; si
+    /// no, igual. Lo que escribe el motor ya sale así; sirve para los textos que se componen fuera de él.
+    public func enSuAlfabeto(_ texto: String) -> String {
+        translitera ? Transliteracion.latina(texto) : texto
+    }
+
+    /// Un valor en el alfabeto de la notación: un texto o una lista de textos, transliterados si hace falta; los
+    /// demás valores (las plantillas con `@Sendable`, los números), igual.
+    package func enSuAlfabeto<Valor>(valor: Valor) -> Valor {
+        guard translitera else { return valor }
+        if let texto = valor as? String, let latino = Transliteracion.latina(texto) as? Valor { return latino }
+        if let textos = valor as? [String], let latinos = textos.map(Transliteracion.latina) as? Valor {
+            return latinos
+        }
+        return valor
     }
 
     /// La notación de las notas con los textos en su propio idioma y la octava como la escriba la escritura:
     /// `.conPalabras(.ruso).conTextos(en: .espanol).notas` es `.conPalabras(.ruso)`.
-    public var notas: Notacion { Notacion(escritura: escritura) }
+    public var notas: Notacion { Notacion(escritura: escritura, alfabeto: alfabeto) }
 
     /// ¿Lleva los textos en un idioma distinto del de sus notas?
     public var esCombinada: Bool { textos != escritura.idioma }
@@ -391,6 +434,28 @@ extension Idioma {
     private static let porNombre: [String: Idioma] = Dictionary(
         Idioma.allCases.flatMap { idioma in idioma.nombres.map { ($0.claveDeBusqueda, idioma) } },
         uniquingKeysWith: { primero, _ in primero })
+}
+
+extension Notacion {
+    private enum CodingKeys: String, CodingKey { case escritura, textos, octavas, alfabeto }
+
+    // El alfabeto solo se guarda si es el latino, y lo guardado antes de que lo hubiera se lee con el propio.
+    public init(from decoder: Decoder) throws {
+        let contenedor = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            escritura: try contenedor.decode(EscrituraDeNotas.self, forKey: .escritura),
+            textos: try contenedor.decode(Idioma.self, forKey: .textos),
+            octavas: try contenedor.decode(EscrituraDeLaOctava.self, forKey: .octavas),
+            alfabeto: try contenedor.decodeIfPresent(Alfabeto.self, forKey: .alfabeto) ?? .propio)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var contenedor = encoder.container(keyedBy: CodingKeys.self)
+        try contenedor.encode(escritura, forKey: .escritura)
+        try contenedor.encode(textos, forKey: .textos)
+        try contenedor.encode(octavas, forKey: .octavas)
+        if alfabeto != .propio { try contenedor.encode(alfabeto, forKey: .alfabeto) }
+    }
 }
 
 extension EscrituraDeNotas: Codable {

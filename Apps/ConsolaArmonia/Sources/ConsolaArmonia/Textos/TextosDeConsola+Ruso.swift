@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: теория музыки в командной строке.
 
-        Использование: armonia <команда> <аргументы> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv]
+        Использование: armonia <команда> <аргументы> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv|ru-latn|el-latn]
 
         Команды (команды и параметры пишутся по-испански или по-английски):
         """,

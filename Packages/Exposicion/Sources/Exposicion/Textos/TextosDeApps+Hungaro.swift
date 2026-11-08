@@ -80,6 +80,7 @@ extension TextosDeApps {
         textos: "Szövegek",
         comoLasNotas: "Mint a hangok",
         octavaEnSubindice: "Oktáv alsó indexben (A₄)",
+        alfabetoLatino: "Latin ábécé",
         octavas: "Oktávok",
         conLaOctavaFinal: "Az oktávval zárva",
         figura: "Hangérték",

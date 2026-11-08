@@ -45,6 +45,10 @@
                 if let octavasEnSubindice {
                     Toggle(notacion.texto(\.octavaEnSubindice), isOn: octavasEnSubindice)
                 }
+                // En ruso y en griego, las notas y los textos también en el alfabeto latino (solʹ, fa díesi).
+                if notacion.admiteAlfabetoLatino {
+                    Toggle(notacion.texto(\.alfabetoLatino), isOn: alfabetoLatino)
+                }
                 if let temperamento {
                     Picker(notacion.texto(\.afinacionAlEscuchar), selection: temperamento) {
                         ForEach(AfinacionHistorica.allCases, id: \.self) { opcion in
@@ -64,8 +68,15 @@
         /// La notación de las notas; al cambiarla se conserva el idioma de los textos.
         private var notas: Binding<String> {
             Binding(
-                get: { Notacion.desde(clave: clave).notas.clave },
+                get: { Notacion.desde(clave: clave).notas.conAlfabeto(.propio).clave },
                 set: { clave = Notacion.desde(clave: clave).conNotas(Notacion.desde(clave: $0)).clave })
+        }
+
+        /// Si se escribe en el alfabeto latino; al cambiarlo se conservan las notas y los textos.
+        private var alfabetoLatino: Binding<Bool> {
+            Binding(
+                get: { Notacion.desde(clave: clave).alfabeto == .latino },
+                set: { clave = Notacion.desde(clave: clave).conAlfabeto($0 ? .latino : .propio).clave })
         }
 
         /// El idioma de los textos, o "" si van en el de las notas.

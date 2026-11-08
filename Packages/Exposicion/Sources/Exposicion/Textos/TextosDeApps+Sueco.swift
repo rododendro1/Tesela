@@ -80,6 +80,7 @@ extension TextosDeApps {
         textos: "Texter",
         comoLasNotas: "Som tonerna",
         octavaEnSubindice: "Oktav som index (A₄)",
+        alfabetoLatino: "Latinskt alfabet",
         octavas: "Oktaver",
         conLaOctavaFinal: "Med slutoktaven",
         figura: "Notvärde",

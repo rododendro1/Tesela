@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: musika-teoria komando-lerrotik.
 
-        Erabilera: armonia <agindua> <argumentuak> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv]
+        Erabilera: armonia <agindua> <argumentuak> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv|ru-latn|el-latn]
 
         Aginduak (aginduak eta aukerak gaztelaniaz edo ingelesez idazten dira):
         """,

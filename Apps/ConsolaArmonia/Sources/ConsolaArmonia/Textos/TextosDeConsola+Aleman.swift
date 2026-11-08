@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: Musiktheorie auf der Kommandozeile.
 
-        Aufruf: armonia <Befehl> <Argumente> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv]
+        Aufruf: armonia <Befehl> <Argumente> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv|ru-latn|el-latn]
 
         Befehle (Befehle und Optionen werden auf Spanisch oder Englisch geschrieben):
         """,

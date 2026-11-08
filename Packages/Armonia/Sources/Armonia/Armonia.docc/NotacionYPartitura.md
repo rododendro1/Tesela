@@ -98,6 +98,10 @@ Tonalidad("ля минор")                               // La menor
   `textos`. Los nombres tradicionales de escala (rāga, maqam, pentatónicas japonesas…)
   se escriben igual en todos los idiomas, y una escala se lee también con su nombre en catalán,
   gallego, euskera, portugués o alemán (`Escala("re doriarra")`, `Escala("dó maior")`).
+- El ruso y el griego se escriben también en el alfabeto latino: `conAlfabeto(.latino)` translitera las notas y
+  los textos, el cirílico con ISO 9 (solʹ, bolʹšaâ terciâ) y el griego con ELOT 743 (fa díesi, megáli tríti). En
+  ese alfabeto también se leen: `Escala(leyendo: "fa-diez dorijskij", en: notacion)`. Para los textos que se
+  componen fuera del motor, `notacion.enSuAlfabeto(_:)` y `Transliteracion.latina(_:)`.
 
 ```swift
 Intervalo.terceraMayor.nombre(en: .conPalabras(.catalan))        // "3a major"

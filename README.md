@@ -1,7 +1,8 @@
 # Tesela
 
 Teoría musical en Swift: un motor de armonía, dos apps para iOS y macOS y una herramienta de línea de comandos,
-`armonia`. Todo habla trece idiomas, del español y el euskera al griego, el húngaro y el sueco.
+`armonia`. Todo habla trece idiomas, del español y el euskera al griego, el húngaro y el sueco, y el ruso
+y el griego también se escriben en alfabeto latino.
 
 [English](README.en.md) · [Documentación](https://rododendro1.github.io/Tesela/) ·
 [Desarrollo](DESARROLLO.md) · [Cómo contribuir](CONTRIBUTING.md)
