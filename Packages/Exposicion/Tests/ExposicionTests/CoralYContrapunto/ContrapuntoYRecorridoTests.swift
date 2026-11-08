@@ -39,6 +39,7 @@ import Testing
         #expect(primera.intervalos == "5")
         #expect(primera.faltas.contains("Quintas paralelas"))
         #expect(presentado.filas[1].faltas.contains("Quintas paralelas"))
+        #expect(!primera.esCorrecta)
         #expect(presentado.filas.last?.intervalos == "8")
     }
 

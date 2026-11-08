@@ -26,9 +26,9 @@ public struct AnalisisPresentado: Hashable, Sendable, Encodable {
     public let cadencias: [String]
     public let ficheros: [FicheroParaExportar]
     /// Los acordes uno detrás de otro, para «Escuchar».
-    public internal(set) var sonido: Escucha = .silencio
+    public internal(set) var sonido: Escucha
     /// Los acordes analizados y la tonalidad de la partitura, para arpegiarlos.
-    public internal(set) var acordes: [Acorde] = []
+    public internal(set) var acordes: [Acorde]
     public internal(set) var tonalidad: Tonalidad?
     /// El ritmo armónico, si viene de una pieza importada; si no, `nil` (una negra cada uno, y una blanca al
     /// arpegiarlos).
