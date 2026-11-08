@@ -151,7 +151,8 @@ extension LineaDeComandos {
     ]
 
     /// `grabar <partitura o dibujo> [--motor lilypond|musescore|verovio|guido|propio] [--formato pdf|svg|png]`.
-    static func grabar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+    static func grabar(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {
+        let notacion = contexto.notacion
         var entrada = Argumentos(argumentos)
         var motor: MotorDeGrabado?
         if let texto = try entrada.valor(.motor) {
@@ -176,12 +177,12 @@ extension LineaDeComandos {
         // Lo que Tesela escribe para el motor: la partitura en su formato, o el SVG del dibujo.
         let fuente: ResultadoDeOrden
         if let formatoDePartitura = elegido.partitura {
-            fuente = try partitura(resto, notacion, formato: formatoDePartitura)
+            fuente = try partitura(resto, contexto, formato: formatoDePartitura)
         } else {
             guard primera != "grabar" && primera != "engrave",
                 let orden = ordenes.first(where: { $0.nombres.contains(primera) })
             else { throw ErrorDeUso.nadaQueGrabar(primera) }
-            fuente = try orden.ejecutar(Array(resto.dropFirst()), notacion)
+            fuente = try orden.ejecutar(Array(resto.dropFirst()), contexto)
             guard fuente.codigo == 0 else { return fuente }
             // Solo un dibujo: el MusicXML de `armonia musicxml` también es XML, pero no es SVG.
             guard fuente.datos == nil, fuente.salida.hasPrefix("<svg") else {

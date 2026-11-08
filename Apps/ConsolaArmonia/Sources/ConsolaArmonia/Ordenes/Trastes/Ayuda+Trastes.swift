@@ -6,11 +6,12 @@ extension LineaDeComandos {
         Orden(
             nombres: ["digitaciones", "digitacion", "fingerings"],
             ayuda: ayudaDeDigitaciones,
-            json: { try digitacionesJSON($0, $1) },
-            ejecutar: { try digitaciones($0, $1) }),
+            json: { try digitacionesJSON($0, $1.notacion) },
+            ejecutar: { try digitaciones($0, $1.notacion) }),
         Orden(
-            nombres: ["posiciones", "positions"], ayuda: ayudaDePosiciones, json: { try posicionesJSON($0, $1) },
-            ejecutar: { try posiciones($0, $1) }),
+            nombres: ["posiciones", "positions"], ayuda: ayudaDePosiciones,
+            json: { try posicionesJSON($0, $1.notacion) },
+            ejecutar: { try posiciones($0, $1.notacion) }),
     ]
 
     static let ayudaDeDigitaciones: [EntradaDeAyuda] = [

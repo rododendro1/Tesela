@@ -14,7 +14,7 @@ extension LineaDeComandos {
     /// `--en <tonalidad>` (al final), la armadura de esa tonalidad.
     static func pentagrama(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(try conLosDedos(textos, soloPiano: false))
-        guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaValor("en") }
+        guard let tonalidad = try argumentos.quitarTonalidad(en: notacion) else { throw ErrorDeUso.faltaValor("en") }
         var opciones = OpcionesDePentagrama(notacion: notacion)
         if let tonalidad { opciones.armadura = .tonalidad(tonalidad) }
         opciones.marcas.nombresDeLasNotas = argumentos.quitarMarca(.nombres)
@@ -50,13 +50,14 @@ extension LineaDeComandos {
         case "acorde":
             try argumentos.sinOpcionesDesconocidas()
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
-            svg = try Acorde(leyendoEnLaOrden: argumentos.unidos).svgPentagrama(octava: octava, opciones: opciones)
+            svg = try Acorde(leyendo: argumentos.unidos, enLaOrden: notacion).svgPentagrama(
+                octava: octava, opciones: opciones)
         case "acordes":
             let romanos = argumentos.quitarMarca(.romanos)
             let conBajoCifrado = argumentos.quitarMarca(.bajoCifrado)
             try argumentos.sinOpcionesDesconocidas()
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
-            let acordes = try argumentos.restantes.map { try Acorde(leyendoEnLaOrden: $0) }
+            let acordes = try argumentos.restantes.map { try Acorde(leyendo: $0, enLaOrden: notacion) }
             // En posición cerrada, desde el Do de la octava (el central, si no se da), en dos octavas.
             let desde = Altura(.do, octava: octava).midi
             let voces = DisposicionDeAcorde.cerrada.conducir(acordes, en: desde...(desde + 24)) ?? []
@@ -73,7 +74,7 @@ extension LineaDeComandos {
             // Un bajo caminante en clave de fa; con --tab, con la tablatura del bajo debajo.
             let tab = argumentos.quitarMarca(.tab)
             try argumentos.sinOpcionesDesconocidas()
-            let acordes = try argumentos.restantes.map { try Acorde(leyendoEnLaOrden: $0) }
+            let acordes = try argumentos.restantes.map { try Acorde(leyendo: $0, enLaOrden: notacion) }
             guard let bajo = PresentacionDeAnalisis.bajoCaminante(acordes, en: notacion) else {
                 throw ErrorDeUso.faltaLoQueDibujaElPentagrama
             }
@@ -104,7 +105,7 @@ extension LineaDeComandos {
         var opciones = opciones
         var acordes: [Acorde] = []
         if let texto = try argumentos.valorConPalabras(.sobre) {
-            acordes = try texto.split(separator: " ").map { try Acorde(leyendoEnLaOrden: String($0)) }
+            acordes = try texto.split(separator: " ").map { try Acorde(leyendo: String($0), enLaOrden: notacion) }
             opciones.marcas.notasAjenas = true
         }
         try argumentos.sinOpcionesDesconocidas()
@@ -193,7 +194,7 @@ extension LineaDeComandos {
         try leerMastil(&argumentos, en: &mastil)
         try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
-        let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
+        let escala = try Escala(leyendo: argumentos.unidos, enLaOrden: notacion)
         let sentido: SentidoDelIntervalo = bajando ? .descendente : .ascendente
         let svg: String
         if tab {
@@ -285,7 +286,7 @@ extension LineaDeComandos {
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaLoQueDibujaElPentagrama }
         if tab {
             // En el mástil: el arpegio del acorde en su primera posición, de la nota más grave a la más aguda.
-            let acorde = try Acorde(leyendoEnLaOrden: argumentos.restantes[0])
+            let acorde = try Acorde(leyendo: argumentos.restantes[0], enLaOrden: notacion)
             guard let enElMastil = mastil.arpegios(de: acorde).first else {
                 throw ErrorDeUso.faltaLoQueDibujaElPentagrama
             }
@@ -297,11 +298,13 @@ extension LineaDeComandos {
         }
         var arpegios: [Arpegio] = []
         for texto in argumentos.restantes {
-            let acorde = try Acorde(leyendoEnLaOrden: texto)
+            let acorde = try Acorde(leyendo: texto, enLaOrden: notacion)
             var inicio = 0
             if let desde = recorrido.desde {
                 let delGrado = Int(desde).flatMap { Arpegio.indice(delGrado: $0, en: acorde) }
-                let deLaNota = (try? Nota(leyendoEnLaOrden: desde)).flatMap { Arpegio.indice(de: $0, en: acorde) }
+                let deLaNota = (try? Nota(leyendo: desde, enLaOrden: notacion)).flatMap {
+                    Arpegio.indice(de: $0, en: acorde)
+                }
                 guard let indice = delGrado ?? deLaNota else { throw ErrorDeUso.desdeNoValido(desde) }
                 inicio = indice
             }

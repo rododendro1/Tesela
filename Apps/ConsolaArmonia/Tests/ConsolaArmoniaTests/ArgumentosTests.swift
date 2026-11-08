@@ -81,18 +81,18 @@ import Testing
 
     @Test func laTonalidadSeLlevaElResto() throws {
         var argumentos = Argumentos(["Do", "Fa", "Sol7", "--en", "La", "menor"])
-        #expect(try (argumentos.quitarTonalidad()) == .some(Tonalidad(.la, .menor)))
+        #expect(try (argumentos.quitarTonalidad(en: .compacta(.espanol))) == .some(Tonalidad(.la, .menor)))
         #expect(argumentos.unidos == "Do Fa Sol7")
         var sinTonalidad = Argumentos(["Do"])
-        #expect(try (sinTonalidad.quitarTonalidad()) == .some(nil))
+        #expect(try (sinTonalidad.quitarTonalidad(en: .compacta(.espanol))) == .some(nil))
         var alFinal = Argumentos(["Do", "--in"])
-        #expect(try (alFinal.quitarTonalidad()) == nil)
+        #expect(try (alFinal.quitarTonalidad(en: .compacta(.espanol))) == nil)
         // Hasta la siguiente opción, que se queda.
         var conOtra = Argumentos(["Do", "--en", "La", "menor", "--escalas"])
-        #expect(try (conOtra.quitarTonalidad()) == .some(Tonalidad(.la, .menor)))
+        #expect(try (conOtra.quitarTonalidad(en: .compacta(.espanol))) == .some(Tonalidad(.la, .menor)))
         #expect(conOtra.restantes == ["Do", "--escalas"])
         var vacia = Argumentos(["Do", "--en", "--escalas"])
-        #expect(try (vacia.quitarTonalidad()) == nil)
+        #expect(try (vacia.quitarTonalidad(en: .compacta(.espanol))) == nil)
     }
 
     @Test func lasOpcionesQueSobran() throws {

@@ -335,7 +335,7 @@ extension LineaDeComandos {
 
     static let ordenesDeLaTerminal: [Orden] = [
         Orden(nombres: ["completado", "completion"], ayuda: ayudaDelCompletado, leeLaEntrada: false) {
-            argumentos, notacion in
+            argumentos, _ in
             guard let nombre = argumentos.first?.lowercased(), argumentos.count == 1,
                 let terminal = Terminal(rawValue: nombre)
             else {
@@ -343,9 +343,9 @@ extension LineaDeComandos {
             }
             return bien(completado(para: terminal))
         },
-        Orden(nombres: ["manual", "man"], ayuda: ayudaDelManual, leeLaEntrada: false) { argumentos, notacion in
+        Orden(nombres: ["manual", "man"], ayuda: ayudaDelManual, leeLaEntrada: false) { argumentos, contexto in
             if let sobra = argumentos.first { throw ErrorDeUso.opcionDesconocida(sobra) }
-            return bien(manual(en: notacion.textos))
+            return bien(manual(en: contexto.notacion.textos))
         },
     ]
 

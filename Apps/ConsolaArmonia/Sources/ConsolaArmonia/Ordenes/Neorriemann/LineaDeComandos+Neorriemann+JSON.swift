@@ -49,7 +49,7 @@ extension LineaDeComandos {
     static func vecinosJSON(_ textos: [String], _ notacion: Notacion) throws -> [PasoJSON] {
         let (voces, tipos, acordes) = try conduccionPedida(textos)
         guard acordes.count == 1 else { throw ErrorDeUso.unAcordeDeVecinos }
-        let acorde = try Acorde(leyendoEnLaOrden: acordes[0])
+        let acorde = try Acorde(leyendo: acordes[0], enLaOrden: notacion)
         let pasos =
             tipos.map { $0.contains(acorde.tipo) ? acorde.vecinosParsimoniosos(voces: voces, tipos: $0) : [] }
             ?? acorde.vecinosParsimoniosos(voces: voces)
@@ -66,8 +66,8 @@ extension LineaDeComandos {
     static func caminoParsimoniosoJSON(_ textos: [String], _ notacion: Notacion) throws -> CaminoJSON {
         let (voces, tipos, acordes) = try conduccionPedida(textos)
         guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeCamino }
-        let origen = try Acorde(leyendoEnLaOrden: acordes[0])
-        let destino = try Acorde(leyendoEnLaOrden: acordes[1])
+        let origen = try Acorde(leyendo: acordes[0], enLaOrden: notacion)
+        let destino = try Acorde(leyendo: acordes[1], enLaOrden: notacion)
         guard let camino = origen.caminoParsimonioso(hasta: destino, voces: voces, tipos: tipos) else {
             throw ErrorDeUso.caminoSinConexion
         }
@@ -85,8 +85,8 @@ extension LineaDeComandos {
     static func conduccionMinimaJSON(_ textos: [String], _ notacion: Notacion) throws -> ConduccionMinimaJSON {
         let acordes = try palabras(Argumentos(textos), siFaltan: .dosAcordesDeConduccion)
         guard acordes.count == 2 else { throw ErrorDeUso.dosAcordesDeConduccion }
-        let conduccion = try Acorde(leyendoEnLaOrden: acordes[0]).conduccionMinima(
-            hasta: try Acorde(leyendoEnLaOrden: acordes[1]))
+        let conduccion = try Acorde(leyendo: acordes[0], enLaOrden: notacion).conduccionMinima(
+            hasta: try Acorde(leyendo: acordes[1], enLaOrden: notacion))
         return ConduccionMinimaJSON(
             movimientos: conduccion.movimientos.map { MovimientoJSON($0, notacion) },
             semitonos: conduccion.semitonosMovidos)
@@ -108,7 +108,7 @@ extension LineaDeComandos {
     /// `plr Do PLR --json`, `plr camino Do Mibm --json`, `plr ciclo hexatonico Do --json`: los pasos, como en el texto.
     static func plrJSON(_ argumentos: [String], _ notacion: Notacion) throws -> PLRJSON {
         let (origen, pasos): (Acorde, [TransformacionNeorriemanniana])
-        switch try pedidoDePLR(argumentos) {
+        switch try pedidoDePLR(argumentos, en: notacion) {
         case .ciclo(let triada, let ciclo):
             let acordes = triada.ciclo(ciclo)!
             return PLRJSON(

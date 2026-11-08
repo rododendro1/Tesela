@@ -10,8 +10,8 @@ extension LineaDeComandos {
     static var nombresDeLasOrdenes: [String] { ordenes.flatMap(nombres(de:)) }
 
     /// Las opciones de la orden en curso y las generales, o las de todas las órdenes si no hay ninguna en curso.
-    static var opcionesConocidas: [String] {
-        if let enCurso = OrdenEnCurso.actual { return opciones(de: enCurso.orden) + opcionesGenerales }
+    static func opcionesConocidas(enCurso: OrdenEnCurso?) -> [String] {
+        if let enCurso { return opciones(de: enCurso.orden) + opcionesGenerales }
         var todas: [String] = []
         for opcion in ordenes.flatMap(opciones(de:)) + opcionesGenerales where !todas.contains(opcion) {
             todas.append(opcion)

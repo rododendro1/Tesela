@@ -9,8 +9,9 @@ extension LineaDeComandos {
     /// Además de una melodía, se exporta un coral, unos acordes, sus arpegios o una escala (`musicxml escala Re
     /// bayati`, con sus microtonos).
     static func partitura(
-        _ argumentos: [String], _ notacion: Notacion, formato: FormatoDePartitura
+        _ argumentos: [String], _ contexto: ContextoDeOrden, formato: FormatoDePartitura
     ) throws -> ResultadoDeOrden {
+        let notacion = contexto.notacion
         let orden = formato.rawValue
         guard let tipo = argumentos.first?.lowercased() else {
             throw ErrorDeUso.faltaTipoDePartitura(orden: orden)
@@ -40,7 +41,7 @@ extension LineaDeComandos {
             throw ErrorDeUso.faltaValor(vacia)
         }
         var compas = try opciones["compas"].map { try Compas(leyendo: $0) } ?? .compasillo
-        let tonalidad = try opciones["en"].map { try Tonalidad(leyendoEnLaOrden: $0) }
+        let tonalidad = try opciones["en"].map { try Tonalidad(leyendo: $0, enLaOrden: notacion) }
         var tempo: Tempo?
         if let texto = opciones["tempo"] {
             let partes = texto.split(separator: " ").map(String.init)
@@ -64,7 +65,7 @@ extension LineaDeComandos {
                 throw ErrorDeUso.archivoSoloParaAcordes
             }
             guard musica.isEmpty else { throw ErrorDeUso.archivoConAcordes }
-            let datos = try Self.datos(deArchivo: archivo)
+            let datos = try Self.datos(deArchivo: archivo, contexto)
             let pieza = try PiezaImportada(leyendo: datos)
             let ventana = try opciones["ventana"].map { try Duracion(leyendo: $0) }
             let suyo = pieza.ritmoArmonico(ventana: ventana)
@@ -189,7 +190,7 @@ extension LineaDeComandos {
                 guard let leida = leerClave(texto) else { throw ErrorDeUso.claveDesconocida(texto) }
                 clave = leida
             }
-            let escala = try Escala(leyendoEnLaOrden: musica.joined(separator: " "))
+            let escala = try Escala(leyendo: musica.joined(separator: " "), enLaOrden: notacion)
             let duracion = try opciones["duracion"].map { try Duracion(leyendo: $0) } ?? .negra
             var voz = escala.voz(duracion: duracion)
             voz.compas = compas

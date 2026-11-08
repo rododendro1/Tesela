@@ -221,20 +221,9 @@ extension SerieDodecafonica: Transponible {
     public func transponer(_ intervalo: Intervalo) -> SerieDodecafonica { transponer(intervalo.semitonosConSigno) }
 }
 
-extension SerieDodecafonica: Codable {
-    /// Como la lista de sus doce clases, `[0, 11, 7, …]`.
-    public init(from decoder: Decoder) throws {
-        let contenedor = try decoder.singleValueContainer()
-        let clases = try contenedor.decode([Int].self)
-        guard let serie = SerieDodecafonica(clases) else {
-            throw DecodingError.dataCorruptedError(
-                in: contenedor, debugDescription: "No son las doce clases de altura una vez cada una: \(clases)")
-        }
-        self = serie
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var contenedor = encoder.singleValueContainer()
-        try contenedor.encode(clases)
-    }
+/// `let serie: SerieDodecafonica = "0 e 7 4 2 9 3 8 t 1 5 6"`. Se codifica como ese texto.
+extension SerieDodecafonica: RepresentableComoTexto {
+    /// Las clases como en `description` («0 e 7 4 2 9 3 8 t 1 5 6»), en cualquier notación: una serie no tiene
+    /// ortografía.
+    public func texto(en notacion: Notacion) -> String { description }
 }

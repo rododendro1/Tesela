@@ -4,7 +4,8 @@ extension LineaDeComandos {
     /// El análisis, la armonización y el contrapunto, en el orden en que salen en la ayuda.
     static let ordenesDeArmonizacion: [Orden] = [
         Orden(
-            nombres: ["analizar", "analyze", "analyse"], ayuda: ayudaDeAnalizar, json: { try analizarJSON($0, $1) },
+            nombres: ["analizar", "analyze", "analyse"], ayuda: ayudaDeAnalizar,
+            json: { try analizarJSON($0, $1.notacion) },
             ejecutar: { try analizar($0, $1) }),
         Orden(
             nombres: ["armonizar", "harmonize", "harmonise"],
@@ -18,17 +19,18 @@ extension LineaDeComandos {
             nombres: ["revisar", "check"], ayuda: ayudaDeRevisar, json: { try revisarJSON($0, $1) },
             ejecutar: { try revisar($0, $1) }),
         Orden(
-            nombres: ["contrapunto", "counterpoint"], ayuda: ayudaDeContrapunto, json: { try contrapuntoJSON($0, $1) },
-            ejecutar: { try contrapunto($0, $1) }),
+            nombres: ["contrapunto", "counterpoint"], ayuda: ayudaDeContrapunto,
+            json: { try contrapuntoJSON($0, $1.notacion) },
+            ejecutar: { try contrapunto($0, $1.notacion) }),
         Orden(
             nombres: ["transponer", "transportar", "transpose"],
             ayuda: ayudaDeTransponer,
-            json: { try transponerJSON($0, $1) },
+            json: { try transponerJSON($0, $1.notacion) },
             ejecutar: { try transponer($0, $1) }),
         Orden(
             nombres: ["rearmonizar", "reharmonize", "reharmonise"],
-            ayuda: ayudaDeRearmonizar, json: { try rearmonizarJSON($0, $1) },
-            ejecutar: { try rearmonizar($0, $1) }),
+            ayuda: ayudaDeRearmonizar, json: { try rearmonizarJSON($0, $1.notacion) },
+            ejecutar: { try rearmonizar($0, $1.notacion) }),
     ]
 
     static let ayudaDeAnalizar: [EntradaDeAyuda] = [

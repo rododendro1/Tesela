@@ -155,6 +155,8 @@ import Testing
         comprobarIdaYVuelta(TipoDeAcorde.todos)
         comprobarIdaYVuelta(["Sol7(b9)/Si", "Fa#m7b5", "Do/Re", "Mib6/9", "Faug", "Sibmaj7#11"] as [Acorde])
         comprobarIdaYVuelta(TipoDeEscala.occidentales.map { Escala("Fa#", $0) })
+        comprobarIdaYVuelta(["0 e 7 4 2 9 3 8 t 1 5 6", "5 4 0 9 7 2 8 1 3 6 t e"] as [SerieDodecafonica])
+        comprobarIdaYVuelta(["[0, 4, 7]", "4-Z15", "[]", "0 1 2 3 4 5 6 7 8 9 10 11"] as [ConjuntoDeClasesDeAltura])
 
         #expect(Acorde("Sib7(b9)/Re").texto(en: .ascii(.ingles)) == "Bb7(b9)/D")
         #expect(Intervalo.terceraMayor.texto(en: .ascii(.ingles)) == "M3")
@@ -177,6 +179,11 @@ import Testing
         let datos = try JSONEncoder().encode(valores)
         #expect(String(decoding: datos, as: UTF8.self) == "[\"3M\",\"-5d\"]")
         #expect(try (JSONDecoder().decode([Intervalo].self, from: datos)) == valores)
+        // La serie y el conjunto también, como sus clases escritas.
+        let serie: SerieDodecafonica = "0 e 7 4 2 9 3 8 t 1 5 6"
+        #expect(String(decoding: try JSONEncoder().encode(serie), as: UTF8.self) == #""0 e 7 4 2 9 3 8 t 1 5 6""#)
+        let triada: ConjuntoDeClasesDeAltura = "3-11"
+        #expect(String(decoding: try JSONEncoder().encode(triada), as: UTF8.self) == #""[0, 3, 7]""#)
     }
 
     @Test func nombrable() {

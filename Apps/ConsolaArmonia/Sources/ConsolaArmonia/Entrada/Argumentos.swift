@@ -179,11 +179,11 @@ struct Argumentos {
     /// Quita `--en <tonalidad>` (o `--in`), que va al final y se lleva lo que lo sigue hasta la siguiente opción:
     /// `--en La menor`. `nil` dentro si no está, y `nil` si no lo sigue nada. Lanza un error de lectura si la
     /// tonalidad no se puede leer.
-    mutating func quitarTonalidad() throws -> Tonalidad?? {
+    mutating func quitarTonalidad(en notacion: Notacion) throws -> Tonalidad?? {
         guard let i = restantes.firstIndex(where: OpcionDeOrden.en.nombres.contains) else { return .some(nil) }
         let fin = restantes[(i + 1)...].firstIndex(where: Self.pareceUnaOpcion) ?? restantes.endIndex
         guard i + 1 < fin else { return nil }
-        let tonalidad = try Tonalidad(leyendoEnLaOrden: restantes[(i + 1)..<fin].joined(separator: " "))
+        let tonalidad = try Tonalidad(leyendo: restantes[(i + 1)..<fin].joined(separator: " "), enLaOrden: notacion)
         restantes.removeSubrange(i..<fin)
         return .some(tonalidad)
     }

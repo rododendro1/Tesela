@@ -33,7 +33,7 @@ extension LineaDeComandos {
         let pedido = try pedidoDeDigitaciones(textos)
         let instrumento = Mensaje.instrumento(pedido.encordado).texto(en: notacion)
         return try pedido.acordes.map { texto in
-            let acorde = try Acorde(leyendoEnLaOrden: texto)
+            let acorde = try Acorde(leyendo: texto, enLaOrden: notacion)
             return DigitacionesJSON(
                 cifrado: acorde.cifrado(en: notacion), instrumento: instrumento, capo: pedido.capo,
                 formas: pedido.formas(de: acorde).map { forma in

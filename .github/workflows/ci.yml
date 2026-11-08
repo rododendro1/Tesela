@@ -344,10 +344,12 @@ jobs:
             Packages/${{ matrix.paquete }}/.build
           key: ${{ steps.cache.outputs.clave }}
 
-  # La cobertura de las pruebas de cada paquete en Linux: el total y los ficheros con menos líneas probadas, en
-  # el resumen de la ejecución, y el informe entero por fichero como artefacto (`cobertura-<paquete>.txt`).
-  # Falla si el porcentaje de funciones o de líneas probadas baja del mínimo del paquete (`funciones` y `lineas`,
-  # un poco por debajo de lo que se tiene, para que un cambio sin pruebas no lo haga bajar). Si sube, sube el mínimo.
+  # La cobertura de las pruebas de cada paquete y de la consola en Linux: el total y los ficheros con menos líneas
+  # probadas, en el resumen de la ejecución, y el informe entero por fichero como artefacto
+  # (`cobertura-<paquete>.txt`). Falla si el porcentaje de funciones o de líneas probadas baja del mínimo del paquete
+  # (`funciones` y `lineas`, un poco por debajo de lo que se tiene, para que un cambio sin pruebas no lo haga bajar).
+  # Si sube, sube el mínimo. El de líneas es el que más dice y queda a medio punto o menos; el de funciones deja un
+  # punto o más, porque cada clausura cuenta como una función y basta con mover código de sitio para que cambie.
   cobertura:
     name: Cobertura · ${{ matrix.paquete.nombre }} · Linux
     runs-on: ubuntu-latest
@@ -358,13 +360,14 @@ jobs:
       matrix:
         paquete:
           # Las exhaustivas tardan y no prueban código distinto del de las rápidas.
-          - { nombre: Armonia, filtro: "^(Armonia|ArmoniaDocumentacion|Elementos|Teoria|Diagramas|Partituras|Polifonia|Formatos|Trastes)Tests\\.", funciones: 95.5, lineas: 98.0 }
-          - { nombre: Exposicion, filtro: "", funciones: 96.5, lineas: 96.0 }
-          - { nombre: Interfaz, filtro: "", funciones: 97.0, lineas: 99.0 }
-          - { nombre: Hexagonos, filtro: "", funciones: 93.5, lineas: 97.5 }
+          - { nombre: Armonia, ruta: Packages/Armonia, filtro: "^(Armonia|ArmoniaDocumentacion|Elementos|Teoria|Diagramas|Partituras|Polifonia|Formatos|Trastes)Tests\\.", funciones: 95.5, lineas: 98.0 }
+          - { nombre: Exposicion, ruta: Packages/Exposicion, filtro: "", funciones: 96.0, lineas: 98.5 }
+          - { nombre: Interfaz, ruta: Packages/Interfaz, filtro: "", funciones: 97.0, lineas: 99.0 }
+          - { nombre: Hexagonos, ruta: Packages/Hexagonos, filtro: "", funciones: 93.5, lineas: 97.5 }
+          - { nombre: ConsolaArmonia, ruta: Apps/ConsolaArmonia, filtro: "", funciones: 96.0, lineas: 98.0 }
     defaults:
       run:
-        working-directory: Packages/${{ matrix.paquete.nombre }}
+        working-directory: ${{ matrix.paquete.ruta }}
         shell: bash
     steps:
       - uses: actions/checkout@v7
@@ -373,7 +376,7 @@ jobs:
         with:
           nombre: cobertura-${{ matrix.paquete.nombre }}
           rutas: |
-            Packages/${{ matrix.paquete.nombre }}/.build
+            ${{ matrix.paquete.ruta }}/.build
       - name: Pruebas con cobertura
         env:
           FILTRO: ${{ matrix.paquete.filtro }}
@@ -428,7 +431,7 @@ jobs:
         if: github.event_name != 'pull_request'
         with:
           path: |
-            Packages/${{ matrix.paquete.nombre }}/.build
+            ${{ matrix.paquete.ruta }}/.build
           key: ${{ steps.cache.outputs.clave }}
 
   # El Package.swift de la raíz, el que usa quien añade el repositorio por URL: debe compilar igual.

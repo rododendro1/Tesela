@@ -15,7 +15,7 @@ extension LineaDeComandos {
         if let cifrado = try argumentos.valor(.acorde, siFalta: .faltaElAcordeDeLaHoja) {
             try argumentos.sinOpcionesDesconocidas()
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaElAcordeDeLaHoja }
-            let acorde = try Acorde(leyendoEnLaOrden: cifrado)
+            let acorde = try Acorde(leyendo: cifrado, enLaOrden: notacion)
             return bien(PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, en: notacion))
         }
         // Los acordes antes que la tonalidad: en `hoja acordes … --en Do mayor`, es la de los acordes.
@@ -23,14 +23,16 @@ extension LineaDeComandos {
             // --doce y --comparar se quitan antes que la tonalidad, que se lleva todo lo que va detrás de --en.
             let doce = argumentos.quitarMarca(.doce)
             let contra = try argumentos.valorConPalabras(.comparar)
-            guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaValor("en") }
+            guard let tonalidad = try argumentos.quitarTonalidad(en: notacion) else {
+                throw ErrorDeUso.faltaValor("en")
+            }
             try argumentos.sinOpcionesDesconocidas()
             guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanLosAcordesDeLaHoja }
             let analisis = try PresentacionDeAnalisis.analizar(
                 argumentos.restantes.joined(separator: " "), en: tonalidad, notacion: notacion)
             // Con --comparar, las dos progresiones comparadas acorde a acorde.
             if let contra {
-                let otra = try contra.split(separator: " ").map { try Acorde(leyendoEnLaOrden: String($0)) }
+                let otra = try contra.split(separator: " ").map { try Acorde(leyendo: String($0), enLaOrden: notacion) }
                 if let hoja = PresentacionDeAnalisis.hojaDeLaComparacion(
                     analisis.acordes, con: otra, en: tonalidad, notacion: notacion)
                 {
@@ -48,18 +50,18 @@ extension LineaDeComandos {
         if let texto = try argumentos.valorConPalabras(.tonalidad, siFalta: .faltaTonalidad) {
             try argumentos.sinOpcionesDesconocidas()
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
-            let tonalidad = try Tonalidad(leyendoEnLaOrden: texto)
+            let tonalidad = try Tonalidad(leyendo: texto, enLaOrden: notacion)
             return bien(PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, en: notacion))
         }
         // `hoja Do mayor --comparar Do dórico`: las dos escalas nota a nota, en el pentagrama y en el reloj.
         let otra = try argumentos.valorConPalabras(.comparar)
         try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDeLaHoja }
-        let escala = try Escala(leyendoEnLaOrden: argumentos.unidos)
+        let escala = try Escala(leyendo: argumentos.unidos, enLaOrden: notacion)
         if let otra {
             return bien(
                 PresentacionDeEstudioDeEscala.comparacionNotaANota(
-                    escala, con: try Escala(leyendoEnLaOrden: otra), en: notacion)
+                    escala, con: try Escala(leyendo: otra, enLaOrden: notacion), en: notacion)
             )
         }
         return bien(PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, en: notacion))

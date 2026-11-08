@@ -18,14 +18,14 @@ extension LineaDeComandos {
         let modulaciones = argumentos.quitarOpcionConPalabras(.modulaciones)
         try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
-        let tonalidad = try Tonalidad(leyendoEnLaOrden: argumentos.unidos)
+        let tonalidad = try Tonalidad(leyendo: argumentos.unidos, enLaOrden: notacion)
         var lineas = [describir(tonalidad: tonalidad, notacion)]
         // `--modulaciones [Sol mayor]`: a los tonos vecinos o, si se da, a esa tonalidad de todas las maneras.
         var destino: Tonalidad?
         switch modulaciones {
         case .ausente: return bien(lineas[0])
         case .sinValor: destino = nil
-        case .valor(let texto): destino = try Tonalidad(leyendoEnLaOrden: texto)
+        case .valor(let texto): destino = try Tonalidad(leyendo: texto, enLaOrden: notacion)
         }
         lineas.append(notacion.texto(\.modulaciones) + ":")
         lineas += PresentacionDeModulaciones.modulaciones(desde: tonalidad, hasta: destino, en: notacion).map {
@@ -49,18 +49,20 @@ extension LineaDeComandos {
     }
 
     static func intervalo(_ a: String, _ b: String, _ notacion: Notacion) throws -> String {
-        let medido = try intervalo(a, b)
+        let medido = try intervalo(a, b, en: notacion)
         let semitonos = Mensaje.semitonos(medido.semitonos).texto(en: notacion)
         return "\(medido.nombre(en: notacion)) (\(medido.texto(en: notacion)), \(semitonos))"
     }
 
     /// El intervalo de una nota a otra: entre las alturas si las dos llevan octava (Do4 Mi5 es una décima), y si no,
     /// el ascendente entre las notas.
-    static func intervalo(_ a: String, _ b: String) throws -> Intervalo {
-        if let grave = try? Altura(leyendoEnLaOrden: a), let aguda = try? Altura(leyendoEnLaOrden: b) {
+    static func intervalo(_ a: String, _ b: String, en notacion: Notacion) throws -> Intervalo {
+        if let grave = try? Altura(leyendo: a, enLaOrden: notacion),
+            let aguda = try? Altura(leyendo: b, enLaOrden: notacion)
+        {
             return aguda - grave
         }
-        return try Nota(leyendoEnLaOrden: a).intervalo(hasta: try Nota(leyendoEnLaOrden: b))
+        return try Nota(leyendo: a, enLaOrden: notacion).intervalo(hasta: try Nota(leyendo: b, enLaOrden: notacion))
     }
 
     static func describir(tonalidad: Tonalidad, _ notacion: Notacion) -> String {
@@ -84,7 +86,8 @@ extension LineaDeComandos {
         ].joined(separator: "\n")
     }
 
-    static func analizar(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+    static func analizar(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {
+        let notacion = contexto.notacion
         var acordes = Argumentos(argumentos)
         // Con --escalas, debajo de cada acorde, su escala con sus tensiones y sus notas a evitar. Se quita antes que
         // la tonalidad, que se lleva todo lo que va detrás de --en.
@@ -93,14 +96,14 @@ extension LineaDeComandos {
         let conConduccion = acordes.quitarMarca(.conduccion)
         let conBajo = acordes.quitarMarca(.bajo)
         let contra = try acordes.valorConPalabras(.comparar)
-        guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
+        guard let tonalidad = try acordes.quitarTonalidad(en: notacion) else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let archivo = try acordes.valor(.archivo)
         let ventana = try acordes.valor(.ventana).map { try Duracion(leyendo: $0) }
         try acordes.sinOpcionesDesconocidas()
         let analisis: AnalisisPresentado
         if let archivo {
             guard acordes.restantes.isEmpty else { throw ErrorDeUso.archivoConAcordes }
-            let datos = try Self.datos(deArchivo: archivo)
+            let datos = try Self.datos(deArchivo: archivo, contexto)
             let pieza = try PiezaImportada(leyendo: datos)
             guard
                 let leido = PresentacionDeAnalisis.analizar(
@@ -167,7 +170,7 @@ extension LineaDeComandos {
         }
         // Con --comparar, la otra versión acorde a acorde: lo que cambia, sus grados y sus notas comunes.
         if let contra {
-            let otra = try contra.split(separator: " ").map { try Acorde(leyendoEnLaOrden: String($0)) }
+            let otra = try contra.split(separator: " ").map { try Acorde(leyendo: String($0), enLaOrden: notacion) }
             if let comparacion = PresentacionDeAnalisis.comparar(
                 analisis.acordes, con: otra, en: tonalidad, notacion: notacion)
             {

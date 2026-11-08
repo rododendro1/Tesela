@@ -158,19 +158,13 @@ public enum LineaDeComandos {
             resto = conLaEntrada(resto, de: orden, estandar, entradaEsTerminal: entradaEsTerminal)
         }
 
-        // Los errores de uso de la orden remiten a su ayuda y proponen sus opciones (ErrorDeUso.mensajeDeUso(en:)).
-        let enCurso = OrdenEnCurso(orden: orden, nombre: nombre)
-        let resultado = OrdenEnCurso.$actual.withValue(orden.nombres.contains("ayuda") ? nil : enCurso) {
-            SistemaMovil.$actual.withValue(movil) {
-                EntradaEstandar.$actual.withValue(estandar) {
-                    NotacionDeLectura.$actual.withValue(notacion) {
-                        conLasNotasDelIdioma(resto, en: notacion) { resto in
-                            ejecutar(
-                                orden, nombre: nombre, resto, json: json, salidaEsTerminal: salidaEsTerminal, notacion)
-                        }
-                    }
-                }
-            }
+        // Los errores de uso de la orden remiten a su ayuda y proponen sus opciones (ErrorDeUso.mensajeDeUso(en:enCurso:)).
+        let enCurso = orden.nombres.contains("ayuda") ? nil : OrdenEnCurso(orden: orden, nombre: nombre)
+        let contexto = ContextoDeOrden(notacion: notacion, entrada: estandar, movil: movil)
+        let resultado = conLasNotasDelIdioma(resto, en: notacion) { resto in
+            ejecutar(
+                orden, nombre: nombre, resto, json: json, salidaEsTerminal: salidaEsTerminal, contexto,
+                enCurso: enCurso)
         }
         if let destino, destino != "-", resultado.codigo == 0 || resultado.codigo == 3 {
             return escribir(resultado, en: destino, notacion)
@@ -185,19 +179,21 @@ public enum LineaDeComandos {
 
     /// Ejecuta la orden ya elegida, con sus argumentos, y recoge sus errores.
     static func ejecutar(
-        _ orden: Orden, nombre: String, _ resto: [String], json: Bool, salidaEsTerminal: Bool, _ notacion: Notacion
+        _ orden: Orden, nombre: String, _ resto: [String], json: Bool, salidaEsTerminal: Bool,
+        _ contexto: ContextoDeOrden, enCurso: OrdenEnCurso?
     ) -> ResultadoDeOrden {
+        let notacion = contexto.notacion
         do {
-            guard json else { return try orden.ejecutar(resto, notacion) }
+            guard json else { return try orden.ejecutar(resto, contexto) }
             guard let salida = orden.json else {
-                return uso(.sinSalidaJSON(nombre), notacion)
+                return uso(.sinSalidaJSON(nombre), notacion, enCurso: enCurso)
             }
-            let datos = try salida(resto, notacion)
+            let datos = try salida(resto, contexto)
             let texto = try textoJSON(datos, enUnaLinea: !salidaEsTerminal)
             let conFaltas = (datos as? any ConFaltas)?.hayFaltas ?? false
             return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: conFaltas ? 3 : 0)
         } catch let error as ErrorDeUso {
-            return uso(error, notacion)
+            return uso(error, notacion, enCurso: enCurso)
         } catch let error as any ErrorDeArmonia {
             return ResultadoDeOrden(
                 salida: "", error: "armonia: " + error.descripcion(en: notacion) + "\n", codigo: 1)
@@ -274,13 +270,20 @@ public enum LineaDeComandos {
             return datos
         }
 
-        @TaskLocal static var actual: EntradaEstandar?
+    }
+
+    /// Lo que una orden recibe además de sus argumentos: la notación, la entrada estándar (la de `--archivo -`) y el
+    /// sistema móvil de `--sistema`, si lo hay.
+    struct ContextoDeOrden: Sendable {
+        let notacion: Notacion
+        var entrada: EntradaEstandar? = nil
+        var movil: SistemaMovil? = nil
     }
 
     /// Lo que hay en un fichero de `--archivo`: la entrada estándar si es `-`. Lanza `ArchivoIlegible` si no se puede
     /// leer, y `ejecutar` lo escribe como un error de lectura (código 1), sin remitir a la ayuda.
-    static func datos(deArchivo ruta: String) throws -> Data {
-        guard let leidos = ruta == "-" ? EntradaEstandar.actual?.datos : FileManager.default.contents(atPath: ruta)
+    static func datos(deArchivo ruta: String, _ contexto: ContextoDeOrden) throws -> Data {
+        guard let leidos = ruta == "-" ? contexto.entrada?.datos : FileManager.default.contents(atPath: ruta)
         else { throw ArchivoIlegible(ruta: ruta) }
         return leidos
     }
@@ -290,7 +293,6 @@ public enum LineaDeComandos {
     struct OrdenEnCurso: Sendable {
         let orden: Orden
         let nombre: String
-        @TaskLocal static var actual: OrdenEnCurso?
     }
 
     // MARK: Órdenes
@@ -313,12 +315,13 @@ public enum LineaDeComandos {
         /// (`conLaEntrada`). Las que no leen nada (la ayuda, la versión, los motores, el completado y el manual) no
         /// la esperan.
         let leeLaEntrada: Bool
-        let ejecutar: @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden
+        let ejecutar: @Sendable (_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden
 
         init(
             nombres: [String], ayuda: [EntradaDeAyuda], opciones: [OpcionDeOrden]? = nil, json: SalidaJSON? = nil,
             leeLaEntrada: Bool = true,
-            ejecutar: @escaping @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden
+            ejecutar:
+                @escaping @Sendable (_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden
         ) {
             self.nombres = nombres
             self.ayuda = ayuda
@@ -364,8 +367,9 @@ public enum LineaDeComandos {
         }
     }
 
-    static func uso(_ error: ErrorDeUso, _ notacion: Notacion) -> ResultadoDeOrden {
-        ResultadoDeOrden(salida: "", error: error.mensajeDeUso(en: notacion), codigo: 2)
+    /// El error de uso, con la ayuda de la orden en curso si la hay.
+    static func uso(_ error: ErrorDeUso, _ notacion: Notacion, enCurso: OrdenEnCurso? = nil) -> ResultadoDeOrden {
+        ResultadoDeOrden(salida: "", error: error.mensajeDeUso(en: notacion, enCurso: enCurso), codigo: 2)
     }
 
     /// La ayuda en el idioma de los textos de la notación (`Notacion.textos`).
@@ -445,7 +449,4 @@ struct SistemaMovil: Sendable {
     let grafia: Grafia
     /// Como se ha escrito, para los errores.
     let nombre: String
-
-    /// El de la orden que se está ejecutando.
-    @TaskLocal static var actual: SistemaMovil?
 }

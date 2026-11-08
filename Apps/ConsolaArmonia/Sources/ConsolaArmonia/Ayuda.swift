@@ -204,8 +204,8 @@ extension LineaDeComandos {
     /// `ayuda --todo` no llegan aquí: las escribe `ejecutar`.
     static let ordenesDeAyuda: [Orden] = [
         Orden(nombres: ["ayuda", "help", "-h", "--help", "--ayuda"], ayuda: ayudaDeLaAyuda, leeLaEntrada: false) {
-            _, notacion in
-            bien(indiceDeAyuda(en: notacion.textos, grafia: notacion.grafiaDeLosTextos))
+            _, contexto in
+            bien(indiceDeAyuda(en: contexto.notacion.textos, grafia: contexto.notacion.grafiaDeLosTextos))
         },
         Orden(nombres: ["--version", "version"], ayuda: ayudaDeLaVersion, leeLaEntrada: false) { _, _ in
             bien("armonia " + version)

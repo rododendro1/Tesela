@@ -20,9 +20,20 @@ import Testing
     @Test func coral() throws {
         let coral = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Sol2 Re4 Sol4 Si4")
         #expect(try idaYVuelta(coral) == coral)
-        #expect(try leer(Coral.self, #"[["Do3", "Mi4"], ["Sol2", "Re4"]]"#).numeroDeVoces == 2)
+        #expect(try leer(Coral.self, #""Do3 Mi4 | Sol2 Re4""#).numeroDeVoces == 2)
         // Acordes con distintas voces no forman un coral.
-        #expect(throws: DecodingError.self) { try leer(Coral.self, #"[["Do3", "Mi4"], ["Sol2"]]"#) }
+        #expect(throws: DecodingError.self) { try leer(Coral.self, #""Do3 Mi4 | Sol2""#) }
+    }
+
+    /// El coral se lee y se escribe como texto en cualquier notación, se escribe como literal y se codifica como su
+    /// texto.
+    @Test func coralComoTexto() throws {
+        let coral: Coral = "Do3 Sol3 Mi4 Do5 | Sol2 Re4 Sol4 Si4"
+        for notacion in [Notacion.compacta(.espanol), .ascii(.espanol), .ascii(.ingles), .compacta(.ingles)] {
+            #expect(try Coral(leyendo: coral.texto(en: notacion)) == coral, "\(notacion)")
+        }
+        let json = String(decoding: try JSONEncoder().encode(coral), as: UTF8.self)
+        #expect(json == #""Do3 Sol3 Mi4 Do5 | Sol2 Re4 Sol4 Si4""#)
     }
 
     @Test func contrapunto() throws {

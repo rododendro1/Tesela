@@ -10,7 +10,7 @@ import Exposicion
 // `TextosDeConsola` solo dicen lo que falta.
 
 /// Una orden mal escrita: lo que falta o sobra, con un ejemplo de cómo se escribe. Las órdenes lo lanzan, y
-/// `ejecutar` lo escribe con `uso(_:_:)`.
+/// `ejecutar` lo escribe con `uso(_:_:enCurso:)`.
 enum ErrorDeUso: ErrorDeArmonia {
     // Generales
     case ordenDesconocida(String)
@@ -174,13 +174,13 @@ enum ErrorDeUso: ErrorDeArmonia {
 
     /// El mensaje que escribe la terminal: el error, lo que se quiso escribir si se parece a una orden o una opción
     /// conocida, y la línea que remite a la ayuda, la de la orden si se está ejecutando una
-    /// (`LineaDeComandos.OrdenEnCurso`).
-    func mensajeDeUso(en notacion: Notacion) -> String {
+    /// (`enCurso`).
+    func mensajeDeUso(en notacion: Notacion, enCurso: LineaDeComandos.OrdenEnCurso? = nil) -> String {
         var lineas = ["armonia: " + descripcion(en: notacion)]
-        if let propuesta {
+        if let propuesta = propuesta(enCurso: enCurso) {
             lineas.append(TextosDeConsola.traduccion { $0.quisoDecir(propuesta) }.en(notacion))
         }
-        if let enCurso = LineaDeComandos.OrdenEnCurso.actual {
+        if let enCurso {
             lineas.append(TextosDeConsola.traduccion { $0.pruebaLaAyudaDe(enCurso.nombre) }.en(notacion))
         } else {
             lineas.append(TextosDeConsola.en(notacion, \.pruebaLaAyuda))
@@ -189,12 +189,13 @@ enum ErrorDeUso: ErrorDeArmonia {
     }
 
     /// La orden o la opción conocida que más se parece a la desconocida (Sugerencias.swift).
-    private var propuesta: String? {
+    /// Las opciones que se proponen son las de la orden en curso, si la hay.
+    private func propuesta(enCurso: LineaDeComandos.OrdenEnCurso?) -> String? {
         switch self {
         case .ordenDesconocida(let orden):
             return LineaDeComandos.propuesta(para: orden, entre: LineaDeComandos.nombresDeLasOrdenes)
         case .opcionDesconocida(let opcion):
-            return LineaDeComandos.propuesta(para: opcion, entre: LineaDeComandos.opcionesConocidas)
+            return LineaDeComandos.propuesta(para: opcion, entre: LineaDeComandos.opcionesConocidas(enCurso: enCurso))
         case .idiomaDesconocido(let idioma):
             let nombres = Idioma.allCases.flatMap { [$0.codigo] + $0.nombres }
             return LineaDeComandos.propuesta(para: idioma, entre: nombres)

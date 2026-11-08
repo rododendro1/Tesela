@@ -13,7 +13,9 @@ extension LineaDeComandos {
     /// `AnalisisPresentado`).
     static func analizarJSON(_ textos: [String], _ notacion: Notacion) throws -> AnalisisPresentado {
         var argumentos = Argumentos(textos)
-        guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
+        guard let tonalidad = try argumentos.quitarTonalidad(en: notacion) else {
+            throw ErrorDeUso.faltaTonalidadTrasEn
+        }
         let acordes = try palabras(argumentos, siFaltan: .faltanAcordesDelAnalisis)
         return try PresentacionDeAnalisis.analizar(acordes.joined(separator: " "), en: tonalidad, notacion: notacion)
     }
@@ -44,8 +46,9 @@ extension LineaDeComandos {
     }
 
     /// `armonizar Mi4 Re4 Do4 --json`.
-    static func armonizarJSON(_ textos: [String], _ notacion: Notacion) throws -> ArmonizacionJSON {
-        let coral = try coralArmonizado(textos, notacion)
+    static func armonizarJSON(_ textos: [String], _ contexto: ContextoDeOrden) throws -> ArmonizacionJSON {
+        let notacion = contexto.notacion
+        let coral = try coralArmonizado(textos, contexto)
         let sinCoral = coral.avisos.contains(.faltanOctavas) || coral.avisos.contains(.sinArmonizacion)
         return ArmonizacionJSON(
             titulo: coral.titulo, propuestas: coral.propuestas,
@@ -60,8 +63,9 @@ extension LineaDeComandos {
     }
 
     /// `realizar Do Fa Sol7 Do --json`.
-    static func realizarJSON(_ textos: [String], _ notacion: Notacion) throws -> RealizacionJSON {
-        let coral = try coralRealizado(textos, notacion)
+    static func realizarJSON(_ textos: [String], _ contexto: ContextoDeOrden) throws -> RealizacionJSON {
+        let notacion = contexto.notacion
+        let coral = try coralRealizado(textos, contexto)
         return RealizacionJSON(
             titulo: coral.titulo, coral: coral.filas.map(AcordeDelCoral.init),
             avisos: coral.avisos.map { $0.texto(en: notacion) })
@@ -84,8 +88,9 @@ extension LineaDeComandos {
     }
 
     /// `revisar Do3 Mi4 Sol4 Do5, Re3 Fa4 La4 Re5 --json`: sale con código 3 si hay faltas.
-    static func revisarJSON(_ textos: [String], _ notacion: Notacion) throws -> RevisionJSON {
-        let coral = try coralRevisado(textos, notacion)
+    static func revisarJSON(_ textos: [String], _ contexto: ContextoDeOrden) throws -> RevisionJSON {
+        let notacion = contexto.notacion
+        let coral = try coralRevisado(textos, contexto)
         return RevisionJSON(
             acordes: coral.filas.map(AcordeDelCoral.init),
             faltas: faltas(de: coral).map {
@@ -246,9 +251,9 @@ extension LineaDeComandos {
     /// `rearmonizar Do Lam Rem7 Sol7 Do --json`: la tonalidad y cada propuesta.
     static func rearmonizarJSON(_ textos: [String], _ notacion: Notacion) throws -> RearmonizacionJSON {
         var acordes = Argumentos(textos)
-        guard let tonalidad = try acordes.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
+        guard let tonalidad = try acordes.quitarTonalidad(en: notacion) else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let leidos = try palabras(acordes, siFaltan: .faltanAcordesDeLaRearmonizacion).map {
-            try Acorde(leyendoEnLaOrden: $0)
+            try Acorde(leyendo: $0, enLaOrden: notacion)
         }
         guard let resultado = PresentacionDeRearmonizacion.proponer(leidos, en: tonalidad, notacion: notacion) else {
             throw ErrorDeUso.faltanAcordesDeLaRearmonizacion

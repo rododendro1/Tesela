@@ -4,7 +4,7 @@ import Foundation
 // MARK: - Las notas en el idioma de --idioma
 //
 // Las órdenes leen las notas, los acordes, las escalas y las tonalidades primero en la notación de `--idioma`, con
-// `leyendo:en:` de la biblioteca, y si no, en español o en inglés (`init(leyendoEnLaOrden:)`): `armonia acorde B7/D
+// `leyendo:en:` de la biblioteca, y si no, en español o en inglés (`init(leyendo:enLaOrden:)`): `armonia acorde B7/D
 // --idioma de` es Si♭7/Re, `escala re dòric --idioma ca` es Re dórico y `acorde Do7 --idioma de` sigue siendo Do7.
 //
 // Lo que no se lee así, sino con los lectores de la biblioteca que leen varias cosas a la vez (voces, corales,
@@ -24,17 +24,12 @@ extension Acorde: LegibleEnUnaNotacion {}
 extension Escala: LegibleEnUnaNotacion {}
 extension Tonalidad: LegibleEnUnaNotacion {}
 
-/// La notación de la orden que se está ejecutando, en la que se leen sus notas (la de `--idioma`).
-enum NotacionDeLectura {
-    @TaskLocal static var actual: Notacion?
-}
-
 extension LegibleEnUnaNotacion {
     /// En la notación de la orden (`--idioma de`: «B7» es Si♭7) o en español o en inglés, con el error de esta
     /// lectura si no se lee de ninguna forma. Si se lee de las dos y da otra cosa, gana la que lee una nota más larga
     /// al principio: «Do7» en alemán es Do7 (con «Do»), no D°7 (con «D»).
-    init(leyendoEnLaOrden texto: String) throws {
-        guard let notacion = NotacionDeLectura.actual, let enLaNotacion = try? Self(leyendo: texto, en: notacion) else {
+    init(leyendo texto: String, enLaOrden notacion: Notacion) throws {
+        guard let enLaNotacion = try? Self(leyendo: texto, en: notacion) else {
             try self.init(leyendo: texto)
             return
         }

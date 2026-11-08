@@ -14,7 +14,7 @@ extension LineaDeComandos {
     /// `acorde Sol7 Do --json`: cada acorde con sus notas, una lista aunque sea uno solo.
     static func acordeJSON(_ textos: [String], _ notacion: Notacion) throws -> [DatosDeAcorde] {
         try palabras(Argumentos(textos), siFaltan: .faltaCifrado).map {
-            DatosDeAcorde(try Acorde(leyendoEnLaOrden: $0), en: notacion)
+            DatosDeAcorde(try Acorde(leyendo: $0, enLaOrden: notacion), en: notacion)
         }
     }
 
@@ -137,7 +137,7 @@ extension LineaDeComandos {
 
     /// `escala Re dórico --json`, con las mismas opciones que el texto (`pedidoDeEscala`).
     static func escalaJSON(_ textos: [String], _ notacion: Notacion) throws -> EscalaJSON {
-        let pedido = try pedidoDeEscala(textos)
+        let pedido = try pedidoDeEscala(textos, en: notacion)
         if pedido.bibtex { throw ErrorDeUso.sinSalidaJSON("escala --bibtex") }
         let escala = pedido.escala
         var datos = EscalaJSON(DatosDeEscala(escala, en: notacion))
@@ -243,7 +243,7 @@ extension LineaDeComandos {
     /// `arpegio Do7 --patron alberti --json`: cada arpegio con sus notas, una lista aunque sea uno solo. Admite las
     /// mismas opciones que el texto.
     static func arpegioJSON(_ textos: [String], _ notacion: Notacion) throws -> [ArpegioJSON] {
-        try arpegios(textos).map { arpegio in
+        try arpegios(textos, en: notacion).map { arpegio in
             let alturas = arpegio.alturas(octava: 4)
             return ArpegioJSON(
                 nombre: arpegio.nombre(en: notacion),
@@ -270,7 +270,7 @@ extension LineaDeComandos {
     static func intervaloJSON(_ textos: [String], _ notacion: Notacion) throws -> IntervaloJSON {
         let escritas = try palabras(Argumentos(textos), siFaltan: .dosNotas)
         guard escritas.count == 2 else { throw ErrorDeUso.dosNotas }
-        let medido = try intervalo(escritas[0], escritas[1])
+        let medido = try intervalo(escritas[0], escritas[1], en: notacion)
         return IntervaloJSON(
             nombre: medido.nombre(en: notacion), abreviatura: medido.texto(en: notacion),
             semitonos: medido.semitonos, numero: medido.numero, descendente: medido.sentido == .descendente)
@@ -301,7 +301,7 @@ extension LineaDeComandos {
     /// `tonalidad La menor --json`.
     static func tonalidadJSON(_ textos: [String], _ notacion: Notacion) throws -> TonalidadJSON {
         let texto = try palabras(Argumentos(textos), siFaltan: .faltaTonalidad).joined(separator: " ")
-        let tonalidad = try Tonalidad(leyendoEnLaOrden: texto)
+        let tonalidad = try Tonalidad(leyendo: texto, enLaOrden: notacion)
         let notas = tonalidad.escala.notas
         return TonalidadJSON(
             nombre: tonalidad.nombre(en: notacion),

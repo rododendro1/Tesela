@@ -194,10 +194,10 @@ import Testing
 
     @Test func codable() throws {
         let datos = try JSONEncoder().encode(berg)
-        #expect(String(decoding: datos, as: UTF8.self) == "[0,11,7,4,2,9,3,8,10,1,5,6]")
+        #expect(String(decoding: datos, as: UTF8.self) == #""0 e 7 4 2 9 3 8 t 1 5 6""#)
         #expect(try JSONDecoder().decode(SerieDodecafonica.self, from: datos) == berg)
         #expect(throws: DecodingError.self) {
-            try JSONDecoder().decode(SerieDodecafonica.self, from: Data("[0,1,2]".utf8))
+            try JSONDecoder().decode(SerieDodecafonica.self, from: Data(#""0 1 2""#.utf8))
         }
         let forma = try JSONEncoder().encode(FormaDeSerie(.inversion, 3))
         #expect(try JSONDecoder().decode(FormaDeSerie.self, from: forma) == FormaDeSerie(.inversion, 3))
