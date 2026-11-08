@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.1 (2026-11-08)
 
 ### El apartado de escalas, reorganizado
 

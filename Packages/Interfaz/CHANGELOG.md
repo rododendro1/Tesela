@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.1 (2026-11-08)
 
 - El selector de notación tiene un interruptor «Alfabeto latino» cuando las notas o los textos están en ruso o en
   griego (`Notacion.admiteOtraGrafia`). La notación se guarda con su grafía detrás de su clave
