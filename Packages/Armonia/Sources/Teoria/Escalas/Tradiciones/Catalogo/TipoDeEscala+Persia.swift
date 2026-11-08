@@ -72,7 +72,7 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         variantes: ["سه\u{200C}گاه"],
-        categoria: .dastgah, llevaLaCategoria: true, afinaciones: [.init(.persa, pasos: [-1, 2, 6, 9, 12, 16, 20])])
+        categoria: .dastgah, afinaciones: [.init(.persa, pasos: [-1, 2, 6, 9, 12, 16, 20])])
     /// نوا (Sol La Si♭ Do Re Mi𝄳 Fa), aproximado: la menor natural.
     public static let nava = TipoDeEscala(
         nombre: "Navā",

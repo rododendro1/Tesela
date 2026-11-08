@@ -23,7 +23,7 @@ extension TipoDeEscala {
         nombre: "échos prótos",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["Ήχος πρώτος", "ichos protos"],
-        categoria: .echos, llevaLaCategoria: true,
+        categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [0, 10, 18, 30, 42, 52, 60]),
             // Los diatónicos en los 68 moria de Chrysanthos de Madytos (Θεωρητικόν μέγα, 1832), la teoría anterior: Ni
@@ -35,7 +35,7 @@ extension TipoDeEscala {
         nombre: "échos plágios prótos",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
         alias: ["plagal protos"], variantes: ["Ήχος πλάγιος του πρώτου"],
-        categoria: .echos, llevaLaCategoria: true,
+        categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [0, 10, 18, 30, 40, 48, 60]),
             .init(.razones, pasos: [18, 176, 300, 512, 671, 794, 1006], fuente: "Chrysanthos, 1832"),
@@ -45,19 +45,19 @@ extension TipoDeEscala {
         nombre: "échos défteros",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
         variantes: ["Ήχος δεύτερος", "echos deuteros", "ichos defteros"],
-        categoria: .echos, llevaLaCategoria: true, afinaciones: [.init(.moria72, pasos: [0, 8, 22, 30, 42, 50, 64])])
+        categoria: .echos, afinaciones: [.init(.moria72, pasos: [0, 8, 22, 30, 42, 50, 64])])
     /// El plagal del segundo (Re Mi♭ Fa♯ Sol La Si♭ Do♯, sobre Pa): cromático duro, la doble armónica.
     public static let echosPlagiosDefteros = TipoDeEscala(
         nombre: "échos plágios défteros",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
         alias: ["plagal defteros"], variantes: ["Ήχος πλάγιος του δευτέρου", "echos plagios deuteros"],
-        categoria: .echos, llevaLaCategoria: true, afinaciones: [.init(.moria72, pasos: [0, 6, 26, 30, 42, 48, 68])])
+        categoria: .echos, afinaciones: [.init(.moria72, pasos: [0, 6, 26, 30, 42, 48, 68])])
     /// El tercero (Fa Sol La Si♭ Do Re Mi, sobre Ga): enarmónico, que en la teoría de 1881 ya es la escala mayor.
     public static let echosTritos = TipoDeEscala(
         nombre: "échos trítos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
         variantes: ["Ήχος τρίτος", "ichos tritos"],
-        categoria: .echos, llevaLaCategoria: true)
+        categoria: .echos)
     /// El grave, el plagal del tercero (Si Do Re Mi Fa Sol La, sobre Zo): diatónico, con la tónica dos moria bajo Si.
     public static let echosVarys = TipoDeEscala(
         nombre: "échos varýs",
@@ -65,7 +65,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         alias: ["grave"], variantes: ["Ήχος βαρύς", "echos barys"],
-        categoria: .echos, llevaLaCategoria: true,
+        categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [-2, 6, 18, 28, 36, 48, 60]),
             .init(.razones, pasos: [-24, 100, 312, 471, 594, 806, 1018], fuente: "Chrysanthos, 1832"),
@@ -75,7 +75,7 @@ extension TipoDeEscala {
         nombre: "échos tétartos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["Ήχος τέταρτος", "ichos tetartos"],
-        categoria: .echos, llevaLaCategoria: true,
+        categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [0, 12, 22, 30, 42, 52, 60]),
             .init(.razones, pasos: [6, 218, 376, 500, 712, 871, 994], fuente: "Chrysanthos, 1832"),
@@ -85,7 +85,7 @@ extension TipoDeEscala {
         nombre: "échos plágios tétartos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
         alias: ["plagal tetartos"], variantes: ["Ήχος πλάγιος του τετάρτου"],
-        categoria: .echos, llevaLaCategoria: true,
+        categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [0, 12, 22, 30, 42, 54, 64]),
             .init(.razones, pasos: [0, 212, 371, 494, 706, 918, 1076], fuente: "Chrysanthos, 1832"),
@@ -96,7 +96,7 @@ extension TipoDeEscala {
         nombre: "échos légetos",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
         alias: ["legetos"], variantes: ["Λέγετος"],
-        categoria: .echos, llevaLaCategoria: true,
+        categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [-2, 6, 18, 30, 40, 48, 60]),
             .init(.razones, pasos: [-29, 94, 306, 518, 676, 800, 1012], fuente: "Chrysanthos, 1832"),

@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+### La palabra de la categoría, deducida del nombre
+
+- Que el nombre de una escala ya lleve la palabra de su categoría («Rast makamı», «jins Ḥijāz», «P'yŏngjo», «shadd
+  Rāst») se deduce de su nombre en español, con la regla que antes solo comprobaba una prueba, y ya no se escribe
+  `llevaLaCategoria: true` en las 68 declaraciones. `nombreCompleto` no cambia.
+
 ### Subtradiciones: estilos y regiones, varias por escala, y la tradición occidental
 
 - **Cambio incompatible:** `Subtradicion` se separa en dos tipos:

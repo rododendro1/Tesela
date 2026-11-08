@@ -164,18 +164,32 @@ extension TipoDeEscala {
     /// janya es un rāga), «maqām Bayātī», «drómos Hitzáz». Es el nombre a secas si ya la lleva («jins Ḥijāz»,
     /// «Rast makamı», «échos prótos», «shadd Rāst»), si la categoría es una palabra que se traduce y no se antepone
     /// en todos los idiomas (tetracordo, harmonía, hexacordo, modo gregoriano, afinación, escala) o si la escala no
-    /// es de otra tradición. Que el nombre ya la lleva se escribe en la declaración de cada escala
-    /// (`llevaLaCategoria: true`), no se deduce del texto.
+    /// es de otra tradición. Que el nombre ya la lleva se deduce de su nombre en español (`llevaLaCategoria`).
     public var nombreCompleto: String { nombreCompleto(en: .compacta(.espanol)) }
 
     /// `nombreCompleto` en el idioma de los textos de la notación, con la palabra de la categoría en ese idioma (en
     /// ruso y en griego, transcrita: «рага», «ράγκα»).
     public func nombreCompleto(en notacion: Notacion) -> String {
         let suyo = nombre(en: notacion)
-        let ficha = fichaDelCatalogo
-        guard let palabra = ficha.categoria?.palabraDelNombre, !ficha.llevaLaCategoria else { return suyo }
+        guard let palabra = fichaDelCatalogo.categoria?.palabraDelNombre, !llevaLaCategoria else { return suyo }
         return "\(palabra.nombre(en: notacion)) \(suyo)"
     }
+
+    /// ¿Lleva ya el nombre de la escala del catálogo, en español, la palabra de su categoría, o una que la sustituye?
+    /// Una palabra del nombre empieza por ella («Rast makamı», «jins Ḥijāz», «échos prótos», «ṣaḍja-grāma»), en los jo
+    /// coreanos acaba en ella («P'yŏngjo»), y los shadd llevan «shadd» en lugar de «maqām». Entonces `nombreCompleto`
+    /// no la antepone. Se calcula una vez, para todo el catálogo.
+    package var llevaLaCategoria: Bool { TipoDeEscala.conLaCategoriaEnElNombre.contains(identidad) }
+
+    /// Las escalas de `tradicionales` cuyo nombre lleva la palabra de su categoría (`llevaLaCategoria`).
+    private static let conLaCategoriaEnElNombre: Set<IdentidadDeEscala> = Set(
+        tradicionales.filter { tipo in
+            guard let palabra = tipo.ficha.categoria?.palabraDelNombre else { return false }
+            let clave = normalizar(palabra.nombre)
+            let palabras = normalizar(tipo.nombre).split(separator: " ")
+            return palabras.first == "shadd"
+                || palabras.contains { $0.hasPrefix(clave) || (palabra == .jo && $0.hasSuffix(clave)) }
+        }.map(\.identidad))
 
     /// ¿Es un rāga (indostánico, mēḷa o janya)?
     public var esRaga: Bool { categoria?.esRaga ?? false }

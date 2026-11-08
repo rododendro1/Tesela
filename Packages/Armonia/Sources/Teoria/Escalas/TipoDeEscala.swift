@@ -68,11 +68,10 @@ public struct TipoDeEscala: Sendable, Codable {
 
     /// Una escala de otra tradición, con su categoría y, si los tiene, sus estilos (si no los da la categoría), sus
     /// regiones, el teórico que la definió (`fuente`), el número del mēḷa del que deriva (un rāga janya) y sus
-    /// versiones microtonales. La tradición la da su lista en `listasTradicionales`. `llevaLaCategoria` va en las que ya tienen
-    /// la palabra de la categoría en el nombre («Rast makamı»), para que `nombreCompleto` no la repita.
+    /// versiones microtonales. La tradición la da su lista en `listasTradicionales`.
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
-        variantes: [String] = [], categoria: CategoriaTradicional, llevaLaCategoria: Bool = false,
+        variantes: [String] = [], categoria: CategoriaTradicional,
         estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil, mela: Int? = nil,
         afinaciones: [FichaDeEscala.Afinacion] = []
     ) {
@@ -81,7 +80,7 @@ public struct TipoDeEscala: Sendable, Codable {
             variantes: variantes,
             ficha: FichaDeEscala(
                 estilos: estilos, regiones: regiones, categoria: categoria, mela: mela, afinaciones: afinaciones,
-                llevaLaCategoria: llevaLaCategoria, fuente: fuente))
+                fuente: fuente))
     }
 
     init(

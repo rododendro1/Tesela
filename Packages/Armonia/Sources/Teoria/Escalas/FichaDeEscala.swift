@@ -14,11 +14,10 @@ import Elementos
 ///     public static let mohanam = TipoDeEscala(nombre: "Mohanam", intervalos: […], categoria: .janya, mela: 28)
 ///     public static let pelogTembung = TipoDeEscala(nombre: "Pélog tembung", intervalos: […], categoria: .pathet,
 ///         regiones: [.bali], afinaciones: [.init(.razones, pasos: […])])
-///     public static let rastMakami = TipoDeEscala(nombre: "Rast makamı", intervalos: […], categoria: .makam,
-///         llevaLaCategoria: true)
+///     public static let rastMakami = TipoDeEscala(nombre: "Rast makamı", intervalos: […], categoria: .makam)
 ///
-/// `llevaLaCategoria` va en las que ya tienen en el nombre la palabra de su categoría, para que `nombreCompleto` no
-/// la repita (una prueba lo comprueba contra el nombre).
+/// Que el nombre ya lleve la palabra de su categoría («Rast makamı») no se escribe: se deduce del nombre
+/// (`TipoDeEscala.llevaLaCategoria`), para que `nombreCompleto` no la repita.
 ///
 /// De ahí salen `TipoDeEscala.estilos`, `regiones`, `categoria`, `padre`, `microtonal` y `afinaciones`, y
 /// `EstiloDeEscala.tipos`, `RegionDeEscala.tipos` y `TipoDeEscalaMicrotonal.catalogo`. La tradición no va en la ficha:
@@ -59,16 +58,12 @@ package struct FichaDeEscala: Sendable {
     package let mela: Int?
     /// Las versiones microtonales: la primera, la de su teoría de hoy; las demás, de otros autores (con `fuente`).
     package let afinaciones: [Afinacion]
-    /// ¿Lleva ya el nombre la palabra de su categoría («Rast makamı», «jins Rāst», «échos prótos», «P'yŏngjo»), o
-    /// una que la sustituye («shadd ʿUshshāq»)? Entonces `nombreCompleto` no la antepone.
-    package let llevaLaCategoria: Bool
     /// El teórico que definió la escala (los géneros de Ptolomeo, los colores de Aristóxeno…); `nil` en las demás.
     package let fuente: FuenteTeorica?
 
     package init(
         estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [], categoria: CategoriaTradicional? = nil,
-        mela: Int? = nil, afinaciones: [Afinacion] = [], llevaLaCategoria: Bool = false,
-        fuente: FuenteTeorica? = nil
+        mela: Int? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil
     ) {
         let estilos = estilos.isEmpty ? (categoria.flatMap(EstiloDeEscala.de).map { [$0] } ?? []) : estilos
         self.estilos = EstiloDeEscala.allCases.filter { estilos.contains($0) }
@@ -76,7 +71,6 @@ package struct FichaDeEscala: Sendable {
         self.categoria = categoria
         self.mela = mela
         self.afinaciones = afinaciones
-        self.llevaLaCategoria = llevaLaCategoria
         self.fuente = fuente
     }
 
