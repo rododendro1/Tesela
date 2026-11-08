@@ -92,8 +92,9 @@ public struct Traducido<Valor> {
         ]
     }
 
-    /// El valor en el idioma de los textos de la notación (`Notacion.textos`).
-    public func en(_ notacion: Notacion) -> Valor { notacion.enSuAlfabeto(valor: texto(en: notacion.textos)) }
+    /// El valor en el idioma de los textos de la notación (`Notacion.textos`). Los textos y las listas de textos,
+    /// también en su grafía (`Notacion.grafiaDeLosTextos`), con las versiones de abajo.
+    public func en(_ notacion: Notacion) -> Valor { texto(en: notacion.textos) }
 
     /// El valor en un idioma.
     public func texto(en idioma: Idioma) -> Valor {
@@ -148,16 +149,51 @@ extension TextosTraducidos {
         try traducidos.map(campo)
     }
 
-    /// Un valor de los textos en el idioma de los textos de la notación: `en(notacion, \.campo)`.
+    /// Un valor de los textos en el idioma de los textos de la notación: `en(notacion, \.campo)`. Los textos y las
+    /// listas de textos, también en su grafía (`Notacion.grafiaDeLosTextos`), con las versiones de abajo.
     @inline(never)
     public static func en<Valor>(_ notacion: Notacion, _ campo: (Self) throws -> Valor) rethrows -> Valor {
-        notacion.enSuAlfabeto(valor: try campo(traducidos.texto(en: notacion.textos)))
+        try campo(traducidos.texto(en: notacion.textos))
+    }
+
+    /// Un texto en el idioma de los textos de la notación y en su grafía: `en(notacion, \.campo)` o
+    /// `en(notacion) { $0.campo(n) }`.
+    @inline(never)
+    public static func en(_ notacion: Notacion, _ campo: (Self) throws -> String) rethrows -> String {
+        notacion.enSuGrafia(try campo(traducidos.texto(en: notacion.textos)))
+    }
+
+    /// Una lista de textos en el idioma de los textos de la notación y en su grafía.
+    @inline(never)
+    public static func en(_ notacion: Notacion, _ campo: (Self) throws -> [String]) rethrows -> [String] {
+        try campo(traducidos.texto(en: notacion.textos)).map(notacion.enSuGrafia)
     }
 
     /// Un valor de los textos en un idioma: `en(idioma: .frances, \.campo)`.
     @inline(never)
     public static func en<Valor>(idioma: Idioma, _ campo: (Self) throws -> Valor) rethrows -> Valor {
         try campo(traducidos.texto(en: idioma))
+    }
+}
+
+extension Traducido where Valor == String {
+    /// El texto en el idioma de los textos de la notación y en su grafía: en ruso y en griego, transliterado si la
+    /// grafía no es la original («bolʹšaâ terciâ»).
+    public func en(_ notacion: Notacion) -> String { notacion.enSuGrafia(texto(en: notacion.textos)) }
+
+    /// El texto en un idioma y en una grafía: `Traduccion.texto(en: .ruso, grafia: .transliterada)`.
+    public func texto(en idioma: Idioma, grafia: Grafia) -> String {
+        Transliteracion.texto(texto(en: idioma), en: grafia)
+    }
+}
+
+extension Traducido where Valor == [String] {
+    /// Los textos en el idioma de los textos de la notación y en su grafía.
+    public func en(_ notacion: Notacion) -> [String] { texto(en: notacion.textos).map(notacion.enSuGrafia) }
+
+    /// Los textos en un idioma y en una grafía.
+    public func texto(en idioma: Idioma, grafia: Grafia) -> [String] {
+        texto(en: idioma).map { Transliteracion.texto($0, en: grafia) }
     }
 }
 

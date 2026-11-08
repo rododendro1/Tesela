@@ -28,7 +28,7 @@ extension PresentacionDeEstudioDeEscala {
     /// interválico, el número de Forte (si lo tiene), las transposiciones distintas y sus rasgos (si tiene alguno).
     ///
     ///     let datos = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do, .mayor),
-    ///         en: .espanolCompacto)
+    ///         en: .compacta(.espanol))
     ///     datos.map(\.valor)   // ["7 (heptatónica)", "0", "+2", "2 2 1 2 2 2 1", "[2, 5, 4, 3, 6, 1]", "7-35",
     ///                          //  "12", "máximamente regular"]
     public static func estadisticas(de escala: Escala, en notacion: Notacion) -> [DatoDeEscalaPresentado] {
@@ -59,7 +59,7 @@ extension PresentacionDeEstudioDeEscala {
     /// interválico, el número de Forte y los rasgos, para compararlas de un vistazo.
     ///
     ///     let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(
-    ///         [Escala(.do), Escala(.do, .lidio)], en: .espanolCompacto)
+    ///         [Escala(.do), Escala(.do, .lidio)], en: .compacta(.espanol))
     ///     tabla.filas[1][2]   // "+3"
     public static func tablaDeEstadisticas(
         _ escalas: [Escala], en notacion: Notacion
@@ -97,7 +97,7 @@ extension PresentacionDeEstudioDeEscala {
     /// Las escalas con la misma tónica de la más oscura a la más brillante, a una nota cada una de la siguiente
     /// (`Escala.escaleraDeBrillo`), con su brillo por quintas y la nota que sube.
     ///
-    ///     PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: Escala(.do), en: .espanolCompacto)
+    ///     PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: Escala(.do), en: .compacta(.espanol))
     ///         .first { $0.nombre == "Do lidio" }?.cambio   // "Fa → Fa♯"
     public static func escaleraDeBrillo(de escala: Escala, en notacion: Notacion) -> [PeldanoDeBrilloPresentado] {
         let escalera = escala.escaleraDeBrillo()

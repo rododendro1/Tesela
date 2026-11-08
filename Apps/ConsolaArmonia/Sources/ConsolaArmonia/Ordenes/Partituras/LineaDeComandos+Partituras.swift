@@ -222,7 +222,7 @@ extension LineaDeComandos {
         let limpio = texto.lowercased()
         if let clave = abreviaturas[limpio] { return clave }
         return Clave.allCases.first { clave in
-            [clave.nombre, clave.nombre(en: .inglesASCII)].contains { nombre in
+            [clave.nombre, clave.nombre(en: .ascii(.ingles))].contains { nombre in
                 nombre == limpio || nombre.hasPrefix("clave de ") && String(nombre.dropFirst(9)) == limpio
             }
         }

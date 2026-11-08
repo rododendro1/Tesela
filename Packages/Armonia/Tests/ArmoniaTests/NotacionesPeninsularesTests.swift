@@ -62,7 +62,7 @@ import Testing
         #expect(Notacion.conPalabras(.catalan).textos == .catalan)
         #expect(Notacion.conPalabras(.aleman).textos == .aleman)
         #expect(Notacion.conPalabras(.portugues).textos == .portugues)
-        #expect(Notacion.espanolASCII.textos == .espanol)
+        #expect(Notacion.ascii(.espanol).textos == .espanol)
 
         let sexta = try Intervalo(leyendo: "-6m")
         #expect(sexta.nombre == "6ª menor descendente")
@@ -162,7 +162,8 @@ import Testing
         #expect(CicloNeorriemanniano.hexatonico.nombre(en: .conPalabras(.catalan)) == "cicle hexatònic")
         #expect(CicloNeorriemanniano.lr.nombre(en: .conPalabras(.euskera)) == "LR zikloa")
         #expect(
-            CicloNeorriemanniano.octatonico.nombre(en: .inglesASCII) == CicloNeorriemanniano.octatonico.nombreEnIngles)
+            CicloNeorriemanniano.octatonico.nombre(en: .ascii(.ingles))
+                == CicloNeorriemanniano.octatonico.nombreEnIngles)
     }
 
     @Test func portugues() throws {
@@ -196,7 +197,7 @@ import Testing
         #expect(Alteracion("sustenido") == .sostenido)
         #expect(Alteracion("duplo bemol") == .dobleBemol)
         #expect(Notacion.conPalabras(.portugues).idiomaDeLasAbreviaturas == .espanol)
-        #expect(Notacion(escritura: EscrituraDeNotas(idioma: .portugues, ascii: true)) == .conPalabras(.portugues))
+        #expect(Notacion.delIdioma(.portugues) == .conPalabras(.portugues))
         #expect(EstiloDeCifrado(notacion: .conPalabras(.portugues)).notacion == .conPalabras(.portugues))
     }
 

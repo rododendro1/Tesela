@@ -19,8 +19,8 @@ subirQuinta(Acorde("Do7"))                  // Sol7
 subirQuinta(Escala(.do))                      // Sol mayor
 Nota.do.secuencia(.quintaJusta, veces: 3)          // Do, Sol, Re, La
 Acorde("Do").esDeLaMismaClase(que: Acorde("Lam"))      // true (3-11)
-Acorde("Sib7(b9)/Re").texto(en: .inglesASCII)             // "Bb7(b9)/D"
-Escala("Re dórico").nombre(en: .inglesASCII)                 // "D dorian"
+Acorde("Sib7(b9)/Re").texto(en: .ascii(.ingles))             // "Bb7(b9)/D"
+Escala("Re dórico").nombre(en: .ascii(.ingles))                 // "D dorian"
 ```
 
 Todos los lectores usan un mismo `Lector` interno, que lleva la posición en el texto; por eso

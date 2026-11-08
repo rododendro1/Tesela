@@ -62,7 +62,7 @@ public struct FaltaDeContrapunto: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// "Quintas paralelas (compases 3 → 4)". Los compases se cuentan desde 1.
-    public var description: String { descripcion(en: .espanolCompacto) }
+    public var description: String { descripcion(en: .compacta(.espanol)) }
 }
 
 // MARK: - Contrapunto
@@ -412,7 +412,7 @@ extension Contrapunto {
     ///
     ///     Especie 1, con el contrapunto encima del cantus firmus
     ///     Quintas paralelas (compases 1 → 2)
-    public var informe: String { informe(en: .espanolCompacto) }
+    public var informe: String { informe(en: .compacta(.espanol)) }
 
     /// El informe en otra notación (y sus textos): «Species 1, counterpoint above the cantus firmus».
     public func informe(en notacion: Notacion) -> String {

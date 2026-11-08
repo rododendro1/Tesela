@@ -92,7 +92,7 @@ struct PentagramaSVG {
             var diferencia = modulo(semitonos - [0, 2, 4, 5, 7, 9, 11][pasos], 12)
             if diferencia > 6 { diferencia -= 12 }
             let numero = conTensiones && [1, 3, 5].contains(pasos) ? pasos + 8 : pasos + 1
-            return (diferencia == 0 ? "" : Alteracion(diferencia).simbolo(en: .conDobles)) + String(numero)
+            return (diferencia == 0 ? "" : Alteracion(diferencia).simbolo(en: .unicodeConDobles)) + String(numero)
         }
     }
 

@@ -204,10 +204,10 @@ import Testing
             teclado.casillas(de: Altura("Sol4"), en: FormasDeMapa.hexagono(radio: 3)) == [CoordenadaAxial(q: 1, r: -1)])
         #expect(teclado.altura(en: CoordenadaAxial(q: 0, r: -1)).midi == 65)
         #expect(
-            teclado.altura(en: CoordenadaAxial(q: 1, r: 0), ventana: .bemoles).nota.nombre(en: .espanolCompacto)
+            teclado.altura(en: CoordenadaAxial(q: 1, r: 0), ventana: .bemoles).nota.nombre(en: .compacta(.espanol))
                 == "Re")
         #expect(
-            teclado.altura(en: CoordenadaAxial(q: 0, r: 1), ventana: .bemoles).nota.nombre(en: .espanolCompacto)
+            teclado.altura(en: CoordenadaAxial(q: 0, r: 1), ventana: .bemoles).nota.nombre(en: .compacta(.espanol))
                 == "Sol")
         #expect("\(teclado)" == "Wicki-Hayden: q +2, r -5")
         let otro = TecladoIsomorfico(
@@ -224,23 +224,23 @@ import Testing
         #expect(svg.contains(">Do₄<"))
         #expect(svg.contains(DibujoSVG.Color.nota))
         #expect(svg.contains("#bbbbbb"))
-        #expect(teclado.svg(casillas, opciones: .init(notacion: .inglesASCII)).contains(">C4<"))
+        #expect(teclado.svg(casillas, opciones: .init(notacion: .ascii(.ingles))).contains(">C4<"))
     }
 
     @Test func elCatalogoDeTecladosYSusNombres() {
         #expect(TecladoIsomorfico.todos.count == 9)
         #expect(Set(TecladoIsomorfico.todos.map(\.nombre)).count == 9)
-        #expect(TecladoIsomorfico.tablaArmonica.nombre(en: .inglesASCII) == "Harmonic table")
+        #expect(TecladoIsomorfico.tablaArmonica.nombre(en: .ascii(.ingles)) == "Harmonic table")
         #expect(TecladoIsomorfico.acordeonB.nombre(en: .conPalabras(.aleman)) == "Akkordeon B-Griff")
-        #expect(TecladoIsomorfico.wickiHaydenEspejo.nombre(en: .espanolCompacto) == "Wicki-Hayden (espejo)")
+        #expect(TecladoIsomorfico.wickiHaydenEspejo.nombre(en: .compacta(.espanol)) == "Wicki-Hayden (espejo)")
         // Los nombres propios no se traducen, ni el de un teclado que no es del catálogo.
         #expect(TecladoIsomorfico.janko.nombre(en: .conPalabras(.ruso)) == "Jankó")
         #expect(TecladoIsomorfico.gerhard.traduccion == nil)
         let propio = TecladoIsomorfico(nombre: "Mío", orientacion: .plana, semitonosEnQ: 1, semitonosEnR: 2)
-        #expect(propio.nombre(en: .inglesASCII) == "Mío")
+        #expect(propio.nombre(en: .ascii(.ingles)) == "Mío")
         // En español, el nombre traducido es el del propio teclado.
         for teclado in TecladoIsomorfico.todos {
-            #expect(teclado.nombre(en: .espanolCompacto) == teclado.nombre)
+            #expect(teclado.nombre(en: .compacta(.espanol)) == teclado.nombre)
         }
     }
 }

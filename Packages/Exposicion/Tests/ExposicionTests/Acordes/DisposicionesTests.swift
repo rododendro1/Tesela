@@ -8,7 +8,7 @@ import Testing
 @Suite struct PresentacionDeDisposicionesTests {
     @Test func lasDisposicionesDeUnAcorde() throws {
         let presentadas = try #require(
-            PresentacionDeDisposiciones.acorde(Acorde("Do7"), .drop2, en: .espanolCompacto))
+            PresentacionDeDisposiciones.acorde(Acorde("Do7"), .drop2, en: .compacta(.espanol)))
         #expect(presentadas.filas.first?.voces == "Do₃ Sol₃ Si♭₃ Mi₄")
         #expect(presentadas.filas.allSatisfy { $0.cifrado.isEmpty })
         #expect(presentadas.ficheros.count == 6)
@@ -20,31 +20,31 @@ import Testing
     @Test func unaProgresionDispuesta() throws {
         let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let presentadas = try #require(
-            PresentacionDeDisposiciones.progresion(acordes, .drop2, en: .espanolCompacto))
-        #expect(presentadas.filas.map(\.cifrado) == acordes.map { $0.cifrado(en: .espanolCompacto) })
+            PresentacionDeDisposiciones.progresion(acordes, .drop2, en: .compacta(.espanol)))
+        #expect(presentadas.filas.map(\.cifrado) == acordes.map { $0.cifrado(en: .compacta(.espanol)) })
         #expect(presentadas.filas.allSatisfy { $0.voces.split(separator: " ").count == 4 })
         #expect(presentadas.ficheros.count == 6)
         #expect(presentadas.sonido.notas.count == 12)
         let shells = try #require(
-            PresentacionDeDisposiciones.progresion(acordes, .shell, en: .espanolCompacto))
+            PresentacionDeDisposiciones.progresion(acordes, .shell, en: .compacta(.espanol)))
         #expect(shells.filas.allSatisfy { $0.voces.split(separator: " ").count == 3 })
     }
 
     @Test func sinDisposicion() {
-        #expect(PresentacionDeDisposiciones.acorde(Acorde(.do, .potencia), .shell, en: .espanolCompacto) == nil)
-        #expect(PresentacionDeDisposiciones.progresion([], .drop2, en: .espanolCompacto) == nil)
+        #expect(PresentacionDeDisposiciones.acorde(Acorde(.do, .potencia), .shell, en: .compacta(.espanol)) == nil)
+        #expect(PresentacionDeDisposiciones.progresion([], .drop2, en: .compacta(.espanol)) == nil)
     }
 
     @Test func losNombres() {
-        #expect(DisposicionDeAcorde.cerrada.nombre(en: .espanolCompacto) == "Cerrada")
-        #expect(DisposicionDeAcorde.drop24.nombre(en: .inglesASCII) == "Drop 2 + 4")
-        #expect(DisposicionDeAcorde.shell.nombre(en: .inglesASCII) == "Root, third and seventh")
-        #expect(DisposicionDeAcorde.notasGuia.nombre(en: .espanolCompacto) == "Tercera y séptima")
-        #expect(DisposicionDeAcorde.cuartal.nombre(en: .inglesASCII) == "Quartal")
-        #expect(DisposicionDeAcorde.sinFundamentalA.nombre(en: .espanolCompacto) == "Sin fundamental (A)")
-        #expect(DisposicionDeAcorde.dosManos.nombre(en: .espanolCompacto) == "A dos manos")
+        #expect(DisposicionDeAcorde.cerrada.nombre(en: .compacta(.espanol)) == "Cerrada")
+        #expect(DisposicionDeAcorde.drop24.nombre(en: .ascii(.ingles)) == "Drop 2 + 4")
+        #expect(DisposicionDeAcorde.shell.nombre(en: .ascii(.ingles)) == "Root, third and seventh")
+        #expect(DisposicionDeAcorde.notasGuia.nombre(en: .compacta(.espanol)) == "Tercera y séptima")
+        #expect(DisposicionDeAcorde.cuartal.nombre(en: .ascii(.ingles)) == "Quartal")
+        #expect(DisposicionDeAcorde.sinFundamentalA.nombre(en: .compacta(.espanol)) == "Sin fundamental (A)")
+        #expect(DisposicionDeAcorde.dosManos.nombre(en: .compacta(.espanol)) == "A dos manos")
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             let nombres = DisposicionDeAcorde.allCases.map { $0.nombre(en: notacion) }
             #expect(Set(nombres).count == nombres.count, "\(idioma)")
         }
@@ -55,7 +55,7 @@ import Testing
 @Suite struct DisposicionesEnElMastilTests {
     @Test func losGruposDeCuerdas() {
         let grupos = PresentacionDeDisposiciones.gruposDeCuerdas(
-            .drop2, mastil: Mastil(.guitarra), en: .espanolCompacto)
+            .drop2, mastil: Mastil(.guitarra), en: .compacta(.espanol))
         #expect(grupos.map(\.nombre) == ["Cuerdas 6-5-4-3", "Cuerdas 5-4-3-2", "Cuerdas 4-3-2-1"])
         #expect(grupos.first?.cuerdas == [0, 1, 2, 3])
     }

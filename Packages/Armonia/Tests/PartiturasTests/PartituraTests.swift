@@ -62,7 +62,7 @@ import Testing
         #expect(Figura.cuadrada.duracion == Duracion(2))
         #expect(Figura.garrapatea.duracion == Duracion(1, 128))
         #expect(Figura.semicorchea.nombre == "semicorchea")
-        #expect(Figura.corchea.nombre(en: .inglesASCII) == "eighth note")
+        #expect(Figura.corchea.nombre(en: .ascii(.ingles)) == "eighth note")
     }
 
     @Test func duraciones() {
@@ -91,7 +91,7 @@ import Testing
         #expect(Duracion(3, 8).nombre == "negra con puntillo")
         #expect(Duracion(7, 8).nombre == "blanca con doble puntillo")
         #expect(Duracion(5, 8).nombre == "5/8 de redonda")
-        #expect(Duracion(3, 8).nombre(en: .inglesASCII) == "dotted quarter note")
+        #expect(Duracion(3, 8).nombre(en: .ascii(.ingles)) == "dotted quarter note")
         #expect(Duracion.corchea.ticks(porNegra: 480) == 240)
         #expect(Duracion(1, 12).ticks(porNegra: 480) == 160)
         #expect(Duracion(1, 7).ticks(porNegra: 480) == nil)
@@ -208,7 +208,7 @@ import Testing
         #expect(voz.transponer(.segundaMayor).melodia.alturas.first == Altura("Re4"))
         #expect(voz.melodia.alturas.count == 2)
         let unida = Voz(melodia: ["Do4", "Mi4", "Sol4"], ritmo: [.negra, .negra, .blanca], compas: "3/4")
-        #expect(unida?.texto(en: .inglesASCII) == "C4:4 E4:4 G4:2")
+        #expect(unida?.texto(en: .ascii(.ingles)) == "C4:4 E4:4 G4:2")
         #expect(Voz(melodia: ["Do4", "Mi4"], ritmo: [.negra]) == nil)
         // Se codifica en JSON y vuelve igual.
         let datos = try JSONEncoder().encode(voz)
@@ -223,7 +223,7 @@ import Testing
         #expect((try? Duracion(leyendo: d.texto)) == d)
         #expect("\(Duracion.blanca + .corchea)" == "5/8 de redonda")
         #expect((Duracion.blanca + .corchea).texto == "5/8")
-        #expect(Duracion.corchea.nombre(en: .inglesASCII) == "eighth note")
+        #expect(Duracion.corchea.nombre(en: .ascii(.ingles)) == "eighth note")
         #expect("\(Duracion.cero)" == "cero")
     }
 }
@@ -377,7 +377,7 @@ import Testing
         #expect(Clave.doEnTercera.alturaCentral == Altura("Do4"))
         #expect(Clave.fa.altura(lugar: 8) == Altura("La3"))
         #expect(Clave.sol.altura(lugar: 4, alteracion: -1) == Altura("Sib4"))
-        #expect(Clave.doEnTercera.nombre(en: .inglesASCII) == "alto clef")
+        #expect(Clave.doEnTercera.nombre(en: .ascii(.ingles)) == "alto clef")
     }
 
     @Test func idaYVueltaDePosiciones() {

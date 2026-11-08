@@ -142,7 +142,8 @@ package struct Lector {
     /// Los nombres de las alteraciones de una a tres, en las notaciones con palabras: «sostenido», «doble
     /// bemol», «triple sharp»… Salen de `Alteracion.nombre(en:)`, así que se leen como se escriben.
     private static let alteracionesEnPalabras: [(idioma: Idioma, semitonos: Int, palabra: String)] =
-        [(Idioma.espanol, Notacion.espanolPalabras), (.ingles, .inglesPalabras)].flatMap { idioma, notacion in
+        [(Idioma.espanol, Notacion.conPalabras(.espanol)), (.ingles, .conPalabras(.ingles))].flatMap {
+            idioma, notacion in
             [3, 2, 1, -1, -2, -3].map { (idioma, $0, Alteracion($0).nombre(en: notacion).lowercased()) }
         }
 

@@ -84,11 +84,11 @@ import Testing
                     - (RazonDeFrecuencias(5, 4).cents)) <= 1e-9)
         for idioma in Idioma.allCases {
             let nombres = AfinacionHistorica.allCases.map {
-                $0.nombre(en: Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false)))
+                $0.nombre(en: Notacion.delIdioma(idioma))
             }
             #expect(Set(nombres).count == nombres.count, "\(idioma)")
         }
-        #expect(AfinacionHistorica.justa.nombre(en: .inglesASCII) == "just intonation")
+        #expect(AfinacionHistorica.justa.nombre(en: .ascii(.ingles)) == "just intonation")
         #expect(AfinacionHistorica.kirnbergerIII.description == "Kirnberger III")
     }
 

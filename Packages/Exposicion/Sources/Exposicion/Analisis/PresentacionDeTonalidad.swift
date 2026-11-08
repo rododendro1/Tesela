@@ -16,7 +16,7 @@ public struct CadenciaPresentada: Hashable, Sendable {
 /// relativas, los acordes de cada grado con su función, las cadencias típicas y las modulaciones a los tonos
 /// vecinos. No usa SwiftUI, así que se prueba en Linux.
 ///
-///     let cadencias = PresentacionDeTonalidad.cadenciasTipicas(de: Tonalidad(.do), en: .espanolCompacto)
+///     let cadencias = PresentacionDeTonalidad.cadenciasTipicas(de: Tonalidad(.do), en: .compacta(.espanol))
 ///     cadencias.first?.acordes   // "Sol7 – Do"
 public enum PresentacionDeTonalidad {
     /// «Armadura: Si♭ Mi♭ La♭», o «Armadura: sin alteraciones».
@@ -53,7 +53,7 @@ public enum PresentacionDeTonalidad {
     /// el pentagrama de su escala, los acordes de cada grado (cuatríadas) con su función, las cadencias típicas y
     /// las modulaciones a los tonos vecinos.
     ///
-    ///     let hoja = PresentacionDeTonalidad.hojaDeEstudio(de: Tonalidad(.re), en: .espanolCompacto)
+    ///     let hoja = PresentacionDeTonalidad.hojaDeEstudio(de: Tonalidad(.re), en: .compacta(.espanol))
     ///     hoja.contains(">Re mayor</text>")   // true
     public static func hojaDeEstudio(de tonalidad: Tonalidad, en notacion: Notacion) -> String {
         typealias Hoja = PresentacionDeEstudioDeEscala

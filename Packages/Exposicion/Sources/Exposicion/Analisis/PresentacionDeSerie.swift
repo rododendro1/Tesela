@@ -56,7 +56,7 @@ public struct SeriePresentada: Hashable, Sendable {
 /// La parte de la vista de la serie dodecafónica que no es dibujo. No usa SwiftUI, así que se prueba en Linux.
 ///
 ///     let berg = try PresentacionDeSerie.presentar(
-///         "5 4 0 9 7 2 8 1 3 6 t e", forma: FormaDeSerie(.inversion, 5), en: .espanolCompacto)
+///         "5 4 0 9 7 2 8 1 3 6 t e", forma: FormaDeSerie(.inversion, 5), en: .compacta(.espanol))
 ///     berg.clasesDeLaForma   // [5, 6, 10, 1, 3, 8, 2, 9, 7, 4, 0, 11]
 public enum PresentacionDeSerie {
     /// La serie de la Suite lírica de Berg, de todos los intervalos, para empezar.

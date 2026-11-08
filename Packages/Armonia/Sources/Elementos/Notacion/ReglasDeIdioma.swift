@@ -108,7 +108,7 @@ public struct ReglasDeIdioma: Hashable, Sendable {
         codigo: String, nombrePropio: String, nombres: [String],
         naturales: [String], separador: String = " ", multiplicador: Multiplicador = .delante,
         alteraciones: EscrituraDeLaAlteracion = .palabras, sufijoDeSostenido: String = "is",
-        sufijoDeBemol: String = "es", tipografia: Tipografia = .conSimples,
+        sufijoDeBemol: String = "es", tipografia: Tipografia = .unicode,
         mayor: String, menor: String, separadorDelModo: String = " ", menorEnMinuscula: Bool = false,
         abreviaturas: Idioma = .ingles, plural: Plural = .unoYLosDemas
     ) {
@@ -132,6 +132,18 @@ public struct ReglasDeIdioma: Hashable, Sendable {
 
     /// Si el idioma tiene las tres escrituras (palabras, ASCII y compacta), como el español y el inglés.
     public var tieneVariantes: Bool { alteraciones == .signos }
+
+    /// Las mismas reglas con lo que se escribe (los naturales, los separadores y los modos) en una grafía: en ruso y
+    /// en griego, transliterado (``Transliteracion``); en los demás, igual.
+    func en(_ grafia: Grafia) -> ReglasDeIdioma {
+        func escrito(_ texto: String) -> String { Transliteracion.texto(texto, en: grafia) }
+        return ReglasDeIdioma(
+            codigo: codigo, nombrePropio: nombrePropio, nombres: nombres, naturales: naturales.map(escrito),
+            separador: escrito(separador), multiplicador: multiplicador, alteraciones: alteraciones,
+            sufijoDeSostenido: sufijoDeSostenido, sufijoDeBemol: sufijoDeBemol, tipografia: tipografia,
+            mayor: escrito(mayor), menor: escrito(menor), separadorDelModo: escrito(separadorDelModo),
+            menorEnMinuscula: menorEnMinuscula, abreviaturas: abreviaturas, plural: plural)
+    }
 }
 
 extension Idioma {
@@ -142,7 +154,20 @@ extension Idioma {
     /// "полутона", "полутонов")` es «5 полутонов», y `Idioma.espanol.contar(1, "dedo", "dedos")`, «1 dedo».
     public func contar(_ n: Int, _ formas: String...) -> String { reglas.plural.contar(n, formas) }
 
+    /// Los datos de este idioma con lo que se escribe en una grafía: `Idioma.ruso.reglas(en: .transliterada)` tiene
+    /// los naturales «do», «re», «mi», «fa», «solʹ», «lâ», «si» y el modo «mažor». En los idiomas que se escriben con
+    /// letras latinas, las mismas que `reglas`.
+    public func reglas(en grafia: Grafia) -> ReglasDeIdioma {
+        switch grafia {
+        case .original: return reglas
+        case .transliterada: return Self.tablaTransliterada.texto(en: self)
+        case .ascii: return Self.tablaASCII.texto(en: self)
+        }
+    }
+
     private static let tablaDeReglas = Traducido<ReglasDeIdioma>(porIdioma: { $0.reglasCalculadas })
+    private static let tablaTransliterada = tablaDeReglas.map { $0.en(.transliterada) }
+    private static let tablaASCII = tablaDeReglas.map { $0.en(.ascii) }
 
     /// Las filas de cada idioma. Es el único `switch` sobre `Idioma` de sus datos y de los nombres de nota: un
     /// idioma nuevo solo tiene que añadir aquí su fila.
@@ -238,8 +263,11 @@ extension EscrituraDeNotas {
     /// Cómo escribe las alteraciones: con palabras si se piden así, y si no, lo que diga el idioma, o con signos en
     /// los que solo las escriben con palabras (la compacta del francés: Ré♭).
     public var escrituraDeLaAlteracion: EscrituraDeLaAlteracion {
-        if sistema != nil { return .signos }
-        if conPalabras { return .palabras }
-        return idioma.reglas.alteraciones == .palabras ? .signos : idioma.reglas.alteraciones
+        switch self {
+        case .sistema: return .signos
+        case .idioma(_, .palabras): return .palabras
+        case .idioma(let idioma, _):
+            return idioma.reglas.alteraciones == .palabras ? .signos : idioma.reglas.alteraciones
+        }
     }
 }

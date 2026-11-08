@@ -45,7 +45,7 @@ public struct ContrapuntoPresentado: Hashable, Sendable {
 ///
 ///     let fux = try PresentacionDeContrapunto.presentar(
 ///         cantus: "Re4 Fa4 Mi4 Re4", contrapunto: "-:2 La4 Re5 La4 Si4 Do#5 Re5:1", especie: .segunda,
-///         en: .espanolCompacto)
+///         en: .compacta(.espanol))
 ///     fux.esCorrecto   // true
 public enum PresentacionDeContrapunto {
     /// El tempo al que suena: negra a 120, una redonda cada dos segundos.

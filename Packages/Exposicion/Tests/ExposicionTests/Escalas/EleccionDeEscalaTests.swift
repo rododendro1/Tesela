@@ -5,7 +5,7 @@ import Testing
 
 // La escala que se elige en la pestaña de escalas, y lo que esa pestaña dibuja y exporta además de sus secciones.
 @Suite struct EleccionDeEscalaTests {
-    let notacion = Notacion.espanolCompacto
+    let notacion = Notacion.compacta(.espanol)
 
     @Test func laEscalaElegida() {
         var eleccion = EleccionDeEscala()

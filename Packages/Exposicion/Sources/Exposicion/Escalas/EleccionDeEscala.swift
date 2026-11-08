@@ -49,8 +49,8 @@ public struct EleccionDeEscala: Hashable, Sendable {
         if let indice = Self.tonicas.firstIndex(where: { $0.claseDeAltura == pedida.tonica.claseDeAltura }) {
             tonica = indice
         }
-        let nombre = pedida.tipo.nombre(en: .espanolCompacto)
-        if let indice = Self.catalogo.firstIndex(where: { $0.nombre(en: .espanolCompacto) == nombre })
+        let nombre = pedida.tipo.nombre(en: .compacta(.espanol))
+        if let indice = Self.catalogo.firstIndex(where: { $0.nombre(en: .compacta(.espanol)) == nombre })
             ?? Self.catalogo.firstIndex(of: pedida.tipo)
         {
             tipo = indice

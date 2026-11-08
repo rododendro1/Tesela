@@ -34,7 +34,7 @@ extension PresentacionDeArpegios {
     /// barrido.
     ///
     ///     let barrido = PresentacionDeArpegios.enElMastil(
-    ///         Acorde("Lam"), formas: .unaNotaPorCuerda, en: .espanolCompacto)
+    ///         Acorde("Lam"), formas: .unaNotaPorCuerda, en: .compacta(.espanol))
     ///     barrido[0].dedos   // "0 0 2 2 1 0": el La menor al aire, de la 6.ª cuerda a la 1.ª
     public static func enElMastil(
         _ acorde: Acorde, formas: FormasDeArpegio = .porPosiciones, idaYVuelta: Bool = false,

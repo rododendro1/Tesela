@@ -5,7 +5,7 @@ import Elementos
 ///
 ///     AfinacionHistorica.mesotonico.afinacion().frecuencia(de: "Sol#4") < AfinacionHistorica.mesotonico.afinacion().frecuencia(de: "Lab4")   // true
 ///     AfinacionHistorica.justa.afinacion(tonica: .re).desviacion(de: "Fa#4")   // −13,69: la tercera pura sobre Re
-///     AfinacionHistorica.werckmeisterIII.nombre(en: .inglesASCII)             // "Werckmeister III"
+///     AfinacionHistorica.werckmeisterIII.nombre(en: .ascii(.ingles))             // "Werckmeister III"
 public enum AfinacionHistorica: String, Hashable, Sendable, CaseIterable, CustomStringConvertible, Nombrable {
     /// Doce semitonos iguales: lo que suena si no se elige otro.
     case igual

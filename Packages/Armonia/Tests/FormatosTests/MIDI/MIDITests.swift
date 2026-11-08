@@ -152,7 +152,7 @@ import Testing
         #expect(Set(leido.pistas.dropFirst().compactMap(\.programa)) == [52])
         // Cada voz, en su canal.
         #expect(leido.pistas.dropFirst().map { $0.notas.first?.canal } == [0, 1, 2, 3])
-        let ingles = try leer(coral.partitura(notacion: .inglesASCII).midi())
+        let ingles = try leer(coral.partitura(notacion: .ascii(.ingles)).midi())
         #expect(ingles.pistas[1].texto(0x03) == ["soprano"])
         #expect(ingles.pistas[4].texto(0x03) == ["bass"])
     }
@@ -166,7 +166,7 @@ import Testing
         #expect(primero == [60, 64, 67])
         #expect(leido.pistas[2].notas.map(\.clave) == [48, 45, 50, 43, 48])
         #expect(leido.pistas[1].notas.count == (3 + 3 + 4 + 4 + 3))
-        #expect(try (leer(analisis.partitura(notacion: .inglesASCII).midi()).pistas[1].texto(0x06).first) == "C · I")
+        #expect(try (leer(analisis.partitura(notacion: .ascii(.ingles)).midi()).pistas[1].texto(0x06).first) == "C · I")
         // En Latin-1, con las alteraciones en ASCII.
         let prestado = try leer(
             AnalisisArmonico.analizar(leyendo: "Do Lab Sib Do").partitura(encabezado: Encabezado(titulo: "Préstamo"))

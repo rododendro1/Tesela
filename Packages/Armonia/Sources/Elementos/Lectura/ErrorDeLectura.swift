@@ -11,7 +11,7 @@ import Foundation
 ///         let altura = try Altura(leyendo: "Do#x")
 ///     } catch let error as ErrorDeLectura {
 ///         print(error)   // No se puede leer «Do#x» (carácter 3): …
-///         error.descripcion(en: .inglesASCII)
+///         error.descripcion(en: .ascii(.ingles))
 ///     }
 public struct ErrorDeLectura: ErrorAlLeer {
     /// Por qué no se pudo leer, con lo que hace falta para explicarlo en cada idioma (`explicacion(en:)`).

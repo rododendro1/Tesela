@@ -114,7 +114,7 @@ import Testing
         #expect(escala.nombre == "dórico")
         #expect(nombre.nombre == "Fa♯")
         #expect(calidad == .menor)
-        #expect(Acorde("Do7").cifrado(estilo: EstiloDeCifrado.inglesASCII) == "C7")
+        #expect(Acorde("Do7").cifrado(estilo: EstiloDeCifrado.ascii(.ingles)) == "C7")
         // La rotación de una escala (sus modos) no se confunde con el modo de una tonalidad.
         #expect(Escala(.do).modo(grado: 2) == Escala(.re, .dorico))
         #expect(TipoDeEscala.mayor.modo(grado: 6) == .menorNatural)

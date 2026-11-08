@@ -138,7 +138,8 @@ import Testing
         #expect(raiz.todos("polygon").count == 1)
         #expect(raiz.todos("line").filter { $0.atributos["stroke-width"] == "3" }.count == 3)
         // En inglés, y con clases de altura, todas las repeticiones de cada clase.
-        let ingles = try #require(ElementoXML.leer(Tonnetz(Acorde("Fa#")).svg(opciones: .init(notacion: .inglesASCII))))
+        let ingles = try #require(
+            ElementoXML.leer(Tonnetz(Acorde("Fa#")).svg(opciones: .init(notacion: .ascii(.ingles)))))
         #expect(ingles.todos("text").contains { $0.texto == "F#" })
         let clases = try #require(ElementoXML.leer(Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7])).svg(margen: 3)))
         #expect(clases.todos("text").filter { $0.atributos["font-weight"] == "bold" }.count > 3)
@@ -239,11 +240,11 @@ import Testing
         let raiz = try #require(ElementoXML.leer(recorrido.svg()))
         #expect(raiz.todos("line").filter { $0.atributos["marker-end"] != nil }.count == 2)
         #expect(raiz.todos("text").contains { $0.texto == "Do –R→ Lam –L→ Fa" })
-        let ingles = try #require(ElementoXML.leer(camino.svg(opciones: .init(notacion: .inglesASCII))))
+        let ingles = try #require(ElementoXML.leer(camino.svg(opciones: .init(notacion: .ascii(.ingles)))))
         #expect(
             ingles.todos("text").contains {
-                $0.texto == "C –P→ Cm –R→ " + Acorde("Mib").cifrado(en: .inglesASCII) + " –P→ "
-                    + Acorde("Mibm").cifrado(en: .inglesASCII)
+                $0.texto == "C –P→ Cm –R→ " + Acorde("Mib").cifrado(en: .ascii(.ingles)) + " –P→ "
+                    + Acorde("Mibm").cifrado(en: .ascii(.ingles))
             })
         #expect(
             try
@@ -282,7 +283,7 @@ import Testing
                 Comment(rawValue: titulo))
         }
         let enIngles = try #require(
-            ElementoXML.leer(Tonnetz(Acorde("Do")).svg(opciones: .init(notacion: .inglesASCII))))
+            ElementoXML.leer(Tonnetz(Acorde("Do")).svg(opciones: .init(notacion: .ascii(.ingles)))))
         #expect(enIngles.todos("title").first?.texto == "C")
         let tonica = try #require(ElementoXML.leer(Tonnetz(Acorde("Do")).svg(opciones: .init(titulo: "Tónica"))))
         #expect(tonica.todos("title").first?.texto == "Tónica")
@@ -369,7 +370,7 @@ import Testing
         #expect(svg.contains("Do –P→ Dom –L→ La♭ –P→ La♭m –L→ Mi –P→ Mim –L→ Do"))
         #expect(!svg.contains("Fa♭"))
         #expect(!(svg.contains("𝄫") || svg.contains("♭♭") || svg.contains("Re♭♭")))
-        #expect(tonnetz.svg(opciones: .init(notacion: .inglesASCII)).contains("C –P→ Cm –L→ Ab"))
+        #expect(tonnetz.svg(opciones: .init(notacion: .ascii(.ingles))).contains("C –P→ Cm –L→ Ab"))
         #expect(Tonnetz(ciclo: .lr, desde: "Lam")?.recorrido.count == 25)
         #expect(Tonnetz(ciclo: .octatonico, desde: "Do7") == nil)
     }
@@ -378,9 +379,9 @@ import Testing
 @Suite struct NombresDeLasTransformacionesTests {
     @Test func enCadaIdioma() {
         #expect(
-            TransformacionNeorriemanniana.allCases.map { $0.nombre(en: .espanolCompacto) }
+            TransformacionNeorriemanniana.allCases.map { $0.nombre(en: .compacta(.espanol)) }
                 == TransformacionNeorriemanniana.allCases.map(\.nombre))
-        #expect(TransformacionNeorriemanniana.l.nombre(en: .inglesASCII) == "leading-tone exchange")
+        #expect(TransformacionNeorriemanniana.l.nombre(en: .ascii(.ingles)) == "leading-tone exchange")
         #expect(TransformacionNeorriemanniana.r.nombre(en: .conPalabras(.aleman)) == "Parallele")
     }
 }

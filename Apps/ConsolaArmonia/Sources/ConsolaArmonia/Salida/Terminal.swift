@@ -114,7 +114,7 @@ extension LineaDeComandos {
         var vistos: Set<String> = []
         let permitidos = Set("abcdefghijklmnopqrstuvwxyz0123456789-")
         for tipo in TipoDeEscala.catalogo {
-            for nombre in [tipo.nombre, tipo.nombre(en: .inglesASCII)] {
+            for nombre in [tipo.nombre, tipo.nombre(en: .ascii(.ingles))] {
                 let palabra = nombre.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: nil)
                     .lowercased().split(separator: " ").joined(separator: "-")
                 guard !palabra.isEmpty, palabra.allSatisfy(permitidos.contains), vistos.insert(palabra).inserted

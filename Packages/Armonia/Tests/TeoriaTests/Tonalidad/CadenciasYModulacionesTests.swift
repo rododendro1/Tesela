@@ -40,12 +40,12 @@ import Testing
         #expect(perfecta.acorde == 2)
         #expect(perfecta.acordes.map(\.cifrado) == ["V7", "I"])
         #expect(perfecta.description == "Cadencia auténtica V7–I (acordes 3 → 4)")
-        #expect(perfecta.descripcion(en: .inglesASCII) == "Authentic cadence V7–I (chords 3 → 4)")
+        #expect(perfecta.descripcion(en: .ascii(.ingles)) == "Authentic cadence V7–I (chords 3 → 4)")
         #expect(perfecta.descripcion(en: .conPalabras(.catalan)) == "Cadència autèntica V7–I (acords 3 → 4)")
         #expect(perfecta.descripcion(en: .conPalabras(.euskera)) == "Kadentzia autentikoa V7–I (3 → 4 akordeak)")
         let imperfecta = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7/Si Do", en: Tonalidad(.do)).cadencias[0]
         #expect(!imperfecta.esPerfecta)
-        #expect(Cadencia.Tipo.semicadencia.nombre(en: .inglesASCII) == "half cadence")
+        #expect(Cadencia.Tipo.semicadencia.nombre(en: .ascii(.ingles)) == "half cadence")
         #expect(Cadencia.Tipo.rota.nombre == "cadencia rota")
     }
 
@@ -61,7 +61,7 @@ import Testing
         let pivote = try #require(modulacion.pivote)
         #expect(pivote.indice == 4)
         #expect(pivote.description == "Lam = vi en Do mayor = ii en Sol mayor")
-        #expect(pivote.descripcion(en: .inglesASCII) == "Am = vi in C major = ii in G major")
+        #expect(pivote.descripcion(en: .ascii(.ingles)) == "Am = vi in C major = ii in G major")
         #expect(
             modulacion.description
                 == "De Do mayor a Sol mayor en el acorde 5 (pivote: Lam = vi en Do mayor = ii en Sol mayor)")

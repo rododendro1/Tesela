@@ -104,7 +104,7 @@ extension AnalisisArmonico {
     /// dura cada acorde (el ritmo de una pieza importada), `RitmoArmonico.partitura(en:…)`.
     public func partitura(
         duracion: Duracion = .negra, compas: Compas = .compasillo, encabezado: Encabezado = Encabezado(),
-        conCifrados: Bool = true, conAnalisis: Bool = true, notacion: Notacion = .espanolCompacto
+        conCifrados: Bool = true, conAnalisis: Bool = true, notacion: Notacion = .compacta(.espanol)
     ) -> Partitura {
         precondition(duracion > .cero, "cada acorde tiene que durar algo")
         return conDuraciones(
@@ -151,7 +151,7 @@ extension RitmoArmonico {
     ///     let datos = ritmo.partitura(encabezado: Encabezado(titulo: "Cadencia")).midi()
     public func partitura(
         en tonalidad: Tonalidad? = nil, encabezado: Encabezado = Encabezado(), conCifrados: Bool = true,
-        conAnalisis: Bool = true, notacion: Notacion = .espanolCompacto
+        conAnalisis: Bool = true, notacion: Notacion = .compacta(.espanol)
     ) -> Partitura {
         let acordes = self.acordes.map(\.acorde)
         // Sin acordes no hay tonalidad que los explique: el análisis, vacío, en Do mayor.

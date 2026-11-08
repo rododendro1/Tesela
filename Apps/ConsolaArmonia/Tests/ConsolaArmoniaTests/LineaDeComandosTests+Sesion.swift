@@ -17,13 +17,13 @@ extension LineaDeComandosTests {
         #expect(indice.contains("armonia ayuda --todo"))
         #expect(!indice.contains("--patron alberti"))
         #expect(
-            indice.split(separator: "\n").count < LineaDeComandos.ayuda(en: .espanolCompacto).split(separator: "\n")
+            indice.split(separator: "\n").count < LineaDeComandos.ayuda(en: .compacta(.espanol)).split(separator: "\n")
                 .count / 2)
         for linea in indice.split(separator: "\n") where linea.hasPrefix("  ") {
             #expect(linea.count <= LineaDeComandos.anchoDelIndice, Comment(rawValue: String(linea)))
         }
-        #expect(salida("ayuda --todo") == LineaDeComandos.ayuda(en: .espanolCompacto) + "\n")
-        #expect(salida("help --all --ingles") == LineaDeComandos.ayuda(en: .inglesASCII) + "\n")
+        #expect(salida("ayuda --todo") == LineaDeComandos.ayuda(en: .compacta(.espanol)) + "\n")
+        #expect(salida("help --all --ingles") == LineaDeComandos.ayuda(en: .ascii(.ingles)) + "\n")
         // Una línea por orden, en todos los idiomas, y un título por grupo.
         for idioma in Idioma.allCases {
             let texto = LineaDeComandos.indiceDeAyuda(en: idioma)

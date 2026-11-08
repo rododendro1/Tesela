@@ -10,7 +10,7 @@ import Armonia
 /// Los textos de la interfaz de las apps en un idioma: los de las pestañas, secciones y etiquetas, que se leen con
 /// `Notacion.texto(_:)`, los avisos y las tareas de `PresentacionDeCoral` y los nombres de `FicheroParaExportar`.
 ///
-///     Notacion.inglesASCII.texto(\.digitaciones)    // "Fingerings"
+///     Notacion.ascii(.ingles).texto(\.digitaciones)    // "Fingerings"
 public struct TextosDeApps: TextosTraducidos {
     // MARK: Notacion+TextosDeApps.swift y las vistas
     public let acordes: String

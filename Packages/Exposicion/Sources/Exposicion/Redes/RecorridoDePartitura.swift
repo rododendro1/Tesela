@@ -6,7 +6,7 @@ import Foundation
 /// o menores dice qué transformaciones P, L y R llevan de una a otra por el camino más corto. No usa SwiftUI, así que
 /// se prueba en Linux.
 ///
-///     let recorrido = RecorridoDePartitura(progresion, notacion: .espanolCompacto)
+///     let recorrido = RecorridoDePartitura(progresion, notacion: .compacta(.espanol))
 ///     recorrido.pasos.map(\.transformacion)   // ["", "R", "L", "–", …]
 public struct RecorridoDePartitura: Hashable, Sendable {
     /// Un acorde de la pieza.

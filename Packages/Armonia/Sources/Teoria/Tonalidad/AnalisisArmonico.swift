@@ -105,7 +105,7 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
     public var funciones: [FuncionTonal?] { acordes.map(\.funcion) }
 
     /// "I–IV–V7–I en Do mayor".
-    public var description: String { nombre(en: .espanolCompacto) }
+    public var description: String { nombre(en: .compacta(.espanol)) }
 
     /// "I–IV–V7–I en Do mayor", "I–IV–V7–I in C major", "I–IV–V7–I do maiorrean".
     public func nombre(en notacion: Notacion) -> String {

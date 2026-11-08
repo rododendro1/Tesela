@@ -5,7 +5,7 @@ import Testing
 
 @Suite struct MicrotonosTests {
     private func nombres(
-        _ escala: Escala, _ sentido: SentidoDelIntervalo = .ascendente, en notacion: Notacion = .espanolCompacto,
+        _ escala: Escala, _ sentido: SentidoDelIntervalo = .ascendente, en notacion: Notacion = .compacta(.espanol),
         afinacion: TipoDeEscalaMicrotonal? = nil
     ) -> String? {
         escala.notasMicrotonales(sentido: sentido, afinacion: afinacion)?.map { $0.nombre(en: notacion) }
@@ -197,7 +197,7 @@ import Testing
         #expect(nombres(Escala(.mi, .echosLegetos)) == "Mi⁻² Fa Sol La Si⁻² Do Re")
         #expect(nombres(Escala(.sol, .echosTetartos)) == "Sol La Si⁻² Do Re Mi⁻² Fa")
         #expect(nombres(Escala(.do, .echosPlagiosTetartos)) == "Do Re Mi⁻² Fa Sol La Si⁻²")
-        #expect(nombres(Escala(.re, .echosProtos), en: .inglesASCII) == "D E(-2) F G A B(-2) C")
+        #expect(nombres(Escala(.re, .echosProtos), en: .ascii(.ingles)) == "D E(-2) F G A B(-2) C")
         // El tercero, enarmónico, ya es la escala mayor.
         #expect(TipoDeEscala.echosTritos == .mayor && TipoDeEscala.echosTritos.microtonal == nil)
         #expect(TipoDeEscala.echoi.filter { $0.microtonal == nil } == [.echosTritos])
@@ -222,7 +222,7 @@ import Testing
         #expect(nombres(Escala(.do, .bhairav)) == "Do Re♭ Mi↓ Fa Sol La♭ Si↓")
         #expect(nombres(Escala(.do, .purvi)) == "Do Re♭↑ Mi↓ Fa♯↓ Sol La♭↑ Si↓")
         #expect(nombres(Escala(.do, .todi)) == "Do Re♭ Mi♭ Fa♯↓ Sol La♭ Si")
-        #expect(nombres(Escala(.do, .bilaval), en: .inglesASCII) == "C D(-1) E(-1) F G A(-1) B(-1)")
+        #expect(nombres(Escala(.do, .bilaval), en: .ascii(.ingles)) == "C D(-1) E(-1) F G A(-1) B(-1)")
         // Mi↓ es 5/4: 13,69 cents bajo el Mi temperado.
         let mi = Escala(.do, .bilaval).notasMicrotonales()?[2]
         #expect(abs((mi?.cents ?? 0) - 386.31) < 0.01)
@@ -235,8 +235,8 @@ import Testing
     @Test func lasDoblesConDobles() {
         let nota = NotaMicrotonal(temperada: Nota(.si, -2), sistema: .cuartosDeTono, ajuste: -1, cents: 0)
         #expect(nota.nombre == "Si𝄫𝄳")
-        #expect(nota.nombre(en: .inglesCompacto) == "B𝄫𝄳")
-        #expect(nota.nombre(en: .inglesASCII) == "Bbbqb")
+        #expect(nota.nombre(en: .compacta(.ingles)) == "B𝄫𝄳")
+        #expect(nota.nombre(en: .ascii(.ingles)) == "Bbbqb")
         let mi = NotaMicrotonal(temperada: .mi, sistema: .cuartosDeTono, ajuste: -1, cents: 0)
         #expect(mi.nombre == "Mi𝄳")
     }
@@ -261,7 +261,7 @@ import Testing
         #expect(enarmonico?.cents == [0, 50, 100, 500])
         #expect(Escala(.mi, .tetracordoEnarmonico).notas.map(\.description).joined(separator: " ") == "Mi Fa♭ Fa La")
         #expect(nombres(Escala(.mi, .tetracordoEnarmonico)) == "Mi Fa𝄳 Fa La")
-        #expect(nombres(Escala(.mi, .tetracordoEnarmonico), en: .inglesASCII) == "E Fqb F A")
+        #expect(nombres(Escala(.mi, .tetracordoEnarmonico), en: .ascii(.ingles)) == "E Fqb F A")
     }
 
     @Test func gramaYMurchanaDelNatyasastra() {
@@ -289,7 +289,7 @@ import Testing
         #expect(SistemaMicrotonal.razones.cents(de: 63) == 63)
         #expect(nombres(Escala(.mi, .tetracordoDiatonicoDeArquitas)) == "Mi Fa(−37¢) Sol(−6¢) La(−2¢)")
         #expect(
-            nombres(Escala(.mi, .tetracordoDiatonicoDeArquitas), en: .inglesASCII) == "E F(-37c) G(-6c) A(-2c)")
+            nombres(Escala(.mi, .tetracordoDiatonicoDeArquitas), en: .ascii(.ingles)) == "E F(-37c) G(-6c) A(-2c)")
         #expect(nombres(Escala(.mi, .tetracordoDiatonicoTenso)) == "Mi Fa(+12¢) Sol(+16¢) La(−2¢)")
         #expect(nombres(Escala(.mi, .tetracordoEnarmonicoDePtolomeo)) == "Mi Fa♭(+38¢) Fa(+12¢) La(−2¢)")
         // El diatónico igual, con su segunda neutra de 151 cents, se escribe con Fa♯.
@@ -302,11 +302,11 @@ import Testing
 
     @Test func nombresEnOtrasNotaciones() {
         let bayati = Escala(.re, .bayati)
-        #expect(nombres(bayati, en: .inglesCompacto) == "D E𝄳 F G A B♭ C")
-        #expect(nombres(bayati, en: .inglesASCII) == "D Eqb F G A Bb C")
-        #expect(nombres(bayati, en: .espanolASCII) == "Re Miqb Fa Sol La Sib Do")
+        #expect(nombres(bayati, en: .compacta(.ingles)) == "D E𝄳 F G A B♭ C")
+        #expect(nombres(bayati, en: .ascii(.ingles)) == "D Eqb F G A Bb C")
+        #expect(nombres(bayati, en: .ascii(.espanol)) == "Re Miqb Fa Sol La Sib Do")
         #expect(nombres(bayati, en: .conPalabras(.frances)) == "Ré Mi𝄳 Fa Sol La Si♭ Do")
-        #expect(nombres(Escala(.sol, .rastMakami), en: .inglesASCII) == "G A B(-1) C D E F#(-1)")
+        #expect(nombres(Escala(.sol, .rastMakami), en: .ascii(.ingles)) == "G A B(-1) C D E F#(-1)")
         #expect(Escala(.re, .bayati).notasMicrotonales()?[1].description == "Mi𝄳")
     }
 }

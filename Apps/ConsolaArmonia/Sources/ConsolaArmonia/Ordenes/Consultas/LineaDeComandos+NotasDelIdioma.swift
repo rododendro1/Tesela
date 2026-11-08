@@ -64,7 +64,7 @@ extension LineaDeComandos {
     /// tal cual si no empieza por una nota del idioma, si en español no se lee o si ya se leía igual. Una palabra que
     /// ya se lee no cambia si la nota del idioma es otro trozo: «Do7» en alemán sigue siendo Do7, no D°7.
     static func notasEnEspanol(_ palabra: String, en notacion: Notacion) -> String {
-        let idioma = notacion.notas.idiomaDeLasNotas
+        let idioma = notacion.idiomaDeLasNotas
         // Con un sistema de otra tradición (--sistema bizantino) también: Ga♯7 → Fa#7.
         let otroSistema = notacion.sistemaDeNombres != nil
         guard otroSistema || (idioma != .espanol && idioma != .ingles), !palabra.hasPrefix("-"), !palabra.contains(" ")

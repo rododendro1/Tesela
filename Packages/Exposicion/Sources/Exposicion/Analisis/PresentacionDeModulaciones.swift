@@ -20,7 +20,7 @@ public struct ModulacionPresentada: Hashable, Sendable {
 /// prueba en Linux.
 ///
 ///     let aSol = PresentacionDeModulaciones.modulaciones(
-///         desde: Tonalidad(.do), hasta: Tonalidad(.sol), en: .espanolCompacto)
+///         desde: Tonalidad(.do), hasta: Tonalidad(.sol), en: .compacta(.espanol))
 ///     aSol.first?.pivote   // "Lam = vi en Do mayor = ii en Sol mayor"
 public enum PresentacionDeModulaciones {
     /// Sin `hasta`, la manera más suave de llegar a cada tono vecino (``Tonalidad/vecinas``); con ella, todas las

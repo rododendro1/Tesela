@@ -42,7 +42,7 @@ extension PresentacionDeEstudioDeEscala {
     /// Las escalas que contienen unas notas, de más a menos probable, con las que añade cada una.
     ///
     ///     let escalas = PresentacionDeEstudioDeEscala.escalas(conLasNotas: [.do, .mi, .sol, .si, Nota("Fa#")],
-    ///         en: .espanolCompacto)
+    ///         en: .compacta(.espanol))
     ///     escalas.first?.nombre   // "Do pentatónica lidia"
     public static func escalas(
         conLasNotas notas: [Nota], limite: Int = 10, en notacion: Notacion
@@ -85,7 +85,7 @@ extension PresentacionDeEstudioDeEscala {
     /// repite a la octava (o a cada semitono, como la cromática).
     ///
     ///     let simetria = PresentacionDeEstudioDeEscala.simetria(de: Escala(.do, .tonosEnteros),
-    ///         en: .espanolCompacto)
+    ///         en: .compacta(.espanol))
     ///     simetria?.resumen   // "Se repite cada 2 semitonos: 2 transposiciones distintas"
     public static func simetria(de escala: Escala, en notacion: Notacion) -> SimetriaPresentada? {
         guard let paso = escala.intervaloDeSimetria, paso >= 2 else { return nil }
@@ -206,7 +206,7 @@ extension PresentacionDeEstudioDeEscala {
     /// mano, con el nombre de cada nota. La tónica lleva el borde naranja.
     ///
     ///     let svg = PresentacionDeEstudioDeEscala.teclado(de: Escala(.re), mano: .derecha,
-    ///         en: .espanolCompacto)
+    ///         en: .compacta(.espanol))
     public static func teclado(
         de escala: Escala, mano: Mano? = nil, octavas: Int = 1, en notacion: Notacion
     ) -> String {

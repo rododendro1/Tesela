@@ -119,11 +119,13 @@ extension Acorde {
     /// pasa a Mi y Sol♭m (con Si𝄫) a Fa♯m, pero La♭m sigue siendo La♭m.
     package var triadaSencilla: Acorde {
         func alteraciones(_ acorde: Acorde) -> Int { acorde.notas.map { abs($0.alteracion.semitonos) }.reduce(0, +) }
-        func conDobles(_ acorde: Acorde) -> Bool { acorde.notas.contains { abs($0.alteracion.semitonos) > 1 } }
+        func unicodeConDobles(_ acorde: Acorde) -> Bool { acorde.notas.contains { abs($0.alteracion.semitonos) > 1 } }
         let enarmonicas = [-12, 12].map { Acorde(Nota(pasosDeQuinta: fundamental.pasosDeQuinta + $0), tipo) }
         // La de menos alteraciones; a igualdad, la primera.
         let mejor = alteraciones(enarmonicas[1]) < alteraciones(enarmonicas[0]) ? enarmonicas[1] : enarmonicas[0]
-        if conDobles(self) && !conDobles(mejor) || alteraciones(mejor) <= alteraciones(self) - 2 { return mejor }
+        if unicodeConDobles(self) && !unicodeConDobles(mejor) || alteraciones(mejor) <= alteraciones(self) - 2 {
+            return mejor
+        }
         return self
     }
 }

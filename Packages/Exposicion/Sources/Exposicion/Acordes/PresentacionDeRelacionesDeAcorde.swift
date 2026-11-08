@@ -30,7 +30,7 @@ public struct ComparacionPresentada: Hashable, Sendable {
 /// Las relaciones de un acorde y la comparación de dos de la vista de acordes y de `armonia acorde`. No usa SwiftUI,
 /// así que se prueba en Linux.
 ///
-///     let relaciones = PresentacionDeRelacionesDeAcorde.relaciones(de: Acorde("Do6"), notacion: .espanolCompacto)
+///     let relaciones = PresentacionDeRelacionesDeAcorde.relaciones(de: Acorde("Do6"), notacion: .compacta(.espanol))
 ///     relaciones.otrosNombres.contains("Lam7/Do")   // true
 public enum PresentacionDeRelacionesDeAcorde {
     /// Los otros nombres, el acorde sin la fundamental, las tonalidades y las sustituciones en la tonalidad dada o,
@@ -59,7 +59,7 @@ public enum PresentacionDeRelacionesDeAcorde {
     /// disponer así.
     ///
     ///     let comparacion = PresentacionDeRelacionesDeAcorde.comparar(
-    ///         Acorde("Sol7"), con: Acorde("Do"), en: .espanolCompacto)
+    ///         Acorde("Sol7"), con: Acorde("Do"), en: .compacta(.espanol))
     ///     comparacion?.comunes   // "Sol"
     public static func comparar(
         _ acorde: Acorde, con otro: Acorde, disposicion: DisposicionDeAcorde = .cerrada, en notacion: Notacion

@@ -315,7 +315,8 @@ import Testing
         #expect(simple.buscar("harmony").isEmpty)
         #expect(simple.buscar("lyric").isEmpty)
         #expect(simple.buscar("words").isEmpty)
-        #expect(leer(analisis.partitura(notacion: .inglesASCII).musicXML()).buscar("words").first?.texto == "C major:")
+        #expect(
+            leer(analisis.partitura(notacion: .ascii(.ingles)).musicXML()).buscar("words").first?.texto == "C major:")
         let menor = leer(try AnalisisArmonico.analizar(leyendo: "Lam Sib/Re Mi7 Lam").partitura().musicXML())
         #expect(menor.buscar("mode").first?.texto == "minor")
         #expect(menor.buscar("harmony")[1]["root"]?["root-alter"]?.entero == -1)
@@ -329,7 +330,7 @@ import Testing
         for tipo in TipoDeAcorde.todos {
             let acorde = Acorde(.do, tipo)
             let armonia = try #require(
-                ElementoXML.leer(EscritorMusicXML.armonia(acorde, .espanolCompacto, pentagrama: nil)))
+                ElementoXML.leer(EscritorMusicXML.armonia(acorde, .compacta(.espanol), pentagrama: nil)))
             let especie = try #require(armonia["kind"]?.texto)
             #expect(especie != "other", "\(tipo)")
             var intervalos = Set(
@@ -348,7 +349,7 @@ import Testing
             #expect(armonia["kind"]?.atributos["text"] == tipo.cifrado, "\(tipo)")
         }
         let novenaMenor = try #require(
-            ElementoXML.leer(EscritorMusicXML.armonia("Sol7(b9)", .inglesASCII, pentagrama: nil)))
+            ElementoXML.leer(EscritorMusicXML.armonia("Sol7(b9)", .ascii(.ingles), pentagrama: nil)))
         #expect(novenaMenor["kind"]?.texto == "dominant")
         #expect(novenaMenor["degree"]?["degree-value"]?.entero == 9)
         #expect(novenaMenor["degree"]?["degree-alter"]?.entero == -1)
@@ -360,7 +361,7 @@ import Testing
         ] {
             let armonia = try #require(
                 ElementoXML.leer(
-                    EscritorMusicXML.armonia(try! Acorde(leyendo: cifrado), .espanolCompacto, pentagrama: nil)))
+                    EscritorMusicXML.armonia(try! Acorde(leyendo: cifrado), .compacta(.espanol), pentagrama: nil)))
             #expect(armonia["kind"]?.texto == especie)
             #expect(armonia.todos("degree").isEmpty, Comment(rawValue: cifrado))
         }

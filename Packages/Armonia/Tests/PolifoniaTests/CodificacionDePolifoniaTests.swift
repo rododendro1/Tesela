@@ -46,8 +46,8 @@ import Testing
     @Test func coralConOctavaEnSubindice() throws {
         let coral = try Coral(leyendo: "Do₃ Mi₄ | Re₃ Fa₄")
         #expect(try coral == (Coral(leyendo: "Do3 Mi4 | Re3 Fa4")))
-        #expect(coral.texto(en: .espanolCompacto) == "Do₃ Mi₄ | Re₃ Fa₄")
-        #expect(coral.texto(en: Notacion.espanolCompacto.conOctavas(.cifras)) == "Do3 Mi4 | Re3 Fa4")
-        #expect(coral.texto(en: .espanolASCII) == "Do3 Mi4 | Re3 Fa4")
+        #expect(coral.texto(en: .compacta(.espanol)) == "Do₃ Mi₄ | Re₃ Fa₄")
+        #expect(coral.texto(en: Notacion.compacta(.espanol).conOctavas(.cifras)) == "Do3 Mi4 | Re3 Fa4")
+        #expect(coral.texto(en: .ascii(.espanol)) == "Do3 Mi4 | Re3 Fa4")
     }
 }

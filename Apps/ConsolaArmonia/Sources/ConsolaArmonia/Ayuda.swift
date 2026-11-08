@@ -56,29 +56,32 @@ extension LineaDeComandos {
     }
 
     /// La ayuda completa en un idioma.
-    static func textoDeAyuda(en idioma: Idioma, latino: Bool = false) -> String {
-        let ordenes = ordenesDeLaAyuda.flatMap { lineas(de: $0, en: idioma, latino: latino) }
-        let cabecera = cabeceraDeLaAyuda.texto(en: idioma).enAlfabeto(latino)
-        return ([cabecera] + ordenes + ["", pieDeLaAyuda.texto(en: idioma).enAlfabeto(latino)])
+    static func textoDeAyuda(en idioma: Idioma, grafia: Grafia = .original) -> String {
+        let ordenes = ordenesDeLaAyuda.flatMap { lineas(de: $0, en: idioma, grafia: grafia) }
+        let cabecera = cabeceraDeLaAyuda.texto(en: idioma, grafia: grafia)
+        return ([cabecera] + ordenes + ["", pieDeLaAyuda.texto(en: idioma, grafia: grafia)])
             .joined(separator: "\n")
     }
 
     /// El índice de la ayuda (`armonia ayuda`, o `armonia` a secas): la cabecera, una línea por orden con lo que hace,
     /// por grupos, y cómo pedir más. Las descripciones se juntan en una línea y se cortan a `anchoDelIndice`.
-    static func indiceDeAyuda(en idioma: Idioma) -> String {
-        let titulos = TextosDeConsola.traduccion(\.gruposDeLaAyuda).texto(en: idioma)
-        var lineas = [cabeceraDeLaAyuda.texto(en: idioma)]
+    static func indiceDeAyuda(en idioma: Idioma, grafia: Grafia = .original) -> String {
+        // Se translitera antes de colocarlo en columnas, porque en griego cambia de largo (θ → th).
+        func escrito(_ texto: String) -> String { Transliteracion.texto(texto, en: grafia) }
+        let titulos = TextosDeConsola.traduccion(\.gruposDeLaAyuda).texto(en: idioma, grafia: grafia)
+        var lineas = [cabeceraDeLaAyuda.texto(en: idioma, grafia: grafia)]
         for (titulo, grupo) in zip(titulos, gruposDeOrdenes) {
             lineas += ["", titulo + ":"]
             var vistas: Set<String> = []
             for orden in grupo {
-                guard let primera = orden.ayuda.first, let nombre = nombreEnLaAyuda(primera, en: idioma),
+                guard let primera = orden.ayuda.first, let nombre = nombreEnLaAyuda(primera, en: idioma).map(escrito),
                     vistas.insert(nombre).inserted
                 else { continue }
-                lineas += lineasDelIndice(nombre, resumen(primera.descripcion.texto(en: idioma)))
+                lineas += lineasDelIndice(nombre, escrito(resumen(primera.descripcion.texto(en: idioma))))
             }
         }
-        return (lineas + ["", TextosDeConsola.traduccion(\.pieDelIndice).texto(en: idioma)]).joined(separator: "\n")
+        let pie = TextosDeConsola.traduccion(\.pieDelIndice).texto(en: idioma, grafia: grafia)
+        return (lineas + ["", pie]).joined(separator: "\n")
     }
 
     static let anchoDelIndice = 80
@@ -147,17 +150,17 @@ extension LineaDeComandos {
 
     /// La ayuda de una orden: sus entradas, como en la ayuda completa (`armonia ayuda acorde`, `armonia acorde --help`).
     static func ayuda(de orden: Orden, en notacion: Notacion) -> String {
-        orden.ayuda.flatMap { lineas(de: $0, en: notacion.textos, latino: notacion.alfabeto == .latino) }
+        orden.ayuda.flatMap { lineas(de: $0, en: notacion.textos, grafia: notacion.grafiaDeLosTextos) }
             .joined(separator: "\n")
     }
 
-    static func lineas(de entrada: EntradaDeAyuda, en idioma: Idioma, latino: Bool = false) -> [String] {
+    static func lineas(de entrada: EntradaDeAyuda, en idioma: Idioma, grafia: Grafia = .original) -> [String] {
         func columna(_ n: Int) -> String { String(repeating: " ", count: n) }
         func rellenar(_ texto: String, hasta ancho: Int) -> String {
             texto + columna(max(0, ancho - texto.count))
         }
-        let sintaxis = entrada.sintaxis.texto(en: idioma).enAlfabeto(latino).components(separatedBy: "\n")
-        var descripcion = ajustar(entrada.descripcion.texto(en: idioma).enAlfabeto(latino))[...]
+        let sintaxis = entrada.sintaxis.texto(en: idioma, grafia: grafia).components(separatedBy: "\n")
+        var descripcion = ajustar(entrada.descripcion.texto(en: idioma, grafia: grafia))[...]
         var lineas = sintaxis.map { columna(columnaDeLaSintaxis) + $0 }
         // La primera línea de la descripción va junto a la sintaxis si queda al menos un espacio.
         if let primera = descripcion.first, let ultima = lineas.last, ultima.count < columnaDeLaDescripcion {
@@ -165,14 +168,14 @@ extension LineaDeComandos {
             descripcion = descripcion.dropFirst()
         }
         lineas += descripcion.map { columna(columnaDeLaDescripcion) + $0 }
-        if let ejemplo = entrada.ejemplo?.texto(en: idioma).enAlfabeto(latino), !ejemplo.isEmpty {
+        if let ejemplo = entrada.ejemplo?.texto(en: idioma, grafia: grafia), !ejemplo.isEmpty {
             if let ultima = lineas.last, ultima.count < columnaDelEjemplo {
                 lineas[lineas.count - 1] = rellenar(ultima, hasta: columnaDelEjemplo) + ejemplo
             } else {
                 lineas.append(columna(columnaDelEjemplo) + ejemplo)
             }
         }
-        if let notas = entrada.notas?.texto(en: idioma).enAlfabeto(latino), !notas.isEmpty {
+        if let notas = entrada.notas?.texto(en: idioma, grafia: grafia), !notas.isEmpty {
             lineas += ajustar(notas).map { columna(columnaDeLaDescripcion) + $0 }
         }
         return lineas
@@ -201,7 +204,7 @@ extension LineaDeComandos {
     /// `ayuda --todo` no llegan aquí: las escribe `ejecutar`.
     static let ordenesDeAyuda: [Orden] = [
         Orden(nombres: ["ayuda", "help", "-h", "--help", "--ayuda"], ayuda: ayudaDeLaAyuda) { _, notacion in
-            bien(indiceDeAyuda(en: notacion.textos))
+            bien(indiceDeAyuda(en: notacion.textos, grafia: notacion.grafiaDeLosTextos))
         },
         Orden(nombres: ["--version", "version", "versión"], ayuda: ayudaDeLaVersion) { _, _ in
             bien("armonia " + version)
@@ -223,10 +226,4 @@ extension LineaDeComandos {
             descripcion: TextosDeConsola.traduccion(\.descripcionAyuda),
             opciones: [.ayuda])
     ]
-}
-
-extension String {
-    /// El texto transliterado al alfabeto latino si `latino`, para la ayuda en ru-latn y el-latn: se translitera antes
-    /// de colocarlo en columnas, porque en griego cambia de largo (θ → th).
-    fileprivate func enAlfabeto(_ latino: Bool) -> String { latino ? Transliteracion.latina(self) : self }
 }

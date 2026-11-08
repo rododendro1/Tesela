@@ -72,6 +72,6 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.notasEnEspanol("B", en: aleman) == "Sib")
         #expect(LineaDeComandos.notasEnEspanol("dur", en: aleman) == "dur")
         #expect(LineaDeComandos.notasEnEspanol("--json", en: aleman) == "--json")
-        #expect(LineaDeComandos.notasEnEspanol("H7", en: .espanolCompacto) == "H7")
+        #expect(LineaDeComandos.notasEnEspanol("H7", en: .compacta(.espanol)) == "H7")
     }
 }

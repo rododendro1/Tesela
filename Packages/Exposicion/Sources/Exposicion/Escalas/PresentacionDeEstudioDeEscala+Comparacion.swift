@@ -18,7 +18,7 @@ extension PresentacionDeEstudioDeEscala {
     /// Las notas comunes van en azul; las que solo están en la primera, en verde; las de la segunda, en rojo.
     ///
     ///     let hoja = PresentacionDeEstudioDeEscala.comparacionNotaANota(
-    ///         Escala(.do), con: Escala(.do, .dorico), en: .espanolCompacto)
+    ///         Escala(.do), con: Escala(.do, .dorico), en: .compacta(.espanol))
     ///     hoja.contains(">Do mayor → Do dórico</text>")   // true
     public static func comparacionNotaANota(_ escala: Escala, con otra: Escala, en notacion: Notacion) -> String {
         let ancho = anchoDeLaHoja

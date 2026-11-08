@@ -54,12 +54,12 @@ import Testing
         #expect(frigia.tipo == .semicadencia)
         #expect(frigia.esFrigia)
         #expect(frigia.description == "Semicadencia frigia iv6–V (acordes 2 → 3)")
-        #expect(frigia.descripcion(en: .inglesASCII) == "Phrygian half cadence iv6–V (chords 2 → 3)")
-        #expect(frigia.nombre(en: .inglesASCII) == "Phrygian half cadence")
+        #expect(frigia.descripcion(en: .ascii(.ingles)) == "Phrygian half cadence iv6–V (chords 2 → 3)")
+        #expect(frigia.nombre(en: .ascii(.ingles)) == "Phrygian half cadence")
         // Desde el iv en estado fundamental no es frigia.
         let normal = try #require(Tonalidad(.la, .menor).analizar(["Lam", "Rem", "Mi"]).cadencias.first)
         #expect(!normal.esFrigia)
-        #expect(normal.nombre(en: .espanolCompacto) == "semicadencia")
+        #expect(normal.nombre(en: .compacta(.espanol)) == "semicadencia")
     }
 
     @Test func plagalMenor() throws {

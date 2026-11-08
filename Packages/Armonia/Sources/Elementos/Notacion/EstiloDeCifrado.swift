@@ -5,7 +5,7 @@
 ///
 ///     let a: Acorde = "Sib7(b9)"
 ///     a.cifrado                                 // "Si♭7(♭9)"
-///     a.cifrado(estilo: .inglesASCII)           // "Bb7(b9)"
+///     a.cifrado(estilo: .ascii(.ingles))           // "Bb7(b9)"
 ///     Acorde("Sim7b5").cifrado(estilo: .jazz)   // "Bø7"
 public struct EstiloDeCifrado: Hashable, Sendable {
     /// Cómo se escribe el acorde menor: Dom o Domin.
@@ -47,9 +47,9 @@ public struct EstiloDeCifrado: Hashable, Sendable {
     public var semidisminuido: Semidisminuido
 
     /// Sin `tensionesEnASCII`, las tensiones llevan b y # si las notas las llevan (`Notacion.usaASCII`): el
-    /// estilo básico de cada notación es `EstiloDeCifrado(notacion:)`, y `.inglesASCII` escribe Bb7(b9).
+    /// estilo básico de cada notación es `EstiloDeCifrado(notacion:)`, y `.ascii(.ingles)` escribe Bb7(b9).
     public init(
-        notacion: Notacion = .espanolCompacto,
+        notacion: Notacion = .compacta(.espanol),
         tensionesEnASCII: Bool? = nil,
         menor: Menor = .m,
         disminuido: Disminuido = .circulo,
@@ -66,20 +66,18 @@ public struct EstiloDeCifrado: Hashable, Sendable {
         self.semidisminuido = semidisminuido
     }
 
-    /// Do♯m7(♭5), Mi♭maj7: el de `.espanolCompacto`.
+    /// Do♯m7(♭5), Mi♭maj7: el de `.compacta(.espanol)`.
     public static let predeterminado = EstiloDeCifrado()
-    /// Sílabas con símbolos tipográficos: Do♯m7(♭5), Mi♭maj7. Es el `predeterminado`.
-    public static let espanolCompacto = EstiloDeCifrado(notacion: .espanolCompacto)
-    /// Solo caracteres ASCII: Do#m7(b5), Mibmaj7.
-    public static let espanolASCII = EstiloDeCifrado(notacion: .espanolASCII)
-    /// Letras internacionales: C#m7(b5), Ebmaj7.
-    public static let inglesASCII = EstiloDeCifrado(notacion: .inglesASCII)
-    /// Letras internacionales con símbolos tipográficos: C♯m7(♭5), E♭maj7.
-    public static let inglesCompacto = EstiloDeCifrado(notacion: .inglesCompacto)
+    /// El estilo básico de la notación compacta de un idioma: `.compacta(.espanol)` escribe Do♯m7(♭5) y Mi♭maj7 (es el
+    /// `predeterminado`), y `.compacta(.ingles)`, C♯m7(♭5) y E♭maj7.
+    public static func compacta(_ idioma: Idioma) -> EstiloDeCifrado { EstiloDeCifrado(notacion: .compacta(idioma)) }
+    /// El estilo básico de la notación ASCII de un idioma: `.ascii(.espanol)` escribe Do#m7(b5) y Mibmaj7, y
+    /// `.ascii(.ingles)`, C#m7(b5) y Ebmaj7.
+    public static func ascii(_ idioma: Idioma) -> EstiloDeCifrado { EstiloDeCifrado(notacion: .ascii(idioma)) }
     /// Notación habitual en jazz: C#ø7, EbΔ7.
-    public static let jazz = EstiloDeCifrado(notacion: .inglesASCII, septimaMayor: .delta, semidisminuido: .barrado)
+    public static let jazz = EstiloDeCifrado(notacion: .ascii(.ingles), septimaMayor: .delta, semidisminuido: .barrado)
     /// Calidades escritas con palabras: Domin7, Fadim, Solaug. No confundir con las notaciones con palabras
-    /// (`Notacion.espanolPalabras`), que escriben así las alteraciones de las notas.
+    /// (`Notacion.conPalabras(.espanol)`), que escriben así las alteraciones de las notas.
     public static let calidadesConPalabras = EstiloDeCifrado(menor: .min, disminuido: .dim, aumentado: .aug)
 
     package func nombre(_ nota: Nota) -> String { nota.nombreCompacto(en: notacion) }

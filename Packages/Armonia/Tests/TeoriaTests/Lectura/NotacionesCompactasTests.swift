@@ -21,17 +21,19 @@ import Testing
 
     @Test func lasCompactasEscribenLasDoblesConDobles() throws {
         for idioma in Idioma.allCases where ![.aleman, .hungaro, .sueco].contains(idioma) {
-            #expect(Notacion(escritura: .compacta(idioma)).tipografia == .conDobles, Comment(rawValue: idioma.codigo))
+            #expect(
+                Notacion(escritura: .compacta(idioma)).tipografia == .unicodeConDobles, Comment(rawValue: idioma.codigo)
+            )
         }
         let conSignos = EscrituraDeNotas.allCases.filter { $0.esCompacta && $0.escrituraDeLaAlteracion == .signos }
         #expect(conSignos.count == 10)
-        #expect(Set(conSignos.map(\.tipografia)) == [.conDobles])
-        #expect(Nota("Sibb").nombre(en: .espanolCompacto) == "Si𝄫")
+        #expect(Set(conSignos.map(\.tipografia)) == [.unicodeConDobles])
+        #expect(Nota("Sibb").nombre(en: .compacta(.espanol)) == "Si𝄫")
         #expect(Nota("Do###").nombre(en: .compacta(.frances)) == "Do𝄪♯")
         #expect(Nota("Fa##").nombre(en: .compacta(.ruso)) == "Фа𝄪")
-        #expect(Nota("Re").nombre(en: .espanolCompacto) == "Re")
-        #expect(Nota("Sibb").nombre(en: .inglesCompacto) == "B𝄫")
-        #expect(Notacion.delIdioma(.espanol) == .espanolCompacto)
+        #expect(Nota("Re").nombre(en: .compacta(.espanol)) == "Re")
+        #expect(Nota("Sibb").nombre(en: .compacta(.ingles)) == "B𝄫")
+        #expect(Notacion.delIdioma(.espanol) == .compacta(.espanol))
         #expect(try Nota(leyendo: "Si𝄫") == Nota("Sibb"))
         // También el nombre, la descripción y lo guardado.
         #expect(Altura("Sibb3").description == "Si𝄫3")
@@ -66,7 +68,7 @@ import Testing
         // La notación de cada idioma sigue siendo la de siempre.
         #expect(Notacion.delIdioma(.catalan) == .conPalabras(.catalan))
         #expect(Notacion.delIdioma(.frances) == .conPalabras(.frances))
-        #expect(Notacion.delIdioma(.espanol) == .espanolCompacto)
+        #expect(Notacion.delIdioma(.espanol) == .compacta(.espanol))
         // Los textos son los del idioma.
         #expect(Intervalo.terceraMayor.nombre(en: .compacta(.frances)) == "tierce majeure")
         #expect(Acorde("Sol7").nombre(en: .compacta(.italiano)).hasPrefix("Sol"))

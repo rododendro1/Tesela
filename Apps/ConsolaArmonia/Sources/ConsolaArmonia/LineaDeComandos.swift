@@ -41,37 +41,15 @@ public enum LineaDeComandos {
         _ argumentos: [String], entrada: (@Sendable () -> Data)? = nil, entradaEsTerminal: Bool = true,
         salidaEsTerminal: Bool = false, entorno: [String: String] = [:]
     ) -> ResultadoDeOrden {
-        // En el alfabeto latino (--idioma ru-latn), lo que se escribe sale transliterado entero: también la ayuda y
-        // los mensajes de la consola, que no pasan por el motor.
-        let elegida = NotacionElegida()
-        var resultado = ejecutar(
-            argumentos, entrada: entrada, entradaEsTerminal: entradaEsTerminal, salidaEsTerminal: salidaEsTerminal,
-            entorno: entorno, elegida: elegida)
-        if let notacion = elegida.notacion, notacion.alfabeto == .latino {
-            resultado.salida = notacion.enSuAlfabeto(resultado.salida)
-            resultado.error = notacion.enSuAlfabeto(resultado.error)
-        }
-        return resultado
-    }
-
-    /// La notación de la orden, cuando ya se sabe, para escribir lo que da en su alfabeto.
-    private final class NotacionElegida {
-        var notacion: Notacion?
-    }
-
-    private static func ejecutar(
-        _ argumentos: [String], entrada: (@Sendable () -> Data)?, entradaEsTerminal: Bool,
-        salidaEsTerminal: Bool, entorno: [String: String], elegida: NotacionElegida
-    ) -> ResultadoDeOrden {
         var opciones = Argumentos(argumentos)
         var notacion: Notacion
         switch notacionDelEntorno(entorno) {
         case .success(let delEntorno):
             notacion = delEntorno
         case .failure(let error):
-            return uso(error, .espanolCompacto)
+            return uso(error, .compacta(.espanol))
         }
-        if opciones.quitarMarca(.ingles) { notacion = .inglesASCII }
+        if opciones.quitarMarca(.ingles) { notacion = .ascii(.ingles) }
         switch opciones.quitarOpcion(.idioma) {
         case .ausente:
             break
@@ -89,7 +67,7 @@ public enum LineaDeComandos {
         case .valor(let texto):
             guard let elegida = notacionDelIdioma(texto) else { return uso(.idiomaDesconocido(texto), notacion) }
             notacion = notacion.conTextos(en: elegida.idiomaDeLasNotas)
-            if elegida.alfabeto == .latino { notacion = notacion.conAlfabeto(.latino) }
+            if elegida.grafia != .original { notacion = notacion.conGrafia(elegida.grafia) }
         }
         switch opciones.quitarOpcion(.escritura) {
         case .ausente:
@@ -100,11 +78,13 @@ public enum LineaDeComandos {
             guard let escritura = escritura(texto, en: notacion.escritura.idioma) else {
                 return uso(.escrituraNoValida(texto), notacion)
             }
-            notacion = Notacion(escritura: escritura, textos: notacion.textos, alfabeto: notacion.alfabeto)
+            notacion = Notacion(escritura: escritura, textos: notacion.textos, grafia: notacion.grafia)
         }
         // Con --sistema, los nombres de otra tradición: los fijos (bizantino, japonés, lü) en toda la orden, como
         // una escritura más; los móviles (sargam, jianpu), solo en `escala`, que tiene tónica (SistemaMovil).
-        var grafiaElegida = Grafia.transliterada
+        // Con --grafia, la de los sistemas y, en ruso y en griego, la de las notas y los textos (--idioma ru
+        // --grafia transliterada es --idioma ru-latn).
+        var grafiaElegida: Grafia?
         switch opciones.quitarOpcion(.grafia) {
         case .ausente:
             break
@@ -124,10 +104,12 @@ public enum LineaDeComandos {
             guard let sistema = SistemaDeNombres(nombre: texto) else {
                 return uso(.sistemaDesconocido(texto), notacion)
             }
-            if let conSistema = Notacion.sistema(sistema, grafia: grafiaElegida, textos: notacion.textos) {
+            if let conSistema = Notacion.sistema(
+                sistema, grafia: grafiaElegida ?? .transliterada, textos: notacion.textos)
+            {
                 notacion = conSistema
             } else {
-                movil = SistemaMovil(sistema: sistema, grafia: grafiaElegida, nombre: texto)
+                movil = SistemaMovil(sistema: sistema, grafia: grafiaElegida ?? .transliterada, nombre: texto)
             }
         }
         // La octava va como la escriba la notación (en subíndice en las compactas, con cifras en las demás), salvo
@@ -139,7 +121,7 @@ public enum LineaDeComandos {
         } else if cifras {
             notacion = notacion.conOctavas(.cifras)
         }
-        elegida.notacion = notacion
+        if let grafiaElegida, notacion.sistemaDeNombres == nil { notacion = notacion.conGrafia(grafiaElegida) }
         // Con --json, las órdenes que lo admiten dan sus datos en JSON (LineaDeComandos+JSON.swift y Ordenes/*/+JSON).
         let json = opciones.quitarMarca(.json)
         // Con -o, lo que da la orden va a ese fichero (`-o -`, a la salida estándar, aunque sea un fichero binario).
@@ -155,7 +137,9 @@ public enum LineaDeComandos {
         }
         let argumentos = opciones.restantes
 
-        guard let nombre = argumentos.first?.lowercased() else { return bien(indiceDeAyuda(en: notacion.textos)) }
+        guard let nombre = argumentos.first?.lowercased() else {
+            return bien(indiceDeAyuda(en: notacion.textos, grafia: notacion.grafiaDeLosTextos))
+        }
         guard let orden = orden(llamada: nombre) else { return uso(.ordenDesconocida(nombre), notacion) }
         var resto = Array(argumentos.dropFirst())
 
@@ -386,7 +370,9 @@ public enum LineaDeComandos {
     /// Todas salen de la tabla de `Ayuda.swift`: `ayuda(en: .delIdioma(.catalan))` es la de
     /// `armonia ayuda --idioma ca`.
     public static func ayuda(en notacion: Notacion) -> String {
-        if notacion.alfabeto == .latino { return textoDeAyuda(en: notacion.textos, latino: true) }
+        if notacion.grafiaDeLosTextos != .original {
+            return textoDeAyuda(en: notacion.textos, grafia: notacion.grafiaDeLosTextos)
+        }
         return ayudas[notacion.textos] ?? textoDeAyuda(en: notacion.textos)
     }
 
@@ -400,7 +386,7 @@ public enum LineaDeComandos {
         let t = texto.lowercased()
         if escriturasConPalabras.contains(t) { return .conPalabras(idioma) }
         if escriturasCompactas.contains(t) { return .compacta(idioma) }
-        if t == "ascii" && idioma.reglas.tieneVariantes { return EscrituraDeNotas(idioma: idioma, ascii: true) }
+        if t == "ascii" && idioma.reglas.tieneVariantes { return .ascii(idioma) }
         return nil
     }
 
@@ -426,11 +412,11 @@ public enum LineaDeComandos {
     /// (`C`, `POSIX`); sin la variable, la española. Un idioma que no se conoce es un error de uso.
     static func notacionDelEntorno(_ entorno: [String: String]) -> Result<Notacion, ErrorDeUso> {
         guard let valor = entorno["ARMONIA_IDIOMA"]?.trimmingCharacters(in: .whitespaces), !valor.isEmpty else {
-            return .success(.espanolCompacto)
+            return .success(.compacta(.espanol))
         }
         if ["sistema", "system"].contains(valor.lowercased()) {
             let local = ["LC_ALL", "LC_MESSAGES", "LANG"].lazy.compactMap { entorno[$0] }.first { !$0.isEmpty }
-            return .success(local.flatMap(Idioma.init(codigo:)).map(Notacion.delIdioma) ?? .espanolCompacto)
+            return .success(local.flatMap(Idioma.init(codigo:)).map(Notacion.delIdioma) ?? .compacta(.espanol))
         }
         guard let notacion = notacionDelIdioma(valor) else {
             return .failure(ErrorDeUso.idiomaDesconocido("ARMONIA_IDIOMA=" + valor))
@@ -439,11 +425,12 @@ public enum LineaDeComandos {
     }
 
     /// La notación de `--idioma`: es, en, ca, gl, eu, pt, fr, it, de, el, ru, hu o sv, o el nombre del idioma. Con
-    /// «-latn» detrás (ru-latn, el-latn, como en las etiquetas de idioma), en el alfabeto latino.
+    /// «-latn» detrás (ru-latn, el-latn, como en las etiquetas de idioma), en el alfabeto latino: con la grafía
+    /// transliterada.
     static func notacionDelIdioma(_ texto: String) -> Notacion? {
         let sufijos = ["-latn", "_latn", "-latin", "-latino"]
         if let sufijo = sufijos.first(where: { texto.lowercased().hasSuffix($0) }) {
-            return notacionDelIdioma(String(texto.dropLast(sufijo.count)))?.conAlfabeto(.latino)
+            return notacionDelIdioma(String(texto.dropLast(sufijo.count)))?.conGrafia(.transliterada)
         }
         return (try? Idioma(leyendo: texto)).map(Notacion.delIdioma)
     }

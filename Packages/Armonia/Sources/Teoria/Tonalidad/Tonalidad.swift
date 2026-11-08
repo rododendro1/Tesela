@@ -205,7 +205,7 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
         for notacion in notaciones + Notacion.deLecturaGenerica {
             for modo in [Modo.mayor, .menor] {
                 let palabra = modo.nombre(en: notacion)
-                let separador = notacion.idiomaDeLasNotas.reglas.separadorDelModo
+                let separador = notacion.reglasDeLasNotas.separadorDelModo
                 let sufijo = (separador + palabra).claveDeBusqueda
                 let clave = limpio.claveDeBusqueda
                 guard clave.hasSuffix(sufijo) else { continue }
@@ -236,8 +236,8 @@ extension Tonalidad.Modo {
     /// «mayor», «major», «Dur», «maiorra»…: el de las `ReglasDeIdioma` (de Elementos) del idioma de las
     /// notas.
     public func nombre(en notacion: Notacion) -> String {
-        let reglas = notacion.idiomaDeLasNotas.reglas
-        return notacion.enSuAlfabeto(self == .mayor ? reglas.mayor : reglas.menor)
+        let reglas = notacion.reglasDeLasNotas
+        return self == .mayor ? reglas.mayor : reglas.menor
     }
 }
 
@@ -248,7 +248,7 @@ extension Tonalidad {
     /// si es menor, y a la alemana también en `.conPalabras(.aleman)`: "Fis-Dur"), "la mineur" en francés, "la minore" en
     /// italiano, "ля минор" en ruso, "λα ελάσσονα" en griego.
     public func nombre(en notacion: Notacion) -> String {
-        let reglas = notacion.idiomaDeLasNotas.reglas
+        let reglas = notacion.reglasDeLasNotas
         // En alemán la tónica y el modo forman una palabra (Fis-Dur), así que la tónica va siempre compacta.
         let nombreTonica =
             reglas.alteraciones == .alemana ? tonica.nombreCompacto(en: notacion) : tonica.nombre(en: notacion)

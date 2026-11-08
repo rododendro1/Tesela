@@ -52,23 +52,23 @@ extension RepresentableComoTexto {
 }
 
 extension Notacion {
-    /// La de `texto` y la codificación: `.espanolCompacto` con la octava en cifras ("Fa♯4", "Si𝄫3"), para que lo
+    /// La de `texto` y la codificación: `.compacta(.espanol)` con la octava en cifras ("Fa♯4", "Si𝄫3"), para que lo
     /// guardado no cambie con la escritura de la octava.
-    package static let deCodificacion = Notacion.espanolCompacto.conOctavas(.cifras)
+    package static let deCodificacion = Notacion.compacta(.espanol).conOctavas(.cifras)
 }
 
 // MARK: - Nombrable
 
 /// Un valor con nombre para personas, en la notación que se pida:
-/// `nombre(en: .espanolCompacto)` → "Re dórico", `nombre(en: .inglesASCII)` → "D dorian".
+/// `nombre(en: .compacta(.espanol))` → "Re dórico", `nombre(en: .ascii(.ingles))` → "D dorian".
 public protocol Nombrable {
     func nombre(en notacion: Notacion) -> String
 }
 
 extension Nombrable {
-    /// El nombre en español: `nombre(en: .espanolCompacto)`. Un tipo que guarda su propio `nombre` (como
+    /// El nombre en español: `nombre(en: .compacta(.espanol))`. Un tipo que guarda su propio `nombre` (como
     /// `TipoDeEscala` o `Encordado`) usa el suyo.
-    public var nombre: String { nombre(en: .espanolCompacto) }
+    public var nombre: String { nombre(en: .compacta(.espanol)) }
 }
 
 // MARK: - Transponible

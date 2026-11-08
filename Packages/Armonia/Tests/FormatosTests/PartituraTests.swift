@@ -114,10 +114,10 @@ import Testing
     @Test func elTituloSigueLaNotacion() {
         let escala = Escala("Re dórico")
         var partitura = escala.partitura(tocadaEn: [Altura("Re4"), Altura("Mi4")])
-        let enEspanol = "<work-title>\(escala.nombre(en: .espanolCompacto))</work-title>"
+        let enEspanol = "<work-title>\(escala.nombre(en: .compacta(.espanol)))</work-title>"
         #expect(partitura.musicXML().contains(enEspanol))
-        partitura.notacion = .inglesASCII
-        #expect(partitura.musicXML().contains("<work-title>\(escala.nombre(en: .inglesASCII))</work-title>"))
+        partitura.notacion = .ascii(.ingles)
+        #expect(partitura.musicXML().contains("<work-title>\(escala.nombre(en: .ascii(.ingles)))</work-title>"))
         #expect(!partitura.musicXML().contains(enEspanol))
     }
 
@@ -129,12 +129,12 @@ import Testing
         let escala = Escala("Re dórico").partitura().mei()
         #expect(escala.contains("Re dórico"))
         let arpegio = Arpegio(Acorde("Do7")).partitura()
-        #expect(arpegio.musicXML().contains("<work-title>\(Arpegio(Acorde("Do7")).nombre(en: .espanolCompacto))"))
+        #expect(arpegio.musicXML().contains("<work-title>\(Arpegio(Acorde("Do7")).nombre(en: .compacta(.espanol)))"))
         let acordes = [Acorde("Do"), Acorde("Sol7")]
         var progresion = Partitura(
             acordes: DisposicionDeAcorde.cerrada.conducir(acordes) ?? [],
             porEvento: .init(cifrados: .enOrden(acordes)))
-        progresion.notacion = .inglesASCII
+        progresion.notacion = .ascii(.ingles)
         #expect(progresion.musicXML().contains("<work-title>C – G7</work-title>"))
     }
 }

@@ -60,8 +60,8 @@ import Testing
     }
 
     @Test func nombresDeLosPapeles() {
-        #expect(PapelEnLaEscala.aEvitar.nombre(en: .espanolCompacto) == "nota a evitar")
-        #expect(PapelEnLaEscala.aEvitar.nombre(en: .inglesASCII) == "avoid note")
+        #expect(PapelEnLaEscala.aEvitar.nombre(en: .compacta(.espanol)) == "nota a evitar")
+        #expect(PapelEnLaEscala.aEvitar.nombre(en: .ascii(.ingles)) == "avoid note")
         #expect(PapelEnLaEscala.delAcorde.description == "nota del acorde")
         #expect(PapelEnLaEscala.allCases.count == 3)
     }
@@ -85,8 +85,8 @@ import Testing
 
     @Test func nombreDelModo() {
         let dorico = Escala(.re, .dorico).escalaMadre
-        #expect(dorico?.nombre(en: .espanolCompacto) == "modo 2 de Do mayor")
-        #expect(dorico?.nombre(en: .inglesASCII) == "mode 2 of C major")
+        #expect(dorico?.nombre(en: .compacta(.espanol)) == "modo 2 de Do mayor")
+        #expect(dorico?.nombre(en: .ascii(.ingles)) == "mode 2 of C major")
         #expect(dorico?.description == "modo 2 de Do mayor")
     }
 

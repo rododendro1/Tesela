@@ -61,7 +61,7 @@ public struct Altura: Hashable, Sendable {
     /// `Altura(leyendo: "ré bémol 3", en: .conPalabras(.frances))`. La octava es la científica (Do4 = do central), con cifras o
     /// en subíndice ("ré bémol ₃").
     public init(leyendo texto: String, en notacion: Notacion) throws {
-        let notacion = notacion.notas
+        let notacion = notacion.notacionDeLasNotas
         // En español e inglés con signos, el lector de siempre («Fa#4»). En los demás casos, el nombre y la octava por
         // separado: «Fa sostenido 4» (también «Fa#4», que lee `Nota(leyendo:en:)`), «Fis₄», «Ré♭₃».
         // Los de otra tradición también van por separado: «Ga♯4», «嬰ヘ₄».
@@ -111,7 +111,7 @@ public struct Altura: Hashable, Sendable {
         frecuenciaDelLa4 * pow(2, Double(midi - 69) / 12)
     }
 
-    /// "Fa♯4": el nombre en `.espanolCompacto` con la octava en cifras, como `description` y la codificación.
+    /// "Fa♯4": el nombre en `.compacta(.espanol)` con la octava en cifras, como `description` y la codificación.
     public var nombreCompleto: String { nombre(en: .deCodificacion) }
 
     /// Nombre con octava (científica en todas las notaciones): "Fa#4", "fa dièse 4" (con espacio cuando el

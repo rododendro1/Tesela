@@ -11,7 +11,7 @@ import Testing
 @Suite struct TextosDeLasVistasTests {
     @Test func lasTareasLosFormatosYLasRedesTienenNombreEnCadaIdioma() {
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             let tareas = PresentacionDeCoral.Tarea.allCases.map { $0.titulo(en: notacion) }
             #expect(Set(tareas).count == tareas.count, "\(idioma)")
             let formatos = FicheroParaExportar.Formato.allCases.map { $0.titulo(en: notacion) }
@@ -19,24 +19,24 @@ import Testing
             let redes = RedDeNotas.allCases.map { $0.nombre(en: notacion) }
             #expect(Set(redes).count == redes.count, "\(idioma)")
         }
-        #expect(RedDeNotas.tablaArmonica.nombre(en: .inglesASCII) == "Harmonic table")
+        #expect(RedDeNotas.tablaArmonica.nombre(en: .ascii(.ingles)) == "Harmonic table")
     }
 
     @Test func loQueLeeVoiceOverVaEnElIdiomaDeLosTextos() {
         let marcas = [PosicionEnElMastil(cuerda: 1, traste: 3), PosicionEnElMastil(cuerda: 0, traste: 0)]
         #expect(
-            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5], cuerdas: 6, en: .inglesASCII)
+            PresentacionDeMastil.descripcion(marcas: marcas, apagadas: [5], cuerdas: 6, en: .ascii(.ingles))
                 == "string 6, fret 0; string 5, fret 3; muted strings: 1")
         #expect(
             PresentacionDeMastil.descripcion(marcas: [], apagadas: [], cuerdas: 6, en: .conPalabras(.frances))
                 == "Aucune marque")
         #expect(
-            PresentacionDeMastil.etiqueta(de: Mastil(.ukelele), rango: 0...5, en: .inglesASCII)
+            PresentacionDeMastil.etiqueta(de: Mastil(.ukelele), rango: 0...5, en: .ascii(.ingles))
                 == "Ukulele neck, frets 0 to 5")
         #expect(
-            PresentacionDeMastil.etiqueta(de: Mastil(.guitarra), rango: 3...7, en: .espanolCompacto)
+            PresentacionDeMastil.etiqueta(de: Mastil(.guitarra), rango: 3...7, en: .compacta(.espanol))
                 == "Mástil de guitarra, trastes 3 a 7")
-        #expect(PresentacionDeRejilla.descripcion(casillas: 1, seleccionada: nil, en: .inglesASCII) == "1 cell")
+        #expect(PresentacionDeRejilla.descripcion(casillas: 1, seleccionada: nil, en: .ascii(.ingles)) == "1 cell")
         #expect(Notacion.conPalabras(.euskera).texto { $0.casillas(19) } == "19 gelaxka")
     }
 
@@ -56,19 +56,19 @@ import Testing
 
     @Test func laNotacionInicialEsLaDelSistema() {
         #expect(Notacion.delSistema(idiomas: ["ca-ES", "es-ES"]) == .conPalabras(.catalan))
-        #expect(Notacion.delSistema(idiomas: ["en-GB"]) == .inglesASCII)
+        #expect(Notacion.delSistema(idiomas: ["en-GB"]) == .ascii(.ingles))
         #expect(Notacion.delSistema(idiomas: ["eu"]) == .conPalabras(.euskera))
         #expect(Notacion.delSistema(idiomas: ["pt_BR"]) == .conPalabras(.portugues))
         // Un idioma sin notación se salta; si no queda ninguno, el español.
         #expect(Notacion.delSistema(idiomas: ["ja-JP", "fr-CA"]) == .conPalabras(.frances))
-        #expect(Notacion.delSistema(idiomas: ["ja-JP"]) == .espanolCompacto)
+        #expect(Notacion.delSistema(idiomas: ["ja-JP"]) == .compacta(.espanol))
         // El asturiano, el aragonés y el occitano ya no están: se saltan como los demás.
         #expect(Notacion.delSistema(idiomas: ["ast-ES", "an", "oc-FR", "gl-ES"]) == .conPalabras(.gallego))
-        #expect(Notacion.delSistema(idiomas: []) == .espanolCompacto)
+        #expect(Notacion.delSistema(idiomas: []) == .compacta(.espanol))
     }
 
     @Test func unaMarca() {
-        #expect(Notacion.espanolCompacto.texto { $0.marcas(1) } == "1 marca")
+        #expect(Notacion.compacta(.espanol).texto { $0.marcas(1) } == "1 marca")
         #expect(Notacion.conPalabras(.euskera).texto { $0.marcas(1) } == "marka 1")
         for notacion in Idioma.allCases.map(Notacion.delIdioma) {
             #expect(

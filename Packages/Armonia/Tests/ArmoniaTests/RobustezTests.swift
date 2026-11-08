@@ -10,7 +10,9 @@ import Testing
 
 /// Ida y vuelta al azar: cualquier valor se escribe en cualquier notación y se vuelve a leer igual.
 @Suite struct IdaYVueltaAlAzarTests {
-    private static let notaciones: [Notacion] = [.espanolCompacto, .espanolASCII, .inglesASCII, .inglesCompacto]
+    private static let notaciones: [Notacion] = [
+        .compacta(.espanol), .ascii(.espanol), .ascii(.ingles), .compacta(.ingles),
+    ]
     private static let casos = 500
 
     private func comprobar<T: RepresentableComoTexto & Equatable>(

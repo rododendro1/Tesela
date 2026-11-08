@@ -91,10 +91,10 @@ extension ContrapuntoAVariasVocesTests {
     @Test func elInformeNombraLasVoces() throws {
         let ejercicio = try ContrapuntoAVariasVoces(
             cantusFirmus: "Do4 Re4 Mi4 Do4", voces: [("Sol4 La4 Sol4 Do5", .primera), ("Do3 Re3 Mi3 Do3", .primera)])
-        let informe = ejercicio.informe(en: .espanolCompacto).split(separator: "\n").map(String.init)
+        let informe = ejercicio.informe(en: .compacta(.espanol)).split(separator: "\n").map(String.init)
         #expect(informe.first == "Contrapunto a 3 voces")
         #expect(informe.contains("Quintas paralelas (compases 1 → 2): cantus firmus / voz 1"))
         #expect(informe.contains("Quintas paralelas (compases 1 → 2): voz 1 / voz 2"))
-        #expect(ejercicio.informe(en: .inglesCompacto).hasPrefix("Counterpoint in 3 parts\n"))
+        #expect(ejercicio.informe(en: .compacta(.ingles)).hasPrefix("Counterpoint in 3 parts\n"))
     }
 }

@@ -16,7 +16,7 @@ import Testing
 @Suite struct TextosConValoresTests {
     @Test func cadaTextoConValoresEnCadaIdioma() {
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             let textos = TextosDeElementos.traducidos.texto(en: idioma)
             let resultados = [
                 textos.multiplicidad(3),
@@ -37,7 +37,7 @@ import Testing
             }
         }
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             let textos = TextosDeTeoria.traducidos.texto(en: idioma)
             let resultados = [
                 textos.simboloNoReconocido("x"),

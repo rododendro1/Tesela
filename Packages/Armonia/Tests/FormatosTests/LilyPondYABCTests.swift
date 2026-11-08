@@ -189,7 +189,7 @@ import Testing
     @Test func lilyPondDeUnaProgresionEnAmalgama() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
         let ly = analisis.partitura(
-            duracion: .blanca, compas: Compas(7, 8, agrupacion: [2, 2, 3]), notacion: .inglesCompacto
+            duracion: .blanca, compas: Compas(7, 8, agrupacion: [2, 2, 3]), notacion: .compacta(.ingles)
         ).lilyPond()
         #expect(ly.contains(#"\time 2,2,3 7/8"#))
         #expect(ly.contains(#"<d' fis' a' c''>8~^\markup "D7""#))

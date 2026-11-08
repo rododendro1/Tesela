@@ -122,18 +122,41 @@ package struct NombresDeEscalas: Sendable {
                 indice[TipoDeEscala.normalizar(alias)] = tipo
             }
         }
-        // Los nombres en cirílico o en griego se leen también transliterados: «dorijskij», «dórios».
+        // Los nombres en cirílico o en griego se leen también transliterados: «dorijskij», «dórios», «dorios».
         for fila in filas {
             guard let tipo = fila.tipo else { continue }
             for nombre in [fila.nombre] + fila.alias + fila.variantes {
-                let latina = TipoDeEscala.normalizar(Transliteracion.latina(nombre))
-                if indice[latina] == nil { indice[latina] = tipo }
+                for escrito in [Transliteracion.latina(nombre), Transliteracion.ascii(nombre)] {
+                    let clave = TipoDeEscala.normalizar(escrito)
+                    if indice[clave] == nil { indice[clave] = tipo }
+                }
             }
         }
+        self.init(porTipo: porTipo, tradicionales: tradicionales, categorias: categorias, indice: indice)
+    }
+
+    private init(
+        porTipo: [TipoDeEscala: Entrada], tradicionales: [IdentidadDeEscala: Entrada],
+        categorias: [CategoriaTradicional: String], indice: [String: TipoDeEscala]
+    ) {
         self.porTipo = porTipo
         self.tradicionales = tradicionales
         self.categorias = categorias
         self.indice = indice
+    }
+
+    /// Los mismos nombres en una grafía: en ruso y en griego, transliterados («dorijskij», «dórios»). El índice no
+    /// cambia: ya lee todas.
+    private func en(_ grafia: Grafia) -> NombresDeEscalas {
+        func escrito(_ texto: String) -> String { Transliteracion.texto(texto, en: grafia) }
+        func escrita(_ entrada: Entrada) -> Entrada {
+            Entrada(
+                nombre: escrito(entrada.nombre), alias: entrada.alias.map(escrito),
+                variantes: entrada.variantes.map(escrito))
+        }
+        return NombresDeEscalas(
+            porTipo: porTipo.mapValues(escrita), tradicionales: tradicionales.mapValues(escrita),
+            categorias: categorias.mapValues(escrito), indice: indice)
     }
 
     /// El nombre de una categoría de escala en este idioma, o `nil` si el fichero no lo da.
@@ -152,6 +175,18 @@ package struct NombresDeEscalas: Sendable {
 
     /// Los nombres en un idioma.
     package static func de(_ idioma: Idioma) -> NombresDeEscalas { traducidos.texto(en: idioma) }
+
+    /// Los nombres en el idioma de los textos de una notación y en su grafía (`Notacion.grafiaDeLosTextos`).
+    package static func de(_ notacion: Notacion) -> NombresDeEscalas {
+        switch notacion.grafiaDeLosTextos {
+        case .original: return de(notacion.textos)
+        case .transliterada: return transliterados.texto(en: notacion.textos)
+        case .ascii: return enASCII.texto(en: notacion.textos)
+        }
+    }
+
+    private static let transliterados = traducidos.map { $0.en(.transliterada) }
+    private static let enASCII = traducidos.map { $0.en(.ascii) }
 
     /// El español sale del catálogo: el nombre de cada tipo, sus alias y sus variantes.
     static let espanol = NombresDeEscalas(
@@ -187,7 +222,7 @@ extension TipoDeEscala {
     /// o el inglés; en alemán, en húngaro y en sueco, cualquiera de los tres ("H mayor" no es una escala); en las demás, los de las lenguas
     /// peninsulares y romances o, si no, el español (sin inglés: "Re dorian" mezclaría idiomas).
     package static func buscar(nombre: String, conTonicaEn notacion: Notacion) -> TipoDeEscala? {
-        if notacion == .inglesPalabras { return buscar(nombre: nombre, aceptarIngles: true) }
+        if notacion == .conPalabras(.ingles) { return buscar(nombre: nombre, aceptarIngles: true) }
         let normalizado = normalizar(nombre)
         if notacion == .conPalabras(.ruso) || notacion == .conPalabras(.griego) {
             return NombresDeEscalas.indiceRusoGriego[normalizado] ?? buscar(nombre: nombre, aceptarIngles: true)

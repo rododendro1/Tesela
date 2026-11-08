@@ -10,8 +10,8 @@ extension PresentacionDeAnalisis {
     /// cadencias y las líneas de notas guía con su pentagrama. El alto es el que ocupa. `armonia grabar hoja
     /// --acordes …` la pasa a PDF.
     ///
-    ///     let analisis = try PresentacionDeAnalisis.analizar("Rem7 Sol7 Do7M", notacion: .espanolCompacto)
-    ///     let hoja = PresentacionDeAnalisis.hojaDeEstudio(analisis, en: .espanolCompacto)
+    ///     let analisis = try PresentacionDeAnalisis.analizar("Rem7 Sol7 Do7M", notacion: .compacta(.espanol))
+    ///     let hoja = PresentacionDeAnalisis.hojaDeEstudio(analisis, en: .compacta(.espanol))
     ///     hoja.hasPrefix("<svg")   // true
     public static func hojaDeEstudio(
         _ analisis: AnalisisPresentado, disposicion: DisposicionDeAcorde = .drop2, en notacion: Notacion

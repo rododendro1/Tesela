@@ -54,7 +54,7 @@ import Testing
                 .init(clave: .sol, voces: [arriba]), .init(clave: .fa, voces: [.init(bajo)], numeroDeCuerdas: 6),
             ],
             encabezado: Encabezado(titulo: "Dos voces", tempo: Tempo(80)), tonalidadDelAnalisis: Tonalidad(.do),
-            notacion: .inglesASCII.conTextos(en: .catalan), llave: true)
+            notacion: .ascii(.ingles).conTextos(en: .catalan), llave: true)
         #expect(try idaYVuelta(partitura) == partitura)
         let tablatura = Tablatura(numeroDeCuerdas: 6, pulsaciones: [0: [.init(cuerda: 1, traste: 3)]])
         let acordes = Partitura(acordes: [[Altura("Do3"), Altura("Mi3")]], titulo: "Do", tablatura: tablatura)
@@ -75,7 +75,8 @@ import Testing
         #expect(try idaYVuelta(combinada) == combinada)
         // Una escritura que no está entre las que hay no se lee.
         #expect(throws: DecodingError.self) {
-            try leer(EscrituraDeNotas.self, #"{"idioma": "aleman", "conPalabras": false, "tipografia": "conDobles"}"#)
+            try leer(
+                EscrituraDeNotas.self, #"{"idioma": "aleman", "conPalabras": false, "tipografia": "unicodeConDobles"}"#)
         }
     }
 }

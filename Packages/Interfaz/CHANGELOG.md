@@ -3,7 +3,11 @@
 ## Sin publicar
 
 - El selector de notación tiene un interruptor «Alfabeto latino» cuando las notas o los textos están en ruso o en
-  griego. La notación se guarda con «@latino» detrás de su clave («ruso@latino»).
+  griego (`Notacion.admiteOtraGrafia`). La notación se guarda con su grafía detrás de su clave
+  («ruso@transliterada», «griego+espanol@ascii»).
+- **Cambio incompatible:** la lista del selector de las notaciones de otras tradiciones es
+  `Notacion.deOtrasTradicionesDelSelector`, porque `Notacion.deOtrasTradiciones` es ahora la del motor, con las tres
+  grafías de cada sistema. Las claves no cambian.
 - Las apps están también en sueco: `sv` en `Idiomas.plist`, las carpetas `sv.lproj` y los textos de las vistas.
   El selector de notación tiene la notación sueca (Fiss, Ess, B, H).
 - Las apps están en doce idiomas: el selector de notación ya no tiene el asturiano, el aragonés ni el occitano, y

@@ -27,7 +27,7 @@ extension PresentacionDeAnalisis {
     /// paso cromática que lleva a ella. El último acorde, su fundamental en una redonda. `nil` sin acordes.
     ///
     ///     let bajo = PresentacionDeAnalisis.bajoCaminante(
-    ///         [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")], en: .espanolCompacto)
+    ///         [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")], en: .compacta(.espanol))
     ///     bajo?.alturas.count   // 9
     public static func bajoCaminante(_ acordes: [Acorde], en notacion: Notacion) -> BajoCaminantePresentado? {
         guard let primero = acordes.first else { return nil }

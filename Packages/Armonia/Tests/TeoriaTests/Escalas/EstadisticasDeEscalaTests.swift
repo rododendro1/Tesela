@@ -23,7 +23,7 @@ import Testing
 
     @Test func nombresDelCardinal() {
         #expect(CardinalDeEscala.pentatonica.nombre == "pentatónica")
-        #expect(CardinalDeEscala.octatonica.nombre(en: .inglesASCII) == "octatonic")
+        #expect(CardinalDeEscala.octatonica.nombre(en: .ascii(.ingles)) == "octatonic")
         #expect(CardinalDeEscala.tritonica.nombre == "tritónica")
         #expect(CardinalDeEscala.hexatonica.nombre(en: .delIdioma(.aleman)) == "Hexatonik")
         // Todos tienen nombre, distinto, en cada idioma.

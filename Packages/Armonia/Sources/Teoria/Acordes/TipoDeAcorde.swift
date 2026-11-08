@@ -68,7 +68,7 @@ public struct TipoDeAcorde: Sendable {
     /// Cifrado en un estilo concreto: `TipoDeAcorde.semidisminuido.cifrado(estilo: .jazz)` → "ø7".
     public func cifrado(estilo: EstiloDeCifrado) -> String { clasificacion.simbolo(estilo: estilo) }
 
-    /// Cifrado en el estilo básico de una notación: `.inglesASCII` → "7(b9,#11)".
+    /// Cifrado en el estilo básico de una notación: `.ascii(.ingles)` → "7(b9,#11)".
     public func cifrado(en notacion: Notacion) -> String { cifrado(estilo: EstiloDeCifrado(notacion: notacion)) }
 
     /// "séptima de dominante", "dominant seventh", "sèptima de dominant", "dominanteko zazpigarrena"

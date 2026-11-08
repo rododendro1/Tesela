@@ -300,7 +300,7 @@ extension TextosDeConsola {
 
         // ErrorDeUso.swift (digitaciones)
         faltaInstrumento: { d, digitaciones in "falta el instrumento: \(d)" },
-        instrumentoDesconocido: { nombre, lista in "instrumento desconocido: «\(nombre)» (\(lista(.espanolCompacto)))" },
+        instrumentoDesconocido: { nombre, lista in "instrumento desconocido: «\(nombre)» (\(lista(.compacta(.espanol))))" },
         faltaLimite: "falta el número de digitaciones: --limite 5",
         limiteFueraDeRango: "el límite es un número de 1 a 200: --limite 5",
         faltanDedos: "falta el número de dedos: --dedos 3",

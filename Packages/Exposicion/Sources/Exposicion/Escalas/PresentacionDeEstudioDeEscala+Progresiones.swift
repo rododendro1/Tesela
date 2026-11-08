@@ -22,7 +22,7 @@ extension PresentacionDeEstudioDeEscala {
     /// siete notas; vacío en las demás.
     ///
     ///     let progresiones = PresentacionDeEstudioDeEscala.progresiones(
-    ///         de: Escala(.la, .menorHungara), en: .espanolCompacto)
+    ///         de: Escala(.la, .menorHungara), en: .compacta(.espanol))
     ///     progresiones.last?.cifrados   // "Lam – Sol♯m – Lam"
     public static func progresiones(de escala: Escala, en notacion: Notacion) -> [ProgresionDeLaEscala] {
         guard escala.notas.count == 7 else { return [] }

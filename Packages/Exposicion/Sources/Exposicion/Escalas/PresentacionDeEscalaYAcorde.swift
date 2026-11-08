@@ -34,7 +34,7 @@ public struct AcordesDelGrado: Hashable, Sendable {
 /// --escalas`. No usa SwiftUI, así que se prueba en Linux.
 ///
 ///     let dorico = PresentacionDeEscalaYAcorde.presentar(
-///         Escala(.re, .dorico), sobre: Acorde("Rem7"), en: .espanolCompacto)
+///         Escala(.re, .dorico), sobre: Acorde("Rem7"), en: .compacta(.espanol))
 ///     dorico.tensiones   // "Mi 9 · Sol 11 · Si 13"
 ///     dorico.modo        // "modo 2 de Do mayor"
 public enum PresentacionDeEscalaYAcorde {

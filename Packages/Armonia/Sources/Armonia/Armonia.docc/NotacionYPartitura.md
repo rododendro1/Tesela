@@ -6,16 +6,16 @@ Notación española e inglesa, alteraciones, intervalos, pentagrama, instrumento
 
 | | Español | Internacional |
 |---|---|---|
-| Altura | `Altura("Fa#3").nombreCompleto` → Fa♯3 | `.nombre(en: .inglesASCII)` → F#3 |
-| Intervalo | `.abreviatura` → 4A · `.nombre` → 4ª aumentada | `.abreviatura(en: .inglesASCII)` → A4 · `.nombre(en: .inglesASCII)` → augmented fourth |
-| Escala | `.nombre` → Re dórico | `.nombre(en: .inglesASCII)` → D dorian |
-| Acorde | `.cifrado` → Si♭7(♭9)/Re | `.cifrado(en: .inglesASCII)` → Bb7(b9)/D |
+| Altura | `Altura("Fa#3").nombreCompleto` → Fa♯3 | `.nombre(en: .ascii(.ingles))` → F#3 |
+| Intervalo | `.abreviatura` → 4A · `.nombre` → 4ª aumentada | `.abreviatura(en: .ascii(.ingles))` → A4 · `.nombre(en: .ascii(.ingles))` → augmented fourth |
+| Escala | `.nombre` → Re dórico | `.nombre(en: .ascii(.ingles))` → D dorian |
+| Acorde | `.cifrado` → Si♭7(♭9)/Re | `.cifrado(en: .ascii(.ingles))` → Bb7(b9)/D |
 | Nombre de acorde | Sol séptima de dominante, primera inversión | G dominant seventh, first inversion |
 
 `Notacion` reúne el idioma y cómo se escriben las alteraciones. En español y en inglés hay tres
-modalidades: con palabras, `.espanolPalabras` (Fa sostenido) e `.inglesPalabras` (F sharp); en ASCII, `.espanolASCII` (Fa#)
-e `.inglesASCII` (F#), y compactas, con los símbolos Unicode y la octava en subíndice, `.espanolCompacto`
-(Fa♯, La₄) e `.inglesCompacto` (F♯, A₄). Con palabras, los cifrados llevan los símbolos Unicode: Fa♯7, F♯7. Se usa en `nombre(en:)`, `texto(en:)`,
+modalidades: con palabras, `.conPalabras(.espanol)` (Fa sostenido) e `.conPalabras(.ingles)` (F sharp); en ASCII, `.ascii(.espanol)` (Fa#)
+e `.ascii(.ingles)` (F#), y compactas, con los símbolos Unicode y la octava en subíndice, `.compacta(.espanol)`
+(Fa♯, La₄) e `.compacta(.ingles)` (F♯, A₄). Con palabras, los cifrados llevan los símbolos Unicode: Fa♯7, F♯7. Se usa en `nombre(en:)`, `texto(en:)`,
 `abreviatura(en:)`, `cifrado(en:)` y `EstiloDeCifrado(notacion:)`.
 
 Todo se lee en ambas notaciones (`Intervalo("P5")`, `Escala("Bb harmonic minor")`,
@@ -98,10 +98,11 @@ Tonalidad("ля минор")                               // La menor
   `textos`. Los nombres tradicionales de escala (rāga, maqam, pentatónicas japonesas…)
   se escriben igual en todos los idiomas, y una escala se lee también con su nombre en catalán,
   gallego, euskera, portugués o alemán (`Escala("re doriarra")`, `Escala("dó maior")`).
-- El ruso y el griego se escriben también en el alfabeto latino: `conAlfabeto(.latino)` translitera las notas y
-  los textos, el cirílico con ISO 9 (solʹ, bolʹšaâ terciâ) y el griego con ELOT 743 (fa díesi, megáli tríti). En
-  ese alfabeto también se leen: `Escala(leyendo: "fa-diez dorijskij", en: notacion)`. Para los textos que se
-  componen fuera del motor, `notacion.enSuAlfabeto(_:)` y `Transliteracion.latina(_:)`.
+- El ruso y el griego se escriben también en el alfabeto latino, con la misma `Grafia` que los sistemas de otras
+  tradiciones: `conGrafia(.transliterada)` translitera las notas y los textos, el cirílico con ISO 9 (solʹ,
+  bolʹšaâ terciâ) y el griego con ELOT 743 (fa díesi, megáli tríti), y `conGrafia(.ascii)` lo hace sin diacríticos
+  (sol', bol'shaya tertsiya; fa diesi). En todas se leen: `Escala(leyendo: "fa-diez dorijskij", en: notacion)`. Para
+  los textos que se componen fuera del motor, `notacion.enSuGrafia(_:)` y `Transliteracion.texto(_:en:)`.
 
 ```swift
 Intervalo.terceraMayor.nombre(en: .conPalabras(.catalan))        // "3a major"
@@ -134,21 +135,21 @@ inglés también `ascii` o `unicode`).
 ```swift
 let notacion = Notacion.conPalabras(.ruso).conTextos(en: .espanol)
 Acorde("Sol7/Si").nombre(en: notacion)              // "соль séptima de dominante, primera inversión"
-Escala(.re, .dorico).nombre(en: Notacion.inglesASCII.conTextos(en: .euskera))   // "D doriarra"
+Escala(.re, .dorico).nombre(en: Notacion.ascii(.ingles).conTextos(en: .euskera))   // "D doriarra"
 Notacion(escritura: .conPalabras(.ruso), textos: .espanol) == notacion   // true
 ```
 
 ### La octava en subíndice
 
-La octava de una ``Altura`` se escribe como subíndice (La₄) en las notaciones compactas (`.espanolCompacto`,
-`.inglesCompacto`, `.compacta(.aleman)`, `.compacta(.frances)`…) y con cifras (La4) en las demás; `conOctavas(_:)` elige otra. Al leer se
+La octava de una ``Altura`` se escribe como subíndice (La₄) en las notaciones compactas (`.compacta(.espanol)`,
+`.compacta(.ingles)`, `.compacta(.aleman)`, `.compacta(.frances)`…) y con cifras (La4) en las demás; `conOctavas(_:)` elige otra. Al leer se
 aceptan siempre las dos formas, también en las melodías y los corales. `description` y la codificación las
 escriben siempre con cifras ("Fa♯3"). La línea de comandos escribe cifras salvo con `--subindices`.
 
 ```swift
-Altura(Nota.fa.sostenido, octava: 3).nombre(en: .espanolCompacto)   // "Fa♯₃"
-Altura(Nota.fa.sostenido, octava: 3).nombre(en: .espanolASCII)      // "Fa#3"
-let conCifras = Notacion.espanolCompacto.conOctavas(.cifras)
+Altura(Nota.fa.sostenido, octava: 3).nombre(en: .compacta(.espanol))   // "Fa♯₃"
+Altura(Nota.fa.sostenido, octava: 3).nombre(en: .ascii(.espanol))      // "Fa#3"
+let conCifras = Notacion.compacta(.espanol).conOctavas(.cifras)
 Altura(Nota.fa.sostenido, octava: 3).nombre(en: conCifras)          // "Fa♯3"
 try Altura(leyendo: "Si♭₋₁") == Altura(Nota.si.bemol, octava: -1) // true
 ```
@@ -235,19 +236,19 @@ puede escribir con un entero (`Nota(.fa, 1)`) o con su nombre (`Nota(.fa, .soste
 ```swift
 Nota("Sibb").alteracion          // doble bemol
 Alteracion(3).nombre                      // "triple sostenido"
-Alteracion(-1).nombre(en: .inglesASCII)        // "flat"
+Alteracion(-1).nombre(en: .ascii(.ingles))        // "flat"
 Alteracion(2).simbolo                     // "♯♯"
 Alteracion(3).simboloConDobles            // "𝄪♯"
 Alteracion(-2).simboloASCII               // "bb"
-Alteracion(-2).simbolo(en: .conDobles)    // "𝄫"
+Alteracion(-2).simbolo(en: .unicodeConDobles)    // "𝄫"
 Alteracion("x"), Alteracion("doble bemol"), Alteracion("♮")
 Alteracion.sostenido + .sostenido         // doble sostenido
 Alteracion.sostenido.pasosDeQuinta        // 7: un sostenido son siete quintas
 ```
 
-Los signos se escriben en una de las tres `Tipografia`: `.conSimples` (♯ y ♭, uno por semitono), `.ascii`
-(# y b) y `.conDobles` (𝄪 y 𝄫 por cada pareja, y ♮ para el natural). `Notacion.tipografia` dice cuál usa
-cada notación: las compactas (`.espanolCompacto`, `.inglesCompacto`, `.compacta(.frances)`…) usan `.conDobles`
+Los signos se escriben en una de las tres `Tipografia`: `.unicode` (♯ y ♭, uno por semitono), `.ascii`
+(# y b) y `.unicodeConDobles` (𝄪 y 𝄫 por cada pareja, y ♮ para el natural). `Notacion.tipografia` dice cuál usa
+cada notación: las compactas (`.compacta(.espanol)`, `.compacta(.ingles)`, `.compacta(.frances)`…) usan `.unicodeConDobles`
 (Fa𝄪, B𝄫).
 
 También la usan `PosicionEnElPentagrama.alteracion` y `Clave.altura(lugar:alteracion:)`.
@@ -285,7 +286,7 @@ Escala("Re mayor").svgPentagrama().contains("<title>Re₄</title>")  // true
 Escala("La menor melódica").svgPentagrama().contains("<title>Sol₅</title>")   // true
 Acorde("Sol7").svgPentagrama().contains(">Sol7</text>")            // true
 Acorde("Sol7").svgPentagrama(cifrado: false).contains("<text")     // false
-Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .inglesASCII)).contains("<title>C4</title>")   // true
+Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .ascii(.ingles))).contains("<title>C4</title>")   // true
 ```
 
 Cada uno de estos dibujos sale de su ``Partitura``, la misma que se exporta: `Escala.partitura(octava:octavas:sentido:digitacion:)`,
@@ -505,7 +506,7 @@ do {
     // (se admiten ♭/♯ con 5, 9, 11 y 13, y add con 2, 4, 6, 9, 11 y 13)
     error.motivo     // .tensionNoValida("b3")
     error.posicion   // 4
-    print(error.descripcion(en: .inglesASCII))
+    print(error.descripcion(en: .ascii(.ingles)))
     // Cannot read "Do7(b3)" (character 5): "b3" is not a valid tension (♭/♯ go with 5, 9, 11 and 13, …
 }
 do { _ = try TipoDeAcorde(comprobandoPasosDeQuinta: [0, -3, 4]) } catch { print(error) }

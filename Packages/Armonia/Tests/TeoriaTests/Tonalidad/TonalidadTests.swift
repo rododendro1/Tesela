@@ -117,7 +117,7 @@ import Testing
         #expect(Tonalidad("A minor") == laMenor)
         #expect(Tonalidad("La menor armónica") == laMenor)
         #expect(laMenor.nombre == "La menor")
-        #expect(laMenor.nombre(en: .inglesASCII) == "A minor")
+        #expect(laMenor.nombre(en: .ascii(.ingles)) == "A minor")
         #expect(Tonalidad(Escala(.la, .menorMelodica)) == laMenor)
         #expect(Tonalidad(Escala(.re, .dorico)) == nil)
         do {

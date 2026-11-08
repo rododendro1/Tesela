@@ -17,9 +17,9 @@ import Testing
             }
         }
         // Y cada uno dice algo distinto.
-        #expect(Set(avisos.map { $0.texto(en: .espanolCompacto) }).count == avisos.count)
+        #expect(Set(avisos.map { $0.texto(en: .compacta(.espanol)) }).count == avisos.count)
         #expect(
-            CoralPresentado.Aviso.sinRealizacion.texto(en: .espanolCompacto)
-                != CoralPresentado.Aviso.sinRealizacion.texto(en: .inglesASCII))
+            CoralPresentado.Aviso.sinRealizacion.texto(en: .compacta(.espanol))
+                != CoralPresentado.Aviso.sinRealizacion.texto(en: .ascii(.ingles)))
     }
 }

@@ -14,7 +14,7 @@ public enum PresentacionDeArpegios {
     /// de acordes.
     ///
     ///     let arpegio = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do"), patron: .alberti),
-    ///                                                 en: .espanolCompacto)
+    ///                                                 en: .compacta(.espanol))
     ///     arpegio.ficheros.map(\.formato)   // [.musicXML, .mei, .lilyPond, .abc, .midi]
     ///
     /// La figura puede ser de tresillo (`Duracion.corchea.grupoIrregular(3, en: 2)`), que las partituras escriben

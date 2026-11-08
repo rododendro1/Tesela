@@ -196,7 +196,7 @@ public struct TecladoCuadrado: Hashable, Sendable {
             return octavas * grados.count + grados.filter { $0 < resto }.count
         }
         return TecladoCuadrado(
-            nombre: "\(nombre) · \(escala.nombre(en: .espanolCompacto))", semitonosEnH: pasos(semitonosEnH),
+            nombre: "\(nombre) · \(escala.nombre(en: .compacta(.espanol)))", semitonosEnH: pasos(semitonosEnH),
             semitonosEnV: pasos(semitonosEnV), midiDelOrigen: midiDelOrigen + modulo(tonica - midiDelOrigen, 12),
             grados: grados)
     }

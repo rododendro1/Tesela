@@ -9,7 +9,7 @@ extension PresentacionDeRelacionesDeAcorde {
     /// las digitaciones de guitarra más cómodas, las escalas compatibles con sus tensiones y las sustituciones. El
     /// alto es el que ocupa. `armonia grabar hoja acorde Sol7` la pasa a PDF.
     ///
-    ///     let hoja = PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: Acorde("Sol7"), en: .espanolCompacto)
+    ///     let hoja = PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: Acorde("Sol7"), en: .compacta(.espanol))
     ///     hoja.hasPrefix("<svg")   // true
     public static func hojaDeEstudio(de acorde: Acorde, en notacion: Notacion) -> String {
         typealias Hoja = PresentacionDeEstudioDeEscala

@@ -29,7 +29,7 @@ extension PresentacionDeEstudioDeEscala {
     /// pentatónica, por ejemplo).
     ///
     ///     let tabla = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(Escala(.do),
-    ///         en: .espanolCompacto)
+    ///         en: .compacta(.espanol))
     ///     tabla?.grados[4]              // "V7"
     ///     tabla?.filas[1].acordes[4]    // "Re7": el V7 de Sol mayor
     public static func acordesEnLasDoceTonalidades(

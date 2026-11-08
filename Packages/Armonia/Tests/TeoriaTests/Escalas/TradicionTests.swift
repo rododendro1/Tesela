@@ -49,15 +49,15 @@ import Testing
     /// Cada tradición tiene nombre en los trece idiomas, y en español es también su `nombre`.
     @Test func losNombresDeLasTradicionesSeTraducen() {
         for tradicion in Tradicion.allCases {
-            #expect(tradicion.nombre(en: .espanolCompacto) == tradicion.nombre)
+            #expect(tradicion.nombre(en: .compacta(.espanol)) == tradicion.nombre)
             for idioma in Idioma.allCases {
                 #expect(
-                    !tradicion.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma)).isEmpty,
+                    !tradicion.nombre(en: Notacion.compacta(.espanol).conTextos(en: idioma)).isEmpty,
                     Comment(rawValue: "\(tradicion) en \(idioma)"))
             }
         }
-        #expect(Tradicion.japon.nombre(en: Notacion.espanolCompacto.conTextos(en: .euskera)) == "Japonia")
-        #expect(Tradicion.mundoArabe.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Arab world")
+        #expect(Tradicion.japon.nombre(en: Notacion.compacta(.espanol).conTextos(en: .euskera)) == "Japonia")
+        #expect(Tradicion.mundoArabe.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Arab world")
     }
 
     /// La subtradición: la de la declaración o la que da la categoría (en la India).
@@ -83,17 +83,17 @@ import Testing
             #expect(!TipoDeEscala.tradicionales(subtradicion: subtradicion).isEmpty, "\(subtradicion)")
         }
         #expect(Subtradicion.carnatica.nombre == "Carnática")
-        #expect(Subtradicion.carnatica.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Carnatic")
-        #expect(Subtradicion.java.nombre(en: Notacion.espanolCompacto.conTextos(en: .ruso)) == "Ява")
+        #expect(Subtradicion.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Carnatic")
+        #expect(Subtradicion.java.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ruso)) == "Ява")
     }
 
     /// Cada subtradición tiene nombre en los trece idiomas y se codifica por su nombre de caso.
     @Test func lasSubtradicionesSeTraducenYSeCodifican() throws {
         for subtradicion in Subtradicion.allCases {
-            #expect(subtradicion.nombre(en: .espanolCompacto) == subtradicion.nombre)
+            #expect(subtradicion.nombre(en: .compacta(.espanol)) == subtradicion.nombre)
             for idioma in Idioma.allCases {
                 #expect(
-                    !subtradicion.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma)).isEmpty,
+                    !subtradicion.nombre(en: Notacion.compacta(.espanol).conTextos(en: idioma)).isEmpty,
                     Comment(rawValue: "\(subtradicion) en \(idioma)"))
             }
             #expect(Subtradicion(rawValue: subtradicion.rawValue) == subtradicion)

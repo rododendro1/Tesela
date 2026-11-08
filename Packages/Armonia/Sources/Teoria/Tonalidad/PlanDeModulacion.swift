@@ -33,7 +33,7 @@ public struct PlanDeModulacion: Hashable, Sendable, CustomStringConvertible {
     public let pivote: AcordePivote?
 
     /// "Do Fa Sol7 Do Lam Re7 Sol (pivote: Lam = vi en Do mayor = ii en Sol mayor)".
-    public var description: String { descripcion(en: .espanolCompacto) }
+    public var description: String { descripcion(en: .compacta(.espanol)) }
 
     public func descripcion(en notacion: Notacion) -> String {
         let progresion = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " ")

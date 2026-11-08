@@ -32,9 +32,9 @@ import Testing
     @Test func nombresDeLasSecuencias() {
         #expect(SecuenciaDeEscala.terceras.nombre == "por terceras")
         #expect("\(SecuenciaDeEscala.gruposDeTres)" == "en grupos de tres")
-        #expect(SecuenciaDeEscala.cuatriadas.nombre(en: .inglesASCII) == "in seventh chords")
+        #expect(SecuenciaDeEscala.cuatriadas.nombre(en: .ascii(.ingles)) == "in seventh chords")
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             let nombres = SecuenciaDeEscala.allCases.map { $0.nombre(en: notacion) }
             #expect(Set(nombres).count == nombres.count, "\(idioma)")
         }
