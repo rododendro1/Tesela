@@ -3,6 +3,11 @@ import Hexagonos
 
 func titulo(_ texto: String) { print("\n== \(texto) ==") }
 
+/// Las casillas en una línea: «(1, -2) (2, -2) (2, -3)».
+func lista(_ casillas: some Sequence<CoordenadaAxial>) -> String {
+    casillas.map(\.description).joined(separator: " ")
+}
+
 /// Dibuja unas casillas con caracteres, en coordenadas dobladas: cada fila va media casilla a la derecha
 /// de la de arriba, como en una rejilla de hexágonos puntiagudos.
 func dibujar(_ casillas: [CoordenadaAxial], _ caracter: (CoordenadaAxial) -> Character) {
@@ -34,8 +39,8 @@ for doblado in Doblado.allCases {
 }
 
 titulo("Vecinos y distancias")
-print("Vecinos de \(a):", a.vecinos.map(\.description).joined(separator: " "))
-print("Diagonales:", a.vecinosDiagonales.map(\.description).joined(separator: " "))
+print("Vecinos de \(a):", lista(a.vecinos))
+print("Diagonales:", lista(a.vecinosDiagonales))
 let b = CoordenadaAxial(q: 4, r: -1)
 print("De \(a) a \(b): \(a.distancia(hasta: b)) pasos")
 for direccion in DireccionHexagonal.allCases {
@@ -48,7 +53,7 @@ titulo("Líneas")
 let desde = CoordenadaAxial(q: -3, r: 2)
 let hasta = CoordenadaAxial(q: 3, r: -1)
 let recta = desde.linea(hasta: hasta)
-print("De \(desde) a \(hasta):", recta.map(\.description).joined(separator: " "))
+print("De \(desde) a \(hasta):", lista(recta))
 let conRecta = Set(recta)
 dibujar(FormasDeMapa.hexagono(radio: 3)) { conRecta.contains($0) ? "*" : "·" }
 
@@ -56,7 +61,7 @@ titulo("Regiones")
 print(
     "Alcance de radio 2: \(CoordenadaAxial.origen.alcance(radio: 2).count) casillas;",
     "anillo de radio 2: \(CoordenadaAxial.origen.anillo(radio: 2).count)")
-print("Espiral de radio 1:", CoordenadaAxial.origen.espiral(radio: 1).map(\.description).joined(separator: " "))
+print("Espiral de radio 1:", lista(CoordenadaAxial.origen.espiral(radio: 1)))
 let anillo = Set(CoordenadaAxial.origen.anillo(radio: 2))
 dibujar(FormasDeMapa.hexagono(radio: 3)) { $0 == .origen ? "o" : (anillo.contains($0) ? "#" : "·") }
 for (nombre, forma) in [
@@ -70,7 +75,7 @@ for (nombre, forma) in [
 
 titulo("Rotaciones y reflexiones")
 let c = CoordenadaAxial(q: 2, r: -1)
-print("\(c) girada de 60 en 60 grados:", (0..<6).map { c.rotada(sextos: $0).description }.joined(separator: " "))
+print("\(c) girada de 60 en 60 grados:", lista((0..<6).map { c.rotada(sextos: $0) }))
 for eje in Eje.allCases {
     print("  reflejada sobre el eje \(eje): \(c.reflejada(sobre: eje))")
 }
@@ -87,10 +92,10 @@ enum Terreno: String, Codable {
     /// Lo que cuesta entrar en la casilla; `nil` si no se puede.
     var coste: Double? {
         switch self {
-        case .hierba: return 1
-        case .bosque: return 2
-        case .montana: return 3
-        case .agua: return nil
+        case .hierba: 1
+        case .bosque: 2
+        case .montana: 3
+        case .agua: nil
         }
     }
 }
@@ -106,7 +111,9 @@ let llegada = CoordenadaAxial(q: 4, r: -2)
 if let camino = terreno.caminoMasBarato(desde: salida, hasta: llegada, costeMinimo: 1, coste: \.coste) {
     print("De \(salida) a \(llegada): \(camino.pasos) pasos, coste \(camino.coste)")
     let pisadas = Set(camino.casillas)
-    dibujar(Array(terreno.casillas)) { pisadas.contains($0) ? "*" : Character(terreno[$0]!.rawValue) }
+    dibujar(Array(terreno.casillas)) { casilla in
+        pisadas.contains(casilla) ? "*" : terreno[casilla].map { Character($0.rawValue) } ?? " "
+    }
 }
 let alcanzables = terreno.alcanzables(desde: salida, presupuesto: 4, coste: \.coste)
 print("Con un presupuesto de 4 se llega a \(alcanzables.count) casillas")
@@ -120,7 +127,7 @@ let datos = try! JSONEncoder().encode(terreno)
 let leido = try! JSONDecoder().decode(MapaHexagonal<Terreno>.self, from: datos)
 print(
     "\(terreno) en \(datos.count) bytes de JSON; leído de vuelta: \(leido),",
-    "igual:", leido.casillas.allSatisfy { leido[$0] == terreno[$0] })
+    "igual:", leido == terreno)
 
 titulo("De casillas a píxeles")
 let trazado = Trazado(orientacion: .puntiaguda, tamano: 20, origen: Punto(x: 100, y: 100))

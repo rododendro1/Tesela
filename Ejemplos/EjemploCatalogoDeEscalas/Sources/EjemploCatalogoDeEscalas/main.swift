@@ -22,8 +22,10 @@ let columnas = [
     "melakarta", "padre", "afinaciones", "sistema_microtonal", "cents",
 ]
 
+let ingles = Notacion.delIdioma(.ingles)
+
+/// La fila de una escala, en el orden de `columnas`.
 func fila(_ tipo: TipoDeEscala) -> [String] {
-    let ingles = Notacion.delIdioma(.ingles)
     let microtonal = tipo.microtonal
     return [
         tipo.nombre,
