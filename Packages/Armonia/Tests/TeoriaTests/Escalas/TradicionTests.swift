@@ -14,12 +14,12 @@ import Testing
             for tipo in lista.tipos {
                 #expect(vistas.insert(tipo.nombre).inserted, "\(tipo.nombre) está en dos listas")
                 #expect(tipo.tradicion == lista.tradicion, Comment(rawValue: tipo.nombre))
-                if let subtradicion = tipo.subtradicion {
+                for subtradicion in tipo.subtradiciones {
                     #expect(subtradicion.tradicion == lista.tradicion, Comment(rawValue: tipo.nombre))
                 }
                 #expect(tipo.ficha.categoria != nil, Comment(rawValue: tipo.nombre))
                 #expect(tipo.categoria == tipo.ficha.categoria, Comment(rawValue: tipo.nombre))
-                #expect(tipo.ficha.usos.isEmpty, Comment(rawValue: tipo.nombre))
+                #expect(lista.tradicion != .occidental, Comment(rawValue: tipo.nombre))
                 if let mela = tipo.ficha.mela {
                     #expect(tipo.categoria == .janya, Comment(rawValue: tipo.nombre))
                     #expect(tipo.padre == TipoDeEscala.melakarta(mela), Comment(rawValue: tipo.nombre))
@@ -27,13 +27,16 @@ import Testing
             }
         }
         #expect(vistas.count == TipoDeEscala.tradicionales.count)
-        // Cada tradición tiene al menos una lista.
-        #expect(Set(TipoDeEscala.listasTradicionales.map(\.tradicion)) == Set(Tradicion.allCases))
-        // Las occidentales no tienen categoría ni tradición.
+        // Cada tradición, salvo la occidental, tiene al menos una lista.
+        #expect(
+            Set(TipoDeEscala.listasTradicionales.map(\.tradicion)) == Set(Tradicion.allCases).subtracting([.occidental])
+        )
+        // Las occidentales no tienen categoría, y su tradición es la occidental.
         for tipo in TipoDeEscala.occidentales {
             #expect(tipo.ficha.categoria == nil && tipo.ficha.mela == nil, Comment(rawValue: tipo.nombre))
-            #expect(tipo.tradicion == nil, Comment(rawValue: tipo.nombre))
+            #expect(tipo.tradicion == .occidental, Comment(rawValue: tipo.nombre))
         }
+        #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).tradicion == nil)
     }
 
     /// El catálogo son las occidentales y después las de otras tradiciones, y su orden decide quién gana.
@@ -60,46 +63,57 @@ import Testing
         #expect(Tradicion.mundoArabe.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Arab world")
     }
 
-    /// La subtradición: la de la declaración o la que da la categoría (en la India).
-    @Test func laSubtradicion() {
-        #expect(TipoDeEscala.mohanam.subtradicion == .carnatica)
-        #expect(TipoDeEscala.melakarta(15)?.subtradicion == .carnatica)
-        #expect(TipoDeEscala.kafi.subtradicion == .indostanica)
-        #expect(TipoDeEscala.pelogTembung.subtradicion == .bali)
-        #expect(TipoDeEscala.pelogLima.subtradicion == .java)
-        #expect(TipoDeEscala.gaitaEscocesa.subtradicion == .escocia)
-        #expect(TipoDeEscala.slendro.subtradicion == nil)
-        #expect(TipoDeEscala.hitzaz.subtradicion == nil)
-        #expect(TipoDeEscala.mayor.subtradicion == nil)
-        #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).subtradicion == nil)
-        #expect(TipoDeEscala.tradicionales(subtradicion: .java).count == 6)
-        #expect(TipoDeEscala.degung.subtradicion == .sunda && Subtradicion.sunda.tradicion == .indonesia)
-        #expect(TipoDeEscala.tradicionales(subtradicion: .bali).count == 3)
-        // Toda escala de la India tiene subtradición, y cada subtradición tiene alguna escala.
+    /// Los estilos y las regiones: los de la declaración, o el estilo que da la categoría (en la India).
+    @Test func lasSubtradiciones() {
+        #expect(TipoDeEscala.mohanam.estilos == [.carnatica])
+        #expect(TipoDeEscala.melakarta(15)?.estilos == [.carnatica])
+        #expect(TipoDeEscala.kafi.estilos == [.indostanica])
+        #expect(TipoDeEscala.pelogTembung.regiones == [.bali])
+        #expect(TipoDeEscala.pelogLima.regiones == [.java])
+        #expect(TipoDeEscala.gaitaEscocesa.regiones == [.escocia])
+        // El sléndro se toca en Java y en Bali.
+        #expect(TipoDeEscala.slendro.regiones == [.java, .bali])
+        #expect(TipoDeEscala.slendro.subtradiciones == [.region(.java), .region(.bali)])
+        #expect(TipoDeEscala.dorico.subtradiciones == [.estilo(.clasica), .estilo(.jazz)])
+        #expect(TipoDeEscala.hitzaz.subtradiciones.isEmpty)
+        #expect(TipoDeEscala.mayor.regiones.isEmpty)
+        #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).subtradiciones.isEmpty)
+        #expect(RegionDeEscala.java.tipos.count == 7)
+        #expect(TipoDeEscala.degung.regiones == [.sunda] && RegionDeEscala.sunda.tradicion == .indonesia)
+        #expect(RegionDeEscala.bali.tipos.count == 4)
+        #expect(Subtradicion.region(.bali).tipos == RegionDeEscala.bali.tipos)
+        #expect(Subtradicion.estilo(.gagaku).tradicion == .japon)
+        // Toda escala de la India tiene estilo, y cada estilo y cada región tiene alguna escala.
         for tipo in TipoDeEscala.tradicionales(tradicion: .india) {
-            #expect(tipo.subtradicion != nil, Comment(rawValue: tipo.nombre))
+            #expect(!tipo.estilos.isEmpty, Comment(rawValue: tipo.nombre))
         }
-        for subtradicion in Subtradicion.allCases {
-            #expect(!TipoDeEscala.tradicionales(subtradicion: subtradicion).isEmpty, "\(subtradicion)")
+        for subtradicion in Subtradicion.todas {
+            #expect(!subtradicion.tipos.isEmpty, "\(subtradicion)")
+            #expect(subtradicion.tipos.allSatisfy { $0.tradicion == subtradicion.tradicion }, "\(subtradicion)")
         }
-        #expect(Subtradicion.carnatica.nombre == "Carnática")
-        #expect(Subtradicion.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Carnatic")
-        #expect(Subtradicion.java.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ruso)) == "Ява")
+        #expect(EstiloDeEscala.carnatica.nombre == "Carnática")
+        #expect(EstiloDeEscala.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Carnatic")
+        #expect(RegionDeEscala.java.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ruso)) == "Ява")
+        #expect(Subtradicion.region(.java).nombre == "Java")
     }
 
     /// Cada subtradición tiene nombre en los trece idiomas y se codifica por su nombre de caso.
     @Test func lasSubtradicionesSeTraducenYSeCodifican() throws {
-        for subtradicion in Subtradicion.allCases {
+        for subtradicion in Subtradicion.todas {
             #expect(subtradicion.nombre(en: .compacta(.espanol)) == subtradicion.nombre)
             for idioma in Idioma.allCases {
                 #expect(
                     !subtradicion.nombre(en: Notacion.compacta(.espanol).conTextos(en: idioma)).isEmpty,
                     Comment(rawValue: "\(subtradicion) en \(idioma)"))
             }
-            #expect(Subtradicion(rawValue: subtradicion.rawValue) == subtradicion)
         }
-        let datos = try JSONEncoder().encode(Subtradicion.allCases)
-        #expect(String(decoding: datos, as: UTF8.self).contains("\"indostanica\""))
-        #expect(try JSONDecoder().decode([Subtradicion].self, from: datos) == Subtradicion.allCases)
+        #expect(Subtradicion.todas.count == EstiloDeEscala.allCases.count + RegionDeEscala.allCases.count)
+        for estilo in EstiloDeEscala.allCases { #expect(EstiloDeEscala(rawValue: estilo.rawValue) == estilo) }
+        for region in RegionDeEscala.allCases { #expect(RegionDeEscala(rawValue: region.rawValue) == region) }
+        let estilos = try JSONEncoder().encode(EstiloDeEscala.allCases)
+        #expect(String(decoding: estilos, as: UTF8.self).contains("\"indostanica\""))
+        #expect(try JSONDecoder().decode([EstiloDeEscala].self, from: estilos) == EstiloDeEscala.allCases)
+        let todas = try JSONEncoder().encode(Subtradicion.todas)
+        #expect(try JSONDecoder().decode([Subtradicion].self, from: todas) == Subtradicion.todas)
     }
 }

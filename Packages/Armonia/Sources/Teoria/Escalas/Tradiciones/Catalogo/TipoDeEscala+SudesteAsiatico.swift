@@ -18,14 +18,14 @@ extension TipoDeEscala {
         nombre: "Piphat",
         intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["tailandesa"], variantes: ["ปี่พาทย์"],
-        categoria: .afinacion, subtradicion: .tailandia,
+        categoria: .afinacion, regiones: [.tailandia],
         afinaciones: [.equiheptatonica])
     /// Pinpeat (siete partes iguales de 171 cents): Do Re Mi♭ Fa Sol La Si♭ en doce notas.
     public static let pinpeat = TipoDeEscala(
         nombre: "Pinpeat",
         intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["camboyana", "jemer"], variantes: ["ពិណពាទ្យ"],
-        categoria: .afinacion, subtradicion: .camboya,
+        categoria: .afinacion, regiones: [.camboya],
         afinaciones: [.equiheptatonica])
 
     // MARK: El arpa birmana
@@ -39,7 +39,7 @@ extension TipoDeEscala {
     public static let saung = TipoDeEscala(
         nombre: "Saung", intervalos: TipoDeEscala.pentatonicaMayor.intervalos,
         alias: ["saung gauk", "arpa birmana", "birmana"],
-        categoria: .afinacion, subtradicion: .birmania,
+        categoria: .afinacion, regiones: [.birmania],
         // En cents: 182, 182, 327, 182 y 327.
         afinaciones: [.init(.razones, pasos: [0, 182, 364, 691, 873])])
 

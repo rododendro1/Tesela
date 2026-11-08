@@ -73,7 +73,7 @@ cada grado desde la tónica. Como en los temperamentos circulares cada tonalidad
 tónica, y la afinación justa se construye sobre ella. Cada tradición sugiere la suya (`Tradicion.afinacionSugerida`,
 también en `TipoDeEscala`): la pitagórica en el canto gregoriano, la Grecia antigua, Mesopotamia y China, que
 afinan por quintas puras, la justa en la India y la mesotónica en el Renacimiento; las demás tienen sus microtonos o no se ajustan a ninguna.
-Las escalas occidentales la toman de su uso (`UsoDeEscala.afinacionSugerida`): Werckmeister III en la música
+Las escalas occidentales la toman de su estilo (`EstiloDeEscala.afinacionSugerida`): Werckmeister III en la música
 clásica, donde cada tonalidad tiene su color, y el temperamento igual en el jazz, el blues, el siglo XX (las escalas
 simétricas lo necesitan), la música popular y las sintéticas. Los modos y el hexacordo, los de la polifonía del
 Renacimiento, van en mesotónico. La escala de blues tiene además sus blue notes

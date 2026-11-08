@@ -10,15 +10,15 @@ import Testing
     @Test func todasLasTradicionalesTienenClaseYTradicion() {
         for tipo in TipoDeEscala.tradicionales {
             #expect(tipo.categoria != nil, Comment(rawValue: tipo.nombre))
-            #expect(tipo.tradicion != nil, Comment(rawValue: tipo.nombre))
+            #expect(tipo.tradicion != nil && tipo.tradicion != .occidental, Comment(rawValue: tipo.nombre))
         }
     }
 
-    /// Las occidentales y las escalas propias no tienen categoría.
+    /// Las occidentales y las escalas propias no tienen categoría; las occidentales son de la tradición occidental.
     @Test func lasOccidentalesYLasPropiasNoTienenClase() {
         for tipo in TipoDeEscala.occidentales {
             #expect(tipo.categoria == nil, Comment(rawValue: tipo.nombre))
-            #expect(tipo.tradicion == nil, Comment(rawValue: tipo.nombre))
+            #expect(tipo.tradicion == .occidental, Comment(rawValue: tipo.nombre))
         }
         let propia = TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta])
         #expect(propia.categoria == nil)

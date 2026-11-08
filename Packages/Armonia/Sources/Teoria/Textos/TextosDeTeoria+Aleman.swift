@@ -204,6 +204,7 @@ extension TextosDeTeoria {
         cardinalEndecatonica: "Hendekatonik",
         cardinalDodecatonica: "Dodekatonik",
         // Tradicion+Nombre.swift
+        tradicionOccidental: "Abendländisch",
         tradicionIndia: "Indien",
         tradicionGrecia: "Griechenland",
         tradicionGreciaAntigua: "Antikes Griechenland",

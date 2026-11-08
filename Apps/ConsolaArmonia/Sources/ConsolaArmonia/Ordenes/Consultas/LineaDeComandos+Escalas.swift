@@ -257,9 +257,9 @@ extension LineaDeComandos {
         (.renacimiento, "renacimiento", "renaissance"),
     ]
 
-    /// Cómo se escribe cada uso en `--uso`, en español y en inglés (se aceptan los dos en cualquier idioma):
-    /// `--uso siglo-xx`, `--use 20th-century`.
-    static let nombresDeLosUsos: [(uso: UsoDeEscala, espanol: String, ingles: String)] = [
+    /// Cómo se escribe cada estilo occidental en `--uso`, en español y en inglés (se aceptan los dos en cualquier
+    /// idioma): `--uso siglo-xx`, `--use 20th-century`.
+    static let nombresDeLosUsos: [(uso: EstiloDeEscala, espanol: String, ingles: String)] = [
         (.clasica, "clasica", "classical"), (.jazz, "jazz", "jazz"), (.blues, "blues", "blues"),
         (.sigloXX, "siglo-xx", "20th-century"), (.popular, "popular", "folk"), (.sintetica, "sintetica", "synthetic"),
     ]
@@ -294,7 +294,8 @@ extension LineaDeComandos {
         let categorias: [(categoria: CategoriaTradicional, escalas: Int)]
     }
 
-    /// Las tradiciones, en el orden de `Tradicion.allCases`, con sus categorías en el de `TipoDeEscala.tradicionales`.
+    /// Las tradiciones, en el orden de `Tradicion.allCases`, con sus categorías en el de `TipoDeEscala.tradicionales`;
+    /// sin la occidental, que no tiene `--tradicion` (sus escalas son las habituales, por estilos con `--uso`).
     static func catalogoDeTradiciones() -> [TradicionDelCatalogo] {
         Tradicion.allCases.compactMap { tradicion in
             guard let claves = nombresDeLasTradiciones.first(where: { $0.tradicion == tradicion }) else { return nil }
@@ -473,14 +474,14 @@ extension LineaDeComandos {
             }
             fuente = encontrada
         }
-        var usoPedido: UsoDeEscala?
+        var usoPedido: EstiloDeEscala?
         if let texto = try entrada.valor(.uso) {
             let clave = claveDeBusqueda(texto)
-            let nombres = { (candidato: UsoDeEscala) -> [String] in
+            let nombres = { (candidato: EstiloDeEscala) -> [String] in
                 let claves = nombresDeLosUsos.first { $0.uso == candidato }.map { [$0.espanol, $0.ingles] } ?? []
                 return (claves + [candidato.nombre, candidato.nombre(en: notacion)]).map(claveDeBusqueda)
             }
-            guard let encontrado = UsoDeEscala.allCases.first(where: { nombres($0).contains(clave) }) else {
+            guard let encontrado = nombresDeLosUsos.map(\.uso).first(where: { nombres($0).contains(clave) }) else {
                 throw ErrorDeUso.usoDesconocido(texto)
             }
             usoPedido = encontrado
@@ -537,7 +538,7 @@ extension LineaDeComandos {
         var grupos: [(titulo: String, tipos: [TipoDeEscala])] = []
         if tradicion == nil && categoria == nil && fuente == nil {
             if let usoPedido {
-                let delUso = TipoDeEscala.occidentales(uso: usoPedido).filter(cumple)
+                let delUso = usoPedido.tipos.filter(cumple)
                 if !delUso.isEmpty {
                     grupos.append((traducir(.habituales) + " · " + usoPedido.nombre(en: notacion), delUso))
                 }

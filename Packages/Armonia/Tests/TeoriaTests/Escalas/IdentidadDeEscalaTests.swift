@@ -35,11 +35,11 @@ import Testing
     }
 
     @Test func cadaTablaDistingueLasEscalasDeMismoContenido() {
-        // Hardino es de África y no tiene usos occidentales; la mayor, al revés.
+        // Hardino es de África y no tiene estilos occidentales; la mayor, al revés.
         #expect(TipoDeEscala.hardino.tradicion == .africa)
-        #expect(TipoDeEscala.mayor.tradicion == nil)
-        #expect(TipoDeEscala.hardino.usos.isEmpty)
-        #expect(!TipoDeEscala.mayor.usos.isEmpty)
+        #expect(TipoDeEscala.mayor.tradicion == .occidental)
+        #expect(TipoDeEscala.hardino.estilos.isEmpty)
+        #expect(!TipoDeEscala.mayor.estilos.isEmpty)
         // La afinación de Knight es la de Hardino, no la de la mayor ni la de Tomora ba (también mayor).
         #expect(TipoDeEscala.hardino.microtonal != nil)
         #expect(TipoDeEscala.mayor.afinaciones.isEmpty)

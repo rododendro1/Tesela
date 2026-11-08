@@ -183,11 +183,12 @@ extension LineaDeComandosTests {
         #expect(!resultado("acorde", "Do", "--idioma", "xyzzy").error.contains("¿Querías"))
     }
 
-    /// `tradiciones` da cada tradición con sus categorías; con una, sus escalas.
+    /// `tradiciones` da cada tradición con sus categorías (salvo la occidental, que no tiene: sus escalas son las
+    /// habituales, por estilos con `escalas --uso`); con una, sus escalas.
     @Test func tradiciones() throws {
         let todas = salida("tradiciones")
         let lineas = todas.split(separator: "\n")
-        #expect(lineas.count == Tradicion.allCases.count)
+        #expect(lineas.count == Tradicion.allCases.count - 1)
         #expect(lineas.contains("Japón (japon): escala 13"))
         #expect(lineas.contains("Turquía (turquia): makam 27 · çeşni 12"))
         #expect(salida("traditions --ingles").contains("Japan (japan): scale 13"))

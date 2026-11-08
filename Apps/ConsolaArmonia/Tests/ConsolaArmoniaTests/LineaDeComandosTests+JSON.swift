@@ -156,10 +156,10 @@ extension LineaDeComandosTests {
         let ptolomeo = try #require(try json("escalas --fuente ptolomeo") as? [[String: Any]])
         let generos = try #require(ptolomeo.first?["escalas"] as? [[String: Any]])
         #expect(generos.allSatisfy { $0["fuente"] as? String == "ptolomeo" && $0["microtonal"] as? Bool == true })
-        // Las habituales no tienen tradición; con --orden brillo, de la más brillante a la más oscura.
+        // Las habituales son de la tradición occidental; con --orden brillo, de la más brillante a la más oscura.
         let habituales = try #require(try json("escalas --uso jazz --orden brillo") as? [[String: Any]])
         let deJazz = try #require(habituales.first?["escalas"] as? [[String: Any]])
-        #expect(deJazz.allSatisfy { $0["tradicion"] == nil })
+        #expect(deJazz.allSatisfy { $0["tradicion"] as? String == "occidental" })
         let brillos = deJazz.compactMap { $0["brilloPorQuintas"] as? Double }
         #expect(brillos == brillos.sorted(by: >))
         #expect(salida("escalas inventadísima --json") == "[]\n")

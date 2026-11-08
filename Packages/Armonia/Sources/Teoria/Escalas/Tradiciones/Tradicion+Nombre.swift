@@ -13,6 +13,7 @@ extension Tradicion {
     /// no compila sin el suyo.
     private var traduccion: Traduccion {
         switch self {
+        case .occidental: TextosDeTeoria.traduccion(\.tradicionOccidental)
         case .india: TextosDeTeoria.traduccion(\.tradicionIndia)
         case .grecia: TextosDeTeoria.traduccion(\.tradicionGrecia)
         case .greciaAntigua: TextosDeTeoria.traduccion(\.tradicionGreciaAntigua)

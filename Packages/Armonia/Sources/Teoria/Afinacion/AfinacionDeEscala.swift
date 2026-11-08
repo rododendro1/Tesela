@@ -6,7 +6,7 @@ import Foundation
 // Una escala de otra tradición suena con sus microtonos (`AfinacionDeEscala`, de `TipoDeEscala.afinaciones`); una
 // escala de doce notas se puede medir en un temperamento histórico (`Escala.cents(en:)`), que depende de la tónica
 // cuando el temperamento es circular o justo. Cada tradición sugiere el suyo (`Tradicion.afinacionSugerida`), y
-// cada uso de una escala occidental, también (`UsoDeEscala.afinacionSugerida`).
+// cada estilo de una escala occidental, también (`EstiloDeEscala.afinacionSugerida`).
 
 // MARK: - Una escala microtonal como afinación
 
@@ -89,43 +89,48 @@ extension Tradicion {
     /// El temperamento histórico que mejor le va a la tradición, para oír sus escalas de doce notas cuando no tienen
     /// versión microtonal: el pitagórico en el canto gregoriano, la Grecia antigua, Mesopotamia y China, que afinan
     /// por quintas puras; la justa en la India, cuyos śruti son razones de 2, 3 y 5; el mesotónico en el
-    /// Renacimiento, el de su polifonía. `nil` en las demás, que tienen sus microtonos o no se ajustan a ninguno.
+    /// Renacimiento, el de su polifonía. `nil` en las demás, que tienen sus microtonos o no se ajustan a ninguno, y en
+    /// la occidental, en la que depende de la escala (`TipoDeEscala.afinacionSugerida`).
     public var afinacionSugerida: AfinacionHistorica? {
         switch self {
         case .gregoriano, .greciaAntigua, .mesopotamia, .china: return .pitagorico
         case .india: return .justa
         case .renacimiento: return .mesotonico
-        case .grecia, .mundoArabe, .persia, .turquia, .azerbaiyan, .japon, .corea, .etiopia, .indonesia, .klezmer,
+        case .occidental, .grecia, .mundoArabe, .persia, .turquia, .azerbaiyan, .japon, .corea, .etiopia, .indonesia,
+            .klezmer,
             .andes, .bizancio, .africa, .sudesteAsiatico, .europa, .vietnam, .brasil:
             return nil
         }
     }
 }
 
-extension UsoDeEscala {
-    /// El temperamento que mejor le va al uso: en la música clásica, un buen temperamento (Werckmeister III), en el
-    /// que cada tonalidad suena con su color; en las demás, el igual, porque modulan a cualquier tonalidad o, como
-    /// las escalas simétricas, lo necesitan para repetirse.
-    public var afinacionSugerida: AfinacionHistorica {
+extension EstiloDeEscala {
+    /// El temperamento que mejor le va a un estilo occidental: en la música clásica, un buen temperamento
+    /// (Werckmeister III), en el que cada tonalidad suena con su color; en los demás, el igual, porque modulan a
+    /// cualquier tonalidad o, como las escalas simétricas, lo necesitan para repetirse. `nil` en los de otras
+    /// tradiciones, que toman el de su tradición (`Tradicion.afinacionSugerida`).
+    public var afinacionSugerida: AfinacionHistorica? {
         switch self {
         case .clasica: return .werckmeisterIII
         case .jazz, .blues, .sigloXX, .popular, .sintetica: return .igual
+        case .carnatica, .indostanica, .indiaAntigua, .gagaku: return nil
         }
     }
 }
 
 extension TipoDeEscala {
     /// El temperamento sugerido: el de su tradición (`Tradicion.afinacionSugerida`); en las occidentales, el
-    /// mesotónico en los modos y el hexacordo, los de la polifonía del Renacimiento, y si no, el de su primer uso
-    /// (`UsoDeEscala.afinacionSugerida`). `nil` si no tiene tradición ni uso.
+    /// mesotónico en los modos y el hexacordo, los de la polifonía del Renacimiento, y si no, el de su primer estilo
+    /// (`EstiloDeEscala.afinacionSugerida`). `nil` si no tiene tradición.
     ///
     ///     TipoDeEscala.dorico.afinacionSugerida     // .mesotonico
     ///     TipoDeEscala.mayor.afinacionSugerida      // .werckmeisterIII
     ///     TipoDeEscala.tonosEnteros.afinacionSugerida   // .igual
     public var afinacionSugerida: AfinacionHistorica? {
-        if let tradicion { return tradicion.afinacionSugerida }
+        guard let tradicion else { return nil }
+        guard tradicion == .occidental else { return tradicion.afinacionSugerida }
         if TipoDeEscala.renacentistas.contains(identidad) { return .mesotonico }
-        return usos.first?.afinacionSugerida
+        return estilos.first?.afinacionSugerida
     }
 
     /// Los modos de la polifonía del Renacimiento y el hexacordo de la solmisación.
