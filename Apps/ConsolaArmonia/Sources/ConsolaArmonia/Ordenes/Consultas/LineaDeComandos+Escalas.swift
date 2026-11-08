@@ -31,6 +31,8 @@ extension LineaDeComandos {
         let parecidas: Bool
         /// `--progresiones`: progresiones con sus tríadas.
         let progresiones: Bool
+        /// `--bibtex`: solo sus referencias, en BibTeX.
+        let bibtex: Bool
 
         var sentido: SentidoDelIntervalo { bajando ? .descendente : .ascendente }
     }
@@ -53,6 +55,7 @@ extension LineaDeComandos {
         let vecinas = argumentos.quitarMarca(.vecinas)
         let parecidas = argumentos.quitarMarca(.parecidas)
         let progresiones = argumentos.quitarMarca(.progresiones)
+        let bibtex = argumentos.quitarMarca(.bibtex)
         let estadisticas = argumentos.quitarMarca(.estadisticas)
         let escalera = argumentos.quitarMarca(.escalera)
         let doce = argumentos.quitarMarca(.doce)
@@ -73,7 +76,7 @@ extension LineaDeComandos {
             escala: try Escala(leyendoEnLaOrden: argumentos.unidos), conAcordes: conAcordes, secuencia: secuencia,
             octavas: octavas, bajando: bajando, piano: piano, modos: modos, simetria: simetria, vecinas: vecinas,
             estadisticas: estadisticas, escalera: escalera, doce: doce, triadas: triadas, otra: otra,
-            parecidas: parecidas, progresiones: progresiones)
+            parecidas: parecidas, progresiones: progresiones, bibtex: bibtex)
     }
 
     /// `escala Do mayor [--acordes] [--secuencia terceras] [--bajando] [--octavas 2] [--dedos] [--modos]
@@ -83,6 +86,8 @@ extension LineaDeComandos {
     static func escala(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let pedido = try pedidoDeEscala(textos)
         let escala = pedido.escala
+        // `--bibtex`: solo las referencias de la escala, que se pueden guardar en un .bib.
+        if pedido.bibtex { return bien(Referencia.bibtex(escala.tipo.referencias)) }
         var lineas = [describir(escala: escala, conTodosSusAcordes: pedido.conAcordes, notacion)]
         if let secuencia = pedido.secuencia {
             let presentada = PresentacionDeEstudioDeEscala.secuencia(
@@ -227,6 +232,11 @@ extension LineaDeComandos {
                 lineas.append("  \(traducir(.microtonos)) ↓: " + nombres(bajada))
                 lineas.append("  ¢ ↓: " + cents(bajada))
             }
+        }
+        // Dónde se lee la escala: «West 1992; Barker 1989».
+        let referencias = escala.tipo.referencias
+        if !referencias.isEmpty {
+            lineas.append("  \(traducir(.referencias)): " + referencias.map(\.cita).joined(separator: "; "))
         }
         // Los acordes de cada grado, si la escala es heptatónica y todos forman un acorde conocido.
         if let acordes = datos.acordes {

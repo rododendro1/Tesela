@@ -129,6 +129,18 @@ extension LineaDeComandos {
         var acordesEnLasDoceTonalidades: AcordesEnLasDoce?
         /// `--comparar`.
         var comparacion: Comparacion?
+        /// Dónde se lee la escala, si es de otra tradición; `nil` en las demás.
+        var referencias: [ReferenciaJSON]?
+
+        /// Una obra o una cita: su clave de BibTeX, la cita breve («West 1992: 160–172») y la referencia completa.
+        struct ReferenciaJSON: Encodable {
+            let clave: String
+            let cita: String
+            let descripcion: String
+            let paginas: String?
+            let doi: String?
+            let url: String?
+        }
 
         init(_ datos: DatosDeEscala) {
             nombre = datos.nombre
@@ -142,8 +154,17 @@ extension LineaDeComandos {
     /// `escala Re dórico --json`, con las mismas opciones que el texto (`pedidoDeEscala`).
     static func escalaJSON(_ textos: [String], _ notacion: Notacion) throws -> EscalaJSON {
         let pedido = try pedidoDeEscala(textos)
+        if pedido.bibtex { throw ErrorDeUso.sinSalidaJSON("escala --bibtex") }
         let escala = pedido.escala
         var datos = EscalaJSON(DatosDeEscala(escala, notacion: notacion))
+        let referencias = escala.tipo.referencias
+        if !referencias.isEmpty {
+            datos.referencias = referencias.map {
+                EscalaJSON.ReferenciaJSON(
+                    clave: $0.clave, cita: $0.cita, descripcion: $0.descripcion, paginas: $0.paginasCitadas,
+                    doi: $0.doi, url: $0.url)
+            }
+        }
         if pedido.conAcordes {
             datos.acordesQueCaben = PresentacionDeEscalaYAcorde.acordesQueCaben(escala, en: notacion).map {
                 EscalaJSON.Grado(grado: $0.grado, acordes: $0.acordes.map { $0.cifrado(en: notacion) })

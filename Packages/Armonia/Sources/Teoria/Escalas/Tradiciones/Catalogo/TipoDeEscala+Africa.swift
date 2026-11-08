@@ -26,7 +26,7 @@ extension TipoDeEscala {
         intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["Chopi", "equiheptatónica chopi"],
         categoria: .afinacion, regiones: [.chopi],
-        afinaciones: [.equiheptatonica])
+        afinaciones: [.equiheptatonica], referencias: [.tracey1948])
 
     // MARK: Kora y mbira
     //
@@ -41,27 +41,27 @@ extension TipoDeEscala {
         nombre: "Hardino", intervalos: TipoDeEscala.mayor.intervalos, alias: ["kora hardino"],
         categoria: .afinacion, regiones: [.mandinga],
         // Las medidas de Knight, en cents.
-        afinaciones: [.init(.razones, pasos: [0, 185, 405, 500, 700, 885, 1105])])
+        afinaciones: [.init(.razones, pasos: [0, 185, 405, 500, 700, 885, 1105])], referencias: [.knight1973])
     /// Sauta (kora): la lidia, con la 4ª aumentada.
     public static let sauta = TipoDeEscala(
         nombre: "Sauta", intervalos: TipoDeEscala.lidio.intervalos, alias: ["kora sauta"],
         categoria: .afinacion, regiones: [.mandinga],
-        afinaciones: [.init(.razones, pasos: [0, 185, 405, 605, 700, 885, 1105])])
+        afinaciones: [.init(.razones, pasos: [0, 185, 405, 605, 700, 885, 1105])], referencias: [.knight1973])
     /// Tomora ba o silaba (kora): la mayor, con la 3ª y la 7ª algo bajas.
     public static let tomoraBa = TipoDeEscala(
         nombre: "Tomora ba", intervalos: TipoDeEscala.mayor.intervalos, alias: ["Silaba", "kora silaba"],
         variantes: ["Tomoraba"],
         categoria: .afinacion, regiones: [.mandinga],
-        afinaciones: [.init(.razones, pasos: [0, 200, 385, 500, 700, 900, 1085])])
+        afinaciones: [.init(.razones, pasos: [0, 200, 385, 500, 700, 900, 1085])], referencias: [.knight1973])
     /// Tomora mesengo (kora): la dórica, con la 2ª, la 3ª, la 6ª y la 7ª algo altas.
     public static let tomoraMesengo = TipoDeEscala(
         nombre: "Tomora mesengo", intervalos: TipoDeEscala.dorico.intervalos, variantes: ["Tomoramesengo"],
         categoria: .afinacion, regiones: [.mandinga],
-        afinaciones: [.init(.razones, pasos: [0, 230, 325, 500, 700, 930, 1025])])
+        afinaciones: [.init(.razones, pasos: [0, 230, 325, 500, 700, 930, 1025])], referencias: [.knight1973])
     /// Nyamaropa (mbira dzavadzimu): cercana al mixolidio.
     public static let nyamaropa = TipoDeEscala(
         nombre: "Nyamaropa", intervalos: TipoDeEscala.mixolidio.intervalos, alias: ["mbira nyamaropa"],
-        categoria: .afinacion, regiones: [.shona])
+        categoria: .afinacion, regiones: [.shona], referencias: [.berliner1978])
 
     package static let africanas: [TipoDeEscala] = [
         .amadinda, .timbila, .hardino, .sauta, .tomoraBa, .tomoraMesengo, .nyamaropa,

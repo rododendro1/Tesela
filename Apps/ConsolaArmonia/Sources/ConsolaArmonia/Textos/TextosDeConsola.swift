@@ -333,6 +333,7 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeAcordes: String
     /// La línea de `armonia escala` con las notas de la versión microtonal (maqamat, dastgāh, makamlar).
     let mensajeMicrotonos: String
+    let mensajeReferencias: String
     let mensajeEscalas: String
     let mensajeHabituales: String
     let mensajeNingunaEscala: String

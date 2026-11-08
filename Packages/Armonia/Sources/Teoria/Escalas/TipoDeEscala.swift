@@ -75,7 +75,7 @@ public struct TipoDeEscala: Sendable, Codable {
         variantes: [String] = [], tradicion: Tradicion? = nil, categoria: CategoriaTradicional,
         estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
         padre: TipoDeEscala? = nil,
-        afinaciones: [FichaDeEscala.Afinacion] = []
+        afinaciones: [FichaDeEscala.Afinacion] = [], referencias: [Referencia] = []
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
@@ -84,7 +84,7 @@ public struct TipoDeEscala: Sendable, Codable {
                 tradicion: tradicion, estilos: estilos, regiones: regiones, categoria: categoria,
                 padre: padre?.identidad,
                 afinaciones: afinaciones,
-                fuente: fuente))
+                fuente: fuente, referencias: referencias))
     }
 
     init(
