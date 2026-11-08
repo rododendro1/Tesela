@@ -19,29 +19,12 @@ import Teoria
 
 /// Reúne varias voces, cada una en un pentagrama (con una capa por voz), y escribe el documento.
 package struct EscritorMEI: EscritorDeLineas {
-    package let compas: Compas
-    package let anacrusa: Duracion
-    package let tonalidad: Tonalidad?
-    package let tempo: Tempo?
-    package let titulo: String?
-    package let parte: String
-    package let claves: [Clave]
+    package let cabecera: CabeceraDePartitura
     package var lineas: [Exportacion.LineaAnotada] = []
     /// Un texto debajo de un pentagrama, al principio (la tonalidad del análisis).
-    package var rotulo: (texto: String, pentagrama: Int)?
+    package var rotulo: Rotulo?
 
-    package init(
-        compas: Compas, anacrusa: Duracion, tonalidad: Tonalidad?, tempo: Tempo?,
-        titulo: String?, parte: String, claves: [Clave]
-    ) {
-        self.compas = compas
-        self.anacrusa = anacrusa
-        self.tonalidad = tonalidad
-        self.tempo = tempo
-        self.titulo = titulo
-        self.parte = parte
-        self.claves = claves
-    }
+    package init(cabecera: CabeceraDePartitura) { self.cabecera = cabecera }
 
     package var documento: String {
         let grafias = lineas.map(\.voz.grafia)

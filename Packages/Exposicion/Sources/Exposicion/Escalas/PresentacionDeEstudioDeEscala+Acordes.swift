@@ -2,15 +2,19 @@ import Armonia
 
 /// Los acordes de cada grado de una escala en las doce tonalidades, de quinta en quinta: una fila por tonalidad y una
 /// columna por grado, para estudiarlos y escucharlos, y la partitura con todos.
-public struct TablaDeAcordesPresentada: Hashable, Sendable {
+///
+/// En JSON (`armonia escala … --doce --acordes --json`), los grados y las filas, sin el título ni lo que suena.
+public struct TablaDeAcordesPresentada: Hashable, Sendable, Encodable {
     /// Los acordes de una tonalidad.
-    public struct Fila: Hashable, Sendable {
+    public struct Fila: Hashable, Sendable, Encodable {
         /// «Sol mayor».
         public let tonalidad: String
         /// Un cifrado por grado: «Lam7», «Re7»…
         public let acordes: [String]
         /// Los acordes de la fila, uno detrás de otro.
         public let sonido: Escucha
+
+        private enum CodingKeys: String, CodingKey { case tonalidad, acordes }
     }
 
     /// «Do mayor · Acordes en las doce tonalidades».
@@ -21,6 +25,8 @@ public struct TablaDeAcordesPresentada: Hashable, Sendable {
     /// Todas las filas seguidas.
     public let sonido: Escucha
     public let ficheros: [FicheroParaExportar]
+
+    private enum CodingKeys: String, CodingKey { case grados, filas }
 }
 
 extension PresentacionDeEstudioDeEscala {

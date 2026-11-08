@@ -1,5 +1,10 @@
 # Cambios
 
+## Sin publicar
+
+- `selectorDePartituras(isPresented:alAbrir:)`: el selector de ficheros para abrir un MIDI, MusicXML, MEI o ABC, con
+  el permiso de los ficheros de fuera de la app, que comparten la vista de análisis y el Tonnetz.
+
 ## 0.4.1 (2026-11-08)
 
 - El selector de notación tiene un interruptor «Alfabeto latino» cuando las notas o los textos están en ruso o en

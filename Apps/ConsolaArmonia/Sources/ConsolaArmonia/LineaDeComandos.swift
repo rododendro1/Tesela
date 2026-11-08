@@ -233,9 +233,6 @@ public enum LineaDeComandos {
     /// Lo que pide la ayuda de una orden en lugar de ejecutarla: `armonia acorde --help`.
     static let marcasDeAyuda: Set = ["--help", "-h", "--ayuda"]
 
-    /// Las órdenes que no leen nada: sin argumentos, no esperan a la entrada estándar.
-    static let ordenesSinEntrada: Set = ["ayuda", "version", "motores", "completado", "manual"]
-
     /// Los argumentos de una orden con las palabras de la entrada estándar: en lugar de `-`, o detrás del nombre de
     /// la orden si no lleva ningún argumento y la entrada no es la terminal. Las líneas son palabras como las demás:
     /// «Do Mi Sol» en una línea o en tres es lo mismo.
@@ -254,7 +251,7 @@ public enum LineaDeComandos {
             conEntrada.replaceSubrange(i...i, with: palabras())
             return conEntrada
         }
-        guard argumentos.isEmpty, !entradaEsTerminal, ordenesSinEntrada.isDisjoint(with: orden.nombres) else {
+        guard argumentos.isEmpty, !entradaEsTerminal, orden.leeLaEntrada else {
             return argumentos
         }
         return palabras()
@@ -312,10 +309,15 @@ public enum LineaDeComandos {
         let opciones: [String]
         /// Lo que da con `--json`; `nil` si no lo admite.
         let json: SalidaJSON?
+        /// Si, sin argumentos y con la entrada estándar de un fichero o de otro programa, toma de ella sus palabras
+        /// (`conLaEntrada`). Las que no leen nada (la ayuda, la versión, los motores, el completado y el manual) no
+        /// la esperan.
+        let leeLaEntrada: Bool
         let ejecutar: @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden
 
         init(
             nombres: [String], ayuda: [EntradaDeAyuda], opciones: [OpcionDeOrden]? = nil, json: SalidaJSON? = nil,
+            leeLaEntrada: Bool = true,
             ejecutar: @escaping @Sendable (_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden
         ) {
             self.nombres = nombres
@@ -327,6 +329,7 @@ public enum LineaDeComandos {
             for nombre in unicas.flatMap(\.nombres) where !visibles.contains(nombre) { visibles.append(nombre) }
             self.opciones = visibles
             self.json = json
+            self.leeLaEntrada = leeLaEntrada
             self.ejecutar = ejecutar
         }
     }

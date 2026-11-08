@@ -8,40 +8,14 @@ import Foundation
 extension LineaDeComandos {
     // MARK: Análisis
 
-    struct AnalisisJSON: Encodable {
-        struct Tramo: Encodable {
-            /// «en Sol mayor» al modular; `nil` en el primer tramo si no hay modulaciones.
-            let cabecera: String?
-            let acordes: [Fila]
-        }
-        struct Fila: Encodable {
-            let cifrado: String
-            let grado: String
-            /// Vacío si el acorde no tiene función en la tonalidad.
-            let funcion: String
-        }
-        let titulo: String
-        let tramos: [Tramo]
-        let cadencias: [String]
-    }
-
-    /// `analizar Do Fa Sol7 Do [--en Do mayor] --json`: el análisis por tramos, como en el texto.
-    static func analizarJSON(_ textos: [String], _ notacion: Notacion) throws -> AnalisisJSON {
+    /// `analizar Do Fa Sol7 Do [--en Do mayor] --json`: el análisis por tramos, como en el texto (el título, los
+    /// tramos con su cabecera, «en Sol mayor» al modular, y sus acordes, y las cadencias: las claves de
+    /// `AnalisisPresentado`).
+    static func analizarJSON(_ textos: [String], _ notacion: Notacion) throws -> AnalisisPresentado {
         var argumentos = Argumentos(textos)
         guard let tonalidad = try argumentos.quitarTonalidad() else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let acordes = try palabras(argumentos, siFaltan: .faltanAcordesDelAnalisis)
-        let analisis = try PresentacionDeAnalisis.analizar(
-            acordes.joined(separator: " "), en: tonalidad, notacion: notacion)
-        return AnalisisJSON(
-            titulo: analisis.titulo,
-            tramos: analisis.tramos.map { tramo in
-                AnalisisJSON.Tramo(
-                    cabecera: tramo.cabecera,
-                    acordes: tramo.filas.map {
-                        AnalisisJSON.Fila(cifrado: $0.cifrado, grado: $0.grado, funcion: $0.funcion)
-                    })
-            },
-            cadencias: analisis.cadencias)
+        return try PresentacionDeAnalisis.analizar(acordes.joined(separator: " "), en: tonalidad, notacion: notacion)
     }
 
     // MARK: Armonización y conducción de las voces

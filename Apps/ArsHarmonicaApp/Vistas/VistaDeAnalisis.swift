@@ -1,7 +1,6 @@
 import Armonia
 import Interfaz
 import SwiftUI
-import UniformTypeIdentifiers
 
 /// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI, MusicXML, MEI o ABC con «Abrir»
 /// (con su ritmo armónico, que siguen la partitura, el MIDI y «Escuchar» mientras no se retoque), y
@@ -34,10 +33,6 @@ struct VistaDeAnalisis: View {
     private static let figuras: [Figura] = [.negra, .corchea, .semicorchea]
 
     /// MIDI, MusicXML (.musicxml, .xml y .mxl), MEI y ABC.
-    private static let tipos: [UTType] =
-        [.midi, .xml]
-        + ImportacionDeProgresion.extensiones.compactMap { UTType(filenameExtension: $0) }
-
     var body: some View {
         Form {
             Section(notacion.texto(\.progresion)) {
@@ -117,9 +112,7 @@ struct VistaDeAnalisis: View {
                 BotonDeExportar(ficheros)
             }
         }
-        .fileImporter(isPresented: $abriendo, allowedContentTypes: Self.tipos) { elegido in
-            abrir(elegido)
-        }
+        .selectorDePartituras(isPresented: $abriendo) { abrir($0) }
         .onChange(of: texto) { _ in errorAlAbrir = nil }
         .task(id: "\(texto)|\(notacion.clave)|\(importada?.hashValue ?? 0)") {
             // Lo abierto, con el ritmo de la pieza, mientras no se retoque; si no, lo escrito.
@@ -447,13 +440,9 @@ struct VistaDeAnalisis: View {
 
     /// Lee el fichero elegido y pone sus acordes en el campo de la progresión, que se analiza como si se
     /// hubieran escrito.
-    private func abrir(_ elegido: Result<URL, Error>) {
+    private func abrir(_ elegida: Result<ProgresionImportada, any Error>) {
         do {
-            let url = try elegido.get()
-            // Los ficheros de fuera de la app (Archivos, iCloud) solo se leen con permiso.
-            let conPermiso = url.startAccessingSecurityScopedResource()
-            defer { if conPermiso { url.stopAccessingSecurityScopedResource() } }
-            let leida = try ImportacionDeProgresion.leer(Data(contentsOf: url))
+            let leida = try elegida.get()
             importada = leida
             texto = leida.texto
             errorAlAbrir = nil

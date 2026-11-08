@@ -42,21 +42,11 @@ extension LineaDeComandos {
             let notas: [String]
             let dedos: [Int]
         }
-        struct Modo: Encodable {
-            let nombre: String
-            let brillo: String
-            /// Lo que cambia respecto a la escala; vacío en la suya.
-            let cambios: String
-        }
-        struct Detalle: Encodable {
-            let nombre: String
-            let detalle: String
-        }
         struct Simetria: Encodable {
             let resumen: String
             /// Las tónicas desde las que empieza igual; no está si la escala solo se repite a la octava.
             let tonicas: String?
-            let ciclos: [Detalle]
+            let ciclos: [EscalaSobreElAcordePresentada]
         }
         /// `EstadisticasDeEscala`, con el cardinal por su nombre.
         struct Estadisticas: Encodable {
@@ -84,14 +74,6 @@ extension LineaDeComandos {
             let tonalidad: String
             let notas: String
         }
-        struct AcordesEnLasDoce: Encodable {
-            let grados: [String]
-            let filas: [Fila]
-            struct Fila: Encodable {
-                let tonalidad: String
-                let acordes: [String]
-            }
-        }
         struct Comparacion: Encodable {
             let con: String
             let comunes: String
@@ -101,7 +83,9 @@ extension LineaDeComandos {
             let distancia: String?
         }
 
-        // Las de `DatosDeEscala`, como sin opciones.
+        // Las de `DatosDeEscala`, como sin opciones. Las de las opciones son los tipos de Exposicion que enseña el
+        // texto, cuando el JSON lleva lo mismo (`ModoPresentado`, `TablaDeAcordesPresentada`…, que saben qué
+        // campos van en JSON), o, si lleva otra cosa (números en lugar de textos), los de aquí.
         let nombre: String
         let notas: [String]
         let clases: [Int]
@@ -114,19 +98,19 @@ extension LineaDeComandos {
         /// `--dedos`: la mano derecha primero.
         var piano: [ManoDelPiano]?
         /// `--modos`.
-        var modosParalelos: [Modo]?
+        var modosParalelos: [ModoPresentado]?
         var modosRelativos: [String]?
         /// `--simetria`.
         var simetria: Simetria?
         /// `--vecinas`.
-        var vecinas: [Detalle]?
+        var vecinas: [EscalaSobreElAcordePresentada]?
         /// `--estadisticas`.
         var estadisticas: Estadisticas?
         /// `--escalera`: de la más oscura a la más brillante.
         var escaleraDeBrillo: [Peldano]?
         /// `--doce`, con la secuencia de `--secuencia` si se da; con `--acordes`, también los acordes de cada grado.
         var doceTonalidades: [Tonalidad]?
-        var acordesEnLasDoceTonalidades: AcordesEnLasDoce?
+        var acordesEnLasDoceTonalidades: TablaDeAcordesPresentada?
         /// `--comparar`.
         var comparacion: Comparacion?
         /// Dónde se lee la escala, si es de otra tradición; `nil` en las demás.
@@ -185,17 +169,14 @@ extension LineaDeComandos {
             }
         }
         if pedido.modos {
-            datos.modosParalelos = PresentacionDeEstudioDeEscala.modosParalelos(de: escala, en: notacion).map {
-                EscalaJSON.Modo(nombre: $0.nombre, brillo: $0.brillo, cambios: $0.cambios)
-            }
+            datos.modosParalelos = PresentacionDeEstudioDeEscala.modosParalelos(de: escala, en: notacion)
             datos.modosRelativos = PresentacionDeEstudioDeEscala.modosRelativos(de: escala, en: notacion)
                 .map(\.nombre)
         }
         if pedido.simetria {
             if let simetria = PresentacionDeEstudioDeEscala.simetria(de: escala, en: notacion) {
                 datos.simetria = EscalaJSON.Simetria(
-                    resumen: simetria.resumen, tonicas: simetria.tonicas,
-                    ciclos: simetria.ciclos.map { EscalaJSON.Detalle(nombre: $0.nombre, detalle: $0.detalle) })
+                    resumen: simetria.resumen, tonicas: simetria.tonicas, ciclos: simetria.ciclos)
             } else {
                 let veces = escala.transposicionesDistintas
                 datos.simetria = EscalaJSON.Simetria(
@@ -203,9 +184,7 @@ extension LineaDeComandos {
             }
         }
         if pedido.vecinas {
-            datos.vecinas = PresentacionDeEstudioDeEscala.vecinas(de: escala, en: notacion).map {
-                EscalaJSON.Detalle(nombre: $0.nombre, detalle: $0.detalle)
-            }
+            datos.vecinas = PresentacionDeEstudioDeEscala.vecinas(de: escala, en: notacion)
         }
         if pedido.estadisticas {
             let medidas = escala.estadisticas
@@ -230,13 +209,9 @@ extension LineaDeComandos {
             let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(
                 escala, secuencia: pedido.secuencia, en: notacion)
             datos.doceTonalidades = hoja.tonalidades.map { EscalaJSON.Tonalidad(tonalidad: $0.titulo, notas: $0.notas) }
-            if pedido.conAcordes,
-                let tabla = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
+            if pedido.conAcordes {
+                datos.acordesEnLasDoceTonalidades = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
                     escala, cuatriadas: !pedido.triadas, en: notacion)
-            {
-                datos.acordesEnLasDoceTonalidades = EscalaJSON.AcordesEnLasDoce(
-                    grados: tabla.grados,
-                    filas: tabla.filas.map { .init(tonalidad: $0.tonalidad, acordes: $0.acordes) })
             }
         }
         if let otra = pedido.otra {

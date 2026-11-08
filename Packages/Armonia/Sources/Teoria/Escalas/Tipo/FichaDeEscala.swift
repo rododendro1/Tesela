@@ -113,9 +113,11 @@ extension TipoDeEscala {
     package var fichaDelCatalogo: FichaDeEscala { TipoDeEscala.delCatalogo[identidad]?.tipo.ficha ?? .vacia }
 
     /// La escala del catálogo con la misma identidad, sus versiones microtonales y sus referencias.
-    package typealias EntradaDelCatalogo = (
-        tipo: TipoDeEscala, afinaciones: [TipoDeEscalaMicrotonal], referencias: [Referencia]
-    )
+    package struct EntradaDelCatalogo: Sendable {
+        package let tipo: TipoDeEscala
+        package let afinaciones: [TipoDeEscalaMicrotonal]
+        package let referencias: [Referencia]
+    }
 
     /// Identidad → escala del catálogo. Si dos escalas tuvieran la misma identidad, vale la primera de `catalogo`.
     package static let delCatalogo: [IdentidadDeEscala: EntradaDelCatalogo] = {
@@ -133,7 +135,7 @@ extension TipoDeEscala {
             let referencias = Referencia.unicas(
                 tipo.ficha.referencias + [tipo.ficha.fuente?.referencia].compactMap { $0 }
                     + (deSuLista[tipo.identidad] ?? []) + afinaciones.flatMap(\.referencias))
-            tabla[tipo.identidad] = (tipo: tipo, afinaciones: afinaciones, referencias: referencias)
+            tabla[tipo.identidad] = EntradaDelCatalogo(tipo: tipo, afinaciones: afinaciones, referencias: referencias)
         }
         return tabla
     }()

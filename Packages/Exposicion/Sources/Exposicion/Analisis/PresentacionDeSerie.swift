@@ -71,20 +71,21 @@ public enum PresentacionDeSerie {
         _ texto: String, forma: FormaDeSerie, en notacion: Notacion
     ) throws -> SeriePresentada {
         let serie = try SerieDodecafonica(leyendo: texto)
-        let t = { (campo: (TextosDeApps) -> String) in notacion.texto(campo) }
         // Lo mismo que da `armonia serie` (y su `--json`), escrito para la vista.
         let enDatos = DatosDeSerie(serie, notacion: notacion)
         let nombres = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: notacion)
         let lista = { (clases: [Int]) in clases.map { nombres[$0] }.joined(separator: " ") }
 
         var intervalos = enDatos.intervalos.map(String.init).joined(separator: " ")
-        if enDatos.deTodosLosIntervalos { intervalos += " (" + t(\.deTodosLosIntervalos) + ")" }
+        if enDatos.deTodosLosIntervalos { intervalos += " (" + notacion.texto(\.deTodosLosIntervalos) + ")" }
         let datos = [
-            SeriePresentada.Dato(titulo: t(\.notas), valor: enDatos.notas.joined(separator: " ")),
-            SeriePresentada.Dato(titulo: t(\.intervalos), valor: intervalos),
-            SeriePresentada.Dato(titulo: t(\.hexacordos), valor: enDatos.hexacordos.joined(separator: " · ")),
+            SeriePresentada.Dato(titulo: notacion.texto(\.notas), valor: enDatos.notas.joined(separator: " ")),
+            SeriePresentada.Dato(titulo: notacion.texto(\.intervalos), valor: intervalos),
             SeriePresentada.Dato(
-                titulo: t(\.formasCombinatorias), valor: enDatos.formasCombinatorias.joined(separator: " ")),
+                titulo: notacion.texto(\.hexacordos), valor: enDatos.hexacordos.joined(separator: " · ")),
+            SeriePresentada.Dato(
+                titulo: notacion.texto(\.formasCombinatorias), valor: enDatos.formasCombinatorias.joined(separator: " ")
+            ),
         ]
 
         // Las notas de cada clase, para el pentagrama.
@@ -95,7 +96,7 @@ public enum PresentacionDeSerie {
         let alturas = clases.map { clase in
             notaDeCada[clase].flatMap { Altura($0, midi: 60 + clase) } ?? Altura(midi: 60 + clase)
         }
-        let titulo = t(\.serieDodecafonica) + " " + forma.description
+        let titulo = notacion.texto(\.serieDodecafonica) + " " + forma.description
         let voz = Voz(alturas.map { Evento($0, .negra) })
         // Sin armadura: una serie no está en ninguna tonalidad.
         let sinArmadura = Tonalidad(armadura: 0)

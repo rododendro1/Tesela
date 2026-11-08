@@ -91,12 +91,7 @@ extension PresentacionDeRelacionesDeAcorde {
             for sustitucion in sustituciones { linea(sustitucion.descripcion) }
         }
         let alto = (y + margen).rounded(.up)
-        let cabecera =
-            "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"\(Hoja.numero(ancho))\" "
-            + "height=\"\(Hoja.numero(alto))\" viewBox=\"0 0 \(Hoja.numero(ancho)) \(Hoja.numero(alto))\" "
-            + "font-family=\"Helvetica, Arial, sans-serif\">"
-        let fondo = "<rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/>"
-        return ([cabecera, fondo] + cuerpo + ["</svg>"]).joined(separator: "\n")
+        return Hoja.hojaSVG(ancho: ancho, alto: alto, cuerpo)
     }
 
     /// El diagrama de una digitación, como en los cancioneros: una línea por cuerda (la más grave a la izquierda),

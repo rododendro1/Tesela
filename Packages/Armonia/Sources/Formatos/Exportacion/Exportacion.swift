@@ -236,13 +236,30 @@ package enum Exportacion {
 /// Lo que comparten los escritores de MusicXML, MEI, LilyPond, GUIDO y ABC: se crean con la cabecera de la
 /// partitura, se les añaden voces con lo que se anota en ellas y escriben el documento. Con él, una voz, un coral y
 /// una progresión se preparan una sola vez para todos los formatos (`Exportacion.documento`).
+/// Lo que un escritor sabe de la partitura antes de sus voces: el compás y la anacrusa, la tonalidad y el tempo del
+/// encabezado, el título, el nombre de la parte y la clave de cada pentagrama.
+package struct CabeceraDePartitura {
+    package let compas: Compas
+    package let anacrusa: Duracion
+    package let tonalidad: Tonalidad?
+    package let tempo: Tempo?
+    package let titulo: String?
+    package let parte: String
+    package let claves: [Clave]
+}
+
+/// Un texto debajo de un pentagrama, al principio: la tonalidad del análisis. Los pentagramas se cuentan desde 1.
+package struct Rotulo {
+    package let texto: String
+    package let pentagrama: Int
+}
+
 package protocol EscritorDePartitura {
-    init(
-        compas: Compas, anacrusa: Duracion, tonalidad: Tonalidad?, tempo: Tempo?,
-        titulo: String?, parte: String, claves: [Clave])
+    init(cabecera: CabeceraDePartitura)
+    var cabecera: CabeceraDePartitura { get }
 
     /// Un texto debajo de un pentagrama, al principio (la tonalidad del análisis).
-    var rotulo: (texto: String, pentagrama: Int)? { get set }
+    var rotulo: Rotulo? { get set }
 
     /// Añade una voz, con el cifrado americano de los acordes que empiezan en cada punto encima y su análisis
     /// (cifrado romano y función) debajo. `plicaArriba` es `nil` si la plica va donde toque.
@@ -259,6 +276,14 @@ package protocol EscritorDePartitura {
 }
 
 extension EscritorDePartitura {
+    package var compas: Compas { cabecera.compas }
+    package var anacrusa: Duracion { cabecera.anacrusa }
+    package var tonalidad: Tonalidad? { cabecera.tonalidad }
+    package var tempo: Tempo? { cabecera.tempo }
+    package var titulo: String? { cabecera.titulo }
+    package var parte: String { cabecera.parte }
+    package var claves: [Clave] { cabecera.claves }
+
     package mutating func anadirTablatura(
         _ voz: Voz, pulsaciones: [Duracion: [Tablatura.Pulsacion]], cuerdas: Int, afinacion: [Altura]?, capo: Int?
     ) {}
@@ -273,12 +298,13 @@ extension Exportacion {
     ) -> String {
         let encabezado = partitura.encabezado
         var escritor = Escritor(
-            compas: partitura.compas, anacrusa: partitura.anacrusa, tonalidad: encabezado.tonalidad,
-            tempo: encabezado.tempo, titulo: encabezado.titulo(en: partitura.notacion),
-            parte: partitura.nombreDeLaParte,
-            claves: partitura.pentagramas.map(\.claveEscrita))
+            cabecera: CabeceraDePartitura(
+                compas: partitura.compas, anacrusa: partitura.anacrusa, tonalidad: encabezado.tonalidad,
+                tempo: encabezado.tempo, titulo: encabezado.titulo(en: partitura.notacion),
+                parte: partitura.nombreDeLaParte, claves: partitura.pentagramas.map(\.claveEscrita)))
         if let rotulo = partitura.tonalidadDelAnalisis {
-            escritor.rotulo = (rotulo.nombre(en: partitura.notacion) + ":", partitura.pentagramas.count)
+            escritor.rotulo = Rotulo(
+                texto: rotulo.nombre(en: partitura.notacion) + ":", pentagrama: partitura.pentagramas.count)
         }
         // Los escritores cuentan los pentagramas desde 1, como `<staff>` en MusicXML.
         for (linea, pentagrama) in partitura.lineas.map({ ($0.linea, $0.pentagrama) }) {

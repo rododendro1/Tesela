@@ -1,5 +1,14 @@
 # Cambios
 
+## Sin publicar
+
+- **Cambio incompatible:** los textos de `TextosDeApps` que solo llevaban valores (`campoDeCifrado`, `trastes`,
+  `cuerdas`, `soloEn`, `cambianAcordes`…) son plantillas con huecos `{1}` (`Plantilla`) en lugar de funciones. Se
+  siguen llamando igual (`textos.trastes(5, 8)`), pero ya no se pueden pasar como función.
+- `ModoPresentado`, `EscalaSobreElAcordePresentada`, `TablaDeAcordesPresentada` y `AnalisisPresentado` (con sus filas
+  y sus tramos) son `Encodable`, con las claves que da `armonia … --json`.
+- Las hojas de estudio en SVG acaban todas con la misma función (la cabecera, el fondo y el cuerpo).
+
 ## 0.4.1 (2026-11-08)
 
 - `TextosDeApps.alfabetoLatino`, el texto del interruptor del alfabeto latino, en los trece idiomas.

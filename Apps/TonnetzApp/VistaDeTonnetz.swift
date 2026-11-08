@@ -1,7 +1,6 @@
 import Armonia
 import Interfaz
 import SwiftUI
-import UniformTypeIdentifiers
 
 /// Un acorde, una escala o un recorrido de tríadas con las transformaciones P, L y R, en el Tonnetz, en la
 /// tabla armónica o en un teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, Gerhard o Park, o uno de
@@ -59,10 +58,6 @@ struct VistaDeTonnetz: View {
     @ObservedObject private var reproductor = Reproductor.compartido
 
     /// MIDI, MusicXML (.musicxml, .xml y .mxl), MEI y ABC.
-    private static let tipos: [UTType] =
-        [.midi, .xml]
-        + ImportacionDeProgresion.extensiones.compactMap { UTType(filenameExtension: $0) }
-
     var body: some View {
         VStack(spacing: 12) {
             Picker(notacion.texto(\.modo), selection: $contenido) {
@@ -109,9 +104,7 @@ struct VistaDeTonnetz: View {
                 BotonDeExportar(ficheros)
             }
         }
-        .fileImporter(isPresented: $abriendo, allowedContentTypes: Self.tipos) { elegido in
-            abrir(elegido)
-        }
+        .selectorDePartituras(isPresented: $abriendo) { abrir($0) }
         .onChange(of: notacion.clave) { _ in
             partitura = importada.map { RecorridoDePartitura($0, notacion: notacion) }
         }
@@ -372,13 +365,9 @@ struct VistaDeTonnetz: View {
     // MARK: Acciones
 
     /// Lee el fichero elegido y empieza por su primer acorde.
-    private func abrir(_ elegido: Result<URL, Error>) {
+    private func abrir(_ elegida: Result<ProgresionImportada, any Error>) {
         do {
-            let url = try elegido.get()
-            // Los ficheros de fuera de la app (Archivos, iCloud) solo se leen con permiso.
-            let conPermiso = url.startAccessingSecurityScopedResource()
-            defer { if conPermiso { url.stopAccessingSecurityScopedResource() } }
-            let leida = try ImportacionDeProgresion.leer(Data(contentsOf: url))
+            let leida = try elegida.get()
             importada = leida
             partitura = RecorridoDePartitura(leida, notacion: notacion)
             pasoElegido = 0

@@ -37,8 +37,9 @@ Packages/
 │                   y el paraguas `Armonia`: notas, acordes, escalas, tonalidad, Tonnetz, MusicXML, MEI, LilyPond, ABC, MIDI, pentagramas en SVG,
 │                   y los mástiles, afinaciones, digitaciones de acordes y escalas por posiciones (guitarra, bajo, ukelele…)
 ├── Interfaz/       Componentes SwiftUI (DiagramaDeMastil, DiagramaDePentagrama, DiagramaDeTonnetz, DiagramaDeRejilla, VistaSVG, tema) y lo que comparten las apps:
-│                   el selector de notación y su ajuste (en el entorno), los textos de la interfaz en doce
-│                   lo que enseña cada vista, el cálculo en segundo plano y el menú para exportar
+│                   el selector de notación y su ajuste (en el entorno), los textos de la interfaz en trece
+│                   idiomas, lo que enseña cada vista, el cálculo en segundo plano, el selector para abrir una
+│                   partitura y el menú para exportar
 ├── Exposicion/     Lo que enseñan las apps y la línea de comandos, sin SwiftUI: el análisis, el coral, la
 │                   transposición, la tablatura, la escucha, los ficheros para exportar y los textos de la
 │                   interfaz en trece idiomas

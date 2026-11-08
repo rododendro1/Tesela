@@ -115,11 +115,7 @@ extension PresentacionDeEstudioDeEscala {
             }
         }
         let alto = (y + margen).rounded(.up)
-        let cabecera =
-            "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"\(numero(ancho))\" height=\"\(numero(alto))\" "
-            + "viewBox=\"0 0 \(numero(ancho)) \(numero(alto))\" font-family=\"Helvetica, Arial, sans-serif\">"
-        let fondo = "<rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/>"
-        return ([cabecera, fondo] + cuerpo + ["</svg>"]).joined(separator: "\n")
+        return hojaSVG(ancho: ancho, alto: alto, cuerpo)
     }
 
     /// Los elementos de una lista en filas de `porFila`, separados por « · ».
@@ -168,6 +164,16 @@ extension PresentacionDeEstudioDeEscala {
         let numeros = texto.split(whereSeparator: { $0 == " " || $0 == "," }).compactMap { Double($0) }
         guard numeros.count == 4, numeros[2] > 0, numeros[3] > 0 else { return nil }
         return (texto, numeros[2], numeros[3])
+    }
+
+    /// Un SVG de `ancho` × `alto` puntos con fondo blanco y `cuerpo` dentro, una línea por elemento: lo que acaba
+    /// cada hoja de estudio (la de la escala, la del análisis, la de la tonalidad, la comparación…).
+    static func hojaSVG(ancho: Double, alto: Double, _ cuerpo: [String]) -> String {
+        let cabecera =
+            "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"\(numero(ancho))\" height=\"\(numero(alto))\" "
+            + "viewBox=\"0 0 \(numero(ancho)) \(numero(alto))\" font-family=\"Helvetica, Arial, sans-serif\">"
+        let fondo = "<rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/>"
+        return ([cabecera, fondo] + cuerpo + ["</svg>"]).joined(separator: "\n")
     }
 
     /// Con un decimal como mucho: «40», «12.5».
