@@ -233,7 +233,7 @@ public struct Nota: Hashable, Sendable {
     package static func leerEnLenguasPeninsulares(_ texto: String) -> Nota? {
         let clave = texto.claveDeBusqueda
         for notacion in Notacion.deLecturaGenerica + Notacion.conPalabras {
-            if let nombre = porNombre[notacion]?[clave] { return nombre }
+            if let nombre = porNombre[notacion][clave] { return nombre }
         }
         return nil
     }
@@ -275,7 +275,7 @@ public struct Nota: Hashable, Sendable {
             // La tabla de la escritura con palabras tiene también los nombres compactos (Fis, Ré♭), que salen en sus
             // cifrados.
             let tabla = idioma.reglas.tieneVariantes ? notacion : Notacion(escritura: .conPalabras(idioma))
-            if let nombre = Nota.porNombre[tabla]?[texto.claveDeBusqueda] {
+            if let nombre = Nota.porNombre[tabla][texto.claveDeBusqueda] {
                 self = nombre
             } else if Notacion.conPalabras.contains(notacion) {
                 // En español e inglés se leen las tres formas: «Fa sostenido», «Fa#» y «Fa♯».
@@ -286,40 +286,33 @@ public struct Nota: Hashable, Sendable {
         }
     }
 
-    /// Nombres de cada notación (hasta cuatro alteraciones) → nombre de nota.
-    package static let porNombre: [Notacion: [String: Nota]] = {
-        var tablas: [Notacion: [String: Nota]] = [:]
-        let notaciones = [
-            Notacion.conPalabras(.aleman), .conPalabras(.hungaro), .conPalabras(.sueco), .conPalabras(.frances),
-            .conPalabras(.italiano),
-        ]
-        for notacion in notaciones + Notacion.deLecturaGenerica + Notacion.conPalabras {
-            var tabla: [String: Nota] = [:]
-            for quintas in -29...33 {
-                let nombre = Nota(pasosDeQuinta: quintas)
-                tabla[nombre.nombre(en: notacion).claveDeBusqueda] = nombre
-                tabla[nombre.nombreCompacto(en: notacion).claveDeBusqueda] = nombre
-                // Y como lo escribe la notación compacta, con 𝄫 y 𝄪: «Mi𝄫», no solo «Mi♭♭».
-                tabla[nombre.nombre(en: .compacta(notacion.idiomaDeLasNotas)).claveDeBusqueda] = nombre
-                // En ruso y en griego, también como se escriben en las otras grafías: «solʹ», «sol'», «fa díesi». La
-                // compacta en ASCII no, que es la del español (Fa#), y la leería como rusa.
-                if [Idioma.ruso, .griego].contains(notacion.idiomaDeLasNotas) {
-                    let transliterada = notacion.conGrafia(.transliterada)
-                    let escritos = [
-                        nombre.nombre(en: transliterada), nombre.nombreCompacto(en: transliterada),
-                        nombre.nombre(en: notacion.conGrafia(.ascii)),
-                    ]
-                    for escrito in escritos where tabla[escrito.claveDeBusqueda] == nil {
-                        tabla[escrito.claveDeBusqueda] = nombre
-                    }
+    /// Nombres de cada notación (hasta cuatro alteraciones) → nombre de nota. Cada tabla se calcula la primera vez que
+    /// se lee una nota en esa notación: leer en español no calcula las del alemán ni las del ruso.
+    package static let porNombre = TablaPerezosa<Notacion, [String: Nota]> { notacion in
+        var tabla: [String: Nota] = [:]
+        for quintas in -29...33 {
+            let nombre = Nota(pasosDeQuinta: quintas)
+            tabla[nombre.nombre(en: notacion).claveDeBusqueda] = nombre
+            tabla[nombre.nombreCompacto(en: notacion).claveDeBusqueda] = nombre
+            // Y como lo escribe la notación compacta, con 𝄫 y 𝄪: «Mi𝄫», no solo «Mi♭♭».
+            tabla[nombre.nombre(en: .compacta(notacion.idiomaDeLasNotas)).claveDeBusqueda] = nombre
+            // En ruso y en griego, también como se escriben en las otras grafías: «solʹ», «sol'», «fa díesi». La
+            // compacta en ASCII no, que es la del español (Fa#), y la leería como rusa.
+            if [Idioma.ruso, .griego].contains(notacion.idiomaDeLasNotas) {
+                let transliterada = notacion.conGrafia(.transliterada)
+                let escritos = [
+                    nombre.nombre(en: transliterada), nombre.nombreCompacto(en: transliterada),
+                    nombre.nombre(en: notacion.conGrafia(.ascii)),
+                ]
+                for escrito in escritos where tabla[escrito.claveDeBusqueda] == nil {
+                    tabla[escrito.claveDeBusqueda] = nombre
                 }
             }
-            tablas[notacion] = tabla
         }
         // «H Be», como se escribía el Si♭ en `.conPalabras(.aleman)` (antes `.aleman`) en la 0.3.0, se sigue leyendo.
-        tablas[.conPalabras(.aleman)]?["H Be".claveDeBusqueda] = Nota(.si, .bemol)
-        return tablas
-    }()
+        if notacion == .conPalabras(.aleman) { tabla["H Be".claveDeBusqueda] = Nota(.si, .bemol) }
+        return tabla
+    }
 
     // MARK: Operaciones
 

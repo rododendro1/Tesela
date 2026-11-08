@@ -168,25 +168,27 @@ package struct NombresDeEscalas: Sendable {
         tradicionales[tipo.identidad]?.nombre ?? porTipo[tipo]?.nombre
     }
 
-    /// Los nombres en los trece idiomas.
-    package static let traducidos = Traducido<NombresDeEscalas>(
-        espanol, ingles, ca: catalan, gl: gallego, eu: euskera, pt: portugues,
-        fr: frances, it: italiano, de: aleman, el: griego, ru: ruso, hu: hungaro, sv: sueco)
+    /// Los nombres de cada idioma, que se calculan la primera vez que se piden (cada `static let` lo hace por su
+    /// cuenta): leer «re dórico» no calcula los del ruso ni los del húngaro.
+    private static let porIdioma = Traducido<@Sendable () -> NombresDeEscalas>(
+        { espanol }, { ingles }, ca: { catalan }, gl: { gallego }, eu: { euskera }, pt: { portugues },
+        fr: { frances }, it: { italiano }, de: { aleman }, el: { griego }, ru: { ruso }, hu: { hungaro },
+        sv: { sueco })
 
     /// Los nombres en un idioma.
-    package static func de(_ idioma: Idioma) -> NombresDeEscalas { traducidos.texto(en: idioma) }
+    package static func de(_ idioma: Idioma) -> NombresDeEscalas { porIdioma.texto(en: idioma)() }
 
     /// Los nombres en el idioma de los textos de una notación y en su grafía (`Notacion.grafiaDeLosTextos`).
     package static func de(_ notacion: Notacion) -> NombresDeEscalas {
         switch notacion.grafiaDeLosTextos {
         case .original: return de(notacion.textos)
-        case .transliterada: return transliterados.texto(en: notacion.textos)
-        case .ascii: return enASCII.texto(en: notacion.textos)
+        case .transliterada: return transliterados[notacion.textos]
+        case .ascii: return enASCII[notacion.textos]
         }
     }
 
-    private static let transliterados = traducidos.map { $0.en(.transliterada) }
-    private static let enASCII = traducidos.map { $0.en(.ascii) }
+    private static let transliterados = TablaPerezosa<Idioma, NombresDeEscalas> { de($0).en(.transliterada) }
+    private static let enASCII = TablaPerezosa<Idioma, NombresDeEscalas> { de($0).en(.ascii) }
 
     /// El español sale del catálogo: el nombre de cada tipo, sus alias y sus variantes.
     static let espanol = NombresDeEscalas(
@@ -198,22 +200,23 @@ package struct NombresDeEscalas: Sendable {
 // MARK: - Leer un tipo de escala junto a una tónica
 
 extension NombresDeEscalas {
-    /// Los nombres de varios idiomas en un solo índice: si dos idiomas escriben igual nombres de tipos distintos,
-    /// gana el primero de la lista.
-    private static func unidos(_ idiomas: [Idioma]) -> [String: TipoDeEscala] {
-        var indice: [String: TipoDeEscala] = [:]
+    /// El tipo con ese nombre (normalizado) en el primero de los idiomas que lo tenga. Se miran en orden, así que solo
+    /// se calculan los nombres de los idiomas que hace falta mirar.
+    private static func buscar(_ normalizado: String, en idiomas: [Idioma]) -> TipoDeEscala? {
         for idioma in idiomas {
-            for (clave, tipo) in de(idioma).indice where indice[clave] == nil { indice[clave] = tipo }
+            if let tipo = de(idioma).indice[normalizado] { return tipo }
         }
-        return indice
+        return nil
     }
 
     /// Catalán, gallego, euskera, portugués, francés e italiano, para leerlos con la tónica en esas lenguas o en
     /// español ("re dòric", "re doriarra", "ré dórico", "ré dorien", "re dorico").
-    static let indicePeninsular: [String: TipoDeEscala] = unidos([.catalan, .gallego, .euskera, .portugues, .frances, .italiano])
+    static func peninsular(_ normalizado: String) -> TipoDeEscala? {
+        buscar(normalizado, en: [.catalan, .gallego, .euskera, .portugues, .frances, .italiano])
+    }
 
     /// Ruso y griego, con las otras formas de los más comunes ("ре ионийский", "λα αιολικός").
-    static let indiceRusoGriego: [String: TipoDeEscala] = unidos([.ruso, .griego])
+    static func rusoOGriego(_ normalizado: String) -> TipoDeEscala? { buscar(normalizado, en: [.ruso, .griego]) }
 }
 
 extension TipoDeEscala {
@@ -225,7 +228,7 @@ extension TipoDeEscala {
         if notacion == .conPalabras(.ingles) { return buscar(nombre: nombre, aceptarIngles: true) }
         let normalizado = normalizar(nombre)
         if notacion == .conPalabras(.ruso) || notacion == .conPalabras(.griego) {
-            return NombresDeEscalas.indiceRusoGriego[normalizado] ?? buscar(nombre: nombre, aceptarIngles: true)
+            return NombresDeEscalas.rusoOGriego(normalizado) ?? buscar(nombre: nombre, aceptarIngles: true)
         }
         // En alemán, en húngaro y en sueco, el suyo o el de los otros, que escriben las notas igual (C, H, B):
         // «C dór», «H moll».
@@ -237,6 +240,6 @@ extension TipoDeEscala {
             }
             return nil
         }
-        return NombresDeEscalas.indicePeninsular[normalizado] ?? buscar(nombre: nombre, aceptarIngles: false)
+        return NombresDeEscalas.peninsular(normalizado) ?? buscar(nombre: nombre, aceptarIngles: false)
     }
 }

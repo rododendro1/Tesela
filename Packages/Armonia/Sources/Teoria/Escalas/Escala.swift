@@ -68,7 +68,7 @@ public struct Escala: Hashable, Sendable {
             .conPalabras(.sueco),
         ]
         for notacion in Notacion.deLecturaGenerica + otras + Notacion.conPalabras {
-            if let nombre = Nota.porNombre[notacion]?[clave] { return (nombre, notacion) }
+            if let nombre = Nota.porNombre[notacion][clave] { return (nombre, notacion) }
         }
         return nil
     }
