@@ -2,11 +2,11 @@ import Armonia
 import Foundation
 
 // Recorre `TipoDeEscala.catalogo` (las occidentales y las de otras tradiciones, en su orden) y escribe una fila por
-// escala con lo que dice de ella la API pública: nombres, intervalos, tradición, estilos, regiones, categoría,
+// escala con lo que dice de ella la API pública: nombres (y su traducción a los otros doce idiomas), intervalos, tradición, estilos, regiones, categoría,
 // fuente, afinaciones, lo que se mide de sus notas (brillo, pasos, forma prima, simetría…), sus parientes en el
 // catálogo y las obras que la citan. Las listas de una celda van separadas por espacios (intervalos, notas, cents,
-// pasos) o por « · » (alias, variantes, estilos, regiones, escalas, citas); una celda vacía es un dato que la escala no tiene, y
-// las de sí o no dicen «sí» o «no».
+// pasos) o por « · » (alias, variantes, estilos, regiones, escalas, citas); una celda vacía es un dato que la escala
+// no tiene, y las de sí o no dicen «sí» o «no».
 //
 //     swift run EjemploCatalogoDeEscalas [fichero | -] [--tradicion <tradición>] [--bibtex <fichero.bib>]
 //
@@ -32,20 +32,21 @@ func numeros(_ valores: [Int]) -> String { valores.map(String.init).joined(separ
 
 func nombres(_ tipos: [TipoDeEscala]) -> String { tipos.map(\.nombre).joined(separator: " · ") }
 
-let columnas = [
-    "nombre", "nombre_completo", "nombre_en_ingles", "alias", "variantes", "tradicion", "estilos", "regiones",
-    "categoria",
-    "clase", "fuente", "numero_de_notas", "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
-    "melakarta", "padre", "afinaciones", "sistema_microtonal", "cents",
-    // Lo que se mide de sus notas, sobre Do (`EstadisticasDeEscala`).
-    "cardinal", "pasos", "brillo", "brillo_por_quintas", "forma_prima", "forte", "vector_intervalico",
-    "nombre_del_conjunto", "anhemitonica", "cohemitonica", "maximamente_regular", "transposiciones_distintas",
-    "aproximada", "nota_caracteristica",
-    // Sus parientes en el catálogo y las obras que la citan.
-    "equivalentes", "derivadas", "referencias",
-]
+/// Los idiomas a los que se traduce el nombre, en el orden de `Idioma.allCases`: todos menos el español.
+let traducciones = Idioma.allCases.filter { $0 != .espanol }
 
-let ingles = Notacion.delIdioma(.ingles)
+let columnas: [String] =
+    ["nombre", "nombre_completo"] + traducciones.map { "nombre_en_\($0.rawValue)" } + [
+        "alias", "variantes", "tradicion", "estilos", "regiones", "categoria", "clase", "fuente", "numero_de_notas",
+        "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
+        "melakarta", "padre", "afinaciones", "sistema_microtonal", "cents",
+        // Lo que se mide de sus notas, sobre Do (`EstadisticasDeEscala`).
+        "cardinal", "pasos", "brillo", "brillo_por_quintas", "forma_prima", "forte", "vector_intervalico",
+        "nombre_del_conjunto", "anhemitonica", "cohemitonica", "maximamente_regular", "transposiciones_distintas",
+        "aproximada", "nota_caracteristica",
+        // Sus parientes en el catálogo y las obras que la citan.
+        "equivalentes", "derivadas", "referencias",
+    ]
 
 /// La fila de una escala, en el orden de `columnas`.
 func fila(_ tipo: TipoDeEscala) -> [String] {
@@ -53,10 +54,8 @@ func fila(_ tipo: TipoDeEscala) -> [String] {
     let sobreDo = Escala(.do, tipo)
     let medidas = sobreDo.estadisticas
     let conjunto = sobreDo.conjuntoDeClasesDeAltura
-    return [
-        tipo.nombre,
-        tipo.nombreCompleto,
-        tipo.nombre(en: ingles),
+    let comoSeLlama = [tipo.nombre, tipo.nombreCompleto] + traducciones.map { tipo.nombre(en: .delIdioma($0)) }
+    let resto: [String] = [
         tipo.alias.joined(separator: " · "),
         tipo.variantes.joined(separator: " · "),
         tipo.tradicion?.nombre ?? "",
@@ -95,6 +94,7 @@ func fila(_ tipo: TipoDeEscala) -> [String] {
         nombres(tipo.derivadas),
         tipo.referencias.map(\.cita).joined(separator: " · "),
     ]
+    return comoSeLlama + resto
 }
 
 // MARK: - Argumentos
