@@ -2,9 +2,9 @@ import Armonia
 import Foundation
 
 // Recorre `TipoDeEscala.catalogo` (las occidentales y las de otras tradiciones, en su orden) y escribe una fila por
-// escala con lo que dice de ella la API pública: nombres, intervalos, tradición, categoría, fuente, usos y
-// afinaciones. Las listas de una celda van separadas por espacios (intervalos, notas, cents) o por « · » (alias,
-// usos), y una celda vacía es un dato que la escala no tiene.
+// escala con lo que dice de ella la API pública: nombres, intervalos, tradición, estilos, regiones, categoría,
+// fuente y afinaciones. Las listas de una celda van separadas por espacios (intervalos, notas, cents) o por « · »
+// (alias, estilos, regiones), y una celda vacía es un dato que la escala no tiene.
 
 /// Una celda de TSV: sin tabuladores ni saltos de línea, que partirían la fila.
 func celda(_ texto: String) -> String {
@@ -17,8 +17,8 @@ func cents(_ valores: [Double]) -> String {
 }
 
 let columnas = [
-    "nombre", "nombre_completo", "nombre_en_ingles", "alias", "tradicion", "subtradicion", "categoria", "clase",
-    "fuente", "usos", "numero_de_notas", "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
+    "nombre", "nombre_completo", "nombre_en_ingles", "alias", "tradicion", "estilos", "regiones", "categoria",
+    "clase", "fuente", "numero_de_notas", "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
     "melakarta", "padre", "afinaciones", "sistema_microtonal", "cents",
 ]
 
@@ -31,11 +31,11 @@ func fila(_ tipo: TipoDeEscala) -> [String] {
         tipo.nombre(en: ingles),
         tipo.alias.joined(separator: " · "),
         tipo.tradicion?.nombre ?? "",
-        tipo.subtradicion?.nombre ?? "",
+        tipo.estilos.map(\.nombre).joined(separator: " · "),
+        tipo.regiones.map(\.nombre).joined(separator: " · "),
         tipo.categoria?.nombre ?? "",
         tipo.clase?.rawValue ?? "",
         tipo.fuente?.nombre ?? "",
-        tipo.usos.map(\.nombre).joined(separator: " · "),
         String(tipo.numeroDeNotas),
         tipo.intervalos.map(\.abreviatura).joined(separator: " "),
         tipo.intervalos.map { String($0.semitonos) }.joined(separator: " "),
