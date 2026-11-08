@@ -5,7 +5,7 @@ import Foundation
 // escala con lo que dice de ella la API pública: nombres, intervalos, tradición, estilos, regiones, categoría,
 // fuente, afinaciones, lo que se mide de sus notas (brillo, pasos, forma prima, simetría…), sus parientes en el
 // catálogo y las obras que la citan. Las listas de una celda van separadas por espacios (intervalos, notas, cents,
-// pasos) o por « · » (alias, estilos, regiones, escalas, citas); una celda vacía es un dato que la escala no tiene, y
+// pasos) o por « · » (alias, variantes, estilos, regiones, escalas, citas); una celda vacía es un dato que la escala no tiene, y
 // las de sí o no dicen «sí» o «no».
 //
 //     swift run EjemploCatalogoDeEscalas [fichero | -] [--tradicion <tradición>] [--bibtex <fichero.bib>]
@@ -33,7 +33,8 @@ func numeros(_ valores: [Int]) -> String { valores.map(String.init).joined(separ
 func nombres(_ tipos: [TipoDeEscala]) -> String { tipos.map(\.nombre).joined(separator: " · ") }
 
 let columnas = [
-    "nombre", "nombre_completo", "nombre_en_ingles", "alias", "tradicion", "estilos", "regiones", "categoria",
+    "nombre", "nombre_completo", "nombre_en_ingles", "alias", "variantes", "tradicion", "estilos", "regiones",
+    "categoria",
     "clase", "fuente", "numero_de_notas", "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
     "melakarta", "padre", "afinaciones", "sistema_microtonal", "cents",
     // Lo que se mide de sus notas, sobre Do (`EstadisticasDeEscala`).
@@ -57,6 +58,7 @@ func fila(_ tipo: TipoDeEscala) -> [String] {
         tipo.nombreCompleto,
         tipo.nombre(en: ingles),
         tipo.alias.joined(separator: " · "),
+        tipo.variantes.joined(separator: " · "),
         tipo.tradicion?.nombre ?? "",
         tipo.estilos.map(\.nombre).joined(separator: " · "),
         tipo.regiones.map(\.nombre).joined(separator: " · "),
