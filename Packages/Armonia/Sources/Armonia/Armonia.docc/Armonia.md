@@ -23,6 +23,7 @@ Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first   // La meno
 - <doc:ElModelo>
 - <doc:Acordes>
 - <doc:Escalas>
+- <doc:EscalasDelMundo>
 - <doc:Tonalidad>
 - <doc:NotacionYPartitura>
 - <doc:MelodiaYRitmo>
