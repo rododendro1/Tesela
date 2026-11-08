@@ -3,7 +3,7 @@ import Elementos
 // MARK: - Ficha de una escala del catálogo
 
 /// Lo que el catálogo sabe de una escala además de su nombre y sus intervalos: sus subtradiciones (los estilos en que
-/// se usa y las regiones de donde viene), su categoría (las de otras tradiciones), el mēḷa de un rāga janya y sus
+/// se usa y las regiones de donde viene), su categoría (las de otras tradiciones), su escala madre (`padre`) y sus
 /// versiones microtonales.
 ///
 /// Se escribe en la declaración de la escala, con el resto de sus datos:
@@ -11,7 +11,8 @@ import Elementos
 ///     public static let dorico = TipoDeEscala(
 ///         nombre: "dórico", intervalos: […], alias: ["menor dórica"], variantes: ["dórica"],
 ///         estilos: [.clasica, .jazz])
-///     public static let mohanam = TipoDeEscala(nombre: "Mohanam", intervalos: […], categoria: .janya, mela: 28)
+///     public static let mohanam = TipoDeEscala(
+///         nombre: "Mohanam", intervalos: […], categoria: .janya, padre: .melakarta(28))
 ///     public static let pelogTembung = TipoDeEscala(nombre: "Pélog tembung", intervalos: […], categoria: .pathet,
 ///         regiones: [.bali], afinaciones: [.init(.razones, pasos: […])])
 ///     public static let rastMakami = TipoDeEscala(nombre: "Rast makamı", intervalos: […], categoria: .makam)
@@ -54,8 +55,9 @@ package struct FichaDeEscala: Sendable {
     package let regiones: [RegionDeEscala]
     /// La categoría en su tradición; `nil` en las occidentales.
     package let categoria: CategoriaTradicional?
-    /// El número del mēḷa de un rāga janya; `nil` en las demás escalas y en los janya sin un padre claro.
-    package let mela: Int?
+    /// La escala madre de la que sale (el mēḷa de un janya, el thāṭ de un rāga, el grāma de una mūrchanā, el laras
+    /// de un pathet), por su identidad; `nil` si no tiene una clara.
+    package let padre: IdentidadDeEscala?
     /// Las versiones microtonales: la primera, la de su teoría de hoy; las demás, de otros autores (con `fuente`).
     package let afinaciones: [Afinacion]
     /// El teórico que definió la escala (los géneros de Ptolomeo, los colores de Aristóxeno…); `nil` en las demás.
@@ -63,13 +65,13 @@ package struct FichaDeEscala: Sendable {
 
     package init(
         estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [], categoria: CategoriaTradicional? = nil,
-        mela: Int? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil
+        padre: IdentidadDeEscala? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil
     ) {
         let estilos = estilos.isEmpty ? (categoria.flatMap(EstiloDeEscala.de).map { [$0] } ?? []) : estilos
         self.estilos = EstiloDeEscala.allCases.filter { estilos.contains($0) }
         self.regiones = RegionDeEscala.allCases.filter { regiones.contains($0) }
         self.categoria = categoria
-        self.mela = mela
+        self.padre = padre
         self.afinaciones = afinaciones
         self.fuente = fuente
     }

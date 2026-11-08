@@ -316,7 +316,9 @@ que siguen en IAST; la forma latina se sigue leyendo.
 `categoria` y `tradicion` dicen qué es una escala de otra tradición. Salen de las listas de arriba y
 valen `nil` en las occidentales y en las escalas propias (también en una propia que se llame «Kāfī» pero
 suene distinta). Un mēḷa es también un rāga (`esRaga`); un thāṭ, que es una escala madre de la que se
-derivan rāgas, no. Un rāga janya tiene `padre`, el mēḷa del que deriva por la tradición.
+derivan rāgas, no. `padre` es la escala madre de la que sale una escala por la tradición: el mēḷa de un rāga
+janya, el thāṭ de un rāga indostánico (en la clasificación de Bhatkhande), el grāma de una mūrchanā y el laras de
+un pathet; `derivadas` da al revés las que salen de una.
 
 ```swift
 TipoDeEscala.kafi.categoria                     // .thaat
@@ -326,6 +328,8 @@ TipoDeEscala.rastMakami.categoria               // .makam
 TipoDeEscala.mohanam.esRaga                     // true
 TipoDeEscala.kafi.esRaga                        // false
 TipoDeEscala.mohanam.padre?.numeroDeMelakarta   // 28
+TipoDeEscala.yaman.padre == .kalyan             // true
+TipoDeEscala.sadjaGrama.derivadas.count         // 7
 TipoDeEscala.menorNatural.categoria             // nil: las occidentales no tienen categoría
 TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
 CategoriaTradicional.escala.nombre(en: Notacion.compacta(.espanol).conTextos(en: .frances))   // "gamme"

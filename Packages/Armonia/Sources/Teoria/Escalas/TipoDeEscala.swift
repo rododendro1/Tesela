@@ -67,19 +67,22 @@ public struct TipoDeEscala: Sendable, Codable {
     }
 
     /// Una escala de otra tradición, con su categoría y, si los tiene, sus estilos (si no los da la categoría), sus
-    /// regiones, el teórico que la definió (`fuente`), el número del mēḷa del que deriva (un rāga janya) y sus
+    /// regiones, el teórico que la definió (`fuente`), la escala madre de la que sale (`padre`: el mēḷa de un
+    /// janya, el thāṭ de un rāga indostánico…) y sus
     /// versiones microtonales. La tradición la da su lista en `listasTradicionales`.
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
         variantes: [String] = [], categoria: CategoriaTradicional,
-        estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil, mela: Int? = nil,
+        estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
+        padre: TipoDeEscala? = nil,
         afinaciones: [FichaDeEscala.Afinacion] = []
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
             variantes: variantes,
             ficha: FichaDeEscala(
-                estilos: estilos, regiones: regiones, categoria: categoria, mela: mela, afinaciones: afinaciones,
+                estilos: estilos, regiones: regiones, categoria: categoria, padre: padre?.identidad,
+                afinaciones: afinaciones,
                 fuente: fuente))
     }
 

@@ -193,6 +193,44 @@ import Testing
         #expect(TipoDeEscala.thaats[0].padre == nil)
     }
 
+    /// Un padre es siempre una escala madre de la misma tradición, y la escala sale de él: sus notas son las del padre
+    /// (los rāgas en su thāṭ, desde la misma tónica) o las de uno de sus modos (las mūrchanā, los pathet). Salvo
+    /// Deś, en Khamāj por la tradición aunque sube con una nota que no es del thāṭ.
+    @Test func elPadreEsUnaEscalaMadreDeLaQueSale() {
+        func clases(_ tipo: TipoDeEscala) -> Set<Int> {
+            Set((tipo.intervalos + (tipo.intervalosDescendentes ?? [])).map { $0.semitonos % 12 })
+        }
+        var conPadre = 0
+        for tipo in TipoDeEscala.catalogo {
+            guard let padre = tipo.padre else { continue }
+            conPadre += 1
+            #expect(padre.clase == .escalaMadre, Comment(rawValue: tipo.nombre))
+            #expect(padre.tradicion == tipo.tradicion, Comment(rawValue: tipo.nombre))
+            #expect(padre.derivadas.contains { $0.esIdentico(a: tipo) }, Comment(rawValue: tipo.nombre))
+            // Deś sube con el Ni natural y baja con el komal, y Bhatkhande lo pone en Khamāj, que solo tiene el komal.
+            guard !tipo.esIdentico(a: .des) else { continue }
+            let suyas = clases(tipo)
+            let delPadre = clases(padre)
+            let modos = delPadre.map { tonica in Set(delPadre.map { ($0 - tonica + 12) % 12 }) }
+            #expect(modos.contains { suyas.isSubset(of: $0) }, "\(tipo.nombre) ↛ \(padre.nombre)")
+            if padre.categoria == .thaat { #expect(suyas.isSubset(of: delPadre), "\(tipo.nombre) ↛ \(padre.nombre)") }
+        }
+        #expect(conPadre == 19 + 13 + 14 + 3)
+        #expect(TipoDeEscala.yaman.padre == .kalyan && TipoDeEscala.yaman.padre?.categoria == .thaat)
+        #expect(TipoDeEscala.darbariKanada.padre?.nombre == TipoDeEscala.asavari.nombre)
+        #expect(TipoDeEscala.candrakauns.padre == nil)
+        #expect(TipoDeEscala.sadjaGrama.derivadas.map(\.nombre) == TipoDeEscala.murchanas.prefix(7).map(\.nombre))
+        #expect(TipoDeEscala.madhyamaGrama.derivadas.map(\.nombre) == TipoDeEscala.murchanas.suffix(7).map(\.nombre))
+        #expect(
+            TipoDeEscala.slendro.derivadas.map(\.nombre) == [
+                "Sléndro pathet nem", "Sléndro pathet sanga", "Sléndro pathet manyura",
+            ])
+        #expect(TipoDeEscala.kalyan.derivadas.map(\.nombre) == ["Bhūpālī", "Yaman"])
+        #expect(TipoDeEscala.mayor.derivadas.isEmpty)
+        // Una escala propia con los intervalos del sléndro no tiene sus pathet.
+        #expect(TipoDeEscala(nombre: "mía", intervalos: TipoDeEscala.slendro.intervalos).derivadas.isEmpty)
+    }
+
     /// Las clases: los fragmentos tienen menos de una octava de notas (de tres a seis), las afinaciones son las
     /// babilónicas y las escalas madre, los mēḷa, los thāṭ, los grāma y los laras.
     @Test func clasesDeLasTradicionales() {

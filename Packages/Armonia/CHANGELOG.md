@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### La escala madre de cualquier escala: `padre` y `derivadas`
+
+- `TipoDeEscala.padre` ya no es solo el mēḷa de un rāga janya: es la escala madre de la que sale una escala por la
+  tradición. Ahora la tienen también los rāgas indostánicos, en su thāṭ según Bhatkhande (Yaman y Bhūpālī en Kalyāṇ,
+  Darbārī Kānaḍa en Āsāvarī…; Lalit y Candrakauns no tienen uno claro), las catorce mūrchanā, en su grāma, y los tres
+  pathet del sléndro, en el sléndro.
+- `TipoDeEscala.derivadas`, nueva: las escalas del catálogo que salen de una (los janya de un mēḷa, los rāgas de un
+  thāṭ, las siete mūrchanā de un grāma), en el orden del catálogo.
+- En el catálogo, una escala dice su padre con la escala (`padre: .melakarta(28)`, `padre: .kalyan`) en lugar del
+  número del mēḷa (`mela: 28`).
+
 ### Las fuentes de las afinaciones, en `FuenteTeorica`
 
 - **Cambio incompatible:** la `fuente` de una afinación (`TipoDeEscalaMicrotonal.fuente`) es una `FuenteTeorica?` y no

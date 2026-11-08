@@ -7,7 +7,7 @@ import Testing
 /// La tradición y la subtradición de cada escala, las listas de `listasTradicionales` y sus nombres.
 @Suite struct TradicionTests {
     /// Las listas de `listasTradicionales` reparten todas las escalas de otras tradiciones, cada una en la suya, y
-    /// cada una dice en su declaración su categoría, su versión microtonal y, los janya, su mēḷa.
+    /// cada una dice en su declaración su categoría, su versión microtonal y, si la tiene, su escala madre.
     @Test func lasListasRepartenLasTradicionales() {
         var vistas = Set<String>()
         for lista in TipoDeEscala.listasTradicionales {
@@ -20,9 +20,9 @@ import Testing
                 #expect(tipo.ficha.categoria != nil, Comment(rawValue: tipo.nombre))
                 #expect(tipo.categoria == tipo.ficha.categoria, Comment(rawValue: tipo.nombre))
                 #expect(lista.tradicion != .occidental, Comment(rawValue: tipo.nombre))
-                if let mela = tipo.ficha.mela {
-                    #expect(tipo.categoria == .janya, Comment(rawValue: tipo.nombre))
-                    #expect(tipo.padre == TipoDeEscala.melakarta(mela), Comment(rawValue: tipo.nombre))
+                if let padre = tipo.ficha.padre {
+                    // El padre es una escala del catálogo.
+                    #expect(tipo.padre?.identidad == padre, Comment(rawValue: tipo.nombre))
                 }
             }
         }
@@ -33,7 +33,7 @@ import Testing
         )
         // Las occidentales no tienen categoría, y su tradición es la occidental.
         for tipo in TipoDeEscala.occidentales {
-            #expect(tipo.ficha.categoria == nil && tipo.ficha.mela == nil, Comment(rawValue: tipo.nombre))
+            #expect(tipo.ficha.categoria == nil && tipo.ficha.padre == nil, Comment(rawValue: tipo.nombre))
             #expect(tipo.tradicion == .occidental, Comment(rawValue: tipo.nombre))
         }
         #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).tradicion == nil)
