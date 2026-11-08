@@ -227,18 +227,23 @@ Sources/
 │   │   └── Neorriemanniana/   TransformacionNeorriemanniana (P, L, R y caminos), CicloNeorriemanniano
 │   │                      (hexatónico, octatónico, LR), ConduccionParsimoniosa (vecinos a un semitono,
 │   │                      conducción mínima)
-│   ├── Escalas/           TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
-│   │   │                  `nombre(en:)`), Escala (con NombreDeGrado, la búsqueda por notas y la ortografía)
-│   │   ├── Nombres/       NombresDeEscalas y un fichero por idioma (`NombresDeEscalas+Catalan.swift`…): el nombre de cada
-│   │   │                  tipo, sus alias, las escalas de otras tradiciones y el nombre de cada clase
-│   │   ├── Occidentales/  TipoDeEscala+Modos (con los modos exóticos), +Exoticas (con hexatónicas, jazz y
-│   │   │                  Messiaen), ModoGregoriano
-│   │   └── Tradiciones/   TipoDeEscala+Tradiciones (`listasTradicionales`, cada lista con su tradición, y
-│   │       │              `tradicionales`), CategoriaTradicional (con `Tradicion`) y Microtonos (SistemaMicrotonal,
-│   │       │              TipoDeEscalaMicrotonal)
-│   │       └── Catalogo/  Un fichero por tradición (TipoDeEscala+India, +MundoArabe, +Turquia, +GreciaAntigua…), cada
-│   │                      uno con sus escalas (cada una con su categoría, sus microtonos y, los janya, su mēḷa)
-│   │                      y sus listas
+│   ├── Escalas/
+│   │   ├── Escala/        Escala (con NombreDeGrado, la búsqueda por notas y la ortografía) y lo que se hace con
+│   │   │                  ella: acordes, estudio, simetría, estadísticas, armonía modal, escalas propias y vecinas
+│   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
+│   │   │                  `nombre(en:)`), FichaDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
+│   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, EstiloDeEscala, RegionDeEscala,
+│   │   │                  Subtradicion y FuenteTeorica
+│   │   ├── Catalogo/      Un fichero por tradición (TipoDeEscala+Occidental y +Occidental+Exoticas, +India,
+│   │   │                  +MundoArabe, +Turquia, +GreciaAntigua…), cada uno con sus escalas (con su categoría, sus
+│   │   │                  microtonos, su padre y sus referencias) y sus listas; TipoDeEscala+Tradiciones
+│   │   │                  (`listasTradicionales` y `tradicionales`); ModoGregoriano, ManoGuidoniana y Escala+Diao,
+│   │   │                  junto a sus tradiciones
+│   │   ├── Microtonos/    Microtonos (SistemaMicrotonal, TipoDeEscalaMicrotonal) y NombresPorOctava (las notas
+│   │   │                  árabes, las perde turcas y el sistema perfecto griego)
+│   │   ├── Referencias/   Referencia (citas, BibTeX y CSL-JSON) y Referencias (el catálogo de obras)
+│   │   └── Nombres/       NombresDeEscalas y un fichero por idioma (`NombresDeEscalas+Catalan.swift`…): el nombre de cada
+│   │                      tipo, sus alias, las escalas de otras tradiciones y el nombre de cada clase
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
 │   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica

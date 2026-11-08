@@ -246,7 +246,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let tradicionBrasil: String
     let tradicionRenacimiento: String
 
-    // MARK: Subtradicion.swift
+    // MARK: EstiloDeEscala.swift y RegionDeEscala.swift
     let subtradicionCarnatica: String
     let subtradicionIndostanica: String
     let subtradicionIndiaAntigua: String

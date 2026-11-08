@@ -17,7 +17,7 @@ Comprueba:
   4. cada fichero de idioma da el nombre de todas las categorías de `CategoriaTradicional` (con `.categoria`);
   5. en un idioma, ningún alias ni variante se escribe igual que el nombre, el alias o la variante de otra escala
      (el primero taparía al segundo al leer).
-  6. toda lista de `Tradiciones/` está en `listasTradicionales` (si no, sus escalas no se buscan ni tienen tradición).
+  6. toda lista de otra tradición en `Catalogo/` está en `listasTradicionales` (si no, sus escalas no se buscan ni tienen tradición).
 
 Y avisa, sin fallar, de las escalas de otras tradiciones que no tienen ninguna referencia bibliográfica: ni la suya
 (`referencias: […]`), ni la de su lista en `listasTradicionales`, ni la de su fuente o la de sus afinaciones
@@ -62,6 +62,12 @@ for f, texto in TEXTO.items():
             definidas[nombre] = f.name
 
 errores = []
+
+
+def de_otra_tradicion(f):
+    """¿Es el fichero del catálogo de una tradición que no es la occidental (`Catalogo/TipoDeEscala+India.swift`…)?"""
+    return "Catalogo" in f.parts and f.name.startswith("TipoDeEscala+") and not f.name.startswith("TipoDeEscala+Occidental")
+
 todos = re.findall(r"\.(\w+)", cuerpo_de_lista("occidentales") or "")
 if not todos:
     sys.exit("No encuentro la lista `occidentales`: ¿cambió el estilo del catálogo?")
@@ -96,7 +102,7 @@ for texto in TEXTO.values():
 if not apuntadas:
     sys.exit("No encuentro `listasTradicionales`: ¿cambió el estilo del catálogo?")
 for f, texto in TEXTO.items():
-    if "Tradiciones" not in f.parts:
+    if not de_otra_tradicion(f):
         continue
     for m in re.finditer(r"public static let (\w+): \[TipoDeEscala\] = \[", texto):
         if m.group(1) not in apuntadas:
@@ -124,11 +130,11 @@ def alias_redundantes(nombre, alias):
 
 
 def tradicionales_declaradas():
-    """Los miembros (`static let`) de las escalas de otras tradiciones, en `Tradiciones/`. Los 72 melakarta salen
+    """Los miembros (`static let`) de las escalas de otras tradiciones, en `Catalogo/`. Los 72 melakarta salen
     de una tabla y no llevan fila: sin ella conservan su nombre original."""
     miembros = []
     for f, texto in TEXTO.items():
-        if "Tradiciones" in f.parts:
+        if de_otra_tradicion(f):
             miembros += re.findall(r'static let `?(\w+)`? = TipoDeEscala\(', texto)
     return list(dict.fromkeys(miembros))
 
