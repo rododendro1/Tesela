@@ -65,9 +65,12 @@ import Testing
     }
 
     @Test func descripcion() {
-        #expect(PresentacionDeRejilla.descripcion(casillas: 19, seleccionada: nil) == "19 casillas")
         #expect(
-            PresentacionDeRejilla.descripcion(casillas: 1, seleccionada: CoordenadaAxial(q: 2, r: -1))
+            PresentacionDeRejilla.descripcion(casillas: 19, seleccionada: nil, en: .compacta(.espanol)) == "19 casillas"
+        )
+        #expect(
+            PresentacionDeRejilla.descripcion(
+                casillas: 1, seleccionada: CoordenadaAxial(q: 2, r: -1), en: .compacta(.espanol))
                 == "1 casilla; elegida q 2, r -1")
     }
 }

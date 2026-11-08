@@ -106,7 +106,7 @@ struct VistaDeTonnetz: View {
         }
         .selectorDePartituras(isPresented: $abriendo) { abrir($0) }
         .onChange(of: notacion.clave) { _ in
-            partitura = importada.map { RecorridoDePartitura($0, notacion: notacion) }
+            partitura = importada.map { RecorridoDePartitura($0, en: notacion) }
         }
         .onAppear {
             if recorrido.isEmpty { reiniciar() }
@@ -369,7 +369,7 @@ struct VistaDeTonnetz: View {
         do {
             let leida = try elegida.get()
             importada = leida
-            partitura = RecorridoDePartitura(leida, notacion: notacion)
+            partitura = RecorridoDePartitura(leida, en: notacion)
             pasoElegido = 0
             errorAlAbrir = nil
         } catch {
@@ -387,7 +387,7 @@ struct VistaDeTonnetz: View {
                 let leida = try? ImportacionDeProgresion.leer(Data(analisis.partitura().musicXML().utf8))
             else { return }
             importada = leida
-            partitura = RecorridoDePartitura(leida, notacion: notacion)
+            partitura = RecorridoDePartitura(leida, en: notacion)
             pasoElegido = 0
             contenido = .partitura
         #endif

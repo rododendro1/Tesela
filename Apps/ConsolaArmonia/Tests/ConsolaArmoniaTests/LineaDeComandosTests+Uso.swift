@@ -9,11 +9,21 @@ import Testing
 
 extension LineaDeComandosTests {
     @Test func version() {
-        for orden in ["--version", "version", "versión", "--version --ingles"] {
+        for orden in ["--version", "version", "versión", "--version --ingles", "versión --inglés"] {
             #expect(salida(orden) == "armonia \(LineaDeComandos.version)\n", Comment(rawValue: orden))
         }
         #expect(LineaDeComandos.version.split(separator: ".").count == 3)
         #expect(salida("ayuda --todo").contains("--version"))
+    }
+
+    /// Las órdenes y las opciones se leen con tildes o sin ellas, y en inglés también con la ortografía británica.
+    @Test func conTildesOSinEllas() {
+        #expect(salida("cuadrícula Do Mi Sol") == salida("cuadricula Do Mi Sol"))
+        #expect(salida("conducción-mínima Do Fa") == salida("conduccion-minima Do Fa"))
+        #expect(salida("escala Do mayor --estadísticas") == salida("escala Do mayor --estadisticas"))
+        #expect(salida("escala Do mayor --tríadas --inglés") == salida("escala Do mayor --triadas --ingles"))
+        #expect(salida("neighbours C") == salida("neighbors C"))
+        #expect(salida("escala Do mayor --neighbours") == salida("escala Do mayor --vecinas"))
     }
 
     /// `ayuda <orden>` y `<orden> --help` dan solo las entradas de esa orden, en el idioma de los textos.

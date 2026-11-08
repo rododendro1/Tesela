@@ -12,12 +12,12 @@ extension LineaDeComandos {
     static func conLaSuborden(
         _ argumentos: [String], entre opciones: [OpcionDeOrden], sinNada: Set<String> = []
     ) throws -> [String] {
-        if let escrita = argumentos.first(where: { texto in opciones.contains { $0.leidos.contains(texto) } }) {
+        if let escrita = argumentos.first(where: { texto in opciones.contains { $0.seEscribe(texto) } }) {
             throw ErrorDeUso.opcionDesconocida(escrita)
         }
         guard let primera = argumentos.first?.lowercased(), !primera.hasPrefix("-") else { return argumentos }
         if sinNada.contains(primera) { return Array(argumentos.dropFirst()) }
-        guard let opcion = opciones.first(where: { $0.leidos.contains("--" + primera) }) else { return argumentos }
+        guard let opcion = opciones.first(where: { $0.seEscribe("--" + primera) }) else { return argumentos }
         return [opcion.nombres[0]] + argumentos.dropFirst()
     }
 
@@ -25,10 +25,10 @@ extension LineaDeComandos {
     /// --dedos`. Con `soloPiano` (en `teclado`), `--dedos` a secas es también `--mano derecha` (y `--dedos izquierda`,
     /// `--mano izquierda`); si no, `--dedos` lleva detrás el instrumento. `--mano` no se escribe.
     static func conLosDedos(_ argumentos: [String], soloPiano: Bool) throws -> [String] {
-        if let escrita = argumentos.first(where: OpcionDeOrden.mano.leidos.contains) {
+        if let escrita = argumentos.first(where: OpcionDeOrden.mano.seEscribe) {
             throw ErrorDeUso.opcionDesconocida(escrita)
         }
-        let nombres = OpcionDeOrden.dedos.leidos
+        let nombres = OpcionDeOrden.dedos.nombres
         guard let i = argumentos.firstIndex(where: nombres.contains) else { return argumentos }
         let siguiente = argumentos.indices.contains(i + 1) ? argumentos[i + 1].lowercased() : nil
         var cambiados = argumentos

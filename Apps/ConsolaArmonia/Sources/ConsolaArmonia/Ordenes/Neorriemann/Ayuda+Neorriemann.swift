@@ -4,14 +4,14 @@ extension LineaDeComandos {
     /// Las transformaciones neorriemannianas y la conducción de voces, en el orden en que salen en la ayuda.
     static let ordenesDeNeorriemann: [Orden] = [
         Orden(
-            nombres: ["vecinos", "neighbors"], ayuda: ayudaDeVecinos, json: { try vecinosJSON($0, $1) },
+            nombres: ["vecinos", "neighbors", "neighbours"], ayuda: ayudaDeVecinos, json: { try vecinosJSON($0, $1) },
             ejecutar: { try vecinos($0, $1) }),
         Orden(
             nombres: ["camino-parsimonioso", "smooth-path"],
             ayuda: ayudaDeConduccionParsimoniosa, json: { try caminoParsimoniosoJSON($0, $1) },
             ejecutar: { try caminoParsimonioso($0, $1) }),
         Orden(
-            nombres: ["conduccion-minima", "conducción-mínima", "minimal-voice-leading"],
+            nombres: ["conduccion-minima", "minimal-voice-leading"],
             ayuda: ayudaDeConduccionMinima, json: { try conduccionMinimaJSON($0, $1) },
             ejecutar: { resto, notacion in
                 try Argumentos(resto).sinOpcionesDesconocidas()

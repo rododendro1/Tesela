@@ -95,7 +95,7 @@ extension LineaDeComandos {
 
     /// El acorde con sus notas y el papel de cada una: los datos de `--json` (`DatosDeAcorde`), en texto.
     static func describir(acorde: Acorde, _ notacion: Notacion) -> String {
-        let datos = DatosDeAcorde(acorde, notacion: notacion)
+        let datos = DatosDeAcorde(acorde, en: notacion)
         var lineas = ["\(datos.cifrado): \(datos.nombre)"]
         let notas = datos.notas.joined(separator: " ")
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }

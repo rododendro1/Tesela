@@ -4,7 +4,7 @@ extension LineaDeComandos {
     /// Las digitaciones y las posiciones en el mástil, en el orden en que salen en la ayuda.
     static let ordenesDeTrastes: [Orden] = [
         Orden(
-            nombres: ["digitaciones", "digitacion", "digitación", "fingerings"],
+            nombres: ["digitaciones", "digitacion", "fingerings"],
             ayuda: ayudaDeDigitaciones,
             json: { try digitacionesJSON($0, $1) },
             ejecutar: { try digitaciones($0, $1) }),

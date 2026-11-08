@@ -31,7 +31,7 @@ enum PresentacionDeRejilla {
     }
 
     /// Una descripción corta para VoiceOver, en el idioma de los textos: cuántas casillas hay y cuál está elegida.
-    static func descripcion(casillas: Int, seleccionada: CoordenadaAxial?, en notacion: Notacion = .compacta(.espanol))
+    static func descripcion(casillas: Int, seleccionada: CoordenadaAxial?, en notacion: Notacion)
         -> String
     {
         let cuantas = notacion.texto { $0.casillas(casillas) }

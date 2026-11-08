@@ -1,4 +1,5 @@
 import Armonia
+import Foundation
 
 /// Los argumentos de una orden, de los que se van quitando las opciones según se leen. Lo que queda al final
 /// (`restantes`) es lo que procesa la orden: notas, cifrados, una escala…
@@ -8,12 +9,23 @@ import Armonia
 ///     argumentos.quitarOpcion(.instrumento)                   // .valor("ukelele")
 ///     argumentos.restantes                                    // ["Sol7"]
 ///
-/// Cada opción se acepta con su nombre en español y en inglés, como la declara `OpcionDeOrden`.
+/// Cada opción se acepta con su nombre en español y en inglés, como la declara `OpcionDeOrden`, y con tildes o sin
+/// ellas: `--estadísticas` se lee como `--estadisticas` (`OpcionDeOrden.seEscribe(_:)`).
 struct Argumentos {
     private(set) var restantes: [String]
 
     init(_ argumentos: [String]) {
         restantes = argumentos
+    }
+
+    /// El nombre de una opción o de una orden sin tildes ni diéresis (`--análisis` → `--analisis`), como se
+    /// declaran. Solo se quitan los acentos de las vocales: la «ñ» se queda. Los errores dicen lo que se escribió.
+    static func sinTildes(_ texto: String) -> String {
+        String(
+            texto.map { letra in
+                let base = String(letra).folding(options: .diacriticInsensitive, locale: nil)
+                return "aeiouAEIOU".contains(base) ? Character(base) : letra
+            })
     }
 
     /// Lo que queda, separado por espacios: «Do Fa Sol7 Do».
@@ -57,7 +69,7 @@ struct Argumentos {
 
     private mutating func quitarMarca(_ nombres: [String]) -> Bool {
         let antes = restantes.count
-        restantes.removeAll { nombres.contains($0) }
+        restantes.removeAll { nombres.contains(Self.sinTildes($0)) }
         return restantes.count != antes
     }
 
@@ -86,7 +98,7 @@ struct Argumentos {
     }
 
     private mutating func quitarOpcion(_ nombres: [String]) -> Opcion {
-        guard let i = restantes.firstIndex(where: { nombres.contains($0) }) else { return .ausente }
+        guard let i = restantes.firstIndex(where: { nombres.contains(Self.sinTildes($0)) }) else { return .ausente }
         guard i + 1 < restantes.count, !restantes[i + 1].hasPrefix("--") else {
             return .sinValor(nombre: String(restantes.remove(at: i).dropFirst(2)))
         }
@@ -102,7 +114,7 @@ struct Argumentos {
     }
 
     private mutating func quitarOpcionConPalabras(_ nombres: [String]) -> Opcion {
-        guard let i = restantes.firstIndex(where: { nombres.contains($0) }) else { return .ausente }
+        guard let i = restantes.firstIndex(where: { nombres.contains(Self.sinTildes($0)) }) else { return .ausente }
         let fin = restantes[(i + 1)...].firstIndex { $0.hasPrefix("--") } ?? restantes.endIndex
         let palabras = restantes[(i + 1)..<fin]
         let nombre = String(restantes[i].dropFirst(2))
@@ -114,7 +126,7 @@ struct Argumentos {
     /// o no está en `rango`.
     mutating func quitarNumero(_ opcion: OpcionDeOrden, en rango: ClosedRange<Int>, porDefecto: Int) -> Int? {
         let nombres = opcion.leidos
-        guard let i = restantes.firstIndex(where: { nombres.contains($0) }) else { return porDefecto }
+        guard let i = restantes.firstIndex(where: { nombres.contains(Self.sinTildes($0)) }) else { return porDefecto }
         guard i + 1 < restantes.count, let n = Int(restantes[i + 1]), rango.contains(n) else { return nil }
         restantes.removeSubrange(i...(i + 1))
         return n
@@ -143,7 +155,7 @@ struct Argumentos {
         var actual: String?
         for argumento in restantes {
             if argumento.hasPrefix("--") {
-                guard let opcion = porNombre[argumento.lowercased()] else {
+                guard let opcion = porNombre[Self.sinTildes(argumento.lowercased())] else {
                     throw ErrorDeUso.opcionDesconocida(argumento)
                 }
                 let nombre = String(opcion.nombres[0].dropFirst(2))
@@ -168,7 +180,7 @@ struct Argumentos {
     /// `--en La menor`. `nil` dentro si no está, y `nil` si no lo sigue nada. Lanza un error de lectura si la
     /// tonalidad no se puede leer.
     mutating func quitarTonalidad() throws -> Tonalidad?? {
-        guard let i = restantes.firstIndex(where: OpcionDeOrden.en.leidos.contains) else { return .some(nil) }
+        guard let i = restantes.firstIndex(where: OpcionDeOrden.en.nombres.contains) else { return .some(nil) }
         let fin = restantes[(i + 1)...].firstIndex(where: Self.pareceUnaOpcion) ?? restantes.endIndex
         guard i + 1 < fin else { return nil }
         let tonalidad = try Tonalidad(leyendoEnLaOrden: restantes[(i + 1)..<fin].joined(separator: " "))

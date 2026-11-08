@@ -189,7 +189,7 @@ extension LineaDeComandos {
     /// `conjunto 0 4 7`: el conjunto con sus notas, sus formas, sus vectores y sus ejes de simetría.
     static func describir(conjunto: ConjuntoDeClasesDeAltura, _ notacion: Notacion) -> String {
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
-        let datos = DatosDeConjunto(conjunto, notacion: notacion)
+        let datos = DatosDeConjunto(conjunto, en: notacion)
         func lista(_ numeros: [Int]) -> String { "[" + numeros.map(String.init).joined(separator: ", ") + "]" }
         let ejes = conjunto.ejesDeSimetria.map(\.description).joined(separator: " · ")
         return [
@@ -208,7 +208,7 @@ extension LineaDeComandos {
     static func describir(serie: SerieDodecafonica, _ notacion: Notacion) -> String {
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         // Los datos de `--json` (`DatosDeSerie`), en texto.
-        let datos = DatosDeSerie(serie, notacion: notacion)
+        let datos = DatosDeSerie(serie, en: notacion)
         var intervalos = "  \(traducir(.intervalos)): " + datos.intervalos.map(String.init).joined(separator: " ")
         if datos.deTodosLosIntervalos { intervalos += "  (\(traducir(.deTodosLosIntervalos)))" }
         var lineas = [

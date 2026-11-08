@@ -158,7 +158,7 @@ public enum LineaDeComandos {
             resto = conLaEntrada(resto, de: orden, estandar, entradaEsTerminal: entradaEsTerminal)
         }
 
-        // Los errores de uso de la orden remiten a su ayuda y proponen sus opciones (ErrorDeUso.texto(en:)).
+        // Los errores de uso de la orden remiten a su ayuda y proponen sus opciones (ErrorDeUso.mensajeDeUso(en:)).
         let enCurso = OrdenEnCurso(orden: orden, nombre: nombre)
         let resultado = OrdenEnCurso.$actual.withValue(orden.nombres.contains("ayuda") ? nil : enCurso) {
             SistemaMovil.$actual.withValue(movil) {
@@ -198,8 +198,6 @@ public enum LineaDeComandos {
             return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: conFaltas ? 3 : 0)
         } catch let error as ErrorDeUso {
             return uso(error, notacion)
-        } catch let error as ArchivoIlegible {
-            return archivoIlegible(error.ruta, notacion)
         } catch let error as any ErrorDeArmonia {
             return ResultadoDeOrden(
                 salida: "", error: "armonia: " + error.descripcion(en: notacion) + "\n", codigo: 1)
@@ -222,9 +220,11 @@ public enum LineaDeComandos {
         return ResultadoDeOrden(salida: "", error: resultado.error, codigo: resultado.codigo)
     }
 
-    /// La orden que se llama así (en minúsculas), con cualquiera de sus nombres.
+    /// La orden que se llama así (en minúsculas), con cualquiera de sus nombres y con tildes o sin ellas
+    /// (`cuadrícula`, `conducción-mínima`).
     static func orden(llamada nombre: String) -> Orden? {
-        ordenes.first { $0.nombres.contains(nombre) }
+        let nombre = Argumentos.sinTildes(nombre)
+        return ordenes.first { $0.nombres.contains(nombre) }
     }
 
     /// Lo que pide toda la ayuda tras `ayuda`, en lugar del índice: `armonia ayuda --todo`.
@@ -354,19 +354,18 @@ public enum LineaDeComandos {
         ResultadoDeOrden(salida: texto + "\n", error: "", codigo: 0)
     }
 
-    /// Un fichero de `--archivo` que no se puede leer (`datos(deArchivo:)`).
-    struct ArchivoIlegible: Error {
+    /// Un fichero de `--archivo` que no se puede leer (`datos(deArchivo:)`). No es un error de uso, sino de lectura:
+    /// sale con el código 1, como los del motor.
+    struct ArchivoIlegible: ErrorDeArmonia {
         let ruta: String
-    }
 
-    /// Un fichero de `--archivo` que no se puede leer: no es un error de uso, sino de lectura (código 1).
-    private static func archivoIlegible(_ ruta: String, _ notacion: Notacion) -> ResultadoDeOrden {
-        let texto = TextosDeConsola.en(notacion) { $0.archivoIlegible(ruta) }
-        return ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1)
+        func descripcion(en notacion: Notacion) -> String {
+            TextosDeConsola.en(notacion) { $0.archivoIlegible(ruta) }
+        }
     }
 
     static func uso(_ error: ErrorDeUso, _ notacion: Notacion) -> ResultadoDeOrden {
-        ResultadoDeOrden(salida: "", error: error.texto(en: notacion), codigo: 2)
+        ResultadoDeOrden(salida: "", error: error.mensajeDeUso(en: notacion), codigo: 2)
     }
 
     /// La ayuda en el idioma de los textos de la notación (`Notacion.textos`).

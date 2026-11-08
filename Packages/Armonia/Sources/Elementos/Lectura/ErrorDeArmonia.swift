@@ -36,6 +36,10 @@ public protocol MotivoDeLectura: Hashable, Sendable {
 /// `ErrorDeLecturaDeTeoria` (cifrados, escalas, tonalidades y corales) y `ErrorDeLecturaDePartitura` (duraciones,
 /// compases y contrapunto). Leer un acorde puede lanzar los dos primeros: el de Elementos si falla la nota y el de
 /// Teoría si falla el cifrado.
+///
+/// `ErrorDeLecturaDeUIL` y `ErrorDeLecturaDeFichero` no lo son, aunque también son de lectura: dicen qué está mal
+/// en todo un texto UIL o en todo un fichero, sin un carácter donde se detuviera la lectura, y por eso son
+/// `ErrorDeArmonia` con sus propios casos.
 public protocol ErrorAlLeer: ErrorDeArmonia, Hashable {
     associatedtype Motivo: MotivoDeLectura
     /// Texto completo que se intentaba leer.

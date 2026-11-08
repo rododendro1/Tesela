@@ -72,7 +72,7 @@ public enum PresentacionDeSerie {
     ) throws -> SeriePresentada {
         let serie = try SerieDodecafonica(leyendo: texto)
         // Lo mismo que da `armonia serie` (y su `--json`), escrito para la vista.
-        let enDatos = DatosDeSerie(serie, notacion: notacion)
+        let enDatos = DatosDeSerie(serie, en: notacion)
         let nombres = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: notacion)
         let lista = { (clases: [Int]) in clases.map { nombres[$0] }.joined(separator: " ") }
 

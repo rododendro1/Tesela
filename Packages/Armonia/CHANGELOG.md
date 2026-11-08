@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+- En la consola, las órdenes y las opciones se leen con tildes o sin ellas, todas: `armonia cuadrícula`,
+  `--estadísticas`, `--límite`, `--tríadas`, `--inglés`… (antes solo unas pocas, como `--compás` o `--patrón`). Los
+  errores dicen la opción como se escribió.
+- `armonia neighbours` y `--neighbours`, con la ortografía británica, como `analyse` o `harmonise`.
+- El comentario de `ErrorAlLeer` explica por qué `ErrorDeLecturaDeUIL` y `ErrorDeLecturaDeFichero` no lo son.
+
 ### Orden interno: plantillas públicas y la cabecera de los escritores
 
 - `Plantilla`, el texto con huecos `{1}`, `{2}`… de los textos traducidos, es pública: la usan también los textos de
