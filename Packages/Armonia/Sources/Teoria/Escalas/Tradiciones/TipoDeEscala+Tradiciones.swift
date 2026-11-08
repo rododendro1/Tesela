@@ -16,8 +16,9 @@ import Elementos
 // pero `TipoDeEscala(leyendo:)` y `Escala("Re hitzaz")` las encuentran.
 //
 // `categoria` y `tradicion` (en `CategoriaTradicional.swift`) dicen de cada una si es un rāga, un mēḷa, un dromos,
-// un maqam, un makam, un mugam…: la categoría la dice la declaración de cada escala (`categoria: .raga`) y la
-// tradición, su lista en `listasTradicionales`. Sus nombres en cada idioma están en `Escalas/Nombres/`.
+// un maqam, un makam, un mugam…: las dice la declaración de cada escala (`categoria: .raga`), y la tradición, si no
+// la da la categoría, una subtradición o la fuente, se escribe (`tradicion: .japon`). Cada lista de
+// `listasTradicionales` tiene solo escalas de su tradición. Sus nombres en cada idioma están en `Escalas/Nombres/`.
 //
 // Cada tradición tiene su fichero, `TipoDeEscala+Nombre.swift` (el nombre del caso de `Tradicion`, con mayúscula):
 // Africa, Andes, Azerbaiyan (mugam), Bizancio (echoi), Brasil (modos nordestinos), China, Corea, Etiopia, Europa
@@ -26,8 +27,8 @@ import Elementos
 // MundoArabe (maqamat y ajnas), Persia (dastgāh), Renacimiento (musica ficta), SudesteAsiatico, Turquia (makamlar
 // y çeşni) y Vietnam. Cada uno declara sus escalas y sus listas. Una escala nueva se declara en el fichero de su
 // tradición con todos sus datos (`FichaDeEscala`): su categoría, su versión microtonal si la tiene (`afinaciones:
-// [.init(.cuartosDeTono, pasos: […])]`) y, si es un rāga janya, su mēḷa (`mela: 28`); y se apunta en una de sus
-// listas. Una lista nueva se apunta, con su tradición, en `listasTradicionales`.
+// [.init(.cuartosDeTono, pasos: […])]`) y su escala madre, si la tiene (`padre: .melakarta(28)`, `padre: .kalyan`);
+// y se apunta en una de sus listas. Una lista nueva se apunta, con su tradición, en `listasTradicionales`.
 
 extension TipoDeEscala {
     /// Escalas de otras tradiciones: thāṭ, dromoi, mēḷa, janya, chinas, japonesas, etíopes, maqamat, de Indonesia
@@ -40,9 +41,9 @@ extension TipoDeEscala {
     /// búsqueda: las nuevas van al final.
     public static let tradicionales: [TipoDeEscala] = listasTradicionales.flatMap(\.tipos)
 
-    /// Las listas de `tradicionales`, cada una con su tradición, en el orden en que tienen prioridad: de aquí salen
-    /// `tradicionales` y `tradicion`. Una lista nueva se apunta aquí, al final, y una tradición nueva necesita al
-    /// menos una.
+    /// Las listas de `tradicionales`, cada una con su tradición, en el orden en que tienen prioridad: de aquí sale
+    /// `tradicionales`. La tradición de cada escala está en su ficha, y una prueba comprueba que es la de su lista.
+    /// Una lista nueva se apunta aquí, al final, y una tradición nueva necesita al menos una.
     static let listasTradicionales: [ListaTradicional] = [
         .init(.india, thaats), .init(.grecia, dromoi), .init(.india, melakartas), .init(.india, janyas),
         .init(.india, gramas), .init(.india, murchanas), .init(.china, chinas), .init(.japon, japonesas),

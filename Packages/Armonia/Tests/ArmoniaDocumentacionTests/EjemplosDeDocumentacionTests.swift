@@ -484,9 +484,11 @@ import Hexagonos
         comprobar(TipoDeEscala.mohanam.esRaga, #"true"#, doc, 4)
         comprobar(TipoDeEscala.kafi.esRaga, #"false"#, doc, 5)
         comprobar(TipoDeEscala.mohanam.padre?.numeroDeMelakarta, #"28"#, doc, 6)
-        comprobar(TipoDeEscala.menorNatural.categoria, #"nil"#, doc, 7)
-        comprobar(TipoDeEscala.tradicionales(categoria: .melakarta).count, #"72"#, doc, 8)
-        comprobar(CategoriaTradicional.escala.nombre(en: Notacion.compacta(.espanol).conTextos(en: .frances)), #""gamme""#, doc, 9)
+        comprobar(TipoDeEscala.yaman.padre == .kalyan, #"true"#, doc, 7)
+        comprobar(TipoDeEscala.sadjaGrama.derivadas.count, #"7"#, doc, 8)
+        comprobar(TipoDeEscala.menorNatural.categoria, #"nil"#, doc, 9)
+        comprobar(TipoDeEscala.tradicionales(categoria: .melakarta).count, #"72"#, doc, 10)
+        comprobar(CategoriaTradicional.escala.nombre(en: Notacion.compacta(.espanol).conTextos(en: .frances)), #""gamme""#, doc, 11)
     }
 
     @Test func escalas6() throws {

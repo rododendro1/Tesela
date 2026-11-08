@@ -98,6 +98,29 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         }
     }
 
+    /// La tradición de sus escalas, si todas son de una: `.india` en un rāga, `.mundoArabe` en un maqām. `nil` en las
+    /// que hay en varias (las afinaciones, las escalas, los tetracordos), que la dicen en su declaración o por su
+    /// región o su fuente. El `switch` no tiene `default`: una categoría nueva no compila sin decidir la suya.
+    public var tradicion: Tradicion? {
+        switch self {
+        case .raga, .melakarta, .janya, .thaat, .grama, .murchana: .india
+        case .dromos: .grecia
+        case .maqam, .jins: .mundoArabe
+        case .dastgah: .persia
+        case .makam, .cesni: .turquia
+        case .mugam: .azerbaiyan
+        case .echos: .bizancio
+        case .shteyger: .klezmer
+        case .qenet: .etiopia
+        case .laras, .pathet: .indonesia
+        case .diao: .china
+        case .jo: .corea
+        case .harmonia: .greciaAntigua
+        case .modoGregoriano, .hexacordo: .gregoriano
+        case .tetracordo, .afinacion, .escala: nil
+        }
+    }
+
     /// ¿Es un rāga? Lo son los rāgas indostánicos, los mēḷa y los janya; el thāṭ no.
     public var esRaga: Bool { self == .raga || self == .melakarta || self == .janya }
 
@@ -148,17 +171,26 @@ extension TipoDeEscala {
     /// natural.
     public var categoria: CategoriaTradicional? { fichaDelCatalogo.categoria }
 
-    /// La tradición de la escala (la de su lista en `listasTradicionales`); `nil` en las occidentales y en
-    /// las propias. Como `categoria`, por su identidad: una escala propia que se llame «Kafi» pero suene distinto no
-    /// es el thāṭ.
-    public var tradicion: Tradicion? { TipoDeEscala.delCatalogo[identidad]?.tradicion }
+    /// La tradición de la escala, la de su ficha: `.occidental` en las habituales, `.india` en un rāga; `nil` en las
+    /// propias. Como `categoria`, por su identidad: una escala propia que se llame «Kafi» pero suene distinto no es el
+    /// thāṭ.
+    public var tradicion: Tradicion? { fichaDelCatalogo.tradicion }
 
-    /// El mēḷa del que deriva un rāga janya, por la tradición («Mohanam» → Harikāmbhojī); `nil` en las demás
-    /// escalas y en los janya sin un padre claro (Revati). Siempre es uno de los `melakartasCompatibles`.
+    /// La escala madre de la que sale, por la tradición: el mēḷa de un rāga janya («Mohanam» → Harikāmbhojī,
+    /// siempre uno de los `melakartasCompatibles`), el thāṭ de un rāga indostánico en la clasificación de Bhatkhande
+    /// (Yaman → Kalyāṇ), el grāma de una mūrchanā (Uttaramandrā → ṣaḍja-grāma) y el laras de un pathet (Sléndro
+    /// pathet nem → Sléndro). `nil` en las demás escalas y en las que no tienen un padre claro (Revati, Lalit).
     public var padre: TipoDeEscala? {
-        guard categoria == .janya, let numero = fichaDelCatalogo.mela else { return nil }
-        return TipoDeEscala.melakarta(numero)
+        fichaDelCatalogo.padre.flatMap { TipoDeEscala.delCatalogo[$0]?.tipo }
     }
+
+    /// Las escalas del catálogo que salen de esta (las que la tienen de `padre`), en el orden del catálogo: los janya
+    /// de un mēḷa, los rāgas de un thāṭ, las siete mūrchanā de un grāma.
+    public var derivadas: [TipoDeEscala] { TipoDeEscala.derivadasPorPadre[identidad] ?? [] }
+
+    /// Padre → sus derivadas, en el orden del catálogo.
+    private static let derivadasPorPadre: [IdentidadDeEscala: [TipoDeEscala]] = Dictionary(
+        grouping: catalogo.filter { $0.ficha.padre != nil }, by: { $0.ficha.padre! })
 
     /// El nombre con la palabra de su categoría delante: «thāṭ Kāfī», «mēḷa Māyāmālavagauḷa», «rāga Mohanam» (un
     /// janya es un rāga), «maqām Bayātī», «drómos Hitzáz». Es el nombre a secas si ya la lleva («jins Ḥijāz»,

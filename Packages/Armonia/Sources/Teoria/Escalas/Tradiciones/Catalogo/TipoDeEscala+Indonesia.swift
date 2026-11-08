@@ -58,19 +58,19 @@ extension TipoDeEscala {
         nombre: "Sléndro pathet nem",
         intervalos: TipoDeEscala.slendro.intervalos,
         alias: ["Sléndro nem"], variantes: ["Slendro patet nem"],
-        categoria: .pathet, regiones: [.java], afinaciones: [.equipentatonica])
+        categoria: .pathet, regiones: [.java], padre: .slendro, afinaciones: [.equipentatonica])
     /// Sléndro pathet sanga (desde 5), con los intervalos de `slendro`.
     public static let slendroSanga = TipoDeEscala(
         nombre: "Sléndro pathet sanga",
         intervalos: TipoDeEscala.slendro.intervalos,
         alias: ["Sléndro sanga"], variantes: ["Slendro patet sanga"],
-        categoria: .pathet, regiones: [.java], afinaciones: [.equipentatonica])
+        categoria: .pathet, regiones: [.java], padre: .slendro, afinaciones: [.equipentatonica])
     /// Sléndro pathet manyura (desde 6), con los intervalos de `slendro`.
     public static let slendroManyura = TipoDeEscala(
         nombre: "Sléndro pathet manyura",
         intervalos: TipoDeEscala.slendro.intervalos,
         alias: ["Sléndro manyura"], variantes: ["Slendro patet manyura"],
-        categoria: .pathet, regiones: [.java], afinaciones: [.equipentatonica])
+        categoria: .pathet, regiones: [.java], padre: .slendro, afinaciones: [.equipentatonica])
     /// Tembung, el modo de Bali sobre el 4 (4 5 6 1 2), con los intervalos de selisir en el modelo de nueve partes.
     public static let pelogTembung = TipoDeEscala(
         nombre: "Pélog tembung",

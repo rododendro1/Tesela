@@ -23,42 +23,42 @@ extension TipoDeEscala {
     public static let yo = TipoDeEscala(
         nombre: "Yō", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         alias: ["Yō onkai"], variantes: ["Yoo", "陽", "陽音階"],
-        categoria: .escala)
+        tradicion: .japon, categoria: .escala)
     /// 民謡音階, la escala de las canciones populares (Re Fa Sol La Do).
     public static let minyo = TipoDeEscala(
         nombre: "Min'yō", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
         variantes: ["Minyo", "Min yo", "民謡", "民謡音階"],
-        categoria: .escala)
+        tradicion: .japon, categoria: .escala)
     /// 都節, la escala de la música urbana de Edo, con semitonos (Mi Fa La Si Do).
     public static let miyakobushi = TipoDeEscala(
         nombre: "Miyakobushi", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
         variantes: ["Miyako-bushi", "Miyako bushi", "都節", "都節音階"],
-        categoria: .escala)
+        tradicion: .japon, categoria: .escala)
     /// 陰音階, la escala in: la contrapartida con semitonos de la yō (Mi Fa La Si Do).
     public static let `in` = TipoDeEscala(
         nombre: "In", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
         alias: ["In onkai"], variantes: ["陰", "陰音階"],
-        categoria: .escala)
+        tradicion: .japon, categoria: .escala)
     /// 陰旋, la in con la 7ª menor (Do Re♭ Fa Sol Si♭).
     public static let insen = TipoDeEscala(
         nombre: "Insen", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
         variantes: ["In sen", "陰旋"],
-        categoria: .escala)
+        tradicion: .japon, categoria: .escala)
     /// 岩戸 (Do Re♭ Fa Sol♭ Si♭).
     public static let iwato = TipoDeEscala(
         nombre: "Iwato", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaDisminuida, .septimaMenor],
         variantes: ["岩戸"],
-        categoria: .escala)
+        tradicion: .japon, categoria: .escala)
     /// 平調子, la afinación más común del koto (Do Re Mi♭ Sol La♭).
     public static let hirajoshi = TipoDeEscala(
         nombre: "Hirajōshi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMenor],
         variantes: ["Hira-jōshi", "平調子"],
-        categoria: .escala)
+        tradicion: .japon, categoria: .escala)
     /// 雲井調子, otra afinación del koto (Do Re Mi♭ Sol La).
     public static let kumoijoshi = TipoDeEscala(
         nombre: "Kumoijōshi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMayor],
         alias: ["Kumoi"], variantes: ["Kumoi-jōshi", "雲井調子"],
-        categoria: .escala)
+        tradicion: .japon, categoria: .escala)
     /// 琉球音階, la escala de Okinawa (Do Mi Fa Sol Si).
     public static let ryukyu = TipoDeEscala(
         nombre: "Ryūkyū", intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
@@ -69,12 +69,12 @@ extension TipoDeEscala {
     public static let akebono = TipoDeEscala(
         nombre: "Akebono", intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMayor],
         alias: ["Akebono-jōshi"], variantes: ["Akebonojoshi", "曙", "曙調子"],
-        categoria: .escala)
+        tradicion: .japon, categoria: .escala)
     /// 古今調子, afinación del koto (Do Re♭ Fa Sol Si♭).
     public static let kokinjoshi = TipoDeEscala(
         nombre: "Kokin-jōshi", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
         alias: ["Kokin"], variantes: ["Kokinjoshi", "古今調子"],
-        categoria: .escala)
+        tradicion: .japon, categoria: .escala)
 
     /// Las escalas japonesas: del gagaku, populares y afinaciones del koto.
     package static let japonesas: [TipoDeEscala] = [

@@ -129,11 +129,11 @@ extension TipoDeEscala {
     public static let mohanam = TipoDeEscala(
         nombre: "Mohanam", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         variantes: ["Mohana", "मोहनम्"],
-        categoria: .janya, mela: 28)
+        categoria: .janya, padre: .melakarta(28))
     public static let hindolam = TipoDeEscala(
         nombre: "Hindolam", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .sextaMenor, .septimaMenor],
         variantes: ["हिन्दोलम्"],
-        categoria: .janya, mela: 20)
+        categoria: .janya, padre: .melakarta(20))
     /// Sa ri ma Pa ni (Do Re♭ Fa Sol Si♭).
     public static let revati = TipoDeEscala(
         nombre: "Revati", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
@@ -143,19 +143,19 @@ extension TipoDeEscala {
     public static let amrtavarsini = TipoDeEscala(
         nombre: "Amṛtavarṣiṇī", intervalos: [.unisono, .terceraMayor, .cuartaAumentada, .quintaJusta, .septimaMayor],
         variantes: ["Amritavarshini", "Amrutavarshini", "अमृतवर्षिणी"],
-        categoria: .janya, mela: 65)
+        categoria: .janya, padre: .melakarta(65))
     public static let hamsadhvani = TipoDeEscala(
         nombre: "Haṃsadhvani", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .septimaMayor],
         variantes: ["Hamsadhwani", "हंसध्वनि"],
-        categoria: .janya, mela: 29)
+        categoria: .janya, padre: .melakarta(29))
     public static let abhogi = TipoDeEscala(
         nombre: "Ābhogi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .sextaMayor],
         variantes: ["आभोगि"],
-        categoria: .janya, mela: 22)
+        categoria: .janya, padre: .melakarta(22))
     public static let madhyamavati = TipoDeEscala(
         nombre: "Madhyamāvatī", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
         variantes: ["मध्यमावती"],
-        categoria: .janya, mela: 22)
+        categoria: .janya, padre: .melakarta(22))
     public static let bilahari = TipoDeEscala(
         nombre: "Bilahari",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
@@ -163,7 +163,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         variantes: ["बिलहरि"],
-        categoria: .janya, mela: 29)
+        categoria: .janya, padre: .melakarta(29))
     public static let kambhoji = TipoDeEscala(
         nombre: "Kāmbhoji",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
@@ -171,7 +171,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         variantes: ["Kambodhi", "काम्भोजि"],
-        categoria: .janya, mela: 28)
+        categoria: .janya, padre: .melakarta(28))
     public static let arabhi = TipoDeEscala(
         nombre: "Ārabhi",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
@@ -179,7 +179,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         variantes: ["आरभि"],
-        categoria: .janya, mela: 29)
+        categoria: .janya, padre: .melakarta(29))
     public static let kedaragaula = TipoDeEscala(
         nombre: "Kedāragauḷa",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
@@ -187,7 +187,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         variantes: ["Kedaragowla", "केदारगौळ"],
-        categoria: .janya, mela: 28)
+        categoria: .janya, padre: .melakarta(28))
     /// Mohanakalyāṇi, del mēḷa 65 (Mecakalyāṇī): sube como Mohanam (Sa Ri₂ Ga₃ Pa Dha₂) y baja con las siete notas,
     /// con Ma₂ (Do Si La Sol Fa♯ Mi Re).
     public static let mohanakalyani = TipoDeEscala(
@@ -197,7 +197,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         variantes: ["मोहनकल्याणि"],
-        categoria: .janya, mela: 65)
+        categoria: .janya, padre: .melakarta(65))
     /// Sāveri, del mēḷa 15 (Māyāmālavagauḷa): sube Sa Ri₁ Ma₁ Pa Dha₁ y baja con las siete notas (Do Si La♭ Sol Fa
     /// Mi Re♭).
     public static let saveri = TipoDeEscala(
@@ -207,7 +207,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         variantes: ["सावेरि"],
-        categoria: .janya, mela: 15)
+        categoria: .janya, padre: .melakarta(15))
     /// Nāṭa, del mēḷa 36 (Calanāṭa): sube Sa Ri₃ Ga₃ Ma₁ Pa Dha₃ Ni₃ (Do Re♯ Mi Fa Sol La♯ Si) y baja sin Ga ni Dha.
     public static let nata = TipoDeEscala(
         nombre: "Nāṭa",
@@ -216,40 +216,40 @@ extension TipoDeEscala {
         ],
         intervalosDescendentes: [.unisono, .segundaAumentada, .cuartaJusta, .quintaJusta, .septimaMayor],
         variantes: ["Nattai", "नाट"],
-        categoria: .janya, mela: 36)
+        categoria: .janya, padre: .melakarta(36))
 
     /// Śuddha Sāveri, del mēḷa 29 (Dhīraśaṅkarābharaṇam): Sa Ri₂ Ma₁ Pa Dha₂ (Do Re Fa Sol La), la Durgā indostánica.
     public static let suddhaSaveri = TipoDeEscala(
         nombre: "Śuddha Sāveri", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         variantes: ["Shuddha Saveri", "शुद्ध सावेरि"],
-        categoria: .janya, mela: 29)
+        categoria: .janya, padre: .melakarta(29))
     /// Śuddha Dhanyāsi, del mēḷa 22 (Kharaharapriyā): Sa Ga₂ Ma₁ Pa Ni₂ (Do Mi♭ Fa Sol Si♭), la pentatónica menor.
     public static let suddhaDhanyasi = TipoDeEscala(
         nombre: "Śuddha Dhanyāsi", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
         variantes: ["Shuddha Dhanyasi", "शुद्ध धन्यासि"],
-        categoria: .janya, mela: 22)
+        categoria: .janya, padre: .melakarta(22))
     /// Śrīrañjani, del mēḷa 22 (Kharaharapriyā): Sa Ri₂ Ga₂ Ma₁ Dha₂ Ni₂ (Do Re Mi♭ Fa La Si♭), sin Pa.
     public static let sriranjani = TipoDeEscala(
         nombre: "Śrīrañjani",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .sextaMayor, .septimaMenor],
         variantes: ["Shriranjani", "श्रीरञ्जनि"],
-        categoria: .janya, mela: 22)
+        categoria: .janya, padre: .melakarta(22))
     /// Mālayamārutam, del mēḷa 16 (Cakravākam): Sa Ri₁ Ga₃ Pa Dha₂ Ni₂ (Do Re♭ Mi Sol La Si♭), sin Ma.
     public static let malayamarutam = TipoDeEscala(
         nombre: "Mālayamārutam",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["Malayamarutham", "मलयमारुतम्"],
-        categoria: .janya, mela: 16)
+        categoria: .janya, padre: .melakarta(16))
     /// Gambhīranāṭa, del mēḷa 36 (Calanāṭa): Sa Ga₃ Ma₁ Pa Ni₃ (Do Mi Fa Sol Si).
     public static let gambhiranata = TipoDeEscala(
         nombre: "Gambhīranāṭa", intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
         variantes: ["Gambheera Nattai", "गम्भीरनाट"],
-        categoria: .janya, mela: 36)
+        categoria: .janya, padre: .melakarta(36))
     /// Haṃsanādam, del mēḷa 60 (Nītimati): Sa Ri₂ Ma₂ Pa Ni₃ (Do Re Fa♯ Sol Si).
     public static let hamsanadam = TipoDeEscala(
         nombre: "Haṃsanādam", intervalos: [.unisono, .segundaMayor, .cuartaAumentada, .quintaJusta, .septimaMayor],
         variantes: ["हंसनादम्"],
-        categoria: .janya, mela: 60)
+        categoria: .janya, padre: .melakarta(60))
 
     /// Rāgas janya incluidos.
     package static let janyas: [TipoDeEscala] = [
@@ -349,17 +349,17 @@ extension TipoDeEscala {
     public static let bhupali = TipoDeEscala(
         nombre: "Bhūpālī", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         variantes: ["Bhoopali", "Bhupal", "भूपाली"],
-        categoria: .raga)
+        categoria: .raga, padre: .kalyan)
     /// Mālkauns (Sa ga ma dha ni): el Hindolam carnático.
     public static let malkauns = TipoDeEscala(
         nombre: "Mālkauns", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .sextaMenor, .septimaMenor],
         variantes: ["Malkosh", "मालकौंस"],
-        categoria: .raga)
+        categoria: .raga, padre: .bhairavi)
     /// Durgā (Sa Re ma Pa Dha).
     public static let durga = TipoDeEscala(
         nombre: "Durgā", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         variantes: ["दुर्गा"],
-        categoria: .raga)
+        categoria: .raga, padre: .bilaval)
     /// Yaman: el thāṭ Kalyāṇ entero, con la 4ª aumentada.
     public static let yaman = TipoDeEscala(
         nombre: "Yaman",
@@ -368,24 +368,24 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         alias: ["Yaman Kalyāṇ"], variantes: ["Iman", "यमन"],
-        categoria: .raga, afinaciones: [.init(.sruti, pasos: [0, 3, 7, 11, 13, 16, 20])])
+        categoria: .raga, padre: .kalyan, afinaciones: [.init(.sruti, pasos: [0, 3, 7, 11, 13, 16, 20])])
     /// Bāgeśrī: sube sin Re ni Pa y baja sin Pa.
     public static let bagesri = TipoDeEscala(
         nombre: "Bāgeśrī",
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .sextaMayor, .septimaMenor],
         intervalosDescendentes: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .sextaMayor, .septimaMenor],
         variantes: ["Bageshri", "Bageshree", "बागेश्री"],
-        categoria: .raga)
+        categoria: .raga, padre: .kafi)
     /// Śivarañjanī (Sa Re ga Pa Dha).
     public static let sivaranjani = TipoDeEscala(
         nombre: "Śivarañjanī", intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMayor],
         variantes: ["Shivaranjani", "शिवरंजनी"],
-        categoria: .raga)
+        categoria: .raga, padre: .kafi)
     /// Kalāvatī (Sa Ga Pa Dha ni), el Valaji carnático.
     public static let kalavati = TipoDeEscala(
         nombre: "Kalāvatī", intervalos: [.unisono, .terceraMayor, .quintaJusta, .sextaMayor, .septimaMenor],
         alias: ["Valaji"], variantes: ["कलावती"],
-        categoria: .raga)
+        categoria: .raga, padre: .khamaj)
     /// Candrakauns (Sa ga ma dha Ni): el Mālkauns con Ni natural.
     public static let candrakauns = TipoDeEscala(
         nombre: "Candrakauns", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .sextaMenor, .septimaMayor],
@@ -395,7 +395,7 @@ extension TipoDeEscala {
     public static let megh = TipoDeEscala(
         nombre: "Megh", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
         alias: ["Megh Malhar"], variantes: ["मेघ"],
-        categoria: .raga)
+        categoria: .raga, padre: .kafi)
     /// Deś: sube sin Ga ni Dha y con Ni natural; baja con ni komal.
     public static let des = TipoDeEscala(
         nombre: "Deś",
@@ -404,7 +404,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         variantes: ["Desh", "देश"],
-        categoria: .raga)
+        categoria: .raga, padre: .khamaj)
     /// Lalit (Sa re Ga ma Ma dha Ni, sin Pa): los dos Ma seguidos, el natural y el tīvra (Do Re♭ Mi Fa Fa♯ La♭ Si).
     public static let lalit = TipoDeEscala(
         nombre: "Lalit",
@@ -421,7 +421,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         variantes: ["Bhimpalas", "Bheempalasi", "भीमपलासी"],
-        categoria: .raga)
+        categoria: .raga, padre: .kafi)
     /// Bihāg (thāṭ Bilāval): sube sin Re ni Dha (Sa Ga ma Pa Ni) y baja con todas; el Ma tīvra solo aparece de
     /// paso (Pa Ma Ga ma Ga) y no entra en la escala.
     public static let bihag = TipoDeEscala(
@@ -431,7 +431,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         variantes: ["Behag", "बिहाग"],
-        categoria: .raga)
+        categoria: .raga, padre: .bilaval)
     /// Darbārī Kānaḍa (thāṭ Āsāvarī: Sa Re ga ma Pa dha ni), en su forma recta: la menor natural, como Āsāvarī.
     public static let darbariKanada = TipoDeEscala(
         nombre: "Darbārī Kānaḍa",
@@ -440,7 +440,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["Darbari"], variantes: ["Darbārī Kānaṛā", "Darbari Kanhra", "दरबारी कान्हड़ा"],
-        categoria: .raga)
+        categoria: .raga, padre: .asavari)
     /// Pūriyā Dhanāśrī (thāṭ Pūrvī: Sa re Ga Ma Pa dha Ni, Do Re♭ Mi Fa♯ Sol La♭ Si).
     public static let puriyaDhanasri = TipoDeEscala(
         nombre: "Pūriyā Dhanāśrī",
@@ -449,7 +449,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         variantes: ["Puriya Dhanashri", "Puriya Dhanashree", "पूरिया धनाश्री"],
-        categoria: .raga)
+        categoria: .raga, padre: .purvi)
 
     /// Rāgas indostánicos incluidos.
     package static let ragasIndostanicos: [TipoDeEscala] = [
@@ -494,13 +494,13 @@ extension TipoDeEscala {
         nombre: "Uttaramandrā",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["उत्तरमन्द्रा"],
-        categoria: .murchana, afinaciones: [.init(.sruti, pasos: [0, 3, 5, 9, 13, 16, 18])])
+        categoria: .murchana, padre: .sadjaGrama, afinaciones: [.init(.sruti, pasos: [0, 3, 5, 9, 13, 16, 18])])
     /// La mūrchanā del ṣaḍja-grāma desde Ni: la mayor en doce notas.
     public static let rajani = TipoDeEscala(
         nombre: "Rajanī",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
         variantes: ["रजनी"],
-        categoria: .murchana, afinaciones: [.init(.sruti, pasos: [0, 4, 7, 9, 13, 17, 20])])
+        categoria: .murchana, padre: .sadjaGrama, afinaciones: [.init(.sruti, pasos: [0, 4, 7, 9, 13, 17, 20])])
     /// La mūrchanā del ṣaḍja-grāma desde Dha: el locrio en doce notas.
     public static let uttarayata = TipoDeEscala(
         nombre: "Uttarāyatā",
@@ -508,19 +508,21 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         variantes: ["उत्तरायता"],
-        categoria: .murchana, afinaciones: [.init(.razones, pasos: [0, 112, 316, 498, 610, 814, 1018])])
+        categoria: .murchana, padre: .sadjaGrama,
+        afinaciones: [.init(.razones, pasos: [0, 112, 316, 498, 610, 814, 1018])])
     /// La mūrchanā del ṣaḍja-grāma desde Pa: el eólico en doce notas.
     public static let suddhasadja = TipoDeEscala(
         nombre: "Śuddhaṣaḍjā",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
         variantes: ["Shuddhashadja", "शुद्धषड्जा"],
-        categoria: .murchana, afinaciones: [.init(.razones, pasos: [0, 182, 294, 498, 680, 792, 996])])
+        categoria: .murchana, padre: .sadjaGrama,
+        afinaciones: [.init(.razones, pasos: [0, 182, 294, 498, 680, 792, 996])])
     /// La mūrchanā del ṣaḍja-grāma desde Ma: el mixolidio en doce notas.
     public static let matsarikrta = TipoDeEscala(
         nombre: "Matsarīkṛtā",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["Matsarikrita", "मत्सरीकृता"],
-        categoria: .murchana, afinaciones: [.init(.sruti, pasos: [0, 4, 7, 9, 13, 16, 18])])
+        categoria: .murchana, padre: .sadjaGrama, afinaciones: [.init(.sruti, pasos: [0, 4, 7, 9, 13, 16, 18])])
     /// La mūrchanā del ṣaḍja-grāma desde Ga: el lidio en doce notas.
     public static let asvakranta = TipoDeEscala(
         nombre: "Aśvakrāntā",
@@ -528,19 +530,19 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         variantes: ["Ashvakranta", "अश्वक्रान्ता"],
-        categoria: .murchana, afinaciones: [.init(.sruti, pasos: [0, 4, 8, 11, 13, 17, 20])])
+        categoria: .murchana, padre: .sadjaGrama, afinaciones: [.init(.sruti, pasos: [0, 4, 8, 11, 13, 17, 20])])
     /// La mūrchanā del ṣaḍja-grāma desde Ri: el frigio en doce notas.
     public static let abhirudgata = TipoDeEscala(
         nombre: "Abhirudgatā",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
         variantes: ["अभिरुद्गता"],
-        categoria: .murchana, afinaciones: [.init(.sruti, pasos: [0, 2, 6, 10, 13, 15, 19])])
+        categoria: .murchana, padre: .sadjaGrama, afinaciones: [.init(.sruti, pasos: [0, 2, 6, 10, 13, 15, 19])])
     /// La mūrchanā del madhyama-grāma desde Ma: el mixolidio en doce notas.
     public static let sauviri = TipoDeEscala(
         nombre: "Sauvīrī",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["सौवीरी"],
-        categoria: .murchana, afinaciones: [.init(.sruti, pasos: [0, 3, 7, 9, 13, 16, 18])])
+        categoria: .murchana, padre: .madhyamaGrama, afinaciones: [.init(.sruti, pasos: [0, 3, 7, 9, 13, 16, 18])])
     /// La mūrchanā del madhyama-grāma desde Ga: el lidio en doce notas.
     public static let harinasva = TipoDeEscala(
         nombre: "Hariṇāśvā",
@@ -548,25 +550,26 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         variantes: ["Harinashva", "हरिणाश्वा"],
-        categoria: .murchana, afinaciones: [.init(.sruti, pasos: [0, 4, 7, 11, 13, 17, 20])])
+        categoria: .murchana, padre: .madhyamaGrama, afinaciones: [.init(.sruti, pasos: [0, 4, 7, 11, 13, 17, 20])])
     /// La mūrchanā del madhyama-grāma desde Ri: el frigio en doce notas.
     public static let kalopanata = TipoDeEscala(
         nombre: "Kalopanatā",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
         variantes: ["कलोपनता"],
-        categoria: .murchana, afinaciones: [.init(.sruti, pasos: [0, 2, 6, 9, 13, 15, 19])])
+        categoria: .murchana, padre: .madhyamaGrama, afinaciones: [.init(.sruti, pasos: [0, 2, 6, 9, 13, 15, 19])])
     /// La mūrchanā del madhyama-grāma desde Sa: el dórico en doce notas.
     public static let suddhamadhya = TipoDeEscala(
         nombre: "Śuddhamadhyā",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["Shuddhamadhya", "शुद्धमध्या"],
-        categoria: .murchana, afinaciones: [.init(.razones, pasos: [0, 182, 294, 498, 680, 884, 996])])
+        categoria: .murchana, padre: .madhyamaGrama,
+        afinaciones: [.init(.razones, pasos: [0, 182, 294, 498, 680, 884, 996])])
     /// La mūrchanā del madhyama-grāma desde Ni: la mayor en doce notas.
     public static let margi = TipoDeEscala(
         nombre: "Mārgī",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
         variantes: ["मार्गी"],
-        categoria: .murchana, afinaciones: [.init(.sruti, pasos: [0, 4, 7, 9, 13, 16, 20])])
+        categoria: .murchana, padre: .madhyamaGrama, afinaciones: [.init(.sruti, pasos: [0, 4, 7, 9, 13, 16, 20])])
     /// La mūrchanā del madhyama-grāma desde Dha: el locrio en doce notas.
     public static let pauravi = TipoDeEscala(
         nombre: "Pauravī",
@@ -574,13 +577,14 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         variantes: ["पौरवी"],
-        categoria: .murchana, afinaciones: [.init(.razones, pasos: [0, 112, 316, 498, 610, 814, 996])])
+        categoria: .murchana, padre: .madhyamaGrama,
+        afinaciones: [.init(.razones, pasos: [0, 112, 316, 498, 610, 814, 996])])
     /// La mūrchanā del madhyama-grāma desde Pa: el eólico en doce notas.
     public static let hrsyaka = TipoDeEscala(
         nombre: "Hṛṣyakā",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
         variantes: ["Hrishyaka", "हृष्यका"],
-        categoria: .murchana, afinaciones: [.init(.sruti, pasos: [0, 4, 6, 10, 13, 15, 19])])
+        categoria: .murchana, padre: .madhyamaGrama, afinaciones: [.init(.sruti, pasos: [0, 4, 6, 10, 13, 15, 19])])
 
     /// Los dos grāma.
     package static let gramas: [TipoDeEscala] = [.sadjaGrama, .madhyamaGrama]

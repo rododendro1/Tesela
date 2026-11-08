@@ -27,31 +27,36 @@ extension TipoDeEscala {
         nombre: "išartu",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
         variantes: ["išartum", "ishartu"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 204, 408, 498, 702, 906, 1110])])
+        tradicion: .mesopotamia, categoria: .afinacion,
+        afinaciones: [.init(.razones, pasos: [0, 204, 408, 498, 702, 906, 1110])])
     /// «La cerrada» (kitmu), por las cuerdas 6 y 3: el mixolidio.
     public static let kitmu = TipoDeEscala(
         nombre: "kitmu",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["kitmum"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 204, 408, 498, 702, 906, 996])])
+        tradicion: .mesopotamia, categoria: .afinacion,
+        afinaciones: [.init(.razones, pasos: [0, 204, 408, 498, 702, 906, 996])])
     /// «La de la flauta» (embūbu), por las cuerdas 3 y 7: el dórico.
     public static let embubu = TipoDeEscala(
         nombre: "embūbu",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["embūbum"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 204, 294, 498, 702, 906, 996])])
+        tradicion: .mesopotamia, categoria: .afinacion,
+        afinaciones: [.init(.razones, pasos: [0, 204, 294, 498, 702, 906, 996])])
     /// «La abierta» (pītu), por las cuerdas 7 y 4: la menor natural.
     public static let pitu = TipoDeEscala(
         nombre: "pītu",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
         alias: ["pūtu"], variantes: ["pītum"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 204, 294, 498, 702, 792, 996])])
+        tradicion: .mesopotamia, categoria: .afinacion,
+        afinaciones: [.init(.razones, pasos: [0, 204, 294, 498, 702, 792, 996])])
     /// «La caída del medio» (nīd qabli), por las cuerdas 4 y 1: el frigio. Es la afinación del himno hurrita h.6.
     public static let nidQabli = TipoDeEscala(
         nombre: "nīd qabli",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
         variantes: ["nīd qablim"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 90, 294, 498, 702, 792, 996])])
+        tradicion: .mesopotamia, categoria: .afinacion,
+        afinaciones: [.init(.razones, pasos: [0, 90, 294, 498, 702, 792, 996])])
     /// nīš tuḫri, por las cuerdas 1 y 5: el locrio. Se leía nīš gabarî.
     public static let nisTuhri = TipoDeEscala(
         nombre: "nīš tuḫri",
@@ -59,7 +64,8 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         alias: ["nīš gabarî"], variantes: ["nīš tuḫrim", "nīš gabarîm", "nish tuhri", "nish gabari"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 90, 294, 498, 588, 792, 996])])
+        tradicion: .mesopotamia, categoria: .afinacion,
+        afinaciones: [.init(.razones, pasos: [0, 90, 294, 498, 588, 792, 996])])
     /// «La del medio» (qablītu), por las cuerdas 5 y 2: el lidio.
     public static let qablitu = TipoDeEscala(
         nombre: "qablītu",
@@ -67,7 +73,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         variantes: ["qablītum"],
-        categoria: .afinacion, afinaciones: [.init(.razones, pasos: [0, 204, 408, 612, 702, 906, 1110])])
+        tradicion: .mesopotamia, categoria: .afinacion,
+        afinaciones: [.init(.razones, pasos: [0, 204, 408, 612, 702, 906, 1110])])
 
     /// Las siete, en el orden de UET VII 74: cada una baja un semitono una nota de la anterior.
     package static let mesopotamicas: [TipoDeEscala] = [
