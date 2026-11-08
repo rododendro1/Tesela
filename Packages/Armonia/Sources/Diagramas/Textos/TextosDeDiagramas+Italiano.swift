@@ -11,7 +11,7 @@ extension TextosDeDiagramas {
 
         // DibujoSVG.swift
         conjunto: "Insieme ",
-        cicloDesde: { nombre, cifrado in "\(nombre) da \(cifrado)" },
+        cicloDesde: "{1} da {2}",
         primeraClase: "prima classe",
         primeraNota: "prima nota",
         leyendaNota: "nota",
@@ -42,10 +42,10 @@ extension TextosDeDiagramas {
         cuadriculaEnOctavas: "Griglia per ottave",
         cuadriculaSecuencial: "Griglia sequenziale",
         // FormatoUIL.swift
-        uilNoValido: { texto in "UIL non valido: «\(texto)». Si attende L,G,D;R<gradi>[M], per esempio 2,7,5;R30M." },
-        intervalosIncoherentes: { menor, mayor, diferencia in "Intervalli incoerenti: \(menor),\(mayor),\(diferencia). Devono rispettare 0 < L ≤ D e G = L + D." },
-        giroNoValido: { grados in "Una rotazione di \(grados)° non è multipla di 30°." },
-        afinacionNoSoportada: { tonos in "Si disegnano solo tastiere a 12 note, non a \(tonos)." },
-        cizallaNoSoportada: { cizalla in "Il taglio S\(cizalla) non è supportato." }
+        uilNoValido: "UIL non valido: «{1}». Si attende L,G,D;R<gradi>[M], per esempio 2,7,5;R30M.",
+        intervalosIncoherentes: "Intervalli incoerenti: {1},{2},{3}. Devono rispettare 0 < L ≤ D e G = L + D.",
+        giroNoValido: "Una rotazione di {1}° non è multipla di 30°.",
+        afinacionNoSoportada: "Si disegnano solo tastiere a 12 note, non a {1}.",
+        cizallaNoSoportada: "Il taglio S{1} non è supportato."
     )
 }

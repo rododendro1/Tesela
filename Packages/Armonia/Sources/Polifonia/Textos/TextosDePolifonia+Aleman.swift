@@ -8,7 +8,7 @@ extension TextosDePolifonia {
         // Coral.swift
         entreLasVoces: { nombres in "zwischen " + nombres.joined(separator: " und ") },
         enLaVoz: { primera in (primera.hasPrefix("Stimme") ? "in \(primera)" : "im \(primera)") },
-        enLosAcordes: { pasos in "(Akkorde \(pasos))" },
+        enLosAcordes: "(Akkorde {1})",
         enElAcorde: { acorde in "(Akkord \(acorde + 1))" },
         quintasParalelas: "Quintparallelen",
         octavasParalelas: "Oktavparallelen",
@@ -23,14 +23,14 @@ extension TextosDePolifonia {
         vozTenor: "Tenor",
         vozContralto: "Alt",
         vozSoprano: "Sopran",
-        vozNumero: { numero in "Stimme \(numero)" },
+        vozNumero: "Stimme {1}",
 
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["Durchgangston", "Wechselnote", "freier Vorhalt", "Vorhalt", "Antizipation", "Echappée", "Orgelpunkt", "freie Dissonanz"],
 
         // Contrapunto.swift
-        enElCompas: { n in "(Takt \(n))" },
-        enLosCompases: { pasos in "(Takte \(pasos))" },
+        enElCompas: "(Takt {1})",
+        enLosCompases: "(Takte {1})",
         ritmoDeLaEspecie: "Rhythmus passt nicht zur Gattung",
         comienzoImperfecto: "Beginn ohne vollkommene Konsonanz",
         finalImperfecto: "Schluss ohne Einklang oder Oktave",
@@ -41,10 +41,10 @@ extension TextosDePolifonia {
         unisono: "Einklang mitten im Satz",
         saltoSinCompensar: "Nicht ausgeglichener Sprung",
         notaRepetida: "Tonwiederholung",
-        especieConElContrapuntoEncima: { n in "Gattung \(n), Kontrapunkt über dem Cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Gattung \(n), Kontrapunkt unter dem Cantus firmus" },
-        contrapuntoAVariasVoces: { n in "\(n)-stimmiger Kontrapunkt" },
-        vozDelContrapunto: { n in "Stimme \(n)" },
+        especieConElContrapuntoEncima: "Gattung {1}, Kontrapunkt über dem Cantus firmus",
+        especieConElContrapuntoDebajo: "Gattung {1}, Kontrapunkt unter dem Cantus firmus",
+        contrapuntoAVariasVoces: "{1}-stimmiger Kontrapunkt",
+        vozDelContrapunto: "Stimme {1}",
         sinFaltas: "Keine Fehler."
     )
 }

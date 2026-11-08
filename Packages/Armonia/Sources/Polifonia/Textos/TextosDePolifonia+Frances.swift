@@ -8,7 +8,7 @@ extension TextosDePolifonia {
         // Coral.swift
         entreLasVoces: { nombres in "entre " + nombres.joined(separator: " et ") },
         enLaVoz: { primera in "(\(primera))" },
-        enLosAcordes: { pasos in "(accords \(pasos))" },
+        enLosAcordes: "(accords {1})",
         enElAcorde: { acorde in "(accord \(acorde + 1))" },
         quintasParalelas: "Quintes parallèles",
         octavasParalelas: "Octaves parallèles",
@@ -23,14 +23,14 @@ extension TextosDePolifonia {
         vozTenor: "ténor",
         vozContralto: "alto",
         vozSoprano: "soprano",
-        vozNumero: { numero in "voix \(numero)" },
+        vozNumero: "voix {1}",
 
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["note de passage", "broderie", "appoggiature", "retard", "anticipation", "échappée", "pédale", "note libre"],
 
         // Contrapunto.swift
-        enElCompas: { n in "(mesure \(n))" },
-        enLosCompases: { pasos in "(mesures \(pasos))" },
+        enElCompas: "(mesure {1})",
+        enLosCompases: "(mesures {1})",
         ritmoDeLaEspecie: "Rythme étranger à l'espèce",
         comienzoImperfecto: "Début sans consonance parfaite",
         finalImperfecto: "Fin sans unisson ni octave",
@@ -41,10 +41,10 @@ extension TextosDePolifonia {
         unisono: "Unisson au milieu de l'exercice",
         saltoSinCompensar: "Saut non compensé",
         notaRepetida: "Note répétée",
-        especieConElContrapuntoEncima: { n in "Espèce \(n), contrepoint au-dessus du cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Espèce \(n), contrepoint au-dessous du cantus firmus" },
-        contrapuntoAVariasVoces: { n in "Contrepoint à \(n) voix" },
-        vozDelContrapunto: { n in "voix \(n)" },
+        especieConElContrapuntoEncima: "Espèce {1}, contrepoint au-dessus du cantus firmus",
+        especieConElContrapuntoDebajo: "Espèce {1}, contrepoint au-dessous du cantus firmus",
+        contrapuntoAVariasVoces: "Contrepoint à {1} voix",
+        vozDelContrapunto: "voix {1}",
         sinFaltas: "Aucune faute."
     )
 }

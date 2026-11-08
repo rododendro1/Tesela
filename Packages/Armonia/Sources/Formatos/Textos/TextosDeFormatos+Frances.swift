@@ -14,7 +14,7 @@ extension TextosDeFormatos {
         musicXMLComprimido: "Le MusicXML compressé (.mxl) est endommagé ou illisible : exportez-le sans compression (.musicxml).",
         midiDanado: "Le fichier MIDI est endommagé ou tronqué.",
         midiConTiempoSMPTE: "Le fichier MIDI compte le temps en images SMPTE, et non en tics par noire.",
-        xmlDanado: { linea in "Le fichier XML est endommagé (ligne \(linea))." },
+        xmlDanado: "Le fichier XML est endommagé (ligne {1}).",
         noEsMusicXMLPorPartes: "Le XML n'est ni une partition MusicXML par parties (score-partwise) ni du MEI.",
         sinNotas: "Le fichier ne contient aucune note.",
         sinAcordes: "Aucun accord ne sonne dans le fichier."

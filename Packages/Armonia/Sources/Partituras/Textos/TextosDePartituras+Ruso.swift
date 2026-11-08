@@ -16,8 +16,8 @@ extension TextosDePartituras {
         semifusa: "шестьдесят четвёртая",
         garrapatea: "сто двадцать восьмая",
         cero: "ноль",
-        fraccionDeRedonda: { fraccion in "\(fraccion) целой" },
-        conPuntillos: ["_ с точкой", "_ с двумя точками", "_ с тремя точками", "_ с четырьмя точками"],
+        fraccionDeRedonda: "{1} целой",
+        conPuntillos: ["{1} с точкой", "{1} с двумя точками", "{1} с тремя точками", "{1} с четырьмя точками"],
 
         // Pentagrama.swift
         claveDeSol: "скрипичный ключ",
@@ -62,8 +62,8 @@ extension TextosDePartituras {
         instrumentoGlockenspiel: "колокольчики",
         instrumentoCelesta: "челеста",
         // ErrorDeLecturaDePartitura.swift
-        duracionNoValida: { texto in "«\(texto)» — не длительность: ожидалась нота (1, 2, 4, 8, 16…, с точкой: 4.) или доля целой (3/8, 1/12)" },
-        compasNoValido: { texto in "«\(texto)» — не размер: ожидалось числитель/знаменатель, где знаменатель — степень двойки (4/4, 6/8, 7/8), C или ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "контрапункт должен длиться столько же, сколько cantus firmus: \(redondas) целых, по одной на ноту" }
+        duracionNoValida: "«{1}» — не длительность: ожидалась нота (1, 2, 4, 8, 16…, с точкой: 4.) или доля целой (3/8, 1/12)",
+        compasNoValido: "«{1}» — не размер: ожидалось числитель/знаменатель, где знаменатель — степень двойки (4/4, 6/8, 7/8), C или ¢",
+        contrapuntoDeOtraDuracion: "контрапункт должен длиться столько же, сколько cantus firmus: {1} целых, по одной на ноту"
     )
 }

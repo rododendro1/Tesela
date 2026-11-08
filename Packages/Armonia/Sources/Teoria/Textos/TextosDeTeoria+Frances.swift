@@ -17,10 +17,10 @@ extension TextosDeTeoria {
         afinacionJusta: "intonation juste",
 
         // Acorde.swift
-        conBajoEn: { acorde, bajo in "\(acorde), avec la basse en \(bajo)" },
+        conBajoEn: "{1}, avec la basse en {2}",
         nombresDeLasInversiones: ["état fondamental", "premier renversement", "deuxième renversement", "troisième renversement",
                                   "quatrième renversement", "cinquième renversement", "sixième renversement"],
-        inversionConNumero: "renversement _",
+        inversionConNumero: "renversement {1}",
 
         // CicloNeorriemanniano.swift
         cicloHexatonico: "cycle hexatonique",
@@ -104,7 +104,7 @@ extension TextosDeTeoria {
         funcionDominante: "dominante",
 
         // Cadencia.swift
-        cadenciaEnLosAcordes: { pasos in "accords \(pasos)" },
+        cadenciaEnLosAcordes: "accords {1}",
         cadenciaAutentica: "cadence parfaite",
         cadenciaPlagal: "cadence plagale",
         cadenciaRota: "cadence rompue",
@@ -117,7 +117,7 @@ extension TextosDeTeoria {
         pivote: "pivot",
         directa: " (directe)",
         // Arpegio.swift
-        arpegioDe: { acorde in "Arpège de \(acorde)" },
+        arpegioDe: "Arpège de {1}",
         patronAscendente: "ascendant",
         patronDescendente: "descendant",
         patronIdaYVuelta: "aller-retour",
@@ -150,39 +150,39 @@ extension TextosDeTeoria {
         secuenciaTriadas: "en accords de trois sons",
         secuenciaCuatriadas: "en accords de quatre sons",
         // ErrorDeLecturaDeTeoria.swift (acordes)
-        simboloNoReconocido: { simbolo in "« \(simbolo) » ne fait partie d'aucun chiffrage connu" },
-        tensionNoValida: { tension in "« \(tension) » n'est pas une tension valide (♭/♯ s'emploient avec 5, 9, 11 et 13, et add avec 2, 4, 6, 9, 11 et 13)" },
-        numeroDeAcordeNoValido: { numero in "« \(numero) » n'est pas un numéro d'accord (5, 6, 7, 9, 11 ou 13)" },
-        numeroRepetido: { numero in "« \(numero) » suit un autre numéro ; les tensions supplémentaires se mettent entre parenthèses, comme dans 7(9)" },
+        simboloNoReconocido: "« {1} » ne fait partie d'aucun chiffrage connu",
+        tensionNoValida: "« {1} » n'est pas une tension valide (♭/♯ s'emploient avec 5, 9, 11 et 13, et add avec 2, 4, 6, 9, 11 et 13)",
+        numeroDeAcordeNoValido: "« {1} » n'est pas un numéro d'accord (5, 6, 7, 9, 11 ou 13)",
+        numeroRepetido: "« {1} » suit un autre numéro ; les tensions supplémentaires se mettent entre parenthèses, comme dans 7(9)",
         disminuidoYSemidisminuido: "diminué (°) et semi-diminué (ø) ne peuvent pas se combiner",
         quintaConCalidad: "l'accord de quinte (5) n'a pas de tierce, il n'admet donc ni m, ni °, ni ø, ni +",
         fundamentalNoOmitible: "on ne peut pas omettre la fondamentale",
-        gradoNoOmitible: { grado in "« omit\(grado) » n'est pas valide (on peut omettre 3, 5, 7, 9, 11 et 13)" },
+        gradoNoOmitible: "« omit{1} » n'est pas valide (on peut omettre 3, 5, 7, 9, 11 et 13)",
         faltaLaFundamental: "il manque la fondamentale",
         intervaloSinPapel: { intervalo, notacion in "l'intervalle de \(intervalo.nombre(en: .conPalabras(.frances))) n'a aucun rôle dans un accord par tierces" },
         terceraMayorYMenor: "il a à la fois une tierce majeure et une tierce mineure (la ♯9 s'écrit comme neuvième augmentée, pas comme tierce mineure)",
         variasSeptimas: "il a plus d'une septième",
         septimaDisminuidaFueraDelDisminuido: "la septième diminuée n'apparaît que dans l'accord diminué (avec tierce mineure et quinte diminuée)",
         noEsPorTerceras: "ce n'est pas un accord par tierces",
-        bajoNoValido: { bajo in "« \(bajo) » n'est pas un nom de note pour la basse" },
-        idiomasMezclados: { nombre in "« \(nombre) » est écrit dans une autre langue que la fondamentale : on écrit tout en syllabes (Sol7/Si) ou tout en lettres (G7/B)" },
+        bajoNoValido: "« {1} » n'est pas un nom de note pour la basse",
+        idiomasMezclados: "« {1} » est écrit dans une autre langue que la fondamentale : on écrit tout en syllabes (Sol7/Si) ou tout en lettres (G7/B)",
         // ErrorDeLecturaDeTeoria.swift (escalas)
-        modoNoReconocido: { nombre in "« \(nombre) » n'est pas le mode d'une tonalité : une tonalité est majeure ou mineure (pour les autres modes, utilisez Escala)" },
+        modoNoReconocido: "« {1} » n'est pas le mode d'une tonalité : une tonalité est majeure ou mineure (pour les autres modes, utilisez Escala)",
         faltaElTipoDeEscala: "il manque le type de gamme (majeur, dorien, mineur harmonique…)",
-        tipoDeEscalaNoReconocido: { nombre in "« \(nombre) » n'est pas un type de gamme connu" },
+        tipoDeEscalaNoReconocido: "« {1} » n'est pas un type de gamme connu",
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "tous les accords doivent avoir le même nombre de voix, et au moins deux",
         vocesDeDistintaLongitud: "toutes les voix doivent avoir le même nombre de notes",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
-        nombreNoReconocido: { n, o in "« \(n) » n'est aucun de ceux-ci : \(o)" },
-        numeroFueraDeRango: { t, d, h in "« \(t) » n'est pas un nombre de \(d) à \(h)" },
-        trasteNoValido: { t, u in "« \(t) » n'est pas une case : il faut x (corde étouffée) ou un nombre de 0 à \(u)" },
-        cuerdasDistintas: { e, l in "il faut une case (ou x) pour chacune des \(e) cordes, et il y en a \(l)" },
+        nombreNoReconocido: "« {1} » n'est aucun de ceux-ci : {2}",
+        numeroFueraDeRango: "« {1} » n'est pas un nombre de {2} à {3}",
+        trasteNoValido: "« {1} » n'est pas une case : il faut x (corde étouffée) ou un nombre de 0 à {2}",
+        cuerdasDistintas: "il faut une case (ou x) pour chacune des {1} cordes, et il y en a {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
-        cifradoRomanoNoValido: { cifrado in "« \(cifrado) » n'est pas un chiffrage romain : un chiffre de I à VII avec sa qualité et ses chiffres (V7, ii65, ♭VI, vii°7/V)" },
-        destinoNoTonicalizable: { destino in "« \(destino) » ne peut pas suivre la barre : il faut un accord parfait majeur ou mineur à l'état fondamental (V/V, vii°7/ii)" },
-        cifrasNoValidas: { cifras in "« \(cifras) » n'est pas une basse chiffrée : des chiffres de 1 à 9, chacun avec au plus une altération (6, 64, 7, ♯6, 4+)" },
-        cifrasSinAcorde: { cifras in "les chiffres « \(cifras) » ne forment aucun accord sur cette basse" },
+        cifradoRomanoNoValido: "« {1} » n'est pas un chiffrage romain : un chiffre de I à VII avec sa qualité et ses chiffres (V7, ii65, ♭VI, vii°7/V)",
+        destinoNoTonicalizable: "« {1} » ne peut pas suivre la barre : il faut un accord parfait majeur ou mineur à l'état fondamental (V/V, vii°7/ii)",
+        cifrasNoValidas: "« {1} » n'est pas une basse chiffrée : des chiffres de 1 à 9, chacun avec au plus une altération (6, 64, 7, ♯6, 4+)",
+        cifrasSinAcorde: "les chiffres « {1} » ne forment aucun accord sur cette basse",
         // UsoDeEscala.swift
         usoClasica: "classique",
         usoJazz: "jazz",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         fuenteLushiChunqiu: "Lüshi chunqiu",
         fuenteVicentino: "Vicentino",
         // Gramática (Acorde.swift, Tonalidad.swift)
-        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        acordeSobre: "{2} {1}",
         enLaTonalidad: { tonalidad in "en " + tonalidad }
     )
 }

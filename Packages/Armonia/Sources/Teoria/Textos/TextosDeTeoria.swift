@@ -21,9 +21,9 @@ struct TextosDeTeoria: TextosTraducidos {
 
     // MARK: Acorde.swift
     /// Un acorde en estado fundamental con otro bajo: «Do mayor, con bajo en Re», «C major over D».
-    let conBajoEn: @Sendable (_ acorde: String, _ bajo: String) -> String
+    let conBajoEn: Plantilla  // {1} acorde, {2} bajo
     let nombresDeLasInversiones: [String]
-    let inversionConNumero: String
+    let inversionConNumero: Plantilla  // {1} número
 
     // MARK: CicloNeorriemanniano.swift
     let cicloHexatonico: String
@@ -107,7 +107,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let funcionDominante: String
 
     // MARK: Cadencia.swift
-    let cadenciaEnLosAcordes: @Sendable (String) -> String
+    let cadenciaEnLosAcordes: Plantilla  // {1} pasos
     let cadenciaAutentica: String
     let cadenciaPlagal: String
     let cadenciaRota: String
@@ -121,7 +121,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let directa: String
 
     // MARK: Arpegio.swift
-    let arpegioDe: @Sendable (String) -> String
+    let arpegioDe: Plantilla  // {1} acorde
     let patronAscendente: String
     let patronDescendente: String
     let patronIdaYVuelta: String
@@ -160,43 +160,43 @@ struct TextosDeTeoria: TextosTraducidos {
     let secuenciaCuatriadas: String
 
     // MARK: ErrorDeLecturaDeTeoria.swift (acordes)
-    let simboloNoReconocido: @Sendable (String) -> String
-    let tensionNoValida: @Sendable (String) -> String
-    let numeroDeAcordeNoValido: @Sendable (Int) -> String
-    let numeroRepetido: @Sendable (Int) -> String
+    let simboloNoReconocido: Plantilla  // {1} simbolo
+    let tensionNoValida: Plantilla  // {1} tension
+    let numeroDeAcordeNoValido: Plantilla  // {1} numero
+    let numeroRepetido: Plantilla  // {1} numero
     let disminuidoYSemidisminuido: String
     let quintaConCalidad: String
     let fundamentalNoOmitible: String
-    let gradoNoOmitible: @Sendable (Int) -> String
+    let gradoNoOmitible: Plantilla  // {1} grado
     let faltaLaFundamental: String
     let intervaloSinPapel: @Sendable (Intervalo, Notacion) -> String
     let terceraMayorYMenor: String
     let variasSeptimas: String
     let septimaDisminuidaFueraDelDisminuido: String
     let noEsPorTerceras: String
-    let bajoNoValido: @Sendable (String) -> String
-    let idiomasMezclados: @Sendable (String) -> String
+    let bajoNoValido: Plantilla  // {1} bajo
+    let idiomasMezclados: Plantilla  // {1} nombre
 
     // MARK: ErrorDeLecturaDeTeoria.swift (escalas)
-    let modoNoReconocido: @Sendable (String) -> String
+    let modoNoReconocido: Plantilla  // {1} nombre
     let faltaElTipoDeEscala: String
-    let tipoDeEscalaNoReconocido: @Sendable (String) -> String
+    let tipoDeEscalaNoReconocido: Plantilla  // {1} nombre
 
     // MARK: ErrorDeLecturaDeTeoria.swift (coral)
     let vocesDistintas: String
     let vocesDeDistintaLongitud: String
 
     // MARK: ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
-    let nombreNoReconocido: @Sendable (_ nombre: String, _ opciones: String) -> String
-    let numeroFueraDeRango: @Sendable (_ texto: String, _ desde: Int, _ hasta: Int) -> String
-    let trasteNoValido: @Sendable (_ traste: String, _ ultimo: Int) -> String
-    let cuerdasDistintas: @Sendable (_ esperadas: Int, _ leidas: Int) -> String
+    let nombreNoReconocido: Plantilla  // {1} nombre, {2} opciones
+    let numeroFueraDeRango: Plantilla  // {1} texto, {2} desde, {3} hasta
+    let trasteNoValido: Plantilla  // {1} traste, {2} ultimo
+    let cuerdasDistintas: Plantilla  // {1} esperadas, {2} leidas
 
     // MARK: ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
-    let cifradoRomanoNoValido: @Sendable (String) -> String
-    let destinoNoTonicalizable: @Sendable (String) -> String
-    let cifrasNoValidas: @Sendable (String) -> String
-    let cifrasSinAcorde: @Sendable (String) -> String
+    let cifradoRomanoNoValido: Plantilla  // {1} cifrado
+    let destinoNoTonicalizable: Plantilla  // {1} destino
+    let cifrasNoValidas: Plantilla  // {1} cifras
+    let cifrasSinAcorde: Plantilla  // {1} cifras
 
     // MARK: UsoDeEscala.swift
     let usoClasica: String
@@ -285,7 +285,7 @@ struct TextosDeTeoria: TextosTraducidos {
 
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».
-    let acordeSobre: @Sendable (_ tipo: String, _ raiz: String) -> String
+    let acordeSobre: Plantilla  // {1} tipo, {2} raiz
     /// «en Do mayor», «in C major», «в до мажоре», «do maiorrean».
     let enLaTonalidad: @Sendable (String) -> String
 

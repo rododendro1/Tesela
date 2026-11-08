@@ -8,7 +8,7 @@ extension TextosDePolifonia {
         // Coral.swift
         entreLasVoces: { nombres in "entre " + nombres.joined(separator: " e ") },
         enLaVoz: { primera in "en \(primera)" },
-        enLosAcordes: { pasos in "(acordes \(pasos))" },
+        enLosAcordes: "(acordes {1})",
         enElAcorde: { acorde in "(acorde \(acorde + 1))" },
         quintasParalelas: "Quintas paralelas",
         octavasParalelas: "Oitavas paralelas",
@@ -23,14 +23,14 @@ extension TextosDePolifonia {
         vozTenor: "tenor",
         vozContralto: "contralto",
         vozSoprano: "soprano",
-        vozNumero: { numero in "voz \(numero)" },
+        vozNumero: "voz {1}",
 
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["nota de paso", "bordadura", "apoiatura", "retardo", "anticipación", "escapada", "nota pedal", "nota libre"],
 
         // Contrapunto.swift
-        enElCompas: { n in "(compás \(n))" },
-        enLosCompases: { pasos in "(compases \(pasos))" },
+        enElCompas: "(compás {1})",
+        enLosCompases: "(compases {1})",
         ritmoDeLaEspecie: "Ritmo alleo á especie",
         comienzoImperfecto: "Comezo sen consonancia perfecta",
         finalImperfecto: "Final sen unísono nin oitava",
@@ -41,10 +41,10 @@ extension TextosDePolifonia {
         unisono: "Unísono no medio do exercicio",
         saltoSinCompensar: "Salto sen compensar",
         notaRepetida: "Nota repetida",
-        especieConElContrapuntoEncima: { n in "Especie \(n), co contrapunto enriba do cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Especie \(n), co contrapunto debaixo do cantus firmus" },
-        contrapuntoAVariasVoces: { n in "Contrapunto a \(n) voces" },
-        vozDelContrapunto: { n in "voz \(n)" },
+        especieConElContrapuntoEncima: "Especie {1}, co contrapunto enriba do cantus firmus",
+        especieConElContrapuntoDebajo: "Especie {1}, co contrapunto debaixo do cantus firmus",
+        contrapuntoAVariasVoces: "Contrapunto a {1} voces",
+        vozDelContrapunto: "voz {1}",
         sinFaltas: "Sen faltas."
     )
 }

@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+### Textos con huecos `{1}`
+
+- Los textos que llevan valores («El fichero XML está dañado (línea {1}).») son plantillas, `Plantilla`, en lugar de
+  funciones: en los ficheros de idioma (`TextosDeX+Espanol.swift`…) son solo texto, con los huecos numerados `{1}`,
+  `{2}`…, que pueden ir en otro orden en cada idioma. Son 56 textos en los trece idiomas, y los tres que se rellenaban
+  con `_` («inversión _») pasan a `{1}`. Los catorce que hacen algo más que poner un valor en su sitio (los plurales,
+  el artículo húngaro, las declinaciones del euskera) siguen siendo funciones.
+- `comprobar_traducciones.py` avisa si un idioma no tiene los mismos huecos que el español, y una prueba lo comprueba
+  también en los textos de varias líneas. Lo que se escribe no cambia.
+
 ### Lectura más rápida
 
 - Las tablas para leer nombres de nota y de escala se calculan por notación y por idioma, la primera vez que hacen

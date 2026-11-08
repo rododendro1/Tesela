@@ -17,10 +17,10 @@ extension TextosDeTeoria {
         afinacionJusta: "чистый строй",
 
         // Acorde.swift
-        conBajoEn: { acorde, bajo in "\(acorde), с басом \(bajo)" },
+        conBajoEn: "{1}, с басом {2}",
         nombresDeLasInversiones: ["основной вид", "первое обращение", "второе обращение", "третье обращение",
                                   "четвёртое обращение", "пятое обращение", "шестое обращение"],
-        inversionConNumero: "_-е обращение",
+        inversionConNumero: "{1}-е обращение",
 
         // CicloNeorriemanniano.swift
         cicloHexatonico: "гексатонический цикл",
@@ -104,7 +104,7 @@ extension TextosDeTeoria {
         funcionDominante: "доминанта",
 
         // Cadencia.swift
-        cadenciaEnLosAcordes: { pasos in "аккорды \(pasos)" },
+        cadenciaEnLosAcordes: "аккорды {1}",
         cadenciaAutentica: "автентический каданс",
         cadenciaPlagal: "плагальный каданс",
         cadenciaRota: "прерванный каданс",
@@ -117,7 +117,7 @@ extension TextosDeTeoria {
         pivote: "общий аккорд",
         directa: " (прямая)",
         // Arpegio.swift
-        arpegioDe: { acorde in "Арпеджио \(acorde)" },
+        arpegioDe: "Арпеджио {1}",
         patronAscendente: "восходящий",
         patronDescendente: "нисходящий",
         patronIdaYVuelta: "вверх и вниз",
@@ -150,39 +150,39 @@ extension TextosDeTeoria {
         secuenciaTriadas: "трезвучиями",
         secuenciaCuatriadas: "септаккордами",
         // ErrorDeLecturaDeTeoria.swift (acordes)
-        simboloNoReconocido: { simbolo in "«\(simbolo)» не входит ни в одно известное буквенное обозначение" },
-        tensionNoValida: { tension in "«\(tension)» — недопустимая альтерация или добавленный тон (♭/♯ — с 5, 9, 11 и 13, add — с 2, 4, 6, 9, 11 и 13)" },
-        numeroDeAcordeNoValido: { numero in "«\(numero)» — не число аккорда (5, 6, 7, 9, 11 или 13)" },
-        numeroRepetido: { numero in "«\(numero)» стоит после другого числа; дополнительные тоны пишутся в скобках, как в 7(9)" },
+        simboloNoReconocido: "«{1}» не входит ни в одно известное буквенное обозначение",
+        tensionNoValida: "«{1}» — недопустимая альтерация или добавленный тон (♭/♯ — с 5, 9, 11 и 13, add — с 2, 4, 6, 9, 11 и 13)",
+        numeroDeAcordeNoValido: "«{1}» — не число аккорда (5, 6, 7, 9, 11 или 13)",
+        numeroRepetido: "«{1}» стоит после другого числа; дополнительные тоны пишутся в скобках, как в 7(9)",
         disminuidoYSemidisminuido: "уменьшённый (°) и полууменьшённый (ø) нельзя совмещать",
         quintaConCalidad: "в квинтовом созвучии (5) нет терции, поэтому к нему нельзя добавить m, °, ø или +",
         fundamentalNoOmitible: "основной тон нельзя опустить",
-        gradoNoOmitible: { grado in "«omit\(grado)» недопустимо (опустить можно 3, 5, 7, 9, 11 и 13)" },
+        gradoNoOmitible: "«omit{1}» недопустимо (опустить можно 3, 5, 7, 9, 11 и 13)",
         faltaLaFundamental: "нет основного тона",
         intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .conPalabras(.ruso))) не играет роли в аккорде терцового строения" },
         terceraMayorYMenor: "в нём одновременно большая и малая терция (♯9 пишется как увеличенная нона, а не как малая терция)",
         variasSeptimas: "в нём больше одной септимы",
         septimaDisminuidaFueraDelDisminuido: "уменьшённая септима встречается только в уменьшённом аккорде (с малой терцией и уменьшённой квинтой)",
         noEsPorTerceras: "это не аккорд терцового строения",
-        bajoNoValido: { bajo in "«\(bajo)» — не название ноты для баса" },
-        idiomasMezclados: { nombre in "«\(nombre)» записано не на том языке, что основной тон: пиши всё слогами (Sol7/Si) или всё буквами (G7/B)" },
+        bajoNoValido: "«{1}» — не название ноты для баса",
+        idiomasMezclados: "«{1}» записано не на том языке, что основной тон: пиши всё слогами (Sol7/Si) или всё буквами (G7/B)",
         // ErrorDeLecturaDeTeoria.swift (escalas)
-        modoNoReconocido: { nombre in "«\(nombre)» — не лад тональности: тональность бывает мажорной или минорной (для других ладов используй Escala)" },
+        modoNoReconocido: "«{1}» — не лад тональности: тональность бывает мажорной или минорной (для других ладов используй Escala)",
         faltaElTipoDeEscala: "не указан тип гаммы (мажор, дорийский, гармонический минор…)",
-        tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» — неизвестный тип гаммы" },
+        tipoDeEscalaNoReconocido: "«{1}» — неизвестный тип гаммы",
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "во всех аккордах должно быть одинаковое число голосов, не меньше двух",
         vocesDeDistintaLongitud: "во всех голосах должно быть одинаковое число нот",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
-        nombreNoReconocido: { n, o in "«\(n)» — ни одно из этих: \(o)" },
-        numeroFueraDeRango: { t, d, h in "«\(t)» — не число от \(d) до \(h)" },
-        trasteNoValido: { t, u in "«\(t)» — не лад: нужен x (заглушённая струна) или число от 0 до \(u)" },
-        cuerdasDistintas: { e, l in "нужен один лад (или x) на каждую из \(e) струн, а их \(l)" },
+        nombreNoReconocido: "«{1}» — ни одно из этих: {2}",
+        numeroFueraDeRango: "«{1}» — не число от {2} до {3}",
+        trasteNoValido: "«{1}» — не лад: нужен x (заглушённая струна) или число от 0 до {2}",
+        cuerdasDistintas: "нужен один лад (или x) на каждую из {1} струн, а их {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
-        cifradoRomanoNoValido: { cifrado in "«\(cifrado)» — не обозначение ступени: римская цифра от I до VII с её качеством и цифровкой (V7, ii65, ♭VI, vii°7/V)" },
-        destinoNoTonicalizable: { destino in "«\(destino)» не может стоять после косой черты: нужно мажорное или минорное трезвучие в основном виде (V/V, vii°7/ii)" },
-        cifrasNoValidas: { cifras in "«\(cifras)» — не генерал-бас: цифры от 1 до 9, каждая не более чем с одним знаком альтерации (6, 64, 7, ♯6, 4+)" },
-        cifrasSinAcorde: { cifras in "цифры «\(cifras)» не образуют над этим басом никакого аккорда" },
+        cifradoRomanoNoValido: "«{1}» — не обозначение ступени: римская цифра от I до VII с её качеством и цифровкой (V7, ii65, ♭VI, vii°7/V)",
+        destinoNoTonicalizable: "«{1}» не может стоять после косой черты: нужно мажорное или минорное трезвучие в основном виде (V/V, vii°7/ii)",
+        cifrasNoValidas: "«{1}» — не генерал-бас: цифры от 1 до 9, каждая не более чем с одним знаком альтерации (6, 64, 7, ♯6, 4+)",
+        cifrasSinAcorde: "цифры «{1}» не образуют над этим басом никакого аккорда",
         // UsoDeEscala.swift
         usoClasica: "классическая",
         usoJazz: "джаз",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         fuenteLushiChunqiu: "Люйши чуньцю",
         fuenteVicentino: "Вичентино",
         // Gramática (Acorde.swift, Tonalidad.swift)
-        acordeSobre: { tipo, raiz in "\(tipo) от \(raiz)" },
+        acordeSobre: "{1} от {2}",
         enLaTonalidad: { tonalidad in "в " + (tonalidad.hasSuffix("мажор") || tonalidad.hasSuffix("минор") ? tonalidad + "е" : tonalidad) }
     )
 }

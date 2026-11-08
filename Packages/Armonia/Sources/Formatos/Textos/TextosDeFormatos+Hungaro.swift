@@ -14,7 +14,7 @@ extension TextosDeFormatos {
         musicXMLComprimido: "A tömörített MusicXML (.mxl) sérült vagy nem olvasható: exportáld tömörítetlenül (.musicxml).",
         midiDanado: "A MIDI-fájl sérült vagy csonka.",
         midiConTiempoSMPTE: "A MIDI-fájl SMPTE-képkockákban méri az időt, nem negyedhangonkénti tickekben.",
-        xmlDanado: { linea in "Az XML-fájl sérült (\(linea). sor)." },
+        xmlDanado: "Az XML-fájl sérült ({1}. sor).",
         noEsMusicXMLPorPartes: "Az XML nem szólamonkénti MusicXML-partitúra (score-partwise), és nem is MEI.",
         sinNotas: "A fájlban nincsenek hangok.",
         sinAcordes: "A fájlban nem szólnak akkordok."

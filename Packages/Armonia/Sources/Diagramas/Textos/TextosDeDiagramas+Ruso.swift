@@ -11,7 +11,7 @@ extension TextosDeDiagramas {
 
         // DibujoSVG.swift
         conjunto: "Множество ",
-        cicloDesde: { nombre, cifrado in "\(nombre) от \(cifrado)" },
+        cicloDesde: "{1} от {2}",
         primeraClase: "первый звуковысотный класс",
         primeraNota: "первая нота",
         leyendaNota: "нота",
@@ -42,10 +42,10 @@ extension TextosDeDiagramas {
         cuadriculaEnOctavas: "Сетка по октавам",
         cuadriculaSecuencial: "Последовательная сетка",
         // FormatoUIL.swift
-        uilNoValido: { texto in "Неверный UIL: «\(texto)». Ожидается L,G,D;R<градусы>[M], например 2,7,5;R30M." },
-        intervalosIncoherentes: { menor, mayor, diferencia in "Несогласованные интервалы: \(menor),\(mayor),\(diferencia). Должно выполняться 0 < L ≤ D и G = L + D." },
-        giroNoValido: { grados in "Поворот на \(grados)° не кратен 30°." },
-        afinacionNoSoportada: { tonos in "Рисуются только клавиатуры на 12 звуков, а не на \(tonos)." },
-        cizallaNoSoportada: { cizalla in "Сдвиг S\(cizalla) не поддерживается." }
+        uilNoValido: "Неверный UIL: «{1}». Ожидается L,G,D;R<градусы>[M], например 2,7,5;R30M.",
+        intervalosIncoherentes: "Несогласованные интервалы: {1},{2},{3}. Должно выполняться 0 < L ≤ D и G = L + D.",
+        giroNoValido: "Поворот на {1}° не кратен 30°.",
+        afinacionNoSoportada: "Рисуются только клавиатуры на 12 звуков, а не на {1}.",
+        cizallaNoSoportada: "Сдвиг S{1} не поддерживается."
     )
 }

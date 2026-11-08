@@ -17,10 +17,10 @@ extension TextosDeTeoria {
         afinacionJusta: "afinazio justua",
 
         // Acorde.swift
-        conBajoEn: { acorde, bajo in "\(acorde), baxua \(bajo) dela" },
+        conBajoEn: "{1}, baxua {2} dela",
         nombresDeLasInversiones: ["oinarrizko egoera", "lehen inbertsioa", "bigarren inbertsioa", "hirugarren inbertsioa",
                                   "laugarren inbertsioa", "bosgarren inbertsioa", "seigarren inbertsioa"],
-        inversionConNumero: "_. inbertsioa",
+        inversionConNumero: "{1}. inbertsioa",
 
         // CicloNeorriemanniano.swift
         cicloHexatonico: "ziklo hexatonikoa",
@@ -104,7 +104,7 @@ extension TextosDeTeoria {
         funcionDominante: "dominantea",
 
         // Cadencia.swift
-        cadenciaEnLosAcordes: { pasos in "\(pasos) akordeak" },
+        cadenciaEnLosAcordes: "{1} akordeak",
         cadenciaAutentica: "kadentzia autentikoa",
         cadenciaPlagal: "kadentzia plagala",
         cadenciaRota: "kadentzia hautsia",
@@ -120,7 +120,7 @@ extension TextosDeTeoria {
         pivote: "pibota",
         directa: " (zuzena)",
         // Arpegio.swift
-        arpegioDe: { acorde in "\(acorde) arpegioa" },
+        arpegioDe: "{1} arpegioa",
         patronAscendente: "igoera",
         patronDescendente: "jaitsiera",
         patronIdaYVuelta: "joan-etorria",
@@ -153,39 +153,39 @@ extension TextosDeTeoria {
         secuenciaTriadas: "hirukoteka",
         secuenciaCuatriadas: "laukoteka",
         // ErrorDeLecturaDeTeoria.swift (acordes)
-        simboloNoReconocido: { simbolo in "«\(simbolo)» ez dago zifratu ezagunetan" },
-        tensionNoValida: { tension in "«\(tension)» ez da tentsio baliozkoa (♭/♯ 5, 9, 11 eta 13rekin onartzen dira, eta add 2, 4, 6, 9, 11 eta 13rekin)" },
-        numeroDeAcordeNoValido: { numero in "«\(numero)» ez da akorde-zenbaki bat (5, 6, 7, 9, 11 edo 13)" },
-        numeroRepetido: { numero in "«\(numero)» beste zenbaki baten ondoren dago; tentsio gehigarriak parentesi artean doaz, 7(9)-n bezala" },
+        simboloNoReconocido: "«{1}» ez dago zifratu ezagunetan",
+        tensionNoValida: "«{1}» ez da tentsio baliozkoa (♭/♯ 5, 9, 11 eta 13rekin onartzen dira, eta add 2, 4, 6, 9, 11 eta 13rekin)",
+        numeroDeAcordeNoValido: "«{1}» ez da akorde-zenbaki bat (5, 6, 7, 9, 11 edo 13)",
+        numeroRepetido: "«{1}» beste zenbaki baten ondoren dago; tentsio gehigarriak parentesi artean doaz, 7(9)-n bezala",
         disminuidoYSemidisminuido: "gutxitua (°) eta erdi-gutxitua (ø) ezin dira batera erabili",
         quintaConCalidad: "bosgarren akordeak (5) ez du hirugarrenik, beraz ez ditu m, °, ø eta + onartzen",
         fundamentalNoOmitible: "oinarria ezin da kendu",
-        gradoNoOmitible: { grado in "«omit\(grado)» ez da baliozkoa (3, 5, 7, 9, 11 eta 13 ken daitezke)" },
+        gradoNoOmitible: "«omit{1}» ez da baliozkoa (3, 5, 7, 9, 11 eta 13 ken daitezke)",
         faltaLaFundamental: "oinarria falta da",
         intervaloSinPapel: { intervalo, notacion in "\(intervalo.nombre(en: .conPalabras(.euskera))): tarte honek ez du paperik hirugarrenez osatutako akorde batean" },
         terceraMayorYMenor: "hirugarren handia eta txikia ditu aldi berean (♯9 9. gehitu gisa idazten da, ez 3. txiki gisa)",
         variasSeptimas: "zazpigarren bat baino gehiago ditu",
         septimaDisminuidaFueraDelDisminuido: "zazpigarren gutxitua akorde gutxituan bakarrik agertzen da (3. txikiarekin eta 5. gutxituarekin)",
         noEsPorTerceras: "ez da hirugarrenez osatutako akordea",
-        bajoNoValido: { bajo in "«\(bajo)» ez da baxurako nota-izen bat" },
-        idiomasMezclados: { nombre in "«\(nombre)» oinarria ez bezalako hizkuntzan idatzita dago: idatzi dena silabekin (Sol7/Si) edo dena letrekin (G7/B)" },
+        bajoNoValido: "«{1}» ez da baxurako nota-izen bat",
+        idiomasMezclados: "«{1}» oinarria ez bezalako hizkuntzan idatzita dago: idatzi dena silabekin (Sol7/Si) edo dena letrekin (G7/B)",
         // ErrorDeLecturaDeTeoria.swift (escalas)
-        modoNoReconocido: { nombre in "«\(nombre)» ez da tonalitate baten modua: tonalitatea maiorra edo minorra da (beste moduetarako, erabili Escala)" },
+        modoNoReconocido: "«{1}» ez da tonalitate baten modua: tonalitatea maiorra edo minorra da (beste moduetarako, erabili Escala)",
         faltaElTipoDeEscala: "eskala-mota falta da (mayor, dórico, menor armónica…)",
-        tipoDeEscalaNoReconocido: { nombre in "«\(nombre)» ez da eskala-mota ezagun bat" },
+        tipoDeEscalaNoReconocido: "«{1}» ez da eskala-mota ezagun bat",
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "akorde guztiek ahots kopuru bera izan behar dute, eta gutxienez bi",
         vocesDeDistintaLongitud: "ahots guztiek nota kopuru bera izan behar dute",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
-        nombreNoReconocido: { n, o in "«\(n)» ez da hauetako bat ere: \(o)" },
-        numeroFueraDeRango: { t, d, h in "«\(t)» ez da \(d) eta \(h) arteko zenbaki bat" },
-        trasteNoValido: { t, u in "«\(t)» ez da traste bat: x (soka itzalia) edo 0 eta \(u) arteko zenbaki bat izan behar du" },
-        cuerdasDistintas: { e, l in "traste bat (edo x) behar da \(e) soketako bakoitzeko, eta \(l) daude" },
+        nombreNoReconocido: "«{1}» ez da hauetako bat ere: {2}",
+        numeroFueraDeRango: "«{1}» ez da {2} eta {3} arteko zenbaki bat",
+        trasteNoValido: "«{1}» ez da traste bat: x (soka itzalia) edo 0 eta {2} arteko zenbaki bat izan behar du",
+        cuerdasDistintas: "traste bat (edo x) behar da {1} soketako bakoitzeko, eta {2} daude",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
-        cifradoRomanoNoValido: { cifrado in "«\(cifrado)» ez da zenbaki erromatar bat: I-etik VII-rako zenbakia, bere kalitatea eta zifrekin (V7, ii65, ♭VI, vii°7/V)" },
-        destinoNoTonicalizable: { destino in "«\(destino)» ezin da barraren ondoren joan: oinarrizko egoeran dagoen hirukote maior edo minor bat izan behar du (V/V, vii°7/ii)" },
-        cifrasNoValidas: { cifras in "«\(cifras)» ez dira baxu jarraituko zifrak: 1etik 9rako zenbakiak, gehienez alterazio batekin (6, 64, 7, ♯6, 4+)" },
-        cifrasSinAcorde: { cifras in "«\(cifras)» zifrek ez dute akorderik osatzen baxu horren gainean" },
+        cifradoRomanoNoValido: "«{1}» ez da zenbaki erromatar bat: I-etik VII-rako zenbakia, bere kalitatea eta zifrekin (V7, ii65, ♭VI, vii°7/V)",
+        destinoNoTonicalizable: "«{1}» ezin da barraren ondoren joan: oinarrizko egoeran dagoen hirukote maior edo minor bat izan behar du (V/V, vii°7/ii)",
+        cifrasNoValidas: "«{1}» ez dira baxu jarraituko zifrak: 1etik 9rako zenbakiak, gehienez alterazio batekin (6, 64, 7, ♯6, 4+)",
+        cifrasSinAcorde: "«{1}» zifrek ez dute akorderik osatzen baxu horren gainean",
         // UsoDeEscala.swift
         usoClasica: "klasikoa",
         usoJazz: "jazza",
@@ -266,7 +266,7 @@ extension TextosDeTeoria {
         fuenteLushiChunqiu: "Lüshi chunqiu",
         fuenteVicentino: "Vicentino",
         // Gramática (Acorde.swift, Tonalidad.swift)
-        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        acordeSobre: "{2} {1}",
         enLaTonalidad: { tonalidad in Tonalidad.declinar(tonalidad, "ean") }
     )
 }

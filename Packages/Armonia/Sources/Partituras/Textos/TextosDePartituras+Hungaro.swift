@@ -16,8 +16,8 @@ extension TextosDePartituras {
         semifusa: "hatvannegyed hang",
         garrapatea: "százhuszonnyolcad hang",
         cero: "nulla",
-        fraccionDeRedonda: { fraccion in "egész hang \(fraccion) része" },
-        conPuntillos: ["pontozott _", "kétszer pontozott _", "háromszor pontozott _", "négyszer pontozott _"],
+        fraccionDeRedonda: "egész hang {1} része",
+        conPuntillos: ["pontozott {1}", "kétszer pontozott {1}", "háromszor pontozott {1}", "négyszer pontozott {1}"],
 
         // Pentagrama.swift
         claveDeSol: "violinkulcs",
@@ -62,8 +62,8 @@ extension TextosDePartituras {
         instrumentoGlockenspiel: "harangjáték",
         instrumentoCelesta: "cseleszta",
         // ErrorDeLecturaDePartitura.swift
-        duracionNoValida: { texto in "„\(texto)” nem időtartam: hangérték (1, 2, 4, 8, 16…, pontozva: 4.) vagy az egész hang törtrésze (3/8, 1/12) várható" },
-        compasNoValido: { texto in "„\(texto)” nem ütemmutató: számláló/nevező várható, a nevező kettő hatványa (4/4, 6/8, 7/8), vagy C, illetve ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "az ellenpontnak ugyanolyan hosszúnak kell lennie, mint a cantus firmusnak: \(redondas) egész hang, hangonként egy" }
+        duracionNoValida: "„{1}” nem időtartam: hangérték (1, 2, 4, 8, 16…, pontozva: 4.) vagy az egész hang törtrésze (3/8, 1/12) várható",
+        compasNoValido: "„{1}” nem ütemmutató: számláló/nevező várható, a nevező kettő hatványa (4/4, 6/8, 7/8), vagy C, illetve ¢",
+        contrapuntoDeOtraDuracion: "az ellenpontnak ugyanolyan hosszúnak kell lennie, mint a cantus firmusnak: {1} egész hang, hangonként egy"
     )
 }

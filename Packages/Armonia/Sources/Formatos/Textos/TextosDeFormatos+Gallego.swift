@@ -14,7 +14,7 @@ extension TextosDeFormatos {
         musicXMLComprimido: "O MusicXML comprimido (.mxl) está danado ou non se pode ler: expórtao sen comprimir (.musicxml).",
         midiDanado: "O ficheiro MIDI está danado ou cortado.",
         midiConTiempoSMPTE: "O ficheiro MIDI conta o tempo en fotogramas SMPTE, non en pulsos por negra.",
-        xmlDanado: { linea in "O ficheiro XML está danado (liña \(linea))." },
+        xmlDanado: "O ficheiro XML está danado (liña {1}).",
         noEsMusicXMLPorPartes: "O XML non é unha partitura MusicXML por partes (score-partwise) nin MEI.",
         sinNotas: "O ficheiro non ten ningunha nota.",
         sinAcordes: "No ficheiro non soa ningún acorde."

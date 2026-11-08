@@ -18,7 +18,7 @@ struct TextosDeFormatos: TextosTraducidos {
     let musicXMLComprimido: String
     let midiDanado: String
     let midiConTiempoSMPTE: String
-    let xmlDanado: @Sendable (Int) -> String
+    let xmlDanado: Plantilla  // {1} linea
     let noEsMusicXMLPorPartes: String
     let sinNotas: String
     let sinAcordes: String

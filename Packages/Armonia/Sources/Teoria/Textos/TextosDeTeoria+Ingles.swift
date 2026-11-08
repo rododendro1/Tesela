@@ -17,10 +17,10 @@ extension TextosDeTeoria {
         afinacionJusta: "just intonation",
 
         // Acorde.swift
-        conBajoEn: { acorde, bajo in "\(acorde) over \(bajo)" },
+        conBajoEn: "{1} over {2}",
         nombresDeLasInversiones: ["root position", "first inversion", "second inversion", "third inversion",
                                   "fourth inversion", "fifth inversion", "sixth inversion"],
-        inversionConNumero: "inversion _",
+        inversionConNumero: "inversion {1}",
 
         // CicloNeorriemanniano.swift
         cicloHexatonico: "hexatonic cycle",
@@ -104,7 +104,7 @@ extension TextosDeTeoria {
         funcionDominante: "dominant",
 
         // Cadencia.swift
-        cadenciaEnLosAcordes: { pasos in "chords \(pasos)" },
+        cadenciaEnLosAcordes: "chords {1}",
         cadenciaAutentica: "authentic cadence",
         cadenciaPlagal: "plagal cadence",
         cadenciaRota: "deceptive cadence",
@@ -117,7 +117,7 @@ extension TextosDeTeoria {
         pivote: "pivot",
         directa: " (direct)",
         // Arpegio.swift
-        arpegioDe: { acorde in "\(acorde) arpeggio" },
+        arpegioDe: "{1} arpeggio",
         patronAscendente: "ascending",
         patronDescendente: "descending",
         patronIdaYVuelta: "up and down",
@@ -150,39 +150,39 @@ extension TextosDeTeoria {
         secuenciaTriadas: "in triads",
         secuenciaCuatriadas: "in seventh chords",
         // ErrorDeLecturaDeTeoria.swift (acordes)
-        simboloNoReconocido: { simbolo in "\"\(simbolo)\" is not part of any known chord symbol" },
-        tensionNoValida: { tension in "\"\(tension)\" is not a valid tension (♭/♯ go with 5, 9, 11 and 13, and add with 2, 4, 6, 9, 11 and 13)" },
-        numeroDeAcordeNoValido: { numero in "\"\(numero)\" is not a chord number (5, 6, 7, 9, 11 or 13)" },
-        numeroRepetido: { numero in "\"\(numero)\" comes after another number; additional tensions go in parentheses, as in 7(9)" },
+        simboloNoReconocido: "\"{1}\" is not part of any known chord symbol",
+        tensionNoValida: "\"{1}\" is not a valid tension (♭/♯ go with 5, 9, 11 and 13, and add with 2, 4, 6, 9, 11 and 13)",
+        numeroDeAcordeNoValido: "\"{1}\" is not a chord number (5, 6, 7, 9, 11 or 13)",
+        numeroRepetido: "\"{1}\" comes after another number; additional tensions go in parentheses, as in 7(9)",
         disminuidoYSemidisminuido: "diminished (°) and half-diminished (ø) cannot be combined",
         quintaConCalidad: "a power chord (5) has no third, so it cannot take m, °, ø or +",
         fundamentalNoOmitible: "the root cannot be omitted",
-        gradoNoOmitible: { grado in "\"omit\(grado)\" is not valid (3, 5, 7, 9, 11 and 13 can be omitted)" },
+        gradoNoOmitible: "\"omit{1}\" is not valid (3, 5, 7, 9, 11 and 13 can be omitted)",
         faltaLaFundamental: "the root is missing",
         intervaloSinPapel: { intervalo, notacion in "the \(intervalo.nombre(en: notacion)) has no role in a tertian chord" },
         terceraMayorYMenor: "it has both a major and a minor third (♯9 is written as an augmented 9th, not a minor 3rd)",
         variasSeptimas: "it has more than one seventh",
         septimaDisminuidaFueraDelDisminuido: "the diminished seventh only appears in the diminished chord (with a minor 3rd and a diminished 5th)",
         noEsPorTerceras: "it is not a tertian chord",
-        bajoNoValido: { bajo in "\"\(bajo)\" is not a note name for the bass" },
-        idiomasMezclados: { nombre in "\"\(nombre)\" is written in a different language from the root: write everything with letters (G7/B) or everything in Spanish (Sol7/Si)" },
+        bajoNoValido: "\"{1}\" is not a note name for the bass",
+        idiomasMezclados: "\"{1}\" is written in a different language from the root: write everything with letters (G7/B) or everything in Spanish (Sol7/Si)",
         // ErrorDeLecturaDeTeoria.swift (escalas)
-        modoNoReconocido: { nombre in "\"\(nombre)\" is not the mode of a key: a key is major or minor (for other modes, use Escala)" },
+        modoNoReconocido: "\"{1}\" is not the mode of a key: a key is major or minor (for other modes, use Escala)",
         faltaElTipoDeEscala: "the scale type is missing (major, dorian, harmonic minor…)",
-        tipoDeEscalaNoReconocido: { nombre in "\"\(nombre)\" is not a known scale type" },
+        tipoDeEscalaNoReconocido: "\"{1}\" is not a known scale type",
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "every chord must have the same number of voices, and at least two",
         vocesDeDistintaLongitud: "every voice must have the same number of notes",
         // ErrorDeLecturaDeTeoria.swift (nombres y digitaciones)
-        nombreNoReconocido: { n, o in "\"\(n)\" is none of these: \(o)" },
-        numeroFueraDeRango: { t, d, h in "\"\(t)\" is not a number from \(d) to \(h)" },
-        trasteNoValido: { t, u in "\"\(t)\" is not a fret: it must be x (muted string) or a number from 0 to \(u)" },
-        cuerdasDistintas: { e, l in "one fret (or x) is needed for each of the \(e) strings, and there are \(l)" },
+        nombreNoReconocido: "\"{1}\" is none of these: {2}",
+        numeroFueraDeRango: "\"{1}\" is not a number from {2} to {3}",
+        trasteNoValido: "\"{1}\" is not a fret: it must be x (muted string) or a number from 0 to {2}",
+        cuerdasDistintas: "one fret (or x) is needed for each of the {1} strings, and there are {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
-        cifradoRomanoNoValido: { cifrado in "\"\(cifrado)\" is not a roman numeral: a numeral from I to VII with its quality and figures (V7, ii65, bVI, vii°7/V)" },
-        destinoNoTonicalizable: { destino in "\"\(destino)\" cannot follow the slash: it must be a major or minor triad in root position (V/V, vii°7/ii)" },
-        cifrasNoValidas: { cifras in "\"\(cifras)\" is not figured bass: numbers from 1 to 9, each with at most one accidental (6, 64, 7, #6, 4+)" },
-        cifrasSinAcorde: { cifras in "the figures \"\(cifras)\" do not make any chord over that bass" },
+        cifradoRomanoNoValido: "\"{1}\" is not a roman numeral: a numeral from I to VII with its quality and figures (V7, ii65, bVI, vii°7/V)",
+        destinoNoTonicalizable: "\"{1}\" cannot follow the slash: it must be a major or minor triad in root position (V/V, vii°7/ii)",
+        cifrasNoValidas: "\"{1}\" is not figured bass: numbers from 1 to 9, each with at most one accidental (6, 64, 7, #6, 4+)",
+        cifrasSinAcorde: "the figures \"{1}\" do not make any chord over that bass",
         // UsoDeEscala.swift
         usoClasica: "classical",
         usoJazz: "jazz",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         fuenteLushiChunqiu: "Lüshi Chunqiu",
         fuenteVicentino: "Vicentino",
         // Gramática (Acorde.swift, Tonalidad.swift)
-        acordeSobre: { tipo, raiz in "\(raiz) \(tipo)" },
+        acordeSobre: "{2} {1}",
         enLaTonalidad: { tonalidad in "in " + tonalidad }
     )
 }

@@ -16,8 +16,8 @@ extension TextosDePartituras {
         semifusa: "Vierundsechzigstel",
         garrapatea: "Hundertachtundzwanzigstel",
         cero: "null",
-        fraccionDeRedonda: { fraccion in "\(fraccion) einer Ganzen" },
-        conPuntillos: ["punktierte _", "doppelt punktierte _", "dreifach punktierte _", "vierfach punktierte _"],
+        fraccionDeRedonda: "{1} einer Ganzen",
+        conPuntillos: ["punktierte {1}", "doppelt punktierte {1}", "dreifach punktierte {1}", "vierfach punktierte {1}"],
 
         // Pentagrama.swift
         claveDeSol: "Violinschlüssel",
@@ -62,8 +62,8 @@ extension TextosDePartituras {
         instrumentoGlockenspiel: "Glockenspiel",
         instrumentoCelesta: "Celesta",
         // ErrorDeLecturaDePartitura.swift
-        duracionNoValida: { texto in "„\(texto)“ ist keine Dauer: erwartet wurde ein Notenwert (1, 2, 4, 8, 16…, punktiert: 4.) oder ein Bruchteil der Ganzen (3/8, 1/12)" },
-        compasNoValido: { texto in "„\(texto)“ ist keine Taktart: erwartet wurde Zähler/Nenner mit einer Zweierpotenz als Nenner (4/4, 6/8, 7/8), C oder ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "der Kontrapunkt muss so lange dauern wie der Cantus firmus: \(redondas) ganze Noten, eine pro Note" }
+        duracionNoValida: "„{1}“ ist keine Dauer: erwartet wurde ein Notenwert (1, 2, 4, 8, 16…, punktiert: 4.) oder ein Bruchteil der Ganzen (3/8, 1/12)",
+        compasNoValido: "„{1}“ ist keine Taktart: erwartet wurde Zähler/Nenner mit einer Zweierpotenz als Nenner (4/4, 6/8, 7/8), C oder ¢",
+        contrapuntoDeOtraDuracion: "der Kontrapunkt muss so lange dauern wie der Cantus firmus: {1} ganze Noten, eine pro Note"
     )
 }

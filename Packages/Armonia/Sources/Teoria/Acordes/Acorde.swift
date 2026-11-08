@@ -124,7 +124,7 @@ public struct Acorde: Hashable, Sendable {
     public static func nombreDeLaInversion(_ inversion: Int, en notacion: Notacion) -> String {
         let nombres = nombresDeLasInversiones.en(notacion)
         if nombres.indices.contains(inversion) { return nombres[inversion] }
-        return inversionConNumero.en(notacion).rellenada(con: String(inversion))
+        return inversionConNumero.en(notacion)(inversion)
     }
 
     /// Del estado fundamental a la sexta inversión.

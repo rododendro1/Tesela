@@ -16,8 +16,8 @@ extension TextosDePartituras {
         semifusa: "semifusa",
         garrapatea: "garrapatea",
         cero: "cero",
-        fraccionDeRedonda: { fraccion in "\(fraccion) de redonda" },
-        conPuntillos: ["_ con puntiño", "_ con dobre puntiño", "_ con triplo puntiño", "_ con cuádruplo puntiño"],
+        fraccionDeRedonda: "{1} de redonda",
+        conPuntillos: ["{1} con puntiño", "{1} con dobre puntiño", "{1} con triplo puntiño", "{1} con cuádruplo puntiño"],
 
         // Pentagrama.swift
         claveDeSol: "clave de sol",
@@ -62,8 +62,8 @@ extension TextosDePartituras {
         instrumentoGlockenspiel: "glockenspiel",
         instrumentoCelesta: "celesta",
         // ErrorDeLecturaDePartitura.swift
-        duracionNoValida: { texto in "«\(texto)» non é unha duración: agardábase unha figura (1, 2, 4, 8, 16…, con puntiños: 4.) ou unha fracción de redonda (3/8, 1/12)" },
-        compasNoValido: { texto in "«\(texto)» non é un compás: agardábase numerador/denominador co denominador potencia de 2 (4/4, 6/8, 7/8), C ou ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "o contrapunto ten que durar o mesmo que o cantus firmus: \(redondas) redondas, unha por nota" }
+        duracionNoValida: "«{1}» non é unha duración: agardábase unha figura (1, 2, 4, 8, 16…, con puntiños: 4.) ou unha fracción de redonda (3/8, 1/12)",
+        compasNoValido: "«{1}» non é un compás: agardábase numerador/denominador co denominador potencia de 2 (4/4, 6/8, 7/8), C ou ¢",
+        contrapuntoDeOtraDuracion: "o contrapunto ten que durar o mesmo que o cantus firmus: {1} redondas, unha por nota"
     )
 }

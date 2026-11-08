@@ -14,7 +14,7 @@ extension TextosDeFormatos {
         musicXMLComprimido: "Den komprimerade MusicXML-filen (.mxl) är skadad eller kan inte läsas: exportera den okomprimerad (.musicxml).",
         midiDanado: "MIDI-filen är skadad eller avkortad.",
         midiConTiempoSMPTE: "MIDI-filen räknar tiden i SMPTE-rutor, inte i tick per fjärdedelsnot.",
-        xmlDanado: { linea in "XML-filen är skadad (rad \(linea))." },
+        xmlDanado: "XML-filen är skadad (rad {1}).",
         noEsMusicXMLPorPartes: "XML-filen är varken ett stämvis MusicXML-partitur (score-partwise) eller MEI.",
         sinNotas: "Filen innehåller inga noter.",
         sinAcordes: "Inget ackord klingar i filen."

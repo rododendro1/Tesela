@@ -437,7 +437,7 @@ extension Intervalo {
         // El unísono es masculino en francés e italiano: "unisson augmenté".
         let concordada = numero == 1 ? TextosDeElementos.en(notacion, { $0.unisonoEnMasculino(calidad) }) : calidad
         let nombre = TextosDeElementos.en(notacion) { $0.nombreDeIntervalo(concordada, ordinal) }
-        return sentido == .descendente ? Intervalo.plantillaDescendente.en(notacion).rellenada(con: nombre) : nombre
+        return sentido == .descendente ? Intervalo.plantillaDescendente.en(notacion)(nombre) : nombre
     }
 
     /// Dónde va «descendente» en cada idioma: delante o detrás del nombre (`_`).

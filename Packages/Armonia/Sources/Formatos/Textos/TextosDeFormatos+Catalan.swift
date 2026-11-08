@@ -14,7 +14,7 @@ extension TextosDeFormatos {
         musicXMLComprimido: "El MusicXML comprimit (.mxl) està malmès o no es pot llegir: exporta'l sense comprimir (.musicxml).",
         midiDanado: "El fitxer MIDI està malmès o tallat.",
         midiConTiempoSMPTE: "El fitxer MIDI compta el temps en fotogrames SMPTE, no en polsos per negra.",
-        xmlDanado: { linea in "El fitxer XML està malmès (línia \(linea))." },
+        xmlDanado: "El fitxer XML està malmès (línia {1}).",
         noEsMusicXMLPorPartes: "L'XML no és una partitura MusicXML per parts (score-partwise) ni MEI.",
         sinNotas: "El fitxer no té cap nota.",
         sinAcordes: "Al fitxer no sona cap acord."

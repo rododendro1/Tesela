@@ -11,7 +11,7 @@ extension TextosDeDiagramas {
 
         // DibujoSVG.swift
         conjunto: "Σύνολο ",
-        cicloDesde: { nombre, cifrado in "\(nombre) από \(cifrado)" },
+        cicloDesde: "{1} από {2}",
         primeraClase: "πρώτη τονική κλάση",
         primeraNota: "πρώτη νότα",
         leyendaNota: "νότα",
@@ -42,10 +42,10 @@ extension TextosDeDiagramas {
         cuadriculaEnOctavas: "Πλέγμα οκτάβων",
         cuadriculaSecuencial: "Διαδοχικό πλέγμα",
         // FormatoUIL.swift
-        uilNoValido: { texto in "Μη έγκυρο UIL: «\(texto)». Αναμένεται L,G,D;R<μοίρες>[M], για παράδειγμα 2,7,5;R30M." },
-        intervalosIncoherentes: { menor, mayor, diferencia in "Ασυνεπή διαστήματα: \(menor),\(mayor),\(diferencia). Πρέπει να ισχύει 0 < L ≤ D και G = L + D." },
-        giroNoValido: { grados in "Η περιστροφή των \(grados)° δεν είναι πολλαπλάσιο των 30°." },
-        afinacionNoSoportada: { tonos in "Σχεδιάζονται μόνο πληκτρολόγια 12 φθόγγων, όχι \(tonos)." },
-        cizallaNoSoportada: { cizalla in "Η διάτμηση S\(cizalla) δεν υποστηρίζεται." }
+        uilNoValido: "Μη έγκυρο UIL: «{1}». Αναμένεται L,G,D;R<μοίρες>[M], για παράδειγμα 2,7,5;R30M.",
+        intervalosIncoherentes: "Ασυνεπή διαστήματα: {1},{2},{3}. Πρέπει να ισχύει 0 < L ≤ D και G = L + D.",
+        giroNoValido: "Η περιστροφή των {1}° δεν είναι πολλαπλάσιο των 30°.",
+        afinacionNoSoportada: "Σχεδιάζονται μόνο πληκτρολόγια 12 φθόγγων, όχι {1}.",
+        cizallaNoSoportada: "Η διάτμηση S{1} δεν υποστηρίζεται."
     )
 }

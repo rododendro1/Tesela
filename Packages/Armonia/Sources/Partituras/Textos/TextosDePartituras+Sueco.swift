@@ -16,8 +16,8 @@ extension TextosDePartituras {
         semifusa: "sextiofjärdedelsnot",
         garrapatea: "hundratjugoåttondelsnot",
         cero: "noll",
-        fraccionDeRedonda: { fraccion in "\(fraccion) av en helnot" },
-        conPuntillos: ["punkterad _", "dubbelpunkterad _", "trippelpunkterad _", "fyrdubbelt punkterad _"],
+        fraccionDeRedonda: "{1} av en helnot",
+        conPuntillos: ["punkterad {1}", "dubbelpunkterad {1}", "trippelpunkterad {1}", "fyrdubbelt punkterad {1}"],
 
         // Pentagrama.swift
         claveDeSol: "G-klav",
@@ -62,8 +62,8 @@ extension TextosDePartituras {
         instrumentoGlockenspiel: "Klockspel",
         instrumentoCelesta: "Celesta",
         // ErrorDeLecturaDePartitura.swift
-        duracionNoValida: { texto in "”\(texto)” är inget notvärde: ett notvärde (1, 2, 4, 8, 16…, punkterat: 4.) eller en del av en helnot (3/8, 1/12) väntades" },
-        compasNoValido: { texto in "”\(texto)” är ingen taktart: täljare/nämnare med en tvåpotens som nämnare (4/4, 6/8, 7/8), C eller ¢ väntades" },
-        contrapuntoDeOtraDuracion: { redondas in "kontrapunkten måste vara lika lång som cantus firmus: \(redondas) helnoter, en per ton" }
+        duracionNoValida: "”{1}” är inget notvärde: ett notvärde (1, 2, 4, 8, 16…, punkterat: 4.) eller en del av en helnot (3/8, 1/12) väntades",
+        compasNoValido: "”{1}” är ingen taktart: täljare/nämnare med en tvåpotens som nämnare (4/4, 6/8, 7/8), C eller ¢ väntades",
+        contrapuntoDeOtraDuracion: "kontrapunkten måste vara lika lång som cantus firmus: {1} helnoter, en per ton"
     )
 }

@@ -16,8 +16,8 @@ extension TextosDePartituras {
         semifusa: "semifusa",
         garrapatea: "garrapatea",
         cero: "zero",
-        fraccionDeRedonda: { fraccion in "biribilaren \(fraccion)" },
-        conPuntillos: ["_ puntuduna", "_ puntu bikoitzarekin", "_ puntu hirukoitzarekin", "_ puntu laukoitzarekin"],
+        fraccionDeRedonda: "biribilaren {1}",
+        conPuntillos: ["{1} puntuduna", "{1} puntu bikoitzarekin", "{1} puntu hirukoitzarekin", "{1} puntu laukoitzarekin"],
 
         // Pentagrama.swift
         claveDeSol: "sol giltza",
@@ -62,8 +62,8 @@ extension TextosDePartituras {
         instrumentoGlockenspiel: "glockenspiela",
         instrumentoCelesta: "zelesta",
         // ErrorDeLecturaDePartitura.swift
-        duracionNoValida: { texto in "«\(texto)» ez da iraupen bat: figura bat espero zen (1, 2, 4, 8, 16…, puntuekin: 4.) edo biribilaren zatiki bat (3/8, 1/12)" },
-        compasNoValido: { texto in "«\(texto)» ez da konpas bat: zenbakitzailea/izendatzailea espero zen, izendatzailea 2ren berretura izanik (4/4, 6/8, 7/8), C edo ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "kontrapuntuak cantus firmusak beste iraun behar du: \(redondas) biribil, nota bakoitzeko bat" }
+        duracionNoValida: "«{1}» ez da iraupen bat: figura bat espero zen (1, 2, 4, 8, 16…, puntuekin: 4.) edo biribilaren zatiki bat (3/8, 1/12)",
+        compasNoValido: "«{1}» ez da konpas bat: zenbakitzailea/izendatzailea espero zen, izendatzailea 2ren berretura izanik (4/4, 6/8, 7/8), C edo ¢",
+        contrapuntoDeOtraDuracion: "kontrapuntuak cantus firmusak beste iraun behar du: {1} biribil, nota bakoitzeko bat"
     )
 }

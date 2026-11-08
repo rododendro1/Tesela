@@ -8,7 +8,7 @@ extension TextosDePolifonia {
         // Coral.swift
         entreLasVoces: { nombres in "between " + nombres.joined(separator: " and ") },
         enLaVoz: { primera in "in the \(primera)" },
-        enLosAcordes: { pasos in "(chords \(pasos))" },
+        enLosAcordes: "(chords {1})",
         enElAcorde: { acorde in "(chord \(acorde + 1))" },
         quintasParalelas: "Parallel fifths",
         octavasParalelas: "Parallel octaves",
@@ -23,14 +23,14 @@ extension TextosDePolifonia {
         vozTenor: "tenor",
         vozContralto: "alto",
         vozSoprano: "soprano",
-        vozNumero: { numero in "voice \(numero)" },
+        vozNumero: "voice {1}",
 
         // NotaExtrana.swift
         nombresDeNotasExtranas: ["passing tone", "neighbor tone", "appoggiatura", "suspension", "anticipation", "escape tone", "pedal tone", "free tone"],
 
         // Contrapunto.swift
-        enElCompas: { n in "(bar \(n))" },
-        enLosCompases: { pasos in "(bars \(pasos))" },
+        enElCompas: "(bar {1})",
+        enLosCompases: "(bars {1})",
         ritmoDeLaEspecie: "Rhythm outside the species",
         comienzoImperfecto: "Opening without a perfect consonance",
         finalImperfecto: "Ending without unison or octave",
@@ -41,10 +41,10 @@ extension TextosDePolifonia {
         unisono: "Unison in the middle",
         saltoSinCompensar: "Uncompensated leap",
         notaRepetida: "Repeated note",
-        especieConElContrapuntoEncima: { n in "Species \(n), counterpoint above the cantus firmus" },
-        especieConElContrapuntoDebajo: { n in "Species \(n), counterpoint below the cantus firmus" },
-        contrapuntoAVariasVoces: { n in "Counterpoint in \(n) parts" },
-        vozDelContrapunto: { n in "voice \(n)" },
+        especieConElContrapuntoEncima: "Species {1}, counterpoint above the cantus firmus",
+        especieConElContrapuntoDebajo: "Species {1}, counterpoint below the cantus firmus",
+        contrapuntoAVariasVoces: "Counterpoint in {1} parts",
+        vozDelContrapunto: "voice {1}",
         sinFaltas: "No faults."
     )
 }

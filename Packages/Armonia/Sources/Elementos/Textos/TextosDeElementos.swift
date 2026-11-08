@@ -17,8 +17,8 @@ struct TextosDeElementos: TextosTraducidos {
     let multiplicidadSimple: String
     let multiplicidadDoble: String
     let multiplicidadTriple: String
-    let multiplicidad: @Sendable (Int) -> String
-    let plantillaDescendente: String
+    let multiplicidad: Plantilla  // {1} n
+    let plantillaDescendente: Plantilla  // {1} intervalo
     let consonanciaPerfecta: String
     let consonanciaImperfecta: String
     let disonancia: String
@@ -33,39 +33,39 @@ struct TextosDeElementos: TextosTraducidos {
 
     // MARK: ErrorDeLectura.swift (generales)
     let valorNoValido: String
-    let noSePuedeLeer: @Sendable (String) -> String
+    let noSePuedeLeer: Plantilla  // {1} texto
     let caracter: @Sendable (Int) -> String
     let textoVacio: String
-    let caracteresSobrantes: @Sendable (String) -> String
+    let caracteresSobrantes: Plantilla  // {1} resto
 
     // MARK: ErrorDeLectura.swift (notas)
     let notaNoReconocida: String
     let faltaLaOctava: String
-    let octavaNoValida: @Sendable (String) -> String
+    let octavaNoValida: Plantilla  // {1} resto
     let faltaElNumeroDeIntervalo: String
-    let numeroDeIntervaloNoValido: @Sendable (String) -> String
+    let numeroDeIntervaloNoValido: Plantilla  // {1} resto
     let faltaLaCalidad: String
-    let calidadNoValida: @Sendable (String) -> String
+    let calidadNoValida: Plantilla  // {1} resto
     let unisonoDisminuido: String
     let reglaDeLasJustas: String
     let reglaDeLasMayores: String
     let intervaloInexistente: @Sendable (Int, CalidadDeIntervalo, Notacion, Traduccion) -> String
-    let alteracionNoReconocida: @Sendable (String) -> String
+    let alteracionNoReconocida: Plantilla  // {1} signo
 
     // MARK: ErrorDeLectura.swift (conjuntos y series)
-    let claseDeAlturaNoValida: @Sendable (String) -> String
-    let numeroDeForteDesconocido: @Sendable (String) -> String
-    let faltaElCierre: @Sendable (String) -> String
+    let claseDeAlturaNoValida: Plantilla  // {1} texto
+    let numeroDeForteDesconocido: Plantilla  // {1} texto
+    let faltaElCierre: Plantilla  // {1} signo
     let serieNoDodecafonica: String
-    let faltanEnLaSerie: @Sendable (String) -> String
-    let repetidasEnLaSerie: @Sendable (String) -> String
+    let faltanEnLaSerie: Plantilla  // {1} clases
+    let repetidasEnLaSerie: Plantilla  // {1} clases
 
     // MARK: ErrorDeLectura.swift (idiomas)
-    let idiomaNoReconocido: @Sendable (_ nombre: String, _ opciones: String) -> String
+    let idiomaNoReconocido: Plantilla  // {1} nombre, {2} opciones
 
     // MARK: Gramática (Intervalo.swift, ErrorDeLectura.swift)
     /// El nombre de un intervalo con su calidad y su número: «3ª mayor», «major third».
-    let nombreDeIntervalo: @Sendable (_ calidad: String, _ ordinal: String) -> String
+    let nombreDeIntervalo: Plantilla  // {1} calidad, {2} ordinal
     /// La calidad del unísono, que en francés e italiano es masculino: «unisson augmenté».
     let unisonoEnMasculino: @Sendable (String) -> String
     /// Los nombres de los intervalos del unísono a la doble octava; vacío si se escriben con número.

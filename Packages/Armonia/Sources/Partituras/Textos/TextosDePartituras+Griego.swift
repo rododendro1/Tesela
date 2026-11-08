@@ -16,8 +16,8 @@ extension TextosDePartituras {
         semifusa: "εξηκοστό τέταρτο",
         garrapatea: "εκατοστό εικοστό όγδοο",
         cero: "μηδέν",
-        fraccionDeRedonda: { fraccion in "\(fraccion) του ολόκληρου" },
-        conPuntillos: ["_ με τελεία", "_ με διπλή τελεία", "_ με τριπλή τελεία", "_ με τετραπλή τελεία"],
+        fraccionDeRedonda: "{1} του ολόκληρου",
+        conPuntillos: ["{1} με τελεία", "{1} με διπλή τελεία", "{1} με τριπλή τελεία", "{1} με τετραπλή τελεία"],
 
         // Pentagrama.swift
         claveDeSol: "κλειδί του σολ",
@@ -62,8 +62,8 @@ extension TextosDePartituras {
         instrumentoGlockenspiel: "γκλόκενσπιλ",
         instrumentoCelesta: "τσελέστα",
         // ErrorDeLecturaDePartitura.swift
-        duracionNoValida: { texto in "το «\(texto)» δεν είναι διάρκεια: αναμενόταν αξία νότας (1, 2, 4, 8, 16…, με τελεία: 4.) ή κλάσμα ολόκληρου (3/8, 1/12)" },
-        compasNoValido: { texto in "το «\(texto)» δεν είναι μέτρο: αναμενόταν αριθμητής/παρονομαστής με παρονομαστή δύναμη του 2 (4/4, 6/8, 7/8), C ή ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "η αντίστιξη πρέπει να διαρκεί όσο το cantus firmus: \(redondas) ολόκληρα, ένα ανά νότα" }
+        duracionNoValida: "το «{1}» δεν είναι διάρκεια: αναμενόταν αξία νότας (1, 2, 4, 8, 16…, με τελεία: 4.) ή κλάσμα ολόκληρου (3/8, 1/12)",
+        compasNoValido: "το «{1}» δεν είναι μέτρο: αναμενόταν αριθμητής/παρονομαστής με παρονομαστή δύναμη του 2 (4/4, 6/8, 7/8), C ή ¢",
+        contrapuntoDeOtraDuracion: "η αντίστιξη πρέπει να διαρκεί όσο το cantus firmus: {1} ολόκληρα, ένα ανά νότα"
     )
 }

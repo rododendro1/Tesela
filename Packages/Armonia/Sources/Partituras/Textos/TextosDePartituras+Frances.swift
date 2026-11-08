@@ -16,8 +16,8 @@ extension TextosDePartituras {
         semifusa: "quadruple croche",
         garrapatea: "quintuple croche",
         cero: "zéro",
-        fraccionDeRedonda: { fraccion in "\(fraccion) de ronde" },
-        conPuntillos: ["_ pointée", "_ doublement pointée", "_ triplement pointée", "_ quadruplement pointée"],
+        fraccionDeRedonda: "{1} de ronde",
+        conPuntillos: ["{1} pointée", "{1} doublement pointée", "{1} triplement pointée", "{1} quadruplement pointée"],
 
         // Pentagrama.swift
         claveDeSol: "clé de sol",
@@ -62,8 +62,8 @@ extension TextosDePartituras {
         instrumentoGlockenspiel: "glockenspiel",
         instrumentoCelesta: "célesta",
         // ErrorDeLecturaDePartitura.swift
-        duracionNoValida: { texto in "« \(texto) » n'est pas une durée : une figure était attendue (1, 2, 4, 8, 16…, pointée : 4.) ou une fraction de ronde (3/8, 1/12)" },
-        compasNoValido: { texto in "« \(texto) » n'est pas une mesure : numérateur/dénominateur attendu, avec un dénominateur puissance de 2 (4/4, 6/8, 7/8), C ou ¢" },
-        contrapuntoDeOtraDuracion: { redondas in "le contrepoint doit durer autant que le cantus firmus : \(redondas) rondes, une par note" }
+        duracionNoValida: "« {1} » n'est pas une durée : une figure était attendue (1, 2, 4, 8, 16…, pointée : 4.) ou une fraction de ronde (3/8, 1/12)",
+        compasNoValido: "« {1} » n'est pas une mesure : numérateur/dénominateur attendu, avec un dénominateur puissance de 2 (4/4, 6/8, 7/8), C ou ¢",
+        contrapuntoDeOtraDuracion: "le contrepoint doit durer autant que le cantus firmus : {1} rondes, une par note"
     )
 }

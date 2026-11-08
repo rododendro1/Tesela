@@ -63,9 +63,9 @@ import Testing
     }
 
     @Test func plantillas() {
-        #expect("inversión _".rellenada(con: "7") == "inversión 7")
-        #expect("_. Umkehrung".rellenada(con: "8") == "8. Umkehrung")
-        #expect("sin hueco".rellenada(con: "7") == "sin hueco")
+        #expect(Plantilla("inversión {1}")(7) == "inversión 7")
+        #expect(Plantilla("{1}. Umkehrung")(8) == "8. Umkehrung")
+        #expect(Plantilla("sin hueco")(7) == "sin hueco")
     }
 
     @Test func textosHechosConListas() {

@@ -11,7 +11,7 @@ extension TextosDeDiagramas {
 
         // DibujoSVG.swift
         conjunto: "mängd ",
-        cicloDesde: { nombre, cifrado in "\(nombre) från \(cifrado)" },
+        cicloDesde: "{1} från {2}",
         primeraClase: "första tonklass",
         primeraNota: "första ton",
         leyendaNota: "ton",
@@ -42,10 +42,10 @@ extension TextosDeDiagramas {
         cuadriculaEnOctavas: "oktavrutnät",
         cuadriculaSecuencial: "sekventiellt rutnät",
         // FormatoUIL.swift
-        uilNoValido: { texto in "Ogiltig UIL: ”\(texto)”. Väntat är L,G,D;R<grader>[M], till exempel 2,7,5;R30M." },
-        intervalosIncoherentes: { menor, mayor, diferencia in "Motstridiga intervall: \(menor),\(mayor),\(diferencia). Det måste gälla att 0 < L ≤ D och G = L + D." },
-        giroNoValido: { grados in "En vridning på \(grados)° är ingen multipel av 30°." },
-        afinacionNoSoportada: { tonos in "Bara klaviaturer med 12 toner kan ritas, inte med \(tonos)." },
-        cizallaNoSoportada: { cizalla in "Skjuvningen S\(cizalla) stöds inte." }
+        uilNoValido: "Ogiltig UIL: ”{1}”. Väntat är L,G,D;R<grader>[M], till exempel 2,7,5;R30M.",
+        intervalosIncoherentes: "Motstridiga intervall: {1},{2},{3}. Det måste gälla att 0 < L ≤ D och G = L + D.",
+        giroNoValido: "En vridning på {1}° är ingen multipel av 30°.",
+        afinacionNoSoportada: "Bara klaviaturer med 12 toner kan ritas, inte med {1}.",
+        cizallaNoSoportada: "Skjuvningen S{1} stöds inte."
     )
 }
