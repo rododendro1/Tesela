@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+- El catálogo de acordes tiene ocho acordes de nombre propio (`AcordeConNombre.conNombrePropio`), con sus notas tal
+  como se escriben, sus estilos y la obra donde se leen: el de Tristán (Rothgeb 1995), el místico o de Prometeo
+  (Samson 1977), el de Petrushka (Taruskin 1987, el único que no se lee por terceras: `tipo` es `nil`), el de «Farben»
+  (Burkhart 1973), el So What (Levine 1989), el de Hendrix, el mu y el acorde por cuartas (Persichetti 1961), con sus
+  nombres en los trece idiomas. Los genéricos están en `AcordeConNombre.genericos`, y `catalogo` tiene los dos. Los
+  de nombre propio no dan nombre a su tipo; `TipoDeAcorde.acordesConNombre` da todos los acordes del catálogo con
+  sus notas.
 - **Cambio incompatible:** `Coral`, `SerieDodecafonica` y `ConjuntoDeClasesDeAltura` son `RepresentableComoTexto`:
   se escriben como literal (`let coral: Coral = "Do3 Sol3 Mi4 Do5 | Sol2 Re4 Sol4 Si4"`,
   `let triada: ConjuntoDeClasesDeAltura = "3-11"`), la serie y el conjunto tienen `texto(en:)`, y los tres se

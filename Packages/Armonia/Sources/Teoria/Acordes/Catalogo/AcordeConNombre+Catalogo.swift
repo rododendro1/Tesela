@@ -77,9 +77,9 @@ extension AcordeConNombre {
         intervalos: [.unisono, .terceraMayor, .quintaJusta, .sextaAumentada],
         estilos: [.clasica])
 
-    /// Todos los acordes del catálogo, en el orden en que tienen prioridad: cuando dos tienen las mismas notas,
-    /// el primero da nombre al tipo (`TipoDeAcorde.acordeConNombre`).
-    public static let catalogo: [AcordeConNombre] = [
+    /// Los genéricos, los que dan nombre a los tipos de acorde (`TipoDeAcorde.acordeConNombre`), en el orden en que
+    /// tienen prioridad: si dos tuvieran las mismas notas, el primero daría nombre al tipo.
+    public static let genericos: [AcordeConNombre] = [
         .mayor, .menor, .disminuido, .aumentado, .sus2, .sus4, .potencia, .dominanteSeptima, .mayorSeptimaMayor,
         .menorSeptima, .semidisminuido, .disminuidoSeptima, .menorSeptimaMayor, .aumentadoSeptima,
         .aumentadoSeptimaMayor, .sus4Septima, .mayorSexta, .menorSexta, .mayorSextaNovena, .dominanteNovena,

@@ -35,5 +35,13 @@ extension NombresDeAcordes {
         .init(.sextaAumentadaItaliana, "sexta augmentada italiana"),
         .init(.sextaAumentadaFrancesa, "sexta augmentada francesa"),
         .init(.sextaAumentadaAlemana, "sexta augmentada alemanya"),
+        .init(.tristan, "acord de Tristany"),
+        .init(.mistico, "acord místic", alias: ["acord de Prometeu"]),
+        .init(.petrushka, "acord de Petruixka"),
+        .init(.farben, "acord de Farben"),
+        .init(.soWhat, "acord So What"),
+        .init(.hendrix, "acord de Hendrix"),
+        .init(.mu, "acord mu"),
+        .init(.porCuartas, "acord per quartes"),
     ])
 }

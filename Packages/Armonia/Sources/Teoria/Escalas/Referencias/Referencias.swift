@@ -1,8 +1,9 @@
 // MARK: - Las obras del catálogo
 //
 // Cada obra es una constante, con la clave de su autor (o de su primer autor) y su año: `west1992`. Una obra nueva va
-// en su sección y en `catalogo`; una prueba comprueba que cada una está en `catalogo` una vez y que alguna escala la
-// cita. Los títulos se escriben como en la obra, sin traducir; los de un tratado, en su lengua y su grafía.
+// en su sección y en `catalogo`; una prueba comprueba que cada una está en `catalogo` una vez y que alguna escala o
+// algún acorde la cita. Los títulos se escriben como en la obra, sin traducir; los de un tratado, en su lengua y su
+// grafía.
 
 extension Referencia {
     // MARK: Obras generales
@@ -213,13 +214,46 @@ extension Referencia {
         titulo: "La musique des Incas et ses survivances", anio: 1925, editorial: "Paul Geuthner", lugar: "París")
 
     /// Todas las obras, en el orden de este fichero.
+    // MARK: Acordes
+
+    /// Rothgeb, el acorde de Tristán tal como se escribe (Fa Si Re♯ Sol♯) y su origen.
+    public static let rothgeb1995 = Referencia(
+        "rothgeb1995", .articulo, autores: ["Rothgeb, John"], titulo: "The Tristan Chord: Identity and Origin",
+        anio: 1995, publicadoEn: "Music Theory Online", volumen: "1 (1)",
+        url: "https://mtosmt.org/issues/mto.95.1.1/mto.95.1.1.rothgeb.html")
+    /// Samson, la armonía de 1900 a 1920: el acorde místico de Skriabin.
+    public static let samson1977 = Referencia(
+        "samson1977", .libro, autores: ["Samson, Jim"],
+        titulo: "Music in Transition: A Study of Tonal Expansion and Atonality, 1900–1920", anio: 1977,
+        editorial: "W. W. Norton", lugar: "Nueva York")
+    /// Taruskin, el acorde de Petrushka: dos tríadas mayores a un trítono.
+    public static let taruskin1987 = Referencia(
+        "taruskin1987", .articulo, autores: ["Taruskin, Richard"],
+        titulo: "Chez Pétrouchka: Harmony and Tonality chez Stravinsky", anio: 1987, publicadoEn: "19th-Century Music",
+        volumen: "10 (3)", paginas: "265–286")
+    /// Burkhart, el acorde de «Farben», la tercera de las Cinco piezas para orquesta de Schönberg.
+    public static let burkhart1973 = Referencia(
+        "burkhart1973", .articulo, autores: ["Burkhart, Charles"],
+        titulo: "Schoenberg's Farben: An Analysis of Op. 16, No. 3", anio: 1973,
+        publicadoEn: "Perspectives of New Music", volumen: "12 (1/2)")
+    /// Levine, las disposiciones del piano de jazz: el acorde So What.
+    public static let levine1989 = Referencia(
+        "levine1989", .libro, autores: ["Levine, Mark"], titulo: "The Jazz Piano Book", anio: 1989,
+        editorial: "Sher Music", lugar: "Petaluma")
+    /// Persichetti, la armonía del siglo XX: los acordes por cuartas.
+    public static let persichetti1961 = Referencia(
+        "persichetti1961", .libro, autores: ["Persichetti, Vincent"],
+        titulo: "Twentieth-Century Harmony: Creative Aspects and Practice", anio: 1961, editorial: "W. W. Norton",
+        lugar: "Nueva York")
+
     public static let catalogo: [Referencia] = [
         .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .rowell1992, .touma1996, .farraj2019,
         .maqamWorld, .wright1978, .farhat1990, .signell1977, .tdvIslamAnsiklopedisi, .hacibeyov1945, .west1992,
         .barker1989, .chalmers1993, .mathiesen1999, .chrysanthos1832, .apel1958, .glareano1547, .ramos1482,
         .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .garfias1975, .tranVanKhe1962, .morton1976,
         .surjodiningrat1972, .tenzer2000, .rubin2020, .kebede1971, .kilmer1971, .gurney1994, .west1994, .tracey1948,
-        .berliner1978, .knight1973, .harcourt1925,
+        .berliner1978, .knight1973, .harcourt1925, .rothgeb1995, .samson1977, .taruskin1987, .burkhart1973,
+        .levine1989, .persichetti1961,
     ]
 }
 

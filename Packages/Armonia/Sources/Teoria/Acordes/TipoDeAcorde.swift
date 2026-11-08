@@ -180,12 +180,12 @@ public struct TipoDeAcorde: Sendable {
         .mayorNovenaAnadida, .dominanteUndecima, .menorSeptimaUndecima, .dominanteDecimotercera,
     ]
 
-    /// Los tipos con nombre, indexados por su conjunto de quintas: el primer acorde de `AcordeConNombre.catalogo` con
-    /// esas notas. Se construye con los pasos de quinta del acorde, sin crear `TipoDeAcorde`, para no depender de
+    /// Los tipos con nombre, indexados por su conjunto de quintas: el primer acorde de `AcordeConNombre.genericos` con
+    /// esas notas (los de nombre propio no nombran su tipo). Se construye con los pasos de quinta del acorde, sin crear `TipoDeAcorde`, para no depender de
     /// otras constantes estáticas.
     package static let nombresConocidos: [Set<Int>: AcordeConNombre] = {
         var diccionario: [Set<Int>: AcordeConNombre] = [:]
-        for acorde in AcordeConNombre.catalogo where diccionario[acorde.pasosDeQuinta] == nil {
+        for acorde in AcordeConNombre.genericos where diccionario[acorde.pasosDeQuinta] == nil {
             diccionario[acorde.pasosDeQuinta] = acorde
         }
         return diccionario
