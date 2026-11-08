@@ -42,7 +42,7 @@ T = {  # original: (ruso, griego)
 CAD = r'"((?:[^"\\]|\\.)*)"'
 # nombre original -> miembro de TipoDeEscala (las filas se escriben `.tradicional(.miembro, "…")`)
 MIEMBRO = {}
-for f in (N.parent / "Tradiciones").rglob("*.swift"):
+for f in (N.parent / "Catalogo").glob("TipoDeEscala+*.swift"):
     for m in re.finditer(r'static let (`?\w+`?) = TipoDeEscala\(\s*nombre: ' + CAD, f.read_text(encoding="utf-8")):
         MIEMBRO[m.group(2)] = m.group(1)
 POR_MIEMBRO = {MIEMBRO[o]: v for o, v in T.items()}

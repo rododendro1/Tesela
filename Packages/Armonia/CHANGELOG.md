@@ -2,6 +2,18 @@
 
 ## Sin publicar
 
+### El apartado de escalas, reorganizado
+
+- `Sources/Teoria/Escalas/` se reparte en carpetas por tema: `Escala/` (la escala y sus extensiones), `Tipo/`
+  (`TipoDeEscala`, su ficha y su cardinal), `Clasificacion/` (tradición, categoría, clase, fuente, estilos y regiones),
+  `Catalogo/` (un fichero por tradición, la occidental incluida, con `ModoGregoriano`, la mano guidoniana y los diao),
+  `Microtonos/`, `Nombres/` y `Referencias/`. Desaparecen `Tradiciones/` y `Occidentales/`.
+- `Subtradicion.swift` se parte: `EstiloDeEscala` y `RegionDeEscala` tienen su propio fichero.
+- Las pruebas de las escalas tradicionales se reparten por tradición (`EscalasOccidentalesTests`,
+  `EscalasDeLaIndiaTests`, `EscalasDeOrienteProximoTests`, `EscalasDeAsiaOrientalTests`, `EscalasDeEuropaTests`).
+- Solo se mueven ficheros: no cambia ninguna API. `comprobar_catalogo.py` y los generadores de nombres siguen las
+  nuevas rutas.
+
 ### Referencias bibliográficas de las escalas
 
 - `Referencia`, nueva: una obra (libro, artículo, capítulo, tesis, tratado o web) con sus autores, su título, su año,
