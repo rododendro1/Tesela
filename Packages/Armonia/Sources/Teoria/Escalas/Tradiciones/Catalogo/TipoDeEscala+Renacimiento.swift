@@ -38,7 +38,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["dórico con musica ficta"],
-        categoria: .escala,
+        tradicion: .renacimiento, categoria: .escala,
         afinaciones: [
             .init(
                 .razones, pasos: [0, 193, 310, 503, 697, 890, 1083],
@@ -63,7 +63,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["mixolidio con musica ficta"],
-        categoria: .escala,
+        tradicion: .renacimiento, categoria: .escala,
         afinaciones: [
             .init(
                 .razones, pasos: [0, 193, 386, 503, 697, 890, 1083],
@@ -80,7 +80,7 @@ extension TipoDeEscala {
         nombre: "lidio con si bemol",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
         alias: ["lidio con b molle", "tritus con b molle"],
-        categoria: .escala,
+        tradicion: .renacimiento, categoria: .escala,
         afinaciones: [
             .init(.razones, pasos: [0, 193, 386, 503, 697, 890, 1083]),
             .init(.razones, pasos: [0, 192, 383, 504, 696, 887, 1079], fuente: .zarlino),
@@ -96,7 +96,7 @@ extension TipoDeEscala {
             .septimaMayor,
         ],
         alias: ["musica vera"],
-        categoria: .escala,
+        tradicion: .renacimiento, categoria: .escala,
         afinaciones: [
             .init(.razones, pasos: [0, 193, 386, 503, 697, 890, 1007, 1083]),
             .init(.razones, pasos: [0, 192, 383, 504, 696, 887, 1008, 1079], fuente: .zarlino),

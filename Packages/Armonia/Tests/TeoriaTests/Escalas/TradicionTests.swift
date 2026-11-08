@@ -39,6 +39,26 @@ import Testing
         #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).tradicion == nil)
     }
 
+    /// La tradición de la ficha casa con todo lo que la dice: su categoría, sus subtradiciones, su fuente y las de
+    /// sus afinaciones. Y cada escala del catálogo tiene una.
+    @Test func laTradicionDeLaFichaCasaConSusDatos() {
+        for tipo in TipoDeEscala.catalogo {
+            let nombre = Comment(rawValue: tipo.nombre)
+            let tradicion = tipo.ficha.tradicion
+            #expect(tradicion != nil, nombre)
+            if let deLaCategoria = tipo.ficha.categoria?.tradicion { #expect(deLaCategoria == tradicion, nombre) }
+            for subtradicion in tipo.subtradiciones { #expect(subtradicion.tradicion == tradicion, nombre) }
+            if let fuente = tipo.ficha.fuente { #expect(fuente.tradicion == tradicion, nombre) }
+            for afinacion in tipo.ficha.afinaciones {
+                if let fuente = afinacion.fuente { #expect(fuente.tradicion == tradicion, nombre) }
+            }
+        }
+        #expect(CategoriaTradicional.maqam.tradicion == .mundoArabe)
+        #expect(CategoriaTradicional.escala.tradicion == nil)
+        #expect(TipoDeEscala.hirajoshi.tradicion == .japon)
+        #expect(TipoDeEscala.ionicus.tradicion == .gregoriano)
+    }
+
     /// El catálogo son las occidentales y después las de otras tradiciones, y su orden decide quién gana.
     @Test func catalogoConPrioridad() {
         let todas = TipoDeEscala.occidentales + TipoDeEscala.tradicionales

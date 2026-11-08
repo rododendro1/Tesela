@@ -21,10 +21,11 @@ import Elementos
 /// (`TipoDeEscala.llevaLaCategoria`), para que `nombreCompleto` no la repita.
 ///
 /// De ahí salen `TipoDeEscala.estilos`, `regiones`, `categoria`, `padre`, `microtonal` y `afinaciones`, y
-/// `EstiloDeEscala.tipos`, `RegionDeEscala.tipos` y `TipoDeEscalaMicrotonal.catalogo`. La tradición no va en la ficha:
-/// la da su lista en `TipoDeEscala.listasTradicionales`, o es la occidental en las de `TipoDeEscala.todos`. Los nombres
-/// en otros idiomas tampoco: están en `Nombres/`. El estilo de las escalas de la India no se escribe: lo da su
-/// categoría.
+/// `EstiloDeEscala.tipos`, `RegionDeEscala.tipos` y `TipoDeEscalaMicrotonal.catalogo`. La tradición (`tradicion`) se
+/// deduce de la categoría, de las subtradiciones o de la fuente, y solo se escribe en las que no la dan
+/// (`tradicion: .japon, categoria: .escala`); cada lista de `TipoDeEscala.listasTradicionales` tiene solo escalas de
+/// la suya. Los nombres en otros idiomas no van en la ficha: están en `Nombres/`. El estilo de las escalas de la India
+/// no se escribe: lo da su categoría.
 ///
 /// Las propiedades públicas no leen la ficha del valor, sino la de la escala del catálogo con su misma `identidad`:
 /// un tipo leído de un fichero o escrito a mano con el nombre y las notas de Bayātī tiene sus microtonos, y una escala
@@ -53,6 +54,9 @@ package struct FichaDeEscala: Sendable {
     package let estilos: [EstiloDeEscala]
     /// De qué regiones viene, en el orden de `RegionDeEscala.allCases`.
     package let regiones: [RegionDeEscala]
+    /// La tradición: la que se escribe en la declaración o, si no, la de su categoría (un rāga es de la India), la de
+    /// sus subtradiciones (un estilo occidental, una región) o la de su fuente. `nil` solo en `vacia`.
+    package let tradicion: Tradicion?
     /// La categoría en su tradición; `nil` en las occidentales.
     package let categoria: CategoriaTradicional?
     /// La escala madre de la que sale (el mēḷa de un janya, el thāṭ de un rāga, el grāma de una mūrchanā, el laras
@@ -64,12 +68,16 @@ package struct FichaDeEscala: Sendable {
     package let fuente: FuenteTeorica?
 
     package init(
-        estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [], categoria: CategoriaTradicional? = nil,
+        tradicion: Tradicion? = nil, estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [],
+        categoria: CategoriaTradicional? = nil,
         padre: IdentidadDeEscala? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil
     ) {
         let estilos = estilos.isEmpty ? (categoria.flatMap(EstiloDeEscala.de).map { [$0] } ?? []) : estilos
         self.estilos = EstiloDeEscala.allCases.filter { estilos.contains($0) }
         self.regiones = RegionDeEscala.allCases.filter { regiones.contains($0) }
+        self.tradicion =
+            tradicion ?? categoria?.tradicion ?? estilos.first?.tradicion ?? regiones.first?.tradicion
+            ?? fuente?.tradicion
         self.categoria = categoria
         self.padre = padre
         self.afinaciones = afinaciones
@@ -97,29 +105,18 @@ extension TipoDeEscala {
     /// La ficha de la escala del catálogo con la misma `identidad` (`FichaDeEscala.vacia` si no es del catálogo).
     package var fichaDelCatalogo: FichaDeEscala { TipoDeEscala.delCatalogo[identidad]?.tipo.ficha ?? .vacia }
 
-    /// La escala del catálogo con la misma identidad, su tradición y sus versiones microtonales.
-    package typealias EntradaDelCatalogo = (
-        tipo: TipoDeEscala, tradicion: Tradicion?, afinaciones: [TipoDeEscalaMicrotonal]
-    )
+    /// La escala del catálogo con la misma identidad y sus versiones microtonales.
+    package typealias EntradaDelCatalogo = (tipo: TipoDeEscala, afinaciones: [TipoDeEscalaMicrotonal])
 
-    /// Identidad → escala del catálogo. Si dos escalas tuvieran la misma identidad, vale la primera de `catalogo`; si
-    /// una estuviera en dos listas de `listasTradicionales`, vale la tradición de la primera. Las de `occidentales` que
-    /// no están en ninguna lista son de la tradición occidental.
+    /// Identidad → escala del catálogo. Si dos escalas tuvieran la misma identidad, vale la primera de `catalogo`.
     package static let delCatalogo: [IdentidadDeEscala: EntradaDelCatalogo] = {
-        var tradiciones: [IdentidadDeEscala: Tradicion] = [:]
-        for lista in listasTradicionales {
-            for tipo in lista.tipos where tradiciones[tipo.identidad] == nil {
-                tradiciones[tipo.identidad] = lista.tradicion
-            }
-        }
-        for tipo in occidentales where tradiciones[tipo.identidad] == nil { tradiciones[tipo.identidad] = .occidental }
         var tabla: [IdentidadDeEscala: EntradaDelCatalogo] = [:]
         for tipo in catalogo where tabla[tipo.identidad] == nil {
             let afinaciones = tipo.ficha.afinaciones.map {
                 TipoDeEscalaMicrotonal(
                     tipo, $0.sistema, pasos: $0.pasos, pasosDescendentes: $0.pasosDescendentes, fuente: $0.fuente)
             }
-            tabla[tipo.identidad] = (tipo: tipo, tradicion: tradiciones[tipo.identidad], afinaciones: afinaciones)
+            tabla[tipo.identidad] = (tipo: tipo, afinaciones: afinaciones)
         }
         return tabla
     }()

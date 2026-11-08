@@ -14,17 +14,17 @@ extension TipoDeEscala {
     public static let mixolidioNordestino = TipoDeEscala(
         nombre: "mixolídio nordestino", intervalos: TipoDeEscala.mixolidio.intervalos,
         alias: ["modo mixolídio nordestino"],
-        categoria: .escala)
+        tradicion: .brasil, categoria: .escala)
     /// Lídio nordestino: Do Re Mi Fa♯ Sol La Si♭.
     public static let lidioNordestino = TipoDeEscala(
         nombre: "lídio nordestino", intervalos: TipoDeEscala.lidioDominante.intervalos,
         alias: ["modo lídio nordestino", "lídio com sétima menor", "lídio-mixolídio"],
-        categoria: .escala)
+        tradicion: .brasil, categoria: .escala)
     /// Dórico nordestino: Do Re Mi♭ Fa Sol La Si♭.
     public static let doricoNordestino = TipoDeEscala(
         nombre: "dórico nordestino", intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["modo dórico nordestino"],
-        categoria: .escala)
+        tradicion: .brasil, categoria: .escala)
 
     package static let brasilenas: [TipoDeEscala] = [.mixolidioNordestino, .lidioNordestino, .doricoNordestino]
 }

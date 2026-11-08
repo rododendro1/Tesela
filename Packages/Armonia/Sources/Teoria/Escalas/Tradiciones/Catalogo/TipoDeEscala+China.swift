@@ -104,14 +104,14 @@ extension TipoDeEscala {
         nombre: "Yánglǜ",
         intervalos: TipoDeEscala.tonosEnteros.intervalos,
         variantes: ["六律", "阳律", "陽律"],
-        categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 204, 408, 612, 816, 1020])])
+        tradicion: .china, categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 204, 408, 612, 816, 1020])])
     /// 六吕, los seis lü yin, de dàlǚ: dàlǚ, jiāzhōng, zhònglǚ, línzhōng, nánlǚ y yìngzhōng (Do♯ Re♯ Mi♯ Sol La Si,
     /// con la quinta disminuida pitagórica de 588 cents).
     public static let yinlu = TipoDeEscala(
         nombre: "Yīnlǜ",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaDisminuida, .sextaMenor, .septimaMenor],
         alias: ["Liùtóng"], variantes: ["六吕", "六呂", "阴律", "陰律", "六同"],
-        categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 204, 408, 588, 792, 996])])
+        tradicion: .china, categoria: .escala, afinaciones: [.init(.razones, pasos: [0, 204, 408, 588, 792, 996])])
 
     /// Los doce lü y sus dos mitades, la yang y la yin.
     package static let lus: [TipoDeEscala] = [.shierLu, .yanglu, .yinlu]

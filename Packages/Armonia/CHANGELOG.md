@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### La tradición, en la ficha de cada escala
+
+- La tradición de una escala del catálogo está en su ficha y ya no sale de la lista en que se apunta: se deduce de su
+  categoría (`CategoriaTradicional.tradicion`, nueva: un rāga es de la India, un maqām del mundo árabe), de sus
+  estilos o regiones o de su fuente, y solo se escribe en las 33 que no la dan (`tradicion: .japon, categoria:
+  .escala`). Una prueba comprueba que casa con su lista y con todo lo demás. `TipoDeEscala.tradicion` no cambia.
+
 ### La escala madre de cualquier escala: `padre` y `derivadas`
 
 - `TipoDeEscala.padre` ya no es solo el mēḷa de un rāga janya: es la escala madre de la que sale una escala por la
