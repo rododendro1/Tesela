@@ -31,7 +31,7 @@ extension PresentacionDeEstudioDeEscala {
     /// `armonia grabar hoja Do mayor` la pasa a PDF.
     ///
     ///     let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudio(
-    ///         de: Escala(.re, .dorico), en: .espanolCompacto)
+    ///         de: Escala(.re, .dorico), en: .compacta(.espanol))
     ///     hoja.hasPrefix("<svg")   // true
     public static func hojaDeEstudio(
         de escala: Escala, en notacion: Notacion, secciones: Set<SeccionDeLaHoja> = Set(SeccionDeLaHoja.allCases)

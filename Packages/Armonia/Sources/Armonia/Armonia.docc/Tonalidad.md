@@ -50,7 +50,7 @@ analisis.tonalidad                    // Do mayor
 analisis.cifrados                     // ["I", "vi", "V7/V", "V7", "I"]
 analisis.funciones.map { $0?.abreviatura ?? "–" }   // ["T", "T", "D", "D", "T"]
 analisis.acordes[2].categoria         // .dominanteSecundaria(de: 5)
-analisis.nombre(en: .inglesASCII)          // "I–vi–V7/V–V7–I in C major"
+analisis.nombre(en: .ascii(.ingles))          // "I–vi–V7/V–V7–I in C major"
 
 try AnalisisArmonico.analizar(leyendo: "Do Fa/La Sol7/Si Do")      // I–IV6–V65–I en Do mayor
 try AnalisisArmonico.analizar(leyendo: "Sim7(b5) Mi7 Lam")         // «iiø7–V7–i en La menor»
@@ -115,7 +115,7 @@ let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
 let partituraAnalizada = analisis.partitura(encabezado: Encabezado(titulo: "Progresión")).musicXML()
 partituraAnalizada.contains("<kind text=\"7\">dominant</kind>")   // true
 partituraAnalizada.contains("<text>V7/V</text>")               // true
-analisis.partitura(notacion: .inglesASCII).musicXML().contains("C major:")      // true
+analisis.partitura(notacion: .ascii(.ingles)).musicXML().contains("C major:")      // true
 ```
 
 `mei()` escribe lo mismo en MEI,
@@ -123,7 +123,7 @@ con el cifrado como texto en `<harm>` (en la notación que se pida) y el anális
 
 ```swift
 let progresion = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
-progresion.partitura(notacion: .inglesASCII).mei().contains(">D7</harm>")        // true
+progresion.partitura(notacion: .ascii(.ingles)).mei().contains(">D7</harm>")        // true
 progresion.partitura().mei().contains("<syl>V7/V</syl>")                   // true
 ```
 
@@ -146,7 +146,7 @@ let cadencia = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do").cadencias
 cadencia.tipo                         // .autentica
 cadencia.esPerfecta                   // true
 cadencia.description                  // "Cadencia auténtica V7–I (acordes 3 → 4)"
-cadencia.descripcion(en: .inglesASCII)     // "Authentic cadence V7–I (chords 3 → 4)"
+cadencia.descripcion(en: .ascii(.ingles))     // "Authentic cadence V7–I (chords 3 → 4)"
 
 Tonalidad(.do).analizar(["Do", "Fa", "Do"]).cadencias.first?.tipo          // .plagal
 Tonalidad(.do).analizar(["Do", "Sol7", "Lam"]).cadencias.first?.tipo       // .rota
@@ -218,7 +218,7 @@ let c = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Re3 La3 Fa4 Re5")
 c.faltas.map(\.tipo) == [.quintasParalelas, .octavasParalelas]   // true
 c.faltas[0].voces                  // [0, 1]
 c.faltas[0].description            // "Quintas paralelas entre bajo y tenor (acordes 1 → 2)"
-c.faltas[0].descripcion(en: .inglesASCII)   // "Parallel fifths between bass and tenor (chords 1 → 2)"
+c.faltas[0].descripcion(en: .ascii(.ingles))   // "Parallel fifths between bass and tenor (chords 1 → 2)"
 
 try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5").esCorrecta   // true
 try Coral(voces: [["Do3", "Sol2"], ["Mi4", "Re4"], ["Sol4", "Sol4"], ["Do5", "Si4"]]).esCorrecta       // true
@@ -406,7 +406,7 @@ let notas = NotaDeLaMelodia.analizar(melodia, sobre: ["Do", "Do", "Fa", "Sol", "
 notas[1].description           // "Re5 (nota de paso)"
 notas[3].description           // "Do5 (retardo 4-3)"
 notas.notasExtranas.map(\.indice)   // [1, 3]
-NotaExtrana.apoyatura.nombre(en: .inglesASCII)   // "appoggiatura"
+NotaExtrana.apoyatura.nombre(en: .ascii(.ingles))   // "appoggiatura"
 ```
 
 ## Contrapunto de especies

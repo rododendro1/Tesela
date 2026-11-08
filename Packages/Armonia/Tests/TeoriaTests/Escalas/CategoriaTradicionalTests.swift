@@ -137,9 +137,9 @@ import Testing
     }
 
     @Test func losNombresDeLasClasesSeTraducen() {
-        let ruso = Notacion.espanolCompacto.conTextos(en: .ruso)
-        let griego = Notacion.espanolCompacto.conTextos(en: .griego)
-        let frances = Notacion.espanolCompacto.conTextos(en: .frances)
+        let ruso = Notacion.compacta(.espanol).conTextos(en: .ruso)
+        let griego = Notacion.compacta(.espanol).conTextos(en: .griego)
+        let frances = Notacion.compacta(.espanol).conTextos(en: .frances)
         #expect(CategoriaTradicional.raga.nombre == "rāga")
         #expect(CategoriaTradicional.melakarta.nombre == "mēḷa")
         #expect(CategoriaTradicional.thaat.nombre == "thāṭ")
@@ -150,16 +150,16 @@ import Testing
         #expect(CategoriaTradicional.maqam.nombre(en: frances) == "maqām")
         #expect(CategoriaTradicional.mugam.nombre == "muğam")
         #expect(CategoriaTradicional.dromos.nombre == "drómos" && CategoriaTradicional.echos.nombre == "échos")
-        #expect(CategoriaTradicional.mugam.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "mugham")
+        #expect(CategoriaTradicional.mugam.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "mugham")
         #expect(CategoriaTradicional.makam.nombre(en: ruso) == "макам")
-        #expect(CategoriaTradicional.raga.nombre(en: Notacion.espanolCompacto.conTextos(en: .aleman)) == "Rāga")
-        #expect(CategoriaTradicional.thaat.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "thāṭ")
+        #expect(CategoriaTradicional.raga.nombre(en: Notacion.compacta(.espanol).conTextos(en: .aleman)) == "Rāga")
+        #expect(CategoriaTradicional.thaat.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "thāṭ")
         // Cada fichero de idioma da el nombre de todas las categorías.
         for categoria in CategoriaTradicional.allCases {
             for idioma in Idioma.allCases {
                 #expect(NombresDeEscalas.de(idioma).nombre(de: categoria) != nil, "\(categoria) \(idioma)")
                 #expect(
-                    !(categoria.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma)).isEmpty),
+                    !(categoria.nombre(en: Notacion.compacta(.espanol).conTextos(en: idioma)).isEmpty),
                     "\(categoria) \(idioma)")
             }
         }
@@ -274,9 +274,9 @@ import Testing
             let palabras = tipo.nombreCompleto.split(separator: " ")
             #expect(palabras.count < 2 || palabras[0] != palabras[1], Comment(rawValue: tipo.nombreCompleto))
         }
-        let ingles = Notacion.espanolCompacto.conTextos(en: .ingles)
+        let ingles = Notacion.compacta(.espanol).conTextos(en: .ingles)
         #expect(TipoDeEscala.mohanam.nombreCompleto(en: ingles) == "rāga Mohanam")
-        let griego = Notacion.espanolCompacto.conTextos(en: .griego)
+        let griego = Notacion.compacta(.espanol).conTextos(en: .griego)
         #expect(TipoDeEscala.mohanam.nombreCompleto(en: griego).hasPrefix("ράγκα "))
     }
 }

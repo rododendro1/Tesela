@@ -25,7 +25,7 @@ extension NotaMicrotonal {
         let base = sistemaDeNombres.nombre(de: temperada, tonica: tonica, grafia: grafia)
         guard ajuste != 0 else { return base }
         // El signo del ajuste, como lo escribe `nombre(en:)` tras la nota temperada: ⁻², ↓, (−37¢).
-        let notacion: Notacion = grafia == .ascii ? .espanolASCII : .espanolCompacto
+        let notacion: Notacion = grafia == .ascii ? .ascii(.espanol) : .compacta(.espanol)
         let completo = NotaMicrotonal.nombre(temperada, sistema: sistema, ajuste: ajuste, en: notacion)
         let temperado = temperada.nombre(en: notacion)
         guard completo.hasPrefix(temperado) else { return base + "(\(ajuste > 0 ? "+" : "")\(ajuste))" }

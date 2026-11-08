@@ -41,7 +41,7 @@ extension PresentacionDeAnalisis {
     /// dada (o, si no se puede, cerrada); `nil` con menos de dos acordes o si no se pueden disponer.
     ///
     ///     let conduccion = PresentacionDeAnalisis.conduccion(
-    ///         [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")], en: .espanolCompacto)
+    ///         [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")], en: .compacta(.espanol))
     ///     conduccion?.pasos.map(\.titulo)   // ["Rem7 → Sol7", "Sol7 → Domaj7"]
     public static func conduccion(
         _ acordes: [Acorde], disposicion: DisposicionDeAcorde = .drop2, en notacion: Notacion
@@ -90,7 +90,7 @@ extension PresentacionDeAnalisis {
     ///
     ///     let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
     ///     let doce = PresentacionDeAnalisis.enLasDoceTonalidades(
-    ///         progresion, tonalidad: Tonalidad(.do), en: .espanolCompacto)
+    ///         progresion, tonalidad: Tonalidad(.do), en: .compacta(.espanol))
     ///     doce[1].cifrados   // "Lam7 Re7 Solmaj7"
     public static func enLasDoceTonalidades(
         _ acordes: [Acorde], tonalidad: Tonalidad, en notacion: Notacion

@@ -52,7 +52,7 @@ los Andes y el klezmer.
 ```swift
 Escala(.do, .dobleArmonica).notas      // Do Re♭ Mi Fa Sol La♭ Si
 Escala("Do enigmática").notas          // Do Re♭ Mi Fa♯ Sol♯ La♯ Si
-Escala("La menor húngara").nombre(en: .inglesASCII)   // "A hungarian minor"
+Escala("La menor húngara").nombre(en: .ascii(.ingles))   // "A hungarian minor"
 TipoDeEscala.mayorArmonica.modo(grado: 4).nombre    // "lidio ♭3"
 TipoDeEscala.dobleArmonica == .hitzazkiar        // true
 Escala("Mi flamenca").notas                      // Mi Fa Sol Sol♯ La Si Do Re
@@ -326,7 +326,7 @@ TipoDeEscala.kafi.esRaga                        // false
 TipoDeEscala.mohanam.padre?.numeroDeMelakarta   // 28
 TipoDeEscala.menorNatural.categoria             // nil: las occidentales no tienen categoría
 TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
-CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .frances))   // "gamme"
+CategoriaTradicional.escala.nombre(en: Notacion.compacta(.espanol).conTextos(en: .frances))   // "gamme"
 ```
 
 `subtradicion` dice de dónde es una escala dentro de su tradición: la música carnática o la indostánica en la
@@ -340,7 +340,7 @@ TipoDeEscala.mohanam.subtradicion                       // .carnatica
 TipoDeEscala.pelogTembung.subtradicion                  // .bali
 Subtradicion.bali.tradicion                             // .indonesia
 TipoDeEscala.tradicionales(subtradicion: .java).count   // 6
-Subtradicion.carnatica.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles))   // "Carnatic"
+Subtradicion.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles))   // "Carnatic"
 ```
 
 `fuente` dice qué teórico definió una escala: el autor de unas razones (los géneros de Arquitas, Dídimo, Eratóstenes y
@@ -353,7 +353,7 @@ TipoDeEscala.tetracordoDiatonicoTenso.fuente            // .ptolomeo
 TipoDeEscala.ionicus.fuente                             // .glareano
 FuenteTeorica.ptolomeo.tradicion                        // .greciaAntigua
 TipoDeEscala.tradicionales(fuente: .ptolomeo).count     // 7
-FuenteTeorica.ptolomeo.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles))   // "Ptolemy"
+FuenteTeorica.ptolomeo.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles))   // "Ptolemy"
 ```
 
 `nombreCompleto` pone delante del nombre la palabra de su categoría, si es un préstamo (rāga, mēḷa, thāṭ, maqām,
@@ -647,7 +647,7 @@ Escala(.sol, .frigioDominante).tensiones(sobre: Acorde("Sol7")) == [Nota(.la, .b
 Tonalidad(.do).analizar(["Do", "La7", "Rem7", "Sol7"]).escalas[1] == Escala(.la, .frigioDominante)          // true
 Tonalidad(.do).escalaDelAcorde(Acorde("Sib7")) == Escala(Nota(.si, .bemol), .lidioDominante)               // true
 Escala(.do, .alterada).escalaMadre?.madre == Escala(Nota(.re, .bemol), .menorMelodicaJazz)               // true
-Escala(.re, .dorico).escalaMadre?.nombre(en: .espanolCompacto) == "modo 2 de Do mayor"                   // true
+Escala(.re, .dorico).escalaMadre?.nombre(en: .compacta(.espanol)) == "modo 2 de Do mayor"                   // true
 Acorde("Do7(#11)").escalasCompatibles().first == Escala(.do, .lidioDominante)                            // true
 ```
 

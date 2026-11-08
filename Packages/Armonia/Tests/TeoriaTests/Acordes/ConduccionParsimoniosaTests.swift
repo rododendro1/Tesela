@@ -128,7 +128,7 @@ import Testing
         #expect(Acorde("Do").conduccionMinima(hasta: "Sol7").movimientos.count == 4)
         #expect(Acorde("Do").conduccionMinima(hasta: "Fa#").semitonosMovidos == 6)
         #expect(
-            Acorde("Sol7").conduccionMinima(hasta: "Do").texto(en: .inglesASCII)
+            Acorde("Sol7").conduccionMinima(hasta: "Do").texto(en: .ascii(.ingles))
                 == "G→G, B→C (+1), D→C (−2), F→E (−1): 4 semitones")
         // Simétrica en el total.
         for (a, b) in [("Sol7", "Do"), ("Rem7", "Solmaj7"), ("Do", "Fa#m"), ("Sio7", "Do")] {

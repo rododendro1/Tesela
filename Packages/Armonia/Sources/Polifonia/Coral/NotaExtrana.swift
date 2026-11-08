@@ -64,9 +64,9 @@ public struct NotaDeLaMelodia: Hashable, Sendable, CustomStringConvertible {
     public var esDelAcorde: Bool { extrana == nil }
 
     /// "Re5 (nota de paso)", "Do5 (retardo 4-3)", "Mi5".
-    public var description: String { texto(altura.nombreCompleto, en: .espanolCompacto) }
+    public var description: String { texto(altura.nombreCompleto, en: .compacta(.espanol)) }
 
-    /// "Re₅ (nota de paso)" en `.espanolCompacto`, "D5 (passing tone)" en `.inglesASCII`.
+    /// "Re₅ (nota de paso)" en `.compacta(.espanol)`, "D5 (passing tone)" en `.ascii(.ingles)`.
     public func texto(en notacion: Notacion) -> String { texto(altura.nombre(en: notacion), en: notacion) }
 
     private func texto(_ nota: String, en notacion: Notacion) -> String {

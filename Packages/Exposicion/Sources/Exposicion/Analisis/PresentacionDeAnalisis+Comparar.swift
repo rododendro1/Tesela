@@ -34,7 +34,7 @@ extension PresentacionDeAnalisis {
     ///
     ///     let comparacion = PresentacionDeAnalisis.comparar(
     ///         [Acorde("Do"), Acorde("Lam"), Acorde("Rem"), Acorde("Sol7")],
-    ///         con: [Acorde("Do"), Acorde("La7"), Acorde("Rem7"), Acorde("Sol7")], en: .espanolCompacto)
+    ///         con: [Acorde("Do"), Acorde("La7"), Acorde("Rem7"), Acorde("Sol7")], en: .compacta(.espanol))
     ///     comparacion?.resumen   // "Cambian 2 de 4 acordes"
     public static func comparar(
         _ original: [Acorde], con nueva: [Acorde], en tonalidad: Tonalidad? = nil, notacion: Notacion

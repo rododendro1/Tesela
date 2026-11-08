@@ -2,16 +2,47 @@
 
 ## Sin publicar
 
-### Alfabeto latino
+### Notación: grafía, escritura como `enum` y construcción simétrica
 
-- El ruso y el griego se escriben también en el alfabeto latino: `Notacion.alfabeto` (`.propio` o `.latino`) y
-  `conAlfabeto(_:)`. Con `.latino`, las notas, los nombres y los textos salen transliterados, el cirílico con ISO 9
-  (solʹ, fa-diez, bolʹšaâ terciâ) y el griego con ELOT 743 (fa díesi, megáli tríti), y se leen en los dos alfabetos
-  (`Escala(leyendo: "fa-diez dorijskij", en:)`). `Transliteracion.latina(_:)` translitera cualquier texto, y
-  `Notacion.enSuAlfabeto(_:)`, los que se componen fuera del motor. Una `Notacion` guardada solo lleva `alfabeto`
-  si es el latino, y lo guardado antes se lee con el propio.
-- En la línea de comandos, `--idioma ru-latn` y `--idioma el-latn` (también en `--textos` y en `ARMONIA_IDIOMA`)
-  dan la salida, la ayuda y los mensajes en el alfabeto latino.
+Cambios incompatibles en `Notacion`, todos en esta versión. Lo guardado con `Codable` se sigue leyendo.
+
+- **Una sola `Grafia` para los sistemas, el ruso y el griego.** `Notacion.grafia` (`.original`, `.transliterada` o
+  `.ascii`) y `conGrafia(_:)`: con `.transliterada`, el ruso y el griego salen en el alfabeto latino, el cirílico con
+  ISO 9 (solʹ, fa-diez, bolʹšaâ terciâ) y el griego con ELOT 743 (fa díesi, megáli tríti); con `.ascii`, sin
+  diacríticos (sol', bol'shaya tertsiya; fa diesi) y con # y b. Se leen en todas las grafías
+  (`Escala(leyendo: "fa-diez dorijskij", en:)`). La grafía de los sistemas de otras tradiciones pasa de la
+  escritura a la notación: `EscrituraDeNotas.grafia` desaparece, y `Notacion.sistema(_:grafia:textos:)` sigue igual.
+  `Transliteracion.latina(_:)`, `ascii(_:)` y `texto(_:en:)` transliteran cualquier texto, y
+  `Notacion.enSuGrafia(_:)`, los que se componen fuera del motor.
+- **Se translitera en la fuente.** `Idioma.reglas(en:)` y `Notacion.reglasDeLasNotas` dan las reglas con los
+  naturales, los separadores y los modos ya en su grafía, y `Traduccion.en(_:)`, `TextosTraducidos.en(_:_:)` (con
+  textos y listas de textos) y `Traduccion.texto(en:grafia:)` dan los textos en ella.
+- **`EscrituraDeNotas` es un `enum`:** `.idioma(Idioma, FormaDeLasAlteraciones)` o `.sistema(SistemaDeNombres)`, con
+  `FormaDeLasAlteraciones` (`.palabras`, `.ascii`, `.compacta`). `idioma`, `conPalabras`, `tipografia`, `sistema`,
+  `esCompacta` y `octavas` siguen como propiedades, y `forma` es nueva. `EscrituraDeNotas(idioma:ascii:)` es
+  `EscrituraDeNotas.habitual(_:)`, y `EscrituraDeNotas.deOtrasTradiciones`, `Notacion.deOtrasTradiciones`.
+- **Los trece idiomas se construyen igual:** `.conPalabras(_:)`, `.compacta(_:)`, `.ascii(_:)` y `.delIdioma(_:)`,
+  en `Notacion` y en `EscrituraDeNotas`, y `Notacion(_:_:textos:grafia:)` (`Notacion(.ruso, .palabras)`).
+  Desaparecen las constantes del español y del inglés, también las de `EstiloDeCifrado`, que tiene
+  `.compacta(_:)` y `.ascii(_:)`.
+- **Nombres más claros:** `Notacion.notas` es `notacionDeLasNotas`, y `Tipografia.conSimples` y `.conDobles` son
+  `.unicode` y `.unicodeConDobles`.
+- En la línea de comandos, `--grafia` vale también para el ruso y el griego (`--idioma ru --grafia ascii`), y
+  `--idioma ru-latn` y `el-latn` (también en `--textos` y en `ARMONIA_IDIOMA`) dan la salida, la ayuda y los mensajes
+  en la grafía transliterada.
+
+**Cómo migrar:**
+
+| Antes | Ahora |
+|---|---|
+| `.espanolCompacto`, `.espanolASCII`, `.espanolPalabras` | `.compacta(.espanol)`, `.ascii(.espanol)`, `.conPalabras(.espanol)` |
+| `.inglesCompacto`, `.inglesASCII`, `.inglesPalabras` | `.compacta(.ingles)`, `.ascii(.ingles)`, `.conPalabras(.ingles)` |
+| `EstiloDeCifrado.espanolCompacto`, `.inglesASCII`… | `EstiloDeCifrado.compacta(.espanol)`, `.ascii(.ingles)`… |
+| `EscrituraDeNotas(idioma: i, ascii: a)` | `EscrituraDeNotas.habitual(i)`, o `.ascii(i)` |
+| `EscrituraDeNotas.sistema(s, grafia: g)` | `Notacion.sistema(s, grafia: g)`, o `.sistema(s)` sin la grafía |
+| `escritura.grafia` | `notacion.grafia` |
+| `notacion.notas` | `notacion.notacionDeLasNotas` |
+| `Tipografia.conSimples`, `.conDobles` | `.unicode`, `.unicodeConDobles` |
 
 ### Sueco
 

@@ -30,7 +30,7 @@ import Testing
 
     @Test func nombreEnUsaElFicheroDeCadaIdioma() {
         for idioma in Idioma.allCases where idioma != .espanol {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             for tipo in TipoDeEscala.occidentales {
                 #expect(
                     tipo.nombre(en: notacion) == NombresDeEscalas.de(idioma).porTipo[tipo]?.nombre,
@@ -39,7 +39,7 @@ import Testing
         }
         // Un tipo propio, con los intervalos de uno del catálogo, conserva su nombre en español.
         let propio = TipoDeEscala(nombre: "mi modo", intervalos: TipoDeEscala.dorico.intervalos)
-        #expect(propio.nombre(en: .espanolCompacto) == "mi modo")
+        #expect(propio.nombre(en: .compacta(.espanol)) == "mi modo")
     }
 
     /// Cada alias o variante se lee como su tipo: ninguno es el nombre de otro tipo ni el alias de otro de su idioma.
@@ -126,19 +126,19 @@ import Testing
         let deAristides = ["lidia", "doria", "frigia", "iastia", "mixolidia", "sintonolidia"]
         traducidos.formUnion(deAristides.map { "harmonía \($0) de Arístides" })
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             // El ruso y el griego, que usan otro alfabeto, transcriben también los nombres propios.
             if idioma == .ruso || idioma == .griego { continue }
             for tipo in TipoDeEscala.tradicionales where !traducidos.contains(tipo.nombre) {
                 #expect(tipo.nombre(en: notacion) == tipo.nombre, "\(idioma): \(tipo.nombre)")
             }
         }
-        let catalan = Notacion.espanolCompacto.conTextos(en: .catalan)
+        let catalan = Notacion.compacta(.espanol).conTextos(en: .catalan)
         #expect(TipoDeEscala.andina.nombre(en: catalan) == "pentatònica andina")
         #expect(TipoDeEscala.tetracordoCromatico.nombre(en: catalan) == "tetracord cromàtic")
         #expect(
-            TipoDeEscala.tezetaMenor.nombre(en: Notacion.espanolCompacto.conTextos(en: .frances)) == "Təzəta mineur")
-        #expect(TipoDeEscala.andina.nombre(en: .espanolCompacto) == "pentatónica andina")
+            TipoDeEscala.tezetaMenor.nombre(en: Notacion.compacta(.espanol).conTextos(en: .frances)) == "Təzəta mineur")
+        #expect(TipoDeEscala.andina.nombre(en: .compacta(.espanol)) == "pentatónica andina")
     }
 
     /// En ruso y griego los nombres propios van en su alfabeto (salvo los 72 mēḷa, que siguen en IAST) y
@@ -148,16 +148,16 @@ import Testing
             (Idioma.ruso, "Хиджаз", "Ḥijāz"), (.ruso, "Бхайрав", "Bhairav"),
             (.griego, "Ραστ", "Rast"), (.griego, "Μπιλαβάλ", "Bilāval"),
         ] {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             let tipo = (try? TipoDeEscala(leyendo: original))
             #expect(tipo?.nombre(en: notacion) == ejemplo, "\(idioma)")
             #expect(NombresDeEscalas.de(idioma).indice[TipoDeEscala.normalizar(ejemplo)] == tipo, "\(idioma)")
         }
         for idioma in [Idioma.ruso, .griego] {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             for tipo in TipoDeEscala.melakartas { #expect(tipo.nombre(en: notacion) == tipo.nombre, "\(idioma)") }
         }
-        let notacion = Notacion.espanolCompacto.conTextos(en: .griego)
+        let notacion = Notacion.compacta(.espanol).conTextos(en: .griego)
         #expect((try? TipoDeEscala(leyendo: "Hitzáz"))?.nombre(en: notacion) == "Χιτζάζ")
     }
 

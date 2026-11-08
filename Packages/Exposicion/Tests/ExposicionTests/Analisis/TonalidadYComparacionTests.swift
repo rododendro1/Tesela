@@ -5,7 +5,7 @@ import Testing
 
 // La hoja de una tonalidad y dos progresiones comparadas acorde a acorde.
 @Suite struct TonalidadYComparacionTests {
-    let notacion = Notacion.espanolCompacto
+    let notacion = Notacion.compacta(.espanol)
 
     @Test func armaduraYRelativas() {
         let sinAlteraciones = PresentacionDeTonalidad.armadura(de: Tonalidad(.do), en: notacion)

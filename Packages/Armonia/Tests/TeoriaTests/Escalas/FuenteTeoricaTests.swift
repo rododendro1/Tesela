@@ -50,7 +50,7 @@ import Testing
 
     @Test func nombresEnLosDoceIdiomas() {
         #expect(FuenteTeorica.ptolomeo.nombre == "Ptolomeo")
-        #expect(FuenteTeorica.ptolomeo.nombre(en: .inglesASCII) == "Ptolemy")
+        #expect(FuenteTeorica.ptolomeo.nombre(en: .ascii(.ingles)) == "Ptolemy")
         #expect(FuenteTeorica.aristoxeno.nombre(en: .compacta(.frances)) == "Aristoxène")
         #expect(FuenteTeorica.arquitas.nombre(en: .compacta(.ruso)) == "Архит")
         for idioma in Idioma.allCases {

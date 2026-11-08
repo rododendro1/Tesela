@@ -61,7 +61,7 @@ public struct Cadencia: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// "Cadencia auténtica V7–I (acordes 3 → 4)". Los acordes se cuentan desde 1.
-    public var description: String { descripcion(en: .espanolCompacto) }
+    public var description: String { descripcion(en: .compacta(.espanol)) }
 
     public func descripcion(en notacion: Notacion) -> String {
         let pasos = "\(acorde + 1) → \(acorde + 2)"

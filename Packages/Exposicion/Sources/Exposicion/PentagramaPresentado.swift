@@ -22,7 +22,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
     ///   - resaltada: la nota (contada desde 0) que se pinta de otro color, la que está sonando.
     public init(
         _ escala: Escala, octava: Int = 4, sentido: SentidoDelIntervalo? = nil,
-        notacion: Notacion = .espanolCompacto, nombresDeLasNotas: Bool = true, resaltada: Int? = nil
+        notacion: Notacion = .compacta(.espanol), nombresDeLasNotas: Bool = true, resaltada: Int? = nil
     ) {
         var opciones = OpcionesDePentagrama(notacion: notacion, marcas: .init(nombresDeLasNotas: nombresDeLasNotas))
         opciones.marcas.resaltada = resaltada
@@ -34,7 +34,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
 
     /// El pentagrama de un acorde en esa octava, con el nombre de cada nota debajo si `nombresDeLasNotas`.
     public init(
-        _ acorde: Acorde, octava: Int = 4, notacion: Notacion = .espanolCompacto,
+        _ acorde: Acorde, octava: Int = 4, notacion: Notacion = .compacta(.espanol),
         nombresDeLasNotas: Bool = false
     ) {
         let opciones = OpcionesDePentagrama(notacion: notacion, marcas: .init(nombresDeLasNotas: nombresDeLasNotas))
@@ -47,7 +47,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
     /// Las notas del arpegio en el orden del patrón, una por columna; la `resaltada` (contada desde 0), de otro
     /// color.
     public init(
-        _ arpegio: Arpegio, octava: Int = 4, notacion: Notacion = .espanolCompacto,
+        _ arpegio: Arpegio, octava: Int = 4, notacion: Notacion = .compacta(.espanol),
         nombresDeLasNotas: Bool = true, resaltada: Int? = nil
     ) {
         var opciones = OpcionesDePentagrama(notacion: notacion, marcas: .init(nombresDeLasNotas: nombresDeLasNotas))
@@ -63,10 +63,10 @@ public struct PentagramaPresentado: Hashable, Sendable {
     /// los pasos de su sonido.
     ///
     ///     let arpegio = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do7")), figura: .semicorchea,
-    ///                                                 en: .espanolCompacto)
+    ///                                                 en: .compacta(.espanol))
     ///     PentagramaPresentado(arpegio.voz, titulo: "Do7").fichero.nombreDeFichero   // "Pentagrama Do7.svg"
     public init(
-        _ voz: Voz, titulo: String, tonalidad: Tonalidad? = nil, notacion: Notacion = .espanolCompacto,
+        _ voz: Voz, titulo: String, tonalidad: Tonalidad? = nil, notacion: Notacion = .compacta(.espanol),
         nombresDeLasNotas: Bool = true, resaltada: Int? = nil
     ) {
         var opciones = OpcionesDePentagrama(notacion: notacion, marcas: .init(nombresDeLasNotas: nombresDeLasNotas))
@@ -79,7 +79,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
 
     /// Acordes con sus alturas escritas, uno por columna: las disposiciones de un acorde o una progresión dispuesta
     /// (`PresentacionDeDisposiciones`).
-    public init(_ acordes: [[Altura]], titulo: String, notacion: Notacion = .espanolCompacto) {
+    public init(_ acordes: [[Altura]], titulo: String, notacion: Notacion = .compacta(.espanol)) {
         let opciones = OpcionesDePentagrama(notacion: notacion)
         let dibujo = Partitura(acordes: acordes, titulo: titulo).svg(opciones: opciones)
         let notas = acordes.map { $0.map { $0.nombre(en: notacion) }.joined(separator: " ") }.joined(separator: "; ")
@@ -88,7 +88,7 @@ public struct PentagramaPresentado: Hashable, Sendable {
 
     /// Una partitura ya hecha (una línea de bajo con su tablatura), con el título del fichero y el texto para los
     /// lectores de pantalla.
-    public init(_ partitura: Partitura, titulo: String, descripcion: String, notacion: Notacion = .espanolCompacto) {
+    public init(_ partitura: Partitura, titulo: String, descripcion: String, notacion: Notacion = .compacta(.espanol)) {
         let dibujo = partitura.svg(opciones: OpcionesDePentagrama(notacion: notacion))
         self.init(svg: dibujo, descripcion: descripcion, nombre: "Pentagrama " + titulo)
     }

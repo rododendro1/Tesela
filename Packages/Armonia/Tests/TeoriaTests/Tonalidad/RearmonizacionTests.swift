@@ -71,21 +71,21 @@ import Testing
             recurso: .backdoor, posicion: 3, original: Acorde("Sol7"),
             acordes: [Acorde("Fam7"), Acorde(Nota.si.bemol, .dominanteSeptima)])
         #expect(backdoor.aplicar(a: progresion).map(\.cifrado) == ["Do", "Lam", "Rem7", "Fam7", "Si♭7", "Do"])
-        #expect(backdoor.descripcion(en: .espanolCompacto) == "Sol7 → Fam7 Si♭7 (backdoor)")
+        #expect(backdoor.descripcion(en: .compacta(.espanol)) == "Sol7 → Fam7 Si♭7 (backdoor)")
     }
 
     @Test func aplicarYDescribir() throws {
         let tritonal = try #require(
             Tonalidad(.do).rearmonizaciones(de: progresion).first { $0.recurso == .sustitutoTritonal })
         #expect(tritonal.aplicar(a: progresion).map(\.cifrado) == ["Do", "Lam", "Rem7", "Re♭7", "Do"])
-        #expect(tritonal.descripcion(en: .espanolCompacto) == "Sol7 → Re♭7 (sustituto tritonal)")
-        #expect(tritonal.descripcion(en: .inglesASCII) == "G7 → Db7 (tritone substitution)")
+        #expect(tritonal.descripcion(en: .compacta(.espanol)) == "Sol7 → Re♭7 (sustituto tritonal)")
+        #expect(tritonal.descripcion(en: .ascii(.ingles)) == "G7 → Db7 (tritone substitution)")
         let secundaria = try #require(
             Tonalidad(.do).rearmonizaciones(de: progresion).first { $0.recurso == .dominanteSecundaria })
         #expect(secundaria.aplicar(a: progresion).count == (progresion.count + 1))
         #expect(tritonal.aplicar(a: []) == [])
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             let nombres = Rearmonizacion.Recurso.allCases.map { $0.nombre(en: notacion) }
             #expect(Set(nombres).count == nombres.count, "\(idioma)")
         }

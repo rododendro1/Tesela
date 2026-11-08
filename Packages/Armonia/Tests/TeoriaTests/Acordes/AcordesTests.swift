@@ -27,11 +27,11 @@ import Testing
     }
 
     @Test func nombreDeLaInversion() {
-        #expect(Acorde.nombreDeLaInversion(0, en: .espanolCompacto) == "estado fundamental")
-        #expect(Acorde.nombreDeLaInversion(1, en: .inglesASCII) == "first inversion")
-        #expect(Acorde.nombreDeLaInversion(6, en: .espanolCompacto) == "sexta inversión")
+        #expect(Acorde.nombreDeLaInversion(0, en: .compacta(.espanol)) == "estado fundamental")
+        #expect(Acorde.nombreDeLaInversion(1, en: .ascii(.ingles)) == "first inversion")
+        #expect(Acorde.nombreDeLaInversion(6, en: .compacta(.espanol)) == "sexta inversión")
         #expect(Acorde.nombreDeLaInversion(2, en: .conPalabras(.aleman)) == "zweite Umkehrung")
-        #expect(Acorde.nombreDeLaInversion(7, en: .espanolCompacto) == "inversión 7")
+        #expect(Acorde.nombreDeLaInversion(7, en: .compacta(.espanol)) == "inversión 7")
         #expect(Acorde.nombreDeLaInversion(7, en: .conPalabras(.aleman)) == "7. Umkehrung")
         #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.frances)).hasSuffix(", premier renversement"))
     }
@@ -74,7 +74,7 @@ import Testing
         #expect(Acorde.identificar(notas: ["La♭", "Do", "Fa♯"] as [Nota]).first?.description == "La♭(♯6,omit5)")
         #expect(Acorde.identificar(notas: ["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.description == "La♭(♯6)")
         #expect(
-            Acorde.identificar(notas: ["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.tipo.nombre(en: .inglesASCII)
+            Acorde.identificar(notas: ["La♭", "Do", "Mi♭", "Fa♯"] as [Nota]).first?.tipo.nombre(en: .ascii(.ingles))
                 == "German augmented sixth")
         let francesa = Acorde.identificar(notas: ["La♭", "Do", "Re", "Fa♯"] as [Nota])
         #expect(
@@ -247,8 +247,8 @@ import Testing
     @Test func estilosPredefinidos() {
         let dominante: Acorde = "Sib7(b9)/Re"
         #expect(dominante.cifrado == "Si♭7(♭9)/Re")
-        #expect(dominante.cifrado(estilo: .espanolASCII) == "Sib7(b9)/Re")
-        #expect(dominante.cifrado(estilo: .inglesASCII) == "Bb7(b9)/D")
+        #expect(dominante.cifrado(estilo: .ascii(.espanol)) == "Sib7(b9)/Re")
+        #expect(dominante.cifrado(estilo: .ascii(.ingles)) == "Bb7(b9)/D")
 
         #expect(Acorde("Dom7b5").cifrado(estilo: .jazz) == "Cø7")
         #expect(Acorde("Dom9b5").cifrado(estilo: .jazz) == "Cø9")
@@ -257,11 +257,11 @@ import Testing
         #expect(Acorde("Rem7").cifrado(estilo: .calidadesConPalabras) == "Remin7")
         #expect(Acorde("Si°").cifrado(estilo: .calidadesConPalabras) == "Sidim")
         #expect(Acorde("Fa+").cifrado(estilo: .calidadesConPalabras) == "Faaug")
-        #expect(Acorde("Do#m(add9)").cifrado(estilo: .espanolASCII) == "Do#m(add9)")
+        #expect(Acorde("Do#m(add9)").cifrado(estilo: .ascii(.espanol)) == "Do#m(add9)")
     }
 
     @Test func laFundamentalFNoSeConfundeConFa() {
-        let estilo = EstiloDeCifrado(notacion: .inglesASCII, aumentado: .aug)
+        let estilo = EstiloDeCifrado(notacion: .ascii(.ingles), aumentado: .aug)
         let acorde = Acorde(.fa, .aumentado)
         #expect(acorde.cifrado(estilo: estilo) == "Faug")
         #expect(Acorde("Faug") == acorde)
@@ -278,8 +278,8 @@ import Testing
     @Test func cifradoDelTipoDeAcorde() {
         #expect(TipoDeAcorde.semidisminuido.cifrado == "m7(♭5)")
         #expect(TipoDeAcorde.semidisminuido.cifrado(estilo: .jazz) == "ø7")
-        #expect(TipoDeAcorde("7(b9,#11)").cifrado(en: .inglesASCII) == "7(b9,#11)")
-        #expect(Acorde("Sib7(b9)/Re").cifrado(en: .inglesASCII) == "Bb7(b9)/D")
+        #expect(TipoDeAcorde("7(b9,#11)").cifrado(en: .ascii(.ingles)) == "7(b9,#11)")
+        #expect(Acorde("Sib7(b9)/Re").cifrado(en: .ascii(.ingles)) == "Bb7(b9)/D")
     }
 }
 

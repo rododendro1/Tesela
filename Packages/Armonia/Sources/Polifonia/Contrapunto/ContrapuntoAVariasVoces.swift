@@ -233,7 +233,7 @@ extension ContrapuntoAVariasVoces {
     ///
     ///     Contrapunto a 3 voces
     ///     Quintas paralelas (compases 1 → 2): voz 1 / voz 2
-    public func informe(en notacion: Notacion = .espanolCompacto) -> String {
+    public func informe(en notacion: Notacion = .compacta(.espanol)) -> String {
         let n = voces.count + 1
         let faltas = self.faltas
         let lineas =

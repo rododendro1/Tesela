@@ -165,11 +165,13 @@ import Testing
         #expect(Intervalo.cuartaJusta.consonancia(cuartaDisonante: true) == .disonancia)
         #expect(Intervalo.sextaMayor.esConsonante)
         #expect(!Intervalo.segundaAumentada.esConsonante)
-        #expect(Consonancia.imperfecta.nombre(en: .inglesASCII) == "imperfect consonance")
+        #expect(Consonancia.imperfecta.nombre(en: .ascii(.ingles)) == "imperfect consonance")
     }
 }
 
 /// Pruebas de los protocolos comunes: cada una recorre varios tipos con el mismo código genérico.
 @Suite struct ProtocolosTests {
-    private static let notaciones: [Notacion] = [.espanolCompacto, .espanolASCII, .inglesASCII, .inglesCompacto]
+    private static let notaciones: [Notacion] = [
+        .compacta(.espanol), .ascii(.espanol), .ascii(.ingles), .compacta(.ingles),
+    ]
 }

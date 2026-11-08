@@ -211,9 +211,9 @@ import Hexagonos
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 9)
         let dibujo = Tonnetz(Escala(.re, .dorico)).svg()
         let sinLeyenda = Tonnetz(Acorde("Do")).svg(opciones: .init(titulo: "Tónica"), leyenda: false)
-        let ingles = Tonnetz(Acorde("Fa#m7")).svg(opciones: .init(notacion: .inglesASCII), margen: 2)
+        let ingles = Tonnetz(Acorde("Fa#m7")).svg(opciones: .init(notacion: .ascii(.ingles)), margen: 2)
         let toro = Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7, 11])).svg(margen: 3)
-        comprobar(RelojDeClasesDeAltura(clases: [0, 4, 7]).svg(opciones: .init(notacion: .inglesASCII)).contains(">G</text>"), #"true"#, doc, 4)
+        comprobar(RelojDeClasesDeAltura(clases: [0, 4, 7]).svg(opciones: .init(notacion: .ascii(.ingles))).contains(">G</text>"), #"true"#, doc, 4)
         comprobar(TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: [61], opciones: .init(ventana: .bemoles)).contains(">Re♭</text>"), #"true"#, doc, 5)
         comprobar(TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))).contains(">Si♭</text>"), #"true"#, doc, 6)
         comprobar(RelojDeClasesDeAltura(notas: Escala("Fa mayor").notas).svg().contains(">Si♭</text>"), #"true"#, doc, 7)
@@ -358,8 +358,8 @@ import Hexagonos
         comprobar(subirQuinta(Escala(.do)), #"Sol mayor"#, doc, 2)
         comprobar(Nota.do.secuencia(.quintaJusta, veces: 3), #"Do, Sol, Re, La"#, doc, 3)
         comprobar(Acorde("Do").esDeLaMismaClase(que: Acorde("Lam")), #"true"#, doc, 4)
-        comprobar(Acorde("Sib7(b9)/Re").texto(en: .inglesASCII), #""Bb7(b9)/D""#, doc, 5)
-        comprobar(Escala("Re dórico").nombre(en: .inglesASCII), #""D dorian""#, doc, 6)
+        comprobar(Acorde("Sib7(b9)/Re").texto(en: .ascii(.ingles)), #""Bb7(b9)/D""#, doc, 5)
+        comprobar(Escala("Re dórico").nombre(en: .ascii(.ingles)), #""D dorian""#, doc, 6)
     }
 
     @Test func convenciones2() throws {
@@ -419,7 +419,7 @@ import Hexagonos
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 1)
         comprobar(Escala(.do, .dobleArmonica).notas, #"Do Re♭ Mi Fa Sol La♭ Si"#, doc, 0)
         comprobar(Escala("Do enigmática").notas, #"Do Re♭ Mi Fa♯ Sol♯ La♯ Si"#, doc, 1)
-        comprobar(Escala("La menor húngara").nombre(en: .inglesASCII), #""A hungarian minor""#, doc, 2)
+        comprobar(Escala("La menor húngara").nombre(en: .ascii(.ingles)), #""A hungarian minor""#, doc, 2)
         comprobar(TipoDeEscala.mayorArmonica.modo(grado: 4).nombre, #""lidio ♭3""#, doc, 3)
         comprobar(TipoDeEscala.dobleArmonica == .hitzazkiar, #"true"#, doc, 4)
         comprobar(Escala("Mi flamenca").notas, #"Mi Fa Sol Sol♯ La Si Do Re"#, doc, 5)
@@ -485,7 +485,7 @@ import Hexagonos
         comprobar(TipoDeEscala.mohanam.padre?.numeroDeMelakarta, #"28"#, doc, 6)
         comprobar(TipoDeEscala.menorNatural.categoria, #"nil"#, doc, 7)
         comprobar(TipoDeEscala.tradicionales(categoria: .melakarta).count, #"72"#, doc, 8)
-        comprobar(CategoriaTradicional.escala.nombre(en: Notacion.espanolCompacto.conTextos(en: .frances)), #""gamme""#, doc, 9)
+        comprobar(CategoriaTradicional.escala.nombre(en: Notacion.compacta(.espanol).conTextos(en: .frances)), #""gamme""#, doc, 9)
     }
 
     @Test func escalas6() throws {
@@ -495,7 +495,7 @@ import Hexagonos
         comprobarIgual(TipoDeEscala.pelogTembung.subtradicion, .bali, doc, 1)
         comprobarIgual(Subtradicion.bali.tradicion, .indonesia, doc, 2)
         comprobar(TipoDeEscala.tradicionales(subtradicion: .java).count, #"6"#, doc, 3)
-        comprobar(Subtradicion.carnatica.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)), #""Carnatic""#, doc, 4)
+        comprobar(Subtradicion.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)), #""Carnatic""#, doc, 4)
     }
 
     @Test func escalas7() throws {
@@ -505,7 +505,7 @@ import Hexagonos
         comprobarIgual(TipoDeEscala.ionicus.fuente, .glareano, doc, 1)
         comprobarIgual(FuenteTeorica.ptolomeo.tradicion, .greciaAntigua, doc, 2)
         comprobar(TipoDeEscala.tradicionales(fuente: .ptolomeo).count, #"7"#, doc, 3)
-        comprobar(FuenteTeorica.ptolomeo.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)), #""Ptolemy""#, doc, 4)
+        comprobar(FuenteTeorica.ptolomeo.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)), #""Ptolemy""#, doc, 4)
     }
 
     @Test func escalas8() throws {
@@ -648,7 +648,7 @@ import Hexagonos
         comprobar(Tonalidad(.do).analizar(["Do", "La7", "Rem7", "Sol7"]).escalas[1] == Escala(.la, .frigioDominante), #"true"#, doc, 3)
         comprobar(Tonalidad(.do).escalaDelAcorde(Acorde("Sib7")) == Escala(Nota(.si, .bemol), .lidioDominante), #"true"#, doc, 4)
         comprobar(Escala(.do, .alterada).escalaMadre?.madre == Escala(Nota(.re, .bemol), .menorMelodicaJazz), #"true"#, doc, 5)
-        comprobar(Escala(.re, .dorico).escalaMadre?.nombre(en: .espanolCompacto) == "modo 2 de Do mayor", #"true"#, doc, 6)
+        comprobar(Escala(.re, .dorico).escalaMadre?.nombre(en: .compacta(.espanol)) == "modo 2 de Do mayor", #"true"#, doc, 6)
         comprobar(Acorde("Do7(#11)").escalasCompatibles().first == Escala(.do, .lidioDominante), #"true"#, doc, 7)
     }
 
@@ -939,16 +939,16 @@ import Hexagonos
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 3)
         let notacion = Notacion.conPalabras(.ruso).conTextos(en: .espanol)
         comprobar(Acorde("Sol7/Si").nombre(en: notacion), #""соль séptima de dominante, primera inversión""#, doc, 1)
-        comprobar(Escala(.re, .dorico).nombre(en: Notacion.inglesASCII.conTextos(en: .euskera)), #""D doriarra""#, doc, 2)
+        comprobar(Escala(.re, .dorico).nombre(en: Notacion.ascii(.ingles).conTextos(en: .euskera)), #""D doriarra""#, doc, 2)
         comprobar(Notacion(escritura: .conPalabras(.ruso), textos: .espanol) == notacion, #"true"#, doc, 3)
     }
 
     @Test func notacionYPartitura4() throws {
         // Sources/Armonia/Armonia.docc/NotacionYPartitura.md, bloque 4
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 4)
-        comprobar(Altura(Nota.fa.sostenido, octava: 3).nombre(en: .espanolCompacto), #""Fa♯₃""#, doc, 0)
-        comprobar(Altura(Nota.fa.sostenido, octava: 3).nombre(en: .espanolASCII), #""Fa#3""#, doc, 1)
-        let conCifras = Notacion.espanolCompacto.conOctavas(.cifras)
+        comprobar(Altura(Nota.fa.sostenido, octava: 3).nombre(en: .compacta(.espanol)), #""Fa♯₃""#, doc, 0)
+        comprobar(Altura(Nota.fa.sostenido, octava: 3).nombre(en: .ascii(.espanol)), #""Fa#3""#, doc, 1)
+        let conCifras = Notacion.compacta(.espanol).conOctavas(.cifras)
         comprobar(Altura(Nota.fa.sostenido, octava: 3).nombre(en: conCifras), #""Fa♯3""#, doc, 3)
         comprobar(try Altura(leyendo: "Si♭₋₁") == Altura(Nota.si.bemol, octava: -1), #"true"#, doc, 4)
     }
@@ -1009,11 +1009,11 @@ import Hexagonos
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/NotacionYPartitura.md"#, 9)
         _ = Nota("Sibb").alteracion
         comprobar(Alteracion(3).nombre, #""triple sostenido""#, doc, 1)
-        comprobar(Alteracion(-1).nombre(en: .inglesASCII), #""flat""#, doc, 2)
+        comprobar(Alteracion(-1).nombre(en: .ascii(.ingles)), #""flat""#, doc, 2)
         comprobar(Alteracion(2).simbolo, #""♯♯""#, doc, 3)
         comprobar(Alteracion(3).simboloConDobles, #""𝄪♯""#, doc, 4)
         comprobar(Alteracion(-2).simboloASCII, #""bb""#, doc, 5)
-        comprobar(Alteracion(-2).simbolo(en: .conDobles), #""𝄫""#, doc, 6)
+        comprobar(Alteracion(-2).simbolo(en: .unicodeConDobles), #""𝄫""#, doc, 6)
         _ = (Alteracion("x"), Alteracion("doble bemol"), Alteracion("♮"))
         _ = Alteracion.sostenido + .sostenido
         comprobar(Alteracion.sostenido.pasosDeQuinta, #"7"#, doc, 9)
@@ -1042,7 +1042,7 @@ import Hexagonos
         comprobar(Escala("La menor melódica").svgPentagrama().contains("<title>Sol₅</title>"), #"true"#, doc, 2)
         comprobar(Acorde("Sol7").svgPentagrama().contains(">Sol7</text>"), #"true"#, doc, 3)
         comprobar(Acorde("Sol7").svgPentagrama(cifrado: false).contains("<text"), #"false"#, doc, 4)
-        comprobar(Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .inglesASCII)).contains("<title>C4</title>"), #"true"#, doc, 5)
+        comprobar(Escala("Do mayor").svgPentagrama(opciones: OpcionesDePentagrama(notacion: .ascii(.ingles))).contains("<title>C4</title>"), #"true"#, doc, 5)
     }
 
     @Test func notacionYPartitura12() throws {
@@ -1137,7 +1137,7 @@ import Hexagonos
             print(error)
             comprobarIgual(error.motivo, .tensionNoValida("b3"), doc, 7)
             comprobar(error.posicion, #"4"#, doc, 8)
-            print(error.descripcion(en: .inglesASCII))
+            print(error.descripcion(en: .ascii(.ingles)))
         }
         do { _ = try TipoDeAcorde(comprobandoPasosDeQuinta: [0, -3, 4]) } catch { print(error) }
     }
@@ -1229,7 +1229,7 @@ import Hexagonos
         comprobar(analisis.cifrados, #"["I", "vi", "V7/V", "V7", "I"]"#, doc, 2)
         comprobar(analisis.funciones.map { $0?.abreviatura ?? "–" }, #"["T", "T", "D", "D", "T"]"#, doc, 3)
         comprobarIgual(analisis.acordes[2].categoria, .dominanteSecundaria(de: 5), doc, 4)
-        comprobar(analisis.nombre(en: .inglesASCII), #""I–vi–V7/V–V7–I in C major""#, doc, 5)
+        comprobar(analisis.nombre(en: .ascii(.ingles)), #""I–vi–V7/V–V7–I in C major""#, doc, 5)
         comprobar(try AnalisisArmonico.analizar(leyendo: "Do Fa/La Sol7/Si Do"), #"I–IV6–V65–I en Do mayor"#, doc, 7)
         comprobar(try AnalisisArmonico.analizar(leyendo: "Sim7(b5) Mi7 Lam"), #"iiø7–V7–i en La menor"#, doc, 8)
         comprobar(try AnalisisArmonico.analizar(leyendo: "Do Lab Sib Do"), #"I–♭VI–♭VII–I en Do mayor"#, doc, 9)
@@ -1264,14 +1264,14 @@ import Hexagonos
         let partituraAnalizada = analisis.partitura(encabezado: Encabezado(titulo: "Progresión")).musicXML()
         comprobar(partituraAnalizada.contains("<kind text=\"7\">dominant</kind>"), #"true"#, doc, 2)
         comprobar(partituraAnalizada.contains("<text>V7/V</text>"), #"true"#, doc, 3)
-        comprobar(analisis.partitura(notacion: .inglesASCII).musicXML().contains("C major:"), #"true"#, doc, 4)
+        comprobar(analisis.partitura(notacion: .ascii(.ingles)).musicXML().contains("C major:"), #"true"#, doc, 4)
     }
 
     @Test func tonalidad7() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 7
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 7)
         let progresion = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
-        comprobar(progresion.partitura(notacion: .inglesASCII).mei().contains(">D7</harm>"), #"true"#, doc, 1)
+        comprobar(progresion.partitura(notacion: .ascii(.ingles)).mei().contains(">D7</harm>"), #"true"#, doc, 1)
         comprobar(progresion.partitura().mei().contains("<syl>V7/V</syl>"), #"true"#, doc, 2)
     }
 
@@ -1282,7 +1282,7 @@ import Hexagonos
         comprobarIgual(cadencia.tipo, .autentica, doc, 1)
         comprobar(cadencia.esPerfecta, #"true"#, doc, 2)
         comprobar(cadencia.description, #""Cadencia auténtica V7–I (acordes 3 → 4)""#, doc, 3)
-        comprobar(cadencia.descripcion(en: .inglesASCII), #""Authentic cadence V7–I (chords 3 → 4)""#, doc, 4)
+        comprobar(cadencia.descripcion(en: .ascii(.ingles)), #""Authentic cadence V7–I (chords 3 → 4)""#, doc, 4)
         comprobarIgual(Tonalidad(.do).analizar(["Do", "Fa", "Do"]).cadencias.first?.tipo, .plagal, doc, 6)
         comprobarIgual(Tonalidad(.do).analizar(["Do", "Sol7", "Lam"]).cadencias.first?.tipo, .rota, doc, 7)
         comprobarIgual(Tonalidad(.do).analizar(["Do", "Lam", "Fa", "Sol"]).cadencias.first?.tipo, .semicadencia, doc, 8)
@@ -1325,7 +1325,7 @@ import Hexagonos
         comprobar(c.faltas.map(\.tipo) == [.quintasParalelas, .octavasParalelas], #"true"#, doc, 1)
         comprobar(c.faltas[0].voces, #"[0, 1]"#, doc, 2)
         comprobar(c.faltas[0].description, #""Quintas paralelas entre bajo y tenor (acordes 1 → 2)""#, doc, 3)
-        comprobar(c.faltas[0].descripcion(en: .inglesASCII), #""Parallel fifths between bass and tenor (chords 1 → 2)""#, doc, 4)
+        comprobar(c.faltas[0].descripcion(en: .ascii(.ingles)), #""Parallel fifths between bass and tenor (chords 1 → 2)""#, doc, 4)
         comprobar(try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5").esCorrecta, #"true"#, doc, 6)
         comprobar(try Coral(voces: [["Do3", "Sol2"], ["Mi4", "Re4"], ["Sol4", "Sol4"], ["Do5", "Si4"]]).esCorrecta, #"true"#, doc, 7)
     }
@@ -1428,7 +1428,7 @@ import Hexagonos
         comprobar(notas[1].description, #""Re5 (nota de paso)""#, doc, 2)
         comprobar(notas[3].description, #""Do5 (retardo 4-3)""#, doc, 3)
         comprobar(notas.notasExtranas.map(\.indice), #"[1, 3]"#, doc, 4)
-        comprobar(NotaExtrana.apoyatura.nombre(en: .inglesASCII), #""appoggiatura""#, doc, 5)
+        comprobar(NotaExtrana.apoyatura.nombre(en: .ascii(.ingles)), #""appoggiatura""#, doc, 5)
     }
 
     @Test func tonalidad24() throws {
@@ -1539,7 +1539,7 @@ import Hexagonos
         let dominante: Acorde = "Sol7/Si"
         comprobar(dominante.notas, #"[Sol, Si, Re, Fa]"#, doc, 3)
         comprobar(dominante.posicionCerrada(octava: 3), #"[Si3, Re4, Fa4, Sol4]"#, doc, 4)
-        comprobar(dominante.cifrado(estilo: .inglesASCII), #""G7/B""#, doc, 5)
+        comprobar(dominante.cifrado(estilo: .ascii(.ingles)), #""G7/B""#, doc, 5)
         comprobar(Acorde("G7(b9,#11)").cifrado, #""Sol7(♭9,♯11)""#, doc, 6)
     }
 

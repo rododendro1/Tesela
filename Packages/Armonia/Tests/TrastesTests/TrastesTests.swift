@@ -221,7 +221,7 @@ extension DigitacionTests {
     @Test func lasNotasSeEscribenComoElAcorde() throws {
         let acorde = try Acorde(leyendo: "Sib")
         let forma = try #require(Mastil(.guitarra).digitaciones(de: acorde, limite: 1).first)
-        let nombres = forma.notas(para: acorde).map { $0.nombre(en: .espanolCompacto) }
+        let nombres = forma.notas(para: acorde).map { $0.nombre(en: .compacta(.espanol)) }
         #expect(nombres.count == forma.cuerdasQueSuenan)
         #expect(nombres.contains("Si♭"), Comment(rawValue: nombres.joined(separator: " ")))
         #expect(!nombres.contains("La♯"), Comment(rawValue: nombres.joined(separator: " ")))
@@ -426,8 +426,8 @@ extension DigitacionTests {
 
 @Suite struct NombresDeLosInstrumentosTests {
     @Test func nombresDeLosInstrumentos() {
-        #expect(Encordado.todos.map { $0.nombre(en: .espanolCompacto) } == Encordado.todos.map(\.nombre))
-        #expect(Encordado.guitarraDeSieteCuerdas.titulo(en: .inglesASCII) == "Seven-string guitar")
+        #expect(Encordado.todos.map { $0.nombre(en: .compacta(.espanol)) } == Encordado.todos.map(\.nombre))
+        #expect(Encordado.guitarraDeSieteCuerdas.titulo(en: .ascii(.ingles)) == "Seven-string guitar")
         #expect(Encordado.mandolina.nombre(en: .conPalabras(.portugues)) == "bandolim")
         let propio = Encordado(nombre: "laúd", afinacion: Encordado.guitarra.afinacion)
         #expect(propio.nombre(en: .conPalabras(.aleman)) == "laúd")
@@ -621,7 +621,7 @@ extension DigitacionTests {
         #expect(Encordado.guitarra.conCapo(0) == .guitarra)
         #expect(Encordado.guitarra.conCapo(-1) == .guitarra)
         // El nombre sigue siendo el del instrumento.
-        #expect(conCapo.nombre(en: .inglesASCII) == Encordado.guitarra.nombre(en: .inglesASCII))
+        #expect(conCapo.nombre(en: .ascii(.ingles)) == Encordado.guitarra.nombre(en: .ascii(.ingles)))
     }
 
     @Test func lasFormasConCapo() throws {
@@ -693,9 +693,9 @@ extension DigitacionTests {
         #expect(try Encordado(leyendo: "open D") == .guitarraEnReAbierto)
         #expect(try Encordado(leyendo: "sol abierto") == .guitarraEnSolAbierto)
         #expect(try Encordado(leyendo: "DADGAD") == .guitarraDADGAD)
-        #expect(Encordado.guitarraEnReAbierto.nombre(en: .inglesASCII) == "open D guitar")
-        #expect(Encordado.guitarraEnSolAbierto.nombre(en: .inglesASCII) == "open G guitar")
-        #expect(Encordado.guitarraDADGAD.nombre(en: .inglesASCII) == "DADGAD guitar")
+        #expect(Encordado.guitarraEnReAbierto.nombre(en: .ascii(.ingles)) == "open D guitar")
+        #expect(Encordado.guitarraEnSolAbierto.nombre(en: .ascii(.ingles)) == "open G guitar")
+        #expect(Encordado.guitarraDADGAD.nombre(en: .ascii(.ingles)) == "DADGAD guitar")
         #expect(Encordado.guitarraEnReAbierto.afinacion.map(\.midi) == [38, 45, 50, 54, 57, 62])
         #expect(Encordado.guitarraEnSolAbierto.afinacion.map(\.midi) == [38, 43, 50, 55, 59, 62])
         #expect(Encordado.guitarraDADGAD.conCapo(2).sinCapo == .guitarraDADGAD)

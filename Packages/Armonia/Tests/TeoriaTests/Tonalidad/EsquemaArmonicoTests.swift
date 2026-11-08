@@ -108,8 +108,8 @@ import Testing
             let nombres = EsquemaArmonico.Tipo.allCases.map { $0.nombre(en: Notacion.delIdioma(idioma)) }
             #expect(Set(nombres).count == nombres.count, Comment(rawValue: nombres.joined(separator: ", ")))
         }
-        #expect(EsquemaArmonico.Tipo.blues.nombre(en: .inglesASCII) == "12-bar blues")
+        #expect(EsquemaArmonico.Tipo.blues.nombre(en: .ascii(.ingles)) == "12-bar blues")
         let ii = EsquemaArmonico.buscar(en: ["Rem7", "Sol7", "Do7M"])[0]
-        #expect(ii.descripcion(en: .inglesASCII) == "ii–V–I (chords 1 → 3)")
+        #expect(ii.descripcion(en: .ascii(.ingles)) == "ii–V–I (chords 1 → 3)")
     }
 }

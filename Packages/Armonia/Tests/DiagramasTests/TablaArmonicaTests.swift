@@ -75,7 +75,7 @@ import Testing
         #expect(textos.contains("La♭₃"))
         #expect(!textos.contains("Sol♯₃"))
         let ingles = try #require(
-            ElementoXML.leer(TablaArmonica(Acorde("Re")).svg(opciones: .init(notacion: .inglesASCII))))
+            ElementoXML.leer(TablaArmonica(Acorde("Re")).svg(opciones: .init(notacion: .ascii(.ingles)))))
         #expect(ingles.todos("text").contains { $0.texto == "F#" })
     }
 
@@ -91,7 +91,7 @@ import Testing
         #expect(leyenda(escala)[1] == "tónica")
         let alturas = try #require(
             ElementoXML.leer(
-                TablaArmonica([Altura("Do3"), Altura("Sol3")]).svg(opciones: .init(notacion: .inglesASCII))))
+                TablaArmonica([Altura("Do3"), Altura("Sol3")]).svg(opciones: .init(notacion: .ascii(.ingles)))))
         #expect(alturas.todos("title").first?.texto == "C3 · G3")
         #expect(leyenda(alturas) == ["pitch (every key)", "first note", "outline of the shape"])
         #expect(try leyenda(#require(ElementoXML.leer(TablaArmonica(Acorde("Do")).svg(leyenda: false)))).isEmpty)

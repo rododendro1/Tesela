@@ -18,7 +18,7 @@ public protocol ErrorDeArmonia: LocalizedError, CustomStringConvertible, Sendabl
 
 extension ErrorDeArmonia {
     /// El mensaje completo, en español.
-    public var description: String { descripcion(en: .espanolCompacto) }
+    public var description: String { descripcion(en: .compacta(.espanol)) }
 
     /// El mensaje completo, en español (el de `localizedDescription`).
     public var errorDescription: String? { description }
@@ -50,7 +50,7 @@ public protocol ErrorAlLeer: ErrorDeArmonia, Hashable {
 
 extension ErrorAlLeer {
     /// Explicación del motivo, en español.
-    public var explicacion: String { explicacion(en: .espanolCompacto) }
+    public var explicacion: String { explicacion(en: .compacta(.espanol)) }
 
     /// Explicación del motivo en el idioma de los textos de la notación (`notacion.textos`).
     public func explicacion(en notacion: Notacion) -> String { motivo.explicacion(en: notacion) }

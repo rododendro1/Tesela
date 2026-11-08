@@ -17,7 +17,7 @@ extension PresentacionDeEstudioDeEscala {
 
     /// Las escalas que salen de esta moviendo una nota un semitono, cada una con el cambio: «Fa → Fa♯».
     ///
-    ///     PresentacionDeEstudioDeEscala.vecinas(de: Escala(.do), en: .espanolCompacto)
+    ///     PresentacionDeEstudioDeEscala.vecinas(de: Escala(.do), en: .compacta(.espanol))
     ///         .first { $0.nombre == "Do lidio" }?.detalle   // "Fa → Fa♯"
     public static func vecinas(de escala: Escala, en notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
         escala.vecinas().map { vecina in
@@ -33,7 +33,7 @@ extension PresentacionDeEstudioDeEscala {
     /// Las escalas que comparten más notas con esta, de la que menos cambia a la que más, cada una con cuántas
     /// comparte, las que se van (−) y las que llegan (+): «Notas comunes: 6 · −Fa · +Fa♯».
     ///
-    ///     PresentacionDeEstudioDeEscala.parecidas(a: Escala(.do), en: .espanolCompacto)
+    ///     PresentacionDeEstudioDeEscala.parecidas(a: Escala(.do), en: .compacta(.espanol))
     ///         .first { $0.nombre == "Do lidio" }?.detalle   // "Notas comunes: 6 · −Fa · +Fa♯"
     public static func parecidas(a escala: Escala, en notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
         escala.masParecidas().map { parecida in

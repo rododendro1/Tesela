@@ -243,7 +243,7 @@ import Testing
             #expect(salida(orden).hasPrefix("armonia: music theory"), Comment(rawValue: orden))
         }
         #expect(salida("help --all --ingles").contains("fingerings <symbol>"))
-        #expect(LineaDeComandos.ayuda(en: .espanolCompacto).hasPrefix("armonia: teoría musical"))
+        #expect(LineaDeComandos.ayuda(en: .compacta(.espanol)).hasPrefix("armonia: teoría musical"))
     }
 
     @Test func idiomas() {
@@ -292,6 +292,16 @@ import Testing
             }
         }
         #expect(resultado("acorde", "Xx", "--idioma", "ru-latn").error.hasPrefix("armonia: Ne udaëtsâ"))
+        // Con --grafia, también en ASCII, sin diacríticos y con # y b.
+        #expect(salida("acorde Sol7/Si --idioma ru --grafia ascii").hasPrefix("Sol'7/Si: dominantseptakkord\n"))
+        #expect(salida("intervalo Do Mi --idioma el --grafia transliterada").hasPrefix("megáli tríti"))
+        for orden in ["ayuda --todo", "escala Re dorico --acordes", "tonalidad Mib menor"] {
+            let texto = salida(orden + " --idioma ru --grafia ascii")
+            #expect(!texto.isEmpty, "\(orden)")
+            #expect(!texto.unicodeScalars.contains { (0x0370...0x04FF).contains($0.value) }, "\(orden)")
+            // Sin las letras con diacríticos de la ISO 9 (š, ž, ʹ).
+            #expect(!texto.contains("ʹ") && !texto.contains("š"), "\(orden)")
+        }
         #expect(salida("ayuda --todo --idioma el") == (ayudaEn(.griego) + "\n"))
         #expect(ayudaEn(.aleman).hasPrefix("armonia: Musiktheorie"))
         #expect(ayudaEn(.ruso).contains("armonia chord G7/B"))

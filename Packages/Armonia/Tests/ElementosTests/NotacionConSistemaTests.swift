@@ -33,8 +33,8 @@ import Testing
         #expect(try Altura(leyendo: "ei He 4", en: japones) == Altura("Fa#4"))
         #expect(throws: ErrorDeLectura.self) { try Nota(leyendo: "Fa", en: bizantino) }
         // Cada escritura lee lo que escribe.
-        for escritura in EscrituraDeNotas.deOtrasTradiciones {
-            let notacion = Notacion(escritura: escritura)
+        for notacion in Notacion.deOtrasTradiciones {
+            let escritura = notacion.escritura
             for quintas in -7...7 {
                 let nota = Nota(pasosDeQuinta: quintas)
                 let leida = try Nota(leyendo: nota.nombre(en: notacion), en: notacion)
@@ -48,7 +48,7 @@ import Testing
     @Test func soloLosFijos() {
         #expect(Notacion.sistema(.sargam) == nil)
         #expect(Notacion.sistema(.jianpu) == nil)
-        #expect(EscrituraDeNotas.deOtrasTradiciones.count == 9 * 3)
+        #expect(Notacion.deOtrasTradiciones.count == 9 * 3)
         #expect(!EscrituraDeNotas.allCases.contains { $0.sistema != nil })
     }
 
@@ -57,14 +57,14 @@ import Testing
         #expect(notacion.textos == .euskera)
         #expect(notacion.esCombinada)
         #expect(notacion.sistemaDeNombres == .bizantino)
-        #expect(notacion.notas.sistemaDeNombres == .bizantino)
+        #expect(notacion.notacionDeLasNotas.sistemaDeNombres == .bizantino)
         #expect(try #require(Notacion.sistema(.bizantino)).textos == .espanol)
         #expect(notacion.octavas == .cifras)
         #expect(Altura("La4").nombre(en: notacion.conOctavas(.subindices)) == "Ke₄")
     }
 
     @Test func codificacion() throws {
-        for escritura in EscrituraDeNotas.deOtrasTradiciones + EscrituraDeNotas.allCases {
+        for escritura in Notacion.deOtrasTradiciones.map(\.escritura) + EscrituraDeNotas.allCases {
             let datos = try JSONEncoder().encode(escritura)
             #expect(try JSONDecoder().decode(EscrituraDeNotas.self, from: datos) == escritura)
         }

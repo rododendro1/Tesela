@@ -61,7 +61,7 @@ public struct EsquemaArmonico: Hashable, Sendable, CustomStringConvertible {
     public var indices: Range<Int> { inicio..<(inicio + longitud) }
 
     /// "ii–V–I (acordes 1 → 3)". Los acordes se cuentan desde 1.
-    public var description: String { descripcion(en: .espanolCompacto) }
+    public var description: String { descripcion(en: .compacta(.espanol)) }
 
     public func descripcion(en notacion: Notacion) -> String {
         let lugar = TextosDeTeoria.en(notacion) { $0.cadenciaEnLosAcordes("\(inicio + 1) → \(inicio + longitud)") }

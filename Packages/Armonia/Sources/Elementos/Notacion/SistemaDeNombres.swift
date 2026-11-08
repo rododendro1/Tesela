@@ -144,15 +144,18 @@ public enum FamiliaDeNombres: String, Hashable, Sendable, CaseIterable, Codable 
     case movil
 }
 
-/// Cómo se escriben los nombres de un ``SistemaDeNombres``.
+/// En qué alfabeto se escriben los nombres de un ``SistemaDeNombres`` y, en ruso y en griego, los nombres de nota y
+/// los textos de una ``Notacion``: el de la tradición o del idioma, o el latino, con o sin diacríticos. Los demás
+/// idiomas ya se escriben con letras latinas, y en ellos no cambia nada.
 public enum Grafia: String, Hashable, Sendable, CaseIterable, Codable {
-    /// Con la escritura de la tradición: Νη Πα Βου; सा रे ग; 嬰ヘ; 올림바; 黄钟. Las alteraciones que el sistema no
-    /// nombra, con ♯ y ♭.
+    /// Con la escritura de la tradición o del idioma: Νη Πα Βου; सा रे ग; 嬰ヘ; 올림바; 黄钟; соль, φα δίεση. Las
+    /// alteraciones que el sistema no nombra, con ♯ y ♭.
     case original
     /// Transliterado al alfabeto latino, con diacríticos: Ni Pa Vou; Sā Re Ga (IAST); ei He; ollim Ba; huángzhōng
-    /// (pinyin). Con ♯ y ♭.
+    /// (pinyin); el ruso con la ISO 9 (solʹ, bolʹšaâ terciâ) y el griego con la ELOT 743 (fa díesi). Con ♯ y ♭.
     case transliterada
-    /// Transliterado sin diacríticos y con # y b: Ni Pa Vou; Sa Re Ga; huangzhong.
+    /// Transliterado sin diacríticos: Ni Pa Vou; Sa Re Ga; huangzhong; sol', bol'shaya tertsiya; fa diesi. En los
+    /// sistemas, también con # y b.
     case ascii
 }
 
@@ -238,7 +241,7 @@ extension SistemaDeNombres {
                     alteracion -= conPrefijo
                 }
             }
-            return base + Alteracion(alteracion).simbolo(en: grafia == .ascii ? .ascii : .conSimples)
+            return base + Alteracion(alteracion).simbolo(en: grafia == .ascii ? .ascii : .unicode)
         }
     }
 

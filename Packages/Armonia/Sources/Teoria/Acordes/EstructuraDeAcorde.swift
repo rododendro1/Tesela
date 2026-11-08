@@ -116,7 +116,7 @@ public enum PapelEnAcorde: Hashable, Sendable, CustomStringConvertible {
         ]
         guard
             let papel = todos.first(where: { p in
-                p.nombre.claveDeBusqueda == clave || p.nombre(en: .inglesASCII).claveDeBusqueda == clave
+                p.nombre.claveDeBusqueda == clave || p.nombre(en: .ascii(.ingles)).claveDeBusqueda == clave
             })
         else {
             throw ErrorDeLecturaDeTeoria(

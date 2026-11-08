@@ -78,8 +78,8 @@ for texto in ["Do7(b3)", "Do7 9", "Do/Xa", "Dom5", "Re dorian"] {
 titulo("Estilos de cifrado")
 let muestra: [Acorde] = ["Sib7(b9)/Re", "Do#m7b5", "Mibmaj7", "Fa+", "Rem(add9)"]
 let estilos: [(String, EstiloDeCifrado)] = [
-    ("predeterminado", .predeterminado), ("ascii", .espanolASCII),
-    ("internacional", .inglesASCII), ("jazz", .jazz), ("palabras", .calidadesConPalabras),
+    ("predeterminado", .predeterminado), ("ascii", .ascii(.espanol)),
+    ("internacional", .ascii(.ingles)), ("jazz", .jazz), ("palabras", .calidadesConPalabras),
 ]
 for (nombre, estilo) in estilos {
     print(
@@ -112,12 +112,12 @@ print(
 titulo("Notación internacional")
 let ejemploAcorde: Acorde = "Sib7(b9)/Re"
 print(
-    ejemploAcorde.cifrado(en: .inglesASCII), "·", ejemploAcorde.cifrado(estilo: .inglesCompacto), "·",
-    ejemploAcorde.nombre(en: .inglesASCII))
+    ejemploAcorde.cifrado(en: .ascii(.ingles)), "·", ejemploAcorde.cifrado(estilo: .compacta(.ingles)), "·",
+    ejemploAcorde.nombre(en: .ascii(.ingles)))
 print(
-    Intervalo.cuartaAumentada.abreviatura(en: .inglesASCII), "·", Intervalo.novenaMenor.nombre(en: .inglesASCII),
-    "·", Intervalo("P5"), "·", Altura("Fa#3").nombre(en: .inglesASCII), "·",
-    Escala("Re dórico").nombre(en: .inglesASCII),
+    Intervalo.cuartaAumentada.abreviatura(en: .ascii(.ingles)), "·", Intervalo.novenaMenor.nombre(en: .ascii(.ingles)),
+    "·", Intervalo("P5"), "·", Altura("Fa#3").nombre(en: .ascii(.ingles)), "·",
+    Escala("Re dórico").nombre(en: .ascii(.ingles)),
     "·", Escala("Bb harmonic minor"))
 
 titulo("Escalas")
@@ -299,10 +299,10 @@ let nombrables: [any Nombrable] = [
     NombreDeGrado.sensible, Clave.doEnTercera, InstrumentoDePartitura.saxofonAlto,
 ]
 for valor in nombrables {
-    print("  \(valor.nombre(en: .espanolCompacto)) — \(valor.nombre(en: .inglesASCII))")
+    print("  \(valor.nombre(en: .compacta(.espanol))) — \(valor.nombre(en: .ascii(.ingles)))")
 }
 let textos: [any RepresentableComoTexto] = [Nota("Fa#"), Intervalo.septimaMenor, Acorde("Sib7(b9)/Re")]
-print("  En notación internacional:", textos.map { $0.texto(en: .inglesASCII) }.joined(separator: " · "))
+print("  En notación internacional:", textos.map { $0.texto(en: .ascii(.ingles)) }.joined(separator: " · "))
 print("  Misma clase de conjuntos:", Acorde("Sol7").esDeLaMismaClase(que: Acorde("Sim7b5")))
 
 titulo("Tonalidad")
@@ -313,8 +313,8 @@ print("  Cifrado romano:", laMenor.cifradosRomanos(cuatriadas: true).joined(sepa
 print("  Sol y Sol♯:", laMenor.nombreDeGrado(de: .sol)!, "/", laMenor.nombreDeGrado(de: "Sol#")!)
 print("  Tonos vecinos:", laMenor.vecinas.map(\.nombre).joined(separator: ", "))
 print(
-    "  En inglés:", laMenor.nombre(en: .inglesASCII), "·",
-    Tonalidad.circuloDeQuintas().map { $0.tonica.nombre(en: .inglesASCII) }.joined(separator: " "))
+    "  En inglés:", laMenor.nombre(en: .ascii(.ingles)), "·",
+    Tonalidad.circuloDeQuintas().map { $0.tonica.nombre(en: .ascii(.ingles)) }.joined(separator: " "))
 
 titulo("Análisis de progresiones")
 for progresion in [

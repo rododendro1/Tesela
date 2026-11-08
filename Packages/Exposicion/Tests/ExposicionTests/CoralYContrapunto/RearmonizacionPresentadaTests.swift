@@ -8,7 +8,7 @@ import Testing
 @Suite struct RearmonizacionPresentadaTests {
     @Test func lasPropuestasDeUnaProgresion() throws {
         let acordes = [Acorde("Do"), Acorde("Lam"), Acorde("Rem7"), Acorde("Sol7"), Acorde("Do")]
-        let resultado = try #require(PresentacionDeRearmonizacion.proponer(acordes, notacion: .espanolCompacto))
+        let resultado = try #require(PresentacionDeRearmonizacion.proponer(acordes, notacion: .compacta(.espanol)))
         let (tonalidad, propuestas) = (resultado.tonalidad, resultado.propuestas)
         #expect(tonalidad == Tonalidad(.do))
         let tritonal = try #require(propuestas.first { $0.rearmonizacion.recurso == .sustitutoTritonal })
@@ -22,29 +22,29 @@ import Testing
             propuestas.first { $0.rearmonizacion.recurso == .dominanteSecundaria && $0.rearmonizacion.posicion == 1 })
         #expect(secundaria.texto == "Do Mi7 Lam Rem7 Sol7 Do")
         #expect(secundaria.sonido.inicios.count == 4)
-        #expect(PresentacionDeRearmonizacion.proponer([], notacion: .espanolCompacto) == nil)
+        #expect(PresentacionDeRearmonizacion.proponer([], notacion: .compacta(.espanol)) == nil)
     }
 
     @Test func desdeElAnalisisYEnIngles() throws {
-        let analisis = try PresentacionDeAnalisis.analizar("C Am F G7 C", notacion: .inglesASCII)
-        let propuestas = analisis.rearmonizaciones(en: .inglesASCII)
+        let analisis = try PresentacionDeAnalisis.analizar("C Am F G7 C", notacion: .ascii(.ingles))
+        let propuestas = analisis.rearmonizaciones(en: .ascii(.ingles))
         #expect(propuestas.contains { $0.descripcion == "G7 → Db7 (tritone substitution)" })
         #expect(propuestas.contains { $0.texto == "C Am F Db7 C" })
         // Sin acordes ni tonalidad, ninguna propuesta.
         var vacio = analisis
         vacio.acordes = []
         vacio.tonalidad = nil
-        #expect(vacio.rearmonizaciones(en: .inglesASCII) == [])
+        #expect(vacio.rearmonizaciones(en: .ascii(.ingles)) == [])
     }
 
     @Test func enUnaTonalidadDada() throws {
         let acordes = [Acorde("Do"), Acorde("Sol7"), Acorde("Do")]
         let enDo = try #require(
-            PresentacionDeRearmonizacion.proponer(acordes, en: Tonalidad(.do), notacion: .espanolCompacto))
+            PresentacionDeRearmonizacion.proponer(acordes, en: Tonalidad(.do), notacion: .compacta(.espanol)))
         #expect(enDo.tonalidad == Tonalidad(.do))
         // Las propuestas son distintas entre sí y se pueden comparar.
         #expect(Set(enDo.propuestas).count == enDo.propuestas.count)
-        let analizada = PresentacionDeRearmonizacion.proponer(acordes, notacion: .espanolCompacto)
+        let analizada = PresentacionDeRearmonizacion.proponer(acordes, notacion: .compacta(.espanol))
         #expect(enDo.propuestas == analizada?.propuestas)
     }
 }

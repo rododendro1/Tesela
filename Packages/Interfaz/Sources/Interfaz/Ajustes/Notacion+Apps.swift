@@ -5,21 +5,38 @@ import Foundation
 extension Notacion {
     /// Cómo se llama cada notación en el selector.
     public var titulo: String {
-        enSuAlfabeto(esCombinada ? "\(escritura.titulo) · \(textos.titulo)" : escritura.titulo)
+        let ejemplo = Notacion.ejemplo.nombre(en: notacionDeLasNotas)
+        // El nombre de un sistema se queda en su escritura: «Βυζαντινή (Ga♯)».
+        let notas =
+            sistemaDeNombres.map { "\($0.titulo) (\(ejemplo))" }
+            ?? Transliteracion.texto("\(idiomaDeLasNotas.titulo) (\(ejemplo))", en: grafiaDeLasNotas)
+        return esCombinada ? "\(notas) · \(enSuGrafia(textos.titulo))" : notas
     }
+
+    /// El Fa♯ con el que se muestra cada notación en el selector.
+    fileprivate static let ejemplo = Nota(.fa, .sostenido)
 
     /// El nombre con que se guarda en los ajustes. Es estable: no depende del orden de `allCases`.
-    /// Una notación combinada se guarda como «ruso+espanol», y en el alfabeto latino, con «@latino» detrás:
-    /// «ruso@latino».
+    /// Una notación combinada se guarda como «ruso+espanol»; las de otra tradición, con el sistema y la grafía
+    /// («bizantino», «bizantinoOriginal», «bizantinoASCII»), y en ruso y en griego, si no van en la grafía original,
+    /// con ella detrás: «ruso@transliterada», «griego+espanol@ascii».
     public var clave: String {
-        let base = esCombinada ? escritura.clave + "+" + textos.clave : escritura.clave
-        return alfabeto == .latino && admiteAlfabetoLatino ? base + Self.sufijoLatino : base
+        let notas: String
+        if let sistema = sistemaDeNombres {
+            switch grafia {
+            case .transliterada: notas = sistema.rawValue
+            case .original: notas = sistema.rawValue + "Original"
+            case .ascii: notas = sistema.rawValue + "ASCII"
+            }
+        } else {
+            notas = escritura.clave
+        }
+        let base = esCombinada ? notas + "+" + textos.clave : notas
+        return sistemaDeNombres == nil && grafia != .original ? base + "@" + grafia.rawValue : base
     }
 
-    private static let sufijoLatino = "@latino"
-
     /// ¿Escribe en ruso o en griego, las notas o los textos? Entonces el selector ofrece el alfabeto latino.
-    public var admiteAlfabetoLatino: Bool {
+    public var admiteOtraGrafia: Bool {
         sistemaDeNombres == nil && [Idioma.ruso, .griego].contains { $0 == textos || $0 == idiomaDeLasNotas }
     }
 
@@ -30,17 +47,20 @@ extension Notacion {
         for codigo in idiomas {
             if let idioma = Idioma(codigo: codigo) { return .delIdioma(idioma) }
         }
-        return .espanolCompacto
+        return .compacta(.espanol)
     }
 
     /// La notación guardada con esa clave; si no existe, el español con ♯ y ♭.
     public static func desde(clave: String) -> Notacion {
-        if clave.hasSuffix(sufijoLatino) {
-            return desde(clave: String(clave.dropLast(sufijoLatino.count))).conAlfabeto(.latino)
+        if let arroba = clave.lastIndex(of: "@") {
+            // «@latino» era la transliterada mientras se probaba.
+            let nombre = String(clave[clave.index(after: arroba)...])
+            let grafia = nombre == "latino" ? .transliterada : Grafia(rawValue: nombre) ?? .original
+            return desde(clave: String(clave[..<arroba])).conGrafia(grafia)
         }
         let partes = clave.split(separator: "+", maxSplits: 1).map(String.init)
         let clave = partes.first
-        let notas = (allCases + deOtrasTradiciones).first { $0.clave == clave } ?? .espanolCompacto
+        let notas = (allCases + deOtrasTradicionesDelSelector).first { $0.clave == clave } ?? .compacta(.espanol)
         guard partes.count == 2, let textos = Idioma.allCases.first(where: { $0.clave == partes[1] }) else {
             return notas
         }
@@ -60,7 +80,7 @@ extension Notacion {
     /// selector: la transliterada, la original y la ASCII de cada sistema, sin las que escriben el Fa♯ del título igual
     /// que otra (el ut de Guido no tiene otra escritura que la latina; el japonés en ASCII solo cambia en las dobles).
     /// Llevan los textos en español; `conNotas(_:)` les pone los que se hayan elegido.
-    public static let deOtrasTradiciones: [Notacion] = {
+    public static let deOtrasTradicionesDelSelector: [Notacion] = {
         var elegidas: [Notacion] = []
         var titulos: Set<String> = []
         for sistema in SistemaDeNombres.allCases {
@@ -79,14 +99,18 @@ extension Notacion {
 
     /// Otras notas, conservando el idioma elegido para los textos.
     public func conNotas(_ notas: Notacion) -> Notacion {
-        // Las de otra tradición no tienen idioma: los textos siguen en el que se estaba leyendo.
-        if notas.sistemaDeNombres != nil { return notas.conTextos(en: textos).conAlfabeto(alfabeto) }
-        return (idiomaElegidoParaLosTextos.map { notas.conTextos(en: $0) } ?? notas.notas).conAlfabeto(alfabeto)
+        // Las de otra tradición no tienen idioma: los textos siguen en el que se estaba leyendo, y van en la grafía
+        // de las notas elegidas.
+        if notas.sistemaDeNombres != nil { return notas.conTextos(en: textos).conGrafia(notas.grafia) }
+        // Las de un idioma, en la grafía que se tenía (la original si eran de otra tradición).
+        let grafia = sistemaDeNombres == nil ? self.grafia : .original
+        return (idiomaElegidoParaLosTextos.map { notas.conTextos(en: $0) } ?? notas.notacionDeLasNotas)
+            .conGrafia(grafia)
     }
 
     /// Los mismos nombres de nota con los textos en otro idioma, o en el de las notas si es `nil`.
     public func conTextosElegidos(_ idioma: Idioma?) -> Notacion {
-        idioma.map { conTextos(en: $0) } ?? notas
+        idioma.map { conTextos(en: $0) } ?? notacionDeLasNotas
     }
 
     /// Mensaje legible de un error del motor, en el idioma de esta notación.
@@ -99,27 +123,15 @@ extension EscrituraDeNotas {
     /// Cómo se llama cada escritura en el selector: el idioma en su lengua y un ejemplo escrito con ella,
     /// «Español (Fa sostenido)», «English (F#)», «Deutsch (Fis)», «Deutsch (F Kreuz)»,
     /// «Русский (фа-диез)».
-    public var titulo: String {
-        let ejemplo = EscrituraDeNotas.ejemplo.nombre(en: Notacion(escritura: self))
-        return "\(sistema?.titulo ?? idioma.titulo) (\(ejemplo))"
-    }
-
-    /// El Fa♯ con el que se muestra cada escritura en el selector.
-    private static let ejemplo = Nota(.fa, .sostenido)
+    public var titulo: String { Notacion(escritura: self).titulo }
 
     /// El nombre con que se guarda en los ajustes: el del idioma y, en los que tienen variantes, la suya
     /// («espanol», «espanolASCII», «espanolCompacto»; «frances», «francesCompacto»). El alemán con palabras se
     /// guarda como «alemanPalabras», porque «aleman» era el alemán compacto (Fis) hasta la 0.3.0.
     ///
-    /// Las de otra tradición, con el sistema y la grafía: «bizantino», «bizantinoOriginal», «bizantinoASCII».
+    /// Las de otra tradición, con el sistema: «bizantino». Su grafía la guarda ``Notacion/clave``.
     public var clave: String {
-        if let sistema {
-            switch grafia {
-            case .transliterada: return sistema.rawValue
-            case .original: return sistema.rawValue + "Original"
-            case .ascii: return sistema.rawValue + "ASCII"
-            }
-        }
+        if let sistema { return sistema.rawValue }
         if conPalabras { return idioma == .aleman ? "alemanPalabras" : idioma.clave }
         return idioma.clave + (usaASCII && idioma.reglas.tieneVariantes ? "ASCII" : "Compacto")
     }

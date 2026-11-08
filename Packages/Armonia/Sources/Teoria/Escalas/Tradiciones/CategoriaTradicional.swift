@@ -135,7 +135,7 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
     /// «hexacordo», «harmonía», «modo gregoriano», «afinación» y «escala», y en ruso y griego se transcriben las demás.
     public func nombre(en notacion: Notacion) -> String {
         if notacion.textos == .espanol { return nombre }
-        return notacion.enSuAlfabeto(NombresDeEscalas.de(notacion.textos).nombre(de: self) ?? nombre)
+        return NombresDeEscalas.de(notacion).nombre(de: self) ?? nombre
     }
 }
 
@@ -163,7 +163,7 @@ extension TipoDeEscala {
     /// en todos los idiomas (tetracordo, harmonía, hexacordo, modo gregoriano, afinación, escala) o si la escala no
     /// es de otra tradición. Que el nombre ya la lleva se escribe en la declaración de cada escala
     /// (`llevaLaCategoria: true`), no se deduce del texto.
-    public var nombreCompleto: String { nombreCompleto(en: .espanolCompacto) }
+    public var nombreCompleto: String { nombreCompleto(en: .compacta(.espanol)) }
 
     /// `nombreCompleto` en el idioma de los textos de la notación, con la palabra de la categoría en ese idioma (en
     /// ruso y en griego, transcrita: «рага», «ράγκα»).

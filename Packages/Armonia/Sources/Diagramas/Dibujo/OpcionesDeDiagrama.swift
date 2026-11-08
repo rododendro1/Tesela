@@ -4,7 +4,7 @@ import Elementos
 // cuadrados, el teclado de piano y el reloj de clases): cómo se escriben las notas, el título y el tamaño, y qué
 // notas se marcan. Lo propio de cada dibujo (las casillas, el margen, la leyenda) va en su `svg`.
 
-/// Las opciones de un diagrama: `Tonnetz(Acorde("Do")).svg(opciones: .init(notacion: .inglesASCII, escala: 1.5))`.
+/// Las opciones de un diagrama: `Tonnetz(Acorde("Do")).svg(opciones: .init(notacion: .ascii(.ingles), escala: 1.5))`.
 public struct OpcionesDeDiagrama: Hashable, Sendable {
     /// Cómo se escriben los nombres de las notas y el título que pone el dibujo.
     public var notacion: Notacion
@@ -23,7 +23,8 @@ public struct OpcionesDeDiagrama: Hashable, Sendable {
     public var escala: Double
 
     public init(
-        notacion: Notacion = .espanolCompacto, ventana: VentanaDeQuintas = .sostenidos, nombresDeLasNotas: Bool = true,
+        notacion: Notacion = .compacta(.espanol), ventana: VentanaDeQuintas = .sostenidos,
+        nombresDeLasNotas: Bool = true,
         titulo: String? = nil, escala: Double = 1
     ) {
         self.notacion = notacion

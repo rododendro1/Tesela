@@ -129,7 +129,7 @@ import Testing
         #expect(Escala(.do).nombreDeGrado(de: .fa) == .subdominante)
         #expect(Escala(.do).nombreDeGrado(de: "Fa#") == nil)
         #expect(Escala(.do, .pentatonicaMayor).nombreDeGrado(1) == nil)
-        #expect(NombreDeGrado.superdominante.nombre(en: .inglesASCII) == "submediant")
+        #expect(NombreDeGrado.superdominante.nombre(en: .ascii(.ingles)) == "submediant")
     }
 
     @Test func armaduras() {
@@ -218,8 +218,8 @@ import Testing
         #expect(jazz.intervalos == TipoDeEscala.menorMelodica.intervalos)
         #expect(jazz != .menorMelodica)
         #expect(jazz == TipoDeEscala.menorMelodica.formaAscendente)
-        #expect(jazz.nombre(en: .inglesASCII) == "jazz minor")
-        #expect(TipoDeEscala.menorMelodica.nombre(en: .inglesASCII) == "melodic minor")
+        #expect(jazz.nombre(en: .ascii(.ingles)) == "jazz minor")
+        #expect(TipoDeEscala.menorMelodica.nombre(en: .ascii(.ingles)) == "melodic minor")
         #expect(Escala("La menor melódica ascendente").tipo == jazz)
         #expect(Escala("A jazz minor").tipo == jazz)
         #expect(
@@ -451,7 +451,7 @@ import Testing
         // Nombres en inglés y alias.
         #expect(Escala("E hungarian minor").tipo == .menorHungara)
         #expect(Escala("C double harmonic").tipo.nombre == "doble armónica")
-        #expect(Escala(.do, .enigmatica).nombre(en: .inglesASCII) == "C enigmatic")
+        #expect(Escala(.do, .enigmatica).nombre(en: .ascii(.ingles)) == "C enigmatic")
         #expect(Escala("G half-whole diminished").tipo == .disminuidaSemitonoTono)
         #expect(Escala("Mi española").tipo == .frigioDominante)
         #expect(Escala("Do modo 1 de Messiaen").tipo == .tonosEnteros)
@@ -522,7 +522,7 @@ import Testing
         for tipo in seis {
             #expect(TipoDeEscala.occidentales.contains(tipo), Comment(rawValue: tipo.nombre))
             for idioma in Idioma.allCases {
-                let notacion = Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false))
+                let notacion = Notacion.delIdioma(idioma)
                 let escala = Escala(Nota("Fa#"), tipo)
                 #expect(
                     (try? Escala(leyendo: escala.nombre(en: notacion))) == escala,
@@ -532,7 +532,7 @@ import Testing
         // Las seis tienen nombres distintos en cada idioma.
         for idioma in Idioma.allCases {
             let nombres = seis.map {
-                $0.nombre(en: Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false)))
+                $0.nombre(en: Notacion.delIdioma(idioma))
             }
             #expect(Set(nombres).count == 6, "\(idioma)")
         }
@@ -582,8 +582,8 @@ import Testing
         #expect(Escala("C overtone").tipo == .lidioDominante)
         #expect(Escala("Do disminuida auxiliar blues").tipo == .disminuidaSemitonoTono)
         #expect(Escala("C auxiliary augmented").tipo == .tonosEnteros)
-        #expect(Escala(.do, .messiaen3).nombre(en: .inglesASCII) == "C Messiaen mode 3")
-        #expect(Escala(.mi, .flamenca).nombre(en: .inglesASCII) == "E flamenco")
+        #expect(Escala(.do, .messiaen3).nombre(en: .ascii(.ingles)) == "C Messiaen mode 3")
+        #expect(Escala(.mi, .flamenca).nombre(en: .ascii(.ingles)) == "E flamenco")
         #expect(TipoDeEscala.occidentales.count == Set(TipoDeEscala.occidentales).count)
     }
 
@@ -637,7 +637,7 @@ import Testing
         #expect(Escala("Do pentatónica de Coltrane").tipo == .pentatonicaMayorSextaMenor)
         #expect(Escala("C dominant pentatonic").tipo == .pentatonicaDominante)
         #expect(Escala("Sol hexacordo").tipo == .hexacordo)
-        #expect(Escala(.do, .bluesDeNueveNotas).nombre(en: .inglesASCII) == "C nine tone blues")
+        #expect(Escala(.do, .bluesDeNueveNotas).nombre(en: .ascii(.ingles)) == "C nine tone blues")
         // Alias de escalas que ya estaban.
         #expect(Escala("Do mayor melódica").tipo == .mixolidioSextaMenor)
         #expect(Escala("Sol dominante b9 b13").tipo == .frigioDominante)
@@ -682,7 +682,7 @@ import Testing
         #expect(Escala("Do Kokin-joshi").tipo.nombre == "Kokin-jōshi")
         #expect(Escala("Mi gitana española").tipo == .flamenca)
         #expect(Escala("C Algerian").tipo == .argelina)
-        #expect(Escala(.re, .nahawand).nombre(en: .inglesASCII) == "D Nahāwand")
+        #expect(Escala(.re, .nahawand).nombre(en: .ascii(.ingles)) == "D Nahāwand")
         // Las tradicionales no entran en las búsquedas de escalas habituales.
         #expect(!(TipoDeEscala.occidentales.contains { $0.nombre == "Ḥijāz" }))
     }
@@ -898,7 +898,7 @@ import Testing
         #expect(Escala("Sol zhi").tipo.nombre == "Zhǐ")
         #expect(Escala("Mi jiao").tipo.nombre == "Jué")
         #expect(Escala("Do yayue").tipo.nombre == "Yǎyuè")
-        #expect(Escala(.la, .yu).nombre(en: .inglesASCII) == "A Yǔ")
+        #expect(Escala(.la, .yu).nombre(en: .ascii(.ingles)) == "A Yǔ")
         #expect(TipoDeEscala.pentatonicaMayor.equivalentes.contains { $0.nombre == "Gōng" })
     }
 
@@ -936,10 +936,10 @@ import Testing
         #expect((try? Escala(leyendo: "Do 六律"))?.tipo.nombre == "Yánglǜ")
         #expect((try? Escala(leyendo: "Do 六吕"))?.tipo.nombre == "Yīnlǜ")
         // En ruso y griego, transcritos; en los demás idiomas, en pinyin.
-        let ruso = Notacion.espanolCompacto.conTextos(en: .ruso)
+        let ruso = Notacion.compacta(.espanol).conTextos(en: .ruso)
         #expect(TipoDeEscala.shierLu.nombre(en: ruso) == "Шиэр люй")
-        #expect(TipoDeEscala.yinlu.nombre(en: Notacion.espanolCompacto.conTextos(en: .griego)) == "Γινλιου")
-        #expect(TipoDeEscala.yanglu.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Yánglǜ")
+        #expect(TipoDeEscala.yinlu.nombre(en: Notacion.compacta(.espanol).conTextos(en: .griego)) == "Γινλιου")
+        #expect(TipoDeEscala.yanglu.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Yánglǜ")
     }
 
     /// Los modos con musica ficta del Renacimiento y la musica recta, en tres mesotónicos y en la afinación justa de
@@ -1001,7 +1001,7 @@ import Testing
                 #expect(abs(c - Double(p) * diesis) <= 0.5, Comment(rawValue: tipo.nombre))
             }
         }
-        let ingles = Notacion.espanolCompacto.conTextos(en: .ingles)
+        let ingles = Notacion.compacta(.espanol).conTextos(en: .ingles)
         #expect(TipoDeEscala.tetracordoEnarmonicoDeVicentino.nombre(en: ingles) == "Vicentino's enharmonic tetrachord")
         #expect(TipoDeEscala.doricoConFicta.nombre(en: ingles) == "Dorian with ficta")
         #expect(TipoDeEscala.musicaRecta.nombre(en: ingles) == "musica recta")
@@ -1050,7 +1050,7 @@ import Testing
         ] {
             #expect((try? Escala(leyendo: texto))?.tipo.nombre == nombre, Comment(rawValue: texto))
         }
-        #expect(Escala(.do, .hirajoshi).nombre(en: .inglesASCII) == "C Hirajōshi")
+        #expect(Escala(.do, .hirajoshi).nombre(en: .ascii(.ingles)) == "C Hirajōshi")
         #expect(!(TipoDeEscala.occidentales.contains { $0.nombre == "Hirajōshi" }))
     }
 
@@ -1163,11 +1163,11 @@ import Testing
         #expect(Escala("Do mayamalavagowla").tipo == .bhairav)
         #expect((try? TipoDeEscala(leyendo: "souzinak"))?.nombre == "Nikríz")
         // Los nombres propios no se traducen…
-        #expect(Escala(.re, .hitzaz).nombre(en: .inglesASCII) == "D Hitzáz")
-        #expect(Escala(.re, .hitzaz).texto(en: .inglesASCII) == "D Hitzáz")
+        #expect(Escala(.re, .hitzaz).nombre(en: .ascii(.ingles)) == "D Hitzáz")
+        #expect(Escala(.re, .hitzaz).texto(en: .ascii(.ingles)) == "D Hitzáz")
         // …y las escalas habituales siguen igual: los nombres de siempre van primero.
         #expect((try? TipoDeEscala(leyendo: "mayor"))?.nombre == "mayor")
-        #expect(TipoDeEscala.frigioDominante.nombre(en: .inglesASCII) == "phrygian dominant")
+        #expect(TipoDeEscala.frigioDominante.nombre(en: .ascii(.ingles)) == "phrygian dominant")
         #expect(!(TipoDeEscala.occidentales.contains { $0.nombre == "Hitzáz" }))
     }
 
@@ -1229,12 +1229,12 @@ import Testing
         #expect(TipoDeEscala.georgiana == .dorico)
         #expect(TipoDeEscala.georgiana.microtonal?.desvios == [0, -37, 32, 9, -7, -32, 18])
         #expect((try? TipoDeEscala(leyendo: "Svaneti"))?.nombre == "georgiana")
-        #expect(TipoDeEscala.georgiana.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Georgian")
+        #expect(TipoDeEscala.georgiana.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Georgian")
         #expect(Tradicion.europa.nombre == "Folklore europeo")
         #expect(Escala(.do, .istriana).notas.map(\.description).joined(separator: " ") == "Do Re♭ Mi♭ Fa♭ Sol♭ La𝄫")
         #expect(TipoDeEscala.istriana.subtradicion == .istria && Subtradicion.istria.nombre == "Istria")
-        #expect(Subtradicion.istria.nombre(en: Notacion.espanolCompacto.conTextos(en: .aleman)) == "Istrien")
-        #expect(Tradicion.europa.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "European folk")
+        #expect(Subtradicion.istria.nombre(en: Notacion.compacta(.espanol).conTextos(en: .aleman)) == "Istrien")
+        #expect(Tradicion.europa.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "European folk")
     }
 
     /// Vietnam, Brasil y el arpa birmana.
@@ -1253,8 +1253,8 @@ import Testing
         #expect((try? TipoDeEscala(leyendo: "nordestina"))?.nombre == "lidio dominante")
         #expect(TipoDeEscala.saung.tradicion == .sudesteAsiatico && TipoDeEscala.saung.clase == .afinacion)
         #expect(TipoDeEscala.saung.microtonal?.desvios == [0, -18, -36, -9, -27])
-        #expect(Tradicion.vietnam.nombre(en: Notacion.espanolCompacto.conTextos(en: .portugues)) == "Vietname")
-        #expect(Tradicion.brasil.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "Brazil")
+        #expect(Tradicion.vietnam.nombre(en: Notacion.compacta(.espanol).conTextos(en: .portugues)) == "Vietname")
+        #expect(Tradicion.brasil.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Brazil")
     }
 }
 

@@ -31,7 +31,7 @@
                     }
                     // Las de otras tradiciones (bizantino, japonés, los lü), con los textos en el idioma elegido.
                     Section(notacion.texto(\.otrasTradiciones)) {
-                        ForEach(Notacion.deOtrasTradiciones, id: \.self) { notacion in
+                        ForEach(Notacion.deOtrasTradicionesDelSelector, id: \.self) { notacion in
                             Text(notacion.titulo).tag(notacion.clave)
                         }
                     }
@@ -46,7 +46,7 @@
                     Toggle(notacion.texto(\.octavaEnSubindice), isOn: octavasEnSubindice)
                 }
                 // En ruso y en griego, las notas y los textos también en el alfabeto latino (solʹ, fa díesi).
-                if notacion.admiteAlfabetoLatino {
+                if notacion.admiteOtraGrafia {
                     Toggle(notacion.texto(\.alfabetoLatino), isOn: alfabetoLatino)
                 }
                 if let temperamento {
@@ -68,15 +68,19 @@
         /// La notación de las notas; al cambiarla se conserva el idioma de los textos.
         private var notas: Binding<String> {
             Binding(
-                get: { Notacion.desde(clave: clave).notas.conAlfabeto(.propio).clave },
+                get: {
+                    let notas = Notacion.desde(clave: clave).notacionDeLasNotas
+                    return (notas.sistemaDeNombres == nil ? notas.conGrafia(.original) : notas).clave
+                },
                 set: { clave = Notacion.desde(clave: clave).conNotas(Notacion.desde(clave: $0)).clave })
         }
 
-        /// Si se escribe en el alfabeto latino; al cambiarlo se conservan las notas y los textos.
+        /// Si se escribe en el alfabeto latino (la grafía transliterada); al cambiarlo se conservan las notas y los
+        /// textos.
         private var alfabetoLatino: Binding<Bool> {
             Binding(
-                get: { Notacion.desde(clave: clave).alfabeto == .latino },
-                set: { clave = Notacion.desde(clave: clave).conAlfabeto($0 ? .latino : .propio).clave })
+                get: { Notacion.desde(clave: clave).grafia != .original },
+                set: { clave = Notacion.desde(clave: clave).conGrafia($0 ? .transliterada : .original).clave })
         }
 
         /// El idioma de los textos, o "" si van en el de las notas.

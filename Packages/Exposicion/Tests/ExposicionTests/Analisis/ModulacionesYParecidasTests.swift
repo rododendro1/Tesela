@@ -5,7 +5,7 @@ import Testing
 
 // Las modulaciones desde una tonalidad y las escalas más parecidas a una dada.
 @Suite struct ModulacionesYParecidasTests {
-    let notacion = Notacion.espanolCompacto
+    let notacion = Notacion.compacta(.espanol)
 
     @Test func modulacionesALosTonosVecinos() {
         let vecinas = PresentacionDeModulaciones.modulaciones(desde: Tonalidad(.do), en: notacion)
@@ -26,7 +26,7 @@ import Testing
         let aDo = PresentacionDeModulaciones.modulaciones(
             desde: Tonalidad(.do), hasta: Tonalidad(.do), en: notacion)
         #expect(aDo.isEmpty)
-        let ingles = PresentacionDeModulaciones.modulaciones(desde: Tonalidad(.do), en: .inglesASCII)
+        let ingles = PresentacionDeModulaciones.modulaciones(desde: Tonalidad(.do), en: .ascii(.ingles))
         #expect(ingles.first?.destino == "A minor")
     }
 

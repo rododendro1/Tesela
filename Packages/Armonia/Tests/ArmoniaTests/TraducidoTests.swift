@@ -23,8 +23,8 @@ import Testing
         #expect(numeros.todos.count == Idioma.allCases.count)
         // Con la notación habitual de cada idioma: ♯ en español, # en inglés.
         let fa = Traduccion(cadaIdioma: { Nota.fa.sostenido.nombre(en: $0) })
-        #expect(fa.en(.espanolCompacto) == "Fa♯")
-        #expect(fa.en(.inglesASCII) == "F#")
+        #expect(fa.en(.compacta(.espanol)) == "Fa♯")
+        #expect(fa.en(.ascii(.ingles)) == "F#")
         #expect(fa.en(.conPalabras(.aleman)) == "Fis")
         #expect(
             Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) }).en(.conPalabras(.aleman))
@@ -47,8 +47,8 @@ import Testing
         }
         #expect(EscrituraDeNotas.compacta(.aleman).escrituraDeLaAlteracion == .alemana)
         #expect(EscrituraDeNotas.conPalabras(.aleman).escrituraDeLaAlteracion == .palabras)
-        #expect(EscrituraDeNotas.espanolPalabras.escrituraDeLaAlteracion == .palabras)
-        #expect(EscrituraDeNotas.inglesASCII.escrituraDeLaAlteracion == .signos)
+        #expect(EscrituraDeNotas.conPalabras(.espanol).escrituraDeLaAlteracion == .palabras)
+        #expect(EscrituraDeNotas.ascii(.ingles).escrituraDeLaAlteracion == .signos)
     }
 
     @Test func plantillas() {
@@ -60,7 +60,7 @@ import Testing
     @Test func textosHechosConListas() {
         #expect(Duracion(7, 8).nombre(en: .conPalabras(.aleman)) == "doppelt punktierte Halbe")
         #expect(Duracion(3, 8).nombre(en: .conPalabras(.frances)) == "noire pointée")
-        #expect(TipoDeAcorde("7(b9,#11)").nombre(en: .espanolCompacto) == "acorde 7(♭9,♯11)")
+        #expect(TipoDeAcorde("7(b9,#11)").nombre(en: .compacta(.espanol)) == "acorde 7(♭9,♯11)")
         #expect(TipoDeAcorde("7(b9,#11)").nombre(en: .conPalabras(.euskera)) == "7(♭9,♯11) akordea")
         #expect(Acorde.nombreDeLaInversion(9, en: .conPalabras(.ruso)) == "9-е обращение")
     }
@@ -117,8 +117,8 @@ import Testing
         ) { try Idioma(leyendo: "japonés") }
         #expect(Idioma(codigo: "") == nil)
         // La notación habitual de cada idioma: # en inglés, ♯ en español.
-        #expect(Notacion.delIdioma(.ingles) == .inglesASCII)
-        #expect(Notacion.delIdioma(.espanol) == .espanolCompacto)
+        #expect(Notacion.delIdioma(.ingles) == .ascii(.ingles))
+        #expect(Notacion.delIdioma(.espanol) == .compacta(.espanol))
         #expect(Notacion.delIdioma(.griego) == .conPalabras(.griego))
         for idioma in Idioma.allCases {
             #expect(Notacion.delIdioma(idioma).idiomaDeLasNotas == idioma)
@@ -179,18 +179,18 @@ import Testing
         #expect(Nota(.si, Alteracion(-3)).nombre(en: .conPalabras(.ruso)) == "си-тройной бемоль")
         #expect(Nota(.si, Alteracion(-2)).nombre(en: .conPalabras(.ruso)) == "си-дубль-бемоль")
         #expect(Alteracion(5).nombre == "5 sostenidos")
-        #expect(Alteracion(-5).nombre(en: .inglesASCII) == "5 flats")
+        #expect(Alteracion(-5).nombre(en: .ascii(.ingles)) == "5 flats")
         #expect(Alteracion(4).nombre(en: .conPalabras(.euskera)) == "diesa laukoitza")
         #expect(Alteracion(3).nombre(en: .conPalabras(.gallego)) == "triplo sostido")
         // Las tipografías de cada escritura.
         #expect(
             EscrituraDeNotas.allCases.filter(\.usaASCII) == [
-                .espanolASCII, .inglesASCII, .conPalabras(.aleman), .compacta(.aleman), .conPalabras(.hungaro),
+                .ascii(.espanol), .ascii(.ingles), .conPalabras(.aleman), .compacta(.aleman), .conPalabras(.hungaro),
                 .compacta(.hungaro), .conPalabras(.sueco), .compacta(.sueco),
             ])
         #expect(
             EscrituraDeNotas.allCases.filter(\.esCompacta) == [
-                .espanolCompacto, .inglesCompacto, .compacta(.catalan), .compacta(.gallego), .compacta(.euskera),
+                .compacta(.espanol), .compacta(.ingles), .compacta(.catalan), .compacta(.gallego), .compacta(.euskera),
                 .compacta(.portugues), .compacta(.frances), .compacta(.italiano), .compacta(.aleman),
                 .compacta(.griego), .compacta(.ruso), .compacta(.hungaro), .compacta(.sueco),
             ])

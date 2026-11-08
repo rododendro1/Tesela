@@ -43,7 +43,7 @@ import Testing
         #expect(propuestas.map(\.coste) == propuestas.map(\.coste).sorted())
         #expect(Set(propuestas.map(\.valor.acordes)).count == 4)
         #expect(propuestas[0].valor.description == "Do Sol Do (I–V–I)")
-        #expect(propuestas[0].valor.texto(en: .inglesASCII) == "C G C (I–V–I)")
+        #expect(propuestas[0].valor.texto(en: .ascii(.ingles)) == "C G C (I–V–I)")
         #expect(propuestas[0].valor.melodia == ["Mi", "Re", "Do"])
     }
 

@@ -188,7 +188,7 @@ public struct NotaMicrotonal: Hashable, Sendable {
     /// «Mi↓» (una coma sintónica bajo el Mi pitagórico), «Fa(−37¢)» (37 cents bajo Fa). En ASCII, «Miqb», «Siq#»,
     /// «Si(-1)», «Mi(-2)», «Mi(-1)» y «Fa(-37c)».
     /// El nombre en español: «Mi𝄳».
-    public var nombre: String { nombre(en: .espanolCompacto) }
+    public var nombre: String { nombre(en: .compacta(.espanol)) }
 
     public func nombre(en notacion: Notacion) -> String {
         NotaMicrotonal.nombre(temperada, sistema: sistema, ajuste: ajuste, en: notacion)
@@ -201,7 +201,7 @@ public struct NotaMicrotonal: Hashable, Sendable {
         switch sistema {
         case .cuartosDeTono, .persa:
             let base = temperada.natural.nombre(en: notacion)
-            let silaba = notacion.idiomaDeLasNotas.reglas.alteraciones == .palabras ? base.conMayusculaInicial : base
+            let silaba = notacion.reglasDeLasNotas.alteraciones == .palabras ? base.conMayusculaInicial : base
             let cuartos = 2 * temperada.alteracion.semitonos + ajuste
             let alteracion = Alteracion(cuartos / 2)
             let entera = alteracion.esNatural ? "" : alteracion.simbolo(en: notacion.tipografia)

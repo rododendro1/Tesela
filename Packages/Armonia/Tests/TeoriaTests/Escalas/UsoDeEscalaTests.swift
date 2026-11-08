@@ -45,14 +45,14 @@ import Testing
     /// Cada uso tiene nombre en los trece idiomas, y en español es también su `nombre`.
     @Test func losNombresDeLosUsosSeTraducen() {
         for uso in UsoDeEscala.allCases {
-            #expect(uso.nombre(en: .espanolCompacto) == uso.nombre)
+            #expect(uso.nombre(en: .compacta(.espanol)) == uso.nombre)
             for idioma in Idioma.allCases {
                 #expect(
-                    !uso.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma)).isEmpty,
+                    !uso.nombre(en: Notacion.compacta(.espanol).conTextos(en: idioma)).isEmpty,
                     Comment(rawValue: "\(uso) en \(idioma)"))
             }
         }
         #expect(UsoDeEscala.sigloXX.nombre == "siglo XX")
-        #expect(UsoDeEscala.sigloXX.nombre(en: Notacion.espanolCompacto.conTextos(en: .ingles)) == "20th century")
+        #expect(UsoDeEscala.sigloXX.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "20th century")
     }
 }

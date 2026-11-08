@@ -7,7 +7,7 @@ import Testing
 @Suite struct PresentacionDeEscalaYAcordeTests {
     @Test func unaEscalaSobreUnAcorde() {
         let dorico = PresentacionDeEscalaYAcorde.presentar(
-            Escala(.re, .dorico), sobre: Acorde("Rem7"), en: .espanolCompacto)
+            Escala(.re, .dorico), sobre: Acorde("Rem7"), en: .compacta(.espanol))
         #expect(dorico.nombre == "Re dórico")
         #expect(dorico.modo == "modo 2 de Do mayor")
         #expect(dorico.notas == "Re 1 · Mi 9 · Fa ♭3 · Sol 11 · La 5 · Si 13 · Do ♭7")
@@ -17,7 +17,7 @@ import Testing
         #expect(dorico.estructurasSuperiores == "Mim · Sol · Do · Lam")
 
         let jonico = PresentacionDeEscalaYAcorde.presentar(
-            Escala(.do, .mayor), sobre: Acorde("Do7M"), en: .espanolCompacto)
+            Escala(.do, .mayor), sobre: Acorde("Do7M"), en: .compacta(.espanol))
         #expect(jonico.modo == nil) // es la propia madre
         #expect(jonico.aEvitar == "Fa 11")
         #expect(jonico.resumen == "Tensiones: Re 9 · La 13 — A evitar: Fa 11")
@@ -26,7 +26,7 @@ import Testing
 
     @Test func enOtroIdioma() {
         let mixolidio = PresentacionDeEscalaYAcorde.presentar(
-            Escala(.sol, .mixolidio), sobre: Acorde("Sol7"), en: .inglesASCII)
+            Escala(.sol, .mixolidio), sobre: Acorde("Sol7"), en: .ascii(.ingles))
         #expect(mixolidio.modo == "mode 5 of C major")
         #expect(mixolidio.resumen.hasPrefix("Tensions: A 9 · E 13"))
         #expect(mixolidio.resumen.hasSuffix("Avoid: C 11"))
@@ -34,13 +34,13 @@ import Testing
 
     @Test func elModoDeUnaEscala() {
         #expect(
-            PresentacionDeEscalaYAcorde.modo(de: Escala(.do, .alterada), en: .espanolCompacto)
+            PresentacionDeEscalaYAcorde.modo(de: Escala(.do, .alterada), en: .compacta(.espanol))
                 == "modo 7 de Re♭ menor melódica de jazz")
-        #expect(PresentacionDeEscalaYAcorde.modo(de: Escala(.do, .tonosEnteros), en: .espanolCompacto) == nil)
+        #expect(PresentacionDeEscalaYAcorde.modo(de: Escala(.do, .tonosEnteros), en: .compacta(.espanol)) == nil)
     }
 
     @Test func losAcordesQueCaben() throws {
-        let grados = PresentacionDeEscalaYAcorde.acordesQueCaben(Escala(.do, .mayor), en: .espanolCompacto)
+        let grados = PresentacionDeEscalaYAcorde.acordesQueCaben(Escala(.do, .mayor), en: .compacta(.espanol))
         #expect(grados.count == 7)
         let primero = try #require(grados.first)
         #expect(primero.grado == "1 · Do")
@@ -51,7 +51,7 @@ import Testing
 
     @Test func laEscalaDeCadaAcordeDelAnalisis() throws {
         let analisis = try PresentacionDeAnalisis.analizar(
-            "Do La7 Rem7 Sol7 Do", en: Tonalidad(.do), notacion: .espanolCompacto)
+            "Do La7 Rem7 Sol7 Do", en: Tonalidad(.do), notacion: .compacta(.espanol))
         let escalas = analisis.tramos.flatMap(\.filas).map { $0.escala?.nombre }
         #expect(escalas == ["Do mayor", "La frigio dominante", "Re dórico", "Sol mixolidio", "Do mayor"])
         let la7 = try #require(analisis.tramos[0].filas[1].escala)

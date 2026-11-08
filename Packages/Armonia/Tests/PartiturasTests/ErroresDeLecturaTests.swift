@@ -140,10 +140,10 @@ import Testing
         } catch {
             let error = error as! ErrorDeLecturaDeTeoria
             #expect(
-                error.descripcion(en: .inglesASCII)
+                error.descripcion(en: .ascii(.ingles))
                     == ("Cannot read \"Do7(b3)\" (character 5): \"b3\" is not a valid tension "
                         + "(♭/♯ go with 5, 9, 11 and 13, and add with 2, 4, 6, 9, 11 and 13)"))
-            #expect(error.descripcion(en: .espanolCompacto) == error.description)
+            #expect(error.descripcion(en: .compacta(.espanol)) == error.description)
             // El idioma lo da la notación.
             #expect(
                 error.descripcion(en: .conPalabras(.aleman))
@@ -180,7 +180,7 @@ import Testing
             Issue.record("Se esperaba un error")
         } catch {
             #expect(
-                (error as! ErrorDeLectura).explicacion(en: .inglesASCII)
+                (error as! ErrorDeLectura).explicacion(en: .ascii(.ingles))
                     == "there is no major 5th: unisons, 4ths, 5ths and octaves are perfect, augmented or diminished")
 
         }
@@ -189,12 +189,12 @@ import Testing
             Issue.record("Se esperaba un error")
         } catch {
             #expect(
-                (error as! ErrorDeLecturaDeTeoria).explicacion(en: .inglesASCII)
+                (error as! ErrorDeLecturaDeTeoria).explicacion(en: .ascii(.ingles))
                     == "the augmented unison has no role in a tertian chord")
 
         }
         #expect(
-            ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).descripcion(en: .inglesASCII)
+            ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).descripcion(en: .ascii(.ingles))
                 == "Invalid value: the text is empty")
         #expect(
             [1, 2, 3, 4, 11, 12, 13, 21, 22].map { Intervalo.ordinalEnCifras($0, en: .ingles) } == [
@@ -236,7 +236,7 @@ import Testing
         let espanol = ["el ", "la ", " no ", "falta", "sobra", "se esperaba", "tiene", "texto"]
         for error in Self.errores {
             let motivo = error.motivo
-            let ingles = error.explicacion(en: .inglesASCII)
+            let ingles = error.explicacion(en: .ascii(.ingles))
             #expect(!ingles.isEmpty, "\(motivo)")
             #expect(ingles != error.explicacion, "\(motivo)")
             #expect(!ingles.contains("«"), "\(motivo): \(ingles)")

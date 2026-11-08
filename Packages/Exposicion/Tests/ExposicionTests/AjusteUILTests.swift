@@ -16,7 +16,7 @@ import Testing
             #expect(ajuste.teclado != nil, Comment(rawValue: conocido.nombre))
             #expect(ajuste.resultado != nil, Comment(rawValue: conocido.nombre))
             #expect(
-                PresentacionDeRedes.svg(doMayor, en: .uil, notacion: .espanolCompacto, uil: ajuste) != nil,
+                PresentacionDeRedes.svg(doMayor, en: .uil, notacion: .compacta(.espanol), uil: ajuste) != nil,
                 Comment(rawValue: conocido.nombre))
         }
     }

@@ -186,7 +186,7 @@ import Testing
         let partitura = escala.partitura(tocadaEn: alturas, porEvento: .init(dedos: [1: [3]]))
         #expect(!partitura.dibujaElRitmo)
         #expect(partitura.encabezado.titulo == nil && partitura.encabezado.tema == .escala(escala))
-        #expect(partitura.encabezado.titulo(en: .espanolCompacto) == escala.nombre(en: .espanolCompacto))
+        #expect(partitura.encabezado.titulo(en: .compacta(.espanol)) == escala.nombre(en: .compacta(.espanol)))
         #expect(partitura.pentagramas[0].armadura == escala.notasDeLaArmadura)
         let linea = partitura.pentagramas[0].voces[0]
         #expect(linea.tonica == escala.tonica)
@@ -205,30 +205,30 @@ import Testing
     @Test func laNotacionDeLaPartitura() {
         let escala = Escala("Re dórico")
         var partitura = escala.partitura(tocadaEn: [Altura("Re4"), Altura("Mi4")])
-        let enIngles = escala.nombre(en: .inglesASCII)
-        #expect(enIngles != escala.nombre(en: .espanolCompacto))
-        #expect(partitura.encabezado.titulo(en: .inglesASCII) == enIngles)
+        let enIngles = escala.nombre(en: .ascii(.ingles))
+        #expect(enIngles != escala.nombre(en: .compacta(.espanol)))
+        #expect(partitura.encabezado.titulo(en: .ascii(.ingles)) == enIngles)
         // Las opciones mandan si fijan una; si no, la de la partitura.
-        #expect(partitura.svg(opciones: .init(notacion: .inglesASCII)).contains(enIngles))
+        #expect(partitura.svg(opciones: .init(notacion: .ascii(.ingles))).contains(enIngles))
         #expect(!partitura.svg().contains(enIngles))
-        partitura.notacion = .inglesASCII
+        partitura.notacion = .ascii(.ingles)
         #expect(partitura.svg().contains(enIngles))
-        #expect(partitura.svg() == partitura.svg(opciones: .init(notacion: .inglesASCII)))
-        let tocada = escala.svgPentagrama(tocadaEn: [Altura("Re4")], opciones: .init(notacion: .inglesASCII))
+        #expect(partitura.svg() == partitura.svg(opciones: .init(notacion: .ascii(.ingles))))
+        let tocada = escala.svgPentagrama(tocadaEn: [Altura("Re4")], opciones: .init(notacion: .ascii(.ingles)))
         #expect(tocada.contains(enIngles))
         // Un título escrito a mano se queda como está.
         partitura.encabezado.titulo = "Mi escala"
-        #expect(partitura.encabezado.titulo(en: .inglesASCII) == "Mi escala")
+        #expect(partitura.encabezado.titulo(en: .ascii(.ingles)) == "Mi escala")
         // Sin notación fijada, las opciones dibujan en español compacto lo que no es una partitura.
-        #expect(OpcionesDePentagrama().notacionFijada == nil && OpcionesDePentagrama().notacion == .espanolCompacto)
+        #expect(OpcionesDePentagrama().notacionFijada == nil && OpcionesDePentagrama().notacion == .compacta(.espanol))
         var opciones = OpcionesDePentagrama()
-        opciones.notacion = .inglesASCII
-        #expect(opciones.notacionFijada == .inglesASCII)
+        opciones.notacion = .ascii(.ingles)
+        #expect(opciones.notacionFijada == .ascii(.ingles))
         // El acorde arpegiado, con su cifrado en la notación de la partitura.
         var arpegio = Acorde("Re7").partitura(arpegiadoEn: [Altura("Re4")])
         #expect(arpegio.encabezado.tema == .acorde(Acorde("Re7")))
-        arpegio.notacion = .inglesASCII
-        #expect(arpegio.encabezado.titulo(en: arpegio.notacion) == Acorde("Re7").cifrado(en: .inglesASCII))
+        arpegio.notacion = .ascii(.ingles)
+        #expect(arpegio.encabezado.titulo(en: arpegio.notacion) == Acorde("Re7").cifrado(en: .ascii(.ingles)))
     }
 
     /// La tablatura cuenta las cuerdas como el mástil, desde la más grave, y al dibujarla pone la más aguda arriba.
@@ -400,8 +400,9 @@ import Testing
         #expect(Escala(.do).svgPentagrama(secuencia: .terceras) == terceras.svg())
         #expect(terceras.dibujaElRitmo && terceras.encabezado.tema == .secuencia(.terceras, de: Escala(.do)))
         let enIngles =
-            Escala(.do).nombre(en: .inglesPalabras) + " · " + SecuenciaDeEscala.terceras.nombre(en: .inglesPalabras)
-        #expect(terceras.svg(opciones: .init(notacion: .inglesPalabras)).contains(">\(enIngles)</title>"))
+            Escala(.do).nombre(en: .conPalabras(.ingles)) + " · "
+            + SecuenciaDeEscala.terceras.nombre(en: .conPalabras(.ingles))
+        #expect(terceras.svg(opciones: .init(notacion: .conPalabras(.ingles))).contains(">\(enIngles)</title>"))
         // El acorde, en una redonda con su cifrado; sin él, si se pide, pero contando desde su fundamental.
         let sol7 = Acorde("Sol7/Si")
         #expect(sol7.svgPentagrama() == sol7.partitura().svg())
@@ -420,7 +421,7 @@ import Testing
         #expect(alberti.svgPentagrama(cifrado: true) == alberti.partitura().svg())
         #expect(alberti.partitura().encabezado.tema == .arpegio(alberti))
         #expect(alberti.partitura().pentagramas[0].voces[0].cifrados == [.cero: Acorde("Do")])
-        #expect(alberti.svgPentagrama().contains(">\(alberti.nombre(en: .espanolCompacto))</title>"))
+        #expect(alberti.svgPentagrama().contains(">\(alberti.nombre(en: .compacta(.espanol)))</title>"))
         // Con una figura, con ritmo: la escala y el arpegio en corcheas, la última nota en negra.
         let enCorcheas = dorico.partitura(ritmo: .uniforme(.corchea))
         let eventos = enCorcheas.pentagramas[0].voces[0].voz.eventos
@@ -461,15 +462,15 @@ import Testing
         let voces = DisposicionDeAcorde.drop2.conducir(acordes) ?? []
         let progresion = Partitura(acordes: voces, porEvento: .init(cifrados: .enOrden(acordes)))
         #expect(progresion.encabezado.titulo == nil && progresion.encabezado.tema == .progresion(acordes))
-        for notacion in [Notacion.espanolCompacto, .inglesASCII] {
+        for notacion in [Notacion.compacta(.espanol), .ascii(.ingles)] {
             let titulo = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " – ")
             #expect(progresion.encabezado.titulo(en: notacion) == titulo)
             #expect(progresion.svg(opciones: .init(notacion: notacion)).contains(">\(titulo)</title>"))
         }
         // Con título, el suyo; sin título ni cifrados, ninguno (el de la parte).
         let titulada = Partitura(acordes: voces, titulo: "ii–V–I", porEvento: .init(cifrados: .enOrden(acordes)))
-        #expect(titulada.encabezado.titulo(en: .inglesASCII) == "ii–V–I")
-        #expect(Partitura(acordes: voces).encabezado.titulo(en: .espanolCompacto) == nil)
+        #expect(titulada.encabezado.titulo(en: .ascii(.ingles)) == "ii–V–I")
+        #expect(Partitura(acordes: voces).encabezado.titulo(en: .compacta(.espanol)) == nil)
         // Los temas se guardan con lo que nombran.
         let temas: [Encabezado.Tema] = [
             .progresion(acordes), .arpegio(Arpegio(Acorde("Do7"), patron: .alberti)),

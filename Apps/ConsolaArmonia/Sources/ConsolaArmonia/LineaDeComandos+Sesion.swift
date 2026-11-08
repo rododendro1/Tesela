@@ -35,7 +35,7 @@ extension LineaDeComandos {
         case .success(let notacion):
             escribir(bien(TextosDeConsola.en(notacion) { $0.bienvenidaDeLaSesion(version) }))
         case .failure(let error):
-            escribir(uso(error, .espanolCompacto))
+            escribir(uso(error, .compacta(.espanol)))
             return
         }
         _ = ejecutarLineas(entorno: entorno, salidaEsTerminal: true, leerLinea: leerLinea, escribir: escribir)

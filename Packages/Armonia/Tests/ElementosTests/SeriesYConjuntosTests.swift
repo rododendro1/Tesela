@@ -69,7 +69,7 @@ import Testing
     @Test func mensajes() {
         let error = ErrorDeLectura(texto: "x", posicion: nil, motivo: .claseDeAlturaNoValida("x"))
         #expect(error.explicacion.contains("«x» no es una clase de altura"))
-        #expect(error.explicacion(en: .inglesASCII).contains("is neither a pitch class"))
+        #expect(error.explicacion(en: .ascii(.ingles)).contains("is neither a pitch class"))
         let serie = ErrorDeLectura(
             texto: "x", posicion: nil, motivo: .serieNoDodecafonica(faltan: [3, 7], repetidas: [1]))
         #expect(
@@ -291,12 +291,12 @@ import Testing
 
 @Suite struct NombresDeLasClasesTests {
     @Test func unNombreDistintoPorClase() {
-        let nombres = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: .espanolCompacto)
+        let nombres = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: .compacta(.espanol))
         #expect(nombres.count == 12)
         #expect(Set(nombres).count == 12)
         #expect(nombres[0] == "Do")
         #expect(nombres[7] == "Sol")
-        #expect(ConjuntoDeClasesDeAltura.nombresDeLasClases(en: .inglesASCII)[0] == "C")
+        #expect(ConjuntoDeClasesDeAltura.nombresDeLasClases(en: .ascii(.ingles))[0] == "C")
     }
 
     @Test func lasCifrasDeUnaSerie() {

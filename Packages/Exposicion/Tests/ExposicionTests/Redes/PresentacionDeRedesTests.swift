@@ -19,7 +19,7 @@ import Testing
         for red in RedDeNotas.allCases {
             for contenido in contenidos {
                 let svg = try #require(
-                    PresentacionDeRedes.svg(contenido, en: red, notacion: .espanolCompacto), "\(red)")
+                    PresentacionDeRedes.svg(contenido, en: red, notacion: .compacta(.espanol)), "\(red)")
                 #expect(svg.contains("<svg"), "\(red) \(contenido)")
             }
         }
@@ -28,7 +28,7 @@ import Testing
     @Test func losTecladosDeCuadriculaSeDibujanConCuadrados() throws {
         let svg = try #require(
             PresentacionDeRedes.svg(
-                .acorde(try Acorde(leyendo: "Do")), en: .cuadriculaEnCuartas, notacion: .espanolCompacto))
+                .acorde(try Acorde(leyendo: "Do")), en: .cuadriculaEnCuartas, notacion: .compacta(.espanol)))
         #expect(svg.contains("<rect"))
         #expect(!svg.contains("<polygon"))
         #expect(svg.contains(">Do₄<"))
@@ -54,7 +54,8 @@ import Testing
         #expect(ajuste.resultado == nil)
         let doMayor = ContenidoDeRed.acorde(try Acorde(leyendo: "Do"))
         let personalizada = RedDeNotas.cuadriculaPersonalizada
-        let sinEjes = PresentacionDeRedes.svg(doMayor, en: personalizada, notacion: .espanolCompacto, cuadrado: ajuste)
+        let sinEjes = PresentacionDeRedes.svg(
+            doMayor, en: personalizada, notacion: .compacta(.espanol), cuadrado: ajuste)
         #expect(sinEjes == nil)
         // La rejilla trae su nota de origen, y al cambiarla se olvida la elegida.
         ajuste = AjusteCuadrado(origen: 48)
@@ -75,7 +76,7 @@ import Testing
         let escala = ContenidoDeRed.escala(try Escala(leyendo: "Re dórico"))
         let ajuste = AjusteCuadrado(rejilla: .launchpad, enTono: true)
         let svg = try #require(
-            PresentacionDeRedes.svg(escala, en: .cuadriculaEnCuartas, notacion: .espanolCompacto, cuadrado: ajuste))
+            PresentacionDeRedes.svg(escala, en: .cuadriculaEnCuartas, notacion: .compacta(.espanol), cuadrado: ajuste))
         // Las 64 casillas y, encima, el borde de las 10 que son Re.
         let cuadrados = svg.components(separatedBy: "<rect").count - 1
         #expect(cuadrados == 74)
@@ -93,19 +94,19 @@ import Testing
             PresentacionDeRedes.midi(
                 en: Punto(x: -lado, y: 0), de: escala, enLaRed: .cuadriculaEnCuartas, cuadrado: ajuste) == nil)
         #expect(
-            PresentacionDeRedes.nombre(escala, en: .cuadriculaPersonalizada, notacion: .espanolCompacto)
+            PresentacionDeRedes.nombre(escala, en: .cuadriculaPersonalizada, notacion: .compacta(.espanol))
                 == "H,V 1,5 · Re dórico")
     }
 
     @Test func unRecorridoVacioNoSeDibuja() {
-        #expect(PresentacionDeRedes.svg(.recorrido([]), en: .tonnetz, notacion: .espanolCompacto) == nil)
+        #expect(PresentacionDeRedes.svg(.recorrido([]), en: .tonnetz, notacion: .compacta(.espanol)) == nil)
     }
 
     @Test func losTecladosMarcanLasNotasEnTodasLasOctavas() throws {
         let svg = try #require(
             PresentacionDeRedes.svg(
                 .acorde(try Acorde(leyendo: "Do")), en: .wickiHayden,
-                notacion: .espanolCompacto))
+                notacion: .compacta(.espanol)))
         #expect(svg.contains(">Do₄<"))
         #expect(svg.contains(">Do₅<"))
         #expect(PresentacionDeRedes.casillasDelTeclado.count == (12 * 7))
@@ -129,17 +130,17 @@ import Testing
         let hexagonales = RedDeNotas.allCases.filter { !$0.esCuadricula }
         for red in hexagonales where ![.tonnetz, .tablaArmonica, .uil].contains(red) {
             #expect(red.teclado?.nombre == red.rawValue)
-            #expect(red.nombre(en: .inglesASCII) == red.teclado?.nombre(en: .inglesASCII))
+            #expect(red.nombre(en: .ascii(.ingles)) == red.teclado?.nombre(en: .ascii(.ingles)))
         }
-        #expect(RedDeNotas.acordeonC.nombre(en: .inglesASCII) == "C-system accordion")
+        #expect(RedDeNotas.acordeonC.nombre(en: .ascii(.ingles)) == "C-system accordion")
         // Y lo mismo con los de cuadrícula, que no son hexagonales.
         #expect(RedDeNotas.allCases.compactMap(\.tecladoCuadrado) == TecladoCuadrado.todos)
         for red in RedDeNotas.allCases where red.tecladoCuadrado != nil {
             #expect(red.teclado == nil)
             #expect(red.tecladoCuadrado?.nombre == red.rawValue)
-            #expect(red.nombre(en: .inglesASCII) == red.tecladoCuadrado?.nombre(en: .inglesASCII))
+            #expect(red.nombre(en: .ascii(.ingles)) == red.tecladoCuadrado?.nombre(en: .ascii(.ingles)))
         }
-        #expect(RedDeNotas.cuadriculaEnCuartas.nombre(en: .inglesASCII) == "Grid in fourths")
+        #expect(RedDeNotas.cuadriculaEnCuartas.nombre(en: .ascii(.ingles)) == "Grid in fourths")
         #expect(PresentacionDeRedes.teclado(de: .cuadriculaEnCuartas) == nil)
     }
 
@@ -151,13 +152,13 @@ import Testing
     @Test func elNombreDiceLaRedYElContenido() throws {
         let acorde = try Acorde(leyendo: "Dom7")
         #expect(
-            PresentacionDeRedes.nombre(.acorde(acorde), en: .tablaArmonica, notacion: .espanolCompacto)
-                == ("Tabla armónica · " + acorde.cifrado(en: .espanolCompacto)))
+            PresentacionDeRedes.nombre(.acorde(acorde), en: .tablaArmonica, notacion: .compacta(.espanol))
+                == ("Tabla armónica · " + acorde.cifrado(en: .compacta(.espanol))))
     }
 
     @Test func elNombreDelFicheroDeCadaContenido() throws {
         #expect(RedDeNotas.allCases.map(\.id) == RedDeNotas.allCases)
-        let n = Notacion.espanolCompacto
+        let n = Notacion.compacta(.espanol)
         #expect(
             try PresentacionDeRedes.nombre(.escala(Escala(leyendo: "Re dórico")), en: .tonnetz, notacion: n)
                 == "Tonnetz · Re dórico")
@@ -175,7 +176,7 @@ import Testing
     }
 
     @Test func losContenidosDeLaLineaDeComandos() throws {
-        let n = Notacion.espanolCompacto
+        let n = Notacion.compacta(.espanol)
         let doMayor = try Acorde(leyendo: "Do")
         let mibMenor = try Acorde(leyendo: "Mibm")
         // Lo mismo que los inicializadores de cada red.
@@ -219,7 +220,7 @@ import Testing
     }
 
     @Test func enUnTecladoDeCuadriculaYaColocado() throws {
-        let n = Notacion.espanolCompacto
+        let n = Notacion.compacta(.espanol)
         let contenido = ContenidoDeRed.acorde(try Acorde(leyendo: "Do"))
         let ajuste = AjusteCuadrado()
         let teclado = try #require(ajuste.teclado(de: .cuadriculaEnCuartas))

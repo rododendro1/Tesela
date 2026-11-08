@@ -1,25 +1,31 @@
-// MARK: - Alfabeto
-
-/// En qué alfabeto se escriben los textos de una notación: en el del idioma (сольный, σολ) o en el latino, con la
-/// transliteración ISO 9 del cirílico (solʹ, bolʹšaâ terciâ) y la ELOT 743 del griego (sol, megáli tríti).
-/// Solo cambia algo en ruso y en griego: los demás idiomas ya se escriben con letras latinas.
-public enum Alfabeto: String, Hashable, Sendable, CaseIterable, Codable {
-    /// El alfabeto del idioma: cirílico en ruso, griego en griego y latino en los demás.
-    case propio
-    /// El alfabeto latino: el ruso y el griego, transliterados.
-    case latino
-}
-
 // MARK: - Transliteración
 
 /// La transliteración al alfabeto latino del cirílico ruso (ISO 9:1995, una letra latina por letra, con signos
 /// diacríticos: щ → ŝ, я → â, ь → ʹ) y del griego moderno (ELOT 743, como la ONU: θ → th, χ → ch, ου → ou, μπ → b
-/// al principio de la palabra, αυ → av o af según lo que siga). El resto del texto no cambia, así que transliterar
-/// dos veces da lo mismo que una.
+/// al principio de la palabra, αυ → av o af según lo que siga), y la misma en ASCII, sin diacríticos (щ → shch,
+/// я → ya, ь → ', δίεση → diesi). El resto del texto no cambia, así que transliterar dos veces da lo mismo que una.
+///
+/// Es la de las notaciones en ruso y en griego con ``Grafia/transliterada`` y ``Grafia/ascii``.
 public enum Transliteracion {
+    /// El texto en una grafía: igual en `.original`, con ``latina(_:)`` en `.transliterada` y con ``ascii(_:)`` en
+    /// `.ascii`.
+    public static func texto(_ texto: String, en grafia: Grafia) -> String {
+        switch grafia {
+        case .original: return texto
+        case .transliterada: return latina(texto)
+        case .ascii: return ascii(texto)
+        }
+    }
+
     /// El texto con las letras cirílicas y griegas en el alfabeto latino:
     /// `Transliteracion.latina("фа-диез мажор")` es «fa-diez mažor», y `latina("φα δίεση")`, «fa díesi».
-    public static func latina(_ texto: String) -> String {
+    public static func latina(_ texto: String) -> String { transliterar(texto, ascii: false) }
+
+    /// El texto con las letras cirílicas y griegas en letras ASCII, sin diacríticos:
+    /// `Transliteracion.ascii("большая терция")` es «bol'shaya tertsiya», y `ascii("φα δίεση")`, «fa diesi».
+    public static func ascii(_ texto: String) -> String { transliterar(texto, ascii: true) }
+
+    private static func transliterar(_ texto: String, ascii: Bool) -> String {
         guard texto.unicodeScalars.contains(where: { esCirilica($0) || esGriega($0) }) else { return texto }
         let letras = Array(texto)
         var salida = ""
@@ -27,11 +33,11 @@ public enum Transliteracion {
         var i = 0
         while i < letras.count {
             let letra = letras[i]
-            if let latina = cirilico[letra] {
+            if let latina = (ascii ? cirilicoASCII : cirilico)[letra] {
                 salida += latina
                 i += 1
             } else if let griega = Griega(letra) {
-                let (texto, consumidas) = griego(letras, desde: i, primera: griega)
+                let (texto, consumidas) = griego(letras, desde: i, primera: griega, ascii: ascii)
                 salida += texto
                 i += consumidas
             } else {
@@ -56,14 +62,27 @@ public enum Transliteracion {
         ("ъ", "ʺ"), ("ы", "y"), ("ь", "ʹ"), ("э", "è"), ("ю", "û"), ("я", "â"),
     ]
 
-    private static let cirilico: [Character: String] = {
+    /// En ASCII, con dos o cuatro letras donde la ISO 9 pone un diacrítico, como se suele escribir en inglés:
+    /// ж → zh, х → kh, ц → ts, щ → shch, ю → yu, я → ya; el signo blando, ', y el duro, ".
+    private static let minusculasCirilicasASCII: [(Character, String)] = [
+        ("а", "a"), ("б", "b"), ("в", "v"), ("г", "g"), ("д", "d"), ("е", "e"), ("ё", "yo"), ("ж", "zh"), ("з", "z"),
+        ("и", "i"), ("й", "y"), ("к", "k"), ("л", "l"), ("м", "m"), ("н", "n"), ("о", "o"), ("п", "p"), ("р", "r"),
+        ("с", "s"), ("т", "t"), ("у", "u"), ("ф", "f"), ("х", "kh"), ("ц", "ts"), ("ч", "ch"), ("ш", "sh"),
+        ("щ", "shch"), ("ъ", "\""), ("ы", "y"), ("ь", "'"), ("э", "e"), ("ю", "yu"), ("я", "ya"),
+    ]
+
+    private static let cirilico = tabla(minusculasCirilicas)
+    private static let cirilicoASCII = tabla(minusculasCirilicasASCII)
+
+    /// Las minúsculas y las mayúsculas, con la primera letra latina en mayúscula: Щ → Ŝ, Shch.
+    private static func tabla(_ minusculas: [(Character, String)]) -> [Character: String] {
         var tabla: [Character: String] = [:]
-        for (letra, latina) in minusculasCirilicas {
+        for (letra, latina) in minusculas {
             tabla[letra] = latina
             tabla[Character(letra.uppercased())] = latina.prefix(1).uppercased() + latina.dropFirst()
         }
         return tabla
-    }()
+    }
 
     // MARK: Griego (ELOT 743)
 
@@ -114,7 +133,8 @@ public enum Transliteracion {
     private static let sonoras: Set<Character> = ["β", "γ", "δ", "ζ", "λ", "μ", "ν", "ρ"]
 
     /// La transliteración de la letra griega `primera`, en la posición `i`, y cuántas letras consume.
-    private static func griego(_ letras: [Character], desde i: Int, primera: Griega) -> (String, Int) {
+    /// En `ascii`, sin tildes ni diéresis.
+    private static func griego(_ letras: [Character], desde i: Int, primera: Griega, ascii: Bool) -> (String, Int) {
         let siguiente = i + 1 < letras.count ? Griega(letras[i + 1]) : nil
         let tras = i + 2 < letras.count ? Griega(letras[i + 2]) : nil
         let alPrincipio = i == 0 || (Griega(letras[i - 1]) == nil && !letras[i - 1].isLetter)
@@ -123,11 +143,12 @@ public enum Transliteracion {
         let diptongoConU = siguiente.map { $0.base == "υ" && !$0.dieresis } ?? false
         switch (primera.base, siguiente?.base) {
         case ("ο", "υ") where diptongoConU:
-            texto = siguiente?.tilde == true || primera.tilde ? "oú" : "ou"
+            texto = !ascii && (siguiente?.tilde == true || primera.tilde) ? "oú" : "ou"
         case ("α", "υ") where diptongoConU, ("ε", "υ") where diptongoConU, ("η", "υ") where diptongoConU:
             let sonora = tras.map { $0.esVocal || sonoras.contains($0.base) } ?? false
             let vocal = simples[primera.base] ?? ""
-            let acentuada = primera.tilde || siguiente?.tilde == true ? conTilde[Character(vocal)] ?? vocal : vocal
+            let tilde = !ascii && (primera.tilde || siguiente?.tilde == true)
+            let acentuada = tilde ? conTilde[Character(vocal)] ?? vocal : vocal
             texto = acentuada + (sonora ? "v" : "f")
         case ("γ", "γ"): texto = "ng"
         case ("γ", "κ"): texto = "gk"
@@ -138,9 +159,9 @@ public enum Transliteracion {
         default:
             consumidas = 1
             texto = simples[primera.base] ?? String(primera.base)
-            if primera.dieresis, let latina = texto.first.flatMap({ conDieresis[$0] }) {
+            if !ascii, primera.dieresis, let latina = texto.first.flatMap({ conDieresis[$0] }) {
                 texto = latina
-            } else if primera.tilde, let latina = texto.first.flatMap({ conTilde[$0] }) {
+            } else if !ascii, primera.tilde, let latina = texto.first.flatMap({ conTilde[$0] }) {
                 texto = latina
             }
         }

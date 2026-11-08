@@ -14,7 +14,8 @@ import Testing
             #expect(Set(nombres).count == calidades.count)
         }
         #expect(
-            CalidadDeTriada.mayor.nombre(en: .espanolPalabras) != CalidadDeTriada.menor.nombre(en: .espanolPalabras))
+            CalidadDeTriada.mayor.nombre(en: .conPalabras(.espanol))
+                != CalidadDeTriada.menor.nombre(en: .conPalabras(.espanol)))
     }
 
     @Test func naturalesDeCadaSistema() {

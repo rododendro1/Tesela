@@ -27,7 +27,7 @@ public struct DisposicionesPresentadas: Hashable, Sendable {
 /// se prueba en Linux.
 ///
 ///     let ii_V_I = PresentacionDeDisposiciones.progresion(
-///         [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")], .drop2, en: .espanolCompacto)
+///         [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")], .drop2, en: .compacta(.espanol))
 ///     ii_V_I?.filas.map(\.voces)   // la séptima de cada acorde baja a la tercera del siguiente
 public enum PresentacionDeDisposiciones {
     /// Todas las disposiciones de un acorde en el ámbito de Do3 a Sol5, de la más grave a la más aguda. `nil` si

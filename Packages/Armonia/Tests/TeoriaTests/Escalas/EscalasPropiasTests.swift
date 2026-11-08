@@ -13,7 +13,7 @@ import Testing
         let rara = try #require(Escala.propia([.do, Nota(.re, .bemol), .re, .mi, .sol]))
         let forte = try #require(ConjuntoDeClasesDeAltura([0, 1, 2, 4, 7]).numeroDeForte)
         #expect(rara.tipo.nombre == forte + " (1-1-2-3-5)")
-        #expect(rara.nombre(en: .inglesASCII).hasSuffix("(1-1-2-3-5)"))
+        #expect(rara.nombre(en: .ascii(.ingles)).hasSuffix("(1-1-2-3-5)"))
         #expect(rara.numeroDeForte == forte)
         #expect(rara.pasosEnSemitonos == [1, 1, 2, 3, 5])
         #expect(Escala.propia([]) == nil)

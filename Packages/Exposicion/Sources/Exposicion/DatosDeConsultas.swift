@@ -10,7 +10,7 @@ import Armonia
 
 /// Un acorde: su cifrado, su nombre, sus notas y el papel de cada una.
 ///
-///     let datos = DatosDeAcorde(Acorde("Sol7/Si"), notacion: .espanolCompacto)
+///     let datos = DatosDeAcorde(Acorde("Sol7/Si"), notacion: .compacta(.espanol))
 ///     datos.inversion   // 1
 public struct DatosDeAcorde: Hashable, Sendable, Codable {
     /// Una nota del acorde con su papel: «Si tercera».
@@ -63,7 +63,7 @@ public struct DatosDeCandidato: Hashable, Sendable, Codable {
     /// Los acordes que pueden formar unas notas escritas, del más probable al menos y como mucho `limite`; ninguno
     /// si no forman ninguno. Si todas llevan octava («Si2 Re4 Sol4»), cuenta cuál es el bajo; si no, solo las notas.
     ///
-    ///     let candidatos = try DatosDeCandidato.identificar(["Do", "Mi", "Sol", "Sib"], en: .espanolCompacto)
+    ///     let candidatos = try DatosDeCandidato.identificar(["Do", "Mi", "Sol", "Sib"], en: .compacta(.espanol))
     ///     candidatos[0].cifrado   // "Do7"
     public static func identificar(
         _ textos: [String], limite: Int = 5, en notacion: Notacion
@@ -112,7 +112,7 @@ public struct DatosDeEscala: Hashable, Sendable, Codable {
 
 /// Un conjunto de clases de altura: sus notas, sus formas y sus vectores.
 ///
-///     let datos = DatosDeConjunto(ConjuntoDeClasesDeAltura([0, 4, 7]), notacion: .espanolCompacto)
+///     let datos = DatosDeConjunto(ConjuntoDeClasesDeAltura([0, 4, 7]), notacion: .compacta(.espanol))
 ///     datos.forte        // "3-11"
 ///     datos.formaPrima   // [0, 3, 7]
 public struct DatosDeConjunto: Hashable, Sendable, Codable {

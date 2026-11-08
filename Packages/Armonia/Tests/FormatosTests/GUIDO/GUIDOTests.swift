@@ -65,7 +65,7 @@ import Testing
     @Test func deUnaProgresionEnAmalgama() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7 Do")
         let gmn = analisis.partitura(
-            duracion: .blanca, compas: Compas(7, 8, agrupacion: [2, 2, 3]), notacion: .inglesCompacto
+            duracion: .blanca, compas: Compas(7, 8, agrupacion: [2, 2, 3]), notacion: .compacta(.ingles)
         ).guido()
         #expect(gmn.contains(#"\meter<"2+2+3/8", autoBarlines="off">"#))
         #expect(gmn.contains(#"\harmony<"D7">({d1/8, f#1/8, a1/8, c2/8})"#))

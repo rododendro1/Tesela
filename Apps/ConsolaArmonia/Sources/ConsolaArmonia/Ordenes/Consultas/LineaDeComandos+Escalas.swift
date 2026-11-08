@@ -464,7 +464,7 @@ extension LineaDeComandos {
             let clave = claveDeBusqueda(texto)
             let nombres = { (candidata: FuenteTeorica) in
                 [
-                    candidata.rawValue, candidata.nombre, candidata.nombre(en: .inglesCompacto),
+                    candidata.rawValue, candidata.nombre, candidata.nombre(en: .compacta(.ingles)),
                     candidata.nombre(en: notacion),
                 ].map(claveDeBusqueda)
             }

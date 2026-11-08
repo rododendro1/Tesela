@@ -3,6 +3,7 @@
 ## Sin publicar
 
 - `TextosDeApps.alfabetoLatino`, el texto del interruptor del alfabeto latino, en los trece idiomas.
+- Usa las notaciones nuevas del motor: `.compacta(.espanol)` en lugar de `.espanolCompacto`, y las demás igual.
 - Los textos de las apps (`TextosDeApps`) están también en sueco.
 
 ## 0.3.7 (2026-11-07)

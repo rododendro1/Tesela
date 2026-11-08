@@ -5,7 +5,7 @@ import Testing
 
 // El bajo caminante sobre una progresión y las progresiones con los acordes de una escala.
 @Suite struct BajoYProgresionesTests {
-    let notacion = Notacion.espanolCompacto
+    let notacion = Notacion.compacta(.espanol)
 
     @Test func bajoCaminante() throws {
         let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]

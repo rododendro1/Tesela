@@ -135,7 +135,7 @@ extension Escala {
         let natural = [0, 2, 4, 5, 7, 9, 11][modulo(ordinal - 1, 7)]
         var diferencia = modulo(semitonos - natural, 12)
         if diferencia > 6 { diferencia -= 12 }
-        return (diferencia == 0 ? "" : Alteracion(diferencia).simbolo(en: .conDobles)) + String(numero)
+        return (diferencia == 0 ? "" : Alteracion(diferencia).simbolo(en: .unicodeConDobles)) + String(numero)
     }
 }
 

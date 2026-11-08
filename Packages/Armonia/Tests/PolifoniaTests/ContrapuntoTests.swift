@@ -24,9 +24,9 @@ import Testing
         #expect(ejercicio.contrapuntoArriba)
         #expect(ejercicio.faltas == [])
         #expect(
-            ejercicio.informe(en: .espanolCompacto)
+            ejercicio.informe(en: .compacta(.espanol))
                 == "Especie 1, con el contrapunto encima del cantus firmus\nSin faltas.")
-        #expect(ejercicio.informe(en: .inglesASCII) == "Species 1, counterpoint above the cantus firmus\nNo faults.")
+        #expect(ejercicio.informe(en: .ascii(.ingles)) == "Species 1, counterpoint above the cantus firmus\nNo faults.")
     }
 
     @Test func primeraEspecie() throws {
@@ -40,7 +40,7 @@ import Testing
             FaltaDeContrapunto(tipo: .quintasParalelas, compases: 0...1).description
                 == "Quintas paralelas (compases 1 → 2)")
         #expect(
-            FaltaDeContrapunto(tipo: .unisono, compases: 2...2).descripcion(en: .inglesASCII)
+            FaltaDeContrapunto(tipo: .unisono, compases: 2...2).descripcion(en: .ascii(.ingles))
                 == "Unison in the middle (bar 3)")
         // Empieza en tercera y acaba en quinta.
         let mal = try tipos("Do4 Re4 Do4", "Mi4 Fa4 Sol4", .primera)
@@ -136,7 +136,7 @@ import Testing
 
     @Test func todasLasFaltasTienenNombreEnCadaIdioma() {
         for idioma in Idioma.allCases {
-            let notacion = Notacion(escritura: EscrituraDeNotas(idioma: idioma, ascii: false))
+            let notacion = Notacion.delIdioma(idioma)
             let nombres = FaltaDeContrapunto.Tipo.allCases.map { $0.nombre(en: notacion) }
             #expect(Set(nombres).count == nombres.count, "\(idioma)")
             #expect(!nombres.contains(""), "\(idioma)")

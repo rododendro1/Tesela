@@ -399,7 +399,7 @@ public struct Voz: Hashable, Sendable, Codable {
     }
 
     /// Los eventos como texto, en español: "Do₄:4 Re₄:8 Mi₄:8".
-    public var texto: String { texto(en: .espanolCompacto) }
+    public var texto: String { texto(en: .compacta(.espanol)) }
 
     /// Los eventos como texto, separados por espacios: "Do4:4 Re4:8 Mi4:8".
     public func texto(en notacion: Notacion) -> String {

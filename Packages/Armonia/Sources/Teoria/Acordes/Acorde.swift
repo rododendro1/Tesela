@@ -93,14 +93,14 @@ public struct Acorde: Hashable, Sendable {
     /// "Do7", "Rem/Fa", "Si°", "Do/Re".
     public var cifrado: String { cifrado(estilo: .predeterminado) }
 
-    /// Cifrado en un estilo concreto: `Acorde("Sib7(b9)/Re").cifrado(estilo: .inglesASCII)`
+    /// Cifrado en un estilo concreto: `Acorde("Sib7(b9)/Re").cifrado(estilo: .ascii(.ingles))`
     /// → "Bb7(b9)/D". Todos los estilos se vuelven a leer igual.
     public func cifrado(estilo: EstiloDeCifrado) -> String {
         estilo.nombre(fundamental) + tipo.cifrado(estilo: estilo)
             + (bajo != fundamental ? "/" + estilo.nombre(bajo) : "")
     }
 
-    /// Cifrado en el estilo básico de una notación: `.inglesASCII` → "Bb7(b9)/D".
+    /// Cifrado en el estilo básico de una notación: `.ascii(.ingles)` → "Bb7(b9)/D".
     public func cifrado(en notacion: Notacion) -> String { cifrado(estilo: EstiloDeCifrado(notacion: notacion)) }
 
     /// "Do séptima de dominante, primera inversión", "C dominant seventh, first inversion",
@@ -137,7 +137,7 @@ public struct Acorde: Hashable, Sendable {
     public var nombre: String {
         let detalle: String
         if let i = inversion {
-            detalle = Acorde.nombreDeLaInversion(i, en: .espanolCompacto)
+            detalle = Acorde.nombreDeLaInversion(i, en: .compacta(.espanol))
         } else {
             detalle = "con bajo en \(bajo.nombre)"
         }

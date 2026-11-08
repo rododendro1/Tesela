@@ -19,7 +19,7 @@ extension Coral {
     ///     let xml = coral.partitura(duracion: .blanca, compas: "3/2", conAnalisis: true).musicXML()
     public func partitura(
         duracion: Duracion = .negra, compas: Compas = .compasillo, encabezado: Encabezado = Encabezado(),
-        conCifrados: Bool = false, conAnalisis: Bool = false, notacion: Notacion = .espanolCompacto
+        conCifrados: Bool = false, conAnalisis: Bool = false, notacion: Notacion = .compacta(.espanol)
     ) -> Partitura {
         let anotado = Coral.anotaciones(
             de: self, duracion: duracion, tonalidad: encabezado.tonalidad, cifrados: conCifrados,

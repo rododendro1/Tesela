@@ -7,8 +7,8 @@ import Armonia
 /// así que el selector de notación cambia la app entera. Cada texto es un campo de `TextosDeApps`, con un fichero
 /// por idioma en `Textos/` (`TextosDeApps+Espanol.swift`…): uno nuevo no compila hasta que está en los trece.
 ///
-///     Notacion.inglesASCII.texto(\.digitaciones)                // "Fingerings"
-///     Notacion.espanolCompacto.texto { $0.notasPorCuerda(3) }    // "3 notas por cuerda"
+///     Notacion.ascii(.ingles).texto(\.digitaciones)                // "Fingerings"
+///     Notacion.compacta(.espanol).texto { $0.notasPorCuerda(3) }    // "3 notas por cuerda"
 extension Notacion {
     /// Un texto de la interfaz de las apps en el idioma de los textos de esta notación.
     public func texto(_ campo: (TextosDeApps) -> String) -> String {

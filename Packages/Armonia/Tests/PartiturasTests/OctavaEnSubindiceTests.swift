@@ -8,8 +8,8 @@ import Testing
 /// La octava de las alturas escrita como subíndice (La₄): al escribir, en las notaciones compactas o con
 /// `Notacion.conOctavas(.subindices)`, y al leer, siempre.
 @Suite struct OctavaEnSubindiceTests {
-    private let subindices = Notacion.espanolCompacto
-    private let cifras = Notacion.espanolCompacto.conOctavas(.cifras)
+    private let subindices = Notacion.compacta(.espanol)
+    private let cifras = Notacion.compacta(.espanol).conOctavas(.cifras)
 
     @Test func escribirLaOctava() {
         #expect(EscrituraDeLaOctava.cifras.escribir(4) == "4")
@@ -21,11 +21,12 @@ import Testing
 
     @Test func laNotacionGuardaLaEleccion() {
         // Las compactas escriben la octava como subíndice y las demás, con cifras.
-        #expect(Notacion.espanolCompacto.octavas == .subindices)
-        #expect(Notacion.inglesCompacto.octavas == .subindices)
+        #expect(Notacion.compacta(.espanol).octavas == .subindices)
+        #expect(Notacion.compacta(.ingles).octavas == .subindices)
         #expect(Notacion.compacta(.aleman).octavas == .subindices)
         for notacion in [
-            Notacion.espanolPalabras, .espanolASCII, .inglesPalabras, .inglesASCII, .conPalabras(.aleman),
+            Notacion.conPalabras(.espanol), .ascii(.espanol), .conPalabras(.ingles), .ascii(.ingles),
+            .conPalabras(.aleman),
             .conPalabras(.frances),
             .conPalabras(.ruso),
         ] {
@@ -33,7 +34,7 @@ import Testing
         }
         #expect(
             Notacion.allCases.filter { $0.octavas == .subindices } == [
-                .espanolCompacto, .inglesCompacto, .compacta(.catalan), .compacta(.gallego), .compacta(.euskera),
+                .compacta(.espanol), .compacta(.ingles), .compacta(.catalan), .compacta(.gallego), .compacta(.euskera),
                 .compacta(.portugues), .compacta(.frances), .compacta(.italiano), .compacta(.aleman),
                 .compacta(.griego), .compacta(.ruso), .compacta(.hungaro), .compacta(.sueco),
             ])
@@ -42,28 +43,28 @@ import Testing
         #expect(cifras.octavas == .cifras)
         #expect(cifras.conTextos(en: .ingles).octavas == .cifras)
         #expect(cifras.conTextos(en: .ingles).textos == .ingles)
-        #expect(cifras.notas == .espanolCompacto)
-        #expect(cifras != .espanolCompacto)
-        #expect(cifras.conOctavas(.subindices) == .espanolCompacto)
-        #expect(Notacion(escritura: .espanolCompacto, octavas: .cifras) == cifras)
+        #expect(cifras.notacionDeLasNotas == .compacta(.espanol))
+        #expect(cifras != .compacta(.espanol))
+        #expect(cifras.conOctavas(.subindices) == .compacta(.espanol))
+        #expect(Notacion(escritura: .compacta(.espanol), octavas: .cifras) == cifras)
     }
 
     @Test func nombresConSubindice() {
         #expect(Altura(.la, octava: 4).nombre(en: subindices) == "La₄")
         #expect(Altura(Nota.fa.sostenido, octava: 3).nombre(en: subindices) == "Fa♯₃")
         #expect(Altura(Nota.si.bemol, octava: -1).nombre(en: subindices) == "Si♭₋₁")
-        #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .inglesASCII.conOctavas(.subindices)) == "F#₄")
+        #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .ascii(.ingles).conOctavas(.subindices)) == "F#₄")
         #expect(
             Altura(Nota.fa.sostenido, octava: 4).nombre(en: .conPalabras(.frances).conOctavas(.subindices))
                 == "fa dièse ₄")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombreCompacto(en: subindices) == "Fa♯₄")
-        #expect(Altura(Nota.fa.sostenido, octava: 4).nombreCompacto(en: .espanolPalabras) == "Fa♯4")
-        #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .inglesCompacto) == "F♯₄")
+        #expect(Altura(Nota.fa.sostenido, octava: 4).nombreCompacto(en: .conPalabras(.espanol)) == "Fa♯4")
+        #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .compacta(.ingles)) == "F♯₄")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: .compacta(.aleman)) == "Fis₄")
         #expect(Altura(Nota.fa.sostenido, octava: 4).nombre(en: cifras) == "Fa♯4")
         // En las que no son compactas, y en `description` y la codificación, con cifras.
-        #expect(Altura(.la, octava: 4).nombre(en: .espanolASCII) == "La4")
-        #expect(Altura(.la, octava: 4).nombre(en: .espanolPalabras) == "La4")
+        #expect(Altura(.la, octava: 4).nombre(en: .ascii(.espanol)) == "La4")
+        #expect(Altura(.la, octava: 4).nombre(en: .conPalabras(.espanol)) == "La4")
         #expect(Altura(.la, octava: 4).description == "La4")
         #expect(Altura(.la, octava: 4).texto == "La4")
         #expect(Altura(.la, octava: 4).nombreCompleto == "La4")
@@ -82,7 +83,7 @@ import Testing
 
     @Test func idaYVuelta() throws {
         for notacion in [
-            subindices, .inglesASCII.conOctavas(.subindices), .conPalabras(.aleman).conOctavas(.subindices),
+            subindices, .ascii(.ingles).conOctavas(.subindices), .conPalabras(.aleman).conOctavas(.subindices),
         ] {
             for midi in [21, 47, 60, 61, 70, 108] {
                 let altura = Altura(midi: midi)

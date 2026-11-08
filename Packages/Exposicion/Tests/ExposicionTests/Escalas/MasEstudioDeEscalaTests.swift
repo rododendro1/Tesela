@@ -5,7 +5,7 @@ import Testing
 
 // Buscar escalas por sus notas, la simetría, las líneas de notas guía, el mástil y el teclado de piano.
 @Suite struct MasEstudioDeEscalaTests {
-    let notacion = Notacion.espanolCompacto
+    let notacion = Notacion.compacta(.espanol)
 
     @Test func buscarEscalasPorSusNotas() throws {
         let notas: [Nota] = [.do, .mi, .sol, .si, try Nota(leyendo: "Fa#")]
@@ -15,7 +15,7 @@ import Testing
         #expect(primera.nombre == "Do pentatónica lidia")
         #expect(primera.ademas == "")
         #expect(escalas.contains { $0.ademas == "además: Re, La" })
-        let dos = PresentacionDeEstudioDeEscala.escalas(conLasNotas: notas, limite: 2, en: .inglesASCII)
+        let dos = PresentacionDeEstudioDeEscala.escalas(conLasNotas: notas, limite: 2, en: .ascii(.ingles))
         #expect(dos.count == 2)
         // Sin ortografía, de un mástil: Fa♯ en el teclado, 78 en MIDI.
         let deClases = PresentacionDeEstudioDeEscala.escalas(conLasClases: [60, 64, 67, 71, 78], en: notacion)
@@ -66,7 +66,7 @@ import Testing
         let tonosEnteros = PresentacionDeEstudioDeEscala.estadisticas(
             de: Escala(.do, .tonosEnteros), en: notacion)
         #expect(tonosEnteros.contains { $0.nombre == "Transposiciones distintas" && $0.valor == "2" })
-        let ingles = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do), en: .inglesASCII)
+        let ingles = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do), en: .ascii(.ingles))
         #expect(ingles.first == DatoDeEscalaPresentado(nombre: "Number of notes", valor: "7 (heptatonic)"))
         #expect(PresentacionDeEstudioDeEscala.conSigno(3) == "+3")
         #expect(PresentacionDeEstudioDeEscala.conSigno(-3) == "-3")
@@ -217,7 +217,7 @@ import Testing
         #expect(lineas.map(\.notas) == ["Fa₄ Fa₄ Mi₄", "Do₄ Si₃ Si₃"])
         #expect(lineas[0].ficheros.count == 6)
         #expect(lineas[0].sonido.notas.count == 3)
-        let sinTonalidad = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(acordes, en: .inglesASCII)
+        let sinTonalidad = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(acordes, en: .ascii(.ingles))
         #expect(sinTonalidad.map(\.titulo) == ["From the third", "From the seventh"])
         #expect(PresentacionDeEstudioDeEscala.lineasDeNotasGuia([], en: notacion).isEmpty)
     }
@@ -244,7 +244,7 @@ import Testing
         #expect(caged[0].comunes.isEmpty)
         #expect(caged[0].notas.count == caged[0].sonido.notas.count)
         let porCuerda = PresentacionDeEstudioDeEscala.secuenciaEnLasPosiciones(
-            Escala(.do), .gruposDeTres, caged: false, sentido: .descendente, en: .inglesASCII)
+            Escala(.do), .gruposDeTres, caged: false, sentido: .descendente, en: .ascii(.ingles))
         #expect(porCuerda.count >= 6)
         #expect(porCuerda[0].titulo == "Frets 0–5")
         #expect(porCuerda[0].notas.count == 48)
@@ -270,7 +270,7 @@ import Testing
         #expect(derecha.contains("<title>Re mayor · Mano derecha</title>"))
         #expect(derecha.contains(">5</text>"))
         let izquierda = PresentacionDeEstudioDeEscala.teclado(
-            de: Escala(.re), mano: .izquierda, octavas: 2, en: .inglesASCII)
+            de: Escala(.re), mano: .izquierda, octavas: 2, en: .ascii(.ingles))
         #expect(izquierda.contains("Left hand"))
     }
 
@@ -286,7 +286,7 @@ import Testing
         #expect(cromatico.contains(">Fa♯</text>") && cromatico.contains(">Do♯</text>"))
         // Las que no son de la escala, con el nombre más sencillo.
         #expect(cromatico.contains(">Fa</text>"))
-        let quintas = PresentacionDeEstudioDeEscala.reloj(de: Escala(.re), orden: .quintas, en: .inglesASCII)
+        let quintas = PresentacionDeEstudioDeEscala.reloj(de: Escala(.re), orden: .quintas, en: .ascii(.ingles))
         #expect(quintas.contains("Circle of fifths"))
     }
 
@@ -334,7 +334,7 @@ import Testing
 
 /// El arpegio de un acorde en el mástil, con su tablatura y sus dedos.
 @Suite struct ArpegiosEnElMastilTests {
-    let notacion = Notacion.espanolCompacto
+    let notacion = Notacion.compacta(.espanol)
 
     @Test func barrido() throws {
         let barrido = PresentacionDeArpegios.enElMastil(Acorde("Lam"), formas: .unaNotaPorCuerda, en: notacion)

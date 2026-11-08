@@ -63,6 +63,6 @@ import Testing
         #expect(throws: ErrorDeLecturaDeTeoria.self) { try Escala(leyendo: "D blabla", en: .compacta(.aleman)) }
         #expect(throws: ErrorDeLecturaDeTeoria.self) { try Tonalidad(leyendo: "D-blabla", en: .compacta(.aleman)) }
         // En español e inglés, como sin notación.
-        #expect((try? Acorde(leyendo: "Bb7", en: .inglesCompacto)) == Acorde("Sib7"))
+        #expect((try? Acorde(leyendo: "Bb7", en: .compacta(.ingles))) == Acorde("Sib7"))
     }
 }

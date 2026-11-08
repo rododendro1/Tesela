@@ -272,7 +272,7 @@ import Testing
     }
 
     @Test func losErroresSeExplicanEnCadaIdioma() {
-        #expect(ErrorDeLecturaDeFichero.sinNotas.descripcion(en: .inglesASCII) == "The file has no notes.")
+        #expect(ErrorDeLecturaDeFichero.sinNotas.descripcion(en: .ascii(.ingles)) == "The file has no notes.")
         #expect(ErrorDeLecturaDeFichero.sinNotas.description == "El fichero no tiene ninguna nota.")
         #expect(
             ErrorDeLecturaDeFichero.xmlDanado(linea: 3).descripcion(en: .conPalabras(.frances))

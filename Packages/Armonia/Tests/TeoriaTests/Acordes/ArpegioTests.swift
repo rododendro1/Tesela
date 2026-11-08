@@ -121,7 +121,7 @@ import Testing
                 motivo: .nombreNoReconocido("lejos", opciones: ["desdeAbajo", "desdeArriba", "encierro"]))
         ) { try Arpegio.Aproximacion(leyendo: "lejos") }
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             for aproximacion in Arpegio.Aproximacion.allCases {
                 let nombre = aproximacion.nombre(en: notacion)
                 #expect(!nombre.isEmpty, "\(aproximacion) en \(idioma)")
@@ -166,10 +166,10 @@ import Testing
 
         let arpegio = Arpegio(Acorde("Do"))
         #expect(arpegio.nombre.hasPrefix("Arpegio de Do"), Comment(rawValue: arpegio.nombre))
-        #expect(arpegio.nombre(en: .inglesASCII).hasSuffix(" arpeggio"))
+        #expect(arpegio.nombre(en: .ascii(.ingles)).hasSuffix(" arpeggio"))
         #expect(arpegio.nombre(en: .conPalabras(.aleman)).hasPrefix("Arpeggio: "))
         for idioma in Idioma.allCases {
-            let notacion = Notacion.espanolCompacto.conTextos(en: idioma)
+            let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             #expect(!(arpegio.nombre(en: notacion).contains("{}")), "\(idioma)")
             #expect(arpegio.nombre(en: notacion).count > Acorde("Do").nombre(en: notacion).count, "\(idioma)")
             for patron in Arpegio.Patron.allCases {
@@ -195,7 +195,7 @@ import Testing
                 == "«zigzag» no es ninguno de estos: ascendente, descendente, idaYVuelta, alberti, quebrado, bajaYSube")
         for idioma in Idioma.allCases {
             for patron in Arpegio.Patron.allCases {
-                let nombre = patron.nombre(en: Notacion.espanolCompacto.conTextos(en: idioma))
+                let nombre = patron.nombre(en: Notacion.compacta(.espanol).conTextos(en: idioma))
                 #expect(try Arpegio.Patron(leyendo: nombre) == patron, "\(nombre) (\(idioma))")
             }
         }

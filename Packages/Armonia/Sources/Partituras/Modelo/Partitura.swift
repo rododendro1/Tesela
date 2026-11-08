@@ -71,7 +71,7 @@ public struct Encabezado: Hashable, Sendable {
     /// El título en una notación: `titulo` si se da; si no, el nombre del tema en esa notación.
     ///
     ///     let encabezado = Encabezado(tema: .escala(Escala("Re dórico")))
-    ///     encabezado.titulo(en: .espanolCompacto)   // "Re dórico"; en otra notación, en esa
+    ///     encabezado.titulo(en: .compacta(.espanol))   // "Re dórico"; en otra notación, en esa
     public func titulo(en notacion: Notacion) -> String? { titulo ?? tema?.nombre(en: notacion) }
 }
 
@@ -211,7 +211,7 @@ public struct Partitura: Hashable, Sendable, Codable {
     /// Una partitura con esos pentagramas. Si no se dan `compas` y `anacrusa`, los de la primera voz.
     public init(
         pentagramas: [Pentagrama], encabezado: Encabezado = Encabezado(), compas: Compas? = nil,
-        anacrusa: Duracion? = nil, tonalidadDelAnalisis: Tonalidad? = nil, notacion: Notacion = .espanolCompacto,
+        anacrusa: Duracion? = nil, tonalidadDelAnalisis: Tonalidad? = nil, notacion: Notacion = .compacta(.espanol),
         llave: Bool = false, dibujaElRitmo: Bool = true
     ) {
         let primera = pentagramas.lazy.flatMap(\.voces).first?.voz

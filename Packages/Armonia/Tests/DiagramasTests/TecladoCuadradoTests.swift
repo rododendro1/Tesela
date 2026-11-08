@@ -54,7 +54,7 @@ import Testing
         #expect(TecladoCuadrado.cuartas.casillas(de: 69, en: ventana) == [casilla(4, 1)])
         #expect(TecladoCuadrado.cuartas.casillas(de: try Altura(leyendo: "Fa4"), en: ventana) == [casilla(0, 1)])
         #expect(
-            TecladoCuadrado.quintas.altura(en: casilla(1, 0), ventana: .bemoles).nota.nombre(en: .espanolCompacto)
+            TecladoCuadrado.quintas.altura(en: casilla(1, 0), ventana: .bemoles).nota.nombre(en: .compacta(.espanol))
                 == "Re♭")
         #expect(TecladoCuadrado.quintas.altura(en: casilla(1, 0), ventana: .sostenidos).nota == Nota(.do, 1))
     }
@@ -198,15 +198,15 @@ import Testing
     }
 
     @Test func losNombresSeTraducen() {
-        #expect(TecladoCuadrado.cuartas.nombre(en: .inglesASCII) == "Grid in fourths")
+        #expect(TecladoCuadrado.cuartas.nombre(en: .ascii(.ingles)) == "Grid in fourths")
         #expect(TecladoCuadrado.tonnetzDeEuler.nombre(en: .conPalabras(.aleman)) == "Eulers Tonnetz")
-        #expect(TecladoCuadrado.wickiHaydenCuadrado.nombre(en: .espanolCompacto) == "Wicki-Hayden (cuadrícula)")
-        #expect(TecladoCuadrado.secuencial.nombre(en: .inglesASCII) == "Sequential grid")
+        #expect(TecladoCuadrado.wickiHaydenCuadrado.nombre(en: .compacta(.espanol)) == "Wicki-Hayden (cuadrícula)")
+        #expect(TecladoCuadrado.secuencial.nombre(en: .ascii(.ingles)) == "Sequential grid")
         #expect(TecladoCuadrado.tritonos.nombre(en: .conPalabras(.aleman)) == "Tritonusraster")
-        #expect(TecladoCuadrado.cuartas.reflejado.nombre(en: .inglesASCII) == "Cuadrícula en cuartas ⇋")
+        #expect(TecladoCuadrado.cuartas.reflejado.nombre(en: .ascii(.ingles)) == "Cuadrícula en cuartas ⇋")
         for teclado in TecladoCuadrado.todos {
             #expect(teclado.traduccion != nil)
-            #expect(teclado.nombre(en: .espanolCompacto) == teclado.nombre)
+            #expect(teclado.nombre(en: .compacta(.espanol)) == teclado.nombre)
         }
     }
 }

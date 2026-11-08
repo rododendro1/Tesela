@@ -5,7 +5,7 @@ import Testing
 
 // La conducción de las voces de una progresión y la progresión en las doce tonalidades.
 @Suite struct ConduccionYDoceTests {
-    let notacion = Notacion.espanolCompacto
+    let notacion = Notacion.compacta(.espanol)
     let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
 
     @Test func conduccionDeUnaProgresion() throws {

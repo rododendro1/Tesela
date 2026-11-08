@@ -167,7 +167,7 @@ public struct OpcionesDePentagrama: Hashable, Sendable {
     /// Cómo se escriben los nombres (en el título y en las etiquetas) y el cifrado: `notacionFijada` o, si no la
     /// hay, la española compacta. Darle un valor la fija.
     public var notacion: Notacion {
-        get { notacionFijada ?? .espanolCompacto }
+        get { notacionFijada ?? .compacta(.espanol) }
         set { notacionFijada = newValue }
     }
     /// El título: si es `nil`, el de lo que se dibuja (el de la partitura, el nombre de la escala, el cifrado del
@@ -181,7 +181,7 @@ public struct OpcionesDePentagrama: Hashable, Sendable {
     var pixelesPorEspacio: Double { 10 * escala }
 
     /// Las opciones, por grupos:
-    /// `OpcionesDePentagrama(notacion: .inglesASCII, marcas: .init(nombresDeLasNotas: true))`. Sin `notacion`, la de
+    /// `OpcionesDePentagrama(notacion: .ascii(.ingles), marcas: .init(nombresDeLasNotas: true))`. Sin `notacion`, la de
     /// la partitura que se dibuja (``Partitura/notacion``).
     public init(
         armadura: Armadura = .automatica, notacion: Notacion? = nil, titulo: String? = nil, escala: Double = 1,

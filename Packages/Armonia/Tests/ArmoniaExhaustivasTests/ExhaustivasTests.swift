@@ -50,9 +50,9 @@ import Testing
     }
 
     static let estilos: [EstiloDeCifrado] = [
-        .predeterminado, .espanolASCII, .inglesASCII, .inglesCompacto, .jazz, .calidadesConPalabras,
+        .predeterminado, .ascii(.espanol), .ascii(.ingles), .compacta(.ingles), .jazz, .calidadesConPalabras,
         EstiloDeCifrado(
-            notacion: .inglesASCII, tensionesEnASCII: false, menor: .min, disminuido: .dim, aumentado: .aug,
+            notacion: .ascii(.ingles), tensionesEnASCII: false, menor: .min, disminuido: .dim, aumentado: .aug,
             septimaMayor: .mayuscula, semidisminuido: .barrado),
     ]
 
@@ -120,9 +120,9 @@ import Testing
             #expect((try? Nota(leyendo: nombre.nombre)) == nombre, Comment(rawValue: nombre.nombre))
             #expect((try? Nota(leyendo: nombre.nombreASCII)) == nombre, Comment(rawValue: nombre.nombreASCII))
             #expect(
-                (try? Nota(leyendo: nombre.nombre(en: .inglesASCII))) == nombre,
-                Comment(rawValue: nombre.nombre(en: .inglesASCII)))
-            let unicode = nombre.nombre(en: .inglesCompacto)
+                (try? Nota(leyendo: nombre.nombre(en: .ascii(.ingles)))) == nombre,
+                Comment(rawValue: nombre.nombre(en: .ascii(.ingles))))
+            let unicode = nombre.nombre(en: .compacta(.ingles))
             #expect((try? Nota(leyendo: unicode)) == nombre, Comment(rawValue: unicode))
         }
     }
@@ -133,9 +133,9 @@ import Testing
                 let nota = Altura(pasosDeQuinta: q, pasosDeOctava: o)
                 #expect((try? Altura(leyendo: nota.nombreCompleto)) == nota, Comment(rawValue: nota.nombreCompleto))
                 #expect(
-                    (try? Altura(leyendo: nota.nombre(en: .inglesASCII))) == nota,
-                    Comment(rawValue: nota.nombre(en: .inglesASCII)))
-                #expect((try? Altura(leyendo: nota.nombre(en: .inglesCompacto))) == nota)
+                    (try? Altura(leyendo: nota.nombre(en: .ascii(.ingles)))) == nota,
+                    Comment(rawValue: nota.nombre(en: .ascii(.ingles))))
+                #expect((try? Altura(leyendo: nota.nombre(en: .compacta(.ingles)))) == nota)
                 #expect(Altura(nota.nota, octava: nota.octava) == nota, Comment(rawValue: nota.nombreCompleto))
             }
         }
@@ -150,8 +150,8 @@ import Testing
                         (try? Intervalo(leyendo: intervalo.abreviatura)) == intervalo,
                         Comment(rawValue: intervalo.abreviatura))
                     #expect(
-                        (try? Intervalo(leyendo: intervalo.abreviatura(en: .inglesASCII))) == intervalo,
-                        Comment(rawValue: intervalo.abreviatura(en: .inglesASCII)))
+                        (try? Intervalo(leyendo: intervalo.abreviatura(en: .ascii(.ingles)))) == intervalo,
+                        Comment(rawValue: intervalo.abreviatura(en: .ascii(.ingles))))
                     #expect(intervalo.pasos >= 0)
                 }
             }

@@ -13,8 +13,8 @@ import Testing
         #expect(Alteracion(-2).nombre == "doble bemol")
         #expect(Alteracion(-5).nombre == "5 bemoles")
         #expect(Alteracion.natural.nombre == "natural")
-        #expect(Alteracion(2).nombre(en: .inglesASCII) == "double sharp")
-        #expect(Alteracion(-1).nombre(en: .inglesASCII) == "flat")
+        #expect(Alteracion(2).nombre(en: .ascii(.ingles)) == "double sharp")
+        #expect(Alteracion(-1).nombre(en: .ascii(.ingles)) == "flat")
         #expect(Alteracion(2).simbolo == "♯♯")
         #expect(Alteracion(-2).simboloASCII == "bb")
         #expect(Alteracion(3).simboloConDobles == "𝄪♯")
@@ -28,10 +28,10 @@ import Testing
                 #expect(try (Alteracion(leyendo: Alteracion(n).simbolo(en: tipografia))) == Alteracion(n))
             }
         }
-        #expect(Notacion.espanolCompacto.tipografia == .conDobles)
-        #expect(Notacion.inglesASCII.tipografia == .ascii)
-        #expect(Notacion.espanolASCII.tipografia == .ascii)
-        #expect(Notacion.conPalabras(.frances).tipografia == .conSimples)
+        #expect(Notacion.compacta(.espanol).tipografia == .unicodeConDobles)
+        #expect(Notacion.ascii(.ingles).tipografia == .ascii)
+        #expect(Notacion.ascii(.espanol).tipografia == .ascii)
+        #expect(Notacion.conPalabras(.frances).tipografia == .unicode)
         #expect(Alteracion(-2).numeroDeSignos == 2)
         #expect(Alteracion.sostenido.pasosDeQuinta == 7)
         #expect(Alteracion.bemol.esBemol)
@@ -133,7 +133,9 @@ import Testing
 
 /// Pruebas de los protocolos comunes: cada una recorre varios tipos con el mismo código genérico.
 @Suite struct ProtocolosTests {
-    private static let notaciones: [Notacion] = [.espanolCompacto, .espanolASCII, .inglesASCII, .inglesCompacto]
+    private static let notaciones: [Notacion] = [
+        .compacta(.espanol), .ascii(.espanol), .ascii(.ingles), .compacta(.ingles),
+    ]
 
     private func comprobarIdaYVuelta<T: RepresentableComoTexto & Equatable>(
         _ valores: [T], sourceLocation: SourceLocation = #_sourceLocation
@@ -154,11 +156,11 @@ import Testing
         comprobarIdaYVuelta(["Sol7(b9)/Si", "Fa#m7b5", "Do/Re", "Mib6/9", "Faug", "Sibmaj7#11"] as [Acorde])
         comprobarIdaYVuelta(TipoDeEscala.occidentales.map { Escala("Fa#", $0) })
 
-        #expect(Acorde("Sib7(b9)/Re").texto(en: .inglesASCII) == "Bb7(b9)/D")
-        #expect(Intervalo.terceraMayor.texto(en: .inglesASCII) == "M3")
+        #expect(Acorde("Sib7(b9)/Re").texto(en: .ascii(.ingles)) == "Bb7(b9)/D")
+        #expect(Intervalo.terceraMayor.texto(en: .ascii(.ingles)) == "M3")
         #expect(Intervalo.terceraMayor.texto == "3M")
         #expect(Altura("Fa#3").texto == "Fa♯3")
-        #expect(Escala("Re dórico").texto(en: .inglesCompacto) == "D dorian")
+        #expect(Escala("Re dórico").texto(en: .compacta(.ingles)) == "D dorian")
     }
 
     @Test func loQueAportaElProtocolo() throws {
@@ -196,9 +198,9 @@ import Testing
             (CalidadDeTriada.aumentada, "aumentada", "augmented"),
         ]
         for (valor, espanol, ingles) in casos {
-            #expect(valor.nombre(en: .espanolCompacto) == espanol)
-            #expect(valor.nombre(en: .inglesASCII) == ingles)
-            #expect(valor.nombre(en: .inglesASCII) == ingles)
+            #expect(valor.nombre(en: .compacta(.espanol)) == espanol)
+            #expect(valor.nombre(en: .ascii(.ingles)) == ingles)
+            #expect(valor.nombre(en: .ascii(.ingles)) == ingles)
         }
     }
 

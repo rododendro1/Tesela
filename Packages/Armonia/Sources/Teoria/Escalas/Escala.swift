@@ -195,7 +195,7 @@ public struct Escala: Hashable, Sendable {
     /// "Re dórico".
     public var nombre: String { "\(tonica.nombre) \(tipo.nombre)" }
 
-    /// Nombre en la notación indicada: "Re dórico", "D dorian", `.inglesCompacto` → "B♭ harmonic minor".
+    /// Nombre en la notación indicada: "Re dórico", "D dorian", `.compacta(.ingles)` → "B♭ harmonic minor".
     public func nombre(en notacion: Notacion) -> String {
         "\(tonica.nombre(en: notacion)) \(tipo.nombre(en: notacion))"
     }
@@ -311,7 +311,7 @@ public enum NombreDeGrado: Hashable, Sendable, CustomStringConvertible {
         ]
         guard
             let funcion = todas.first(where: { f in
-                f.nombre.claveDeBusqueda == clave || f.nombre(en: .inglesASCII).claveDeBusqueda == clave
+                f.nombre.claveDeBusqueda == clave || f.nombre(en: .ascii(.ingles)).claveDeBusqueda == clave
             })
         else {
             throw ErrorDeLecturaDeTeoria(

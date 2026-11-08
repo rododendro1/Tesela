@@ -18,7 +18,7 @@ import Testing
         #expect("\(CalidadDeIntervalo.mayor)" == "mayor")
         #expect("\(Consonancia.perfecta)" == "consonancia perfecta")
         #expect(Consonancia.disonancia.nombre == "disonancia")
-        #expect(Consonancia.disonancia.nombre(en: .inglesASCII) == "dissonance")
+        #expect(Consonancia.disonancia.nombre(en: .ascii(.ingles)) == "dissonance")
         #expect(
             ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio).errorDescription
                 == "Valor no válido: el texto está vacío")
@@ -39,7 +39,7 @@ import Testing
     @Test func alturas() throws {
         #expect(Altura("Do4").esEnarmonica(de: Altura("Si#3")))
         #expect(!(Altura("Do4").esEnarmonica(de: Altura("Do5"))))
-        #expect(try (Altura(leyendo: "C#4", en: .inglesASCII)) == Altura("Do#4"))
+        #expect(try (Altura(leyendo: "C#4", en: .ascii(.ingles))) == Altura("Do#4"))
     }
 
     @Test func intervalos() {
@@ -91,12 +91,12 @@ import Testing
         #expect("\(TipoDeAcorde(""))" == "mayor")
         #expect("\(TipoDeAcorde("m7"))" == "m7")
         #expect("\(Cadencia.Tipo.plagal)" == "cadencia plagal")
-        #expect(Cadencia.Tipo.plagal.nombre(en: .inglesASCII) == "plagal cadence")
+        #expect(Cadencia.Tipo.plagal.nombre(en: .ascii(.ingles)) == "plagal cadence")
         #expect("\(FaltaDeConduccion.Tipo.superposicion)" == "Superposición")
         #expect(FaltaDeConduccion.Tipo.separacionExcesiva.nombre == "Más de una octava")
         #expect(CalidadDeTriada.sinTercera.nombre == "sin tercera")
-        #expect(PapelEnAcorde.tension(9).nombre(en: .espanolCompacto) == "novena")
-        #expect(PapelEnAcorde.tension(4).nombre(en: .espanolCompacto) == "tensión 4ª")
+        #expect(PapelEnAcorde.tension(9).nombre(en: .compacta(.espanol)) == "novena")
+        #expect(PapelEnAcorde.tension(4).nombre(en: .compacta(.espanol)) == "tensión 4ª")
         #expect(Tonalidad(.do, .mayor).analizar([Acorde("Sol7")]).acordes[0].description == "V7")
     }
 
@@ -134,7 +134,7 @@ import Testing
     }
 
     @Test func corales() throws {
-        #expect(Coral.nombreDeVoz(4, de: 5, en: .espanolCompacto) == "voz 5")
+        #expect(Coral.nombreDeVoz(4, de: 5, en: .compacta(.espanol)) == "voz 5")
         let armonizacion = try #require(
             Tonalidad(.do, .mayor).armonizar(melodia: [Nota("Mi"), Nota("Re"), Nota("Do")]).first?.valor)
         #expect(armonizacion.realizar(soprano: [Altura("Mi5"), Altura("Re5"), Altura("Do5")]) != nil)

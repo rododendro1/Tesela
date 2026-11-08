@@ -21,8 +21,8 @@ import Testing
             de: AnalisisArmonico.analizar(leyendo: texto).partitura().midi())
         #expect(progresion == texto)
         #expect(
-            try (PresentacionDeAnalisis.analizar(progresion, notacion: .espanolCompacto))
-                == (PresentacionDeAnalisis.analizar(texto, notacion: .espanolCompacto)))
+            try (PresentacionDeAnalisis.analizar(progresion, notacion: .compacta(.espanol)))
+                == (PresentacionDeAnalisis.analizar(texto, notacion: .compacta(.espanol))))
     }
 
     @Test func unaMelodiaSolaNoTieneAcordes() throws {
@@ -44,7 +44,7 @@ import Testing
     }
 
     @Test func losErroresSeExplicanEnLaNotacion() {
-        #expect(ErrorDeLecturaDeFichero.sinAcordes.descripcion(en: .inglesASCII) == "No chords sound in the file.")
+        #expect(ErrorDeLecturaDeFichero.sinAcordes.descripcion(en: .ascii(.ingles)) == "No chords sound in the file.")
     }
 }
 
@@ -73,10 +73,10 @@ import Testing
 
     @Test func elAnalisisSigueElRitmo() throws {
         let leida = try importada()
-        let analisis = try #require(PresentacionDeAnalisis.analizar(leida, notacion: .espanolCompacto))
+        let analisis = try #require(PresentacionDeAnalisis.analizar(leida, notacion: .compacta(.espanol)))
         #expect(analisis.ritmo == leida.ritmo)
         // Lo mismo que escrita, salvo el ritmo.
-        let escrita = try PresentacionDeAnalisis.analizar("Do Fa Sol7 Do", notacion: .espanolCompacto)
+        let escrita = try PresentacionDeAnalisis.analizar("Do Fa Sol7 Do", notacion: .compacta(.espanol))
         #expect(analisis.titulo == escrita.titulo)
         #expect(analisis.tramos == escrita.tramos)
         #expect(escrita.ritmo == nil)
@@ -85,7 +85,7 @@ import Testing
         let inicios = Set(analisis.sonido.notas.map { ($0.inicio * 1000).rounded() / 1000 })
         #expect(inicios == [0, 1.333, 2, 2.667])
         // Los arpegios también: 4 + 2 + 2 + 8 corcheas.
-        let arpegiada = try #require(analisis.arpegiada(.ascendente, en: .espanolCompacto))
+        let arpegiada = try #require(analisis.arpegiada(.ascendente, en: .compacta(.espanol)))
         #expect(arpegiada.voz.eventos.count == 16)
         #expect(arpegiada.voz.eventos.reduce(Duracion.cero) { $0 + $1.duracion } == Duracion(2))
     }
@@ -94,15 +94,15 @@ import Testing
     @Test func unRitmoQueNoCuadraNoSeUsa() throws {
         let acordes = [Acorde("Do"), Acorde("Sol")]
         let cojo = RitmoArmonico([AcordeConDuracion("Do", .blanca)])
-        #expect(PresentacionDeAnalisis.analizar(acordes, ritmo: cojo, notacion: .espanolCompacto)?.ritmo == nil)
+        #expect(PresentacionDeAnalisis.analizar(acordes, ritmo: cojo, notacion: .compacta(.espanol))?.ritmo == nil)
         let otro = RitmoArmonico([AcordeConDuracion("Do", .blanca), AcordeConDuracion("Fa", .blanca)])
-        #expect(PresentacionDeAnalisis.analizar(acordes, ritmo: otro, notacion: .espanolCompacto)?.ritmo == nil)
+        #expect(PresentacionDeAnalisis.analizar(acordes, ritmo: otro, notacion: .compacta(.espanol))?.ritmo == nil)
         #expect(
-            PresentacionDeAnalisis.analizar(acordes, notacion: .espanolCompacto)
-                == PresentacionDeAnalisis.analizar(acordes, ritmo: cojo, notacion: .espanolCompacto))
+            PresentacionDeAnalisis.analizar(acordes, notacion: .compacta(.espanol))
+                == PresentacionDeAnalisis.analizar(acordes, ritmo: cojo, notacion: .compacta(.espanol)))
         let arpegiada = try #require(
             PresentacionDeArpegios.progresion(
-                acordes, patron: .ascendente, tonalidad: nil, ritmo: otro, en: .espanolCompacto))
+                acordes, patron: .ascendente, tonalidad: nil, ritmo: otro, en: .compacta(.espanol)))
         #expect(arpegiada.voz.eventos.count == 8) // una blanca de corcheas por acorde
     }
 

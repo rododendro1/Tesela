@@ -15,11 +15,11 @@ import Testing
         let mi: Evento = "Mi♭4(50¢):4"
         #expect(mi.alturas == ["Mi♭4"])
         #expect(mi.notas == [Evento.NotaDelEvento("Mi♭4", desvio: 50)])
-        #expect(mi.notas[0].texto(en: .inglesASCII) == "Eb4(50c)" && mi.notas[0].description == "Mi♭4(50¢)")
+        #expect(mi.notas[0].texto(en: .ascii(.ingles)) == "Eb4(50c)" && mi.notas[0].description == "Mi♭4(50¢)")
         #expect(mi.esMicrotonal)
         #expect(mi.texto == "Mi♭4(50¢):4")
         #expect(Evento("Mib4(50c):4") == mi)
-        #expect(mi.texto(en: .inglesASCII) == "Eb4(50c):4")
+        #expect(mi.texto(en: .ascii(.ingles)) == "Eb4(50c):4")
         // En un acorde, cada nota con el suyo; se redondean a la centésima de cent.
         let acorde: Evento = "Do4+Si4(-15.094¢):2"
         #expect(acorde.notas.map(\.desvio) == [0, -15.09])
@@ -361,7 +361,7 @@ import Testing
         // El Mi koron de un dastgāh: los mismos cents que el Mi𝄳 de un maqam, con otro signo.
         let koron: Evento = "Mi♭4(50¢,persa,1):4"
         #expect(koron.notas == [Evento.NotaDelEvento("Mi♭4", desvio: 50, sistema: .persa, ajuste: 1)])
-        #expect(koron.texto == "Mi♭4(50¢,persa,1):4" && koron.texto(en: .inglesASCII) == "Eb4(50c,persa,1):4")
+        #expect(koron.texto == "Mi♭4(50¢,persa,1):4" && koron.texto(en: .ascii(.ingles)) == "Eb4(50c,persa,1):4")
         #expect(koron.notas[0].signo() == .koron && Evento.NotaDelEvento("Mi♭4", desvio: 50).signo() == .cuartos(-1))
         #expect(koron != "Mi♭4(50¢):4")
         #expect(koron.transponer("2M").notas[0] == Evento.NotaDelEvento("Fa4", desvio: 50, sistema: .persa, ajuste: 1))

@@ -209,7 +209,8 @@ import Testing
 
     @Test func progresion() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "Do Lam Re7 Sol7/Si Do")
-        let raiz = leer(analisis.partitura(encabezado: Encabezado(titulo: "Progresión"), notacion: .inglesASCII).mei())
+        let raiz = leer(
+            analisis.partitura(encabezado: Encabezado(titulo: "Progresión"), notacion: .ascii(.ingles)).mei())
         #expect(raiz.buscar("harm").map(\.texto) == ["C", "Am", "D7", "G7/B", "C"])
         #expect(raiz.buscar("dir").first?.texto == "C major:")
         #expect(raiz.buscar("chord").count == 5)

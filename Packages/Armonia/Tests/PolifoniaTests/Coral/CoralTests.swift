@@ -35,7 +35,7 @@ import Testing
                 "Quintas paralelas entre bajo y tenor (acordes 1 → 2)",
                 "Octavas paralelas entre bajo y soprano (acordes 1 → 2)",
             ])
-        #expect(c.faltas[0].descripcion(en: .inglesASCII) == "Parallel fifths between bass and tenor (chords 1 → 2)")
+        #expect(c.faltas[0].descripcion(en: .ascii(.ingles)) == "Parallel fifths between bass and tenor (chords 1 → 2)")
         #expect(
             c.faltas[0].descripcion(en: .conPalabras(.gallego))
                 == "Quintas paralelas entre baixo e tenor (acordes 1 → 2)")
@@ -89,7 +89,7 @@ import Testing
         #expect(problemas("Do3 Do4 | Do3 Do5") == [])
         #expect(problemas("Do3 Do4 | Do3 Do#4") == [])
         let c = try Coral(leyendo: "Fa3 Do4 La4 Fa5 | Sol#3 Si3 Mi4 Si4")
-        #expect(c.faltas[0].descripcion(en: .inglesASCII) == "Unmelodic leap in the bass (chords 1 → 2)")
+        #expect(c.faltas[0].descripcion(en: .ascii(.ingles)) == "Unmelodic leap in the bass (chords 1 → 2)")
     }
 
     @Test func construccion() throws {
@@ -144,6 +144,6 @@ import Testing
     @Test func transponer() throws {
         let coral = try Coral([[Altura(.do, octava: 3), Altura(.mi, octava: 4)]])
         #expect(coral.transponer(.segundaMayor).acordes.first?.map(\.midi) == [50, 66])
-        #expect(coral.texto(en: .espanolCompacto) == "Do₃ Mi₄")
+        #expect(coral.texto(en: .compacta(.espanol)) == "Do₃ Mi₄")
     }
 }

@@ -120,7 +120,7 @@ import Testing
         let analisis = try! AnalisisArmonico.analizar(leyendo: "Do Lam Rem Sol7 Mim Sim° Do")
         #expect(analisis.funciones == [.tonica, .tonica, .subdominante, .dominante, .tonica, .dominante, .tonica])
         #expect(analisis.funciones.map { $0!.abreviatura }.joined() == "TTSDTDT")
-        #expect(FuncionTonal.subdominante.nombre(en: .inglesASCII) == "subdominant")
+        #expect(FuncionTonal.subdominante.nombre(en: .ascii(.ingles)) == "subdominant")
     }
 
     @Test func deteccionDeTonalidad() {
@@ -135,7 +135,7 @@ import Testing
     @Test func textoYNotaciones() throws {
         let analisis = try AnalisisArmonico.analizar(leyendo: "C, F, G7, C")
         #expect("\(analisis)" == "I–IV–V7–I en Do mayor")
-        #expect(analisis.nombre(en: .inglesASCII) == "I–IV–V7–I in C major")
+        #expect(analisis.nombre(en: .ascii(.ingles)) == "I–IV–V7–I in C major")
         #expect(try (AnalisisArmonico.analizar(leyendo: "Do–Fa–Sol7–Do").cifrados) == ["I", "IV", "V7", "I"])
         #expect(
             try (AnalisisArmonico.analizar(leyendo: "Lam | Rem | Mi7 | Lam", en: "La menor").cifrados) == [

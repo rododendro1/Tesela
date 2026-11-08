@@ -94,12 +94,12 @@ import Testing
 
     @Test func nombresYTexto() {
         #expect(NotaExtrana.notaDePaso.nombre == "nota de paso")
-        #expect(NotaExtrana.retardo.nombre(en: .inglesASCII) == "suspension")
+        #expect(NotaExtrana.retardo.nombre(en: .ascii(.ingles)) == "suspension")
         let notas = NotaDeLaMelodia.analizar(["Do5", "Re5", "Mi5"], sobre: ["Do", "Do", "Do"])!
         #expect(notas.map(\.description) == ["Do5", "Re5 (nota de paso)", "Mi5"])
         let retardo = NotaDeLaMelodia.analizar(["Do5", "Do5", "Si4"], sobre: ["Fa", "Sol", "Sol"])![1]
         #expect(retardo.description == "Do5 (retardo 4-3)")
-        #expect(retardo.texto(en: .inglesASCII).hasSuffix("(suspension 4-3)"))
+        #expect(retardo.texto(en: .ascii(.ingles)).hasSuffix("(suspension 4-3)"))
     }
 
     @Test func enLosDoceIdiomas() {

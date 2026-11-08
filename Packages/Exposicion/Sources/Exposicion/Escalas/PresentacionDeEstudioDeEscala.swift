@@ -63,7 +63,7 @@ public struct EscalaSobreElAcordePresentada: Hashable, Sendable {
 /// La parte de la pestaña de escalas para estudiarlas (secuencias, digitación de piano, modos, comparación) y las
 /// escalas sobre un acorde. No usa SwiftUI, así que se prueba en Linux.
 ///
-///     let terceras = PresentacionDeEstudioDeEscala.secuencia(Escala(.do), .terceras, en: .espanolCompacto)
+///     let terceras = PresentacionDeEstudioDeEscala.secuencia(Escala(.do), .terceras, en: .compacta(.espanol))
 ///     terceras.titulo   // "Do mayor por terceras"
 public enum PresentacionDeEstudioDeEscala {
     /// La escala en una secuencia desde la octava 4, a lo largo de `octavas` octavas, subiendo o bajando.
@@ -118,7 +118,7 @@ public enum PresentacionDeEstudioDeEscala {
     /// círculo de quintas.
     ///
     ///     let lidio = PresentacionDeEstudioDeEscala.comparar(
-    ///         Escala(.do), con: Escala(.do, .lidio), en: .espanolCompacto)
+    ///         Escala(.do), con: Escala(.do, .lidio), en: .compacta(.espanol))
     ///     lidio.cambios   // ["4: Fa → Fa♯"]
     public static func comparar(
         _ escala: Escala, con otra: Escala, en notacion: Notacion

@@ -23,7 +23,7 @@ import Testing
     }
 
     @Test func laNotacionSeSigue() {
-        let pentagrama = PentagramaPresentado(Escala("Do mayor"), notacion: .inglesASCII)
+        let pentagrama = PentagramaPresentado(Escala("Do mayor"), notacion: .ascii(.ingles))
         #expect(pentagrama.svg.contains("<title>C4</title>"))
     }
 
@@ -58,7 +58,7 @@ import Testing
     @Test func laVozSeDibujaConSuRitmo() {
         let figura = Duracion.corchea.grupoIrregular(3, en: 2)
         let arpegio = PresentacionDeArpegios.arpegio(
-            Arpegio(Acorde("Mi7")), figura: figura, en: .espanolCompacto)
+            Arpegio(Acorde("Mi7")), figura: figura, en: .compacta(.espanol))
         let pentagrama = PentagramaPresentado(arpegio.voz, titulo: "Mi7", resaltada: 1)
         #expect(pentagrama.descripcion == "Mi7: Mi₄, Sol♯₄, Si₄, Re₅, Mi₅")
         #expect(pentagrama.fichero.nombreDeFichero == "Pentagrama Mi7.svg")
@@ -94,7 +94,7 @@ import Testing
     }
 
     @Test func laNotacionSeSigueTambienEnElAcorde() {
-        let pentagrama = PentagramaPresentado(Acorde("Sol7"), notacion: .inglesASCII)
+        let pentagrama = PentagramaPresentado(Acorde("Sol7"), notacion: .ascii(.ingles))
         #expect(pentagrama.descripcion == "G7: G, B, D, F")
         #expect(pentagrama.svg.contains(">G7</text>"))
         #expect(pentagrama.fichero.nombreDeFichero == "Pentagrama G7.svg")
