@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.1 (2026-11-08)
 
 - `TextosDeApps.alfabetoLatino`, el texto del interruptor del alfabeto latino, en los trece idiomas.
 - Usa las notaciones nuevas del motor: `.compacta(.espanol)` en lugar de `.espanolCompacto`, y las demás igual.
