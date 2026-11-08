@@ -221,6 +221,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let cardinalDodecatonica: String
 
     // MARK: Tradicion+Nombre.swift
+    let tradicionOccidental: String
     let tradicionIndia: String
     let tradicionGrecia: String
     let tradicionGreciaAntigua: String

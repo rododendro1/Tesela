@@ -2,6 +2,35 @@
 
 ## Sin publicar
 
+### Subtradiciones: estilos y regiones, varias por escala, y la tradición occidental
+
+- **Cambio incompatible:** `Subtradicion` se separa en dos tipos:
+  - `EstiloDeEscala`: el estilo o repertorio en que se usa la escala (carnática, indostánica, India antigua, gagaku, y
+    los occidentales clásica, jazz, blues, siglo XX, popular y sintética);
+  - `RegionDeEscala`: la región, el país o el pueblo de donde viene (Java, Bali, Sunda, Escocia, los chopi, Ryūkyū…).
+
+  `Subtradicion` queda como un `enum` con `.estilo(_:)` y `.region(_:)`, con su `tradicion`, su `nombre` y sus
+  `tipos`, y `Subtradicion.todas` las da todas.
+- **Cambio incompatible:** una escala puede tener varias subtradiciones. `TipoDeEscala.subtradicion` (una o `nil`) pasa
+  a `estilos`, `regiones` y `subtradiciones` (listas). El sléndro, que antes no tenía ninguna, es de Java y de Bali.
+- **Cambio incompatible:** la occidental es una tradición más, `Tradicion.occidental` («Occidental», «Western»…), y
+  `UsoDeEscala` desaparece: los usos son los estilos occidentales de `EstiloDeEscala`, con los mismos casos. Las
+  escalas de `TipoDeEscala.occidentales` tienen `tradicion == .occidental` en lugar de `nil`, y en la línea de comandos
+  `escalas --json` da `"tradicion": "occidental"` en ellas. El canto gregoriano, el Renacimiento, la Grecia antigua y
+  el folklore europeo siguen siendo tradiciones aparte. `armonia escalas --uso` no cambia.
+
+| Antes | Ahora |
+| --- | --- |
+| `TipoDeEscala.usos` | `estilos` |
+| `UsoDeEscala` | `EstiloDeEscala` (los casos occidentales) |
+| `TipoDeEscala.occidentales(uso: .jazz)` | `EstiloDeEscala.jazz.tipos` |
+| `UsoDeEscala.afinacionSugerida` | `EstiloDeEscala.afinacionSugerida` (opcional: `nil` en los de otras tradiciones) |
+| `TipoDeEscala.subtradicion == .java` | `regiones.contains(.java)` |
+| `TipoDeEscala.subtradicion == .carnatica` | `estilos.contains(.carnatica)` |
+| `TipoDeEscala.tradicionales(subtradicion: .bali)` | `RegionDeEscala.bali.tipos` |
+| `Subtradicion.bali`, `Subtradicion.allCases` | `RegionDeEscala.bali`, `Subtradicion.todas` |
+| `TipoDeEscala.mayor.tradicion == nil` | `== .occidental` |
+
 ### Textos con huecos `{1}`
 
 - Los textos que llevan valores («El fichero XML está dañado (línea {1}).») son plantillas, `Plantilla`, en lugar de

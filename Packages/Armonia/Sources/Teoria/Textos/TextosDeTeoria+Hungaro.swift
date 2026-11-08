@@ -204,6 +204,7 @@ extension TextosDeTeoria {
         cardinalEndecatonica: "hendekaton",
         cardinalDodecatonica: "dodekaton",
         // Tradicion+Nombre.swift
+        tradicionOccidental: "Nyugati",
         tradicionIndia: "India",
         tradicionGrecia: "Görögország",
         tradicionGreciaAntigua: "Ókori Görögország",

@@ -105,11 +105,11 @@ Escala("Do cromatica -6..5").tipo.nombre                    // "cromática con c
 Escala(.do, .cromaticaConCincoSostenidos).nombre(claseDeAltura: 10)   // La♯
 ```
 
-## Clásica, jazz, blues: el uso de una escala
+## Clásica, jazz, blues: el estilo de una escala
 
 Las notas no dicen de qué música es una escala: la menor melódica de jazz es la «bachiana» de los conservatorios, y
-el lidio dominante es la acústica de Bartók. Lo dice el uso, y `TipoDeEscala.usos` lo da para cada escala de
-`todos`, con uno o varios `UsoDeEscala`:
+el lidio dominante es la acústica de Bartók. Lo dice el estilo, y `TipoDeEscala.estilos` lo da para cada escala de
+`todos`, con uno o varios `EstiloDeEscala` de la tradición occidental:
 
 - **clásica**: la escala da la tonalidad y de ella sale la armonía (la mayor, las menores, los modos, las
   napolitanas, la cromática, el hexacordo).
@@ -122,14 +122,16 @@ el lidio dominante es la acústica de Bartók. Lo dice el uso, y `TipoDeEscala.u
 - **sintética**: las que salen de rotar o alterar otra, sin repertorio propio (casi todos los modos de la menor y la
   mayor armónicas, de la doble armónica y de las napolitanas).
 
-`TipoDeEscala.occidentales(uso:)` da las de un uso, en el orden de `occidentales`, y en la línea de comandos `armonia escalas --uso
-jazz` las lista. Las escalas de otras tradiciones no tienen uso: se clasifican por su tradición.
+Las escalas de `todos` son de la tradición occidental (`Tradicion.occidental`), y estos son sus estilos, como la música
+carnática o el gagaku lo son de la India o de Japón. `EstiloDeEscala.tipos` da las de un estilo, en el orden del
+catálogo, y en la línea de comandos `armonia escalas --uso jazz` las lista.
 
 ```swift
-TipoDeEscala.dorico.usos == [.clasica, .jazz]    // true
-TipoDeEscala.occidentales(uso: .blues).count     // 6
-UsoDeEscala.sigloXX.nombre                       // "siglo XX"
-TipoDeEscala.kafi.usos.isEmpty                   // true
+TipoDeEscala.dorico.estilos == [.clasica, .jazz]    // true
+EstiloDeEscala.blues.tipos.count                     // 6
+EstiloDeEscala.sigloXX.nombre                        // "siglo XX"
+TipoDeEscala.kafi.estilos == [.indostanica]         // true
+TipoDeEscala.dorico.tradicion                        // .occidental
 ```
 
 ## Escalas de otras tradiciones
@@ -329,18 +331,20 @@ TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
 CategoriaTradicional.escala.nombre(en: Notacion.compacta(.espanol).conTextos(en: .frances))   // "gamme"
 ```
 
-`subtradicion` dice de dónde es una escala dentro de su tradición: la música carnática o la indostánica en la
-India, Java, Bali o Sunda en Indonesia, el país o el pueblo de una escala de África, de Europa o del sudeste asiático, el
-gagaku o las Ryūkyū en Japón. En la India la da la categoría (un mēḷa es carnático, un thāṭ indostánico); en las
-demás se escribe en la declaración de la escala. Vale `nil` donde no hay una clara (el sléndro se toca en Java y
-en Bali) y en las occidentales.
+Las subtradiciones dicen de dónde es una escala dentro de su tradición, de dos maneras: `estilos`, el estilo o
+repertorio en que se usa (la música carnática o la indostánica en la India, el gagaku en Japón, la clásica o el jazz en
+la occidental), y `regiones`, la región, el país o el pueblo de donde viene (Java, Bali o Sunda en Indonesia, el de una
+escala de África, de Europa o del sudeste asiático, las Ryūkyū en Japón). En la India el estilo lo da la categoría (un
+mēḷa es carnático, un thāṭ indostánico); en las demás se escriben en la declaración de la escala, y puede haber varios:
+el sléndro se toca en Java y en Bali. `subtradiciones` da los dos juntos, como `Subtradicion`.
 
 ```swift
-TipoDeEscala.mohanam.subtradicion                       // .carnatica
-TipoDeEscala.pelogTembung.subtradicion                  // .bali
-Subtradicion.bali.tradicion                             // .indonesia
-TipoDeEscala.tradicionales(subtradicion: .java).count   // 6
-Subtradicion.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles))   // "Carnatic"
+TipoDeEscala.mohanam.estilos == [.carnatica]       // true
+TipoDeEscala.pelogTembung.regiones == [.bali]      // true
+TipoDeEscala.slendro.regiones == [.java, .bali]    // true
+RegionDeEscala.bali.tradicion                      // .indonesia
+RegionDeEscala.java.tipos.count                    // 7
+EstiloDeEscala.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles))   // "Carnatic"
 ```
 
 `fuente` dice qué teórico definió una escala: el autor de unas razones (los géneros de Arquitas, Dídimo, Eratóstenes y

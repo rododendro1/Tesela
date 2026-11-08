@@ -2,28 +2,29 @@ import Elementos
 
 // MARK: - Ficha de una escala del catálogo
 
-/// Lo que el catálogo sabe de una escala además de su nombre y sus intervalos: en qué música se usa (las
-/// occidentales), su categoría y su subtradición (las de otras tradiciones), el mēḷa de un rāga janya y sus versiones
-/// microtonales.
+/// Lo que el catálogo sabe de una escala además de su nombre y sus intervalos: sus subtradiciones (los estilos en que
+/// se usa y las regiones de donde viene), su categoría (las de otras tradiciones), el mēḷa de un rāga janya y sus
+/// versiones microtonales.
 ///
 /// Se escribe en la declaración de la escala, con el resto de sus datos:
 ///
 ///     public static let dorico = TipoDeEscala(
 ///         nombre: "dórico", intervalos: […], alias: ["menor dórica"], variantes: ["dórica"],
-///         usos: [.clasica, .jazz])
+///         estilos: [.clasica, .jazz])
 ///     public static let mohanam = TipoDeEscala(nombre: "Mohanam", intervalos: […], categoria: .janya, mela: 28)
 ///     public static let pelogTembung = TipoDeEscala(nombre: "Pélog tembung", intervalos: […], categoria: .pathet,
-///         subtradicion: .bali, afinaciones: [.init(.razones, pasos: […])])
+///         regiones: [.bali], afinaciones: [.init(.razones, pasos: […])])
 ///     public static let rastMakami = TipoDeEscala(nombre: "Rast makamı", intervalos: […], categoria: .makam,
 ///         llevaLaCategoria: true)
 ///
 /// `llevaLaCategoria` va en las que ya tienen en el nombre la palabra de su categoría, para que `nombreCompleto` no
 /// la repita (una prueba lo comprueba contra el nombre).
 ///
-/// De ahí salen `TipoDeEscala.usos`, `categoria`, `subtradicion`, `padre`, `microtonal` y `afinaciones`, y
-/// `UsoDeEscala.tipos` y `TipoDeEscalaMicrotonal.catalogo`. La tradición no va en la ficha: la da su lista en
-/// `TipoDeEscala.listasTradicionales`. Los nombres en otros idiomas tampoco: están en `Nombres/`. La subtradición de
-/// las escalas de la India no se escribe: la da su categoría.
+/// De ahí salen `TipoDeEscala.estilos`, `regiones`, `categoria`, `padre`, `microtonal` y `afinaciones`, y
+/// `EstiloDeEscala.tipos`, `RegionDeEscala.tipos` y `TipoDeEscalaMicrotonal.catalogo`. La tradición no va en la ficha:
+/// la da su lista en `TipoDeEscala.listasTradicionales`, o es la occidental en las de `TipoDeEscala.todos`. Los nombres
+/// en otros idiomas tampoco: están en `Nombres/`. El estilo de las escalas de la India no se escribe: lo da su
+/// categoría.
 ///
 /// Las propiedades públicas no leen la ficha del valor, sino la de la escala del catálogo con su misma `identidad`:
 /// un tipo leído de un fichero o escrito a mano con el nombre y las notas de Bayātī tiene sus microtonos, y una escala
@@ -47,12 +48,13 @@ package struct FichaDeEscala: Sendable {
         }
     }
 
-    /// En qué música se usa, en el orden de `UsoDeEscala.allCases`; vacío en las de otras tradiciones.
-    package let usos: [UsoDeEscala]
+    /// En qué estilos se usa, en el orden de `EstiloDeEscala.allCases`: los escritos en la declaración o, si no los
+    /// hay, el que da la categoría (`EstiloDeEscala.de(_:)`).
+    package let estilos: [EstiloDeEscala]
+    /// De qué regiones viene, en el orden de `RegionDeEscala.allCases`.
+    package let regiones: [RegionDeEscala]
     /// La categoría en su tradición; `nil` en las occidentales.
     package let categoria: CategoriaTradicional?
-    /// La subtradición: la escrita en la declaración o, si no la hay, la que da la categoría (`Subtradicion.de(_:)`).
-    package let subtradicion: Subtradicion?
     /// El número del mēḷa de un rāga janya; `nil` en las demás escalas y en los janya sin un padre claro.
     package let mela: Int?
     /// Las versiones microtonales: la primera, la de su teoría de hoy; las demás, de otros autores (con `fuente`).
@@ -64,13 +66,14 @@ package struct FichaDeEscala: Sendable {
     package let fuente: FuenteTeorica?
 
     package init(
-        usos: [UsoDeEscala] = [], categoria: CategoriaTradicional? = nil, subtradicion: Subtradicion? = nil,
+        estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [], categoria: CategoriaTradicional? = nil,
         mela: Int? = nil, afinaciones: [Afinacion] = [], llevaLaCategoria: Bool = false,
         fuente: FuenteTeorica? = nil
     ) {
-        self.usos = UsoDeEscala.allCases.filter { usos.contains($0) }
+        let estilos = estilos.isEmpty ? (categoria.flatMap(EstiloDeEscala.de).map { [$0] } ?? []) : estilos
+        self.estilos = EstiloDeEscala.allCases.filter { estilos.contains($0) }
+        self.regiones = RegionDeEscala.allCases.filter { regiones.contains($0) }
         self.categoria = categoria
-        self.subtradicion = subtradicion ?? categoria.flatMap(Subtradicion.de)
         self.mela = mela
         self.afinaciones = afinaciones
         self.llevaLaCategoria = llevaLaCategoria
@@ -104,7 +107,8 @@ extension TipoDeEscala {
     )
 
     /// Identidad → escala del catálogo. Si dos escalas tuvieran la misma identidad, vale la primera de `catalogo`; si
-    /// una estuviera en dos listas de `listasTradicionales`, vale la tradición de la primera.
+    /// una estuviera en dos listas de `listasTradicionales`, vale la tradición de la primera. Las de `occidentales` que
+    /// no están en ninguna lista son de la tradición occidental.
     package static let delCatalogo: [IdentidadDeEscala: EntradaDelCatalogo] = {
         var tradiciones: [IdentidadDeEscala: Tradicion] = [:]
         for lista in listasTradicionales {
@@ -112,6 +116,7 @@ extension TipoDeEscala {
                 tradiciones[tipo.identidad] = lista.tradicion
             }
         }
+        for tipo in occidentales where tradiciones[tipo.identidad] == nil { tradiciones[tipo.identidad] = .occidental }
         var tabla: [IdentidadDeEscala: EntradaDelCatalogo] = [:]
         for tipo in catalogo where tabla[tipo.identidad] == nil {
             let afinaciones = tipo.ficha.afinaciones.map {
@@ -123,10 +128,10 @@ extension TipoDeEscala {
         return tabla
     }()
 
-    /// Una copia con estos usos: para las escalas del catálogo que salen de una función (las cromáticas).
-    package func con(usos: [UsoDeEscala]) -> TipoDeEscala {
+    /// Una copia con estos estilos: para las escalas del catálogo que salen de una función (las cromáticas).
+    package func con(estilos: [EstiloDeEscala]) -> TipoDeEscala {
         TipoDeEscala(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
-            variantes: variantes, ficha: FichaDeEscala(usos: usos))
+            variantes: variantes, ficha: FichaDeEscala(estilos: estilos))
     }
 }

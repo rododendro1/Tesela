@@ -1232,8 +1232,8 @@ import Testing
         #expect(TipoDeEscala.georgiana.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Georgian")
         #expect(Tradicion.europa.nombre == "Folklore europeo")
         #expect(Escala(.do, .istriana).notas.map(\.description).joined(separator: " ") == "Do Re♭ Mi♭ Fa♭ Sol♭ La𝄫")
-        #expect(TipoDeEscala.istriana.subtradicion == .istria && Subtradicion.istria.nombre == "Istria")
-        #expect(Subtradicion.istria.nombre(en: Notacion.compacta(.espanol).conTextos(en: .aleman)) == "Istrien")
+        #expect(TipoDeEscala.istriana.regiones == [.istria] && RegionDeEscala.istria.nombre == "Istria")
+        #expect(RegionDeEscala.istria.nombre(en: Notacion.compacta(.espanol).conTextos(en: .aleman)) == "Istrien")
         #expect(Tradicion.europa.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "European folk")
     }
 

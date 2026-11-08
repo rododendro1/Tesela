@@ -447,10 +447,11 @@ import Hexagonos
     @Test func escalas3() throws {
         // Sources/Armonia/Armonia.docc/Escalas.md, bloque 3
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 3)
-        comprobar(TipoDeEscala.dorico.usos == [.clasica, .jazz], #"true"#, doc, 0)
-        comprobar(TipoDeEscala.occidentales(uso: .blues).count, #"6"#, doc, 1)
-        comprobar(UsoDeEscala.sigloXX.nombre, #""siglo XX""#, doc, 2)
-        comprobar(TipoDeEscala.kafi.usos.isEmpty, #"true"#, doc, 3)
+        comprobar(TipoDeEscala.dorico.estilos == [.clasica, .jazz], #"true"#, doc, 0)
+        comprobar(EstiloDeEscala.blues.tipos.count, #"6"#, doc, 1)
+        comprobar(EstiloDeEscala.sigloXX.nombre, #""siglo XX""#, doc, 2)
+        comprobar(TipoDeEscala.kafi.estilos == [.indostanica], #"true"#, doc, 3)
+        comprobarIgual(TipoDeEscala.dorico.tradicion, .occidental, doc, 4)
     }
 
     @Test func escalas4() throws {
@@ -491,11 +492,12 @@ import Hexagonos
     @Test func escalas6() throws {
         // Sources/Armonia/Armonia.docc/Escalas.md, bloque 6
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 6)
-        comprobarIgual(TipoDeEscala.mohanam.subtradicion, .carnatica, doc, 0)
-        comprobarIgual(TipoDeEscala.pelogTembung.subtradicion, .bali, doc, 1)
-        comprobarIgual(Subtradicion.bali.tradicion, .indonesia, doc, 2)
-        comprobar(TipoDeEscala.tradicionales(subtradicion: .java).count, #"6"#, doc, 3)
-        comprobar(Subtradicion.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)), #""Carnatic""#, doc, 4)
+        comprobar(TipoDeEscala.mohanam.estilos == [.carnatica], #"true"#, doc, 0)
+        comprobar(TipoDeEscala.pelogTembung.regiones == [.bali], #"true"#, doc, 1)
+        comprobar(TipoDeEscala.slendro.regiones == [.java, .bali], #"true"#, doc, 2)
+        comprobarIgual(RegionDeEscala.bali.tradicion, .indonesia, doc, 3)
+        comprobar(RegionDeEscala.java.tipos.count, #"7"#, doc, 4)
+        comprobar(EstiloDeEscala.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)), #""Carnatic""#, doc, 5)
     }
 
     @Test func escalas7() throws {

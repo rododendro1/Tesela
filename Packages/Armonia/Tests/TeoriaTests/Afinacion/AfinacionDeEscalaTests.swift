@@ -72,7 +72,7 @@ import Testing
         #expect(TipoDeEscala.menorArmonica.afinacionSugerida == .werckmeisterIII)
         #expect(TipoDeEscala.alterada.afinacionSugerida == .igual)
         #expect(TipoDeEscala.tonosEnteros.afinacionSugerida == .igual)
-        #expect(UsoDeEscala.blues.afinacionSugerida == .igual)
+        #expect(EstiloDeEscala.blues.afinacionSugerida == .igual)
         #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .segundaMayor]).afinacionSugerida == nil)
     }
 }
