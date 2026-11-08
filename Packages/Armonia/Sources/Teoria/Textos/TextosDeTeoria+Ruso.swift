@@ -263,6 +263,11 @@ extension TextosDeTeoria {
         fuenteGuanzi: "Гуань-цзы",
         fuenteLushiChunqiu: "Люйши чуньцю",
         fuenteVicentino: "Вичентино",
+        fuenteChrysanthos: "Хрисанф",
+        fuenteRamosDePareja: "Рамос де Пареха",
+        fuenteZarlino: "Царлино",
+        fuenteSalinas: "Салинас",
+        fuenteZhuZaiyu: "Чжу Цзайюй",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{1} от {2}",
         enLaTonalidad: { tonalidad in "в " + (tonalidad.hasSuffix("мажор") || tonalidad.hasSuffix("минор") ? tonalidad + "е" : tonalidad) }

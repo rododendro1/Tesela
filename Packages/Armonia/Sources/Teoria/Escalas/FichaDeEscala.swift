@@ -35,10 +35,10 @@ package struct FichaDeEscala: Sendable {
         let sistema: SistemaMicrotonal
         let pasos: [Int]
         let pasosDescendentes: [Int]?
-        let fuente: String?
+        let fuente: FuenteTeorica?
 
         package init(
-            _ sistema: SistemaMicrotonal, pasos: [Int], pasosDescendentes: [Int]? = nil, fuente: String? = nil
+            _ sistema: SistemaMicrotonal, pasos: [Int], pasosDescendentes: [Int]? = nil, fuente: FuenteTeorica? = nil
         ) {
             self.sistema = sistema
             self.pasos = pasos

@@ -45,13 +45,13 @@ extension TipoDeEscala {
                 pasosDescendentes: [0, 193, 310, 503, 697, 814, 1007]),
             .init(
                 .razones, pasos: [0, 192, 313, 504, 696, 887, 1079],
-                pasosDescendentes: [0, 192, 313, 504, 696, 817, 1008], fuente: "Zarlino, 1558"),
+                pasosDescendentes: [0, 192, 313, 504, 696, 817, 1008], fuente: .zarlino),
             .init(
                 .razones, pasos: [0, 190, 316, 505, 695, 884, 1074],
-                pasosDescendentes: [0, 190, 316, 505, 695, 821, 1010], fuente: "Salinas, 1577"),
+                pasosDescendentes: [0, 190, 316, 505, 695, 821, 1010], fuente: .salinas),
             .init(
                 .razones, pasos: [0, 204, 316, 520, 702, 906, 1110],
-                pasosDescendentes: [0, 204, 316, 520, 702, 814, 1018], fuente: "Ramos de Pareja, 1482"),
+                pasosDescendentes: [0, 204, 316, 520, 702, 814, 1018], fuente: .ramosDePareja),
         ])
     /// El mixolidio con ficta (Sol): sube con el Fa♯ de la cadencia y baja con Fa.
     public static let mixolidioConFicta = TipoDeEscala(
@@ -70,10 +70,10 @@ extension TipoDeEscala {
                 pasosDescendentes: [0, 193, 386, 503, 697, 890, 1007]),
             .init(
                 .razones, pasos: [0, 192, 383, 504, 696, 887, 1079],
-                pasosDescendentes: [0, 192, 383, 504, 696, 887, 1008], fuente: "Zarlino, 1558"),
+                pasosDescendentes: [0, 192, 383, 504, 696, 887, 1008], fuente: .zarlino),
             .init(
                 .razones, pasos: [0, 190, 379, 505, 695, 884, 1074],
-                pasosDescendentes: [0, 190, 379, 505, 695, 884, 1010], fuente: "Salinas, 1577"),
+                pasosDescendentes: [0, 190, 379, 505, 695, 884, 1010], fuente: .salinas),
         ])
     /// El lidio con Si♭ (Fa Sol La Si♭ Do Re Mi): los modos 5 y 6 como se cantaban, con las notas de la mayor.
     public static let lidioConSiBemol = TipoDeEscala(
@@ -83,9 +83,9 @@ extension TipoDeEscala {
         categoria: .escala,
         afinaciones: [
             .init(.razones, pasos: [0, 193, 386, 503, 697, 890, 1083]),
-            .init(.razones, pasos: [0, 192, 383, 504, 696, 887, 1079], fuente: "Zarlino, 1558"),
-            .init(.razones, pasos: [0, 190, 379, 505, 695, 884, 1074], fuente: "Salinas, 1577"),
-            .init(.razones, pasos: [0, 204, 386, 498, 702, 884, 1088], fuente: "Ramos de Pareja, 1482"),
+            .init(.razones, pasos: [0, 192, 383, 504, 696, 887, 1079], fuente: .zarlino),
+            .init(.razones, pasos: [0, 190, 379, 505, 695, 884, 1074], fuente: .salinas),
+            .init(.razones, pasos: [0, 204, 386, 498, 702, 884, 1088], fuente: .ramosDePareja),
         ])
     /// La musica recta en una octava desde Do: las siete naturales y el Si♭ (Do Re Mi Fa Sol La Si♭ Si), las notas
     /// de los tres hexacordos.
@@ -99,9 +99,9 @@ extension TipoDeEscala {
         categoria: .escala,
         afinaciones: [
             .init(.razones, pasos: [0, 193, 386, 503, 697, 890, 1007, 1083]),
-            .init(.razones, pasos: [0, 192, 383, 504, 696, 887, 1008, 1079], fuente: "Zarlino, 1558"),
-            .init(.razones, pasos: [0, 190, 379, 505, 695, 884, 1010, 1074], fuente: "Salinas, 1577"),
-            .init(.razones, pasos: [0, 182, 386, 498, 702, 884, 996, 1088], fuente: "Ramos de Pareja, 1482"),
+            .init(.razones, pasos: [0, 192, 383, 504, 696, 887, 1008, 1079], fuente: .zarlino),
+            .init(.razones, pasos: [0, 190, 379, 505, 695, 884, 1010, 1074], fuente: .salinas),
+            .init(.razones, pasos: [0, 182, 386, 498, 702, 884, 996, 1088], fuente: .ramosDePareja),
         ])
 
     // MARK: Los géneros de Vicentino

@@ -144,7 +144,7 @@ import Hexagonos
         comprobar(bayati.desviacion(de: "Mi4"), #"0"#, doc, 2)
         comprobar(Escala(.re, .bayati).afinacion(la4: 442)?.frecuencia(de: "La4"), #"442"#, doc, 3)
         comprobar(TipoDeEscala.echosProtos.afinaciones.count, #"2"#, doc, 4)
-        comprobar(TipoDeEscala.echosProtos.afinaciones[1].fuente, #""Chrysanthos, 1832""#, doc, 5)
+        comprobarIgual(TipoDeEscala.echosProtos.afinaciones[1].fuente, .chrysanthos, doc, 5)
         let chrysanthos = TipoDeEscala.echosProtos.afinaciones[1]
         comprobar(Escala(.re, .echosProtos).afinacion(microtonal: chrysanthos)?.desviacion(de: "Mi4"), #"−29"#, doc, 7)
         comprobar(Escala(.do, .mayor).afinacion(), #"nil"#, doc, 8)

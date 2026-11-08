@@ -458,8 +458,8 @@ extension LineaDeComandos {
             }
             categoria = encontrada
         }
-        // `--fuente ptolomeo`, `--source ptolemy`: las escalas de un teórico, por su clave o por su nombre en español,
-        // en inglés o en el idioma de la notación.
+        // `--fuente ptolomeo`, `--source ptolemy`: las escalas que definió o afinó un teórico, por su clave o por su
+        // nombre en español, en inglés o en el idioma de la notación.
         var fuente: FuenteTeorica?
         if let texto = try entrada.valor(.fuente) {
             let clave = claveDeBusqueda(texto)
@@ -550,7 +550,7 @@ extension LineaDeComandos {
         for tipo in TipoDeEscala.tradicionales where usoPedido == nil && cumple(tipo) {
             guard let suya = tipo.tradicion, let deTipo = tipo.categoria else { continue }
             guard tradicion == nil || tradicion == suya, categoria == nil || categoria == deTipo,
-                fuente == nil || fuente == tipo.fuente
+                fuente == nil || fuente == tipo.fuente || tipo.afinaciones.contains(where: { $0.fuente == fuente })
             else { continue }
             let titulo = suya.nombre(en: notacion) + " · " + deTipo.nombre(en: notacion)
             if let i = grupos.firstIndex(where: { $0.titulo == titulo }) {

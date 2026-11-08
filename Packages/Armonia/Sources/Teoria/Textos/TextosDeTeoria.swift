@@ -283,6 +283,11 @@ struct TextosDeTeoria: TextosTraducidos {
     let fuenteGuanzi: String
     let fuenteLushiChunqiu: String
     let fuenteVicentino: String
+    let fuenteChrysanthos: String
+    let fuenteRamosDePareja: String
+    let fuenteZarlino: String
+    let fuenteSalinas: String
+    let fuenteZhuZaiyu: String
 
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».

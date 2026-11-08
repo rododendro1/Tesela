@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### Las fuentes de las afinaciones, en `FuenteTeorica`
+
+- **Cambio incompatible:** la `fuente` de una afinación (`TipoDeEscalaMicrotonal.fuente`) es una `FuenteTeorica?` y no
+  un texto libre: `TipoDeEscala.echosProtos.afinaciones[1].fuente` da `.chrysanthos` y no `"Chrysanthos, 1832"`. Su
+  nombre se traduce como el de las demás fuentes: «Crisanto», «Chrysanthos», «Хрисанф».
+- `FuenteTeorica` tiene cinco casos nuevos, los autores de las afinaciones que ya había: `chrysanthos` (Bizancio),
+  `ramosDePareja`, `zarlino` y `salinas` (Renacimiento) y `zhuZaiyu` (China).
+- `TipoDeEscala.tradicionales(fuente:)` da también las escalas que afinó una fuente, aunque no las definiera
+  (`tradicionales(fuente: .zarlino)`, las escalas del Renacimiento), y lo mismo `armonia escalas --fuente zarlino`.
+  `TipoDeEscala.fuente` sigue siendo solo el teórico que definió la escala.
+
 ### La palabra de la categoría, deducida del nombre
 
 - Que el nombre de una escala ya lleve la palabra de su categoría («Rast makamı», «jins Ḥijāz», «P'yŏngjo», «shadd

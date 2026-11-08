@@ -36,6 +36,21 @@ import Testing
         }
     }
 
+    /// Las fuentes de las afinaciones: dan las escalas que afinaron, aunque no las definieran.
+    @Test func lasFuentesDeLasAfinaciones() {
+        #expect(TipoDeEscala.echosProtos.fuente == nil)
+        #expect(TipoDeEscala.echosProtos.afinaciones.map(\.fuente) == [nil, .chrysanthos])
+        #expect(TipoDeEscala.tradicionales(fuente: .chrysanthos).count == 6)
+        #expect(TipoDeEscala.tradicionales(fuente: .zarlino) == TipoDeEscala.escalasRenacentistas)
+        #expect(TipoDeEscala.tradicionales(fuente: .salinas) == TipoDeEscala.escalasRenacentistas)
+        #expect(!TipoDeEscala.tradicionales(fuente: .ramosDePareja).contains(.mixolidioConFicta))
+        // El shíèr lǜ es del Lüshi chunqiu; su temperamento igual, de Zhu Zaiyu.
+        #expect(TipoDeEscala.tradicionales(fuente: .zhuZaiyu) == [.shierLu])
+        #expect(TipoDeEscala.shierLu.fuente == .lushiChunqiu)
+        #expect(FuenteTeorica.chrysanthos.nombre(en: .compacta(.ruso)) == "Хрисанф")
+        #expect(FuenteTeorica.chrysanthos.nombre == "Crisanto")
+    }
+
     @Test func lasQueNoSonDeUnAutor() {
         #expect(TipoDeEscala.harmoniaDoria.fuente == nil)
         #expect(TipoDeEscala.protusAuthenticus.fuente == nil)
