@@ -218,24 +218,26 @@ import Testing
         #expect(TipoDeEscala.occidentales.allSatisfy { $0.clase == nil })
     }
 
-    /// `llevaLaCategoria` se escribe a mano en la declaración: aquí se comprueba contra el texto del nombre, para
-    /// que una escala nueva no se quede sin él (y salga «makam Rast makamı») ni lo lleve de más (y pierda «rāga»).
-    /// La palabra puede ir dentro de otra («makamı», «muğamı», «ṣaḍja-grāma») o, en los jo coreanos, al final
-    /// («P'yŏngjo»); los shadd llevan «shadd» en lugar de «maqām».
-    @Test func llevaLaCategoriaCuandoElNombreLaTiene() {
-        for tipo in TipoDeEscala.tradicionales {
-            guard let palabra = tipo.categoria?.palabraDelNombre else {
-                #expect(!tipo.ficha.llevaLaCategoria, Comment(rawValue: tipo.nombre))
-                continue
-            }
-            let clave = TipoDeEscala.normalizar(palabra.nombre)
-            let palabras = TipoDeEscala.normalizar(tipo.nombre).split(separator: " ")
-            let laTiene =
-                palabras.first == "shadd"
-                || palabras.contains { $0.hasPrefix(clave) || (palabra == .jo && $0.hasSuffix(clave)) }
-            #expect(tipo.ficha.llevaLaCategoria == laTiene, Comment(rawValue: tipo.nombre))
+    /// `llevaLaCategoria` se deduce del nombre: la palabra puede ir dentro de otra («makamı», «muğamı»,
+    /// «ṣaḍja-grāma») o, en los jo coreanos, al final («P'yŏngjo»); los shadd llevan «shadd» en lugar de «maqām».
+    /// Así una escala nueva no sale «makam Rast makamı» ni pierde «rāga».
+    @Test func llevaLaCategoriaCuandoElNombreLaTiene() throws {
+        #expect(TipoDeEscala.tradicionales.filter(\.llevaLaCategoria).count == 68)
+        #expect(TipoDeEscala.rastMakami.llevaLaCategoria && TipoDeEscala.rastMakami.nombreCompleto == "Rast makamı")
+        #expect(TipoDeEscala.surMugami.llevaLaCategoria)
+        #expect(TipoDeEscala.jinsHijaz.llevaLaCategoria)
+        #expect(TipoDeEscala.echosProtos.llevaLaCategoria)
+        #expect(TipoDeEscala.pelogLima.llevaLaCategoria)
+        #expect(!TipoDeEscala.mohanam.llevaLaCategoria && TipoDeEscala.mohanam.nombreCompleto == "rāga Mohanam")
+        #expect(!TipoDeEscala.pelogTembung.llevaLaCategoria)
+        let shadd = try #require(TipoDeEscala.tradicionales.first { $0.nombre.hasPrefix("shadd") })
+        #expect(shadd.llevaLaCategoria && shadd.nombreCompleto == shadd.nombre)
+        let jo = try #require(TipoDeEscala.tradicionales.first { $0.categoria == .jo && $0.nombre.hasSuffix("jo") })
+        #expect(jo.llevaLaCategoria)
+        // Las que no anteponen palabra (tetracordo, escala…) y las occidentales, nunca.
+        for tipo in TipoDeEscala.catalogo where tipo.categoria?.palabraDelNombre == nil {
+            #expect(!tipo.llevaLaCategoria, Comment(rawValue: tipo.nombre))
         }
-        #expect(TipoDeEscala.tradicionales.filter(\.ficha.llevaLaCategoria).count == 68)
     }
 
     /// En ningún idioma sale la palabra de la categoría dos veces.

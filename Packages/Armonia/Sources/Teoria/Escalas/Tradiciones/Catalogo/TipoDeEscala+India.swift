@@ -477,7 +477,7 @@ extension TipoDeEscala {
         nombre: "ṣaḍja-grāma",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["shadja grama", "shadjagrama", "षड्जग्राम"],
-        categoria: .grama, llevaLaCategoria: true,
+        categoria: .grama,
         // Grāma y mūrchanā del Nāṭyaśāstra, con las razones de los thāṭ: en śruti, por su número desde Sa, y en
         // cents las que tienen una quinta una coma corta (40/27) o la quinta disminuida de 64/45, que no son
         // ninguno de los 22.
@@ -487,7 +487,7 @@ extension TipoDeEscala {
         nombre: "madhyama-grāma",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["madhyamagrama", "मध्यमग्राम"],
-        categoria: .grama, llevaLaCategoria: true,
+        categoria: .grama,
         afinaciones: [.init(.razones, pasos: [0, 182, 294, 498, 680, 884, 996])])
     /// La mūrchanā del ṣaḍja-grāma desde Sa: el dórico en doce notas.
     public static let uttaramandra = TipoDeEscala(
