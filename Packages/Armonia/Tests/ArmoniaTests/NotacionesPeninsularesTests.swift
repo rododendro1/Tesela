@@ -127,11 +127,11 @@ import Testing
                 == "συγχορδία έβδομης δεσπόζουσας στο σολ, πρώτη αναστροφή")
         #expect(Acorde("Do/Re").nombre(en: .conPalabras(.aleman)) == "Durdreiklang auf C, mit D im Bass")
         // Todos los tipos conocidos tienen nombre propio en cada idioma.
-        for (_, nombre) in TipoDeAcorde.nombresConocidos {
-            #expect(
-                !(nombre.texto(en: .catalan).isEmpty || nombre.texto(en: .gallego).isEmpty
-                    || nombre.texto(en: .euskera).isEmpty),
-                Comment(rawValue: nombre.texto(en: .espanol)))
+        for acorde in AcordeConNombre.catalogo {
+            for idioma in [Idioma.catalan, .gallego, .euskera] {
+                let nombre = NombresDeAcordes.de(idioma).nombre(de: acorde)
+                #expect(nombre?.isEmpty == false, "\(acorde.nombre) en \(idioma)")
+            }
         }
 
         #expect(Escala(.re, .dorico).nombre(en: .conPalabras(.catalan)) == "re dòric")

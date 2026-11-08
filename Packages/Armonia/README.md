@@ -224,6 +224,8 @@ Sources/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
+│   │   ├── Catalogo/      AcordeConNombre (el acorde del catálogo, con su ficha) y el catálogo
+│   │   ├── Nombres/       NombresDeAcordes y un fichero por idioma (`NombresDeAcordes+Catalan.swift`…)
 │   │   └── Neorriemanniana/   TransformacionNeorriemanniana (P, L, R y caminos), CicloNeorriemanniano
 │   │                      (hexatónico, octatónico, LR), ConduccionParsimoniosa (vecinos a un semitono,
 │   │                      conducción mínima)
@@ -287,7 +289,7 @@ notas); en las demás capas, los errores de lectura de cada una (`ErrorDeLectura
 las figuras, las duraciones y los colores. Los textos usan `Traduccion`, que pide los trece idiomas:
 español, inglés, catalán, gallego, euskera, portugués, francés, italiano, alemán,
 griego, ruso, húngaro y sueco. Los nombres que son datos de un catálogo (tipos de acorde y de escala, instrumentos)
-siguen junto a su catálogo, en los trece idiomas (los de las escalas en los que no son español ni inglés,
+siguen junto a su catálogo, en los trece idiomas (los de los acordes, en `Teoria/Acordes/Nombres/`; los de las escalas en los que no son español ni inglés,
 un fichero por idioma en `Teoria/Escalas/Nombres/`, `NombresDeEscalas+Catalan.swift`…, con los alias y las variantes con que también se leen;
 `Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno, y `Scripts/generadores/nombres_de_escalas/` tiene las herramientas con que se sembraron).
 

@@ -46,6 +46,7 @@ Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first   // La meno
 
 - ``Acorde``
 - ``TipoDeAcorde``
+- ``AcordeConNombre``
 - ``DisposicionDeAcorde``
 - ``ComparacionDeAcordes``
 - ``Escala``

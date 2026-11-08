@@ -1,0 +1,39 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+// Los nombres de los acordes del catálogo en ruso. Qué es cada campo, en `NombresDeAcordes.swift`.
+
+extension NombresDeAcordes {
+    static let ruso = NombresDeAcordes([
+        .init(.mayor, "мажорное трезвучие"),
+        .init(.menor, "минорное трезвучие"),
+        .init(.disminuido, "уменьшённое трезвучие"),
+        .init(.aumentado, "увеличенное трезвучие"),
+        .init(.sus2, "аккорд sus2"),
+        .init(.sus4, "аккорд sus4"),
+        .init(.potencia, "квинтовое созвучие"),
+        .init(.dominanteSeptima, "доминантсептаккорд"),
+        .init(.mayorSeptimaMayor, "большой мажорный септаккорд"),
+        .init(.menorSeptima, "малый минорный септаккорд"),
+        .init(.semidisminuido, "малый уменьшённый септаккорд"),
+        .init(.disminuidoSeptima, "уменьшённый септаккорд"),
+        .init(.menorSeptimaMayor, "большой минорный септаккорд"),
+        .init(.aumentadoSeptima, "увеличенный септаккорд с малой септимой"),
+        .init(.aumentadoSeptimaMayor, "большой увеличенный септаккорд"),
+        .init(.sus4Septima, "доминантсептаккорд с задержанием кварты"),
+        .init(.mayorSexta, "мажорный аккорд с секстой"),
+        .init(.menorSexta, "минорный аккорд с секстой"),
+        .init(.mayorSextaNovena, "аккорд с секстой и ноной"),
+        .init(.dominanteNovena, "доминантнонаккорд"),
+        .init(.mayorSeptimaMayorNovena, "большой мажорный нонаккорд"),
+        .init(.menorSeptimaNovena, "минорный нонаккорд"),
+        .init(.mayorNovenaAnadida, "мажорный аккорд с добавленной ноной"),
+        .init(.dominanteUndecima, "доминантовый ундецимаккорд"),
+        .init(.menorSeptimaUndecima, "минорный ундецимаккорд"),
+        .init(.dominanteDecimotercera, "доминантовый терцдецимаккорд"),
+        .init(.menorSeptimaDecimotercera, "минорный терцдецимаккорд"),
+        .init(.dominanteNovenaMenor, "доминантсептаккорд с малой ноной"),
+        .init(.sextaAumentadaItaliana, "итальянский увеличенный секстаккорд"),
+        .init(.sextaAumentadaFrancesa, "французский увеличенный секстаккорд"),
+        .init(.sextaAumentadaAlemana, "немецкий увеличенный секстаккорд"),
+    ])
+}

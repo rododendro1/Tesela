@@ -229,11 +229,11 @@ import Testing
             Acorde("Sol7/Si").nombre(en: .conPalabras(.frances)) == "sol septième de dominante, premier renversement")
         #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.italiano)) == "sol settima di dominante, primo rivolto")
         #expect(Acorde("Do/Re").nombre(en: .conPalabras(.italiano)) == "do maggiore, con il basso in re")
-        for (_, nombre) in TipoDeAcorde.nombresConocidos {
-            #expect(
-                !(nombre.texto(en: .portugues).isEmpty || nombre.texto(en: .frances).isEmpty
-                    || nombre.texto(en: .italiano).isEmpty),
-                Comment(rawValue: nombre.texto(en: .espanol)))
+        for acorde in AcordeConNombre.catalogo {
+            for idioma in [Idioma.portugues, .frances, .italiano] {
+                let nombre = NombresDeAcordes.de(idioma).nombre(de: acorde)
+                #expect(nombre?.isEmpty == false, "\(acorde.nombre) en \(idioma)")
+            }
         }
 
         #expect(Escala(.re, .dorico).nombre(en: .conPalabras(.frances)) == "ré dorien")

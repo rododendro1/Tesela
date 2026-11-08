@@ -1,0 +1,39 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
+// Los nombres de los acordes del catálogo en alemán. Qué es cada campo, en `NombresDeAcordes.swift`.
+
+extension NombresDeAcordes {
+    static let aleman = NombresDeAcordes([
+        .init(.mayor, "Durdreiklang"),
+        .init(.menor, "Molldreiklang"),
+        .init(.disminuido, "verminderter Dreiklang"),
+        .init(.aumentado, "übermäßiger Dreiklang"),
+        .init(.sus2, "Sus2-Akkord"),
+        .init(.sus4, "Sus4-Akkord"),
+        .init(.potencia, "Quintklang (Powerchord)"),
+        .init(.dominanteSeptima, "Dominantseptakkord"),
+        .init(.mayorSeptimaMayor, "großer Septakkord"),
+        .init(.menorSeptima, "Mollseptakkord"),
+        .init(.semidisminuido, "halbverminderter Septakkord"),
+        .init(.disminuidoSeptima, "verminderter Septakkord"),
+        .init(.menorSeptimaMayor, "Moll-Major-Septakkord"),
+        .init(.aumentadoSeptima, "übermäßiger Septakkord"),
+        .init(.aumentadoSeptimaMayor, "übermäßiger großer Septakkord"),
+        .init(.sus4Septima, "Dominantseptakkord mit Quartvorhalt"),
+        .init(.mayorSexta, "Dur mit Sexte"),
+        .init(.menorSexta, "Moll mit Sexte"),
+        .init(.mayorSextaNovena, "Sext-Non-Akkord"),
+        .init(.dominanteNovena, "Dominantnonakkord"),
+        .init(.mayorSeptimaMayorNovena, "großer Nonakkord"),
+        .init(.menorSeptimaNovena, "Mollnonakkord"),
+        .init(.mayorNovenaAnadida, "Dur mit hinzugefügter None"),
+        .init(.dominanteUndecima, "Dominant-Undezimakkord"),
+        .init(.menorSeptimaUndecima, "Moll-Undezimakkord"),
+        .init(.dominanteDecimotercera, "Dominant-Tredezimakkord"),
+        .init(.menorSeptimaDecimotercera, "Moll-Tredezimakkord"),
+        .init(.dominanteNovenaMenor, "Dominantseptakkord mit kleiner None"),
+        .init(.sextaAumentadaItaliana, "italienischer übermäßiger Sextakkord"),
+        .init(.sextaAumentadaFrancesa, "französischer übermäßiger Sextakkord"),
+        .init(.sextaAumentadaAlemana, "deutscher übermäßiger Sextakkord"),
+    ])
+}

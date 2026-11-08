@@ -2,9 +2,9 @@ import Foundation
 
 // MARK: - Referencia bibliográfica
 
-/// Una obra donde se lee una escala o una afinación del catálogo: un libro, un artículo, un capítulo, una tesis o un
-/// tratado antiguo. La `fuente` de una escala (`FuenteTeorica`) dice quién la definió; sus `referencias`, dónde la
-/// hemos leído.
+/// Una obra donde se lee una escala, una afinación o un acorde del catálogo: un libro, un artículo, un capítulo, una
+/// tesis o un tratado antiguo. La `fuente` de una escala (`FuenteTeorica`) dice quién la definió; sus `referencias`,
+/// dónde la hemos leído.
 ///
 /// Las obras del catálogo son constantes (`Referencia.west1992`, `.touma1996`…), y una cita es la obra con las páginas
 /// que se citan: `Referencia.west1992.paginas("160–172")`. Los títulos no se traducen.

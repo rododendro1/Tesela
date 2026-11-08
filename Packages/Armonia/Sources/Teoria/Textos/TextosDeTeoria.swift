@@ -59,37 +59,6 @@ struct TextosDeTeoria: TextosTraducidos {
 
     // MARK: TipoDeAcorde.swift
     let acordeDesconocido: @Sendable (Bool, String, String) -> String
-    let tipoMayor: String
-    let tipoMenor: String
-    let tipoDisminuido: String
-    let tipoAumentado: String
-    let tipoSuspendidoDeSegunda: String
-    let tipoSuspendidoDeCuarta: String
-    let tipoQuintaAcordeDePotencia: String
-    let tipoSeptimaDeDominante: String
-    let tipoSeptimaMayor: String
-    let tipoMenorSeptima: String
-    let tipoSemidisminuido: String
-    let tipoSeptimaDisminuida: String
-    let tipoMenorConSeptimaMayor: String
-    let tipoAumentadoConSeptimaMenor: String
-    let tipoAumentadoConSeptimaMayor: String
-    let tipoSeptimaSuspendida: String
-    let tipoSexta: String
-    let tipoMenorSexta: String
-    let tipoSextaYNovena: String
-    let tipoNovenaDeDominante: String
-    let tipoNovenaMayor: String
-    let tipoMenorNovena: String
-    let tipoNovenaAnadida: String
-    let tipoUndecima: String
-    let tipoMenorUndecima: String
-    let tipoDecimotercera: String
-    let tipoMenorDecimotercera: String
-    let tipoSeptimaConNovenaMenor: String
-    let tipoSextaAumentadaItaliana: String
-    let tipoSextaAumentadaFrancesa: String
-    let tipoSextaAumentadaAlemana: String
 
     // MARK: Escala.swift
     let gradoTonica: String
