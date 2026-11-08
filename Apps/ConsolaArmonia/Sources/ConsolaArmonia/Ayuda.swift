@@ -203,10 +203,11 @@ extension LineaDeComandos {
     /// La propia ayuda y la versión; las demás órdenes están en los archivos Ayuda+*.swift. `ayuda <orden>` y
     /// `ayuda --todo` no llegan aquí: las escribe `ejecutar`.
     static let ordenesDeAyuda: [Orden] = [
-        Orden(nombres: ["ayuda", "help", "-h", "--help", "--ayuda"], ayuda: ayudaDeLaAyuda) { _, notacion in
+        Orden(nombres: ["ayuda", "help", "-h", "--help", "--ayuda"], ayuda: ayudaDeLaAyuda, leeLaEntrada: false) {
+            _, notacion in
             bien(indiceDeAyuda(en: notacion.textos, grafia: notacion.grafiaDeLosTextos))
         },
-        Orden(nombres: ["--version", "version", "versión"], ayuda: ayudaDeLaVersion) { _, _ in
+        Orden(nombres: ["--version", "version", "versión"], ayuda: ayudaDeLaVersion, leeLaEntrada: false) { _, _ in
             bien("armonia " + version)
         },
     ]

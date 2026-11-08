@@ -74,11 +74,7 @@ extension PresentacionDeEstudioDeEscala {
             lineas += 18
         }
         let total = (max(y + alto, lineas) + margen).rounded(.up)
-        let cabecera =
-            "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"\(numero(ancho))\" height=\"\(numero(total))\" "
-            + "viewBox=\"0 0 \(numero(ancho)) \(numero(total))\" font-family=\"Helvetica, Arial, sans-serif\">"
-        let fondo = "<rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/>"
-        return ([cabecera, fondo] + cuerpo + ["</svg>"]).joined(separator: "\n")
+        return hojaSVG(ancho: ancho, alto: total, cuerpo)
     }
 
     /// La tabla grado a grado: una fila con el número de cada grado y otra por escala, con las notas del color de

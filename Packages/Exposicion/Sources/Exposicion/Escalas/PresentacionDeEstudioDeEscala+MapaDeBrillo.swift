@@ -68,10 +68,6 @@ extension PresentacionDeEstudioDeEscala {
                     + "height=\"\(numero(altoDeCaja))\" rx=\"4\" fill=\"\(relleno)\" stroke=\"\(borde)\"/>"
                     + texto(escala.tipo.nombre(en: notacion), x: caja.x + 8, y: caja.y + 15, tamano: 11) + "</g>")
         }
-        let cabecera =
-            "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"\(numero(ancho))\" height=\"\(numero(alto))\" "
-            + "viewBox=\"0 0 \(numero(ancho)) \(numero(alto))\" font-family=\"Helvetica, Arial, sans-serif\">"
-        let fondo = "<rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/>"
-        return ([cabecera, fondo] + cuerpo + ["</svg>"]).joined(separator: "\n")
+        return hojaSVG(ancho: ancho, alto: alto, cuerpo)
     }
 }
