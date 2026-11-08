@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.2 (2026-11-08)
 
 - **Cambio incompatible:** `DiagramaDePentagrama`, `DiagramaDeMastil` y `DiagramaDeTonnetz` ya no ponen la
   notación española si no se da: hay que pasarla, para que nada salga en español en una app en otro idioma.

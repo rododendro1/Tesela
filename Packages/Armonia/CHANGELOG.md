@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.2 (2026-11-08)
 
 - El catálogo de acordes tiene ocho acordes de nombre propio (`AcordeConNombre.conNombrePropio`), con sus notas tal
   como se escriben, sus estilos y la obra donde se leen: el de Tristán (Rothgeb 1995), el místico o de Prometeo
