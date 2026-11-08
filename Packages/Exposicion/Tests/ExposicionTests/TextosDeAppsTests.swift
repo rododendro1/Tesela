@@ -277,4 +277,22 @@ import Testing
             #expect(Set(tareas).count == tareas.count, "\(idioma)")
         }
     }
+
+    /// Los huecos de cada plantilla de `TextosDeApps`, por idioma: los de los trece tienen que ser los del español (como
+    /// `PlantillasDeTextoTests` en el motor).
+    @Test func cadaIdiomaTieneLosHuecosDelEspanol() {
+        func plantillas(_ idioma: Idioma) -> [(String, Plantilla)] {
+            Mirror(reflecting: TextosDeApps.traducidos.texto(en: idioma)).children.compactMap { hijo in
+                (hijo.value as? Plantilla).map { (hijo.label ?? "", $0) }
+            }
+        }
+        let espanol = plantillas(.espanol)
+        for idioma in Idioma.allCases {
+            for ((nombre, suya), (_, enEspanol)) in zip(plantillas(idioma), espanol) {
+                #expect(suya.huecos == enEspanol.huecos, "TextosDeApps.\(nombre) en \(idioma)")
+                #expect(!enEspanol.huecos.isEmpty, "TextosDeApps.\(nombre) no tiene huecos")
+            }
+        }
+        #expect(espanol.count == 31)
+    }
 }

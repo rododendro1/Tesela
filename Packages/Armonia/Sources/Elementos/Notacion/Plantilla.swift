@@ -7,23 +7,23 @@
 /// huecos se pueden comprobar desde fuera: `Scripts/comprobaciones/comprobar_traducciones.py` avisa si un
 /// idioma no tiene los mismos que el español. Un hueco puede repetirse o ir en otro orden (en húngaro o en
 /// euskera el orden de las palabras cambia); uno sin valor se deja como está.
-package struct Plantilla: Hashable, Sendable, ExpressibleByStringLiteral, CustomStringConvertible {
+public struct Plantilla: Hashable, Sendable, ExpressibleByStringLiteral, CustomStringConvertible {
     /// El texto, con los huecos sin rellenar.
-    package let texto: String
+    public let texto: String
 
-    package init(_ texto: String) { self.texto = texto }
+    public init(_ texto: String) { self.texto = texto }
 
-    package init(stringLiteral texto: String) { self.init(texto) }
+    public init(stringLiteral texto: String) { self.init(texto) }
 
-    package var description: String { texto }
+    public var description: String { texto }
 
     /// El texto con cada `{n}` cambiado por el valor `n`-ésimo, contando desde 1.
-    package func callAsFunction(_ valores: any CustomStringConvertible...) -> String {
+    public func callAsFunction(_ valores: any CustomStringConvertible...) -> String {
         rellenada(con: valores.map(\.description))
     }
 
     /// Lo mismo, con los valores ya escritos.
-    package func rellenada(con valores: [String]) -> String {
+    public func rellenada(con valores: [String]) -> String {
         var resultado = ""
         var resto = Substring(texto)
         while let abre = resto.firstIndex(of: "{") {
@@ -43,7 +43,7 @@ package struct Plantilla: Hashable, Sendable, ExpressibleByStringLiteral, Custom
     }
 
     /// Los números de los huecos, sin repetir y en orden: `[1, 2]` en «{2} de {1}».
-    package var huecos: [Int] {
+    public var huecos: [Int] {
         var vistos = Set<Int>()
         var resto = Substring(texto)
         while let abre = resto.firstIndex(of: "{") {
@@ -61,14 +61,14 @@ package struct Plantilla: Hashable, Sendable, ExpressibleByStringLiteral, Custom
 
 extension Traducido where Valor == Plantilla {
     /// La plantilla en el idioma de los textos de la notación y en su grafía, con los huecos sin tocar.
-    package func en(_ notacion: Notacion) -> Plantilla {
+    public func en(_ notacion: Notacion) -> Plantilla {
         Plantilla(notacion.enSuGrafia(texto(en: notacion.textos).texto))
     }
 }
 
 extension Traducido where Valor == [Plantilla] {
     /// Las plantillas en el idioma de los textos de la notación y en su grafía.
-    package func en(_ notacion: Notacion) -> [Plantilla] {
+    public func en(_ notacion: Notacion) -> [Plantilla] {
         texto(en: notacion.textos).map { Plantilla(notacion.enSuGrafia($0.texto)) }
     }
 }

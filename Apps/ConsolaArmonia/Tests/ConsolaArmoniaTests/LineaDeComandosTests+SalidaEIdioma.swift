@@ -74,4 +74,22 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.notasEnEspanol("--json", en: aleman) == "--json")
         #expect(LineaDeComandos.notasEnEspanol("H7", en: .compacta(.espanol)) == "H7")
     }
+
+    /// Los huecos de cada plantilla de `TextosDeConsola`, por idioma: los de los trece tienen que ser los del español (como
+    /// `PlantillasDeTextoTests` en el motor).
+    @Test func cadaIdiomaTieneLosHuecosDelEspanol() {
+        func plantillas(_ idioma: Idioma) -> [(String, Plantilla)] {
+            Mirror(reflecting: TextosDeConsola.traducidos.texto(en: idioma)).children.compactMap { hijo in
+                (hijo.value as? Plantilla).map { (hijo.label ?? "", $0) }
+            }
+        }
+        let espanol = plantillas(.espanol)
+        for idioma in Idioma.allCases {
+            for ((nombre, suya), (_, enEspanol)) in zip(plantillas(idioma), espanol) {
+                #expect(suya.huecos == enEspanol.huecos, "TextosDeConsola.\(nombre) en \(idioma)")
+                #expect(!enEspanol.huecos.isEmpty, "TextosDeConsola.\(nombre) no tiene huecos")
+            }
+        }
+        #expect(espanol.count == 72)
+    }
 }

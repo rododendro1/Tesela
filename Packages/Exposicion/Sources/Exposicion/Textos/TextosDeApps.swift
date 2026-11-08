@@ -18,7 +18,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let analisis: String
     public let coral: String
     public let acorde: String
-    public let campoDeCifrado: @Sendable (String) -> String
+    public let campoDeCifrado: Plantilla  // {1} ejemplo
     public let informacion: String
     public let nombre: String
     public let cifrado: String
@@ -27,7 +27,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let arpegio: String
     public let patron: String
     public let arpegioEnElMastil: String
-    public let trastes: @Sendable (Int, Int) -> String
+    public let trastes: Plantilla  // {1} desde, {2} hasta
     public let escalasCompatibles: String
     public let identificar: String
     public let tocaElMastil: String
@@ -45,7 +45,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let sinDigitaciones: String
     public let calculando: String
     public let dedos: @Sendable (Int) -> String
-    public let cejilla: @Sendable (Int) -> String
+    public let cejilla: Plantilla  // {1} traste
     public let escala: String
     public let tonica: String
     public let tipo: String
@@ -54,7 +54,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let acordesDeLaEscala: String
     public let posicionesEnElMastil: String
     public let notasPorCuerda: @Sendable (Int) -> String
-    public let forma: @Sendable (String) -> String
+    public let forma: Plantilla  // {1} forma
     public let mastilDeGuitarra: String
     public let pentagrama: String
     public let progresion: String
@@ -81,7 +81,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let notaDeOrigen: String
     public let enTono: String
     public let noSeDibuja: String
-    public let campoDeTriadaInicial: @Sendable (String) -> String
+    public let campoDeTriadaInicial: Plantilla  // {1} ejemplo
     public let reiniciar: String
     public let deshacer: String
     public let textos: String
@@ -100,9 +100,9 @@ public struct TextosDeApps: TextosTraducidos {
     public let enlazarLosAcordes: String
     public let porPosiciones: String
     public let dedosSugeridos: String
-    public let tempo: @Sendable (Int) -> String
+    public let tempo: Plantilla  // {1} negras por minuto
     public let sinCapo: String
-    public let capo: @Sendable (Int) -> String
+    public let capo: Plantilla  // {1} traste
     public let rearmonizar: String
     public let aplicar: String
     public let detener: String
@@ -115,40 +115,40 @@ public struct TextosDeApps: TextosTraducidos {
     public let casillas: @Sendable (Int) -> String
     public let elegida: String
     public let mastilDe: @Sendable (String, Int, Int) -> String
-    public let posicion: @Sendable (Int, Int) -> String
+    public let posicion: Plantilla  // {1} cuerda, {2} traste
     public let marcas: @Sendable (Int) -> String
-    public let cuerdasApagadas: @Sendable (String) -> String
+    public let cuerdasApagadas: Plantilla  // {1} lista
     public let sinMarcas: String
 
     // MARK: PresentacionDeCoral.swift
     public let sinArmonizacion: String
-    public let faltanOctavas: @Sendable (String) -> String
-    public let sinCoralParaLaMelodia: @Sendable (String, String) -> String
+    public let faltanOctavas: Plantilla  // {1} ejemplo
+    public let sinCoralParaLaMelodia: Plantilla  // {1} grave, {2} agudo
     public let sinRealizacion: String
     public let sinFaltasDeConduccion: String
     public let armonizar: String
     public let realizar: String
     public let revisar: String
-    public let indicacionArmonizar: @Sendable (String, String) -> String
-    public let indicacionRevisar: @Sendable (String) -> String
+    public let indicacionArmonizar: Plantilla  // {1} ejemplo, {2} ejemplo con ritmo
+    public let indicacionRevisar: Plantilla  // {1} ejemplo
 
     // MARK: PresentacionDeContrapunto.swift
     public let contrapunto: String
     public let especie: String
-    public let indicacionCantus: @Sendable (String) -> String
-    public let indicacionContrapunto: @Sendable (String) -> String
-    public let compasNumero: @Sendable (Int) -> String
+    public let indicacionCantus: Plantilla  // {1} ejemplo
+    public let indicacionContrapunto: Plantilla  // {1} ejemplo
+    public let compasNumero: Plantilla  // {1} número
 
     // MARK: PresentacionDeSerie.swift
     public let serieDodecafonica: String
-    public let indicacionSerie: @Sendable (String, String) -> String
+    public let indicacionSerie: Plantilla  // {1} ejemplo, {2} ejemplo con números
     public let formaDeSerie: String
     public let matriz: String
     public let intervalos: String
     public let deTodosLosIntervalos: String
     public let hexacordos: String
     public let formasCombinatorias: String
-    public let formasDistintas: @Sendable (Int) -> String
+    public let formasDistintas: Plantilla  // {1} cuántas
 
     // MARK: RecorridoDePartitura.swift
     public let partitura: String
@@ -166,7 +166,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let disposicionSinFundamentalB: String
     public let disposicionDosManos: String
     public let enElMastil: String
-    public let cuerdas: @Sendable (String) -> String
+    public let cuerdas: Plantilla  // {1} cuerdas
     public let otrosNombres: String
     public let sinLaFundamental: String
     public let tonalidadesDelAcorde: String
@@ -174,7 +174,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let compararCon: String
     public let notasComunes: String
     public let ningunaNotaComun: String
-    public let movimientoTotal: @Sendable (Int) -> String
+    public let movimientoTotal: Plantilla  // {1} semitonos
     public let secuencia: String
     public let bajando: String
     public let digitacionDePiano: String
@@ -182,25 +182,25 @@ public struct TextosDeApps: TextosTraducidos {
     public let manoIzquierda: String
     public let modosParalelos: String
     public let modosRelativos: String
-    public let soloEn: @Sendable (String) -> String
-    public let alteracionesDeDiferencia: @Sendable (Int) -> String
+    public let soloEn: Plantilla  // {1} escala
+    public let alteracionesDeDiferencia: Plantilla  // {1} cuántas
     public let escalasBebop: String
-    public let notaDePaso: @Sendable (String) -> String
+    public let notaDePaso: Plantilla  // {1} nota
     public let pentatonicas: String
-    public let cambian: @Sendable (String) -> String
-    public let notasGuia: @Sendable (String) -> String
+    public let cambian: Plantilla  // {1} notas
+    public let notasGuia: Plantilla  // {1} notas
     public let escalasQueLasContienen: String
-    public let ademas: @Sendable (String) -> String
+    public let ademas: Plantilla  // {1} notas
     public let simetria: String
-    public let repiteCada: @Sendable (Int, Int) -> String
+    public let repiteCada: Plantilla  // {1} semitonos, {2} transposiciones
     public let tonicasEquivalentes: String
     public let lineasDeNotasGuia: String
     public let desdeLaTercera: String
     public let desdeLaSeptima: String
     public let secuenciaEnLasPosiciones: String
     public let formasDeLaPentatonica: String
-    public let formaNumero: @Sendable (Int) -> String
-    public let comparteCon: @Sendable (Int, String) -> String
+    public let formaNumero: Plantilla  // {1} número
+    public let comparteCon: Plantilla  // {1} forma, {2} posiciones
     public let teclado: String
     public let escalaPropia: String
     public let campoDeEscalaPropia: String
@@ -244,13 +244,13 @@ public struct TextosDeApps: TextosTraducidos {
     public let homonima: String
     public let cadenciasTipicas: String
     /// Dos progresiones comparadas: «Cambian 2 de 4 acordes».
-    public let cambianAcordes: @Sendable (Int, Int) -> String
+    public let cambianAcordes: Plantilla  // {1} cuántos, {2} de cuántos
     /// Una línea de bajo en negras sobre una progresión.
     public let bajoCaminante: String
     /// Progresiones con los acordes de una escala.
     public let progresionesEnLaEscala: String
     /// «Fuera de La menor: Re♯, Sol♯»: las notas de una progresión que no son de esa escala.
-    public let notasFueraDe: @Sendable (String, String) -> String
+    public let notasFueraDe: Plantilla  // {1} escala, {2} notas
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

@@ -184,107 +184,97 @@ struct TextosDeConsola: TextosTraducidos {
     let manualEntorno: String
     let manualEstadoDeSalida: String
     let manualIdiomaDelEntorno: String
-    let manualRutaDelPrograma: @Sendable (String) -> String
+    let manualRutaDelPrograma: Plantilla  // {1} programa
     let manualCodigosDeSalida: [String]
 
     // MARK: ErrorDeUso.swift (armonización)
-    let faltanAcordesDeLasVoces: @Sendable (String) -> String
-    let dosAcordesDeConduccion: @Sendable (String) -> String
-    let faltanNotasDeLaArmonizacion: @Sendable (String) -> String
+    let faltanAcordes: Plantilla  // {1} ejemplo
+    let dosAcordes: Plantilla  // {1} ejemplo
+    let faltanNotasDeLaArmonizacion: Plantilla  // {1} ejemplo
     let propuestasFueraDeRango: String
-    let faltanVocesDelContrapunto: @Sendable (String, String) -> String
+    let faltanVocesDelContrapunto: Plantilla  // {1} ejemplo
     let especieFueraDeRango: String
-    let faltanAcordesDeLaRealizacion: @Sendable (String) -> String
 
     // MARK: ErrorDeUso.swift (consultas)
-    let faltaCifrado: String
-    let faltaCifradoDelArpegio: String
-    let patronDesconocido: @Sendable (String) -> String
-    let tradicionDesconocida: @Sendable (String) -> String
-    let categoriaDesconocida: @Sendable (String) -> String
-    let fuenteDesconocida: @Sendable (String) -> String
-    let usoDesconocido: @Sendable (String) -> String
-    let ordenDeEscalasDesconocido: @Sendable (String) -> String
-    let intervaloDeEscalasDesconocido: @Sendable (String) -> String
+    let faltaCifrado: Plantilla  // {1} ejemplo
+    let patronDesconocido: Plantilla  // {1} patron
+    let tradicionDesconocida: Plantilla  // {1} tradicion
+    let categoriaDesconocida: Plantilla  // {1} categoria
+    let fuenteDesconocida: Plantilla  // {1} fuente
+    let usoDesconocido: Plantilla  // {1} uso
+    let ordenDeEscalasDesconocido: Plantilla  // {1} orden
+    let intervaloDeEscalasDesconocido: Plantilla  // {1} intervalo
     let pasoFueraDeRango: String
-    let faltanNotas: String
-    let dosNotas: String
-    let faltaEscala: String
-    let faltaTonalidad: String
+    let faltanNotas: Plantilla  // {1} ejemplo
+    let dosNotas: Plantilla  // {1} ejemplo
+    let faltaEscala: Plantilla  // {1} ejemplo
+    let faltaTonalidad: Plantilla  // {1} ejemplo
     let faltaTonalidadTrasEn: String
-    let faltaConjunto: String
-    let faltaSerie: String
-    let faltanAcordesDelAnalisis: @Sendable (String) -> String
-    let archivoIlegible: @Sendable (String) -> String
+    let faltaConjunto: Plantilla  // {1} ejemplo
+    let faltaSerie: Plantilla  // {1} ejemplo
+    let archivoIlegible: Plantilla  // {1} nombre
     /// Un fichero de `-o` que no se puede escribir.
-    let archivoNoEscrito: @Sendable (String) -> String
+    let archivoNoEscrito: Plantilla  // {1} nombre
     let archivoConAcordes: String
     let archivoSinAcordes: String
     let sinContrapuntoPosible: String
-    let faltaTransporte: @Sendable (String) -> String
-    let faltanAcordesDeLaRearmonizacion: @Sendable (String) -> String
+    let faltaTransporte: Plantilla  // {1} ejemplo
 
     // MARK: ErrorDeUso.swift (dibujos)
     let margenFueraDeRango: String
-    let faltanNotasDelDibujo: @Sendable (String, String) -> String
-    let faltaAcordeDelDibujo: @Sendable (String, String) -> String
-    let faltaEscalaDelDibujo: @Sendable (String, String) -> String
-    let faltanClasesDelDibujo: @Sendable (String, String) -> String
-    let faltanTriadasDelRecorrido: @Sendable (String, String) -> String
-    let cicloMalEscrito: @Sendable (String, String) -> String
-    let recorridoSoloTriadas: @Sendable (String, String) -> String
-    let caminoSoloTriadas: @Sendable (String, String) -> String
-    let cicloSoloTriadas: @Sendable (String, String) -> String
+    let faltaAcorde: Plantilla  // {1} ejemplo
+    let faltanClasesDelDibujo: Plantilla  // {1} ejemplo
+    let faltanTriadasDelRecorrido: Plantilla  // {1} ejemplo
+    let cicloMalEscrito: Plantilla  // {1} ejemplo
+    let recorridoSoloTriadas: Plantilla  // {1} ejemplo
+    let caminoSoloTriadas: Plantilla  // {1} ejemplo
+    let cicloSoloTriadas: Plantilla  // {1} ejemplo
     let opcionesDeCuadricula: String
 
     // MARK: ErrorDeUso.swift (neorriemanniana)
     let vocesFueraDeRango: String
-    let unAcordeDeVecinos: @Sendable (String) -> String
+    let unAcordeDeVecinos: Plantilla  // {1} ejemplo
     let vecinosSinFamilia: String
-    let dosAcordesDeCamino: @Sendable (String) -> String
     let caminoSinConexion: String
-    let faltanPasosDePLR: @Sendable (String) -> String
-    let plrSoloTriadas: @Sendable (String, Bool) -> String
+    let faltanPasosDePLR: Plantilla  // {1} ejemplo
+    let plrSoloTriadas: Plantilla  // {1} ejemplo
 
     // MARK: ErrorDeUso.swift (partituras)
-    let faltaTipoDePartitura: @Sendable (String, String) -> String
+    let faltaTipoDePartitura: Plantilla  // {1} ejemplo
     let instrumentoMIDI: String
     let marcasSoloMusicXML: String
-    let faltaValor: @Sendable (String) -> String
+    let faltaValor: Plantilla  // {1} opcion
     let tempoMalEscrito: String
-    let faltanNotasDeLaMelodia: @Sendable (String, String) -> String
     let marcasSoloCoral: String
     let duracionSoloCoral: String
-    let claveDesconocida: @Sendable (String, String) -> String
-    let faltanAcordesDelCoral: @Sendable (String, String) -> String
-    let soloParaMelodia: @Sendable (String) -> String
-    let soloParaArpegios: @Sendable (String) -> String
+    let claveDesconocida: Plantilla  // {1} clave, {2} las claves que se conocen
+    let soloParaMelodia: Plantilla  // {1} opcion
+    let soloParaArpegios: Plantilla  // {1} opcion
     let archivoSoloParaAcordes: String
     let ventanaSinArchivo: String
-    let faltanAcordesDeLaProgresion: @Sendable (String, String) -> String
     let acordesConCifradosYAnalisis: String
-    let tipoDePartituraDesconocido: @Sendable (String) -> String
+    let tipoDePartituraDesconocido: Plantilla  // {1} tipo
 
     // MARK: ErrorDeUso.swift (grabado)
-    let faltaLoQueSeGraba: String
-    let motorDesconocido: @Sendable (String) -> String
-    let formatoDeGrabadoDesconocido: @Sendable (String) -> String
-    let formatoDePartituraDesconocido: @Sendable (String) -> String
-    let nadaQueGrabar: @Sendable (String) -> String
+    let faltaLoQueSeGraba: Plantilla  // {1} ejemplo
+    let motorDesconocido: Plantilla  // {1} motor
+    let formatoDeGrabadoDesconocido: Plantilla  // {1} formato
+    let formatoDePartituraDesconocido: Plantilla  // {1} formato
+    let nadaQueGrabar: Plantilla  // {1} orden
 
     // MARK: LineaDeComandos+Grabado.swift
     /// El programa y la variable de entorno que da su ruta.
-    let motorNoEncontrado: @Sendable (String, String) -> String
+    let motorNoEncontrado: Plantilla  // {1} programa, {2} variable
     /// El programa y su código de salida; debajo van las últimas líneas de lo que dijo.
-    let motorFallo: @Sendable (String, Int) -> String
-    let motorSinTerminar: @Sendable (String) -> String
+    let motorFallo: Plantilla  // {1} programa, {2} codigo
+    let motorSinTerminar: Plantilla  // {1} programa
     /// La variable de entorno que da la ruta del programa que no está.
-    let motorNoInstalado: @Sendable (String) -> String
+    let motorNoInstalado: Plantilla  // {1} variable
     /// El nombre de `--motor propio` en el idioma de las órdenes.
     let motorPropio: String
 
     // MARK: ErrorDeUso.swift (digitaciones)
-    let faltaInstrumento: @Sendable (String, (String, String)) -> String
+    let faltaInstrumento: Plantilla  // {1} ejemplo
     let instrumentoDesconocido: @Sendable (String, (Notacion) -> String) -> String
     let faltaLimite: String
     let limiteFueraDeRango: String
@@ -292,41 +282,34 @@ struct TextosDeConsola: TextosTraducidos {
     let dedosFueraDeRango: String
     let faltaTraste: String
     let trasteFueraDeRango: String
-    let faltaCifradoDeDigitaciones: @Sendable (String, (String, String)) -> String
-    let faltaEscalaDePosiciones: String
-    let faltaEscalaDelTeclado: String
-    let manoDesconocida: @Sendable (String) -> String
+    let manoDesconocida: Plantilla  // {1} texto
     let archivoConNotas: String
-    let noEsPentatonica: String
-    let faltaEscalaDelReloj: String
-    let faltaEscalaDeLaHoja: String
-    let faltanLosAcordesDeLaHoja: String
-    let faltaElAcordeDeLaHoja: String
-    let faltaLoQueDibujaElPentagrama: String
+    let noEsPentatonica: Plantilla  // {1} ejemplo
+    let faltaLoQueDibujaElPentagrama: Plantilla  // {1} ejemplo
     let capoFueraDeRango: String
     let octavasFueraDeRango: String
     let notasFueraDeRango: String
     let octavaFueraDeRango: String
-    let desdeNoValido: @Sendable (String) -> String
+    let desdeNoValido: Plantilla  // {1} desde
     let tensionesMalEscritas: String
     let gradosMalEscritos: String
-    let aproximacionDesconocida: @Sendable (String) -> String
-    let secuenciaDesconocida: @Sendable (String) -> String
+    let aproximacionDesconocida: Plantilla  // {1} aproximacion
+    let secuenciaDesconocida: Plantilla  // {1} secuencia
 
     // MARK: ErrorDeUso.swift (comunes)
     let pruebaLaAyuda: String
-    let ordenDesconocida: @Sendable (String) -> String
-    let opcionDesconocida: @Sendable (String) -> String
-    let idiomaDesconocido: @Sendable (String) -> String
-    let terminalDesconocida: @Sendable (String) -> String
-    let escrituraNoValida: @Sendable (String) -> String
+    let ordenDesconocida: Plantilla  // {1} orden
+    let opcionDesconocida: Plantilla  // {1} opcion
+    let idiomaDesconocido: Plantilla  // {1} idioma
+    let terminalDesconocida: Plantilla  // {1} terminal
+    let escrituraNoValida: Plantilla  // {1} escritura
     /// `--sistema` con un sistema que no se conoce, y la lista de los que hay.
-    let sistemaDesconocido: @Sendable (String, String) -> String
+    let sistemaDesconocido: Plantilla  // {1} sistema, {2} lista
     /// `--grafia` con un valor que no es original, transliterada ni ascii.
-    let grafiaNoValida: @Sendable (String) -> String
+    let grafiaNoValida: Plantilla  // {1} grafia
     /// `--sistema` con uno móvil (el sargam) en una orden que no es `escala`.
-    let sistemaMovil: @Sendable (String) -> String
-    let sinSalidaJSON: @Sendable (String) -> String
+    let sistemaMovil: Plantilla  // {1} sistema
+    let sinSalidaJSON: Plantilla  // {1} orden
 
     // MARK: Mensaje.swift
     let mensajeNotas: String
@@ -340,10 +323,10 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeArmadura: String
     let mensajeRelativa: String
     let mensajeHomonima: String
-    let mensajeBajo: @Sendable (String) -> String
+    let mensajeBajo: Plantilla  // {1} nota
     let mensajeBajoAjeno: String
     let mensajeSinAcordes: String
-    let mensajeSin: @Sendable (String) -> String
+    let mensajeSin: Plantilla  // {1} notas
     let mensajeSemitonos: @Sendable (Int) -> String
     let mensajeSinAlteraciones: String
     let mensajeSostenidos: @Sendable (Int) -> String
@@ -351,7 +334,7 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeACuatroVoces: String
     let mensajeSinDigitaciones: String
     let mensajeDedos: @Sendable (Int) -> String
-    let mensajeCejilla: @Sendable (Int) -> String
+    let mensajeCejilla: Plantilla  // {1} traste
     let mensajeNingunPaso: String
     let mensajeUnPaso: String
     let mensajePasos: @Sendable (Int) -> String
@@ -363,7 +346,7 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeEjesDeSimetria: String
     let mensajeIntervalos: String
     let mensajeDeTodosLosIntervalos: String
-    let mensajeFormasDistintas: @Sendable (Int) -> String
+    let mensajeFormasDistintas: Plantilla  // {1} cuántas
     let mensajeHexacordos: String
     let mensajeFormasCombinatorias: String
 
@@ -371,15 +354,15 @@ struct TextosDeConsola: TextosTraducidos {
     let sintaxisVersion: String
     let descripcionVersion: String
     /// La propuesta tras una orden o una opción mal escrita: «¿Querías decir «acorde»?».
-    let quisoDecir: @Sendable (String) -> String
+    let quisoDecir: Plantilla  // {1} propuesta
     /// Como `pruebaLaAyuda`, con la ayuda de la orden: «Prueba «armonia ayuda acorde».».
-    let pruebaLaAyudaDe: @Sendable (String) -> String
+    let pruebaLaAyudaDe: Plantilla  // {1} orden
     /// Una orden que da un fichero binario con la salida en la terminal.
     let salidaBinaria: String
     /// `escalas` con unas notas, que no son el nombre de ninguna escala: cómo buscarla por sus notas (el ejemplo).
-    let escalasPorNotas: @Sendable (String) -> String
+    let escalasPorNotas: Plantilla  // {1} ejemplo
     /// `grabar midi …` (o musicxml, mei…): esa orden ya escribe la partitura; el ejemplo, cómo grabarla.
-    let grabarUnaPartitura: @Sendable (String, String) -> String
+    let grabarUnaPartitura: Plantilla  // {1} orden, {2} ejemplo
 
     // MARK: Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
     /// Los títulos de los grupos del índice de `armonia ayuda`, uno por cada lista de `gruposDeOrdenes`.
@@ -387,7 +370,7 @@ struct TextosDeConsola: TextosTraducidos {
     /// Lo que sigue al índice: cómo ver la ayuda de una orden y toda la ayuda, y las opciones de todas las órdenes.
     let pieDelIndice: String
     /// La primera línea de la sesión (`armonia` sin argumentos en la terminal), con la versión.
-    let bienvenidaDeLaSesion: @Sendable (String) -> String
+    let bienvenidaDeLaSesion: Plantilla  // {1} versión
 
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
