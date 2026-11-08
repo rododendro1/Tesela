@@ -2,6 +2,14 @@
 
 ## Sin publicar
 
+- **Cambio incompatible:** `Coral`, `SerieDodecafonica` y `ConjuntoDeClasesDeAltura` son `RepresentableComoTexto`:
+  se escriben como literal (`let coral: Coral = "Do3 Sol3 Mi4 Do5 | Sol2 Re4 Sol4 Si4"`,
+  `let triada: ConjuntoDeClasesDeAltura = "3-11"`), la serie y el conjunto tienen `texto(en:)`, y los tres se
+  codifican como su texto, como los demás: `"Do3 Sol3 Mi4 Do5 | Sol2 Re4 Sol4 Si4"`, `"0 e 7 4 2 9 3 8 t 1 5 6"` y
+  `"[0, 3, 7]"`, en lugar de `[["Do3", …], …]` y `[0, 11, 7, …]`. Lo guardado con la versión anterior ya no se lee.
+- La documentación de `RepresentableComoTexto` explica por qué `Escala` tiene su propio `Codable` (un modo sin nombre
+  no se puede volver a leer de su texto) y por qué `Voz` y `Arpegio` no lo cumplen.
+
 - En la consola, las órdenes y las opciones se leen con tildes o sin ellas, todas: `armonia cuadrícula`,
   `--estadísticas`, `--límite`, `--tríadas`, `--inglés`… (antes solo unas pocas, como `--compás` o `--patrón`). Los
   errores dicen la opción como se escribió.

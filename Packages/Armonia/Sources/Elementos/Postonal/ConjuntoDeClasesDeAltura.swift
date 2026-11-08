@@ -159,16 +159,10 @@ extension ConjuntoDeClasesDeAltura: ExpressibleByArrayLiteral {
     public init(arrayLiteral clases: Int...) { self.init(clases) }
 }
 
-extension ConjuntoDeClasesDeAltura: Codable {
-    public init(from decoder: Decoder) throws {
-        let clases = try decoder.singleValueContainer().decode([Int].self)
-        self.init(clases)
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var contenedor = encoder.singleValueContainer()
-        try contenedor.encode(clases)
-    }
+/// `let triada: ConjuntoDeClasesDeAltura = "3-11"`. Se codifica como su texto, «[0, 3, 7]».
+extension ConjuntoDeClasesDeAltura: RepresentableComoTexto {
+    /// Las clases como en `description` («[0, 4, 7]»), en cualquier notación: un conjunto no tiene ortografía.
+    public func texto(en notacion: Notacion) -> String { description }
 }
 
 extension ConjuntoDeClasesDeAltura: Transponible, ConClasesDeAltura {

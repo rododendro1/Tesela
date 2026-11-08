@@ -71,7 +71,7 @@ import Testing
     @Test func conjuntosCodable() throws {
         let conjunto = ConjuntoDeClasesDeAltura([0, 4, 7])
         let datos = try JSONEncoder().encode(conjunto)
-        #expect(String(decoding: datos, as: UTF8.self) == "[0,4,7]")
+        #expect(String(decoding: datos, as: UTF8.self) == #""[0, 4, 7]""#)
         #expect(try (JSONDecoder().decode(ConjuntoDeClasesDeAltura.self, from: datos)) == conjunto)
     }
 

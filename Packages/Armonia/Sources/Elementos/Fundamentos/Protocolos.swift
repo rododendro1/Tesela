@@ -6,15 +6,21 @@ import Foundation
 // cada idioma, transposición, clases de altura) se declara aquí una sola vez:
 //
 //  · RepresentableComoTexto: se lee con `init(leyendo:)` y se escribe con `texto(en:)`.
-//    A cambio recibe el literal de texto y Codable. Sin error, `try? Acorde(leyendo: entrada)`.
+//    A cambio recibe el literal de texto y Codable (o su propio Codable, si puede perder algo). Sin error, `try? Acorde(leyendo: entrada)`.
 //  · Nombrable: nombre para personas en la notación que se pida (`nombre(en:)`).
 //  · Transponible: `transponer(_:)`, y con ello los operadores + y − y las secuencias.
 //  · ConClasesDeAltura: `conjuntoDeClasesDeAltura`, y con ello número de Forte y vector interválico.
 
 // MARK: - RepresentableComoTexto
 
-/// Un valor que se lee y se escribe como texto, sin pérdida: `T(leyendo: x.texto(en: n)) == x`
-/// para cualquier notación `n`.
+/// Un valor que se lee y se escribe como texto: `T(leyendo: x.texto(en: n)) == x` para cualquier notación `n`.
+///
+/// A cambio recibe el literal de texto (`let a: Acorde = "Sol7"`) y un `Codable` que guarda el texto. Un tipo que
+/// pueda perder algo al escribirse lo dice en su `texto(en:)` y se codifica con su estructura, con su propio
+/// `Codable`, como `Escala`: un modo sin nombre no se puede volver a leer de su texto.
+///
+/// No lo son los que pierden algo siempre: `Voz` (su texto no lleva el compás ni la anacrusa) y `Arpegio` (se lee
+/// solo el acorde, sin el patrón ni las octavas).
 public protocol RepresentableComoTexto: Codable, ExpressibleByStringLiteral where StringLiteralType == String {
     /// Lee un texto. Si no se puede, lanza un `ErrorAlLeer` (`ErrorDeLectura` o el de su capa) con la posición y
     /// el motivo.

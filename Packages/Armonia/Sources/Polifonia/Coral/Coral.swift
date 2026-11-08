@@ -272,21 +272,6 @@ extension Coral: Transponible {
     }
 }
 
-extension Coral: Codable {
-    /// Se codifica como sus acordes, cada uno con sus alturas de grave a agudo: `[["Do3", "Sol3", "Mi4", "Do5"], …]`.
-    /// Al leerlo se comprueba, como en `init(_:)`, que todos tengan las mismas voces, y al menos dos.
-    public init(from decoder: Decoder) throws {
-        let contenedor = try decoder.singleValueContainer()
-        let acordes = try contenedor.decode([[Altura]].self)
-        let coral: Coral
-        do { coral = try Coral(acordes) } catch let error as ErrorDeLecturaDeTeoria {
-            throw DecodingError.dataCorruptedError(in: contenedor, debugDescription: error.description)
-        }
-        self = coral
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var contenedor = encoder.singleValueContainer()
-        try contenedor.encode(acordes)
-    }
-}
+/// `let coral: Coral = "Do3 Sol3 Mi4 Do5 | Sol2 Re4 Sol4 Si4"`, y se codifica como ese texto. Al leerlo se comprueba,
+/// como en `init(_:)`, que todos los acordes tengan las mismas voces, y al menos dos.
+extension Coral: RepresentableComoTexto {}
