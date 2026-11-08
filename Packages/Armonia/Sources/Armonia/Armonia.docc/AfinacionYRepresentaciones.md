@@ -49,7 +49,7 @@ AfinacionHistorica.vallotti.nombre(en: .conPalabras(.ruso))                     
 
 ### Escalas y afinaciones
 
-Una escala con microtonos (``TipoDeEscalaMicrotonal``, en <doc:Escalas>) se puede oír como es:
+Una escala con microtonos (``TipoDeEscalaMicrotonal``, en <doc:EscalasDelMundo>) se puede oír como es:
 `Escala.afinacion(la4:microtonal:sentido:)` da una ``AfinacionDeEscala``, que afina cada nota de la escala con lo
 que se aparta de su nota temperada y deja las demás en temperamento igual. La nota se busca por su nombre y, si no
 está, por su altura (Re♯ suena como el Mi♭ de la escala). Una escala puede tener varias afinaciones, cada una de un

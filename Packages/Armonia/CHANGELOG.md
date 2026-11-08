@@ -11,6 +11,9 @@
 - `Subtradicion.swift` se parte: `EstiloDeEscala` y `RegionDeEscala` tienen su propio fichero.
 - Las pruebas de las escalas tradicionales se reparten por tradición (`EscalasOccidentalesTests`,
   `EscalasDeLaIndiaTests`, `EscalasDeOrienteProximoTests`, `EscalasDeAsiaOrientalTests`, `EscalasDeEuropaTests`).
+- El artículo «Escalas» se parte en dos: «Escalas» explica cómo se usan y «Escalas del mundo» (`EscalasDelMundo.md`,
+  nuevo) reúne las tradiciones, sus categorías, sus escalas madre, sus referencias, sus microtonos y los modos
+  gregorianos.
 - Solo se mueven ficheros: no cambia ninguna API. `comprobar_catalogo.py` y los generadores de nombres siguen las
   nuevas rutas.
 
