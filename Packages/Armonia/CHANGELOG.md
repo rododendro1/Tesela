@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### Lectura más rápida
+
+- Las tablas para leer nombres de nota y de escala se calculan por notación y por idioma, la primera vez que hacen
+  falta, y no todas a la vez: leer «Fis dorisch» tarda 0,13 s en lugar de 0,54 s (la orden entera de la línea de
+  comandos, compilada en Release), «re doriarra», 0,17 s en lugar de 0,52 s, y «ре дорийский», 0,29 s en lugar de
+  0,54 s. Lo que se lee no cambia.
+
 ### `Traducido`, con una tabla
 
 - **Cambio incompatible:** `Traducido` guarda sus trece valores en una tabla, en el orden de `Idioma.allCases`, y ya
