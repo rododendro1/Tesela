@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: θεωρία της μουσικής από τη γραμμή εντολών.
 
-        Χρήση: armonia <εντολή> <ορίσματα> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv]
+        Χρήση: armonia <εντολή> <ορίσματα> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv|ru-latn|el-latn]
 
         Εντολές (οι εντολές και οι επιλογές γράφονται στα ισπανικά ή στα αγγλικά):
         """,

@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: zeneelmélet a parancssorban.
 
-        Használat: armonia <parancs> <argumentumok> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv]
+        Használat: armonia <parancs> <argumentumok> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv|ru-latn|el-latn]
 
         Parancsok (a parancsok és az opciók spanyolul vagy angolul íródnak):
         """,

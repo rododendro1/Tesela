@@ -80,6 +80,7 @@ extension TextosDeApps {
         textos: "Textos",
         comoLasNotas: "Como as notas",
         octavaEnSubindice: "Oitava en subíndice (La₄)",
+        alfabetoLatino: "Alfabeto latino",
         octavas: "Oitavas",
         conLaOctavaFinal: "Coa oitava final",
         figura: "Figura",

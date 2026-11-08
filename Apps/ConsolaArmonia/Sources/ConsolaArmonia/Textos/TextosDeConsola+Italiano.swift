@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: teoria musicale dalla riga di comando.
 
-        Uso: armonia <comando> <argomenti> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv]
+        Uso: armonia <comando> <argomenti> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv|ru-latn|el-latn]
 
         Comandi (i comandi e le opzioni si scrivono in spagnolo o in inglese):
         """,

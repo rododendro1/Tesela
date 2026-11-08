@@ -165,7 +165,7 @@ extension TextosDeConsola {
         cabeceraDeLaAyuda: """
         armonia: teoria musical des de la línia d'ordres.
 
-        Ús: armonia <ordre> <arguments> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv]
+        Ús: armonia <ordre> <arguments> [--ingles | --idioma es|en|ca|gl|eu|pt|fr|it|de|el|ru|hu|sv|ru-latn|el-latn]
 
         Ordres (les ordres i les opcions s'escriuen en castellà o en anglès):
         """,

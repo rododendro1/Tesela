@@ -87,6 +87,8 @@ public struct TextosDeApps: TextosTraducidos {
     public let textos: String
     public let comoLasNotas: String
     public let octavaEnSubindice: String
+    /// El interruptor del selector que escribe el ruso y el griego en el alfabeto latino (ISO 9 y ELOT 743).
+    public let alfabetoLatino: String
     public let octavas: String
     public let conLaOctavaFinal: String
     public let figura: String

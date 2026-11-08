@@ -93,7 +93,7 @@ public struct Traducido<Valor> {
     }
 
     /// El valor en el idioma de los textos de la notación (`Notacion.textos`).
-    public func en(_ notacion: Notacion) -> Valor { texto(en: notacion.textos) }
+    public func en(_ notacion: Notacion) -> Valor { notacion.enSuAlfabeto(valor: texto(en: notacion.textos)) }
 
     /// El valor en un idioma.
     public func texto(en idioma: Idioma) -> Valor {
@@ -151,7 +151,7 @@ extension TextosTraducidos {
     /// Un valor de los textos en el idioma de los textos de la notación: `en(notacion, \.campo)`.
     @inline(never)
     public static func en<Valor>(_ notacion: Notacion, _ campo: (Self) throws -> Valor) rethrows -> Valor {
-        try campo(traducidos.en(notacion))
+        notacion.enSuAlfabeto(valor: try campo(traducidos.texto(en: notacion.textos)))
     }
 
     /// Un valor de los textos en un idioma: `en(idioma: .frances, \.campo)`.

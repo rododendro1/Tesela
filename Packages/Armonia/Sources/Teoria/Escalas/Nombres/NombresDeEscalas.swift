@@ -122,6 +122,14 @@ package struct NombresDeEscalas: Sendable {
                 indice[TipoDeEscala.normalizar(alias)] = tipo
             }
         }
+        // Los nombres en cirílico o en griego se leen también transliterados: «dorijskij», «dórios».
+        for fila in filas {
+            guard let tipo = fila.tipo else { continue }
+            for nombre in [fila.nombre] + fila.alias + fila.variantes {
+                let latina = TipoDeEscala.normalizar(Transliteracion.latina(nombre))
+                if indice[latina] == nil { indice[latina] = tipo }
+            }
+        }
         self.porTipo = porTipo
         self.tradicionales = tradicionales
         self.categorias = categorias

@@ -237,7 +237,7 @@ extension Tonalidad.Modo {
     /// notas.
     public func nombre(en notacion: Notacion) -> String {
         let reglas = notacion.idiomaDeLasNotas.reglas
-        return self == .mayor ? reglas.mayor : reglas.menor
+        return notacion.enSuAlfabeto(self == .mayor ? reglas.mayor : reglas.menor)
     }
 }
 

@@ -5,13 +5,22 @@ import Foundation
 extension Notacion {
     /// Cómo se llama cada notación en el selector.
     public var titulo: String {
-        esCombinada ? "\(escritura.titulo) · \(textos.titulo)" : escritura.titulo
+        enSuAlfabeto(esCombinada ? "\(escritura.titulo) · \(textos.titulo)" : escritura.titulo)
     }
 
     /// El nombre con que se guarda en los ajustes. Es estable: no depende del orden de `allCases`.
-    /// Una notación combinada se guarda como «ruso+espanol».
+    /// Una notación combinada se guarda como «ruso+espanol», y en el alfabeto latino, con «@latino» detrás:
+    /// «ruso@latino».
     public var clave: String {
-        esCombinada ? escritura.clave + "+" + textos.clave : escritura.clave
+        let base = esCombinada ? escritura.clave + "+" + textos.clave : escritura.clave
+        return alfabeto == .latino && admiteAlfabetoLatino ? base + Self.sufijoLatino : base
+    }
+
+    private static let sufijoLatino = "@latino"
+
+    /// ¿Escribe en ruso o en griego, las notas o los textos? Entonces el selector ofrece el alfabeto latino.
+    public var admiteAlfabetoLatino: Bool {
+        sistemaDeNombres == nil && [Idioma.ruso, .griego].contains { $0 == textos || $0 == idiomaDeLasNotas }
     }
 
     /// La notación del idioma del sistema, para cuando aún no se ha elegido ninguna: con el sistema en
@@ -26,6 +35,9 @@ extension Notacion {
 
     /// La notación guardada con esa clave; si no existe, el español con ♯ y ♭.
     public static func desde(clave: String) -> Notacion {
+        if clave.hasSuffix(sufijoLatino) {
+            return desde(clave: String(clave.dropLast(sufijoLatino.count))).conAlfabeto(.latino)
+        }
         let partes = clave.split(separator: "+", maxSplits: 1).map(String.init)
         let clave = partes.first
         let notas = (allCases + deOtrasTradiciones).first { $0.clave == clave } ?? .espanolCompacto
@@ -68,8 +80,8 @@ extension Notacion {
     /// Otras notas, conservando el idioma elegido para los textos.
     public func conNotas(_ notas: Notacion) -> Notacion {
         // Las de otra tradición no tienen idioma: los textos siguen en el que se estaba leyendo.
-        if notas.sistemaDeNombres != nil { return notas.conTextos(en: textos) }
-        return idiomaElegidoParaLosTextos.map { notas.conTextos(en: $0) } ?? notas.notas
+        if notas.sistemaDeNombres != nil { return notas.conTextos(en: textos).conAlfabeto(alfabeto) }
+        return (idiomaElegidoParaLosTextos.map { notas.conTextos(en: $0) } ?? notas.notas).conAlfabeto(alfabeto)
     }
 
     /// Los mismos nombres de nota con los textos en otro idioma, o en el de las notas si es `nil`.
