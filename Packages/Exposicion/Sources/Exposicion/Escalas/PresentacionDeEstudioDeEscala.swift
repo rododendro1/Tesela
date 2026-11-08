@@ -24,7 +24,9 @@ public struct DigitacionDePianoPresentada: Hashable, Sendable {
 
 /// Un modo de una escala: su nombre, cuánto más brillante u oscuro es que el mayor y lo que cambia respecto a la
 /// escala de partida.
-public struct ModoPresentado: Hashable, Sendable {
+///
+/// En JSON (`armonia escala … --modos --json`), su nombre, su brillo y sus cambios.
+public struct ModoPresentado: Hashable, Sendable, Encodable {
     public let escala: Escala
     public let nombre: String
     /// «+1», «0», «-2»; vacío si la escala no tiene siete notas.
@@ -32,6 +34,8 @@ public struct ModoPresentado: Hashable, Sendable {
     /// Los grados que cambian respecto a la escala de partida, si tienen la misma tónica: «4: Fa → Fa♯».
     public let cambios: String
     public let sonido: Escucha
+
+    private enum CodingKeys: String, CodingKey { case nombre, brillo, cambios }
 }
 
 /// Dos escalas comparadas, como lo enseñan las apps y la línea de comandos.
@@ -51,13 +55,17 @@ public struct ComparacionDeEscalasPresentada: Hashable, Sendable {
 }
 
 /// Una escala bebop o pentatónica sobre un acorde: su nombre, lo que aporta y cómo suena.
-public struct EscalaSobreElAcordePresentada: Hashable, Sendable {
+///
+/// En JSON (las vecinas y los ciclos de la simetría de `armonia escala … --json`), su nombre y su detalle.
+public struct EscalaSobreElAcordePresentada: Hashable, Sendable, Encodable {
     public let escala: Escala
     public let nombre: String
     /// En una bebop, la nota de paso y el recorrido bajando: «nota de paso: Si · Do Si Si♭ La Sol Fa Mi Re»; en una
     /// pentatónica, sus tensiones: «9 · 13».
     public let detalle: String
     public let sonido: Escucha
+
+    private enum CodingKeys: String, CodingKey { case nombre, detalle }
 }
 
 /// La parte de la pestaña de escalas para estudiarlas (secuencias, digitación de piano, modos, comparación) y las

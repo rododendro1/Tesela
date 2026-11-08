@@ -2,9 +2,11 @@ import Armonia
 
 /// El análisis de una progresión tal como lo enseñan la app y la línea de comandos: en tramos (uno por
 /// tonalidad, con la modulación que lo abre), las cadencias y los ficheros para exportar.
-public struct AnalisisPresentado: Hashable, Sendable {
-    /// Un acorde del análisis, como se enseña en una fila.
-    public struct Fila: Hashable, Sendable {
+///
+/// En JSON (`armonia analizar … --json`), el título, los tramos y las cadencias.
+public struct AnalisisPresentado: Hashable, Sendable, Encodable {
+    /// Un acorde del análisis, como se enseña en una fila. En JSON, sin la escala.
+    public struct Fila: Hashable, Sendable, Encodable {
         /// El cifrado americano («Re7»).
         public let cifrado: String
         /// El cifrado romano («V7/V»).
@@ -14,6 +16,8 @@ public struct AnalisisPresentado: Hashable, Sendable {
         /// La escala del acorde en su tonalidad (Re7 en V7/V → Re mixolidio), con sus tensiones y sus notas a
         /// evitar; `nil` si ninguna tiene todas sus notas.
         public let escala: EscalaSobreAcordePresentada?
+
+        private enum CodingKeys: String, CodingKey { case cifrado, grado, funcion }
     }
 
     /// La tonalidad, o el recorrido de tonalidades si modula («Do mayor → Sol mayor»).
@@ -30,6 +34,8 @@ public struct AnalisisPresentado: Hashable, Sendable {
     /// arpegiarlos).
     public internal(set) var ritmo: RitmoArmonico?
 
+    private enum CodingKeys: String, CodingKey { case titulo, tramos, cadencias }
+
     /// La progresión arpegiada con un patrón, en la tonalidad de la partitura y con su ritmo armónico; las notas,
     /// en corcheas o en la figura que se diga.
     public func arpegiada(
@@ -41,11 +47,16 @@ public struct AnalisisPresentado: Hashable, Sendable {
     }
 }
 
-/// Un tramo del análisis en una tonalidad: la modulación que lo abre y sus acordes.
-public struct TramoPresentado: Hashable, Sendable {
+/// Un tramo del análisis en una tonalidad: la modulación que lo abre y sus acordes (en JSON, `acordes`).
+public struct TramoPresentado: Hashable, Sendable, Encodable {
     /// La modulación que abre el tramo; `nil` en el primero.
     public let cabecera: String?
     public let filas: [AnalisisPresentado.Fila]
+
+    private enum CodingKeys: String, CodingKey {
+        case cabecera
+        case filas = "acordes"
+    }
 }
 
 /// La parte de la vista de análisis que no es dibujo, y la salida de `armonia analizar`. No usa SwiftUI,
