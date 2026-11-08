@@ -285,26 +285,35 @@ enum ErrorDeUso: Error {
         case .faltaTonalidad:
             return Self.conEjemplo(\.faltaTonalidad, "armonia tonalidad La menor", "armonia key A minor")
         case .faltanAcordesDeLasVoces:
-            return Self.conEjemplo(\.faltanAcordes, "armonia revisar Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4", "armonia check C3 E4 G4 C5, G2 D4 G4 B4")
+            return Self.conEjemplo(
+                \.faltanAcordes, "armonia revisar Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4",
+                "armonia check C3 E4 G4 C5, G2 D4 G4 B4")
         case .dosAcordesDeConduccion:
-            return Self.conEjemplo(\.dosAcordes, "armonia conduccion-minima Sol7 Do", "armonia minimal-voice-leading G7 C")
+            return Self.conEjemplo(
+                \.dosAcordes, "armonia conduccion-minima Sol7 Do", "armonia minimal-voice-leading G7 C")
         case .faltaTonalidadTrasEn: return TextosDeConsola.traduccion(\.faltaTonalidadTrasEn)
         case .faltaConjunto: return Self.conEjemplo(\.faltaConjunto, "armonia conjunto 0 4 7", "armonia set 0 4 7")
         case .faltaSerie:
-            return Self.conEjemplo(\.faltaSerie, "armonia serie 0 e 7 4 2 9 3 8 t 1 5 6", "armonia row 0 e 7 4 2 9 3 8 t 1 5 6")
+            return Self.conEjemplo(
+                \.faltaSerie, "armonia serie 0 e 7 4 2 9 3 8 t 1 5 6", "armonia row 0 e 7 4 2 9 3 8 t 1 5 6")
         case .faltanAcordesDelAnalisis:
             return Self.conEjemplo(\.faltanAcordes, "armonia analizar Do Fa Sol7 Do", "armonia analyze C F G7 C")
         case .archivoConAcordes: return TextosDeConsola.traduccion(\.archivoConAcordes)
         case .archivoSinAcordes: return TextosDeConsola.traduccion(\.archivoSinAcordes)
         case .faltaTransporte:
-            return Self.conEjemplo(\.faltaTransporte, "armonia transponer 2M Do Lam Fa Sol7", "armonia transpose M2 C Am F G7")
+            return Self.conEjemplo(
+                \.faltaTransporte, "armonia transponer 2M Do Lam Fa Sol7", "armonia transpose M2 C Am F G7")
         case .faltanAcordesDeLaRearmonizacion:
-            return Self.conEjemplo(\.faltanAcordes, "armonia rearmonizar Do Lam Rem7 Sol7", "armonia reharmonize C Am Dm7 G7")
+            return Self.conEjemplo(
+                \.faltanAcordes, "armonia rearmonizar Do Lam Rem7 Sol7", "armonia reharmonize C Am Dm7 G7")
         case .faltanNotasDeLaArmonizacion:
-            return Self.conEjemplo(\.faltanNotasDeLaArmonizacion, "armonia armonizar Mi4 Re4 Do4", "armonia harmonize E4 D4 C4")
+            return Self.conEjemplo(
+                \.faltanNotasDeLaArmonizacion, "armonia armonizar Mi4 Re4 Do4", "armonia harmonize E4 D4 C4")
         case .propuestasFueraDeRango: return TextosDeConsola.traduccion(\.propuestasFueraDeRango)
         case .faltanVocesDelContrapunto:
-            return Self.conEjemplo(\.faltanVocesDelContrapunto, "armonia contrapunto Re4 Fa4 Mi4 Re4 / La4 La4 Do#5 Re5", "armonia counterpoint D4 F4 E4 D4 / A4 A4 C#5 D5")
+            return Self.conEjemplo(
+                \.faltanVocesDelContrapunto, "armonia contrapunto Re4 Fa4 Mi4 Re4 / La4 La4 Do#5 Re5",
+                "armonia counterpoint D4 F4 E4 D4 / A4 A4 C#5 D5")
         case .especieFueraDeRango: return TextosDeConsola.traduccion(\.especieFueraDeRango)
         case .sinContrapuntoPosible: return TextosDeConsola.traduccion(\.sinContrapuntoPosible)
         case .formatoDePartituraDesconocido(let formato):
@@ -323,7 +332,8 @@ enum ErrorDeUso: Error {
         case .dedosFueraDeRango: return TextosDeConsola.traduccion(\.dedosFueraDeRango)
         case .faltaTraste: return TextosDeConsola.traduccion(\.faltaTraste)
         case .trasteFueraDeRango: return TextosDeConsola.traduccion(\.trasteFueraDeRango)
-        case .faltaCifradoDeDigitaciones: return Self.conEjemplo(\.faltaCifrado, Self.digitaciones.0, Self.digitaciones.1)
+        case .faltaCifradoDeDigitaciones:
+            return Self.conEjemplo(\.faltaCifrado, Self.digitaciones.0, Self.digitaciones.1)
         case .faltaEscalaDePosiciones:
             return Self.conEjemplo(\.faltaEscala, "armonia posiciones Sol mayor", "armonia positions G major")
         case .capoFueraDeRango: return TextosDeConsola.traduccion(\.capoFueraDeRango)
@@ -342,17 +352,21 @@ enum ErrorDeUso: Error {
         case .manoDesconocida(let mano): return TextosDeConsola.traduccion { $0.manoDesconocida(mano) }
         case .archivoConNotas: return TextosDeConsola.traduccion(\.archivoConNotas)
         case .noEsPentatonica:
-            return Self.conEjemplo(\.noEsPentatonica, "armonia posiciones La pentatónica menor --formas", "armonia positions A minor pentatonic --shapes")
+            return Self.conEjemplo(
+                \.noEsPentatonica, "armonia posiciones La pentatónica menor --formas",
+                "armonia positions A minor pentatonic --shapes")
         case .faltaEscalaDelReloj:
             return Self.conEjemplo(\.faltaEscala, "armonia reloj Re mayor", "armonia clock D major")
         case .faltaEscalaDeLaHoja:
             return Self.conEjemplo(\.faltaEscala, "armonia hoja Re mayor", "armonia sheet D major")
         case .faltanLosAcordesDeLaHoja:
-            return Self.conEjemplo(\.faltanAcordes, "armonia hoja acordes Rem7 Sol7 Do7M", "armonia sheet chords Dm7 G7 Cmaj7")
+            return Self.conEjemplo(
+                \.faltanAcordes, "armonia hoja acordes Rem7 Sol7 Do7M", "armonia sheet chords Dm7 G7 Cmaj7")
         case .faltaElAcordeDeLaHoja:
             return Self.conEjemplo(\.faltaAcorde, "armonia hoja acorde Sol7", "armonia sheet chord G7")
         case .faltaLoQueDibujaElPentagrama:
-            return Self.conEjemplo(\.faltaLoQueDibujaElPentagrama, "armonia pentagrama escala Re dórico", "armonia staff scale D dorian")
+            return Self.conEjemplo(
+                \.faltaLoQueDibujaElPentagrama, "armonia pentagrama escala Re dórico", "armonia staff scale D dorian")
         case .vocesFueraDeRango: return TextosDeConsola.traduccion(\.vocesFueraDeRango)
         case .unAcordeDeVecinos:
             return Self.conEjemplo(\.unAcordeDeVecinos, "armonia vecinos Sol7", "armonia neighbors G7")
@@ -365,13 +379,17 @@ enum ErrorDeUso: Error {
             let (espanol, ingles) = camino ? ("camino Do Mibm", "shortest C Ebm") : ("Do PLR", "C PLR")
             return Self.conEjemplo(\.plrSoloTriadas, "armonia plr " + espanol, "armonia plr " + ingles)
         case .faltaTipoDePartitura(let orden):
-            return Self.conEjemplo(\.faltaTipoDePartitura, "armonia \(orden) melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4", "armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --time 3/4")
+            return Self.conEjemplo(
+                \.faltaTipoDePartitura, "armonia \(orden) melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4",
+                "armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --time 3/4")
         case .instrumentoMIDI: return TextosDeConsola.traduccion(\.instrumentoMIDI)
         case .marcasSoloMusicXML: return TextosDeConsola.traduccion(\.marcasSoloMusicXML)
         case .faltaValor(let opcion): return TextosDeConsola.traduccion { $0.faltaValor(opcion) }
         case .tempoMalEscrito: return TextosDeConsola.traduccion(\.tempoMalEscrito)
         case .faltanNotasDeLaMelodia(let orden):
-            return Self.conEjemplo(\.faltanNotas, "armonia \(orden) melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4", "armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --time 3/4")
+            return Self.conEjemplo(
+                \.faltanNotas, "armonia \(orden) melodia Do4:4 Re4:8 Mi4:8 Fa4:2 --compas 3/4",
+                "armonia \(orden) melody C4:4 D4:8 E4:8 F4:2 --time 3/4")
         case .marcasSoloCoral: return TextosDeConsola.traduccion(\.marcasSoloCoral)
         case .duracionSoloCoral: return TextosDeConsola.traduccion(\.duracionSoloCoral)
         case .claveDesconocida(let clave):
@@ -382,18 +400,23 @@ enum ErrorDeUso: Error {
                 TextosDeConsola.en(notacion) { $0.claveDesconocida(clave, claves.en(notacion)) }
             })
         case .faltanAcordesDelCoral(let orden):
-            return Self.conEjemplo(\.faltanAcordes, "armonia \(orden) coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4", "armonia \(orden) chorale C3 E4 G4 C5, G2 D4 G4 B4")
+            return Self.conEjemplo(
+                \.faltanAcordes, "armonia \(orden) coral Do3 Mi4 Sol4 Do5, Sol2 Re4 Sol4 Si4",
+                "armonia \(orden) chorale C3 E4 G4 C5, G2 D4 G4 B4")
         case .soloParaMelodia(let opcion): return TextosDeConsola.traduccion { $0.soloParaMelodia(opcion) }
         case .soloParaArpegios(let opcion): return TextosDeConsola.traduccion { $0.soloParaArpegios(opcion) }
         case .archivoSoloParaAcordes: return TextosDeConsola.traduccion(\.archivoSoloParaAcordes)
         case .ventanaSinArchivo: return TextosDeConsola.traduccion(\.ventanaSinArchivo)
         case .faltanAcordesDeLaProgresion(let orden):
-            return Self.conEjemplo(\.faltanAcordes, "armonia \(orden) acordes Do Lam Re7 Sol7 Do", "armonia \(orden) chords C Am D7 G7 C")
+            return Self.conEjemplo(
+                \.faltanAcordes, "armonia \(orden) acordes Do Lam Re7 Sol7 Do", "armonia \(orden) chords C Am D7 G7 C")
         case .acordesConCifradosYAnalisis: return TextosDeConsola.traduccion(\.acordesConCifradosYAnalisis)
         case .tipoDePartituraDesconocido(let tipo):
             return TextosDeConsola.traduccion { $0.tipoDePartituraDesconocido(tipo) }
         case .faltaLoQueSeGraba:
-            return Self.conEjemplo(\.faltaLoQueSeGraba, "armonia grabar coral Do3 Mi4 Sol4 Do5 > coral.pdf", "armonia engrave chorale C3 E4 G4 C5 > chorale.pdf")
+            return Self.conEjemplo(
+                \.faltaLoQueSeGraba, "armonia grabar coral Do3 Mi4 Sol4 Do5 > coral.pdf",
+                "armonia engrave chorale C3 E4 G4 C5 > chorale.pdf")
         case .grabarUnaPartitura(let orden):
             let ejemplo = LineaDeComandos.ejemplo(
                 "armonia grabar melodia Do4:4 Re4:4 > melodia.pdf", "armonia engrave melody C4:4 D4:4 > melody.pdf")
@@ -410,19 +433,28 @@ enum ErrorDeUso: Error {
         case .faltaAcordeDelDibujo(let orden):
             return Self.conEjemplo(\.faltaAcorde, "armonia \(orden) acorde Sol7", "armonia \(orden) chord G7")
         case .faltaEscalaDelDibujo(let orden):
-            return Self.conEjemplo(\.faltaEscala, "armonia \(orden) escala Re dórico", "armonia \(orden) scale D dorian")
+            return Self.conEjemplo(
+                \.faltaEscala, "armonia \(orden) escala Re dórico", "armonia \(orden) scale D dorian")
         case .faltanClasesDelDibujo(let orden):
-            return Self.conEjemplo(\.faltanClasesDelDibujo, "armonia \(orden) clases 0 4 7", "armonia \(orden) pcs 0 4 7")
+            return Self.conEjemplo(
+                \.faltanClasesDelDibujo, "armonia \(orden) clases 0 4 7", "armonia \(orden) pcs 0 4 7")
         case .faltanTriadasDelRecorrido(let orden):
-            return Self.conEjemplo(\.faltanTriadasDelRecorrido, "armonia \(orden) recorrido Do Lam Fa Rem", "armonia \(orden) sequence C Am F Dm")
+            return Self.conEjemplo(
+                \.faltanTriadasDelRecorrido, "armonia \(orden) recorrido Do Lam Fa Rem",
+                "armonia \(orden) sequence C Am F Dm")
         case .cicloMalEscrito(let orden):
-            return Self.conEjemplo(\.cicloMalEscrito, "armonia \(orden) ciclo hexatonico Do", "armonia \(orden) cycle hexatonic C")
+            return Self.conEjemplo(
+                \.cicloMalEscrito, "armonia \(orden) ciclo hexatonico Do", "armonia \(orden) cycle hexatonic C")
         case .recorridoSoloTriadas(let orden):
-            return Self.conEjemplo(\.recorridoSoloTriadas, "armonia \(orden) recorrido Do Lam Fa Rem", "armonia \(orden) sequence C Am F Dm")
+            return Self.conEjemplo(
+                \.recorridoSoloTriadas, "armonia \(orden) recorrido Do Lam Fa Rem",
+                "armonia \(orden) sequence C Am F Dm")
         case .caminoSoloTriadas(let orden):
-            return Self.conEjemplo(\.caminoSoloTriadas, "armonia \(orden) camino Do Mibm", "armonia \(orden) shortest C Ebm")
+            return Self.conEjemplo(
+                \.caminoSoloTriadas, "armonia \(orden) camino Do Mibm", "armonia \(orden) shortest C Ebm")
         case .cicloSoloTriadas(let orden):
-            return Self.conEjemplo(\.cicloSoloTriadas, "armonia \(orden) ciclo hexatonico Do", "armonia \(orden) cycle hexatonic C")
+            return Self.conEjemplo(
+                \.cicloSoloTriadas, "armonia \(orden) ciclo hexatonico Do", "armonia \(orden) cycle hexatonic C")
         case .opcionesDeCuadricula: return TextosDeConsola.traduccion(\.opcionesDeCuadricula)
         }
     }
