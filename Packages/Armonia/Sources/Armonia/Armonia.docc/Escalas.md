@@ -108,7 +108,7 @@ Escala(.do, .cromaticaConCincoSostenidos).nombre(claseDeAltura: 10)   // La♯
 
 Las notas no dicen de qué música es una escala: la menor melódica de jazz es la «bachiana» de los conservatorios, y
 el lidio dominante es la acústica de Bartók. Lo dice el estilo, y `TipoDeEscala.estilos` lo da para cada escala de
-`todos`, con uno o varios `EstiloDeEscala` de la tradición occidental:
+`todos`, con uno o varios `Estilo` de la tradición occidental:
 
 - **clásica**: la escala da la tonalidad y de ella sale la armonía (la mayor, las menores, los modos, las
   napolitanas, la cromática, el hexacordo).
@@ -122,13 +122,13 @@ el lidio dominante es la acústica de Bartók. Lo dice el estilo, y `TipoDeEscal
   mayor armónicas, de la doble armónica y de las napolitanas).
 
 Las escalas de `todos` son de la tradición occidental (`Tradicion.occidental`), y estos son sus estilos, como la música
-carnática o el gagaku lo son de la India o de Japón. `EstiloDeEscala.tipos` da las de un estilo, en el orden del
+carnática o el gagaku lo son de la India o de Japón. `Estilo.tipos` da las de un estilo, en el orden del
 catálogo, y en la línea de comandos `armonia escalas --uso jazz` las lista.
 
 ```swift
 TipoDeEscala.dorico.estilos == [.clasica, .jazz]    // true
-EstiloDeEscala.blues.tipos.count                     // 6
-EstiloDeEscala.sigloXX.nombre                        // "siglo XX"
+Estilo.blues.tipos.count                            // 6
+Estilo.sigloXX.nombre                               // "siglo XX"
 TipoDeEscala.kafi.estilos == [.indostanica]         // true
 TipoDeEscala.dorico.tradicion                        // .occidental
 ```

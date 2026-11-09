@@ -154,6 +154,20 @@ extension LineaDeComandosTests {
         #expect(matriz.count == 12 && matriz.allSatisfy { $0.count == 12 })
     }
 
+    @Test func catalogosConNombreEnJSON() throws {
+        let andaluza = try #require(try json("progresiones andaluza --en La") as? [[String: Any]])
+        #expect(andaluza.count == 1)
+        #expect(andaluza.first?["cifrado"] as? String == "i VII VI V")
+        #expect(andaluza.first?["modo"] as? String == "menor")
+        #expect(andaluza.first?["acordes"] as? [String] == ["Lam", "Sol", "Fa", "Mi"])
+
+        let tristan = try #require(try json("acordes tristan --sobre Fa") as? [[String: Any]])
+        #expect(tristan.first?["notas"] as? [String] == ["Fa", "Si", "Re♯", "Sol♯"])
+        #expect(tristan.first?["cifrado"] == nil)
+        let septima = try #require(try json("acordes séptima de dominante") as? [[String: Any]])
+        #expect(septima.first?["cifrado"] as? String == "Do7")
+    }
+
     /// Los errores siguen en texto, en la salida de errores, con su código.
     @Test func erroresConJSON() {
         let sinJSON = LineaDeComandos.ejecutar(["tonnetz", "Do", "Mi", "Sol", "--json"])

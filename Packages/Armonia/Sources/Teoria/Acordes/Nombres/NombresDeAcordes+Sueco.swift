@@ -3,7 +3,7 @@
 // Los nombres de los acordes del catálogo en sueco. Qué es cada campo, en `NombresDeAcordes.swift`.
 
 extension NombresDeAcordes {
-    static let sueco = NombresDeAcordes([
+    static let sueco = Tabla([
         .init(.mayor, "durtreklang"),
         .init(.menor, "molltreklang"),
         .init(.disminuido, "förminskad treklang"),

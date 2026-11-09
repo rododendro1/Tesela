@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en griego. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let griego = NombresDeProgresiones([
+    static let griego = Tabla([
         .init(.cadenciaPerfecta, "τέλεια πτώση"),
         .init(.cadenciaPlagal, "πλάγια πτώση"),
         .init(.cadenciaRota, "απατηλή πτώση"),

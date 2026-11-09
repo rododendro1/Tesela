@@ -3,7 +3,7 @@
 // Los nombres de los acordes del catálogo en húngaro. Qué es cada campo, en `NombresDeAcordes.swift`.
 
 extension NombresDeAcordes {
-    static let hungaro = NombresDeAcordes([
+    static let hungaro = Tabla([
         .init(.mayor, "dúr"),
         .init(.menor, "moll"),
         .init(.disminuido, "szűkített"),

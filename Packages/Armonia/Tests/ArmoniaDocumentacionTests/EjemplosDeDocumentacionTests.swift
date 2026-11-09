@@ -468,8 +468,8 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Escalas.md, bloque 3
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 3)
         comprobar(TipoDeEscala.dorico.estilos == [.clasica, .jazz], #"true"#, doc, 0)
-        comprobar(EstiloDeEscala.blues.tipos.count, #"6"#, doc, 1)
-        comprobar(EstiloDeEscala.sigloXX.nombre, #""siglo XX""#, doc, 2)
+        comprobar(Estilo.blues.tipos.count, #"6"#, doc, 1)
+        comprobar(Estilo.sigloXX.nombre, #""siglo XX""#, doc, 2)
         comprobar(TipoDeEscala.kafi.estilos == [.indostanica], #"true"#, doc, 3)
         comprobarIgual(TipoDeEscala.dorico.tradicion, .occidental, doc, 4)
     }
@@ -605,7 +605,7 @@ import Hexagonos
         comprobar(TipoDeEscala.slendro.regiones == [.java, .bali], #"true"#, doc, 2)
         comprobarIgual(RegionDeEscala.bali.tradicion, .indonesia, doc, 3)
         comprobar(RegionDeEscala.java.tipos.count, #"7"#, doc, 4)
-        comprobar(EstiloDeEscala.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)), #""Carnatic""#, doc, 5)
+        comprobar(Estilo.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)), #""Carnatic""#, doc, 5)
     }
 
     @Test func escalasDelMundo4() throws {
@@ -1422,10 +1422,10 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 19
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 19)
         let esquemas = EsquemaArmonico.buscar(en: ["Do7M", "Lam7", "Rem7", "Sol7", "Do7M"])
-        comprobar(esquemas.map(\.tipo), #"[turnaround, progresión por quintas, ii–V–I]"#, doc, 1)
+        comprobar(esquemas.map(\.progresion), #"[turnaround, progresión por quintas, ii–V–I]"#, doc, 1)
         comprobar(esquemas.map(\.indices), #"[0..<4, 1..<5, 2..<5]"#, doc, 2)
-        comprobar(EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])[0].tipo == .backdoor, #"true"#, doc, 3)
-        comprobar(EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].tipo == .andaluza, #"true"#, doc, 4)
+        comprobar(EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])[0].progresion == .backdoor, #"true"#, doc, 3)
+        comprobar(EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].progresion == .andaluza, #"true"#, doc, 4)
         comprobar(EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].tonica, #"La"#, doc, 5)
     }
 

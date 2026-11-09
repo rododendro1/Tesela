@@ -3,7 +3,7 @@
 // Los nombres de los acordes del catálogo en ruso. Qué es cada campo, en `NombresDeAcordes.swift`.
 
 extension NombresDeAcordes {
-    static let ruso = NombresDeAcordes([
+    static let ruso = Tabla([
         .init(.mayor, "мажорное трезвучие"),
         .init(.menor, "минорное трезвучие"),
         .init(.disminuido, "уменьшённое трезвучие"),

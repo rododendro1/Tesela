@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en italiano. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let italiano = NombresDeProgresiones([
+    static let italiano = Tabla([
         .init(.cadenciaPerfecta, "cadenza perfetta"),
         .init(.cadenciaPlagal, "cadenza plagale"),
         .init(.cadenciaRota, "cadenza d'inganno"),

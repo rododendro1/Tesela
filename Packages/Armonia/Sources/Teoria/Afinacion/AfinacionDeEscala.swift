@@ -6,7 +6,7 @@ import Foundation
 // Una escala de otra tradición suena con sus microtonos (`AfinacionDeEscala`, de `TipoDeEscala.afinaciones`); una
 // escala de doce notas se puede medir en un temperamento histórico (`Escala.cents(en:)`), que depende de la tónica
 // cuando el temperamento es circular o justo. Cada tradición sugiere el suyo (`Tradicion.afinacionSugerida`), y
-// cada estilo de una escala occidental, también (`EstiloDeEscala.afinacionSugerida`).
+// cada estilo de una escala occidental, también (`Estilo.afinacionSugerida`).
 
 // MARK: - Una escala microtonal como afinación
 
@@ -104,7 +104,7 @@ extension Tradicion {
     }
 }
 
-extension EstiloDeEscala {
+extension Estilo {
     /// El temperamento que mejor le va a un estilo occidental: en la música clásica, un buen temperamento
     /// (Werckmeister III), en el que cada tonalidad suena con su color; en los demás, el igual, porque modulan a
     /// cualquier tonalidad o, como las escalas simétricas, lo necesitan para repetirse. `nil` en los de otras
@@ -121,7 +121,7 @@ extension EstiloDeEscala {
 extension TipoDeEscala {
     /// El temperamento sugerido: el de su tradición (`Tradicion.afinacionSugerida`); en las occidentales, el
     /// mesotónico en los modos y el hexacordo, los de la polifonía del Renacimiento, y si no, el de su primer estilo
-    /// (`EstiloDeEscala.afinacionSugerida`). `nil` si no tiene tradición.
+    /// (`Estilo.afinacionSugerida`). `nil` si no tiene tradición.
     ///
     ///     TipoDeEscala.dorico.afinacionSugerida     // .mesotonico
     ///     TipoDeEscala.mayor.afinacionSugerida      // .werckmeisterIII

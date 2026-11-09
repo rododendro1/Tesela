@@ -3,7 +3,7 @@
 // Los nombres de los acordes del catálogo en euskera. Qué es cada campo, en `NombresDeAcordes.swift`.
 
 extension NombresDeAcordes {
-    static let euskera = NombresDeAcordes([
+    static let euskera = Tabla([
         .init(.mayor, "maiorra"),
         .init(.menor, "minorra"),
         .init(.disminuido, "gutxitua"),

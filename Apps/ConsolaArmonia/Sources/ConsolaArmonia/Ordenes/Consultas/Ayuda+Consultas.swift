@@ -28,7 +28,12 @@ extension LineaDeComandos {
             ejecutar: { try tradiciones($0, $1.notacion) }),
         Orden(
             nombres: ["progresiones", "progressions"], ayuda: ayudaDeProgresiones,
+            json: { try progresionesJSON($0, $1.notacion) },
             ejecutar: { try progresiones($0, $1.notacion) }),
+        Orden(
+            nombres: ["acordes", "chords"], ayuda: ayudaDeAcordesConNombre,
+            json: { try acordesConNombreJSON($0, $1.notacion) },
+            ejecutar: { try acordesConNombre($0, $1.notacion) }),
         Orden(
             nombres: ["tonalidad", "key"], ayuda: ayudaDeTonalidad, json: { try tonalidadJSON($0, $1.notacion) },
             ejecutar: { try consultarTonalidad($0, $1.notacion) }),
@@ -116,6 +121,15 @@ extension LineaDeComandos {
             descripcion: TextosDeConsola.traduccion(\.descripcionProgresiones),
             ejemplo: ejemplo("armonia progresiones andaluza --en La", "armonia progressions andalusian --in A"),
             opciones: [.en])
+    ]
+
+    static let ayudaDeAcordesConNombre: [EntradaDeAyuda] = [
+        // acordes [<texto>] [--sobre <nota>]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisAcordesConNombre),
+            descripcion: TextosDeConsola.traduccion(\.descripcionAcordesConNombre),
+            ejemplo: ejemplo("armonia acordes tristan --sobre Fa", "armonia chords tristan --over F"),
+            opciones: [.sobre])
     ]
 
     static let ayudaDeEscalas: [EntradaDeAyuda] = [

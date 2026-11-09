@@ -1,18 +1,20 @@
 import Elementos
 
-// MARK: - El estilo de una escala
+// MARK: - El estilo de una escala, un acorde o una progresión
 
-/// El estilo o repertorio en que se usa una escala, dentro de su tradición: en la occidental, la música clásica, el
-/// jazz, el blues…; en la India, la música carnática, la indostánica o la del Nāṭyaśāstra; en Japón, el gagaku. Las
-/// notas no lo dicen: la menor melódica de jazz es la «bachiana» de los conservatorios, y el lidio dominante es la
-/// acústica de Bartók. Lo dice el repertorio.
+/// El estilo o repertorio en que se usa una escala, un acorde o una progresión del catálogo, dentro de su tradición:
+/// en la occidental, la música clásica, el jazz, el blues…; en la India, la música carnática, la indostánica o la del
+/// Nāṭyaśāstra; en Japón, el gagaku. Las notas no lo dicen: la menor melódica de jazz es la «bachiana» de los
+/// conservatorios, y el lidio dominante es la acústica de Bartók. Lo dice el repertorio.
 ///
 /// Todas las escalas de `TipoDeEscala.todos` tienen al menos un estilo de la tradición occidental. A las de la India
-/// se lo da su categoría (`EstiloDeEscala.de(_:)`); las demás lo llevan en su declaración, si lo tienen.
+/// se lo da su categoría (`Estilo.de(_:)`); las demás lo llevan en su declaración, si lo tienen.
 ///
 ///     TipoDeEscala.alterada.estilos         // [.jazz]
-///     EstiloDeEscala.blues.tipos            // pentatónica mayor, pentatónica menor, blues, blues mayor…
-public enum EstiloDeEscala: String, Sendable, Codable, CaseIterable {
+///     Estilo.blues.tipos                    // pentatónica mayor, pentatónica menor, blues, blues mayor…
+///
+/// Hasta la 0.4.4 se llamaba `EstiloDeEscala`, que queda como alias obsoleto hasta la 0.5.0.
+public enum Estilo: String, Sendable, Codable, CaseIterable {
     /// Occidental: la teoría tonal y modal, en la que la escala da la tonalidad y de ella sale la armonía (la mayor,
     /// las menores, los modos, las napolitanas, la cromática, el hexacordo).
     case clasica
@@ -49,7 +51,7 @@ public enum EstiloDeEscala: String, Sendable, Codable, CaseIterable {
 
     /// El que da una categoría por sí sola: los mēḷa y los janya son carnáticos, los thāṭ y los rāgas indostánicos, y
     /// los grāma y las mūrchanā, del Nāṭyaśāstra. `nil` en las demás categorías.
-    public static func de(_ categoria: CategoriaTradicional) -> EstiloDeEscala? {
+    public static func de(_ categoria: CategoriaTradicional) -> Estilo? {
         switch categoria {
         case .melakarta, .janya: .carnatica
         case .thaat, .raga: .indostanica
@@ -86,14 +88,38 @@ public enum EstiloDeEscala: String, Sendable, Codable, CaseIterable {
     }
 }
 
-extension EstiloDeEscala: Nombrable {}
+extension Estilo: Nombrable {}
+
+/// El nombre de `Estilo` hasta la 0.4.4.
+@available(*, deprecated, renamed: "Estilo")
+public typealias EstiloDeEscala = Estilo
+
+// MARK: - Ficha de un acorde o una progresión del catálogo
+
+/// Lo que el catálogo sabe de un acorde o una progresión además de su nombre y sus notas o sus grados. Se escribe en
+/// su declaración:
+///
+///     public static let sextaAumentadaAlemana = AcordeConNombre(
+///         nombre: "sexta aumentada alemana", intervalos: [.unisono, .terceraMayor, .quintaJusta, .sextaAumentada],
+///         estilos: [.clasica])
+package struct FichaDelCatalogo: Sendable {
+    /// En qué estilos se usa, en el orden de `Estilo.allCases`.
+    package let estilos: [Estilo]
+    /// Dónde se lee.
+    package let referencias: [Referencia]
+
+    package init(estilos: [Estilo] = [], referencias: [Referencia] = []) {
+        self.estilos = Estilo.allCases.filter(estilos.contains)
+        self.referencias = referencias
+    }
+}
 
 extension TipoDeEscala {
-    /// Los estilos en que se usa la escala, en el orden de `EstiloDeEscala.allCases`: los occidentales en las de
+    /// Los estilos en que se usa la escala, en el orden de `Estilo.allCases`: los occidentales en las de
     /// `todos` (`[.clasica, .jazz]` en el dórico), el carnático o el indostánico en las de la India… Vacío en las
     /// propias y en las de otras tradiciones sin uno claro. Se busca por su `identidad`, como `tradicion`: Kāfī tiene
     /// las notas del dórico, pero no sus estilos.
     ///
     ///     TipoDeEscala.mohanam.estilos   // [.carnatica]
-    public var estilos: [EstiloDeEscala] { fichaDelCatalogo.estilos }
+    public var estilos: [Estilo] { fichaDelCatalogo.estilos }
 }

@@ -4,7 +4,8 @@ import Elementos
 //
 // Las progresiones con nombre: las cadencias y las secuencias de la armonía tonal, los esquemas del barroco y del
 // estilo galante y los bajos de danza del Renacimiento, las del jazz y el blues y las del pop y el rock. Cada una con
-// sus grados en cifrado romano, su modo, sus estilos y, si la hay, la obra donde se lee. Los nombres en los otros idiomas están en `Progresiones/Nombres/`.
+// sus grados en cifrado romano, su modo, sus estilos y, si la hay, la obra donde se lee. Los nombres en los otros
+// idiomas están en `Progresiones/Nombres/`.
 
 extension ProgresionConNombre {
     // MARK: Cadencias y secuencias de la armonía tonal

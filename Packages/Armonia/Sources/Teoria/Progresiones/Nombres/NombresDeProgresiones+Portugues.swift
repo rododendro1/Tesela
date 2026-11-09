@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en portugués. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let portugues = NombresDeProgresiones([
+    static let portugues = Tabla([
         .init(.cadenciaPerfecta, "cadência perfeita"),
         .init(.cadenciaPlagal, "cadência plagal"),
         .init(.cadenciaRota, "cadência interrompida"),

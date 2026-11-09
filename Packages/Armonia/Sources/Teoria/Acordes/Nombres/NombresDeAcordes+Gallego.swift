@@ -3,7 +3,7 @@
 // Los nombres de los acordes del catálogo en gallego. Qué es cada campo, en `NombresDeAcordes.swift`.
 
 extension NombresDeAcordes {
-    static let gallego = NombresDeAcordes([
+    static let gallego = Tabla([
         .init(.mayor, "maior"),
         .init(.menor, "menor"),
         .init(.disminuido, "diminuído"),

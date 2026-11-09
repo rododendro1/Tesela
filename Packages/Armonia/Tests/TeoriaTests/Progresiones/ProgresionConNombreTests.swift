@@ -36,11 +36,11 @@ import Testing
         for idioma in Idioma.allCases {
             let nombres = NombresDeProgresiones.de(idioma)
             #expect(nombres.filas.count == catalogo.count, "\(idioma)")
-            #expect(Set(nombres.filas.map(\.progresion)) == Set(catalogo), "\(idioma)")
+            #expect(Set(nombres.filas.map(\.elemento)) == Set(catalogo), "\(idioma)")
             let escritos = catalogo.compactMap { nombres.nombre(de: $0) }
             #expect(escritos.count == catalogo.count, "\(idioma)")
             #expect(escritos.allSatisfy { !$0.isEmpty }, "\(idioma)")
-            #expect(Set(escritos.map(NombresDeProgresiones.normalizar)).count == catalogo.count, "\(idioma)")
+            #expect(Set(escritos.map(NombresDeProgresiones.Tabla.normalizar)).count == catalogo.count, "\(idioma)")
         }
         #expect(ProgresionConNombre.andaluza.nombre(en: .conPalabras(.ingles)) == "Andalusian cadence")
         #expect(ProgresionConNombre.cadenciaRota.nombre(en: .conPalabras(.aleman)) == "Trugschluss")
@@ -50,7 +50,7 @@ import Testing
     @Test func ningunNombreEsDeDos() {
         var duenos: [String: ProgresionConNombre] = [:]
         for progresion in ProgresionConNombre.catalogo {
-            for clave in NombresDeProgresiones.claves(de: progresion) {
+            for clave in progresion.claves {
                 if let otra = duenos[clave] { #expect(otra == progresion, "«\(clave)»: \(otra) y \(progresion)") }
                 duenos[clave] = progresion
             }
@@ -70,5 +70,13 @@ import Testing
         #expect(cadencias.first == .cadenciaPerfecta)
         #expect(cadencias.contains(.andaluza) && !cadencias.contains(.monte))
         #expect(ProgresionConNombre.buscar(conteniendo: "") == ProgresionConNombre.catalogo)
+    }
+
+    /// Una progresión propia se puede comprobar al crearla.
+    @Test func leyendoElCifrado() throws {
+        let propia = try ProgresionConNombre(nombre: "mía", leyendo: "I ♭VII IV I")
+        #expect(propia.acordes(sobre: .do) == ["Do", "Sib", "Fa", "Do"])
+        #expect(throws: (any Error).self) { try ProgresionConNombre(nombre: "mía", leyendo: "I X I") }
+        #expect(ProgresionConNombre(nombre: "mía", cifrado: "I X I").acordes(sobre: .do).isEmpty)
     }
 }

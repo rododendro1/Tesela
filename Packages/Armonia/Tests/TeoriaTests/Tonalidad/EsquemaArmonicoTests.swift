@@ -7,25 +7,25 @@ import Testing
 /// galantes) y las demás, por sus grados.
 @Suite struct EsquemaArmonicoTests {
     private func tipos(_ acordes: [Acorde]) -> [ProgresionConNombre] {
-        EsquemaArmonico.buscar(en: acordes).map(\.tipo)
+        EsquemaArmonico.buscar(en: acordes).map(\.progresion)
     }
 
     // MARK: Jazz
 
     @Test func iiVI() {
         let esquemas = EsquemaArmonico.buscar(en: ["Rem7", "Sol7", "Do7M"])
-        #expect(esquemas.map(\.tipo) == [.iiVI])
+        #expect(esquemas.map(\.progresion) == [.iiVI])
         #expect(esquemas[0].tonica == .do)
         #expect(esquemas[0].indices == 0..<3)
         #expect(esquemas[0].description == "ii–V–I (acordes 1 → 3)")
         // En menor, con el iiø7; y secundario, hacia el ii.
         let menor = EsquemaArmonico.buscar(en: ["Siø7", "Mi7", "Lam"])
-        #expect(menor.map(\.tipo) == [.iiVIMenor])
+        #expect(menor.map(\.progresion) == [.iiVIMenor])
         #expect(menor.map(\.tonica) == [.la])
         #expect(EsquemaArmonico.buscar(en: ["Mim7", "La7", "Rem7"]).map(\.tonica) == [.re])
         // Sin resolver, un ii–V.
         let iiV = EsquemaArmonico.buscar(en: ["Rem7", "Sol7", "Mim7"])
-        #expect(iiV.map(\.tipo) == [.iiV])
+        #expect(iiV.map(\.progresion) == [.iiV])
         #expect(iiV[0].tonica == .do)
         #expect(tipos(["Rem7", "Sol7"]) == [.iiV])
     }
@@ -33,9 +33,9 @@ import Testing
     @Test func turnaroundYBackdoor() {
         #expect(tipos(["Do7M", "Lam7", "Rem7", "Sol7", "Do7M"]) == [.turnaround, .quintasDescendentes, .iiVI])
         let desdeElIII = EsquemaArmonico.buscar(en: ["Mim7", "Lam7", "Rem7", "Sol7"])
-        #expect(desdeElIII.first { $0.tipo == .turnaround }?.tonica == .do)
+        #expect(desdeElIII.first { $0.progresion == .turnaround }?.tonica == .do)
         let backdoor = EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])
-        #expect(backdoor.map(\.tipo) == [.backdoor])
+        #expect(backdoor.map(\.progresion) == [.backdoor])
         #expect(backdoor[0].tonica == .do)
     }
 
@@ -43,7 +43,7 @@ import Testing
         let blues = ProgresionConNombre.blues.acordes(en: Tonalidad(.fa))
         let cifrados = ["Fa7", "Fa7", "Fa7", "Fa7", "Si♭7", "Si♭7", "Fa7", "Fa7", "Do7", "Si♭7", "Fa7", "Fa7"]
         #expect(blues.map(\.cifrado) == cifrados)
-        #expect(EsquemaArmonico.buscar(en: blues).filter { $0.tipo == .blues }.map(\.tonica) == [.fa])
+        #expect(EsquemaArmonico.buscar(en: blues).filter { $0.progresion == .blues }.map(\.tonica) == [.fa])
         // Con el IV en el segundo compás, el V en el décimo y el V en el último.
         var rapido = blues
         rapido[1] = Acorde("Sib7")
@@ -56,7 +56,7 @@ import Testing
         // Menor, con el ♭VI en el noveno compás.
         let menor = ProgresionConNombre.bluesMenor.acordes(sobre: .la)
         #expect(menor[8].cifrado == "Fa7")
-        #expect(EsquemaArmonico.buscar(en: menor).filter { $0.indices == 0..<12 }.map(\.tipo) == [.bluesMenor])
+        #expect(EsquemaArmonico.buscar(en: menor).filter { $0.indices == 0..<12 }.map(\.progresion) == [.bluesMenor])
         var conElV = menor
         conElV[8] = Acorde("Mi7")
         #expect(EsquemaArmonico.esBlues(conElV))
@@ -69,7 +69,7 @@ import Testing
     @Test func quintasDescendentes() {
         let diatonica = ProgresionConNombre.quintasDescendentes.acordes(en: Tonalidad(.do))
         #expect(diatonica.map(\.cifrado) == ["Do", "Fa", "Si°", "Mim", "Lam", "Rem", "Sol", "Do"])
-        let quintas = EsquemaArmonico.buscar(en: diatonica).filter { $0.tipo == .quintasDescendentes }
+        let quintas = EsquemaArmonico.buscar(en: diatonica).filter { $0.progresion == .quintasDescendentes }
         #expect(quintas.map(\.indices) == [0..<8])
         // Tres acordes no bastan.
         #expect(!tipos(["Lam", "Rem", "Sol"]).contains(.quintasDescendentes))
@@ -86,14 +86,14 @@ import Testing
 
     @Test func monteFonteYPonte() {
         let monte = EsquemaArmonico.buscar(en: ProgresionConNombre.monte.acordes(en: Tonalidad(.do)))
-        #expect(monte.map(\.tipo) == [.monte])
+        #expect(monte.map(\.progresion) == [.monte])
         #expect(monte[0].tonica == .do)
         let fonte = ProgresionConNombre.fonte.acordes(en: Tonalidad(.do))
         #expect(fonte.map(\.cifrado) == ["La7", "Rem", "Sol7", "Do"])
         #expect(tipos(fonte).contains(.fonte))
-        #expect(EsquemaArmonico.buscar(en: fonte).first { $0.tipo == .fonte }?.tonica == .do)
+        #expect(EsquemaArmonico.buscar(en: fonte).first { $0.progresion == .fonte }?.tonica == .do)
         let ponte = EsquemaArmonico.buscar(en: ["Sol", "Sol7", "Do"])
-        #expect(ponte.map(\.tipo) == [.ponte])
+        #expect(ponte.map(\.progresion) == [.ponte])
         #expect(ponte[0].indices == 0..<2)
         // Sin la séptima no es ponte.
         #expect(tipos(["Sol", "Sol", "Do"]) == [])
@@ -103,13 +103,13 @@ import Testing
 
     @Test func porSusGrados() {
         let andaluza = EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])
-        #expect(andaluza.map(\.tipo) == [.andaluza])
+        #expect(andaluza.map(\.progresion) == [.andaluza])
         #expect(andaluza[0].tonica == .la)
         #expect(andaluza[0].description == "cadencia andaluza (acordes 1 → 4)")
         #expect(tipos(["Do", "Sol", "Lam", "Fa"]) == [.ejePop])
         #expect(tipos(["Do", "Lam", "Fa", "Sol"]) == [.deLos50])
         let eolica = EsquemaArmonico.buscar(en: ["Lab", "Sib", "Do"])
-        #expect(eolica.map(\.tipo) == [.eolica])
+        #expect(eolica.map(\.progresion) == [.eolica])
         #expect(eolica[0].tonica == .do)
         // Con séptimas o sin ellas, pero con la calidad de cada tríada y el bajo de las invertidas.
         #expect(tipos(["Lam7", "Sol7", "Famaj7", "Mi7"]) == [.andaluza])
@@ -131,7 +131,7 @@ import Testing
                 let acordes = progresion.acordes(sobre: tonica)
                 // Desde el primer acorde; la ponte acaba antes de su resolución.
                 let halladas = EsquemaArmonico.buscar(en: acordes).filter { $0.inicio == 0 }
-                #expect(halladas.map(\.tipo).contains(progresion), "\(progresion) sobre \(tonica)")
+                #expect(halladas.map(\.progresion).contains(progresion), "\(progresion) sobre \(tonica)")
             }
         }
     }

@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en ruso. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let ruso = NombresDeProgresiones([
+    static let ruso = Tabla([
         .init(.cadenciaPerfecta, "полная совершенная каденция"),
         .init(.cadenciaPlagal, "плагальная каденция"),
         .init(.cadenciaRota, "прерванная каденция"),

@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en alemán. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let aleman = NombresDeProgresiones([
+    static let aleman = Tabla([
         .init(.cadenciaPerfecta, "authentischer Ganzschluss"),
         .init(.cadenciaPlagal, "plagale Kadenz"),
         .init(.cadenciaRota, "Trugschluss"),

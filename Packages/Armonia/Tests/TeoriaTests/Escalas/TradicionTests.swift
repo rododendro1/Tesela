@@ -111,8 +111,8 @@ import Testing
             #expect(!subtradicion.tipos.isEmpty, "\(subtradicion)")
             #expect(subtradicion.tipos.allSatisfy { $0.tradicion == subtradicion.tradicion }, "\(subtradicion)")
         }
-        #expect(EstiloDeEscala.carnatica.nombre == "Carnática")
-        #expect(EstiloDeEscala.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Carnatic")
+        #expect(Estilo.carnatica.nombre == "Carnática")
+        #expect(Estilo.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Carnatic")
         #expect(RegionDeEscala.java.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ruso)) == "Ява")
         #expect(Subtradicion.region(.java).nombre == "Java")
     }
@@ -127,12 +127,12 @@ import Testing
                     Comment(rawValue: "\(subtradicion) en \(idioma)"))
             }
         }
-        #expect(Subtradicion.todas.count == EstiloDeEscala.allCases.count + RegionDeEscala.allCases.count)
-        for estilo in EstiloDeEscala.allCases { #expect(EstiloDeEscala(rawValue: estilo.rawValue) == estilo) }
+        #expect(Subtradicion.todas.count == Estilo.allCases.count + RegionDeEscala.allCases.count)
+        for estilo in Estilo.allCases { #expect(Estilo(rawValue: estilo.rawValue) == estilo) }
         for region in RegionDeEscala.allCases { #expect(RegionDeEscala(rawValue: region.rawValue) == region) }
-        let estilos = try JSONEncoder().encode(EstiloDeEscala.allCases)
+        let estilos = try JSONEncoder().encode(Estilo.allCases)
         #expect(String(decoding: estilos, as: UTF8.self).contains("\"indostanica\""))
-        #expect(try JSONDecoder().decode([EstiloDeEscala].self, from: estilos) == EstiloDeEscala.allCases)
+        #expect(try JSONDecoder().decode([Estilo].self, from: estilos) == Estilo.allCases)
         let todas = try JSONEncoder().encode(Subtradicion.todas)
         #expect(try JSONDecoder().decode([Subtradicion].self, from: todas) == Subtradicion.todas)
     }

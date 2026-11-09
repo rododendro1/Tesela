@@ -3,7 +3,7 @@
 // Los nombres de los acordes del catálogo en alemán. Qué es cada campo, en `NombresDeAcordes.swift`.
 
 extension NombresDeAcordes {
-    static let aleman = NombresDeAcordes([
+    static let aleman = Tabla([
         .init(.mayor, "Durdreiklang"),
         .init(.menor, "Molldreiklang"),
         .init(.disminuido, "verminderter Dreiklang"),

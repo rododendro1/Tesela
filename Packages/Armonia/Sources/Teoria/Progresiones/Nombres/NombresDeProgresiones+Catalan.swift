@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en catalán. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let catalan = NombresDeProgresiones([
+    static let catalan = Tabla([
         .init(.cadenciaPerfecta, "cadència perfecta"),
         .init(.cadenciaPlagal, "cadència plagal"),
         .init(.cadenciaRota, "cadència trencada"),

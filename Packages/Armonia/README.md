@@ -224,6 +224,8 @@ Sources/
 │   └── Postonal/          ConjuntoDeClasesDeAltura, TablaForte
 ├── Teoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
+│   ├── Catalogo/          Lo que comparten los catálogos: Estilo (de escalas, acordes y progresiones),
+│   │                      FichaDelCatalogo y NombresDelCatalogo (los nombres de acordes y progresiones por idioma)
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
 │   │   ├── Catalogo/      AcordeConNombre (el acorde del catálogo, con su ficha) y el catálogo
@@ -236,7 +238,7 @@ Sources/
 │   │   │                  ella: acordes, estudio, simetría, estadísticas, armonía modal, escalas propias y vecinas
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
 │   │   │                  `nombre(en:)`), FichaDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
-│   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, EstiloDeEscala, RegionDeEscala,
+│   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala,
 │   │   │                  Subtradicion y FuenteTeorica
 │   │   ├── Catalogo/      Un fichero por tradición (TipoDeEscala+Occidental y +Occidental+Exoticas, +India,
 │   │   │                  +MundoArabe, +Turquia, +GreciaAntigua…), cada uno con sus escalas (con su categoría, sus

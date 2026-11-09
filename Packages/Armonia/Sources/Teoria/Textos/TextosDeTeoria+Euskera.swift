@@ -199,7 +199,7 @@ extension TextosDeTeoria {
         tradicionVietnam: "Vietnam",
         tradicionBrasil: "Brasil",
         tradicionRenacimiento: "Errenazimendua",
-        // EstiloDeEscala.swift y RegionDeEscala.swift
+        // Estilo.swift y RegionDeEscala.swift
         subtradicionCarnatica: "Karnatikoa",
         subtradicionIndostanica: "Hindustaniarra",
         subtradicionIndiaAntigua: "Antzinako India",

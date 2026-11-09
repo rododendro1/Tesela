@@ -220,7 +220,7 @@ TipoDeEscala.pelogTembung.regiones == [.bali]      // true
 TipoDeEscala.slendro.regiones == [.java, .bali]    // true
 RegionDeEscala.bali.tradicion                      // .indonesia
 RegionDeEscala.java.tipos.count                    // 7
-EstiloDeEscala.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles))   // "Carnatic"
+Estilo.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles))   // "Carnatic"
 ```
 
 `fuente` dice qué teórico definió una escala: el autor de unas razones (los géneros de Arquitas, Dídimo, Eratóstenes y

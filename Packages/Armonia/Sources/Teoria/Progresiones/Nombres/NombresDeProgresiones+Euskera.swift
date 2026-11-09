@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en euskera. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let euskera = NombresDeProgresiones([
+    static let euskera = Tabla([
         .init(.cadenciaPerfecta, "kadentzia perfektua"),
         .init(.cadenciaPlagal, "kadentzia plagala"),
         .init(.cadenciaRota, "kadentzia hautsia"),

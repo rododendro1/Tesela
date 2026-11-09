@@ -3,7 +3,7 @@
 // Los nombres de los acordes del catálogo en inglés. Qué es cada campo, en `NombresDeAcordes.swift`.
 
 extension NombresDeAcordes {
-    static let ingles = NombresDeAcordes([
+    static let ingles = Tabla([
         .init(.mayor, "major"),
         .init(.menor, "minor"),
         .init(.disminuido, "diminished"),
