@@ -272,6 +272,18 @@ extension LineaDeComandosTests {
         #expect(resultado("acordes", "--notas", "veinte").error.contains("--notas 5"))
     }
 
+    /// `escala --estadisticas` da también lo que dicen las teorías de escalas.
+    @Test func teoriasDeUnaEscala() {
+        let mayor = salida("escala Do mayor --estadisticas")
+        #expect(mayor.contains("  Propiedad de Rothenberg: propia\n"))
+        #expect(mayor.contains("  Análisis de Hanson: p⁶m³n⁴s⁵d²t\n"))
+        #expect(mayor.contains("  Tríadas por grados: I ii iii IV V vi vii°\n"))
+        #expect(mayor.contains("  Perfil tonal (Krumhansl y Kessler): M 0.756 · m 0.092\n"))
+        #expect(
+            salida("escala Do tonos-enteros --estadisticas").contains("Modo de transposición limitada (Messiaen): 1"))
+        #expect(salida("scale C major --statistics --ingles").contains("  Rothenberg propriety: proper\n"))
+    }
+
     /// `acorde --estadisticas` da lo que se mide de cada acorde.
     @Test func estadisticasDeUnAcorde() {
         let sol7 = salida("acorde Sol7 --estadisticas")

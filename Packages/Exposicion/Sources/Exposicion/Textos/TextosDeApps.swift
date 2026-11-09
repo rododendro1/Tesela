@@ -261,6 +261,35 @@ public struct TextosDeApps: TextosTraducidos {
     public let complementoDeForte: String
     public let disposicionAbierta: String
     public let serieArmonica: String
+    public let generador: String
+    public let propiedadDeRothenberg: String
+    public let estrictamentePropia: String
+    public let propia: String
+    public let impropia: String
+    public let ambiguedades: String
+    public let estabilidad: String
+    public let cocienteDeIgualdad: String
+    public let anchuraDelEspectro: String
+    public let analisisDeHanson: String
+    public let modoDeMessiaen: String
+    public let imperfecciones: String
+    public let triadasPorGrados: String
+    public let cuatriadasPorGrados: String
+    public let combinatoriedadHexacordal: String
+    public let entropiaIntervalica: String
+    public let parsimonia: String
+    public let rugosidadMedia: String
+    public let perfilTonal: String
+    public let propiedadDeMyhill: String
+    public let bienFormada: String
+    public let escalaProfunda: String
+    public let equilibrada: String
+    public let simetricaPorInversion: String
+    public let unicidad: String
+    public let simplicidad: String
+    public let conSensible: String
+    public let tetracordosIguales: String
+    public let propiedades: String
     public let escaleraDeBrillo: String
     public let hojaDeEstudio: String
     public let mapaDeBrillo: String

@@ -241,6 +241,7 @@ Sources/
 │   ├── Escalas/
 │   │   ├── Escala/        Escala (con NombreDeGrado, la búsqueda por notas y la ortografía) y lo que se hace con
 │   │   │                  ella: acordes, estudio, simetría, estadísticas, armonía modal, escalas propias y vecinas
+│   │   │                  (MedidasDeEscala: Myhill, Rothenberg, Hanson, Messiaen, Balzano, Babbitt…)
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
 │   │   │                  `nombre(en:)`), FichaDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
 │   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala,

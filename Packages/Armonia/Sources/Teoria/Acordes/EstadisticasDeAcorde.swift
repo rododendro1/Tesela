@@ -208,7 +208,7 @@ public struct EstadisticasDeAcorde: Hashable, Sendable {
     }
 
     /// El número de Forte del conjunto con su mismo vector interválico y otra forma prima, si lo hay.
-    private static func parejaZ(de conjunto: ConjuntoDeClasesDeAltura) -> String? {
+    static func parejaZ(de conjunto: ConjuntoDeClasesDeAltura) -> String? {
         guard conjunto.numeroDeForte?.contains("Z") == true else { return nil }
         let vector = conjunto.vectorIntervalico
         return ConjuntoDeClasesDeAltura.tablaForte.first { prima, _ in

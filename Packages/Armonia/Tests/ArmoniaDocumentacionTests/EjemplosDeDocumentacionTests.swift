@@ -598,6 +598,16 @@ import Hexagonos
         comprobar(Escala(.mi, .frigio).cadenciaModal == [Acorde("Fa"), Acorde("Mim")], #"true"#, doc, 3)
     }
 
+    @Test func escalas13() throws {
+        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 13
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 13)
+        comprobarIgual(Escala(.do, .mayor).estadisticas.propiedadDeRothenberg, .propia, doc, 0)
+        comprobar(Escala(.do, .pentatonicaMayor).estadisticas.generador, #"5"#, doc, 1)
+        comprobar(Escala(.do, .mayor).estadisticas.analisisDeHanson, #""p⁶m³n⁴s⁵d²t""#, doc, 2)
+        comprobar(Escala(.do, .tonosEnteros).estadisticas.modoDeMessiaen, #"1"#, doc, 3)
+        comprobar(Escala(.do, .mayor).estadisticas.parsimonia, #"2"#, doc, 4)
+    }
+
     @Test func escalasDelMundo1() throws {
         // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 1)

@@ -328,3 +328,36 @@ Sobre un acorde, ``Acorde/escalasBebop`` son las bebop que, bajando en corcheas,
 parte fuerte (Do bebop dominante sobre Do7, con el Si de paso), y ``Acorde/pentatonicas``, las pentatónicas sin notas
 a evitar, con las tensiones que suma cada una. En una progresión, ``Escala/cambios(desde:)`` dice qué notas cambian
 de la escala de un acorde a la del siguiente y ``Acorde/notasGuia``, su tercera y su séptima.
+
+### Lo que dicen las teorías de escalas
+
+``EstadisticasDeEscala`` reúne, además de lo que se cuenta de sus notas, lo que dicen de ellas las teorías:
+
+- **Myhill y la buena formación** (Clough y Myerson; Carey y Clampitt): si cada intervalo genérico tiene dos
+  tamaños, el intervalo que la genera en cadena y si es bien formada, un «momento de simetría» (MOS).
+- **Rothenberg**: ``PropiedadDeRothenberg`` (estrictamente propia, propia o impropia), las ambigüedades y
+  contradicciones entre clases genéricas, la estabilidad, el cociente de igualdad (a la manera de Carey) y la
+  anchura media del espectro.
+- **Gamer, Hanson y Forte**: si es profunda, el análisis pmn-sdt de su vector, la pareja Z y el complemento.
+- **Messiaen y la simetría**: el modo de transposición limitada que es y si coincide con su inversión.
+- **Zeitler y Balzano**: las imperfecciones, la unicidad y la simplicidad.
+- **La armonización por grados**: las tríadas y las cuatríadas por terceras de cada grado, en las de siete notas.
+- **Babbitt**: ``CombinatoriedadHexacordal``, si las de seis notas se completan con una transposición o una
+  inversión suya, con la letra de las totalmente combinatorias.
+- **Fourier, Tymoczko y Milne**: las magnitudes |f1|…|f6|, la distancia a la uniformidad, la parsimonia y si está
+  equilibrada.
+- **Afinación y psicoacústica**: la consonancia de Huron, el gradus de Euler, la altura de Tenney, el límite impar,
+  la entropía armónica de Erlich, la rugosidad media de Sethares y la entropía interválica.
+- **El perfil tonal** de Krumhansl y Kessler: la correlación con la tonalidad mayor y menor sobre su tónica; y si
+  tiene sensible y dos tetracordos iguales.
+
+```swift
+Escala(.do, .mayor).estadisticas.propiedadDeRothenberg         // .propia
+Escala(.do, .pentatonicaMayor).estadisticas.generador          // 5
+Escala(.do, .mayor).estadisticas.analisisDeHanson              // "p⁶m³n⁴s⁵d²t"
+Escala(.do, .tonosEnteros).estadisticas.modoDeMessiaen         // 1
+Escala(.do, .mayor).estadisticas.parsimonia                    // 2
+```
+
+En la línea de comandos, `armonia escala Do mayor --estadisticas` las escribe, también en `--json` (en
+`estadisticas.teoria`).

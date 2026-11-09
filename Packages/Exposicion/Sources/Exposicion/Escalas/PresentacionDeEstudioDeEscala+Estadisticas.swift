@@ -32,8 +32,8 @@ extension PresentacionDeEstudioDeEscala {
     ///
     ///     let datos = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do, .mayor),
     ///         en: .compacta(.espanol))
-    ///     datos.map(\.valor)   // ["7 (heptatónica)", "0", "+2", "2 2 1 2 2 2 1", "[2, 5, 4, 3, 6, 1]", "7-35",
-    ///                          //  "12", "máximamente regular"]
+    ///     datos.prefix(8).map(\.valor)   // ["7 (heptatónica)", "0", "+2", "2 2 1 2 2 2 1", "[2, 5, 4, 3, 6, 1]", "7-35",
+    ///                                    //  "12", "máximamente regular"]
     public static func estadisticas(de escala: Escala, en notacion: Notacion) -> [DatoPresentado] {
         let estadisticas = escala.estadisticas
         func dato(_ campo: (TextosDeApps) -> String, _ valor: String) -> DatoPresentado {
@@ -55,7 +55,99 @@ extension PresentacionDeEstudioDeEscala {
             estadisticas.aproximada ? notacion.texto(\.medidaAproximada) : nil,
         ].compactMap { $0 }
         if !rasgos.isEmpty { datos.append(dato(\.rasgos, rasgos.joined(separator: " · "))) }
+        return datos + teorias(estadisticas, en: notacion)
+    }
+
+    /// Lo que dicen de la escala las teorías, un dato por fila: Myhill, Rothenberg, Carey, Hanson, Messiaen, Forte,
+    /// Zeitler, la armonización por grados, Babbitt, Fourier, Tymoczko, la afinación justa, Sethares, Krumhansl y
+    /// Kessler, y sus propiedades.
+    static func teorias(_ estadisticas: EstadisticasDeEscala, en notacion: Notacion) -> [DatoPresentado] {
+        func dato(_ campo: (TextosDeApps) -> String, _ valor: String) -> DatoPresentado {
+            DatoPresentado(nombre: notacion.texto(campo), valor: valor)
+        }
+        let decimal = PresentacionDeEstadisticasDeAcorde.decimal
+        var datos = [dato(\.consonanciaDiadica, decimal(estadisticas.consonanciaDiadica))]
+        if let generador = estadisticas.generador { datos.append(dato(\.generador, "\(generador)")) }
+        datos.append(dato(\.propiedadDeRothenberg, propiedad(estadisticas.propiedadDeRothenberg, en: notacion)))
+        datos.append(dato(\.ambiguedades, "\(estadisticas.ambiguedades) · \(estadisticas.contradicciones)"))
+        datos.append(dato(\.estabilidad, decimal(estadisticas.estabilidad)))
+        datos.append(dato(\.cocienteDeIgualdad, decimal(estadisticas.cocienteDeIgualdad)))
+        datos.append(dato(\.anchuraDelEspectro, decimal(estadisticas.anchuraDelEspectro)))
+        datos.append(dato(\.analisisDeHanson, estadisticas.analisisDeHanson))
+        if let modo = estadisticas.modoDeMessiaen { datos.append(dato(\.modoDeMessiaen, "\(modo)")) }
+        if let pareja = estadisticas.parejaZ { datos.append(dato(\.parejaZ, pareja)) }
+        if let complemento = estadisticas.complemento { datos.append(dato(\.complementoDeForte, complemento)) }
+        datos.append(dato(\.imperfecciones, "\(estadisticas.imperfecciones)"))
+        if let triadas = estadisticas.triadasPorGrados {
+            datos.append(dato(\.triadasPorGrados, grados(triadas).joined(separator: " ")))
+        }
+        if let cuatriadas = estadisticas.cuatriadasPorGrados {
+            datos.append(dato(\.cuatriadasPorGrados, grados(cuatriadas).joined(separator: " ")))
+        }
+        if let combinatoriedad = estadisticas.combinatoriedad {
+            datos.append(dato(\.combinatoriedadHexacordal, self.combinatoriedad(combinatoriedad)))
+        }
+        datos.append(
+            dato(\.coeficientesDeFourier, estadisticas.magnitudesDeFourier.map(decimal).joined(separator: " · ")))
+        datos.append(dato(\.distanciaALaUniformidad, decimal(estadisticas.distanciaALaUniformidad)))
+        datos.append(
+            dato(\.triadasContenidas, PresentacionDeEstadisticasDeAcorde.triadas(estadisticas.triadasContenidas)))
+        datos.append(dato(\.entropiaIntervalica, decimal(estadisticas.entropiaIntervalica)))
+        datos.append(dato(\.parsimonia, "\(estadisticas.parsimonia)"))
+        datos.append(dato(\.gradoDeSuavidad, "\(estadisticas.gradoDeSuavidad)"))
+        datos.append(dato(\.alturaDeTenney, decimal(estadisticas.alturaDeTenney)))
+        datos.append(dato(\.limiteImpar, "\(estadisticas.limiteImpar)"))
+        datos.append(dato(\.entropiaArmonica, decimal(estadisticas.entropiaArmonica)))
+        datos.append(dato(\.rugosidadMedia, decimal(estadisticas.rugosidadMedia)))
+        datos.append(
+            dato(\.perfilTonal, "M \(decimal(estadisticas.perfilMayor)) · m \(decimal(estadisticas.perfilMenor))"))
+        let propiedades = self.propiedades(estadisticas, en: notacion)
+        if !propiedades.isEmpty { datos.append(dato(\.propiedades, propiedades)) }
         return datos
+    }
+
+    /// «estrictamente propia», «propia», «impropia».
+    public static func propiedad(_ propiedad: PropiedadDeRothenberg, en notacion: Notacion) -> String {
+        switch propiedad {
+        case .estrictamentePropia: return notacion.texto(\.estrictamentePropia)
+        case .propia: return notacion.texto(\.propia)
+        case .impropia: return notacion.texto(\.impropia)
+        }
+    }
+
+    /// Los acordes de cada grado en números romanos, en minúscula los menores y disminuidos: «I ii iii IV V vi vii°»,
+    /// «Imaj7 ii7 iii7 IVmaj7 V7 vi7 viiø7».
+    public static func grados(_ cifrados: [String]) -> [String] {
+        let romanos = ["I", "II", "III", "IV", "V", "VI", "VII"]
+        return cifrados.enumerated().map { i, cifrado in
+            let romano = i < romanos.count ? romanos[i] : "\(i + 1)"
+            if cifrado.hasPrefix("m") && !cifrado.hasPrefix("maj") { return romano.lowercased() + cifrado.dropFirst(1) }
+            if cifrado.hasPrefix("°") || cifrado.hasPrefix("ø") { return romano.lowercased() + cifrado }
+            return romano + cifrado
+        }
+    }
+
+    /// «T6 · I3 · I9 (A)»: las transposiciones y las inversiones que la completan, y la letra de Babbitt.
+    public static func combinatoriedad(_ combinatoriedad: CombinatoriedadHexacordal) -> String {
+        let operaciones =
+            combinatoriedad.transposiciones.map { "T\($0)" } + combinatoriedad.inversiones.map { "I\($0)" }
+        return operaciones.joined(separator: " · ") + (combinatoriedad.tipo.map { " (\($0))" } ?? "")
+    }
+
+    /// Sus propiedades, separadas por « · »: «propiedad de Myhill · bien formada (MOS) · profunda (Gamer)…»; vacío si
+    /// no tiene ninguna.
+    public static func propiedades(_ estadisticas: EstadisticasDeEscala, en notacion: Notacion) -> String {
+        [
+            estadisticas.propiedadDeMyhill ? notacion.texto(\.propiedadDeMyhill) : nil,
+            estadisticas.bienFormada ? notacion.texto(\.bienFormada) : nil,
+            estadisticas.profunda ? notacion.texto(\.escalaProfunda) : nil,
+            estadisticas.equilibrada ? notacion.texto(\.equilibrada) : nil,
+            estadisticas.simetricaPorInversion ? notacion.texto(\.simetricaPorInversion) : nil,
+            estadisticas.unicidad ? notacion.texto(\.unicidad) : nil,
+            estadisticas.simplicidad ? notacion.texto(\.simplicidad) : nil,
+            estadisticas.conSensible ? notacion.texto(\.conSensible) : nil,
+            estadisticas.tetracordosIguales ? notacion.texto(\.tetracordosIguales) : nil,
+        ].compactMap { $0 }.joined(separator: " · ")
     }
 
     /// Varias escalas en una tabla, una por fila: el nombre, las notas, el brillo por quintas, los pasos, el vector
@@ -112,5 +204,90 @@ extension PresentacionDeEstudioDeEscala {
                 cambio: subida.map { $0.desde.nombre(en: notacion) + " → " + $0.hasta.nombre(en: notacion) } ?? "",
                 esLaDePartida: i == escalera.posicion, sonido: .escala(peldano))
         }
+    }
+}
+
+/// Lo que dicen de una escala las teorías (`EstadisticasDeEscala`), para `--json`: las propiedades de Myhill,
+/// Rothenberg y Balzano, los análisis de Hanson y de Forte, la armonización por grados, la afinación justa y el perfil
+/// tonal.
+public struct MedidasDeEscalaPresentadas: Hashable, Sendable, Codable {
+    public let propiedadDeMyhill: Bool
+    public let generador: Int?
+    public let bienFormada: Bool
+    /// «estrictamente propia», «propia», «impropia».
+    public let propiedadDeRothenberg: String
+    public let ambiguedades: Int
+    public let contradicciones: Int
+    public let estabilidad: Double
+    public let cocienteDeIgualdad: Double
+    public let anchuraDelEspectro: Double
+    public let profunda: Bool
+    public let consonanciaDiadica: Double
+    public let magnitudesDeFourier: [Double]
+    public let equilibrada: Bool
+    public let distanciaALaUniformidad: Double
+    public let triadasContenidas: TriadasContenidas
+    public let analisisDeHanson: String
+    public let modoDeMessiaen: Int?
+    public let simetricaPorInversion: Bool
+    public let parejaZ: String?
+    public let complemento: String?
+    public let imperfecciones: Int
+    public let unicidad: Bool
+    public let simplicidad: Bool
+    /// En números romanos: «I ii iii IV V vi vii°».
+    public let triadasPorGrados: [String]?
+    public let cuatriadasPorGrados: [String]?
+    public let combinatoriedad: CombinatoriedadHexacordal?
+    public let entropiaIntervalica: Double
+    public let parsimonia: Int
+    public let gradoDeSuavidad: Int
+    public let alturaDeTenney: Double
+    public let limiteImpar: Int
+    public let entropiaArmonica: Double
+    public let rugosidadMedia: Double
+    public let perfilMayor: Double
+    public let perfilMenor: Double
+    public let conSensible: Bool
+    public let tetracordosIguales: Bool
+
+    public init(_ medidas: EstadisticasDeEscala, en notacion: Notacion) {
+        propiedadDeMyhill = medidas.propiedadDeMyhill
+        generador = medidas.generador
+        bienFormada = medidas.bienFormada
+        propiedadDeRothenberg = PresentacionDeEstudioDeEscala.propiedad(medidas.propiedadDeRothenberg, en: notacion)
+        ambiguedades = medidas.ambiguedades
+        contradicciones = medidas.contradicciones
+        estabilidad = medidas.estabilidad
+        cocienteDeIgualdad = medidas.cocienteDeIgualdad
+        anchuraDelEspectro = medidas.anchuraDelEspectro
+        profunda = medidas.profunda
+        consonanciaDiadica = medidas.consonanciaDiadica
+        magnitudesDeFourier = medidas.magnitudesDeFourier
+        equilibrada = medidas.equilibrada
+        distanciaALaUniformidad = medidas.distanciaALaUniformidad
+        triadasContenidas = medidas.triadasContenidas
+        analisisDeHanson = medidas.analisisDeHanson
+        modoDeMessiaen = medidas.modoDeMessiaen
+        simetricaPorInversion = medidas.simetricaPorInversion
+        parejaZ = medidas.parejaZ
+        complemento = medidas.complemento
+        imperfecciones = medidas.imperfecciones
+        unicidad = medidas.unicidad
+        simplicidad = medidas.simplicidad
+        triadasPorGrados = medidas.triadasPorGrados.map(PresentacionDeEstudioDeEscala.grados)
+        cuatriadasPorGrados = medidas.cuatriadasPorGrados.map(PresentacionDeEstudioDeEscala.grados)
+        combinatoriedad = medidas.combinatoriedad
+        entropiaIntervalica = medidas.entropiaIntervalica
+        parsimonia = medidas.parsimonia
+        gradoDeSuavidad = medidas.gradoDeSuavidad
+        alturaDeTenney = medidas.alturaDeTenney
+        limiteImpar = medidas.limiteImpar
+        entropiaArmonica = medidas.entropiaArmonica
+        rugosidadMedia = medidas.rugosidadMedia
+        perfilMayor = medidas.perfilMayor
+        perfilMenor = medidas.perfilMenor
+        conSensible = medidas.conSensible
+        tetracordosIguales = medidas.tetracordosIguales
     }
 }
