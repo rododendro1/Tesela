@@ -3,9 +3,10 @@ import Elementos
 // MARK: - Dónde se leen las escalas occidentales
 //
 // Las occidentales no llevan las obras en su declaración: van aquí, por obras, y `TipoDeEscala.referencias` las junta.
-// Una escala puede estar en varias. Las que solo salen de rotar o alterar otra (`EstiloDeEscala.sintetica`) y las
-// variantes de otras que no trata ninguna obra general (las cromáticas con alteraciones, las pentatónicas alteradas)
-// no tienen.
+// Una escala puede estar en varias. Las sintéticas de siete notas (`EstiloDeEscala.sintetica`, las que salen de
+// alterar los grados de otra) se citan por Busoni, que las cuenta todas sin nombrarlas. Las demás variantes que no
+// trata ninguna obra general (las cromáticas con alteraciones, las pentatónicas y hexatónicas alteradas, las de ocho
+// notas) no tienen.
 
 extension TipoDeEscala {
     /// Cada obra con las escalas occidentales que trata.
@@ -42,6 +43,20 @@ extension TipoDeEscala {
             [
                 .mayor, .dorico, .frigio, .lidio, .mixolidio, .menorNatural, .locrio, .pentatonicaMayor,
                 .pentatonicaMenor, .menorHungara, .eolicoCuartaAumentada, .dobleArmonica,
+            ]
+        ),
+        (
+            .busoni1916,
+            [
+                .locrioSextaNatural, .jonicoAumentado, .doricoCuartaAumentada, .lidioSegundaAumentada, .ultralocrio,
+                .doricoQuintaDisminuida, .frigioCuartaDisminuida, .lidioTerceraMenor, .mixolidioSegundaMenor,
+                .lidioAumentadoSegundaAumentada, .locrioSeptimaDisminuida, .persa, .lidioSegundaSextaAumentadas,
+                .ultrafrigio, .jonicoSegundaQuintaAumentadas, .locrioTerceraSeptimaDisminuidas,
+                .lidioAumentadoSextaAumentada, .lidioDominanteAumentado, .locrioSegundaNaturalCuartaDisminuida,
+                .superlocrioTerceraDisminuida, .lidioSextaAumentada, .mixolidioAumentado, .locrioDominante,
+                .jonicoSegundaAumentada, .ultralocrioTerceraDisminuida, .mayorRumana, .ultralocrioSextaDisminuida,
+                .menorArmonicaQuintaDisminuida, .superlocrioSextaNatural, .menorMelodicaQuintaAumentada,
+                .doricoSegundaMenorCuartaAumentada, .lidioAumentadoTerceraAumentada,
             ]
         ),
     ]

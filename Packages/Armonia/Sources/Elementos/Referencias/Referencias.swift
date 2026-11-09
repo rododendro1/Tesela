@@ -103,6 +103,15 @@ extension Referencia {
         "chrysanthos1832", .tratado, autores: ["Chrysanthos de Madytos"], titulo: "Θεωρητικὸν μέγα τῆς μουσικῆς",
         anio: 1832, lugar: "Trieste")
 
+    // MARK: Grecia moderna
+
+    /// Pennanen, la música popular griega del siglo XX: los dromoi del rebético y del laikó, con sus escalas y los makam
+    /// de los que vienen (tesis doctoral).
+    public static let pennanen1999 = Referencia(
+        "pennanen1999", .tesis, autores: ["Pennanen, Risto Pekka"],
+        titulo: "Westernisation and Modernisation in Greek Popular Music", anio: 1999,
+        editorial: "University of Tampere", lugar: "Tampere")
+
     // MARK: Canto gregoriano y Renacimiento
 
     /// Apel, el canto gregoriano: los ocho modos, la solmisación y el hexacordo.
@@ -165,6 +174,13 @@ extension Referencia {
         "tenzer2000", .libro, autores: ["Tenzer, Michael"],
         titulo: "Gamelan Gong Kebyar: The Art of Twentieth-Century Balinese Music", anio: 2000,
         editorial: "University of Chicago Press", lugar: "Chicago")
+    /// Shin Eun-Joo, P'yŏngjo, Ujo y Kyemyŏnjo en el pansori según Baek Daewoong y Lee Bohyeong (en la traducción
+    /// inglesa de Seokyoung Kim; el original, en 한국음악연구 63, 2018).
+    public static let shin2024 = Referencia(
+        "shin2024", .articulo, autores: ["Shin, Eun-Joo"],
+        titulo:
+            "Two Theories of Ujo and Pyeongjo in Pansori: Comparing Baek Daewoong's and Lee Bohyeong's Theories of Pansori Modes",
+        anio: 2024, publicadoEn: "Music Theory Online", volumen: "30 (4)", doi: "10.30535/mto.30.4.10")
 
     // MARK: Klezmer y Etiopía
 
@@ -179,7 +195,7 @@ extension Referencia {
         titulo: "The Music of Ethiopia: Its Development and Cultural Setting", anio: 1971,
         editorial: "Wesleyan University", lugar: "Middletown (Connecticut)")
 
-    // MARK: Mesopotamia, África y los Andes
+    // MARK: Mesopotamia, África, los Andes y Brasil
 
     /// Kilmer, la primera lectura de la teoría musical de los textos cuneiformes.
     public static let kilmer1971 = Referencia(
@@ -213,8 +229,12 @@ extension Referencia {
     public static let harcourt1925 = Referencia(
         "harcourt1925", .libro, autores: ["Harcourt, Raoul d'", "Harcourt, Marguerite d'"],
         titulo: "La musique des Incas et ses survivances", anio: 1925, editorial: "Paul Geuthner", lugar: "París")
+    /// Siqueira, el sistema modal del folclore del Nordeste de Brasil: los modos mixolidio, lidio con la 7ª menor y
+    /// dórico.
+    public static let siqueira1981 = Referencia(
+        "siqueira1981", .libro, autores: ["Siqueira, José"], titulo: "Sistema modal na música folclórica do Brasil",
+        anio: 1981, editorial: "Secretaria de Educação e Cultura", lugar: "João Pessoa")
 
-    /// Todas las obras, en el orden de este fichero.
     // MARK: Acordes
 
     /// Rothgeb, el acorde de Tristán tal como se escribe (Fa Si Re♯ Sol♯) y su origen.
@@ -302,15 +322,24 @@ extension Referencia {
     public static let rechberger2008 = Referencia(
         "rechberger2008", .libro, autores: ["Rechberger, Herman"], titulo: "Scales and Modes around the World",
         anio: 2008, editorial: "Fennica Gehrman", lugar: "Helsinki")
+    /// Busoni, el Entwurf: las 113 escalas de siete notas que salen de bajar y subir los grados de la de Do (p. 41
+    /// de la segunda edición, la de 1916). No les da nombre: se cita por todas las heptatónicas sintéticas.
+    public static let busoni1916 = Referencia(
+        "busoni1916", .libro, autores: ["Busoni, Ferruccio"], titulo: "Entwurf einer neuen Ästhetik der Tonkunst",
+        anio: 1916, editorial: "Insel-Verlag", lugar: "Leipzig")
 
+    /// Todas las obras, en el orden de este fichero.
     public static let catalogo: [Referencia] = [
         .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .rowell1992, .touma1996, .farraj2019,
         .maqamWorld, .wright1978, .farhat1990, .signell1977, .tdvIslamAnsiklopedisi, .hacibeyov1945, .west1992,
-        .barker1989, .chalmers1993, .mathiesen1999, .chrysanthos1832, .apel1958, .glareano1547, .ramos1482,
+        .barker1989, .chalmers1993, .mathiesen1999, .chrysanthos1832, .pennanen1999, .apel1958, .glareano1547,
+        .ramos1482,
         .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .garfias1975, .tranVanKhe1962, .morton1976,
-        .surjodiningrat1972, .tenzer2000, .rubin2020, .kebede1971, .kilmer1971, .gurney1994, .west1994, .tracey1948,
-        .berliner1978, .knight1973, .harcourt1925, .rothgeb1995, .samson1977, .taruskin1987, .burkhart1973,
+        .surjodiningrat1972, .tenzer2000, .shin2024, .rubin2020, .kebede1971, .kilmer1971, .gurney1994, .west1994,
+        .tracey1948,
+        .berliner1978, .knight1973, .harcourt1925, .siqueira1981, .rothgeb1995, .samson1977, .taruskin1987,
+        .burkhart1973,
         .levine1989, .persichetti1961, .aldwell2011, .levine1995, .messiaen1944, .lendvai1971, .cohn1996,
-        .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .rechberger2008,
+        .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .rechberger2008, .busoni1916,
     ]
 }

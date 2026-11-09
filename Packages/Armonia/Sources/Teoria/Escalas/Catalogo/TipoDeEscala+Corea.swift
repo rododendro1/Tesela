@@ -20,8 +20,7 @@ extension TipoDeEscala {
         categoria: .jo)
 
     /// 우조 (Do Re Mi Sol La): las notas de P'yŏngjo con la tónica en Do. Entre la tónica (본청) y la nota aguda de
-    /// referencia (상청) hay una 3ª mayor, y no una 4ª como en P'yŏngjo (Baek Daewoong, según Kim, «Pansori Modes»,
-    /// Music Theory Online 30.4, 2024).
+    /// referencia (상청) hay una 3ª mayor, y no una 4ª como en P'yŏngjo (Baek Daewoong, según Shin, en `Referencia.shin2024`).
     public static let ujo = TipoDeEscala(
         nombre: "Ujo", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         variantes: ["우조"],

@@ -1,5 +1,20 @@
 # Cambios
 
+## Sin publicar
+
+- Cuatro obras nuevas en `Referencia.catalogo`, para las listas que no tenían ninguna: Pennanen (1999),
+  *Westernisation and Modernisation in Greek Popular Music*, para los dromoi; Shin (2024), «Two Theories of Ujo and
+  Pyeongjo in Pansori», en Music Theory Online, para las escalas coreanas; Siqueira (1981), *Sistema modal na música
+  folclórica do Brasil*, para los modos nordestinos, y Busoni (1916), *Entwurf einer neuen Ästhetik der Tonkunst*, para
+  las sintéticas de siete notas, las que salen de alterar los grados de otra (lidio ♯2, ultralocrio, locrio
+  dominante…), que Busoni cuenta todas sin nombrarlas.
+- Diez acordes genéricos nuevos, de Levine: la séptima con quinta disminuida, 7(♭5); con novena aumentada, 7(♯9); con
+  undécima aumentada, 7(♯11); la séptima mayor con undécima aumentada, maj7(♯11); la novena y la decimotercera
+  suspendidas, 9sus4 y 13sus4; la séptima alterada, 7alt; la menor con séptima mayor y novena, m(maj9); la
+  decimotercera mayor, maj13, y la menor sexta y novena, m6/9. Tienen nombre en los doce idiomas y dan nombre a su tipo de acorde. El acorde de Hendrix
+  sigue siendo el 7(♯9) sin quinta.
+- La sexta aumentada alemana vuelve a citar a Aldwell, Schachter y Cadwallader, que había perdido en la 0.4.4.
+
 ## 0.4.4 (2026-11-09)
 
 - Nueva obra en `Referencia.catalogo`: Rechberger (2008), *Scales and Modes around the World* (Fennica Gehrman), un
