@@ -93,6 +93,7 @@ extension TextosDeTeoria {
         patronAscendente: "igoera",
         patronDescendente: "jaitsiera",
         patronIdaYVuelta: "joan-etorria",
+        tetracordoGriego: "{1} tetrakordea",
         patronAlberti: "Albertiren baxua",
         patronQuebrado: "hautsia",
         patronBajaYSube: "jaitsi-igoa",

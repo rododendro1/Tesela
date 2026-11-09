@@ -653,9 +653,14 @@ extension LineaDeComandosTests {
             armonica.hasSuffix(
                 "\nTetracordos:\n"
                     + "  La Si Do Re (jins Nahāwand, Bûselik dörtlüsü) | 2ª mayor | Mi Fa Sol♯ La (jins Ḥijāz)\n"
-                    + "  2ª mayor | Si Do Re Mi (tetracordo diatónico, jins Kurd, Kürdî dörtlüsü)"
+                    + "  2ª mayor | Si Do Re Mi (tetracordo hypátōn, tetracordo diezeugménōn, tetracordo diatónico, jins Kurd,"
+                    + " Kürdî dörtlüsü)"
                     + " | Mi Fa Sol♯ La (jins Ḥijāz)\n"),
             Comment(rawValue: armonica))
+        #expect(
+            salida("escala Mi frigio --tetracordos").contains(
+                "\n  Mi Fa Sol La (tetracordo mésōn, tetracordo hyperbolaíōn, tetracordo diatónico, jins Kurd,"
+                    + " Kürdî dörtlüsü) | 2ª mayor | Si Do Re Mi (tetracordo hypátōn, tetracordo diezeugménōn,"))
         #expect(
             salida("escala Do pentatónica mayor --tetracordos").hasSuffix(
                 "\nTetracordos:\n  no se divide en dos tetracordos\n"))

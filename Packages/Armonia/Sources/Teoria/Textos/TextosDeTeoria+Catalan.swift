@@ -90,6 +90,7 @@ extension TextosDeTeoria {
         patronAscendente: "ascendent",
         patronDescendente: "descendent",
         patronIdaYVuelta: "d'anada i tornada",
+        tetracordoGriego: "tetracord {1}",
         patronAlberti: "baix d'Alberti",
         patronQuebrado: "trencat",
         patronBajaYSube: "de baixada i pujada",

@@ -90,6 +90,7 @@ extension TextosDeTeoria {
         patronAscendente: "felfelé",
         patronDescendente: "lefelé",
         patronIdaYVuelta: "fel és le",
+        tetracordoGriego: "{1} tetrachord",
         patronAlberti: "Alberti-basszus",
         patronQuebrado: "tört",
         patronBajaYSube: "le és fel",

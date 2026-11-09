@@ -205,8 +205,9 @@ extension LineaDeComandos {
     }
 
     /// `escala … --tetracordos`: una línea por cada forma de partirla en dos tetracordos, de grave a agudo, con los
-    /// nombres de cada uno entre paréntesis y el intervalo que los separa entre barras: «Do Re Mi Fa (jins ʿAjam,
-    /// Çârgâh dörtlüsü) | 2ª mayor | Sol La Si Do (…)» en Do mayor.
+    /// nombres de cada uno entre paréntesis (primero su lugar en el sistema perfecto griego, si lo tiene) y el
+    /// intervalo que los separa entre barras: «Do Re Mi Fa (jins ʿAjam, Çârgâh dörtlüsü) | 2ª mayor | Sol La Si Do
+    /// (…)» en Do mayor.
     static func lineasDeTetracordos(de escala: Escala, _ notacion: Notacion) -> [String] {
         let titulo = Mensaje.tetracordos.texto(en: notacion) + ":"
         let divisiones = piezasDeTetracordos(de: escala, notacion)
@@ -239,7 +240,8 @@ extension LineaDeComandos {
                 case .tetracordo(let tetracordo):
                     PiezaDeTetracordos(
                         notas: escala.notas(de: tetracordo).map { $0.nombre(en: notacion) },
-                        nombres: tetracordo.fragmentos.map { $0.nombre(en: notacion) })
+                        nombres: escala.tetracordosGriegos(de: tetracordo).map { $0.nombre(en: notacion) }
+                            + tetracordo.fragmentos.map { $0.nombre(en: notacion) })
                 case .separacion(_, let intervalo):
                     PiezaDeTetracordos(separacion: intervalo.nombre(en: notacion))
                 }

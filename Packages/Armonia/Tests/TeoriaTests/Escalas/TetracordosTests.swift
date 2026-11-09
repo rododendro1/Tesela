@@ -45,6 +45,25 @@ import Testing
         #expect(frigio.tetracordos[0].fragmentos.allSatisfy { $0.microtonal == nil && $0.intervalos.count == 4 })
     }
 
+    @Test func losTetracordosDelSistemaPerfecto() throws {
+        let frigio = Escala(.mi, .frigio)
+        let primera = try #require(frigio.divisionesEnTetracordos.first)
+        #expect(
+            primera.tetracordos.map(frigio.tetracordosGriegos(de:)) == [
+                [.meson, .hyperbolaion], [.hypaton, .diezeugmenon],
+            ])
+        let dorico = Escala(.re, .dorico)
+        let conSiBemol = try #require(dorico.divisionesEnTetracordos.first)
+        #expect(conSiBemol.tetracordos.map(dorico.tetracordosGriegos(de:)) == [[], []])
+        let eolico = Escala(.re, .menorNatural)
+        let deRe = try #require(eolico.divisionesEnTetracordos.first)
+        #expect(eolico.tetracordosGriegos(de: deRe.tetracordos[1]) == [.synemmenon])
+        #expect(TetracordoDelSistemaPerfecto.synemmenon.notas.map(\.nombre) == ["La", "Si♭", "Do", "Re"])
+        #expect(TetracordoDelSistemaPerfecto.meson.nombre(en: .conPalabras(.ingles)) == "tetrachord mésōn")
+        #expect(TetracordoDelSistemaPerfecto.meson.nombre(en: .conPalabras(.griego)) == "τετράχορδο μέσων")
+        #expect(TetracordoDelSistemaPerfecto.meson.nombre(en: .conPalabras(.euskera)) == "mésōn tetrakordea")
+    }
+
     @Test func lasQueEmpiezanPorElGradoSueltoVanAlFinal() {
         let dorica = Escala(.re, .dorico)
         #expect(

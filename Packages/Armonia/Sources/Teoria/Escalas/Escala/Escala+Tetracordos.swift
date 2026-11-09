@@ -135,3 +135,64 @@ extension Escala {
     /// Las notas de un tetracordo de la escala.
     public func notas(de tetracordo: Tetracordo) -> [Nota] { tetracordo.notas(desde: grado(tetracordo.grado + 1)) }
 }
+
+// MARK: - El sistema perfecto griego
+
+/// Los cinco tetracordos del sistema perfecto griego, con sus notas de hoy (el sistema mayor va de La a La, y el
+/// menor añade el synēmménōn, unido al mésōn): hypátōn (Si Do Re Mi), mésōn (Mi Fa Sol La), synēmménōn (La Si♭ Do
+/// Re), diezeugménōn (Si Do Re Mi, una octava más arriba que el hypátōn) e hyperbolaíōn (Mi Fa Sol La, una octava más
+/// arriba que el mésōn). Son todos del género diatónico, semitono-tono-tono de grave a agudo.
+public enum TetracordoDelSistemaPerfecto: CaseIterable, Sendable {
+    case hypaton, meson, synemmenon, diezeugmenon, hyperbolaion
+
+    /// Sus notas, de grave a agudo.
+    public var notas: [Nota] {
+        switch self {
+        case .hypaton, .diezeugmenon: [.si, .do, .re, .mi]
+        case .meson, .hyperbolaion: [.mi, .fa, .sol, .la]
+        case .synemmenon: [.la, Nota(.si, .bemol), .do, .re]
+        }
+    }
+
+    /// El nombre griego, transliterado: «hypátōn», «mésōn»…
+    public var nombre: String {
+        switch self {
+        case .hypaton: "hypátōn"
+        case .meson: "mésōn"
+        case .synemmenon: "synēmménōn"
+        case .diezeugmenon: "diezeugménōn"
+        case .hyperbolaion: "hyperbolaíōn"
+        }
+    }
+
+    /// El nombre griego en su alfabeto: «ὑπάτων», «μέσων»…
+    public var nombreEnGriego: String {
+        switch self {
+        case .hypaton: "ὑπάτων"
+        case .meson: "μέσων"
+        case .synemmenon: "συνημμένων"
+        case .diezeugmenon: "διεζευγμένων"
+        case .hyperbolaion: "ὑπερβολαίων"
+        }
+    }
+
+    /// «tetracordo mésōn», «tetrachord mésōn», «Tetrachord mésōn», «τετράχορδο μέσων»… El nombre griego va igual en
+    /// todos los idiomas, salvo en griego, que lo escribe en su alfabeto.
+    public func nombre(en notacion: Notacion) -> String {
+        let suNombre = notacion.textos == .griego ? nombreEnGriego : nombre
+        return TextosDeTeoria.en(notacion) { $0.tetracordoGriego(suNombre) }
+    }
+}
+
+extension Escala {
+    /// Los tetracordos del sistema perfecto griego que tienen las notas de un tetracordo de la escala: mésōn e
+    /// hyperbolaíōn para Mi Fa Sol La, synēmménōn para La Si♭ Do Re. Vacío si no es ninguno (Do Re Mi Fa).
+    ///
+    ///     let frigio = Escala(.mi, .frigio)
+    ///     frigio.divisionesEnTetracordos[0].tetracordos.map { frigio.tetracordosGriegos(de: $0) }
+    ///     // [[.meson, .hyperbolaion], [.hypaton, .diezeugmenon]]
+    public func tetracordosGriegos(de tetracordo: Tetracordo) -> [TetracordoDelSistemaPerfecto] {
+        let suyas = notas(de: tetracordo)
+        return TetracordoDelSistemaPerfecto.allCases.filter { $0.notas == suyas }
+    }
+}
