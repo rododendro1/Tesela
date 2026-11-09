@@ -125,7 +125,7 @@ import Testing
     /// Cada progresión del catálogo de tres acordes o más, y el ii–V, se reconoce a sí misma con cualquier tónica.
     @Test func cadaProgresionSeReconoce() {
         let buscadas = ProgresionConNombre.catalogo.filter { $0.grados.count >= 3 || $0 == .iiV }
-        #expect(buscadas.count == 24)
+        #expect(buscadas.count == 47)
         for progresion in buscadas {
             for tonica in [Nota.do, Nota.mi.bemol, Nota.la, Nota.fa.sostenido] {
                 let acordes = progresion.acordes(sobre: tonica)
@@ -134,6 +134,13 @@ import Testing
                 #expect(halladas.map(\.tipo).contains(progresion), "\(progresion) sobre \(tonica)")
             }
         }
+    }
+
+    /// Dos progresiones que se reconocen por sus grados no tienen los mismos grados: si no, saldrían siempre juntas.
+    @Test func ningunPatronSeRepite() {
+        let patrones = EsquemaArmonico.patrones.map { "\($0.fundamentales) \($0.calidades) \($0.bajos)" }
+        #expect(Set(patrones).count == patrones.count)
+        #expect(EsquemaArmonico.patrones.count == ProgresionConNombre.catalogo.count - 5 - 13)
     }
 
     @Test func enLosDoceIdiomas() {

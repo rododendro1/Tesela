@@ -21,6 +21,12 @@
   `acordes(sobre:)` y `acordes(en:)` las escriben en cualquier tonalidad; `nombre(en:)` las nombra en los trece
   idiomas, y `buscar(nombre:)` y `buscar(conteniendo:)` las encuentran por su nombre, sus alias o sus variantes en
   cualquiera de ellos. Cuatro obras nuevas en `Referencia.catalogo`: Gjerdingen, Hudson, Rosand y Doll.
+- 23 progresiones más en el catálogo, que tiene ya 52: la tercera de picardía y la cadencia evitada; los esquemas
+  galantes de Gjerdingen que faltaban (Prinner, Fenaroli, quiescenza, Meyer, sol-fa-mi e indugio); el bajo de lamento
+  cromático y los bajos de danza (passamezzo antico y moderno, ruggiero, bergamasca, chacona y pasacalle); del jazz,
+  el ii–subV–I, el turnaround de Tadd Dameron, el Bird blues y la de Autumn Leaves, y del rock y el pop, I–♭VII–IV,
+  i–♭VII–♭VI–♭VII, I–IV–V–IV e I–III–IV–iv. Las que no citan ninguna obra (las danzas, la cadencia evitada y las del
+  jazz y el pop salvo el ii–subV–I) están a falta de fuente. `EsquemaArmonico.buscar(en:)` las reconoce todas.
 - **Cambio incompatible:** `EsquemaArmonico.tipo` es una `ProgresionConNombre` del catálogo, y `EsquemaArmonico.Tipo`
   desaparece (queda como alias obsoleto de `ProgresionConNombre`). Lo que se escribía `.iiVI`, `.turnaround` o
   `.pachelbel` se escribe igual, pero `Tipo.allCases` ya no existe y `acordes(en:)` da los acordes del cifrado del
