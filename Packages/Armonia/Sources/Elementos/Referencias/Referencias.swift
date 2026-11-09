@@ -410,7 +410,8 @@ extension Referencia {
         "rechberger2008", .libro, autores: ["Rechberger, Herman"], titulo: "Scales and Modes around the World",
         anio: 2008, editorial: "Fennica Gehrman", lugar: "Helsinki")
     /// Busoni, el Entwurf: las 113 escalas de siete notas que salen de bajar y subir los grados de la de Do (p. 41
-    /// de la segunda edición, la de 1916). No les da nombre: se cita por todas las heptatónicas sintéticas.
+    /// de la segunda edición, la de 1916; la primera, de 1907, ya las cuenta, como se ve en la traducción de Baker de
+    /// 1911). No les da nombre: se cita por todas las heptatónicas sintéticas.
     public static let busoni1916 = Referencia(
         "busoni1916", .libro, autores: ["Busoni, Ferruccio"], titulo: "Entwurf einer neuen Ästhetik der Tonkunst",
         anio: 1916, editorial: "Insel-Verlag", lugar: "Leipzig")

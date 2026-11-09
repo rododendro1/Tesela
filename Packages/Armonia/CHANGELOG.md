@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- Persichetti (1961) se cita también por la superlocria, la de tonos enteros con sensible, la doble armónica, la
+  Prometeo y la Prometeo napolitana, que están en su capítulo de escalas. La nota de Busoni dice que la edición de
+  1907 ya cuenta las 113 escalas.
 - Fuentes para las danzas y las escalas europeas, con once obras nuevas en `Referencia.catalogo`. El passamezzo
   antico y el moderno citan el artículo del New Grove de Gerbino y Silbiger (2001); el ruggiero, a Staiti (2023); la
   bergamasca, a Sheinberg (2016, p. 19), y la chacona y el pasacalle, los volúmenes IV y III de Hudson (1982). El
