@@ -179,7 +179,8 @@ los tetracordos y las harmoniai griegas están además en `tetracordosGriegos` y
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
 traducen los descriptivos (las andinas, las europeas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
 las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷa,
-que siguen en IAST; la forma latina se sigue leyendo.
+que siguen en IAST; la forma latina se sigue leyendo. Una escala sin traducir conserva en cada idioma sus alias y
+sus variantes (otras transliteraciones, su escritura original), menos los que están en español.
 
 ## Rāga, mēḷa, dromos: la categoría de una escala
 

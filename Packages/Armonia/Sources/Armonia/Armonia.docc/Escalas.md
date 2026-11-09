@@ -146,7 +146,9 @@ del propio catálogo). `TipoDeEscala.nombre(en:)` usa el fichero del idioma de l
 `TipoDeEscala(leyendo:)` y `Escala("Re dòric")` leen los de todos. Cada fichero da todos los tipos de
 `TipoDeEscala.occidentales`, el nombre de cada `CategoriaTradicional` (`.categoria`) y las escalas de otras tradiciones
 que se traducen en ese idioma (`.tradicional(.andina, "…")`, que apunta al miembro de `TipoDeEscala` y no compila si
-deja de existir); las demás, sin fila, conservan su nombre original (Kāfī, Hitzáz).
+deja de existir); las demás, sin fila, conservan su nombre original (Kāfī, Hitzáz) y sus alias y variantes del
+catálogo («Hicaz», «ትዝታ»), menos los que están en español (`NombresDeEscalas.aliasEnEspanol`: «modo gregoriano 1»,
+«hexacordo duro»…), así que también se leen por ellos con la tónica en alemán, en húngaro o en sueco.
 `Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno y que no haya filas que no traducen nada. Un idioma nuevo es un fichero más.
 
 Un alias es otro nombre de la escala («jónico» para la mayor, «bizantina» para la doble armónica); una variante es
