@@ -171,6 +171,14 @@ extension TextosDeTeoria {
         cardinalDecatonica: "Dekatonik",
         cardinalEndecatonica: "Hendekatonik",
         cardinalDodecatonica: "Dodekatonik",
+        // CardinalDeAcorde.swift
+        cardinalDiada: "Zweiklang",
+        cardinalTriada: "Dreiklang",
+        cardinalTetrada: "Vierklang",
+        cardinalPentada: "Fünfklang",
+        cardinalHexada: "Sechsklang",
+        cardinalHeptada: "Siebenklang",
+        cardinalOctada: "Achtklang",
         // Tradicion+Nombre.swift
         tradicionOccidental: "Abendländisch",
         tradicionIndia: "Indien",

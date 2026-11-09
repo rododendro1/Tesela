@@ -30,6 +30,14 @@ extension LineaDeComandosTests {
         // Un bajo que no es del acorde no tiene inversión.
         let ajeno = try #require(try json("acorde Do/Re") as? [[String: Any]])
         #expect(ajeno[0]["inversion"] is NSNull || ajeno[0]["inversion"] == nil)
+        #expect(sol7["estadisticas"] == nil)
+        // Con `--estadisticas`, las mismas claves y además `estadisticas`.
+        let conMedidas = try #require(try json("acorde Sol7/Si --estadisticas") as? [[String: Any]])
+        #expect(Set(conMedidas[0].keys) == Set(sol7.keys).union(["estadisticas"]))
+        let medidas = try #require(conMedidas[0]["estadisticas"] as? [String: Any])
+        #expect(medidas["numeroDeForte"] as? String == "4-27")
+        #expect(medidas["brilloPorQuintas"] as? Double == 0.75)
+        #expect(medidas["ambito"] == nil)
     }
 
     /// Las claves son las mismas en cualquier idioma; los nombres van en la notación elegida.
@@ -166,6 +174,14 @@ extension LineaDeComandosTests {
         #expect(tristan.first?["cifrado"] == nil)
         let septima = try #require(try json("acordes séptima de dominante") as? [[String: Any]])
         #expect(septima.first?["cifrado"] as? String == "Do7")
+        #expect(septima.first?["estadisticas"] == nil)
+        let conMedidas = try #require(try json("acordes tristan --estadisticas") as? [[String: Any]])
+        let medidas = try #require(conMedidas.first?["estadisticas"] as? [String: Any])
+        #expect(medidas["cardinal"] as? String == "tétrada")
+        #expect(medidas["ambito"] as? Int == 15)
+        let resumen = try #require(try json("acordes --resumen") as? [String: Any])
+        #expect(resumen["total"] as? Int == AcordeConNombre.catalogo.count)
+        #expect((resumen["porNumeroDeNotas"] as? [[String: Any]])?.first?["nombre"] as? String == "2 (díada)")
     }
 
     /// Los errores siguen en texto, en la salida de errores, con su código.

@@ -171,6 +171,14 @@ extension TextosDeTeoria {
         cardinalDecatonica: "dekaton",
         cardinalEndecatonica: "hendekaton",
         cardinalDodecatonica: "dodekaton",
+        // CardinalDeAcorde.swift
+        cardinalDiada: "kéthangzat",
+        cardinalTriada: "hármashangzat",
+        cardinalTetrada: "négyeshangzat",
+        cardinalPentada: "ötöshangzat",
+        cardinalHexada: "hatoshangzat",
+        cardinalHeptada: "heteshangzat",
+        cardinalOctada: "nyolcashangzat",
         // Tradicion+Nombre.swift
         tradicionOccidental: "Nyugati",
         tradicionIndia: "India",

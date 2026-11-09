@@ -54,7 +54,10 @@ extension LineaDeComandos {
                 "armonia acorde Sol7/Si",
                 "armonia chord G7/B"),
             notas: TextosDeConsola.traduccion(\.notasAcorde),
-            opciones: [.disposiciones, .nombres, .tonalidades, .sustituciones, .en, .comparar, .bebop, .pentatonicas])
+            opciones: [
+                .disposiciones, .nombres, .tonalidades, .sustituciones, .en, .comparar, .bebop, .pentatonicas,
+                .estadisticas,
+            ])
     ]
 
     static let ayudaDeIdentificar: [EntradaDeAyuda] = [
@@ -124,12 +127,16 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeAcordesConNombre: [EntradaDeAyuda] = [
-        // acordes [<texto>] [--sobre <nota>]
+        // acordes [<texto>] [opciones]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisAcordesConNombre),
             descripcion: TextosDeConsola.traduccion(\.descripcionAcordesConNombre),
             ejemplo: ejemplo("armonia acordes tristan --sobre Fa", "armonia chords tristan --over F"),
-            opciones: [.sobre])
+            notas: TextosDeConsola.traduccion(\.notasAcordesConNombre),
+            opciones: [
+                .sobre, .notas, .uso, .porTerceras, .noPorTerceras, .sinSemitonos, .conIntervalo, .sinIntervalo, .orden,
+                .estadisticas, .resumen,
+            ])
     ]
 
     static let ayudaDeEscalas: [EntradaDeAyuda] = [

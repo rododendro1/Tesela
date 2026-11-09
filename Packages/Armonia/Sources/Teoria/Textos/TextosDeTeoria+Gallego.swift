@@ -171,6 +171,14 @@ extension TextosDeTeoria {
         cardinalDecatonica: "decatónica",
         cardinalEndecatonica: "endecatónica",
         cardinalDodecatonica: "dodecatónica",
+        // CardinalDeAcorde.swift
+        cardinalDiada: "díade",
+        cardinalTriada: "tríade",
+        cardinalTetrada: "tétrade",
+        cardinalPentada: "péntade",
+        cardinalHexada: "héxade",
+        cardinalHeptada: "héptade",
+        cardinalOctada: "óctade",
         // Tradicion+Nombre.swift
         tradicionOccidental: "Occidental",
         tradicionIndia: "India",

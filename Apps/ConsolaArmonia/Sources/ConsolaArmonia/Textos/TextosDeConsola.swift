@@ -66,6 +66,7 @@ struct TextosDeConsola: TextosTraducidos {
     let descripcionProgresiones: String
     let sintaxisAcordesConNombre: String
     let descripcionAcordesConNombre: String
+    let notasAcordesConNombre: String
     let sintaxisTonalidad: String
     let descripcionTonalidad: String
     let sintaxisConjunto: String

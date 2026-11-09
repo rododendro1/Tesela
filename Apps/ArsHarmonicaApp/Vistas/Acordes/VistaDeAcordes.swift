@@ -94,6 +94,7 @@ struct VistaDeAcordes: View {
                 disposiciones(de: acorde)
                 disposicionesEnElMastil(de: acorde)
                 relaciones(de: acorde)
+                estadisticas(de: acorde)
                 escalas(de: acorde)
                 escalasParaImprovisar(sobre: acorde)
                 digitaciones(de: acorde)
@@ -377,6 +378,17 @@ struct VistaDeAcordes: View {
                 notacion.texto(\.notas),
                 value: acorde.notasDesdeElBajo.map { $0.nombre(en: notacion) }.joined(separator: " "))
             BotonDeEscuchar(.acorde(acorde))
+        }
+    }
+
+    /// Lo que se mide del acorde (`EstadisticasDeAcorde`): el número de notas con su cardinal, el brillo por quintas,
+    /// el vector interválico, el número de Forte, la simetría y sus rasgos.
+    private func estadisticas(de acorde: Acorde) -> some View {
+        Section(notacion.texto(\.estadisticas)) {
+            ForEach(PresentacionDeEstadisticasDeAcorde.estadisticas(acorde.estadisticas, en: notacion), id: \.self) {
+                dato in
+                LabeledContent(dato.nombre, value: dato.valor)
+            }
         }
     }
 

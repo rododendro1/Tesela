@@ -1,5 +1,26 @@
 # Cambios
 
+## Sin publicar
+
+- `CardinalDeAcorde`, el hermano de `CardinalDeEscala`: díada, tríada, tétrada, péntada, héxada, héptada y óctada
+  (la de la séptima alterada y el acorde alfa), con su nombre en los trece idiomas. `TipoDeAcorde`, `AcordeConNombre`
+  y `Acorde` tienen `numeroDeNotas` (las notas distintas por su ortografía, y en `Acorde`, con el bajo si es ajeno) y
+  `cardinal`, y `TipoDeAcorde.todos(numeroDeNotas:)` y `AcordeConNombre.todos(numeroDeNotas:)` dan los que tienen
+  tantas notas.
+- `EstadisticasDeAcorde`, el hermano de `EstadisticasDeEscala`: el número de notas y su cardinal, si se lee por
+  terceras, las tensiones, el brillo por quintas (+0,75 la séptima de dominante; `nil` en los que no se leen por
+  terceras), la amplitud en quintas, el vector interválico, la forma prima, el número de Forte, las transposiciones
+  distintas, la simetría por inversión, si es anhemitónico, si tiene tritono y, en los acordes con nombre, el ámbito
+  de su disposición. Lo dan `TipoDeAcorde.estadisticas`, `AcordeConNombre.estadisticas` y `Acorde.estadisticas`.
+- La consola: `acorde Sol7 --estadisticas` (también con `--json`) escribe lo que se mide del acorde, y `acordes`
+  filtra el catálogo con `--notas 4` (o `--notas tétrada`), `--uso jazz`, `--por-terceras`, `--no-por-terceras`,
+  `--sin-semitonos`, `--con-intervalo` y `--sin-intervalo`, lo ordena con `--orden brillo` o `--orden notas`, lo pone
+  en una tabla con `--estadisticas` y cuenta con `--resumen` cuántos hay de cada número de notas, de cada estilo y
+  por terceras (los dos, también en JSON).
+- El TSV de `EjemploCatalogoDeAcordes` añade el cardinal, si se lee por terceras, el brillo y la amplitud en quintas,
+  el vector interválico, la forma prima, el número de Forte, las transposiciones distintas y el ámbito. Su
+  `numero_de_notas` cuenta ahora las notas distintas y no las voces: el acorde de la Sinfonía de los salmos tiene 3.
+
 ## 0.4.5 (2026-11-09)
 
 - `AcordeConNombre.buscar(nombre:)` y `buscar(conteniendo:)`, como en las progresiones: un acorde del catálogo por

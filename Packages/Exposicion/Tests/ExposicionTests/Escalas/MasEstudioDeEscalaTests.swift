@@ -67,7 +67,7 @@ import Testing
             de: Escala(.do, .tonosEnteros), en: notacion)
         #expect(tonosEnteros.contains { $0.nombre == "Transposiciones distintas" && $0.valor == "2" })
         let ingles = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do), en: .ascii(.ingles))
-        #expect(ingles.first == DatoDeEscalaPresentado(nombre: "Number of notes", valor: "7 (heptatonic)"))
+        #expect(ingles.first == DatoPresentado(nombre: "Number of notes", valor: "7 (heptatonic)"))
         #expect(PresentacionDeEstudioDeEscala.conSigno(3) == "+3")
         #expect(PresentacionDeEstudioDeEscala.conSigno(-3) == "-3")
         #expect(PresentacionDeEstudioDeEscala.conSigno(0.4286) == "+0.43")

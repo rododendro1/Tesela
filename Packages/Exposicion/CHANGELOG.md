@@ -1,5 +1,14 @@
 # Cambios
 
+## Sin publicar
+
+- `PresentacionDeEstadisticasDeAcorde`: lo que se mide de un acorde (`EstadisticasDeAcorde`), un dato por fila, la
+  tabla para comparar varios del catálogo y su resumen (`ResumenDeAcordesPresentado`: cuántos hay de cada número de
+  notas, de cada estilo y por terceras). `EstadisticasDeAcordePresentadas` es lo mismo para el JSON. Ars Harmonica lo
+  enseña en la vista de acordes, en una sección «Estadísticas».
+- `DatoDeEscalaPresentado` se llama ahora `DatoPresentado`, porque lo usan también los acordes; el nombre antiguo
+  queda como alias.
+
 ## 0.4.4 (2026-11-09)
 
 - **Cambio incompatible:** una sola regla para pasar la notación: `en:` cuando nada más ocupa esa etiqueta y

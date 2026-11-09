@@ -5,9 +5,10 @@ import Foundation
 // MARK: - Consultas: acordes y arpegios
 
 extension LineaDeComandos {
-    /// `acorde Sol7 [--disposiciones] [--nombres] [--tonalidades] [--sustituciones] [--comparar Do] [--en Do mayor]`:
-    /// cada acorde con sus notas y, si se piden, sus disposiciones, sus otros nombres, las tonalidades en que está,
-    /// sus sustituciones (en la tonalidad de `--en` o en la suya) y la conducción hasta otro acorde.
+    /// `acorde Sol7 [--disposiciones] [--nombres] [--tonalidades] [--sustituciones] [--comparar Do] [--en Do mayor]
+    /// [--estadisticas]`: cada acorde con sus notas y, si se piden, sus disposiciones, sus otros nombres, las
+    /// tonalidades en que está, sus sustituciones (en la tonalidad de `--en` o en la suya), la conducción hasta otro
+    /// acorde y lo que se mide de él.
     static func acorde(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(textos)
         guard let tonalidad = try argumentos.quitarTonalidad(en: notacion) else {
@@ -22,6 +23,7 @@ extension LineaDeComandos {
             nombres: argumentos.quitarMarca(.nombres),
             tonalidades: argumentos.quitarMarca(.tonalidades),
             sustituciones: argumentos.quitarMarca(.sustituciones),
+            estadisticas: argumentos.quitarMarca(.estadisticas),
             tonalidad: tonalidad, otro: otro)
         try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaCifrado }
@@ -41,6 +43,8 @@ extension LineaDeComandos {
         var nombres: Bool
         var tonalidades: Bool
         var sustituciones: Bool
+        /// `--estadisticas`: lo que se mide del acorde (`EstadisticasDeAcorde`).
+        var estadisticas: Bool
         var tonalidad: Tonalidad?
         var otro: Acorde?
     }
@@ -91,6 +95,12 @@ extension LineaDeComandos {
             lineas.append("  " + notacion.texto(\.notasComunes) + ": " + comparacion.comunes)
             lineas += comparacion.voces.reversed().map { "  " + $0 }
             lineas.append("  " + comparacion.movimiento)
+        }
+        if pedido.estadisticas {
+            lineas.append(notacion.texto(\.estadisticas) + ":")
+            lineas += PresentacionDeEstadisticasDeAcorde.estadisticas(acorde.estadisticas, en: notacion).map {
+                "  " + $0.nombre + ": " + $0.valor
+            }
         }
         return lineas
     }
