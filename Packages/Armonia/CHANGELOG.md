@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+- `CakraDeMela`: los doce cakra en que se agrupan los 72 mēḷa, de seis en seis (Indu, Netra, Agni… Āditya), con su
+  nombre en IAST y en devanagari y sus mēḷa (`CakraDeMela.rtu.melas`, 31…36). `TipoDeEscala.cakra` da el de una
+  escala: Bāṇa para la mayor, que es el mēḷa 29. `CakraDeMela.silabas` son las sílabas del lugar de cada mēḷa en su
+  cakra (pa, śrī, go, bhū, mā, ṣa), que dan su Dha y su Ni; `TipoDeEscala.mnemonicoDeMela` es el nombre que sale de
+  juntarlas («Agni-go» para Māyāmālavagauḷa) y `solfaDeMela`, su solfa carnática («sa ra gu ma pa dha nu»). La consola
+  lo escribe todo al describir un mēḷa («mēḷa 15, cakra 3 (Agni), Agni-go: sa ra gu ma pa dha nu»), y en JSON da
+  `mela`, `cakra`, `mnemonico` y `solfa`.
 - Las escalas se parten en tetracordos: `TipoDeEscala.divisionesEnTetracordos` y `Escala.divisionesEnTetracordos`
   dan las formas de partir la octava en dos tetracordos (cuatro notas seguidas que abarcan una cuarta justa), unidos
   o separados por un grado suelto. La mayor es Do Re Mi Fa | 2ª mayor | Sol La Si Do. Primero van las disjuntas, con
@@ -10,6 +17,11 @@
   `Escala.tetracordosGriegos(de:)` da además su lugar en el sistema perfecto griego (`TetracordoDelSistemaPerfecto`):
   Mi Fa Sol La es el tetracordo mésōn o el hyperbolaíōn; Si Do Re Mi, el hypátōn o el diezeugménōn, y La Si♭ Do Re,
   el synēmménōn. La consola los da con `escala … --tetracordos` (`--tetrachords`), también en JSON.
+- `TipoDeEscala.ajnas` da los fragmentos con los que describe una escala su teoría, cada uno con el grado en que
+  empieza (`FragmentoDeLaEscala`), y `fuenteDeLosAjnas`, la obra de la que salen: los ajnas de 16 maqāmāt según
+  Maqam World (Bayātī es el jins Bayātī en la tónica y el Nahāwand en la cuarta) y los çeşni de 19 makam según
+  Signell (1977) (Rast makamı, el Rast beşlisi y el Rast dörtlüsü en la quinta). Faltan los que usan un fragmento que
+  el catálogo no tiene, como Lāmī o el Segâh üçlüsü. `escala … --tetracordos` los da antes de las divisiones.
 - Cuatro obras nuevas en `Referencia.catalogo`, para las listas que no tenían ninguna: Pennanen (1999),
   *Westernisation and Modernisation in Greek Popular Music*, para los dromoi; Shin (2024), «Two Theories of Ujo and
   Pyeongjo in Pansori», en Music Theory Online, para las escalas coreanas; Siqueira (1981), *Sistema modal na música

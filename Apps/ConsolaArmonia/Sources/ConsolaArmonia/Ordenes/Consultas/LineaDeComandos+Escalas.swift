@@ -207,12 +207,27 @@ extension LineaDeComandos {
     /// `escala … --tetracordos`: una línea por cada forma de partirla en dos tetracordos, de grave a agudo, con los
     /// nombres de cada uno entre paréntesis (primero su lugar en el sistema perfecto griego, si lo tiene) y el
     /// intervalo que los separa entre barras: «Do Re Mi Fa (jins ʿAjam, Çârgâh dörtlüsü) | 2ª mayor | Sol La Si Do
-    /// (…)» en Do mayor.
+    /// (…)» en Do mayor. Si es un maqām o un makam, antes, los ajnas o çeşni que le da su teoría
+    /// (`TipoDeEscala.ajnas`).
     static func lineasDeTetracordos(de escala: Escala, _ notacion: Notacion) -> [String] {
         let titulo = Mensaje.tetracordos.texto(en: notacion) + ":"
         let divisiones = piezasDeTetracordos(de: escala, notacion)
-        guard !divisiones.isEmpty else { return [titulo, "  " + Mensaje.sinTetracordos.texto(en: notacion)] }
+        var ajnas: [String] = []
+        if let fuente = escala.tipo.fuenteDeLosAjnas {
+            let fragmentos = escala.tipo.ajnas.map { fragmento in
+                fragmento.fragmento.nombre(en: notacion) + " (" + escala.grado(fragmento.grado).nombre(en: notacion)
+                    + ")"
+            }
+            ajnas = [
+                "  " + Mensaje.ajnas.texto(en: notacion) + " (" + fuente.cita + "): "
+                    + fragmentos.joined(separator: " · ")
+            ]
+        }
+        guard !divisiones.isEmpty else {
+            return [titulo, "  " + Mensaje.sinTetracordos.texto(en: notacion)] + ajnas
+        }
         return [titulo]
+            + ajnas
             + divisiones.map { piezas in
                 "  "
                     + piezas.map { pieza in
@@ -230,6 +245,21 @@ extension LineaDeComandos {
         var notas: [String]?
         var nombres: [String]?
         var separacion: String?
+    }
+
+    /// Un jins o un çeşni de un maqām o un makam, para `--json`: su nombre y sus notas.
+    struct FragmentoJSON: Encodable {
+        let nombre: String
+        let notas: [String]
+    }
+
+    /// Los ajnas o çeşni de un maqām o un makam (`TipoDeEscala.ajnas`), para `--json`; `nil` si no tiene.
+    static func ajnasJSON(de escala: Escala, _ notacion: Notacion) -> [FragmentoJSON]? {
+        guard escala.tipo.fuenteDeLosAjnas != nil else { return nil }
+        return escala.tipo.ajnas.map {
+            FragmentoJSON(
+                nombre: $0.fragmento.nombre(en: notacion), notas: escala.notas(de: $0).map { $0.nombre(en: notacion) })
+        }
     }
 
     /// Las divisiones en tetracordos de una escala, pieza a pieza.
@@ -275,6 +305,15 @@ extension LineaDeComandos {
         }
         // De qué escala es modo: Re dórico → modo 2 de Do mayor.
         if let modo = datos.modo { lineas.append("  " + modo) }
+        // El número del mēḷa, su cakra, su mnemónico y su solfa: «mēḷa 15, cakra 3 (Agni), Agni-go: sa ra gu ma pa
+        // dha nu».
+        let tipo = escala.tipo
+        if tipo.categoria == .melakarta, let numero = tipo.numeroDeMelakarta, let cakra = CakraDeMela(mela: numero),
+            let mnemonico = tipo.mnemonicoDeMela, let solfa = tipo.solfaDeMela
+        {
+            lineas.append(
+                "  " + traducir(.mela(numero, cakra, mnemonico: mnemonico, solfa: solfa.joined(separator: " "))))
+        }
         // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.
         if let subida = escala.notasMicrotonales() {
             let bajada = escala.notasMicrotonales(sentido: .descendente) ?? subida

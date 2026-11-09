@@ -26,10 +26,12 @@ enum Mensaje {
     case ningunaProgresion
     case tetracordos
     case sinTetracordos
+    case ajnas
     case armadura
     case relativa
     case homonima
     case bajo(String)
+    case mela(Int, CakraDeMela, mnemonico: String, solfa: String)
     case inversion(Int)
     case bajoAjeno
     case sinAcordes
@@ -72,11 +74,14 @@ enum Mensaje {
         case .ningunaProgresion: return TextosDeConsola.traduccion(\.mensajeNingunaProgresion)
         case .tetracordos: return TextosDeConsola.traduccion(\.mensajeTetracordos)
         case .sinTetracordos: return TextosDeConsola.traduccion(\.mensajeSinTetracordos)
+        case .ajnas: return TextosDeConsola.traduccion(\.mensajeAjnas)
         case .armadura: return TextosDeConsola.traduccion(\.mensajeArmadura)
         case .relativa: return TextosDeConsola.traduccion(\.mensajeRelativa)
         case .homonima: return TextosDeConsola.traduccion(\.mensajeHomonima)
         case .bajo(let nota):
             return TextosDeConsola.traduccion { $0.mensajeBajo(nota) }
+        case .mela(let numero, let cakra, let mnemonico, let solfa):
+            return TextosDeConsola.traduccion { $0.mensajeMela(numero, cakra.numero, cakra.nombre, mnemonico, solfa) }
         case .inversion(let n):
             // Los nombres de las inversiones son los de la biblioteca (`Acorde.nombreDeLaInversion`).
             return Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(n, en: $0) })

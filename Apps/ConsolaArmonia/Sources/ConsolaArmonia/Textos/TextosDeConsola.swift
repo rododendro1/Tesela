@@ -325,10 +325,12 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeNingunaProgresion: String
     let mensajeTetracordos: String
     let mensajeSinTetracordos: String
+    let mensajeAjnas: String
     let mensajeArmadura: String
     let mensajeRelativa: String
     let mensajeHomonima: String
     let mensajeBajo: Plantilla  // {1} nota
+    let mensajeMela: Plantilla  // {1} número del mēḷa, {2} número del cakra, {3} nombre del cakra, {4} mnemónico, {5} solfa
     let mensajeBajoAjeno: String
     let mensajeSinAcordes: String
     let mensajeSin: Plantilla  // {1} notas

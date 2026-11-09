@@ -104,6 +104,8 @@ extension LineaDeComandos {
         var simetria: Simetria?
         /// `--tetracordos`: cada división, pieza a pieza.
         var tetracordos: [[PiezaDeTetracordos]]?
+        /// `--tetracordos` en un maqām o un makam: sus ajnas o çeşni.
+        var ajnas: [FragmentoJSON]?
         /// `--vecinas`.
         var vecinas: [EscalaConDetallePresentada]?
         /// `--estadisticas`.
@@ -115,6 +117,11 @@ extension LineaDeComandos {
         var acordesEnLasDoceTonalidades: TablaDeAcordesPresentada?
         /// `--comparar`.
         var comparacion: Comparacion?
+        /// En un mēḷa, su número y su cakra.
+        var mela: Int?
+        var cakra: String?
+        var mnemonico: String?
+        var solfa: [String]?
         /// Dónde se lee la escala, si es de otra tradición; `nil` en las demás.
         var referencias: [ReferenciaJSON]?
 
@@ -143,6 +150,12 @@ extension LineaDeComandos {
         if pedido.bibtex { throw ErrorDeUso.sinSalidaJSON("escala --bibtex") }
         let escala = pedido.escala
         var datos = EscalaJSON(EscalaPresentada(escala, en: notacion))
+        if escala.tipo.categoria == .melakarta {
+            datos.mela = escala.tipo.numeroDeMelakarta
+            datos.cakra = escala.tipo.cakra?.nombre
+            datos.mnemonico = escala.tipo.mnemonicoDeMela
+            datos.solfa = escala.tipo.solfaDeMela
+        }
         let referencias = escala.tipo.referencias
         if !referencias.isEmpty {
             datos.referencias = referencias.map {
@@ -185,7 +198,10 @@ extension LineaDeComandos {
                     resumen: notacion.texto { $0.repiteCada(veces, veces) }, tonicas: nil, ciclos: [])
             }
         }
-        if pedido.tetracordos { datos.tetracordos = piezasDeTetracordos(de: escala, notacion) }
+        if pedido.tetracordos {
+            datos.tetracordos = piezasDeTetracordos(de: escala, notacion)
+            datos.ajnas = ajnasJSON(de: escala, notacion)
+        }
         if pedido.vecinas {
             datos.vecinas = PresentacionDeEstudioDeEscala.vecinas(de: escala, en: notacion)
         }

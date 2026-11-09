@@ -157,6 +157,7 @@ quitan las marcas, porque भैरव (Bhairav) y भैरवी (Bhairavī) s
 ```swift
 TipoDeEscala.melakarta(15)                   // Māyāmālavagauḷa
 TipoDeEscala.mayor.numeroDeMelakarta         // 29 (Dhīraśaṅkarābharaṇam)
+TipoDeEscala.mayor.cakra?.nombre             // "Bāṇa": el cakra 5, mēḷa 25 a 30
 Escala(.re, .hitzaz).notas                   // Re Mi♭ Fa♯ Sol La Si♭ Do
 Escala("Do Kāfī"), Escala("Do kafi"), Escala("Re hijaz"), Escala("Do melakarta 22")
 Escala(.do, .todi).notas                     // Do Re♭ Mi♭ Fa♯ Sol La♭ Si
