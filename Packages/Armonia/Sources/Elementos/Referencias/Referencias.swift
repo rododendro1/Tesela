@@ -314,6 +314,28 @@ extension Referencia {
         titulo: "Running with the Devil: Power, Gender, and Madness in Heavy Metal Music", anio: 1993,
         editorial: "Wesleyan University Press", lugar: "Hanover")
 
+    // MARK: Progresiones
+
+    /// Gjerdingen, los esquemas del estilo galante: la romanesca, el monte, la fonte, la ponte, el do-re-mi…
+    public static let gjerdingen2007 = Referencia(
+        "gjerdingen2007", .libro, autores: ["Gjerdingen, Robert O."], titulo: "Music in the Galant Style", anio: 2007,
+        editorial: "Oxford University Press", lugar: "Nueva York")
+    /// Hudson, la folía, de la guitarra española de cinco órdenes a Corelli (el primero de sus cuatro volúmenes).
+    public static let hudson1982 = Referencia(
+        "hudson1982", .libro, autores: ["Hudson, Richard"],
+        titulo:
+            "The Folia, the Saraband, the Passacaglia, and the Chaconne, vol. I: The Folia",
+        anio: 1982, editorial: "American Institute of Musicology", lugar: "Neuhausen-Stuttgart")
+    /// Rosand, el tetracordo descendente, el bajo del lamento.
+    public static let rosand1979 = Referencia(
+        "rosand1979", .articulo, autores: ["Rosand, Ellen"], titulo: "The Descending Tetrachord: An Emblem of Lament",
+        anio: 1979, publicadoEn: "The Musical Quarterly", volumen: "65", paginas: "346–359")
+    /// Doll, la armonía del rock y del pop: los esquemas de cuatro acordes, la de los 50, ♭VI–♭VII–I…
+    public static let doll2017 = Referencia(
+        "doll2017", .libro, autores: ["Doll, Christopher"],
+        titulo: "Hearing Harmony: Toward a Tonal Theory for the Rock Era", anio: 2017,
+        editorial: "University of Michigan Press", lugar: "Ann Arbor")
+
     // MARK: Compendios
 
     /// Rechberger, un compendio de más de mil escalas: las diatónicas y las pentatónicas, los modos griegos, bizantinos
@@ -340,6 +362,7 @@ extension Referencia {
         .berliner1978, .knight1973, .harcourt1925, .siqueira1981, .rothgeb1995, .samson1977, .taruskin1987,
         .burkhart1973,
         .levine1989, .persichetti1961, .aldwell2011, .levine1995, .messiaen1944, .lendvai1971, .cohn1996,
-        .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .rechberger2008, .busoni1916,
+        .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .gjerdingen2007, .hudson1982, .rosand1979, .doll2017,
+        .rechberger2008, .busoni1916,
     ]
 }

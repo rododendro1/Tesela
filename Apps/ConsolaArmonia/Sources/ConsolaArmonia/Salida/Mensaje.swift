@@ -23,6 +23,7 @@ enum Mensaje {
     case escalas
     case habituales
     case ningunaEscala
+    case ningunaProgresion
     case armadura
     case relativa
     case homonima
@@ -66,6 +67,7 @@ enum Mensaje {
         case .escalas: return TextosDeConsola.traduccion(\.mensajeEscalas)
         case .habituales: return TextosDeConsola.traduccion(\.mensajeHabituales)
         case .ningunaEscala: return TextosDeConsola.traduccion(\.mensajeNingunaEscala)
+        case .ningunaProgresion: return TextosDeConsola.traduccion(\.mensajeNingunaProgresion)
         case .armadura: return TextosDeConsola.traduccion(\.mensajeArmadura)
         case .relativa: return TextosDeConsola.traduccion(\.mensajeRelativa)
         case .homonima: return TextosDeConsola.traduccion(\.mensajeHomonima)

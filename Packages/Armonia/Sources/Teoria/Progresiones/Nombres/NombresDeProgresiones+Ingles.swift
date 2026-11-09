@@ -1,0 +1,36 @@
+// swift-format-ignore-file
+// Tabla de datos, una fila por línea: no se formatea.
+// Los nombres de las progresiones del catálogo en inglés. Qué es cada campo, en `NombresDeProgresiones.swift`.
+
+extension NombresDeProgresiones {
+    static let ingles = NombresDeProgresiones([
+        .init(.cadenciaPerfecta, "perfect cadence", alias: ["authentic cadence"]),
+        .init(.cadenciaPlagal, "plagal cadence"),
+        .init(.cadenciaRota, "deceptive cadence", alias: ["interrupted cadence"]),
+        .init(.semicadencia, "half cadence", alias: ["imperfect cadence"]),
+        .init(.cadenciaFrigia, "Phrygian half cadence"),
+        .init(.cadenciaNapolitana, "Neapolitan cadence"),
+        .init(.cadenciaConSextaAumentada, "augmented sixth cadence"),
+        .init(.quintasDescendentes, "circle-of-fifths progression", alias: ["circle of fifths"]),
+        .init(.romanesca, "romanesca"),
+        .init(.pachelbel, "Pachelbel's canon"),
+        .init(.monte, "monte"),
+        .init(.fonte, "fonte"),
+        .init(.ponte, "ponte"),
+        .init(.doReMi, "do-re-mi"),
+        .init(.folia, "folia", alias: ["la folia"]),
+        .init(.bajoDeLamento, "lament bass", alias: ["descending tetrachord"]),
+        .init(.iiVI, "ii–V–I"),
+        .init(.iiVIMenor, "minor ii–V–i"),
+        .init(.turnaround, "turnaround"),
+        .init(.backdoor, "backdoor progression", alias: ["backdoor ii–V"]),
+        .init(.blues, "12-bar blues"),
+        .init(.bluesMenor, "minor blues"),
+        .init(.rhythmChanges, "rhythm changes"),
+        .init(.coltrane, "Coltrane changes", alias: ["Giant Steps changes"]),
+        .init(.ejePop, "I–V–vi–IV", alias: ["axis progression", "four-chord progression"]),
+        .init(.deLos50, "50s progression", alias: ["doo-wop progression"]),
+        .init(.eolica, "♭VI–♭VII–I", alias: ["Aeolian cadence"]),
+        .init(.andaluza, "Andalusian cadence"),
+    ])
+}

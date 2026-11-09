@@ -249,6 +249,9 @@ Sources/
 │   │                      tipo, sus alias, las escalas de otras tradiciones y el nombre de cada clase
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado)
+│   ├── Progresiones/      ProgresionConNombre (una progresión en cifrado romano, con su realización y su búsqueda)
+│   │   ├── Catalogo/      El catálogo: cadencias, esquemas del barroco y del galante, jazz y blues, y pop
+│   │   └── Nombres/       NombresDeProgresiones y un fichero por idioma (`NombresDeProgresiones+Catalan.swift`…)
 │   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
 │                          (el catálogo), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett (números)
 ├── Diagramas/

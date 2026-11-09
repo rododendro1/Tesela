@@ -212,6 +212,23 @@ extension LineaDeComandosTests {
         #expect(!resultado("acorde", "Do", "--idioma", "xyzzy").error.contains("¿Querías"))
     }
 
+    /// `progresiones` da cada progresión del catálogo con su cifrado y sus acordes sobre Do; con un texto, las que lo
+    /// tienen en el nombre en algún idioma, y con `--en`, sobre otra tónica.
+    @Test func progresiones() {
+        let todas = salida("progresiones").split(separator: "\n")
+        #expect(todas.count == ProgresionConNombre.catalogo.count)
+        #expect(todas.contains("monte: V7/IV IV V7/V V · Do7 Fa Re7 Sol"))
+        #expect(todas.contains("cadencia andaluza: i VII VI V · Dom Si♭ La♭ Sol"))
+        #expect(salida("progresiones andaluza --en La") == "cadencia andaluza: i VII VI V · Lam Sol Fa Mi\n")
+        #expect(salida("progresiones andaluza --en La menor") == salida("progresiones andaluza --en La"))
+        // El nombre exacto da solo esa; si no, todas las que lo contienen.
+        #expect(salida("progressions ii-V-I --in Bb --ingles") == "ii–V–I: ii7 V7 Imaj7 · Cm7 F7 Bbmaj7\n")
+        #expect(salida("progresiones cadencia").split(separator: "\n").count == 9)
+        #expect(salida("progresiones Trugschluss --idioma de") == "Trugschluss: V7 vi · G7 Am\n")
+        #expect(resultado("progresiones", "zzz").error.contains("no hay ninguna progresión así"))
+        #expect(resultado("progresiones", "blues", "--en").error.contains("falta la tonalidad tras --en"))
+    }
+
     /// `tradiciones` da cada tradición con sus categorías (salvo la occidental, que no tiene: sus escalas son las
     /// habituales, por estilos con `escalas --uso`); con una, sus escalas.
     @Test func tradiciones() throws {
