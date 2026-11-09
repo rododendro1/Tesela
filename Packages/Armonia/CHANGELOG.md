@@ -1,5 +1,13 @@
 # Cambios
 
+## Sin publicar
+
+- Los nombres de las escalas tienen más alias y variantes en los doce idiomas: los que faltaban de las occidentales
+  (sobre todo en inglés, alemán, sueco, húngaro, ruso y griego) y los de las tradiciones que se traducen (las
+  harmoniai y los tetracordos griegos, las etíopes, las europeas y las andinas). Una escala de otra tradición sin
+  fila en un idioma conserva sus alias y sus variantes del catálogo («Hicaz», «ትዝታ»), menos los que están en
+  español (`NombresDeEscalas.aliasEnEspanol`), así que también se leen con la tónica en alemán, en húngaro y en sueco.
+
 ## 0.4.2 (2026-11-08)
 
 - El catálogo de acordes tiene ocho acordes de nombre propio (`AcordeConNombre.conNombrePropio`), con sus notas tal
