@@ -27,7 +27,9 @@ Apps/
 PruebasDeInterfaz/  Las pruebas de interfaz de las dos apps (XCUITest), con los ejemplos de cada vista
 Ejemplos/
 ├── EjemploArmonia/     Un recorrido por la API del motor, ejecutable (SwiftPM)
+├── EjemploCatalogoDeAcordes/  El catálogo de acordes en un fichero TSV, una fila por acorde (SwiftPM)
 ├── EjemploCatalogoDeEscalas/  El catálogo de escalas en un fichero TSV, una fila por escala (SwiftPM)
+├── EjemploCatalogoDeProgresiones/  El catálogo de progresiones en un fichero TSV, una fila por progresión (SwiftPM)
 └── EjemploHexagonos/   Un recorrido por las rejillas hexagonales, con mapas dibujados en el terminal (SwiftPM)
 Herramientas/
 ├── FuzzArmonia/         Los lectores de ficheros y textos con datos al azar (libFuzzer; el CI lo pasa cada semana)
@@ -67,13 +69,13 @@ Package.swift       Los paquetes juntos, para usarlos desde otro proyecto por UR
 ArsHarmonicaApp ──┬──► Interfaz ───┬──► Exposicion ──► Armonia ──► Hexagonos
 TonnetzApp ───────┘               ├──► Armonia
                                   └──► Hexagonos
-ArsHarmonicaApp, TonnetzApp, ConsolaArmonia, EjemploArmonia, EjemploCatalogoDeEscalas, RendimientoArmonia, FuzzArmonia ──► Armonia
+ArsHarmonicaApp, TonnetzApp, ConsolaArmonia, EjemploArmonia, EjemploCatalogoDeEscalas, EjemploCatalogoDeAcordes, EjemploCatalogoDeProgresiones, RendimientoArmonia, FuzzArmonia ──► Armonia
 ConsolaArmonia ──► Exposicion (sin SwiftUI) ──► Armonia
 EjemploHexagonos ──► Hexagonos
 ```
 
 Un paquete solo depende de los que tiene debajo, y nunca de una app. La línea de comandos (`ConsolaArmonia`),
-los ejemplos (`EjemploArmonia`, `EjemploCatalogoDeEscalas` y `EjemploHexagonos`) y la medida del rendimiento (`RendimientoArmonia`) se construyen con SwiftPM; las apps de SwiftUI, con Xcode (`project.yml`).
+los ejemplos (`EjemploArmonia`, los de los catálogos de escalas, acordes y progresiones y `EjemploHexagonos`) y la medida del rendimiento (`RendimientoArmonia`) se construyen con SwiftPM; las apps de SwiftUI, con Xcode (`project.yml`).
 `Scripts/comprobaciones/comprobar_dependencias.py` lo comprueba (también en el CI).
 
 El paquete, su producto principal y su módulo paraguas se llaman `Armonia`: en el código es
@@ -95,6 +97,8 @@ swift run --package-path Apps/ConsolaArmonia armonia manual > armonia.1   # y `c
 swift run --package-path Ejemplos/EjemploArmonia EjemploArmonia       # el ejemplo del motor
 swift run --package-path Ejemplos/EjemploHexagonos EjemploHexagonos   # el de las rejillas hexagonales
 swift run --package-path Ejemplos/EjemploCatalogoDeEscalas EjemploCatalogoDeEscalas escalas.tsv   # el catálogo en TSV
+swift run --package-path Ejemplos/EjemploCatalogoDeAcordes EjemploCatalogoDeAcordes acordes.tsv   # el de acordes
+swift run --package-path Ejemplos/EjemploCatalogoDeProgresiones EjemploCatalogoDeProgresiones progresiones.tsv
 swift run -c release --package-path Herramientas/RendimientoArmonia RendimientoArmonia   # los tiempos del motor
 
 # Las apps (macOS, con XcodeGen)

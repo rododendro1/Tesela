@@ -1,13 +1,12 @@
 # Huecos del catálogo de escalas y acordes
 
-Estado a 9 de noviembre de 2026, tras la 0.4.4 y el PR #264.
+Estado a 9 de noviembre de 2026, tras la 0.4.4 y los acordes que faltaban.
 
 ## Resumen
 
-En main quedan 10 escalas de otras tradiciones y 30 escalas occidentales sin ninguna referencia. Faltan además una
-sexta aumentada y cuatro acordes de nombre propio. El catálogo tiene 434 escalas en 49 listas de tradición y 49
-acordes, todos con nombre en los doce idiomas. Lo más rápido de cerrar son las europeas (7 escalas de una lista) y la
-sexta suiza.
+En main quedan 10 escalas de otras tradiciones y 30 escalas occidentales sin ninguna referencia, y ocho acordes sin
+fuente. El catálogo tiene 434 escalas en 49 listas de tradición y 55 acordes, todos con nombre en los doce idiomas. Lo
+más rápido de cerrar son las europeas (7 escalas de una lista).
 
 ## Escalas sin ninguna referencia
 
@@ -51,20 +50,20 @@ tanto, Busoni no cubre.
 Las bebop podrían citar a Levine (1995), como ya hacen las otras bebop, si se comprueba que las trae. Las hexatónicas
 de dos tríadas encajarían en Cohn (1996), que ya está en el catálogo.
 
-## Acordes que faltan
+## Acordes que faltaban
 
-Tras el PR #264 hay 41 acordes genéricos y 8 de nombre propio. Faltan estos:
+Hay 43 acordes genéricos y 12 de nombre propio. Los que faltaban ya están, pero algunos sin fuente:
 
-| Acorde | Notas | Fuente posible | Por qué no está |
+| Acorde | Notas | Fuente | Qué queda |
 | --- | --- | --- | --- |
-| Sexta aumentada suiza | La♭ Do Re♯ Fa♯ (sobre La♭) | Aldwell, Schachter y Cadwallader (2011) | El lector de acordes no admite la cuarta doble aumentada; hay que tocar `ClasificacionDeAcorde` |
-| m(add9) | Do Mi♭ Sol Re (sobre Do) | Ninguna del catálogo | Sin fuente |
-| Acorde de Elektra | Re♭ Fa La♭ + Mi Sol♯ Si | Kramer (1993) o Abbate (1989) | Su ortografía varía entre fuentes; hay que leer la partitura o la fuente |
-| Acorde de los augures (*La consagración de la primavera*) | Fa♭ La♭ Do♭ + Mi♭ Sol Si♭ Re♭ | Taruskin (1996) o van den Toorn (1983) | Sin fuente verificada en el catálogo |
-| Acorde de la Sinfonía de los salmos | Mi Sol Si con la tercera doblada | White (1979) | Sin fuente verificada |
-| Acorde alfa de Lendvai | Las dos séptimas disminuidas superpuestas | Lendvai (1971), ya en el catálogo | Hay que confirmar en el libro qué notas da |
+| Sexta aumentada suiza | La♭ Do Re♯ Fa♯ (sobre La♭) | Aldwell, Schachter y Cadwallader (2011) | Nada: el lector ya admite la cuarta doble aumentada (`𝄪11`) |
+| m(add9) | Do Mi♭ Sol Re (sobre Do) | Ninguna | Buscar una obra que la traiga |
+| Acorde de Elektra | Do♯ Mi♯ Sol♯ + Mi Si | Ninguna | Confirmar la ortografía en la partitura, Kramer (1993) o Abbate (1989) |
+| Acorde de los augures | Fa♭ La♭ Do♭ + Mi♭ Sol Si♭ Re♭ | Ninguna | Citar a Taruskin (1996) o van den Toorn (1983) |
+| Acorde de la Sinfonía de los salmos | Mi Sol Si Sol | Ninguna | Citar a White (1979) |
+| Acorde alfa de Lendvai | Do Mi♭ Fa♯ La + Do♯ Mi Sol Si♭ | Ninguna | Confirmar en Lendvai (1971) qué notas da |
 
-Los acordes de Hendrix y mu ya están, pero no citan ninguna obra.
+Los acordes de Hendrix y mu tampoco citan ninguna obra.
 
 ## Datos por confirmar y orden propuesto
 
@@ -77,8 +76,7 @@ Antes de añadir nada conviene confirmar tres datos que ya están en el catálog
 
 Orden propuesto:
 
-1. La sexta suiza: la fuente ya está y solo hace falta el cambio en el lector.
-2. Las europeas, el pinpeat, el saung y la amadinda: diez escalas que solo necesitan sus fuentes.
-3. Las bebop y las hexatónicas de dos tríadas, con Levine y Cohn.
-4. Los acordes de nombre propio, cuando haya fuentes con su ortografía.
-5. Las tradiciones ausentes, empezando por el shashmaqom, que es vecino de los dastgāh.
+1. Las europeas, el pinpeat, el saung y la amadinda: diez escalas que solo necesitan sus fuentes.
+2. Las bebop y las hexatónicas de dos tríadas, con Levine y Cohn.
+3. Las fuentes de los acordes de nombre propio y de m(add9), con su ortografía.
+4. Las tradiciones ausentes, empezando por el shashmaqom, que es vecino de los dastgāh.

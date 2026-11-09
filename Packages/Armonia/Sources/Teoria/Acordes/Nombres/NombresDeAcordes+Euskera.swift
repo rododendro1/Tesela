@@ -42,9 +42,11 @@ extension NombresDeAcordes {
         .init(.menorSeptimaMayorNovena, "minorra zazpigarren handiarekin eta bederatzigarrenarekin"),
         .init(.mayorSeptimaMayorDecimotercera, "hamahirugarren handia"),
         .init(.menorSextaNovena, "minor seigarrena eta bederatzigarrena"),
+        .init(.menorNovenaAnadida, "minorra bederatzigarren gehigarriarekin"),
         .init(.sextaAumentadaItaliana, "seigarren gehitu italiarra"),
         .init(.sextaAumentadaFrancesa, "seigarren gehitu frantsesa"),
         .init(.sextaAumentadaAlemana, "seigarren gehitu alemana"),
+        .init(.sextaAumentadaSuiza, "seigarren gehitu suitzarra"),
         .init(.tristan, "Tristan akordea"),
         .init(.mistico, "akorde mistikoa", alias: ["Prometeo akordea"]),
         .init(.petrushka, "Petrushka akordea"),
@@ -53,5 +55,9 @@ extension NombresDeAcordes {
         .init(.hendrix, "Hendrix akordea"),
         .init(.mu, "mu akordea"),
         .init(.porCuartas, "laugarrenezko akordea"),
+        .init(.elektra, "Elektra akordea"),
+        .init(.augures, "augurren akordea"),
+        .init(.salmos, "Salmoen Sinfoniaren akordea"),
+        .init(.alfa, "alfa akordea"),
     ])
 }

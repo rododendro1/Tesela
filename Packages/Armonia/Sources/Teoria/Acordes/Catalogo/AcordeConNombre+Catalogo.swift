@@ -131,6 +131,8 @@ extension AcordeConNombre {
     public static let menorSextaNovena = AcordeConNombre(
         nombre: "menor sexta y novena",
         intervalos: [.unisono, .terceraMenor, .quintaJusta, .sextaMayor, .novenaMayor], referencias: [.levine1995])
+    public static let menorNovenaAnadida = AcordeConNombre(
+        nombre: "menor con novena añadida", intervalos: [.unisono, .terceraMenor, .quintaJusta, .novenaMayor])
     public static let sextaAumentadaItaliana = AcordeConNombre(
         nombre: "sexta aumentada italiana", intervalos: [.unisono, .terceraMayor, .sextaAumentada], estilos: [.clasica],
         referencias: [.aldwell2011])
@@ -141,6 +143,12 @@ extension AcordeConNombre {
     public static let sextaAumentadaAlemana = AcordeConNombre(
         nombre: "sexta aumentada alemana",
         intervalos: [.unisono, .terceraMayor, .quintaJusta, .sextaAumentada],
+        estilos: [.clasica], referencias: [.aldwell2011])
+    /// La alemana con la quinta escrita como cuarta doble aumentada, que va a la tónica en segunda inversión:
+    /// La♭ Do Re♯ Fa♯.
+    public static let sextaAumentadaSuiza = AcordeConNombre(
+        nombre: "sexta aumentada suiza",
+        intervalos: [.unisono, .terceraMayor, Intervalo(numero: 4, calidad: .aumentada(2))!, .sextaAumentada],
         estilos: [.clasica], referencias: [.aldwell2011])
 
     /// Los genéricos, los que dan nombre a los tipos de acorde (`TipoDeAcorde.acordeConNombre`), en el orden en que
@@ -153,7 +161,7 @@ extension AcordeConNombre {
         .dominanteDecimotercera, .menorSeptimaDecimotercera, .dominanteNovenaMenor, .dominanteQuintaDisminuida,
         .dominanteNovenaAumentada, .dominanteUndecimaAumentada, .mayorSeptimaMayorUndecimaAumentada, .sus4Novena,
         .sus4Decimotercera, .dominanteAlterado, .menorSeptimaMayorNovena, .mayorSeptimaMayorDecimotercera,
-        .menorSextaNovena, .sextaAumentadaItaliana,
-        .sextaAumentadaFrancesa, .sextaAumentadaAlemana,
+        .menorSextaNovena, .menorNovenaAnadida, .sextaAumentadaItaliana,
+        .sextaAumentadaFrancesa, .sextaAumentadaAlemana, .sextaAumentadaSuiza,
     ]
 }

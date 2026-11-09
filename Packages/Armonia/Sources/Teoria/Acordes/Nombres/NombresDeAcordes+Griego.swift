@@ -42,9 +42,11 @@ extension NombresDeAcordes {
         .init(.menorSeptimaMayorNovena, "ελάσσονα συγχορδία μεγάλης έβδομης και ένατης"),
         .init(.mayorSeptimaMayorDecimotercera, "μείζονα συγχορδία μεγάλης δέκατης τρίτης"),
         .init(.menorSextaNovena, "ελάσσονα συγχορδία έκτης και ένατης"),
+        .init(.menorNovenaAnadida, "ελάσσονα συγχορδία με προστιθέμενη ένατη"),
         .init(.sextaAumentadaItaliana, "ιταλική συγχορδία αυξημένης έκτης"),
         .init(.sextaAumentadaFrancesa, "γαλλική συγχορδία αυξημένης έκτης"),
         .init(.sextaAumentadaAlemana, "γερμανική συγχορδία αυξημένης έκτης"),
+        .init(.sextaAumentadaSuiza, "ελβετική συγχορδία αυξημένης έκτης"),
         .init(.tristan, "συγχορδία του Τριστάνου"),
         .init(.mistico, "μυστική συγχορδία", alias: ["συγχορδία του Προμηθέα"]),
         .init(.petrushka, "συγχορδία του Πετρούσκα"),
@@ -53,5 +55,9 @@ extension NombresDeAcordes {
         .init(.hendrix, "συγχορδία του Χέντριξ"),
         .init(.mu, "συγχορδία mu"),
         .init(.porCuartas, "συγχορδία τετάρτων"),
+        .init(.elektra, "συγχορδία της Ηλέκτρας"),
+        .init(.augures, "συγχορδία των οιωνοσκόπων"),
+        .init(.salmos, "συγχορδία της Συμφωνίας των ψαλμών"),
+        .init(.alfa, "συγχορδία άλφα"),
     ])
 }

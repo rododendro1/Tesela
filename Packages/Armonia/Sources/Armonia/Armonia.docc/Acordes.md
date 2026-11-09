@@ -48,7 +48,8 @@ Acorde.identificar(notas: [.do, .mi, "Sib", "Reb"]).first   // Do7(♭9)
 
 Los acordes de sexta aumentada se escriben desde el bajo natural, ♭6̂, con la sexta aumentada
 (`♯6`) dentro de la octava, como una sexta añadida: la italiana es `La♭(♯6,omit5)`, la francesa
-`La♭(♯6,♯11,omit5)` y la alemana `La♭(♯6)`. Sin quinta, la italiana y la francesa no se dan por
+`La♭(♯6,♯11,omit5)`, la alemana `La♭(♯6)` y la suiza, la alemana con la cuarta doble aumentada en lugar
+de la quinta (La♭ Do Re♯ Fa♯), `La♭(♯6,𝄪11,omit5)`, que también se lee `Lab(#6,##11,omit5)`. Sin quinta, la italiana y la francesa no se dan por
 incompletas al identificarlas:
 
 ```swift
@@ -78,8 +79,9 @@ AcordeConNombre.sextaAumentadaAlemana.estilos                  // [clasica]
 
 Los genéricos citan dónde se leen: Aldwell, Schachter y Cadwallader los de la armonía tonal (las tríadas, las séptimas,
 las sextas aumentadas), Levine los del jazz y Walser el de potencia. Los de nombre propio
-(``AcordeConNombre/conNombrePropio``) son acordes de una obra o de un estilo, con la obra donde se leen: el de Tristán, el místico de Skriabin, el de Petrushka, el de «Farben», el So What, el de Hendrix, el mu y
-el acorde por cuartas. No dan nombre a su tipo, pero ``TipoDeAcorde/acordesConNombre`` los encuentra:
+(``AcordeConNombre/conNombrePropio``) son acordes de una obra o de un estilo, con la obra donde se leen: el de Tristán, el místico de Skriabin, el de Petrushka, el de «Farben», el So What, el de Hendrix, el mu,
+el acorde por cuartas, el de «Elektra», el de los augures, el de la «Sinfonía de los salmos» y el alfa de Lendvai.
+Los de Hendrix y mu, los cuatro últimos y la novena añadida menor, m(add9), no citan todavía ninguna obra. No dan nombre a su tipo, pero ``TipoDeAcorde/acordesConNombre`` los encuentra:
 
 ```swift
 AcordeConNombre.tristan.notas(sobre: .fa)                      // [Fa, Si, Re♯, Sol♯]

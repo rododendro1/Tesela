@@ -11,7 +11,7 @@ import Foundation
 //   quinta:    1 (J) −6 (d)  8 (A)
 //   séptima:  −2 (m)  5 (M) −9 (d, solo en °7)
 //   2ª / 9ª:  −5 (♭9) 2 (9)  9 (♯9)
-//   4ª / 11ª: −1 (11) 6 (♯11)
+//   4ª / 11ª: −1 (11) 6 (♯11) 13 (𝄪11, solo con la sexta aumentada: la sexta suiza)
 //   6ª / 13ª: −4 (♭13) 3 (13 o sexta) 10 (♯6, solo como sexta aumentada)
 //
 // A partir de ese análisis se generan el cifrado, la disposición de intervalos y una
@@ -27,7 +27,7 @@ package struct ClasificacionDeAcorde: Hashable, Sendable {
     package var sextas: [Int] = []
 
     /// Todas las posiciones que puede ocupar una nota de acorde (además de la fundamental).
-    package static let posicionesValidas: Set<Int> = [-3, 4, 1, -6, 8, -2, 5, -9, -5, 2, 9, -1, 6, -4, 3, 10]
+    package static let posicionesValidas: Set<Int> = [-3, 4, 1, -6, 8, -2, 5, -9, -5, 2, 9, -1, 6, 13, -4, 3, 10]
 
     /// `nil` si el conjunto no se puede interpretar como acorde por terceras.
     /// `motivoDeRechazo(_:)` explica por qué.
@@ -39,7 +39,7 @@ package struct ClasificacionDeAcorde: Hashable, Sendable {
             case 1, -6, 8: quintasDelAcorde.append(intervalo)
             case -2, 5, -9: septima = intervalo
             case -5, 2, 9: segundas.append(intervalo)
-            case -1, 6: cuartas.append(intervalo)
+            case -1, 6, 13: cuartas.append(intervalo)
             default: sextas.append(intervalo) // −4, 3, 10
             }
         }
@@ -50,6 +50,10 @@ package struct ClasificacionDeAcorde: Hashable, Sendable {
         guard conjunto.contains(0) else { return .faltaLaFundamental }
         for intervalo in conjunto.sorted() where intervalo != 0 && !posicionesValidas.contains(intervalo) {
             return .intervaloSinPapel(Intervalo.simpleAscendente(pasosDeQuinta: intervalo))
+        }
+        // La cuarta doble aumentada solo es la de la sexta suiza (La♭ Do Re♯ Fa♯), con la sexta aumentada.
+        if conjunto.contains(13), !conjunto.contains(10) {
+            return .intervaloSinPapel(Intervalo.simpleAscendente(pasosDeQuinta: 13))
         }
         if conjunto.isSuperset(of: [-3, 4]) { return .terceraMayorYMenor }
         if conjunto.intersection([-2, 5, -9]).count > 1 { return .variasSeptimas }
@@ -169,6 +173,15 @@ extension ClasificacionDeAcorde {
         /// Con b/♭/#/♯, un grado que no existe es un error; con -/+ (que también
         /// significan menor y aumentado) simplemente no se reconoce.
         func leerAlterada() throws -> Int? {
+            // La cuarta doble aumentada de la sexta suiza: 𝄪11, ##11 o ♯♯11.
+            for doble in ["𝄪", "##", "♯♯", "#♯", "♯#"] where resto.hasPrefix(doble) {
+                let tras = resto.dropFirst(doble.count)
+                guard tras.cifrasIniciales == "11" else {
+                    throw fallo(.tensionNoValida(resto.fragmentoParaError), en: resto)
+                }
+                resto = tras.dropFirst(2)
+                return -1 + 14
+            }
             guard let caracter = resto.first else { return nil }
             let alteracion: Int
             switch caracter {
@@ -406,9 +419,10 @@ extension ClasificacionDeAcorde {
     // MARK: Cifrado
 
     package static let etiquetas: [Int: String] = [
-        1: "5", -6: "♭5", 8: "♯5", 10: "♯6", -5: "♭9", 2: "9", 9: "♯9", -1: "11", 6: "♯11", -4: "♭13", 3: "13",
+        1: "5", -6: "♭5", 8: "♯5", 10: "♯6", -5: "♭9", 2: "9", 9: "♯9", -1: "11", 6: "♯11", 13: "𝄪11", -4: "♭13",
+        3: "13",
     ]
-    package static let ordenEtiquetas = [1, -6, 8, 10, -5, 2, 9, -1, 6, -4, 3]
+    package static let ordenEtiquetas = [1, -6, 8, 10, -5, 2, 9, -1, 6, 13, -4, 3]
 
     package var simbolo: String { simbolo(estilo: .predeterminado) }
 

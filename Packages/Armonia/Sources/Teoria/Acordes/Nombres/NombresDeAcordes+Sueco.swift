@@ -42,9 +42,11 @@ extension NombresDeAcordes {
         .init(.menorSeptimaMayorNovena, "moll med stor septima och nona"),
         .init(.mayorSeptimaMayorDecimotercera, "stort tredecimackord"),
         .init(.menorSextaNovena, "moll-sext-nonackord"),
+        .init(.menorNovenaAnadida, "moll med tillagd nona"),
         .init(.sextaAumentadaItaliana, "italienskt överstigande sextackord"),
         .init(.sextaAumentadaFrancesa, "franskt överstigande sextackord"),
         .init(.sextaAumentadaAlemana, "tyskt överstigande sextackord"),
+        .init(.sextaAumentadaSuiza, "schweiziskt överstigande sextackord"),
         .init(.tristan, "Tristanackord"),
         .init(.mistico, "mystiskt ackord", alias: ["Prometheusackord"]),
         .init(.petrushka, "Petrusjka-ackord"),
@@ -53,5 +55,9 @@ extension NombresDeAcordes {
         .init(.hendrix, "Hendrixackord"),
         .init(.mu, "mu-ackord"),
         .init(.porCuartas, "kvartackord"),
+        .init(.elektra, "Elektra-ackord"),
+        .init(.augures, "augurackord"),
+        .init(.salmos, "Psalmsymfoni-ackord"),
+        .init(.alfa, "alfaackord"),
     ])
 }
