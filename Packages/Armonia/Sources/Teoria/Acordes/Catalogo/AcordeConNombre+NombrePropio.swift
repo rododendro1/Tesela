@@ -56,10 +56,40 @@ extension AcordeConNombre {
         intervalos: [.unisono, .cuartaJusta, .septimaMenor, .terceraMenor + .octava],
         alias: ["acorde cuartal"],
         estilos: [.sigloXX, .jazz], referencias: [.persichetti1961])
+    /// El acorde de «Elektra» (Strauss, 1909), el del motivo de Elektra: Mi mayor sobre Re♭ mayor, escrito sobre Do♯
+    /// (Do♯ Mi♯ Sol♯ Mi Si). Su ortografía cambia de una fuente a otra.
+    public static let elektra = AcordeConNombre(
+        nombre: "acorde de Elektra",
+        intervalos: [.unisono, .terceraMayor, .quintaJusta, .terceraMenor + .octava, .septimaMenor + .octava],
+        estilos: [.sigloXX])
+    /// El acorde de los augures, de «La consagración de la primavera» (Stravinski, 1913): Mi♭7 sobre Fa♭ mayor,
+    /// Fa♭ La♭ Do♭ Mi♭ Sol Si♭ Re♭.
+    public static let augures = AcordeConNombre(
+        nombre: "acorde de los augures",
+        intervalos: [
+            .unisono, .terceraMayor, .quintaJusta, .septimaMayor, .novenaAumentada, .undecimaAumentada,
+            .decimoterceraMayor,
+        ],
+        alias: ["acorde de La consagración de la primavera"], estilos: [.sigloXX])
+    /// El acorde con que empieza la «Sinfonía de los salmos» (Stravinski, 1930): Mi menor con la tercera doblada,
+    /// Mi Sol Si Sol.
+    public static let salmos = AcordeConNombre(
+        nombre: "acorde de la Sinfonía de los salmos",
+        intervalos: [.unisono, .terceraMenor, .quintaJusta, .terceraMenor + .octava], estilos: [.sigloXX])
+    /// El acorde alfa de Lendvai, en Bartók: dos séptimas disminuidas superpuestas, Do Mi♭ Fa♯ La Do♯ Mi Sol Si♭. Está
+    /// por comprobar en Lendvai (1971) qué notas da.
+    public static let alfa = AcordeConNombre(
+        nombre: "acorde alfa",
+        intervalos: [
+            .unisono, .terceraMenor, .cuartaAumentada, .sextaMayor, .unisonoAumentado + .octava,
+            .terceraMayor + .octava, .quintaJusta + .octava, .septimaMenor + .octava,
+        ],
+        alias: ["acorde alfa de Lendvai"], estilos: [.sigloXX])
 
     /// Los de nombre propio, en su orden.
     public static let conNombrePropio: [AcordeConNombre] = [
-        .tristan, .mistico, .petrushka, .farben, .soWhat, .hendrix, .mu, .porCuartas,
+        .tristan, .mistico, .petrushka, .farben, .soWhat, .hendrix, .mu, .porCuartas, .elektra, .augures, .salmos,
+        .alfa,
     ]
 
     /// Todos los acordes del catálogo: los genéricos (`genericos`) y después los de nombre propio (`conNombrePropio`).

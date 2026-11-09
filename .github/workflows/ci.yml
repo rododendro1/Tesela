@@ -132,6 +132,8 @@ jobs:
           - { nombre: ConsolaArmonia, ruta: Apps/ConsolaArmonia }
           - { nombre: EjemploArmonia, ruta: Ejemplos/EjemploArmonia }
           - { nombre: EjemploCatalogoDeEscalas, ruta: Ejemplos/EjemploCatalogoDeEscalas }
+          - { nombre: EjemploCatalogoDeAcordes, ruta: Ejemplos/EjemploCatalogoDeAcordes }
+          - { nombre: EjemploCatalogoDeProgresiones, ruta: Ejemplos/EjemploCatalogoDeProgresiones }
           - { nombre: EjemploHexagonos, ruta: Ejemplos/EjemploHexagonos }
           - { nombre: RendimientoArmonia, ruta: Herramientas/RendimientoArmonia }
           - { nombre: FuzzArmonia, ruta: Herramientas/FuzzArmonia }
@@ -521,6 +523,8 @@ jobs:
           (cd Apps/ConsolaArmonia && swift test --parallel)
           (cd Ejemplos/EjemploArmonia && swift run EjemploArmonia > /dev/null)
           (cd Ejemplos/EjemploCatalogoDeEscalas && swift run EjemploCatalogoDeEscalas - > /dev/null)
+          (cd Ejemplos/EjemploCatalogoDeAcordes && swift run EjemploCatalogoDeAcordes - > /dev/null)
+          (cd Ejemplos/EjemploCatalogoDeProgresiones && swift run EjemploCatalogoDeProgresiones - > /dev/null)
           (cd Ejemplos/EjemploHexagonos && swift run EjemploHexagonos > /dev/null)
       - name: Instalar XcodeGen
         run: brew install xcodegen

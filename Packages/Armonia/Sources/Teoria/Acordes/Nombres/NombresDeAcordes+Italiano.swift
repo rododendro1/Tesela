@@ -42,9 +42,11 @@ extension NombresDeAcordes {
         .init(.menorSeptimaMayorNovena, "minore con settima maggiore e nona"),
         .init(.mayorSeptimaMayorDecimotercera, "tredicesima maggiore"),
         .init(.menorSextaNovena, "minore sesta e nona"),
+        .init(.menorNovenaAnadida, "minore con nona aggiunta"),
         .init(.sextaAumentadaItaliana, "sesta aumentata italiana"),
         .init(.sextaAumentadaFrancesa, "sesta aumentata francese"),
         .init(.sextaAumentadaAlemana, "sesta aumentata tedesca"),
+        .init(.sextaAumentadaSuiza, "sesta aumentata svizzera"),
         .init(.tristan, "accordo del Tristano"),
         .init(.mistico, "accordo mistico", alias: ["accordo di Prometeo"]),
         .init(.petrushka, "accordo di Petruška"),
@@ -53,5 +55,9 @@ extension NombresDeAcordes {
         .init(.hendrix, "accordo di Hendrix"),
         .init(.mu, "accordo mu"),
         .init(.porCuartas, "accordo per quarte"),
+        .init(.elektra, "accordo di Elektra"),
+        .init(.augures, "accordo degli àuguri"),
+        .init(.salmos, "accordo della Sinfonia di salmi"),
+        .init(.alfa, "accordo alfa"),
     ])
 }

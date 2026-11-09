@@ -21,6 +21,16 @@
   `acordes(sobre:)` y `acordes(en:)` las escriben en cualquier tonalidad; `nombre(en:)` las nombra en los trece
   idiomas, y `buscar(nombre:)` y `buscar(conteniendo:)` las encuentran por su nombre, sus alias o sus variantes en
   cualquiera de ellos. Cuatro obras nuevas en `Referencia.catalogo`: Gjerdingen, Hudson, Rosand y Doll.
+- `Ejemplos/EjemploCatalogoDeAcordes` y `Ejemplos/EjemploCatalogoDeProgresiones` escriben, como el de las escalas,
+  el catálogo de acordes y el de progresiones en TSV con la API pública, una fila por acorde o por progresión: sus
+  nombres en los trece idiomas, sus notas o sus acordes sobre Do, el cifrado, los estilos y las obras que los citan
+  (`swift run EjemploCatalogoDeAcordes [fichero.tsv | -] [--bibtex obras.bib]`).
+- Seis acordes más en el catálogo. Dos genéricos, que dan nombre a su tipo: la menor con novena añadida, m(add9), y
+  la sexta aumentada suiza, `La♭(♯6,𝄪11,omit5)` (La♭ Do Re♯ Fa♯), la alemana con la cuarta doble aumentada en lugar
+  de la quinta. El lector de cifrados admite esa cuarta, que se escribe `𝄪11`, `##11` o `♯♯11`, y solo junto a la
+  sexta aumentada. Y cuatro de nombre propio: el de «Elektra», el de los augures de «La consagración de la
+  primavera», el de la «Sinfonía de los salmos» y el alfa de Lendvai. Salvo la suiza, que cita a Aldwell, Schachter y
+  Cadwallader, no citan ninguna obra: su ortografía está por confirmar.
 - 23 progresiones más en el catálogo, que tiene ya 52: la tercera de picardía y la cadencia evitada; los esquemas
   galantes de Gjerdingen que faltaban (Prinner, Fenaroli, quiescenza, Meyer, sol-fa-mi e indugio); el bajo de lamento
   cromático y los bajos de danza (passamezzo antico y moderno, ruggiero, bergamasca, chacona y pasacalle); del jazz,
