@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.3 (2026-11-09)
 
 - Revisión del catalán y del inglés en las apps: «Número de Forte», «Reharmonitzar» y los apóstrofos rectos en
   catalán; en inglés, la red del Tonnetz es «Lattice» (la rejilla del controlador sigue siendo «Grid») y la nota de

@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.3 (2026-11-09)
 
 - La documentación de las escalas (`Escalas.md`, `EscalasDelMundo.md`) explica que una escala de otra tradición sin
   fila en un idioma hereda sus alias y sus variantes, y `EstiloDeEscala.popular` dice que en los acordes abarca también
