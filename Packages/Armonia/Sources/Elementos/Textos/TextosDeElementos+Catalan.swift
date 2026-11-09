@@ -51,7 +51,7 @@ extension TextosDeElementos {
 
         // ErrorDeLectura.swift (conjuntos y series)
         claseDeAlturaNoValida: "«{1}» no és una classe d'altura (de 0 a 11, o t i e per al 10 i l'11) ni un nom de nota",
-        numeroDeForteDesconocido: "«{1}» no és un nombre de Forte (per exemple, 3-11 o 4-Z15)",
+        numeroDeForteDesconocido: "«{1}» no és un número de Forte (per exemple, 3-11 o 4-Z15)",
         faltaElCierre: "falta el «{1}» del final",
         serieNoDodecafonica: "una sèrie dodecafònica té les dotze classes d'altura, cadascuna una vegada",
         faltanEnLaSerie: "falten {1}",

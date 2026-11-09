@@ -9,7 +9,7 @@ extension TextosDeConsola {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <Akkorde> [--in <Tonart>] [--scales]",
         descripcionAnalizar: "Stufenbezeichnung, Funktionen, Kadenzen und Modulationen (mit ihrem Drehakkord; ohne --in)\n--scales: die Skala jedes Akkords, mit Spannungs- und Avoid-Tönen",
-        notasAnalizar: "--guide-tones: zwei Leittonlinien, ab der Terz und ab der Septime; --voice-leading: wie jede Stimme von einem Akkord zum nächsten geht (in Drop 2), mit den gemeinsamen Tönen; --compare: die andere Fassung Akkord für Akkord, mit dem, was sich ändert, ihren Stufen und den gemeinsamen Tönen; --walking-bass: eine Walking-Bass-Linie in Vierteln, ein Takt pro Akkord",
+        notasAnalizar: "--guide-tones: zwei Guide-Tone-Linien, ab der Terz und ab der Septime; --voice-leading: wie jede Stimme von einem Akkord zum nächsten geht (in Drop 2), mit den gemeinsamen Tönen; --compare: die andere Fassung Akkord für Akkord, mit dem, was sich ändert, ihren Stufen und den gemeinsamen Tönen; --walking-bass: eine Walking-Bass-Linie in Vierteln, ein Takt pro Akkord",
         sintaxisAnalizarArchivo: "analyze --file <Datei> [--window <Dauer>]",
         descripcionAnalizarArchivo: "dasselbe mit den Akkorden einer MIDI-, MusicXML-, MEI- oder ABC-Datei (einer pro Schlag; --window 2: einer pro Halbe)",
         sintaxisArmonizar: "harmonize <Melodie> [--in <Tonart>] [--proposals 3]",
@@ -145,7 +145,7 @@ extension TextosDeConsola {
         sintaxisHojaDeAcorde: "sheet chord <symbol>",
         descripcionHojaDeAcorde: "der Akkord auf einem druckbaren Übungsblatt (SVG): Töne und andere Namen, Notensystem, Voicings, Gitarrengriffe, passende Skalen und Substitutionen",
         sintaxisHojaDeAcordes: "sheet chords <chords> [--in <key>] [--all-keys] [--compare <chords>]",
-        descripcionHojaDeAcordes: "die Akkordfolge auf einem druckbaren Übungsblatt (SVG): Notensystem mit einem Voicing jedes Akkords, Analyse mit Stufen, Funktionen und Skalen, Kadenzen und Leittonlinien; auch die Stimmführung. Mit --all-keys die Folge in allen zwölf Tonarten, jede mit ihrem Notensystem. Mit --compare Akkord für Akkord mit einer anderen Fassung (Reharmonisierung…) verglichen: was sich ändert, in Rot",
+        descripcionHojaDeAcordes: "die Akkordfolge auf einem druckbaren Übungsblatt (SVG): Notensystem mit einem Voicing jedes Akkords, Analyse mit Stufen, Funktionen und Skalen, Kadenzen und Guide-Tone-Linien; auch die Stimmführung. Mit --all-keys die Folge in allen zwölf Tonarten, jede mit ihrem Notensystem. Mit --compare Akkord für Akkord mit einer anderen Fassung (Reharmonisierung…) verglichen: was sich ändert, in Rot",
         sintaxisHojaDeTonalidad: "sheet key <key>",
         descripcionHojaDeTonalidad: "die Tonart auf einem druckbaren Übungsblatt (SVG): Vorzeichen, Parallel- und gleichnamige Tonart, die Tonleiter im Notensystem, die Akkorde jeder Stufe mit ihrer Funktion, die typischen Kadenzen und die Modulationen in die verwandten Tonarten",
         sintaxisPentagrama: "staff scale|chord|arpeggio|chords <Noten>",

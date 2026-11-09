@@ -35,7 +35,7 @@ extension TextosDePolifonia {
         comienzoImperfecto: "Opening without a perfect consonance",
         finalImperfecto: "Ending without unison or octave",
         finalSinGradoConjunto: "Ending not approached by step",
-        disonanciaEnParteFuerte: "Dissonance on the downbeat",
+        disonanciaEnParteFuerte: "Dissonance on a strong beat",
         disonanciaMalTratada: "Mishandled dissonance",
         retardoMalResuelto: "Badly resolved suspension",
         unisono: "Unison in the middle",

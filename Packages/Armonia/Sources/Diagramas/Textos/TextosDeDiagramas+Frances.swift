@@ -7,7 +7,7 @@ import Elementos
 extension TextosDeDiagramas {
     static let frances = TextosDeDiagramas(
         // CorrespondenciaDeColores.swift
-        circuloDeQuintas: "cycle des quintes",
+        circuloDeQuintas: "cercle des quintes",
 
         // DibujoSVG.swift
         conjunto: "Ensemble ",

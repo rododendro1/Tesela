@@ -137,7 +137,7 @@ extension TextosDeTeoria {
         idiomasMezclados: "«{1}» está escrito noutro idioma que a fundamental: escríbese todo con sílabas (Sol7/Si) ou todo con letras (G7/B)",
         // ErrorDeLecturaDeTeoria.swift (escalas)
         modoNoReconocido: "«{1}» non é o modo dunha tonalidade: unha tonalidade é maior ou menor (para os demais modos, usa Escala)",
-        faltaElTipoDeEscala: "falta o tipo de escala (mayor, dórico, menor armónica…)",
+        faltaElTipoDeEscala: "falta o tipo de escala (maior, dórico, menor harmónica…)",
         tipoDeEscalaNoReconocido: "«{1}» non é un tipo de escala coñecido",
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "todos os acordes teñen que ter o mesmo número de voces, e polo menos dúas",

@@ -1,5 +1,24 @@
 # Cambios
 
+## Sin publicar
+
+- Los nombres de las escalas tienen más alias y variantes en los doce idiomas: los que faltaban de las occidentales
+  (sobre todo en inglés, alemán, sueco, húngaro, ruso y griego) y los de las tradiciones que se traducen (las
+  harmoniai y los tetracordos griegos, las etíopes, las europeas y las andinas). Una escala de otra tradición sin
+  fila en un idioma conserva sus alias y sus variantes del catálogo («Hicaz», «ትዝታ»), menos los que están en
+  español (`NombresDeEscalas.aliasEnEspanol`), así que también se leen con la tónica en alemán, en húngaro y en sueco.
+- Revisión del catalán: la séptima es «setena», como ya decían las apps («setena de dominant»; «sèptima» queda de
+  variante), la sexta, «sisena» («sisena augmentada alemanya», en los acordes y en los alias de las escalas), y la quinta,
+  «cinquena» («cercle de cinquenes», «cinquenes paral·leles»), «número de Forte», «reharmonitzar», «sota el cantus firmus» y los ejemplos del error de tipo de escala
+  en catalán (también en gallego y en euskera, que los tenían en español).
+- Revisión del inglés: el estilo popular se llama «popular» y no «folk» (abarca también el power chord o el acorde
+  mu), también en `armonia escalas --use popular`; «dissonance on a strong beat», y `--margen` se escribe también
+  `--margin`, como dice la ayuda en inglés.
+- Revisión de los demás idiomas: «Dissonanza su tempo forte» en italiano, «disonantzia denbora indartsuan» en euskera,
+  «{1}-голосный контрапункт» en ruso (concuerda con cualquier número), «cercle des quintes» en francés y «meios-tons»
+  en toda la consola en portugués; en alemán y en húngaro, las notas guía ya no se llaman como la sensible
+  («Guide-Tone-Linien», «vezérhang-vonalak»).
+
 ## 0.4.2 (2026-11-08)
 
 - El catálogo de acordes tiene ocho acordes de nombre propio (`AcordeConNombre.conNombrePropio`), con sus notas tal

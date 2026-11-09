@@ -1,5 +1,17 @@
 # Cambios
 
+## Sin publicar
+
+- Revisión del catalán y del inglés en las apps: «Número de Forte», «Reharmonitzar» y los apóstrofos rectos en
+  catalán; en inglés, la red del Tonnetz es «Lattice» (la rejilla del controlador sigue siendo «Grid») y la nota de
+  paso, «passing tone».
+- Revisión de los demás idiomas en las apps: la red del Tonnetz ya no se llama como la rejilla en húngaro («Háló»),
+  griego («Δίκτυο») y ruso («Решётка»); las notas guía no son «Leittöne» ni «vezetőhangok»; el francés trata siempre
+  de usted, «Instrument et accordage»; el portugués es siempre de Portugal («anemitónica», «meios-tons»); en euskera,
+  «Laugarrenka», «Bosgarrenen zirkulua» y «Ahots-eramatea»; en gallego, «Padrón por graos» y «Grella hexagonal»; el
+  rótulo de las tónicas equivalentes dice «la misma escala desde» en alemán, sueco, húngaro, euskera, griego y
+  francés, y en ruso los semitonos ya no dependen de la concordancia con el número.
+
 ## 0.4.2 (2026-11-08)
 
 - **Cambio incompatible:** `DatosDeAcorde`, `DatosDeCandidato`, `DatosDeEscala`, `DatosDeConjunto`, `DatosDeSerie`

@@ -93,12 +93,17 @@ package struct NombresDeEscalas: Sendable {
     package let indice: [String: TipoDeEscala]
 
     init(_ listadas: [Fila]) {
-        // Las tradicionales sin fila (los mēḷa) conservan su nombre original.
+        // Las tradicionales sin fila (los mēḷa) conservan su nombre original, y sus alias y sus variantes (otras
+        // transliteraciones, su escritura original: «Hicaz», «ትዝታ»), salvo los que están en español.
         let conFila = Set(listadas.compactMap(\.tradicional))
         var vistas = Set<IdentidadDeEscala>()
         let filas = listadas + TipoDeEscala.tradicionales
             .filter { !conFila.contains($0.identidad) && vistas.insert($0.identidad).inserted }
-            .map { Fila.tradicional($0) }
+            .map {
+                Fila.tradicional(
+                    $0, alias: $0.alias.filter { !NombresDeEscalas.aliasEnEspanol.contains($0) },
+                    variantes: $0.variantes.filter { !NombresDeEscalas.aliasEnEspanol.contains($0) })
+            }
         var porTipo: [TipoDeEscala: Entrada] = [:]
         var tradicionales: [IdentidadDeEscala: Entrada] = [:]
         var categorias: [CategoriaTradicional: String] = [:]
@@ -189,6 +194,28 @@ package struct NombresDeEscalas: Sendable {
 
     private static let transliterados = TablaPerezosa<Idioma, NombresDeEscalas> { de($0).en(.transliterada) }
     private static let enASCII = TablaPerezosa<Idioma, NombresDeEscalas> { de($0).en(.ascii) }
+
+    /// Los alias de las escalas de otras tradiciones que están escritos en español («modo gregoriano 1», «hexacordo
+    /// duro», «balinesa»): una escala sin fila en un idioma hereda los demás, pero no estos.
+    static let aliasEnEspanol: Set<String> = [
+        // Los modos gregorianos y los de Glareano.
+        "protus auténtico", "deuterus auténtico", "tritus auténtico", "tetrardus auténtico",
+        "modo gregoriano 1", "modo gregoriano 2", "modo gregoriano 3", "modo gregoriano 4",
+        "modo gregoriano 5", "modo gregoriano 6", "modo gregoriano 7", "modo gregoriano 8",
+        "hipodórico", "hipofrigio", "hipolidio", "hipomixolidio", "hipoeólico", "hipojónico",
+        "modo 1 de Zarlino", "modo 2 de Zarlino", "modo 3 de Zarlino", "modo 4 de Zarlino", "modo 5 de Zarlino",
+        "modo 6 de Zarlino", "modo 7 de Zarlino", "modo 8 de Zarlino", "modo 9 de Zarlino", "modo 10 de Zarlino",
+        "modo 11 de Zarlino", "modo 12 de Zarlino",
+        "modo de Glareano 9", "modo de Glareano 10", "modo de Glareano 11", "modo de Glareano 12",
+        "modo 9", "modo 10", "modo 11", "modo 12",
+        // Los hexacordos.
+        "hexacordo natural", "hexacordo duro", "hexacordo blando",
+        // Los shadd de Ṣafī al-Dīn.
+        "Abū Salīk de Ṣafī al-Dīn", "Nawā de Ṣafī al-Dīn", "Rāst de Ṣafī al-Dīn", "ʿUshshāq de Ṣafī al-Dīn",
+        // Europa, África y Asia.
+        "escala istriana", "podhalana", "escala podhalana", "equipentatónica de Uganda", "equiheptatónica chopi",
+        "balinesa", "camboyana", "jemer", "tailandesa", "arpa birmana", "birmana", "doce lü",
+    ]
 
     /// El español sale del catálogo: el nombre de cada tipo, sus alias y sus variantes.
     static let espanol = NombresDeEscalas(

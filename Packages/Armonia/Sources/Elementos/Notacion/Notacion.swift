@@ -12,8 +12,8 @@
 /// | `.conPalabras(.ingles)` | F sharp | major third | dominant seventh | D dorian |
 /// | `.ascii(.ingles)` | F# | major third | dominant seventh | D dorian |
 /// | `.compacta(.ingles)` | F♯ | major third | dominant seventh | D dorian |
-/// | `.conPalabras(.catalan)` | fa sostingut | 3a major | sèptima de dominant | fa sostingut dòric |
-/// | `.compacta(.catalan)` | Fa♯ | 3a major | sèptima de dominant | Fa♯ dòric |
+/// | `.conPalabras(.catalan)` | fa sostingut | 3a major | setena de dominant | fa sostingut dòric |
+/// | `.compacta(.catalan)` | Fa♯ | 3a major | setena de dominant | Fa♯ dòric |
 /// | `.conPalabras(.gallego)` | fa sostido | 3ª maior | sétima de dominante | fa sostido dórico |
 /// | `.compacta(.gallego)` | Fa♯ | 3ª maior | sétima de dominante | Fa♯ dórico |
 /// | `.conPalabras(.euskera)` | fa diesa | 3. handia | dominanteko zazpigarrena | fa diesa doriarra |

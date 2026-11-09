@@ -318,7 +318,7 @@ import Testing
         #expect(salida("tonalidad Mib mayor --idioma pt").contains("(3 bemóis)"))
         #expect(salida("escala Re dórico --idioma fr").hasPrefix("ré dorien"))
         #expect(salida("help --idioma en").hasPrefix("armonia: music theory"))
-        #expect(salida("acorde Sol7/Si --idioma ca").hasPrefix("Sol7/Si: sèptima de dominant\n"))
+        #expect(salida("acorde Sol7/Si --idioma ca").hasPrefix("Sol7/Si: setena de dominant\n"))
         #expect(salida("escala Re dórico --idioma eu").hasPrefix("re doriarra"))
         // Los errores de lectura los traduce el motor.
         #expect(resultado("acorde", "Do7(b3)", "--idioma", "eu").error.hasPrefix("armonia: Ezin da «Do7(b3)» irakurri"))

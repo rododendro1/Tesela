@@ -104,7 +104,7 @@ public struct Acorde: Hashable, Sendable {
     public func cifrado(en notacion: Notacion) -> String { cifrado(estilo: EstiloDeCifrado(notacion: notacion)) }
 
     /// "Do séptima de dominante, primera inversión", "C dominant seventh, first inversion",
-    /// "C major over D", "do sèptima de dominant, primera inversió", "do dominanteko zazpigarrena,
+    /// "C major over D", "do setena de dominant, primera inversió", "do dominanteko zazpigarrena,
     /// lehen inbertsioa", "dó sétima de dominante, primeira inversão", "sol septième de dominante,
     /// premier renversement", "sol settima di dominante, primo rivolto", "Dominantseptakkord auf G,
     /// erste Umkehrung", "доминантсептаккорд от соль, первое обращение".

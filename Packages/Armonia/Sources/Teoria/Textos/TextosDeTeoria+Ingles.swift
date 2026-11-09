@@ -157,7 +157,7 @@ extension TextosDeTeoria {
         usoJazz: "jazz",
         usoBlues: "blues",
         usoSigloXX: "20th century",
-        usoPopular: "folk",
+        usoPopular: "popular",
         usoSintetica: "synthetic",
         // CardinalDeEscala.swift
         cardinalMonotonica: "monotonic",

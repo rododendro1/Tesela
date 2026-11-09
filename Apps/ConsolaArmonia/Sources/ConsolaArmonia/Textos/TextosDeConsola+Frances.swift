@@ -139,7 +139,7 @@ extension TextosDeConsola {
         sintaxisTeclado: "teclado <gamme> [--dedos]",
         descripcionTeclado: "la gamme sur un clavier de piano (SVG) : ses notes ou, avec --dedos derecha ou izquierda, les doigts ; --octavas 2",
         sintaxisReloj: "reloj <gamme> [--quintas]",
-        descripcionReloj: "la gamme sur une horloge de douze heures (SVG) : le cercle chromatique ou, avec --quintas, le cycle des quintes",
+        descripcionReloj: "la gamme sur une horloge de douze heures (SVG) : le cercle chromatique ou, avec --quintas, le cercle des quintes",
         sintaxisHoja: "hoja <gamme>",
         descripcionHoja: "la gamme sur une fiche d'étude à imprimer (SVG) : portée, clavier avec les doigtés, horloge, statistiques, accords et échelle de brillance ; armonia grabar hoja … la convertit en PDF ; --comparar Do dórico (la comparaison note à note, sur la portée et l’horloge, en SVG)",
         sintaxisHojaDeAcorde: "hoja acorde <chiffrage>",
@@ -284,7 +284,7 @@ extension TextosDeConsola {
         motorNoEncontrado: "« {1} » introuvable : installez-le ou indiquez son chemin dans {2}",
         motorFallo: "« {1} » s\'est terminé avec le code {2} :",
         motorSinTerminar: "« {1} » n\'a pas fini à temps et a été arrêté",
-        motorNoInstalado: "non installé (ou mets son chemin dans {1})",
+        motorNoInstalado: "non installé (ou indiquez son chemin dans {1})",
         motorPropio: "propio",
 
         // ErrorDeUso.swift (digitaciones)

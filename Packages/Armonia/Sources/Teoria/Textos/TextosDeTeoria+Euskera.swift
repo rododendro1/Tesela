@@ -140,7 +140,7 @@ extension TextosDeTeoria {
         idiomasMezclados: "«{1}» oinarria ez bezalako hizkuntzan idatzita dago: idatzi dena silabekin (Sol7/Si) edo dena letrekin (G7/B)",
         // ErrorDeLecturaDeTeoria.swift (escalas)
         modoNoReconocido: "«{1}» ez da tonalitate baten modua: tonalitatea maiorra edo minorra da (beste moduetarako, erabili Escala)",
-        faltaElTipoDeEscala: "eskala-mota falta da (mayor, dórico, menor armónica…)",
+        faltaElTipoDeEscala: "eskala-mota falta da (maiorra, doriarra, minor harmonikoa…)",
         tipoDeEscalaNoReconocido: "«{1}» ez da eskala-mota ezagun bat",
         // ErrorDeLecturaDeTeoria.swift (coral)
         vocesDistintas: "akorde guztiek ahots kopuru bera izan behar dute, eta gutxienez bi",

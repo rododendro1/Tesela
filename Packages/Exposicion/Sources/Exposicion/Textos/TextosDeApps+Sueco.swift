@@ -180,7 +180,7 @@ extension TextosDeApps {
         ademas: "dessutom: {1}",
         simetria: "Symmetri",
         repiteCada: "Upprepas var {1}:e halvton: {2} olika transpositioner",
-        tonicasEquivalentes: "Likadan från",
+        tonicasEquivalentes: "Samma skala från",
         lineasDeNotasGuia: "Guidetonslinjer",
         desdeLaTercera: "Från tersen",
         desdeLaSeptima: "Från septiman",
