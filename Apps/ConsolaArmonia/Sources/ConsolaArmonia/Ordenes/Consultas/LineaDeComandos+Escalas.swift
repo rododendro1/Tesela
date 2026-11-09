@@ -34,6 +34,8 @@ extension LineaDeComandos {
         let parecidas: Bool
         /// `--progresiones`: progresiones con sus tríadas.
         let progresiones: Bool
+        /// `--tetracordos`: sus divisiones en dos tetracordos.
+        let tetracordos: Bool
         /// `--bibtex`: solo sus referencias, en BibTeX.
         let bibtex: Bool
 
@@ -58,6 +60,7 @@ extension LineaDeComandos {
         let vecinas = argumentos.quitarMarca(.vecinas)
         let parecidas = argumentos.quitarMarca(.parecidas)
         let progresiones = argumentos.quitarMarca(.progresiones)
+        let tetracordos = argumentos.quitarMarca(.tetracordos)
         let bibtex = argumentos.quitarMarca(.bibtex)
         let estadisticas = argumentos.quitarMarca(.estadisticas)
         let escalera = argumentos.quitarMarca(.escalera)
@@ -82,7 +85,7 @@ extension LineaDeComandos {
             secuencia: secuencia,
             octavas: octavas, bajando: bajando, piano: piano, modos: modos, simetria: simetria, vecinas: vecinas,
             estadisticas: estadisticas, escalera: escalera, doce: doce, triadas: triadas, otra: otra,
-            parecidas: parecidas, progresiones: progresiones, bibtex: bibtex)
+            parecidas: parecidas, progresiones: progresiones, tetracordos: tetracordos, bibtex: bibtex)
     }
 
     /// `escala Do mayor [--acordes] [--secuencia terceras] [--bajando] [--octavas 2] [--dedos] [--modos]
@@ -121,6 +124,7 @@ extension LineaDeComandos {
             lineas.append("  " + relativos.map(\.nombre).joined(separator: " · "))
         }
         if pedido.simetria { lineas += lineasDeSimetria(de: escala, notacion) }
+        if pedido.tetracordos { lineas += lineasDeTetracordos(de: escala, notacion) }
         if pedido.vecinas { lineas += escalasQueSalen(de: escala, .vecinas, notacion) }
         if pedido.parecidas { lineas += escalasQueSalen(de: escala, .parecidas, notacion) }
         if pedido.progresiones {
@@ -198,6 +202,51 @@ extension LineaDeComandos {
         lineas.append("  " + notacion.texto(\.tonicasEquivalentes) + ": " + simetria.tonicas)
         lineas += simetria.ciclos.map { "  " + $0.nombre + ": " + $0.detalle }
         return lineas
+    }
+
+    /// `escala … --tetracordos`: una línea por cada forma de partirla en dos tetracordos, de grave a agudo, con los
+    /// nombres de cada uno entre paréntesis (primero su lugar en el sistema perfecto griego, si lo tiene) y el
+    /// intervalo que los separa entre barras: «Do Re Mi Fa (jins ʿAjam, Çârgâh dörtlüsü) | 2ª mayor | Sol La Si Do
+    /// (…)» en Do mayor.
+    static func lineasDeTetracordos(de escala: Escala, _ notacion: Notacion) -> [String] {
+        let titulo = Mensaje.tetracordos.texto(en: notacion) + ":"
+        let divisiones = piezasDeTetracordos(de: escala, notacion)
+        guard !divisiones.isEmpty else { return [titulo, "  " + Mensaje.sinTetracordos.texto(en: notacion)] }
+        return [titulo]
+            + divisiones.map { piezas in
+                "  "
+                    + piezas.map { pieza in
+                        if let separacion = pieza.separacion { return separacion }
+                        let notas = (pieza.notas ?? []).joined(separator: " ")
+                        let nombres = pieza.nombres ?? []
+                        return nombres.isEmpty ? notas : notas + " (" + nombres.joined(separator: ", ") + ")"
+                    }.joined(separator: " | ")
+            }
+    }
+
+    /// Una pieza de una división en tetracordos, para el texto y para `--json`: un tetracordo, con sus notas y sus
+    /// nombres, o el intervalo que separa dos.
+    struct PiezaDeTetracordos: Encodable {
+        var notas: [String]?
+        var nombres: [String]?
+        var separacion: String?
+    }
+
+    /// Las divisiones en tetracordos de una escala, pieza a pieza.
+    static func piezasDeTetracordos(de escala: Escala, _ notacion: Notacion) -> [[PiezaDeTetracordos]] {
+        escala.divisionesEnTetracordos.map { division in
+            division.piezas.map { pieza in
+                switch pieza {
+                case .tetracordo(let tetracordo):
+                    PiezaDeTetracordos(
+                        notas: escala.notas(de: tetracordo).map { $0.nombre(en: notacion) },
+                        nombres: escala.tetracordosGriegos(de: tetracordo).map { $0.nombre(en: notacion) }
+                            + tetracordo.fragmentos.map { $0.nombre(en: notacion) })
+                case .separacion(_, let intervalo):
+                    PiezaDeTetracordos(separacion: intervalo.nombre(en: notacion))
+                }
+            }
+        }
     }
 
     /// La secuencia de `--secuencia`, por su nombre en español o en inglés.

@@ -102,6 +102,8 @@ extension LineaDeComandos {
         var modosRelativos: [String]?
         /// `--simetria`.
         var simetria: Simetria?
+        /// `--tetracordos`: cada división, pieza a pieza.
+        var tetracordos: [[PiezaDeTetracordos]]?
         /// `--vecinas`.
         var vecinas: [EscalaConDetallePresentada]?
         /// `--estadisticas`.
@@ -183,6 +185,7 @@ extension LineaDeComandos {
                     resumen: notacion.texto { $0.repiteCada(veces, veces) }, tonicas: nil, ciclos: [])
             }
         }
+        if pedido.tetracordos { datos.tetracordos = piezasDeTetracordos(de: escala, notacion) }
         if pedido.vecinas {
             datos.vecinas = PresentacionDeEstudioDeEscala.vecinas(de: escala, en: notacion)
         }

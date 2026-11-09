@@ -90,6 +90,7 @@ extension TextosDeTeoria {
         patronAscendente: "uppåt",
         patronDescendente: "nedåt",
         patronIdaYVuelta: "upp och ned",
+        tetracordoGriego: "tetrakord {1}",
         patronAlberti: "albertibas",
         patronQuebrado: "bruten",
         patronBajaYSube: "ned och upp",

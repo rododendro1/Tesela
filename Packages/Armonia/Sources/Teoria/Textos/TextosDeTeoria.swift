@@ -94,6 +94,8 @@ struct TextosDeTeoria: TextosTraducidos {
     let patronAscendente: String
     let patronDescendente: String
     let patronIdaYVuelta: String
+    /// Escala+Tetracordos.swift.
+    let tetracordoGriego: Plantilla  // {1} nombre griego (en su alfabeto en griego)
     let patronAlberti: String
     let patronQuebrado: String
     let patronBajaYSube: String

@@ -90,6 +90,7 @@ extension TextosDeTeoria {
         patronAscendente: "ανιούσα",
         patronDescendente: "κατιούσα",
         patronIdaYVuelta: "πάνω-κάτω",
+        tetracordoGriego: "τετράχορδο {1}",
         patronAlberti: "μπάσο Alberti",
         patronQuebrado: "σπαστό",
         patronBajaYSube: "κάτω-πάνω",

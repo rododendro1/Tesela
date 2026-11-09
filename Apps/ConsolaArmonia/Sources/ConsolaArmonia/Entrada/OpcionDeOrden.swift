@@ -160,6 +160,7 @@ extension OpcionDeOrden {
     static let sustituciones = marca("--sustituciones", "--substitutions")
     static let tab = marca("--tab")
     static let tensiones = valor("--tensiones", "--tensions")
+    static let tetracordos = marca("--tetracordos", "--tetrachords")
     static let tonalidad = valor("--tonalidad", "--key")
     static let tonalidades = marca("--tonalidades", "--keys")
     static let tonica = marca("--tonica", "--tonic")

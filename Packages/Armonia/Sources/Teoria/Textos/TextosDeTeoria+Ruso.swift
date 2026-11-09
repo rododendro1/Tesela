@@ -90,6 +90,7 @@ extension TextosDeTeoria {
         patronAscendente: "восходящий",
         patronDescendente: "нисходящий",
         patronIdaYVuelta: "вверх и вниз",
+        tetracordoGriego: "тетрахорд {1}",
         patronAlberti: "альбертиев бас",
         patronQuebrado: "ломаный",
         patronBajaYSube: "вниз и вверх",

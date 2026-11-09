@@ -323,6 +323,8 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeHabituales: String
     let mensajeNingunaEscala: String
     let mensajeNingunaProgresion: String
+    let mensajeTetracordos: String
+    let mensajeSinTetracordos: String
     let mensajeArmadura: String
     let mensajeRelativa: String
     let mensajeHomonima: String

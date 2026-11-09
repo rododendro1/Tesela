@@ -75,7 +75,8 @@ extension LineaDeComandosTests {
     /// Las opciones del texto valen también con `--json`, y cada una añade su clave.
     @Test func escalaConOpcionesEnJSON() throws {
         let orden =
-            "escala Do mayor --acordes --secuencia terceras --dedos --modos --simetria --vecinas --comparar Do lidio"
+            "escala Do mayor --acordes --secuencia terceras --dedos --modos --simetria --tetracordos --vecinas"
+            + " --comparar Do lidio"
         let mayor = try #require(try json(orden) as? [String: Any])
         #expect(mayor["notas"] as? [String] == ["Do", "Re", "Mi", "Fa", "Sol", "La", "Si"])
         #expect((mayor["acordesQueCaben"] as? [[String: Any]])?.count == 7)
@@ -87,6 +88,10 @@ extension LineaDeComandosTests {
         #expect((mayor["modosParalelos"] as? [[String: String]])?.count == 7)
         #expect((mayor["modosRelativos"] as? [String])?.isEmpty == false)
         #expect((mayor["simetria"] as? [String: Any])?["resumen"] is String)
+        let tetracordos = try #require(mayor["tetracordos"] as? [[[String: Any]]])
+        #expect(tetracordos.count == 2)
+        #expect(tetracordos[0][0]["notas"] as? [String] == ["Do", "Re", "Mi", "Fa"])
+        #expect(tetracordos[0][1]["separacion"] as? String == "2ª mayor")
         #expect(mayor["vecinas"] is [[String: String]])
         #expect((mayor["comparacion"] as? [String: Any])?["comunes"] is String)
         let doce = try #require(try json("escala Do mayor --doce --acordes") as? [String: Any])
