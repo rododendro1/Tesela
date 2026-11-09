@@ -85,6 +85,8 @@ open Tesela.xcodeproj                                    # elige el esquema ArsH
 - [Docs/DESARROLLO.md](Docs/DESARROLLO.md): qué hay en cada carpeta, las dependencias, las pruebas, el rendimiento, el fuzzing
   y el CI.
 - [Packages/Armonia/README.md](Packages/Armonia/README.md): el motor, con ejemplos de todo lo que hace.
+- [Docs/HUECOS_DEL_CATALOGO.md](Docs/HUECOS_DEL_CATALOGO.md): las escalas y los acordes que faltan en el catálogo o no
+  tienen referencia.
 - [CONTRIBUTING.md](CONTRIBUTING.md) para contribuir y [SECURITY.md](.github/SECURITY.md) para avisar de un fallo de
   seguridad.
 
