@@ -42,6 +42,23 @@ import Testing
         #expect(propio.nombre(en: .compacta(.espanol)) == "mi modo")
     }
 
+    /// Una escala de otra tradición sin fila en un idioma hereda sus alias y sus variantes, menos los que están en
+    /// español: «Hicaz» y «बिलावल» se leen también en alemán, «modo gregoriano 1» no.
+    @Test func lasTradicionalesSinFilaHeredanSusAlias() throws {
+        let aleman = NombresDeEscalas.de(.aleman)
+        let hitzaz = try #require(aleman.tradicionales[TipoDeEscala.hitzaz.identidad])
+        #expect(hitzaz.nombre == "Hitzáz" && hitzaz.variantes.contains("Hicaz"))
+        #expect(aleman.tradicionales[TipoDeEscala.yaman.identidad]?.alias == ["Yaman Kalyāṇ"])
+        #expect(TipoDeEscala.buscar(nombre: "Hicaz", conTonicaEn: .conPalabras(.aleman)) != nil)
+        #expect(TipoDeEscala.buscar(nombre: "बिलावल", conTonicaEn: .conPalabras(.sueco)) != nil)
+        let protus = try #require(aleman.tradicionales[TipoDeEscala.protusAuthenticus.identidad])
+        #expect(!protus.alias.contains("modo gregoriano 1"))
+        #expect(TipoDeEscala.buscar(nombre: "modo gregoriano 1", conTonicaEn: .conPalabras(.aleman)) == nil)
+        // La lista de los que no se heredan no tiene ninguno que no esté en el catálogo.
+        let todos = Set(TipoDeEscala.tradicionales.flatMap { $0.alias + $0.variantes })
+        #expect(NombresDeEscalas.aliasEnEspanol.subtracting(todos).isEmpty)
+    }
+
     /// Cada alias o variante se lee como su tipo: ninguno es el nombre de otro tipo ni el alias de otro de su idioma.
     @Test func cadaAliasSeLeeComoSuTipo() {
         let sinAlias: Set<Idioma> = [.espanol, .ruso, .griego]
