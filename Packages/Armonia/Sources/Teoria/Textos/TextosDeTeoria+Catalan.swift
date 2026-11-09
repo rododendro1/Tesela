@@ -40,7 +40,7 @@ extension TextosDeTeoria {
         papelTercera: "tercera",
         papelSuspension: "suspensió",
         papelQuinta: "quinta",
-        papelSexta: "sexta",
+        papelSexta: "sisena",
         papelSeptima: "setena",
         papelNovena: "novena",
         papelUndecima: "onzena",
