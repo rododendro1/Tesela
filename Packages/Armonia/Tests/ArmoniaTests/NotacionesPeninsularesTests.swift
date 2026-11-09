@@ -87,7 +87,7 @@ import Testing
         #expect(Figura.blanca.nombre(en: .conPalabras(.gallego)) == "branca")
         #expect(CorrespondenciaDeColores.circuloDeQuintas.nombre(en: .conPalabras(.euskera)) == "bosgarrenen zirkulua")
         #expect(Cadencia.Tipo.semicadencia.nombre(en: .conPalabras(.euskera)) == "erdi-kadentzia")
-        #expect(FaltaDeConduccion.Tipo.quintasParalelas.nombre(en: .conPalabras(.catalan)) == "Quintes paral·leles")
+        #expect(FaltaDeConduccion.Tipo.quintasParalelas.nombre(en: .conPalabras(.catalan)) == "Cinquenes paral·leles")
         #expect(
             Tonalidad(.do).analizar(["Do", "Fa", "Sol7", "Do"]).nombre(en: .conPalabras(.euskera))
                 == "I–IV–V7–I do maiorrean")

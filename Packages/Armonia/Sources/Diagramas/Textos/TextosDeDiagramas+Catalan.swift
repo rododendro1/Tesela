@@ -7,7 +7,7 @@ import Elementos
 extension TextosDeDiagramas {
     static let catalan = TextosDeDiagramas(
         // CorrespondenciaDeColores.swift
-        circuloDeQuintas: "cercle de quintes",
+        circuloDeQuintas: "cercle de cinquenes",
 
         // DibujoSVG.swift
         conjunto: "Conjunt ",
@@ -17,7 +17,7 @@ extension TextosDeDiagramas {
         leyendaNota: "nota",
         leyendaClaseDeAltura: "classe d'altura (totes les còpies)",
         leyendaAltura: "altura (totes les tecles)",
-        leyendaIntervalos: "quinta o tercera entre notes",
+        leyendaIntervalos: "cinquena o tercera entre notes",
         leyendaContorno: "contorn de la forma",
         leyendaTriadaMayor: "tríada major",
         leyendaTriadaMenor: "tríada menor",
@@ -33,7 +33,7 @@ extension TextosDeDiagramas {
         // TecladoCuadrado.swift
         cuadriculaEnCuartas: "Quadrícula en quartes",
         cuadriculaEnTercerasMayores: "Quadrícula en terceres majors",
-        cuadriculaEnQuintas: "Quadrícula en quintes",
+        cuadriculaEnQuintas: "Quadrícula en cinquenes",
         wickiHaydenCuadrado: "Wicki-Hayden (quadrícula)",
         cuadriculaDeTonosEnteros: "Quadrícula de tons sencers",
         tonnetzDeEuler: "Tonnetz d'Euler",

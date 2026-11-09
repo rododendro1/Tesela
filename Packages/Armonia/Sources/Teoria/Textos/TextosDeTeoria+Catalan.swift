@@ -39,7 +39,7 @@ extension TextosDeTeoria {
         papelFundamental: "fonamental",
         papelTercera: "tercera",
         papelSuspension: "suspensió",
-        papelQuinta: "quinta",
+        papelQuinta: "cinquena",
         papelSexta: "sisena",
         papelSeptima: "setena",
         papelNovena: "novena",
@@ -51,7 +51,7 @@ extension TextosDeTeoria {
         triadaDisminuida: "disminuïda",
         triadaAumentada: "augmentada",
         triadaSuspendida: "suspesa",
-        triadaDeQuinta: "de quinta",
+        triadaDeQuinta: "de cinquena",
         triadaSinTercera: "sense tercera",
 
         // TipoDeAcorde.swift
@@ -102,7 +102,7 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "nota a evitar",
         modoDe: { modo, escala in "mode \(modo) de \(escala)" },
         // EsquemaArmonico.swift
-        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "blues de 12 compassos", "progressió per quintes", "romanesca", "cànon de Pachelbel", "monte", "fonte", "ponte"],
+        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "blues de 12 compassos", "progressió per cinquenes", "romanesca", "cànon de Pachelbel", "monte", "fonte", "ponte"],
         // Rearmonizacion.swift
         sustitutoTritonal: "substitut de trítò",
         dominanteSecundaria: "dominant secundària",
@@ -124,7 +124,7 @@ extension TextosDeTeoria {
         numeroDeAcordeNoValido: "«{1}» no és un número d'acord (5, 6, 7, 9, 11 o 13)",
         numeroRepetido: "«{1}» apareix després d'un altre número; les tensions addicionals van entre parèntesis, com a 7(9)",
         disminuidoYSemidisminuido: "disminuït (°) i semidisminuït (ø) no es poden combinar",
-        quintaConCalidad: "l'acord de quinta (5) no porta tercera, així que no admet m, °, ø ni +",
+        quintaConCalidad: "l'acord de cinquena (5) no porta tercera, així que no admet m, °, ø ni +",
         fundamentalNoOmitible: "no es pot ometre la fonamental",
         gradoNoOmitible: "«omit{1}» no és vàlid (es poden ometre 3, 5, 7, 9, 11 i 13)",
         faltaLaFundamental: "falta la fonamental",

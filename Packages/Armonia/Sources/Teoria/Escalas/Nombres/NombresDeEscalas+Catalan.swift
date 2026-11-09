@@ -89,7 +89,7 @@ extension NombresDeEscalas {
         .init(.bebopDorico, "bebop dòric", alias: ["bebop menor"]),
         .init(.bebopLocrio, "bebop locri"),
         .init(.bebopLidio, "bebop lidi"),
-        .init(.doricoQuintaDisminuida, "dòric ♭5", alias: ["dòric amb quinta disminuïda"]),
+        .init(.doricoQuintaDisminuida, "dòric ♭5", alias: ["dòric amb cinquena disminuïda"]),
         .init(.frigioCuartaDisminuida, "frigi ♭4", alias: ["superfrigi"]),
         .init(.lidioTerceraMenor, "lidi ♭3", alias: ["lidi disminuït"]),
         .init(.mixolidioSegundaMenor, "mixolidi ♭2"),

@@ -10,7 +10,7 @@ extension NombresDeAcordes {
         .init(.aumentado, "augmentat"),
         .init(.sus2, "suspès de segona"),
         .init(.sus4, "suspès de quarta"),
-        .init(.potencia, "quinta (acord de potència)"),
+        .init(.potencia, "cinquena (acord de potència)", variantes: ["quinta (acord de potència)"]),
         .init(.dominanteSeptima, "setena de dominant", variantes: ["sèptima de dominant"]),
         .init(.mayorSeptimaMayor, "setena major", variantes: ["sèptima major"]),
         .init(.menorSeptima, "menor setena", variantes: ["menor sèptima"]),
