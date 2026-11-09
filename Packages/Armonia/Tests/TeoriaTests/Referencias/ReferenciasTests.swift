@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 
+@testable import Elementos
 @testable import Teoria
 
 /// Las referencias bibliográficas del catálogo (`Referencia`, `TipoDeEscala.referencias`).
@@ -76,9 +77,20 @@ import Testing
             TipoDeEscala.escalasRenacentistas[0].referencias
                 == [.barbour1951, .zarlino1558, .salinas1577, .ramos1482])
         #expect(TipoDeEscala.hardino.referencias == [.knight1973])
-        // Las occidentales y las propias no tienen.
-        #expect(TipoDeEscala.mayor.referencias.isEmpty)
+        // Las propias y las occidentales sintéticas no tienen.
+        #expect(TipoDeEscala.lidioSegundaAumentada.referencias.isEmpty)
         #expect(TipoDeEscala(nombre: "mía", intervalos: TipoDeEscala.bayati.intervalos).referencias.isEmpty)
+    }
+
+    /// Las occidentales, por `referenciasOccidentales`, y los acordes genéricos, por su declaración.
+    @Test func lasOccidentalesYLosAcordesTienenLasSuyas() {
+        #expect(TipoDeEscala.mayor.referencias == [.aldwell2011, .powers2001, .levine1995])
+        #expect(
+            TipoDeEscala.lidioDominante.referencias == [.levine1995, .persichetti1961, .lendvai1971, .tymoczko2011])
+        #expect(TipoDeEscala.flamenca.referencias == [.manuel1989])
+        #expect(TipoDeEscala.aumentada.referencias == [.tymoczko2011, .cohn1996])
+        #expect(AcordeConNombre.dominanteSeptima.referencias == [.aldwell2011, .levine1995])
+        #expect(AcordeConNombre.potencia.referencias == [.walser1993])
     }
 
     @Test func bibtex() {

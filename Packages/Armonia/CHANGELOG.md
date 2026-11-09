@@ -1,5 +1,22 @@
 # Cambios
 
+## Sin publicar
+
+- Las referencias bibliográficas (`Referencia` y su catálogo) están en el módulo Elementos, en `Elementos/Referencias/`
+  (antes, en `Teoria/Escalas/Referencias/`), porque las citan también los acordes, los corales y las partituras.
+  Quien importa `Armonia` no nota nada; quien importa solo `Teoria` necesita también `import Elementos`.
+  `FuenteTeorica.referencia` sigue en Teoria. La licencia de Bravura está en `Packages/Armonia/Licencias/`, junto
+  al paquete que usa sus glifos.
+- Las escalas occidentales y los acordes genéricos citan dónde se leen (`referencias`), con nueve obras nuevas en
+  `Referencia.catalogo`: Aldwell, Schachter y Cadwallader (2011) para la mayor, las menores y los acordes de la armonía
+  tonal; Levine (1995) para los modos, las escalas y los acordes del jazz; Messiaen (1944) para sus modos; Lendvai
+  (1971) y Tymoczko (2011) para la acústica y las simétricas; Cohn (1996) para la aumentada; Manuel (1989) para la
+  flamenca y el frigio dominante; van der Merwe (1989) para las pentatónicas y el blues, y Walser (1993) para el acorde
+  de potencia. Powers (2001), Persichetti (1961), Taruskin (1987), Samson (1977) y Apel (1958) citan también los modos
+  diatónicos, las escalas sintéticas con nombre, la octatónica y la de Petrushka, la de Prometeo y el hexacordo. Están en
+  `TipoDeEscala.referenciasOccidentales`; las sintéticas, que solo salen de rotar o alterar otra, siguen sin ninguna.
+  `armonia escala Re dórico` da su línea de referencias, y `--bibtex`, sus obras.
+
 ## 0.4.3 (2026-11-09)
 
 - La documentación de las escalas (`Escalas.md`, `EscalasDelMundo.md`) explica que una escala de otra tradición sin

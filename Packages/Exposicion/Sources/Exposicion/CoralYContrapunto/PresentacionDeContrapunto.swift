@@ -6,7 +6,7 @@ import Foundation
 /// escucharlo y los ficheros para exportar.
 public struct ContrapuntoPresentado: Hashable, Sendable {
     /// Un compás: la nota del cantus, las del contrapunto y el intervalo de cada una con el cantus.
-    public struct Fila: Hashable, Sendable {
+    public struct CompasDelContrapunto: Hashable, Sendable {
         /// Contado desde 0, como en `FaltaDeContrapunto.compases`.
         public let compas: Int
         /// «Compás 3», contado desde 1.
@@ -24,7 +24,7 @@ public struct ContrapuntoPresentado: Hashable, Sendable {
 
     /// «Especie 1, con el contrapunto encima del cantus firmus».
     public let cabecera: String
-    public let filas: [Fila]
+    public let filas: [CompasDelContrapunto]
     /// Cada falta con sus compases («Quintas paralelas (compases 3 → 4)»), o «Sin faltas.».
     public let informe: [String]
     public let esCorrecto: Bool
@@ -93,14 +93,14 @@ public enum PresentacionDeContrapunto {
         let ejercicio = try Contrapunto(cantusFirmus: cantus, contrapunto: contrapunto, especie: especie)
         let faltas = ejercicio.faltas
         let lineas = ejercicio.informe(en: notacion).split(separator: "\n").map(String.init)
-        var filas: [ContrapuntoPresentado.Fila] = []
+        var filas: [ContrapuntoPresentado.CompasDelContrapunto] = []
         for (c, eventos) in ejercicio.contrapunto.compases.enumerated() where c < ejercicio.cantusFirmus.count {
             let cantus = ejercicio.cantusFirmus[c]
             var vistas = Set<FaltaDeContrapunto.Tipo>()
             let nombres = faltas.filter { $0.compases.contains(c) && vistas.insert($0.tipo).inserted }
                 .map { $0.tipo.nombre(en: notacion) }
             filas.append(
-                ContrapuntoPresentado.Fila(
+                ContrapuntoPresentado.CompasDelContrapunto(
                     compas: c, titulo: notacion.texto { $0.compasNumero(c + 1) },
                     cantus: cantus.nombre(en: notacion),
                     contrapunto: eventos.map { texto(de: $0, notacion) }.joined(separator: " "),

@@ -6,7 +6,7 @@ Es una copia de la función de Swift (`Teoria/Escalas/TipoDeEscala.swift`): min�
 turco como i y un solo espacio entre palabras. Para que las dos no se separen, las dos leen los mismos casos de `Scripts/datos/normalizar.tsv`: el test de
 Swift (`NormalizarVectoresTests`) y este script.
 
-Uso:  python3 Scripts/comprobaciones/normalizar_escalas.py --comprobar     (sale con 1 si algún caso no coincide)
+Uso:  python3 Scripts/comun/normalizar_escalas.py --comprobar     (sale con 1 si algún caso no coincide)
 Los otros scripts lo importan: `from normalizar_escalas import normalizar`.
 """
 import re

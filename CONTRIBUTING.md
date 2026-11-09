@@ -9,19 +9,19 @@ commit), y lo que entra conviene que siga igual.
   plataforma y, si se puede, el cifrado, la escala o el fichero que lo provoca.
 - Para algo nuevo, abre primero un issue con la plantilla «Propuesta» y espera a hablarlo, sobre todo si cambia la
   API pública de un paquete o añade un paquete o una app.
-- Un fallo de seguridad no va en un issue: mira [SECURITY.md](SECURITY.md).
+- Un fallo de seguridad no va en un issue: mira [SECURITY.md](.github/SECURITY.md).
 
 ## Preparar el entorno
 
 Los paquetes solo necesitan Swift 6.0 o posterior, en macOS o en Linux; las apps, además, macOS con Xcode y
-XcodeGen. Los pasos están en el apartado «Empezar» de [DESARROLLO.md](DESARROLLO.md):
+XcodeGen. Los pasos están en el apartado «Empezar» de [Docs/DESARROLLO.md](Docs/DESARROLLO.md):
 
 ```sh
 cd Packages/Armonia && swift test        # el motor
 cd Packages/Hexagonos && swift test      # las rejillas hexagonales
 cd Packages/Exposicion && swift test     # lo que enseñan las apps, sin SwiftUI
 cd Packages/Interfaz && swift test       # la interfaz (en Linux, solo la parte sin SwiftUI)
-./Scripts/compilar_todo.sh               # todo, por capas, como el CI
+./Scripts/compilacion/compilar_todo.sh               # todo, por capas, como el CI
 ```
 
 ## Qué debe llevar un cambio
@@ -31,13 +31,13 @@ cd Packages/Interfaz && swift test       # la interfaz (en Linux, solo la parte 
   paquete o de la consola baja de su mínimo (en el job `cobertura` de `.github/workflows/ci.yml`). Si tu cambio lo
   sube, sube también el mínimo. Lo que lee ficheros de fuera tiene además pruebas con ficheros estropeados al azar
   (`ImportacionAlAzarTests`): si tocas esa lectura, añade ahí los casos nuevos. Un lector nuevo va también en
-  `Herramientas/FuzzArmonia`, que el CI pasa con libFuzzer cada semana (mira «Fuzzing» en [DESARROLLO.md](DESARROLLO.md)).
+  `Herramientas/FuzzArmonia`, que el CI pasa con libFuzzer cada semana (mira «Fuzzing» en [Docs/DESARROLLO.md](Docs/DESARROLLO.md)).
 - **Dibujos.** Los SVG del pentagrama, el Tonnetz, la tabla armónica y los teclados se comparan con los guardados en
   `Packages/Armonia/Tests/ArmoniaTests/Referencias` (`ReferenciasSVGTests`). Si cambias un dibujo a propósito,
   regenéralos con `TESELA_REGENERAR_REFERENCIAS=1 swift test --filter ReferenciasSVGTests` (en `Packages/Armonia`) y
   revisa el diff: es lo que verá quien revise el pull request.
 - **Dependencias en orden.** Un paquete solo depende de los que tiene debajo, nunca de una app. Si añades un
-  módulo o un paquete, sigue el apartado «Añadir un paquete o una app» de [DESARROLLO.md](DESARROLLO.md):
+  módulo o un paquete, sigue el apartado «Añadir un paquete o una app» de [Docs/DESARROLLO.md](Docs/DESARROLLO.md):
   El `Package.swift` de la raíz no se edita a mano: tras cambiar uno de `Packages/`, regenéralo con
   `python3 Scripts/generadores/generar_paquete_raiz.py` (el CI comprueba que está al día).
 - **Textos traducidos.** Un texto nuevo de la interfaz o del motor va en los trece idiomas.
@@ -55,8 +55,8 @@ El código Swift sigue el formato de [swift-format](https://github.com/swiftlang
 Swift 6, con la configuración de `.swift-format` (4 espacios, 120 columnas). Antes de abrir el pull request:
 
 ```sh
-swift format -i -r --parallel Packages Apps Ejemplos Herramientas Package.swift   # lo arregla
-swift format lint --strict -r --parallel Packages Apps Ejemplos Herramientas Package.swift   # lo comprueba, como el CI
+swift format -i -r --parallel Packages Apps PruebasDeInterfaz Ejemplos Herramientas Package.swift   # lo arregla
+swift format lint --strict -r --parallel Packages Apps PruebasDeInterfaz Ejemplos Herramientas Package.swift   # lo comprueba, como el CI
 ```
 
 Las tablas de datos (los nombres de escalas y los textos traducidos) y las pruebas generadas empiezan con
@@ -80,7 +80,7 @@ python3 Scripts/comprobaciones/comprobar_enlaces_docc.py
 python3 Scripts/comprobaciones/comprobar_traducciones.py
 python3 Scripts/generadores/generar_paquete_raiz.py --comprobar
 python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar
-python3 Scripts/comprobaciones/notas_de_version.py --comprobar
+python3 Scripts/version/notas_de_version.py --comprobar
 ```
 
 En cada pull request corren estas comprobaciones, la del formato y las pruebas en Linux (Swift 6.0 y 6.2). Si el pull
@@ -100,7 +100,7 @@ Las versiones siguen [SemVer](https://semver.org/lang/es/); mientras sean 0.x, u
 anterior marcó como obsoleto. Para publicar una:
 
 ```sh
-python3 Scripts/comprobaciones/notas_de_version.py --publicar 0.2.0   # «Sin publicar» pasa a «0.2.0 (fecha)»; sube MARKETING_VERSION, armonia y los README
+python3 Scripts/version/notas_de_version.py --publicar 0.2.0   # «Sin publicar» pasa a «0.2.0 (fecha)»; sube MARKETING_VERSION, armonia y los README
 # … pull request con ese cambio, y fusionarlo …
 git tag 0.2.0 && git push origin 0.2.0                 # en el commit de main
 ```

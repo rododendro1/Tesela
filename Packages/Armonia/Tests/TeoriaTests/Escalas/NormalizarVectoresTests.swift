@@ -4,7 +4,7 @@ import Testing
 @testable import Teoria
 
 /// `TipoDeEscala.normalizar` contra los casos de `Scripts/datos/normalizar.tsv`, que también lee
-/// `Scripts/comprobaciones/normalizar_escalas.py` (la copia en Python que usan los scripts del repositorio): así
+/// `Scripts/comun/normalizar_escalas.py` (la copia en Python que usan los scripts del repositorio): así
 /// las dos no se separan.
 @Suite struct NormalizarVectoresTests {
     /// …/Packages/Armonia/Tests/TeoriaTests/Escalas/<este fichero> → la raíz, seis niveles más arriba.

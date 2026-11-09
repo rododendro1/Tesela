@@ -19,9 +19,9 @@ extension PresentacionDeEstudioDeEscala {
     ///
     ///     PresentacionDeEstudioDeEscala.vecinas(de: Escala(.do), en: .compacta(.espanol))
     ///         .first { $0.nombre == "Do lidio" }?.detalle   // "Fa → Fa♯"
-    public static func vecinas(de escala: Escala, en notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
+    public static func vecinas(de escala: Escala, en notacion: Notacion) -> [EscalaConDetallePresentada] {
         escala.vecinas().map { vecina in
-            EscalaSobreElAcordePresentada(
+            EscalaConDetallePresentada(
                 escala: vecina.escala, nombre: vecina.escala.nombre(en: notacion),
                 detalle: vecina.desde.nombre(en: notacion) + " → " + vecina.hasta.nombre(en: notacion),
                 sonido: .escala(vecina.escala))
@@ -35,7 +35,7 @@ extension PresentacionDeEstudioDeEscala {
     ///
     ///     PresentacionDeEstudioDeEscala.parecidas(a: Escala(.do), en: .compacta(.espanol))
     ///         .first { $0.nombre == "Do lidio" }?.detalle   // "Notas comunes: 6 · −Fa · +Fa♯"
-    public static func parecidas(a escala: Escala, en notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
+    public static func parecidas(a escala: Escala, en notacion: Notacion) -> [EscalaConDetallePresentada] {
         escala.masParecidas().map { parecida in
             func lista(_ signo: String, _ notas: [Nota]) -> String? {
                 notas.isEmpty ? nil : signo + notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
@@ -44,7 +44,7 @@ extension PresentacionDeEstudioDeEscala {
                 notacion.texto(\.notasComunes) + ": \(parecida.comunes.count)", lista("−", parecida.quitadas),
                 lista("+", parecida.anadidas),
             ]
-            return EscalaSobreElAcordePresentada(
+            return EscalaConDetallePresentada(
                 escala: parecida.escala, nombre: parecida.escala.nombre(en: notacion),
                 detalle: partes.compactMap { $0 }.joined(separator: " · "), sonido: .escala(parecida.escala))
         }
@@ -87,7 +87,7 @@ extension PresentacionDeEstudioDeEscala {
             return SecuenciaPresentada(
                 titulo: nombre, notas: PresentacionDeCoral.voces(alturas, notacion),
                 sonido: Escucha.voz(Voz(alturas.map { Evento($0, .corchea) })).conTonica(transportada.tonica),
-                pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: nombre, notacion: notacion),
+                pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: nombre, en: notacion),
                 ficheros: [])
         }
         let presentado = PresentacionDeArpegios.presentar(

@@ -9,8 +9,8 @@
 ## Lista
 
 - [ ] Pruebas para el cambio, y pasan las del paquete (`swift test`).
-- [ ] El código está formateado (`swift format -i -r --parallel Packages Apps Ejemplos Herramientas Package.swift`).
+- [ ] El código está formateado (`swift format -i -r --parallel Packages Apps PruebasDeInterfaz Ejemplos Herramientas Package.swift`).
 - [ ] Pasan las comprobaciones de `Scripts/` (las de [CONTRIBUTING.md](https://github.com/rododendro1/Tesela/blob/main/CONTRIBUTING.md#comprobaciones)).
 - [ ] Textos nuevos en los trece idiomas, si los hay.
-- [ ] Documentación al día (comentarios, artículos de DocC, README y DESARROLLO.md).
+- [ ] Documentación al día (comentarios, artículos de DocC, README y Docs/DESARROLLO.md).
 - [ ] Entrada en `## Sin publicar` del `CHANGELOG.md` de cada paquete que cambia.

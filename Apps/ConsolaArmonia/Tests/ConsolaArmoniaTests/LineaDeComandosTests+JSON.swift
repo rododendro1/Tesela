@@ -57,8 +57,8 @@ extension LineaDeComandosTests {
         let acordes = try #require(dorico["acordes"] as? [[String: String]])
         #expect(acordes.count == 7)
         #expect(acordes.first?["cifrado"] == "Rem7")
-        // Sin opciones, solo esas claves.
-        #expect(Set(dorico.keys) == ["nombre", "notas", "clases", "modo", "acordes"])
+        // Sin opciones, solo esas claves (y sus referencias, Powers y Levine).
+        #expect(Set(dorico.keys) == ["nombre", "notas", "clases", "modo", "acordes", "referencias"])
     }
 
     /// Una escala de otra tradición lleva sus referencias, con su clave, su cita y la referencia completa.

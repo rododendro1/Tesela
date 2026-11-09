@@ -211,13 +211,13 @@ extension LineaDeComandos {
         return nombres[texto.lowercased()]
     }
 
-    /// La escala con los datos de `--json` (`DatosDeEscala`) y, además, sus microtonos y, si se piden, todos los
+    /// La escala con los datos de `--json` (`EscalaPresentada`) y, además, sus microtonos y, si se piden, todos los
     /// acordes que caben en ella; con un sistema móvil (`--sistema sargam`), también los nombres de sus grados.
     static func describir(
         escala: Escala, conTodosSusAcordes: Bool = false, movil: SistemaMovil? = nil, _ notacion: Notacion
     ) -> String {
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
-        let datos = DatosDeEscala(escala, en: notacion)
+        let datos = EscalaPresentada(escala, en: notacion)
         var lineas = [datos.nombre, "  \(traducir(.notas)): " + datos.notas.joined(separator: " ")]
         // Con un sistema móvil (--sistema sargam), los grados con sus nombres, desde la tónica: Sā Re ga ma Pa Dha ni.
         if let movil {

@@ -75,7 +75,7 @@ struct VistaDeAcordes: View {
     /// El arpegio en el pentagrama con el ritmo con que suena: la figura elegida, en tresillos si se piden.
     private func pentagrama(de arpegio: Arpegio, resaltada: Int? = nil) -> PentagramaPresentado {
         PentagramaPresentado(
-            presentado(arpegio).voz, titulo: arpegio.nombre(en: notacion), notacion: notacion, resaltada: resaltada)
+            presentado(arpegio).voz, titulo: arpegio.nombre(en: notacion), en: notacion, resaltada: resaltada)
     }
 
     var body: some View {
@@ -88,7 +88,7 @@ struct VistaDeAcordes: View {
             case .success(let acorde):
                 informacion(de: acorde)
                 Section(notacion.texto(\.pentagrama)) {
-                    DiagramaDePentagrama(PentagramaPresentado(acorde, notacion: notacion))
+                    DiagramaDePentagrama(PentagramaPresentado(acorde, en: notacion))
                 }
                 seccionDelArpegio(de: acorde)
                 disposiciones(de: acorde)
@@ -133,7 +133,7 @@ struct VistaDeAcordes: View {
         guard case .success(let acorde) = lectura else { return [] }
         let arpegio = self.arpegio(de: acorde)
         var ficheros = [
-            PentagramaPresentado(acorde, notacion: notacion).fichero,
+            PentagramaPresentado(acorde, en: notacion).fichero,
             pentagrama(de: arpegio).fichero,
             FicheroParaExportar.svg(
                 PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, en: notacion),
@@ -211,7 +211,7 @@ struct VistaDeAcordes: View {
                             BotonDeEscuchar(forma.sonido).labelStyle(.iconOnly)
                         }
                         .buttonStyle(.borderless)
-                        DiagramaDeMastil(digitacion: forma.digitacion, acorde: acorde, notacion: notacion)
+                        DiagramaDeMastil(digitacion: forma.digitacion, acorde: acorde, en: notacion)
                             .frame(maxHeight: 120)
                     }
                 }
@@ -350,7 +350,7 @@ struct VistaDeAcordes: View {
         }
     }
 
-    private func filaDeEscala(_ presentada: EscalaSobreElAcordePresentada) -> some View {
+    private func filaDeEscala(_ presentada: EscalaConDetallePresentada) -> some View {
         HStack {
             Button {
                 navegacion.ver(presentada.escala)
@@ -400,7 +400,7 @@ struct VistaDeAcordes: View {
                             Text(notacion.texto { $0.dedosYCejilla(forma.dedos, forma.cejilla) })
                                 .font(.caption).foregroundColor(.secondary)
                         }
-                        DiagramaDeMastil(digitacion: forma, acorde: acorde, notacion: notacion)
+                        DiagramaDeMastil(digitacion: forma, acorde: acorde, en: notacion)
                             .frame(maxHeight: 120)
                     }
                 }
@@ -422,7 +422,7 @@ struct VistaDeAcordes: View {
         Section(notacion.texto(\.arpegioEnElMastil)) {
             Text(instrumento)
                 .foregroundColor(.secondary)
-            DiagramaDeMastil(mastil: mastil, acorde: acorde, notacion: notacion)
+            DiagramaDeMastil(mastil: mastil, acorde: acorde, en: notacion)
             Picker(notacion.texto(\.porPosiciones), selection: $formas) {
                 Text(notacion.texto(\.porPosiciones)).tag(FormasDeArpegio.porPosiciones)
                 Text("CAGED").tag(FormasDeArpegio.caged)
@@ -441,7 +441,7 @@ struct VistaDeAcordes: View {
                         BotonDeEscuchar(posicion.sonido)
                         BotonDeExportar([posicion.fichero])
                     }
-                    DiagramaDeMastil(arpegio: posicion.arpegio, acorde: acorde, notacion: notacion)
+                    DiagramaDeMastil(arpegio: posicion.arpegio, acorde: acorde, en: notacion)
                         .resaltando(sonando)
                         .frame(maxHeight: 120)
                     Text(notacion.texto(\.dedosSugeridos) + ": " + posicion.dedos)

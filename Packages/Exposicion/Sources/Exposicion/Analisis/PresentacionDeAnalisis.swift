@@ -6,7 +6,7 @@ import Armonia
 /// En JSON (`armonia analizar … --json`), el título, los tramos y las cadencias.
 public struct AnalisisPresentado: Hashable, Sendable, Encodable {
     /// Un acorde del análisis, como se enseña en una fila. En JSON, sin la escala.
-    public struct Fila: Hashable, Sendable, Encodable {
+    public struct AcordeDelAnalisis: Hashable, Sendable, Encodable {
         /// El cifrado americano («Re7»).
         public let cifrado: String
         /// El cifrado romano («V7/V»).
@@ -51,7 +51,7 @@ public struct AnalisisPresentado: Hashable, Sendable, Encodable {
 public struct TramoPresentado: Hashable, Sendable, Encodable {
     /// La modulación que abre el tramo; `nil` en el primero.
     public let cabecera: String?
-    public let filas: [AnalisisPresentado.Fila]
+    public let filas: [AnalisisPresentado.AcordeDelAnalisis]
 
     private enum CodingKeys: String, CodingKey {
         case cabecera
@@ -152,8 +152,8 @@ public enum PresentacionDeAnalisis {
 
     static func fila(
         _ analizado: AcordeAnalizado, en tonalidad: Tonalidad, _ notacion: Notacion
-    ) -> AnalisisPresentado.Fila {
-        AnalisisPresentado.Fila(
+    ) -> AnalisisPresentado.AcordeDelAnalisis {
+        AnalisisPresentado.AcordeDelAnalisis(
             cifrado: analizado.acorde.cifrado(en: notacion), grado: analizado.cifrado,
             funcion: analizado.funcion?.nombre(en: notacion) ?? "",
             escala: PresentacionDeEscalaYAcorde.escala(de: analizado, en: tonalidad, notacion: notacion))

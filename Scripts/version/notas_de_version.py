@@ -15,7 +15,7 @@ Cada `Packages/<Paquete>/CHANGELOG.md` tiene, de lo más nuevo a lo más viejo, 
                    `MARKETING_VERSION`, la de `armonia --version` y la de los README, a 0.2.0. Falla si ningún paquete tiene nada sin
                    publicar.
 
-Uso: python3 Scripts/comprobaciones/notas_de_version.py 0.2.0 | --actual | --comprobar | --publicar 0.2.0
+Uso: python3 Scripts/version/notas_de_version.py 0.2.0 | --actual | --comprobar | --publicar 0.2.0
      (--actual es la versión de project.yml)
 """
 import datetime
@@ -88,7 +88,7 @@ def escribir_notas(version):
     texto = notas(version)
     if not texto:
         print(f"Ningún Packages/*/CHANGELOG.md tiene una sección «## {version}». Para pasar lo que está en "
-              f"«## {SIN_PUBLICAR}» a esa versión: python3 Scripts/comprobaciones/notas_de_version.py --publicar {version}",
+              f"«## {SIN_PUBLICAR}» a esa versión: python3 Scripts/version/notas_de_version.py --publicar {version}",
               file=sys.stderr)
         return 1
     if len(texto) > LIMITE:

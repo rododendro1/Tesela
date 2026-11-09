@@ -8,7 +8,8 @@
 extension Referencia {
     // MARK: Obras generales
 
-    /// El artículo «Mode» del New Grove, de Harold Powers y otros: los modos de todas las tradiciones.
+    /// El artículo «Mode» del New Grove, de Harold Powers y otros: los modos de todas las tradiciones, también los
+    /// siete diatónicos.
     public static let powers2001 = Referencia(
         "powers2001", .capitulo, autores: ["Powers, Harold S.", "Wiering, Frans", "Porter, James", "Cowdery, James"],
         titulo: "Mode",
@@ -104,7 +105,7 @@ extension Referencia {
 
     // MARK: Canto gregoriano y Renacimiento
 
-    /// Apel, el canto gregoriano: los ocho modos y la solmisación.
+    /// Apel, el canto gregoriano: los ocho modos, la solmisación y el hexacordo.
     public static let apel1958 = Referencia(
         "apel1958", .libro, autores: ["Apel, Willi"], titulo: "Gregorian Chant", anio: 1958,
         editorial: "Indiana University Press", lugar: "Bloomington")
@@ -221,12 +222,12 @@ extension Referencia {
         "rothgeb1995", .articulo, autores: ["Rothgeb, John"], titulo: "The Tristan Chord: Identity and Origin",
         anio: 1995, publicadoEn: "Music Theory Online", volumen: "1 (1)",
         url: "https://mtosmt.org/issues/mto.95.1.1/mto.95.1.1.rothgeb.html")
-    /// Samson, la armonía de 1900 a 1920: el acorde místico de Skriabin.
+    /// Samson, la armonía de 1900 a 1920: el acorde místico de Skriabin y su escala, la de Prometeo.
     public static let samson1977 = Referencia(
         "samson1977", .libro, autores: ["Samson, Jim"],
         titulo: "Music in Transition: A Study of Tonal Expansion and Atonality, 1900–1920", anio: 1977,
         editorial: "W. W. Norton", lugar: "Nueva York")
-    /// Taruskin, el acorde de Petrushka: dos tríadas mayores a un trítono.
+    /// Taruskin, el acorde de Petrushka (dos tríadas mayores a un trítono), su escala y la octatónica.
     public static let taruskin1987 = Referencia(
         "taruskin1987", .articulo, autores: ["Taruskin, Richard"],
         titulo: "Chez Pétrouchka: Harmony and Tonality chez Stravinsky", anio: 1987, publicadoEn: "19th-Century Music",
@@ -240,11 +241,58 @@ extension Referencia {
     public static let levine1989 = Referencia(
         "levine1989", .libro, autores: ["Levine, Mark"], titulo: "The Jazz Piano Book", anio: 1989,
         editorial: "Sher Music", lugar: "Petaluma")
-    /// Persichetti, la armonía del siglo XX: los acordes por cuartas.
+    /// Persichetti, la armonía del siglo XX: los acordes por cuartas y las escalas sintéticas con nombre (napolitanas,
+    /// húngaras, enigmática…).
     public static let persichetti1961 = Referencia(
         "persichetti1961", .libro, autores: ["Persichetti, Vincent"],
         titulo: "Twentieth-Century Harmony: Creative Aspects and Practice", anio: 1961, editorial: "W. W. Norton",
         lugar: "Nueva York")
+
+    // MARK: Escalas occidentales
+
+    /// Aldwell, Schachter y Cadwallader (4.ª ed.), la armonía tonal: las escalas mayor y menores, y los acordes de la tonalidad.
+    public static let aldwell2011 = Referencia(
+        "aldwell2011", .libro, autores: ["Aldwell, Edward", "Schachter, Carl", "Cadwallader, Allen"],
+        titulo: "Harmony and Voice Leading", anio: 2011, editorial: "Schirmer Cengage Learning", lugar: "Boston")
+    /// Levine, la teoría del jazz: los modos de la menor melódica, las bebop, las disminuidas, las pentatónicas, el
+    /// blues y los acordes de cuatro, cinco y más notas.
+    public static let levine1995 = Referencia(
+        "levine1995", .libro, autores: ["Levine, Mark"], titulo: "The Jazz Theory Book", anio: 1995,
+        editorial: "Sher Music", lugar: "Petaluma")
+    /// Messiaen, los modos de transposición limitada.
+    public static let messiaen1944 = Referencia(
+        "messiaen1944", .libro, autores: ["Messiaen, Olivier"], titulo: "Technique de mon langage musical",
+        anio: 1944, editorial: "Alphonse Leduc", lugar: "París")
+    /// Lendvai, la escala acústica en Bartók.
+    public static let lendvai1971 = Referencia(
+        "lendvai1971", .libro, autores: ["Lendvai, Ernő"], titulo: "Béla Bartók: An Analysis of His Music",
+        anio: 1971, editorial: "Kahn & Averill", lugar: "Londres")
+    /// Cohn, los sistemas hexatónicos: la escala aumentada.
+    public static let cohn1996 = Referencia(
+        "cohn1996", .articulo, autores: ["Cohn, Richard"],
+        titulo: "Maximally Smooth Cycles, Hexatonic Systems, and the Analysis of Late-Romantic Triadic Progressions",
+        anio: 1996, publicadoEn: "Music Analysis", volumen: "15 (1)", paginas: "9–40")
+    /// Tymoczko, las escalas del siglo XX y del jazz: la acústica, la de tonos enteros, la octatónica, la hexatónica
+    /// y las armónicas menor y mayor.
+    public static let tymoczko2011 = Referencia(
+        "tymoczko2011", .libro, autores: ["Tymoczko, Dmitri"],
+        titulo: "A Geometry of Music: Harmony and Counterpoint in the Extended Common Practice", anio: 2011,
+        editorial: "Oxford University Press", lugar: "Nueva York")
+    /// Manuel, la armonía del modo frigio en el flamenco: la escala flamenca y el frigio dominante.
+    public static let manuel1989 = Referencia(
+        "manuel1989", .articulo, autores: ["Manuel, Peter"],
+        titulo: "Modal Harmony in Andalusian, Eastern European, and Turkish Syncretic Musics", anio: 1989,
+        publicadoEn: "Yearbook for Traditional Music", volumen: "21", paginas: "70–94")
+    /// Van der Merwe, el origen de la música popular del siglo XX: las pentatónicas y el blues.
+    public static let vanDerMerwe1989 = Referencia(
+        "vanDerMerwe1989", .libro, autores: ["Van der Merwe, Peter"],
+        titulo: "Origins of the Popular Style: The Antecedents of Twentieth-Century Popular Music", anio: 1989,
+        editorial: "Clarendon Press", lugar: "Oxford")
+    /// Walser, el heavy metal: el acorde de potencia.
+    public static let walser1993 = Referencia(
+        "walser1993", .libro, autores: ["Walser, Robert"],
+        titulo: "Running with the Devil: Power, Gender, and Madness in Heavy Metal Music", anio: 1993,
+        editorial: "Wesleyan University Press", lugar: "Hanover")
 
     public static let catalogo: [Referencia] = [
         .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .rowell1992, .touma1996, .farraj2019,
@@ -253,26 +301,7 @@ extension Referencia {
         .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .garfias1975, .tranVanKhe1962, .morton1976,
         .surjodiningrat1972, .tenzer2000, .rubin2020, .kebede1971, .kilmer1971, .gurney1994, .west1994, .tracey1948,
         .berliner1978, .knight1973, .harcourt1925, .rothgeb1995, .samson1977, .taruskin1987, .burkhart1973,
-        .levine1989, .persichetti1961,
+        .levine1989, .persichetti1961, .aldwell2011, .levine1995, .messiaen1944, .lendvai1971, .cohn1996,
+        .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993,
     ]
-}
-
-extension FuenteTeorica {
-    /// La obra donde se leen las escalas de la fuente: su tratado o, en las griegas, su traducción (Barker). `nil` en
-    /// Guido.
-    public var referencia: Referencia? {
-        switch self {
-        case .arquitas, .aristoxeno, .eratostenes, .didimo, .ptolomeo, .aristides: .barker1989
-        case .guido: nil
-        case .glareano: .glareano1547
-        case .safiAlDin: .wright1978
-        case .guanzi, .lushiChunqiu: .kuttner1990
-        case .vicentino: .vicentino1555
-        case .chrysanthos: .chrysanthos1832
-        case .ramosDePareja: .ramos1482
-        case .zarlino: .zarlino1558
-        case .salinas: .salinas1577
-        case .zhuZaiyu: .barbour1951
-        }
-    }
 }

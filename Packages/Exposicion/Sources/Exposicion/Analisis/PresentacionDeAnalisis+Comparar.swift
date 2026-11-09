@@ -3,8 +3,8 @@ import Foundation
 
 /// Dos progresiones comparadas acorde a acorde, en la misma tonalidad: una original y otra (rearmonizada, otra
 /// versión…), con lo que cambia en cada posición.
-public struct ComparacionDeProgresiones: Hashable, Sendable {
-    public struct Fila: Hashable, Sendable {
+public struct ComparacionDeProgresionesPresentada: Hashable, Sendable {
+    public struct PosicionComparada: Hashable, Sendable {
         /// Desde 1.
         public let posicion: Int
         /// El cifrado de la original en esta posición; «–» si es más corta.
@@ -19,7 +19,7 @@ public struct ComparacionDeProgresiones: Hashable, Sendable {
 
     /// La tonalidad en que se leen las dos: «Do mayor».
     public let tonalidad: String
-    public let filas: [Fila]
+    public let filas: [PosicionComparada]
     /// «Cambian 2 de 4 acordes».
     public let resumen: String
     /// La original y, detrás, la otra.
@@ -38,12 +38,12 @@ extension PresentacionDeAnalisis {
     ///     comparacion?.resumen   // "Cambian 2 de 4 acordes"
     public static func comparar(
         _ original: [Acorde], con nueva: [Acorde], en tonalidad: Tonalidad? = nil, notacion: Notacion
-    ) -> ComparacionDeProgresiones? {
+    ) -> ComparacionDeProgresionesPresentada? {
         guard let primero = original.first, !nueva.isEmpty else { return nil }
         let clave = tonalidad ?? AnalisisArmonico.analizar(original)?.tonalidad ?? primero.tonalidadPropia
         let gradosDeLaOriginal = clave.analizar(original).acordes.map(\.cifrado)
         let gradosDeLaNueva = clave.analizar(nueva).acordes.map(\.cifrado)
-        var filas: [ComparacionDeProgresiones.Fila] = []
+        var filas: [ComparacionDeProgresionesPresentada.PosicionComparada] = []
         for i in 0..<max(original.count, nueva.count) {
             let antes = i < original.count ? original[i] : nil
             let despues = i < nueva.count ? nueva[i] : nil
@@ -61,14 +61,14 @@ extension PresentacionDeAnalisis {
                 comunes = notacion.texto(\.notasComunes) + ": " + lista
             }
             filas.append(
-                ComparacionDeProgresiones.Fila(
+                ComparacionDeProgresionesPresentada.PosicionComparada(
                     posicion: i + 1, original: antes?.cifrado(en: notacion) ?? "–",
                     nueva: despues?.cifrado(en: notacion) ?? "–",
                     grados: gradoAntes == gradoDespues ? gradoAntes : gradoAntes + " → " + gradoDespues,
                     comunes: comunes, cambia: cambia))
         }
         let cambian = filas.filter(\.cambia).count
-        return ComparacionDeProgresiones(
+        return ComparacionDeProgresionesPresentada(
             tonalidad: clave.nombre(en: notacion), filas: filas,
             resumen: notacion.texto { $0.cambianAcordes(cambian, filas.count) },
             sonido: Escucha.acordes(original + nueva).conTonica(clave.tonica))

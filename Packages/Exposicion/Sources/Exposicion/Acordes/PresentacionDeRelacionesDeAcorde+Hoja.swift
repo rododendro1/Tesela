@@ -43,7 +43,7 @@ extension PresentacionDeRelacionesDeAcorde {
             linea(notacion.texto(\.sinLaFundamental) + ": " + sinFundamental)
         }
         let anchoDelPentagrama = 170.0
-        let pentagrama = PentagramaPresentado(acorde, notacion: notacion, nombresDeLasNotas: true).svg
+        let pentagrama = PentagramaPresentado(acorde, en: notacion, nombresDeLasNotas: true).svg
         let altoDelPentagrama = Hoja.incrustar(
             pentagrama, x: ancho - margen - anchoDelPentagrama, y: arriba, ancho: anchoDelPentagrama, en: &cuerpo)
         y = max(y, arriba + altoDelPentagrama) + 12

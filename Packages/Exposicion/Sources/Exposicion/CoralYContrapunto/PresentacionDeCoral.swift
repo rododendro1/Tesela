@@ -6,7 +6,7 @@ import Foundation
 /// ficheros para exportar.
 public struct CoralPresentado: Hashable, Sendable {
     /// Un acorde del coral, como se enseña en una fila.
-    public struct Fila: Hashable, Sendable {
+    public struct AcordeDelCoral: Hashable, Sendable {
         /// El cifrado americano, o "–" si las notas no forman un acorde conocido.
         public let cifrado: String
         /// El cifrado romano, o "" si no se ha analizado.
@@ -19,7 +19,7 @@ public struct CoralPresentado: Hashable, Sendable {
     public let titulo: String
     /// Las armonizaciones de la melodía, de mejor a peor; vacío si no se armoniza.
     public let propuestas: [String]
-    public let filas: [Fila]
+    public let filas: [AcordeDelCoral]
     /// Las faltas de conducción, o por qué no hay coral.
     public let avisos: [Aviso]
     public let ficheros: [FicheroParaExportar]
@@ -144,7 +144,7 @@ public enum PresentacionDeCoral {
         var avisos: [CoralPresentado.Aviso] = []
         if candidatos.isEmpty { avisos.append(.sinArmonizacion) }
 
-        var filas: [CoralPresentado.Fila] = []
+        var filas: [CoralPresentado.AcordeDelCoral] = []
         var ficheros: [FicheroParaExportar] = []
         var sonido = Escucha.silencio
         if !conOctavas {
@@ -168,12 +168,12 @@ public enum PresentacionDeCoral {
     /// Los acordes escritos a cuatro voces, sin faltas de conducción.
     public static func realizar(_ texto: String, en tonalidad: Tonalidad?, notacion: Notacion) throws -> CoralPresentado
     {
-        realizar(try AnalisisArmonico.analizar(leyendo: texto, en: tonalidad), notacion: notacion)
+        realizar(try AnalisisArmonico.analizar(leyendo: texto, en: tonalidad), en: notacion)
     }
 
     /// Los acordes de un análisis ya hecho (el de un fichero, con `PiezaImportada.analisis(en:ventana:)`) a cuatro
     /// voces, como `realizar(_:en:notacion:)`.
-    public static func realizar(_ analisis: AnalisisArmonico, notacion: Notacion) -> CoralPresentado {
+    public static func realizar(_ analisis: AnalisisArmonico, en notacion: Notacion) -> CoralPresentado {
         let titulo = analisis.tonalidad.nombre(en: notacion)
         guard let voces = Coral.realizar(analisis.acordes.map(\.acorde), en: analisis.tonalidad) else {
             return CoralPresentado(
@@ -195,7 +195,7 @@ public enum PresentacionDeCoral {
     /// Las faltas de un coral ya leído (de un fichero, con `PiezaImportada.coral()`), como `revisar(_:en:)`.
     public static func revisar(_ coral: Coral, en notacion: Notacion) -> CoralPresentado {
         let filas = coral.acordes.map { alturas in
-            CoralPresentado.Fila(
+            CoralPresentado.AcordeDelCoral(
                 cifrado: Acorde.identificar(alturas: alturas).first?.cifrado(en: notacion) ?? "–", grado: "",
                 voces: voces(alturas, notacion))
         }
@@ -209,9 +209,9 @@ public enum PresentacionDeCoral {
     static func filas(
         _ analisis: AnalisisArmonico, _ coral: Coral,
         _ notacion: Notacion
-    ) -> [CoralPresentado.Fila] {
+    ) -> [CoralPresentado.AcordeDelCoral] {
         zip(analisis.acordes, coral.acordes).map { analizado, alturas in
-            CoralPresentado.Fila(
+            CoralPresentado.AcordeDelCoral(
                 cifrado: analizado.acorde.cifrado(en: notacion), grado: analizado.cifrado,
                 voces: voces(alturas, notacion))
         }

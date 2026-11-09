@@ -57,7 +57,7 @@ public struct ComparacionDeEscalasPresentada: Hashable, Sendable {
 /// Una escala bebop o pentatónica sobre un acorde: su nombre, lo que aporta y cómo suena.
 ///
 /// En JSON (las vecinas y los ciclos de la simetría de `armonia escala … --json`), su nombre y su detalle.
-public struct EscalaSobreElAcordePresentada: Hashable, Sendable, Encodable {
+public struct EscalaConDetallePresentada: Hashable, Sendable, Encodable {
     public let escala: Escala
     public let nombre: String
     /// En una bebop, la nota de paso y el recorrido bajando: «nota de paso: Si · Do Si Si♭ La Sol Fa Mi Re»; en una
@@ -86,7 +86,7 @@ public enum PresentacionDeEstudioDeEscala {
             tonica: escala.tonica)
         return SecuenciaPresentada(
             titulo: titulo, notas: PresentacionDeCoral.voces(alturas, notacion), sonido: presentado.sonido,
-            pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: titulo, notacion: notacion),
+            pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: titulo, en: notacion),
             ficheros: presentado.ficheros)
     }
 
@@ -154,20 +154,20 @@ public enum PresentacionDeEstudioDeEscala {
     }
 
     /// Las escalas bebop que encajan con el acorde, con su nota de paso y el recorrido bajando.
-    public static func bebop(sobre acorde: Acorde, en notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
+    public static func bebop(sobre acorde: Acorde, en notacion: Notacion) -> [EscalaConDetallePresentada] {
         acorde.escalasBebop.map { bebop in
             let paso = notacion.texto { $0.notaDePaso(bebop.notaDePaso.nombre(en: notacion)) }
             let recorrido = bebop.recorrido.map { $0.nombre(en: notacion) }.joined(separator: " ")
-            return EscalaSobreElAcordePresentada(
+            return EscalaConDetallePresentada(
                 escala: bebop.escala, nombre: bebop.escala.nombre(en: notacion), detalle: paso + " · " + recorrido,
                 sonido: .escala(bebop.escala))
         }
     }
 
     /// Las pentatónicas sin notas a evitar sobre el acorde, con las tensiones que suma cada una.
-    public static func pentatonicas(sobre acorde: Acorde, en notacion: Notacion) -> [EscalaSobreElAcordePresentada] {
+    public static func pentatonicas(sobre acorde: Acorde, en notacion: Notacion) -> [EscalaConDetallePresentada] {
         acorde.pentatonicas.map { pentatonica in
-            EscalaSobreElAcordePresentada(
+            EscalaConDetallePresentada(
                 escala: pentatonica.escala, nombre: pentatonica.escala.nombre(en: notacion),
                 detalle: pentatonica.tensiones.joined(separator: " · "), sonido: .escala(pentatonica.escala))
         }

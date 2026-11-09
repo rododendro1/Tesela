@@ -4,8 +4,8 @@
 
     /// El pentagrama de una escala o de un acorde, dibujado por el motor.
     ///
-    ///     DiagramaDePentagrama(Escala("Re dórico"), notacion: .compacta(.espanol))
-    ///     DiagramaDePentagrama(Acorde("Sol7"), notacion: .ascii(.ingles))
+    ///     DiagramaDePentagrama(Escala("Re dórico"), en: .compacta(.espanol))
+    ///     DiagramaDePentagrama(Acorde("Sol7"), en: .ascii(.ingles))
     ///
     /// Para ofrecerlo como fichero SVG: `BotonDeExportar([pentagrama.fichero])`, con la `PentagramaPresentado`.
     public struct DiagramaDePentagrama: View {
@@ -19,25 +19,25 @@
             self.alturaMaxima = alturaMaxima
         }
 
-        /// El pentagrama de una escala, como `PentagramaPresentado(_:octava:sentido:notacion:nombresDeLasNotas:)`.
+        /// El pentagrama de una escala, como `PentagramaPresentado(_:octava:sentido:en:nombresDeLasNotas:resaltada:)`.
         public init(
             _ escala: Escala, octava: Int = 4, sentido: SentidoDelIntervalo? = nil,
-            notacion: Notacion, nombresDeLasNotas: Bool = true, alturaMaxima: CGFloat = 260
+            en notacion: Notacion, nombresDeLasNotas: Bool = true, alturaMaxima: CGFloat = 260
         ) {
             self.init(
                 PentagramaPresentado(
-                    escala, octava: octava, sentido: sentido, notacion: notacion,
+                    escala, octava: octava, sentido: sentido, en: notacion,
                     nombresDeLasNotas: nombresDeLasNotas), alturaMaxima: alturaMaxima)
         }
 
-        /// El pentagrama de un acorde, como `PentagramaPresentado(_:octava:notacion:nombresDeLasNotas:)`.
+        /// El pentagrama de un acorde, como `PentagramaPresentado(_:octava:en:nombresDeLasNotas:)`.
         public init(
-            _ acorde: Acorde, octava: Int = 4, notacion: Notacion,
+            _ acorde: Acorde, octava: Int = 4, en notacion: Notacion,
             nombresDeLasNotas: Bool = false, alturaMaxima: CGFloat = 260
         ) {
             self.init(
                 PentagramaPresentado(
-                    acorde, octava: octava, notacion: notacion,
+                    acorde, octava: octava, en: notacion,
                     nombresDeLasNotas: nombresDeLasNotas), alturaMaxima: alturaMaxima)
         }
 

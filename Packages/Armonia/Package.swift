@@ -5,7 +5,7 @@ import PackageDescription
 // `import Armonia` ve la misma API de siempre. Lo que antes era interno y se usa entre capas es
 // `package`: visible dentro de este paquete y no en la API pública.
 //
-//     Elementos   Fundamentos, Texto, Postonal
+//     Elementos   Fundamentos, Texto, Postonal, Referencias
 //     Teoria      Acordes, Escalas, Tonalidad, Afinacion
 //     Diagramas   Color, Dibujo, Redes
 //     Partituras  Modelo, Dibujo

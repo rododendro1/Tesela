@@ -6,7 +6,7 @@ import Armonia
 /// En JSON (`armonia escala … --doce --acordes --json`), los grados y las filas, sin el título ni lo que suena.
 public struct TablaDeAcordesPresentada: Hashable, Sendable, Encodable {
     /// Los acordes de una tonalidad.
-    public struct Fila: Hashable, Sendable, Encodable {
+    public struct AcordesDeUnaTonalidad: Hashable, Sendable, Encodable {
         /// «Sol mayor».
         public let tonalidad: String
         /// Un cifrado por grado: «Lam7», «Re7»…
@@ -21,7 +21,7 @@ public struct TablaDeAcordesPresentada: Hashable, Sendable, Encodable {
     public let titulo: String
     /// El cifrado romano de cada grado, igual en todas las tonalidades: «ii7», «V7»…
     public let grados: [String]
-    public let filas: [Fila]
+    public let filas: [AcordesDeUnaTonalidad]
     /// Todas las filas seguidas.
     public let sonido: Escucha
     public let ficheros: [FicheroParaExportar]
@@ -51,7 +51,7 @@ extension PresentacionDeEstudioDeEscala {
         else { return nil }
         let titulo = escala.nombre(en: notacion) + " · " + notacion.texto(\.acordesEnLasDoceTonalidades)
         let filas = tonalidades.map { tonalidad in
-            TablaDeAcordesPresentada.Fila(
+            TablaDeAcordesPresentada.AcordesDeUnaTonalidad(
                 tonalidad: tonalidad.escala.nombre(en: notacion),
                 acordes: tonalidad.acordes.map { $0.cifrado(en: notacion) },
                 sonido: .acordes(tonalidad.acordes))

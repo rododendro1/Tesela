@@ -115,8 +115,8 @@ targets:
     type: bundle.ui-testing
     supportedDestinations: [iOS, macOS]
     sources:
-      - path: Apps/PruebasDeInterfaz/ArsHarmonicaApp
-      - path: Apps/PruebasDeInterfaz/Comun
+      - path: PruebasDeInterfaz/ArsHarmonicaApp
+      - path: PruebasDeInterfaz/Comun
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: $(BUNDLE_ID_PREFIX).arsharmonica.pruebasDeInterfaz
@@ -131,8 +131,8 @@ targets:
     type: bundle.ui-testing
     supportedDestinations: [iOS, macOS]
     sources:
-      - path: Apps/PruebasDeInterfaz/TonnetzApp
-      - path: Apps/PruebasDeInterfaz/Comun
+      - path: PruebasDeInterfaz/TonnetzApp
+      - path: PruebasDeInterfaz/Comun
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: $(BUNDLE_ID_PREFIX).tonnetz.pruebasDeInterfaz

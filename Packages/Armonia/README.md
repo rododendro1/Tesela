@@ -219,6 +219,8 @@ Sources/
 │   ├── Notacion/          Notacion (con EscrituraDeNotas e Idioma), ReglasDeIdioma, EstiloDeCifrado, Traduccion
 │   ├── Lectura/           Lector, ErrorDeArmonia (con ErrorAlLeer y MotivoDeLectura), ErrorDeLectura
 │   ├── Textos/            TextosDeElementos y un fichero por idioma
+│   ├── Referencias/       Referencia (citas, BibTeX y CSL-JSON) y Referencias (el catálogo de obras, que citan
+│   │                      escalas, acordes, corales y partituras)
 │   └── Postonal/          ConjuntoDeClasesDeAltura, TablaForte
 ├── Teoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
@@ -243,7 +245,6 @@ Sources/
 │   │   │                  junto a sus tradiciones
 │   │   ├── Microtonos/    Microtonos (SistemaMicrotonal, TipoDeEscalaMicrotonal) y NombresPorOctava (las notas
 │   │   │                  árabes, las perde turcas y el sistema perfecto griego)
-│   │   ├── Referencias/   Referencia (citas, BibTeX y CSL-JSON) y Referencias (el catálogo de obras)
 │   │   └── Nombres/       NombresDeEscalas y un fichero por idioma (`NombresDeEscalas+Catalan.swift`…): el nombre de cada
 │   │                      tipo, sus alias, las escalas de otras tradiciones y el nombre de cada clase
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
@@ -294,7 +295,7 @@ un fichero por idioma en `Teoria/Escalas/Nombres/`, `NombresDeEscalas+Catalan.sw
 `Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno, y `Scripts/generadores/nombres_de_escalas/` tiene las herramientas con que se sembraron).
 
 Para añadir un idioma: un caso en `Idioma`, su fila en `ReglasDeIdioma` (código, nombre, sílabas, alteraciones y
-modos) y en `Scripts/comprobaciones/idiomas.py`, un caso en `EscrituraDeNotas` (con su constante en `Notacion`), un campo en
+modos) y en `Scripts/comun/idiomas.py`, un caso en `EscrituraDeNotas` (con su constante en `Notacion`), un campo en
 `Traducido`, un fichero en cada `Textos/`, y corregir lo que el compilador señale: ningún `switch` sobre el
 idioma o la escritura tiene `default`, y cada `Traduccion` sin el idioma nuevo deja de compilar.
 
@@ -311,7 +312,7 @@ línea de comandos están con ella, en `Apps/ConsolaArmonia/Tests/`.
 
 ### Capas
 
-La biblioteca se reparte en siete módulos que siguen unas capas: **Elementos** (Fundamentos,
+La biblioteca se reparte en siete módulos que siguen unas capas: **Elementos** (Fundamentos, Referencias,
 Texto, Postonal), **Teoria** (Acordes, con la teoría neorriemanniana, Escalas, Tonalidad, que se necesitan entre sí, y la
 afinación) y
 dos ramas que usan las anteriores y no se usan entre sí: **Diagramas** (color, dibujo y redes, como

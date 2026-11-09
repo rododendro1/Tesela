@@ -64,11 +64,11 @@ struct SeccionDeLaEscaleraDeBrillo: View {
 /// Una sección de escalas con su detalle debajo y «Escuchar» (las vecinas, que salen moviendo una nota un semitono,
 /// o las parecidas, que comparten más notas); nada si no hay ninguna.
 struct ListaDeEscalas: View {
-    let escalas: [EscalaSobreElAcordePresentada]
+    let escalas: [EscalaConDetallePresentada]
     let titulo: String
     @EnvironmentObject private var navegacion: Navegacion
 
-    init(_ escalas: [EscalaSobreElAcordePresentada], titulo: String) {
+    init(_ escalas: [EscalaConDetallePresentada], titulo: String) {
         self.escalas = escalas
         self.titulo = titulo
     }

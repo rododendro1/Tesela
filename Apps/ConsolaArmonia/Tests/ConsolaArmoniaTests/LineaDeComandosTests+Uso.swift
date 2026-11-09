@@ -145,17 +145,20 @@ extension LineaDeComandosTests {
     }
 
     /// `escalas` busca por el nombre: con unas notas, remite a `identificar --escalas`.
-    /// `escala` da la línea de las referencias de una escala de otra tradición, y `--bibtex`, solo sus obras en BibTeX.
+    /// `escala` da la línea de las referencias de una escala, y `--bibtex`, solo sus obras en BibTeX; una sintética no
+    /// tiene.
     @Test func referenciasDeUnaEscala() {
         #expect(
             salida("escala Re bayati").contains("\n  referencias: Maqam World; Touma 1996; Farraj & Abu Shumays 2019\n")
         )
         #expect(salida("escala Re bayati --ingles").contains("\n  references: Maqam World;"))
-        #expect(!salida("escala Re dórico").contains("referencias"))
+        #expect(salida("escala Re dórico").contains("\n  referencias: Powers et al. 2001; Levine 1995\n"))
+        #expect(!salida("escala Re lidio ♯2").contains("referencias"))
         let bib = salida("escala Re bayati --bibtex")
         #expect(bib.hasPrefix("@online{maqamWorld,\n"))
         #expect(bib.contains("@book{touma1996,\n  author = {Touma, Habib Hassan},"))
-        #expect(salida("escala Re dórico --bibtex").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        #expect(salida("escala Re dórico --bibtex").hasPrefix("@incollection{powers2001,\n"))
+        #expect(salida("escala Re lidio ♯2 --bibtex").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
     }
 
     @Test func escalasConNotas() {

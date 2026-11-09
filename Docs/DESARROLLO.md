@@ -1,7 +1,7 @@
 # Desarrollo de Tesela
 
 Cómo está organizado el repositorio y cómo se compila, se prueba y se mide. Lo que es Tesela y cómo usarlo está en
-el [README](README.md); cómo contribuir, en [CONTRIBUTING.md](CONTRIBUTING.md).
+el [README](../README.md); cómo contribuir, en [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Qué hay en cada carpeta
 
@@ -23,8 +23,8 @@ Apps/
 │                     MEI o ABC mientras suenan (con las transformaciones entre ellos), o las notas que se toquen (y
 │                     qué acorde forman), en el Tonnetz, la tabla armónica o un
 │                     teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático, Gerhard, Park, o uno en formato UIL con giros de 30°); exporta el dibujo en SVG
-├── ConsolaArmonia/   La herramienta `armonia`, con sus pruebas (SwiftPM)
-└── PruebasDeInterfaz/  Las pruebas de interfaz de las dos apps (XCUITest), con los ejemplos de cada vista
+└── ConsolaArmonia/   La herramienta `armonia`, con sus pruebas (SwiftPM)
+PruebasDeInterfaz/  Las pruebas de interfaz de las dos apps (XCUITest), con los ejemplos de cada vista
 Ejemplos/
 ├── EjemploArmonia/     Un recorrido por la API del motor, ejecutable (SwiftPM)
 ├── EjemploCatalogoDeEscalas/  El catálogo de escalas en un fichero TSV, una fila por escala (SwiftPM)
@@ -47,10 +47,13 @@ Packages/
                     líneas, regiones, rotaciones y el paso a píxeles; el motor la usa para el Tonnetz,
                     la tabla armónica y los teclados isomórficos
 Scripts/
-├── comprobaciones/   Las del repositorio y del motor, que pasa el CI (comprobar_*.py, notas_de_version.py)
+├── comprobaciones/   Las del repositorio y del motor, que pasa el CI (comprobar_*.py)
 ├── generadores/      El proyecto de Xcode, el Package.swift de la raíz, las pruebas de la documentación, los glifos de Bravura y los nombres de escalas
-├── datos/            Los casos que comparten las comprobaciones en Python y las pruebas en Swift (normalizar.tsv)
-└── compilar_todo.sh  Todo, por capas, como el CI
+├── version/          Las notas de cada versión y su publicación (notas_de_version.py)
+├── compilacion/      Todo, por capas, como el CI (compilar_todo.sh), y el empaquetado de `armonia` (empaquetar_cli.sh)
+├── comun/            Lo que importan los demás scripts: los idiomas (idiomas.py) y la normalización de los nombres de escalas
+└── datos/            Los casos que comparten las comprobaciones en Python y las pruebas en Swift (normalizar.tsv)
+Docs/               Este documento
 Config/             Ajustes de compilación de las apps (Local.xcconfig, el de tu equipo, no se guarda en git), su
                     manifiesto de privacidad (PrivacyInfo.xcprivacy) y sus trece idiomas (Idiomas.plist; cada
                     app tiene además sus carpetas Idiomas/<idioma>.lproj)
@@ -156,7 +159,7 @@ arregla con su prueba en `ImportacionAlAzarTests`, con el caso dentro.
 2. Un paquete se añade a `PERMITIDO` en `Scripts/comprobaciones/comprobar_dependencias.py`, con los paquetes de los que puede depender,
    y se regenera el `Package.swift` de la raíz con `python3 Scripts/generadores/generar_paquete_raiz.py`, que reúne
    los módulos y las bibliotecas de todos (el CI comprueba que está al día).
-3. Una app de SwiftUI, además, en `project.yml` (un `target` y su `scheme`, y sus pruebas de interfaz en `Apps/PruebasDeInterfaz/<App>`); un paquete, en `packages:`. Una app de
+3. Una app de SwiftUI, además, en `project.yml` (un `target` y su `scheme`, y sus pruebas de interfaz en `PruebasDeInterfaz/<App>`); un paquete, en `packages:`. Una app de
    SwiftPM solo necesita su `Package.swift`, con dependencias por ruta a `Packages/`.
 4. Añade su job a `.github/workflows/ci.yml`.
 
@@ -169,9 +172,9 @@ resolver. Los jobs de macOS (paquetes y apps, pruebas de interfaz y DocC) corren
 semana, los lunes; en cada push y en cada pull request corre Linux, y en los pull requests que cambian las apps,
 `Exposicion`, `Interfaz` o el proyecto de Xcode, también las pruebas de interfaz de las dos apps, en macOS y en el simulador de iOS (que antes las compilan). Si una máquina de macOS se pierde a mitad de un job, `.github/workflows/reintentar.yml` repite una vez los jobs que fallaron. La documentación de DocC (Armonia, Hexagonos, Interfaz y Exposicion) se publica en
 [GitHub Pages](https://rododendro1.github.io/Tesela/) con cada versión (`.github/workflows/documentacion.yml`), y también se
-puede publicar a mano desde la pestaña Actions. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). El formato del código Swift se comprueba con swift-format (`.swift-format`; los comandos, en `CONTRIBUTING.md`). Los jobs de Linux guardan `.build` en caché y recompilan solo lo que ha cambiado desde la última ejecución en main. `./Scripts/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
+puede publicar a mano desde la pestaña Actions. Dependabot mantiene al día las acciones del CI (`.github/dependabot.yml`). El formato del código Swift se comprueba con swift-format (`.swift-format`; los comandos, en `CONTRIBUTING.md`). Los jobs de Linux guardan `.build` en caché y recompilan solo lo que ha cambiado desde la última ejecución en main. `./Scripts/compilacion/compilar_todo.sh` hace lo mismo en una máquina con Swift, por capas y con un log por paso.
 
-Cómo contribuir está en `CONTRIBUTING.md`, y cómo avisar de un fallo de seguridad, en `SECURITY.md`.
+Cómo contribuir está en `CONTRIBUTING.md`, y cómo avisar de un fallo de seguridad, en `.github/SECURITY.md`.
 `.spi.yml` le dice a [Swift Package Index](https://swiftpackageindex.com) qué módulos documentar.
 
 El código se publica con licencia MIT (`LICENSE`). Los iconos de las apps, en

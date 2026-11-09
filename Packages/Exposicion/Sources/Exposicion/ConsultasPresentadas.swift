@@ -10,9 +10,9 @@ import Armonia
 
 /// Un acorde: su cifrado, su nombre, sus notas y el papel de cada una.
 ///
-///     let datos = DatosDeAcorde(Acorde("Sol7/Si"), en: .compacta(.espanol))
+///     let datos = AcordePresentado(Acorde("Sol7/Si"), en: .compacta(.espanol))
 ///     datos.inversion   // 1
-public struct DatosDeAcorde: Hashable, Sendable, Codable {
+public struct AcordePresentado: Hashable, Sendable, Codable {
     /// Una nota del acorde con su papel: «Si tercera».
     public struct Componente: Hashable, Sendable, Codable {
         public let nota: String
@@ -48,7 +48,7 @@ public struct DatosDeAcorde: Hashable, Sendable, Codable {
 }
 
 /// Un acorde que pueden formar unas notas, con las suyas que faltan.
-public struct DatosDeCandidato: Hashable, Sendable, Codable {
+public struct CandidatoPresentado: Hashable, Sendable, Codable {
     public let cifrado: String
     public let nombre: String
     /// Las notas del acorde que no están entre las tocadas.
@@ -63,23 +63,23 @@ public struct DatosDeCandidato: Hashable, Sendable, Codable {
     /// Los acordes que pueden formar unas notas escritas, del más probable al menos y como mucho `limite`; ninguno
     /// si no forman ninguno. Si todas llevan octava («Si2 Re4 Sol4»), cuenta cuál es el bajo; si no, solo las notas.
     ///
-    ///     let candidatos = try DatosDeCandidato.identificar(["Do", "Mi", "Sol", "Sib"], en: .compacta(.espanol))
+    ///     let candidatos = try CandidatoPresentado.identificar(["Do", "Mi", "Sol", "Sib"], en: .compacta(.espanol))
     ///     candidatos[0].cifrado   // "Do7"
     public static func identificar(
         _ textos: [String], limite: Int = 5, en notacion: Notacion
-    ) throws -> [DatosDeCandidato] {
+    ) throws -> [CandidatoPresentado] {
         let candidatos: [Candidato<Acorde>]
         if let alturas = try? textos.map({ try Altura(leyendo: $0) }) {
             candidatos = Acorde.candidatos(alturas: alturas)
         } else {
             candidatos = Acorde.candidatos(notas: try textos.map { try Nota(leyendo: $0) })
         }
-        return candidatos.prefix(limite).map { DatosDeCandidato($0, en: notacion) }
+        return candidatos.prefix(limite).map { CandidatoPresentado($0, en: notacion) }
     }
 }
 
 /// Una escala: su nombre, sus notas, de qué escala es modo y los acordes de sus grados.
-public struct DatosDeEscala: Hashable, Sendable, Codable {
+public struct EscalaPresentada: Hashable, Sendable, Codable {
     /// El acorde de un grado, con su cifrado romano: «ii» «Rem7».
     public struct AcordeDelGrado: Hashable, Sendable, Codable {
         public let grado: String
@@ -112,10 +112,10 @@ public struct DatosDeEscala: Hashable, Sendable, Codable {
 
 /// Un conjunto de clases de altura: sus notas, sus formas y sus vectores.
 ///
-///     let datos = DatosDeConjunto(ConjuntoDeClasesDeAltura([0, 4, 7]), en: .compacta(.espanol))
+///     let datos = ConjuntoPresentado(ConjuntoDeClasesDeAltura([0, 4, 7]), en: .compacta(.espanol))
 ///     datos.forte        // "3-11"
 ///     datos.formaPrima   // [0, 3, 7]
-public struct DatosDeConjunto: Hashable, Sendable, Codable {
+public struct ConjuntoPresentado: Hashable, Sendable, Codable {
     public let clases: [Int]
     public let notas: [String]
     /// `nil` si el conjunto no está en la tabla de Forte (el vacío).
@@ -138,7 +138,7 @@ public struct DatosDeConjunto: Hashable, Sendable, Codable {
 }
 
 /// Una serie dodecafónica: sus notas, sus intervalos, sus hexacordos, sus formas y su matriz.
-public struct DatosDeSerie: Hashable, Sendable, Codable {
+public struct SeriePresentada: Hashable, Sendable, Codable {
     public let clases: [Int]
     /// Una nota por clase, escritas todas a la vez para que ninguna se repita
     /// (`ConjuntoDeClasesDeAltura.nombresDeLasClases`).

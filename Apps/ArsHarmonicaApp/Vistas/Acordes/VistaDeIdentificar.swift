@@ -51,7 +51,7 @@ struct VistaDeIdentificar: View {
                 DiagramaDeMastil(
                     mastil: mastil, marcas: posiciones, rango: 0...12,
                     apagadas: Set(0..<encordado.numeroDeCuerdas).subtracting(trastes.keys),
-                    ortografia: ortografia(de: acordes.first), notacion: notacion
+                    ortografia: ortografia(de: acordes.first), en: notacion
                 )
                 .alTocar(tocar)
                 Button(notacion.texto(\.borrar)) { borrar() }

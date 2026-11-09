@@ -29,6 +29,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "comun"))  # Scripts/comun: idiomas.py y normalizar_escalas.py
 from idiomas import CODIGOS as IDIOMAS, CODIGO_DEL_FICHERO, comprobar as comprobar_idiomas
 
 # Textos que se escriben igual que en inglés a propósito.
@@ -174,7 +175,7 @@ def main() -> int:
         # Si `Traduccion` cambia de forma (otro idioma, otras etiquetas), la expresión deja de encontrarlas.
         errores.append("no se ha encontrado ninguna Traduccion literal: ¿ha cambiado IDIOMAS?")
     if not comprobar_idiomas():
-        errores.append("Scripts/comprobaciones/idiomas.py no tiene los códigos de `Idioma.codigo`, en su orden")
+        errores.append("Scripts/comun/idiomas.py no tiene los códigos de `Idioma.codigo`, en su orden")
     if errores:
         print(f"\n{len(errores)} problema(s):")
         for e in errores:

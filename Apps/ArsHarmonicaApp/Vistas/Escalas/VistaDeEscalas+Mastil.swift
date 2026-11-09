@@ -44,7 +44,7 @@ struct SeccionDePosiciones: View {
                         Spacer()
                         BotonDeEscuchar(sonido)
                     }
-                    DiagramaDeMastil(posicion: posicion, escala: escala, notacion: notacion)
+                    DiagramaDeMastil(posicion: posicion, escala: escala, en: notacion)
                         .resaltando(sonando)
                         .frame(maxHeight: 120)
                 }
@@ -70,7 +70,7 @@ struct SeccionDeFormasPentatonicas: View {
                             Spacer()
                             BotonDeEscuchar(forma.sonido)
                         }
-                        DiagramaDeMastil(posicion: forma.posicion, escala: escala, notacion: notacion)
+                        DiagramaDeMastil(posicion: forma.posicion, escala: escala, en: notacion)
                             .frame(maxHeight: 120)
                         Text(forma.comunes).font(.caption).foregroundColor(.secondary)
                     }

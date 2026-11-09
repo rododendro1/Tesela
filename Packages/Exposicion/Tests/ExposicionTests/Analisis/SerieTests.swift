@@ -34,9 +34,9 @@ import Testing
         #expect(presentada.nombresDeLasClases.count == 12)
         #expect(presentada.nombresDeLasClases[0] == "Do")
         #expect(presentada.descripcion(deLaFila: 0).hasPrefix("P5: Fa Mi Do"))
-        #expect(SeriePresentada.cifra(10) == "t")
-        #expect(SeriePresentada.cifra(11) == "e")
-        #expect(SeriePresentada.cifra(7) == "7")
+        #expect(MatrizDeSeriePresentada.cifra(10) == "t")
+        #expect(MatrizDeSeriePresentada.cifra(11) == "e")
+        #expect(MatrizDeSeriePresentada.cifra(7) == "7")
     }
 
     @Test func laFormaElegidaSeResaltaSeEscuchaYSeExporta() throws {

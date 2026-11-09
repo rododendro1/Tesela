@@ -30,7 +30,7 @@ struct VistaDeEscalas: View {
 
     var body: some View {
         let escala = eleccion.escala
-        let pentagrama = PentagramaPresentado(escala, notacion: notacion)
+        let pentagrama = PentagramaPresentado(escala, en: notacion)
         let sonido = Escucha.escala(escala)
         let mastil = self.mastil
         let presentada = secuenciaPresentada(de: escala)
@@ -64,13 +64,13 @@ struct VistaDeEscalas: View {
             Section(notacion.texto(\.pentagrama)) {
                 // Mientras suena, la nota que se oye, de otro color.
                 if let paso = reproductor.paso(de: sonido) {
-                    DiagramaDePentagrama(PentagramaPresentado(escala, notacion: notacion, resaltada: paso))
+                    DiagramaDePentagrama(PentagramaPresentado(escala, en: notacion, resaltada: paso))
                 } else {
                     DiagramaDePentagrama(pentagrama)
                 }
             }
             Section(notacion.texto(\.mastilDeGuitarra)) {
-                DiagramaDeMastil(mastil: Mastil(.guitarra, numeroDeTrastes: 12), escala: escala, notacion: notacion)
+                DiagramaDeMastil(mastil: Mastil(.guitarra, numeroDeTrastes: 12), escala: escala, en: notacion)
             }
             SeccionDePosiciones(escala: escala, mastil: mastil, caged: $caged, encordado: $encordado, capo: $capo)
             SeccionDeFormasPentatonicas(escala: escala, mastil: mastil)

@@ -87,7 +87,7 @@ extension PresentacionDeAnalisis {
         }
         return BajoCaminantePresentado(
             alturas: alturas, compases: compases, voz: voz, partitura: partitura,
-            pentagrama: PentagramaPresentado(partitura, titulo: nombre, descripcion: descripcion, notacion: notacion),
+            pentagrama: PentagramaPresentado(partitura, titulo: nombre, descripcion: descripcion, en: notacion),
             sonido: Escucha(notas: notas, tonica: primero.fundamental),
             ficheros: FicheroParaExportar.partituras(nombre: nombre) { partitura.exportar(como: $0) })
     }

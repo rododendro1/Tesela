@@ -95,9 +95,9 @@ extension LineaDeComandos {
         return lineas
     }
 
-    /// El acorde con sus notas y el papel de cada una: los datos de `--json` (`DatosDeAcorde`), en texto.
+    /// El acorde con sus notas y el papel de cada una: los datos de `--json` (`AcordePresentado`), en texto.
     static func describir(acorde: Acorde, _ notacion: Notacion) -> String {
-        let datos = DatosDeAcorde(acorde, en: notacion)
+        let datos = AcordePresentado(acorde, en: notacion)
         var lineas = ["\(datos.cifrado): \(datos.nombre)"]
         let notas = datos.notas.joined(separator: " ")
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
@@ -142,9 +142,9 @@ extension LineaDeComandos {
                 .joined(separator: "\n"))
     }
 
-    /// Los acordes que pueden formar las notas, como en `--json` (`DatosDeCandidato.identificar`).
+    /// Los acordes que pueden formar las notas, como en `--json` (`CandidatoPresentado.identificar`).
     static func identificar(_ textos: [String], _ notacion: Notacion) throws -> String {
-        let candidatos = try DatosDeCandidato.identificar(textos, en: notacion)
+        let candidatos = try CandidatoPresentado.identificar(textos, en: notacion)
         guard !candidatos.isEmpty else { return Mensaje.sinAcordes.texto(en: notacion) }
         return candidatos.map { candidato in
             var linea = "\(candidato.cifrado)  \(candidato.nombre)"

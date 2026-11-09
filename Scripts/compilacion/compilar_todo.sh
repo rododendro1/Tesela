@@ -3,14 +3,14 @@
 # Es lo que hay que ejecutar la primera vez que se tiene Swift a mano (el repositorio se montó sin
 # compilador) y después de cualquier cambio grande.
 #
-#     ./Scripts/compilar_todo.sh            # todo lo que se pueda en esta máquina
-#     ./Scripts/compilar_todo.sh --rapido   # sin las pruebas exhaustivas ni las apps de Xcode
+#     ./Scripts/compilacion/compilar_todo.sh            # todo lo que se pueda en esta máquina
+#     ./Scripts/compilacion/compilar_todo.sh --rapido   # sin las pruebas exhaustivas ni las apps de Xcode
 #
 # Una capa que falla impide las que dependen de ella (si el núcleo no compila, nada más lo hará), pero las
 # independientes se siguen intentando. El log de cada paso queda en `.logs-compilacion/` y, si falla,
 # se muestran sus primeros errores. Sale con 0 solo si todo pasó.
 set -u
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/../.."
 
 RAPIDO=0
 [ "${1:-}" = "--rapido" ] && RAPIDO=1
