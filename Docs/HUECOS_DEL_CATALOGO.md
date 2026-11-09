@@ -1,21 +1,19 @@
 # Huecos del catálogo de escalas y acordes
 
-Estado a 9 de noviembre de 2026, tras la 0.4.4 y los acordes que faltaban.
+Estado a 9 de noviembre de 2026, tras la 0.4.4, los acordes que faltaban y las fuentes de las europeas y las danzas.
 
 ## Resumen
 
-En main quedan 10 escalas de otras tradiciones y 30 escalas occidentales sin ninguna referencia, y ocho acordes sin
-fuente. El catálogo tiene 434 escalas en 49 listas de tradición y 55 acordes, todos con nombre en los doce idiomas. Lo
-más rápido de cerrar son las europeas (7 escalas de una lista).
+Quedan 3 escalas de otras tradiciones y 30 escalas occidentales sin ninguna referencia, y ocho acordes sin fuente. El
+catálogo tiene 434 escalas en 49 listas de tradición y 55 acordes, todos con nombre en los doce idiomas. Las siete
+europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una obra cada una.
 
 ## Escalas sin ninguna referencia
 
-Son 10 escalas en 3 listas, según `comprobar_catalogo.py`. Ninguna de las tres listas tiene referencia propia, así que
-una sola obra por lista bastaría para cubrirlas.
+Son 3 escalas en 2 listas, según `comprobar_catalogo.py`.
 
 | Lista | Escalas sin fuente | Total en la lista | Qué haría falta |
 | --- | --- | --- | --- |
-| Europeas | dórico ucraniano, podhalańska, pentatónica húngara, cuerno alpino, gaita escocesa, georgiana, istriana | 7 | Una obra por escala, porque cada una es de un país |
 | Sudeste asiático | pinpeat, saung | 3 | Una fuente sobre la música jemer y otra sobre la birmana; el piphat ya cita a Morton (1976) |
 | Africanas | amadinda | 7 | Una fuente sobre el xilófono de Uganda; las otras seis citan a Tracey, Berliner o Knight |
 
@@ -76,7 +74,8 @@ Antes de añadir nada conviene confirmar tres datos que ya están en el catálog
 
 Orden propuesto:
 
-1. Las europeas, el pinpeat, el saung y la amadinda: diez escalas que solo necesitan sus fuentes.
+1. El pinpeat, el saung y la amadinda: tres escalas que solo necesitan sus fuentes. De las europeas, falta comprobar
+   en Małanicz-Przybylska (2018) las notas exactas de la podhalańska.
 2. Las bebop y las hexatónicas de dos tríadas, con Levine y Cohn.
 3. Las fuentes de los acordes de nombre propio y de m(add9), con su ortografía.
 4. Las tradiciones ausentes, empezando por el shashmaqom, que es vecino de los dastgāh.
