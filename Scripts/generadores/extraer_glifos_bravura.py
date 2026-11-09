@@ -7,7 +7,7 @@ con el eje y hacia abajo, para que el SVG no dependa de la fuente al ejecutar.
 
 Uso:  python3 Scripts/generadores/extraer_glifos_bravura.py ruta/a/Bravura.otf
       (la fuente: https://github.com/steinbergmedia/bravura, carpeta redist/otf; necesita `pip install fonttools`)
-La licencia de la fuente está en `Licencias/Bravura-OFL.txt`.
+La licencia de la fuente está en `Packages/Armonia/Licencias/Bravura-OFL.txt`.
 """
 import sys
 from pathlib import Path
@@ -109,7 +109,7 @@ def main():
     DESTINO.parent.mkdir(parents=True, exist_ok=True)
     DESTINO.write_text(f"""// Generado por Scripts/generadores/extraer_glifos_bravura.py a partir de la fuente Bravura. No lo edites a mano.
 //
-// Bravura © Steinberg Media Technologies GmbH, con licencia SIL Open Font License 1.1 (Licencias/Bravura-OFL.txt).
+// Bravura © Steinberg Media Technologies GmbH, con licencia SIL Open Font License 1.1 (Packages/Armonia/Licencias/Bravura-OFL.txt).
 // Los trazados están en espacios de pentagrama (1 = distancia entre dos líneas), con el origen en la línea base del
 // glifo y el eje y hacia abajo; `ancho` es lo que avanza el glifo, en la misma unidad.
 

@@ -1,5 +1,9 @@
 # Cambios
 
+## Sin publicar
+
+- README del paquete: qué tiene cada carpeta, de qué depende y dónde está su DocC.
+
 ## 0.4.2 (2026-11-08)
 
 - **Cambio incompatible:** `DiagramaDePentagrama`, `DiagramaDeMastil` y `DiagramaDeTonnetz` ya no ponen la

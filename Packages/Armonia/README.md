@@ -294,7 +294,7 @@ un fichero por idioma en `Teoria/Escalas/Nombres/`, `NombresDeEscalas+Catalan.sw
 `Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno, y `Scripts/generadores/nombres_de_escalas/` tiene las herramientas con que se sembraron).
 
 Para añadir un idioma: un caso en `Idioma`, su fila en `ReglasDeIdioma` (código, nombre, sílabas, alteraciones y
-modos) y en `Scripts/comprobaciones/idiomas.py`, un caso en `EscrituraDeNotas` (con su constante en `Notacion`), un campo en
+modos) y en `Scripts/comun/idiomas.py`, un caso en `EscrituraDeNotas` (con su constante en `Notacion`), un campo en
 `Traducido`, un fichero en cada `Textos/`, y corregir lo que el compilador señale: ningún `switch` sobre el
 idioma o la escritura tiene `default`, y cada `Traduccion` sin el idioma nuevo deja de compilar.
 

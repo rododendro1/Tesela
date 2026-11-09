@@ -5,7 +5,7 @@ Teoría musical en Swift: un motor de armonía, dos apps para iOS y macOS y una 
 y el griego también se escriben en alfabeto latino.
 
 [English](README.en.md) · [Documentación](https://rododendro1.github.io/Tesela/) ·
-[Desarrollo](DESARROLLO.md) · [Cómo contribuir](CONTRIBUTING.md)
+[Desarrollo](Docs/DESARROLLO.md) · [Cómo contribuir](CONTRIBUTING.md)
 
 ## Qué hay
 
@@ -82,10 +82,10 @@ open Tesela.xcodeproj                                    # elige el esquema ArsH
 
 ## Más
 
-- [DESARROLLO.md](DESARROLLO.md): qué hay en cada carpeta, las dependencias, las pruebas, el rendimiento, el fuzzing
+- [Docs/DESARROLLO.md](Docs/DESARROLLO.md): qué hay en cada carpeta, las dependencias, las pruebas, el rendimiento, el fuzzing
   y el CI.
 - [Packages/Armonia/README.md](Packages/Armonia/README.md): el motor, con ejemplos de todo lo que hace.
-- [CONTRIBUTING.md](CONTRIBUTING.md) para contribuir y [SECURITY.md](SECURITY.md) para avisar de un fallo de
+- [CONTRIBUTING.md](CONTRIBUTING.md) para contribuir y [SECURITY.md](.github/SECURITY.md) para avisar de un fallo de
   seguridad.
 
 El código se publica con licencia MIT ([LICENSE](LICENSE)). Los iconos de las apps muestran a Kokopelli: en negro

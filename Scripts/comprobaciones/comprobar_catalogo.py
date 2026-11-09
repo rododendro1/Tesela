@@ -109,6 +109,7 @@ for f, texto in TEXTO.items():
             errores.append(f"`{m.group(1)}` ({f.name}) no está en `listasTradicionales`: sus escalas no se buscan")
 
 # --- Los ficheros por idioma de `Nombres/`
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "comun"))  # Scripts/comun: idiomas.py y normalizar_escalas.py
 from normalizar_escalas import normalizar, comprobar as comprobar_normalizacion
 
 NOMBRES = RAIZ / "Nombres"

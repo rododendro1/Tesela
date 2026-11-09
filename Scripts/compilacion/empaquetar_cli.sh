@@ -3,7 +3,7 @@
 # en español y en inglés, el completado para bash, zsh y fish, y la licencia, en `<nombre>.tar.gz` (con su
 # `.sha256` al lado). El manual y el completado los genera el propio binario, así que salen siempre al día.
 #
-#     ./Scripts/empaquetar_cli.sh .build/release/armonia armonia-0.3.0-linux-x86_64
+#     ./Scripts/compilacion/empaquetar_cli.sh .build/release/armonia armonia-0.3.0-linux-x86_64
 #
 # Si el binario no es de esta máquina (uno compilado para otra arquitectura), pasa un tercer argumento con otro
 # `armonia` que sí se pueda ejecutar para generar los ficheros: los textos son los mismos.
@@ -24,7 +24,7 @@ NOMBRE=$2
 GENERADOR=${3:-$1}
 # Sin barra, el shell buscaría el generador en el PATH.
 case $GENERADOR in */*) ;; *) GENERADOR=./$GENERADOR ;; esac
-RAIZ=$(cd "$(dirname "$0")/.." && pwd)
+RAIZ=$(cd "$(dirname "$0")/../.." && pwd)
 
 DESTINO=$(mktemp -d)
 trap 'rm -rf "$DESTINO"' EXIT

@@ -370,7 +370,7 @@ public enum EscrituraDeNotas: Hashable, Sendable, CaseIterable {
 /// 1. Un caso aquí.
 /// 2. Su fila en ``ReglasDeIdioma``: su código, cómo se llama, las sílabas, cómo se le pega la alteración, los modos,
 ///    las abreviaturas de los intervalos y el plural.
-/// 3. Su fila en `Scripts/comprobaciones/idiomas.py`.
+/// 3. Su fila en `Scripts/comun/idiomas.py`.
 /// 4. Su argumento en el inicializador de `Traducido`, en el orden de `allCases`.
 /// 5. Un fichero de textos por módulo en cada carpeta `Textos/`, que `comprobar_traducciones` busca.
 ///

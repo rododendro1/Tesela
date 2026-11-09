@@ -1,5 +1,9 @@
 # Cambios
 
+## Sin publicar
+
+- README del paquete: qué presenta cada carpeta, de qué depende y dónde está su DocC.
+
 ## 0.4.3 (2026-11-09)
 
 - Revisión del catalán y del inglés en las apps: «Número de Forte», «Reharmonitzar» y los apóstrofos rectos en

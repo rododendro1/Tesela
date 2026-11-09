@@ -1,6 +1,6 @@
 // Generado por Scripts/generadores/extraer_glifos_bravura.py a partir de la fuente Bravura. No lo edites a mano.
 //
-// Bravura © Steinberg Media Technologies GmbH, con licencia SIL Open Font License 1.1 (Licencias/Bravura-OFL.txt).
+// Bravura © Steinberg Media Technologies GmbH, con licencia SIL Open Font License 1.1 (Packages/Armonia/Licencias/Bravura-OFL.txt).
 // Los trazados están en espacios de pentagrama (1 = distancia entre dos líneas), con el origen en la línea base del
 // glifo y el eje y hacia abajo; `ancho` es lo que avanza el glifo, en la misma unidad.
 

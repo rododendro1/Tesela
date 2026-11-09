@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- Las referencias bibliográficas están en `Teoria/Referencias/` (antes, en `Teoria/Escalas/Referencias/`), porque las
+  citan también los acordes, y la licencia de Bravura, en `Packages/Armonia/Licencias/`, junto al paquete que usa sus
+  glifos.
 - Las escalas occidentales y los acordes genéricos citan dónde se leen (`referencias`), con nueve obras nuevas en
   `Referencia.catalogo`: Aldwell, Schachter y Cadwallader (2011) para la mayor, las menores y los acordes de la armonía
   tonal; Levine (1995) para los modos, las escalas y los acordes del jazz; Messiaen (1944) para sus modos; Lendvai
