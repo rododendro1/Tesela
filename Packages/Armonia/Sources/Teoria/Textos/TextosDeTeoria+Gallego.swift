@@ -101,8 +101,6 @@ extension TextosDeTeoria {
         papelTensionDisponible: "tensión",
         papelNotaAEvitar: "nota que evitar",
         modoDe: { modo, escala in "modo \(modo) de \(escala)" },
-        // EsquemaArmonico.swift
-        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "blues de 12 compases", "progresión por quintas", "romanesca", "canon de Pachelbel", "monte", "fonte", "ponte"],
         // Rearmonizacion.swift
         sustitutoTritonal: "substituto de trítono",
         dominanteSecundaria: "dominante secundaria",

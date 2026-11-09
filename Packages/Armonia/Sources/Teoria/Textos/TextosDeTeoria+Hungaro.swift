@@ -101,8 +101,6 @@ extension TextosDeTeoria {
         papelTensionDisponible: "feszültség",
         papelNotaAEvitar: "kerülendő hang",
         modoDe: { modo, escala in "\(escala) \(modo). módusza" },
-        // EsquemaArmonico.swift
-        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "12 ütemes blues", "kvintszekvencia", "romanesca", "Pachelbel-kánon", "monte", "fonte", "ponte"],
         // Rearmonizacion.swift
         sustitutoTritonal: "tritónuszhelyettesítés",
         dominanteSecundaria: "mellékdomináns",

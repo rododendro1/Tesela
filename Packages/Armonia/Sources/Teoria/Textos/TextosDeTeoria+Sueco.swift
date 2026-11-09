@@ -104,8 +104,6 @@ extension TextosDeTeoria {
             let sufijo = [1, 2].contains(modo % 10) && ![11, 12].contains(modo % 100) ? "a" : "e"
             return "\(modo):\(sufijo) modus av \(escala)"
         },
-        // EsquemaArmonico.swift
-        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "12-taktersblues", "kvintfallssekvens", "romanesca", "Pachelbels kanon", "monte", "fonte", "ponte"],
         // Rearmonizacion.swift
         sustitutoTritonal: "tritonussubstitution",
         dominanteSecundaria: "bidominant",

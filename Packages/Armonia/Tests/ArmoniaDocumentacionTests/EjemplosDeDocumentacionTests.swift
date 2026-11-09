@@ -1423,9 +1423,9 @@ import Hexagonos
         let esquemas = EsquemaArmonico.buscar(en: ["Do7M", "Lam7", "Rem7", "Sol7", "Do7M"])
         comprobar(esquemas.map(\.tipo), #"[turnaround, progresión por quintas, ii–V–I]"#, doc, 1)
         comprobar(esquemas.map(\.indices), #"[0..<4, 1..<5, 2..<5]"#, doc, 2)
-        comprobarIgual(EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])[0].tipo, .backdoor, doc, 3)
-        comprobar(EsquemaArmonico.Tipo.pachelbel.acordes(en: Tonalidad(.re)), #"[Re, La, Sim, Fa♯m, Sol, Re, Sol, La]"#, doc, 4)
-        comprobar(EsquemaArmonico.Tipo.blues.acordes(en: Tonalidad(.fa)).count, #"12"#, doc, 5)
+        comprobar(EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])[0].tipo == .backdoor, #"true"#, doc, 3)
+        comprobar(EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].tipo == .andaluza, #"true"#, doc, 4)
+        comprobar(EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].tonica, #"La"#, doc, 5)
     }
 
     @Test func tonalidad20() throws {

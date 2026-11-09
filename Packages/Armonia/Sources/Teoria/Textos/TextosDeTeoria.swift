@@ -108,10 +108,6 @@ struct TextosDeTeoria: TextosTraducidos {
     /// Una escala como modo de otra: «modo 2 de Do mayor», «mode 2 of C major».
     let modoDe: @Sendable (_ modo: Int, _ escala: String) -> String
 
-    // MARK: EsquemaArmonico.swift
-    /// En el orden de `EsquemaArmonico.Tipo.allCases`.
-    let nombresDeEsquemas: [String]
-
     // MARK: Rearmonizacion.swift
     let sustitutoTritonal: String
     let dominanteSecundaria: String
