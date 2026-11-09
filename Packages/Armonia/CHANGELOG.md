@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- Nueva obra en `Referencia.catalogo`: Rechberger (2008), *Scales and Modes around the World* (Fennica Gehrman), un
+  compendio de más de mil escalas. Se cita por capítulos: los modos diatónicos, las pentatónicas, la menor húngara, la
+  gitana húngara y la doble armónica, y las listas que trata enteras (los maqāmāt, los makam, los dastgāh, los thāṭ y
+  los mēḷa, las japonesas, las chinas, los echoi, que no tenían ninguna, las harmoniai y los modos gregorianos).
 - Los alias y las variantes de las escalas van del más usado al menos, en el catálogo y en los doce idiomas: «acústica»
   antes que «lidio ♭7», «española» antes que «frigio mayor», «semidisminuida» antes que «locrio natural 2», «modo
   gregoriano 1» antes que «protus auténtico», «Tizita» antes que «Təzəta», «Ahava Rabbah» antes que «Freigish»; el

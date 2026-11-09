@@ -294,6 +294,15 @@ extension Referencia {
         titulo: "Running with the Devil: Power, Gender, and Madness in Heavy Metal Music", anio: 1993,
         editorial: "Wesleyan University Press", lugar: "Hanover")
 
+    // MARK: Compendios
+
+    /// Rechberger, un compendio de más de mil escalas: las diatónicas y las pentatónicas, los modos griegos, bizantinos
+    /// y eclesiásticos, los gitanos húngaros y los sistemas árabe, persa, turco, indio, japonés y chino (ISBN
+    /// 978-952-5489-07-1). Se cita por sus capítulos, no escala por escala.
+    public static let rechberger2008 = Referencia(
+        "rechberger2008", .libro, autores: ["Rechberger, Herman"], titulo: "Scales and Modes around the World",
+        anio: 2008, editorial: "Fennica Gehrman", lugar: "Helsinki")
+
     public static let catalogo: [Referencia] = [
         .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .rowell1992, .touma1996, .farraj2019,
         .maqamWorld, .wright1978, .farhat1990, .signell1977, .tdvIslamAnsiklopedisi, .hacibeyov1945, .west1992,
@@ -302,6 +311,6 @@ extension Referencia {
         .surjodiningrat1972, .tenzer2000, .rubin2020, .kebede1971, .kilmer1971, .gurney1994, .west1994, .tracey1948,
         .berliner1978, .knight1973, .harcourt1925, .rothgeb1995, .samson1977, .taruskin1987, .burkhart1973,
         .levine1989, .persichetti1961, .aldwell2011, .levine1995, .messiaen1944, .lendvai1971, .cohn1996,
-        .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993,
+        .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .rechberger2008,
     ]
 }

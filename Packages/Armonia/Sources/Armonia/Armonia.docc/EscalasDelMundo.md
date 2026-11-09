@@ -269,14 +269,17 @@ TipoDeEscala.tradicionales(clase: .afinacion).count   // 18
 `referencias` dice dónde se lee una escala de otra tradición: las obras (``Referencia``) que cita su declaración,
 las de su lista, la del teórico que la definió (`fuente`) y las de sus afinaciones. Las occidentales tienen las de
 `referenciasOccidentales` (Aldwell, Schachter y Cadwallader para la mayor y las menores; Levine para las del jazz;
-Messiaen para sus modos…), salvo las sintéticas, que solo salen de rotar o alterar otra. Cada obra es una constante
+Messiaen para sus modos…), salvo las sintéticas, que solo salen de rotar o alterar otra. El compendio de Rechberger
+(`Referencia.rechberger2008`) se cita por capítulos: los modos diatónicos, las pentatónicas, las gitanas húngaras y
+las listas que trata enteras (los maqāmāt, los makam, los dastgāh, los thāṭ y los mēḷa, las japonesas, las chinas, los
+echoi, las harmoniai y los modos gregorianos). Cada obra es una constante
 (`Referencia.west1992`, `.touma1996`…; todas en `Referencia.catalogo`), y una cita es la obra con las páginas que
 se citan (`.west1992.paginas("160–172")`). `fuente` dice quién definió la escala; `referencias`, dónde la hemos
 leído. Los títulos no se traducen. `Referencia.bibtex(_:)` y `Referencia.cslJSON(_:)` las escriben en BibTeX y en
 CSL-JSON (el formato de Zotero y de Pandoc).
 
 ```swift
-TipoDeEscala.bayati.referencias.map(\.cita)               // ["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019"]
+TipoDeEscala.bayati.referencias.map(\.cita)               // ["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019", "Rechberger 2008"]
 TipoDeEscala.tetracordoDiatonicoTenso.referencias.first == .barker1989   // true
 Referencia.west1992.paginas("160–172").cita              // "West 1992: 160–172"
 Referencia.west1992.descripcion                          // "West, M. L. (1992). Ancient Greek Music. Oxford: Clarendon Press."

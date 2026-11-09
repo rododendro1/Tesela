@@ -149,10 +149,11 @@ extension LineaDeComandosTests {
     /// tiene.
     @Test func referenciasDeUnaEscala() {
         #expect(
-            salida("escala Re bayati").contains("\n  referencias: Maqam World; Touma 1996; Farraj & Abu Shumays 2019\n")
-        )
+            salida("escala Re bayati").contains(
+                "\n  referencias: Maqam World; Touma 1996; Farraj & Abu Shumays 2019; Rechberger 2008\n"))
         #expect(salida("escala Re bayati --ingles").contains("\n  references: Maqam World;"))
-        #expect(salida("escala Re dórico").contains("\n  referencias: Powers et al. 2001; Levine 1995\n"))
+        #expect(
+            salida("escala Re dórico").contains("\n  referencias: Powers et al. 2001; Levine 1995; Rechberger 2008\n"))
         #expect(!salida("escala Re lidio ♯2").contains("referencias"))
         let bib = salida("escala Re bayati --bibtex")
         #expect(bib.hasPrefix("@online{maqamWorld,\n"))

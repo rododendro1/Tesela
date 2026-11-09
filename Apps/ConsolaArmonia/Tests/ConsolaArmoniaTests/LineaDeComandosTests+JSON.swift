@@ -65,7 +65,7 @@ extension LineaDeComandosTests {
     @Test func referenciasEnJSON() throws {
         let bayati = try #require(try json("escala Re bayati") as? [String: Any])
         let referencias = try #require(bayati["referencias"] as? [[String: String]])
-        #expect(referencias.map { $0["clave"] } == ["maqamWorld", "touma1996", "farraj2019"])
+        #expect(referencias.map { $0["clave"] } == ["maqamWorld", "touma1996", "farraj2019", "rechberger2008"])
         #expect(referencias[1]["cita"] == "Touma 1996")
         #expect(referencias[1]["descripcion"]?.hasPrefix("Touma, Habib Hassan (1996). The Music of the Arabs.") == true)
         #expect(referencias[0]["url"] == "https://www.maqamworld.com")
