@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+- Las escalas se parten en tetracordos: `TipoDeEscala.divisionesEnTetracordos` y `Escala.divisionesEnTetracordos`
+  dan las formas de partir la octava en dos tetracordos (cuatro notas seguidas que abarcan una cuarta justa), unidos
+  o separados por un grado suelto. La mayor es Do Re Mi Fa | 2ª mayor | Sol La Si Do. Primero van las disjuntas, con
+  el grado suelto en medio; luego las que lo tienen arriba y luego abajo. Cada `Tetracordo` lleva en `fragmentos` los
+  tetracordos, ajnas y çeşni temperados del catálogo que tienen sus notas: Mi Fa Sol♯ La es el jins Ḥijāz. La consola
+  las da con `escala … --tetracordos` (`--tetrachords`), también en JSON.
 - Cuatro obras nuevas en `Referencia.catalogo`, para las listas que no tenían ninguna: Pennanen (1999),
   *Westernisation and Modernisation in Greek Popular Music*, para los dromoi; Shin (2024), «Two Theories of Ujo and
   Pyeongjo in Pansori», en Music Theory Online, para las escalas coreanas; Siqueira (1981), *Sistema modal na música

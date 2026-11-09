@@ -97,7 +97,7 @@ extension LineaDeComandos {
             notas: TextosDeConsola.traduccion(\.notasEscala),
             opciones: [
                 .acordes, .secuencia, .bajando, .octavas, .piano, .modos, .comparar, .simetria, .vecinas, .doce,
-                .triadas, .estadisticas, .escalera, .parecidas, .progresiones, .bibtex,
+                .triadas, .estadisticas, .escalera, .parecidas, .progresiones, .tetracordos, .bibtex,
             ])
     ]
 

@@ -647,6 +647,23 @@ extension LineaDeComandosTests {
         #expect(salida("scale C whole tone --symmetry --ingles").contains("\nSymmetry:\n"))
     }
 
+    @Test func tetracordosDeUnaEscala() {
+        let armonica = salida("escala La menor armónica --tetracordos")
+        #expect(
+            armonica.hasSuffix(
+                "\nTetracordos:\n"
+                    + "  La Si Do Re (jins Nahāwand, Bûselik dörtlüsü) | 2ª mayor | Mi Fa Sol♯ La (jins Ḥijāz)\n"
+                    + "  2ª mayor | Si Do Re Mi (tetracordo diatónico, jins Kurd, Kürdî dörtlüsü)"
+                    + " | Mi Fa Sol♯ La (jins Ḥijāz)\n"),
+            Comment(rawValue: armonica))
+        #expect(
+            salida("escala Do pentatónica mayor --tetracordos").hasSuffix(
+                "\nTetracordos:\n  no se divide en dos tetracordos\n"))
+        #expect(
+            salida("scale C major --tetrachords --ingles").contains(
+                "\nTetrachords:\n  C D E F (jins ʿAjam, Çârgâh dörtlüsü) | major second | G A B C"))
+    }
+
     @Test func lineasDeNotasGuia() {
         let analisis = salida("analizar Rem7 Sol7 Do7M --notas-guia")
         #expect(
