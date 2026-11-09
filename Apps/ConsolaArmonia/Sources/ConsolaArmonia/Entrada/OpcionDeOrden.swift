@@ -125,7 +125,7 @@ extension OpcionDeOrden {
     static let limite = valor("--limite", "--limit")
     static let mano = valor("--mano", "--hand")
     static let mapa = marca("--mapa", "--map")
-    static let margen = valor("--margen")
+    static let margen = valor("--margen", "--margin")
     static let modos = marca("--modos", "--modes")
     static let modulaciones = valor("--modulaciones", "--modulations")
     static let motor = valor("--motor", "--engine")

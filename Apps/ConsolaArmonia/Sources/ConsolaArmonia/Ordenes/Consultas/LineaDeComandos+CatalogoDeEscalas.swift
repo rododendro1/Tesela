@@ -25,7 +25,8 @@ extension LineaDeComandos {
     /// idioma): `--uso siglo-xx`, `--use 20th-century`.
     static let nombresDeLosUsos: [(uso: EstiloDeEscala, espanol: String, ingles: String)] = [
         (.clasica, "clasica", "classical"), (.jazz, "jazz", "jazz"), (.blues, "blues", "blues"),
-        (.sigloXX, "siglo-xx", "20th-century"), (.popular, "popular", "folk"), (.sintetica, "sintetica", "synthetic"),
+        (.sigloXX, "siglo-xx", "20th-century"), (.popular, "popular", "popular"),
+        (.sintetica, "sintetica", "synthetic"),
     ]
 
     /// Un texto para comparar nombres: sin mayúsculas, tildes, guiones ni espacios («Mundo árabe» → «mundoarabe»).

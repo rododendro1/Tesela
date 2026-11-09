@@ -10,6 +10,9 @@
 - Revisión del catalán: la séptima es «setena», como ya decían las apps («setena de dominant»; «sèptima» queda de
   variante), «número de Forte», «reharmonitzar», «sota el cantus firmus» y los ejemplos del error de tipo de escala
   en catalán (también en gallego y en euskera, que los tenían en español).
+- Revisión del inglés: el estilo popular se llama «popular» y no «folk» (abarca también el power chord o el acorde
+  mu), también en `armonia escalas --use popular`; «dissonance on a strong beat», y `--margen` se escribe también
+  `--margin`, como dice la ayuda en inglés.
 
 ## 0.4.2 (2026-11-08)
 
