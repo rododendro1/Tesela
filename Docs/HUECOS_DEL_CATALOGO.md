@@ -5,7 +5,7 @@ Estado a 9 de noviembre de 2026, tras la 0.4.4, los acordes que faltaban y las f
 ## Resumen
 
 Quedan 3 escalas de otras tradiciones y 29 escalas occidentales sin ninguna referencia, y ocho acordes sin fuente. El
-catálogo tiene 434 escalas en 49 listas de tradición y 55 acordes, todos con nombre en los doce idiomas. Las siete
+catálogo tiene 437 escalas en 49 listas de tradición y 55 acordes, todos con nombre en los doce idiomas. Las siete
 europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una obra cada una.
 
 ## Escalas sin ninguna referencia

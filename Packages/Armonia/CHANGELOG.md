@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- Los tres mugam de Hacıbəyov que faltaban: `sustarMugami` (Şüştər), `bayatiSirazMugami` (Bayatı-Şiraz) y
+  `humayunMugami` (Hümayun), como los describe el texto azerbaiyano de sus «Principios» en musbook.musigi-dunya.az.
+  Şüştər une dos tetracordos semitono-tono-semitono con una segunda aumentada; Bayatı-Şiraz, dos tono-tono-semitono
+  con un grado suelto, y Hümayun, dos semitono-segunda aumentada-semitono con un tono. Ya están los siete.
 - Persichetti (1961) se cita también por la superlocria, la de tonos enteros con sensible, la doble armónica, la
   Prometeo y la Prometeo napolitana, que están en su capítulo de escalas. La nota de Busoni dice que la edición de
   1907 ya cuenta las 113 escalas.

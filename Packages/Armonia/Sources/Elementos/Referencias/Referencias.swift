@@ -73,7 +73,7 @@ extension Referencia {
     public static let tdvIslamAnsiklopedisi = Referencia(
         "tdvIslamAnsiklopedisi", .web, autores: ["Türkiye Diyanet Vakfı"], titulo: "TDV İslâm Ansiklopedisi",
         anio: nil, url: "https://islamansiklopedisi.org.tr")
-    /// Hacıbəyov, los mugam azerbaiyanos.
+    /// Hacıbəyov, los mugam azerbaiyanos. El texto azerbaiyano está en musbook.musigi-dunya.az.
     public static let hacibeyov1945 = Referencia(
         "hacibeyov1945", .libro, autores: ["Hacıbəyov, Üzeyir"], titulo: "Azərbaycan xalq musiqisinin əsasları",
         anio: 1945, lugar: "Bakú")
