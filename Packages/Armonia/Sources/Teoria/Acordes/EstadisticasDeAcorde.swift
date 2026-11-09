@@ -92,6 +92,37 @@ public struct EstadisticasDeAcorde: Hashable, Sendable {
     /// cuarta octava. Cuanto más alta, más áspero.
     public let rugosidad: Double
 
+    /// La altura de Tenney media de los intervalos justos entre cada par de notas: log₂(n·d). Cuanto más baja, más
+    /// sencillas sus razones.
+    public let alturaDeTenney: Double
+    /// El límite impar (Partch): la mayor parte impar de los intervalos justos entre sus notas. 5 la tríada mayor, 45 la
+    /// séptima de dominante, por su tritono (45/32).
+    public let limiteImpar: Int
+    /// El límite primo (Partch) de sus intervalos justos: 2, 3 o 5.
+    public let limitePrimo: Int
+    /// La armonicidad de Gill y Purves: el porcentaje medio de armónicos que comparten sus notas dos a dos.
+    public let armonicidad: Double
+    /// La entropía armónica de Erlich media de los intervalos entre voces, en bits: cuanto más baja, más claramente se
+    /// oye cada intervalo como una razón sencilla.
+    public let entropiaArmonica: Double
+    /// La fundamental virtual de Terhardt, como intervalo desde la nota de referencia: puede no ser del acorde.
+    public let fundamentalVirtual: Intervalo?
+    /// La fusión tonal (Huron): la proporción de pares de voces a unísono, octava o quinta.
+    public let fusionTonal: Double
+    /// La rugosidad de Vassilakis de la disposición, como la de Sethares.
+    public let rugosidadDeVassilakis: Double
+    /// La disonancia de Hutchinson y Knopoff de la disposición, entre 0 y 1.
+    public let rugosidadDeHutchinsonKnopoff: Double
+    /// El número de Forte del conjunto en relación Z con el suyo (el mismo vector interválico sin ser la misma clase),
+    /// si lo tiene: 4-Z29 para 4-Z15.
+    public let parejaZ: String?
+    /// El número de Forte de las notas que le faltan para las doce.
+    public let complemento: String?
+    /// La disposición de sus voces: cerrada, drop 2, drop 3 o drop 2 + 4; `nil` si es otra abierta.
+    public let disposicion: DisposicionDeAcorde?
+    /// Si sus intervalos entre voces no crecen de grave a agudo, como en la serie armónica (los anchos abajo).
+    public let respetaLaSerieArmonica: Bool
+
     /// Lo que se mide de unas notas, en pasos de quinta desde la fundamental (o desde la más grave, sin tipo), con su
     /// disposición de grave a agudo.
     init(pasosDeQuinta: Set<Int>, tipo: TipoDeAcorde?, voces: [VozMedida], ambito: Int?, graveMidi: Int = 60) {
@@ -128,6 +159,22 @@ public struct EstadisticasDeAcorde: Hashable, Sendable {
         triadasContenidas = MedidasDeAcorde.triadasContenidas(Set(conjunto.clases))
         (tensionDeCook, modalidadDeCook) = MedidasDeAcorde.tensionYModalidad(ordenadas)
         rugosidad = MedidasDeAcorde.rugosidad(ordenadas, desdeMidi: graveMidi)
+        let razones = MedidasDeAcorde.razonesJustas(pasosDeQuinta: pasosDeQuinta)
+        alturaDeTenney = MedidasDeAcorde.alturaDeTenney(razones)
+        limiteImpar = razones.map(\.limiteImpar).max() ?? 1
+        limitePrimo = MedidasDeAcorde.limitePrimo(pasosDeQuinta: pasosDeQuinta)
+        armonicidad = MedidasDeAcorde.armonicidad(razones)
+        entropiaArmonica = MedidasDeAcorde.entropiaArmonica(ordenadas)
+        fundamentalVirtual = MedidasDeAcorde.fundamentalVirtual(pasosDeQuinta: pasosDeQuinta).map {
+            Intervalo.simpleAscendente(pasosDeQuinta: $0)
+        }
+        fusionTonal = MedidasDeAcorde.fusionTonal(ordenadas)
+        rugosidadDeVassilakis = MedidasDeAcorde.rugosidadDeVassilakis(ordenadas, desdeMidi: graveMidi)
+        rugosidadDeHutchinsonKnopoff = MedidasDeAcorde.rugosidadDeHutchinsonKnopoff(ordenadas, desdeMidi: graveMidi)
+        parejaZ = Self.parejaZ(de: conjunto)
+        complemento = conjunto.complemento.numeroDeForte
+        disposicion = MedidasDeAcorde.disposicion(ordenadas.map(\.semitonos))
+        respetaLaSerieArmonica = zip(intervalosEntreVoces, intervalosEntreVoces.dropFirst()).allSatisfy { $0 >= $1 }
     }
 
     /// La nota más prominente como fundamental en el modelo de Parncutt, como intervalo desde la nota de referencia.
@@ -158,6 +205,16 @@ public struct EstadisticasDeAcorde: Hashable, Sendable {
         self.init(
             pasosDeQuinta: acorde.tipo.pasosDeQuinta.union([bajo]), tipo: acorde.tipo, voces: voces, ambito: nil,
             graveMidi: grave)
+    }
+
+    /// El número de Forte del conjunto con su mismo vector interválico y otra forma prima, si lo hay.
+    static func parejaZ(de conjunto: ConjuntoDeClasesDeAltura) -> String? {
+        guard conjunto.numeroDeForte?.contains("Z") == true else { return nil }
+        let vector = conjunto.vectorIntervalico
+        return ConjuntoDeClasesDeAltura.tablaForte.first { prima, _ in
+            prima.count == conjunto.cardinalidad && prima != conjunto.formaPrima
+                && ConjuntoDeClasesDeAltura(prima).vectorIntervalico == vector
+        }?.value
     }
 
     /// Las voces de unos intervalos desde la nota de referencia, sin repetir la misma altura.

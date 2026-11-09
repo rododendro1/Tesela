@@ -252,4 +252,77 @@ import Testing
         // Un `Acorde` suena en su posición cerrada en la cuarta octava: Do4 Mi4 Sol4, como el tipo.
         #expect(try Acorde(leyendo: "Do").estadisticas.rugosidad == mayor)
     }
+
+    @Test func afinacionJusta() {
+        let mayor = TipoDeAcorde.mayor.estadisticas
+        #expect(mayor.alturaDeTenney == 3.605)
+        #expect(mayor.limiteImpar == 5)
+        #expect(mayor.limitePrimo == 5)
+        #expect(mayor.armonicidad == 51.1)
+        let quinta = TipoDeAcorde.potencia.estadisticas
+        #expect(quinta.alturaDeTenney == 2.585) // log₂(3·2)
+        #expect(quinta.limiteImpar == 3)
+        #expect(quinta.limitePrimo == 3)
+        #expect(quinta.armonicidad == 66.7) // (3 + 2 − 1)/(3·2)
+        // El tritono de la séptima de dominante, 45/32, sube su límite impar.
+        #expect(TipoDeAcorde.dominanteSeptima.estadisticas.limiteImpar == 45)
+        #expect(TipoDeAcorde.disminuidoSeptima.estadisticas.armonicidad < mayor.armonicidad)
+    }
+
+    @Test func entropiaArmonica() {
+        #expect(MedidasDeAcorde.entropiaArmonica(cents: 0) < MedidasDeAcorde.entropiaArmonica(cents: 1200))
+        #expect(MedidasDeAcorde.entropiaArmonica(cents: 700) < MedidasDeAcorde.entropiaArmonica(cents: 100))
+        let quinta = TipoDeAcorde.potencia.estadisticas.entropiaArmonica
+        let mayor = TipoDeAcorde.mayor.estadisticas.entropiaArmonica
+        #expect(quinta < mayor)
+        #expect(mayor < TipoDeAcorde.disminuidoSeptima.estadisticas.entropiaArmonica)
+    }
+
+    @Test func fundamentalVirtualDeTerhardt() {
+        #expect(TipoDeAcorde.mayor.estadisticas.fundamentalVirtual == .unisono)
+        #expect(TipoDeAcorde.menor.estadisticas.fundamentalVirtual == .unisono)
+        // La menor séptima se oye como la mayor sexta de su tercera (Do Mi♭ Sol Si♭, Mi♭6), y Do Fa Sol sobre Fa.
+        #expect(TipoDeAcorde.menorSeptima.estadisticas.fundamentalVirtual == .terceraMenor)
+        #expect(TipoDeAcorde.sus4.estadisticas.fundamentalVirtual == .cuartaJusta)
+    }
+
+    @Test func fusionTonal() {
+        #expect(TipoDeAcorde.potencia.estadisticas.fusionTonal == 1)
+        #expect(TipoDeAcorde.mayor.estadisticas.fusionTonal == 0.333)
+        #expect(TipoDeAcorde.disminuidoSeptima.estadisticas.fusionTonal == 0)
+    }
+
+    @Test func rugosidadesDeVassilakisYHutchinsonKnopoff() {
+        let (quinta, mayor, disminuida) = (
+            TipoDeAcorde.potencia.estadisticas, TipoDeAcorde.mayor.estadisticas,
+            TipoDeAcorde.disminuidoSeptima.estadisticas
+        )
+        #expect(quinta.rugosidadDeVassilakis < mayor.rugosidadDeVassilakis)
+        #expect(mayor.rugosidadDeVassilakis < disminuida.rugosidadDeVassilakis)
+        #expect(quinta.rugosidadDeHutchinsonKnopoff < mayor.rugosidadDeHutchinsonKnopoff)
+        #expect(mayor.rugosidadDeHutchinsonKnopoff < disminuida.rugosidadDeHutchinsonKnopoff)
+        #expect(disminuida.rugosidadDeHutchinsonKnopoff < 1)
+    }
+
+    @Test func relacionZYComplemento() {
+        let hendrix = AcordeConNombre.hendrix.estadisticas
+        #expect(hendrix.numeroDeForte == "4-Z15")
+        #expect(hendrix.parejaZ == "4-Z29")
+        #expect(hendrix.complemento == "8-Z15")
+        #expect(TipoDeAcorde.mayor.estadisticas.parejaZ == nil)
+        #expect(TipoDeAcorde.mayor.estadisticas.complemento == "9-11")
+    }
+
+    @Test func disposicion() {
+        #expect(TipoDeAcorde.mayor.estadisticas.disposicion == .cerrada)
+        #expect(TipoDeAcorde.dominanteNovena.estadisticas.disposicion == .drop2)
+        #expect(TipoDeAcorde.dominanteUndecima.estadisticas.disposicion == .drop24)
+        #expect(TipoDeAcorde.dominanteDecimotercera.estadisticas.disposicion == nil)
+        // Do7 en drop 2 (Sol abajo) y en drop 3 (Mi abajo).
+        #expect(MedidasDeAcorde.disposicion([0, 5, 9, 15]) == .drop2)
+        #expect(MedidasDeAcorde.disposicion([0, 8, 15, 18]) == .drop3)
+        // La serie armónica: los intervalos anchos abajo.
+        #expect(TipoDeAcorde.mayor.estadisticas.respetaLaSerieArmonica)
+        #expect(!TipoDeAcorde.menor.estadisticas.respetaLaSerieArmonica)
+    }
 }

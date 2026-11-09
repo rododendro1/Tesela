@@ -231,6 +231,8 @@ Sources/
 │   │   │                  CardinalDeAcorde y EstadisticasDeAcorde (lo que se mide de un acorde)
 │   │   │                  GrupoDeHindemith y MedidasDeAcorde+Percepcion (Huron, Hindemith, Euler, Parncutt,
 │   │   │                  Fourier, Tymoczko, Cook y Sethares)
+│   │   │                  MedidasDeAcorde+Afinacion (Tenney, Partch, Gill y Purves, Erlich, Terhardt) y
+│   │   │                  MedidasDeAcorde+Voces (fusión, Vassilakis, Hutchinson y Knopoff, disposición)
 │   │   ├── Catalogo/      AcordeConNombre (el acorde del catálogo, con su ficha) y el catálogo
 │   │   ├── Nombres/       NombresDeAcordes y un fichero por idioma (`NombresDeAcordes+Catalan.swift`…)
 │   │   └── Neorriemanniana/   TransformacionNeorriemanniana (P, L, R y caminos), CicloNeorriemanniano
@@ -239,6 +241,7 @@ Sources/
 │   ├── Escalas/
 │   │   ├── Escala/        Escala (con NombreDeGrado, la búsqueda por notas y la ortografía) y lo que se hace con
 │   │   │                  ella: acordes, estudio, simetría, estadísticas, armonía modal, escalas propias y vecinas
+│   │   │                  (MedidasDeEscala: Myhill, Rothenberg, Hanson, Messiaen, Balzano, Babbitt…)
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
 │   │   │                  `nombre(en:)`), FichaDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
 │   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala,

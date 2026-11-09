@@ -105,16 +105,20 @@ extension MedidasDeAcorde {
         return ((tension * 1000).rounded() / 1000, (modalidad * 1000).rounded() / 1000)
     }
 
+    /// Los seis primeros armónicos de cada voz, de amplitud 0,88ⁿ⁻¹, con la voz más grave en `grave` (MIDI).
+    static func parciales(_ voces: [VozMedida], desdeMidi grave: Int) -> [(frecuencia: Double, amplitud: Double)] {
+        voces.flatMap { voz in
+            let fundamental = 440 * pow(2, Double(grave + voz.semitonos - 69) / 12)
+            return (1...6).map { n in (fundamental * Double(n), pow(0.88, Double(n - 1))) }
+        }
+    }
+
     /// La rugosidad sensorial de Sethares (1993, «Local consonance and the relationship between timbre and scale»,
     /// *JASA* 94: 1218–1228), su ajuste de las curvas de Plomp y Levelt (1965): la suma, sobre cada par de parciales,
     /// de mín(a₁, a₂)·(e^(−3,5·s·Δf) − e^(−5,75·s·Δf)), con s = 0,24/(0,0207·f_mín + 18,96). Cada voz tiene seis
     /// armónicos de amplitud 0,88ⁿ, y la disposición suena desde el Do central (o desde su altura, en un `Acorde`).
     static func rugosidad(_ voces: [VozMedida], desdeMidi grave: Int = 60) -> Double {
-        var parciales: [(frecuencia: Double, amplitud: Double)] = []
-        for voz in voces {
-            let fundamental = 440 * pow(2, Double(grave + voz.semitonos - 69) / 12)
-            for n in 1...6 { parciales.append((fundamental * Double(n), pow(0.88, Double(n - 1)))) }
-        }
+        let parciales = parciales(voces, desdeMidi: grave)
         var total = 0.0
         for i in parciales.indices {
             for j in parciales.indices where j > i {

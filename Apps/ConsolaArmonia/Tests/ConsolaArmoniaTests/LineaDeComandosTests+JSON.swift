@@ -125,6 +125,12 @@ extension LineaDeComandosTests {
         #expect(medidas["anhemitonica"] as? Bool == true)
         #expect(medidas["numeroDeForte"] as? String == "5-35")
         #expect(medidas["brillo"] == nil)
+        let teoria = try #require(medidas["teoria"] as? [String: Any])
+        #expect(teoria["propiedadDeMyhill"] as? Bool == true)
+        #expect(teoria["generador"] as? Int == 5)
+        #expect(teoria["propiedadDeRothenberg"] as? String == "estrictamente propia")
+        #expect(teoria["analisisDeHanson"] as? String == "p⁴mn²s³")
+        #expect(teoria["triadasPorGrados"] == nil)
         let escalera = try #require(
             (try json("escala Do mayor --escalera") as? [String: Any])?["escaleraDeBrillo"] as? [[String: Any]])
         let dePartida = try #require(escalera.firstIndex { $0["dePartida"] as? Bool == true })

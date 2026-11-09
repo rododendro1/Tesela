@@ -26,6 +26,9 @@ func cents(_ valores: [Double]) -> String {
 /// Un número con dos decimales como mucho y punto decimal: «2.0», «-0.43».
 func decimal(_ valor: Double) -> String { String((valor * 100).rounded() / 100) }
 
+/// Con tres decimales como mucho.
+func milesimas(_ valor: Double) -> String { String((valor * 1000).rounded() / 1000) }
+
 func siONo(_ valor: Bool) -> String { valor ? "sí" : "no" }
 
 func numeros(_ valores: [Int]) -> String { valores.map(String.init).joined(separator: " ") }
@@ -44,6 +47,13 @@ let columnas: [String] =
         "cardinal", "pasos", "brillo", "brillo_por_quintas", "forma_prima", "forte", "vector_intervalico",
         "nombre_del_conjunto", "anhemitonica", "cohemitonica", "maximamente_regular", "transposiciones_distintas",
         "aproximada", "nota_caracteristica",
+        // Lo que dicen las teorías de escalas.
+        "myhill", "generador", "bien_formada", "rothenberg", "ambiguedades", "contradicciones", "estabilidad",
+        "cociente_de_igualdad", "anchura_del_espectro", "profunda", "consonancia_diadica", "fourier", "equilibrada",
+        "uniformidad", "triadas", "hanson", "modo_de_messiaen", "simetrica_por_inversion", "pareja_z", "complemento",
+        "imperfecciones", "unicidad", "simplicidad", "triadas_por_grados", "cuatriadas_por_grados", "combinatoriedad",
+        "entropia_intervalica", "parsimonia", "gradus", "altura_de_tenney", "limite_impar", "entropia_armonica",
+        "rugosidad_media", "perfil_mayor", "perfil_menor", "con_sensible", "tetracordos_iguales",
         // Sus parientes en el catálogo y las obras que la citan.
         "equivalentes", "derivadas", "referencias",
     ]
@@ -89,6 +99,50 @@ func fila(_ tipo: TipoDeEscala) -> [String] {
         String(medidas.transposicionesDistintas),
         siONo(medidas.aproximada),
         sobreDo.notaCaracteristica?.nombre ?? "",
+
+        siONo(medidas.propiedadDeMyhill),
+        medidas.generador.map(String.init) ?? "",
+        siONo(medidas.bienFormada),
+        medidas.propiedadDeRothenberg.rawValue,
+        String(medidas.ambiguedades),
+        String(medidas.contradicciones),
+        milesimas(medidas.estabilidad),
+        milesimas(medidas.cocienteDeIgualdad),
+        milesimas(medidas.anchuraDelEspectro),
+        siONo(medidas.profunda),
+        milesimas(medidas.consonanciaDiadica),
+        medidas.magnitudesDeFourier.map(milesimas).joined(separator: " "),
+        siONo(medidas.equilibrada),
+        milesimas(medidas.distanciaALaUniformidad),
+        numeros([
+            medidas.triadasContenidas.mayores, medidas.triadasContenidas.menores, medidas.triadasContenidas.disminuidas,
+            medidas.triadasContenidas.aumentadas,
+        ]),
+        medidas.analisisDeHanson,
+        medidas.modoDeMessiaen.map(String.init) ?? "",
+        siONo(medidas.simetricaPorInversion),
+        medidas.parejaZ ?? "",
+        medidas.complemento ?? "",
+        String(medidas.imperfecciones),
+        siONo(medidas.unicidad),
+        siONo(medidas.simplicidad),
+        medidas.triadasPorGrados?.joined(separator: " ") ?? "",
+        medidas.cuatriadasPorGrados?.joined(separator: " ") ?? "",
+        medidas.combinatoriedad.map { c in
+            (c.transposiciones.map { "T\($0)" } + c.inversiones.map { "I\($0)" }).joined(separator: " ")
+                + (c.tipo.map { " (\($0))" } ?? "")
+        } ?? "",
+        milesimas(medidas.entropiaIntervalica),
+        String(medidas.parsimonia),
+        String(medidas.gradoDeSuavidad),
+        milesimas(medidas.alturaDeTenney),
+        String(medidas.limiteImpar),
+        milesimas(medidas.entropiaArmonica),
+        milesimas(medidas.rugosidadMedia),
+        milesimas(medidas.perfilMayor),
+        milesimas(medidas.perfilMenor),
+        siONo(medidas.conSensible),
+        siONo(medidas.tetracordosIguales),
 
         nombres(tipo.equivalentes),
         nombres(tipo.derivadas),

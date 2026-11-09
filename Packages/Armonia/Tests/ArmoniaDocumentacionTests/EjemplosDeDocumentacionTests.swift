@@ -104,8 +104,12 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Acordes.md, bloque 9
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 9)
         comprobar(TipoDeAcorde.mayor.estadisticas.consonanciaDiadica, #"2.22"#, doc, 0)
-        comprobar(TipoDeAcorde.dominanteSeptima.estadisticas.gradoDeSuavidad, #"11"#, doc, 1)
-        comprobar(TipoDeAcorde.mayor.estadisticas.gradoDeSuavidad, #"7"#, doc, 2)
+        comprobar(TipoDeAcorde.potencia.estadisticas.limiteImpar, #"3"#, doc, 1)
+        comprobar(TipoDeAcorde.dominanteSeptima.estadisticas.limiteImpar, #"45"#, doc, 2)
+        comprobar(TipoDeAcorde.mayor.estadisticas.armonicidad, #"51.1"#, doc, 3)
+        comprobar(AcordeConNombre.hendrix.estadisticas.parejaZ, #""4-Z29""#, doc, 4)
+        comprobar(TipoDeAcorde.dominanteSeptima.estadisticas.gradoDeSuavidad, #"11"#, doc, 5)
+        comprobar(TipoDeAcorde.mayor.estadisticas.gradoDeSuavidad, #"7"#, doc, 6)
     }
 
     @Test func acordes10() throws {
@@ -592,6 +596,16 @@ import Hexagonos
         comprobar(Escala(.re, .dorico).acordesCaracteristicos == [Acorde("Mim"), Acorde("Sol")], #"true"#, doc, 1)
         comprobar(Escala(.sol, .mixolidio).cadenciaModal == [Acorde("Fa"), Acorde("Sol")], #"true"#, doc, 2)
         comprobar(Escala(.mi, .frigio).cadenciaModal == [Acorde("Fa"), Acorde("Mim")], #"true"#, doc, 3)
+    }
+
+    @Test func escalas13() throws {
+        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 13
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 13)
+        comprobarIgual(Escala(.do, .mayor).estadisticas.propiedadDeRothenberg, .propia, doc, 0)
+        comprobar(Escala(.do, .pentatonicaMayor).estadisticas.generador, #"5"#, doc, 1)
+        comprobar(Escala(.do, .mayor).estadisticas.analisisDeHanson, #""p⁶m³n⁴s⁵d²t""#, doc, 2)
+        comprobar(Escala(.do, .tonosEnteros).estadisticas.modoDeMessiaen, #"1"#, doc, 3)
+        comprobar(Escala(.do, .mayor).estadisticas.parsimonia, #"2"#, doc, 4)
     }
 
     @Test func escalasDelMundo1() throws {

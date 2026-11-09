@@ -85,6 +85,8 @@ extension LineaDeComandos {
             let numeroDeForte: String?
             let maximamenteRegular: Bool
             let aproximada: Bool
+            /// Lo que dicen las teorías: Myhill, Rothenberg, Hanson, Messiaen, Balzano…
+            let teoria: MedidasDeEscalaPresentadas
         }
         struct Peldano: Encodable {
             let nombre: String
@@ -236,7 +238,7 @@ extension LineaDeComandos {
                 pasos: medidas.pasos, vectorIntervalico: medidas.vectorIntervalico, anhemitonica: medidas.anhemitonica,
                 cohemitonica: medidas.cohemitonica, transposicionesDistintas: medidas.transposicionesDistintas,
                 numeroDeForte: medidas.numeroDeForte, maximamenteRegular: medidas.maximamenteRegular,
-                aproximada: medidas.aproximada)
+                aproximada: medidas.aproximada, teoria: MedidasDeEscalaPresentadas(medidas, en: notacion))
         }
         if pedido.escalera {
             let peldanos = PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, en: notacion)

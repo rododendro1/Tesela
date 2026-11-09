@@ -28,6 +28,21 @@
   Fujisawa y la rugosidad de Sethares. Las da la consola en `acorde --estadisticas` y en `--json`, y `acordes
   --orden consonancia` ordena el catálogo de más a menos consonante. El TSV de `EjemploCatalogoDeAcordes` añade una
   columna por cada una.
+- Más medidas en `EstadisticasDeAcorde`: la altura de Tenney, los límites impar y primo de Partch, la armonicidad de
+  Gill y Purves, la entropía armónica de Erlich, la fundamental virtual de Terhardt, la fusión tonal de Huron, la
+  rugosidad de Vassilakis, la disonancia de Hutchinson y Knopoff, la pareja Z y el complemento de Forte, y la
+  disposición de las voces (cerrada, drop 2, drop 3, drop 2 + 4 u otra abierta) con si respeta la serie armónica.
+  También en la consola, en `--json` y en el TSV de `EjemploCatalogoDeAcordes`.
+- `EstadisticasDeEscala` mide también lo que dicen las teorías de escalas: la propiedad de Myhill, el generador y si
+  es bien formada (MOS), la propiedad de Rothenberg (`PropiedadDeRothenberg`) con sus ambigüedades, contradicciones
+  y estabilidad, el cociente de igualdad, la anchura del espectro, si es profunda (Gamer), la consonancia de Huron,
+  las magnitudes de Fourier y si está equilibrada, la distancia a la uniformidad, las tríadas contenidas, el análisis
+  de Hanson, el modo de Messiaen, la simetría por inversión, la pareja Z y el complemento, las imperfecciones de
+  Zeitler, la unicidad y la simplicidad de Balzano, las tríadas y cuatríadas por grados, la combinatoriedad
+  hexacordal de Babbitt (`CombinatoriedadHexacordal`), la entropía interválica, la parsimonia de Tymoczko, el gradus,
+  la altura de Tenney, el límite impar, la entropía armónica, la rugosidad media, el perfil tonal de Krumhansl y
+  Kessler, si tiene sensible y si tiene dos tetracordos iguales. Las da `escala --estadisticas` (y `--json`, en
+  `estadisticas.teoria`) y el TSV de `EjemploCatalogoDeEscalas`.
 
 ## 0.4.5 (2026-11-09)
 

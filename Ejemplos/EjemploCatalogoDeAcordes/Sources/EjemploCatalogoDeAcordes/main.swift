@@ -27,7 +27,10 @@ let columnas: [String] =
         "vector_intervalico", "forma_prima", "forte", "transposiciones_distintas", "ambito", "consonancia_diadica",
         "grupo_de_hindemith",
         "fundamental_de_hindemith", "fundamental_de_parncutt", "intervalos_entre_voces", "gradus", "fourier",
-        "uniformidad", "triadas", "tension", "modalidad", "rugosidad", "estilos", "referencias",
+        "uniformidad", "triadas", "tension", "modalidad", "rugosidad", "rugosidad_de_vassilakis",
+        "disonancia_de_hutchinson_knopoff", "fusion_tonal", "altura_de_tenney", "limite_impar", "limite_primo",
+        "armonicidad", "entropia_armonica", "fundamental_virtual", "pareja_z", "complemento", "disposicion",
+        "estilos", "referencias",
     ]
 
 let genericos = Set(AcordeConNombre.genericos)
@@ -78,6 +81,18 @@ func fila(_ acorde: AcordeConNombre) -> [String] {
         decimal(medidas.tensionDeCook),
         decimal(medidas.modalidadDeCook),
         decimal(medidas.rugosidad),
+        decimal(medidas.rugosidadDeVassilakis),
+        decimal(medidas.rugosidadDeHutchinsonKnopoff),
+        decimal(medidas.fusionTonal),
+        decimal(medidas.alturaDeTenney),
+        String(medidas.limiteImpar),
+        String(medidas.limitePrimo),
+        decimal(medidas.armonicidad),
+        decimal(medidas.entropiaArmonica),
+        medidas.fundamentalVirtual?.abreviatura ?? "",
+        medidas.parejaZ ?? "",
+        medidas.complemento ?? "",
+        medidas.disposicion?.rawValue ?? "abierta",
         acorde.estilos.map(\.nombre).joined(separator: " · "),
         acorde.referencias.map(\.cita).joined(separator: " · "),
     ]

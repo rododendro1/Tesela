@@ -47,12 +47,12 @@ import Testing
     @Test func estadisticas() {
         let mayor = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do), en: notacion)
         #expect(
-            mayor.map(\.nombre) == [
+            mayor.prefix(8).map(\.nombre) == [
                 "Número de notas", "Brillo", "Brillo por quintas", "Pasos en semitonos", "Vector interválico",
                 "Número de Forte", "Transposiciones distintas", "Rasgos",
             ])
         #expect(
-            mayor.map(\.valor) == [
+            mayor.prefix(8).map(\.valor) == [
                 "7 (heptatónica)", "0", "+2", "2 2 1 2 2 2 1", "[2, 5, 4, 3, 6, 1]", "7-35", "12",
                 "máximamente regular",
             ])
@@ -62,10 +62,22 @@ import Testing
         #expect(!pentatonica.map(\.nombre).contains("Brillo"))
         #expect(pentatonica.first?.valor == "5 (pentatónica)")
         #expect(pentatonica.contains { $0.nombre == "Brillo por quintas" && $0.valor == "-1" })
-        #expect(pentatonica.last?.valor == "anhemitónica (sin semitonos) · máximamente regular")
+        #expect(
+            pentatonica.first { $0.nombre == "Rasgos" }?.valor == "anhemitónica (sin semitonos) · máximamente regular")
+        // Lo que dicen las teorías.
+        func valor(_ nombre: String) -> String? { mayor.first { $0.nombre == nombre }?.valor }
+        #expect(valor("Propiedad de Rothenberg") == "propia")
+        #expect(valor("Análisis de Hanson") == "p⁶m³n⁴s⁵d²t")
+        #expect(valor("Tríadas por grados") == "I ii iii IV V vi vii°")
+        #expect(valor("Cuatríadas por grados") == "Imaj7 ii7 iii7 IVmaj7 V7 vi7 viiø7")
+        #expect(valor("Perfil tonal (Krumhansl y Kessler)") == "M 0.756 · m 0.092")
+        #expect(valor("Propiedades")?.hasPrefix("propiedad de Myhill · bien formada (MOS) · profunda (Gamer)") == true)
         let tonosEnteros = PresentacionDeEstudioDeEscala.estadisticas(
             de: Escala(.do, .tonosEnteros), en: notacion)
         #expect(tonosEnteros.contains { $0.nombre == "Transposiciones distintas" && $0.valor == "2" })
+        #expect(tonosEnteros.contains { $0.nombre == "Modo de transposición limitada (Messiaen)" && $0.valor == "1" })
+        #expect(
+            tonosEnteros.contains { $0.nombre == "Combinatoriedad hexacordal (Babbitt)" && $0.valor.hasSuffix("(F)") })
         let ingles = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do), en: .ascii(.ingles))
         #expect(ingles.first == DatoPresentado(nombre: "Number of notes", valor: "7 (heptatonic)"))
         #expect(PresentacionDeEstudioDeEscala.conSigno(3) == "+3")

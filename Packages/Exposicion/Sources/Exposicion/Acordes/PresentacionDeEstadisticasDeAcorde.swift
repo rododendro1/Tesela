@@ -11,7 +11,9 @@ public enum PresentacionDeEstadisticasDeAcorde {
     /// (en los acordes con nombre) y los rasgos (si tiene alguno); y después las medidas de las teorías de acordes:
     /// la consonancia de Huron, el grupo y la fundamental de Hindemith, la fundamental de Parncutt, los intervalos
     /// entre voces, el gradus de Euler, los coeficientes de Fourier, la distancia a la uniformidad, las tríadas que
-    /// contiene, la tensión y la modalidad de Cook y la rugosidad. Con `sobre`, las fundamentales se escriben como
+    /// contiene, la tensión y la modalidad de Cook, las rugosidades de Sethares, Vassilakis y Hutchinson y Knopoff, la
+    /// fusión tonal, la altura de Tenney, los límites impar y primo, la armonicidad, la entropía armónica, la
+    /// fundamental virtual, la pareja Z y el complemento, y la disposición. Con `sobre`, las fundamentales se escriben como
     /// notas sobre esa; sin ella, como intervalos desde la nota de referencia.
     ///
     ///     let datos = PresentacionDeEstadisticasDeAcorde.estadisticas(
@@ -62,7 +64,26 @@ public enum PresentacionDeEstadisticasDeAcorde {
         datos.append(dato(\.tensionDeCook, decimal(estadisticas.tensionDeCook)))
         datos.append(dato(\.modalidadDeCook, PresentacionDeEstudioDeEscala.conSigno(estadisticas.modalidadDeCook)))
         datos.append(dato(\.rugosidad, decimal(estadisticas.rugosidad)))
+        datos.append(dato(\.rugosidadDeVassilakis, decimal(estadisticas.rugosidadDeVassilakis)))
+        datos.append(dato(\.rugosidadDeHutchinsonKnopoff, decimal(estadisticas.rugosidadDeHutchinsonKnopoff)))
+        datos.append(dato(\.fusionTonal, decimal(estadisticas.fusionTonal)))
+        datos.append(dato(\.alturaDeTenney, decimal(estadisticas.alturaDeTenney)))
+        datos.append(dato(\.limiteImpar, "\(estadisticas.limiteImpar)"))
+        datos.append(dato(\.limitePrimo, "\(estadisticas.limitePrimo)"))
+        datos.append(dato(\.armonicidad, decimal(estadisticas.armonicidad)))
+        datos.append(dato(\.entropiaArmonica, decimal(estadisticas.entropiaArmonica)))
+        if let virtual = estadisticas.fundamentalVirtual { datos.append(dato(\.fundamentalVirtual, nota(virtual))) }
+        if let pareja = estadisticas.parejaZ { datos.append(dato(\.parejaZ, pareja)) }
+        if let complemento = estadisticas.complemento { datos.append(dato(\.complementoDeForte, complemento)) }
+        datos.append(dato(\.disposicion, disposicion(estadisticas, en: notacion)))
         return datos
+    }
+
+    /// La disposición de sus voces, y si deja los intervalos anchos abajo: «Cerrada · intervalos anchos abajo (serie
+    /// armónica)», «Drop 2», «Abierta».
+    public static func disposicion(_ estadisticas: EstadisticasDeAcorde, en notacion: Notacion) -> String {
+        let nombre = estadisticas.disposicion?.nombre(en: notacion) ?? notacion.texto(\.disposicionAbierta)
+        return estadisticas.respetaLaSerieArmonica ? nombre + " · " + notacion.texto(\.serieArmonica) : nombre
     }
 
     /// Las tríadas que contiene, con los símbolos del cifrado, que no cambian de idioma: «M 1 · m 1 · ° 1 · + 0».
@@ -175,6 +196,20 @@ public struct EstadisticasDeAcordePresentadas: Hashable, Sendable, Codable {
     public let tensionDeCook: Double
     public let modalidadDeCook: Double
     public let rugosidad: Double
+    public let rugosidadDeVassilakis: Double
+    public let rugosidadDeHutchinsonKnopoff: Double
+    public let fusionTonal: Double
+    public let alturaDeTenney: Double
+    public let limiteImpar: Int
+    public let limitePrimo: Int
+    public let armonicidad: Double
+    public let entropiaArmonica: Double
+    public let fundamentalVirtual: String?
+    public let parejaZ: String?
+    public let complemento: String?
+    /// «Cerrada», «Drop 2»… o «Abierta».
+    public let disposicion: String
+    public let respetaLaSerieArmonica: Bool
 
     /// Una nota con su peso como fundamental en el modelo de Parncutt.
     public struct Prominencia: Hashable, Sendable, Codable {
@@ -214,6 +249,19 @@ public struct EstadisticasDeAcordePresentadas: Hashable, Sendable, Codable {
         tensionDeCook = medidas.tensionDeCook
         modalidadDeCook = medidas.modalidadDeCook
         rugosidad = medidas.rugosidad
+        rugosidadDeVassilakis = medidas.rugosidadDeVassilakis
+        rugosidadDeHutchinsonKnopoff = medidas.rugosidadDeHutchinsonKnopoff
+        fusionTonal = medidas.fusionTonal
+        alturaDeTenney = medidas.alturaDeTenney
+        limiteImpar = medidas.limiteImpar
+        limitePrimo = medidas.limitePrimo
+        armonicidad = medidas.armonicidad
+        entropiaArmonica = medidas.entropiaArmonica
+        fundamentalVirtual = medidas.fundamentalVirtual.map(nota)
+        parejaZ = medidas.parejaZ
+        complemento = medidas.complemento
+        disposicion = medidas.disposicion?.nombre(en: notacion) ?? notacion.texto(\.disposicionAbierta)
+        respetaLaSerieArmonica = medidas.respetaLaSerieArmonica
     }
 }
 

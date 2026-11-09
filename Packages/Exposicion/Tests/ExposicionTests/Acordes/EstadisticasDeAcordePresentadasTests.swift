@@ -57,6 +57,28 @@ import Testing
         #expect(json.magnitudesDeFourier.count == 6)
     }
 
+    @Test func afinacionYDisposicion() throws {
+        let sol7 = try Acorde(leyendo: "Sol7")
+        let datos = PresentacionDeEstadisticasDeAcorde.estadisticas(sol7.estadisticas, sobre: .sol, en: notacion)
+        func valor(_ nombre: String) -> String? { datos.first { $0.nombre == nombre }?.valor }
+        #expect(valor("Límite impar (Partch)") == "45")
+        #expect(valor("Límite primo (Partch)") == "5")
+        #expect(valor("Altura de Tenney") == "6.038")
+        #expect(valor("Fundamental virtual (Terhardt)") == "Sol")
+        #expect(valor("Complemento (Forte)") == "8-27")
+        #expect(valor("Pareja Z (Forte)") == nil)
+        #expect(valor("Disposición") == "Cerrada · intervalos anchos abajo (serie armónica)")
+        let hendrix = PresentacionDeEstadisticasDeAcorde.estadisticas(
+            AcordeConNombre.hendrix.estadisticas, en: notacion)
+        #expect(hendrix.first { $0.nombre == "Pareja Z (Forte)" }?.valor == "4-Z29")
+        let trece = EstadisticasDeAcordePresentadas(TipoDeAcorde.dominanteDecimotercera.estadisticas, en: notacion)
+        #expect(trece.disposicion == "Abierta")
+        #expect(!trece.respetaLaSerieArmonica)
+        #expect(
+            EstadisticasDeAcordePresentadas(TipoDeAcorde.dominanteNovena.estadisticas, en: notacion).disposicion
+                == "Drop 2")
+    }
+
     @Test func tabla() {
         let tabla = PresentacionDeEstadisticasDeAcorde.tablaDeEstadisticas(
             [.mayor, .dominanteSeptima, .petrushka], en: notacion)
