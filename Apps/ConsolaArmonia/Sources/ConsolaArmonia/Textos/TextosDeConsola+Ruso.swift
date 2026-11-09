@@ -75,7 +75,7 @@ extension TextosDeConsola {
         descripcionTonnetzRecorrido: "последовательность трезвучий со стрелками или кратчайший путь через P, L и R",
         sintaxisTonnetzCiclo: "tonnetz cycle <цикл> <трезвучие>",
         descripcionTonnetzCiclo: "гексатонический, октатонический или LR-цикл",
-        notasTonnetzCiclo: "(--margen 2: больше сетки вокруг)",
+        notasTonnetzCiclo: "(--margen 2: больше решётки вокруг)",
         sintaxisTabla: "tabla <ноты или высоты>",
         descripcionTabla: "гармоническая таблица в SVG (шестиугольники)",
         sintaxisTablaAcorde: "tabla chord | scale | pcs | sequence | shortest | cycle",

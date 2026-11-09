@@ -139,7 +139,7 @@ extension TextosDeConsola {
         sintaxisTeclado: "teclado <eskala> [--dedos]",
         descripcionTeclado: "eskala piano-teklatu batean (SVG): notak edo, --dedos derecha edo izquierda-rekin, hatzak; --octavas 2",
         sintaxisReloj: "reloj <eskala> [--quintas]",
-        descripcionReloj: "eskala hamabi orduko erloju batean (SVG): zirkulu kromatikoa edo, --quintas-ekin, bosten zirkulua",
+        descripcionReloj: "eskala hamabi orduko erloju batean (SVG): zirkulu kromatikoa edo, --quintas-ekin, bosgarrenen zirkulua",
         sintaxisHoja: "hoja <eskala>",
         descripcionHoja: "eskala inprimatzeko ikasketa-orri batean (SVG): pentagrama, teklatua hatzekin, erlojua, estatistikak, akordeak eta distira-eskailera; armonia grabar hoja … PDF bihurtzen du; --comparar Do dórico (bi eskalak notaz nota alderatuta, pentagraman eta erlojuan, SVGn)",
         sintaxisHojaDeAcorde: "hoja acorde <zifratua>",

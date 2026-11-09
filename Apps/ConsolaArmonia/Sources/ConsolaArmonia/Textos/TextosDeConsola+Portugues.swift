@@ -227,7 +227,7 @@ extension TextosDeConsola {
         usoDesconocido: "«{1}»: não é um uso de escalas (clasica, jazz, blues, siglo-xx, popular, sintetica)",
         ordenDeEscalasDesconocido: "«{1}»: as escalas ordenam-se por brillo ou por notas: --orden brillo",
         intervaloDeEscalasDesconocido: "«{1}»: o intervalo é um número de 1 a 6 ou semitono, tono, tercera-menor, tercera-mayor, cuarta ou tritono: --con-intervalo tritono",
-        pasoFueraDeRango: "o passo é um número de semitons de 1 a 11: --con-paso 3",
+        pasoFueraDeRango: "o passo é um número de meios-tons de 1 a 11: --con-paso 3",
         faltanNotas: "faltam as notas: {1}",
         dosNotas: "são necessárias duas notas: {1}",
         faltaEscala: "falta a escala: {1}",

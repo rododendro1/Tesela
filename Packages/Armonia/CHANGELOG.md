@@ -14,6 +14,10 @@
 - Revisión del inglés: el estilo popular se llama «popular» y no «folk» (abarca también el power chord o el acorde
   mu), también en `armonia escalas --use popular`; «dissonance on a strong beat», y `--margen` se escribe también
   `--margin`, como dice la ayuda en inglés.
+- Revisión de los demás idiomas: «Dissonanza su tempo forte» en italiano, «disonantzia denbora indartsuan» en euskera,
+  «{1}-голосный контрапункт» en ruso (concuerda con cualquier número), «cercle des quintes» en francés y «meios-tons»
+  en toda la consola en portugués; en alemán y en húngaro, las notas guía ya no se llaman como la sensible
+  («Guide-Tone-Linien», «vezérhang-vonalak»).
 
 ## 0.4.2 (2026-11-08)
 

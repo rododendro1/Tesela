@@ -9,7 +9,7 @@ extension TextosDeConsola {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <akkordok> [--in <hangnem>] [--scales]",
         descripcionAnalizar: "fokszámok, funkciók, zárlatok és modulációk (közvetítő akkordjukkal; --in nélkül)\n--scales: minden akkord skálája, a feszültségekkel és kerülendő hangokkal",
-        notasAnalizar: "--guide-tones: két vezetőhang-vonal, a terctől és a szeptimtől; --voice-leading: hogyan halad minden szólam egyik akkordról a következőre (drop 2-ben), a közös hangokkal; --compare: a másik változat akkordról akkordra, azzal, ami változik, a fokaival és a közös hangokkal; --walking-bass: walking basszus negyedekben, akkordonként egy ütem",
+        notasAnalizar: "--guide-tones: két vezérhang-vonal, a terctől és a szeptimtől; --voice-leading: hogyan halad minden szólam egyik akkordról a következőre (drop 2-ben), a közös hangokkal; --compare: a másik változat akkordról akkordra, azzal, ami változik, a fokaival és a közös hangokkal; --walking-bass: walking basszus negyedekben, akkordonként egy ütem",
         sintaxisAnalizarArchivo: "analyze --file <fájl> [--window <időtartam>]",
         descripcionAnalizarArchivo: "ugyanez egy MIDI-, MusicXML-, MEI- vagy ABC-fájl akkordjaival (ütésenként egy; --window 2: félhangonként egy)",
         sintaxisArmonizar: "harmonize <dallam> [--in <hangnem>] [--proposals 3]",
@@ -75,7 +75,7 @@ extension TextosDeConsola {
         descripcionTonnetzRecorrido: "hármashangzatok sora nyilakkal, vagy a legrövidebb út P, L és R mentén",
         sintaxisTonnetzCiclo: "tonnetz cycle <ciklus> <hármashangzat>",
         descripcionTonnetzCiclo: "hexatonikus, oktatonikus vagy LR-ciklus",
-        notasTonnetzCiclo: "(--margen 2: több rács körülötte)",
+        notasTonnetzCiclo: "(--margen 2: több háló körülötte)",
         sintaxisTabla: "tabla <hangok vagy hangmagasságok>",
         descripcionTabla: "harmonikus tábla SVG-ben (hatszögek)",
         sintaxisTablaAcorde: "tabla chord | scale | pcs | sequence | shortest | cycle",

@@ -35,7 +35,7 @@ extension TextosDePolifonia {
         comienzoImperfecto: "Inizio senza consonanza perfetta",
         finalImperfecto: "Finale senza unisono né ottava",
         finalSinGradoConjunto: "Finale non raggiunto per grado congiunto",
-        disonanciaEnParteFuerte: "Dissonanza in battere",
+        disonanciaEnParteFuerte: "Dissonanza su tempo forte",
         disonanciaMalTratada: "Dissonanza mal trattata",
         retardoMalResuelto: "Ritardo mal risolto",
         unisono: "Unisono a metà esercizio",

@@ -146,7 +146,7 @@ extension TextosDeTeoria {
         nombreNoReconocido: "«{1}» não é nenhum destes: {2}",
         numeroFueraDeRango: "«{1}» não é um número de {2} a {3}",
         trasteNoValido: "«{1}» não é um traste: tem de ser x (corda abafada) ou um número de 0 a {2}",
-        cuerdasDistintas: "é preciso um traste (ou x) por cada uma das {1} cordas, e há {2}",
+        cuerdasDistintas: "é preciso um traste (ou x) para cada uma das {1} cordas, e há {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
         cifradoRomanoNoValido: "«{1}» não é uma cifra romana: um numeral de I a VII com a sua qualidade e as suas cifras (V7, ii65, ♭VI, vii°7/V)",
         destinoNoTonicalizable: "«{1}» não pode vir depois da barra: tem de ser uma tríade maior ou menor no estado fundamental (V/V, vii°7/ii)",

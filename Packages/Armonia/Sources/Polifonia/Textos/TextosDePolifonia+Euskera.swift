@@ -35,7 +35,7 @@ extension TextosDePolifonia {
         comienzoImperfecto: "Hasiera kontsonantzia perfekturik gabe",
         finalImperfecto: "Amaiera unisonorik eta zortzidunik gabe",
         finalSinGradoConjunto: "Amaiera gradu jarraiturik gabe",
-        disonanciaEnParteFuerte: "Disonantzia zati sendoan",
+        disonanciaEnParteFuerte: "Disonantzia denbora indartsuan",
         disonanciaMalTratada: "Gaizki tratatutako disonantzia",
         retardoMalResuelto: "Gaizki ebatzitako atzerapena",
         unisono: "Unisonoa ariketaren erdian",
