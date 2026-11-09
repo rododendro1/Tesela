@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.4 (2026-11-09)
 
 - Nueva obra en `Referencia.catalogo`: Rechberger (2008), *Scales and Modes around the World* (Fennica Gehrman), un
   compendio de más de mil escalas. Se cita por capítulos: los modos diatónicos, las pentatónicas, la menor húngara, la

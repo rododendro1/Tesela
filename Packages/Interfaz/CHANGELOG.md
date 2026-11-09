@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.4 (2026-11-09)
 
 - **Cambio incompatible:** `DiagramaDePentagrama`, `DiagramaDeMastil` y `DiagramaDeTonnetz` toman la notación con
   `en:` (antes `notacion:`), como `PentagramaPresentado` y las demás presentaciones de Exposicion.
