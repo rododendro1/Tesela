@@ -76,13 +76,15 @@ TipoDeAcorde.dominanteSeptima.acordeConNombre == .dominanteSeptima   // true
 AcordeConNombre.sextaAumentadaAlemana.estilos                  // [clasica]
 ```
 
-Los de nombre propio (``AcordeConNombre/conNombrePropio``) son acordes de una obra o de un estilo, con la obra donde
-se leen: el de Tristán, el místico de Skriabin, el de Petrushka, el de «Farben», el So What, el de Hendrix, el mu y
+Los genéricos citan dónde se leen: Aldwell, Schachter y Cadwallader los de la armonía tonal (las tríadas, las séptimas,
+las sextas aumentadas), Levine los del jazz y Walser el de potencia. Los de nombre propio
+(``AcordeConNombre/conNombrePropio``) son acordes de una obra o de un estilo, con la obra donde se leen: el de Tristán, el místico de Skriabin, el de Petrushka, el de «Farben», el So What, el de Hendrix, el mu y
 el acorde por cuartas. No dan nombre a su tipo, pero ``TipoDeAcorde/acordesConNombre`` los encuentra:
 
 ```swift
 AcordeConNombre.tristan.notas(sobre: .fa)                      // [Fa, Si, Re♯, Sol♯]
 AcordeConNombre.tristan.referencias.map(\.cita)              // ["Rothgeb 1995"]
+AcordeConNombre.dominanteSeptima.referencias.map(\.cita)     // ["Aldwell et al. 2011", "Levine 1995"]
 AcordeConNombre.petrushka.tipo                                 // nil
 TipoDeAcorde.mayorNovenaAnadida.acordesConNombre               // [novena añadida, acorde mu]
 ```

@@ -68,8 +68,9 @@ import Hexagonos
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 5)
         comprobar(AcordeConNombre.tristan.notas(sobre: .fa), #"[Fa, Si, Re♯, Sol♯]"#, doc, 0)
         comprobar(AcordeConNombre.tristan.referencias.map(\.cita), #"["Rothgeb 1995"]"#, doc, 1)
-        comprobar(AcordeConNombre.petrushka.tipo, #"nil"#, doc, 2)
-        comprobar(TipoDeAcorde.mayorNovenaAnadida.acordesConNombre, #"[novena añadida, acorde mu]"#, doc, 3)
+        comprobar(AcordeConNombre.dominanteSeptima.referencias.map(\.cita), #"["Aldwell et al. 2011", "Levine 1995"]"#, doc, 2)
+        comprobar(AcordeConNombre.petrushka.tipo, #"nil"#, doc, 3)
+        comprobar(TipoDeAcorde.mayorNovenaAnadida.acordesConNombre, #"[novena añadida, acorde mu]"#, doc, 4)
     }
 
     @Test func acordes6() throws {
@@ -647,7 +648,7 @@ import Hexagonos
         comprobar(Referencia.west1992.paginas("160–172").cita, #""West 1992: 160–172""#, doc, 2)
         comprobar(Referencia.west1992.descripcion, #""West, M. L. (1992). Ancient Greek Music. Oxford: Clarendon Press.""#, doc, 3)
         comprobar(FuenteTeorica.zarlino.referencia == .zarlino1558, #"true"#, doc, 4)
-        comprobar(TipoDeEscala.mayor.referencias.isEmpty, #"true"#, doc, 5)
+        comprobar(TipoDeEscala.flamenca.referencias.map(\.cita), #"["Manuel 1989"]"#, doc, 5)
     }
 
     @Test func escalasDelMundo8() throws {

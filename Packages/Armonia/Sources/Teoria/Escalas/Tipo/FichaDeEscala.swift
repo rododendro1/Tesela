@@ -125,6 +125,9 @@ extension TipoDeEscala {
         for lista in listasTradicionales {
             for tipo in lista.tipos { deSuLista[tipo.identidad, default: []] += lista.referencias }
         }
+        for (obra, tipos) in referenciasOccidentales {
+            for tipo in tipos { deSuLista[tipo.identidad, default: []].append(obra) }
+        }
         var tabla: [IdentidadDeEscala: EntradaDelCatalogo] = [:]
         for tipo in catalogo where tabla[tipo.identidad] == nil {
             let afinaciones = tipo.ficha.afinaciones.map {
@@ -141,9 +144,11 @@ extension TipoDeEscala {
     }()
 
     /// Dónde se lee la escala: las obras que cita su declaración, la de su fuente, las de su lista y las de sus
-    /// afinaciones, sin repetir. Vacío en las occidentales y en las propias.
+    /// afinaciones, sin repetir; en las occidentales, las de `referenciasOccidentales`. Vacío en las propias y en las
+    /// occidentales sintéticas.
     ///
     ///     TipoDeEscala.bayati.referencias.map(\.cita)   // ["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019"]
+    ///     TipoDeEscala.lidioDominante.referencias.map(\.cita)   // ["Levine 1995", "Persichetti 1961", "Lendvai 1971", "Tymoczko 2011"]
     public var referencias: [Referencia] { TipoDeEscala.delCatalogo[identidad]?.referencias ?? [] }
 
     /// Una copia con estos estilos: para las escalas del catálogo que salen de una función (las cromáticas).
