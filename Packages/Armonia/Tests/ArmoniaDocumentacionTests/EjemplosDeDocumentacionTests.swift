@@ -1440,6 +1440,16 @@ import Hexagonos
     @Test func tonalidad21() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 21
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 21)
+        comprobar(ProgresionConNombre.monte.acordes(sobre: .do) == ["Do7", "Fa", "Re7", "Sol"], #"true"#, doc, 0)
+        comprobar(ProgresionConNombre.andaluza.acordes(sobre: .la) == ["Lam", "Sol", "Fa", "Mi"], #"true"#, doc, 1)
+        comprobar(ProgresionConNombre.andaluza.nombre(en: .conPalabras(.ingles)) == "Andalusian cadence", #"true"#, doc, 2)
+        comprobar(ProgresionConNombre.buscar(nombre: "ii-V-I") == .iiVI, #"true"#, doc, 3)
+        comprobar(ProgresionConNombre.buscar(conteniendo: "blues").count, #"2"#, doc, 4)
+    }
+
+    @Test func tonalidad22() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 22
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 22)
         comprobar(try Tonalidad(.do).acorde(sobre: .si, cifras: "65"), #"Sol7/Si"#, doc, 0)
         comprobar(try Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#"), #"Mi"#, doc, 1)
         comprobar(try Tonalidad(.la, .menor).acordes(bajoCifrado: "La Fa:6 Mi:# La"), #"[Lam, Rem/Fa, Mi, Lam]"#, doc, 2)
@@ -1447,17 +1457,17 @@ import Hexagonos
         comprobar(realizado.esCorrecta, #"true"#, doc, 4)
     }
 
-    @Test func tonalidad22() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 22
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 22)
+    @Test func tonalidad23() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 23
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 23)
         comprobar(Tonalidad(.do).negativa(.mi) == Nota(.mi, .bemol), #"true"#, doc, 0)
         comprobar(Tonalidad(.do).negativo(Acorde("Do")) == Acorde("Dom"), #"true"#, doc, 1)
         comprobar(Tonalidad(.do).negativo(Acorde("Fa")) == Acorde("Solm"), #"true"#, doc, 2)
     }
 
-    @Test func tonalidad23() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 23
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 23)
+    @Test func tonalidad24() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 24
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 24)
         let melodia: [Altura] = ["Mi5", "Re5", "Do5", "Do5", "Si4", "Do5"]
         let notas = NotaDeLaMelodia.analizar(melodia, sobre: ["Do", "Do", "Fa", "Sol", "Sol", "Do"])!
         comprobar(notas[1].description, #""Re5 (nota de paso)""#, doc, 2)
@@ -1466,9 +1476,9 @@ import Hexagonos
         comprobar(NotaExtrana.apoyatura.nombre(en: .ascii(.ingles)), #""appoggiatura""#, doc, 5)
     }
 
-    @Test func tonalidad24() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 24
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 24)
+    @Test func tonalidad25() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 25
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 25)
         let cantus = "Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4"
         let fux = try Contrapunto(cantusFirmus: cantus, contrapunto: "La4 La4 Sol4 La4 Si4 Do5 Do5 Si4 Re5 Do#5 Re5", especie: .primera)
         comprobar(fux.esCorrecto, #"true"#, doc, 2)
@@ -1482,9 +1492,9 @@ import Hexagonos
         comprobar(try Contrapunto(cantusFirmus: "Re4 Mi4 Re4", contrapunto: "-:2 Re5:1 Do#5 Re5:1", especie: .cuarta).esCorrecto, #"true"#, doc, 13)
     }
 
-    @Test func tonalidad25() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 25
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 25)
+    @Test func tonalidad26() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 26
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 26)
         let tres = try ContrapuntoAVariasVoces(cantusFirmus: "Re4 Fa4 Mi4 Re4", voces: [("La4 La4 Do#5 Re5", .primera), ("Re3 Re3 La2 Re3", .primera)])
         comprobar(tres.esCorrecto, #"true"#, doc, 1)
         let paralelas = try ContrapuntoAVariasVoces(cantusFirmus: "Re4 Fa4 Mi4 Re4", voces: [("La4 La4 Sol4 La4", .primera), ("Re3 Re3 Do3 Re3", .primera)])

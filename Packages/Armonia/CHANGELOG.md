@@ -13,6 +13,16 @@
   suspendidas, 9sus4 y 13sus4; la séptima alterada, 7alt; la menor con séptima mayor y novena, m(maj9); la
   decimotercera mayor, maj13, y la menor sexta y novena, m6/9. Tienen nombre en los doce idiomas y dan nombre a su tipo de acorde. El acorde de Hendrix
   sigue siendo el 7(♯9) sin quinta.
+- Nuevo catálogo de progresiones, `ProgresionConNombre.catalogo`: 28 progresiones con nombre, cada una con sus
+  grados en cifrado romano, su modo, sus estilos y dónde se lee. Son las cadencias de la armonía tonal y la progresión
+  por quintas (Aldwell, Schachter y Cadwallader); los esquemas del barroco y del galante, de la romanesca al do-re-mi
+  (Gjerdingen, 2007), la folía (Hudson, 1982) y el bajo de lamento (Rosand, 1979); las del jazz y el blues, del ii–V–I
+  a los cambios de Coltrane (Levine), y las del pop (Doll, 2017, y Manuel, 1989, para la cadencia andaluza).
+  `acordes(sobre:)` y `acordes(en:)` las escriben en cualquier tonalidad; `nombre(en:)` las nombra en los trece
+  idiomas, y `buscar(nombre:)` y `buscar(conteniendo:)` las encuentran por su nombre, sus alias o sus variantes en
+  cualquiera de ellos. Cuatro obras nuevas en `Referencia.catalogo`: Gjerdingen, Hudson, Rosand y Doll.
+- Nueva orden de la consola, `progresiones [<texto>] [--en <tonalidad>]` (`progressions`): las progresiones del catálogo
+  con su cifrado y sus acordes sobre Do, o sobre la tónica de `--en`.
 - La sexta aumentada alemana vuelve a citar a Aldwell, Schachter y Cadwallader, que había perdido en la 0.4.4.
 
 ## 0.4.4 (2026-11-09)

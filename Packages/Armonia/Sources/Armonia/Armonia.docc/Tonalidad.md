@@ -357,6 +357,27 @@ try Tonalidad(.la, .menor).acorde(romano: "vii°7") == Acorde("Sol#°7")        
 try Tonalidad(.do).acordes(romanos: "I ♭VI ♭VII I") == ["Do", "Lab", "Sib", "Do"]    // true
 ```
 
+## El catálogo de progresiones
+
+`ProgresionConNombre.catalogo` reúne 28 progresiones con nombre, cada una con sus grados en
+cifrado romano, su modo, sus estilos y la obra donde se lee: las cadencias (perfecta, plagal,
+rota, semicadencia, frigia, napolitana y con sexta aumentada) y la progresión por quintas; los
+esquemas del barroco y del galante (romanesca, canon de Pachelbel, monte, fonte, ponte, do-re-mi,
+folía y bajo de lamento); las del jazz y el blues (ii–V–I mayor y menor, turnaround, backdoor,
+blues de 12 compases y menor, rhythm changes y cambios de Coltrane), y las del pop (I–V–vi–IV,
+progresión de los 50, ♭VI–♭VII–I y cadencia andaluza). `acordes(sobre:)` la escribe con una
+tónica, en su modo, y `nombre(en:)` la nombra en los trece idiomas. `buscar(nombre:)` la
+encuentra por su nombre, un alias o una variante en cualquier idioma, sin mirar mayúsculas,
+tildes ni guiones, y `buscar(conteniendo:)` da las que tienen un texto en el nombre.
+
+```swift
+ProgresionConNombre.monte.acordes(sobre: .do) == ["Do7", "Fa", "Re7", "Sol"]           // true
+ProgresionConNombre.andaluza.acordes(sobre: .la) == ["Lam", "Sol", "Fa", "Mi"]         // true
+ProgresionConNombre.andaluza.nombre(en: .conPalabras(.ingles)) == "Andalusian cadence"   // true
+ProgresionConNombre.buscar(nombre: "ii-V-I") == .iiVI                                    // true
+ProgresionConNombre.buscar(conteniendo: "blues").count                                  // 2
+```
+
 ## Bajo cifrado
 
 `acorde(sobre:cifras:)` lee las cifras del bajo continuo sobre una nota del bajo, contando los

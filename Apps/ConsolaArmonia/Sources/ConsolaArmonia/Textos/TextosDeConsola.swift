@@ -62,6 +62,8 @@ struct TextosDeConsola: TextosTraducidos {
     let notasEscalas: String
     let sintaxisTradiciones: String
     let descripcionTradiciones: String
+    let sintaxisProgresiones: String
+    let descripcionProgresiones: String
     let sintaxisTonalidad: String
     let descripcionTonalidad: String
     let sintaxisConjunto: String
@@ -320,6 +322,7 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeEscalas: String
     let mensajeHabituales: String
     let mensajeNingunaEscala: String
+    let mensajeNingunaProgresion: String
     let mensajeArmadura: String
     let mensajeRelativa: String
     let mensajeHomonima: String
