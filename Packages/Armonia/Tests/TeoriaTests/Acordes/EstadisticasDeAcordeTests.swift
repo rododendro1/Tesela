@@ -166,7 +166,8 @@ import Testing
         #expect(TipoDeAcorde.semidisminuido.estadisticas.fundamentalDeHindemith == .terceraMenor)
         // El de Tristán, por su cuarta Re♯–Sol♯: Sol♯ sobre Fa.
         let tristan = try #require(AcordeConNombre.tristan.estadisticas.fundamentalDeHindemith)
-        #expect(Nota.fa + tristan == (try Nota(leyendo: "Sol#")))
+        let solSostenido = try Nota(leyendo: "Sol#")
+        #expect(Nota.fa + tristan == solSostenido)
         #expect(TipoDeAcorde.disminuidoSeptima.estadisticas.fundamentalDeHindemith == nil)
         #expect(TipoDeAcorde.aumentado.estadisticas.fundamentalDeHindemith == nil)
     }
