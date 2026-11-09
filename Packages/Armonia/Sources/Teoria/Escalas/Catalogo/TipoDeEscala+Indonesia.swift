@@ -26,7 +26,7 @@ extension TipoDeEscala {
     /// Pélog en el modo selisir de Bali (1 2 3 5 6: Do Re♭ Mi♭ Sol La♭).
     public static let pelog = TipoDeEscala(
         nombre: "Pélog selisir", intervalos: [.unisono, .segundaMenor, .terceraMenor, .quintaJusta, .sextaMenor],
-        alias: ["Pélog", "Selisir", "balinesa", "Bali"],
+        alias: ["Selisir", "Pélog", "balinesa", "Bali"],
         categoria: .laras, regiones: [.bali], afinaciones: [.pelogSelisir])
     /// Sléndro, de cinco notas equidistantes (Do Re Fa Sol Si♭ en doce notas).
     public static let slendro = TipoDeEscala(

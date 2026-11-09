@@ -14,12 +14,12 @@ extension TipoDeEscala {
     public static let tezetaMayor = TipoDeEscala(
         nombre: "Təzəta mayor", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         alias: ["Tezeta", "Tezeta major"],
-        variantes: ["Tezeta mayor", "Təzəta", "Tizita", "Tizita mayor", "Tizita major", "ትዝታ"],
+        variantes: ["Tizita", "Tizita mayor", "Tezeta mayor", "Tizita major", "Təzəta", "ትዝታ"],
         categoria: .qenet)
     /// Do Re Mi♭ Sol La♭.
     public static let tezetaMenor = TipoDeEscala(
         nombre: "Təzəta menor", intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMenor],
-        alias: ["Tezeta minor"], variantes: ["Tezeta menor", "Tizita menor", "Tizita minor"],
+        alias: ["Tezeta minor"], variantes: ["Tizita menor", "Tezeta menor", "Tizita minor"],
         categoria: .qenet)
     /// ባቲ (Do Mi Fa Sol Si).
     public static let batiMayor = TipoDeEscala(

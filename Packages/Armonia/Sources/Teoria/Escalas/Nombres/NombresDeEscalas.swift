@@ -6,7 +6,8 @@ import Elementos
 //
 // Un idioma por fichero: `NombresDeEscalas+Catalan.swift`, `…+Ingles.swift`… Cada uno da el nombre de cada tipo
 // del catálogo occidental y, si los tiene, sus otros nombres (alias) y otras formas de escribirlos (variantes: el
-// femenino, otra transliteración); los dos se leen igual. Las escalas de otras
+// femenino, otra transliteración); los dos se leen igual y van del más usado al menos (en las de otras tradiciones,
+// la escritura original al final). Las escalas de otras
 // tradiciones (Kafi, Hitzaz, Hirajoshi…) llevan casi todas un nombre propio que se escribe igual en todos los
 // idiomas, y no tienen fila: sin ella, una escala conserva su nombre original. Solo la llevan, al final del fichero,
 // las que se traducen o se transcriben en ese idioma (las andinas, los tetracordos y las harmoniai griegas, el mayor

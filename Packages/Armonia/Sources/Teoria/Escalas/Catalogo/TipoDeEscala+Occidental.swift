@@ -34,7 +34,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["frigio mayor", "frigio ♯3", "española", "frigio español", "dominante ♭9 ♭13", "frigio ♮3"],
+        alias: ["española", "frigio español", "frigio mayor", "frigio ♯3", "frigio ♮3", "dominante ♭9 ♭13"],
         estilos: [.jazz, .popular])
     public static let lidioSegundaAumentada = TipoDeEscala(
         nombre: "lidio ♯2",
@@ -76,8 +76,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: [
-            "lidio ♭7", "acústica", "de Bartók", "Bartók", "de los armónicos", "armónicos", "nordestina",
-            "escala nordestina", "mixolidio ♯4",
+            "acústica", "lidio ♭7", "mixolidio ♯4", "de los armónicos", "armónicos", "de Bartók", "Bartók",
+            "nordestina", "escala nordestina",
         ],
         estilos: [.jazz, .sigloXX])
     public static let mixolidioSextaMenor = TipoDeEscala(
@@ -86,7 +86,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["hindú", "mayor melódica", "eólico dominante"],
+        alias: ["eólico dominante", "hindú", "mayor melódica"],
         estilos: [.jazz])
     public static let locrioSegundaNatural = TipoDeEscala(
         nombre: "locrio ♮2",
@@ -94,7 +94,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["locrio natural 2", "semidisminuida"],
+        alias: ["semidisminuida", "locrio natural 2"],
         estilos: [.jazz])
     public static let alterada = TipoDeEscala(
         nombre: "alterada",
