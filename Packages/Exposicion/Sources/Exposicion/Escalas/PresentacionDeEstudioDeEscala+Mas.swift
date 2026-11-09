@@ -16,7 +16,7 @@ public struct SimetriaPresentada: Hashable, Sendable {
     /// «Do, Mi♭, Fa♯, La».
     public let tonicas: String
     /// Un ciclo por tipo de acorde: el nombre del tipo y los acordes, «Do7 · Mi♭7 · Fa♯7 · La7».
-    public let ciclos: [EscalaSobreElAcordePresentada]
+    public let ciclos: [EscalaConDetallePresentada]
 }
 
 /// Una posición de una escala en el mástil, con su tablatura y cómo suena: una forma de la pentatónica (con las notas
@@ -90,7 +90,7 @@ extension PresentacionDeEstudioDeEscala {
     public static func simetria(de escala: Escala, en notacion: Notacion) -> SimetriaPresentada? {
         guard let paso = escala.intervaloDeSimetria, paso >= 2 else { return nil }
         let ciclos = escala.ciclosSimetricos.map { ciclo in
-            EscalaSobreElAcordePresentada(
+            EscalaConDetallePresentada(
                 escala: escala, nombre: ciclo.tipo.nombre(en: notacion),
                 detalle: ciclo.acordes.map { $0.cifrado(en: notacion) }.joined(separator: " · "),
                 sonido: .acordes(ciclo.acordes))
@@ -117,7 +117,7 @@ extension PresentacionDeEstudioDeEscala {
                 swing: false, tonica: tonalidad?.tonica)
             return SecuenciaPresentada(
                 titulo: titulo, notas: PresentacionDeCoral.voces(alturas, notacion), sonido: presentado.sonido,
-                pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: titulo, notacion: notacion),
+                pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: titulo, en: notacion),
                 ficheros: presentado.ficheros)
         }
     }

@@ -28,7 +28,7 @@ extension LineaDeComandos {
         let grado: String
         let voces: [String]
 
-        init(_ fila: CoralPresentado.Fila) {
+        init(_ fila: CoralPresentado.AcordeDelCoral) {
             cifrado = fila.cifrado
             grado = fila.grado
             voces = fila.voces.split(separator: " ").map(String.init)

@@ -4,8 +4,8 @@
 
     /// Un mástil dibujado en horizontal, con las cuerdas graves abajo, y unas posiciones marcadas.
     ///
-    ///     DiagramaDeMastil(mastil: Mastil(.guitarra), escala: Escala(.la, .pentatonicaMenor), notacion: notacion)
-    ///     DiagramaDeMastil(digitacion: digitacion, acorde: acorde, notacion: notacion)
+    ///     DiagramaDeMastil(mastil: Mastil(.guitarra), escala: Escala(.la, .pentatonicaMenor), en: notacion)
+    ///     DiagramaDeMastil(digitacion: digitacion, acorde: acorde, en: notacion)
     ///
     /// Las notas se escriben con la ortografía de la escala o del acorde (Si♭ en Fa mayor, no La♯).
     /// Si el rango no empieza en el 0, las cuerdas al aire se dibujan con un círculo vacío en un canal a la
@@ -28,7 +28,7 @@
         /// Un mástil con esas marcas en `rango`, escritas con `ortografia` donde la haya.
         public init(
             mastil: Mastil, marcas: [PosicionEnElMastil] = [], rango: ClosedRange<Int> = 0...12, etiquetas: Bool = true,
-            apagadas: Set<Int> = [], ortografia: [Int: Nota] = [:], notacion: Notacion
+            apagadas: Set<Int> = [], ortografia: [Int: Nota] = [:], en notacion: Notacion
         ) {
             self.mastil = mastil
             self.marcas = marcas
@@ -42,60 +42,60 @@
         /// Las notas de una escala en el mástil, escritas como las escribe la escala.
         public init(
             mastil: Mastil, escala: Escala, rango: ClosedRange<Int> = 0...12, etiquetas: Bool = true,
-            notacion: Notacion
+            en notacion: Notacion
         ) {
             self.init(
                 mastil: mastil, marcas: mastil.posiciones(de: escala, en: rango), rango: rango,
                 etiquetas: etiquetas, ortografia: PresentacionDeMastil.ortografia(de: escala.notas),
-                notacion: notacion)
+                en: notacion)
         }
 
         /// Las notas de un acorde por todo el mástil, escritas con su ortografía.
         public init(
             mastil: Mastil, acorde: Acorde, rango: ClosedRange<Int> = 0...12, etiquetas: Bool = true,
-            notacion: Notacion
+            en notacion: Notacion
         ) {
             self.init(
                 mastil: mastil, marcas: mastil.posiciones(de: acorde, en: rango), rango: rango,
                 etiquetas: etiquetas, ortografia: PresentacionDeMastil.ortografia(de: acorde.notas),
-                notacion: notacion)
+                en: notacion)
         }
 
         /// Un arpegio en una posición: sus notas en la franja de trastes que abarca la mano. Si se da el
         /// acorde, las notas se escriben con su ortografía.
         public init(
             arpegio: ArpegioEnElMastil, acorde: Acorde? = nil, etiquetas: Bool = true,
-            notacion: Notacion
+            en notacion: Notacion
         ) {
             self.init(
                 mastil: arpegio.mastil, marcas: arpegio.posiciones, rango: arpegio.rangoDeTrastes,
                 etiquetas: etiquetas,
-                ortografia: PresentacionDeMastil.ortografia(de: acorde?.notas ?? []), notacion: notacion)
+                ortografia: PresentacionDeMastil.ortografia(de: acorde?.notas ?? []), en: notacion)
         }
 
         /// Una escala en una posición (de tres notas por cuerda o CAGED): sus notas en la franja que abarca la
         /// mano. Si se da la escala, las notas se escriben con su ortografía.
         public init(
             posicion: EscalaEnElMastil, escala: Escala? = nil, etiquetas: Bool = true,
-            notacion: Notacion
+            en notacion: Notacion
         ) {
             self.init(
                 mastil: posicion.mastil, marcas: posicion.posiciones, rango: posicion.rangoDeTrastes,
                 etiquetas: etiquetas,
-                ortografia: PresentacionDeMastil.ortografia(de: escala?.notas ?? []), notacion: notacion)
+                ortografia: PresentacionDeMastil.ortografia(de: escala?.notas ?? []), en: notacion)
         }
 
         /// Muestra una digitación, con un rango de trastes que la deja a la vista. Si se da el acorde, las
         /// notas se escriben con su ortografía.
         public init(
             digitacion: Digitacion, acorde: Acorde? = nil, etiquetas: Bool = true,
-            notacion: Notacion
+            en notacion: Notacion
         ) {
             self.init(
                 mastil: digitacion.mastil, marcas: digitacion.posiciones,
                 rango: PresentacionDeMastil.rango(de: digitacion), etiquetas: etiquetas,
                 apagadas: PresentacionDeMastil.apagadas(de: digitacion),
-                ortografia: PresentacionDeMastil.ortografia(de: acorde?.notas ?? []), notacion: notacion)
+                ortografia: PresentacionDeMastil.ortografia(de: acorde?.notas ?? []), en: notacion)
         }
 
         /// El mismo dibujo con una marca resaltada, la que está sonando; con `nil`, ninguna.
@@ -140,7 +140,7 @@
         /// Avisa de la posición (cuerda y traste) que se toca en el dibujo. Un toque entre dos cuerdas va a la más
         /// cercana; uno en los márgenes o en el canal de las cuerdas al aire no avisa.
         ///
-        ///     DiagramaDeMastil(mastil: mastil, marcas: elegidas, notacion: notacion).alTocar { posicion in … }
+        ///     DiagramaDeMastil(mastil: mastil, marcas: elegidas, en: notacion).alTocar { posicion in … }
         public func alTocar(_ accion: @escaping (PosicionEnElMastil) -> Void) -> some View {
             let (cuerdas, trastes, canal) = (mastil.encordado.numeroDeCuerdas, self.rango, hayCanal)
             return overlay(

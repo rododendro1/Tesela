@@ -20,7 +20,7 @@ struct VistaDeEscala: View {
     let escala = Escala("Re dórico")
 
     var body: some View {
-        let pentagrama = PentagramaPresentado(escala, notacion: notacion)
+        let pentagrama = PentagramaPresentado(escala, en: notacion)
         VStack {
             DiagramaDePentagrama(pentagrama)
             BotonDeEscuchar(.escala(escala))

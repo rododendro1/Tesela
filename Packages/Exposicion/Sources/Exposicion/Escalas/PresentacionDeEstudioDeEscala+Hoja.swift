@@ -52,7 +52,7 @@ extension PresentacionDeEstudioDeEscala {
 
         // El pentagrama, de lado a lado.
         if secciones.contains(.pentagrama) {
-            let pentagrama = PentagramaPresentado(escala, notacion: notacion).svg
+            let pentagrama = PentagramaPresentado(escala, en: notacion).svg
             y += incrustar(pentagrama, x: margen, y: y, ancho: util, en: &cuerpo) + 12
         }
 
@@ -93,7 +93,7 @@ extension PresentacionDeEstudioDeEscala {
         }
 
         // Los acordes de cada grado, si los forma.
-        if secciones.contains(.acordes), let acordes = DatosDeEscala(escala, en: notacion).acordes {
+        if secciones.contains(.acordes), let acordes = EscalaPresentada(escala, en: notacion).acordes {
             cuerpo.append(texto(notacion.texto(\.acordesDeLaEscala), x: margen, y: y + 12, tamano: 14, negrita: true))
             y += 32
             for fila in filas(acordes.map { $0.grado + " " + $0.cifrado }, porFila: 4) {

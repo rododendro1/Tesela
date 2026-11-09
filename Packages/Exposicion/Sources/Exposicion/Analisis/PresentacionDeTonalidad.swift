@@ -71,7 +71,7 @@ public enum PresentacionDeTonalidad {
         y += 12
 
         // La escala de la tonalidad en el pentagrama.
-        let pentagrama = PentagramaPresentado(tonalidad.escala, notacion: notacion).svg
+        let pentagrama = PentagramaPresentado(tonalidad.escala, en: notacion).svg
         y += Hoja.incrustar(pentagrama, x: margen, y: y, ancho: util, en: &cuerpo) + 8
 
         // Los acordes de cada grado, en columnas: el cifrado romano, el acorde y su función.

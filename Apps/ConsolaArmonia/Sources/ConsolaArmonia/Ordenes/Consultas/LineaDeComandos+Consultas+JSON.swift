@@ -8,24 +8,24 @@ import Foundation
 extension LineaDeComandos {
     // MARK: Acordes y escalas
     //
-    // Los datos son los de `Exposicion` (DatosDeConsultas.swift), los mismos que da el texto: sus nombres
+    // Los datos son los de `Exposicion` (ConsultasPresentadas.swift), los mismos que da el texto: sus nombres
     // son las claves del JSON.
 
     /// `acorde Sol7 Do --json`: cada acorde con sus notas, una lista aunque sea uno solo.
-    static func acordeJSON(_ textos: [String], _ notacion: Notacion) throws -> [DatosDeAcorde] {
+    static func acordeJSON(_ textos: [String], _ notacion: Notacion) throws -> [AcordePresentado] {
         try palabras(Argumentos(textos), siFaltan: .faltaCifrado).map {
-            DatosDeAcorde(try Acorde(leyendo: $0, enLaOrden: notacion), en: notacion)
+            AcordePresentado(try Acorde(leyendo: $0, enLaOrden: notacion), en: notacion)
         }
     }
 
     /// `identificar Do Mi Sol Sib --json`: los acordes que pueden formar las notas, del más probable al menos (como
     /// mucho cinco, como en el texto); vacío si no forman ninguno.
-    static func identificarJSON(_ textos: [String], _ notacion: Notacion) throws -> [DatosDeCandidato] {
-        try DatosDeCandidato.identificar(palabras(Argumentos(textos), siFaltan: .faltanNotas), en: notacion)
+    static func identificarJSON(_ textos: [String], _ notacion: Notacion) throws -> [CandidatoPresentado] {
+        try CandidatoPresentado.identificar(palabras(Argumentos(textos), siFaltan: .faltanNotas), en: notacion)
     }
 
     /// `escala Re dórico --json`: la escala con sus notas y los acordes de sus grados (las claves de
-    /// `DatosDeEscala`) y, con las opciones del texto, lo que añaden: cada una, su clave.
+    /// `EscalaPresentada`) y, con las opciones del texto, lo que añaden: cada una, su clave.
     struct EscalaJSON: Encodable {
         struct Grado: Encodable {
             let grado: String
@@ -46,7 +46,7 @@ extension LineaDeComandos {
             let resumen: String
             /// Las tónicas desde las que empieza igual; no está si la escala solo se repite a la octava.
             let tonicas: String?
-            let ciclos: [EscalaSobreElAcordePresentada]
+            let ciclos: [EscalaConDetallePresentada]
         }
         /// `EstadisticasDeEscala`, con el cardinal por su nombre.
         struct Estadisticas: Encodable {
@@ -83,14 +83,14 @@ extension LineaDeComandos {
             let distancia: String?
         }
 
-        // Las de `DatosDeEscala`, como sin opciones. Las de las opciones son los tipos de Exposicion que enseña el
+        // Las de `EscalaPresentada`, como sin opciones. Las de las opciones son los tipos de Exposicion que enseña el
         // texto, cuando el JSON lleva lo mismo (`ModoPresentado`, `TablaDeAcordesPresentada`…, que saben qué
         // campos van en JSON), o, si lleva otra cosa (números en lugar de textos), los de aquí.
         let nombre: String
         let notas: [String]
         let clases: [Int]
         let modo: String?
-        let acordes: [DatosDeEscala.AcordeDelGrado]?
+        let acordes: [EscalaPresentada.AcordeDelGrado]?
         /// `--acordes`.
         var acordesQueCaben: [Grado]?
         /// `--secuencia`.
@@ -103,7 +103,7 @@ extension LineaDeComandos {
         /// `--simetria`.
         var simetria: Simetria?
         /// `--vecinas`.
-        var vecinas: [EscalaSobreElAcordePresentada]?
+        var vecinas: [EscalaConDetallePresentada]?
         /// `--estadisticas`.
         var estadisticas: Estadisticas?
         /// `--escalera`: de la más oscura a la más brillante.
@@ -126,7 +126,7 @@ extension LineaDeComandos {
             let url: String?
         }
 
-        init(_ datos: DatosDeEscala) {
+        init(_ datos: EscalaPresentada) {
             nombre = datos.nombre
             notas = datos.notas
             clases = datos.clases
@@ -140,7 +140,7 @@ extension LineaDeComandos {
         let pedido = try pedidoDeEscala(textos, en: notacion)
         if pedido.bibtex { throw ErrorDeUso.sinSalidaJSON("escala --bibtex") }
         let escala = pedido.escala
-        var datos = EscalaJSON(DatosDeEscala(escala, en: notacion))
+        var datos = EscalaJSON(EscalaPresentada(escala, en: notacion))
         let referencias = escala.tipo.referencias
         if !referencias.isEmpty {
             datos.referencias = referencias.map {
@@ -292,7 +292,7 @@ extension LineaDeComandos {
         let acordes: [AcordeDelGrado]
     }
 
-    /// Como `DatosDeEscala.AcordeDelGrado`: «ii» «Rem7».
+    /// Como `EscalaPresentada.AcordeDelGrado`: «ii» «Rem7».
     struct AcordeDelGrado: Encodable {
         let grado: String
         let cifrado: String
@@ -355,15 +355,15 @@ extension LineaDeComandos {
     // MARK: Teoría postonal
 
     /// `conjunto 0 4 7 --json`: el conjunto con sus formas y sus vectores.
-    static func conjuntoJSON(_ textos: [String], _ notacion: Notacion) throws -> DatosDeConjunto {
+    static func conjuntoJSON(_ textos: [String], _ notacion: Notacion) throws -> ConjuntoPresentado {
         let texto = try palabras(Argumentos(textos), siFaltan: .faltaConjunto).joined(separator: " ")
-        return DatosDeConjunto(try ConjuntoDeClasesDeAltura(leyendo: texto), en: notacion)
+        return ConjuntoPresentado(try ConjuntoDeClasesDeAltura(leyendo: texto), en: notacion)
     }
 
     /// `serie 0 e 7 4 2 9 3 8 t 1 5 6 --json`: la serie con sus intervalos, sus hexacordos, sus formas y la matriz.
-    static func serieJSON(_ textos: [String], _ notacion: Notacion) throws -> DatosDeSerie {
+    static func serieJSON(_ textos: [String], _ notacion: Notacion) throws -> SeriePresentada {
         let texto = try palabras(Argumentos(textos), siFaltan: .faltaSerie).joined(separator: " ")
-        return DatosDeSerie(try SerieDodecafonica(leyendo: texto), en: notacion)
+        return SeriePresentada(try SerieDodecafonica(leyendo: texto), en: notacion)
     }
 
     // MARK: El catálogo de escalas

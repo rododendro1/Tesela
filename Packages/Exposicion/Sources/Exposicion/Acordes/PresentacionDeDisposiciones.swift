@@ -5,7 +5,7 @@ import Foundation
 /// el pentagrama, lo que suena y los ficheros para exportar.
 public struct DisposicionesPresentadas: Hashable, Sendable {
     /// Un acorde con sus disposiciones, como se enseña en una fila.
-    public struct Fila: Hashable, Sendable {
+    public struct AcordeDispuesto: Hashable, Sendable {
         /// El cifrado del acorde, o «» si son las disposiciones de un solo acorde.
         public let cifrado: String
         /// Las alturas de grave a agudo: «Do₃ Sol₃ Si♭₃ Mi₄».
@@ -14,7 +14,7 @@ public struct DisposicionesPresentadas: Hashable, Sendable {
         public let sonido: Escucha
     }
 
-    public let filas: [Fila]
+    public let filas: [AcordeDispuesto]
     /// Todos los acordes, uno detrás de otro.
     public let sonido: Escucha
     public let pentagrama: PentagramaPresentado
@@ -63,13 +63,13 @@ public enum PresentacionDeDisposiciones {
         notacion: Notacion
     ) -> DisposicionesPresentadas {
         let filas = acordes.indices.map { i in
-            DisposicionesPresentadas.Fila(
+            DisposicionesPresentadas.AcordeDispuesto(
                 cifrado: cifrados.map { $0[i] } ?? "", voces: PresentacionDeCoral.voces(acordes[i], notacion),
                 sonido: .coral([acordes[i]], duracion: 1.5))
         }
         return DisposicionesPresentadas(
             filas: filas, sonido: .coral(acordes),
-            pentagrama: PentagramaPresentado(acordes, titulo: titulo, notacion: notacion),
+            pentagrama: PentagramaPresentado(acordes, titulo: titulo, en: notacion),
             ficheros: ficheros)
     }
 }

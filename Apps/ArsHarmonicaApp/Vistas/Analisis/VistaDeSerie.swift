@@ -12,7 +12,7 @@ struct VistaDeSerie: View {
     @State private var tipo = TipoDeFormaDeSerie.original
     /// La clase con que empieza la P o la I elegida; `nil`, la de la serie escrita (su P de la primera fila).
     @State private var indice: Int?
-    @State private var resultado: Result<SeriePresentada, Error>?
+    @State private var resultado: Result<MatrizDeSeriePresentada, Error>?
 
     private var clave: String { "\(texto)|\(tipo.rawValue)|\(indice.map(String.init) ?? "")|\(notacion.clave)" }
 
@@ -55,7 +55,7 @@ struct VistaDeSerie: View {
     }
 
     @ViewBuilder
-    private func contenido(_ presentada: SeriePresentada) -> some View {
+    private func contenido(_ presentada: MatrizDeSeriePresentada) -> some View {
         Section(notacion.texto(\.serieDodecafonica)) {
             ForEach(presentada.datos, id: \.titulo) { dato in
                 LabeledContent(dato.titulo, value: dato.valor)
@@ -83,7 +83,7 @@ struct VistaDeSerie: View {
     }
 
     /// La matriz con el nombre de las formas alrededor. Los nombres son botones que eligen esa forma.
-    private func matriz(_ presentada: SeriePresentada) -> some View {
+    private func matriz(_ presentada: MatrizDeSeriePresentada) -> some View {
         Grid(horizontalSpacing: 2, verticalSpacing: 2) {
             GridRow {
                 Color.clear.gridCellUnsizedAxes([.horizontal, .vertical])
@@ -97,7 +97,7 @@ struct VistaDeSerie: View {
                     nombre(presentada.formasDeLasFilas[fila], elegida: presentada.forma)
                         .accessibilityValue(Text(presentada.descripcion(deLaFila: fila)))
                     ForEach(presentada.matriz[fila].indices, id: \.self) { columna in
-                        Text(SeriePresentada.cifra(presentada.matriz[fila][columna]))
+                        Text(MatrizDeSeriePresentada.cifra(presentada.matriz[fila][columna]))
                             .font(.system(.body, design: .monospaced))
                             .frame(minWidth: 26, minHeight: 26)
                             .background(

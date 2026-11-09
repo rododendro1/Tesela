@@ -1,3 +1,5 @@
+import Elementos
+
 // MARK: - Dónde se leen las escalas occidentales
 //
 // Las occidentales no llevan las obras en su declaración: van aquí, por obras, y `TipoDeEscala.referencias` las junta.

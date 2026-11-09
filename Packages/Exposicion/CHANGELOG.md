@@ -2,6 +2,21 @@
 
 ## Sin publicar
 
+- **Cambio incompatible:** una sola regla para pasar la notación: `en:` cuando nada más ocupa esa etiqueta y
+  `notacion:` cuando `en:` ya es la tonalidad, el mástil o la red. Pasan a `en:` los seis `PentagramaPresentado(…)`
+  y `PresentacionDeCoral.realizar(_:en:)` (el del análisis ya hecho); las demás ya la seguían.
+- **Cambio incompatible:** los resultados se llaman todos `…Presentado` o `…Presentada`, y los datos de las
+  consultas dejan de ser una familia aparte: `DatosDeAcorde` es `AcordePresentado`, `DatosDeCandidato`,
+  `CandidatoPresentado`, `DatosDeEscala`, `EscalaPresentada`, `DatosDeConjunto`, `ConjuntoPresentado`, y
+  `DatosDeSerie`, `SeriePresentada`. La serie de la app, que antes se llamaba así, es `MatrizDeSeriePresentada`, y
+  `ComparacionDeProgresiones`, `ComparacionDeProgresionesPresentada`. El JSON de `armonia … --json` no cambia.
+- **Cambio incompatible:** las seis `Fila` anidadas tienen nombre propio: `AnalisisPresentado.AcordeDelAnalisis`,
+  `CoralPresentado.AcordeDelCoral`, `ContrapuntoPresentado.CompasDelContrapunto`,
+  `DisposicionesPresentadas.AcordeDispuesto`, `TablaDeAcordesPresentada.AcordesDeUnaTonalidad` y
+  `ComparacionDeProgresionesPresentada.PosicionComparada`. Las propiedades siguen siendo `filas`.
+- **Cambio incompatible:** `EscalaSobreElAcordePresentada`, que se confundía con `EscalaSobreAcordePresentada`, es
+  `EscalaConDetallePresentada`: una escala con su detalle, que sirve para las bebop y las pentatónicas sobre un acorde,
+  las vecinas, las parecidas y los ciclos de la simetría.
 - README del paquete: qué presenta cada carpeta, de qué depende y dónde está su DocC.
 
 ## 0.4.3 (2026-11-09)

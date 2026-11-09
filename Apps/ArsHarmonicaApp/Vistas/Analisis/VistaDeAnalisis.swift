@@ -238,7 +238,7 @@ struct VistaDeAnalisis: View {
         }
     }
 
-    private func filaDeLaComparacion(_ fila: ComparacionDeProgresiones.Fila) -> some View {
+    private func filaDeLaComparacion(_ fila: ComparacionDeProgresionesPresentada.PosicionComparada) -> some View {
         let acordes = fila.cambia ? fila.original + " → " + fila.nueva : fila.original
         return VStack(alignment: .leading, spacing: 2) {
             HStack {

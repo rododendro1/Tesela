@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 
+@testable import Elementos
 @testable import Teoria
 
 /// Las referencias bibliográficas del catálogo (`Referencia`, `TipoDeEscala.referencias`).

@@ -4,7 +4,7 @@ import Foundation
 /// Una serie dodecafónica tal como la enseña la app: sus datos (notas, intervalos, hexacordos, formas
 /// combinatorias), la matriz de 12 × 12 con el nombre de cada fila y columna, y la forma elegida, con sus notas, su
 /// pentagrama, lo que suena al escucharla y los ficheros para exportar.
-public struct SeriePresentada: Hashable, Sendable {
+public struct MatrizDeSeriePresentada: Hashable, Sendable {
     /// Un dato con su nombre: «Intervalos: 11 8 9 10 7 6 5 4 2 3 4».
     public struct Dato: Hashable, Sendable {
         public let titulo: String
@@ -69,21 +69,21 @@ public enum PresentacionDeSerie {
     /// son las doce clases una vez cada una.
     public static func presentar(
         _ texto: String, forma: FormaDeSerie, en notacion: Notacion
-    ) throws -> SeriePresentada {
+    ) throws -> MatrizDeSeriePresentada {
         let serie = try SerieDodecafonica(leyendo: texto)
         // Lo mismo que da `armonia serie` (y su `--json`), escrito para la vista.
-        let enDatos = DatosDeSerie(serie, en: notacion)
+        let enDatos = SeriePresentada(serie, en: notacion)
         let nombres = ConjuntoDeClasesDeAltura.nombresDeLasClases(en: notacion)
         let lista = { (clases: [Int]) in clases.map { nombres[$0] }.joined(separator: " ") }
 
         var intervalos = enDatos.intervalos.map(String.init).joined(separator: " ")
         if enDatos.deTodosLosIntervalos { intervalos += " (" + notacion.texto(\.deTodosLosIntervalos) + ")" }
         let datos = [
-            SeriePresentada.Dato(titulo: notacion.texto(\.notas), valor: enDatos.notas.joined(separator: " ")),
-            SeriePresentada.Dato(titulo: notacion.texto(\.intervalos), valor: intervalos),
-            SeriePresentada.Dato(
+            MatrizDeSeriePresentada.Dato(titulo: notacion.texto(\.notas), valor: enDatos.notas.joined(separator: " ")),
+            MatrizDeSeriePresentada.Dato(titulo: notacion.texto(\.intervalos), valor: intervalos),
+            MatrizDeSeriePresentada.Dato(
                 titulo: notacion.texto(\.hexacordos), valor: enDatos.hexacordos.joined(separator: " · ")),
-            SeriePresentada.Dato(
+            MatrizDeSeriePresentada.Dato(
                 titulo: notacion.texto(\.formasCombinatorias), valor: enDatos.formasCombinatorias.joined(separator: " ")
             ),
         ]
@@ -100,14 +100,14 @@ public enum PresentacionDeSerie {
         let voz = Voz(alturas.map { Evento($0, .negra) })
         // Sin armadura: una serie no está en ninguna tonalidad.
         let sinArmadura = Tonalidad(armadura: 0)
-        return SeriePresentada(
+        return MatrizDeSeriePresentada(
             serie: serie.description, datos: datos,
             formasDistintas: notacion.texto { $0.formasDistintas(enDatos.formasDistintas) }, matriz: matriz,
             formasDeLasFilas: matriz.map { FormaDeSerie(.original, $0[0]) },
             formasDeLasColumnas: matriz[0].map { FormaDeSerie(.inversion, $0) },
             nombresDeLasClases: nombres, forma: forma, clasesDeLaForma: clases,
             notasDeLaForma: lista(clases),
-            pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: forma.description, notacion: notacion),
+            pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: forma.description, en: notacion),
             sonido: Escucha.voz(voz, tempo: tempo),
             ficheros: FicheroParaExportar.partituras(nombre: titulo) { formato in
                 voz.partitura(encabezado: Encabezado(titulo: titulo, tonalidad: sinArmadura, tempo: tempo)).exportar(

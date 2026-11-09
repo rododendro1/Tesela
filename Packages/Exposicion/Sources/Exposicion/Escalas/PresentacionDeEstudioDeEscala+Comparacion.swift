@@ -43,7 +43,7 @@ extension PresentacionDeEstudioDeEscala {
             y += 14
             cuerpo.append(texto(cual.nombre(en: notacion), x: margen, y: y, tamano: 13, negrita: true, color: color))
             y += 4
-            let pentagrama = PentagramaPresentado(cual, notacion: notacion).svg
+            let pentagrama = PentagramaPresentado(cual, en: notacion).svg
             y += incrustar(pentagrama, x: margen, y: y, ancho: util, en: &cuerpo)
             y += 8
         }

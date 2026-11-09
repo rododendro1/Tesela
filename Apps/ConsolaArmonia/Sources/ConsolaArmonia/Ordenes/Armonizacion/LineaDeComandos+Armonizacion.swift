@@ -87,7 +87,7 @@ extension LineaDeComandos {
                 throw ErrorDeUso.faltaTonalidad
             }
             let acordes = try enTono.acordes(bajoCifrado: texto)
-            return PresentacionDeCoral.realizar(enTono.analizar(acordes), notacion: notacion)
+            return PresentacionDeCoral.realizar(enTono.analizar(acordes), en: notacion)
         }
         // Con `--archivo`, los acordes del fichero (por sus cambios de armonía, o en ventanas de `--ventana`).
         if let archivo {
@@ -96,7 +96,7 @@ extension LineaDeComandos {
             guard let analisis = pieza.analisis(en: tonalidad, ventana: ventana) else {
                 throw ErrorDeUso.archivoSinAcordes
             }
-            return PresentacionDeCoral.realizar(analisis, notacion: notacion)
+            return PresentacionDeCoral.realizar(analisis, en: notacion)
         }
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltanAcordesDeLaRealizacion }
         return try PresentacionDeCoral.realizar(argumentos.unidos, en: tonalidad, notacion: notacion)
@@ -296,7 +296,7 @@ extension LineaDeComandos {
 
     /// Una línea por acorde: el cifrado, el grado y las alturas de grave a agudo
     /// («Do        I         Do3 Mi4 Sol4 Do5»), que se pueden copiar en `revisar` o `musicxml coral`.
-    static func describir(_ filas: [CoralPresentado.Fila]) -> [String] {
+    static func describir(_ filas: [CoralPresentado.AcordeDelCoral]) -> [String] {
         let anchoDelCifrado = max(10, (filas.map(\.cifrado.count).max() ?? 0) + 2)
         let anchoDelGrado = max(10, (filas.map(\.grado.count).max() ?? 0) + 2)
         return filas.map {

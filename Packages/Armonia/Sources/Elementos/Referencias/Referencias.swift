@@ -305,23 +305,3 @@ extension Referencia {
         .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993,
     ]
 }
-
-extension FuenteTeorica {
-    /// La obra donde se leen las escalas de la fuente: su tratado o, en las griegas, su traducción (Barker). `nil` en
-    /// Guido.
-    public var referencia: Referencia? {
-        switch self {
-        case .arquitas, .aristoxeno, .eratostenes, .didimo, .ptolomeo, .aristides: .barker1989
-        case .guido: nil
-        case .glareano: .glareano1547
-        case .safiAlDin: .wright1978
-        case .guanzi, .lushiChunqiu: .kuttner1990
-        case .vicentino: .vicentino1555
-        case .chrysanthos: .chrysanthos1832
-        case .ramosDePareja: .ramos1482
-        case .zarlino: .zarlino1558
-        case .salinas: .salinas1577
-        case .zhuZaiyu: .barbour1951
-        }
-    }
-}

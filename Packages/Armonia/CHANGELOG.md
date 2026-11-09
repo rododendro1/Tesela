@@ -2,9 +2,11 @@
 
 ## Sin publicar
 
-- Las referencias bibliográficas están en `Teoria/Referencias/` (antes, en `Teoria/Escalas/Referencias/`), porque las
-  citan también los acordes, y la licencia de Bravura, en `Packages/Armonia/Licencias/`, junto al paquete que usa sus
-  glifos.
+- Las referencias bibliográficas (`Referencia` y su catálogo) están en el módulo Elementos, en `Elementos/Referencias/`
+  (antes, en `Teoria/Escalas/Referencias/`), porque las citan también los acordes, los corales y las partituras.
+  Quien importa `Armonia` no nota nada; quien importa solo `Teoria` necesita también `import Elementos`.
+  `FuenteTeorica.referencia` sigue en Teoria. La licencia de Bravura está en `Packages/Armonia/Licencias/`, junto
+  al paquete que usa sus glifos.
 - Las escalas occidentales y los acordes genéricos citan dónde se leen (`referencias`), con nueve obras nuevas en
   `Referencia.catalogo`: Aldwell, Schachter y Cadwallader (2011) para la mayor, las menores y los acordes de la armonía
   tonal; Levine (1995) para los modos, las escalas y los acordes del jazz; Messiaen (1944) para sus modos; Lendvai
