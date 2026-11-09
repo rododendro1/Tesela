@@ -152,8 +152,23 @@ Además de contar, ``EstadisticasDeAcorde`` mide el acorde con las medidas clás
   positiva en las mayores y negativa en las menores.
 - **Rugosidad** (Sethares, 1993) de la disposición con seis armónicos desde el Do central.
 
+- **Afinación justa**: la altura de Tenney (log₂(n·d) de cada par de notas), los límites impar y primo de Partch y
+  la armonicidad de Gill y Purves (el porcentaje de armónicos que comparten), con cada nota afinada en el sistema de
+  cinco límites que pide su ortografía.
+- **Entropía armónica** (Erlich): cuánto cuesta oír cada intervalo entre voces como una razón sencilla, en bits.
+- **Fundamental virtual** (Terhardt): la nota de la que más notas del acorde son armónicos, aunque no suene.
+- **Fusión tonal** (Huron, 1991): la proporción de pares de voces a unísono, octava o quinta.
+- **Rugosidad de Vassilakis y disonancia de Hutchinson y Knopoff**, las otras dos medidas clásicas de aspereza.
+- **Pareja Z y complemento** de Forte.
+- **Disposición**: cerrada, drop 2, drop 3, drop 2 + 4 u otra abierta, y si deja los intervalos anchos abajo, como
+  la serie armónica.
+
 ```swift
 TipoDeAcorde.mayor.estadisticas.consonanciaDiadica             // 2.22
+TipoDeAcorde.potencia.estadisticas.limiteImpar                 // 3
+TipoDeAcorde.dominanteSeptima.estadisticas.limiteImpar         // 45
+TipoDeAcorde.mayor.estadisticas.armonicidad                    // 51.1
+AcordeConNombre.hendrix.estadisticas.parejaZ                   // "4-Z29"
 TipoDeAcorde.dominanteSeptima.estadisticas.gradoDeSuavidad     // 11
 TipoDeAcorde.mayor.estadisticas.gradoDeSuavidad                // 7
 ```

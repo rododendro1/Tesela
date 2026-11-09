@@ -149,16 +149,19 @@ enum MedidasDeAcorde {
     /// menor, 16/9), y el grado es 1 + Σ e·(p − 1) sobre los factores 3 y 5 del mínimo común múltiplo. Cuanto más bajo,
     /// más suave: 1 una nota, 3 la quinta, 7 las tríadas mayor y menor, 11 la séptima de dominante.
     static func gradoDeSuavidad(pasosDeQuinta: Set<Int>) -> Int {
-        // Cada cuatro quintas, una coma sintónica: la nota pasa de 3^q a 3^(q − 4k)·5^k.
-        let exponentes = pasosDeQuinta.map { q -> (tres: Int, cinco: Int) in
-            let k = (q >= 0 ? 1 : -1) * ((abs(q) + 1) / 4)
-            return (q - 4 * k, k)
-        }
+        let exponentes = pasosDeQuinta.map(exponentesJustos)
         guard let primero = exponentes.first else { return 1 }
         let tres = exponentes.map(\.tres)
         let cinco = exponentes.map(\.cinco)
         let rangoDeTres = (tres.max() ?? primero.tres) - (tres.min() ?? primero.tres)
         let rangoDeCinco = (cinco.max() ?? primero.cinco) - (cinco.min() ?? primero.cinco)
         return 1 + 2 * rangoDeTres + 4 * rangoDeCinco
+    }
+
+    /// Los exponentes de 3 y de 5 de una nota afinada en el sistema justo de cinco límites que pide su ortografía, a
+    /// `q` quintas de la referencia: cada cuatro quintas, una coma sintónica, y la nota pasa de 3^q a 3^(q − 4k)·5^k.
+    static func exponentesJustos(_ q: Int) -> (tres: Int, cinco: Int) {
+        let k = (q >= 0 ? 1 : -1) * ((abs(q) + 1) / 4)
+        return (q - 4 * k, k)
     }
 }

@@ -231,6 +231,8 @@ Sources/
 │   │   │                  CardinalDeAcorde y EstadisticasDeAcorde (lo que se mide de un acorde)
 │   │   │                  GrupoDeHindemith y MedidasDeAcorde+Percepcion (Huron, Hindemith, Euler, Parncutt,
 │   │   │                  Fourier, Tymoczko, Cook y Sethares)
+│   │   │                  MedidasDeAcorde+Afinacion (Tenney, Partch, Gill y Purves, Erlich, Terhardt) y
+│   │   │                  MedidasDeAcorde+Voces (fusión, Vassilakis, Hutchinson y Knopoff, disposición)
 │   │   ├── Catalogo/      AcordeConNombre (el acorde del catálogo, con su ficha) y el catálogo
 │   │   ├── Nombres/       NombresDeAcordes y un fichero por idioma (`NombresDeAcordes+Catalan.swift`…)
 │   │   └── Neorriemanniana/   TransformacionNeorriemanniana (P, L, R y caminos), CicloNeorriemanniano

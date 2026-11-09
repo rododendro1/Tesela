@@ -248,6 +248,19 @@ public struct TextosDeApps: TextosTraducidos {
     public let tensionDeCook: String
     public let modalidadDeCook: String
     public let rugosidad: String
+    public let alturaDeTenney: String
+    public let limiteImpar: String
+    public let limitePrimo: String
+    public let armonicidad: String
+    public let entropiaArmonica: String
+    public let fundamentalVirtual: String
+    public let fusionTonal: String
+    public let rugosidadDeVassilakis: String
+    public let rugosidadDeHutchinsonKnopoff: String
+    public let parejaZ: String
+    public let complementoDeForte: String
+    public let disposicionAbierta: String
+    public let serieArmonica: String
     public let escaleraDeBrillo: String
     public let hojaDeEstudio: String
     public let mapaDeBrillo: String

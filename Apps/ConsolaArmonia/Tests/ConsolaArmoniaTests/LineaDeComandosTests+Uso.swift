@@ -289,6 +289,11 @@ extension LineaDeComandosTests {
         let json = salida("acorde Sol7 --estadisticas --json")
         #expect(json.contains("\"grupoDeHindemith\":\"II a\""))
         #expect(json.contains("\"consonanciaDiadica\":1.779"))
+        #expect(sol7.contains("  Límite impar (Partch): 45\n"))
+        #expect(sol7.contains("  Fundamental virtual (Terhardt): Sol\n"))
+        #expect(sol7.contains("  Disposición: Cerrada · intervalos anchos abajo (serie armónica)\n"))
+        #expect(json.contains("\"limiteImpar\":45"))
+        #expect(json.contains("\"complemento\":\"8-27\""))
         // `acordes --orden consonancia`: de la más consonante a la menos.
         #expect(salida("acordes --orden consonancia --notas 3").hasPrefix("mayor (Do): Do Mi Sol\n"))
         #expect(

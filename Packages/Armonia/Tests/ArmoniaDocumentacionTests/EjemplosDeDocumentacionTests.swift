@@ -104,8 +104,12 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Acordes.md, bloque 9
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 9)
         comprobar(TipoDeAcorde.mayor.estadisticas.consonanciaDiadica, #"2.22"#, doc, 0)
-        comprobar(TipoDeAcorde.dominanteSeptima.estadisticas.gradoDeSuavidad, #"11"#, doc, 1)
-        comprobar(TipoDeAcorde.mayor.estadisticas.gradoDeSuavidad, #"7"#, doc, 2)
+        comprobar(TipoDeAcorde.potencia.estadisticas.limiteImpar, #"3"#, doc, 1)
+        comprobar(TipoDeAcorde.dominanteSeptima.estadisticas.limiteImpar, #"45"#, doc, 2)
+        comprobar(TipoDeAcorde.mayor.estadisticas.armonicidad, #"51.1"#, doc, 3)
+        comprobar(AcordeConNombre.hendrix.estadisticas.parejaZ, #""4-Z29""#, doc, 4)
+        comprobar(TipoDeAcorde.dominanteSeptima.estadisticas.gradoDeSuavidad, #"11"#, doc, 5)
+        comprobar(TipoDeAcorde.mayor.estadisticas.gradoDeSuavidad, #"7"#, doc, 6)
     }
 
     @Test func acordes10() throws {

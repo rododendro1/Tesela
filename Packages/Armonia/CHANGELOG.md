@@ -28,6 +28,11 @@
   Fujisawa y la rugosidad de Sethares. Las da la consola en `acorde --estadisticas` y en `--json`, y `acordes
   --orden consonancia` ordena el catálogo de más a menos consonante. El TSV de `EjemploCatalogoDeAcordes` añade una
   columna por cada una.
+- Más medidas en `EstadisticasDeAcorde`: la altura de Tenney, los límites impar y primo de Partch, la armonicidad de
+  Gill y Purves, la entropía armónica de Erlich, la fundamental virtual de Terhardt, la fusión tonal de Huron, la
+  rugosidad de Vassilakis, la disonancia de Hutchinson y Knopoff, la pareja Z y el complemento de Forte, y la
+  disposición de las voces (cerrada, drop 2, drop 3, drop 2 + 4 u otra abierta) con si respeta la serie armónica.
+  También en la consola, en `--json` y en el TSV de `EjemploCatalogoDeAcordes`.
 
 ## 0.4.5 (2026-11-09)
 

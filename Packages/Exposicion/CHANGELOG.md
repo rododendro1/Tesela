@@ -12,6 +12,9 @@
   medidas de la teoría (Huron, Hindemith, Parncutt, Euler, Fourier, Tymoczko, Cook y Sethares); con `sobre:`, las
   fundamentales se escriben como notas. La tabla añade la consonancia y el grupo de Hindemith, y `triadas(_:)` da
   las tríadas contenidas («M 1 · m 0 · ° 1 · + 0»).
+- `PresentacionDeEstadisticasDeAcorde` y `EstadisticasDeAcordePresentadas` añaden la afinación justa (Tenney,
+  Partch, Gill y Purves), la entropía armónica, la fundamental virtual, la fusión tonal, las rugosidades de
+  Vassilakis y de Hutchinson y Knopoff, la pareja Z, el complemento y la disposición (`disposicion(_:en:)`).
 
 ## 0.4.4 (2026-11-09)
 
