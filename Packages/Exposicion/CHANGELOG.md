@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.2 (2026-11-08)
 
 - **Cambio incompatible:** `DatosDeAcorde`, `DatosDeCandidato`, `DatosDeEscala`, `DatosDeConjunto`, `DatosDeSerie`
   y `RecorridoDePartitura` toman la notación con `en:`, como las demás presentaciones (antes `notacion:`).
