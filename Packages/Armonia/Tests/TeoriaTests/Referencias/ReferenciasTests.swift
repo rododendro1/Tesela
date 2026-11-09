@@ -65,11 +65,14 @@ import Testing
     }
 
     @Test func lasEscalasTienenLasDeSuListaSuFuenteYSusAfinaciones() {
-        #expect(TipoDeEscala.bayati.referencias == [.maqamWorld, .touma1996, .farraj2019])
+        #expect(TipoDeEscala.bayati.referencias == [.maqamWorld, .touma1996, .farraj2019, .rechberger2008])
         // Ptolomeo, por su fuente (Barker), y su lista.
         #expect(TipoDeEscala.tetracordoDiatonicoTenso.referencias == [.barker1989, .chalmers1993, .west1992])
         // Los echoi, por la afinación de Chrysanthos.
         #expect(TipoDeEscala.echosProtos.referencias.contains(.chrysanthos1832))
+        // Rechberger, por las listas que trata enteras.
+        #expect(TipoDeEscala.echosProtos.referencias.contains(.rechberger2008))
+        #expect(TipoDeEscala.menorHungara.referencias.contains(.rechberger2008))
         #expect(TipoDeEscala.echosProtos.afinaciones[1].referencias == [.chrysanthos1832])
         #expect(TipoDeEscala.echosProtos.microtonal?.referencias == [])
         // El dórico con ficta: Barbour, por su lista, y los tratados de Zarlino, Salinas y Ramos.
@@ -84,7 +87,7 @@ import Testing
 
     /// Las occidentales, por `referenciasOccidentales`, y los acordes genéricos, por su declaración.
     @Test func lasOccidentalesYLosAcordesTienenLasSuyas() {
-        #expect(TipoDeEscala.mayor.referencias == [.aldwell2011, .powers2001, .levine1995])
+        #expect(TipoDeEscala.mayor.referencias == [.aldwell2011, .powers2001, .levine1995, .rechberger2008])
         #expect(
             TipoDeEscala.lidioDominante.referencias == [.levine1995, .persichetti1961, .lendvai1971, .tymoczko2011])
         #expect(TipoDeEscala.flamenca.referencias == [.manuel1989])

@@ -13,7 +13,8 @@ import Foundation
 ///     Referencia.west1992.paginas("160–172").cita     // "West 1992: 160–172"
 ///     Referencia.west1992.descripcion
 ///     // "West, M. L. (1992). Ancient Greek Music. Oxford: Clarendon Press."
-///     TipoDeEscala.bayati.referencias.map(\.clave)    // ["maqamWorld", "touma1996", "farraj2019"]
+///     TipoDeEscala.bayati.referencias.map(\.clave)
+///     // ["maqamWorld", "touma1996", "farraj2019", "rechberger2008"]
 public struct Referencia: Hashable, Sendable, Identifiable {
     /// La clase de obra, que decide cómo se escribe y su tipo en BibTeX y en CSL-JSON.
     public enum Clase: String, Hashable, Sendable, Codable, CaseIterable {

@@ -643,7 +643,7 @@ import Hexagonos
     @Test func escalasDelMundo7() throws {
         // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 7
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 7)
-        comprobar(TipoDeEscala.bayati.referencias.map(\.cita), #"["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019"]"#, doc, 0)
+        comprobar(TipoDeEscala.bayati.referencias.map(\.cita), #"["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019", "Rechberger 2008"]"#, doc, 0)
         comprobar(TipoDeEscala.tetracordoDiatonicoTenso.referencias.first == .barker1989, #"true"#, doc, 1)
         comprobar(Referencia.west1992.paginas("160–172").cita, #""West 1992: 160–172""#, doc, 2)
         comprobar(Referencia.west1992.descripcion, #""West, M. L. (1992). Ancient Greek Music. Oxford: Clarendon Press.""#, doc, 3)

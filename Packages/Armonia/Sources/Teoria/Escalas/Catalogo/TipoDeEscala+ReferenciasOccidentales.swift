@@ -37,5 +37,12 @@ extension TipoDeEscala {
         (.manuel1989, [.flamenca, .frigioDominante]),
         (.vanDerMerwe1989, [.pentatonicaMayor, .pentatonicaMenor, .blues, .bluesMayor]),
         (.apel1958, [.hexacordo]),
+        (
+            .rechberger2008,
+            [
+                .mayor, .dorico, .frigio, .lidio, .mixolidio, .menorNatural, .locrio, .pentatonicaMayor,
+                .pentatonicaMenor, .menorHungara, .eolicoCuartaAumentada, .dobleArmonica,
+            ]
+        ),
     ]
 }
