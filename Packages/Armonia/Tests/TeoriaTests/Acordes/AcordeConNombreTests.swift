@@ -7,7 +7,7 @@ import Testing
     /// Cada acorde del catálogo se lee por terceras y tiene un nombre que no se repite.
     @Test func catalogo() {
         let catalogo = AcordeConNombre.catalogo
-        #expect(AcordeConNombre.genericos.count == 37)
+        #expect(AcordeConNombre.genericos.count == 41)
         #expect(catalogo == AcordeConNombre.genericos + AcordeConNombre.conNombrePropio)
         #expect(Set(catalogo.map(\.nombre)).count == catalogo.count)
         #expect(Set(catalogo).count == catalogo.count)
@@ -54,6 +54,16 @@ import Testing
         #expect(hendrix.acordesConNombre == [.hendrix])
         #expect(try TipoDeAcorde(leyendo: "7(#9)").acordesConNombre == [.dominanteNovenaAumentada])
         #expect(try TipoDeAcorde(leyendo: "7(#9,#11)").acordesConNombre.isEmpty)
+        // Los cifrados de Levine dan nombre a su tipo.
+        for (cifrado, acorde) in [
+            ("7alt", AcordeConNombre.dominanteAlterado), ("m(maj9)", .menorSeptimaMayorNovena),
+            ("maj13", .mayorSeptimaMayorDecimotercera), ("m6/9", .menorSextaNovena),
+            ("7(b5)", .dominanteQuintaDisminuida),
+            ("7(#11)", .dominanteUndecimaAumentada), ("maj7(#11)", .mayorSeptimaMayorUndecimaAumentada),
+            ("9sus4", .sus4Novena), ("13sus4", .sus4Decimotercera),
+        ] {
+            #expect(try TipoDeAcorde(leyendo: cifrado).acordeConNombre == acorde, "\(cifrado)")
+        }
         #expect(TipoDeAcorde.mayorNovenaAnadida.acordesConNombre == [.mayorNovenaAnadida, .mu])
         #expect(TipoDeAcorde.dominanteSeptima.acordesConNombre == [.dominanteSeptima])
         for acorde in AcordeConNombre.conNombrePropio {
