@@ -3,7 +3,7 @@
 // Los nombres de los acordes del catálogo en griego. Qué es cada campo, en `NombresDeAcordes.swift`.
 
 extension NombresDeAcordes {
-    static let griego = NombresDeAcordes([
+    static let griego = Tabla([
         .init(.mayor, "μείζονα συγχορδία"),
         .init(.menor, "ελάσσονα συγχορδία"),
         .init(.disminuido, "ελαττωμένη συγχορδία"),

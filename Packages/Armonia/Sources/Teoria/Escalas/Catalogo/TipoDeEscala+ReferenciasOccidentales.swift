@@ -3,7 +3,7 @@ import Elementos
 // MARK: - Dónde se leen las escalas occidentales
 //
 // Las occidentales no llevan las obras en su declaración: van aquí, por obras, y `TipoDeEscala.referencias` las junta.
-// Una escala puede estar en varias. Las sintéticas de siete notas (`EstiloDeEscala.sintetica`, las que salen de
+// Una escala puede estar en varias. Las sintéticas de siete notas (`Estilo.sintetica`, las que salen de
 // alterar los grados de otra) se citan por Busoni, que las cuenta todas sin nombrarlas. Las demás variantes que no
 // trata ninguna obra general (las cromáticas con alteraciones, las pentatónicas y hexatónicas alteradas, las de ocho
 // notas) no tienen.

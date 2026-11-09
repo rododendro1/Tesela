@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en húngaro. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let hungaro = NombresDeProgresiones([
+    static let hungaro = Tabla([
         .init(.cadenciaPerfecta, "tökéletes zárlat"),
         .init(.cadenciaPlagal, "plagális zárlat"),
         .init(.cadenciaRota, "megszakított zárlat"),

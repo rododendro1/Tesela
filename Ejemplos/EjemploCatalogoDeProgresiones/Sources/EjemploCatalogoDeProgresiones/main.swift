@@ -32,7 +32,7 @@ let columnas: [String] =
 func fila(_ progresion: ProgresionConNombre) -> [String] {
     let comoSeLlama = [progresion.nombre] + traducciones.map { progresion.nombre(en: .delIdioma($0)) }
     let acordes = progresion.acordes(sobre: .do)
-    let reconocida = EsquemaArmonico.buscar(en: acordes).contains { $0.tipo == progresion && $0.inicio == 0 }
+    let reconocida = EsquemaArmonico.buscar(en: acordes).contains { $0.progresion == progresion && $0.inicio == 0 }
     let resto: [String] = [
         progresion.alias.joined(separator: " · "),
         progresion.variantes.joined(separator: " · "),

@@ -229,6 +229,18 @@ extension LineaDeComandosTests {
         #expect(resultado("progresiones", "blues", "--en").error.contains("falta la tonalidad tras --en"))
     }
 
+    /// `acordes` da cada acorde del catálogo con sus notas sobre Do y su cifrado, si se lee por terceras; con un
+    /// texto, los que lo tienen en el nombre en algún idioma, y con `--sobre`, sobre otra nota.
+    @Test func acordesDelCatalogo() {
+        let todos = salida("acordes").split(separator: "\n")
+        #expect(todos.count == AcordeConNombre.catalogo.count)
+        #expect(todos.contains("séptima de dominante (Do7): Do Mi Sol Si♭"))
+        #expect(salida("acordes tristan --sobre Fa") == "acorde de Tristán: Fa Si Re♯ Sol♯\n")
+        #expect(salida("chords dominant seventh --over G --ingles") == "dominant seventh (G7): G B D F\n")
+        #expect(salida("acordes sexta aumentada").split(separator: "\n").count == 4)
+        #expect(resultado("acordes", "zzz").error.contains("no hay ningún acorde así"))
+    }
+
     /// `tradiciones` da cada tradición con sus categorías (salvo la occidental, que no tiene: sus escalas son las
     /// habituales, por estilos con `escalas --uso`); con una, sus escalas.
     @Test func tradiciones() throws {

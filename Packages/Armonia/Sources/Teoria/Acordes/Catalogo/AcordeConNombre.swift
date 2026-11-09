@@ -17,8 +17,8 @@ import Elementos
 /// mayor, la séptima de dominante, las sextas aumentadas…) y dan nombre a su `TipoDeAcorde`. Los de nombre propio
 /// (`conNombrePropio`) son acordes concretos de una obra o de un estilo: el de Tristán, el místico de Skriabin, el de
 /// Petrushka, el So What… No dan nombre a su tipo, si lo tienen (el de Hendrix es un 7(♯9) sin quinta cualquiera), y
-/// alguno no lo tiene, porque sus notas no se leen por terceras. Los nombres en los otros idiomas están en `Acordes/Nombres/`, un
-/// fichero por idioma.
+/// alguno no lo tiene, porque sus notas no se leen por terceras. Los nombres en los otros idiomas están en
+/// `Acordes/Nombres/`, un fichero por idioma.
 ///
 ///     AcordeConNombre.tristan.notas(sobre: .fa)          // [Fa, Si, Re♯, Sol♯]
 ///     AcordeConNombre.petrushka.tipo                     // nil
@@ -37,31 +37,18 @@ public struct AcordeConNombre: Sendable {
     /// Pueden ser intervalos compuestos (la novena, la undécima…).
     public let intervalos: [Intervalo]
     /// Lo demás que sabe el catálogo del acorde: sus estilos y sus referencias.
-    package let ficha: FichaDeAcorde
+    package let ficha: FichaDelCatalogo
 
-    /// Un acorde con nombre propio, fuera del catálogo. Si los intervalos no empiezan por el unísono, se le añade.
-    public init(nombre: String, intervalos: [Intervalo], alias: [String] = [], variantes: [String] = []) {
-        self.init(nombre: nombre, intervalos: intervalos, alias: alias, variantes: variantes, ficha: .vacia)
-    }
-
-    /// Un acorde del catálogo, con sus estilos y sus referencias.
-    package init(
+    /// Un acorde con nombre, del catálogo o fuera de él. Si los intervalos no empiezan por el unísono, se le añade.
+    public init(
         nombre: String, intervalos: [Intervalo], alias: [String] = [], variantes: [String] = [],
-        estilos: [EstiloDeEscala] = [], referencias: [Referencia] = []
-    ) {
-        self.init(
-            nombre: nombre, intervalos: intervalos, alias: alias, variantes: variantes,
-            ficha: FichaDeAcorde(estilos: estilos, referencias: referencias))
-    }
-
-    private init(
-        nombre: String, intervalos: [Intervalo], alias: [String], variantes: [String], ficha: FichaDeAcorde
+        estilos: [Estilo] = [], referencias: [Referencia] = []
     ) {
         self.nombre = nombre
         self.alias = alias
         self.variantes = variantes
         self.intervalos = intervalos.first == .unisono ? intervalos : [.unisono] + intervalos
-        self.ficha = ficha
+        self.ficha = FichaDelCatalogo(estilos: estilos, referencias: referencias)
     }
 
     // MARK: Propiedades
@@ -78,7 +65,7 @@ public struct AcordeConNombre: Sendable {
     public func notas(sobre fundamental: Nota) -> [Nota] { intervalos.map { fundamental + $0 } }
 
     /// En qué estilos se usa (la clásica, el jazz, la popular…); vacío si no es propio de ninguno.
-    public var estilos: [EstiloDeEscala] { ficha.estilos }
+    public var estilos: [Estilo] { ficha.estilos }
 
     /// Dónde se lee el acorde.
     public var referencias: [Referencia] { ficha.referencias }
@@ -86,9 +73,7 @@ public struct AcordeConNombre: Sendable {
     /// El nombre en el idioma de la notación, y en su grafía: «séptima de dominante», «dominant seventh»,
     /// «Dominantseptakkord», «dominantseptakkord» (en ruso transliterado)… Un acorde fuera del catálogo se llama en
     /// todos los idiomas como se escribió.
-    public func nombre(en notacion: Notacion) -> String {
-        notacion.enSuGrafia(NombresDeAcordes.de(notacion.textos).nombre(de: self) ?? nombre)
-    }
+    public func nombre(en notacion: Notacion) -> String { nombreTraducido(en: notacion) }
 }
 
 extension AcordeConNombre: Hashable {
@@ -111,26 +96,16 @@ extension AcordeConNombre: Nombrable, CustomStringConvertible {
     public var description: String { nombre }
 }
 
-// MARK: - Ficha de un acorde del catálogo
+// MARK: - Búsqueda por nombre
 
-/// Lo que el catálogo sabe de un acorde además de su nombre y sus notas. Se escribe en su declaración:
-///
-///     public static let sextaAumentadaAlemana = AcordeConNombre(
-///         nombre: "sexta aumentada alemana", intervalos: [.unisono, .terceraMayor, .quintaJusta, .sextaAumentada],
-///         estilos: [.clasica])
-package struct FichaDeAcorde: Sendable {
-    /// En qué estilos se usa, en el orden de `EstiloDeEscala.allCases`.
-    package let estilos: [EstiloDeEscala]
-    /// Dónde se lee el acorde.
-    package let referencias: [Referencia]
+extension AcordeConNombre {
+    /// El acorde del catálogo con ese nombre, alias o variante en cualquier idioma, sin mirar mayúsculas, tildes,
+    /// espacios ni guiones: «séptima de dominante», «dominant seventh», «Tristan chord», «acorde de Tristán».
+    public static func buscar(nombre: String) -> AcordeConNombre? { buscarNombre(nombre) }
 
-    package init(estilos: [EstiloDeEscala] = [], referencias: [Referencia] = []) {
-        self.estilos = EstiloDeEscala.allCases.filter(estilos.contains)
-        self.referencias = referencias
-    }
-
-    /// La de un acorde que no es del catálogo.
-    package static let vacia = FichaDeAcorde()
+    /// Los del catálogo cuyo nombre, alias o variante contiene el texto en algún idioma (sin mirar mayúsculas ni
+    /// tildes), en el orden del catálogo: «sexta aumentada» da la italiana, la francesa, la alemana y la suiza.
+    public static func buscar(conteniendo texto: String) -> [AcordeConNombre] { buscarConteniendo(texto) }
 }
 
 // MARK: - Desde el tipo

@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en gallego. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let gallego = NombresDeProgresiones([
+    static let gallego = Tabla([
         .init(.cadenciaPerfecta, "cadencia perfecta"),
         .init(.cadenciaPlagal, "cadencia plagal"),
         .init(.cadenciaRota, "cadencia rota"),

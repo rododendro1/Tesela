@@ -4,20 +4,20 @@ import Elementos
 //
 // Una escala puede tener dos clases de subtradición dentro de su `Tradicion`: el estilo o repertorio en que se usa
 // (la música carnática, el gagaku, el jazz) y la región o el pueblo de donde viene (Java, Escocia, los chopi). Son dos
-// tipos, `EstiloDeEscala` y `RegionDeEscala`, y `Subtradicion` reúne los dos. Una escala puede tener varios de cada
+// tipos, `Estilo` y `RegionDeEscala`, y `Subtradicion` reúne los dos. Una escala puede tener varios de cada
 // uno: el dórico es clásico y de jazz, y el sléndro se toca en Java y en Bali.
 
-/// Una subtradición: un estilo (`EstiloDeEscala`) o una región (`RegionDeEscala`) dentro de una tradición.
+/// Una subtradición: un estilo (`Estilo`) o una región (`RegionDeEscala`) dentro de una tradición.
 ///
 ///     TipoDeEscala.slendro.subtradiciones   // [.region(.java), .region(.bali)]
 ///     TipoDeEscala.dorico.subtradiciones    // [.estilo(.clasica), .estilo(.jazz)]
 public enum Subtradicion: Hashable, Sendable, Codable {
-    case estilo(EstiloDeEscala)
+    case estilo(Estilo)
     case region(RegionDeEscala)
 
     /// Todas: primero los estilos y después las regiones, en el orden de sus casos.
     public static let todas: [Subtradicion] =
-        EstiloDeEscala.allCases.map(Subtradicion.estilo) + RegionDeEscala.allCases.map(Subtradicion.region)
+        Estilo.allCases.map(Subtradicion.estilo) + RegionDeEscala.allCases.map(Subtradicion.region)
 
     /// La tradición a la que pertenece.
     public var tradicion: Tradicion {
@@ -27,7 +27,7 @@ public enum Subtradicion: Hashable, Sendable, Codable {
         }
     }
 
-    /// Las escalas del catálogo de esta subtradición (`EstiloDeEscala.tipos` o `RegionDeEscala.tipos`).
+    /// Las escalas del catálogo de esta subtradición (`Estilo.tipos` o `RegionDeEscala.tipos`).
     public var tipos: [TipoDeEscala] {
         switch self {
         case .estilo(let estilo): estilo.tipos

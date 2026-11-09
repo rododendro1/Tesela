@@ -59,7 +59,7 @@ public struct TipoDeEscala: Sendable, Codable {
     /// Una escala occidental del catálogo, con sus estilos y, si las tiene, sus versiones microtonales.
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
-        variantes: [String] = [], estilos: [EstiloDeEscala], afinaciones: [FichaDeEscala.Afinacion] = []
+        variantes: [String] = [], estilos: [Estilo], afinaciones: [FichaDeEscala.Afinacion] = []
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
@@ -73,7 +73,7 @@ public struct TipoDeEscala: Sendable, Codable {
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
         variantes: [String] = [], tradicion: Tradicion? = nil, categoria: CategoriaTradicional,
-        estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
+        estilos: [Estilo] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
         padre: TipoDeEscala? = nil,
         afinaciones: [FichaDeEscala.Afinacion] = [], referencias: [Referencia] = []
     ) {
@@ -454,21 +454,6 @@ extension TipoDeEscala {
     /// Nombres de las escalas de otras tradiciones (los de `NombresDeEscalas.tradicionales`, en español).
     package static let nombresTradicionales: Set<String> = Set(tradicionales.map(\.nombre))
 
-    /// Minúsculas, sin diacríticos (dórico → dorico, Kāfī → kafi), ♯/♭ como #/b, sin ♮ ni ordinales
-    /// (4ª → 4), «−» como «-», «…» como «..», la ı sin punto del turco como i (makamı → makami) y con
-    /// un solo espacio entre palabras. En devanagari no se quitan los signos: las vocales y el virama
-    /// son parte de la letra (भैरव y भैरवी son dos rāgas).
-    package static func normalizar(_ texto: String) -> String {
-        let devanagari = texto.unicodeScalars.contains { (0x0900...0x097F).contains($0.value) }
-        return texto.replacingOccurrences(of: "♯", with: "#")
-            .replacingOccurrences(of: "♭", with: "b")
-            .replacingOccurrences(of: "♮", with: "")
-            .replacingOccurrences(of: "ª", with: "")
-            .replacingOccurrences(of: "−", with: "-")
-            .replacingOccurrences(of: "…", with: "..")
-            .replacingOccurrences(of: "ı", with: "i")
-            .folding(options: devanagari ? [.caseInsensitive] : [.diacriticInsensitive, .caseInsensitive], locale: nil)
-            .lowercased()
-            .split(whereSeparator: { $0 == " " || $0 == "-" }).joined(separator: " ")
-    }
+    /// El nombre como se busca en el catálogo, con un solo espacio entre palabras: `String.normalizadoParaBuscar()`.
+    package static func normalizar(_ texto: String) -> String { texto.normalizadoParaBuscar() }
 }

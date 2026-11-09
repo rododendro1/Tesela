@@ -2,6 +2,23 @@
 
 ## Sin publicar
 
+- `AcordeConNombre.buscar(nombre:)` y `buscar(conteniendo:)`, como en las progresiones: un acorde del catálogo por
+  su nombre, un alias o una variante en cualquiera de los trece idiomas, sin mirar mayúsculas, tildes ni guiones
+  («dominant seventh», «Tristan chord»). La consola tiene la orden `acordes [<texto>] [--sobre <nota>]` (`chords …
+  --over`), que da cada acorde con sus notas y, en los genéricos, su cifrado («séptima de dominante (Do7): Do Mi Sol
+  Si♭»), y `progresiones` y `acordes` dan también JSON.
+- **Cambio incompatible:** `EstiloDeEscala` se llama ahora `Estilo`, porque lo usan también los acordes y las
+  progresiones. No queda alias del nombre antiguo.
+- **Cambio incompatible:** la progresión de un `EsquemaArmonico` es `progresion`, y no `tipo`. Desaparece también
+  `EsquemaArmonico.Tipo`, el alias obsoleto de `ProgresionConNombre` que quedaba desde la 0.4.4.
+- `AcordeConNombre` y `ProgresionConNombre` tienen la misma forma: el `init` público acepta estilos y referencias en
+  los dos. `ProgresionConNombre(nombre:leyendo:…)` comprueba el cifrado al crearla y lanza el error de lectura si no
+  se lee, en vez de dar luego sus acordes vacíos.
+- Por dentro: los nombres de los acordes y de las progresiones en los trece idiomas son el mismo tipo,
+  `NombresDelCatalogo`, con un único índice de búsqueda, y las escalas, los acordes y las progresiones se normalizan
+  con la misma función (`String.normalizadoParaBuscar`). Las reglas propias de `EsquemaArmonico.buscar(en:)` son una
+  función por familia de progresiones, y de ellas sale la lista de las que tienen regla propia.
+
 - Los tres mugam de Hacıbəyov que faltaban: `sustarMugami` (Şüştər), `bayatiSirazMugami` (Bayatı-Şiraz) y
   `humayunMugami` (Hümayun), como los describe el texto azerbaiyano de sus «Principios» en musbook.musigi-dunya.az.
   Şüştər une dos tetracordos semitono-tono-semitono con una segunda aumentada; Bayatı-Şiraz, dos tono-tono-semitono

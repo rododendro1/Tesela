@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en sueco. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let sueco = NombresDeProgresiones([
+    static let sueco = Tabla([
         .init(.cadenciaPerfecta, "helkadens"),
         .init(.cadenciaPlagal, "plagal kadens"),
         .init(.cadenciaRota, "bedräglig kadens"),

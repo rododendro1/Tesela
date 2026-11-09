@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en francés. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let frances = NombresDeProgresiones([
+    static let frances = Tabla([
         .init(.cadenciaPerfecta, "cadence parfaite"),
         .init(.cadenciaPlagal, "cadence plagale"),
         .init(.cadenciaRota, "cadence rompue"),

@@ -105,7 +105,7 @@ import Testing
         for idioma in Idioma.allCases {
             let nombres = NombresDeAcordes.de(idioma)
             #expect(nombres.filas.count == catalogo.count, "\(idioma)")
-            #expect(Set(nombres.filas.map(\.acorde)) == Set(catalogo), "\(idioma)")
+            #expect(Set(nombres.filas.map(\.elemento)) == Set(catalogo), "\(idioma)")
             let escritos = catalogo.compactMap { nombres.nombre(de: $0) }
             #expect(escritos.count == catalogo.count, "\(idioma)")
             #expect(escritos.allSatisfy { !$0.isEmpty }, "\(idioma)")
@@ -137,5 +137,30 @@ import Testing
         #expect(petrushka.notas(sobre: .do).map(\.nombre) == ["Do", "Mi", "Sol", "Fa♯", "La"])
         #expect(AcordeConNombre.dominanteSeptima.notas(sobre: .sol).map(\.nombre) == ["Sol", "Si", "Re", "Fa"])
         #expect(AcordeConNombre.sextaAumentadaItaliana.estilos == [.clasica])
+    }
+
+    /// Ningún nombre, alias ni variante, en ningún idioma, es de dos acordes distintos.
+    @Test func ningunNombreEsDeDos() {
+        var duenos: [String: AcordeConNombre] = [:]
+        for acorde in AcordeConNombre.catalogo {
+            for clave in acorde.claves {
+                if let otro = duenos[clave] { #expect(otro == acorde, "«\(clave)»: \(otro) y \(acorde)") }
+                duenos[clave] = acorde
+            }
+        }
+    }
+
+    /// Se busca por el nombre, un alias o una variante en cualquier idioma, sin mirar mayúsculas, tildes ni guiones.
+    @Test func buscar() {
+        #expect(AcordeConNombre.buscar(nombre: "séptima de dominante") == .dominanteSeptima)
+        #expect(AcordeConNombre.buscar(nombre: "Septima de dominante") == .dominanteSeptima)
+        #expect(AcordeConNombre.buscar(nombre: "dominant seventh") == .dominanteSeptima)
+        #expect(AcordeConNombre.buscar(nombre: "Tristan chord") == .tristan)
+        #expect(AcordeConNombre.buscar(nombre: "half-diminished seventh") == .semidisminuido)
+        #expect(AcordeConNombre.buscar(nombre: "dominante") == nil)
+        let sextas = AcordeConNombre.buscar(conteniendo: "sexta aumentada")
+        #expect(
+            sextas == [.sextaAumentadaItaliana, .sextaAumentadaFrancesa, .sextaAumentadaAlemana, .sextaAumentadaSuiza])
+        #expect(AcordeConNombre.buscar(conteniendo: "").count == AcordeConNombre.catalogo.count)
     }
 }

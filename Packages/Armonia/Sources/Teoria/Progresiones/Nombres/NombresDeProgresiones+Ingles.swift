@@ -3,7 +3,7 @@
 // Los nombres de las progresiones del catálogo en inglés. Qué es cada campo, en `NombresDeProgresiones.swift`.
 
 extension NombresDeProgresiones {
-    static let ingles = NombresDeProgresiones([
+    static let ingles = Tabla([
         .init(.cadenciaPerfecta, "perfect cadence", alias: ["authentic cadence"]),
         .init(.cadenciaPlagal, "plagal cadence"),
         .init(.cadenciaRota, "deceptive cadence", alias: ["interrupted cadence"]),

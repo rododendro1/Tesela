@@ -3,7 +3,7 @@ import Testing
 @testable import Elementos
 @testable import Teoria
 
-@Suite struct EstiloDeEscalaTests {
+@Suite struct EstiloTests {
     /// Toda escala de `todos` tiene al menos un estilo, y todos occidentales; las de otras tradiciones, ninguno
     /// occidental; las propias, ninguno.
     @Test func todasLasHabitualesTienenEstilo() {
@@ -37,20 +37,20 @@ import Testing
         #expect(TipoDeEscala.lidioDominante.estilos == [.jazz, .sigloXX])
         #expect(TipoDeEscala.flamenca.estilos == [.popular])
         #expect(TipoDeEscala.ultrafrigio.estilos == [.sintetica])
-        #expect(EstiloDeEscala.blues.tipos.first == .pentatonicaMayor)
-        #expect(EstiloDeEscala.sigloXX.tipos.contains(.messiaen3))
+        #expect(Estilo.blues.tipos.first == .pentatonicaMayor)
+        #expect(Estilo.sigloXX.tipos.contains(.messiaen3))
         // En el orden del catálogo, sin repetir; cada estilo tiene alguna escala.
-        for estilo in EstiloDeEscala.allCases {
+        for estilo in Estilo.allCases {
             let nombres = estilo.tipos.map(\.nombre)
             #expect(!nombres.isEmpty, "\(estilo)")
             #expect(nombres == TipoDeEscala.catalogo.map(\.nombre).filter { nombres.contains($0) })
         }
-        #expect(EstiloDeEscala.gagaku.tipos.allSatisfy { $0.tradicion == .japon })
+        #expect(Estilo.gagaku.tipos.allSatisfy { $0.tradicion == .japon })
     }
 
     /// Cada estilo tiene nombre en los trece idiomas, y en español es también su `nombre`.
     @Test func losNombresDeLosEstilosSeTraducen() {
-        for uso in EstiloDeEscala.allCases {
+        for uso in Estilo.allCases {
             #expect(uso.nombre(en: .compacta(.espanol)) == uso.nombre)
             for idioma in Idioma.allCases {
                 #expect(
@@ -58,7 +58,7 @@ import Testing
                     Comment(rawValue: "\(uso) en \(idioma)"))
             }
         }
-        #expect(EstiloDeEscala.sigloXX.nombre == "siglo XX")
-        #expect(EstiloDeEscala.sigloXX.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "20th century")
+        #expect(Estilo.sigloXX.nombre == "siglo XX")
+        #expect(Estilo.sigloXX.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "20th century")
     }
 }

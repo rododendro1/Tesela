@@ -26,26 +26,45 @@ public struct ProgresionConNombre: Sendable {
     public let cifrado: String
     /// El modo en que se leen los grados: «i VII VI V» es la andaluza en menor.
     public let modo: Tonalidad.Modo
-    /// En qué estilos se usa, en el orden de `EstiloDeEscala.allCases`.
-    public let estilos: [EstiloDeEscala]
-    /// Dónde se lee la progresión.
-    public let referencias: [Referencia]
+    /// Lo demás que sabe el catálogo de la progresión: sus estilos y sus referencias.
+    package let ficha: FichaDelCatalogo
 
-    /// Una progresión con nombre propio, fuera del catálogo.
+    /// Una progresión con nombre, del catálogo o fuera de él. No comprueba el cifrado: una que no se lee da sus
+    /// acordes vacíos. Para comprobarlo al crearla, `init(nombre:leyendo:modo:alias:variantes:estilos:referencias:)`.
     public init(
         nombre: String, cifrado: String, modo: Tonalidad.Modo = .mayor, alias: [String] = [], variantes: [String] = [],
-        estilos: [EstiloDeEscala] = [], referencias: [Referencia] = []
+        estilos: [Estilo] = [], referencias: [Referencia] = []
     ) {
         self.nombre = nombre
         self.cifrado = cifrado
         self.modo = modo
         self.alias = alias
         self.variantes = variantes
-        self.estilos = EstiloDeEscala.allCases.filter(estilos.contains)
-        self.referencias = referencias
+        self.ficha = FichaDelCatalogo(estilos: estilos, referencias: referencias)
+    }
+
+    /// Una progresión con nombre, comprobando que su cifrado se lee en su modo: lanza el error de
+    /// `Tonalidad.acordes(romanos:)` si no.
+    ///
+    ///     try ProgresionConNombre(nombre: "mía", leyendo: "I ♭VII IV I")   // bien
+    ///     try ProgresionConNombre(nombre: "mía", leyendo: "I X I")          // lanza un error
+    public init(
+        nombre: String, leyendo cifrado: String, modo: Tonalidad.Modo = .mayor, alias: [String] = [],
+        variantes: [String] = [], estilos: [Estilo] = [], referencias: [Referencia] = []
+    ) throws {
+        _ = try Tonalidad(.do, modo).acordes(romanos: cifrado)
+        self.init(
+            nombre: nombre, cifrado: cifrado, modo: modo, alias: alias, variantes: variantes, estilos: estilos,
+            referencias: referencias)
     }
 
     // MARK: Propiedades
+
+    /// En qué estilos se usa, en el orden de `Estilo.allCases`.
+    public var estilos: [Estilo] { ficha.estilos }
+
+    /// Dónde se lee la progresión.
+    public var referencias: [Referencia] { ficha.referencias }
 
     /// Los grados, uno por acorde: ["ii7", "V7", "Imaj7"].
     public var grados: [String] { cifrado.split(separator: " ").map(String.init) }
@@ -54,7 +73,7 @@ public struct ProgresionConNombre: Sendable {
     public func tonalidad(sobre tonica: Nota) -> Tonalidad { Tonalidad(tonica, modo) }
 
     /// Los acordes en una tonalidad, uno por grado. Vacío si su cifrado no se lee (los del catálogo se leen
-    /// todos: lo comprueban las pruebas).
+    /// todos: lo comprueban las pruebas; una propia se comprueba al crearla con `init(nombre:leyendo:…)`).
     ///
     ///     ProgresionConNombre.monte.acordes(en: Tonalidad(.do))   // [Do7, Fa, Re7, Sol]
     public func acordes(en tonalidad: Tonalidad) -> [Acorde] { (try? tonalidad.acordes(romanos: cifrado)) ?? [] }
@@ -64,9 +83,7 @@ public struct ProgresionConNombre: Sendable {
 
     /// El nombre en el idioma de la notación, y en su grafía: «cadencia andaluza», «Andalusian cadence»,
     /// «andalusische Kadenz»… Una progresión fuera del catálogo se llama en todos los idiomas como se escribió.
-    public func nombre(en notacion: Notacion) -> String {
-        notacion.enSuGrafia(NombresDeProgresiones.de(notacion.textos).nombre(de: self) ?? nombre)
-    }
+    public func nombre(en notacion: Notacion) -> String { nombreTraducido(en: notacion) }
 }
 
 extension ProgresionConNombre: Hashable {
@@ -95,17 +112,9 @@ extension ProgresionConNombre: Nombrable, CustomStringConvertible {
 extension ProgresionConNombre {
     /// La progresión del catálogo con ese nombre, alias o variante en cualquier idioma, sin mirar mayúsculas,
     /// tildes, guiones ni rayas: «cadencia andaluza», «tetracordo andaluz», «Andalusian cadence», «ii-V-I», «II–V–I».
-    public static func buscar(nombre: String) -> ProgresionConNombre? {
-        NombresDeProgresiones.indice[NombresDeProgresiones.normalizar(nombre)]
-    }
+    public static func buscar(nombre: String) -> ProgresionConNombre? { buscarNombre(nombre) }
 
     /// Las del catálogo cuyo nombre, alias o variante contiene el texto en algún idioma (sin mirar mayúsculas ni
     /// tildes), en el orden del catálogo: «cadencia» da todas las cadencias.
-    public static func buscar(conteniendo texto: String) -> [ProgresionConNombre] {
-        let buscado = NombresDeProgresiones.normalizar(texto)
-        guard !buscado.isEmpty else { return catalogo }
-        return catalogo.filter { progresion in
-            NombresDeProgresiones.claves(de: progresion).contains { $0.contains(buscado) }
-        }
-    }
+    public static func buscar(conteniendo texto: String) -> [ProgresionConNombre] { buscarConteniendo(texto) }
 }

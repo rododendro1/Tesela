@@ -76,6 +76,14 @@ import Hexagonos
     @Test func acordes6() throws {
         // Sources/Armonia/Armonia.docc/Acordes.md, bloque 6
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 6)
+        comprobar(AcordeConNombre.dominanteSeptima.nombre(en: .conPalabras(.ingles)), #"dominant seventh"#, doc, 0)
+        comprobar(AcordeConNombre.buscar(nombre: "Tristan chord") == .tristan, #"true"#, doc, 1)
+        comprobar(AcordeConNombre.buscar(conteniendo: "sexta aumentada").count, #"4"#, doc, 2)
+    }
+
+    @Test func acordes7() throws {
+        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 7
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 7)
         comprobar(Acorde.identificar(midi: [60, 64, 68]).first, #"Do+"#, doc, 0)
         comprobar(Acorde.identificar(midi: [60, 63, 66, 69]).first, #"Do°7"#, doc, 1)
         comprobar(Acorde.identificar(midi: [61, 65, 68]).first, #"Re♭"#, doc, 2)
@@ -84,9 +92,9 @@ import Hexagonos
         comprobar(Acorde("Do+").ortografiar(midi: [60, 64, 68]), #"[Do4, Mi4, Sol♯4]"#, doc, 5)
     }
 
-    @Test func acordes7() throws {
-        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 7
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 7)
+    @Test func acordes8() throws {
+        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 8
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 8)
         let a: Acorde = "Sol13(b9)"
         comprobar(a.componentes.map { "\($0.nota) \($0.papel)" }, #"["Sol fundamental", "Si tercera", "Re quinta", "Fa séptima", "La♭ novena", "Mi decimotercera"]"#, doc, 1)
         _ = (a.tercera, a.quinta, a.septima)
@@ -96,9 +104,9 @@ import Hexagonos
         comprobar(TipoDeAcorde("7sus4").estructura.suspension, #"4ª justa"#, doc, 7)
     }
 
-    @Test func acordes8() throws {
-        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 8
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 8)
+    @Test func acordes9() throws {
+        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 9
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 9)
         comprobar(Acorde("Sol7").vecinosParsimoniosos().map(\.description) == ["Sol♯°7 (Sol→Sol♯)", "Solm7 (Si→Si♭)", "Mim7 (Fa→Mi)"], #"true"#, doc, 0)
         comprobar(Acorde("Sol7").vecinosParsimoniosos(voces: 2).contains { $0.acorde == Acorde("Reb7") }, #"true"#, doc, 1)
         comprobar(Acorde("Sol7").caminoParsimonioso(hasta: "Rem7")?.map(\.acorde.cifrado) == ["Sol♯°7", "Sim7(♭5)", "Rem7"], #"true"#, doc, 2)
@@ -107,17 +115,17 @@ import Hexagonos
         comprobar(Acorde("Domaj7").caminoParsimonioso(hasta: "Sol7")?.count == 3, #"true"#, doc, 5)
     }
 
-    @Test func acordes9() throws {
-        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 9
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 9)
+    @Test func acordes10() throws {
+        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 10
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 10)
         comprobar("\(Acorde("Sol7").conduccionMinima(hasta: "Do"))", #""Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos""#, doc, 0)
         comprobar(Acorde("Rem7").conduccionMinima(hasta: "Sol7").semitonosMovidos == 3, #"true"#, doc, 1)
         comprobar(Acorde("Do").conduccionMinima(hasta: "Lam").semitonosMovidos == 2, #"true"#, doc, 2)
     }
 
-    @Test func acordes10() throws {
-        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 10
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 10)
+    @Test func acordes11() throws {
+        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 11
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 11)
         comprobar(Acorde("Sol7").disposiciones(.cuartal).isEmpty, #"false"#, doc, 0)
         comprobar(DisposicionDeAcorde.cuartal.voces, #"4"#, doc, 1)
     }
@@ -468,8 +476,8 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Escalas.md, bloque 3
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 3)
         comprobar(TipoDeEscala.dorico.estilos == [.clasica, .jazz], #"true"#, doc, 0)
-        comprobar(EstiloDeEscala.blues.tipos.count, #"6"#, doc, 1)
-        comprobar(EstiloDeEscala.sigloXX.nombre, #""siglo XX""#, doc, 2)
+        comprobar(Estilo.blues.tipos.count, #"6"#, doc, 1)
+        comprobar(Estilo.sigloXX.nombre, #""siglo XX""#, doc, 2)
         comprobar(TipoDeEscala.kafi.estilos == [.indostanica], #"true"#, doc, 3)
         comprobarIgual(TipoDeEscala.dorico.tradicion, .occidental, doc, 4)
     }
@@ -605,7 +613,7 @@ import Hexagonos
         comprobar(TipoDeEscala.slendro.regiones == [.java, .bali], #"true"#, doc, 2)
         comprobarIgual(RegionDeEscala.bali.tradicion, .indonesia, doc, 3)
         comprobar(RegionDeEscala.java.tipos.count, #"7"#, doc, 4)
-        comprobar(EstiloDeEscala.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)), #""Carnatic""#, doc, 5)
+        comprobar(Estilo.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)), #""Carnatic""#, doc, 5)
     }
 
     @Test func escalasDelMundo4() throws {
@@ -1422,10 +1430,10 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 19
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 19)
         let esquemas = EsquemaArmonico.buscar(en: ["Do7M", "Lam7", "Rem7", "Sol7", "Do7M"])
-        comprobar(esquemas.map(\.tipo), #"[turnaround, progresión por quintas, ii–V–I]"#, doc, 1)
+        comprobar(esquemas.map(\.progresion), #"[turnaround, progresión por quintas, ii–V–I]"#, doc, 1)
         comprobar(esquemas.map(\.indices), #"[0..<4, 1..<5, 2..<5]"#, doc, 2)
-        comprobar(EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])[0].tipo == .backdoor, #"true"#, doc, 3)
-        comprobar(EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].tipo == .andaluza, #"true"#, doc, 4)
+        comprobar(EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])[0].progresion == .backdoor, #"true"#, doc, 3)
+        comprobar(EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].progresion == .andaluza, #"true"#, doc, 4)
         comprobar(EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].tonica, #"La"#, doc, 5)
     }
 

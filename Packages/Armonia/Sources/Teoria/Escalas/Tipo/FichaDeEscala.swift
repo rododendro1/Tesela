@@ -21,7 +21,7 @@ import Elementos
 /// (`TipoDeEscala.llevaLaCategoria`), para que `nombreCompleto` no la repita.
 ///
 /// De ahí salen `TipoDeEscala.estilos`, `regiones`, `categoria`, `padre`, `microtonal` y `afinaciones`, y
-/// `EstiloDeEscala.tipos`, `RegionDeEscala.tipos` y `TipoDeEscalaMicrotonal.catalogo`. La tradición (`tradicion`) se
+/// `Estilo.tipos`, `RegionDeEscala.tipos` y `TipoDeEscalaMicrotonal.catalogo`. La tradición (`tradicion`) se
 /// deduce de la categoría, de las subtradiciones o de la fuente, y solo se escribe en las que no la dan
 /// (`tradicion: .japon, categoria: .escala`); cada lista de `TipoDeEscala.listasTradicionales` tiene solo escalas de
 /// la suya. Los nombres en otros idiomas no van en la ficha: están en `Nombres/`. El estilo de las escalas de la India
@@ -52,9 +52,9 @@ package struct FichaDeEscala: Sendable {
         }
     }
 
-    /// En qué estilos se usa, en el orden de `EstiloDeEscala.allCases`: los escritos en la declaración o, si no los
-    /// hay, el que da la categoría (`EstiloDeEscala.de(_:)`).
-    package let estilos: [EstiloDeEscala]
+    /// En qué estilos se usa, en el orden de `Estilo.allCases`: los escritos en la declaración o, si no los
+    /// hay, el que da la categoría (`Estilo.de(_:)`).
+    package let estilos: [Estilo]
     /// De qué regiones viene, en el orden de `RegionDeEscala.allCases`.
     package let regiones: [RegionDeEscala]
     /// La tradición: la que se escribe en la declaración o, si no, la de su categoría (un rāga es de la India), la de
@@ -73,14 +73,14 @@ package struct FichaDeEscala: Sendable {
     package let referencias: [Referencia]
 
     package init(
-        tradicion: Tradicion? = nil, estilos: [EstiloDeEscala] = [], regiones: [RegionDeEscala] = [],
+        tradicion: Tradicion? = nil, estilos: [Estilo] = [], regiones: [RegionDeEscala] = [],
         categoria: CategoriaTradicional? = nil,
         padre: IdentidadDeEscala? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil,
         referencias: [Referencia] = []
     ) {
         self.referencias = referencias
-        let estilos = estilos.isEmpty ? (categoria.flatMap(EstiloDeEscala.de).map { [$0] } ?? []) : estilos
-        self.estilos = EstiloDeEscala.allCases.filter { estilos.contains($0) }
+        let estilos = estilos.isEmpty ? (categoria.flatMap(Estilo.de).map { [$0] } ?? []) : estilos
+        self.estilos = Estilo.allCases.filter { estilos.contains($0) }
         self.regiones = RegionDeEscala.allCases.filter { regiones.contains($0) }
         self.tradicion =
             tradicion ?? categoria?.tradicion ?? estilos.first?.tradicion ?? regiones.first?.tradicion
@@ -152,7 +152,7 @@ extension TipoDeEscala {
     public var referencias: [Referencia] { TipoDeEscala.delCatalogo[identidad]?.referencias ?? [] }
 
     /// Una copia con estos estilos: para las escalas del catálogo que salen de una función (las cromáticas).
-    package func con(estilos: [EstiloDeEscala]) -> TipoDeEscala {
+    package func con(estilos: [Estilo]) -> TipoDeEscala {
         TipoDeEscala(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
             variantes: variantes, ficha: FichaDeEscala(estilos: estilos))

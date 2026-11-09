@@ -3,7 +3,7 @@
 // Los nombres de los acordes del catálogo en francés. Qué es cada campo, en `NombresDeAcordes.swift`.
 
 extension NombresDeAcordes {
-    static let frances = NombresDeAcordes([
+    static let frances = Tabla([
         .init(.mayor, "majeur"),
         .init(.menor, "mineur"),
         .init(.disminuido, "diminué"),

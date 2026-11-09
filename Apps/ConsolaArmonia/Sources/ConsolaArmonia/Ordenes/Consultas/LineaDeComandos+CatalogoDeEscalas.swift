@@ -23,7 +23,7 @@ extension LineaDeComandos {
 
     /// Cómo se escribe cada estilo occidental en `--uso`, en español y en inglés (se aceptan los dos en cualquier
     /// idioma): `--uso siglo-xx`, `--use 20th-century`.
-    static let nombresDeLosUsos: [(uso: EstiloDeEscala, espanol: String, ingles: String)] = [
+    static let nombresDeLosUsos: [(uso: Estilo, espanol: String, ingles: String)] = [
         (.clasica, "clasica", "classical"), (.jazz, "jazz", "jazz"), (.blues, "blues", "blues"),
         (.sigloXX, "siglo-xx", "20th-century"), (.popular, "popular", "popular"),
         (.sintetica, "sintetica", "synthetic"),
@@ -239,10 +239,10 @@ extension LineaDeComandos {
             }
             fuente = encontrada
         }
-        var usoPedido: EstiloDeEscala?
+        var usoPedido: Estilo?
         if let texto = try entrada.valor(.uso) {
             let clave = claveDeBusqueda(texto)
-            let nombres = { (candidato: EstiloDeEscala) -> [String] in
+            let nombres = { (candidato: Estilo) -> [String] in
                 let claves = nombresDeLosUsos.first { $0.uso == candidato }.map { [$0.espanol, $0.ingles] } ?? []
                 return (claves + [candidato.nombre, candidato.nombre(en: notacion)]).map(claveDeBusqueda)
             }

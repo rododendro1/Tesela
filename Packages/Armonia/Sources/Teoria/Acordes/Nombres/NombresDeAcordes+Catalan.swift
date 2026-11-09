@@ -3,7 +3,7 @@
 // Los nombres de los acordes del catálogo en catalán. Qué es cada campo, en `NombresDeAcordes.swift`.
 
 extension NombresDeAcordes {
-    static let catalan = NombresDeAcordes([
+    static let catalan = Tabla([
         .init(.mayor, "major"),
         .init(.menor, "menor"),
         .init(.disminuido, "disminuït"),

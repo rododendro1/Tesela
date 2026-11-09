@@ -332,16 +332,16 @@ Las demás de tres acordes o más se reconocen por sus grados: las fundamentales
 cada tríada (con séptima o sin ella) y el bajo de las que van invertidas. Así se encuentran la
 cadencia andaluza, la folía, el bajo de lamento, el do-re-mi, el Prinner, la chacona, el
 I–V–vi–IV, los cambios de Coltrane… Las cadencias de dos acordes las reconoce `Cadencia`, que sabe en qué tonalidad se
-está. Cada esquema dice cuál es (`tipo`, una `ProgresionConNombre`), dónde está (`indices`) y a
+está. Cada esquema dice cuál es (`progresion`, una `ProgresionConNombre`), dónde está (`indices`) y a
 qué tónica va.
 
 ```swift
 let esquemas = EsquemaArmonico.buscar(en: ["Do7M", "Lam7", "Rem7", "Sol7", "Do7M"])
-esquemas.map(\.tipo)          // [turnaround, progresión por quintas, ii–V–I]
+esquemas.map(\.progresion)    // [turnaround, progresión por quintas, ii–V–I]
 esquemas.map(\.indices)       // [0..<4, 1..<5, 2..<5]
-EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])[0].tipo == .backdoor     // true
-EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].tipo == .andaluza   // true
-EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].tonica             // La
+EsquemaArmonico.buscar(en: ["Fam7", "Sib7", "Do7M"])[0].progresion == .backdoor     // true
+EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].progresion == .andaluza   // true
+EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].tonica                  // La
 ```
 
 `rearmonizaciones(de:)` propone también preparar un acorde con su **ii–V** (Rem → Mim7 La7 Rem)
@@ -385,7 +385,10 @@ cifrado romano, su modo, sus estilos y, si la hay, la obra donde se lee:
 `acordes(sobre:)` la escribe con una
 tónica, en su modo, y `nombre(en:)` la nombra en los trece idiomas. `buscar(nombre:)` la
 encuentra por su nombre, un alias o una variante en cualquier idioma, sin mirar mayúsculas,
-tildes ni guiones, y `buscar(conteniendo:)` da las que tienen un texto en el nombre.
+tildes ni guiones, y `buscar(conteniendo:)` da las que tienen un texto en el nombre. Una
+progresión propia se crea con `ProgresionConNombre(nombre:leyendo:modo:…)`, que lanza un error si
+su cifrado no se lee. En la línea de comandos, `armonia progresiones andaluza --en La` las busca y
+las escribe.
 
 ```swift
 ProgresionConNombre.monte.acordes(sobre: .do) == ["Do7", "Fa", "Re7", "Sol"]           // true

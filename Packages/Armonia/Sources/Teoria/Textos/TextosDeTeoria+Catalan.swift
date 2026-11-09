@@ -196,7 +196,7 @@ extension TextosDeTeoria {
         tradicionVietnam: "Vietnam",
         tradicionBrasil: "Brasil",
         tradicionRenacimiento: "Renaixement",
-        // EstiloDeEscala.swift y RegionDeEscala.swift
+        // Estilo.swift y RegionDeEscala.swift
         subtradicionCarnatica: "Carnàtica",
         subtradicionIndostanica: "Indostànica",
         subtradicionIndiaAntigua: "Índia antiga",

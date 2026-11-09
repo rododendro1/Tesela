@@ -3,7 +3,7 @@
 // Los nombres de los acordes del catálogo en portugués. Qué es cada campo, en `NombresDeAcordes.swift`.
 
 extension NombresDeAcordes {
-    static let portugues = NombresDeAcordes([
+    static let portugues = Tabla([
         .init(.mayor, "maior"),
         .init(.menor, "menor"),
         .init(.disminuido, "diminuto"),

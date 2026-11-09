@@ -4,6 +4,8 @@
 // lleva la posición correcta sin cálculos aparte. Es un valor: copiarlo permite probar una
 // lectura y volver atrás (por ejemplo, leer "Faug" primero como Fa y después como F).
 
+import Foundation
+
 package struct Lector {
     /// Texto completo (para los mensajes de error).
     package let texto: String
@@ -199,6 +201,31 @@ extension String {
             }
         }
         return String(sinTildes).split(whereSeparator: { $0 == " " || $0 == "-" }).joined(separator: " ")
+    }
+}
+
+extension String {
+    /// Forma para buscar un nombre del catálogo (de escala, de acorde, de progresión): minúsculas, sin diacríticos
+    /// (dórico → dorico, Kāfī → kafi), ♯/♭ como #/b, sin ♮ ni ordinales (4ª → 4), «−» como «-», «…» como «..», la ı
+    /// sin punto del turco como i (makamı → makami) y con un solo espacio entre palabras. En devanagari no se quitan
+    /// los signos: las vocales y el virama son parte de la letra (भैरव y भैरवी son dos rāgas).
+    ///
+    /// Con `conEspacios: false` se quitan además los espacios, los guiones, las rayas, los apóstrofos y los puntos,
+    /// para que «ii–V–I», «ii-V-I» y «II V I» sean lo mismo. Las escalas se buscan con espacios (es lo que replica
+    /// `Scripts/comun/normalizar_escalas.py`), y los acordes y las progresiones, sin ellos.
+    package func normalizadoParaBuscar(conEspacios: Bool = true) -> String {
+        let devanagari = unicodeScalars.contains { (0x0900...0x097F).contains($0.value) }
+        let normalizado = replacingOccurrences(of: "♯", with: "#")
+            .replacingOccurrences(of: "♭", with: "b")
+            .replacingOccurrences(of: "♮", with: "")
+            .replacingOccurrences(of: "ª", with: "")
+            .replacingOccurrences(of: "−", with: "-")
+            .replacingOccurrences(of: "…", with: "..")
+            .replacingOccurrences(of: "ı", with: "i")
+            .folding(options: devanagari ? [.caseInsensitive] : [.diacriticInsensitive, .caseInsensitive], locale: nil)
+            .lowercased()
+            .split(whereSeparator: { $0 == " " || $0 == "-" }).joined(separator: " ")
+        return conEspacios ? normalizado : normalizado.filter { !" -–—'’.".contains($0) }
     }
 }
 
