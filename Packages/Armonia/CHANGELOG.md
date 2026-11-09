@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.5 (2026-11-09)
 
 - `AcordeConNombre.buscar(nombre:)` y `buscar(conteniendo:)`, como en las progresiones: un acorde del catálogo por
   su nombre, un alias o una variante en cualquiera de los trece idiomas, sin mirar mayúsculas, tildes ni guiones
