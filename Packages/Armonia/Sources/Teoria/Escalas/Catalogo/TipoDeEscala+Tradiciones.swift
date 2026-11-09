@@ -45,7 +45,8 @@ extension TipoDeEscala {
     /// `tradicionales`. La tradición de cada escala está en su ficha, y una prueba comprueba que es la de su lista.
     /// Una lista nueva se apunta aquí, al final, y una tradición nueva necesita al menos una.
     static let listasTradicionales: [ListaTradicional] = [
-        .init(.india, thaats, referencias: [.jairazbhoy1971, .kaufmann1968, .rechberger2008]), .init(.grecia, dromoi),
+        .init(.india, thaats, referencias: [.jairazbhoy1971, .kaufmann1968, .rechberger2008]),
+        .init(.grecia, dromoi, referencias: [.pennanen1999]),
         .init(.india, melakartas, referencias: [.kaufmann1976, .rechberger2008]),
         .init(.india, janyas, referencias: [.kaufmann1976]),
         .init(.india, gramas, referencias: [.rowell1992]), .init(.india, murchanas, referencias: [.rowell1992]),
@@ -58,7 +59,7 @@ extension TipoDeEscala {
         .init(.klezmer, klezmer, referencias: [.rubin2020]),
         .init(.india, ragasIndostanicos, referencias: [.jairazbhoy1971, .kaufmann1968]),
         .init(.persia, dastgah, referencias: [.farhat1990, .rechberger2008]),
-        .init(.corea, coreanas), .init(.andes, andinas, referencias: [.harcourt1925]),
+        .init(.corea, coreanas, referencias: [.shin2024]), .init(.andes, andinas, referencias: [.harcourt1925]),
         .init(.greciaAntigua, tetracordosGriegos, referencias: [.chalmers1993, .west1992]),
         .init(.greciaAntigua, generosDeArquitasYPtolomeo, referencias: [.chalmers1993, .west1992]),
         .init(.greciaAntigua, harmoniai, referencias: [.west1992, .rechberger2008]),
@@ -76,7 +77,8 @@ extension TipoDeEscala {
         .init(.greciaAntigua, harmoniaiDeAristides, referencias: [.west1992, .mathiesen1999]),
         .init(.gregoriano, hexacordos, referencias: [.apel1958]), .init(.europa, europeas),
         .init(.gregoriano, modosDeGlareano),
-        .init(.vietnam, vietnamitas, referencias: [.tranVanKhe1962]), .init(.brasil, brasilenas),
+        .init(.vietnam, vietnamitas, referencias: [.tranVanKhe1962]),
+        .init(.brasil, brasilenas, referencias: [.siqueira1981]),
         .init(.greciaAntigua, coloresDeAristoxeno, referencias: [.chalmers1993, .west1992]),
         .init(.mundoArabe, adwar, referencias: [.wright1978]), .init(.china, lus, referencias: [.barbour1951]),
         .init(.renacimiento, escalasRenacentistas, referencias: [.barbour1951]),

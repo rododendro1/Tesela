@@ -7,7 +7,7 @@ import Testing
     /// Cada acorde del catálogo se lee por terceras y tiene un nombre que no se repite.
     @Test func catalogo() {
         let catalogo = AcordeConNombre.catalogo
-        #expect(AcordeConNombre.genericos.count == 31)
+        #expect(AcordeConNombre.genericos.count == 37)
         #expect(catalogo == AcordeConNombre.genericos + AcordeConNombre.conNombrePropio)
         #expect(Set(catalogo.map(\.nombre)).count == catalogo.count)
         #expect(Set(catalogo).count == catalogo.count)
@@ -52,7 +52,8 @@ import Testing
         #expect(hendrix.acordeConNombre == nil)
         #expect(hendrix.nombre(en: .conPalabras(.espanol)) == "acorde 7(♯9,omit5)")
         #expect(hendrix.acordesConNombre == [.hendrix])
-        #expect(try TipoDeAcorde(leyendo: "7(#9)").acordesConNombre.isEmpty)
+        #expect(try TipoDeAcorde(leyendo: "7(#9)").acordesConNombre == [.dominanteNovenaAumentada])
+        #expect(try TipoDeAcorde(leyendo: "7(#9,#11)").acordesConNombre.isEmpty)
         #expect(TipoDeAcorde.mayorNovenaAnadida.acordesConNombre == [.mayorNovenaAnadida, .mu])
         #expect(TipoDeAcorde.dominanteSeptima.acordesConNombre == [.dominanteSeptima])
         for acorde in AcordeConNombre.conNombrePropio {

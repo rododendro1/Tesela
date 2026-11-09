@@ -91,6 +91,28 @@ extension AcordeConNombre {
         nombre: "séptima con novena menor",
         intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMenor],
         referencias: [.aldwell2011, .levine1995])
+    public static let dominanteQuintaDisminuida = AcordeConNombre(
+        nombre: "séptima con quinta disminuida",
+        intervalos: [.unisono, .terceraMayor, .quintaDisminuida, .septimaMenor], referencias: [.levine1995])
+    public static let dominanteNovenaAumentada = AcordeConNombre(
+        nombre: "séptima con novena aumentada",
+        intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaAumentada],
+        referencias: [.levine1995])
+    public static let dominanteUndecimaAumentada = AcordeConNombre(
+        nombre: "séptima con undécima aumentada",
+        intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .undecimaAumentada],
+        referencias: [.levine1995])
+    public static let mayorSeptimaMayorUndecimaAumentada = AcordeConNombre(
+        nombre: "séptima mayor con undécima aumentada",
+        intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMayor, .undecimaAumentada],
+        referencias: [.levine1995])
+    public static let sus4Novena = AcordeConNombre(
+        nombre: "novena suspendida",
+        intervalos: [.unisono, .cuartaJusta, .quintaJusta, .septimaMenor, .novenaMayor], referencias: [.levine1995])
+    public static let sus4Decimotercera = AcordeConNombre(
+        nombre: "decimotercera suspendida",
+        intervalos: [.unisono, .cuartaJusta, .quintaJusta, .septimaMenor, .novenaMayor, .decimoterceraMayor],
+        referencias: [.levine1995])
     public static let sextaAumentadaItaliana = AcordeConNombre(
         nombre: "sexta aumentada italiana", intervalos: [.unisono, .terceraMayor, .sextaAumentada], estilos: [.clasica],
         referencias: [.aldwell2011])
@@ -101,16 +123,18 @@ extension AcordeConNombre {
     public static let sextaAumentadaAlemana = AcordeConNombre(
         nombre: "sexta aumentada alemana",
         intervalos: [.unisono, .terceraMayor, .quintaJusta, .sextaAumentada],
-        estilos: [.clasica])
+        estilos: [.clasica], referencias: [.aldwell2011])
 
-    /// Los genéricos, los que dan nombre a los tipos de acorde (`TipoDeAcorde.acordeConNombre`, referencias: [.aldwell2011]), en el orden en que
+    /// Los genéricos, los que dan nombre a los tipos de acorde (`TipoDeAcorde.acordeConNombre`), en el orden en que
     /// tienen prioridad: si dos tuvieran las mismas notas, el primero daría nombre al tipo.
     public static let genericos: [AcordeConNombre] = [
         .mayor, .menor, .disminuido, .aumentado, .sus2, .sus4, .potencia, .dominanteSeptima, .mayorSeptimaMayor,
         .menorSeptima, .semidisminuido, .disminuidoSeptima, .menorSeptimaMayor, .aumentadoSeptima,
         .aumentadoSeptimaMayor, .sus4Septima, .mayorSexta, .menorSexta, .mayorSextaNovena, .dominanteNovena,
         .mayorSeptimaMayorNovena, .menorSeptimaNovena, .mayorNovenaAnadida, .dominanteUndecima, .menorSeptimaUndecima,
-        .dominanteDecimotercera, .menorSeptimaDecimotercera, .dominanteNovenaMenor, .sextaAumentadaItaliana,
+        .dominanteDecimotercera, .menorSeptimaDecimotercera, .dominanteNovenaMenor, .dominanteQuintaDisminuida,
+        .dominanteNovenaAumentada, .dominanteUndecimaAumentada, .mayorSeptimaMayorUndecimaAumentada, .sus4Novena,
+        .sus4Decimotercera, .sextaAumentadaItaliana,
         .sextaAumentadaFrancesa, .sextaAumentadaAlemana,
     ]
 }

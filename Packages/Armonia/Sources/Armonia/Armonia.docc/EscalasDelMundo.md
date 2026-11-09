@@ -269,7 +269,9 @@ TipoDeEscala.tradicionales(clase: .afinacion).count   // 18
 `referencias` dice dónde se lee una escala de otra tradición: las obras (``Referencia``) que cita su declaración,
 las de su lista, la del teórico que la definió (`fuente`) y las de sus afinaciones. Las occidentales tienen las de
 `referenciasOccidentales` (Aldwell, Schachter y Cadwallader para la mayor y las menores; Levine para las del jazz;
-Messiaen para sus modos…), salvo las sintéticas, que solo salen de rotar o alterar otra. El compendio de Rechberger
+Messiaen para sus modos…); las sintéticas de siete notas, las que salen de alterar los grados de otra, la de Busoni
+(`Referencia.busoni1916`), que las cuenta todas sin nombrarlas, y las demás alteradas (las pentatónicas, las
+hexatónicas, las cromáticas) ninguna. El compendio de Rechberger
 (`Referencia.rechberger2008`) se cita por capítulos: los modos diatónicos, las pentatónicas, las gitanas húngaras y
 las listas que trata enteras (los maqāmāt, los makam, los dastgāh, los thāṭ y los mēḷa, las japonesas, las chinas, los
 echoi, las harmoniai y los modos gregorianos). Cada obra es una constante

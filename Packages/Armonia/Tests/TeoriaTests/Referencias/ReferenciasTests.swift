@@ -80,8 +80,13 @@ import Testing
             TipoDeEscala.escalasRenacentistas[0].referencias
                 == [.barbour1951, .zarlino1558, .salinas1577, .ramos1482])
         #expect(TipoDeEscala.hardino.referencias == [.knight1973])
-        // Las propias y las occidentales sintéticas no tienen.
-        #expect(TipoDeEscala.lidioSegundaAumentada.referencias.isEmpty)
+        // Los dromoi, las coreanas y las brasileñas, por su lista.
+        #expect(TipoDeEscala.hitzaz.referencias == [.pennanen1999])
+        #expect(TipoDeEscala.ujo.referencias == [.shin2024])
+        #expect(TipoDeEscala.lidioNordestino.referencias == [.siqueira1981])
+        // Las sintéticas de siete notas, por Busoni; las propias y las demás alteradas no tienen.
+        #expect(TipoDeEscala.lidioSegundaAumentada.referencias == [.busoni1916])
+        #expect(TipoDeEscala.pentatonicaMenorSexta.referencias.isEmpty)
         #expect(TipoDeEscala(nombre: "mía", intervalos: TipoDeEscala.bayati.intervalos).referencias.isEmpty)
     }
 
@@ -93,6 +98,7 @@ import Testing
         #expect(TipoDeEscala.flamenca.referencias == [.manuel1989])
         #expect(TipoDeEscala.aumentada.referencias == [.tymoczko2011, .cohn1996])
         #expect(AcordeConNombre.dominanteSeptima.referencias == [.aldwell2011, .levine1995])
+        #expect(AcordeConNombre.sextaAumentadaAlemana.referencias == [.aldwell2011])
         #expect(AcordeConNombre.potencia.referencias == [.walser1993])
     }
 
