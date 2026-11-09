@@ -647,6 +647,13 @@ extension LineaDeComandosTests {
         #expect(salida("scale C whole tone --symmetry --ingles").contains("\nSymmetry:\n"))
     }
 
+    @Test func melaYCakra() {
+        #expect(
+            salida("escala Do mayamalavagowla").contains(
+                "\n  mēḷa 15, cakra 3 (Agni), Agni-go: sa ra gu ma pa dha nu\n"))
+        #expect(!salida("escala Do mayor").contains("cakra"))
+    }
+
     @Test func tetracordosDeUnaEscala() {
         let armonica = salida("escala La menor armónica --tetracordos")
         #expect(
@@ -661,6 +668,12 @@ extension LineaDeComandosTests {
             salida("escala Mi frigio --tetracordos").contains(
                 "\n  Mi Fa Sol La (tetracordo mésōn, tetracordo hyperbolaíōn, tetracordo diatónico, jins Kurd,"
                     + " Kürdî dörtlüsü) | 2ª mayor | Si Do Re Mi (tetracordo hypátōn, tetracordo diezeugménōn,"))
+        #expect(
+            salida("escala Re bayati --tetracordos").contains(
+                "\nTetracordos:\n  sus ajnas o çeşni (Maqam World): jins Bayātī (Re) · jins Nahāwand (Sol)\n"))
+        #expect(
+            salida("escala La rast makami --tetracordos").contains(
+                "  sus ajnas o çeşni (Signell 1977): Rast beşlisi (La) · Rast dörtlüsü (Mi)\n"))
         #expect(
             salida("escala Do pentatónica mayor --tetracordos").hasSuffix(
                 "\nTetracordos:\n  no se divide en dos tetracordos\n"))
