@@ -330,8 +330,8 @@ secuencias y esquemas del barroco y el galante tienen reglas propias, que admite
 
 Las demás de tres acordes o más se reconocen por sus grados: las fundamentales, la calidad de
 cada tríada (con séptima o sin ella) y el bajo de las que van invertidas. Así se encuentran la
-cadencia andaluza, la folía, el bajo de lamento, el do-re-mi, el I–V–vi–IV, los cambios de
-Coltrane… Las cadencias de dos acordes las reconoce `Cadencia`, que sabe en qué tonalidad se
+cadencia andaluza, la folía, el bajo de lamento, el do-re-mi, el Prinner, la chacona, el
+I–V–vi–IV, los cambios de Coltrane… Las cadencias de dos acordes las reconoce `Cadencia`, que sabe en qué tonalidad se
 está. Cada esquema dice cuál es (`tipo`, una `ProgresionConNombre`), dónde está (`indices`) y a
 qué tónica va.
 
@@ -367,13 +367,22 @@ try Tonalidad(.do).acordes(romanos: "I ♭VI ♭VII I") == ["Do", "Lab", "Sib", 
 
 ## El catálogo de progresiones
 
-`ProgresionConNombre.catalogo` reúne 29 progresiones con nombre, cada una con sus grados en
-cifrado romano, su modo, sus estilos y la obra donde se lee: las cadencias (perfecta, plagal,
-rota, semicadencia, frigia, napolitana y con sexta aumentada) y la progresión por quintas; los
-esquemas del barroco y del galante (romanesca, canon de Pachelbel, monte, fonte, ponte, do-re-mi,
-folía y bajo de lamento); las del jazz y el blues (ii–V–I mayor y menor, ii–V, turnaround, backdoor,
-blues de 12 compases y menor, rhythm changes y cambios de Coltrane), y las del pop (I–V–vi–IV,
-progresión de los 50, ♭VI–♭VII–I y cadencia andaluza). `acordes(sobre:)` la escribe con una
+`ProgresionConNombre.catalogo` reúne 52 progresiones con nombre, cada una con sus grados en
+cifrado romano, su modo, sus estilos y, si la hay, la obra donde se lee:
+
+- Las cadencias (perfecta, plagal, rota, semicadencia, frigia, napolitana, con sexta aumentada,
+  evitada y la tercera de picardía) y la progresión por quintas.
+- Los esquemas del galante (romanesca, canon de Pachelbel, monte, fonte, ponte, do-re-mi,
+  Prinner, Fenaroli, quiescenza, Meyer, sol-fa-mi e indugio), la folía, el bajo de lamento,
+  diatónico y cromático, y los bajos de danza del Renacimiento y el barroco (passamezzo antico y
+  moderno, ruggiero, bergamasca, chacona y pasacalle).
+- Las del jazz y el blues: ii–V–I mayor y menor, ii–V, ii–subV–I, turnaround, el de Tadd
+  Dameron, backdoor, blues de 12 compases, menor y el Bird blues, rhythm changes, cambios de
+  Coltrane y la progresión de Autumn Leaves.
+- Las del pop y el rock: I–V–vi–IV, progresión de los 50, ♭VI–♭VII–I, cadencia andaluza,
+  I–♭VII–IV, i–♭VII–♭VI–♭VII, I–IV–V–IV e I–III–IV–iv.
+
+`acordes(sobre:)` la escribe con una
 tónica, en su modo, y `nombre(en:)` la nombra en los trece idiomas. `buscar(nombre:)` la
 encuentra por su nombre, un alias o una variante en cualquier idioma, sin mirar mayúsculas,
 tildes ni guiones, y `buscar(conteniendo:)` da las que tienen un texto en el nombre.
@@ -383,7 +392,7 @@ ProgresionConNombre.monte.acordes(sobre: .do) == ["Do7", "Fa", "Re7", "Sol"]    
 ProgresionConNombre.andaluza.acordes(sobre: .la) == ["Lam", "Sol", "Fa", "Mi"]         // true
 ProgresionConNombre.andaluza.nombre(en: .conPalabras(.ingles)) == "Andalusian cadence"   // true
 ProgresionConNombre.buscar(nombre: "ii-V-I") == .iiVI                                    // true
-ProgresionConNombre.buscar(conteniendo: "blues").count                                  // 2
+ProgresionConNombre.buscar(conteniendo: "blues").count                                  // 3
 ```
 
 ## Bajo cifrado

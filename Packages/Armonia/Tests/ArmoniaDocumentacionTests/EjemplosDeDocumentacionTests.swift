@@ -1444,7 +1444,7 @@ import Hexagonos
         comprobar(ProgresionConNombre.andaluza.acordes(sobre: .la) == ["Lam", "Sol", "Fa", "Mi"], #"true"#, doc, 1)
         comprobar(ProgresionConNombre.andaluza.nombre(en: .conPalabras(.ingles)) == "Andalusian cadence", #"true"#, doc, 2)
         comprobar(ProgresionConNombre.buscar(nombre: "ii-V-I") == .iiVI, #"true"#, doc, 3)
-        comprobar(ProgresionConNombre.buscar(conteniendo: "blues").count, #"2"#, doc, 4)
+        comprobar(ProgresionConNombre.buscar(conteniendo: "blues").count, #"3"#, doc, 4)
     }
 
     @Test func tonalidad22() throws {

@@ -7,14 +7,14 @@ import Testing
     /// Cada progresión del catálogo tiene un nombre que no se repite y su cifrado se lee entero.
     @Test func catalogo() throws {
         let catalogo = ProgresionConNombre.catalogo
-        #expect(catalogo.count == 29)
+        #expect(catalogo.count == 52)
         #expect(Set(catalogo.map(\.nombre)).count == catalogo.count)
         #expect(Set(catalogo).count == catalogo.count)
         for progresion in catalogo {
             let acordes = try progresion.tonalidad(sobre: .do).acordes(romanos: progresion.cifrado)
             #expect(acordes.count == progresion.grados.count, "\(progresion)")
             #expect(progresion.acordes(sobre: .do) == acordes, "\(progresion)")
-            #expect(!progresion.estilos.isEmpty && !progresion.referencias.isEmpty, "\(progresion)")
+            #expect(!progresion.estilos.isEmpty, "\(progresion)")
         }
     }
 
