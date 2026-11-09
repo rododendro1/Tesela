@@ -385,7 +385,10 @@ cifrado romano, su modo, sus estilos y, si la hay, la obra donde se lee:
 `acordes(sobre:)` la escribe con una
 tónica, en su modo, y `nombre(en:)` la nombra en los trece idiomas. `buscar(nombre:)` la
 encuentra por su nombre, un alias o una variante en cualquier idioma, sin mirar mayúsculas,
-tildes ni guiones, y `buscar(conteniendo:)` da las que tienen un texto en el nombre.
+tildes ni guiones, y `buscar(conteniendo:)` da las que tienen un texto en el nombre. Una
+progresión propia se crea con `ProgresionConNombre(nombre:leyendo:modo:…)`, que lanza un error si
+su cifrado no se lee. En la línea de comandos, `armonia progresiones andaluza --en La` las busca y
+las escribe.
 
 ```swift
 ProgresionConNombre.monte.acordes(sobre: .do) == ["Do7", "Fa", "Re7", "Sol"]           // true

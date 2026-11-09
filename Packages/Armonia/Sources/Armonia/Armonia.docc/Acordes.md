@@ -79,9 +79,11 @@ AcordeConNombre.sextaAumentadaAlemana.estilos                  // [clasica]
 
 Los genéricos citan dónde se leen: Aldwell, Schachter y Cadwallader los de la armonía tonal (las tríadas, las séptimas,
 las sextas aumentadas), Levine los del jazz y Walser el de potencia. Los de nombre propio
-(``AcordeConNombre/conNombrePropio``) son acordes de una obra o de un estilo, con la obra donde se leen: el de Tristán, el místico de Skriabin, el de Petrushka, el de «Farben», el So What, el de Hendrix, el mu,
-el acorde por cuartas, el de «Elektra», el de los augures, el de la «Sinfonía de los salmos» y el alfa de Lendvai.
-Los de Hendrix y mu, los cuatro últimos y la novena añadida menor, m(add9), no citan todavía ninguna obra. No dan nombre a su tipo, pero ``TipoDeAcorde/acordesConNombre`` los encuentra:
+(``AcordeConNombre/conNombrePropio``) son acordes de una obra o de un estilo, con la obra donde se leen: el de
+Tristán, el místico de Skriabin, el de Petrushka, el de «Farben», el So What, el de Hendrix, el mu, el acorde por
+cuartas, el de «Elektra», el de los augures, el de la «Sinfonía de los salmos» y el alfa de Lendvai. Los de Hendrix y
+mu, los cuatro últimos y la novena añadida menor, m(add9), no citan todavía ninguna obra. No dan nombre a su tipo,
+pero ``TipoDeAcorde/acordesConNombre`` los encuentra:
 
 ```swift
 AcordeConNombre.tristan.notas(sobre: .fa)                      // [Fa, Si, Re♯, Sol♯]
@@ -89,6 +91,17 @@ AcordeConNombre.tristan.referencias.map(\.cita)              // ["Rothgeb 1995"]
 AcordeConNombre.dominanteSeptima.referencias.map(\.cita)     // ["Aldwell et al. 2011", "Levine 1995"]
 AcordeConNombre.petrushka.tipo                                 // nil
 TipoDeAcorde.mayorNovenaAnadida.acordesConNombre               // [novena añadida, acorde mu]
+```
+
+`nombre(en:)` lo nombra en los trece idiomas. ``AcordeConNombre/buscar(nombre:)`` lo encuentra por su nombre, un
+alias o una variante en cualquier idioma, sin mirar mayúsculas, tildes, espacios ni guiones, y
+``AcordeConNombre/buscar(conteniendo:)`` da los que tienen un texto en el nombre. En la línea de comandos,
+`armonia acordes tristan --sobre Fa` los busca y escribe sus notas.
+
+```swift
+AcordeConNombre.dominanteSeptima.nombre(en: .conPalabras(.ingles))   // «dominant seventh»
+AcordeConNombre.buscar(nombre: "Tristan chord") == .tristan          // true
+AcordeConNombre.buscar(conteniendo: "sexta aumentada").count         // 4
 ```
 
 ## Identificación desde alturas (MIDI)

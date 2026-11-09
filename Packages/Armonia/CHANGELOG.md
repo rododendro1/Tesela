@@ -7,10 +7,10 @@
   («dominant seventh», «Tristan chord»). La consola tiene la orden `acordes [<texto>] [--sobre <nota>]` (`chords …
   --over`), que da cada acorde con sus notas y, en los genéricos, su cifrado («séptima de dominante (Do7): Do Mi Sol
   Si♭»), y `progresiones` y `acordes` dan también JSON.
-- `EstiloDeEscala` se llama ahora `Estilo`, porque lo usan también los acordes y las progresiones. El nombre antiguo
-  queda como alias obsoleto hasta la 0.5.0.
-- `EsquemaArmonico.progresion` es la progresión encontrada; `tipo` queda como alias obsoleto hasta la 0.5.0, con
-  `EsquemaArmonico.Tipo`.
+- **Cambio incompatible:** `EstiloDeEscala` se llama ahora `Estilo`, porque lo usan también los acordes y las
+  progresiones. No queda alias del nombre antiguo.
+- **Cambio incompatible:** la progresión de un `EsquemaArmonico` es `progresion`, y no `tipo`. Desaparece también
+  `EsquemaArmonico.Tipo`, el alias obsoleto de `ProgresionConNombre` que quedaba desde la 0.4.4.
 - `AcordeConNombre` y `ProgresionConNombre` tienen la misma forma: el `init` público acepta estilos y referencias en
   los dos. `ProgresionConNombre(nombre:leyendo:…)` comprueba el cifrado al crearla y lanza el error de lectura si no
   se lee, en vez de dar luego sus acordes vacíos.

@@ -17,15 +17,8 @@ import Elementos
 /// Se reconocen por el movimiento de las fundamentales y el tipo de los acordes, sin mirar la tonalidad: un
 /// ii–V–I secundario (Mim7–La7–Rem7 en Do) cuenta igual, con Re de tónica.
 public struct EsquemaArmonico: Hashable, Sendable, CustomStringConvertible {
-    /// Los esquemas son las progresiones del catálogo. Se va en la 0.5.0, con `tipo`.
-    @available(*, deprecated, renamed: "ProgresionConNombre")
-    public typealias Tipo = ProgresionConNombre
-
     /// La progresión del catálogo: `.iiVI`, `.turnaround`, `.andaluza`…
     public let progresion: ProgresionConNombre
-    /// El nombre de `progresion` hasta la 0.4.4.
-    @available(*, deprecated, renamed: "progresion")
-    public var tipo: ProgresionConNombre { progresion }
     /// Índice, desde 0, del primer acorde del esquema.
     public let inicio: Int
     /// Cuántos acordes ocupa.

@@ -12,8 +12,6 @@ import Elementos
 ///
 ///     TipoDeEscala.alterada.estilos         // [.jazz]
 ///     Estilo.blues.tipos                    // pentatónica mayor, pentatónica menor, blues, blues mayor…
-///
-/// Hasta la 0.4.4 se llamaba `EstiloDeEscala`, que queda como alias obsoleto hasta la 0.5.0.
 public enum Estilo: String, Sendable, Codable, CaseIterable {
     /// Occidental: la teoría tonal y modal, en la que la escala da la tonalidad y de ella sale la armonía (la mayor,
     /// las menores, los modos, las napolitanas, la cromática, el hexacordo).
@@ -89,10 +87,6 @@ public enum Estilo: String, Sendable, Codable, CaseIterable {
 }
 
 extension Estilo: Nombrable {}
-
-/// El nombre de `Estilo` hasta la 0.4.4.
-@available(*, deprecated, renamed: "Estilo")
-public typealias EstiloDeEscala = Estilo
 
 // MARK: - Ficha de un acorde o una progresión del catálogo
 
