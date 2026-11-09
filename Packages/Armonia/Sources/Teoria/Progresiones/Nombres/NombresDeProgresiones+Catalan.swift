@@ -21,6 +21,7 @@ extension NombresDeProgresiones {
         .init(.folia, "fòlia"),
         .init(.bajoDeLamento, "baix de lament"),
         .init(.iiVI, "ii–V–I"),
+        .init(.iiV, "ii–V"),
         .init(.iiVIMenor, "ii–V–i menor"),
         .init(.turnaround, "turnaround"),
         .init(.backdoor, "backdoor"),

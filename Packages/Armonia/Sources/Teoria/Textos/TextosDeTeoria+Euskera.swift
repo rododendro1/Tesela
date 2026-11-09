@@ -104,8 +104,6 @@ extension TextosDeTeoria {
         papelTensionDisponible: "tentsioa",
         papelNotaAEvitar: "saihesteko nota",
         modoDe: { modo, escala in "\(escala): \(modo). modua" },
-        // EsquemaArmonico.swift
-        nombresDeEsquemas: ["ii–V–I", "ii–V", "turnaround", "backdoor", "12 konpaseko bluesa", "boskoen progresioa", "romanesca", "Pachelbelen kanona", "monte", "fonte", "ponte"],
         // Rearmonizacion.swift
         sustitutoTritonal: "tritono-ordezkapena",
         dominanteSecundaria: "bigarren mailako dominantea",

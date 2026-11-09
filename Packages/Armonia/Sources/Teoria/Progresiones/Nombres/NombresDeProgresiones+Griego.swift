@@ -21,6 +21,7 @@ extension NombresDeProgresiones {
         .init(.folia, "φόλια"),
         .init(.bajoDeLamento, "μπάσο του θρήνου"),
         .init(.iiVI, "ii–V–I"),
+        .init(.iiV, "ii–V"),
         .init(.iiVIMenor, "ελάσσονα ii–V–i"),
         .init(.turnaround, "τέρναραουντ"),
         .init(.backdoor, "μπακντόρ"),

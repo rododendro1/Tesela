@@ -13,14 +13,25 @@
   suspendidas, 9sus4 y 13sus4; la séptima alterada, 7alt; la menor con séptima mayor y novena, m(maj9); la
   decimotercera mayor, maj13, y la menor sexta y novena, m6/9. Tienen nombre en los doce idiomas y dan nombre a su tipo de acorde. El acorde de Hendrix
   sigue siendo el 7(♯9) sin quinta.
-- Nuevo catálogo de progresiones, `ProgresionConNombre.catalogo`: 28 progresiones con nombre, cada una con sus
+- Nuevo catálogo de progresiones, `ProgresionConNombre.catalogo`: 29 progresiones con nombre, cada una con sus
   grados en cifrado romano, su modo, sus estilos y dónde se lee. Son las cadencias de la armonía tonal y la progresión
   por quintas (Aldwell, Schachter y Cadwallader); los esquemas del barroco y del galante, de la romanesca al do-re-mi
   (Gjerdingen, 2007), la folía (Hudson, 1982) y el bajo de lamento (Rosand, 1979); las del jazz y el blues, del ii–V–I
-  a los cambios de Coltrane (Levine), y las del pop (Doll, 2017, y Manuel, 1989, para la cadencia andaluza).
+  y el ii–V a los cambios de Coltrane (Levine), y las del pop (Doll, 2017, y Manuel, 1989, para la cadencia andaluza).
   `acordes(sobre:)` y `acordes(en:)` las escriben en cualquier tonalidad; `nombre(en:)` las nombra en los trece
   idiomas, y `buscar(nombre:)` y `buscar(conteniendo:)` las encuentran por su nombre, sus alias o sus variantes en
   cualquiera de ellos. Cuatro obras nuevas en `Referencia.catalogo`: Gjerdingen, Hudson, Rosand y Doll.
+- **Cambio incompatible:** `EsquemaArmonico.tipo` es una `ProgresionConNombre` del catálogo, y `EsquemaArmonico.Tipo`
+  desaparece (queda como alias obsoleto de `ProgresionConNombre`). Lo que se escribía `.iiVI`, `.turnaround` o
+  `.pachelbel` se escribe igual, pero `Tipo.allCases` ya no existe y `acordes(en:)` da los acordes del cifrado del
+  catálogo: el blues acaba en I7 I7 y no en I7 V7. El ii–V–I en menor es ahora `.iiVIMenor`, y el blues menor,
+  `.bluesMenor`, que admite el ♭VI en el noveno compás. Los nombres salen de `NombresDeProgresiones`: el backdoor en
+  inglés es «backdoor progression», y las quintas descendentes, «circle-of-fifths progression».
+- `EsquemaArmonico.buscar(en:)` reconoce también, por sus grados, las demás progresiones del catálogo de tres acordes
+  o más: la cadencia andaluza, la folía, el bajo de lamento, el do-re-mi, las cadencias napolitana y con sexta
+  aumentada, el rhythm changes, los cambios de Coltrane, I–V–vi–IV, la de los 50 y ♭VI–♭VII–I. Mira las
+  fundamentales, la calidad de cada tríada y el bajo de las invertidas. A igualdad de inicio, los esquemas salen en
+  el orden del catálogo.
 - Nueva orden de la consola, `progresiones [<texto>] [--en <tonalidad>]` (`progressions`): las progresiones del catálogo
   con su cifrado y sus acordes sobre Do, o sobre la tónica de `--en`.
 - La sexta aumentada alemana vuelve a citar a Aldwell, Schachter y Cadwallader, que había perdido en la 0.4.4.

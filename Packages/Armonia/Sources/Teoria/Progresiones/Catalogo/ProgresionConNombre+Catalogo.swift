@@ -69,6 +69,9 @@ extension ProgresionConNombre {
 
     public static let iiVI = ProgresionConNombre(
         nombre: "ii–V–I", cifrado: "ii7 V7 Imaj7", estilos: [.jazz], referencias: [.levine1995])
+    /// Un ii–V que no resuelve en su tónica.
+    public static let iiV = ProgresionConNombre(
+        nombre: "ii–V", cifrado: "ii7 V7", estilos: [.jazz], referencias: [.levine1995])
     public static let iiVIMenor = ProgresionConNombre(
         nombre: "ii–V–i menor", cifrado: "iiø7 V7 i", modo: .menor, estilos: [.jazz], referencias: [.levine1995])
     public static let turnaround = ProgresionConNombre(
@@ -112,7 +115,7 @@ extension ProgresionConNombre {
     public static let catalogo: [ProgresionConNombre] = [
         .cadenciaPerfecta, .cadenciaPlagal, .cadenciaRota, .semicadencia, .cadenciaFrigia, .cadenciaNapolitana,
         .cadenciaConSextaAumentada, .quintasDescendentes, .romanesca, .pachelbel, .monte, .fonte, .ponte, .doReMi,
-        .folia, .bajoDeLamento, .iiVI, .iiVIMenor, .turnaround, .backdoor, .blues, .bluesMenor, .rhythmChanges,
+        .folia, .bajoDeLamento, .iiVI, .iiV, .iiVIMenor, .turnaround, .backdoor, .blues, .bluesMenor, .rhythmChanges,
         .coltrane, .ejePop, .deLos50, .eolica, .andaluza,
     ]
 }

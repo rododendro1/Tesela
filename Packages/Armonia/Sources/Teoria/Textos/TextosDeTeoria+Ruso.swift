@@ -101,8 +101,6 @@ extension TextosDeTeoria {
         papelTensionDisponible: "напряжение",
         papelNotaAEvitar: "избегаемый звук",
         modoDe: { modo, escala in "\(modo)-й лад гаммы \(escala)" },
-        // EsquemaArmonico.swift
-        nombresDeEsquemas: ["ii–V–I", "ii–V", "тёрнэраунд", "бэкдор", "12-тактовый блюз", "квинтовая секвенция", "романеска", "канон Пахельбеля", "монте", "фонте", "понте"],
         // Rearmonizacion.swift
         sustitutoTritonal: "тритоновая замена",
         dominanteSecundaria: "побочная доминанта",

@@ -101,8 +101,6 @@ extension TextosDeTeoria {
         papelTensionDisponible: "ένταση",
         papelNotaAEvitar: "φθόγγος προς αποφυγή",
         modoDe: { modo, escala in "τρόπος \(modo) της κλίμακας \(escala)" },
-        // EsquemaArmonico.swift
-        nombresDeEsquemas: ["ii–V–I", "ii–V", "τέρναραουντ", "μπακντόρ", "μπλουζ 12 μέτρων", "αλυσίδα πεμπτών", "ρομανέσκα", "κανόνας του Πάχελμπελ", "μόντε", "φόντε", "πόντε"],
         // Rearmonizacion.swift
         sustitutoTritonal: "τριτονική υποκατάσταση",
         dominanteSecundaria: "δευτερεύουσα δεσπόζουσα",

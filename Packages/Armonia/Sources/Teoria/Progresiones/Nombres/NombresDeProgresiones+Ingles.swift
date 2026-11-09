@@ -21,6 +21,7 @@ extension NombresDeProgresiones {
         .init(.folia, "folia", alias: ["la folia"]),
         .init(.bajoDeLamento, "lament bass", alias: ["descending tetrachord"]),
         .init(.iiVI, "ii–V–I"),
+        .init(.iiV, "ii–V"),
         .init(.iiVIMenor, "minor ii–V–i"),
         .init(.turnaround, "turnaround"),
         .init(.backdoor, "backdoor progression", alias: ["backdoor ii–V"]),
