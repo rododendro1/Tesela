@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.4.4 (2026-11-09)
 
 - **Cambio incompatible:** una sola regla para pasar la notación: `en:` cuando nada más ocupa esa etiqueta y
   `notacion:` cuando `en:` ya es la tonalidad, el mástil o la red. Pasan a `en:` los seis `PentagramaPresentado(…)`
