@@ -171,6 +171,14 @@ extension TextosDeTeoria {
         cardinalDecatonica: "декатоника",
         cardinalEndecatonica: "ундекатоника",
         cardinalDodecatonica: "додекатоника",
+        // CardinalDeAcorde.swift
+        cardinalDiada: "двузвучие",
+        cardinalTriada: "трезвучие",
+        cardinalTetrada: "четырёхзвучие",
+        cardinalPentada: "пятизвучие",
+        cardinalHexada: "шестизвучие",
+        cardinalHeptada: "семизвучие",
+        cardinalOctada: "восьмизвучие",
         // Tradicion+Nombre.swift
         tradicionOccidental: "Западная",
         tradicionIndia: "Индия",

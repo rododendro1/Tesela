@@ -1,10 +1,13 @@
 import Armonia
 
-/// Un dato de una escala con su nombre: «Brillo por quintas: +2».
-public struct DatoDeEscalaPresentado: Hashable, Sendable {
+/// Un dato con su nombre, de una escala o de un acorde: «Brillo por quintas: +2».
+public struct DatoPresentado: Hashable, Sendable {
     public let nombre: String
     public let valor: String
 }
+
+/// El nombre de antes de `DatoPresentado`, cuando solo lo daban las escalas.
+public typealias DatoDeEscalaPresentado = DatoPresentado
 
 /// Un peldaño de la escalera de brillo: la escala, su brillo por quintas y la nota que sube desde el anterior.
 public struct PeldanoDeBrilloPresentado: Hashable, Sendable {
@@ -31,10 +34,10 @@ extension PresentacionDeEstudioDeEscala {
     ///         en: .compacta(.espanol))
     ///     datos.map(\.valor)   // ["7 (heptatónica)", "0", "+2", "2 2 1 2 2 2 1", "[2, 5, 4, 3, 6, 1]", "7-35",
     ///                          //  "12", "máximamente regular"]
-    public static func estadisticas(de escala: Escala, en notacion: Notacion) -> [DatoDeEscalaPresentado] {
+    public static func estadisticas(de escala: Escala, en notacion: Notacion) -> [DatoPresentado] {
         let estadisticas = escala.estadisticas
-        func dato(_ campo: (TextosDeApps) -> String, _ valor: String) -> DatoDeEscalaPresentado {
-            DatoDeEscalaPresentado(nombre: notacion.texto(campo), valor: valor)
+        func dato(_ campo: (TextosDeApps) -> String, _ valor: String) -> DatoPresentado {
+            DatoPresentado(nombre: notacion.texto(campo), valor: valor)
         }
         let cardinal = estadisticas.cardinal.map { " (" + $0.nombre(en: notacion) + ")" } ?? ""
         var datos = [dato(\.numeroDeNotas, "\(estadisticas.numeroDeNotas)" + cardinal)]

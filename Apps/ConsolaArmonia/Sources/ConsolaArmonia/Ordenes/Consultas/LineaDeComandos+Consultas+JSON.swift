@@ -11,10 +11,31 @@ extension LineaDeComandos {
     // Los datos son los de `Exposicion` (ConsultasPresentadas.swift), los mismos que da el texto: sus nombres
     // son las claves del JSON.
 
-    /// `acorde Sol7 Do --json`: cada acorde con sus notas, una lista aunque sea uno solo.
-    static func acordeJSON(_ textos: [String], _ notacion: Notacion) throws -> [AcordePresentado] {
-        try palabras(Argumentos(textos), siFaltan: .faltaCifrado).map {
-            AcordePresentado(try Acorde(leyendo: $0, enLaOrden: notacion), en: notacion)
+    /// `acorde Sol7 Do --json`: cada acorde con sus notas, una lista aunque sea uno solo; con `--estadisticas`, cada
+    /// uno lleva también la clave `estadisticas` (`EstadisticasDeAcordePresentadas`).
+    static func acordeJSON(_ textos: [String], _ notacion: Notacion) throws -> [AcordeJSON] {
+        var argumentos = Argumentos(textos)
+        let estadisticas = argumentos.quitarMarca(.estadisticas)
+        return try palabras(argumentos, siFaltan: .faltaCifrado).map {
+            let acorde = try Acorde(leyendo: $0, enLaOrden: notacion)
+            return AcordeJSON(
+                acorde: AcordePresentado(acorde, en: notacion),
+                estadisticas: estadisticas ? EstadisticasDeAcordePresentadas(acorde.estadisticas, en: notacion) : nil)
+        }
+    }
+
+    /// Un acorde de `acorde --json`: las claves de `AcordePresentado` y, con `--estadisticas`, `estadisticas`.
+    struct AcordeJSON: Encodable {
+        let acorde: AcordePresentado
+        let estadisticas: EstadisticasDeAcordePresentadas?
+
+        private enum Clave: String, CodingKey { case estadisticas }
+
+        func encode(to encoder: any Encoder) throws {
+            try acorde.encode(to: encoder)
+            guard let estadisticas else { return }
+            var contenedor = encoder.container(keyedBy: Clave.self)
+            try contenedor.encode(estadisticas, forKey: .estadisticas)
         }
     }
 

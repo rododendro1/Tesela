@@ -104,6 +104,37 @@ AcordeConNombre.buscar(nombre: "Tristan chord") == .tristan          // true
 AcordeConNombre.buscar(conteniendo: "sexta aumentada").count         // 4
 ```
 
+## Cardinal y estadísticas
+
+``CardinalDeAcorde`` nombra un acorde por sus notas distintas, como ``CardinalDeEscala`` a las escalas: díada,
+tríada, tétrada, péntada, héxada, héptada y óctada, que es la de la séptima alterada y el acorde alfa. Lo dan
+`TipoDeAcorde`, `AcordeConNombre` (también los que no se leen por terceras) y `Acorde`, con el bajo si es ajeno.
+
+```swift
+TipoDeAcorde.dominanteSeptima.cardinal?.nombre                 // "tétrada"
+TipoDeAcorde.potencia.cardinal?.nombre(en: .conPalabras(.ingles))   // "dyad"
+AcordeConNombre.petrushka.numeroDeNotas                        // 6
+TipoDeAcorde.todos(numeroDeNotas: 3).count                     // 6
+```
+
+``EstadisticasDeAcorde`` es lo que se mide de él, como ``EstadisticasDeEscala``: el número de notas, si se lee por
+terceras y cuántas tensiones lleva, el brillo por quintas (la media de las quintas de la fundamental a cada nota), la
+amplitud en quintas, el vector interválico, la forma prima y el número de Forte, las transposiciones distintas, si es
+simétrico por inversión, si es anhemitónico, si tiene un tritono y, en los acordes con nombre, el ámbito de su
+disposición en semitonos.
+
+```swift
+TipoDeAcorde.dominanteSeptima.estadisticas.brilloPorQuintas    // 0.75
+TipoDeAcorde.dominanteSeptima.estadisticas.numeroDeForte       // "4-27"
+TipoDeAcorde.disminuidoSeptima.estadisticas.transposicionesDistintas   // 3
+AcordeConNombre.tristan.estadisticas.ambito                    // 15
+AcordeConNombre.petrushka.estadisticas.porTerceras             // false
+```
+
+En la línea de comandos, `armonia acorde Sol7 --estadisticas` las escribe; `armonia acordes` filtra el catálogo por
+ellas (`--notas 4` o `--notas tétrada`, `--por-terceras`, `--sin-semitonos`, `--con-intervalo tritono`…), lo ordena
+con `--orden brillo`, lo pone en una tabla con `--estadisticas` y cuenta cuántos hay de cada clase con `--resumen`.
+
 ## Identificación desde alturas (MIDI)
 
 Un teclado o un archivo MIDI solo da alturas. `Acorde.candidatos(midi:)` y

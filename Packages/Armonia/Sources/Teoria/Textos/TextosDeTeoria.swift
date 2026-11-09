@@ -187,6 +187,15 @@ struct TextosDeTeoria: TextosTraducidos {
     let cardinalEndecatonica: String
     let cardinalDodecatonica: String
 
+    // MARK: CardinalDeAcorde.swift
+    let cardinalDiada: String
+    let cardinalTriada: String
+    let cardinalTetrada: String
+    let cardinalPentada: String
+    let cardinalHexada: String
+    let cardinalHeptada: String
+    let cardinalOctada: String
+
     // MARK: Tradicion+Nombre.swift
     let tradicionOccidental: String
     let tradicionIndia: String

@@ -241,6 +241,47 @@ extension LineaDeComandosTests {
         #expect(resultado("acordes", "zzz").error.contains("no hay ningún acorde así"))
     }
 
+    /// `acordes` filtra por el número de notas (o su cardinal), el estilo, si se lee por terceras y los intervalos;
+    /// ordena por brillo o por notas, y da la tabla de estadísticas o el resumen del catálogo.
+    @Test func acordesPorSusEstadisticas() {
+        let tetradas = salida("acordes --notas 4").split(separator: "\n")
+        #expect(tetradas.count == AcordeConNombre.todos(numeroDeNotas: 4).count)
+        #expect(salida("acordes --notas tétrada") == salida("acordes --notas 4"))
+        #expect(salida("chords --notes tetrad --ingles") == salida("acordes --notas 4 --ingles"))
+        #expect(salida("acordes --notas 2") == "quinta (acorde de potencia) (Do5): Do Sol\n")
+        #expect(salida("acordes --no-por-terceras").contains("acorde de Petrushka"))
+        #expect(!salida("acordes --por-terceras").contains("acorde de Petrushka"))
+        #expect(salida("acordes --uso jazz --notas 4") == "acorde por cuartas: Do Fa Si♭ Mi♭\n")
+        #expect(!salida("acordes --sin-semitonos").contains("séptima mayor (Domaj7)"))
+        #expect(salida("acordes --sin-intervalo tritono --notas 3").contains("mayor (Do): Do Mi Sol"))
+        #expect(!salida("acordes --con-intervalo tritono --notas 3").contains("mayor (Do): Do Mi Sol"))
+        // Del más brillante al más oscuro: la séptima disminuida, la última de las tétradas por terceras.
+        let porBrillo = salida("acordes --orden brillo --notas 4 --por-terceras").split(separator: "\n")
+        #expect(porBrillo.last == "séptima disminuida (Do°7): Do Mi♭ Sol♭ Si𝄫")
+        // La tabla: una fila por acorde, más la de los encabezados.
+        let tabla = salida("acordes --estadisticas --notas 3").split(separator: "\n")
+        #expect(tabla.count == AcordeConNombre.todos(numeroDeNotas: 3).count + 1)
+        #expect(tabla[0].hasPrefix("Acorde"))
+        #expect(tabla[1].contains("3-11"))
+        // El resumen.
+        let resumen = salida("acordes --resumen")
+        #expect(resumen.hasPrefix("Acordes: \(AcordeConNombre.catalogo.count)\n"))
+        #expect(resumen.contains("  4 (tétrada): \(AcordeConNombre.todos(numeroDeNotas: 4).count)\n"))
+        #expect(resumen.contains("No se lee por terceras: "))
+        #expect(salida("chords --summary --ingles").contains("  3 (triad): "))
+        #expect(resultado("acordes", "--notas", "veinte").error.contains("--notas 5"))
+    }
+
+    /// `acorde --estadisticas` da lo que se mide de cada acorde.
+    @Test func estadisticasDeUnAcorde() {
+        let sol7 = salida("acorde Sol7 --estadisticas")
+        #expect(sol7.contains("Estadísticas:\n  Número de notas: 4 (tétrada)\n"))
+        #expect(sol7.contains("  Número de Forte: 4-27\n"))
+        #expect(sol7.contains("  Rasgos: anhemitónico (sin semitonos) · con tritono\n"))
+        #expect(salida("acorde Do/Re --estadisticas").contains("Número de notas: 4 (tétrada)"))
+        #expect(salida("chord C --statistics --ingles").contains("Number of notes: 3 (triad)"))
+    }
+
     /// `tradiciones` da cada tradición con sus categorías (salvo la occidental, que no tiene: sus escalas son las
     /// habituales, por estilos con `escalas --uso`); con una, sus escalas.
     @Test func tradiciones() throws {

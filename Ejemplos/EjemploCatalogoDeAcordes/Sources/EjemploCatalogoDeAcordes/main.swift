@@ -3,7 +3,8 @@ import Foundation
 
 // Recorre `AcordeConNombre.catalogo` (los genéricos y después los de nombre propio, en su orden) y escribe una fila por
 // acorde con lo que dice de él la API pública: nombres (y su traducción a los otros doce idiomas), intervalos, notas
-// sobre Do, el cifrado y el nombre de su tipo de acorde, estilos y las obras que lo citan. Las listas de una celda van
+// sobre Do, el cifrado y el nombre de su tipo de acorde, lo que se mide de él (`EstadisticasDeAcorde`), estilos y las
+// obras que lo citan. Las listas de una celda van
 // separadas por espacios (intervalos, semitonos, notas) o por « · » (alias, variantes, estilos, citas); una celda
 // vacía es un dato que el acorde no tiene.
 //
@@ -21,8 +22,9 @@ let traducciones = Idioma.allCases.filter { $0 != .espanol }
 
 let columnas: [String] =
     ["nombre"] + traducciones.map { "nombre_en_\($0.rawValue)" } + [
-        "alias", "variantes", "grupo", "numero_de_notas", "intervalos", "semitonos", "notas_sobre_do", "cifrado",
-        "nombre_del_tipo", "estilos", "referencias",
+        "alias", "variantes", "grupo", "numero_de_notas", "cardinal", "intervalos", "semitonos", "notas_sobre_do",
+        "cifrado", "nombre_del_tipo", "por_terceras", "brillo_por_quintas", "amplitud_en_quintas",
+        "vector_intervalico", "forma_prima", "forte", "transposiciones_distintas", "ambito", "estilos", "referencias",
     ]
 
 let genericos = Set(AcordeConNombre.genericos)
@@ -30,16 +32,27 @@ let genericos = Set(AcordeConNombre.genericos)
 /// La fila de un acorde, en el orden de `columnas`.
 func fila(_ acorde: AcordeConNombre) -> [String] {
     let comoSeLlama = [acorde.nombre] + traducciones.map { acorde.nombre(en: .delIdioma($0)) }
+    let medidas = acorde.estadisticas
     let resto: [String] = [
         acorde.alias.joined(separator: " · "),
         acorde.variantes.joined(separator: " · "),
         genericos.contains(acorde) ? "genérico" : "nombre propio",
-        String(acorde.intervalos.count),
+        // Las notas distintas: el acorde de la Sinfonía de los salmos tiene cuatro voces y tres notas.
+        String(medidas.numeroDeNotas),
+        medidas.cardinal?.nombre ?? "",
         acorde.intervalos.map(\.abreviatura).joined(separator: " "),
         acorde.intervalos.map { String($0.semitonos) }.joined(separator: " "),
         acorde.notas(sobre: .do).map(\.nombre).joined(separator: " "),
         acorde.tipo?.cifrado ?? "",
         acorde.tipo?.acordeConNombre?.nombre ?? "",
+        medidas.porTerceras ? "sí" : "no",
+        medidas.brilloPorQuintas.map { String(($0 * 100).rounded() / 100) } ?? "",
+        String(medidas.amplitudEnQuintas),
+        medidas.vectorIntervalico.map(String.init).joined(separator: " "),
+        medidas.formaPrima.map(String.init).joined(separator: " "),
+        medidas.numeroDeForte ?? "",
+        String(medidas.transposicionesDistintas),
+        medidas.ambito.map(String.init) ?? "",
         acorde.estilos.map(\.nombre).joined(separator: " · "),
         acorde.referencias.map(\.cita).joined(separator: " · "),
     ]

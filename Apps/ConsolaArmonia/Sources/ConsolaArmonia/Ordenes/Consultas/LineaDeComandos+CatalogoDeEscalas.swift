@@ -29,8 +29,22 @@ extension LineaDeComandos {
         (.sintetica, "sintetica", "synthetic"),
     ]
 
+    /// El estilo de `--uso jazz`, por su clave (`siglo-xx`), en español o en inglés, o por su nombre en español o en el
+    /// idioma de la notación; lanza `usoDesconocido` si no es ninguno.
+    static func estiloDeUso(leyendo texto: String, _ notacion: Notacion) throws -> Estilo {
+        let clave = claveDeBusqueda(texto)
+        let nombres = { (candidato: Estilo) -> [String] in
+            let claves = nombresDeLosUsos.first { $0.uso == candidato }.map { [$0.espanol, $0.ingles] } ?? []
+            return (claves + [candidato.nombre, candidato.nombre(en: notacion)]).map(claveDeBusqueda)
+        }
+        guard let encontrado = nombresDeLosUsos.map(\.uso).first(where: { nombres($0).contains(clave) }) else {
+            throw ErrorDeUso.usoDesconocido(texto)
+        }
+        return encontrado
+    }
+
     /// Un texto para comparar nombres: sin mayúsculas, tildes, guiones ni espacios («Mundo árabe» → «mundoarabe»).
-    private static func claveDeBusqueda(_ texto: String) -> String {
+    static func claveDeBusqueda(_ texto: String) -> String {
         texto.replacingOccurrences(of: "ı", with: "i")
             .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
             .filter { $0.isLetter || $0.isNumber }
@@ -240,17 +254,7 @@ extension LineaDeComandos {
             fuente = encontrada
         }
         var usoPedido: Estilo?
-        if let texto = try entrada.valor(.uso) {
-            let clave = claveDeBusqueda(texto)
-            let nombres = { (candidato: Estilo) -> [String] in
-                let claves = nombresDeLosUsos.first { $0.uso == candidato }.map { [$0.espanol, $0.ingles] } ?? []
-                return (claves + [candidato.nombre, candidato.nombre(en: notacion)]).map(claveDeBusqueda)
-            }
-            guard let encontrado = nombresDeLosUsos.map(\.uso).first(where: { nombres($0).contains(clave) }) else {
-                throw ErrorDeUso.usoDesconocido(texto)
-            }
-            usoPedido = encontrado
-        }
+        if let texto = try entrada.valor(.uso) { usoPedido = try estiloDeUso(leyendo: texto, notacion) }
         // `--notas 5`: solo las de cinco notas (las pentatónicas).
         var numeroDeNotas: Int?
         if let texto = try entrada.valor(.notas, siFalta: .notasFueraDeRango) {

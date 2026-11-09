@@ -1,4 +1,5 @@
 import Armonia
+import Exposicion
 
 // MARK: - Consultas: los catálogos de acordes y de progresiones
 
@@ -62,35 +63,142 @@ extension LineaDeComandos {
 
     // MARK: Acordes
 
-    /// Los acordes que pide `acordes [<texto>] [--sobre <nota>]` y la nota sobre la que se escriben. Con un nombre
-    /// exacto, solo ese; si no, los que lo contienen (todos, sin texto).
-    static func acordesPedidos(_ textos: [String], _ notacion: Notacion) throws -> (
-        acordes: [AcordeConNombre], sobre: Nota
-    ) {
+    /// Lo que pide `acordes`: los acordes, ya filtrados y ordenados, la nota sobre la que se escriben y si se quiere la
+    /// tabla de estadísticas o el resumen. Lo mismo para el texto y para `--json`.
+    struct PedidoDeAcordes {
+        let acordes: [AcordeConNombre]
+        let sobre: Nota
+        /// `--estadisticas`: una tabla con lo que se mide de cada uno.
+        let estadisticas: Bool
+        /// `--resumen`: cuántos hay de cada número de notas, de cada estilo y por terceras.
+        let resumen: Bool
+    }
+
+    /// Los acordes que pide `acordes [<texto>] [--sobre <nota>] [--notas 4] [--uso jazz] [--por-terceras]
+    /// [--no-por-terceras] [--sin-semitonos] [--con-intervalo tritono] [--sin-intervalo 1] [--orden brillo]`. Con un
+    /// nombre exacto, solo ese; si no, los que lo contienen (todos, sin texto), con los filtros.
+    static func acordesPedidos(_ textos: [String], _ notacion: Notacion) throws -> PedidoDeAcordes {
         var argumentos = Argumentos(textos)
         var sobre = Nota.do
         if let texto = try argumentos.valorConPalabras(.sobre) { sobre = try Nota(leyendo: texto, enLaOrden: notacion) }
+        var uso: Estilo?
+        if let texto = try argumentos.valor(.uso) { uso = try estiloDeUso(leyendo: texto, notacion) }
+        // `--notas 4` o `--notas tétrada`: solo los de cuatro notas.
+        var numeroDeNotas: Int?
+        if let texto = try argumentos.valor(.notas, siFalta: .notasFueraDeRango) {
+            numeroDeNotas = try numeroDeNotasDeAcorde(texto, notacion)
+        }
+        let porTerceras = argumentos.quitarMarca(.porTerceras)
+        let noPorTerceras = argumentos.quitarMarca(.noPorTerceras)
+        let sinSemitonos = argumentos.quitarMarca(.sinSemitonos)
+        var conIntervalo: Int?
+        if let texto = try argumentos.valor(.conIntervalo) { conIntervalo = try claseIntervalica(texto) }
+        var sinIntervalo: Int?
+        if let texto = try argumentos.valor(.sinIntervalo) { sinIntervalo = try claseIntervalica(texto) }
+        var orden: OrdenDeEscalas?
+        if let texto = try argumentos.valor(.orden) {
+            guard let elegido = ordenesDeEscalas[claveDeBusqueda(texto)] else {
+                throw ErrorDeUso.ordenDeEscalasDesconocido(texto)
+            }
+            orden = elegido
+        }
+        let estadisticas = argumentos.quitarMarca(.estadisticas)
+        let resumen = argumentos.quitarMarca(.resumen)
         try argumentos.sinOpcionesDesconocidas()
         let texto = argumentos.unidos
         let hallados = AcordeConNombre.buscar(nombre: texto).map { [$0] } ?? AcordeConNombre.buscar(conteniendo: texto)
-        return (hallados, sobre)
+        let elegidos = hallados.filter { acorde in
+            let medidas = acorde.estadisticas
+            if let uso, !acorde.estilos.contains(uso) { return false }
+            if let numeroDeNotas, medidas.numeroDeNotas != numeroDeNotas { return false }
+            if porTerceras && !medidas.porTerceras { return false }
+            if noPorTerceras && medidas.porTerceras { return false }
+            if sinSemitonos && !medidas.anhemitonico { return false }
+            if let conIntervalo, medidas.vectorIntervalico[conIntervalo - 1] == 0 { return false }
+            if let sinIntervalo, medidas.vectorIntervalico[sinIntervalo - 1] > 0 { return false }
+            return true
+        }
+        // Con `--orden`, del más brillante al más oscuro (los que no tienen brillo, al final) o de menos a más notas;
+        // a igualdad, en el orden del catálogo.
+        var ordenados = elegidos
+        if let orden {
+            let claves = elegidos.map { acorde -> Double in
+                let medidas = acorde.estadisticas
+                return orden == .brillo
+                    ? -(medidas.brilloPorQuintas ?? -.infinity) : Double(medidas.numeroDeNotas)
+            }
+            ordenados = elegidos.indices.sorted { (claves[$0], $0) < (claves[$1], $1) }.map { elegidos[$0] }
+        }
+        return PedidoDeAcordes(acordes: ordenados, sobre: sobre, estadisticas: estadisticas, resumen: resumen)
     }
 
-    /// `acordes [<texto>] [--sobre <nota>]`: cada acorde del catálogo, o los que tienen el texto en el nombre o en un
-    /// alias en algún idioma, con sus notas sobre Do, o sobre la nota de `--sobre`, y, en los genéricos (los que dan
-    /// nombre a su tipo), su cifrado.
+    /// El número de notas de `acordes --notas`: un número de 1 a 24 o el nombre de un cardinal («tétrada»,
+    /// «tetrad»), en español, en inglés o en el idioma de la notación.
+    static func numeroDeNotasDeAcorde(_ texto: String, _ notacion: Notacion) throws -> Int {
+        if let n = Int(texto) {
+            guard (1...24).contains(n) else { throw ErrorDeUso.notasFueraDeRango }
+            return n
+        }
+        let clave = claveDeBusqueda(texto)
+        let cardinal = CardinalDeAcorde.allCases.first { candidato in
+            [candidato.nombre, candidato.nombre(en: .compacta(.ingles)), candidato.nombre(en: notacion)]
+                .map(claveDeBusqueda).contains(clave)
+        }
+        guard let numeroDeNotas = cardinal?.numeroDeNotas else { throw ErrorDeUso.notasFueraDeRango }
+        return numeroDeNotas
+    }
+
+    /// `acordes [<texto>] [opciones]`: cada acorde del catálogo, o los que tienen el texto en el nombre o en un alias
+    /// en algún idioma, con sus notas sobre Do, o sobre la nota de `--sobre`, y, en los genéricos (los que dan nombre a
+    /// su tipo), su cifrado. Con `--estadisticas`, en una tabla con lo que se mide de cada uno; con `--resumen`,
+    /// cuántos hay de cada número de notas, de cada estilo y por terceras.
     ///
     ///     acorde de Tristán: Fa Si Re♯ Sol♯
     ///     séptima de dominante (Do7): Do Mi Sol Si♭
     static func acordesConNombre(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let (hallados, sobre) = try acordesPedidos(textos, notacion)
-        guard !hallados.isEmpty else { return ninguno(.ningunAcorde, notacion) }
-        let lineas = hallados.map { acorde in
-            let cifrado = cifradoDelGenerico(acorde, sobre: sobre, notacion).map { " (" + $0 + ")" } ?? ""
-            let notas = acorde.notas(sobre: sobre).map { $0.nombre(en: notacion) }
+        let pedido = try acordesPedidos(textos, notacion)
+        guard !pedido.acordes.isEmpty else { return ninguno(.ningunAcorde, notacion) }
+        if pedido.resumen {
+            return bien(
+                describir(resumen: PresentacionDeEstadisticasDeAcorde.resumen(pedido.acordes, en: notacion), notacion))
+        }
+        if pedido.estadisticas {
+            let tabla = PresentacionDeEstadisticasDeAcorde.tablaDeEstadisticas(pedido.acordes, en: notacion)
+            return bien(columnas([tabla.encabezados] + tabla.filas))
+        }
+        let lineas = pedido.acordes.map { acorde in
+            let cifrado = cifradoDelGenerico(acorde, sobre: pedido.sobre, notacion).map { " (" + $0 + ")" } ?? ""
+            let notas = acorde.notas(sobre: pedido.sobre).map { $0.nombre(en: notacion) }
             return acorde.nombre(en: notacion) + cifrado + ": " + notas.joined(separator: " ")
         }
         return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// El resumen de `acordes --resumen`, en líneas:
+    ///
+    ///     Acordes: 58
+    ///     Por número de notas:
+    ///       3 (tríada): 9
+    ///       …
+    ///     Por estilo:
+    ///       jazz: 3
+    ///       …
+    ///     Por terceras: 56
+    ///     No se lee por terceras: 2
+    static func describir(resumen: ResumenDeAcordesPresentado, _ notacion: Notacion) -> String {
+        var lineas = [notacion.texto(\.acordes) + ": \(resumen.total)"]
+        lineas.append(notacion.texto(\.porNumeroDeNotas) + ":")
+        lineas += resumen.porNumeroDeNotas.map { "  " + $0.nombre + ": \($0.acordes)" }
+        if !resumen.porEstilo.isEmpty {
+            lineas.append(notacion.texto(\.porEstilo) + ":")
+            lineas += resumen.porEstilo.map { "  " + $0.nombre + ": \($0.acordes)" }
+        }
+        lineas.append(notacion.texto(\.porTerceras) + ": \(resumen.porTerceras)")
+        if resumen.noPorTerceras > 0 {
+            let etiqueta = notacion.texto(\.noPorTerceras)
+            lineas.append(etiqueta.prefix(1).uppercased() + etiqueta.dropFirst() + ": \(resumen.noPorTerceras)")
+        }
+        return lineas.joined(separator: "\n")
     }
 
     struct AcordeConNombreJSON: Encodable {
@@ -99,16 +207,22 @@ extension LineaDeComandos {
         let cifrado: String?
         let notas: [String]
         let estilos: [String]
+        /// Con `--estadisticas`: lo que se mide del acorde.
+        let estadisticas: EstadisticasDeAcordePresentadas?
     }
 
-    /// `acordes [<texto>] [--sobre <nota>] --json`: los mismos acordes, con sus estilos.
-    static func acordesConNombreJSON(_ textos: [String], _ notacion: Notacion) throws -> [AcordeConNombreJSON] {
-        let (hallados, sobre) = try acordesPedidos(textos, notacion)
-        return hallados.map { acorde in
+    /// `acordes [<texto>] [opciones] --json`: los mismos acordes, con sus estilos y, con `--estadisticas`, lo que se
+    /// mide de cada uno; con `--resumen`, el resumen (`ResumenDeAcordesPresentado`).
+    static func acordesConNombreJSON(_ textos: [String], _ notacion: Notacion) throws -> any Encodable {
+        let pedido = try acordesPedidos(textos, notacion)
+        if pedido.resumen { return PresentacionDeEstadisticasDeAcorde.resumen(pedido.acordes, en: notacion) }
+        return pedido.acordes.map { acorde in
             AcordeConNombreJSON(
-                nombre: acorde.nombre(en: notacion), cifrado: cifradoDelGenerico(acorde, sobre: sobre, notacion),
-                notas: acorde.notas(sobre: sobre).map { $0.nombre(en: notacion) },
-                estilos: acorde.estilos.map { $0.nombre(en: notacion) })
+                nombre: acorde.nombre(en: notacion), cifrado: cifradoDelGenerico(acorde, sobre: pedido.sobre, notacion),
+                notas: acorde.notas(sobre: pedido.sobre).map { $0.nombre(en: notacion) },
+                estilos: acorde.estilos.map { $0.nombre(en: notacion) },
+                estadisticas: pedido.estadisticas
+                    ? EstadisticasDeAcordePresentadas(acorde.estadisticas, en: notacion) : nil)
         }
     }
 

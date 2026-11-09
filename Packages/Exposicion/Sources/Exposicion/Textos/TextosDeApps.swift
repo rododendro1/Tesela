@@ -225,6 +225,17 @@ public struct TextosDeApps: TextosTraducidos {
     public let cohemitonica: String
     public let maximamenteRegular: String
     public let medidaAproximada: String
+    // PresentacionDeEstadisticasDeAcorde.swift
+    public let amplitudEnQuintas: String
+    public let ambito: String
+    public let noPorTerceras: String
+    public let simetricoPorInversion: String
+    public let anhemitonico: String
+    public let conTritono: String
+    public let porNumeroDeNotas: String
+    public let porEstilo: String
+    public let sinEstilo: String
+    public let porTerceras: String
     public let escaleraDeBrillo: String
     public let hojaDeEstudio: String
     public let mapaDeBrillo: String

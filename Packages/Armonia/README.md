@@ -227,7 +227,8 @@ Sources/
 │   ├── Catalogo/          Lo que comparten los catálogos: Estilo (de escalas, acordes y progresiones),
 │   │                      FichaDelCatalogo y NombresDelCatalogo (los nombres de acordes y progresiones por idioma)
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
-│   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
+│   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde,
+│   │   │                  CardinalDeAcorde y EstadisticasDeAcorde (lo que se mide de un acorde)
 │   │   ├── Catalogo/      AcordeConNombre (el acorde del catálogo, con su ficha) y el catálogo
 │   │   ├── Nombres/       NombresDeAcordes y un fichero por idioma (`NombresDeAcordes+Catalan.swift`…)
 │   │   └── Neorriemanniana/   TransformacionNeorriemanniana (P, L, R y caminos), CicloNeorriemanniano
