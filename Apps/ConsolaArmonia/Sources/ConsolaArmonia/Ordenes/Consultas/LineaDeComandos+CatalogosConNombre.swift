@@ -95,10 +95,11 @@ extension LineaDeComandos {
         if let texto = try argumentos.valor(.conIntervalo) { conIntervalo = try claseIntervalica(texto) }
         var sinIntervalo: Int?
         if let texto = try argumentos.valor(.sinIntervalo) { sinIntervalo = try claseIntervalica(texto) }
-        var orden: OrdenDeEscalas?
+        // `--orden brillo`, `--orden notas` o `--orden consonancia`.
+        var orden: OrdenDeAcordes?
         if let texto = try argumentos.valor(.orden) {
-            guard let elegido = ordenesDeEscalas[claveDeBusqueda(texto)] else {
-                throw ErrorDeUso.ordenDeEscalasDesconocido(texto)
+            guard let elegido = ordenesDeAcordes[claveDeBusqueda(texto)] else {
+                throw ErrorDeUso.ordenDeAcordesDesconocido(texto)
             }
             orden = elegido
         }
@@ -118,19 +119,30 @@ extension LineaDeComandos {
             if let sinIntervalo, medidas.vectorIntervalico[sinIntervalo - 1] > 0 { return false }
             return true
         }
-        // Con `--orden`, del más brillante al más oscuro (los que no tienen brillo, al final) o de menos a más notas;
-        // a igualdad, en el orden del catálogo.
+        // Con `--orden`, del más brillante al más oscuro (los que no tienen brillo, al final), de menos a más notas o
+        // del más al menos consonante (Huron); a igualdad, en el orden del catálogo.
         var ordenados = elegidos
         if let orden {
             let claves = elegidos.map { acorde -> Double in
                 let medidas = acorde.estadisticas
-                return orden == .brillo
-                    ? -(medidas.brilloPorQuintas ?? -.infinity) : Double(medidas.numeroDeNotas)
+                switch orden {
+                case .brillo: return -(medidas.brilloPorQuintas ?? -.infinity)
+                case .notas: return Double(medidas.numeroDeNotas)
+                case .consonancia: return -medidas.consonanciaDiadica
+                }
             }
             ordenados = elegidos.indices.sorted { (claves[$0], $0) < (claves[$1], $1) }.map { elegidos[$0] }
         }
         return PedidoDeAcordes(acordes: ordenados, sobre: sobre, estadisticas: estadisticas, resumen: resumen)
     }
+
+    enum OrdenDeAcordes { case brillo, notas, consonancia }
+
+    /// Los valores de `acordes --orden`, en español y en inglés.
+    static let ordenesDeAcordes: [String: OrdenDeAcordes] = [
+        "brillo": .brillo, "brightness": .brillo, "notas": .notas, "notes": .notas, "consonancia": .consonancia,
+        "consonance": .consonancia,
+    ]
 
     /// El número de notas de `acordes --notas`: un número de 1 a 24 o el nombre de un cardinal («tétrada»,
     /// «tetrad»), en español, en inglés o en el idioma de la notación.

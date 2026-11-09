@@ -229,6 +229,8 @@ Sources/
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde,
 │   │   │                  CardinalDeAcorde y EstadisticasDeAcorde (lo que se mide de un acorde)
+│   │   │                  GrupoDeHindemith y MedidasDeAcorde+Percepcion (Huron, Hindemith, Euler, Parncutt,
+│   │   │                  Fourier, Tymoczko, Cook y Sethares)
 │   │   ├── Catalogo/      AcordeConNombre (el acorde del catálogo, con su ficha) y el catálogo
 │   │   ├── Nombres/       NombresDeAcordes y un fichero por idioma (`NombresDeAcordes+Catalan.swift`…)
 │   │   └── Neorriemanniana/   TransformacionNeorriemanniana (P, L, R y caminos), CicloNeorriemanniano

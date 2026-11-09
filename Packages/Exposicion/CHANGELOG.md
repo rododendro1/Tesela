@@ -8,6 +8,10 @@
   enseña en la vista de acordes, en una sección «Estadísticas».
 - `DatoDeEscalaPresentado` se llama ahora `DatoPresentado`, porque lo usan también los acordes; el nombre antiguo
   queda como alias.
+- `PresentacionDeEstadisticasDeAcorde.estadisticas(_:sobre:en:)` y `EstadisticasDeAcordePresentadas` añaden las
+  medidas de la teoría (Huron, Hindemith, Parncutt, Euler, Fourier, Tymoczko, Cook y Sethares); con `sobre:`, las
+  fundamentales se escriben como notas. La tabla añade la consonancia y el grupo de Hindemith, y `triadas(_:)` da
+  las tríadas contenidas («M 1 · m 0 · ° 1 · + 0»).
 
 ## 0.4.4 (2026-11-09)
 

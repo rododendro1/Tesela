@@ -385,7 +385,10 @@ struct VistaDeAcordes: View {
     /// el vector interválico, el número de Forte, la simetría y sus rasgos.
     private func estadisticas(de acorde: Acorde) -> some View {
         Section(notacion.texto(\.estadisticas)) {
-            ForEach(PresentacionDeEstadisticasDeAcorde.estadisticas(acorde.estadisticas, en: notacion), id: \.self) {
+            ForEach(
+                PresentacionDeEstadisticasDeAcorde.estadisticas(
+                    acorde.estadisticas, sobre: acorde.fundamental, en: notacion), id: \.self
+            ) {
                 dato in
                 LabeledContent(dato.nombre, value: dato.valor)
             }

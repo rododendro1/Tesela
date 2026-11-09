@@ -208,6 +208,7 @@ struct TextosDeConsola: TextosTraducidos {
     let fuenteDesconocida: Plantilla  // {1} fuente
     let usoDesconocido: Plantilla  // {1} uso
     let ordenDeEscalasDesconocido: Plantilla  // {1} orden
+    let ordenDeAcordesDesconocido: Plantilla  // {1} orden
     let intervaloDeEscalasDesconocido: Plantilla  // {1} intervalo
     let pasoFueraDeRango: String
     let faltanNotas: Plantilla  // {1} ejemplo

@@ -236,6 +236,18 @@ public struct TextosDeApps: TextosTraducidos {
     public let porEstilo: String
     public let sinEstilo: String
     public let porTerceras: String
+    public let consonanciaDiadica: String
+    public let grupoDeHindemith: String
+    public let fundamentalDeHindemith: String
+    public let fundamentalDeParncutt: String
+    public let intervalosEntreVoces: String
+    public let gradoDeSuavidad: String
+    public let coeficientesDeFourier: String
+    public let distanciaALaUniformidad: String
+    public let triadasContenidas: String
+    public let tensionDeCook: String
+    public let modalidadDeCook: String
+    public let rugosidad: String
     public let escaleraDeBrillo: String
     public let hojaDeEstudio: String
     public let mapaDeBrillo: String

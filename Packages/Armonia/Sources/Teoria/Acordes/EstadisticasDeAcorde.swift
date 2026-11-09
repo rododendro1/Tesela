@@ -49,9 +49,52 @@ public struct EstadisticasDeAcorde: Hashable, Sendable {
     /// Los semitonos de la nota más grave a la más aguda de su disposición: 15 en el de Tristán (Fa–Sol♯ de la
     /// octava de arriba). Solo en los acordes con nombre, que guardan una; `nil` en un tipo o un acorde cifrado.
     public let ambito: Int?
+    /// La consonancia diádica agregada de Huron (1994): la suma, sobre el vector interválico, de lo consonante que es
+    /// cada clase de intervalo (la quinta +1,24, la tercera menor +0,594, el semitono −1,428…). Cuanto más alta, más
+    /// consonante: 2,22 las tríadas mayor y menor, 1,779 la séptima de dominante, 1,47 la séptima disminuida.
+    public let consonanciaDiadica: Double
+    /// Su grupo en la clasificación de Hindemith (`GrupoDeHindemith`).
+    public let grupoDeHindemith: GrupoDeHindemith
+    /// La fundamental según Hindemith, como intervalo desde la nota de referencia (la fundamental del tipo, o la nota
+    /// más grave si no se lee por terceras): la del mejor intervalo de la disposición, la quinta antes que la cuarta,
+    /// la tercera mayor… En la semidisminuida es la tercera (Mi♭ en Dom7(♭5), que suena como Mi♭m6). `nil` en los
+    /// grupos indeterminados (V y VI).
+    public let fundamentalDeHindemith: Intervalo?
+    /// Los semitonos entre cada voz y la de encima, de grave a agudo, en la disposición: 4 3 en la tríada mayor
+    /// cerrada, 6 4 5 en el de Tristán (Fa Si Re♯ Sol♯). La de un tipo es la de sus `intervalos`, y la de un `Acorde`,
+    /// su posición cerrada desde el bajo.
+    public let intervalosEntreVoces: [Int]
+    /// El gradus suavitatis de Euler (1739), sin contar las octavas: 1 una nota, 3 la quinta, 7 las tríadas mayor y
+    /// menor, 11 la séptima de dominante. Cuanto más bajo, más suave.
+    public let gradoDeSuavidad: Int
+    /// Las magnitudes de sus coeficientes de Fourier, de |f1| a |f6| (Quinn 2006; Amiot 2016): cuánto se parece al
+    /// cluster cromático, al tritono, al aumentado, a la séptima disminuida, a la escala diatónica y a la de tonos
+    /// enteros. La tríada mayor tiene |f3| y |f5| altos; el aumentado, |f3| = 3.
+    public let magnitudesDeFourier: [Double]
+    /// Sus notas de la más a la menos prominente como fundamental en el modelo de Parncutt (1988): cada nota suma el
+    /// peso de las que la apoyan (la quinta 5, la tercera mayor 3, la séptima menor 2, la segunda mayor 1, y ella
+    /// misma 10). En Do Mi Sol, Do pesa 18; en La Do Mi Sol, Do (18) le gana a La (17).
+    public let prominenciasDeParncutt: [ProminenciaDeFundamental]
+    /// La distancia, en semitonos, al acorde perfectamente repartido más cercano de su mismo número de notas
+    /// (Tymoczko 2011): 0 el aumentado y la séptima disminuida, 0,816 las tríadas mayor y menor.
+    public let distanciaALaUniformidad: Double
+    /// Las tríadas mayores, menores, disminuidas y aumentadas que caben en sus notas: la novena de dominante tiene una
+    /// mayor (Do Mi Sol), una menor (Sol Si♭ Re) y una disminuida (Mi Sol Si♭).
+    public let triadasContenidas: TriadasContenidas
+    /// La tensión de Cook y Fujisawa (2006), con tonos puros: alta cuando dos intervalos seguidos son iguales (1 en el
+    /// aumentado y en el disminuido), casi 0 en las tríadas mayor y menor.
+    public let tensionDeCook: Double
+    /// La modalidad de Cook y Fujisawa (2006), con tonos puros: positiva en la tríada mayor (+1,558), negativa en la
+    /// menor (−1,558).
+    public let modalidadDeCook: Double
+    /// La rugosidad sensorial de Sethares (1993), con seis armónicos por voz, en la disposición: la de un tipo y la de
+    /// un acorde con nombre suenan desde el Do central; la de un `Acorde`, en su posición cerrada desde el bajo en la
+    /// cuarta octava. Cuanto más alta, más áspero.
+    public let rugosidad: Double
 
-    /// Lo que se mide de unas notas, en pasos de quinta desde la fundamental (o desde la más grave, sin tipo).
-    init(pasosDeQuinta: Set<Int>, tipo: TipoDeAcorde?, ambito: Int?) {
+    /// Lo que se mide de unas notas, en pasos de quinta desde la fundamental (o desde la más grave, sin tipo), con su
+    /// disposición de grave a agudo.
+    init(pasosDeQuinta: Set<Int>, tipo: TipoDeAcorde?, voces: [VozMedida], ambito: Int?, graveMidi: Int = 60) {
         numeroDeNotas = pasosDeQuinta.count
         cardinal = CardinalDeAcorde(numeroDeNotas: numeroDeNotas)
         porTerceras = tipo != nil
@@ -69,21 +112,61 @@ public struct EstadisticasDeAcorde: Hashable, Sendable {
         anhemitonico = conjunto.vectorIntervalico.first == 0
         conTritono = (conjunto.vectorIntervalico.last ?? 0) > 0
         self.ambito = ambito
+        consonanciaDiadica = MedidasDeAcorde.consonanciaDiadica(conjunto.vectorIntervalico)
+        let ordenadas = voces.sorted { $0.semitonos < $1.semitonos }
+        let fundamental = MedidasDeAcorde.fundamentalDeHindemith(ordenadas)
+        let grupo = MedidasDeAcorde.grupoDeHindemith(
+            pasosDeQuinta: pasosDeQuinta, fundamental: fundamental, bajo: ordenadas.first?.pasosDeQuinta)
+        grupoDeHindemith = grupo
+        fundamentalDeHindemith =
+            grupo.indeterminado ? nil : fundamental.map { Intervalo.simpleAscendente(pasosDeQuinta: $0) }
+        intervalosEntreVoces = zip(ordenadas, ordenadas.dropFirst()).map { $1.semitonos - $0.semitonos }
+        gradoDeSuavidad = MedidasDeAcorde.gradoDeSuavidad(pasosDeQuinta: pasosDeQuinta)
+        magnitudesDeFourier = MedidasDeAcorde.magnitudesDeFourier(conjunto.clases)
+        prominenciasDeParncutt = MedidasDeAcorde.prominencias(ordenadas)
+        distanciaALaUniformidad = MedidasDeAcorde.distanciaALaUniformidad(conjunto.clases)
+        triadasContenidas = MedidasDeAcorde.triadasContenidas(Set(conjunto.clases))
+        (tensionDeCook, modalidadDeCook) = MedidasDeAcorde.tensionYModalidad(ordenadas)
+        rugosidad = MedidasDeAcorde.rugosidad(ordenadas, desdeMidi: graveMidi)
     }
 
-    public init(_ tipo: TipoDeAcorde) { self.init(pasosDeQuinta: tipo.pasosDeQuinta, tipo: tipo, ambito: nil) }
+    /// La nota más prominente como fundamental en el modelo de Parncutt, como intervalo desde la nota de referencia.
+    public var fundamentalDeParncutt: Intervalo? { prominenciasDeParncutt.first?.intervalo }
+
+    public init(_ tipo: TipoDeAcorde) {
+        self.init(
+            pasosDeQuinta: tipo.pasosDeQuinta, tipo: tipo, voces: Self.voces(tipo.intervalos), ambito: nil)
+    }
 
     public init(_ acorde: AcordeConNombre) {
         let semitonos = acorde.intervalos.map(\.semitonos)
         self.init(
-            pasosDeQuinta: acorde.pasosDeQuinta, tipo: acorde.tipo,
+            pasosDeQuinta: acorde.pasosDeQuinta, tipo: acorde.tipo, voces: Self.voces(acorde.intervalos),
             ambito: (semitonos.max() ?? 0) - (semitonos.min() ?? 0))
     }
 
-    /// Las del tipo, y con el bajo si es ajeno: Do/Re es una tétrada con la novena abajo.
+    /// Las del tipo, y con el bajo si es ajeno: Do/Re es una tétrada con la novena abajo. La disposición es la
+    /// posición cerrada desde el bajo.
     public init(_ acorde: Acorde) {
-        let bajo = acorde.bajo.pasosDeQuinta - acorde.fundamental.pasosDeQuinta
-        self.init(pasosDeQuinta: acorde.tipo.pasosDeQuinta.union([bajo]), tipo: acorde.tipo, ambito: nil)
+        let referencia = acorde.fundamental.pasosDeQuinta
+        let bajo = acorde.bajo.pasosDeQuinta - referencia
+        let alturas = acorde.posicionCerrada()
+        let grave = alturas.first?.midi ?? 0
+        let voces = alturas.map {
+            VozMedida(pasosDeQuinta: $0.nota.pasosDeQuinta - referencia, semitonos: $0.midi - grave)
+        }
+        self.init(
+            pasosDeQuinta: acorde.tipo.pasosDeQuinta.union([bajo]), tipo: acorde.tipo, voces: voces, ambito: nil,
+            graveMidi: grave)
+    }
+
+    /// Las voces de unos intervalos desde la nota de referencia, sin repetir la misma altura.
+    private static func voces(_ intervalos: [Intervalo]) -> [VozMedida] {
+        var vistas = Set<Int>()
+        return intervalos.compactMap { intervalo in
+            guard vistas.insert(intervalo.semitonos).inserted else { return nil }
+            return VozMedida(pasosDeQuinta: intervalo.pasosDeQuintaConSigno, semitonos: intervalo.semitonos)
+        }
     }
 }
 

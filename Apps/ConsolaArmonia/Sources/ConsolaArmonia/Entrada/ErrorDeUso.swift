@@ -38,6 +38,7 @@ enum ErrorDeUso: ErrorDeArmonia {
     case fuenteDesconocida(String)
     case usoDesconocido(String)
     case ordenDeEscalasDesconocido(String)
+    case ordenDeAcordesDesconocido(String)
     case intervaloDeEscalasDesconocido(String)
     case pasoFueraDeRango
     case faltanNotas
@@ -214,6 +215,8 @@ enum ErrorDeUso: ErrorDeArmonia {
                 para: intervalo, entre: Array(LineaDeComandos.clasesIntervalicasPorNombre.keys))
         case .ordenDeEscalasDesconocido(let orden):
             return LineaDeComandos.propuesta(para: orden, entre: Array(LineaDeComandos.ordenesDeEscalas.keys))
+        case .ordenDeAcordesDesconocido(let orden):
+            return LineaDeComandos.propuesta(para: orden, entre: Array(LineaDeComandos.ordenesDeAcordes.keys))
         case .escrituraNoValida(let escritura):
             return LineaDeComandos.propuesta(para: escritura, entre: LineaDeComandos.nombresDeLasEscrituras)
         case .sistemaDesconocido(let sistema):
@@ -280,6 +283,8 @@ enum ErrorDeUso: ErrorDeArmonia {
             return TextosDeConsola.traduccion { $0.usoDesconocido(uso) }
         case .ordenDeEscalasDesconocido(let orden):
             return TextosDeConsola.traduccion { $0.ordenDeEscalasDesconocido(orden) }
+        case .ordenDeAcordesDesconocido(let orden):
+            return TextosDeConsola.traduccion { $0.ordenDeAcordesDesconocido(orden) }
         case .intervaloDeEscalasDesconocido(let intervalo):
             return TextosDeConsola.traduccion { $0.intervaloDeEscalasDesconocido(intervalo) }
         case .pasoFueraDeRango: return TextosDeConsola.traduccion(\.pasoFueraDeRango)
