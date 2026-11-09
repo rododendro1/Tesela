@@ -27,7 +27,8 @@ public enum EstiloDeEscala: String, Sendable, Codable, CaseIterable {
     /// modos de Messiaen, Prometeo (Skriabin), Petrushka (Stravinski), la acústica (Bartók) y la cromática.
     case sigloXX
     /// Occidental: las que vienen de una música popular, como se conocen en los libros de teoría: la flamenca, la
-    /// mayor rumana, la menor húngara, las pentatónicas, las hexatónicas gaélicas.
+    /// mayor rumana, la menor húngara, las pentatónicas, las hexatónicas gaélicas. En los acordes
+    /// (`AcordeConNombre.estilos`), también el pop y el rock: el power chord, el de Hendrix, el mu.
     case popular
     /// Occidental: las que salen de rotar o alterar otra escala, sin un repertorio propio: la mayoría de los modos de
     /// la menor armónica, de la mayor armónica, de la doble armónica y de las napolitanas.

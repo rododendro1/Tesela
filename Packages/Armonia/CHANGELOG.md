@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- La documentación de las escalas (`Escalas.md`, `EscalasDelMundo.md`) explica que una escala de otra tradición sin
+  fila en un idioma hereda sus alias y sus variantes, y `EstiloDeEscala.popular` dice que en los acordes abarca también
+  el pop y el rock.
 - Los nombres de las escalas tienen más alias y variantes en los doce idiomas: los que faltaban de las occidentales
   (sobre todo en inglés, alemán, sueco, húngaro, ruso y griego) y los de las tradiciones que se traducen (las
   harmoniai y los tetracordos griegos, las etíopes, las europeas y las andinas). Una escala de otra tradición sin
