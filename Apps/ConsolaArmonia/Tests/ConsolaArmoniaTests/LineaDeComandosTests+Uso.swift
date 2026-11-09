@@ -280,6 +280,21 @@ extension LineaDeComandosTests {
         #expect(sol7.contains("  Rasgos: anhemitónico (sin semitonos) · con tritono\n"))
         #expect(salida("acorde Do/Re --estadisticas").contains("Número de notas: 4 (tétrada)"))
         #expect(salida("chord C --statistics --ingles").contains("Number of notes: 3 (triad)"))
+        // Las medidas de la teoría: Huron, Hindemith, Parncutt, Euler, Cook, Sethares…
+        #expect(sol7.contains("  Consonancia diádica (Huron): 1.779\n"))
+        #expect(sol7.contains("  Grupo de Hindemith: II a\n  Fundamental (Hindemith): Sol\n"))
+        #expect(sol7.contains("  Intervalos entre voces (semitonos): 4 3 3\n"))
+        #expect(sol7.contains("  Gradus suavitatis (Euler): 11\n"))
+        #expect(sol7.contains("  Tríadas contenidas: M 1 · m 0 · ° 1 · + 0\n"))
+        let json = salida("acorde Sol7 --estadisticas --json")
+        #expect(json.contains("\"grupoDeHindemith\":\"II a\""))
+        #expect(json.contains("\"consonanciaDiadica\":1.779"))
+        // `acordes --orden consonancia`: de la más consonante a la menos.
+        #expect(salida("acordes --orden consonancia --notas 3").hasPrefix("mayor (Do): Do Mi Sol\n"))
+        #expect(
+            salida("chords --sort consonance --notes 3 --ingles")
+                == salida("acordes --orden consonancia --notas 3 --ingles"))
+        #expect(resultado("acordes", "--orden", "consonante").error.contains("--orden consonancia"))
     }
 
     /// `tradiciones` da cada tradición con sus categorías (salvo la occidental, que no tiene: sus escalas son las

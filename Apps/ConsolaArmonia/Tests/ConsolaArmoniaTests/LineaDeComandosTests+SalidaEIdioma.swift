@@ -90,6 +90,6 @@ extension LineaDeComandosTests {
                 #expect(!enEspanol.huecos.isEmpty, "TextosDeConsola.\(nombre) no tiene huecos")
             }
         }
-        #expect(espanol.count == 73)
+        #expect(espanol.count == 74)
     }
 }

@@ -20,7 +20,9 @@ extension LineaDeComandos {
             let acorde = try Acorde(leyendo: $0, enLaOrden: notacion)
             return AcordeJSON(
                 acorde: AcordePresentado(acorde, en: notacion),
-                estadisticas: estadisticas ? EstadisticasDeAcordePresentadas(acorde.estadisticas, en: notacion) : nil)
+                estadisticas: estadisticas
+                    ? EstadisticasDeAcordePresentadas(acorde.estadisticas, sobre: acorde.fundamental, en: notacion)
+                    : nil)
         }
     }
 

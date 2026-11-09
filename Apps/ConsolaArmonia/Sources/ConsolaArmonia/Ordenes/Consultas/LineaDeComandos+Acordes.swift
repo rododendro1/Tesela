@@ -98,7 +98,9 @@ extension LineaDeComandos {
         }
         if pedido.estadisticas {
             lineas.append(notacion.texto(\.estadisticas) + ":")
-            lineas += PresentacionDeEstadisticasDeAcorde.estadisticas(acorde.estadisticas, en: notacion).map {
+            lineas += PresentacionDeEstadisticasDeAcorde.estadisticas(
+                acorde.estadisticas, sobre: acorde.fundamental, en: notacion
+            ).map {
                 "  " + $0.nombre + ": " + $0.valor
             }
         }

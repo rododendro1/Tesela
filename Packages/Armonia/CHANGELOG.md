@@ -20,6 +20,14 @@
 - El TSV de `EjemploCatalogoDeAcordes` añade el cardinal, si se lee por terceras, el brillo y la amplitud en quintas,
   el vector interválico, la forma prima, el número de Forte, las transposiciones distintas y el ámbito. Su
   `numero_de_notas` cuenta ahora las notas distintas y no las voces: el acorde de la Sinfonía de los salmos tiene 3.
+- `EstadisticasDeAcorde` mide también lo que dice la teoría: la consonancia diádica de Huron (2,22 la tríada mayor),
+  el grupo y la fundamental de Hindemith (`GrupoDeHindemith`: «II a» la séptima de dominante, «V» el acorde por
+  cuartas), los intervalos entre voces, el gradus suavitatis de Euler, las magnitudes de Fourier |f1|…|f6|, las
+  prominencias de fundamental de Parncutt (`ProminenciaDeFundamental`, y `fundamentalDeParncutt`), la distancia a
+  la uniformidad de Tymoczko, las tríadas contenidas (`TriadasContenidas`), la tensión y la modalidad de Cook y
+  Fujisawa y la rugosidad de Sethares. Las da la consola en `acorde --estadisticas` y en `--json`, y `acordes
+  --orden consonancia` ordena el catálogo de más a menos consonante. El TSV de `EjemploCatalogoDeAcordes` añade una
+  columna por cada una.
 
 ## 0.4.5 (2026-11-09)
 

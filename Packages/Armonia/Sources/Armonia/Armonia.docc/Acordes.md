@@ -131,9 +131,36 @@ AcordeConNombre.tristan.estadisticas.ambito                    // 15
 AcordeConNombre.petrushka.estadisticas.porTerceras             // false
 ```
 
+### Lo que dice la teoría
+
+Además de contar, ``EstadisticasDeAcorde`` mide el acorde con las medidas clásicas de la teoría y la psicoacústica:
+
+- **Consonancia diádica** (Huron, 1994): la suma del vector interválico por los pesos de consonancia de cada clase de
+  intervalo; cuanto más alta, más consonante.
+- **Grupo y fundamental de Hindemith** (*Unterweisung im Tonsatz*, 1937): ``GrupoDeHindemith`` clasifica el acorde
+  por si tiene tritono, segundas o séptimas y si la fundamental está en el bajo (I 1 … VI); la fundamental es la nota
+  grave o aguda del mejor intervalo de la serie 2 (quinta, cuarta, terceras…), y `nil` si es indeterminado.
+- **Intervalos entre voces**, en semitonos, de la disposición de grave a agudo.
+- **Gradus suavitatis** (Euler, 1739) de las notas afinadas en justa sobre la fundamental: 1 es el unísono.
+- **Magnitudes de Fourier** |f1|…|f6| (Quinn, Amiot): cuánto se parece el conjunto a la escala cromática, la de
+  tonos enteros, el acorde aumentado, el disminuido, el ciclo de quintas y el tritono.
+- **Prominencias de fundamental** (Parncutt, 1988): ``ProminenciaDeFundamental`` da cada nota con su peso, y la
+  primera es la fundamental más probable.
+- **Distancia a la uniformidad** (Tymoczko): cuánto se aleja de repartir las notas a partes iguales en la octava.
+- ``TriadasContenidas``: cuántas tríadas mayores, menores, disminuidas y aumentadas hay entre sus notas.
+- **Tensión y modalidad** (Cook y Fujisawa, 2006): la tensión de las tríadas de intervalos iguales y la modalidad,
+  positiva en las mayores y negativa en las menores.
+- **Rugosidad** (Sethares, 1993) de la disposición con seis armónicos desde el Do central.
+
+```swift
+TipoDeAcorde.mayor.estadisticas.consonanciaDiadica             // 2.22
+TipoDeAcorde.dominanteSeptima.estadisticas.gradoDeSuavidad     // 11
+TipoDeAcorde.mayor.estadisticas.gradoDeSuavidad                // 7
+```
+
 En la línea de comandos, `armonia acorde Sol7 --estadisticas` las escribe; `armonia acordes` filtra el catálogo por
 ellas (`--notas 4` o `--notas tétrada`, `--por-terceras`, `--sin-semitonos`, `--con-intervalo tritono`…), lo ordena
-con `--orden brillo`, lo pone en una tabla con `--estadisticas` y cuenta cuántos hay de cada clase con `--resumen`.
+con `--orden brillo` (o `notas`, o `consonancia`), lo pone en una tabla con `--estadisticas` y cuenta cuántos hay de cada clase con `--resumen`.
 
 ## Identificación desde alturas (MIDI)
 

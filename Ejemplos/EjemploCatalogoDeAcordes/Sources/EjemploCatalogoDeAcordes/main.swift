@@ -24,10 +24,23 @@ let columnas: [String] =
     ["nombre"] + traducciones.map { "nombre_en_\($0.rawValue)" } + [
         "alias", "variantes", "grupo", "numero_de_notas", "cardinal", "intervalos", "semitonos", "notas_sobre_do",
         "cifrado", "nombre_del_tipo", "por_terceras", "brillo_por_quintas", "amplitud_en_quintas",
-        "vector_intervalico", "forma_prima", "forte", "transposiciones_distintas", "ambito", "estilos", "referencias",
+        "vector_intervalico", "forma_prima", "forte", "transposiciones_distintas", "ambito", "consonancia_diadica",
+        "grupo_de_hindemith",
+        "fundamental_de_hindemith", "fundamental_de_parncutt", "intervalos_entre_voces", "gradus", "fourier",
+        "uniformidad", "triadas", "tension", "modalidad", "rugosidad", "estilos", "referencias",
     ]
 
 let genericos = Set(AcordeConNombre.genericos)
+
+/// Un número con tres decimales como mucho.
+func decimal(_ valor: Double) -> String {
+    String((valor * 1000).rounded() / 1000)
+}
+
+/// Las tríadas contenidas: mayores, menores, disminuidas y aumentadas, separadas por espacios.
+func triadas(_ t: TriadasContenidas) -> String {
+    [t.mayores, t.menores, t.disminuidas, t.aumentadas].map(String.init).joined(separator: " ")
+}
 
 /// La fila de un acorde, en el orden de `columnas`.
 func fila(_ acorde: AcordeConNombre) -> [String] {
@@ -53,6 +66,18 @@ func fila(_ acorde: AcordeConNombre) -> [String] {
         medidas.numeroDeForte ?? "",
         String(medidas.transposicionesDistintas),
         medidas.ambito.map(String.init) ?? "",
+        decimal(medidas.consonanciaDiadica),
+        medidas.grupoDeHindemith.description,
+        medidas.fundamentalDeHindemith?.abreviatura ?? "",
+        medidas.fundamentalDeParncutt?.abreviatura ?? "",
+        medidas.intervalosEntreVoces.map(String.init).joined(separator: " "),
+        String(medidas.gradoDeSuavidad),
+        medidas.magnitudesDeFourier.map(decimal).joined(separator: " "),
+        decimal(medidas.distanciaALaUniformidad),
+        triadas(medidas.triadasContenidas),
+        decimal(medidas.tensionDeCook),
+        decimal(medidas.modalidadDeCook),
+        decimal(medidas.rugosidad),
         acorde.estilos.map(\.nombre).joined(separator: " · "),
         acorde.referencias.map(\.cita).joined(separator: " · "),
     ]
