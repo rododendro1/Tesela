@@ -349,7 +349,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .quintaAumentada, .sextaAumentada,
         ],
-        alias: ["hexatónica", "modo 1 de Messiaen", "aumentada auxiliar", "de Debussy", "Debussy"],
+        alias: ["hexatónica", "modo 1 de Messiaen", "de Debussy", "Debussy", "aumentada auxiliar"],
         estilos: [.jazz, .sigloXX])
     public static let disminuida = TipoDeEscala(
         nombre: "disminuida tono-semitono",

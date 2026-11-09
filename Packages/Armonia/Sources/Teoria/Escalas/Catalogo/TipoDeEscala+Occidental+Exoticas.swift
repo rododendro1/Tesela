@@ -111,8 +111,8 @@ extension TipoDeEscala {
             .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: [
-            "disminuida dominante", "dominante disminuida", "modo 2 de Messiaen", "disminuida auxiliar blues",
-            "de Rimski-Kórsakov", "Rimski-Kórsakov", "de Stravinski", "Stravinski",
+            "disminuida dominante", "dominante disminuida", "modo 2 de Messiaen", "de Rimski-Kórsakov",
+            "Rimski-Kórsakov", "de Stravinski", "Stravinski", "disminuida auxiliar blues",
         ],
         variantes: ["Rimsky-Korsakov"],
         estilos: [.jazz, .sigloXX])

@@ -2,6 +2,11 @@
 
 ## Sin publicar
 
+- Los alias y las variantes de las escalas van del más usado al menos, en el catálogo y en los doce idiomas: «acústica»
+  antes que «lidio ♭7», «española» antes que «frigio mayor», «semidisminuida» antes que «locrio natural 2», «modo
+  gregoriano 1» antes que «protus auténtico», «Tizita» antes que «Təzəta», «Ahava Rabbah» antes que «Freigish»; el
+  nombre en el idioma antes que el original («gaita de las Highlands», «trompa alpina») y, en los échos bizantinos, la
+  transcripción antes que el griego, como en las demás tradiciones. Las escalas se leen igual que antes.
 - Las referencias bibliográficas (`Referencia` y su catálogo) están en el módulo Elementos, en `Elementos/Referencias/`
   (antes, en `Teoria/Escalas/Referencias/`), porque las citan también los acordes, los corales y las partituras.
   Quien importa `Armonia` no nota nada; quien importa solo `Teoria` necesita también `import Elementos`.

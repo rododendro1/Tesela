@@ -12,7 +12,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        alias: ["Ahavah Rabbah"], variantes: ["Freigish", "Ahava Rabbah", "Ahava Raba"],
+        alias: ["Ahavah Rabbah"], variantes: ["Ahava Rabbah", "Freigish", "Ahava Raba"],
         categoria: .shteyger)
     /// Misheberakh, el dórico ♯4.
     public static let misheberakh = TipoDeEscala(

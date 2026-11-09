@@ -31,7 +31,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["skala podhalańska", "podhalana", "escala podhalana", "Podhale", "góralska"],
+        alias: ["podhalana", "escala podhalana", "skala podhalańska", "góralska", "Podhale"],
         categoria: .escala, regiones: [.polonia])
     /// La pentatónica de la canción popular húngara, la que estudiaron Bartók y Kodály: la–do–re–mi–sol
     /// (Do Mi♭ Fa Sol Si♭ desde Do), sin semitonos.
@@ -72,7 +72,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMenor, .septimaMayor,
         ],
-        alias: ["Alphorn", "trompa alpina", "cuerno de los Alpes"],
+        alias: ["trompa alpina", "cuerno de los Alpes", "Alphorn"],
         categoria: .escala, regiones: [.alpes],
         afinaciones: [.init(.razones, pasos: [0, 204, 386, 551, 702, 841, 969, 1088])])
     /// La escala de la gaita escocesa de las Highlands: un mixolidio (Do Re Mi Fa Sol La Si♭ desde Do; en la gaita,
@@ -83,7 +83,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        alias: ["Great Highland Bagpipe", "gaita de las Highlands", "píob mhór"],
+        alias: ["gaita de las Highlands", "Great Highland Bagpipe", "píob mhór"],
         categoria: .escala, regiones: [.escocia],
         afinaciones: [.init(.razones, pasos: [0, 204, 386, 498, 702, 884, 969])])
 
@@ -100,7 +100,7 @@ extension TipoDeEscala {
     public static let georgiana = TipoDeEscala(
         nombre: "georgiana",
         intervalos: TipoDeEscala.dorico.intervalos,
-        alias: ["escala georgiana", "svana", "Svaneti", "canto georgiano"],
+        alias: ["escala georgiana", "canto georgiano", "svana", "Svaneti"],
         categoria: .escala, regiones: [.georgia],
         afinaciones: [.init(.razones, pasos: [0, 163, 332, 509, 693, 868, 1018])])
 

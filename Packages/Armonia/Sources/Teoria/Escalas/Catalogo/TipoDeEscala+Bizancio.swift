@@ -22,7 +22,7 @@ extension TipoDeEscala {
     public static let echosProtos = TipoDeEscala(
         nombre: "échos prótos",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        variantes: ["Ήχος πρώτος", "ichos protos"],
+        variantes: ["ichos protos", "Ήχος πρώτος"],
         categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [0, 10, 18, 30, 42, 52, 60]),
@@ -44,19 +44,19 @@ extension TipoDeEscala {
     public static let echosDefteros = TipoDeEscala(
         nombre: "échos défteros",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
-        variantes: ["Ήχος δεύτερος", "echos deuteros", "ichos defteros"],
+        variantes: ["echos deuteros", "ichos defteros", "Ήχος δεύτερος"],
         categoria: .echos, afinaciones: [.init(.moria72, pasos: [0, 8, 22, 30, 42, 50, 64])])
     /// El plagal del segundo (Re Mi♭ Fa♯ Sol La Si♭ Do♯, sobre Pa): cromático duro, la doble armónica.
     public static let echosPlagiosDefteros = TipoDeEscala(
         nombre: "échos plágios défteros",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
-        alias: ["plagal defteros"], variantes: ["Ήχος πλάγιος του δευτέρου", "echos plagios deuteros"],
+        alias: ["plagal defteros"], variantes: ["echos plagios deuteros", "Ήχος πλάγιος του δευτέρου"],
         categoria: .echos, afinaciones: [.init(.moria72, pasos: [0, 6, 26, 30, 42, 48, 68])])
     /// El tercero (Fa Sol La Si♭ Do Re Mi, sobre Ga): enarmónico, que en la teoría de 1881 ya es la escala mayor.
     public static let echosTritos = TipoDeEscala(
         nombre: "échos trítos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
-        variantes: ["Ήχος τρίτος", "ichos tritos"],
+        variantes: ["ichos tritos", "Ήχος τρίτος"],
         categoria: .echos)
     /// El grave, el plagal del tercero (Si Do Re Mi Fa Sol La, sobre Zo): diatónico, con la tónica dos moria bajo Si.
     public static let echosVarys = TipoDeEscala(
@@ -64,7 +64,7 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["grave"], variantes: ["Ήχος βαρύς", "echos barys"],
+        alias: ["grave"], variantes: ["echos barys", "Ήχος βαρύς"],
         categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [-2, 6, 18, 28, 36, 48, 60]),
@@ -74,7 +74,7 @@ extension TipoDeEscala {
     public static let echosTetartos = TipoDeEscala(
         nombre: "échos tétartos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        variantes: ["Ήχος τέταρτος", "ichos tetartos"],
+        variantes: ["ichos tetartos", "Ήχος τέταρτος"],
         categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [0, 12, 22, 30, 42, 52, 60]),
