@@ -95,21 +95,25 @@ extension ProgresionConNombre {
         alias: ["lamento cromático"], estilos: [.clasica])
     /// El bajo de danza del Renacimiento en menor: i–♭VII–i–V–III–♭VII–i–V–i.
     public static let passamezzoAntico = ProgresionConNombre(
-        nombre: "passamezzo antico", cifrado: "i VII i V III VII i V i", modo: .menor, estilos: [.clasica])
+        nombre: "passamezzo antico", cifrado: "i VII i V III VII i V i", modo: .menor, estilos: [.clasica],
+        referencias: [.gerbino2001])
     /// El bajo de danza del Renacimiento en mayor: I–IV–I–V–I–IV–I–V–I.
     public static let passamezzoModerno = ProgresionConNombre(
-        nombre: "passamezzo moderno", cifrado: "I IV I V I IV I V I", estilos: [.clasica])
+        nombre: "passamezzo moderno", cifrado: "I IV I V I IV I V I", estilos: [.clasica],
+        referencias: [.gerbino2001])
     /// El bajo de danza 1–4–2–5, 1–4–5–1.
     public static let ruggiero = ProgresionConNombre(
-        nombre: "ruggiero", cifrado: "I IV ii V I IV V I", estilos: [.clasica])
+        nombre: "ruggiero", cifrado: "I IV ii V I IV V I", estilos: [.clasica], referencias: [.staiti2023])
     public static let bergamasca = ProgresionConNombre(
-        nombre: "bergamasca", cifrado: "I IV V I", estilos: [.clasica])
+        nombre: "bergamasca", cifrado: "I IV V I", estilos: [.clasica],
+        referencias: [.sheinberg2016.paginas("19")])
     /// El bajo de la chacona barroca en mayor: I–V–vi–V.
     public static let chacona = ProgresionConNombre(
-        nombre: "chacona", cifrado: "I V vi V", estilos: [.clasica])
+        nombre: "chacona", cifrado: "I V vi V", estilos: [.clasica], referencias: [.hudsonChaconne1982])
     /// El bajo del pasacalle en menor: i–iv–V–i.
     public static let passacaglia = ProgresionConNombre(
-        nombre: "pasacalle", cifrado: "i iv V i", modo: .menor, alias: ["passacaglia"], estilos: [.clasica])
+        nombre: "pasacalle", cifrado: "i iv V i", modo: .menor, alias: ["passacaglia"], estilos: [.clasica],
+        referencias: [.hudsonPassacaglia1982])
 
     // MARK: Jazz y blues
 

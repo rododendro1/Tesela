@@ -63,6 +63,9 @@ import Testing
         #expect(notas(.surMugami, .sol) == "Sol La Si♭ Do Re Mi♭ Mi Fa")
         #expect(notas(.segahMugami, .mi) == "Mi Fa Sol La Si♭ Si Do Re")
         #expect(TipoDeEscala.cahargahMugami == .dobleArmonica)
+        #expect(notas(.sustarMugami) == "Do Re Mi♭ Mi Fa Sol La♭ Si")
+        #expect(notas(.bayatiSirazMugami) == "Do Re Mi♭ Fa Sol La♭ La Si")
+        #expect(notas(.humayunMugami) == "Do Re Mi Fa Sol Sol♯ La Si")
         // Se leen con sus letras turcas y azerbaiyanas y sin ellas (la ı sin punto como i).
         for (texto, nombre) in [
             ("Sol Rast makamı", "Rast makamı"), ("La hicaz makami", "Hicaz makamı"),

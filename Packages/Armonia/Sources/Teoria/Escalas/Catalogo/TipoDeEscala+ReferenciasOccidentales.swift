@@ -27,7 +27,8 @@ extension TipoDeEscala {
             .persichetti1961,
             [
                 .pentatonicaMayor, .tonosEnteros, .lidioDominante, .mayorLocria, .lidioMenor, .napolitanaMayor,
-                .napolitanaMenor, .menorHungara, .mayorHungara, .enigmatica, .oriental,
+                .napolitanaMenor, .menorHungara, .mayorHungara, .enigmatica, .oriental, .alterada,
+                .lidioAumentadoSextaAumentada, .dobleArmonica, .prometeo, .prometeoNapolitano,
             ]
         ),
         (.lendvai1971, [.lidioDominante]),

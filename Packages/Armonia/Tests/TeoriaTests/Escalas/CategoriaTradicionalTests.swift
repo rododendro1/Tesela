@@ -260,7 +260,7 @@ import Testing
     /// «ṣaḍja-grāma») o, en los jo coreanos, al final («P'yŏngjo»); los shadd llevan «shadd» en lugar de «maqām».
     /// Así una escala nueva no sale «makam Rast makamı» ni pierde «rāga».
     @Test func llevaLaCategoriaCuandoElNombreLaTiene() throws {
-        #expect(TipoDeEscala.tradicionales.filter(\.llevaLaCategoria).count == 68)
+        #expect(TipoDeEscala.tradicionales.filter(\.llevaLaCategoria).count == 71)
         #expect(TipoDeEscala.rastMakami.llevaLaCategoria && TipoDeEscala.rastMakami.nombreCompleto == "Rast makamı")
         #expect(TipoDeEscala.surMugami.llevaLaCategoria)
         #expect(TipoDeEscala.jinsHijaz.llevaLaCategoria)

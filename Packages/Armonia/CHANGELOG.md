@@ -2,6 +2,20 @@
 
 ## Sin publicar
 
+- Los tres mugam de Hacıbəyov que faltaban: `sustarMugami` (Şüştər), `bayatiSirazMugami` (Bayatı-Şiraz) y
+  `humayunMugami` (Hümayun), como los describe el texto azerbaiyano de sus «Principios» en musbook.musigi-dunya.az.
+  Şüştər une dos tetracordos semitono-tono-semitono con una segunda aumentada; Bayatı-Şiraz, dos tono-tono-semitono
+  con un grado suelto, y Hümayun, dos semitono-segunda aumentada-semitono con un tono. Ya están los siete.
+- Persichetti (1961) se cita también por la superlocria, la de tonos enteros con sensible, la doble armónica, la
+  Prometeo y la Prometeo napolitana, que están en su capítulo de escalas. La nota de Busoni dice que la edición de
+  1907 ya cuenta las 113 escalas.
+- Fuentes para las danzas y las escalas europeas, con once obras nuevas en `Referencia.catalogo`. El passamezzo
+  antico y el moderno citan el artículo del New Grove de Gerbino y Silbiger (2001); el ruggiero, a Staiti (2023); la
+  bergamasca, a Sheinberg (2016, p. 19), y la chacona y el pasacalle, los volúmenes IV y III de Hudson (1982). El
+  dórico ucraniano cita a Soroker (1995, pp. 8–10); la podhalańska, a Małanicz-Przybylska (2018); la pentatónica
+  húngara, a Kodály (1960); el cuerno alpino, a Campbell (2019); la gaita escocesa, a Cannon (2002); la georgiana, a
+  Scherbaum, Mzhavanadze, Rosenzweig y Müller (2022), y la istriana, a Bonifačić (2001). Todas las escalas europeas
+  tienen ya fuente.
 - `CakraDeMela`: los doce cakra en que se agrupan los 72 mēḷa, de seis en seis (Indu, Netra, Agni… Āditya), con su
   nombre en IAST y en devanagari y sus mēḷa (`CakraDeMela.rtu.melas`, 31…36). `TipoDeEscala.cakra` da el de una
   escala: Bāṇa para la mayor, que es el mēḷa 29. `CakraDeMela.silabas` son las sílabas del lugar de cada mēḷa en su
@@ -18,10 +32,12 @@
   Mi Fa Sol La es el tetracordo mésōn o el hyperbolaíōn; Si Do Re Mi, el hypátōn o el diezeugménōn, y La Si♭ Do Re,
   el synēmménōn. La consola los da con `escala … --tetracordos` (`--tetrachords`), también en JSON.
 - `TipoDeEscala.ajnas` da los fragmentos con los que describe una escala su teoría, cada uno con el grado en que
-  empieza (`FragmentoDeLaEscala`), y `fuenteDeLosAjnas`, la obra de la que salen: los ajnas de 16 maqāmāt según
-  Maqam World (Bayātī es el jins Bayātī en la tónica y el Nahāwand en la cuarta) y los çeşni de 19 makam según
-  Signell (1977) (Rast makamı, el Rast beşlisi y el Rast dörtlüsü en la quinta). Faltan los que usan un fragmento que
-  el catálogo no tiene, como Lāmī o el Segâh üçlüsü. `escala … --tetracordos` los da antes de las divisiones.
+  empieza (`FragmentoDeLaEscala`), y `fuenteDeLosAjnas`, la obra de la que salen: los ajnas de 17 maqāmāt según
+  Maqam World (Bayātī es el jins Bayātī en la tónica y el Nahāwand en la cuarta) y los çeşni de 15 makam según la
+  TDV İslâm Ansiklopedisi (Rast makamı, el Rast beşlisi y el Rast dörtlüsü en la quinta), comprobados en la página de
+  cada uno. Faltan los que usan un fragmento que el catálogo no tiene, como Lāmī, el jins Ḥijāzkār o el Saba
+  dörtlüsü, y los makam que no se han podido comprobar (Hüzzam, Karcığar, Sûzinak, Nikriz). `escala … --tetracordos`
+  los da antes de las divisiones.
 - Cuatro obras nuevas en `Referencia.catalogo`, para las listas que no tenían ninguna: Pennanen (1999),
   *Westernisation and Modernisation in Greek Popular Music*, para los dromoi; Shin (2024), «Two Theories of Ujo and
   Pyeongjo in Pansori», en Music Theory Online, para las escalas coreanas; Siqueira (1981), *Sistema modal na música

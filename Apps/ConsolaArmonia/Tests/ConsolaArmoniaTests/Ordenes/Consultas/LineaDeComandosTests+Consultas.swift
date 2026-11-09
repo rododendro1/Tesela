@@ -673,7 +673,7 @@ extension LineaDeComandosTests {
                 "\nTetracordos:\n  sus ajnas o çeşni (Maqam World): jins Bayātī (Re) · jins Nahāwand (Sol)\n"))
         #expect(
             salida("escala La rast makami --tetracordos").contains(
-                "  sus ajnas o çeşni (Signell 1977): Rast beşlisi (La) · Rast dörtlüsü (Mi)\n"))
+                "  sus ajnas o çeşni (TDV İslâm Ansiklopedisi): Rast beşlisi (La) · Rast dörtlüsü (Mi)\n"))
         #expect(
             salida("escala Do pentatónica mayor --tetracordos").hasSuffix(
                 "\nTetracordos:\n  no se divide en dos tetracordos\n"))

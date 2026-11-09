@@ -22,7 +22,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["ucraniana"],
-        categoria: .escala, regiones: [.ucrania])
+        categoria: .escala, regiones: [.ucrania], referencias: [.soroker1995.paginas("8–10")])
     /// La escala de los górales de Podhale, en los Tatras polacos (Do Re Mi Fa♯ Sol La Si♭): mayor con la 4ª
     /// aumentada y la 7ª menor, como la acústica.
     public static let podhalanska = TipoDeEscala(
@@ -32,13 +32,13 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["podhalana", "escala podhalana", "skala podhalańska", "góralska", "Podhale"],
-        categoria: .escala, regiones: [.polonia])
+        categoria: .escala, regiones: [.polonia], referencias: [.malaniczPrzybylska2018])
     /// La pentatónica de la canción popular húngara, la que estudiaron Bartók y Kodály: la–do–re–mi–sol
     /// (Do Mi♭ Fa Sol Si♭ desde Do), sin semitonos.
     public static let pentatonicaHungara = TipoDeEscala(
         nombre: "pentatónica húngara",
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        categoria: .escala, regiones: [.hungria])
+        categoria: .escala, regiones: [.hungria], referencias: [.kodaly1960])
 
     /// La escala istriana (Do Re♭ Mi♭ Fa♭ Sol♭ La♭♭; Mi Fa Sol La♭ Si♭ Do♭ sobre Mi), la del canto a dos voces y
     /// de las sopile de Istria y el Kvarner: seis notas que alternan semitonos y tonos, y que cierra con una
@@ -52,7 +52,7 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaDisminuida,
         ],
         alias: ["escala istriana", "istarska ljestvica", "istarska"],
-        categoria: .escala, regiones: [.istria])
+        categoria: .escala, regiones: [.istria], referencias: [.bonifacic2001])
 
     // MARK: Instrumentos de afinación natural
     //
@@ -74,7 +74,7 @@ extension TipoDeEscala {
         ],
         alias: ["trompa alpina", "cuerno de los Alpes", "Alphorn"],
         categoria: .escala, regiones: [.alpes],
-        afinaciones: [.init(.razones, pasos: [0, 204, 386, 551, 702, 841, 969, 1088])])
+        afinaciones: [.init(.razones, pasos: [0, 204, 386, 551, 702, 841, 969, 1088])], referencias: [.campbell2019])
     /// La escala de la gaita escocesa de las Highlands: un mixolidio (Do Re Mi Fa Sol La Si♭ desde Do; en la gaita,
     /// sobre La).
     public static let gaitaEscocesa = TipoDeEscala(
@@ -85,7 +85,7 @@ extension TipoDeEscala {
         ],
         alias: ["gaita de las Highlands", "Great Highland Bagpipe", "píob mhór"],
         categoria: .escala, regiones: [.escocia],
-        afinaciones: [.init(.razones, pasos: [0, 204, 386, 498, 702, 884, 969])])
+        afinaciones: [.init(.razones, pasos: [0, 204, 386, 498, 702, 884, 969])], referencias: [.cannon2002])
 
     // MARK: Canto georgiano
     //
@@ -102,7 +102,7 @@ extension TipoDeEscala {
         intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["escala georgiana", "canto georgiano", "svana", "Svaneti"],
         categoria: .escala, regiones: [.georgia],
-        afinaciones: [.init(.razones, pasos: [0, 163, 332, 509, 693, 868, 1018])])
+        afinaciones: [.init(.razones, pasos: [0, 163, 332, 509, 693, 868, 1018])], referencias: [.scherbaum2022])
 
     package static let europeas: [TipoDeEscala] = [
         .doricoUcraniano, .podhalanska, .pentatonicaHungara, .cuernoAlpino, .gaitaEscocesa, .georgiana,

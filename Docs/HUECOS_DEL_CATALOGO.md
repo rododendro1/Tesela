@@ -1,21 +1,19 @@
 # Huecos del catálogo de escalas y acordes
 
-Estado a 9 de noviembre de 2026, tras la 0.4.4 y los acordes que faltaban.
+Estado a 9 de noviembre de 2026, tras la 0.4.4, los acordes que faltaban y las fuentes de las europeas y las danzas.
 
 ## Resumen
 
-En main quedan 10 escalas de otras tradiciones y 30 escalas occidentales sin ninguna referencia, y ocho acordes sin
-fuente. El catálogo tiene 434 escalas en 49 listas de tradición y 55 acordes, todos con nombre en los doce idiomas. Lo
-más rápido de cerrar son las europeas (7 escalas de una lista).
+Quedan 3 escalas de otras tradiciones y 29 escalas occidentales sin ninguna referencia, y ocho acordes sin fuente. El
+catálogo tiene 437 escalas en 49 listas de tradición y 55 acordes, todos con nombre en los doce idiomas. Las siete
+europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una obra cada una.
 
 ## Escalas sin ninguna referencia
 
-Son 10 escalas en 3 listas, según `comprobar_catalogo.py`. Ninguna de las tres listas tiene referencia propia, así que
-una sola obra por lista bastaría para cubrirlas.
+Son 3 escalas en 2 listas, según `comprobar_catalogo.py`.
 
 | Lista | Escalas sin fuente | Total en la lista | Qué haría falta |
 | --- | --- | --- | --- |
-| Europeas | dórico ucraniano, podhalańska, pentatónica húngara, cuerno alpino, gaita escocesa, georgiana, istriana | 7 | Una obra por escala, porque cada una es de un país |
 | Sudeste asiático | pinpeat, saung | 3 | Una fuente sobre la música jemer y otra sobre la birmana; el piphat ya cita a Morton (1976) |
 | Africanas | amadinda | 7 | Una fuente sobre el xilófono de Uganda; las otras seis citan a Tracey, Berliner o Knight |
 
@@ -37,13 +35,13 @@ Son más largas India (62), Turquía (39) y el mundo árabe (35).
 
 ## Escalas occidentales sin fuente
 
-De las 112 escalas occidentales, 30 no citan ninguna obra. Son las alteradas que no tienen siete notas y que, por
+De las 112 escalas occidentales, 29 no citan ninguna obra. Son las alteradas que no tienen siete notas y que, por
 tanto, Busoni no cubre.
 
 | Grupo | Escalas | Cuántas |
 | --- | --- | --- |
 | Pentatónicas alteradas | dominante, menor 6, mayor ♭6, menor ♭5, mayor ♭3, menor ♭6, mixolidia, lidia, escocesa, egipcia | 10 |
-| Hexatónicas | jónico sin 4ª, mixolidio sin 3ª, dórico sin 6ª, eólico sin 2ª, de dos tríadas (mayor y menor), de armónicos, trítono de dos semitonos, Prometeo napolitana | 9 |
+| Hexatónicas | jónico sin 4ª, mixolidio sin 3ª, dórico sin 6ª, eólico sin 2ª, de dos tríadas (mayor y menor), de armónicos, trítono de dos semitonos | 8 |
 | Cromáticas con alteraciones | con uno, dos, tres y cinco bemoles, con cinco sostenidos | 5 |
 | De ocho o nueve notas | bebop locrio, bebop lidio, bebop menor armónica, argelina, blues de nueve notas, blues menor con 2ª | 6 |
 
@@ -65,18 +63,27 @@ Hay 43 acordes genéricos y 12 de nombre propio. Los que faltaban ya están, per
 
 Los acordes de Hendrix y mu tampoco citan ninguna obra.
 
-## Datos por confirmar y orden propuesto
+## Datos comprobados y por confirmar
 
-Antes de añadir nada conviene confirmar tres datos que ya están en el catálogo:
+Comprobado en noviembre de 2026:
 
-- Las páginas citadas de Manuel (1989) y de Cohn (1996).
-- Que Persichetti, Tymoczko, Rechberger y Levine traen cada escala y cada acorde a los que se citan, porque se citan
-  por capítulos y no por página.
-- Que la edición de 1907 de Busoni ya cuenta las 113 escalas; la cita es a la de 1916, p. 41.
+- Manuel (1989) ocupa las pp. 70–94 del vol. 21 del Yearbook for Traditional Music, y Cohn (1996) las pp. 9–40 del
+  vol. 15 (1) de Music Analysis.
+- Busoni ya cuenta las 113 escalas en la primera edición: la traducción de Baker (1911), hecha sobre la de 1907, dice
+  «one hundred and thirteen different scales».
+- Persichetti trae las once escalas que se le citaban y, además, la superlocria, la de tonos enteros con sensible, la
+  doble armónica, la Prometeo y la Prometeo napolitana, que ahora también lo citan. Se ha comprobado en un resumen de
+  curso de su capítulo de escalas, no en el libro.
+- Tymoczko trata las seis que se le citan en los capítulos 4 y 9 («Scales» y «Scales in Twentieth-Century Music»).
+
+Sin comprobar, porque no se ha podido ver el libro: que Levine trae cada uno de los modos de la menor melódica y de
+las bebop que se le citan (los temas sí están: menor melódica, disminuidas, tonos enteros, pentatónicas, blues y
+bebop), y las doce escalas que se citan de Rechberger (2008).
 
 Orden propuesto:
 
-1. Las europeas, el pinpeat, el saung y la amadinda: diez escalas que solo necesitan sus fuentes.
+1. El pinpeat, el saung y la amadinda: tres escalas que solo necesitan sus fuentes. De las europeas, falta comprobar
+   en Małanicz-Przybylska (2018) las notas exactas de la podhalańska.
 2. Las bebop y las hexatónicas de dos tríadas, con Levine y Cohn.
 3. Las fuentes de los acordes de nombre propio y de m(add9), con su ortografía.
 4. Las tradiciones ausentes, empezando por el shashmaqom, que es vecino de los dastgāh.

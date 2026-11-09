@@ -73,7 +73,7 @@ extension Referencia {
     public static let tdvIslamAnsiklopedisi = Referencia(
         "tdvIslamAnsiklopedisi", .web, autores: ["Türkiye Diyanet Vakfı"], titulo: "TDV İslâm Ansiklopedisi",
         anio: nil, url: "https://islamansiklopedisi.org.tr")
-    /// Hacıbəyov, los mugam azerbaiyanos.
+    /// Hacıbəyov, los mugam azerbaiyanos. El texto azerbaiyano está en musbook.musigi-dunya.az.
     public static let hacibeyov1945 = Referencia(
         "hacibeyov1945", .libro, autores: ["Hacıbəyov, Üzeyir"], titulo: "Azərbaycan xalq musiqisinin əsasları",
         anio: 1945, lugar: "Bakú")
@@ -326,6 +326,32 @@ extension Referencia {
         titulo:
             "The Folia, the Saraband, the Passacaglia, and the Chaconne, vol. I: The Folia",
         anio: 1982, editorial: "American Institute of Musicology", lugar: "Neuhausen-Stuttgart")
+    /// Hudson, el pasacalle, de la guitarra española a las variaciones para teclado (el tercero de sus cuatro
+    /// volúmenes).
+    public static let hudsonPassacaglia1982 = Referencia(
+        "hudsonPassacaglia1982", .libro, autores: ["Hudson, Richard"],
+        titulo: "The Folia, the Saraband, the Passacaglia, and the Chaconne, vol. III: The Passacaglia",
+        anio: 1982, editorial: "American Institute of Musicology", lugar: "Neuhausen-Stuttgart")
+    /// Hudson, la chacona (el cuarto de sus cuatro volúmenes).
+    public static let hudsonChaconne1982 = Referencia(
+        "hudsonChaconne1982", .libro, autores: ["Hudson, Richard"],
+        titulo: "The Folia, the Saraband, the Passacaglia, and the Chaconne, vol. IV: The Chaconne",
+        anio: 1982, editorial: "American Institute of Musicology", lugar: "Neuhausen-Stuttgart")
+    /// El artículo «Passamezzo» del New Grove: el antico y el moderno.
+    public static let gerbino2001 = Referencia(
+        "gerbino2001", .capitulo, autores: ["Gerbino, Giuseppe", "Silbiger, Alexander"], titulo: "Passamezzo",
+        anio: 2001, publicadoEn: "The New Grove Dictionary of Music and Musicians, 2.ª ed., editado por Stanley Sadie",
+        editorial: "Macmillan", lugar: "Londres")
+    /// Staiti, la historia del ruggiero, de la melodía y su bajo.
+    public static let staiti2023 = Referencia(
+        "staiti2023", .articulo, autores: ["Staiti, Nico"], titulo: "Il Ruggiero: storia di una forma di danza",
+        anio: 2023, publicadoEn: "Artes – Rivista di arte, letteratura e musica dell'Officina San Francesco Bologna",
+        volumen: "2", paginas: "111–136", doi: "10.6092/issn.2974-7287/18300")
+    /// Sheinberg, la bergamasca y su bajo I–IV–V–I (p. 19, citando a Judith Cohen).
+    public static let sheinberg2016 = Referencia(
+        "sheinberg2016", .articulo, autores: ["Sheinberg, Esti"],
+        titulo: "In Praise of the Politically Incorrect: the Bergamasca", anio: 2016,
+        publicadoEn: "Min-Ad: Israel Studies in Musicology", volumen: "13", paginas: "19–34")
     /// Rosand, el tetracordo descendente, el bajo del lamento.
     public static let rosand1979 = Referencia(
         "rosand1979", .articulo, autores: ["Rosand, Ellen"], titulo: "The Descending Tetrachord: An Emblem of Lament",
@@ -338,6 +364,45 @@ extension Referencia {
 
     // MARK: Compendios
 
+    // MARK: Europa
+
+    /// Soroker, lo ucraniano en la música clásica: el dórico con la cuarta aumentada (pp. 8–10).
+    public static let soroker1995 = Referencia(
+        "soroker1995", .libro, autores: ["Soroker, Yakov"], titulo: "Ukrainian Musical Elements in Classical Music",
+        anio: 1995, editorial: "Canadian Institute of Ukrainian Studies Press", lugar: "Edmonton")
+    /// Małanicz-Przybylska, la música de hoy de Podhale.
+    public static let malaniczPrzybylska2018 = Referencia(
+        "malaniczPrzybylska2018", .libro, autores: ["Małanicz-Przybylska, Maria"],
+        titulo: "Między dźwiękami Skalnego Podhala. Współczesna góralszczyzna", anio: 2018,
+        editorial: "Wydawnictwa Uniwersytetu Warszawskiego", lugar: "Varsovia")
+    /// Kodály, la canción popular húngara y su pentatónica (la traducción inglesa de «A magyar népzene», 1937).
+    public static let kodaly1960 = Referencia(
+        "kodaly1960", .libro, autores: ["Kodály, Zoltán"], titulo: "Folk Music of Hungary", anio: 1960,
+        editorial: "Barrie and Rockliff", lugar: "Londres")
+    /// Campbell, el cuerno de los Alpes y sus armónicos, en la Cambridge Encyclopedia of Brass Instruments.
+    public static let campbell2019 = Referencia(
+        "campbell2019", .capitulo, autores: ["Campbell, Murray"], titulo: "Alphorn", anio: 2019,
+        publicadoEn:
+            "The Cambridge Encyclopedia of Brass Instruments, editado por Trevor Herbert, Arnold Myers y John Wallace",
+        editorial: "Cambridge University Press", lugar: "Cambridge", paginas: "18–20", doi: "10.1017/9781316841273")
+    /// Cannon, la gaita de las Highlands y su escala.
+    public static let cannon2002 = Referencia(
+        "cannon2002", .libro, autores: ["Cannon, Roderick D."], titulo: "The Highland Bagpipe and Its Music",
+        anio: 2002, editorial: "Birlinn", lugar: "Edimburgo")
+    /// Scherbaum, Mzhavanadze, Rosenzweig y Müller, las afinaciones del canto georgiano medidas en grabaciones de
+    /// campo de Svaneti.
+    public static let scherbaum2022 = Referencia(
+        "scherbaum2022", .articulo,
+        autores: ["Scherbaum, Frank", "Mzhavanadze, Nana", "Rosenzweig, Sebastian", "Müller, Meinard"],
+        titulo: "Tuning Systems of Traditional Georgian Singing Determined from a New Corpus of Field Recordings",
+        anio: 2022, publicadoEn: "Musicologist", volumen: "6 (2)", paginas: "142–168",
+        doi: "10.33906/musicologist.1068947")
+    /// Bonifačić, qué es y qué no es la llamada escala istriana.
+    public static let bonifacic2001 = Referencia(
+        "bonifacic2001", .articulo, autores: ["Bonifačić, Ruža"],
+        titulo: "O problematici takozvane «istarske ljestvice»", anio: 2001,
+        publicadoEn: "Narodna umjetnost", volumen: "38 (2)", paginas: "73–97")
+
     /// Rechberger, un compendio de más de mil escalas: las diatónicas y las pentatónicas, los modos griegos, bizantinos
     /// y eclesiásticos, los gitanos húngaros y los sistemas árabe, persa, turco, indio, japonés y chino (ISBN
     /// 978-952-5489-07-1). Se cita por sus capítulos, no escala por escala.
@@ -345,7 +410,8 @@ extension Referencia {
         "rechberger2008", .libro, autores: ["Rechberger, Herman"], titulo: "Scales and Modes around the World",
         anio: 2008, editorial: "Fennica Gehrman", lugar: "Helsinki")
     /// Busoni, el Entwurf: las 113 escalas de siete notas que salen de bajar y subir los grados de la de Do (p. 41
-    /// de la segunda edición, la de 1916). No les da nombre: se cita por todas las heptatónicas sintéticas.
+    /// de la segunda edición, la de 1916; la primera, de 1907, ya las cuenta, como se ve en la traducción de Baker de
+    /// 1911). No les da nombre: se cita por todas las heptatónicas sintéticas.
     public static let busoni1916 = Referencia(
         "busoni1916", .libro, autores: ["Busoni, Ferruccio"], titulo: "Entwurf einer neuen Ästhetik der Tonkunst",
         anio: 1916, editorial: "Insel-Verlag", lugar: "Leipzig")
@@ -362,7 +428,10 @@ extension Referencia {
         .berliner1978, .knight1973, .harcourt1925, .siqueira1981, .rothgeb1995, .samson1977, .taruskin1987,
         .burkhart1973,
         .levine1989, .persichetti1961, .aldwell2011, .levine1995, .messiaen1944, .lendvai1971, .cohn1996,
-        .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .gjerdingen2007, .hudson1982, .rosand1979, .doll2017,
+        .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .gjerdingen2007, .hudson1982, .hudsonPassacaglia1982,
+        .hudsonChaconne1982,
+        .gerbino2001, .staiti2023, .sheinberg2016, .rosand1979, .doll2017,
+        .soroker1995, .malaniczPrzybylska2018, .kodaly1960, .campbell2019, .cannon2002, .scherbaum2022, .bonifacic2001,
         .rechberger2008, .busoni1916,
     ]
 }

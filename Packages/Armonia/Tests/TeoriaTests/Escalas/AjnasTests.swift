@@ -11,7 +11,7 @@ import Testing
         #expect(TipoDeEscala.bayati.ajnas.map(\.grado) == [1, 4])
         #expect(TipoDeEscala.bayati.fuenteDeLosAjnas == .maqamWorld)
         #expect(bayati.notas(de: TipoDeEscala.bayati.ajnas[1]).map(\.nombre) == ["Sol", "La", "Si♭", "Do", "Re"])
-        #expect(TipoDeEscala.rastMakami.fuenteDeLosAjnas == .signell1977)
+        #expect(TipoDeEscala.rastMakami.fuenteDeLosAjnas == .tdvIslamAnsiklopedisi)
         #expect(TipoDeEscala.mayor.ajnas.isEmpty)
         #expect(TipoDeEscala.mayor.fuenteDeLosAjnas == nil)
     }
@@ -19,7 +19,7 @@ import Testing
     /// Cada fragmento declarado tiene las notas de la escala, subiendo o bajando, y es un fragmento del catálogo.
     @Test func cadaFragmentoCasaConSuEscala() {
         let declarados = TipoDeEscala.tradicionales.filter { !$0.ajnas.isEmpty }
-        #expect(declarados.count == 35)
+        #expect(declarados.count == 32)
         for tipo in declarados {
             let escala = Escala(.do, tipo)
             for fragmento in tipo.ajnas {

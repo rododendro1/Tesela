@@ -77,8 +77,8 @@ usan microtonos):
 - **12 çeşni turcos**, los dörtlü (tetracordos) y beşli (pentacordos) de Arel-Ezgi-Uzdilek de los que se
   hacen los makamlar: Çârgâh, Bûselik, Kürdî, Rast, Uşşak y Hicaz, cada uno de cuatro y de cinco notas
   (Hicaz dörtlüsü, Hicaz beşlisi).
-- **4 mugam azerbaiyanos**, los de Üzeyir Hacıbəyov que ya están en doce notas: Rast, Şur,
-  Segah y Çahargah, con «muğamı» detrás. Los tres primeros encadenan tres tetracordos y tienen
+- **7 mugam azerbaiyanos**, los de Üzeyir Hacıbəyov, que ya están en doce notas: Rast, Şur,
+  Segah, Çahargah, Şüştər, Bayatı-Şiraz y Hümayun, con «muğamı» detrás. Casi todos tienen
   una nota distinta por debajo de la tónica y por encima, así que tienen ocho notas (Rast
   muğamı en Do: Do Re Mi Fa Sol La Si♭ Si).
 - **9 echoi bizantinos**, los ocho modos de la salmodia y el légetos: échos prótos (el dórico, sobre Re), plágios
