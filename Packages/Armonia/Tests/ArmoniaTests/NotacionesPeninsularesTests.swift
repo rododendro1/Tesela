@@ -113,11 +113,11 @@ import Testing
     /// Los nombres de los catálogos (tipos de acorde y de escala, instrumentos, ciclos) en catalán,
     /// gallego y euskera.
     @Test func catalogosEnCatalanGallegoEuskera() {
-        #expect(TipoDeAcorde.dominanteSeptima.nombre(en: .conPalabras(.catalan)) == "sèptima de dominant")
+        #expect(TipoDeAcorde.dominanteSeptima.nombre(en: .conPalabras(.catalan)) == "setena de dominant")
         #expect(TipoDeAcorde.dominanteSeptima.nombre(en: .conPalabras(.gallego)) == "sétima de dominante")
         #expect(TipoDeAcorde.dominanteSeptima.nombre(en: .conPalabras(.euskera)) == "dominanteko zazpigarrena")
         #expect(TipoDeAcorde.dominanteSeptima.nombre(en: .conPalabras(.portugues)) == "sétima de dominante")
-        #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.catalan)) == "sol sèptima de dominant, primera inversió")
+        #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.catalan)) == "sol setena de dominant, primera inversió")
         #expect(Acorde("Sol7/Si").nombre(en: .conPalabras(.gallego)) == "sol sétima de dominante, primeira inversión")
         #expect(Acorde("Do/Re").nombre(en: .conPalabras(.euskera)) == "do maiorra, baxua re dela")
         #expect(Acorde("Do/Re").nombre(en: .conPalabras(.catalan)) == "do major, amb el baix en re")

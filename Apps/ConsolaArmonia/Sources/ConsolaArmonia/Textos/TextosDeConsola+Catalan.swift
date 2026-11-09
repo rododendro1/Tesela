@@ -9,7 +9,7 @@ extension TextosDeConsola {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <acords> [--en <tonalitat>] [--escalas]",
         descripcionAnalizar: "xifrat romà, funcions, cadències i modulacions (amb l'acord pivot; sense --en)\n--escalas: l'escala de cada acord, amb les tensions i notes a evitar",
-        notasAnalizar: "--notas-guia: dues línies de notes guia, des de la tercera i des de la setena; --conduccion: com va cada veu d’un acord al següent (en drop 2), amb les notes comunes; --comparar: l’altra versió acord a acord, amb el que canvia, els seus graus i les notes comunes; --bajo: un baix caminant en negres, un compàs per acord",
+        notasAnalizar: "--notas-guia: dues línies de notes guia, des de la tercera i des de la setena; --conduccion: com va cada veu d'un acord al següent (en drop 2), amb les notes comunes; --comparar: l'altra versió acord a acord, amb el que canvia, els seus graus i les notes comunes; --bajo: un baix caminant en negres, un compàs per acord",
         sintaxisAnalizarArchivo: "analizar --archivo <fitxer> [--ventana <durada>]",
         descripcionAnalizarArchivo: "el mateix, amb els acords d'un fitxer MIDI, MusicXML, MEI o ABC (un per pols; --ventana 2: un per blanca)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalitat>] [--propuestas 3]",
@@ -60,9 +60,9 @@ extension TextosDeConsola {
         sintaxisTradiciones: "tradiciones [<tradició>]",
         descripcionTradiciones: "les tradicions del catàleg, amb les categories i quantes escales hi ha en cadascuna; amb una, les seves escales",
         sintaxisTonalidad: "tonalidad <tonalitat>",
-        descripcionTonalidad: "armadura, relatives i graus; --modulaciones: com arribar a cada to veí (o --modulaciones Sol mayor, a aquest), amb l’acord pivot",
+        descripcionTonalidad: "armadura, relatives i graus; --modulaciones: com arribar a cada to veí (o --modulaciones Sol mayor, a aquest), amb l'acord pivot",
         sintaxisConjunto: "conjunto <classes>",
-        descripcionConjunto: "forma primera, nombre de Forte, vectors, simetries i notes",
+        descripcionConjunto: "forma primera, número de Forte, vectors, simetries i notes",
         sintaxisSerie: "serie <sèrie>",
         descripcionSerie: "matriu, formes i combinatorietat d'una sèrie dodecafònica",
 
@@ -87,7 +87,7 @@ extension TextosDeConsola {
 
         // Ayuda+Neorriemann.swift
         sintaxisVecinos: "vecinos <acord> [--voces 2]",
-        descripcionVecinos: "acords a un semitò (sèptimes: dominant, menor, semidisminuïda i disminuïda; tríades: major, menor i augmentada; --ampliada: amb els maj7 també)",
+        descripcionVecinos: "acords a un semitò (setenes: dominant, menor, semidisminuïda i disminuïda; tríades: major, menor i augmentada; --ampliada: amb els maj7 també)",
         sintaxisConduccionParsimoniosa: "camino-parsimonioso <acord> <acord> [--voces 2] [--ampliada]",
         descripcionConduccionParsimoniosa: "d'un acord a un altre movent una veu (o dues) un semitò a cada pas",
         sintaxisConduccionMinima: "conduccion-minima <acord> <acord>",
@@ -145,9 +145,9 @@ extension TextosDeConsola {
         sintaxisHojaDeAcorde: "hoja acorde <xifrat>",
         descripcionHojaDeAcorde: "l'acord en un full d'estudi per imprimir (SVG): notes i altres noms, pentagrama, disposicions, digitacions de guitarra, escales compatibles i substitucions",
         sintaxisHojaDeAcordes: "hoja acordes <acords> [--en <tonalitat>] [--doce] [--comparar <acords>]",
-        descripcionHojaDeAcordes: "la progressió en un full d'estudi per imprimir (SVG): pentagrama amb una disposició de cada acord, anàlisi amb graus, funcions i escales, cadències i línies de notes guia; també la conducció de veus. Amb --doce, la progressió en les dotze tonalitats, cadascuna amb el seu pentagrama. Amb --comparar, comparada acord a acord amb una altra versió (rearmonitzada…): el que canvia, en vermell",
+        descripcionHojaDeAcordes: "la progressió en un full d'estudi per imprimir (SVG): pentagrama amb una disposició de cada acord, anàlisi amb graus, funcions i escales, cadències i línies de notes guia; també la conducció de veus. Amb --doce, la progressió en les dotze tonalitats, cadascuna amb el seu pentagrama. Amb --comparar, comparada acord a acord amb una altra versió (reharmonitzada…): el que canvia, en vermell",
         sintaxisHojaDeTonalidad: "hoja tonalidad <tonalitat>",
-        descripcionHojaDeTonalidad: "la tonalitat en un full d'estudi per imprimir (SVG): armadura, relativa i homònima, l’escala al pentagrama, els acords de cada grau amb la seva funció, les cadències típiques i les modulacions als tons veïns",
+        descripcionHojaDeTonalidad: "la tonalitat en un full d'estudi per imprimir (SVG): armadura, relativa i homònima, l'escala al pentagrama, els acords de cada grau amb la seva funció, les cadències típiques i les modulacions als tons veïns",
         sintaxisPentagrama: "pentagrama escala|acorde|arpegio|acordes <…>",
         descripcionPentagrama: "una escala, un acord, un arpegi (amb ritme: --figura 16, --tresillos) o uns acords amb el xifrat en un pentagrama (SVG); --nombres, --intervalos, --semitonos, --tonica, --en <tonalitat>",
         sintaxisPentagramaEstudio: "pentagrama <què> --romanos|--dedos|--secuencia|--tab",
@@ -157,7 +157,7 @@ extension TextosDeConsola {
         sintaxisPentagramaMelodia: "pentagrama melodia <notes> --sobre <acords>",
         descripcionPentagramaMelodia: "una melodia (Do4:8 Re4:8…) amb un acord per compàs a sobre; les notes que no són de l'acord, en verd (o en vermell si són cromàtiques); --ajenas ho fa en les altres",
         sintaxisPentagramaBajo: "pentagrama bajo <acords> [--tab]",
-        descripcionPentagramaBajo: "un baix caminant en negres sobre la progressió, en clau de fa: la fonamental a la primera part, notes de l’acord a la segona i la tercera i una nota de pas cromàtica cap a l’acord següent; amb --tab, amb la tabulatura del baix",
+        descripcionPentagramaBajo: "un baix caminant en negres sobre la progressió, en clau de fa: la fonamental a la primera part, notes de l'acord a la segona i la tercera i una nota de pas cromàtica cap a l'acord següent; amb --tab, amb la tabulatura del baix",
         sintaxisPosicionesArpegio: "posiciones --arpegio <xifrat> [--caged|--barrido]",
         descripcionPosicionesArpegio: "l'arpegi d'un acord a cada posició del mànec, en tabulatura i amb els dits; --ida-y-vuelta, puja i baixa",
 
@@ -256,8 +256,8 @@ extension TextosDeConsola {
         // ErrorDeUso.swift (neorriemanniana)
         vocesFueraDeRango: "les veus que es mouen són 1 o 2: --voces 2",
         unAcordeDeVecinos: "cal un acord: {1}",
-        vecinosSinFamilia: "els veïns es busquen entre sèptimes de dominant, menors, semidisminuïdes, disminuïdes i maj7, o entre tríades majors, menors i augmentades",
-        caminoSinConexion: "els dos acords han de ser de la mateixa família (sèptimes, amb maj7 o sense, o tríades) i estar connectats",
+        vecinosSinFamilia: "els veïns es busquen entre setenes de dominant, menors, semidisminuïdes, disminuïdes i maj7, o entre tríades majors, menors i augmentades",
+        caminoSinConexion: "els dos acords han de ser de la mateixa família (setenes, amb maj7 o sense, o tríades) i estar connectats",
         faltanPasosDePLR: "calen una tríada i uns passos o una altra tríada: {1}",
         plrSoloTriadas: "P, L i R s'apliquen a tríades majors i menors: {1}",
 

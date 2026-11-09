@@ -955,7 +955,7 @@ import Hexagonos
         comprobar(Intervalo.sextaMenor.nombre(en: .conPalabras(.euskera)), #""6. txikia""#, doc, 2)
         comprobar(Cadencia.Tipo.rota.nombre(en: .conPalabras(.catalan)), #""cadència trencada""#, doc, 3)
         comprobar(Escala(.re, .dorico).nombre(en: .conPalabras(.euskera)), #""re doriarra""#, doc, 4)
-        comprobar(Acorde("Sol7/Si").nombre(en: .conPalabras(.catalan)), #""sol sèptima de dominant, primera inversió""#, doc, 5)
+        comprobar(Acorde("Sol7/Si").nombre(en: .conPalabras(.catalan)), #""sol setena de dominant, primera inversió""#, doc, 5)
         comprobar(Intervalo.terceraMayor.nombre(en: .conPalabras(.frances)), #""tierce majeure""#, doc, 6)
         comprobar(Cadencia.Tipo.rota.nombre(en: .conPalabras(.italiano)), #""cadenza d'inganno""#, doc, 7)
         comprobar(Escala(.re, .dorico).nombre(en: .conPalabras(.frances)), #""ré dorien""#, doc, 8)

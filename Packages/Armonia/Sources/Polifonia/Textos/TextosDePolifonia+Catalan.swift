@@ -42,7 +42,7 @@ extension TextosDePolifonia {
         saltoSinCompensar: "Salt sense compensar",
         notaRepetida: "Nota repetida",
         especieConElContrapuntoEncima: "Espècie {1}, amb el contrapunt damunt del cantus firmus",
-        especieConElContrapuntoDebajo: "Espècie {1}, amb el contrapunt davall del cantus firmus",
+        especieConElContrapuntoDebajo: "Espècie {1}, amb el contrapunt sota el cantus firmus",
         contrapuntoAVariasVoces: "Contrapunt a {1} veus",
         vozDelContrapunto: "veu {1}",
         sinFaltas: "Sense faltes."

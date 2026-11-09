@@ -7,6 +7,9 @@
   harmoniai y los tetracordos griegos, las etíopes, las europeas y las andinas). Una escala de otra tradición sin
   fila en un idioma conserva sus alias y sus variantes del catálogo («Hicaz», «ትዝታ»), menos los que están en
   español (`NombresDeEscalas.aliasEnEspanol`), así que también se leen con la tónica en alemán, en húngaro y en sueco.
+- Revisión del catalán: la séptima es «setena», como ya decían las apps («setena de dominant»; «sèptima» queda de
+  variante), «número de Forte», «reharmonitzar», «sota el cantus firmus» y los ejemplos del error de tipo de escala
+  en catalán (también en gallego y en euskera, que los tenían en español).
 
 ## 0.4.2 (2026-11-08)
 
