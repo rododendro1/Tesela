@@ -13,7 +13,7 @@ import Foundation
 ///     TemperamentoConNombre.comas53.pasosPorOctava                   // 53
 ///     TemperamentoConNombre.buscar(nombre: "quarter-comma meantone") // .mesotonicoCuartoDeComa
 ///
-/// Los nombres en los otros idiomas están en `Temperamentos/Nombres/`, un fichero por idioma. Dos temperamentos son
+/// Los nombres en los otros idiomas están en `Afinacion/Nombres/`, un fichero por idioma. Dos temperamentos son
 /// iguales si se llaman igual.
 public struct TemperamentoConNombre: Sendable {
     /// El nombre en español: «mesotónico de 1/4 de coma».

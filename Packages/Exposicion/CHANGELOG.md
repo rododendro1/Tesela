@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- Por dentro, sin cambios de API: la raíz se reparte en carpetas. `ConsultasPresentadas` se divide por lo que
+  consulta (`Acordes/`, `Escalas/` y la nueva `Postonal/`, con el análisis postonal y la serie); `Escucha` y
+  `CambioMIDI` van a `Sonido/`, `PentagramaPresentado` a `Partituras/` y `ValorDeMedida` a `Acordes/`.
+
 - `MedidaDeAcorde`: cada medida de un acorde descrita una sola vez, con su clave, su título en `TextosDeApps` y cómo
   se escribe su valor en texto y en JSON (`ValorDeMedida`). La lista de la consola y la app, la tabla de `acordes
   --estadisticas`, el JSON (`EstadisticasDeAcordePresentadas`, ahora con `valores` por clave en vez de un campo por

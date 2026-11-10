@@ -12,18 +12,22 @@ terminal.
 
 | Carpeta              | Qué presenta                                                                                 |
 |----------------------|----------------------------------------------------------------------------------------------|
-| `Acordes/`           | Los arpegios (también en el mástil), las disposiciones, las relaciones de un acorde y la tablatura |
+| `Acordes/`           | Lo que se consulta de un acorde, los arpegios (también en el mástil), las disposiciones, las relaciones de un acorde, la tablatura y sus medidas (`ValorDeMedida`) |
 | `Afinacion/`         | Un temperamento del catálogo con su ficha y sus medidas                                      |
-| `Analisis/`          | El análisis armónico (y sus hojas, el bajo, las doce tonalidades), la tonalidad, las modulaciones, la transposición, el análisis postonal y la serie |
+| `Analisis/`          | El análisis armónico (y sus hojas, el bajo, las doce tonalidades), la tonalidad, las modulaciones y la transposición |
 | `CoralYContrapunto/` | El coral a cuatro voces, el contrapunto de especies y la rearmonización                     |
-| `Escalas/`           | El estudio de una escala: sus acordes, sus progresiones, sus estadísticas, el mapa de brillo y la comparación con otras |
+| `Escalas/`           | Lo que se consulta de una escala y su estudio: sus acordes, sus progresiones, sus estadísticas, el mapa de brillo y la comparación con otras |
 | `Notas/`             | Una nota con nombre y una función de nota del catálogo, con su ficha                         |
+| `Partituras/`        | El pentagrama de una escala o de un acorde                                                   |
+| `Postonal/`          | Lo que se consulta de un conjunto o de una serie, el análisis postonal y la matriz de la serie |
 | `Relaciones/`        | Lo que separa a dos acordes, a dos escalas o a los acordes de una progresión, y cómo encaja un acorde en una tonalidad |
 | `Ritmos/`            | Un ritmo del catálogo con su ficha y sus medidas, y las distancias entre dos                 |
 | `Redes/`             | El Tonnetz, la tabla armónica y los teclados isomórficos, y el recorrido de una partitura     |
+| `Sonido/`            | Lo que suena al pulsar «Escuchar» y lo que llega de un teclado MIDI                          |
 | `Textos/`            | `TextosDeApps`, un fichero por idioma                                                        |
 
-La documentación de DocC está en `Sources/Exposicion/Exposicion.docc`.
+En la raíz quedan `FicheroParaExportar`, lo que se comparte, y `Notacion+TextosDeApps`. La documentación de DocC
+está en `Sources/Exposicion/Exposicion.docc`.
 
 ```sh
 cd Packages/Exposicion && swift test
