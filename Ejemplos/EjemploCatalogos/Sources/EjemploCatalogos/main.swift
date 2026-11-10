@@ -51,7 +51,7 @@ let columnasDeRitmos: [String] =
         "sincopa", "referencias",
     ]
 
-func fila(_ ritmo: RitmoConNombre) -> [String] {
+func filaDeRitmo(_ ritmo: RitmoConNombre) -> [String] {
     let medidas = ritmo.estadisticas
     let nombres: [String] = [ritmo.nombre] + traducciones.map { ritmo.nombre(en: .delIdioma($0)) }
     let resto: [String] = [
@@ -65,7 +65,8 @@ func fila(_ ritmo: RitmoConNombre) -> [String] {
     return nombres + resto
 }
 
-let ritmos = Catalogo(fichero: "ritmos.tsv", columnas: columnasDeRitmos, filas: RitmoConNombre.catalogo.map(fila))
+let ritmos = Catalogo(
+    fichero: "ritmos.tsv", columnas: columnasDeRitmos, filas: RitmoConNombre.catalogo.map(filaDeRitmo))
 
 let razonesJustas = ["3_2", "5_4", "6_5", "7_4", "11_8"]
 
@@ -80,7 +81,7 @@ let columnasTrasLosErrores: [String] = [
 let columnasDeTemperamentos: [String] =
     columnasDeNombres + columnasAntesDeLosErrores + columnasDeLosErrores + columnasTrasLosErrores
 
-func fila(_ temperamento: TemperamentoConNombre) -> [String] {
+func filaDeTemperamento(_ temperamento: TemperamentoConNombre) -> [String] {
     let medidas = temperamento.estadisticas
     let nombres: [String] = [temperamento.nombre] + traducciones.map { temperamento.nombre(en: .delIdioma($0)) }
     let ficha: [String] = [
@@ -99,20 +100,42 @@ func fila(_ temperamento: TemperamentoConNombre) -> [String] {
 }
 
 let temperamentos = Catalogo(
-    fichero: "temperamentos.tsv", columnas: columnasDeTemperamentos, filas: TemperamentoConNombre.catalogo.map(fila))
+    fichero: "temperamentos.tsv", columnas: columnasDeTemperamentos,
+    filas: TemperamentoConNombre.catalogo.map(filaDeTemperamento))
+
+/// Una escala microtonal: sus pasos, sus cents y lo que se apartan de la temperada.
+func filaDeEscala(_ escala: TipoDeEscalaMicrotonal) -> [String] {
+    let descendentes: String = escala.pasosDescendentes.map(lista) ?? ""
+    let fuente: String = escala.fuente?.rawValue ?? ""
+    return [
+        escala.temperada.nombre, escala.sistema.rawValue, lista(escala.pasos), descendentes, lista(escala.cents),
+        lista(escala.desvios), siONo(escala.esCoherente), fuente, citas(escala.referencias),
+    ]
+}
+
+/// Una obra citada, con cada campo en su columna.
+func filaDeObra(_ obra: Referencia) -> [String] {
+    let anio: String = obra.anio.map { String($0) } ?? ""
+    let publicadoEn: String = obra.publicadoEn ?? ""
+    let editorial: String = obra.editorial ?? ""
+    let lugar: String = obra.lugar ?? ""
+    let volumen: String = obra.volumen ?? ""
+    let paginas: String = obra.paginasDeLaObra ?? ""
+    let doi: String = obra.doi ?? ""
+    let url: String = obra.url ?? ""
+    let autores: String = obra.autores.joined(separator: " · ")
+    return [
+        obra.clave, obra.clase.rawValue, autores, obra.titulo, anio, publicadoEn, editorial, lugar, volumen, paginas,
+        doi, url, obra.cita,
+    ]
+}
 
 let escalasMicrotonales = Catalogo(
     fichero: "escalas-microtonales.tsv",
     columnas: [
         "escala", "sistema", "pasos", "pasos_descendentes", "cents", "desvios", "coherente", "fuente", "referencias",
     ],
-    filas: TipoDeEscalaMicrotonal.catalogo.map { escala in
-        [
-            escala.temperada.nombre, escala.sistema.rawValue, lista(escala.pasos),
-            escala.pasosDescendentes.map(lista) ?? "", lista(escala.cents), lista(escala.desvios),
-            siONo(escala.esCoherente), escala.fuente?.rawValue ?? "", citas(escala.referencias),
-        ]
-    })
+    filas: TipoDeEscalaMicrotonal.catalogo.map(filaDeEscala))
 
 let referencias = Catalogo(
     fichero: "referencias.tsv",
@@ -120,13 +143,7 @@ let referencias = Catalogo(
         "clave", "clase", "autores", "titulo", "anio", "publicado_en", "editorial", "lugar", "volumen", "paginas",
         "doi", "url", "cita",
     ],
-    filas: Referencia.catalogo.map { obra in
-        [
-            obra.clave, obra.clase.rawValue, obra.autores.joined(separator: " · "), obra.titulo,
-            obra.anio.map(String.init) ?? "", obra.publicadoEn ?? "", obra.editorial ?? "", obra.lugar ?? "",
-            obra.volumen ?? "", obra.paginasDeLaObra ?? "", obra.doi ?? "", obra.url ?? "", obra.cita,
-        ]
-    })
+    filas: Referencia.catalogo.map(filaDeObra))
 
 let encordados = Catalogo(
     fichero: "encordados.tsv",
