@@ -66,41 +66,56 @@ extension PresentacionDeEstudioDeEscala {
             DatoPresentado(nombre: notacion.texto(campo), valor: valor)
         }
         let decimal = PresentacionDeEstadisticasDeAcorde.decimal
-        var datos = [dato(\.consonanciaDiadica, decimal(estadisticas.consonanciaDiadica))]
-        if let generador = estadisticas.generador { datos.append(dato(\.generador, "\(generador)")) }
-        datos.append(dato(\.propiedadDeRothenberg, propiedad(estadisticas.propiedadDeRothenberg, en: notacion)))
-        datos.append(dato(\.ambiguedades, "\(estadisticas.ambiguedades) · \(estadisticas.contradicciones)"))
-        datos.append(dato(\.estabilidad, decimal(estadisticas.estabilidad)))
-        datos.append(dato(\.cocienteDeIgualdad, decimal(estadisticas.cocienteDeIgualdad)))
-        datos.append(dato(\.anchuraDelEspectro, decimal(estadisticas.anchuraDelEspectro)))
-        datos.append(dato(\.analisisDeHanson, estadisticas.analisisDeHanson))
-        if let modo = estadisticas.modoDeMessiaen { datos.append(dato(\.modoDeMessiaen, "\(modo)")) }
-        if let pareja = estadisticas.parejaZ { datos.append(dato(\.parejaZ, pareja)) }
-        if let complemento = estadisticas.complemento { datos.append(dato(\.complementoDeForte, complemento)) }
-        datos.append(dato(\.imperfecciones, "\(estadisticas.imperfecciones)"))
-        if let triadas = estadisticas.triadasPorGrados {
+        var datos = [dato(\.consonanciaDiadica, decimal(estadisticas.conjunto.consonanciaDiadica))]
+        if let generador = estadisticas.intervalosGenericos.generador {
+            datos.append(dato(\.generador, "\(generador)"))
+        }
+        datos.append(
+            dato(
+                \.propiedadDeRothenberg, propiedad(estadisticas.intervalosGenericos.propiedadDeRothenberg, en: notacion)
+            ))
+        datos.append(
+            dato(
+                \.ambiguedades,
+                "\(estadisticas.intervalosGenericos.ambiguedades) · \(estadisticas.intervalosGenericos.contradicciones)"
+            ))
+        datos.append(dato(\.estabilidad, decimal(estadisticas.intervalosGenericos.estabilidad)))
+        datos.append(dato(\.cocienteDeIgualdad, decimal(estadisticas.intervalosGenericos.cocienteDeIgualdad)))
+        datos.append(dato(\.anchuraDelEspectro, decimal(estadisticas.intervalosGenericos.anchuraDelEspectro)))
+        datos.append(dato(\.analisisDeHanson, estadisticas.conjunto.analisisDeHanson))
+        if let modo = estadisticas.conjunto.modoDeMessiaen { datos.append(dato(\.modoDeMessiaen, "\(modo)")) }
+        if let pareja = estadisticas.conjunto.parejaZ { datos.append(dato(\.parejaZ, pareja)) }
+        if let complemento = estadisticas.conjunto.complemento { datos.append(dato(\.complementoDeForte, complemento)) }
+        datos.append(dato(\.imperfecciones, "\(estadisticas.conjunto.imperfecciones)"))
+        if let triadas = estadisticas.tonal.triadasPorGrados {
             datos.append(dato(\.triadasPorGrados, grados(triadas).joined(separator: " ")))
         }
-        if let cuatriadas = estadisticas.cuatriadasPorGrados {
+        if let cuatriadas = estadisticas.tonal.cuatriadasPorGrados {
             datos.append(dato(\.cuatriadasPorGrados, grados(cuatriadas).joined(separator: " ")))
         }
-        if let combinatoriedad = estadisticas.combinatoriedad {
+        if let combinatoriedad = estadisticas.conjunto.combinatoriedad {
             datos.append(dato(\.combinatoriedadHexacordal, self.combinatoriedad(combinatoriedad)))
         }
         datos.append(
-            dato(\.coeficientesDeFourier, estadisticas.magnitudesDeFourier.map(decimal).joined(separator: " · ")))
-        datos.append(dato(\.distanciaALaUniformidad, decimal(estadisticas.distanciaALaUniformidad)))
+            dato(
+                \.coeficientesDeFourier, estadisticas.conjunto.magnitudesDeFourier.map(decimal).joined(separator: " · ")
+            ))
+        datos.append(dato(\.distanciaALaUniformidad, decimal(estadisticas.conjunto.distanciaALaUniformidad)))
         datos.append(
-            dato(\.triadasContenidas, PresentacionDeEstadisticasDeAcorde.triadas(estadisticas.triadasContenidas)))
-        datos.append(dato(\.entropiaIntervalica, decimal(estadisticas.entropiaIntervalica)))
-        datos.append(dato(\.parsimonia, "\(estadisticas.parsimonia)"))
-        datos.append(dato(\.gradoDeSuavidad, "\(estadisticas.gradoDeSuavidad)"))
-        datos.append(dato(\.alturaDeTenney, decimal(estadisticas.alturaDeTenney)))
-        datos.append(dato(\.limiteImpar, "\(estadisticas.limiteImpar)"))
-        datos.append(dato(\.entropiaArmonica, decimal(estadisticas.entropiaArmonica)))
-        datos.append(dato(\.rugosidadMedia, decimal(estadisticas.rugosidadMedia)))
+            dato(
+                \.triadasContenidas, PresentacionDeEstadisticasDeAcorde.triadas(estadisticas.conjunto.triadasContenidas)
+            ))
+        datos.append(dato(\.entropiaIntervalica, decimal(estadisticas.conjunto.entropiaIntervalica)))
+        datos.append(dato(\.parsimonia, "\(estadisticas.conjunto.parsimonia)"))
+        datos.append(dato(\.gradoDeSuavidad, "\(estadisticas.afinacion.gradoDeSuavidad)"))
+        datos.append(dato(\.alturaDeTenney, decimal(estadisticas.afinacion.alturaDeTenney)))
+        datos.append(dato(\.limiteImpar, "\(estadisticas.afinacion.limiteImpar)"))
+        datos.append(dato(\.entropiaArmonica, decimal(estadisticas.psicoacustica.entropiaArmonica)))
+        datos.append(dato(\.rugosidadMedia, decimal(estadisticas.psicoacustica.rugosidadMedia)))
         datos.append(
-            dato(\.perfilTonal, "M \(decimal(estadisticas.perfilMayor)) · m \(decimal(estadisticas.perfilMenor))"))
+            dato(
+                \.perfilTonal,
+                "M \(decimal(estadisticas.tonal.perfilMayor)) · m \(decimal(estadisticas.tonal.perfilMenor))"))
         let propiedades = self.propiedades(estadisticas, en: notacion)
         if !propiedades.isEmpty { datos.append(dato(\.propiedades, propiedades)) }
         return datos
@@ -138,15 +153,15 @@ extension PresentacionDeEstudioDeEscala {
     /// no tiene ninguna.
     public static func propiedades(_ estadisticas: EstadisticasDeEscala, en notacion: Notacion) -> String {
         [
-            estadisticas.propiedadDeMyhill ? notacion.texto(\.propiedadDeMyhill) : nil,
-            estadisticas.bienFormada ? notacion.texto(\.bienFormada) : nil,
-            estadisticas.profunda ? notacion.texto(\.escalaProfunda) : nil,
-            estadisticas.equilibrada ? notacion.texto(\.equilibrada) : nil,
-            estadisticas.simetricaPorInversion ? notacion.texto(\.simetricaPorInversion) : nil,
-            estadisticas.unicidad ? notacion.texto(\.unicidad) : nil,
-            estadisticas.simplicidad ? notacion.texto(\.simplicidad) : nil,
-            estadisticas.conSensible ? notacion.texto(\.conSensible) : nil,
-            estadisticas.tetracordosIguales ? notacion.texto(\.tetracordosIguales) : nil,
+            estadisticas.intervalosGenericos.propiedadDeMyhill ? notacion.texto(\.propiedadDeMyhill) : nil,
+            estadisticas.intervalosGenericos.bienFormada ? notacion.texto(\.bienFormada) : nil,
+            estadisticas.conjunto.profundo ? notacion.texto(\.escalaProfunda) : nil,
+            estadisticas.conjunto.equilibrado ? notacion.texto(\.equilibrada) : nil,
+            estadisticas.conjunto.simetricoPorInversion ? notacion.texto(\.simetricaPorInversion) : nil,
+            estadisticas.conjunto.unicidad ? notacion.texto(\.unicidad) : nil,
+            estadisticas.conjunto.simplicidad ? notacion.texto(\.simplicidad) : nil,
+            estadisticas.tonal.conSensible ? notacion.texto(\.conSensible) : nil,
+            estadisticas.tonal.tetracordosIguales ? notacion.texto(\.tetracordosIguales) : nil,
         ].compactMap { $0 }.joined(separator: " · ")
     }
 
@@ -252,42 +267,43 @@ public struct MedidasDeEscalaPresentadas: Hashable, Sendable, Codable {
     public let tetracordosIguales: Bool
 
     public init(_ medidas: EstadisticasDeEscala, en notacion: Notacion) {
-        propiedadDeMyhill = medidas.propiedadDeMyhill
-        generador = medidas.generador
-        bienFormada = medidas.bienFormada
-        propiedadDeRothenberg = PresentacionDeEstudioDeEscala.propiedad(medidas.propiedadDeRothenberg, en: notacion)
-        ambiguedades = medidas.ambiguedades
-        contradicciones = medidas.contradicciones
-        estabilidad = medidas.estabilidad
-        cocienteDeIgualdad = medidas.cocienteDeIgualdad
-        anchuraDelEspectro = medidas.anchuraDelEspectro
-        profunda = medidas.profunda
-        consonanciaDiadica = medidas.consonanciaDiadica
-        magnitudesDeFourier = medidas.magnitudesDeFourier
-        equilibrada = medidas.equilibrada
-        distanciaALaUniformidad = medidas.distanciaALaUniformidad
-        triadasContenidas = medidas.triadasContenidas
-        analisisDeHanson = medidas.analisisDeHanson
-        modoDeMessiaen = medidas.modoDeMessiaen
-        simetricaPorInversion = medidas.simetricaPorInversion
-        parejaZ = medidas.parejaZ
-        complemento = medidas.complemento
-        imperfecciones = medidas.imperfecciones
-        unicidad = medidas.unicidad
-        simplicidad = medidas.simplicidad
-        triadasPorGrados = medidas.triadasPorGrados.map(PresentacionDeEstudioDeEscala.grados)
-        cuatriadasPorGrados = medidas.cuatriadasPorGrados.map(PresentacionDeEstudioDeEscala.grados)
-        combinatoriedad = medidas.combinatoriedad
-        entropiaIntervalica = medidas.entropiaIntervalica
-        parsimonia = medidas.parsimonia
-        gradoDeSuavidad = medidas.gradoDeSuavidad
-        alturaDeTenney = medidas.alturaDeTenney
-        limiteImpar = medidas.limiteImpar
-        entropiaArmonica = medidas.entropiaArmonica
-        rugosidadMedia = medidas.rugosidadMedia
-        perfilMayor = medidas.perfilMayor
-        perfilMenor = medidas.perfilMenor
-        conSensible = medidas.conSensible
-        tetracordosIguales = medidas.tetracordosIguales
+        propiedadDeMyhill = medidas.intervalosGenericos.propiedadDeMyhill
+        generador = medidas.intervalosGenericos.generador
+        bienFormada = medidas.intervalosGenericos.bienFormada
+        propiedadDeRothenberg = PresentacionDeEstudioDeEscala.propiedad(
+            medidas.intervalosGenericos.propiedadDeRothenberg, en: notacion)
+        ambiguedades = medidas.intervalosGenericos.ambiguedades
+        contradicciones = medidas.intervalosGenericos.contradicciones
+        estabilidad = medidas.intervalosGenericos.estabilidad
+        cocienteDeIgualdad = medidas.intervalosGenericos.cocienteDeIgualdad
+        anchuraDelEspectro = medidas.intervalosGenericos.anchuraDelEspectro
+        profunda = medidas.conjunto.profundo
+        consonanciaDiadica = medidas.conjunto.consonanciaDiadica
+        magnitudesDeFourier = medidas.conjunto.magnitudesDeFourier
+        equilibrada = medidas.conjunto.equilibrado
+        distanciaALaUniformidad = medidas.conjunto.distanciaALaUniformidad
+        triadasContenidas = medidas.conjunto.triadasContenidas
+        analisisDeHanson = medidas.conjunto.analisisDeHanson
+        modoDeMessiaen = medidas.conjunto.modoDeMessiaen
+        simetricaPorInversion = medidas.conjunto.simetricoPorInversion
+        parejaZ = medidas.conjunto.parejaZ
+        complemento = medidas.conjunto.complemento
+        imperfecciones = medidas.conjunto.imperfecciones
+        unicidad = medidas.conjunto.unicidad
+        simplicidad = medidas.conjunto.simplicidad
+        triadasPorGrados = medidas.tonal.triadasPorGrados.map(PresentacionDeEstudioDeEscala.grados)
+        cuatriadasPorGrados = medidas.tonal.cuatriadasPorGrados.map(PresentacionDeEstudioDeEscala.grados)
+        combinatoriedad = medidas.conjunto.combinatoriedad
+        entropiaIntervalica = medidas.conjunto.entropiaIntervalica
+        parsimonia = medidas.conjunto.parsimonia
+        gradoDeSuavidad = medidas.afinacion.gradoDeSuavidad
+        alturaDeTenney = medidas.afinacion.alturaDeTenney
+        limiteImpar = medidas.afinacion.limiteImpar
+        entropiaArmonica = medidas.psicoacustica.entropiaArmonica
+        rugosidadMedia = medidas.psicoacustica.rugosidadMedia
+        perfilMayor = medidas.tonal.perfilMayor
+        perfilMenor = medidas.tonal.perfilMenor
+        conSensible = medidas.tonal.conSensible
+        tetracordosIguales = medidas.tonal.tetracordosIguales
     }
 }

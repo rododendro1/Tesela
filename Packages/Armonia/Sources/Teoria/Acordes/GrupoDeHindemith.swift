@@ -71,26 +71,10 @@ extension GrupoDeHindemith: CustomStringConvertible {
     }
 }
 
-// MARK: - Las medidas de las teorías de acordes
+// MARK: - La clasificación de Hindemith
 
-/// Una voz de una disposición: su nota en pasos de quinta desde la nota de referencia y su altura en semitonos.
-struct VozMedida: Hashable, Sendable {
-    let pasosDeQuinta: Int
-    let semitonos: Int
-}
-
-enum MedidasDeAcorde {
-    /// Los pesos de Huron (1994, «Interval-class content in equally tempered pitch-class sets», *Music Perception*
-    /// 11: 289–305) para cada clase interválica, del semitono al tritono, sacados de los juicios de consonancia de
-    /// Malmberg, Kameoka y Kuriyagawa, y Hutchinson y Knopoff.
-    static let pesosDeHuron: [Double] = [-1.428, -0.582, 0.594, 0.386, 1.240, -0.453]
-
-    /// La consonancia diádica agregada: la suma de los pesos de Huron de todos los intervalos del vector.
-    static func consonanciaDiadica(_ vector: [Int]) -> Double {
-        let suma = zip(vector, pesosDeHuron).map { Double($0) * $1 }.reduce(0, +)
-        return (suma * 1000).rounded() / 1000
-    }
-
+/// Las cuentas de Hindemith (*Unterweisung im Tonsatz*, 1937): la fundamental por la serie 2 y el grupo.
+enum Hindemith {
     /// Para cada intervalo reducido a la octava (en semitonos), su lugar en la serie de Hindemith (de más a menos
     /// fuerza de fundamental: quinta, cuarta, tercera mayor, sexta menor, tercera menor, sexta mayor, segunda mayor,
     /// séptima menor, segunda menor, séptima mayor) y si su fundamental es la nota de arriba. El tritono no tiene.
@@ -142,26 +126,5 @@ enum MedidasDeAcorde {
         guard n >= 3 else { return false }
         if ConjuntoDeClasesDeAltura(clases).formaPrima == [0, 4, 8] { return true }
         return clases.contains { inicio in Set((0..<n).map { modulo(inicio + 5 * $0, 12) }) == clases }
-    }
-
-    /// El gradus suavitatis de Euler (*Tentamen novae theoriae musicae*, 1739), sin contar las octavas: cada nota se
-    /// afina en el sistema justo de cinco límites que pide su ortografía (Mi, la tercera mayor, es 5/4; Si♭, la séptima
-    /// menor, 16/9), y el grado es 1 + Σ e·(p − 1) sobre los factores 3 y 5 del mínimo común múltiplo. Cuanto más bajo,
-    /// más suave: 1 una nota, 3 la quinta, 7 las tríadas mayor y menor, 11 la séptima de dominante.
-    static func gradoDeSuavidad(pasosDeQuinta: Set<Int>) -> Int {
-        let exponentes = pasosDeQuinta.map(exponentesJustos)
-        guard let primero = exponentes.first else { return 1 }
-        let tres = exponentes.map(\.tres)
-        let cinco = exponentes.map(\.cinco)
-        let rangoDeTres = (tres.max() ?? primero.tres) - (tres.min() ?? primero.tres)
-        let rangoDeCinco = (cinco.max() ?? primero.cinco) - (cinco.min() ?? primero.cinco)
-        return 1 + 2 * rangoDeTres + 4 * rangoDeCinco
-    }
-
-    /// Los exponentes de 3 y de 5 de una nota afinada en el sistema justo de cinco límites que pide su ortografía, a
-    /// `q` quintas de la referencia: cada cuatro quintas, una coma sintónica, y la nota pasa de 3^q a 3^(q − 4k)·5^k.
-    static func exponentesJustos(_ q: Int) -> (tres: Int, cinco: Int) {
-        let k = (q >= 0 ? 1 : -1) * ((abs(q) + 1) / 4)
-        return (q - 4 * k, k)
     }
 }

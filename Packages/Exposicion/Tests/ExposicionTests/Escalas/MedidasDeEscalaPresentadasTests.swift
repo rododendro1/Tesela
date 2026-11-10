@@ -23,7 +23,7 @@ import Testing
     }
 
     @Test func combinatoriedad() throws {
-        let tonosEnteros = try #require(Escala(.do, .tonosEnteros).estadisticas.combinatoriedad)
+        let tonosEnteros = try #require(Escala(.do, .tonosEnteros).estadisticas.conjunto.combinatoriedad)
         #expect(PresentacionDeEstudioDeEscala.combinatoriedad(tonosEnteros).hasSuffix(" (F)"))
     }
 

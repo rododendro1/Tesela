@@ -49,79 +49,31 @@ public struct EstadisticasDeAcorde: Hashable, Sendable {
     /// Los semitonos de la nota más grave a la más aguda de su disposición: 15 en el de Tristán (Fa–Sol♯ de la
     /// octava de arriba). Solo en los acordes con nombre, que guardan una; `nil` en un tipo o un acorde cifrado.
     public let ambito: Int?
-    /// La consonancia diádica agregada de Huron (1994): la suma, sobre el vector interválico, de lo consonante que es
-    /// cada clase de intervalo (la quinta +1,24, la tercera menor +0,594, el semitono −1,428…). Cuanto más alta, más
-    /// consonante: 2,22 las tríadas mayor y menor, 1,779 la séptima de dominante, 1,47 la séptima disminuida.
-    public let consonanciaDiadica: Double
-    /// Su grupo en la clasificación de Hindemith (`GrupoDeHindemith`).
-    public let grupoDeHindemith: GrupoDeHindemith
-    /// La fundamental según Hindemith, como intervalo desde la nota de referencia (la fundamental del tipo, o la nota
-    /// más grave si no se lee por terceras): la del mejor intervalo de la disposición, la quinta antes que la cuarta,
-    /// la tercera mayor… En la semidisminuida es la tercera (Mi♭ en Dom7(♭5), que suena como Mi♭m6). `nil` en los
-    /// grupos indeterminados (V y VI).
-    public let fundamentalDeHindemith: Intervalo?
-    /// Los semitonos entre cada voz y la de encima, de grave a agudo, en la disposición: 4 3 en la tríada mayor
-    /// cerrada, 6 4 5 en el de Tristán (Fa Si Re♯ Sol♯). La de un tipo es la de sus `intervalos`, y la de un `Acorde`,
-    /// su posición cerrada desde el bajo.
-    public let intervalosEntreVoces: [Int]
-    /// El gradus suavitatis de Euler (1739), sin contar las octavas: 1 una nota, 3 la quinta, 7 las tríadas mayor y
-    /// menor, 11 la séptima de dominante. Cuanto más bajo, más suave.
-    public let gradoDeSuavidad: Int
-    /// Las magnitudes de sus coeficientes de Fourier, de |f1| a |f6| (Quinn 2006; Amiot 2016): cuánto se parece al
-    /// cluster cromático, al tritono, al aumentado, a la séptima disminuida, a la escala diatónica y a la de tonos
-    /// enteros. La tríada mayor tiene |f3| y |f5| altos; el aumentado, |f3| = 3.
-    public let magnitudesDeFourier: [Double]
-    /// Sus notas de la más a la menos prominente como fundamental en el modelo de Parncutt (1988): cada nota suma el
-    /// peso de las que la apoyan (la quinta 5, la tercera mayor 3, la séptima menor 2, la segunda mayor 1, y ella
-    /// misma 10). En Do Mi Sol, Do pesa 18; en La Do Mi Sol, Do (18) le gana a La (17).
-    public let prominenciasDeParncutt: [ProminenciaDeFundamental]
-    /// La distancia, en semitonos, al acorde perfectamente repartido más cercano de su mismo número de notas
-    /// (Tymoczko 2011): 0 el aumentado y la séptima disminuida, 0,816 las tríadas mayor y menor.
-    public let distanciaALaUniformidad: Double
-    /// Las tríadas mayores, menores, disminuidas y aumentadas que caben en sus notas: la novena de dominante tiene una
-    /// mayor (Do Mi Sol), una menor (Sol Si♭ Re) y una disminuida (Mi Sol Si♭).
-    public let triadasContenidas: TriadasContenidas
-    /// La tensión de Cook y Fujisawa (2006), con tonos puros: alta cuando dos intervalos seguidos son iguales (1 en el
-    /// aumentado y en el disminuido), casi 0 en las tríadas mayor y menor.
-    public let tensionDeCook: Double
-    /// La modalidad de Cook y Fujisawa (2006), con tonos puros: positiva en la tríada mayor (+1,558), negativa en la
-    /// menor (−1,558).
-    public let modalidadDeCook: Double
-    /// La rugosidad sensorial de Sethares (1993), con seis armónicos por voz, en la disposición: la de un tipo y la de
-    /// un acorde con nombre suenan desde el Do central; la de un `Acorde`, en su posición cerrada desde el bajo en la
-    /// cuarta octava. Cuanto más alta, más áspero.
-    public let rugosidad: Double
 
-    /// La altura de Tenney media de los intervalos justos entre cada par de notas: log₂(n·d). Cuanto más baja, más
-    /// sencillas sus razones.
-    public let alturaDeTenney: Double
-    /// El límite impar (Partch): la mayor parte impar de los intervalos justos entre sus notas. 5 la tríada mayor, 45 la
-    /// séptima de dominante, por su tritono (45/32).
-    public let limiteImpar: Int
-    /// El límite primo (Partch) de sus intervalos justos: 2, 3 o 5.
-    public let limitePrimo: Int
-    /// La armonicidad de Gill y Purves: el porcentaje medio de armónicos que comparten sus notas dos a dos.
-    public let armonicidad: Double
-    /// La entropía armónica de Erlich media de los intervalos entre voces, en bits: cuanto más baja, más claramente se
-    /// oye cada intervalo como una razón sencilla.
-    public let entropiaArmonica: Double
-    /// La fundamental virtual de Terhardt, como intervalo desde la nota de referencia: puede no ser del acorde.
-    public let fundamentalVirtual: Intervalo?
-    /// La fusión tonal (Huron): la proporción de pares de voces a unísono, octava o quinta.
-    public let fusionTonal: Double
-    /// La rugosidad de Vassilakis de la disposición, como la de Sethares.
-    public let rugosidadDeVassilakis: Double
-    /// La disonancia de Hutchinson y Knopoff de la disposición, entre 0 y 1.
-    public let rugosidadDeHutchinsonKnopoff: Double
-    /// El número de Forte del conjunto en relación Z con el suyo (el mismo vector interválico sin ser la misma clase),
-    /// si lo tiene: 4-Z29 para 4-Z15.
-    public let parejaZ: String?
-    /// El número de Forte de las notas que le faltan para las doce.
-    public let complemento: String?
-    /// La disposición de sus voces: cerrada, drop 2, drop 3 o drop 2 + 4; `nil` si es otra abierta.
-    public let disposicion: DisposicionDeAcorde?
-    /// Si sus intervalos entre voces no crecen de grave a agudo, como en la serie armónica (los anchos abajo).
-    public let respetaLaSerieArmonica: Bool
+    // Lo que hace falta para las medidas de las teorías, que se calculan al pedirlas.
+    let pasosDeQuinta: Set<Int>
+    let clases: ConjuntoDeClasesDeAltura
+    /// Las voces de la disposición, de grave a agudo.
+    let voces: [VozMedida]
+    let graveMidi: Int
+
+    /// Lo que dice la teoría de conjuntos de sus clases de altura (`MedidasDeConjunto`): la consonancia de Huron,
+    /// Fourier, la uniformidad, las tríadas contenidas, la pareja Z y el complemento…
+    public var conjunto: MedidasDeConjunto { clases.medidas }
+
+    /// Lo que dice la afinación justa de sus notas (`MedidasDeAfinacionJusta`): el gradus de Euler, Tenney, Partch y
+    /// la armonicidad.
+    public var afinacion: MedidasDeAfinacionJusta { MedidasDeAfinacionJusta(pasosDeQuinta: pasosDeQuinta) }
+
+    /// Cómo se perciben sus voces (`PsicoacusticaDeAcorde`): las fundamentales de Parncutt y Terhardt, Cook, las
+    /// rugosidades, la entropía armónica y la fusión tonal.
+    public var psicoacustica: PsicoacusticaDeAcorde {
+        PsicoacusticaDeAcorde(voces, pasosDeQuinta: pasosDeQuinta, graveMidi: graveMidi)
+    }
+
+    /// Lo que dice su disposición (`DisposicionDeVoces`): el grupo y la fundamental de Hindemith, los intervalos entre
+    /// voces y si es cerrada, drop 2…
+    public var disposicionDeVoces: DisposicionDeVoces { DisposicionDeVoces(voces, pasosDeQuinta: pasosDeQuinta) }
 
     /// Lo que se mide de unas notas, en pasos de quinta desde la fundamental (o desde la más grave, sin tipo), con su
     /// disposición de grave a agudo.
@@ -143,42 +95,11 @@ public struct EstadisticasDeAcorde: Hashable, Sendable {
         anhemitonico = conjunto.vectorIntervalico.first == 0
         conTritono = (conjunto.vectorIntervalico.last ?? 0) > 0
         self.ambito = ambito
-        consonanciaDiadica = MedidasDeAcorde.consonanciaDiadica(conjunto.vectorIntervalico)
-        let ordenadas = voces.sorted { $0.semitonos < $1.semitonos }
-        let fundamental = MedidasDeAcorde.fundamentalDeHindemith(ordenadas)
-        let grupo = MedidasDeAcorde.grupoDeHindemith(
-            pasosDeQuinta: pasosDeQuinta, fundamental: fundamental, bajo: ordenadas.first?.pasosDeQuinta)
-        grupoDeHindemith = grupo
-        fundamentalDeHindemith =
-            grupo.indeterminado ? nil : fundamental.map { Intervalo.simpleAscendente(pasosDeQuinta: $0) }
-        intervalosEntreVoces = zip(ordenadas, ordenadas.dropFirst()).map { $1.semitonos - $0.semitonos }
-        gradoDeSuavidad = MedidasDeAcorde.gradoDeSuavidad(pasosDeQuinta: pasosDeQuinta)
-        magnitudesDeFourier = MedidasDeAcorde.magnitudesDeFourier(conjunto.clases)
-        prominenciasDeParncutt = MedidasDeAcorde.prominencias(ordenadas)
-        distanciaALaUniformidad = MedidasDeAcorde.distanciaALaUniformidad(conjunto.clases)
-        triadasContenidas = MedidasDeAcorde.triadasContenidas(Set(conjunto.clases))
-        (tensionDeCook, modalidadDeCook) = MedidasDeAcorde.tensionYModalidad(ordenadas)
-        rugosidad = MedidasDeAcorde.rugosidad(ordenadas, desdeMidi: graveMidi)
-        let razones = MedidasDeAcorde.razonesJustas(pasosDeQuinta: pasosDeQuinta)
-        alturaDeTenney = MedidasDeAcorde.alturaDeTenney(razones)
-        limiteImpar = razones.map(\.limiteImpar).max() ?? 1
-        limitePrimo = MedidasDeAcorde.limitePrimo(pasosDeQuinta: pasosDeQuinta)
-        armonicidad = MedidasDeAcorde.armonicidad(razones)
-        entropiaArmonica = MedidasDeAcorde.entropiaArmonica(ordenadas)
-        fundamentalVirtual = MedidasDeAcorde.fundamentalVirtual(pasosDeQuinta: pasosDeQuinta).map {
-            Intervalo.simpleAscendente(pasosDeQuinta: $0)
-        }
-        fusionTonal = MedidasDeAcorde.fusionTonal(ordenadas)
-        rugosidadDeVassilakis = MedidasDeAcorde.rugosidadDeVassilakis(ordenadas, desdeMidi: graveMidi)
-        rugosidadDeHutchinsonKnopoff = MedidasDeAcorde.rugosidadDeHutchinsonKnopoff(ordenadas, desdeMidi: graveMidi)
-        parejaZ = Self.parejaZ(de: conjunto)
-        complemento = conjunto.complemento.numeroDeForte
-        disposicion = MedidasDeAcorde.disposicion(ordenadas.map(\.semitonos))
-        respetaLaSerieArmonica = zip(intervalosEntreVoces, intervalosEntreVoces.dropFirst()).allSatisfy { $0 >= $1 }
+        self.pasosDeQuinta = pasosDeQuinta
+        clases = conjunto
+        self.voces = voces.sorted { $0.semitonos < $1.semitonos }
+        self.graveMidi = graveMidi
     }
-
-    /// La nota más prominente como fundamental en el modelo de Parncutt, como intervalo desde la nota de referencia.
-    public var fundamentalDeParncutt: Intervalo? { prominenciasDeParncutt.first?.intervalo }
 
     public init(_ tipo: TipoDeAcorde) {
         self.init(
@@ -205,16 +126,6 @@ public struct EstadisticasDeAcorde: Hashable, Sendable {
         self.init(
             pasosDeQuinta: acorde.tipo.pasosDeQuinta.union([bajo]), tipo: acorde.tipo, voces: voces, ambito: nil,
             graveMidi: grave)
-    }
-
-    /// El número de Forte del conjunto con su mismo vector interválico y otra forma prima, si lo hay.
-    static func parejaZ(de conjunto: ConjuntoDeClasesDeAltura) -> String? {
-        guard conjunto.numeroDeForte?.contains("Z") == true else { return nil }
-        let vector = conjunto.vectorIntervalico
-        return ConjuntoDeClasesDeAltura.tablaForte.first { prima, _ in
-            prima.count == conjunto.cardinalidad && prima != conjunto.formaPrima
-                && ConjuntoDeClasesDeAltura(prima).vectorIntervalico == vector
-        }?.value
     }
 
     /// Las voces de unos intervalos desde la nota de referencia, sin repetir la misma altura.

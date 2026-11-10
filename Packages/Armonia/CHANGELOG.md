@@ -43,6 +43,14 @@
   la altura de Tenney, el límite impar, la entropía armónica, la rugosidad media, el perfil tonal de Krumhansl y
   Kessler, si tiene sensible y si tiene dos tetracordos iguales. Las da `escala --estadisticas` (y `--json`, en
   `estadisticas.teoria`) y el TSV de `EjemploCatalogoDeEscalas`.
+- Las medidas de las teorías van por bloques, que se calculan solo al pedirlos: `conjunto` (`MedidasDeConjunto`, en
+  `Elementos`, que da también `ConjuntoDeClasesDeAltura.medidas`), `afinacion` (`MedidasDeAfinacionJusta`),
+  `psicoacustica` (`PsicoacusticaDeAcorde` y `PsicoacusticaDeEscala`), `disposicionDeVoces` (`DisposicionDeVoces`),
+  `intervalosGenericos` (`IntervalosGenericosDeEscala`) y `tonal` (`MedidasTonalesDeEscala`):
+  `TipoDeAcorde.mayor.estadisticas.conjunto.consonanciaDiadica` o
+  `Escala(.do, .mayor).estadisticas.intervalosGenericos.propiedadDeRothenberg`.
+  Las medidas de acordes y escalas que son las mismas se calculan ahora con el mismo código, y `armonia escalas
+  --orden brillo` tarda 0,06 s en vez de 0,54.
 
 ## 0.4.5 (2026-11-09)
 
