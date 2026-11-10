@@ -262,6 +262,10 @@ Sources/
 │   │                      EstadisticasDeProgresion (Lerdahl, movimiento de las voces, cromatismo)
 │   │   ├── Catalogo/      El catálogo: cadencias, esquemas del barroco y del galante, jazz y blues, y pop
 │   │   └── Nombres/       NombresDeProgresiones y un fichero por idioma (`NombresDeProgresiones+Catalan.swift`…)
+│   ├── Ritmos/            RitmoConNombre (un ritmo en notación de caja, con su familia y su búsqueda) y
+│   │                      EstadisticasDeRitmo (Toussaint: distancias, euclídeo, profundo, síncopa)
+│   │   ├── Catalogo/      El catálogo: líneas de tiempo, flamenco, tāla, iqa'at, aksak y usul, modos rítmicos y danzas
+│   │   └── Nombres/       NombresDeRitmos y un fichero por idioma (`NombresDeRitmos+Catalan.swift`…)
 │   ├── Psicoacustica/     Psicoacustica (Parncutt, Terhardt, Cook, Sethares, Vassilakis, Hutchinson y Knopoff,
 │   │                      Erlich), VozMedida y ProminenciaDeFundamental
 │   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica

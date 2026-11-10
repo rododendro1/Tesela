@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+- El catálogo de ritmos: `RitmoConNombre`, 42 ritmos en la notación de caja de Toussaint (`x` fuerte, `o` débil, `.`
+  silencio), con su agrupación, la figura de su pulso, su familia (`FamiliaDeRitmo`: líneas de tiempo, flamenco,
+  tāla, iqa'at, aksak y usul, modos rítmicos y danzas) y sus referencias, y sus nombres en los trece idiomas
+  (`buscar(nombre:)`, `buscar(conteniendo:)`, `todos(de:)`). `RitmoConNombre.euclideo(ataques:pulsos:)` da E(k, n).
+  `EstadisticasDeRitmo` mide el vector de distancias, si es euclídeo o profundo, las simetrías por rotación, la
+  uniformidad de Amiot, el contratiempo de Toussaint y la síncopa (WNBD), y `distanciaDeHamming(a:)` y
+  `distanciaDeIntercambio(a:)` comparan dos ritmos. En Partituras, `compas`, `duraciones` y `voz(en:ciclos:)` lo
+  tocan. Referencias nuevas: Toussaint (2013), Clayton (2000), Viswanathan y Allen (2004), Brăiloiu (1951), Apel
+  (1953) y Fernández (2004).
+- La consola: `ritmos [<texto>] [--familia tala] [--estadisticas] [--comparar <ritmo>]`, también con `--json`.
+
 - `CardinalDeAcorde`, el hermano de `CardinalDeEscala`: díada, tríada, tétrada, péntada, héxada, héptada y óctada
   (la de la séptima alterada y el acorde alfa), con su nombre en los trece idiomas. `TipoDeAcorde`, `AcordeConNombre`
   y `Acorde` tienen `numeroDeNotas` (las notas distintas por su ortografía, y en `Acorde`, con el bajo si es ajeno) y

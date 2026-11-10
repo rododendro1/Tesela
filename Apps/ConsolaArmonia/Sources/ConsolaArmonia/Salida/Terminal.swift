@@ -66,6 +66,7 @@ extension LineaDeComandos {
             }
         ),
         (nombres(.categoria), CategoriaTradicional.allCases.map(\.rawValue)),
+        (nombres(.familia), LineaDeComandos.nombresDeLasFamiliasDeRitmo.flatMap { [$0.espanol, $0.ingles] }),
         (nombres(.fuente), FuenteTeorica.allCases.map(\.rawValue)),
         (nombres(.uso), LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }),
         (nombres(.orden), ["brillo", "notas", "brightness", "notes"]),

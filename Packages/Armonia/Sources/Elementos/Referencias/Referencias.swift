@@ -416,6 +416,36 @@ extension Referencia {
         "busoni1916", .libro, autores: ["Busoni, Ferruccio"], titulo: "Entwurf einer neuen Ästhetik der Tonkunst",
         anio: 1916, editorial: "Insel-Verlag", lugar: "Leipzig")
 
+    // MARK: Ritmo
+
+    /// Toussaint, la geometría del ritmo: la notación de caja, los ritmos euclídeos, las seis claves, el contratiempo,
+    /// los ritmos profundos y las distancias entre ritmos.
+    public static let toussaint2013 = Referencia(
+        "toussaint2013", .libro, autores: ["Toussaint, Godfried T."],
+        titulo: "The Geometry of Musical Rhythm: What Makes a “Good” Rhythm Good?", anio: 2013, editorial: "CRC Press",
+        lugar: "Boca Raton")
+    /// Clayton, el tiempo en la música indostánica: los tāla, sus vibhāg, la palmada (tālī) y la onda (khālī).
+    public static let clayton2000 = Referencia(
+        "clayton2000", .libro, autores: ["Clayton, Martin"],
+        titulo: "Time in Indian Music: Rhythm, Metre, and Form in North Indian Rāg Performance", anio: 2000,
+        editorial: "Oxford University Press", lugar: "Oxford")
+    /// Viswanathan y Allen, la música carnática: el ādi tāla y la cuenta de los tāla del sur.
+    public static let viswanathan2004 = Referencia(
+        "viswanathan2004", .libro, autores: ["Viswanathan, T.", "Allen, Matthew Harp"], titulo: "Music in South India",
+        anio: 2004, editorial: "Oxford University Press", lugar: "New York")
+    /// Brăiloiu, el ritmo aksak: los compases de tiempos de dos y tres pulsos de los Balcanes y de Turquía.
+    public static let brailoiu1951 = Referencia(
+        "brailoiu1951", .articulo, autores: ["Brăiloiu, Constantin"], titulo: "Le rythme aksak", anio: 1951,
+        publicadoEn: "Revue de Musicologie", volumen: "33", paginas: "71–108")
+    /// Apel, la notación de la polifonía: los seis modos rítmicos de la escuela de Notre Dame.
+    public static let apel1953 = Referencia(
+        "apel1953", .libro, autores: ["Apel, Willi"], titulo: "The Notation of Polyphonic Music, 900–1600",
+        anio: 1953, editorial: "The Mediaeval Academy of America", lugar: "Cambridge (Massachusetts)")
+    /// Fernández, la teoría del flamenco: el compás de doce tiempos de la soleá y la bulería, y el de la seguiriya.
+    public static let fernandez2004 = Referencia(
+        "fernandez2004", .libro, autores: ["Fernández, Lola"], titulo: "Teoría musical del flamenco", anio: 2004,
+        editorial: "Acordes Concert", lugar: "Madrid")
+
     /// Todas las obras, en el orden de este fichero.
     public static let catalogo: [Referencia] = [
         .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .rowell1992, .touma1996, .farraj2019,
@@ -432,6 +462,7 @@ extension Referencia {
         .hudsonChaconne1982,
         .gerbino2001, .staiti2023, .sheinberg2016, .rosand1979, .doll2017,
         .soroker1995, .malaniczPrzybylska2018, .kodaly1960, .campbell2019, .cannon2002, .scherbaum2022, .bonifacic2001,
-        .rechberger2008, .busoni1916,
+        .rechberger2008, .busoni1916, .toussaint2013, .clayton2000, .viswanathan2004, .brailoiu1951, .apel1953,
+        .fernandez2004,
     ]
 }

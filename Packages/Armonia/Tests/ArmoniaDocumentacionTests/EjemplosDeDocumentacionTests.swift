@@ -851,6 +851,21 @@ import Hexagonos
     @Test func melodiaYRitmo7() throws {
         // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 7
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 7)
+        let clave = RitmoConNombre.claveDeSon
+        comprobar(clave.patron, #""x..x..x...x.x...""#, doc, 1)
+        comprobar(clave.intervalos, #"[3, 3, 4, 2, 4]"#, doc, 2)
+        comprobar(clave.compas.description, #""4/4""#, doc, 3)
+        comprobar(clave.estadisticas.vectorDeDistancias, #"[0, 1, 2, 2, 0, 3, 2, 0]"#, doc, 4)
+        comprobar(RitmoConNombre.tresillo.estadisticas.euclideo, #"true"#, doc, 5)
+        comprobar(RitmoConNombre.euclideo(ataques: 3, pulsos: 8), #""x..x..x.""#, doc, 6)
+        comprobar(clave.distanciaDeHamming(a: .claveDeRumba), #"2"#, doc, 7)
+        comprobar(RitmoConNombre.buscar(nombre: "son clave") == clave, #"true"#, doc, 8)
+        comprobar(clave.voz(ciclos: 2).eventos.count, #"10"#, doc, 9)
+    }
+
+    @Test func melodiaYRitmo8() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 8
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 8)
         comprobar(Compas("7/8").agrupacion, #"[2, 2, 3]"#, doc, 0)
         comprobar(Compas("7/8").pulsos, #"3"#, doc, 1)
         comprobar(Compas("6/8").iniciosDePulso, #"[cero, negra con puntillo]"#, doc, 2)
@@ -858,9 +873,9 @@ import Hexagonos
         comprobar(Compas.compasillo.acento(en: .corchea), #"nil"#, doc, 4)
     }
 
-    @Test func melodiaYRitmo8() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 8
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 8)
+    @Test func melodiaYRitmo9() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 9
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 9)
         comprobar(try Voz(leyendo: "Do4:4 Re4:2 Mi4:4").grafia, #"[[Do4:4, Re4:4~, Re4:4, Mi4:4]]"#, doc, 0)
         comprobar(try Voz(leyendo: "Do4:8 Re4:4 Mi4:8 Fa4:2").grafia, #"[[Do4:8, Re4:8~, Re4:8, Mi4:8, Fa4:2]]"#, doc, 1)
         comprobar(try Voz(leyendo: "Do4:4. Re4:8 Mi4:2").grafia, #"[[Do4:4., Re4:8, Mi4:2]]"#, doc, 2)
@@ -870,9 +885,9 @@ import Hexagonos
         comprobar(try Voz(leyendo: "Do4:2..", compas: "3+2+2/8").grafia, #"[[Do4:4.~, Do4:2]]"#, doc, 6)
     }
 
-    @Test func melodiaYRitmo9() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 9
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 9)
+    @Test func melodiaYRitmo10() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 10
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 10)
         let escala = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2", compas: "3/4")
         let partitura = escala.partitura(encabezado: Encabezado(titulo: "Escala", tempo: Tempo(90)))
         comprobar(partitura.musicXML().contains("<work-title>Escala</work-title>"), #"true"#, doc, 2)
@@ -884,27 +899,27 @@ import Hexagonos
         comprobar(dos.svg().contains("<svg"), #"true"#, doc, 8)
     }
 
-    @Test func melodiaYRitmo10() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 10
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 10)
+    @Test func melodiaYRitmo11() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 11
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 11)
         let escala = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2 Sol4:1/12 La4:1/12 Si4:1/12 Do5:2.", compas: "3/4")
         let xml = escala.partitura(encabezado: Encabezado(titulo: "Escala", tonalidad: Tonalidad(.do), tempo: Tempo(90))).musicXML()
         comprobar(xml.contains("<fifths>0</fifths>"), #"true"#, doc, 2)
         comprobar(xml.contains("<actual-notes>3</actual-notes>"), #"true"#, doc, 3)
     }
 
-    @Test func melodiaYRitmo11() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 11
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 11)
+    @Test func melodiaYRitmo12() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 12
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 12)
         let escala = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2 Sol4:1/12 La4:1/12 Si4:1/12 Do5:2.", compas: "3/4")
         let mei = escala.partitura(encabezado: Encabezado(titulo: "Escala", tonalidad: Tonalidad(.do), tempo: Tempo(90))).mei()
         comprobar(mei.contains("keysig=\"0\""), #"true"#, doc, 2)
         comprobar(mei.contains("<tuplet num=\"3\" numbase=\"2\">"), #"true"#, doc, 3)
     }
 
-    @Test func melodiaYRitmo12() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 12
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 12)
+    @Test func melodiaYRitmo13() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 13
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 13)
         let tema = try Voz(leyendo: "Sol4:4 Do5:2 Re5:8 Mi5:8 Fa#5:4 Sol5:2", compas: "3/4", anacrusa: .negra)
         let ly = tema.partitura(encabezado: Encabezado(titulo: "Tema", tonalidad: Tonalidad(.sol))).lilyPond()
         comprobar(ly.contains("\\key g \\major \\time 3/4 \\partial 4"), #"true"#, doc, 2)
@@ -914,17 +929,17 @@ import Hexagonos
         comprobar(abc.contains("c2 d/2e/2 | f g2 |]"), #"true"#, doc, 6)
     }
 
-    @Test func melodiaYRitmo13() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 13
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 13)
+    @Test func melodiaYRitmo14() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 14
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 14)
         let melodia = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8~ Mi4:4 Sol4+Si4:2", compas: "3/4")
         let datos = melodia.partitura(encabezado: Encabezado(titulo: "Escala", tempo: Tempo(90), instrumento: 40)).midi()
         comprobar(datos.prefix(4) == Data("MThd".utf8), #"true"#, doc, 2)
     }
 
-    @Test func melodiaYRitmo14() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 14
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 14)
+    @Test func melodiaYRitmo15() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 15
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 15)
         let acorde = try Voz(leyendo: "Do4+Mi4+Sol4:1")
         let datos = acorde.partitura().midi(afinacion: TemperamentoRegular.mesotonicoCuartoDeComa)
         let pieza = try PiezaImportada(midi: datos)
@@ -932,24 +947,24 @@ import Hexagonos
         comprobar(abs(400 + pieza.notas[1].desvio - pieza.notas[0].desvio - 386.31) < 0.05, #"true"#, doc, 4)
     }
 
-    @Test func melodiaYRitmo15() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 15
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 15)
-        let sur = try PiezaImportada(musicXML: Data(Escala(.re, .sur).partitura().musicXML().utf8))
-        comprobar(sur.notas[1].sistema == .persa && sur.notas[1].ajuste == 1, #"true"#, doc, 1)
-    }
-
     @Test func melodiaYRitmo16() throws {
         // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 16
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 16)
-        let leida = try PiezaImportada(musicXML: Data(Voz(leyendo: "Do4:4 -:4 Mi4+Sol4:2").partitura().musicXML().utf8))
-        comprobar(leida.partitura().pentagramas[0].voces[0].voz.eventos.count == 3, #"true"#, doc, 1)
-        comprobar(leida.partitura().svg().hasPrefix("<svg"), #"true"#, doc, 2)
+        let sur = try PiezaImportada(musicXML: Data(Escala(.re, .sur).partitura().musicXML().utf8))
+        comprobar(sur.notas[1].sistema == .persa && sur.notas[1].ajuste == 1, #"true"#, doc, 1)
     }
 
     @Test func melodiaYRitmo17() throws {
         // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 17
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 17)
+        let leida = try PiezaImportada(musicXML: Data(Voz(leyendo: "Do4:4 -:4 Mi4+Sol4:2").partitura().musicXML().utf8))
+        comprobar(leida.partitura().pentagramas[0].voces[0].voz.eventos.count == 3, #"true"#, doc, 1)
+        comprobar(leida.partitura().svg().hasPrefix("<svg"), #"true"#, doc, 2)
+    }
+
+    @Test func melodiaYRitmo18() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 18
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 18)
         let tema = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2", compas: "3/4")
         comprobar(FormatoDePartitura.allCases.map(\.extensionDeFichero) == ["musicxml", "mei", "ly", "gmn", "abc", "mid"], #"true"#, doc, 1)
         let delTema = tema.partitura(encabezado: Encabezado(titulo: "Tema"))
@@ -957,9 +972,9 @@ import Hexagonos
         comprobar(delTema.exportar(como: .midi) == delTema.midi(), #"true"#, doc, 4)
     }
 
-    @Test func melodiaYRitmo18() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 18
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 18)
+    @Test func melodiaYRitmo19() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 19
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 19)
         let arpegio = Voz(Arpegio(Acorde("Do7"), patron: .idaYVuelta), figura: .semicorchea)
         comprobar(arpegio.eventos.count, #"9"#, doc, 1)
         let acordes = [Acorde("Do"), Acorde("Lam"), Acorde("Fa"), Acorde("Sol7")]
@@ -970,9 +985,9 @@ import Hexagonos
         _ = datos
     }
 
-    @Test func melodiaYRitmo19() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 19
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 19)
+    @Test func melodiaYRitmo20() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 20
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 20)
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
         let pieza = try PiezaImportada(leyendo: coral.partitura(duracion: .blanca, encabezado: Encabezado(tonalidad: Tonalidad(.do))).midi())
         comprobar(pieza.tonalidad, #"Do mayor"#, doc, 2)
@@ -982,9 +997,9 @@ import Hexagonos
         comprobar(pieza.ritmoArmonico().duraciones == [.blanca, .blanca, .redonda], #"true"#, doc, 6)
     }
 
-    @Test func melodiaYRitmo20() throws {
-        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 20
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 20)
+    @Test func melodiaYRitmo21() throws {
+        // Sources/Armonia/Armonia.docc/MelodiaYRitmo.md, bloque 21
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/MelodiaYRitmo.md"#, 21)
         let repetida = try PiezaImportada(abc: "X:1\nM:4/4\nL:1/4\nK:C\n|: {B}c4 |1 d4 :|2 e4 |]\n")
         comprobar(repetida.notas.map(\.inicio) == [.cero, Duracion(1), Duracion(2), Duracion(3)], #"true"#, doc, 1)
         comprobar(repetida.notas[3].altura, #"Mi5"#, doc, 2)

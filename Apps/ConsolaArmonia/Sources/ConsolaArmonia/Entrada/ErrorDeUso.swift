@@ -35,6 +35,9 @@ enum ErrorDeUso: ErrorDeArmonia {
     case patronDesconocido(String)
     case tradicionDesconocida(String)
     case categoriaDesconocida(String)
+    case familiaDeRitmoDesconocida(String)
+    /// `ritmos --comparar` con un ritmo que no está en el catálogo.
+    case ritmoDesconocido(String)
     case fuenteDesconocida(String)
     case usoDesconocido(String)
     case ordenDeEscalasDesconocido(String)
@@ -203,6 +206,11 @@ enum ErrorDeUso: ErrorDeArmonia {
         case .tradicionDesconocida(let tradicion):
             let claves = LineaDeComandos.nombresDeLasTradiciones.flatMap { [$0.espanol, $0.ingles] }
             return LineaDeComandos.propuesta(para: tradicion, entre: claves)
+        case .ritmoDesconocido(let ritmo):
+            return LineaDeComandos.propuesta(para: ritmo, entre: RitmoConNombre.catalogo.map(\.nombre))
+        case .familiaDeRitmoDesconocida(let familia):
+            return LineaDeComandos.propuesta(
+                para: familia, entre: LineaDeComandos.nombresDeLasFamiliasDeRitmo.flatMap { [$0.espanol, $0.ingles] })
         case .categoriaDesconocida(let categoria):
             return LineaDeComandos.propuesta(para: categoria, entre: CategoriaTradicional.allCases.map(\.rawValue))
         case .fuenteDesconocida(let fuente):
@@ -277,6 +285,10 @@ enum ErrorDeUso: ErrorDeArmonia {
             return TextosDeConsola.traduccion { $0.tradicionDesconocida(tradicion) }
         case .categoriaDesconocida(let categoria):
             return TextosDeConsola.traduccion { $0.categoriaDesconocida(categoria) }
+        case .ritmoDesconocido(let ritmo):
+            return TextosDeConsola.traduccion { $0.ritmoDesconocido(ritmo) }
+        case .familiaDeRitmoDesconocida(let familia):
+            return TextosDeConsola.traduccion { $0.familiaDeRitmoDesconocida(familia) }
         case .fuenteDesconocida(let fuente):
             return TextosDeConsola.traduccion { $0.fuenteDesconocida(fuente) }
         case .usoDesconocido(let uso):
