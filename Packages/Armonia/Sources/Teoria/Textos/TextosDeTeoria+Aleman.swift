@@ -22,6 +22,11 @@ extension TextosDeTeoria {
         familiaDeRitmoAksak: "Aksak und Usul",
         familiaDeRitmoModoRitmico: "rhythmische Modi",
         familiaDeRitmoDanza: "Tänze",
+        familiaDeTemperamentoRegular: "reguläre Temperaturen",
+        familiaDeTemperamentoCircular: "wohltemperierte Stimmungen",
+        familiaDeTemperamentoJusta: "reine Stimmungen",
+        familiaDeTemperamentoDivisionesIguales: "gleiche Teilungen der Oktave",
+        familiaDeTemperamentoTradicional: "Systeme anderer Traditionen",
 
         // Acorde.swift
         conBajoEn: "{1}, mit {2} im Bass",

@@ -22,6 +22,11 @@ extension TextosDeTeoria {
         familiaDeRitmoAksak: "aksak och usul",
         familiaDeRitmoModoRitmico: "rytmiska modi",
         familiaDeRitmoDanza: "danser",
+        familiaDeTemperamentoRegular: "reguljära temperaturer",
+        familiaDeTemperamentoCircular: "vältempererade stämningar",
+        familiaDeTemperamentoJusta: "rena stämningar",
+        familiaDeTemperamentoDivisionesIguales: "lika delningar av oktaven",
+        familiaDeTemperamentoTradicional: "system från andra traditioner",
 
         // Acorde.swift
         conBajoEn: "{1}, med {2} i basen",

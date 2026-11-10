@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- `TemperamentoPresentado`: un temperamento del catálogo con su ficha (familia, autor, año, pasos por octava,
+  quinta) y lo que se mide de él, con `ficha(en:)` y `datos(en:)`. `TextosDeApps` tiene sus nombres en los trece
+  idiomas.
+
 - `RitmoPresentado`: un ritmo del catálogo con su ficha (familia, patrón, agrupación, compás) y lo que se mide de él,
   con `ficha(en:)` y `datos(en:)`; `RelacionEntreRitmosPresentada`, las distancias de Hamming y de intercambio.
   `TextosDeApps` tiene sus nombres en los trece idiomas.

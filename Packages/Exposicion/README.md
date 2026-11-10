@@ -13,6 +13,7 @@ terminal.
 | Carpeta              | Qué presenta                                                                                 |
 |----------------------|----------------------------------------------------------------------------------------------|
 | `Acordes/`           | Los arpegios (también en el mástil), las disposiciones, las relaciones de un acorde y la tablatura |
+| `Afinacion/`         | Un temperamento del catálogo con su ficha y sus medidas                                      |
 | `Analisis/`          | El análisis armónico (y sus hojas, el bajo, las doce tonalidades), la tonalidad, las modulaciones, la transposición, el análisis postonal y la serie |
 | `CoralYContrapunto/` | El coral a cuatro voces, el contrapunto de especies y la rearmonización                     |
 | `Escalas/`           | El estudio de una escala: sus acordes, sus progresiones, sus estadísticas, el mapa de brillo y la comparación con otras |

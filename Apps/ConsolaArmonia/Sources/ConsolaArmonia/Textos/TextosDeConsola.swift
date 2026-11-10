@@ -67,6 +67,9 @@ struct TextosDeConsola: TextosTraducidos {
     let sintaxisRitmos: String
     let descripcionRitmos: String
     let notasRitmos: String
+    let sintaxisTemperamentos: String
+    let descripcionTemperamentos: String
+    let notasTemperamentos: String
     let sintaxisAcordesConNombre: String
     let descripcionAcordesConNombre: String
     let notasAcordesConNombre: String
@@ -209,6 +212,7 @@ struct TextosDeConsola: TextosTraducidos {
     let tradicionDesconocida: Plantilla  // {1} tradicion
     let familiaDeRitmoDesconocida: Plantilla  // {1} familia
     let ritmoDesconocido: Plantilla  // {1} ritmo
+    let familiaDeTemperamentoDesconocida: Plantilla  // {1} familia
     let categoriaDesconocida: Plantilla  // {1} categoria
     let fuenteDesconocida: Plantilla  // {1} fuente
     let usoDesconocido: Plantilla  // {1} uso
@@ -333,6 +337,7 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeNingunaEscala: String
     let mensajeNingunaProgresion: String
     let mensajeNingunRitmo: String
+    let mensajeNingunTemperamento: String
     let mensajeNingunAcorde: String
     let mensajeTetracordos: String
     let mensajeSinTetracordos: String

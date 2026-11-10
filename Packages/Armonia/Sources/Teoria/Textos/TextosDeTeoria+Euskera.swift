@@ -22,6 +22,11 @@ extension TextosDeTeoria {
         familiaDeRitmoAksak: "aksak eta usul",
         familiaDeRitmoModoRitmico: "modu erritmikoak",
         familiaDeRitmoDanza: "dantzak",
+        familiaDeTemperamentoRegular: "tenperamentu erregularrak",
+        familiaDeTemperamentoCircular: "tenperamentu zirkularrak",
+        familiaDeTemperamentoJusta: "afinazio justuak",
+        familiaDeTemperamentoDivisionesIguales: "zortzidunaren zatiketa berdinak",
+        familiaDeTemperamentoTradicional: "beste tradizio batzuetako sistemak",
 
         // Acorde.swift
         conBajoEn: "{1}, baxua {2} dela",

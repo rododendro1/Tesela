@@ -25,6 +25,11 @@ struct TextosDeTeoria: TextosTraducidos {
     let familiaDeRitmoAksak: String
     let familiaDeRitmoModoRitmico: String
     let familiaDeRitmoDanza: String
+    let familiaDeTemperamentoRegular: String
+    let familiaDeTemperamentoCircular: String
+    let familiaDeTemperamentoJusta: String
+    let familiaDeTemperamentoDivisionesIguales: String
+    let familiaDeTemperamentoTradicional: String
 
     // MARK: Acorde.swift
     /// Un acorde en estado fundamental con otro bajo: «Do mayor, con bajo en Re», «C major over D».

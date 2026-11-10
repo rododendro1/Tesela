@@ -22,6 +22,11 @@ extension TextosDeTeoria {
         familiaDeRitmoAksak: "aksak és usul",
         familiaDeRitmoModoRitmico: "ritmikai modusok",
         familiaDeRitmoDanza: "táncok",
+        familiaDeTemperamentoRegular: "szabályos temperálások",
+        familiaDeTemperamentoCircular: "jól temperált hangolások",
+        familiaDeTemperamentoJusta: "tiszta hangolások",
+        familiaDeTemperamentoDivisionesIguales: "az oktáv egyenlő felosztásai",
+        familiaDeTemperamentoTradicional: "más hagyományok rendszerei",
 
         // Acorde.swift
         conBajoEn: "{1}, {2} a basszusban",
