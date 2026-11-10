@@ -38,6 +38,7 @@ enum ErrorDeUso: ErrorDeArmonia {
     case familiaDeRitmoDesconocida(String)
     /// `ritmos --comparar` con un ritmo que no está en el catálogo.
     case ritmoDesconocido(String)
+    case familiaDeTemperamentoDesconocida(String)
     case fuenteDesconocida(String)
     case usoDesconocido(String)
     case ordenDeEscalasDesconocido(String)
@@ -206,6 +207,10 @@ enum ErrorDeUso: ErrorDeArmonia {
         case .tradicionDesconocida(let tradicion):
             let claves = LineaDeComandos.nombresDeLasTradiciones.flatMap { [$0.espanol, $0.ingles] }
             return LineaDeComandos.propuesta(para: tradicion, entre: claves)
+        case .familiaDeTemperamentoDesconocida(let familia):
+            return LineaDeComandos.propuesta(
+                para: familia,
+                entre: LineaDeComandos.nombresDeLasFamiliasDeTemperamento.flatMap { [$0.espanol, $0.ingles] })
         case .ritmoDesconocido(let ritmo):
             return LineaDeComandos.propuesta(para: ritmo, entre: RitmoConNombre.catalogo.map(\.nombre))
         case .familiaDeRitmoDesconocida(let familia):
@@ -285,6 +290,8 @@ enum ErrorDeUso: ErrorDeArmonia {
             return TextosDeConsola.traduccion { $0.tradicionDesconocida(tradicion) }
         case .categoriaDesconocida(let categoria):
             return TextosDeConsola.traduccion { $0.categoriaDesconocida(categoria) }
+        case .familiaDeTemperamentoDesconocida(let familia):
+            return TextosDeConsola.traduccion { $0.familiaDeTemperamentoDesconocida(familia) }
         case .ritmoDesconocido(let ritmo):
             return TextosDeConsola.traduccion { $0.ritmoDesconocido(ritmo) }
         case .familiaDeRitmoDesconocida(let familia):

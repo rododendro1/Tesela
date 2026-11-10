@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+- El catálogo de temperamentos: `TemperamentoConNombre`, 22 temperamentos y sistemas de afinación con su familia
+  (`FamiliaDeTemperamento`: regulares, circulares, justa, divisiones iguales y de otras tradiciones), su autor, su año,
+  sus referencias y su nombre en los trece idiomas (`buscar(nombre:)`, `buscar(conteniendo:)`, `todos(de:)`). Da los
+  cents de cada paso de su octava, su quinta y su `SistemaDeAfinacion`, y une los que ya había: cada
+  `AfinacionHistorica` y cada `SistemaMicrotonal` tienen su `temperamento`. Nuevos: los mesotónicos de 2/7 (Zarlino),
+  1/5 y 1/6 de coma en el catálogo, `TemperamentoCircular.kirnbergerII` y las octavas en 19, 22, 31 y 41 partes.
+  `EstadisticasDeTemperamento` mide sus pasos, lo que se apartan de las razones justas (`AproximacionJusta`) y, en los
+  de doce notas, las quintas (con la del lobo), las terceras mayores y las desviaciones del igual. Referencias
+  nuevas: Lindley (2001) y Sethares (2005).
+- La consola: `temperamentos [<texto>] [--familia circular] [--estadisticas]`, también con `--json`.
+
 - El catálogo de ritmos: `RitmoConNombre`, 42 ritmos en la notación de caja de Toussaint (`x` fuerte, `o` débil, `.`
   silencio), con su agrupación, la figura de su pulso, su familia (`FamiliaDeRitmo`: líneas de tiempo, flamenco,
   tāla, iqa'at, aksak y usul, modos rítmicos y danzas) y sus referencias, y sus nombres en los trece idiomas

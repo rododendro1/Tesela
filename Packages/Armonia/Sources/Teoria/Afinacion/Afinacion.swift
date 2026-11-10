@@ -168,6 +168,10 @@ public struct TemperamentoCircular: SistemaDeAfinacion, Hashable {
             0: comaPitagorica / 4, 1: comaPitagorica / 4,
             2: comaPitagorica / 4, 5: comaPitagorica / 4,
         ])
+    /// Kirnberger II (1771): Re–La y La–Mi, ½ coma sintónica más estrechas, con la tercera Do–Mi pura; Fa♯–Do♯, un
+    /// esquisma más estrecha; las demás, puras.
+    public static let kirnbergerII = circulo(
+        "Kirnberger II", [2: comaSintonica / 2, 3: comaSintonica / 2, 6: comaPitagorica - comaSintonica])
     /// Kirnberger III (1779): de Do a Mi, cuatro quintas ¼ de coma sintónica más estrechas, con la
     /// tercera Do–Mi pura; Fa♯–Do♯, un esquisma más estrecha; las demás, puras.
     public static let kirnbergerIII = circulo(

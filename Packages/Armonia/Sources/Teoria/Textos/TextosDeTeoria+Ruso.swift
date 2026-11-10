@@ -22,6 +22,11 @@ extension TextosDeTeoria {
         familiaDeRitmoAksak: "аксак и усуль",
         familiaDeRitmoModoRitmico: "ритмические модусы",
         familiaDeRitmoDanza: "танцы",
+        familiaDeTemperamentoRegular: "регулярные темперации",
+        familiaDeTemperamentoCircular: "хорошие темперации",
+        familiaDeTemperamentoJusta: "чистые строи",
+        familiaDeTemperamentoDivisionesIguales: "равные деления октавы",
+        familiaDeTemperamentoTradicional: "системы других традиций",
 
         // Acorde.swift
         conBajoEn: "{1}, с басом {2}",

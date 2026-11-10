@@ -22,6 +22,11 @@ extension TextosDeTeoria {
         familiaDeRitmoAksak: "ακσάκ και ουσούλ",
         familiaDeRitmoModoRitmico: "ρυθμικοί τρόποι",
         familiaDeRitmoDanza: "χοροί",
+        familiaDeTemperamentoRegular: "κανονικοί συγκερασμοί",
+        familiaDeTemperamentoCircular: "κυκλικοί συγκερασμοί",
+        familiaDeTemperamentoJusta: "φυσικά κουρδίσματα",
+        familiaDeTemperamentoDivisionesIguales: "ίσες διαιρέσεις της οκτάβας",
+        familiaDeTemperamentoTradicional: "συστήματα άλλων παραδόσεων",
 
         // Acorde.swift
         conBajoEn: "{1}, με μπάσο το {2}",

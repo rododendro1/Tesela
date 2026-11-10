@@ -446,6 +446,19 @@ extension Referencia {
         "fernandez2004", .libro, autores: ["Fernández, Lola"], titulo: "Teoría musical del flamenco", anio: 2004,
         editorial: "Acordes Concert", lugar: "Madrid")
 
+    // MARK: Temperamentos
+
+    /// Lindley, el artículo «Temperaments» del New Grove: los mesotónicos, los buenos temperamentos del Barroco
+    /// (Werckmeister, Kirnberger, Vallotti, Young) y el igual.
+    public static let lindley2001 = Referencia(
+        "lindley2001", .capitulo, autores: ["Lindley, Mark"], titulo: "Temperaments", anio: 2001,
+        publicadoEn: "The New Grove Dictionary of Music and Musicians, 2.ª ed., editado por Stanley Sadie",
+        editorial: "Macmillan", lugar: "Londres")
+    /// Sethares, la afinación y el timbre: las octavas partidas en 19, 22, 31 y 41 partes iguales.
+    public static let sethares2005 = Referencia(
+        "sethares2005", .libro, autores: ["Sethares, William A."], titulo: "Tuning, Timbre, Spectrum, Scale",
+        anio: 2005, editorial: "Springer", lugar: "Londres")
+
     /// Todas las obras, en el orden de este fichero.
     public static let catalogo: [Referencia] = [
         .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .rowell1992, .touma1996, .farraj2019,
@@ -463,6 +476,6 @@ extension Referencia {
         .gerbino2001, .staiti2023, .sheinberg2016, .rosand1979, .doll2017,
         .soroker1995, .malaniczPrzybylska2018, .kodaly1960, .campbell2019, .cannon2002, .scherbaum2022, .bonifacic2001,
         .rechberger2008, .busoni1916, .toussaint2013, .clayton2000, .viswanathan2004, .brailoiu1951, .apel1953,
-        .fernandez2004,
+        .fernandez2004, .lindley2001, .sethares2005,
     ]
 }

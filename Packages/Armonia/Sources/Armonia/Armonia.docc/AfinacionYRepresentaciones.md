@@ -47,6 +47,25 @@ AfinacionHistorica.mesotonico.distingueEnarmonicas                      // true
 AfinacionHistorica.vallotti.nombre(en: .conPalabras(.ruso))                           // "Валлотти"
 ```
 
+### El catálogo de temperamentos
+
+``TemperamentoConNombre`` reúne en un catálogo los temperamentos y los sistemas de afinación: los regulares (el
+igual, el pitagórico y cinco mesotónicos), los circulares del Barroco, la afinación justa, las octavas en 19, 22, 31 y
+41 partes iguales y los sistemas de otras tradiciones (los cuartos de tono, el koron y el sori, las 53 comas turcas,
+los 72 moria y los 22 śruti). Cada uno tiene su familia (``FamiliaDeTemperamento``), su autor, su año, sus
+referencias y su nombre en los trece idiomas, y da los cents de cada paso de su octava.
+``EstadisticasDeTemperamento`` mide sus pasos, lo que se apartan de las razones justas (``AproximacionJusta``) y, en
+los de doce notas, la quinta del lobo y las terceras mayores:
+
+```swift
+TemperamentoConNombre.catalogo.count                                     // 22
+TemperamentoConNombre.buscar(nombre: "meantone") == .mesotonicoCuartoDeComa   // true
+TemperamentoConNombre.comas53.pasosPorOctava                             // 53
+TemperamentoConNombre.divisiones31.autor                                 // "Christiaan Huygens"
+AfinacionHistorica.vallotti.temperamento == .vallotti                    // true
+TemperamentoConNombre.temperamentoIgual.estadisticas.uniforme             // true
+```
+
 ### Escalas y afinaciones
 
 Una escala con microtonos (``TipoDeEscalaMicrotonal``, en <doc:EscalasDelMundo>) se puede oír como es:

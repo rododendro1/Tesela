@@ -22,6 +22,11 @@ extension TextosDeTeoria {
         familiaDeRitmoAksak: "aksak i usul",
         familiaDeRitmoModoRitmico: "modes rítmics",
         familiaDeRitmoDanza: "danses",
+        familiaDeTemperamentoRegular: "temperaments regulars",
+        familiaDeTemperamentoCircular: "temperaments circulars",
+        familiaDeTemperamentoJusta: "afinacions justes",
+        familiaDeTemperamentoDivisionesIguales: "divisions iguals de l'octava",
+        familiaDeTemperamentoTradicional: "sistemes d'altres tradicions",
 
         // Acorde.swift
         conBajoEn: "{1}, amb el baix en {2}",

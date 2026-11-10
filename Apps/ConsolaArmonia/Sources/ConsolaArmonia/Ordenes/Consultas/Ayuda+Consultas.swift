@@ -34,6 +34,9 @@ extension LineaDeComandos {
             nombres: ["ritmos", "rhythms"], ayuda: ayudaDeRitmos, json: { try ritmosJSON($0, $1.notacion) },
             ejecutar: { try ritmos($0, $1.notacion) }),
         Orden(
+            nombres: ["temperamentos", "temperaments"], ayuda: ayudaDeTemperamentos,
+            json: { try temperamentosJSON($0, $1.notacion) }, ejecutar: { try temperamentos($0, $1.notacion) }),
+        Orden(
             nombres: ["acordes", "chords"], ayuda: ayudaDeAcordesConNombre,
             json: { try acordesConNombreJSON($0, $1.notacion) },
             ejecutar: { try acordesConNombre($0, $1.notacion) }),
@@ -138,6 +141,17 @@ extension LineaDeComandos {
                 "armonia ritmos clave de son --estadisticas", "armonia rhythms son clave --statistics"),
             notas: TextosDeConsola.traduccion(\.notasRitmos),
             opciones: [.familia, .estadisticas, .comparar])
+    ]
+
+    static let ayudaDeTemperamentos: [EntradaDeAyuda] = [
+        // temperamentos [<texto>] [--familia <familia>] [--estadisticas]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisTemperamentos),
+            descripcion: TextosDeConsola.traduccion(\.descripcionTemperamentos),
+            ejemplo: ejemplo(
+                "armonia temperamentos mesotonico --estadisticas", "armonia temperaments meantone --statistics"),
+            notas: TextosDeConsola.traduccion(\.notasTemperamentos),
+            opciones: [.familia, .estadisticas])
     ]
 
     static let ayudaDeAcordesConNombre: [EntradaDeAyuda] = [

@@ -268,6 +268,10 @@ Sources/
 │   │   └── Nombres/       NombresDeRitmos y un fichero por idioma (`NombresDeRitmos+Catalan.swift`…)
 │   ├── Psicoacustica/     Psicoacustica (Parncutt, Terhardt, Cook, Sethares, Vassilakis, Hutchinson y Knopoff,
 │   │                      Erlich), VozMedida y ProminenciaDeFundamental
+│   ├── Temperamentos/     TemperamentoConNombre (el catálogo de temperamentos y sistemas de afinación, con su búsqueda)
+│   │   │                  y EstadisticasDeTemperamento (pasos, razones justas, quinta del lobo, terceras)
+│   │   ├── Catalogo/      Regulares, circulares, justa, divisiones iguales y sistemas de otras tradiciones
+│   │   └── Nombres/       NombresDeTemperamentos y un fichero por idioma (`NombresDeTemperamentos+Catalan.swift`…)
 │   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
 │                          (el catálogo), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett (números),
 │                          MedidasDeAfinacionJusta (Euler, Tenney, Partch, Gill y Purves)

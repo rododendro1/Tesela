@@ -108,7 +108,7 @@ import Testing
         #expect(
             conJSON == [
                 "acorde", "identificar", "arpegio", "intervalo", "escala", "escalas", "tradiciones", "progresiones",
-                "ritmos",
+                "ritmos", "temperamentos",
                 "acordes", "tonalidad",
                 "conjunto", "serie", "analizar", "armonizar", "realizar", "revisar", "contrapunto", "transponer",
                 "rearmonizar", "motores", "vecinos", "camino-parsimonioso", "conduccion-minima", "plr",

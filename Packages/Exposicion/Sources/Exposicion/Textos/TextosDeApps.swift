@@ -330,6 +330,17 @@ public struct TextosDeApps: TextosTraducidos {
     public let sincopaDeRitmo: String
     public let distanciaDeHamming: String
     public let distanciaDeIntercambio: String
+    public let familiaDeTemperamento: String
+    public let autorDelTemperamento: String
+    public let anioDelTemperamento: String
+    public let pasosPorOctava: String
+    public let quintaDelTemperamento: String
+    public let pasoMenorYMayor: String
+    public let aproximacionesJustas: String
+    public let quintaDelLobo: String
+    public let terceraMasPuraYMasLejana: String
+    public let desviacionesDelIgual: String
+    public let pasosIguales: String
     public let propiedades: String
     public let escaleraDeBrillo: String
     public let hojaDeEstudio: String
