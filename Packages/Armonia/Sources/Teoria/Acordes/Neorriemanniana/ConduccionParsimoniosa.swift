@@ -225,7 +225,7 @@ public struct ConduccionMinima: Hashable, Sendable, CustomStringConvertible {
     /// cuadrados de lo que se mueve cada voz. Premia repartir el movimiento entre varias voces.
     public var desplazamientoEuclideo: Double {
         let cuadrados = movimientos.reduce(0) { $0 + $1.semitonos * $1.semitonos }
-        return (Double(cuadrados).squareRoot() * 1000).rounded() / 1000
+        return Double(cuadrados).squareRoot()
     }
     /// Lo que se mueve la voz que más se mueve: la norma del máximo de Tymoczko.
     public var desplazamientoMaximo: Int { movimientos.map { abs($0.semitonos) }.max() ?? 0 }

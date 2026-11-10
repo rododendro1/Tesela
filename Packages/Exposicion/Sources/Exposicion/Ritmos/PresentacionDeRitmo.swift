@@ -82,10 +82,10 @@ public struct RitmoPresentado: Hashable, Sendable, Codable {
             DatoPresentado(nombre: notacion.texto(\.simetriasPorRotacion), valor: "\(simetriasPorRotacion)"),
             DatoPresentado(
                 nombre: notacion.texto(\.uniformidadDeRitmo),
-                valor: PresentacionDeEstadisticasDeAcorde.decimal(uniformidad)),
+                valor: Redondeo.texto(uniformidad)),
             DatoPresentado(nombre: notacion.texto(\.contratiempoDeToussaint), valor: "\(contratiempo)"),
             DatoPresentado(
-                nombre: notacion.texto(\.sincopaDeRitmo), valor: PresentacionDeEstadisticasDeAcorde.decimal(sincopa)),
+                nombre: notacion.texto(\.sincopaDeRitmo), valor: Redondeo.texto(sincopa)),
         ]
         return datos
     }

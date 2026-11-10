@@ -64,7 +64,7 @@ public struct TemperamentoPresentado: Hashable, Sendable, Codable {
     }
 
     /// Unos cents con tres decimales como mucho: «696.578».
-    static func cents(_ valor: Double) -> String { PresentacionDeEstadisticasDeAcorde.decimal(valor) }
+    static func cents(_ valor: Double) -> String { Redondeo.texto(valor) }
 
     /// Unos cents con su signo: «+13.686», «−1.955», «0».
     static func conSigno(_ valor: Double) -> String {

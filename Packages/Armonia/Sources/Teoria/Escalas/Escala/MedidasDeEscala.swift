@@ -78,7 +78,7 @@ enum MedidasDeEscala {
             contradicciones > 0 ? .impropia : ambiguedades > 0 ? .propia : .estrictamentePropia
         return (
             propiedad, ambiguedades, contradicciones,
-            MedidasDeConjunto.redondear(Double(estables) / Double(instancias.count))
+            Double(estables) / Double(instancias.count)
         )
     }
 
@@ -90,7 +90,7 @@ enum MedidasDeEscala {
         guard n > 2 else { return 1 }
         let clasesGenericas = n - 1
         let pares = clasesGenericas * (clasesGenericas - 1) / 2 * n * n
-        return MedidasDeConjunto.redondear(1 - Double(ambiguedades) / Double(pares))
+        return 1 - Double(ambiguedades) / Double(pares)
     }
 
     /// La anchura media del espectro (Rothenberg; Chalmers, *Divisions of the Tetrachord*, 1993): cuántos semitonos
@@ -100,7 +100,7 @@ enum MedidasDeEscala {
         let espectros = espectros(clases)
         guard !espectros.isEmpty else { return 0 }
         let anchuras = espectros.map { ($0.last ?? 0) - ($0.first ?? 0) }
-        return MedidasDeConjunto.redondear(Double(anchuras.reduce(0, +)) / Double(anchuras.count))
+        return Double(anchuras.reduce(0, +)) / Double(anchuras.count)
     }
 
     /// Las tríadas y las cuatríadas por terceras sobre cada grado de una heptatónica, con los símbolos del cifrado
@@ -134,7 +134,7 @@ enum MedidasDeEscala {
                 pares += 1
             }
         }
-        return pares == 0 ? 0 : MedidasDeConjunto.redondear(suma / Double(pares))
+        return pares == 0 ? 0 : suma / Double(pares)
     }
 
     /// La entropía armónica de Erlich media de los intervalos entre cada par de sus notas.
@@ -163,7 +163,7 @@ enum MedidasDeEscala {
             cuadradosDelPerfil += b * b
         }
         guard cuadradosDeNotas > 0 else { return 0 }
-        return MedidasDeConjunto.redondear(producto / (cuadradosDeNotas * cuadradosDelPerfil).squareRoot())
+        return producto / (cuadradosDeNotas * cuadradosDelPerfil).squareRoot()
     }
 
     /// Se parte en dos tetracordos iguales separados por un tono: los mismos pasos de la tónica a la cuarta y de la

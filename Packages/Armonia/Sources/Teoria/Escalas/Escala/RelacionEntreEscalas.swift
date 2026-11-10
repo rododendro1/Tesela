@@ -36,7 +36,7 @@ extension Escala {
         let nuevas = Set(otra.notas.map(\.claseDeAltura)).subtracting(propias)
         return RelacionEntreEscalas(
             origen: self, destino: otra,
-            distanciaEnQuintas: MedidasDeConjunto.redondear(abs(centro(otra) - centro(self))),
+            distanciaEnQuintas: abs(centro(otra) - centro(self)),
             notasQueCambian: nuevas.count, conduccion: ConduccionMinima.entre(notas, otra.notas),
             conjunto: conjuntoDeClasesDeAltura.relacion(con: otra.conjuntoDeClasesDeAltura))
     }

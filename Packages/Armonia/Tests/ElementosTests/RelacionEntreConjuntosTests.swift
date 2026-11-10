@@ -7,21 +7,21 @@ import Testing
     @Test func mismoContenido() {
         // La tríada mayor y la menor, y los dos conjuntos Z de cuatro notas, tienen el mismo vector.
         let triadas = ConjuntoDeClasesDeAltura([0, 4, 7]).relacion(con: [0, 3, 7])
-        #expect(triadas.distanciaDeFourier == 0)
+        #expect(casi(triadas.distanciaDeFourier, 0))
         #expect(triadas.distanciaIntervalica == 0)
         #expect(triadas.asimilitudDeMorris == 0)
         #expect(triadas.relacionDeForte == nil)
         #expect(!triadas.relacionRp)
         let z = ConjuntoDeClasesDeAltura([0, 1, 4, 6]).relacion(con: [0, 1, 3, 7])
-        #expect(z.distanciaDeFourier == 0)
+        #expect(casi(z.distanciaDeFourier, 0))
     }
 
     @Test func distintos() {
         // El cromático de tres notas y el aumentado no comparten ningún intervalo.
         let relacion = ConjuntoDeClasesDeAltura([0, 1, 2]).relacion(con: [0, 4, 8])
         #expect(relacion.asimilitudDeMorris == 1)
-        #expect(relacion.distanciaDeFourier == 4.472)
-        #expect(relacion.distanciaIntervalica == 1.528)
+        #expect(casi(relacion.distanciaDeFourier, 4.472))
+        #expect(casi(relacion.distanciaIntervalica, 1.528))
         // Coinciden en los ceros: no es R0, que pide que no coincida ninguna entrada.
         #expect(relacion.relacionDeForte == nil)
         #expect(!relacion.relacionRp)

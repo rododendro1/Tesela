@@ -27,21 +27,21 @@ public struct EstadisticasDeProgresion: Hashable, Sendable {
 
     /// Lo que se mueven las voces de media en cada cambio de acorde: cuanto menos, más suave.
     public var movimientoMedio: Double {
-        movimientos.isEmpty ? 0 : MedidasDeConjunto.redondear(Double(movimientoTotal) / Double(movimientos.count))
+        movimientos.isEmpty ? 0 : Double(movimientoTotal) / Double(movimientos.count)
     }
 
     /// La tensión de Lerdahl media desde el acorde anterior, sin contar el primero.
     public var tensionMedia: Double {
         guard tensiones.count > 1 else { return 0 }
         let suma = tensiones.dropFirst().map(\.secuencial).reduce(0, +)
-        return MedidasDeConjunto.redondear(Double(suma) / Double(tensiones.count - 1))
+        return Double(suma) / Double(tensiones.count - 1)
     }
 
     /// La proporción de las notas de sus acordes que no son de la tonalidad, de 0 a 1.
     public var cromatismo: Double {
         let total = acordes.map { Set($0.notasDesdeElBajo.map(\.claseDeAltura)).count }.reduce(0, +)
         return total == 0
-            ? 0 : MedidasDeConjunto.redondear(Double(notasFueraDeLaTonalidad.reduce(0, +)) / Double(total))
+            ? 0 : Double(notasFueraDeLaTonalidad.reduce(0, +)) / Double(total)
     }
 
     public init(_ acordes: [Acorde], en tonalidad: Tonalidad) {

@@ -26,13 +26,13 @@ public struct RelacionEntreConjuntosPresentada: Hashable, Sendable, Codable {
         var datos = [
             DatoPresentado(
                 nombre: notacion.texto(\.distanciaDeFourier),
-                valor: PresentacionDeEstadisticasDeAcorde.decimal(distanciaDeFourier)),
+                valor: Redondeo.texto(distanciaDeFourier)),
             DatoPresentado(
                 nombre: notacion.texto(\.distanciaIntervalica),
-                valor: PresentacionDeEstadisticasDeAcorde.decimal(distanciaIntervalica)),
+                valor: Redondeo.texto(distanciaIntervalica)),
             DatoPresentado(
                 nombre: notacion.texto(\.asimilitudDeMorris),
-                valor: PresentacionDeEstadisticasDeAcorde.decimal(asimilitudDeMorris)),
+                valor: Redondeo.texto(asimilitudDeMorris)),
         ]
         let forte = [relacionDeForte, relacionRp ? "Rp" : nil].compactMap { $0 }
         if !forte.isEmpty {
@@ -75,7 +75,7 @@ public struct RelacionEntreAcordesPresentada: Hashable, Sendable, Codable {
     /// tonalidad) y lo que se parecen sus contenidos.
     public func datos(en notacion: Notacion) -> [DatoPresentado] {
         let tamanos =
-            "\(semitonosMovidos) · " + PresentacionDeEstadisticasDeAcorde.decimal(desplazamientoEuclideo)
+            "\(semitonosMovidos) · " + Redondeo.texto(desplazamientoEuclideo)
             + " · \(desplazamientoMaximo)"
         var datos = [DatoPresentado(nombre: notacion.texto(\.tamanosDeTymoczko), valor: tamanos)]
         if let pasos = distanciaEnElTonnetz {
@@ -122,7 +122,7 @@ public struct AcordeEnLaTonalidadPresentado: Hashable, Sendable, Codable {
 
     /// Un dato por fila: el ajuste, la función, las tonalidades cercanas y las escalas del catálogo.
     public func datos(en notacion: Notacion) -> [DatoPresentado] {
-        let decimal = PresentacionDeEstadisticasDeAcorde.decimal
+        let decimal = { (valor: Double) in Redondeo.texto(valor) }
         var datos = [DatoPresentado(nombre: notacion.texto(\.ajusteDeKrumhansl), valor: decimal(ajusteDeKrumhansl))]
         if let funcionProbable {
             datos.append(DatoPresentado(nombre: notacion.texto(\.funcionProbable), valor: funcionProbable))
@@ -180,7 +180,7 @@ public struct RelacionEntreEscalasPresentada: Hashable, Sendable, Codable {
         var datos = [
             DatoPresentado(
                 nombre: notacion.texto(\.distanciaEnQuintas),
-                valor: PresentacionDeEstadisticasDeAcorde.decimal(distanciaEnQuintas)),
+                valor: Redondeo.texto(distanciaEnQuintas)),
             DatoPresentado(nombre: notacion.texto(\.notasQueCambian), valor: "\(notasQueCambian)"),
         ]
         if let conduccion {
@@ -190,7 +190,7 @@ public struct RelacionEntreEscalasPresentada: Hashable, Sendable, Codable {
             datos.append(
                 DatoPresentado(
                     nombre: notacion.texto(\.tamanosDeTymoczko),
-                    valor: "\(semitonosMovidos) · " + PresentacionDeEstadisticasDeAcorde.decimal(desplazamientoEuclideo)
+                    valor: "\(semitonosMovidos) · " + Redondeo.texto(desplazamientoEuclideo)
                         + " · \(desplazamientoMaximo)"))
         }
         return datos + conjunto.datos(en: notacion)
@@ -233,7 +233,7 @@ public struct EstadisticasDeProgresionPresentadas: Hashable, Sendable, Codable {
 
     /// Un dato por fila, con una cifra por acorde (o por cambio de acorde) en las que van acorde a acorde.
     public func datos(en notacion: Notacion) -> [DatoPresentado] {
-        let decimal = PresentacionDeEstadisticasDeAcorde.decimal
+        let decimal = { (valor: Double) in Redondeo.texto(valor) }
         func cifras(_ valores: [Int]) -> String { valores.map(String.init).joined(separator: " ") }
         return [
             DatoPresentado(nombre: notacion.texto(\.tensionDeLerdahl), valor: cifras(tensionDeLerdahl)),

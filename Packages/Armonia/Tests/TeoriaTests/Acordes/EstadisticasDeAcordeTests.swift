@@ -130,10 +130,10 @@ import Testing
     // MARK: Las teorías de acordes
 
     @Test func consonanciaDeHuron() {
-        #expect(TipoDeAcorde.mayor.estadisticas.conjunto.consonanciaDiadica == 2.22)
-        #expect(TipoDeAcorde.menor.estadisticas.conjunto.consonanciaDiadica == 2.22)
-        #expect(TipoDeAcorde.dominanteSeptima.estadisticas.conjunto.consonanciaDiadica == 1.779)
-        #expect(TipoDeAcorde.disminuidoSeptima.estadisticas.conjunto.consonanciaDiadica == 1.47)
+        #expect(casi(TipoDeAcorde.mayor.estadisticas.conjunto.consonanciaDiadica, 2.22))
+        #expect(casi(TipoDeAcorde.menor.estadisticas.conjunto.consonanciaDiadica, 2.22))
+        #expect(casi(TipoDeAcorde.dominanteSeptima.estadisticas.conjunto.consonanciaDiadica, 1.779))
+        #expect(casi(TipoDeAcorde.disminuidoSeptima.estadisticas.conjunto.consonanciaDiadica, 1.47))
         // Más consonante la tríada que la séptima, y la séptima que el cluster de Petrushka.
         #expect(
             AcordeConNombre.petrushka.estadisticas.conjunto.consonanciaDiadica
@@ -207,7 +207,7 @@ import Testing
         #expect(aumentado.count == 6)
         #expect(aumentado[2] == 3)
         #expect(aumentado[5] == 3)
-        #expect(aumentado[0] == 0)
+        #expect(casi(aumentado[0], 0))
         #expect(TipoDeAcorde.disminuidoSeptima.estadisticas.conjunto.magnitudesDeFourier[3] == 4)
         // La tríada mayor se parece más a la diatónica (|f5|) que al cluster (|f1|).
         let mayor = TipoDeAcorde.mayor.estadisticas.conjunto.magnitudesDeFourier
@@ -227,8 +227,8 @@ import Testing
     @Test func uniformidad() {
         #expect(TipoDeAcorde.aumentado.estadisticas.conjunto.distanciaALaUniformidad == 0)
         #expect(TipoDeAcorde.disminuidoSeptima.estadisticas.conjunto.distanciaALaUniformidad == 0)
-        #expect(TipoDeAcorde.mayor.estadisticas.conjunto.distanciaALaUniformidad == 0.816)
-        #expect(TipoDeAcorde.menor.estadisticas.conjunto.distanciaALaUniformidad == 0.816)
+        #expect(casi(TipoDeAcorde.mayor.estadisticas.conjunto.distanciaALaUniformidad, 0.816))
+        #expect(casi(TipoDeAcorde.menor.estadisticas.conjunto.distanciaALaUniformidad, 0.816))
     }
 
     @Test func triadasContenidas() {
@@ -239,11 +239,11 @@ import Testing
     }
 
     @Test func tensionYModalidadDeCook() {
-        #expect(TipoDeAcorde.mayor.estadisticas.psicoacustica.tensionDeCook == 0.062)
+        #expect(casi(TipoDeAcorde.mayor.estadisticas.psicoacustica.tensionDeCook, 0.062))
         #expect(TipoDeAcorde.aumentado.estadisticas.psicoacustica.tensionDeCook == 1)
         #expect(TipoDeAcorde.disminuido.estadisticas.psicoacustica.tensionDeCook == 1)
-        #expect(TipoDeAcorde.mayor.estadisticas.psicoacustica.modalidadDeCook == 1.558)
-        #expect(TipoDeAcorde.menor.estadisticas.psicoacustica.modalidadDeCook == -1.558)
+        #expect(casi(TipoDeAcorde.mayor.estadisticas.psicoacustica.modalidadDeCook, 1.558))
+        #expect(casi(TipoDeAcorde.menor.estadisticas.psicoacustica.modalidadDeCook, -1.558))
         #expect(TipoDeAcorde.aumentado.estadisticas.psicoacustica.modalidadDeCook == 0)
     }
 
@@ -258,15 +258,15 @@ import Testing
 
     @Test func afinacionJusta() {
         let mayor = TipoDeAcorde.mayor.estadisticas
-        #expect(mayor.afinacion.alturaDeTenney == 3.605)
+        #expect(casi(mayor.afinacion.alturaDeTenney, 3.605))
         #expect(mayor.afinacion.limiteImpar == 5)
         #expect(mayor.afinacion.limitePrimo == 5)
-        #expect(mayor.afinacion.armonicidad == 51.1)
+        #expect(casi(mayor.afinacion.armonicidad, 51.1, tolerancia: 0.05))
         let quinta = TipoDeAcorde.potencia.estadisticas
-        #expect(quinta.afinacion.alturaDeTenney == 2.585) // log₂(3·2)
+        #expect(casi(quinta.afinacion.alturaDeTenney, 2.585)) // log₂(3·2)
         #expect(quinta.afinacion.limiteImpar == 3)
         #expect(quinta.afinacion.limitePrimo == 3)
-        #expect(quinta.afinacion.armonicidad == 66.7) // (3 + 2 − 1)/(3·2)
+        #expect(casi(quinta.afinacion.armonicidad, 66.7, tolerancia: 0.05)) // (3 + 2 − 1)/(3·2)
         // El tritono de la séptima de dominante, 45/32, sube su límite impar.
         #expect(TipoDeAcorde.dominanteSeptima.estadisticas.afinacion.limiteImpar == 45)
         #expect(TipoDeAcorde.disminuidoSeptima.estadisticas.afinacion.armonicidad < mayor.afinacion.armonicidad)
@@ -291,7 +291,7 @@ import Testing
 
     @Test func fusionTonal() {
         #expect(TipoDeAcorde.potencia.estadisticas.psicoacustica.fusionTonal == 1)
-        #expect(TipoDeAcorde.mayor.estadisticas.psicoacustica.fusionTonal == 0.333)
+        #expect(casi(TipoDeAcorde.mayor.estadisticas.psicoacustica.fusionTonal, 0.333))
         #expect(TipoDeAcorde.disminuidoSeptima.estadisticas.psicoacustica.fusionTonal == 0)
     }
 

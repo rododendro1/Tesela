@@ -178,7 +178,6 @@ extension PresentacionDeEstudioDeEscala {
 
     /// Con un decimal como mucho: «40», «12.5».
     static func numero(_ valor: Double) -> String {
-        let redondeado = (valor * 10).rounded() / 10
-        return redondeado == redondeado.rounded() ? String(Int(redondeado)) : String(redondeado)
+        Redondeo.texto(valor, decimales: 1)
     }
 }

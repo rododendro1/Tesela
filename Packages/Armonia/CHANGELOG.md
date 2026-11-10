@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- `Redondeo`: el único formateador de números (`valor` y `texto`, tres decimales por omisión, sin −0). El motor da
+  ahora valores exactos (medidas de conjunto y escala, relaciones, estadísticas de ritmo y progresión, psicoacústica,
+  afinación justa, conducción parsimoniosa) y solo se redondea al presentar.
+
 - El catálogo de funciones de nota: `FuncionDeNota`, 34 papeles que hace una nota, con su familia
   (`FamiliaDeFuncionDeNota`): los 8 grados de la escala, la finalis, el tenor y la confinalis del modo gregoriano, el
   sa, el pa, el vādī, el saṃvādī y el nyāsa del rāga, el qarār, el ghammāz y el yeden del maqam, las blue notes (la

@@ -18,9 +18,7 @@ func siONo(_ valor: Bool) -> String { valor ? "sí" : "no" }
 
 /// Un número con tres decimales como mucho: «696.578», «700».
 func numero(_ valor: Double?) -> String {
-    guard let valor else { return "" }
-    let redondeado = (valor * 1000).rounded() / 1000
-    return redondeado == redondeado.rounded() ? String(Int(redondeado)) : String(redondeado)
+    valor.map { Redondeo.texto($0) } ?? ""
 }
 
 func lista(_ valores: [Int]) -> String { valores.map(String.init).joined(separator: " ") }

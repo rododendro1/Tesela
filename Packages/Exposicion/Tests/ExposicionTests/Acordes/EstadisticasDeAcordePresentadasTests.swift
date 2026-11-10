@@ -52,9 +52,13 @@ import Testing
             TipoDeAcorde.semidisminuido.estadisticas, en: notacion)
         #expect(semidisminuido.first { $0.nombre == "Fundamental (Hindemith)" }?.valor == "3m")
         let json = EstadisticasDeAcordePresentadas(sol7.estadisticas, sobre: .sol, en: notacion)
-        #expect(json.grupoDeHindemith == "II a")
-        #expect(json.fundamentalDeHindemith == "Sol")
-        #expect(json.magnitudesDeFourier.count == 6)
+        #expect(json["grupoDeHindemith"] == .texto("II a"))
+        #expect(json["fundamentalDeHindemith"] == .texto("Sol"))
+        guard case .lista(let fourier) = json["magnitudesDeFourier"] else {
+            Issue.record("sin Fourier")
+            return
+        }
+        #expect(fourier.count == 6)
     }
 
     @Test func afinacionYDisposicion() throws {
@@ -72,11 +76,11 @@ import Testing
             AcordeConNombre.hendrix.estadisticas, en: notacion)
         #expect(hendrix.first { $0.nombre == "Pareja Z (Forte)" }?.valor == "4-Z29")
         let trece = EstadisticasDeAcordePresentadas(TipoDeAcorde.dominanteDecimotercera.estadisticas, en: notacion)
-        #expect(trece.disposicion == "Abierta")
-        #expect(!trece.respetaLaSerieArmonica)
+        #expect(trece["disposicion"] == .texto("Abierta"))
+        #expect(trece["respetaLaSerieArmonica"] == .booleano(false))
         #expect(
-            EstadisticasDeAcordePresentadas(TipoDeAcorde.dominanteNovena.estadisticas, en: notacion).disposicion
-                == "Drop 2")
+            EstadisticasDeAcordePresentadas(TipoDeAcorde.dominanteNovena.estadisticas, en: notacion)["disposicion"]
+                == .texto("Drop 2"))
     }
 
     @Test func tabla() {
@@ -111,10 +115,49 @@ import Testing
 
     @Test func json() throws {
         let datos = EstadisticasDeAcordePresentadas(TipoDeAcorde.mayor.estadisticas, en: notacion)
-        #expect(datos.cardinal == "tríada")
-        #expect(datos.brilloPorQuintas == 1.67)
+        #expect(datos["cardinal"] == .texto("tríada"))
+        #expect(datos["brilloPorQuintas"] == .decimal(1.67))
         let codificado = try JSONEncoder().encode(datos)
         let texto = String(decoding: codificado, as: UTF8.self)
         #expect(texto.contains("\"numeroDeForte\":\"3-11\""))
+        #expect(texto.contains("\"triadasContenidas\":{"))
+        // Las que el acorde no tiene no salen, y «rasgos» solo va al texto.
+        #expect(datos["parejaZ"] == nil)
+        #expect(datos["rasgos"] == nil)
+    }
+
+    /// Cada medida se describe una vez: las claves no se repiten, todas van al texto o al JSON, y la lista, la tabla y
+    /// el JSON salen de ellas.
+    @Test func medidas() throws {
+        let claves = MedidaDeAcorde.todas.map(\.clave)
+        #expect(Set(claves).count == claves.count)
+        #expect(MedidaDeAcorde.todas.allSatisfy { $0.enTexto || $0.vaAlJSON })
+        let consonancia = try #require(MedidaDeAcorde.medida("consonanciaDiadica"))
+        #expect(consonancia.titulo(en: notacion) == "Consonancia diádica (Huron)")
+        #expect(consonancia.texto(de: TipoDeAcorde.mayor.estadisticas, en: notacion) == "2.22")
+        #expect(MedidaDeAcorde.medida("cardinal")?.titulo(en: notacion) == nil)
+        #expect(MedidaDeAcorde.medida("rasgos")?.valor(de: TipoDeAcorde.mayor.estadisticas, en: notacion) == nil)
+        #expect(MedidaDeAcorde.medida("no existe") == nil)
+        let datos = PresentacionDeEstadisticasDeAcorde.estadisticas(TipoDeAcorde.mayor.estadisticas, en: notacion)
+        let mayor = TipoDeAcorde.mayor.estadisticas
+        #expect(
+            datos.map(\.nombre)
+                == MedidaDeAcorde.todas.filter { $0.texto(de: mayor, en: notacion) != nil }.compactMap {
+                    $0.titulo(en: notacion)
+                })
+        #expect(!datos.contains { $0.nombre == "Pareja Z (Forte)" })
+    }
+
+    @Test func valorEnTextoPlano() {
+        #expect(ValorDeMedida.enteros([0, 4, 7]).textoPlano == "0 4 7")
+        #expect(ValorDeMedida.decimal(2.2222).textoPlano == "2.222")
+        #expect(ValorDeMedida.booleano(true).textoPlano == "sí")
+        #expect(ValorDeMedida.booleano(false).textoPlano == "no")
+        #expect(ValorDeMedida.texto("4-27").textoPlano == "4-27")
+        let prominencias = ValorDeMedida.lista([
+            .objeto([.init("nota", .texto("Sol")), .init("peso", .entero(20))]),
+            .objeto([.init("nota", .texto("Fa")), .init("peso", .entero(11))]),
+        ])
+        #expect(prominencias.textoPlano == "Sol 20 · Fa 11")
     }
 }

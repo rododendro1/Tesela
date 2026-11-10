@@ -65,7 +65,7 @@ extension PresentacionDeEstudioDeEscala {
         func dato(_ campo: (TextosDeApps) -> String, _ valor: String) -> DatoPresentado {
             DatoPresentado(nombre: notacion.texto(campo), valor: valor)
         }
-        let decimal = PresentacionDeEstadisticasDeAcorde.decimal
+        let decimal = { (valor: Double) in Redondeo.texto(valor) }
         var datos = [dato(\.consonanciaDiadica, decimal(estadisticas.conjunto.consonanciaDiadica))]
         if let generador = estadisticas.intervalosGenericos.generador {
             datos.append(dato(\.generador, "\(generador)"))
@@ -195,8 +195,8 @@ extension PresentacionDeEstudioDeEscala {
 
     /// «+2», «0», «-1», «+0.43»: con signo, sin decimales si es entero y con dos como mucho si no.
     public static func conSigno(_ valor: Double) -> String {
-        let redondeado = (valor * 100).rounded() / 100
-        let cifras = redondeado == redondeado.rounded() ? "\(Int(abs(redondeado)))" : "\(abs(redondeado))"
+        let redondeado = Redondeo.valor(valor, decimales: 2)
+        let cifras = Redondeo.texto(abs(redondeado), decimales: 2)
         if redondeado > 0 { return "+" + cifras }
         if redondeado < 0 { return "-" + cifras }
         return "0"

@@ -51,8 +51,7 @@ extension LineaDeComandos {
             let presentado = TemperamentoPresentado(temperamento, en: notacion)
             var linea = presentado.nombre + ": \(presentado.pasosPorOctava)"
             if let quinta = presentado.quinta {
-                let redondeada = (quinta * 1000).rounded() / 1000
-                linea += " · " + (redondeada == redondeada.rounded() ? "\(Int(redondeada))" : "\(redondeada)")
+                linea += " · " + Redondeo.texto(quinta)
             }
             let origen = [presentado.autor, presentado.anio.map(String.init)].compactMap { $0 }
             if !origen.isEmpty { linea += " (" + origen.joined(separator: ", ") + ")" }

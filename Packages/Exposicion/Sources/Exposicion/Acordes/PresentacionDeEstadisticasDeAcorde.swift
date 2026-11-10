@@ -23,70 +23,12 @@ public enum PresentacionDeEstadisticasDeAcorde {
     public static func estadisticas(
         _ estadisticas: EstadisticasDeAcorde, sobre: Nota? = nil, en notacion: Notacion
     ) -> [DatoPresentado] {
-        func dato(_ campo: (TextosDeApps) -> String, _ valor: String) -> DatoPresentado {
-            DatoPresentado(nombre: notacion.texto(campo), valor: valor)
+        MedidaDeAcorde.todas.compactMap { medida in
+            guard let nombre = medida.titulo(en: notacion),
+                let valor = medida.texto(de: estadisticas, sobre: sobre, en: notacion)
+            else { return nil }
+            return DatoPresentado(nombre: nombre, valor: valor)
         }
-        let cardinal = estadisticas.cardinal.map { " (" + $0.nombre(en: notacion) + ")" } ?? ""
-        var datos = [dato(\.numeroDeNotas, "\(estadisticas.numeroDeNotas)" + cardinal)]
-        if let tensiones = estadisticas.tensiones { datos.append(dato(\.tensiones, "\(tensiones)")) }
-        if let brillo = estadisticas.brilloPorQuintas {
-            datos.append(dato(\.brilloPorQuintas, PresentacionDeEstudioDeEscala.conSigno(brillo)))
-        }
-        datos.append(dato(\.amplitudEnQuintas, "\(estadisticas.amplitudEnQuintas)"))
-        datos.append(dato(\.vectorIntervalico, "[" + lista(estadisticas.vectorIntervalico) + "]"))
-        datos.append(dato(\.formaPrima, "(" + lista(estadisticas.formaPrima) + ")"))
-        if let forte = estadisticas.numeroDeForte { datos.append(dato(\.numeroDeForte, forte)) }
-        datos.append(dato(\.transposicionesDistintas, "\(estadisticas.transposicionesDistintas)"))
-        if let ambito = estadisticas.ambito { datos.append(dato(\.ambito, "\(ambito)")) }
-        let rasgos = self.rasgos(estadisticas, en: notacion)
-        if !rasgos.isEmpty { datos.append(dato(\.rasgos, rasgos)) }
-        func nota(_ intervalo: Intervalo) -> String {
-            sobre.map { ($0 + intervalo).nombre(en: notacion) } ?? intervalo.abreviatura(en: notacion)
-        }
-        datos.append(dato(\.consonanciaDiadica, decimal(estadisticas.conjunto.consonanciaDiadica)))
-        datos.append(dato(\.grupoDeHindemith, estadisticas.disposicionDeVoces.grupoDeHindemith.description))
-        if let fundamental = estadisticas.disposicionDeVoces.fundamentalDeHindemith {
-            datos.append(dato(\.fundamentalDeHindemith, nota(fundamental)))
-        }
-        if !estadisticas.psicoacustica.prominenciasDeParncutt.isEmpty {
-            let prominencias = estadisticas.psicoacustica.prominenciasDeParncutt.map {
-                nota($0.intervalo) + " (\($0.peso))"
-            }
-            datos.append(dato(\.fundamentalDeParncutt, prominencias.joined(separator: " · ")))
-        }
-        if !estadisticas.disposicionDeVoces.intervalosEntreVoces.isEmpty {
-            datos.append(
-                dato(
-                    \.intervalosEntreVoces,
-                    estadisticas.disposicionDeVoces.intervalosEntreVoces.map(String.init).joined(separator: " ")))
-        }
-        datos.append(dato(\.gradoDeSuavidad, "\(estadisticas.afinacion.gradoDeSuavidad)"))
-        datos.append(
-            dato(
-                \.coeficientesDeFourier, estadisticas.conjunto.magnitudesDeFourier.map(decimal).joined(separator: " · ")
-            ))
-        datos.append(dato(\.distanciaALaUniformidad, decimal(estadisticas.conjunto.distanciaALaUniformidad)))
-        datos.append(dato(\.triadasContenidas, triadas(estadisticas.conjunto.triadasContenidas)))
-        datos.append(dato(\.tensionDeCook, decimal(estadisticas.psicoacustica.tensionDeCook)))
-        datos.append(
-            dato(\.modalidadDeCook, PresentacionDeEstudioDeEscala.conSigno(estadisticas.psicoacustica.modalidadDeCook)))
-        datos.append(dato(\.rugosidad, decimal(estadisticas.psicoacustica.rugosidad)))
-        datos.append(dato(\.rugosidadDeVassilakis, decimal(estadisticas.psicoacustica.rugosidadDeVassilakis)))
-        datos.append(
-            dato(\.rugosidadDeHutchinsonKnopoff, decimal(estadisticas.psicoacustica.rugosidadDeHutchinsonKnopoff)))
-        datos.append(dato(\.fusionTonal, decimal(estadisticas.psicoacustica.fusionTonal)))
-        datos.append(dato(\.alturaDeTenney, decimal(estadisticas.afinacion.alturaDeTenney)))
-        datos.append(dato(\.limiteImpar, "\(estadisticas.afinacion.limiteImpar)"))
-        datos.append(dato(\.limitePrimo, "\(estadisticas.afinacion.limitePrimo)"))
-        datos.append(dato(\.armonicidad, decimal(estadisticas.afinacion.armonicidad)))
-        datos.append(dato(\.entropiaArmonica, decimal(estadisticas.psicoacustica.entropiaArmonica)))
-        if let virtual = estadisticas.psicoacustica.fundamentalVirtual {
-            datos.append(dato(\.fundamentalVirtual, nota(virtual)))
-        }
-        if let pareja = estadisticas.conjunto.parejaZ { datos.append(dato(\.parejaZ, pareja)) }
-        if let complemento = estadisticas.conjunto.complemento { datos.append(dato(\.complementoDeForte, complemento)) }
-        datos.append(dato(\.disposicion, disposicion(estadisticas, en: notacion)))
-        return datos
     }
 
     /// La disposición de sus voces, y si deja los intervalos anchos abajo: «Cerrada · intervalos anchos abajo (serie
@@ -101,12 +43,6 @@ public enum PresentacionDeEstadisticasDeAcorde {
     /// Las tríadas que contiene, con los símbolos del cifrado, que no cambian de idioma: «M 1 · m 1 · ° 1 · + 0».
     public static func triadas(_ triadas: TriadasContenidas) -> String {
         "M \(triadas.mayores) · m \(triadas.menores) · ° \(triadas.disminuidas) · + \(triadas.aumentadas)"
-    }
-
-    /// «2.22», «0», «0.062»: sin decimales si es entero y con tres como mucho si no.
-    static func decimal(_ valor: Double) -> String {
-        let redondeado = (valor * 1000).rounded() / 1000
-        return redondeado == redondeado.rounded() ? "\(Int(redondeado))" : "\(redondeado)"
     }
 
     /// Los rasgos que tiene, separados por « · »: «no se lee por terceras · con tritono · simétrico por inversión»;
@@ -130,24 +66,24 @@ public enum PresentacionDeEstadisticasDeAcorde {
     public static func tablaDeEstadisticas(
         _ acordes: [AcordeConNombre], en notacion: Notacion
     ) -> (encabezados: [String], filas: [[String]]) {
-        let encabezados = [
-            notacion.texto(\.acorde), notacion.texto(\.notas), notacion.texto(\.numeroDeNotas),
-            notacion.texto(\.brilloPorQuintas), notacion.texto(\.vectorIntervalico), notacion.texto(\.numeroDeForte),
-            notacion.texto(\.consonanciaDiadica), notacion.texto(\.grupoDeHindemith), notacion.texto(\.rasgos),
-        ]
+        let medidas = columnasDeLaTabla.compactMap(MedidaDeAcorde.medida)
+        let encabezados =
+            [notacion.texto(\.acorde), notacion.texto(\.notas)] + medidas.compactMap { $0.titulo(en: notacion) }
         let filas = acordes.map { acorde -> [String] in
-            let medidas = acorde.estadisticas
+            let estadisticas = acorde.estadisticas
             return [
                 acorde.nombre(en: notacion),
                 acorde.notas(sobre: .do).map { $0.nombre(en: notacion) }.joined(separator: " "),
-                "\(medidas.numeroDeNotas)", medidas.brilloPorQuintas.map(PresentacionDeEstudioDeEscala.conSigno) ?? "—",
-                "[" + lista(medidas.vectorIntervalico) + "]", medidas.numeroDeForte ?? "—",
-                decimal(medidas.conjunto.consonanciaDiadica), medidas.disposicionDeVoces.grupoDeHindemith.description,
-                rasgos(medidas, en: notacion).isEmpty ? "—" : rasgos(medidas, en: notacion),
-            ]
+            ] + medidas.map { $0.texto(de: estadisticas, en: notacion) ?? "—" }
         }
         return (encabezados, filas)
     }
+
+    /// Las medidas de `tablaDeEstadisticas(_:en:)`, por su clave.
+    static let columnasDeLaTabla = [
+        "numeroDeNotas", "brilloPorQuintas", "vectorIntervalico", "numeroDeForte", "consonanciaDiadica",
+        "grupoDeHindemith", "rasgos",
+    ]
 
     /// Cuántos acordes hay de cada número de notas, de cada estilo y por terceras o no.
     ///
@@ -174,107 +110,32 @@ public enum PresentacionDeEstadisticasDeAcorde {
             noPorTerceras: acordes.count - porTerceras)
     }
 
-    private static func lista(_ numeros: [Int]) -> String { numeros.map(String.init).joined(separator: ", ") }
 }
 
-/// Lo que se mide de un acorde, para `--json`: `EstadisticasDeAcorde` con el cardinal por su nombre y el brillo
-/// redondeado a dos decimales.
-public struct EstadisticasDeAcordePresentadas: Hashable, Sendable, Codable {
-    public let numeroDeNotas: Int
-    public let cardinal: String?
-    public let porTerceras: Bool
-    public let tensiones: Int?
-    public let brilloPorQuintas: Double?
-    public let amplitudEnQuintas: Int
-    public let vectorIntervalico: [Int]
-    public let formaPrima: [Int]
-    public let numeroDeForte: String?
-    public let transposicionesDistintas: Int
-    public let simetricoPorInversion: Bool
-    public let anhemitonico: Bool
-    public let conTritono: Bool
-    public let ambito: Int?
-    public let consonanciaDiadica: Double
-    /// Como lo escribe Hindemith: «II b 1».
-    public let grupoDeHindemith: String
-    /// Las fundamentales, como intervalos desde la nota de referencia («3m»), o, con `sobre`, como notas.
-    public let fundamentalDeHindemith: String?
-    public let prominenciasDeParncutt: [Prominencia]
-    public let intervalosEntreVoces: [Int]
-    public let gradoDeSuavidad: Int
-    public let magnitudesDeFourier: [Double]
-    public let distanciaALaUniformidad: Double
-    public let triadasContenidas: TriadasContenidas
-    public let tensionDeCook: Double
-    public let modalidadDeCook: Double
-    public let rugosidad: Double
-    public let rugosidadDeVassilakis: Double
-    public let rugosidadDeHutchinsonKnopoff: Double
-    public let fusionTonal: Double
-    public let alturaDeTenney: Double
-    public let limiteImpar: Int
-    public let limitePrimo: Int
-    public let armonicidad: Double
-    public let entropiaArmonica: Double
-    public let fundamentalVirtual: String?
-    public let parejaZ: String?
-    public let complemento: String?
-    /// «Cerrada», «Drop 2»… o «Abierta».
-    public let disposicion: String
-    public let respetaLaSerieArmonica: Bool
+/// Lo que se mide de un acorde, para `--json`: el valor de cada medida de `MedidaDeAcorde.todas` que va al JSON, con
+/// su clave (`numeroDeNotas`, `cardinal`, `brilloPorQuintas` redondeado a dos decimales, `consonanciaDiadica`…). Las
+/// que el acorde no tiene no salen.
+///
+///     let datos = EstadisticasDeAcordePresentadas(TipoDeAcorde.mayor.estadisticas, en: .compacta(.espanol))
+///     datos["numeroDeForte"]   // .texto("3-11")
+public struct EstadisticasDeAcordePresentadas: Hashable, Sendable, Encodable {
+    /// Los valores por su clave.
+    public let valores: [String: ValorDeMedida]
 
-    /// Una nota con su peso como fundamental en el modelo de Parncutt.
-    public struct Prominencia: Hashable, Sendable, Codable {
-        public let nota: String
-        public let peso: Int
-    }
+    /// El valor de la medida de esa clave.
+    public subscript(clave: String) -> ValorDeMedida? { valores[clave] }
 
     public init(_ medidas: EstadisticasDeAcorde, sobre: Nota? = nil, en notacion: Notacion) {
-        func nota(_ intervalo: Intervalo) -> String {
-            sobre.map { ($0 + intervalo).nombre(en: notacion) } ?? intervalo.abreviatura(en: notacion)
+        var valores: [String: ValorDeMedida] = [:]
+        for medida in MedidaDeAcorde.todas {
+            valores[medida.clave] = medida.valor(de: medidas, sobre: sobre, en: notacion)
         }
-        numeroDeNotas = medidas.numeroDeNotas
-        cardinal = medidas.cardinal?.nombre(en: notacion)
-        porTerceras = medidas.porTerceras
-        tensiones = medidas.tensiones
-        brilloPorQuintas = medidas.brilloPorQuintas.map { ($0 * 100).rounded() / 100 }
-        amplitudEnQuintas = medidas.amplitudEnQuintas
-        vectorIntervalico = medidas.vectorIntervalico
-        formaPrima = medidas.formaPrima
-        numeroDeForte = medidas.numeroDeForte
-        transposicionesDistintas = medidas.transposicionesDistintas
-        simetricoPorInversion = medidas.simetricoPorInversion
-        anhemitonico = medidas.anhemitonico
-        conTritono = medidas.conTritono
-        ambito = medidas.ambito
-        consonanciaDiadica = medidas.conjunto.consonanciaDiadica
-        grupoDeHindemith = medidas.disposicionDeVoces.grupoDeHindemith.description
-        fundamentalDeHindemith = medidas.disposicionDeVoces.fundamentalDeHindemith.map(nota)
-        prominenciasDeParncutt = medidas.psicoacustica.prominenciasDeParncutt.map {
-            Prominencia(nota: nota($0.intervalo), peso: $0.peso)
-        }
-        intervalosEntreVoces = medidas.disposicionDeVoces.intervalosEntreVoces
-        gradoDeSuavidad = medidas.afinacion.gradoDeSuavidad
-        magnitudesDeFourier = medidas.conjunto.magnitudesDeFourier
-        distanciaALaUniformidad = medidas.conjunto.distanciaALaUniformidad
-        triadasContenidas = medidas.conjunto.triadasContenidas
-        tensionDeCook = medidas.psicoacustica.tensionDeCook
-        modalidadDeCook = medidas.psicoacustica.modalidadDeCook
-        rugosidad = medidas.psicoacustica.rugosidad
-        rugosidadDeVassilakis = medidas.psicoacustica.rugosidadDeVassilakis
-        rugosidadDeHutchinsonKnopoff = medidas.psicoacustica.rugosidadDeHutchinsonKnopoff
-        fusionTonal = medidas.psicoacustica.fusionTonal
-        alturaDeTenney = medidas.afinacion.alturaDeTenney
-        limiteImpar = medidas.afinacion.limiteImpar
-        limitePrimo = medidas.afinacion.limitePrimo
-        armonicidad = medidas.afinacion.armonicidad
-        entropiaArmonica = medidas.psicoacustica.entropiaArmonica
-        fundamentalVirtual = medidas.psicoacustica.fundamentalVirtual.map(nota)
-        parejaZ = medidas.conjunto.parejaZ
-        complemento = medidas.conjunto.complemento
-        disposicion =
-            medidas.disposicionDeVoces.disposicion?.nombre(en: notacion) ?? notacion.texto(\.disposicionAbierta)
-        respetaLaSerieArmonica = medidas.disposicionDeVoces.respetaLaSerieArmonica
+        self.valores = valores
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var contenedor = encoder.singleValueContainer()
+        try contenedor.encode(valores)
     }
 }
 

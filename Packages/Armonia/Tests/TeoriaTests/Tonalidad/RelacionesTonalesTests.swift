@@ -24,7 +24,7 @@ import Testing
     }
 
     @Test func ajusteDeKrumhansl() throws {
-        #expect(doMayor.ajuste(de: try acorde("Do")) == 0.834)
+        #expect(casi(doMayor.ajuste(de: try acorde("Do")), 0.834))
         #expect(try acorde("Sol7").ajustesTonales.first?.tonalidad == Tonalidad(.sol))
         #expect(try acorde("Lam").ajustesTonales.count == 24)
         #expect(Tonalidad.todas.count == 24)
@@ -44,15 +44,15 @@ import Testing
     @Test func entreAcordes() throws {
         let relacion = try acorde("Sol7").relacion(con: try acorde("Do"))
         #expect(relacion.conduccion.semitonosMovidos == 4)
-        #expect(relacion.conduccion.desplazamientoEuclideo == 2.449)
+        #expect(casi(relacion.conduccion.desplazamientoEuclideo, 2.449))
         #expect(relacion.conduccion.desplazamientoMaximo == 2)
         #expect(relacion.distanciaEnElTonnetz == nil)
         #expect(relacion.tonalidad == doMayor)
         #expect(relacion.distanciaDeLerdahl == 5)
-        #expect(relacion.conjunto.distanciaDeFourier == 1.585)
+        #expect(casi(relacion.conjunto.distanciaDeFourier, 1.584))
         let hexatonica = try acorde("Do").relacion(con: try acorde("Lab"))
         #expect(hexatonica.distanciaEnElTonnetz == 2)
-        #expect(hexatonica.conjunto.distanciaDeFourier == 0)
+        #expect(casi(hexatonica.conjunto.distanciaDeFourier, 0))
     }
 
     @Test func escalasDelCatalogo() throws {
@@ -72,7 +72,7 @@ import Testing
         // De siete a cinco notas: Fa baja a Mi y Si sube a Do.
         let pentatonica = mayor.relacion(con: Escala(.do, .pentatonicaMayor))
         #expect(pentatonica.conduccion?.semitonosMovidos == 2)
-        #expect(pentatonica.conjunto.asimilitudDeMorris == 0.355)
+        #expect(casi(pentatonica.conjunto.asimilitudDeMorris, 0.355))
         // De siete a doce notas, demasiadas formas de duplicar.
         #expect(mayor.relacion(con: Escala(.do, .cromatica)).conduccion == nil)
     }
@@ -88,7 +88,7 @@ import Testing
         #expect(diatonica.cromatismo == 0)
         let cromatica = doMayor.estadisticas(de: try ["Do", "Lab", "Reb7", "Do"].map(acorde))
         #expect(cromatica.notasFueraDeLaTonalidad == [0, 2, 2, 0])
-        #expect(cromatica.cromatismo == 0.308)
+        #expect(casi(cromatica.cromatismo, 0.308))
         let progresion = try #require(ProgresionConNombre.buscar(nombre: "ii-V-I"))
         #expect(progresion.estadisticas(en: doMayor).acordes.count == 3)
     }

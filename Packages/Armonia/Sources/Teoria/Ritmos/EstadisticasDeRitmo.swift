@@ -77,7 +77,7 @@ public struct EstadisticasDeRitmo: Hashable, Sendable {
                 real += cos(angulo)
                 imaginaria += sin(angulo)
             }
-            uniformidad = MedidasDeConjunto.redondear((real * real + imaginaria * imaginaria).squareRoot() / k)
+            uniformidad = (real * real + imaginaria * imaginaria).squareRoot() / k
         }
         contratiempo = ataques.filter { Self.mcd($0, n) == 1 }.count
         sincopa = Self.sincopa(ataques, pulsos: n, tiempos: ritmo.tiempos)
@@ -102,7 +102,7 @@ public struct EstadisticasDeRitmo: Hashable, Sendable {
             let cruzados = (tiempos + tiempos.map { $0 + n }).filter { $0 > ataque && $0 < fin }.count
             total += (cruzados == 1 ? 2 : 1) / distancia
         }
-        return MedidasDeConjunto.redondear(total / Double(ataques.count))
+        return total / Double(ataques.count)
     }
 }
 
