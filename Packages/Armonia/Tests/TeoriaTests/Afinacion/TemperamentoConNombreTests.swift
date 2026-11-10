@@ -26,21 +26,17 @@ import Testing
         }
     }
 
-    /// Cada afinación histórica y cada sistema microtonal (salvo el de cents cualesquiera) está en el catálogo, y
-    /// suena igual.
+    /// Cada temperamento para escuchar y cada sistema microtonal (salvo el de cents cualesquiera) está en el catálogo.
     @Test func historicasYSistemas() throws {
-        for historica in AfinacionHistorica.allCases {
-            #expect(historica.temperamento.historica == historica)
-            let la = try Altura(leyendo: "Sol#4")
-            let delCatalogo = try #require(historica.temperamento.afinacion(tonica: .re))
-            #expect(abs(delCatalogo.frecuencia(de: la) - historica.afinacion(tonica: .re).frecuencia(de: la)) < 1e-9)
+        for temperamento in TemperamentoConNombre.paraEscuchar {
+            #expect(TemperamentoConNombre.catalogo.contains(temperamento))
+            #expect(temperamento.afinacion(tonica: .re) != nil)
         }
         for sistema in SistemaMicrotonal.allCases where sistema != .razones {
             #expect(sistema.temperamento?.sistemaMicrotonal == sistema)
             #expect(sistema.temperamento?.pasosPorOctava == sistema.pasosPorOctava)
         }
         #expect(SistemaMicrotonal.razones.temperamento == nil)
-        #expect(TemperamentoConNombre.divisiones31.historica == nil)
     }
 
     /// Los pasos y la quinta de algunos.

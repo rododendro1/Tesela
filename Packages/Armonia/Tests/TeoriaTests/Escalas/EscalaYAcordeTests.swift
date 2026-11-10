@@ -13,6 +13,10 @@ import Testing
     @Test func jonicoSobreDo7M() {
         let notas = Escala(.do, .mayor).notas(sobre: Acorde("Do7M"))
         #expect(notas.map(\.cifra) == ["1", "9", "3", "11", "5", "13", "7"])
+        #expect(notas.map(\.numero) == [1, 9, 3, 11, 5, 13, 7])
+        #expect(notas.allSatisfy { $0.alteracion == 0 })
+        let sobreLaDominante = Escala(.do, .menorArmonica).notas(sobre: Acorde("Sol7"))
+        #expect(sobreLaDominante.first { $0.nota == Nota(.la, .bemol) }?.alteracion == -1)
         #expect(notas.map(\.papel) == [.delAcorde, .tension, .delAcorde, .aEvitar, .delAcorde, .tension, .delAcorde])
         #expect(Escala(.do, .mayor).notasAEvitar(sobre: Acorde("Do7M")) == [.fa])
         // En lidio no hay ninguna: el fa♯ está un tono por encima del mi.

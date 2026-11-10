@@ -39,7 +39,7 @@ import Testing
         #expect(quintaATonica.voces.allSatisfy { $0.contains(" → ") && $0.hasSuffix(")") })
         #expect(quintaATonica.voces.contains { $0.contains("(+") })
         #expect(quintaATonica.voces.contains { $0.contains("(-") })
-        let total = quintaATonica.comparacion.movimientoTotal
+        let total = quintaATonica.disposiciones.movimientoTotal
         #expect(quintaATonica.movimiento == "Movimiento total: \(total) semitonos")
         #expect(quintaATonica.sonido.notas.count == 8)
 

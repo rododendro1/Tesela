@@ -16,7 +16,9 @@ public struct RelacionesPresentadas: Hashable, Sendable {
 
 /// Dos acordes comparados: sus notas comunes y cómo se mueve cada voz de uno al otro.
 public struct ComparacionPresentada: Hashable, Sendable {
-    public let comparacion: ComparacionDeAcordes
+    public let relacion: RelacionEntreAcordes
+    /// Las voces de los dos en la disposición pedida.
+    public let disposiciones: RelacionEntreAcordes.Voces
     /// «Do, Mi, Sol», o «ninguna».
     public let comunes: String
     /// Una por voz, de grave a agudo: «Sol₃ → Do₄ (+5)».
@@ -64,18 +66,19 @@ public enum PresentacionDeRelacionesDeAcorde {
     public static func comparar(
         _ acorde: Acorde, con otro: Acorde, disposicion: DisposicionDeAcorde = .cerrada, en notacion: Notacion
     ) -> ComparacionPresentada? {
-        guard let comparacion = acorde.comparar(con: otro, disposicion: disposicion) else { return nil }
-        let comunes = comparacion.comunes.map { $0.nombre(en: notacion) }
-        let voces = zip(comparacion.desde, comparacion.hasta).map { desde, hasta in
+        let relacion = acorde.relacion(con: otro)
+        guard let disposiciones = relacion.voces(en: disposicion) else { return nil }
+        let comunes = relacion.comunes.map { $0.nombre(en: notacion) }
+        let voces = zip(disposiciones.desde, disposiciones.hasta).map { desde, hasta in
             let paso = hasta.midi - desde.midi
             let signo = paso > 0 ? "+" : ""
             return desde.nombre(en: notacion) + " → " + hasta.nombre(en: notacion) + " (\(signo)\(paso))"
         }
-        let total = comparacion.movimientoTotal
+        let total = disposiciones.movimientoTotal
         return ComparacionPresentada(
-            comparacion: comparacion,
+            relacion: relacion, disposiciones: disposiciones,
             comunes: comunes.isEmpty ? notacion.texto(\.ningunaNotaComun) : comunes.joined(separator: ", "),
             voces: voces, movimiento: notacion.texto { $0.movimientoTotal(total) },
-            sonido: .coral([comparacion.desde, comparacion.hasta], duracion: 1.5))
+            sonido: .coral([disposiciones.desde, disposiciones.hasta], duracion: 1.5))
     }
 }

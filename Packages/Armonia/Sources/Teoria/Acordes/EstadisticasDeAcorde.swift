@@ -57,13 +57,13 @@ public struct EstadisticasDeAcorde: Hashable, Sendable {
     let voces: [VozMedida]
     let graveMidi: Int
 
-    /// Lo que dice la teoría de conjuntos de sus clases de altura (`MedidasDeConjunto`): la consonancia de Huron,
+    /// Lo que dice la teoría de conjuntos de sus clases de altura (`EstadisticasDeConjunto`): la consonancia de Huron,
     /// Fourier, la uniformidad, las tríadas contenidas, la pareja Z y el complemento…
-    public var conjunto: MedidasDeConjunto { clases.medidas }
+    public var conjunto: EstadisticasDeConjunto { clases.estadisticas }
 
-    /// Lo que dice la afinación justa de sus notas (`MedidasDeAfinacionJusta`): el gradus de Euler, Tenney, Partch y
+    /// Lo que dice la afinación justa de sus notas (`EstadisticasDeAfinacionJusta`): el gradus de Euler, Tenney, Partch y
     /// la armonicidad.
-    public var afinacion: MedidasDeAfinacionJusta { MedidasDeAfinacionJusta(pasosDeQuinta: pasosDeQuinta) }
+    public var afinacion: EstadisticasDeAfinacionJusta { EstadisticasDeAfinacionJusta(pasosDeQuinta: pasosDeQuinta) }
 
     /// Cómo se perciben sus voces (`PsicoacusticaDeAcorde`): las fundamentales de Parncutt y Terhardt, Cook, las
     /// rugosidades, la entropía armónica y la fusión tonal.

@@ -87,10 +87,10 @@ extension PresentacionDeEstudioDeEscala {
         if let pareja = estadisticas.conjunto.parejaZ { datos.append(dato(\.parejaZ, pareja)) }
         if let complemento = estadisticas.conjunto.complemento { datos.append(dato(\.complementoDeForte, complemento)) }
         datos.append(dato(\.imperfecciones, "\(estadisticas.conjunto.imperfecciones)"))
-        if let triadas = estadisticas.tonal.triadasPorGrados {
+        if let triadas = estadisticas.tonal.triadas {
             datos.append(dato(\.triadasPorGrados, grados(triadas).joined(separator: " ")))
         }
-        if let cuatriadas = estadisticas.tonal.cuatriadasPorGrados {
+        if let cuatriadas = estadisticas.tonal.cuatriadas {
             datos.append(dato(\.cuatriadasPorGrados, grados(cuatriadas).joined(separator: " ")))
         }
         if let combinatoriedad = estadisticas.conjunto.combinatoriedad {
@@ -131,7 +131,17 @@ extension PresentacionDeEstudioDeEscala {
     }
 
     /// Los acordes de cada grado en números romanos, en minúscula los menores y disminuidos: «I ii iii IV V vi vii°»,
-    /// «Imaj7 ii7 iii7 IVmaj7 V7 vi7 viiø7».
+    /// «Imaj7 ii7 iii7 IVmaj7 V7 vi7 viiø7». Un grado sin acorde conocido lleva «?».
+    public static func grados(_ acordes: [TipoDeAcorde?]) -> [String] {
+        let romanos = ["I", "II", "III", "IV", "V", "VI", "VII"]
+        return acordes.enumerated().map { i, acorde in
+            let romano = i < romanos.count ? romanos[i] : "\(i + 1)"
+            guard let acorde else { return romano + "?" }
+            return (acorde.esMenor ? romano.lowercased() : romano) + acorde.sufijoRomano
+        }
+    }
+
+    /// Lo mismo, desde los cifrados de los acordes: «m7» en el 2.º grado es «ii7».
     public static func grados(_ cifrados: [String]) -> [String] {
         let romanos = ["I", "II", "III", "IV", "V", "VI", "VII"]
         return cifrados.enumerated().map { i, cifrado in
@@ -291,8 +301,8 @@ public struct MedidasDeEscalaPresentadas: Hashable, Sendable, Codable {
         imperfecciones = medidas.conjunto.imperfecciones
         unicidad = medidas.conjunto.unicidad
         simplicidad = medidas.conjunto.simplicidad
-        triadasPorGrados = medidas.tonal.triadasPorGrados.map(PresentacionDeEstudioDeEscala.grados)
-        cuatriadasPorGrados = medidas.tonal.cuatriadasPorGrados.map(PresentacionDeEstudioDeEscala.grados)
+        triadasPorGrados = medidas.tonal.triadas.map(PresentacionDeEstudioDeEscala.grados)
+        cuatriadasPorGrados = medidas.tonal.cuatriadas.map(PresentacionDeEstudioDeEscala.grados)
         combinatoriedad = medidas.conjunto.combinatoriedad
         entropiaIntervalica = medidas.conjunto.entropiaIntervalica
         parsimonia = medidas.conjunto.parsimonia

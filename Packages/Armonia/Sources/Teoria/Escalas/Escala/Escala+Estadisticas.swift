@@ -50,20 +50,20 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
 
     // MARK: Lo que dicen las teorías de escalas
 
-    /// Lo que dice la teoría de conjuntos de sus clases de altura (`MedidasDeConjunto`): Huron, Fourier, Hanson,
+    /// Lo que dice la teoría de conjuntos de sus clases de altura (`EstadisticasDeConjunto`): Huron, Fourier, Hanson,
     /// Messiaen, Forte, Zeitler, Balzano, Babbitt y la parsimonia de Tymoczko.
-    public var conjunto: MedidasDeConjunto { conjuntoDeClases.medidas }
+    public var conjunto: EstadisticasDeConjunto { conjuntoDeClases.estadisticas }
 
-    /// Lo que dice la afinación justa de sus notas, por su ortografía (`MedidasDeAfinacionJusta`).
-    public var afinacion: MedidasDeAfinacionJusta { MedidasDeAfinacionJusta(pasosDeQuinta: quintas) }
+    /// Lo que dice la afinación justa de sus notas, por su ortografía (`EstadisticasDeAfinacionJusta`).
+    public var afinacion: EstadisticasDeAfinacionJusta { EstadisticasDeAfinacionJusta(pasosDeQuinta: quintas) }
 
     /// Lo que dicen de ella sus intervalos genéricos (`IntervalosGenericosDeEscala`): Myhill, la buena formación,
     /// Rothenberg y Carey.
     public var intervalosGenericos: IntervalosGenericosDeEscala { IntervalosGenericosDeEscala(clases, pasos: pasos) }
 
-    /// Lo que dice de ella la armonía tonal (`MedidasTonalesDeEscala`): sus acordes por grados, el perfil de
+    /// Lo que dice de ella la armonía tonal (`EstadisticasTonalesDeEscala`): sus acordes por grados, el perfil de
     /// Krumhansl y Kessler, la sensible y los tetracordos.
-    public var tonal: MedidasTonalesDeEscala { MedidasTonalesDeEscala(clases) }
+    public var tonal: EstadisticasTonalesDeEscala { EstadisticasTonalesDeEscala(clases) }
 
     /// Cómo se perciben sus intervalos (`PsicoacusticaDeEscala`): la entropía armónica y la rugosidad media.
     public var psicoacustica: PsicoacusticaDeEscala { PsicoacusticaDeEscala(clases) }
@@ -147,11 +147,25 @@ public struct IntervalosGenericosDeEscala: Hashable, Sendable {
 
 /// Lo que dice de una escala la armonía tonal: sus tríadas y cuatríadas por grados, cuánto se parece a una tonalidad
 /// mayor o menor, si tiene sensible y si se parte en dos tetracordos iguales.
-public struct MedidasTonalesDeEscala: Hashable, Sendable {
+public struct EstadisticasTonalesDeEscala: Hashable, Sendable {
+    /// La tríada por terceras de cada grado (solo en las de siete notas): `.mayor`, `.menor`, `.disminuido`,
+    /// `.aumentado`, o `nil` si sus terceras no forman ninguna de las cuatro.
+    public let triadas: [TipoDeAcorde?]?
+    /// La cuatríada por terceras de cada grado (solo en las de siete notas): `.dominanteSeptima`, `.menorSeptima`,
+    /// `.semidisminuido`…, o `nil` si no es ninguna de las nueve conocidas.
+    public let cuatriadas: [TipoDeAcorde?]?
     /// Las tríadas por terceras de cada grado (solo en las de siete notas): «», «m», «°», «+», «?».
-    public let triadasPorGrados: [String]?
+    @available(*, deprecated, message: "Usa triadas, con los tipos de acorde")
+    public var triadasPorGrados: [String]? { escritas?.triadas }
     /// Las cuatríadas por terceras de cada grado (solo en las de siete notas): «maj7», «m7», «7», «ø7»…
-    public let cuatriadasPorGrados: [String]?
+    @available(*, deprecated, message: "Usa cuatriadas, con los tipos de acorde")
+    public var cuatriadasPorGrados: [String]? { escritas?.cuatriadas }
+    /// Las de `triadasPorGrados` y `cuatriadasPorGrados`, mientras estén.
+    private let escritas: ArmonizacionEscrita?
+    private struct ArmonizacionEscrita: Hashable, Sendable {
+        let triadas: [String]
+        let cuatriadas: [String]
+    }
     /// La correlación de sus notas con el perfil de Krumhansl y Kessler de la tonalidad mayor sobre su tónica.
     public let perfilMayor: Double
     /// La correlación con el perfil de la tonalidad menor.
@@ -163,9 +177,12 @@ public struct MedidasTonalesDeEscala: Hashable, Sendable {
 
     /// Las de unas clases de altura desde la tónica.
     init(_ clases: [Int]) {
-        let armonizacion = MedidasDeEscala.armonizacion(clases)
-        triadasPorGrados = armonizacion?.triadas
-        cuatriadasPorGrados = armonizacion?.cuatriadas
+        let acordes = MedidasDeEscala.acordesPorGrados(clases)
+        triadas = acordes?.triadas
+        cuatriadas = acordes?.cuatriadas
+        escritas = MedidasDeEscala.armonizacion(clases).map {
+            ArmonizacionEscrita(triadas: $0.triadas, cuatriadas: $0.cuatriadas)
+        }
         perfilMayor = MedidasDeEscala.correlacion(clases, con: MedidasDeEscala.perfilMayor)
         perfilMenor = MedidasDeEscala.correlacion(clases, con: MedidasDeEscala.perfilMenor)
         conSensible = clases.contains(11)
@@ -191,3 +208,6 @@ extension Escala {
     /// Lo que se mide de la escala (`EstadisticasDeEscala`): su cardinal, su brillo, sus intervalos, su simetría.
     public var estadisticas: EstadisticasDeEscala { EstadisticasDeEscala(self) }
 }
+
+@available(*, deprecated, renamed: "EstadisticasTonalesDeEscala")
+public typealias MedidasTonalesDeEscala = EstadisticasTonalesDeEscala

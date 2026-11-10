@@ -38,11 +38,11 @@ public struct RelacionEntreConjuntos: Hashable, Sendable {
     public let relacionRp: Bool
 
     public init(_ a: ConjuntoDeClasesDeAltura, _ b: ConjuntoDeClasesDeAltura) {
-        let fa = MedidasDeConjunto.magnitudesDeFourier(a.clases)
-        let fb = MedidasDeConjunto.magnitudesDeFourier(b.clases)
+        let fa = EstadisticasDeConjunto.magnitudesDeFourier(a.clases)
+        let fb = EstadisticasDeConjunto.magnitudesDeFourier(b.clases)
         var suma = 0.0
         for (x, y) in zip(fa, fb) { suma += (x - y) * (x - y) }
-        distanciaDeFourier = MedidasDeConjunto.sinRuido(suma.squareRoot())
+        distanciaDeFourier = EstadisticasDeConjunto.sinRuido(suma.squareRoot())
         let va = a.vectorIntervalico
         let vb = b.vectorIntervalico
         let diferencias = zip(va, vb).map { Double($0 - $1) }

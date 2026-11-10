@@ -59,10 +59,7 @@ extension Acorde {
 
 /// Dos acordes, uno tras otro: las notas que comparten y cómo va cada voz del primero al segundo con el menor
 /// movimiento.
-///
-///     let comparacion = Acorde("Sol7").comparar(con: Acorde("Do"))
-///     comparacion?.comunes        // [Sol]
-///     comparacion?.movimientos    // lo que sube (+) o baja (−) cada voz, en semitonos
+@available(*, deprecated, message: "Usa RelacionEntreAcordes, de Acorde.relacion(con:en:), y su voces(en:)")
 public struct ComparacionDeAcordes: Hashable, Sendable {
     public let origen: Acorde
     public let destino: Acorde
@@ -82,14 +79,14 @@ public struct ComparacionDeAcordes: Hashable, Sendable {
 extension Acorde {
     /// Este acorde y otro, con sus notas comunes y la conducción de las voces de menor movimiento en la disposición
     /// dada (cerrada, a cuatro voces, si no se dice otra). `nil` si alguno no se puede disponer así.
+    @available(*, deprecated, message: "Usa relacion(con:).comunes y relacion(con:).voces(en:)")
     public func comparar(
         con otro: Acorde, disposicion: DisposicionDeAcorde = .cerrada
     ) -> ComparacionDeAcordes? {
-        guard let voces = disposicion.conducir([self, otro]), voces.count == 2 else { return nil }
-        let suyas = Set(otro.notas.map(\.claseDeAltura))
-        var comunes: [Nota] = []
-        for nota in notas where suyas.contains(nota.claseDeAltura) && !comunes.contains(nota) { comunes.append(nota) }
-        return ComparacionDeAcordes(origen: self, destino: otro, comunes: comunes, desde: voces[0], hasta: voces[1])
+        let relacion = relacion(con: otro)
+        guard let voces = relacion.voces(en: disposicion) else { return nil }
+        return ComparacionDeAcordes(
+            origen: self, destino: otro, comunes: relacion.comunes, desde: voces.desde, hasta: voces.hasta)
     }
 }
 

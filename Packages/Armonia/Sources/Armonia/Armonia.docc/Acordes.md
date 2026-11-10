@@ -338,7 +338,7 @@ dominante. ``DisposicionDeAcorde/dosManos`` pone la fundamental y la séptima en
 ``Acorde/otrosNombres`` da otros cifrados de las mismas notas sobre el mismo bajo (Do6 es también Lam7/Do; un
 disminuido con séptima se llama igual desde cualquiera de sus notas), y ``Acorde/sinFundamental``, el acorde que
 queda sin la fundamental (Sol7(♭9) sin Sol es Si°7). ``Acorde/tonalidades`` dice en qué tonalidades mayores y
-menores es diatónico, con su cifrado romano y su función. ``Acorde/comparar(con:disposicion:)`` da las notas
-comunes con otro acorde y cómo va cada voz de uno a otro (``ComparacionDeAcordes``), y
-``Acorde/sustituciones(en:)``, por qué acordes se puede cambiar suelto: las rearmonizaciones de su tonalidad y, en
+menores es diatónico, con su cifrado romano y su función. ``Acorde/relacion(con:en:)`` da las notas comunes con
+otro acorde (``RelacionEntreAcordes/comunes``) y ``RelacionEntreAcordes/voces(en:)``, cómo va cada voz de uno a otro
+en una disposición, y ``Acorde/sustituciones(en:)``, por qué acordes se puede cambiar suelto: las rearmonizaciones de su tonalidad y, en
 una dominante, su ii relativo y el disminuido sobre su tercera.

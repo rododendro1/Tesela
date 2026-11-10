@@ -29,7 +29,7 @@ struct RazonJusta: Hashable {
 /// Lo que dice de unas notas la afinación justa de cinco límites que pide su ortografía (Mi, la tercera mayor, es
 /// 5/4; Si♭, la séptima menor, 16/9): el gradus de Euler, la altura de Tenney, los límites de Partch y la armonicidad
 /// de Gill y Purves. Lo comparten `EstadisticasDeAcorde.afinacion` y `EstadisticasDeEscala.afinacion`.
-public struct MedidasDeAfinacionJusta: Hashable, Sendable {
+public struct EstadisticasDeAfinacionJusta: Hashable, Sendable {
     /// El gradus suavitatis de Euler (1739): 1 una nota, 3 la quinta, 7 las tríadas mayor y menor, 11 la séptima de
     /// dominante.
     public let gradoDeSuavidad: Int
@@ -118,3 +118,6 @@ enum CuentasDeAfinacionJusta {
         return 2
     }
 }
+
+@available(*, deprecated, renamed: "EstadisticasDeAfinacionJusta")
+public typealias MedidasDeAfinacionJusta = EstadisticasDeAfinacionJusta

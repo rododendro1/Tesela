@@ -30,7 +30,7 @@ extension Partitura {
     /// La partitura como fichero MIDI estándar (formato 1): una pista de control con el título, el tempo (negra =
     /// 120 si no se da), el compás y la armadura, y una por voz, de arriba abajo, con su nombre (o el de la parte),
     /// el instrumento y sus marcadores. Con `afinacion`, las notas suenan en ella
-    /// (`TemperamentoRegular.mesotonicoCuartoDeComa`, `AfinacionHistorica.werckmeisterIII.afinacion()`…).
+    /// (`TemperamentoRegular.mesotonicoCuartoDeComa`, `TemperamentoConNombre.werckmeisterIII.afinacion()`…).
     ///
     ///     let datos = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2").partitura().midi()
     ///     try datos.write(to: URL(fileURLWithPath: "escala.mid"))

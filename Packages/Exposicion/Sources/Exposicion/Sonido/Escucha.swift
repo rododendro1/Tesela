@@ -6,7 +6,7 @@ import Armonia
 ///
 ///     Escucha.acorde(Acorde("Sol7/Si")).notas.map(\.midi)   // [59, 62, 65, 67]: Si3 Re4 Fa4 Sol4
 ///
-/// Cada nota guarda su altura escrita, así que `afinado(en:)` puede afinar Sol♯ y La♭ de forma distinta en un
+/// Cada nota guarda su altura escrita, así que `afinado(con:)` puede afinar Sol♯ y La♭ de forma distinta en un
 /// temperamento que los distinga.
 public struct Escucha: Hashable, Sendable {
     /// Una nota que suena: su altura (y su número MIDI), cuándo empieza, cuánto dura y cuánto se aparta, en
@@ -18,7 +18,7 @@ public struct Escucha: Hashable, Sendable {
         /// Cents por encima (o por debajo) de la nota MIDI en temperamento igual con La4 = 440.
         public var desviacion: Double
         /// Los cents que se aparta de su nota escrita por ser un microtono (el Mi𝄳 de Bayātī es un Mi♭ cincuenta
-        /// cents más alto), sea cual sea el temperamento: `afinado(en:)` los suma a los del temperamento.
+        /// cents más alto), sea cual sea el temperamento: `afinado(con:)` los suma a los del temperamento.
         public let microtono: Double
 
         public var midi: Int { altura.midi }
@@ -66,12 +66,19 @@ public struct Escucha: Hashable, Sendable {
         Escucha(notas: notas, tonica: tonica)
     }
 
-    /// Lo mismo, con cada nota afinada en `temperamento` (la justa, sobre la tónica, o sobre Do si no se conoce).
-    /// Los microtonos se conservan: se suman a la afinación de su nota escrita.
-    ///
-    ///     Escucha.acorde(Acorde("Do")).afinado(en: .justa).notas.map { Int($0.desviacion.rounded()) }   // [0, -14, 2]
+    /// Lo mismo, con cada nota afinada en `temperamento`.
+    @available(*, deprecated, message: "Usa afinado(con:), con un TemperamentoConNombre")
     public func afinado(en temperamento: AfinacionHistorica) -> Escucha {
-        let afinacion = temperamento.afinacion(tonica: tonica ?? .do)
+        afinado(con: temperamento.temperamento)
+    }
+
+    /// Lo mismo, con cada nota afinada en `temperamento` (la justa, sobre la tónica, o sobre Do si no se conoce).
+    /// Los microtonos se conservan: se suman a la afinación de su nota escrita. Un sistema de otra tradición, que no
+    /// afina notas, lo deja como está.
+    ///
+    ///     Escucha.acorde(Acorde("Do")).afinado(con: .afinacionJusta).notas.map { Int($0.desviacion.rounded()) }   // [0, -14, 2]
+    public func afinado(con temperamento: TemperamentoConNombre) -> Escucha {
+        guard let afinacion = temperamento.afinacion(tonica: tonica ?? .do) else { return self }
         return Escucha(
             notas: notas.map { nota in
                 var afinada = nota

@@ -78,18 +78,35 @@ import Testing
     }
 
     @Test func armonizacionPorGrados() {
-        #expect(mayor.tonal.triadasPorGrados == ["", "m", "m", "", "", "m", "°"])
-        #expect(mayor.tonal.cuatriadasPorGrados == ["maj7", "m7", "m7", "maj7", "7", "m7", "ø7"])
-        #expect(menorArmonica.tonal.triadasPorGrados?[2] == "+")
-        #expect(pentatonica.tonal.triadasPorGrados == nil)
+        #expect(mayor.tonal.triadas == [.mayor, .menor, .menor, .mayor, .mayor, .menor, .disminuido])
+        #expect(
+            mayor.tonal.cuatriadas == [
+                .mayorSeptimaMayor, .menorSeptima, .menorSeptima, .mayorSeptimaMayor, .dominanteSeptima, .menorSeptima,
+                .semidisminuido,
+            ])
+        #expect(menorArmonica.tonal.triadas?[2] == .aumentado)
+        #expect(pentatonica.tonal.triadas == nil)
+    }
+
+    /// Cada acorde de la armonización por grados se lee de su cifrado, en todas las escalas de siete notas del
+    /// catálogo.
+    @Test func losAcordesPorGradosSonLosDeSuCifrado() throws {
+        for tipo in TipoDeEscala.catalogo where tipo.intervalos.count == 7 {
+            let clases = Escala(.do, tipo).notas.map(\.claseDeAltura)
+            let cifrados = try #require(MedidasDeEscala.armonizacion(clases))
+            let tipos = try #require(MedidasDeEscala.acordesPorGrados(clases))
+            for (cifrado, acorde) in zip(cifrados.triadas + cifrados.cuatriadas, tipos.triadas + tipos.cuatriadas) {
+                #expect((acorde == nil) == (cifrado == "?"), "\(tipo.nombre): \(cifrado)")
+            }
+        }
     }
 
     @Test func combinatoriedadHexacordal() {
         #expect(tonosEnteros.conjunto.combinatoriedad?.tipo == "F")
         #expect(mayor.conjunto.combinatoriedad == nil)
         let hexacordo = ConjuntoDeClasesDeAltura([0, 1, 2, 3, 4, 5])
-        #expect(MedidasDeConjunto.combinatoriedad(hexacordo)?.tipo == "A")
-        #expect(MedidasDeConjunto.combinatoriedad(hexacordo)?.transposiciones == [6])
+        #expect(EstadisticasDeConjunto.combinatoriedad(hexacordo)?.tipo == "A")
+        #expect(EstadisticasDeConjunto.combinatoriedad(hexacordo)?.transposiciones == [6])
     }
 
     @Test func parsimoniaYAfinacion() {

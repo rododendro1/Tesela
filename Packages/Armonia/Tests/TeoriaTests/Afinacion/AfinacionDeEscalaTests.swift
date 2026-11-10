@@ -43,36 +43,41 @@ import Testing
     /// Los cents de cada grado en un temperamento histórico dependen de la tónica.
     @Test func centsEnUnaAfinacionHistorica() {
         #expect(
-            redondear(Escala(.do, .mayor).cents(en: .justa)) == [0, 203.91, 386.31, 498.04, 701.96, 884.36, 1088.27])
+            redondear(Escala(.do, .mayor).cents(con: .afinacionJusta) ?? []) == [
+                0, 203.91, 386.31, 498.04, 701.96, 884.36, 1088.27,
+            ])
         #expect(
-            redondear(Escala(.re, .protusAuthenticus).cents(en: .pitagorico)) == [
+            redondear(Escala(.re, .protusAuthenticus).cents(con: .pitagorico) ?? []) == [
                 0, 203.91, 294.13, 498.04, 701.96, 905.87, 996.09,
             ])
-        #expect(redondear(Escala(.mi, .mayor).cents(en: .igual)) == [0, 200, 400, 500, 700, 900, 1100])
+        #expect(
+            redondear(Escala(.mi, .mayor).cents(con: .temperamentoIgual) ?? []) == [0, 200, 400, 500, 700, 900, 1100])
         // En Werckmeister III, la tercera de Do es más pura que la de Re♭.
-        let tercerasDeDo = Escala(.do, .mayor).cents(en: .werckmeisterIII)[2]
-        let tercerasDeReBemol = Escala(Nota(.re, .bemol), .mayor).cents(en: .werckmeisterIII)[2]
+        let tercerasDeDo = (Escala(.do, .mayor).cents(con: .werckmeisterIII) ?? [])[2]
+        let tercerasDeReBemol = (Escala(Nota(.re, .bemol), .mayor).cents(con: .werckmeisterIII) ?? [])[2]
         #expect(abs(tercerasDeDo - 390.22) <= 0.01)
         #expect(abs(tercerasDeReBemol - 407.82) <= 0.01)
         // Al bajar, la menor melódica es la natural.
         #expect(
-            redondear(Escala(.la, .menorMelodica).cents(en: .igual, sentido: .descendente)) == [
+            redondear(Escala(.la, .menorMelodica).cents(con: .temperamentoIgual, sentido: .descendente) ?? []) == [
                 0, 200, 300, 500, 700, 800, 1000,
             ])
+        // Los sistemas de otras tradiciones no afinan notas.
+        #expect(Escala(.do, .mayor).cents(con: .comas53) == nil)
     }
 
     @Test func laAfinacionDeCadaTradicion() {
-        #expect(TipoDeEscala.protusAuthenticus.afinacionSugerida == .pitagorico)
-        #expect(Tradicion.india.afinacionSugerida == .justa)
-        #expect(Tradicion.mundoArabe.afinacionSugerida == nil)
+        #expect(TipoDeEscala.protusAuthenticus.temperamentoSugerido == .pitagorico)
+        #expect(Tradicion.india.temperamentoSugerido == .afinacionJusta)
+        #expect(Tradicion.mundoArabe.temperamentoSugerido == nil)
         // Las occidentales, por su uso: los modos del Renacimiento, en mesotónico; la tonalidad, en un buen
         // temperamento; lo demás, en el igual.
-        #expect(TipoDeEscala.dorico.afinacionSugerida == .mesotonico)
-        #expect(TipoDeEscala.mayor.afinacionSugerida == .werckmeisterIII)
-        #expect(TipoDeEscala.menorArmonica.afinacionSugerida == .werckmeisterIII)
-        #expect(TipoDeEscala.alterada.afinacionSugerida == .igual)
-        #expect(TipoDeEscala.tonosEnteros.afinacionSugerida == .igual)
-        #expect(Estilo.blues.afinacionSugerida == .igual)
-        #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .segundaMayor]).afinacionSugerida == nil)
+        #expect(TipoDeEscala.dorico.temperamentoSugerido == .mesotonicoCuartoDeComa)
+        #expect(TipoDeEscala.mayor.temperamentoSugerido == .werckmeisterIII)
+        #expect(TipoDeEscala.menorArmonica.temperamentoSugerido == .werckmeisterIII)
+        #expect(TipoDeEscala.alterada.temperamentoSugerido == .temperamentoIgual)
+        #expect(TipoDeEscala.tonosEnteros.temperamentoSugerido == .temperamentoIgual)
+        #expect(Estilo.blues.temperamentoSugerido == .temperamentoIgual)
+        #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .segundaMayor]).temperamentoSugerido == nil)
     }
 }

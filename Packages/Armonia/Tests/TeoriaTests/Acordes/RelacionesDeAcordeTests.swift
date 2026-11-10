@@ -36,14 +36,15 @@ import Testing
     }
 
     @Test func compararDosAcordes() throws {
-        let quintaATonica = try #require(Acorde("Sol7").comparar(con: Acorde("Do")))
-        #expect(quintaATonica.comunes == [.sol])
+        let relacion = Acorde("Sol7").relacion(con: Acorde("Do"))
+        #expect(relacion.comunes == [.sol])
+        let quintaATonica = try #require(relacion.voces())
         #expect(quintaATonica.desde.count == 4 && quintaATonica.hasta.count == 4)
         #expect(quintaATonica.movimientoTotal == quintaATonica.movimientos.map(abs).reduce(0, +))
         #expect(quintaATonica.movimientoTotal <= 4)
-        #expect(Acorde("Do7M").comparar(con: Acorde("Lam7"))?.comunes == [.do, .mi, .sol])
+        #expect(Acorde("Do7M").relacion(con: Acorde("Lam7")).comunes == [.do, .mi, .sol])
         // Sin tercera no hay shell.
-        #expect(Acorde(.do, .potencia).comparar(con: Acorde("Sol"), disposicion: .shell) == nil)
+        #expect(Acorde(.do, .potencia).relacion(con: Acorde("Sol")).voces(en: .shell) == nil)
     }
 
     @Test func dominantesYTonalidadPropia() {

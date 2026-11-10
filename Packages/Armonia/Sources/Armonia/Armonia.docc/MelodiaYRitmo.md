@@ -311,7 +311,7 @@ datos.prefix(4) == Data("MThd".utf8)   // true
 
 Los microtonos de una voz (los desvíos de cada nota, como en `Mi♭4(50¢):4`) suenan en MIDI con inflexiones de tono
 (*pitch bend*). Con `afinacion`, además, todas las notas suenan en la que se pida: un temperamento regular, uno
-circular o la afinación justa (``AfinacionHistorica``). La inflexión mueve todo un canal, así que las notas que suenan
+circular o la afinación justa (``TemperamentoConNombre/afinacion(tonica:frecuenciaDelLa4:)``). La inflexión mueve todo un canal, así que las notas que suenan
 a la vez y se apartan distinto (la tercera pura de un acorde, por ejemplo) van cada una a un canal, con el mismo
 instrumento: los que no son de ninguna voz, sin el 10, el de percusión. Al importar el fichero, los canales de una
 pista con el mismo instrumento vuelven a ser una sola parte.

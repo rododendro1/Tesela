@@ -1,5 +1,11 @@
 # Cambios
 
+## Sin publicar
+
+- `Reproductor.tocar(_:con:)` y `Reproductor.temperamentoGuardado` usan un `TemperamentoConNombre`;
+  `tocar(_:en:)`, con una `AfinacionHistorica`, queda obsoleta. `AjustesDeLasApps.claveDeTemperamento(_:)` y
+  `temperamento(deClave:)` pasan de un temperamento a lo que se guarda, con las mismas claves de antes.
+
 ## 0.4.4 (2026-11-09)
 
 - **Cambio incompatible:** `DiagramaDePentagrama`, `DiagramaDeMastil` y `DiagramaDeTonnetz` toman la notación con

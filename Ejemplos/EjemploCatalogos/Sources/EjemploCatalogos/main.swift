@@ -74,7 +74,7 @@ let columnasAntesDeLosErrores: [String] = [
 let columnasDeLosErrores: [String] = razonesJustas.map { "error_\($0)" }
 let columnasTrasLosErrores: [String] = [
     "quinta_del_lobo", "tercera_mas_pura", "tercera_mas_lejana", "desviaciones_del_igual", "pasos",
-    "afinacion_historica", "sistema_microtonal", "referencias",
+    "para_escuchar", "sistema_microtonal", "referencias",
 ]
 let columnasDeTemperamentos: [String] =
     columnasDeNombres + columnasAntesDeLosErrores + columnasDeLosErrores + columnasTrasLosErrores
@@ -91,7 +91,8 @@ func filaDeTemperamento(_ temperamento: TemperamentoConNombre) -> [String] {
     let resto: [String] = [
         numero(medidas.quintaDelLobo), numero(medidas.terceraMasPura), numero(medidas.terceraMasLejana),
         medidas.desviacionesDelIgual.map(lista) ?? "", lista(temperamento.pasos),
-        temperamento.historica?.nombre ?? "", temperamento.sistemaMicrotonal?.rawValue ?? "",
+        siONo(TemperamentoConNombre.paraEscuchar.contains(temperamento)),
+        temperamento.sistemaMicrotonal?.rawValue ?? "",
         citas(temperamento.referencias),
     ]
     return nombres + ficha + errores + resto

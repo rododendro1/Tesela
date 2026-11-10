@@ -201,10 +201,10 @@ import Hexagonos
     @Test func afinacionYRepresentaciones3() throws {
         // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 3
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 3)
-        comprobar(AfinacionHistorica.allCases.count, #"8"#, doc, 0)
-        comprobar(AfinacionHistorica.justa.afinacion(tonica: .re).desviacion(de: "Fa#4"), #"−13,69"#, doc, 1)
-        comprobar(AfinacionHistorica.mesotonico.distingueEnarmonicas, #"true"#, doc, 2)
-        comprobar(AfinacionHistorica.vallotti.nombre(en: .conPalabras(.ruso)), #""Валлотти""#, doc, 3)
+        comprobar(TemperamentoConNombre.paraEscuchar.count, #"8"#, doc, 0)
+        comprobar(TemperamentoConNombre.afinacionJusta.afinacion(tonica: .re)?.desviacion(de: "Fa#4"), #"−13,69"#, doc, 1)
+        comprobar(TemperamentoConNombre.mesotonicoCuartoDeComa.distingueEnarmonicas, #"true"#, doc, 2)
+        comprobar(TemperamentoConNombre.vallotti.nombre(en: .conPalabras(.ruso)), #""Валлотти""#, doc, 3)
     }
 
     @Test func afinacionYRepresentaciones4() throws {
@@ -214,7 +214,7 @@ import Hexagonos
         comprobar(TemperamentoConNombre.buscar(nombre: "meantone") == .mesotonicoCuartoDeComa, #"true"#, doc, 1)
         comprobar(TemperamentoConNombre.comas53.pasosPorOctava, #"53"#, doc, 2)
         comprobar(TemperamentoConNombre.divisiones31.autor, #""Christiaan Huygens""#, doc, 3)
-        comprobar(AfinacionHistorica.vallotti.temperamento == .vallotti, #"true"#, doc, 4)
+        comprobar(TemperamentoConNombre.paraEscuchar.contains(.vallotti), #"true"#, doc, 4)
         comprobar(TemperamentoConNombre.temperamentoIgual.estadisticas.uniforme, #"true"#, doc, 5)
     }
 
@@ -257,15 +257,15 @@ import Hexagonos
     @Test func afinacionYRepresentaciones8() throws {
         // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 8
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 8)
-        comprobar(Escala(.do, .mayor).cents(en: .justa)[2], #"386,31"#, doc, 0)
-        comprobar(Escala(.do, .mayor).cents(en: .werckmeisterIII)[2], #"390,22"#, doc, 1)
-        comprobar(Escala(Nota(.re, .bemol), .mayor).cents(en: .werckmeisterIII)[2], #"407,82"#, doc, 2)
-        comprobarIgual(TipoDeEscala.protusAuthenticus.afinacionSugerida, .pitagorico, doc, 3)
-        comprobar(Escala(.re, .protusAuthenticus).cents(en: .pitagorico)[2], #"294,13"#, doc, 4)
-        comprobarIgual(Tradicion.india.afinacionSugerida, .justa, doc, 5)
-        comprobarIgual(TipoDeEscala.dorico.afinacionSugerida, .mesotonico, doc, 6)
-        comprobarIgual(TipoDeEscala.mayor.afinacionSugerida, .werckmeisterIII, doc, 7)
-        comprobarIgual(TipoDeEscala.alterada.afinacionSugerida, .igual, doc, 8)
+        comprobar(Escala(.do, .mayor).cents(con: .afinacionJusta)?[2], #"386,31"#, doc, 0)
+        comprobar(Escala(.do, .mayor).cents(con: .werckmeisterIII)?[2], #"390,22"#, doc, 1)
+        comprobar(Escala(Nota(.re, .bemol), .mayor).cents(con: .werckmeisterIII)?[2], #"407,82"#, doc, 2)
+        comprobarIgual(TipoDeEscala.protusAuthenticus.temperamentoSugerido, .pitagorico, doc, 3)
+        comprobar(Escala(.re, .protusAuthenticus).cents(con: .pitagorico)?[2], #"294,13"#, doc, 4)
+        comprobarIgual(Tradicion.india.temperamentoSugerido, .afinacionJusta, doc, 5)
+        comprobarIgual(TipoDeEscala.dorico.temperamentoSugerido, .mesotonicoCuartoDeComa, doc, 6)
+        comprobarIgual(TipoDeEscala.mayor.temperamentoSugerido, .werckmeisterIII, doc, 7)
+        comprobarIgual(TipoDeEscala.alterada.temperamentoSugerido, .temperamentoIgual, doc, 8)
         comprobar(Escala(.la, .blues).afinacion()?.desviacion(de: "Sol4"), #"−31"#, doc, 9)
     }
 

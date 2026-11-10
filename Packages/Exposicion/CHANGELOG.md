@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+- `ComparacionPresentada` lleva `relacion` (`RelacionEntreAcordes`) y `disposiciones` en vez de `comparacion`, y
+  `ComparacionDeEscalasPresentada`, `relacion` (`RelacionEntreEscalas`) en vez de `comparacion`.
+- `Escucha.afinado(con:)` toma un `TemperamentoConNombre`; `afinado(en:)`, con una `AfinacionHistorica`, queda
+  obsoleta.
+- `PresentacionDeEstudioDeEscala.grados(_:)` toma también los tipos de acorde de cada grado. Las cuatríadas con la
+  quinta disminuida se escriben `V7(♭5)`, con el cifrado del acorde (antes `V7♭5`).
+
 - Por dentro, sin cambios de API: la raíz se reparte en carpetas. `ConsultasPresentadas` se divide por lo que
   consulta (`Acordes/`, `Escalas/` y la nueva `Postonal/`, con el análisis postonal y la serie); `Escucha` y
   `CambioMIDI` van a `Sonido/`, `PentagramaPresentado` a `Partituras/` y `ValorDeMedida` a `Acordes/`.
