@@ -341,6 +341,15 @@ public struct TextosDeApps: TextosTraducidos {
     public let terceraMasPuraYMasLejana: String
     public let desviacionesDelIgual: String
     public let pasosIguales: String
+    public let familiaDeLaNota: String
+    public let alturaDeLaNota: String
+    public let desvioDeLaNota: String
+    public let frecuenciaDeLaNota: String
+    public let laDeLaNota: String
+    public let midiDeLaNota: String
+    public let anioDeLaNota: String
+    public let nombreOriginalDeLaNota: String
+    public let posicionGuidoniana: String
     public let propiedades: String
     public let escaleraDeBrillo: String
     public let hojaDeEstudio: String

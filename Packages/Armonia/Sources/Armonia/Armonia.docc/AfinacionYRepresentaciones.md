@@ -66,6 +66,25 @@ AfinacionHistorica.vallotti.temperamento == .vallotti                    // true
 TemperamentoConNombre.temperamentoIgual.estadisticas.uniforme             // true
 ```
 
+### El catálogo de notas
+
+``NotaConNombre`` reúne las notas con nombre propio: los diapasones (el La 440, el La 415 barroco, el La 435 del
+diapasón normal francés, el Do 256 científico…), las notas de referencia (el Do central, las notas extremas del piano
+y del MIDI), las veinte posiciones de la mano guidoniana y las alturas con nombre de otras tradiciones, que salen de
+``NombresPorOctava``: las notas árabes, las perde turcas y las cuerdas del sistema perfecto griego. Cada una tiene su
+familia (``FamiliaDeNota``), su altura, lo que se aparta en cents de la temperada, su frecuencia, sus referencias y su
+nombre en los trece idiomas. Si dos nombres se leen igual (Rāst y la perde Rast; E la mi, la grave y la aguda), la
+segunda lleva su altura: «Rast (Sol4)».
+
+```swift
+NotaConNombre.la415.frecuencia                          // 415
+NotaConNombre.buscar(nombre: "middle C") == .doCentral   // true
+NotaConNombre.buscar(nombre: "Sikah")?.desvio            // -50
+NotaConNombre.buscar(nombre: "Segâh")?.desvio            // -13,21: una koma bajo Si, en comas de 1200/53 cents
+NotaConNombre.do256.frecuenciaDelLa4                     // 430,54
+NombresPorOctava.griegoAntiguo.alturas[7].notaConNombre  // mésē
+```
+
 ### Escalas y afinaciones
 
 Una escala con microtonos (``TipoDeEscalaMicrotonal``, en <doc:EscalasDelMundo>) se puede oír como es:

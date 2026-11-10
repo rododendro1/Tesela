@@ -221,6 +221,17 @@ import Hexagonos
     @Test func afinacionYRepresentaciones5() throws {
         // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 5
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 5)
+        comprobar(NotaConNombre.la415.frecuencia, #"415"#, doc, 0)
+        comprobar(NotaConNombre.buscar(nombre: "middle C") == .doCentral, #"true"#, doc, 1)
+        comprobar(NotaConNombre.buscar(nombre: "Sikah")?.desvio, #"-50"#, doc, 2)
+        comprobar(NotaConNombre.buscar(nombre: "Segâh")?.desvio, #"-13,21"#, doc, 3)
+        comprobar(NotaConNombre.do256.frecuenciaDelLa4, #"430,54"#, doc, 4)
+        _ = NombresPorOctava.griegoAntiguo.alturas[7].notaConNombre
+    }
+
+    @Test func afinacionYRepresentaciones6() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 6
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 6)
         let bayati = Escala(.re, .bayati).afinacion()!
         comprobar(bayati.desviacion(de: "Mib4"), #"50"#, doc, 1)
         comprobar(bayati.desviacion(de: "Mi4"), #"0"#, doc, 2)
@@ -232,9 +243,9 @@ import Hexagonos
         comprobar(Escala(.do, .mayor).afinacion(), #"nil"#, doc, 8)
     }
 
-    @Test func afinacionYRepresentaciones6() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 6
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 6)
+    @Test func afinacionYRepresentaciones7() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 7
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 7)
         comprobar(Escala(.do, .mayor).cents(en: .justa)[2], #"386,31"#, doc, 0)
         comprobar(Escala(.do, .mayor).cents(en: .werckmeisterIII)[2], #"390,22"#, doc, 1)
         comprobar(Escala(Nota(.re, .bemol), .mayor).cents(en: .werckmeisterIII)[2], #"407,82"#, doc, 2)
@@ -247,9 +258,9 @@ import Hexagonos
         comprobar(Escala(.la, .blues).afinacion()?.desviacion(de: "Sol4"), #"−31"#, doc, 9)
     }
 
-    @Test func afinacionYRepresentaciones7() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 7
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 7)
+    @Test func afinacionYRepresentaciones8() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 8
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 8)
         comprobar(Altura("Do4").numero(en: .base40), #"162"#, doc, 0)
         comprobar(Altura("Fa#4").numero(en: .base40), #"180"#, doc, 1)
         comprobar(Altura("Solb4").numero(en: .base40), #"184"#, doc, 2)
@@ -264,9 +275,9 @@ import Hexagonos
         _ = BaseDeHewlett(base: 96)
     }
 
-    @Test func afinacionYRepresentaciones8() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 8
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 8)
+    @Test func afinacionYRepresentaciones9() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 9
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 9)
         comprobar(Nota.re.color(segun: .scriabin), #"#FFFF00"#, doc, 0)
         comprobar(CorrespondenciaDeColores.scriabin.nombreDelColor(de: .mi), #""azul cielo (luz de luna o escarcha)""#, doc, 1)
         comprobar(Altura("La4").color(segun: .newton).hexadecimal, ##""#4B0082""##, doc, 2)
@@ -275,9 +286,9 @@ import Hexagonos
         _ = (ColorRGB(hexadecimal: "#FF8000"), ColorRGB(tono: 120, saturacion: 1, brillo: 1))
     }
 
-    @Test func afinacionYRepresentaciones9() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 9
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 9)
+    @Test func afinacionYRepresentaciones10() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 10
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 10)
         comprobar(PuntoDeLaRed(quintas: 0, terceras: 1).nota, #"Mi"#, doc, 0)
         comprobar(PuntoDeLaRed(quintas: 1, terceras: -1).nota, #"Mi♭"#, doc, 1)
         comprobar(PuntoDeLaRed(quintas: 4, terceras: -1).claseDeAltura, #"0"#, doc, 2)
@@ -288,9 +299,9 @@ import Hexagonos
         comprobar("\(Tonnetz(ConjuntoDeClasesDeAltura([0, 4, 7])))", #""0 (0, 0) · 4 (0, 1) · 7 (1, 0)""#, doc, 7)
     }
 
-    @Test func afinacionYRepresentaciones10() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 10
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 10)
+    @Test func afinacionYRepresentaciones11() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 11
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 11)
         let dibujo = Tonnetz(Escala(.re, .dorico)).svg()
         let sinLeyenda = Tonnetz(Acorde("Do")).svg(opciones: .init(titulo: "Tónica"), leyenda: false)
         let ingles = Tonnetz(Acorde("Fa#m7")).svg(opciones: .init(notacion: .ascii(.ingles)), margen: 2)
@@ -302,9 +313,9 @@ import Hexagonos
         _ = (dibujo, sinLeyenda, ingles, toro)
     }
 
-    @Test func afinacionYRepresentaciones11() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 11
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 11)
+    @Test func afinacionYRepresentaciones12() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 12
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 12)
         comprobar(Acorde("Do").transformar(.r) == Acorde("Lam"), #"true"#, doc, 0)
         comprobar(Acorde("Mib").transformar(.r) == Acorde("Dom"), #"true"#, doc, 1)
         comprobar(try Acorde("Do").transformar(leyendo: "PLR") == Acorde("Fam"), #"true"#, doc, 2)
@@ -315,9 +326,9 @@ import Hexagonos
         comprobar(Acorde("Do").caminoNeorriemanniano(hasta: "Sol#", enarmonico: true) == [.p, .l], #"true"#, doc, 7)
     }
 
-    @Test func afinacionYRepresentaciones12() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 12
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 12)
+    @Test func afinacionYRepresentaciones13() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 13
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 13)
         let recorrido = Tonnetz(recorrido: ["Do", "Lam", "Fa", "Rem"])
         comprobar(recorrido?.recorrido.count == 4, #"true"#, doc, 1)
         let bomba = Tonnetz(recorrido: ["Do", "Lam", "Rem", "Sol", "Do"])!
@@ -326,18 +337,18 @@ import Hexagonos
         _ = dibujo
     }
 
-    @Test func afinacionYRepresentaciones13() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 13
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 13)
+    @Test func afinacionYRepresentaciones14() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 14
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 14)
         comprobar(Acorde("Do").ciclo(.hexatonico)?.map(\.cifrado) == ["Do", "Dom", "La♭", "La♭m", "Mi", "Mim", "Do"], #"true"#, doc, 0)
         comprobar(Acorde("Do").ciclo(.octatonico)?.map(\.cifrado) == ["Do", "Dom", "Mi♭", "Mi♭m", "Sol♭", "Fa♯m", "La", "Lam", "Do"], #"true"#, doc, 1)
         comprobar(Acorde("Do").ciclo(.lr)?.count == 25, #"true"#, doc, 2)
         comprobar(Tonnetz(ciclo: .hexatonico, desde: "Do")?.recorrido.count == 7, #"true"#, doc, 3)
     }
 
-    @Test func afinacionYRepresentaciones14() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 14
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 14)
+    @Test func afinacionYRepresentaciones15() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 15
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 15)
         comprobar(TablaArmonica.midi(de: PuntoDeLaRed(quintas: 1, terceras: 0)) == 67, #"true"#, doc, 0)
         comprobar(TablaArmonica(Acorde("Domaj7")).triadas.map(\.acorde) == [Acorde("Do"), Acorde("Mim")], #"true"#, doc, 1)
         comprobar(TablaArmonica([Altura("Do4"), Altura("Mi4"), Altura("Sol4")]).triadas.count == 1, #"true"#, doc, 2)
@@ -347,16 +358,16 @@ import Hexagonos
         _ = dibujo
     }
 
-    @Test func afinacionYRepresentaciones15() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 15
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 15)
+    @Test func afinacionYRepresentaciones16() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 16
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 16)
         comprobar(TablaArmonica(recorrido: ["Do", "Lam", "Fa"])?.recorrido.count == 3, #"true"#, doc, 0)
         comprobar(TablaArmonica(caminoDesde: "Do", hasta: "Sol7") == nil, #"true"#, doc, 1)
     }
 
-    @Test func afinacionYRepresentaciones16() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 16
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 16)
+    @Test func afinacionYRepresentaciones17() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 17
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 17)
         let mi = PuntoDeLaRed(quintas: 0, terceras: 1)
         comprobar(mi.coordenada == CoordenadaAxial(q: 0, r: 1), #"true"#, doc, 3)
         comprobar(PuntoDeLaRed(CoordenadaAxial(q: 1, r: 0)).nota == .sol, #"true"#, doc, 4)
@@ -364,9 +375,9 @@ import Hexagonos
         comprobar(TablaArmonica.coordenada(de: mi) == CoordenadaAxial(q: 1, r: -1), #"true"#, doc, 6)
     }
 
-    @Test func afinacionYRepresentaciones17() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 17
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 17)
+    @Test func afinacionYRepresentaciones18() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 18
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 18)
         let teclado = TecladoIsomorfico.wickiHayden
         comprobar(teclado.midi(en: CoordenadaAxial(q: 1, r: -1)) == 67, #"true"#, doc, 3)
         comprobar(teclado.semitonos(hacia: DireccionHexagonal(.noreste, .puntiaguda)!) == 7, #"true"#, doc, 4)
@@ -381,9 +392,9 @@ import Hexagonos
         _ = dibujo
     }
 
-    @Test func afinacionYRepresentaciones18() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 18
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 18)
+    @Test func afinacionYRepresentaciones19() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 19
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 19)
         let formato = try FormatoUIL(leyendo: "2,7,5;R30M")
         comprobar(formato.esCompleto == true, #"true"#, doc, 1)
         comprobar(formato.orientacion == .puntiaguda, #"true"#, doc, 2)
@@ -396,9 +407,9 @@ import Hexagonos
         comprobar(FormatoUIL.conocidos.count == 8, #"true"#, doc, 9)
     }
 
-    @Test func afinacionYRepresentaciones19() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 19
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 19)
+    @Test func afinacionYRepresentaciones20() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 20
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 20)
         let cuartas = TecladoCuadrado.cuartas
         comprobar(cuartas.midi(en: CasillaCuadrada(columna: 2, fila: 1)) == 67, #"true"#, doc, 1)
         comprobar(cuartas.semitonosEnDiagonal == 6, #"true"#, doc, 2)
@@ -411,9 +422,9 @@ import Hexagonos
         _ = dibujo
     }
 
-    @Test func afinacionYRepresentaciones20() throws {
-        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 20
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 20)
+    @Test func afinacionYRepresentaciones21() throws {
+        // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 21
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 21)
         let enTono = TecladoCuadrado.cuartas.enTono(Escala(.re, .dorico))
         comprobar(enTono.semitonosEnV == 3, #"true"#, doc, 1)
         comprobar(enTono.midi(en: .origen) == 62, #"true"#, doc, 2)

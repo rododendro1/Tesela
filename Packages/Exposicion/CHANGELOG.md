@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- `NotaPresentada`: una nota del catálogo con su ficha (familia, altura, desvío, frecuencia, La4, MIDI, año, nombre
+  original y alturas de la posición guidoniana), con `ficha(en:)`. `TextosDeApps` tiene sus nombres en los trece
+  idiomas.
+
 - `TemperamentoPresentado`: un temperamento del catálogo con su ficha (familia, autor, año, pasos por octava,
   quinta) y lo que se mide de él, con `ficha(en:)` y `datos(en:)`. `TextosDeApps` tiene sus nombres en los trece
   idiomas.

@@ -2,7 +2,7 @@ import Armonia
 import Foundation
 
 // Escribe en TSV, un fichero por catálogo, lo que dice la API pública de cada uno: los ritmos, los temperamentos, las
-// escalas microtonales, las referencias, los encordados, los teclados isomórficos y cuadrados, los modos gregorianos y
+// notas con nombre, las escalas microtonales, las referencias, los encordados, los teclados isomórficos y cuadrados, los modos gregorianos y
 // los instrumentos de la partitura. Las listas de una celda van separadas por espacios (pasos, notas) o por « · »
 // (alias, citas); una celda vacía es un dato que el elemento no tiene, y las de sí o no dicen «sí» o «no». Los
 // números se escriben con tres decimales como mucho.
@@ -103,6 +103,26 @@ let temperamentos = Catalogo(
     fichero: "temperamentos.tsv", columnas: columnasDeTemperamentos,
     filas: TemperamentoConNombre.catalogo.map(filaDeTemperamento))
 
+let columnasDeNotas: [String] =
+    columnasDeNombres + [
+        "alias", "variantes", "familia", "altura", "desvio", "frecuencia", "frecuencia_del_la4", "midi", "anio",
+        "referencias",
+    ]
+
+/// Una nota con nombre: su altura, lo que se aparta de la temperada y su frecuencia.
+func filaDeNota(_ nota: NotaConNombre) -> [String] {
+    let nombres: [String] = [nota.nombre] + traducciones.map { nota.nombre(en: .delIdioma($0)) }
+    let anio: String = nota.anio.map { String($0) } ?? ""
+    let resto: [String] = [
+        nota.alias.joined(separator: " · "), nota.variantes.joined(separator: " · "), nota.familia.nombre,
+        nota.altura.description, numero(nota.desvio), numero(nota.frecuencia), numero(nota.frecuenciaDelLa4),
+        String(nota.midi), anio, citas(nota.referencias),
+    ]
+    return nombres + resto
+}
+
+let notas = Catalogo(fichero: "notas.tsv", columnas: columnasDeNotas, filas: NotaConNombre.catalogo.map(filaDeNota))
+
 /// Una escala microtonal: sus pasos, sus cents y lo que se apartan de la temperada.
 func filaDeEscala(_ escala: TipoDeEscalaMicrotonal) -> [String] {
     let descendentes: String = escala.pasosDescendentes.map(lista) ?? ""
@@ -198,7 +218,7 @@ let instrumentos = Catalogo(
     })
 
 let catalogos = [
-    ritmos, temperamentos, escalasMicrotonales, referencias, encordados, tecladosIsomorficos, tecladosCuadrados,
+    ritmos, temperamentos, notas, escalasMicrotonales, referencias, encordados, tecladosIsomorficos, tecladosCuadrados,
     modosGregorianos, instrumentos,
 ]
 

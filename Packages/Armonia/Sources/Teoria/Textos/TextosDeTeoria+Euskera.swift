@@ -27,6 +27,12 @@ extension TextosDeTeoria {
         familiaDeTemperamentoJusta: "afinazio justuak",
         familiaDeTemperamentoDivisionesIguales: "zortzidunaren zatiketa berdinak",
         familiaDeTemperamentoTradicional: "beste tradizio batzuetako sistemak",
+        familiaDeNotaDiapason: "diapasoiak",
+        familiaDeNotaReferencia: "erreferentziako notak",
+        familiaDeNotaGuidoniana: "esku guidoniarra",
+        familiaDeNotaArabe: "nota arabiarrak",
+        familiaDeNotaTurca: "perde turkiarrak",
+        familiaDeNotaGriega: "sistema perfektuaren sokak",
 
         // Acorde.swift
         conBajoEn: "{1}, baxua {2} dela",

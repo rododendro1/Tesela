@@ -27,6 +27,12 @@ extension TextosDeTeoria {
         familiaDeTemperamentoJusta: "rena stämningar",
         familiaDeTemperamentoDivisionesIguales: "lika delningar av oktaven",
         familiaDeTemperamentoTradicional: "system från andra traditioner",
+        familiaDeNotaDiapason: "stämtoner",
+        familiaDeNotaReferencia: "referenstoner",
+        familiaDeNotaGuidoniana: "den guidonska handen",
+        familiaDeNotaArabe: "arabiska toner",
+        familiaDeNotaTurca: "turkiska perde",
+        familiaDeNotaGriega: "det fullkomliga systemets strängar",
 
         // Acorde.swift
         conBajoEn: "{1}, med {2} i basen",
