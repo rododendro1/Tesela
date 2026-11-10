@@ -352,11 +352,11 @@ de la escala de un acorde a la del siguiente y ``Acorde/notasGuia``, su tercera 
   tiene sensible y dos tetracordos iguales.
 
 ```swift
-Escala(.do, .mayor).estadisticas.propiedadDeRothenberg         // .propia
-Escala(.do, .pentatonicaMayor).estadisticas.generador          // 5
-Escala(.do, .mayor).estadisticas.analisisDeHanson              // "p⁶m³n⁴s⁵d²t"
-Escala(.do, .tonosEnteros).estadisticas.modoDeMessiaen         // 1
-Escala(.do, .mayor).estadisticas.parsimonia                    // 2
+Escala(.do, .mayor).estadisticas.intervalosGenericos.propiedadDeRothenberg   // .propia
+Escala(.do, .pentatonicaMayor).estadisticas.intervalosGenericos.generador    // 5
+Escala(.do, .mayor).estadisticas.conjunto.analisisDeHanson                   // "p⁶m³n⁴s⁵d²t"
+Escala(.do, .tonosEnteros).estadisticas.conjunto.modoDeMessiaen              // 1
+Escala(.do, .mayor).estadisticas.conjunto.parsimonia                         // 2
 ```
 
 En la línea de comandos, `armonia escala Do mayor --estadisticas` las escribe, también en `--json` (en

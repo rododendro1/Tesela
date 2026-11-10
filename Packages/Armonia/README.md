@@ -221,18 +221,16 @@ Sources/
 │   ├── Textos/            TextosDeElementos y un fichero por idioma
 │   ├── Referencias/       Referencia (citas, BibTeX y CSL-JSON) y Referencias (el catálogo de obras, que citan
 │   │                      escalas, acordes, corales y partituras)
-│   └── Postonal/          ConjuntoDeClasesDeAltura, TablaForte
+│   └── Postonal/          ConjuntoDeClasesDeAltura, TablaForte, MedidasDeConjunto (Huron, Fourier, Tymoczko,
+│                          Hanson, Messiaen, Forte, Babbitt, Balzano…: lo que se mide de un conjunto)
 ├── Teoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
 │   ├── Catalogo/          Lo que comparten los catálogos: Estilo (de escalas, acordes y progresiones),
 │   │                      FichaDelCatalogo y NombresDelCatalogo (los nombres de acordes y progresiones por idioma)
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde,
-│   │   │                  CardinalDeAcorde y EstadisticasDeAcorde (lo que se mide de un acorde)
-│   │   │                  GrupoDeHindemith y MedidasDeAcorde+Percepcion (Huron, Hindemith, Euler, Parncutt,
-│   │   │                  Fourier, Tymoczko, Cook y Sethares)
-│   │   │                  MedidasDeAcorde+Afinacion (Tenney, Partch, Gill y Purves, Erlich, Terhardt) y
-│   │   │                  MedidasDeAcorde+Voces (fusión, Vassilakis, Hutchinson y Knopoff, disposición)
+│   │   │                  CardinalDeAcorde y EstadisticasDeAcorde (lo que se mide de un acorde, con sus
+│   │   │                  bloques PsicoacusticaDeAcorde y DisposicionDeVoces), GrupoDeHindemith
 │   │   ├── Catalogo/      AcordeConNombre (el acorde del catálogo, con su ficha) y el catálogo
 │   │   ├── Nombres/       NombresDeAcordes y un fichero por idioma (`NombresDeAcordes+Catalan.swift`…)
 │   │   └── Neorriemanniana/   TransformacionNeorriemanniana (P, L, R y caminos), CicloNeorriemanniano
@@ -241,7 +239,7 @@ Sources/
 │   ├── Escalas/
 │   │   ├── Escala/        Escala (con NombreDeGrado, la búsqueda por notas y la ortografía) y lo que se hace con
 │   │   │                  ella: acordes, estudio, simetría, estadísticas, armonía modal, escalas propias y vecinas
-│   │   │                  (MedidasDeEscala: Myhill, Rothenberg, Hanson, Messiaen, Balzano, Babbitt…)
+│   │   │                  (MedidasDeEscala: Myhill, Rothenberg, Carey, Krumhansl y Kessler…)
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
 │   │   │                  `nombre(en:)`), FichaDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
 │   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala,
@@ -260,8 +258,11 @@ Sources/
 │   ├── Progresiones/      ProgresionConNombre (una progresión en cifrado romano, con su realización y su búsqueda)
 │   │   ├── Catalogo/      El catálogo: cadencias, esquemas del barroco y del galante, jazz y blues, y pop
 │   │   └── Nombres/       NombresDeProgresiones y un fichero por idioma (`NombresDeProgresiones+Catalan.swift`…)
+│   ├── Psicoacustica/     Psicoacustica (Parncutt, Terhardt, Cook, Sethares, Vassilakis, Hutchinson y Knopoff,
+│   │                      Erlich), VozMedida y ProminenciaDeFundamental
 │   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
-│                          (el catálogo), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett (números)
+│                          (el catálogo), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett (números),
+│                          MedidasDeAfinacionJusta (Euler, Tenney, Partch, Gill y Purves)
 ├── Diagramas/
 │   ├── Color/         CorrespondenciaDeColores (colores)
 │   ├── Redes/         Tonnetz (la red de quintas y terceras, en SVG, con los recorridos y los ciclos

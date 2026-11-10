@@ -164,13 +164,13 @@ Además de contar, ``EstadisticasDeAcorde`` mide el acorde con las medidas clás
   la serie armónica.
 
 ```swift
-TipoDeAcorde.mayor.estadisticas.consonanciaDiadica             // 2.22
-TipoDeAcorde.potencia.estadisticas.limiteImpar                 // 3
-TipoDeAcorde.dominanteSeptima.estadisticas.limiteImpar         // 45
-TipoDeAcorde.mayor.estadisticas.armonicidad                    // 51.1
-AcordeConNombre.hendrix.estadisticas.parejaZ                   // "4-Z29"
-TipoDeAcorde.dominanteSeptima.estadisticas.gradoDeSuavidad     // 11
-TipoDeAcorde.mayor.estadisticas.gradoDeSuavidad                // 7
+TipoDeAcorde.mayor.estadisticas.conjunto.consonanciaDiadica           // 2.22
+TipoDeAcorde.potencia.estadisticas.afinacion.limiteImpar              // 3
+TipoDeAcorde.dominanteSeptima.estadisticas.afinacion.limiteImpar      // 45
+TipoDeAcorde.mayor.estadisticas.afinacion.armonicidad                 // 51.1
+AcordeConNombre.hendrix.estadisticas.conjunto.parejaZ                 // "4-Z29"
+TipoDeAcorde.dominanteSeptima.estadisticas.afinacion.gradoDeSuavidad  // 11
+TipoDeAcorde.mayor.estadisticas.afinacion.gradoDeSuavidad             // 7
 ```
 
 En la línea de comandos, `armonia acorde Sol7 --estadisticas` las escribe; `armonia acordes` filtra el catálogo por

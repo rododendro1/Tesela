@@ -128,7 +128,7 @@ extension LineaDeComandos {
                 switch orden {
                 case .brillo: return -(medidas.brilloPorQuintas ?? -.infinity)
                 case .notas: return Double(medidas.numeroDeNotas)
-                case .consonancia: return -medidas.consonanciaDiadica
+                case .consonancia: return -medidas.conjunto.consonanciaDiadica
                 }
             }
             ordenados = elegidos.indices.sorted { (claves[$0], $0) < (claves[$1], $1) }.map { elegidos[$0] }

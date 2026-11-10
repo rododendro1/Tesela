@@ -43,38 +43,48 @@ public enum PresentacionDeEstadisticasDeAcorde {
         func nota(_ intervalo: Intervalo) -> String {
             sobre.map { ($0 + intervalo).nombre(en: notacion) } ?? intervalo.abreviatura(en: notacion)
         }
-        datos.append(dato(\.consonanciaDiadica, decimal(estadisticas.consonanciaDiadica)))
-        datos.append(dato(\.grupoDeHindemith, estadisticas.grupoDeHindemith.description))
-        if let fundamental = estadisticas.fundamentalDeHindemith {
+        datos.append(dato(\.consonanciaDiadica, decimal(estadisticas.conjunto.consonanciaDiadica)))
+        datos.append(dato(\.grupoDeHindemith, estadisticas.disposicionDeVoces.grupoDeHindemith.description))
+        if let fundamental = estadisticas.disposicionDeVoces.fundamentalDeHindemith {
             datos.append(dato(\.fundamentalDeHindemith, nota(fundamental)))
         }
-        if !estadisticas.prominenciasDeParncutt.isEmpty {
-            let prominencias = estadisticas.prominenciasDeParncutt.map { nota($0.intervalo) + " (\($0.peso))" }
+        if !estadisticas.psicoacustica.prominenciasDeParncutt.isEmpty {
+            let prominencias = estadisticas.psicoacustica.prominenciasDeParncutt.map {
+                nota($0.intervalo) + " (\($0.peso))"
+            }
             datos.append(dato(\.fundamentalDeParncutt, prominencias.joined(separator: " · ")))
         }
-        if !estadisticas.intervalosEntreVoces.isEmpty {
+        if !estadisticas.disposicionDeVoces.intervalosEntreVoces.isEmpty {
             datos.append(
-                dato(\.intervalosEntreVoces, estadisticas.intervalosEntreVoces.map(String.init).joined(separator: " ")))
+                dato(
+                    \.intervalosEntreVoces,
+                    estadisticas.disposicionDeVoces.intervalosEntreVoces.map(String.init).joined(separator: " ")))
         }
-        datos.append(dato(\.gradoDeSuavidad, "\(estadisticas.gradoDeSuavidad)"))
+        datos.append(dato(\.gradoDeSuavidad, "\(estadisticas.afinacion.gradoDeSuavidad)"))
         datos.append(
-            dato(\.coeficientesDeFourier, estadisticas.magnitudesDeFourier.map(decimal).joined(separator: " · ")))
-        datos.append(dato(\.distanciaALaUniformidad, decimal(estadisticas.distanciaALaUniformidad)))
-        datos.append(dato(\.triadasContenidas, triadas(estadisticas.triadasContenidas)))
-        datos.append(dato(\.tensionDeCook, decimal(estadisticas.tensionDeCook)))
-        datos.append(dato(\.modalidadDeCook, PresentacionDeEstudioDeEscala.conSigno(estadisticas.modalidadDeCook)))
-        datos.append(dato(\.rugosidad, decimal(estadisticas.rugosidad)))
-        datos.append(dato(\.rugosidadDeVassilakis, decimal(estadisticas.rugosidadDeVassilakis)))
-        datos.append(dato(\.rugosidadDeHutchinsonKnopoff, decimal(estadisticas.rugosidadDeHutchinsonKnopoff)))
-        datos.append(dato(\.fusionTonal, decimal(estadisticas.fusionTonal)))
-        datos.append(dato(\.alturaDeTenney, decimal(estadisticas.alturaDeTenney)))
-        datos.append(dato(\.limiteImpar, "\(estadisticas.limiteImpar)"))
-        datos.append(dato(\.limitePrimo, "\(estadisticas.limitePrimo)"))
-        datos.append(dato(\.armonicidad, decimal(estadisticas.armonicidad)))
-        datos.append(dato(\.entropiaArmonica, decimal(estadisticas.entropiaArmonica)))
-        if let virtual = estadisticas.fundamentalVirtual { datos.append(dato(\.fundamentalVirtual, nota(virtual))) }
-        if let pareja = estadisticas.parejaZ { datos.append(dato(\.parejaZ, pareja)) }
-        if let complemento = estadisticas.complemento { datos.append(dato(\.complementoDeForte, complemento)) }
+            dato(
+                \.coeficientesDeFourier, estadisticas.conjunto.magnitudesDeFourier.map(decimal).joined(separator: " · ")
+            ))
+        datos.append(dato(\.distanciaALaUniformidad, decimal(estadisticas.conjunto.distanciaALaUniformidad)))
+        datos.append(dato(\.triadasContenidas, triadas(estadisticas.conjunto.triadasContenidas)))
+        datos.append(dato(\.tensionDeCook, decimal(estadisticas.psicoacustica.tensionDeCook)))
+        datos.append(
+            dato(\.modalidadDeCook, PresentacionDeEstudioDeEscala.conSigno(estadisticas.psicoacustica.modalidadDeCook)))
+        datos.append(dato(\.rugosidad, decimal(estadisticas.psicoacustica.rugosidad)))
+        datos.append(dato(\.rugosidadDeVassilakis, decimal(estadisticas.psicoacustica.rugosidadDeVassilakis)))
+        datos.append(
+            dato(\.rugosidadDeHutchinsonKnopoff, decimal(estadisticas.psicoacustica.rugosidadDeHutchinsonKnopoff)))
+        datos.append(dato(\.fusionTonal, decimal(estadisticas.psicoacustica.fusionTonal)))
+        datos.append(dato(\.alturaDeTenney, decimal(estadisticas.afinacion.alturaDeTenney)))
+        datos.append(dato(\.limiteImpar, "\(estadisticas.afinacion.limiteImpar)"))
+        datos.append(dato(\.limitePrimo, "\(estadisticas.afinacion.limitePrimo)"))
+        datos.append(dato(\.armonicidad, decimal(estadisticas.afinacion.armonicidad)))
+        datos.append(dato(\.entropiaArmonica, decimal(estadisticas.psicoacustica.entropiaArmonica)))
+        if let virtual = estadisticas.psicoacustica.fundamentalVirtual {
+            datos.append(dato(\.fundamentalVirtual, nota(virtual)))
+        }
+        if let pareja = estadisticas.conjunto.parejaZ { datos.append(dato(\.parejaZ, pareja)) }
+        if let complemento = estadisticas.conjunto.complemento { datos.append(dato(\.complementoDeForte, complemento)) }
         datos.append(dato(\.disposicion, disposicion(estadisticas, en: notacion)))
         return datos
     }
@@ -82,8 +92,10 @@ public enum PresentacionDeEstadisticasDeAcorde {
     /// La disposición de sus voces, y si deja los intervalos anchos abajo: «Cerrada · intervalos anchos abajo (serie
     /// armónica)», «Drop 2», «Abierta».
     public static func disposicion(_ estadisticas: EstadisticasDeAcorde, en notacion: Notacion) -> String {
-        let nombre = estadisticas.disposicion?.nombre(en: notacion) ?? notacion.texto(\.disposicionAbierta)
-        return estadisticas.respetaLaSerieArmonica ? nombre + " · " + notacion.texto(\.serieArmonica) : nombre
+        let nombre =
+            estadisticas.disposicionDeVoces.disposicion?.nombre(en: notacion) ?? notacion.texto(\.disposicionAbierta)
+        return estadisticas.disposicionDeVoces.respetaLaSerieArmonica
+            ? nombre + " · " + notacion.texto(\.serieArmonica) : nombre
     }
 
     /// Las tríadas que contiene, con los símbolos del cifrado, que no cambian de idioma: «M 1 · m 1 · ° 1 · + 0».
@@ -130,7 +142,7 @@ public enum PresentacionDeEstadisticasDeAcorde {
                 acorde.notas(sobre: .do).map { $0.nombre(en: notacion) }.joined(separator: " "),
                 "\(medidas.numeroDeNotas)", medidas.brilloPorQuintas.map(PresentacionDeEstudioDeEscala.conSigno) ?? "—",
                 "[" + lista(medidas.vectorIntervalico) + "]", medidas.numeroDeForte ?? "—",
-                decimal(medidas.consonanciaDiadica), medidas.grupoDeHindemith.description,
+                decimal(medidas.conjunto.consonanciaDiadica), medidas.disposicionDeVoces.grupoDeHindemith.description,
                 rasgos(medidas, en: notacion).isEmpty ? "—" : rasgos(medidas, en: notacion),
             ]
         }
@@ -235,33 +247,34 @@ public struct EstadisticasDeAcordePresentadas: Hashable, Sendable, Codable {
         anhemitonico = medidas.anhemitonico
         conTritono = medidas.conTritono
         ambito = medidas.ambito
-        consonanciaDiadica = medidas.consonanciaDiadica
-        grupoDeHindemith = medidas.grupoDeHindemith.description
-        fundamentalDeHindemith = medidas.fundamentalDeHindemith.map(nota)
-        prominenciasDeParncutt = medidas.prominenciasDeParncutt.map {
+        consonanciaDiadica = medidas.conjunto.consonanciaDiadica
+        grupoDeHindemith = medidas.disposicionDeVoces.grupoDeHindemith.description
+        fundamentalDeHindemith = medidas.disposicionDeVoces.fundamentalDeHindemith.map(nota)
+        prominenciasDeParncutt = medidas.psicoacustica.prominenciasDeParncutt.map {
             Prominencia(nota: nota($0.intervalo), peso: $0.peso)
         }
-        intervalosEntreVoces = medidas.intervalosEntreVoces
-        gradoDeSuavidad = medidas.gradoDeSuavidad
-        magnitudesDeFourier = medidas.magnitudesDeFourier
-        distanciaALaUniformidad = medidas.distanciaALaUniformidad
-        triadasContenidas = medidas.triadasContenidas
-        tensionDeCook = medidas.tensionDeCook
-        modalidadDeCook = medidas.modalidadDeCook
-        rugosidad = medidas.rugosidad
-        rugosidadDeVassilakis = medidas.rugosidadDeVassilakis
-        rugosidadDeHutchinsonKnopoff = medidas.rugosidadDeHutchinsonKnopoff
-        fusionTonal = medidas.fusionTonal
-        alturaDeTenney = medidas.alturaDeTenney
-        limiteImpar = medidas.limiteImpar
-        limitePrimo = medidas.limitePrimo
-        armonicidad = medidas.armonicidad
-        entropiaArmonica = medidas.entropiaArmonica
-        fundamentalVirtual = medidas.fundamentalVirtual.map(nota)
-        parejaZ = medidas.parejaZ
-        complemento = medidas.complemento
-        disposicion = medidas.disposicion?.nombre(en: notacion) ?? notacion.texto(\.disposicionAbierta)
-        respetaLaSerieArmonica = medidas.respetaLaSerieArmonica
+        intervalosEntreVoces = medidas.disposicionDeVoces.intervalosEntreVoces
+        gradoDeSuavidad = medidas.afinacion.gradoDeSuavidad
+        magnitudesDeFourier = medidas.conjunto.magnitudesDeFourier
+        distanciaALaUniformidad = medidas.conjunto.distanciaALaUniformidad
+        triadasContenidas = medidas.conjunto.triadasContenidas
+        tensionDeCook = medidas.psicoacustica.tensionDeCook
+        modalidadDeCook = medidas.psicoacustica.modalidadDeCook
+        rugosidad = medidas.psicoacustica.rugosidad
+        rugosidadDeVassilakis = medidas.psicoacustica.rugosidadDeVassilakis
+        rugosidadDeHutchinsonKnopoff = medidas.psicoacustica.rugosidadDeHutchinsonKnopoff
+        fusionTonal = medidas.psicoacustica.fusionTonal
+        alturaDeTenney = medidas.afinacion.alturaDeTenney
+        limiteImpar = medidas.afinacion.limiteImpar
+        limitePrimo = medidas.afinacion.limitePrimo
+        armonicidad = medidas.afinacion.armonicidad
+        entropiaArmonica = medidas.psicoacustica.entropiaArmonica
+        fundamentalVirtual = medidas.psicoacustica.fundamentalVirtual.map(nota)
+        parejaZ = medidas.conjunto.parejaZ
+        complemento = medidas.conjunto.complemento
+        disposicion =
+            medidas.disposicionDeVoces.disposicion?.nombre(en: notacion) ?? notacion.texto(\.disposicionAbierta)
+        respetaLaSerieArmonica = medidas.disposicionDeVoces.respetaLaSerieArmonica
     }
 }
 

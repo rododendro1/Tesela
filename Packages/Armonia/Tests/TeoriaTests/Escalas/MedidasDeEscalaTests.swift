@@ -13,98 +13,102 @@ import Testing
     let disminuida = Escala(.do, .disminuida).estadisticas
 
     @Test func myhillYBienFormadas() {
-        #expect(mayor.propiedadDeMyhill)
-        #expect(pentatonica.propiedadDeMyhill)
-        #expect(!menorArmonica.propiedadDeMyhill)
+        #expect(mayor.intervalosGenericos.propiedadDeMyhill)
+        #expect(pentatonica.intervalosGenericos.propiedadDeMyhill)
+        #expect(!menorArmonica.intervalosGenericos.propiedadDeMyhill)
         // La mayor y la pentatónica, cadenas de cuartas; la de tonos enteros, de tonos, con un solo paso.
-        #expect(mayor.generador == 5)
-        #expect(pentatonica.generador == 5)
-        #expect(tonosEnteros.generador == 2)
-        #expect(menorArmonica.generador == nil)
-        #expect(mayor.bienFormada && pentatonica.bienFormada && tonosEnteros.bienFormada)
-        #expect(!menorArmonica.bienFormada)
+        #expect(mayor.intervalosGenericos.generador == 5)
+        #expect(pentatonica.intervalosGenericos.generador == 5)
+        #expect(tonosEnteros.intervalosGenericos.generador == 2)
+        #expect(menorArmonica.intervalosGenericos.generador == nil)
+        #expect(
+            mayor.intervalosGenericos.bienFormada && pentatonica.intervalosGenericos.bienFormada
+                && tonosEnteros.intervalosGenericos.bienFormada)
+        #expect(!menorArmonica.intervalosGenericos.bienFormada)
     }
 
     @Test func propiedadDeRothenberg() {
         // La mayor es propia pero no estrictamente: la cuarta aumentada y la quinta disminuida miden lo mismo.
-        #expect(mayor.propiedadDeRothenberg == .propia)
-        #expect(mayor.ambiguedades == 1)
-        #expect(mayor.contradicciones == 0)
-        #expect(pentatonica.propiedadDeRothenberg == .estrictamentePropia)
-        #expect(pentatonica.estabilidad == 1)
-        #expect(menorArmonica.estabilidad < mayor.estabilidad)
+        #expect(mayor.intervalosGenericos.propiedadDeRothenberg == .propia)
+        #expect(mayor.intervalosGenericos.ambiguedades == 1)
+        #expect(mayor.intervalosGenericos.contradicciones == 0)
+        #expect(pentatonica.intervalosGenericos.propiedadDeRothenberg == .estrictamentePropia)
+        #expect(pentatonica.intervalosGenericos.estabilidad == 1)
+        #expect(menorArmonica.intervalosGenericos.estabilidad < mayor.intervalosGenericos.estabilidad)
         // Do Re♭ Re Mi♭ Sol: la segunda Mi♭–Sol (4 semitonos) es mayor que la tercera Do–Re (2).
         #expect(MedidasDeEscala.rothenberg([0, 1, 2, 3, 7]).propiedad == .impropia)
-        #expect(mayor.anchuraDelEspectro == 1)
-        #expect(pentatonica.cocienteDeIgualdad == 1)
+        #expect(mayor.intervalosGenericos.anchuraDelEspectro == 1)
+        #expect(pentatonica.intervalosGenericos.cocienteDeIgualdad == 1)
     }
 
     @Test func profundaYHanson() {
-        #expect(mayor.profunda)
-        #expect(!pentatonica.profunda)
-        #expect(mayor.analisisDeHanson == "p⁶m³n⁴s⁵d²t")
-        #expect(tonosEnteros.analisisDeHanson == "m⁶s⁶t³")
-        #expect(mayor.consonanciaDiadica > menorArmonica.consonanciaDiadica)
-        #expect(mayor.entropiaIntervalica == 2.398)
+        #expect(mayor.conjunto.profundo)
+        #expect(!pentatonica.conjunto.profundo)
+        #expect(mayor.conjunto.analisisDeHanson == "p⁶m³n⁴s⁵d²t")
+        #expect(tonosEnteros.conjunto.analisisDeHanson == "m⁶s⁶t³")
+        #expect(mayor.conjunto.consonanciaDiadica > menorArmonica.conjunto.consonanciaDiadica)
+        #expect(mayor.conjunto.entropiaIntervalica == 2.398)
     }
 
     @Test func fourierYUniformidad() {
-        #expect(tonosEnteros.equilibrada)
-        #expect(disminuida.equilibrada)
-        #expect(!mayor.equilibrada)
-        #expect(tonosEnteros.magnitudesDeFourier[5] == 6)
-        #expect(tonosEnteros.distanciaALaUniformidad == 0)
-        #expect(mayor.distanciaALaUniformidad == 0.756)
-        #expect(mayor.triadasContenidas == TriadasContenidas(mayores: 3, menores: 3, disminuidas: 1, aumentadas: 0))
+        #expect(tonosEnteros.conjunto.equilibrado)
+        #expect(disminuida.conjunto.equilibrado)
+        #expect(!mayor.conjunto.equilibrado)
+        #expect(tonosEnteros.conjunto.magnitudesDeFourier[5] == 6)
+        #expect(tonosEnteros.conjunto.distanciaALaUniformidad == 0)
+        #expect(mayor.conjunto.distanciaALaUniformidad == 0.756)
+        #expect(
+            mayor.conjunto.triadasContenidas == TriadasContenidas(mayores: 3, menores: 3, disminuidas: 1, aumentadas: 0)
+        )
     }
 
     @Test func simetriasMessiaenYForte() {
-        #expect(tonosEnteros.modoDeMessiaen == 1)
-        #expect(disminuida.modoDeMessiaen == 2)
-        #expect(mayor.modoDeMessiaen == nil)
-        #expect(mayor.simetricaPorInversion)
-        #expect(!menorArmonica.simetricaPorInversion)
-        #expect(mayor.complemento == "5-35")
-        #expect(mayor.parejaZ == nil)
-        #expect(mayor.unicidad)
-        #expect(!tonosEnteros.unicidad)
-        #expect(mayor.simplicidad)
-        #expect(mayor.imperfecciones == 1)
-        #expect(Escala(.do, .menorMelodica).estadisticas.imperfecciones == 3)
+        #expect(tonosEnteros.conjunto.modoDeMessiaen == 1)
+        #expect(disminuida.conjunto.modoDeMessiaen == 2)
+        #expect(mayor.conjunto.modoDeMessiaen == nil)
+        #expect(mayor.conjunto.simetricoPorInversion)
+        #expect(!menorArmonica.conjunto.simetricoPorInversion)
+        #expect(mayor.conjunto.complemento == "5-35")
+        #expect(mayor.conjunto.parejaZ == nil)
+        #expect(mayor.conjunto.unicidad)
+        #expect(!tonosEnteros.conjunto.unicidad)
+        #expect(mayor.conjunto.simplicidad)
+        #expect(mayor.conjunto.imperfecciones == 1)
+        #expect(Escala(.do, .menorMelodica).estadisticas.conjunto.imperfecciones == 3)
     }
 
     @Test func armonizacionPorGrados() {
-        #expect(mayor.triadasPorGrados == ["", "m", "m", "", "", "m", "°"])
-        #expect(mayor.cuatriadasPorGrados == ["maj7", "m7", "m7", "maj7", "7", "m7", "ø7"])
-        #expect(menorArmonica.triadasPorGrados?[2] == "+")
-        #expect(pentatonica.triadasPorGrados == nil)
+        #expect(mayor.tonal.triadasPorGrados == ["", "m", "m", "", "", "m", "°"])
+        #expect(mayor.tonal.cuatriadasPorGrados == ["maj7", "m7", "m7", "maj7", "7", "m7", "ø7"])
+        #expect(menorArmonica.tonal.triadasPorGrados?[2] == "+")
+        #expect(pentatonica.tonal.triadasPorGrados == nil)
     }
 
     @Test func combinatoriedadHexacordal() {
-        #expect(tonosEnteros.combinatoriedad?.tipo == "F")
-        #expect(mayor.combinatoriedad == nil)
+        #expect(tonosEnteros.conjunto.combinatoriedad?.tipo == "F")
+        #expect(mayor.conjunto.combinatoriedad == nil)
         let hexacordo = ConjuntoDeClasesDeAltura([0, 1, 2, 3, 4, 5])
-        #expect(MedidasDeEscala.combinatoriedad(hexacordo)?.tipo == "A")
-        #expect(MedidasDeEscala.combinatoriedad(hexacordo)?.transposiciones == [6])
+        #expect(MedidasDeConjunto.combinatoriedad(hexacordo)?.tipo == "A")
+        #expect(MedidasDeConjunto.combinatoriedad(hexacordo)?.transposiciones == [6])
     }
 
     @Test func parsimoniaYAfinacion() {
         // Fa → Fa♯ da Sol mayor; Si → Si♭, Fa mayor.
-        #expect(mayor.parsimonia == 2)
-        #expect(mayor.gradoDeSuavidad == 11)
-        #expect(mayor.limiteImpar == 45)
-        #expect(pentatonica.alturaDeTenney < mayor.alturaDeTenney)
-        #expect(mayor.rugosidadMedia < Escala(.do, .cromatica).estadisticas.rugosidadMedia)
-        #expect(mayor.entropiaArmonica > 0)
+        #expect(mayor.conjunto.parsimonia == 2)
+        #expect(mayor.afinacion.gradoDeSuavidad == 11)
+        #expect(mayor.afinacion.limiteImpar == 45)
+        #expect(pentatonica.afinacion.alturaDeTenney < mayor.afinacion.alturaDeTenney)
+        #expect(mayor.psicoacustica.rugosidadMedia < Escala(.do, .cromatica).estadisticas.psicoacustica.rugosidadMedia)
+        #expect(mayor.psicoacustica.entropiaArmonica > 0)
     }
 
     @Test func perfilTonalSensibleYTetracordos() {
-        #expect(mayor.perfilMayor == 0.756)
-        #expect(mayor.perfilMayor > mayor.perfilMenor)
-        #expect(menorArmonica.perfilMenor > menorArmonica.perfilMayor)
-        #expect(mayor.conSensible)
-        #expect(!Escala(.do, .mixolidio).estadisticas.conSensible)
-        #expect(mayor.tetracordosIguales)
-        #expect(!menorArmonica.tetracordosIguales)
+        #expect(mayor.tonal.perfilMayor == 0.756)
+        #expect(mayor.tonal.perfilMayor > mayor.tonal.perfilMenor)
+        #expect(menorArmonica.tonal.perfilMenor > menorArmonica.tonal.perfilMayor)
+        #expect(mayor.tonal.conSensible)
+        #expect(!Escala(.do, .mixolidio).estadisticas.tonal.conSensible)
+        #expect(mayor.tonal.tetracordosIguales)
+        #expect(!menorArmonica.tonal.tetracordosIguales)
     }
 }
