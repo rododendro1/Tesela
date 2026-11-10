@@ -55,41 +55,6 @@ extension Acorde {
     }
 }
 
-// MARK: - Comparar
-
-/// Dos acordes, uno tras otro: las notas que comparten y cómo va cada voz del primero al segundo con el menor
-/// movimiento.
-@available(*, deprecated, message: "Usa RelacionEntreAcordes, de Acorde.relacion(con:en:), y su voces(en:)")
-public struct ComparacionDeAcordes: Hashable, Sendable {
-    public let origen: Acorde
-    public let destino: Acorde
-    /// Las notas del primero que suenan también en el segundo (por su sonido: Fa♯ y Sol♭ son la misma).
-    public let comunes: [Nota]
-    /// La disposición del primero y la del segundo, con las voces de grave a agudo.
-    public let desde: [Altura]
-    public let hasta: [Altura]
-
-    /// Lo que se mueve cada voz, de la más grave a la más aguda, en semitonos: positivo si sube.
-    public var movimientos: [Int] { zip(desde, hasta).map { $1.midi - $0.midi } }
-
-    /// La suma de lo que se mueven las voces, sin signo.
-    public var movimientoTotal: Int { movimientos.map(abs).reduce(0, +) }
-}
-
-extension Acorde {
-    /// Este acorde y otro, con sus notas comunes y la conducción de las voces de menor movimiento en la disposición
-    /// dada (cerrada, a cuatro voces, si no se dice otra). `nil` si alguno no se puede disponer así.
-    @available(*, deprecated, message: "Usa relacion(con:).comunes y relacion(con:).voces(en:)")
-    public func comparar(
-        con otro: Acorde, disposicion: DisposicionDeAcorde = .cerrada
-    ) -> ComparacionDeAcordes? {
-        let relacion = relacion(con: otro)
-        guard let voces = relacion.voces(en: disposicion) else { return nil }
-        return ComparacionDeAcordes(
-            origen: self, destino: otro, comunes: relacion.comunes, desde: voces.desde, hasta: voces.hasta)
-    }
-}
-
 // MARK: - Sustituciones
 
 extension Acorde {

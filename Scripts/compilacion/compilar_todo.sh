@@ -87,11 +87,7 @@ if [ "$MOTOR_COMPILA" = 1 ]; then
     paso "Línea de comandos: compilar" Apps/ConsolaArmonia swift build &&
         paso "Línea de comandos: pruebas" Apps/ConsolaArmonia swift test --parallel
     paso "Ejemplo: ejecutar" Ejemplos/EjemploArmonia swift run EjemploArmonia
-    paso "Ejemplo del catálogo de escalas: ejecutar" Ejemplos/EjemploCatalogoDeEscalas swift run EjemploCatalogoDeEscalas
-    paso "Ejemplo del catálogo de acordes: ejecutar" Ejemplos/EjemploCatalogoDeAcordes swift run EjemploCatalogoDeAcordes
-    paso "Ejemplo del catálogo de progresiones: ejecutar" Ejemplos/EjemploCatalogoDeProgresiones \
-        swift run EjemploCatalogoDeProgresiones
-    paso "Ejemplo de los demás catálogos: ejecutar" Ejemplos/EjemploCatalogos swift run EjemploCatalogos
+    paso "Ejemplo de los catálogos: ejecutar" Ejemplos/EjemploCatalogos swift run EjemploCatalogos
     paso "Rendimiento: compilar" Herramientas/RendimientoArmonia swift build
     paso "Interfaz: compilar" Packages/Interfaz swift build &&
         paso "Interfaz: pruebas" Packages/Interfaz swift test --parallel

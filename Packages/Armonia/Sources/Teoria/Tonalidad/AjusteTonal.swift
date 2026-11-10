@@ -17,8 +17,8 @@ extension Tonalidad {
     public func ajuste(de acorde: Acorde) -> Double {
         let tonica = self.tonica.claseDeAltura
         let clases = Set(acorde.notasDesdeElBajo.map { modulo($0.claseDeAltura - tonica, 12) })
-        return MedidasDeEscala.correlacion(
-            Array(clases), con: modo == .mayor ? MedidasDeEscala.perfilMayor : MedidasDeEscala.perfilMenor)
+        return CalculosDeEscala.correlacion(
+            Array(clases), con: modo == .mayor ? CalculosDeEscala.perfilMayor : CalculosDeEscala.perfilMenor)
     }
 
     /// La función que hacen sus notas en esta tonalidad, aunque no sea uno de sus grados: la tónica (la tónica, la

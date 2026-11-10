@@ -2,14 +2,50 @@
 
 ## Sin publicar
 
+### Cambios incompatibles
+
+Se quita todo lo que había quedado obsoleto. En su lugar:
+
+- `Acorde.comparar(con:disposicion:)` y `ComparacionDeAcordes`: `Acorde.relacion(con:)`, con `comunes` y
+  `voces(en:)`. `Escala.comparar(con:)` y `ComparacionDeEscalas`: `Escala.relacion(con:)`, con `comunes`,
+  `soloEnOrigen`, `soloEnDestino` y `cambios`.
+- `AfinacionHistorica`, `TemperamentoConNombre.historica`, `Escala.cents(en:sentido:)` y `afinacionSugerida`:
+  `TemperamentoQueAfina` (ver abajo), `Escala.cents(con:sentido:)` y `temperamentoSugerido`. Se van también los ocho
+  textos de `AfinacionHistorica` de `TextosDeTeoria`; los nombres son los del catálogo.
+- `ConjuntoDeClasesDeAltura.medidas`: `estadisticas`. Los alias `MedidasDeConjunto`, `MedidasTonalesDeEscala` y
+  `MedidasDeAfinacionJusta`: `EstadisticasDeConjunto`, `EstadisticasTonalesDeEscala` y `EstadisticasDeAfinacionJusta`.
+- `EstadisticasTonalesDeEscala.triadasPorGrados` y `cuatriadasPorGrados`: `triadas` y `cuatriadas`, con el
+  `TipoDeAcorde` de cada grado. `PentatonicaSobreElAcorde.tensiones`: `notasDeTension`.
+- Un temperamento que siempre afina: `TemperamentoQueAfina` es un temperamento del catálogo que afina las doce
+  notas, con `afinacion(tonica:frecuenciaDelLa4:)` no opcional y los ocho de escuchar (`.temperamentoIgual`,
+  `.pitagorico`… `.afinacionJusta`). `TemperamentoQueAfina.paraEscuchar` sustituye a
+  `TemperamentoConNombre.paraEscuchar`, y `todos` da los del catálogo que afinan notas.
+  `TemperamentoQueAfina(_:)` es `nil` con un sistema de otra tradición (`.comas53`). `Escala.cents(con:sentido:)`
+  toma un `TemperamentoQueAfina` y da `[Double]` (antes `[Double]?`), y los `temperamentoSugerido` dan un
+  `TemperamentoQueAfina?`.
+
+### Lo demás
+
+- `Ejemplos/EjemploCatalogos` junta los cuatro ejemplos de catálogos: escribe las escalas, los acordes, las
+  progresiones y los demás catálogos, un TSV por catálogo, con `--solo` para elegirlos, `--tradicion` para las escalas
+  y `--bibtex` para las obras que citan. `EjemploCatalogoDeEscalas`, `EjemploCatalogoDeAcordes` y
+  `EjemploCatalogoDeProgresiones` se quitan. Es nuevo `grados.tsv`: los acordes de cada grado en Do mayor y Do menor
+  (diatónicos, préstamos, dominantes y sensibles secundarias, sustituto tritonal, napolitana y sextas aumentadas), con
+  su categoría, su función y sus notas en los sistemas de nombres móviles (do móvil, sargam, carnático, jianpu,
+  gongche, wusheng, tonic sol-fa y notas de forma).
+- Por dentro, sin cambios de API: el lector de cifrados (`LecturaDeCifrado`) va parte a parte, con un método para
+  cada una; `PentagramaSVG.dibujo()` llama a funciones con nombre (`ajusteAlTexto`, `medidasVerticales`, `llave`…);
+  los cálculos de escala se llaman `CalculosDeEscala`, y `ConduccionMinima.entre(_:_:)` va junto a
+  `ConduccionMinima`.
+
 - Una sola relación entre dos acordes y entre dos escalas. `RelacionEntreAcordes` tiene ahora las notas comunes
   (`comunes`) y, con `voces(en:)`, cómo va cada voz en una disposición (`RelacionEntreAcordes.Voces`, con
   `movimientos` y `movimientoTotal`). `RelacionEntreEscalas` tiene `comunes`, `soloEnOrigen`, `soloEnDestino` y
   `cambios`. Quedan obsoletos `Acorde.comparar(con:disposicion:)`, `Escala.comparar(con:)`, `ComparacionDeAcordes` y
   `ComparacionDeEscalas`; la distancia por armaduras sigue en `Escala.distancia(hasta:)`.
-- Un solo camino a la afinación: `TemperamentoConNombre.paraEscuchar` son los ocho temperamentos que las apps ofrecen
-  para oír, y `TemperamentoConNombre.distingueEnarmonicas` dice si separa Sol♯ de La♭. `Escala.cents(con:sentido:)` y
-  `temperamentoSugerido` (en `Tradicion`, `Estilo` y `TipoDeEscala`) toman y dan un `TemperamentoConNombre`. Quedan
+- Un solo camino a la afinación: los ocho temperamentos que las apps ofrecen para oír (ahora
+  `TemperamentoQueAfina.paraEscuchar`), y `TemperamentoConNombre.distingueEnarmonicas` dice si separa Sol♯ de La♭. `Escala.cents(con:sentido:)` y
+  `temperamentoSugerido` (en `Tradicion`, `Estilo` y `TipoDeEscala`) toman y dan un temperamento del catálogo. Quedan
   obsoletos `AfinacionHistorica`, `TemperamentoConNombre.historica`, `Escala.cents(en:sentido:)` y
   `afinacionSugerida`. Los nombres en ruso y en griego de Werckmeister, Kirnberger, Vallotti y Young van en su
   alfabeto, como ya iban en `AfinacionHistorica`.

@@ -18,7 +18,7 @@ public enum PropiedadDeRothenberg: String, Hashable, Sendable, Codable, CaseIter
 
 /// Lo que dicen de una escala las teorías: Myhill, Rothenberg, Gamer, Hanson, Messiaen, Balzano…, a partir de sus
 /// clases de altura desde la tónica (en semitonos) y de las quintas de su ortografía.
-enum MedidasDeEscala {
+enum CalculosDeEscala {
     /// El tamaño, en semitonos, de los `k` pasos que siguen a la nota `i` (el intervalo genérico de k + 1).
     static func tamano(_ clases: [Int], desde i: Int, pasos k: Int) -> Int {
         let n = clases.count

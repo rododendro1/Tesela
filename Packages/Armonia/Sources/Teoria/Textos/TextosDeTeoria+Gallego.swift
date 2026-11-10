@@ -6,15 +6,6 @@ import Elementos
 
 extension TextosDeTeoria {
     static let gallego = TextosDeTeoria(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "temperamento igual",
-        pitagorico: "afinación pitagórica",
-        mesotonico: "mesotónico de ¼ de coma",
-        werckmeisterIII: "Werckmeister III",
-        kirnbergerIII: "Kirnberger III",
-        vallotti: "Vallotti",
-        young: "Young",
-        afinacionJusta: "afinación xusta",
         familiaDeRitmoLineaDeTiempo: "liñas de tempo",
         familiaDeRitmoFlamenco: "compases flamencos",
         familiaDeRitmoTala: "tāla da India",

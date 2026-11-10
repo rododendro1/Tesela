@@ -6,15 +6,6 @@ import Elementos
 
 extension TextosDeTeoria {
     static let catalan = TextosDeTeoria(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "temperament igual",
-        pitagorico: "afinació pitagòrica",
-        mesotonico: "mesotònic d'¼ de coma",
-        werckmeisterIII: "Werckmeister III",
-        kirnbergerIII: "Kirnberger III",
-        vallotti: "Vallotti",
-        young: "Young",
-        afinacionJusta: "afinació justa",
         familiaDeRitmoLineaDeTiempo: "línies de temps",
         familiaDeRitmoFlamenco: "compassos flamencs",
         familiaDeRitmoTala: "tāla de l'Índia",

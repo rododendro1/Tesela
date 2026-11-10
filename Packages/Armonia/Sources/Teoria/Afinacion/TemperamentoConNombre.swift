@@ -83,7 +83,8 @@ public struct TemperamentoConNombre: Sendable {
     }
 
     /// La afinación de las notas, con el La4 dado y, en la justa, sobre la tónica; `nil` en los sistemas de otras
-    /// tradiciones, que no afinan notas sino los grados de sus escalas (`TipoDeEscalaMicrotonal`).
+    /// tradiciones, que no afinan notas sino los grados de sus escalas (`TipoDeEscalaMicrotonal`). Con un
+    /// ``TemperamentoQueAfina`` no hace falta mirar si es `nil`.
     public func afinacion(tonica: Nota = .do, frecuenciaDelLa4: Double = 440) -> (any SistemaDeAfinacion)? {
         switch construccion {
         case .regular(let quinta):
@@ -101,12 +102,6 @@ public struct TemperamentoConNombre: Sendable {
     public var distingueEnarmonicas: Bool {
         guard let afinacion = afinacion() else { return false }
         return abs(afinacion.cents(desde: "Sol#4", hasta: "Lab4")) > 1e-6
-    }
-
-    /// La afinación histórica que es, para tocar con ella (`AfinacionHistorica`), si es una.
-    @available(*, deprecated, message: "Usa TemperamentoConNombre.paraEscuchar")
-    public var historica: AfinacionHistorica? {
-        AfinacionHistorica.allCases.first { $0.temperamento == self }
     }
 
     /// El sistema microtonal que es, si es uno.
@@ -177,34 +172,6 @@ extension TemperamentoConNombre {
     /// Los del catálogo de una familia, en su orden.
     public static func todos(de familia: FamiliaDeTemperamento) -> [TemperamentoConNombre] {
         catalogo.filter { $0.familia == familia }
-    }
-
-    /// Los que las apps ofrecen para oír las notas (el botón «Escuchar»): el igual, el pitagórico, el mesotónico de
-    /// ¼ de coma, Werckmeister III, Kirnberger III, Vallotti, Young y la justa. Todos afinan las doce notas, así que
-    /// su ``afinacion(tonica:frecuenciaDelLa4:)`` nunca es `nil`; la justa se construye sobre la tónica.
-    ///
-    ///     TemperamentoConNombre.paraEscuchar.count                        // 8
-    ///     TemperamentoConNombre.afinacionJusta.afinacion(tonica: .re)?.desviacion(de: "Fa#4")   // −13,69
-    public static let paraEscuchar: [TemperamentoConNombre] = [
-        .temperamentoIgual, .pitagorico, .mesotonicoCuartoDeComa, .werckmeisterIII, .kirnbergerIII, .vallotti,
-        .young, .afinacionJusta,
-    ]
-}
-
-@available(*, deprecated)
-extension AfinacionHistorica {
-    /// El temperamento del catálogo que es.
-    public var temperamento: TemperamentoConNombre {
-        switch self {
-        case .igual: .temperamentoIgual
-        case .pitagorico: .pitagorico
-        case .mesotonico: .mesotonicoCuartoDeComa
-        case .werckmeisterIII: .werckmeisterIII
-        case .kirnbergerIII: .kirnbergerIII
-        case .vallotti: .vallotti
-        case .young: .young
-        case .justa: .afinacionJusta
-        }
     }
 }
 

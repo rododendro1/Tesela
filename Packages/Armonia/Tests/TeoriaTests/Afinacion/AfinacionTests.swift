@@ -66,11 +66,11 @@ import Testing
     }
 
     @Test func temperamentosParaEscuchar() throws {
-        let paraEscuchar = TemperamentoConNombre.paraEscuchar
+        let paraEscuchar = TemperamentoQueAfina.paraEscuchar
         #expect(paraEscuchar.count == 8)
         for temperamento in paraEscuchar {
             // Todos con el La4 de referencia en su sitio y la octava pura.
-            let afinacion = try #require(temperamento.afinacion(tonica: .la))
+            let afinacion = temperamento.afinacion(tonica: .la)
             #expect(abs(afinacion.frecuencia(de: "La4") - (440)) <= 1e-9, "\(temperamento)")
             #expect(abs(afinacion.frecuencia(de: "Mi5") / afinacion.frecuencia(de: "Mi4") - (2)) <= 1e-12)
         }
@@ -78,11 +78,11 @@ import Testing
         #expect(distinguen == [.pitagorico, .mesotonicoCuartoDeComa, .afinacionJusta])
         #expect(TemperamentoConNombre.divisiones31.distingueEnarmonicas)
         #expect(!TemperamentoConNombre.comas53.distingueEnarmonicas)
-        let igual = try #require(TemperamentoConNombre.temperamentoIgual.afinacion())
+        let igual = TemperamentoQueAfina.temperamentoIgual.afinacion()
         #expect(abs(igual.desviacion(de: "Fa#3") - (0)) <= 1e-9)
-        let justa = try #require(TemperamentoConNombre.afinacionJusta.afinacion(tonica: .re))
+        let justa = TemperamentoQueAfina.afinacionJusta.afinacion(tonica: .re)
         #expect(abs(justa.desviacion(de: "Fa#4") - (-13.69)) <= 0.01)
-        let mesotonico = try #require(TemperamentoConNombre.mesotonicoCuartoDeComa.afinacion())
+        let mesotonico = TemperamentoQueAfina.mesotonicoCuartoDeComa.afinacion()
         #expect(abs(mesotonico.cents(desde: "Do4", hasta: "Mi4") - (RazonDeFrecuencias(5, 4).cents)) <= 1e-9)
         for idioma in Idioma.allCases {
             let nombres = paraEscuchar.map { $0.nombre(en: Notacion.delIdioma(idioma)) }

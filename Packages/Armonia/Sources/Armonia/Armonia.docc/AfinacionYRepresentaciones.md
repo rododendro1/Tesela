@@ -36,15 +36,18 @@ TemperamentoCircular.vallotti.afinar(frecuenciaDelLa4: 415).frecuencia(de: "La4"
 TemperamentoCircular(nombre: "mío", quintas: Array(repeating: 701, count: 12))   // nil: no cierra el círculo
 ```
 
-`TemperamentoConNombre.paraEscuchar` reúne las afinaciones más conocidas del catálogo (igual, pitagórico, mesotónico
-de ¼ de coma, Werckmeister III, Kirnberger III, Vallotti, Young y la afinación justa), con su nombre en cada idioma,
-para elegir una; es lo que usa el botón «Escuchar» de las apps:
+Un ``TemperamentoQueAfina`` es un temperamento del catálogo que afina las doce notas (todos menos los sistemas de
+otras tradiciones, que afinan los grados de sus escalas), así que su afinación no es opcional.
+`TemperamentoQueAfina.paraEscuchar` reúne los más conocidos (igual, pitagórico, mesotónico de ¼ de coma,
+Werckmeister III, Kirnberger III, Vallotti, Young y la afinación justa), con su nombre en cada idioma, para elegir
+uno; es lo que usa el botón «Escuchar» de las apps:
 
 ```swift
-TemperamentoConNombre.paraEscuchar.count                                        // 8
-TemperamentoConNombre.afinacionJusta.afinacion(tonica: .re)?.desviacion(de: "Fa#4")   // −13,69
-TemperamentoConNombre.mesotonicoCuartoDeComa.distingueEnarmonicas               // true
-TemperamentoConNombre.vallotti.nombre(en: .conPalabras(.ruso))                  // "Валлотти"
+TemperamentoQueAfina.paraEscuchar.count                                        // 8
+TemperamentoQueAfina.afinacionJusta.afinacion(tonica: .re).desviacion(de: "Fa#4")   // −13,69
+TemperamentoQueAfina.mesotonicoCuartoDeComa.distingueEnarmonicas               // true
+TemperamentoQueAfina.vallotti.nombre(en: .conPalabras(.ruso))                  // "Валлотти"
+TemperamentoQueAfina(.comas53)                                                 // nil: afina grados, no notas
 ```
 
 ### El catálogo de temperamentos
@@ -62,7 +65,7 @@ TemperamentoConNombre.catalogo.count                                     // 22
 TemperamentoConNombre.buscar(nombre: "meantone") == .mesotonicoCuartoDeComa   // true
 TemperamentoConNombre.comas53.pasosPorOctava                             // 53
 TemperamentoConNombre.divisiones31.autor                                 // "Christiaan Huygens"
-TemperamentoConNombre.paraEscuchar.contains(.vallotti)                   // true
+TemperamentoQueAfina(.vallotti) != nil                                    // true
 TemperamentoConNombre.temperamentoIgual.estadisticas.uniforme             // true
 ```
 
@@ -122,7 +125,7 @@ Escala(.re, .echosProtos).afinacion(microtonal: chrysanthos)?.desviacion(de: "Mi
 Escala(.do, .mayor).afinacion()                            // nil: no tiene microtonos
 ```
 
-Una escala de doce notas se mide en cualquier ``TemperamentoConNombre`` que afine notas con `Escala.cents(con:sentido:)`: los cents de
+Una escala de doce notas se mide en cualquier ``TemperamentoQueAfina`` con `Escala.cents(con:sentido:)`: los cents de
 cada grado desde la tónica. Como en los temperamentos circulares cada tonalidad suena distinta, depende de la
 tónica, y la afinación justa se construye sobre ella. Cada tradición sugiere la suya (`Tradicion.temperamentoSugerido`,
 también en `TipoDeEscala`): la pitagórica en el canto gregoriano, la Grecia antigua, Mesopotamia y China, que
@@ -134,11 +137,11 @@ Renacimiento, van en mesotónico. La escala de blues tiene además sus blue note
 (`TipoDeEscalaMicrotonal.occidentales`): la tercera neutra, de 350 cents, y la séptima armónica, de 969.
 
 ```swift
-Escala(.do, .mayor).cents(con: .afinacionJusta)?[2]             // 386,31: la tercera pura
-Escala(.do, .mayor).cents(con: .werckmeisterIII)?[2]            // 390,22
-Escala(Nota(.re, .bemol), .mayor).cents(con: .werckmeisterIII)?[2]   // 407,82: más abierta
+Escala(.do, .mayor).cents(con: .afinacionJusta)[2]             // 386,31: la tercera pura
+Escala(.do, .mayor).cents(con: .werckmeisterIII)[2]            // 390,22
+Escala(Nota(.re, .bemol), .mayor).cents(con: .werckmeisterIII)[2]   // 407,82: más abierta
 TipoDeEscala.protusAuthenticus.temperamentoSugerido             // .pitagorico
-Escala(.re, .protusAuthenticus).cents(con: .pitagorico)?[2]     // 294,13: la tercera menor de 32/27
+Escala(.re, .protusAuthenticus).cents(con: .pitagorico)[2]     // 294,13: la tercera menor de 32/27
 Tradicion.india.temperamentoSugerido                            // .afinacionJusta
 TipoDeEscala.dorico.temperamentoSugerido                        // .mesotonicoCuartoDeComa
 TipoDeEscala.mayor.temperamentoSugerido                         // .werckmeisterIII

@@ -250,6 +250,19 @@ extension PentagramaSVG {
     /// Lo que se aparta de la cabeza el punto en que nace la plica (los anclajes de Bravura).
     static let anclajeDeLaPlica = 0.168
 
+    /// Las plicas, las barras de unión, las ligaduras, los tresillos y las articulaciones, con el lienzo estirado a
+    /// lo que suben y bajan.
+    func dibujarElRitmo(
+        _ ritmo: Ritmo, _ colocadas: [ColumnaColocada], pentagramas: Int, en lienzo: inout Lienzo
+    ) {
+        let (trazos, arriba, abajo, plicasArriba) = trazosDelRitmo(
+            ritmo, colocadas: colocadas, pentagramas: pentagramas)
+        lienzo.notas += trazos
+        if arriba.isFinite { lienzo.minimoY = min(lienzo.minimoY, arriba) }
+        if abajo.isFinite { lienzo.maximoY = max(lienzo.maximoY, abajo) }
+        dibujarLasArticulaciones(colocadas, plicasArriba: plicasArriba, en: &lienzo)
+    }
+
     /// Plicas, corchetes, barras de unión, ligaduras y tresillos, y lo que suben y bajan.
     func trazosDelRitmo(
         _ ritmo: Ritmo, colocadas: [ColumnaColocada], pentagramas: Int

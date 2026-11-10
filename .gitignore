@@ -5,10 +5,7 @@
 xcuserdata/
 DerivedData/
 Package.resolved
-# Lo que escribe Ejemplos/EjemploCatalogoDeEscalas si no se le da otro fichero
-Ejemplos/EjemploCatalogoDeEscalas/catalogo-de-escalas.tsv
-Ejemplos/EjemploCatalogoDeAcordes/catalogo-de-acordes.tsv
-Ejemplos/EjemploCatalogoDeProgresiones/catalogo-de-progresiones.tsv
+# Lo que escribe Ejemplos/EjemploCatalogos si no se le da otra carpeta
 Ejemplos/EjemploCatalogos/catalogos/
 # Ajustes de tu equipo (copia de Config/Local.xcconfig.ejemplo)
 Config/Local.xcconfig

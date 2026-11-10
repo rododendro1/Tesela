@@ -5,11 +5,11 @@ import Testing
 
 @Suite struct AjustesDeLasAppsTests {
     @Test func cadaTemperamentoParaEscucharSeGuardaYSeLee() {
-        for temperamento in TemperamentoConNombre.paraEscuchar {
+        for temperamento in TemperamentoQueAfina.paraEscuchar {
             let clave = AjustesDeLasApps.claveDeTemperamento(temperamento)
             #expect(AjustesDeLasApps.temperamento(deClave: clave) == temperamento)
         }
-        let claves = TemperamentoConNombre.paraEscuchar.map(AjustesDeLasApps.claveDeTemperamento)
+        let claves = TemperamentoQueAfina.paraEscuchar.map(AjustesDeLasApps.claveDeTemperamento)
         #expect(Set(claves).count == claves.count)
     }
 

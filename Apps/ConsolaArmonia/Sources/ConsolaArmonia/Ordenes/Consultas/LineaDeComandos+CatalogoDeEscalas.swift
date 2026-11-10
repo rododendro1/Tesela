@@ -174,121 +174,89 @@ extension LineaDeComandos {
         case ninguna(ResultadoDeOrden)
     }
 
-    /// Lee los argumentos de `escalas` y da sus grupos, para el texto y para `--json`.
+    /// Lee los argumentos de `escalas` y da sus grupos, para el texto y para `--json`. `--comparar`, `--vecinas` (y
+    /// `--parecidas` y `--escalera`) y `--mapa` dan otra cosa; si no, los filtros eligen las escalas del catálogo.
     static func catalogoDeEscalas(_ argumentos: [String], _ notacion: Notacion) throws -> CatalogoPedido {
-        let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         var entrada = Argumentos(argumentos)
-        // `--comparar Do mayor, Do dórico, Do lidio`: las escalas en una tabla, con lo que se mide de cada una.
         if let texto = try entrada.valorConPalabras(.comparar) {
-            try entrada.sinOpcionesDesconocidas()
-            let nombres = texto.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
-                .filter { !$0.isEmpty }
-            guard !nombres.isEmpty else { throw ErrorDeUso.faltaValor("--comparar") }
-            let escalas = try nombres.map { try Escala(leyendo: $0, enLaOrden: notacion) }
-            let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(escalas, en: notacion)
-            return .otraCosa(bien(columnas([tabla.encabezados] + tabla.filas)), opcion: "--comparar")
+            return try compararEscalas(texto, &entrada, notacion)
         }
-        // `--vecinas Re dórico`, `--parecidas Re dórico`, `--escalera Re dórico`: las escalas que salen de una, como
-        // `escala Re dórico --vecinas`, pero sin la escala de partida.
+        if let pedido = try escalasQueSalen(&entrada, notacion) { return pedido }
+        if entrada.quitarMarca(.mapa) { return try mapaDeBrillo(&entrada, notacion) }
+        let filtro = try filtrosDelCatalogo(&entrada, notacion)
+        let grupos = filtro.grupos(en: notacion)
+        guard !grupos.isEmpty else { return .ninguna(ningunaEscala(entrada, notacion)) }
+        return .grupos(grupos.map { ($0.titulo, filtro.ordenados($0.tipos)) }, orden: filtro.orden)
+    }
+
+    /// `--comparar Do mayor, Do dórico, Do lidio`: las escalas en una tabla, con lo que se mide de cada una.
+    static func compararEscalas(
+        _ texto: String, _ entrada: inout Argumentos, _ notacion: Notacion
+    ) throws -> CatalogoPedido {
+        try entrada.sinOpcionesDesconocidas()
+        let nombres = texto.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+        guard !nombres.isEmpty else { throw ErrorDeUso.faltaValor("--comparar") }
+        let escalas = try nombres.map { try Escala(leyendo: $0, enLaOrden: notacion) }
+        let tabla = PresentacionDeEstudioDeEscala.tablaDeEstadisticas(escalas, en: notacion)
+        return .otraCosa(bien(columnas([tabla.encabezados] + tabla.filas)), opcion: "--comparar")
+    }
+
+    /// `--vecinas Re dórico`, `--parecidas Re dórico`, `--escalera Re dórico`: las escalas que salen de una, como
+    /// `escala Re dórico --vecinas`, pero sin la escala de partida. `nil` si no se pide ninguna de las tres.
+    static func escalasQueSalen(_ entrada: inout Argumentos, _ notacion: Notacion) throws -> CatalogoPedido? {
         let deUna = try [
             (OpcionDeOrden.vecinasDe, entrada.valorConPalabras(.vecinasDe)),
             (OpcionDeOrden.parecidasA, entrada.valorConPalabras(.parecidasA)),
             (OpcionDeOrden.escaleraDe, entrada.valorConPalabras(.escaleraDe)),
         ].compactMap { opcion, texto in texto.map { (opcion, $0) } }
-        if !deUna.isEmpty {
-            try entrada.sinOpcionesDesconocidas()
-            guard entrada.restantes.isEmpty else { throw ErrorDeUso.opcionDesconocida(entrada.restantes[0]) }
-            let lineas = try deUna.flatMap { opcion, texto in
-                try escalasQueSalen(de: Escala(leyendo: texto, enLaOrden: notacion), opcion, notacion)
-            }
-            return .otraCosa(bien(lineas.joined(separator: "\n")), opcion: deUna[0].0.nombres[0])
-        }
-        // `--mapa [Re dórico] [--notas 7]`: el mapa de brillo en SVG, resaltando la escala que se dé.
-        if entrada.quitarMarca(.mapa) {
-            var numeroDeNotas = 7
-            if let texto = try entrada.valor(.notas, siFalta: .notasFueraDeRango) {
-                guard let n = Int(texto), (1...24).contains(n) else { throw ErrorDeUso.notasFueraDeRango }
-                numeroDeNotas = n
-            }
-            try entrada.sinOpcionesDesconocidas()
-            let resaltada = entrada.restantes.isEmpty ? nil : try Escala(leyendo: entrada.unidos, enLaOrden: notacion)
-            let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(
-                numeroDeNotas: numeroDeNotas, resaltada: resaltada, en: notacion)
-            return .otraCosa(bien(mapa), opcion: "--mapa")
-        }
-        var tradicion: Tradicion?
-        if let texto = try entrada.valor(.tradicion) {
-            let clave = claveDeBusqueda(texto)
-            guard
-                let encontrada = nombresDeLasTradiciones.first(where: {
-                    claveDeBusqueda($0.espanol) == clave || claveDeBusqueda($0.ingles) == clave
-                })
-            else { throw ErrorDeUso.tradicionDesconocida(texto) }
-            tradicion = encontrada.tradicion
-        }
-        var categoria: CategoriaTradicional?
-        if let texto = try entrada.valor(.categoria) {
-            let clave = claveDeBusqueda(texto)
-            let nombres = { (candidata: CategoriaTradicional) in
-                [candidata.rawValue, candidata.nombre, candidata.nombre(en: notacion)].map(claveDeBusqueda)
-            }
-            guard let encontrada = CategoriaTradicional.allCases.first(where: { nombres($0).contains(clave) }) else {
-                throw ErrorDeUso.categoriaDesconocida(texto)
-            }
-            categoria = encontrada
-        }
-        // `--fuente ptolomeo`, `--source ptolemy`: las escalas que definió o afinó un teórico, por su clave o por su
-        // nombre en español, en inglés o en el idioma de la notación.
-        var fuente: FuenteTeorica?
-        if let texto = try entrada.valor(.fuente) {
-            let clave = claveDeBusqueda(texto)
-            let nombres = { (candidata: FuenteTeorica) in
-                [
-                    candidata.rawValue, candidata.nombre, candidata.nombre(en: .compacta(.ingles)),
-                    candidata.nombre(en: notacion),
-                ].map(claveDeBusqueda)
-            }
-            guard let encontrada = FuenteTeorica.allCases.first(where: { nombres($0).contains(clave) }) else {
-                throw ErrorDeUso.fuenteDesconocida(texto)
-            }
-            fuente = encontrada
-        }
-        var usoPedido: Estilo?
-        if let texto = try entrada.valor(.uso) { usoPedido = try estiloDeUso(leyendo: texto, notacion) }
-        // `--notas 5`: solo las de cinco notas (las pentatónicas).
-        var numeroDeNotas: Int?
-        if let texto = try entrada.valor(.notas, siFalta: .notasFueraDeRango) {
-            guard let n = Int(texto), (1...24).contains(n) else { throw ErrorDeUso.notasFueraDeRango }
-            numeroDeNotas = n
-        }
-        // `--orden brillo`, `--sin-semitonos`, `--regulares`: por lo que se mide de cada escala.
-        var orden: OrdenDeEscalas?
-        if let texto = try entrada.valor(.orden) {
-            guard let elegido = ordenesDeEscalas[claveDeBusqueda(texto)] else {
-                throw ErrorDeUso.ordenDeEscalasDesconocido(texto)
-            }
-            orden = elegido
-        }
-        let sinSemitonos = entrada.quitarMarca(.sinSemitonos)
-        // `--con-intervalo tritono`, `--sin-intervalo 1`, `--con-paso 3`: por el vector interválico y los pasos.
-        var conIntervalo: Int?
-        if let texto = try entrada.valor(.conIntervalo) {
-            conIntervalo = try claseIntervalica(texto)
-        }
-        var sinIntervalo: Int?
-        if let texto = try entrada.valor(.sinIntervalo) {
-            sinIntervalo = try claseIntervalica(texto)
-        }
-        var conPaso: Int?
-        if let texto = try entrada.valor(.conPaso, siFalta: .pasoFueraDeRango) {
-            guard let n = Int(texto), (1...11).contains(n) else { throw ErrorDeUso.pasoFueraDeRango }
-            conPaso = n
-        }
-        let regulares = entrada.quitarMarca(.regulares)
+        guard !deUna.isEmpty else { return nil }
         try entrada.sinOpcionesDesconocidas()
-        let buscado = claveDeBusqueda(entrada.unidos)
-        func estadisticas(_ tipo: TipoDeEscala) -> EstadisticasDeEscala { Escala(.do, tipo).estadisticas }
-        func cumple(_ tipo: TipoDeEscala) -> Bool {
+        guard entrada.restantes.isEmpty else { throw ErrorDeUso.opcionDesconocida(entrada.restantes[0]) }
+        let lineas = try deUna.flatMap { opcion, texto in
+            try escalasQueSalen(de: Escala(leyendo: texto, enLaOrden: notacion), opcion, notacion)
+        }
+        return .otraCosa(bien(lineas.joined(separator: "\n")), opcion: deUna[0].0.nombres[0])
+    }
+
+    /// `--mapa [Re dórico] [--notas 7]`: el mapa de brillo en SVG, resaltando la escala que se dé.
+    static func mapaDeBrillo(_ entrada: inout Argumentos, _ notacion: Notacion) throws -> CatalogoPedido {
+        let numeroDeNotas = try numeroDeNotasPedido(&entrada) ?? 7
+        try entrada.sinOpcionesDesconocidas()
+        let resaltada = entrada.restantes.isEmpty ? nil : try Escala(leyendo: entrada.unidos, enLaOrden: notacion)
+        let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(
+            numeroDeNotas: numeroDeNotas, resaltada: resaltada, en: notacion)
+        return .otraCosa(bien(mapa), opcion: "--mapa")
+    }
+
+    /// `--notas 5`: de 1 a 24; `nil` si no se pide.
+    static func numeroDeNotasPedido(_ entrada: inout Argumentos) throws -> Int? {
+        guard let texto = try entrada.valor(.notas, siFalta: .notasFueraDeRango) else { return nil }
+        guard let n = Int(texto), (1...24).contains(n) else { throw ErrorDeUso.notasFueraDeRango }
+        return n
+    }
+
+    /// Lo que deja `escalas` del catálogo: la tradición, la categoría, la fuente, el uso, el número de notas, lo que
+    /// se mide de cada una y el texto que se busca en los nombres, y el orden en que salen.
+    struct FiltroDeEscalas {
+        var tradicion: Tradicion?
+        var categoria: CategoriaTradicional?
+        var fuente: FuenteTeorica?
+        var uso: Estilo?
+        var numeroDeNotas: Int?
+        var orden: OrdenDeEscalas?
+        var sinSemitonos = false
+        var conIntervalo: Int?
+        var sinIntervalo: Int?
+        var conPaso: Int?
+        var regulares = false
+        /// El texto suelto, como clave de búsqueda; vacío si no hay.
+        var buscado = ""
+
+        private func estadisticas(_ tipo: TipoDeEscala) -> EstadisticasDeEscala { Escala(.do, tipo).estadisticas }
+
+        /// Si una escala pasa los filtros que no son de tradición, categoría, fuente ni uso.
+        func cumple(_ tipo: TipoDeEscala, en notacion: Notacion) -> Bool {
             guard numeroDeNotas == nil || tipo.numeroDeNotas == numeroDeNotas else { return false }
             guard !sinSemitonos || estadisticas(tipo).anhemitonica else { return false }
             guard !regulares || estadisticas(tipo).maximamenteRegular else { return false }
@@ -302,56 +270,123 @@ extension LineaDeComandos {
                 || claveDeBusqueda(tipo.nombre).contains(buscado)
         }
 
-        // Los grupos, en el orden del catálogo: las habituales (si no se filtra por tradición ni por categoría) y,
-        // después, cada tradición con su categoría.
-        var grupos: [(titulo: String, tipos: [TipoDeEscala])] = []
-        if tradicion == nil && categoria == nil && fuente == nil {
-            if let usoPedido {
-                let delUso = usoPedido.tipos.filter(cumple)
-                if !delUso.isEmpty {
-                    grupos.append((traducir(.habituales) + " · " + usoPedido.nombre(en: notacion), delUso))
+        /// Los grupos, en el orden del catálogo: las habituales (si no se filtra por tradición, categoría ni fuente)
+        /// y, después, cada tradición con su categoría.
+        func grupos(en notacion: Notacion) -> [GrupoDeEscalas] {
+            let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+            var grupos: [GrupoDeEscalas] = []
+            if tradicion == nil && categoria == nil && fuente == nil {
+                if let uso {
+                    let delUso = uso.tipos.filter { cumple($0, en: notacion) }
+                    if !delUso.isEmpty {
+                        grupos.append((traducir(.habituales) + " · " + uso.nombre(en: notacion), delUso))
+                    }
+                } else {
+                    let habituales = TipoDeEscala.occidentales.filter { cumple($0, en: notacion) }
+                    if !habituales.isEmpty { grupos.append((traducir(.habituales), habituales)) }
                 }
-            } else {
-                let habituales = TipoDeEscala.occidentales.filter(cumple)
-                if !habituales.isEmpty { grupos.append((traducir(.habituales), habituales)) }
             }
-        }
-        for tipo in TipoDeEscala.tradicionales where usoPedido == nil && cumple(tipo) {
-            guard let suya = tipo.tradicion, let deTipo = tipo.categoria else { continue }
-            guard tradicion == nil || tradicion == suya, categoria == nil || categoria == deTipo,
-                fuente == nil || fuente == tipo.fuente || tipo.afinaciones.contains(where: { $0.fuente == fuente })
-            else { continue }
-            let titulo = suya.nombre(en: notacion) + " · " + deTipo.nombre(en: notacion)
-            if let i = grupos.firstIndex(where: { $0.titulo == titulo }) {
-                grupos[i].tipos.append(tipo)
-            } else {
-                grupos.append((titulo, [tipo]))
+            for tipo in TipoDeEscala.tradicionales where uso == nil && cumple(tipo, en: notacion) {
+                guard let suya = tipo.tradicion, let deTipo = tipo.categoria else { continue }
+                guard tradicion == nil || tradicion == suya, categoria == nil || categoria == deTipo,
+                    fuente == nil || fuente == tipo.fuente || tipo.afinaciones.contains(where: { $0.fuente == fuente })
+                else { continue }
+                let titulo = suya.nombre(en: notacion) + " · " + deTipo.nombre(en: notacion)
+                if let i = grupos.firstIndex(where: { $0.titulo == titulo }) {
+                    grupos[i].tipos.append(tipo)
+                } else {
+                    grupos.append((titulo, [tipo]))
+                }
             }
+            return grupos
         }
-        guard !grupos.isEmpty else {
-            // `escalas` busca por el nombre: con unas notas, lo que se quería era `identificar --escalas`.
-            let palabras = entrada.restantes
-            let sonNotas =
-                !palabras.isEmpty && palabras.allSatisfy { (try? Nota(leyendo: $0, enLaOrden: notacion)) != nil }
-            let texto =
-                sonNotas
-                ? TextosDeConsola.en(notacion) {
-                    $0.escalasPorNotas(
-                        ejemplo(
-                            "armonia identificar --escalas " + entrada.unidos,
-                            "armonia identify --scales " + entrada.unidos
-                        ).en(notacion))
-                } : traducir(.ningunaEscala)
-            return .ninguna(ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1))
-        }
-        // Con `--orden`, cada grupo de la más brillante a la más oscura, o de menos a más notas; a igualdad, en el
-        // orden del catálogo.
+
+        /// Con `--orden`, de la más brillante a la más oscura, o de menos a más notas; a igualdad, en el orden del
+        /// catálogo.
         func ordenados(_ tipos: [TipoDeEscala]) -> [TipoDeEscala] {
             guard let orden else { return tipos }
             // La clave de cada una, de menor a mayor: el brillo, cambiado de signo, o el número de notas.
             let claves = tipos.map { orden == .brillo ? -estadisticas($0).brilloPorQuintas : Double($0.numeroDeNotas) }
             return tipos.indices.sorted { (claves[$0], $0) < (claves[$1], $1) }.map { tipos[$0] }
         }
-        return .grupos(grupos.map { ($0.titulo, ordenados($0.tipos)) }, orden: orden)
+    }
+
+    /// Lee los filtros de `escalas`, en el orden en que se comprueban, y el texto suelto que queda.
+    static func filtrosDelCatalogo(_ entrada: inout Argumentos, _ notacion: Notacion) throws -> FiltroDeEscalas {
+        var filtro = FiltroDeEscalas()
+        if let texto = try entrada.valor(.tradicion) {
+            let clave = claveDeBusqueda(texto)
+            guard
+                let encontrada = nombresDeLasTradiciones.first(where: {
+                    claveDeBusqueda($0.espanol) == clave || claveDeBusqueda($0.ingles) == clave
+                })
+            else { throw ErrorDeUso.tradicionDesconocida(texto) }
+            filtro.tradicion = encontrada.tradicion
+        }
+        if let texto = try entrada.valor(.categoria) {
+            let clave = claveDeBusqueda(texto)
+            let nombres = { (candidata: CategoriaTradicional) in
+                [candidata.rawValue, candidata.nombre, candidata.nombre(en: notacion)].map(claveDeBusqueda)
+            }
+            guard let encontrada = CategoriaTradicional.allCases.first(where: { nombres($0).contains(clave) }) else {
+                throw ErrorDeUso.categoriaDesconocida(texto)
+            }
+            filtro.categoria = encontrada
+        }
+        // `--fuente ptolomeo`, `--source ptolemy`: las escalas que definió o afinó un teórico, por su clave o por su
+        // nombre en español, en inglés o en el idioma de la notación.
+        if let texto = try entrada.valor(.fuente) {
+            let clave = claveDeBusqueda(texto)
+            let nombres = { (candidata: FuenteTeorica) in
+                [
+                    candidata.rawValue, candidata.nombre, candidata.nombre(en: .compacta(.ingles)),
+                    candidata.nombre(en: notacion),
+                ].map(claveDeBusqueda)
+            }
+            guard let encontrada = FuenteTeorica.allCases.first(where: { nombres($0).contains(clave) }) else {
+                throw ErrorDeUso.fuenteDesconocida(texto)
+            }
+            filtro.fuente = encontrada
+        }
+        if let texto = try entrada.valor(.uso) { filtro.uso = try estiloDeUso(leyendo: texto, notacion) }
+        // `--notas 5`: solo las de cinco notas (las pentatónicas).
+        filtro.numeroDeNotas = try numeroDeNotasPedido(&entrada)
+        // `--orden brillo`, `--sin-semitonos`, `--regulares`: por lo que se mide de cada escala.
+        if let texto = try entrada.valor(.orden) {
+            guard let elegido = ordenesDeEscalas[claveDeBusqueda(texto)] else {
+                throw ErrorDeUso.ordenDeEscalasDesconocido(texto)
+            }
+            filtro.orden = elegido
+        }
+        filtro.sinSemitonos = entrada.quitarMarca(.sinSemitonos)
+        // `--con-intervalo tritono`, `--sin-intervalo 1`, `--con-paso 3`: por el vector interválico y los pasos.
+        if let texto = try entrada.valor(.conIntervalo) { filtro.conIntervalo = try claseIntervalica(texto) }
+        if let texto = try entrada.valor(.sinIntervalo) { filtro.sinIntervalo = try claseIntervalica(texto) }
+        if let texto = try entrada.valor(.conPaso, siFalta: .pasoFueraDeRango) {
+            guard let n = Int(texto), (1...11).contains(n) else { throw ErrorDeUso.pasoFueraDeRango }
+            filtro.conPaso = n
+        }
+        filtro.regulares = entrada.quitarMarca(.regulares)
+        try entrada.sinOpcionesDesconocidas()
+        filtro.buscado = claveDeBusqueda(entrada.unidos)
+        return filtro
+    }
+
+    /// El error de que no hay ninguna escala. `escalas` busca por el nombre: si lo que se le dio son notas, lo que se
+    /// quería era `identificar --escalas`, y lo dice.
+    static func ningunaEscala(_ entrada: Argumentos, _ notacion: Notacion) -> ResultadoDeOrden {
+        let palabras = entrada.restantes
+        let sonNotas =
+            !palabras.isEmpty && palabras.allSatisfy { (try? Nota(leyendo: $0, enLaOrden: notacion)) != nil }
+        let texto =
+            sonNotas
+            ? TextosDeConsola.en(notacion) {
+                $0.escalasPorNotas(
+                    ejemplo(
+                        "armonia identificar --escalas " + entrada.unidos,
+                        "armonia identify --scales " + entrada.unidos
+                    ).en(notacion))
+            } : Mensaje.ningunaEscala.texto(en: notacion)
+        return ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1)
     }
 }

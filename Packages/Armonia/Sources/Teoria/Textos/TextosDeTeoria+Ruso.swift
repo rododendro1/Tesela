@@ -6,15 +6,6 @@ import Elementos
 
 extension TextosDeTeoria {
     static let ruso = TextosDeTeoria(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "равномерная темперация",
-        pitagorico: "пифагоров строй",
-        mesotonico: "среднетоновый строй в ¼ коммы",
-        werckmeisterIII: "Веркмейстер III",
-        kirnbergerIII: "Кирнбергер III",
-        vallotti: "Валлотти",
-        young: "Юнг",
-        afinacionJusta: "чистый строй",
         familiaDeRitmoLineaDeTiempo: "тайм-лайны",
         familiaDeRitmoFlamenco: "компасы фламенко",
         familiaDeRitmoTala: "индийские талы",

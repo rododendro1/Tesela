@@ -6,6 +6,34 @@ import Teoria
 // debajo.
 
 extension PentagramaSVG {
+    /// La llave de Bravura del pentagrama doble, a la izquierda, estirada de sus 4 espacios a lo que miden los dos
+    /// pentagramas (14).
+    func llave(pentagramas: Int) -> String {
+        let n = PentagramaSVG.n
+        let abajoDelSistema = PentagramaSVG.y(deLugar: 0, pentagrama: pentagramas - 1)
+        let origen = "translate(\(n(-PentagramaSVG.margenDeLaLlave + 0.3)) \(n(abajoDelSistema)))"
+        return elemento("path").con("transform", origen + " scale(\(n(abajoDelSistema / 4)))")
+            .con("d", GlifosSMuFL.llave.trazado).vacio
+    }
+
+    /// Con ritmo, las barras de compás, que se desplazan con las notas.
+    func barrasDeCompas(_ maquetacion: Maquetacion, pentagramas: Int) -> [String] {
+        let abajoDelSistema = PentagramaSVG.y(deLugar: 0, pentagrama: pentagramas - 1)
+        return maquetacion.barrasDeCompas.map {
+            elemento("line").con("x1", $0).con("y1", 0).con("x2", $0).con("y2", abajoDelSistema)
+                .con("stroke-width", "0.16").vacio
+        }
+    }
+
+    /// Las líneas adicionales de las notas que se salen del pentagrama.
+    func lineasAdicionales(_ maquetacion: Maquetacion) -> [String] {
+        maquetacion.lineasAdicionales.map {
+            linea(
+                desde: $0.desde, hasta: $0.hasta, y: PentagramaSVG.y(deLugar: $0.lugar, pentagrama: $0.pentagrama),
+                grosor: "0.16")
+        }
+    }
+
     /// Las líneas de los pentagramas y de la tablatura y las barras del principio y del final, que no se desplazan
     /// con las notas.
     func lineasDelSistema(

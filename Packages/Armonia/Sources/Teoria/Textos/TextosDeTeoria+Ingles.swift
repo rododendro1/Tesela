@@ -6,15 +6,6 @@ import Elementos
 
 extension TextosDeTeoria {
     static let ingles = TextosDeTeoria(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "equal temperament",
-        pitagorico: "Pythagorean tuning",
-        mesotonico: "quarter-comma meantone",
-        werckmeisterIII: "Werckmeister III",
-        kirnbergerIII: "Kirnberger III",
-        vallotti: "Vallotti",
-        young: "Young",
-        afinacionJusta: "just intonation",
         familiaDeRitmoLineaDeTiempo: "timelines",
         familiaDeRitmoFlamenco: "flamenco compás",
         familiaDeRitmoTala: "Indian tālas",

@@ -243,7 +243,7 @@ Sources/
 │   ├── Escalas/
 │   │   ├── Escala/        Escala (con NombreDeGrado, la búsqueda por notas y la ortografía) y lo que se hace con
 │   │   │                  ella: acordes, estudio, simetría, estadísticas, armonía modal, escalas propias y vecinas
-│   │   │                  (MedidasDeEscala: Myhill, Rothenberg, Carey, Krumhansl y Kessler…) y RelacionEntreEscalas
+│   │   │                  (CalculosDeEscala: Myhill, Rothenberg, Carey, Krumhansl y Kessler…) y RelacionEntreEscalas
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
 │   │   │                  `nombre(en:)`), FichaDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
 │   │   │                  y Microtonos (SistemaMicrotonal, TipoDeEscalaMicrotonal)

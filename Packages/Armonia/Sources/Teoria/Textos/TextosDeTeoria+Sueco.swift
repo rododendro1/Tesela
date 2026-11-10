@@ -6,15 +6,6 @@ import Elementos
 
 extension TextosDeTeoria {
     static let sueco = TextosDeTeoria(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "liksvävande temperatur",
-        pitagorico: "pythagoreisk stämning",
-        mesotonico: "kvartskommamiddeltonstemperatur",
-        werckmeisterIII: "Werckmeister III",
-        kirnbergerIII: "Kirnberger III",
-        vallotti: "Vallotti",
-        young: "Young",
-        afinacionJusta: "ren stämning",
         familiaDeRitmoLineaDeTiempo: "tidslinjer",
         familiaDeRitmoFlamenco: "flamencons compás",
         familiaDeRitmoTala: "indiska tālor",
