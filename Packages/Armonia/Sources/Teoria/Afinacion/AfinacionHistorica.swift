@@ -6,6 +6,7 @@ import Elementos
 ///     AfinacionHistorica.mesotonico.afinacion().frecuencia(de: "Sol#4") < AfinacionHistorica.mesotonico.afinacion().frecuencia(de: "Lab4")   // true
 ///     AfinacionHistorica.justa.afinacion(tonica: .re).desviacion(de: "Fa#4")   // −13,69: la tercera pura sobre Re
 ///     AfinacionHistorica.werckmeisterIII.nombre(en: .ascii(.ingles))             // "Werckmeister III"
+@available(*, deprecated, message: "Usa TemperamentoConNombre.paraEscuchar y su afinacion(tonica:frecuenciaDelLa4:)")
 public enum AfinacionHistorica: String, Hashable, Sendable, CaseIterable, CustomStringConvertible, Nombrable {
     /// Doce semitonos iguales: lo que suena si no se elige otro.
     case igual
@@ -49,6 +50,7 @@ public enum AfinacionHistorica: String, Hashable, Sendable, CaseIterable, Custom
 //
 // Nombres de los temperamentos en los trece idiomas de los textos (`Traduccion`).
 
+@available(*, deprecated)
 extension AfinacionHistorica {
     public func nombre(en notacion: Notacion) -> String {
         switch self {

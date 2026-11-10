@@ -50,7 +50,7 @@ import Testing
                 "dórico con ficta", "mixolidio con ficta", "lidio con si bemol", "musica recta",
             ])
         #expect(TipoDeEscala.escalasRenacentistas.allSatisfy { $0.tradicion == .renacimiento })
-        #expect(TipoDeEscala.doricoConFicta.afinacionSugerida == .mesotonico)
+        #expect(TipoDeEscala.doricoConFicta.temperamentoSugerido == .mesotonicoCuartoDeComa)
         let dorico = Escala(.re, .doricoConFicta)
         #expect(dorico.notas.map(\.description) == ["Re", "Mi", "Fa", "Sol", "La", "Si", "Do♯"])
         #expect(

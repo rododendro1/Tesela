@@ -259,8 +259,9 @@ La teoría acorde-escala del jazz mira cada nota de una escala desde el acorde q
 qué es cada una (``PapelEnLaEscala``): una nota del acorde, una tensión disponible o una nota a evitar, la que está un
 semitono por encima de una nota del acorde y choca con ella si se sostiene (el fa sobre Do7M en jónico). En un acorde
 de dominante, la ♭9 y la ♭13 no se evitan; en uno sus4, sí la tercera mayor. Cada nota lleva su grado sobre la
-fundamental (``NotaSobreElAcorde/cifra``) como en los cifrados de jazz: las 2.ª, 4.ª y 6.ª se cuentan como 9, 11 y 13, y
-una 3.ª menor sobre un acorde mayor, como ♯9.
+fundamental como en los cifrados de jazz, como número (``NotaSobreElAcorde/numero``) y alteración
+(``NotaSobreElAcorde/alteracion``), y escrito (``NotaSobreElAcorde/cifra``): las 2.ª, 4.ª y 6.ª se cuentan como 9, 11
+y 13, y una 3.ª menor sobre un acorde mayor, como ♯9.
 
 Qué escala toca sobre cada acorde depende de lo que hace en la tonalidad. ``Tonalidad/escalaDelAcorde(_:siguiente:)`` y
 ``AnalisisArmonico/escalas`` la eligen por su papel en el análisis: el modo de la tonalidad para un acorde diatónico
@@ -321,7 +322,7 @@ el pulgar no caiga en el Si♭.
 ``Escala/modosParalelos`` son los siete modos de la mayor sobre la misma tónica, del más brillante (lidio) al más
 oscuro (locrio), y ``Escala/brillo`` mide cuánto: lidio +1, jónico 0, dórico −2, locrio −5.
 ``Escala/modosRelativos`` son las escalas con las mismas notas que empiezan en cada grado.
-``Escala/comparar(con:)`` da una ``ComparacionDeEscalas``: las notas comunes, las que solo están en una, los grados
+``Escala/relacion(con:)`` da una ``RelacionEntreEscalas``: las notas comunes, las que solo están en una, los grados
 que cambian (de Do mayor a Do lidio, el 4.º, de Fa a Fa♯) y la distancia en el círculo de quintas.
 
 Sobre un acorde, ``Acorde/escalasBebop`` son las bebop que, bajando en corcheas, ponen una nota del acorde en cada

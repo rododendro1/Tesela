@@ -105,6 +105,15 @@ enum MedidasDeEscala {
 
     /// Las tríadas y las cuatríadas por terceras sobre cada grado de una heptatónica, con los símbolos del cifrado
     /// («», «m», «°», «+»; «maj7», «7», «m7», «ø7», «°7»…), o «?» si no tiene nombre. `nil` si no tiene siete notas.
+    /// Los acordes de ``armonizacion(_:)``, como tipos: `nil` en un grado sin tríada o sin cuatríada conocida.
+    static func acordesPorGrados(_ clases: [Int]) -> (triadas: [TipoDeAcorde?], cuatriadas: [TipoDeAcorde?])? {
+        guard let armonizacion = armonizacion(clases) else { return nil }
+        func tipo(_ cifrado: String) -> TipoDeAcorde? {
+            cifrado == "?" ? nil : cifrado.isEmpty ? .mayor : try? TipoDeAcorde(leyendo: cifrado)
+        }
+        return (armonizacion.triadas.map(tipo), armonizacion.cuatriadas.map(tipo))
+    }
+
     static func armonizacion(_ clases: [Int]) -> (triadas: [String], cuatriadas: [String])? {
         guard clases.count == 7 else { return nil }
         let triadas: [[Int]: String] = [[4, 3]: "", [3, 4]: "m", [3, 3]: "°", [4, 4]: "+"]

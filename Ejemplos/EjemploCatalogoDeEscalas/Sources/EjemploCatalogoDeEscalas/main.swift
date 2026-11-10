@@ -127,8 +127,8 @@ func fila(_ tipo: TipoDeEscala) -> [String] {
         String(medidas.conjunto.imperfecciones),
         siONo(medidas.conjunto.unicidad),
         siONo(medidas.conjunto.simplicidad),
-        medidas.tonal.triadasPorGrados?.joined(separator: " ") ?? "",
-        medidas.tonal.cuatriadasPorGrados?.joined(separator: " ") ?? "",
+        medidas.tonal.triadas.map { $0.map { $0?.cifrado ?? "?" }.joined(separator: " ") } ?? "",
+        medidas.tonal.cuatriadas.map { $0.map { $0?.cifrado ?? "?" }.joined(separator: " ") } ?? "",
         medidas.conjunto.combinatoriedad.map { c in
             (c.transposiciones.map { "T\($0)" } + c.inversiones.map { "I\($0)" }).joined(separator: " ")
                 + (c.tipo.map { " (\($0))" } ?? "")

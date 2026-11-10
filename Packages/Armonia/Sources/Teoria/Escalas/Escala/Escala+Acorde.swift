@@ -37,14 +37,23 @@ extension PapelEnLaEscala: Nombrable {
 ///     let notas = Escala(.do, .mayor).notas(sobre: Acorde("Do7M"))
 ///     notas.map(\.cifra)    // ["1", "9", "3", "11", "5", "13", "7"]
 ///     notas[3].papel        // .aEvitar (el fa, un semitono por encima del mi)
+///     notas[1].numero       // 9
 public struct NotaSobreElAcorde: Hashable, Sendable, CustomStringConvertible {
     /// La nota, escrita como en el acorde si es suya (aunque la escala la escriba de otra forma) y como en la
     /// escala si no.
     public let nota: Nota
     public let papel: PapelEnLaEscala
-    /// El grado sobre la fundamental, como en los cifrados de jazz: «1», «♭3», «5», «7» para las notas del acorde;
-    /// «9», «♭9», «♯9», «11», «♯11», «13», «♭13» para las demás (las 2.ª, 4.ª y 6.ª, una octava más arriba).
-    public let cifra: String
+    /// El grado sobre la fundamental, como en los cifrados de jazz: 1, 3, 5 y 7 para las notas del acorde; 9, 11 y
+    /// 13 para las demás (las 2.ª, 4.ª y 6.ª, una octava más arriba).
+    public let numero: Int
+    /// Lo que se aparta ese grado del mayor o del justo: −1 en la ♭9, 0 en la 13, −2 en la 𝄫7.
+    public let alteracion: Alteracion
+
+    /// El grado escrito, como en los cifrados de jazz: «1», «♭3», «5», «7» para las notas del acorde; «9», «♭9»,
+    /// «♯9», «11», «♯11», «13», «♭13» para las demás.
+    public var cifra: String {
+        (alteracion.semitonos == 0 ? "" : alteracion.simbolo(en: .unicodeConDobles)) + String(numero)
+    }
 
     public var description: String { "\(nota.nombre) (\(cifra))" }
 }
@@ -73,8 +82,10 @@ extension Escala {
 
         return notas.map { nota in
             if let propia = propias.first(where: { $0.nota.esEnarmonica(de: nota) }) {
-                let cifra = Escala.cifra(propia.intervalo, numero: Escala.numero(de: propia.papel, propia.intervalo))
-                return NotaSobreElAcorde(nota: propia.nota, papel: .delAcorde, cifra: cifra)
+                let numero = Escala.numero(de: propia.papel, propia.intervalo)
+                let alteracion = Escala.alteracion(
+                    semitonos: modulo(propia.intervalo.semitonos, 12), ordinal: propia.intervalo.numeroSimple)
+                return NotaSobreElAcorde(nota: propia.nota, papel: .delAcorde, numero: numero, alteracion: alteracion)
             }
             let semitonosDeLaNota = semitonos(nota)
             let intervalo = raiz.intervalo(hasta: nota)
@@ -102,8 +113,9 @@ extension Escala {
             default:
                 break
             }
-            let cifra = Escala.cifra(semitonos: semitonosDeLaNota, numero: numero, ordinal: ordinal)
-            return NotaSobreElAcorde(nota: nota, papel: aEvitar ? .aEvitar : .tension, cifra: cifra)
+            return NotaSobreElAcorde(
+                nota: nota, papel: aEvitar ? .aEvitar : .tension, numero: numero,
+                alteracion: Escala.alteracion(semitonos: semitonosDeLaNota, ordinal: ordinal))
         }
     }
 
@@ -124,18 +136,13 @@ extension Escala {
         return intervalo.numeroSimple
     }
 
-    private static func cifra(_ intervalo: Intervalo, numero: Int) -> String {
-        cifra(
-            semitonos: modulo(intervalo.semitonos, 12), numero: numero, ordinal: intervalo.numeroSimple)
-    }
-
-    /// «♭9», «♯11», «13», «𝄫7»: la alteración respecto a la 2.ª, 3.ª, 6.ª y 7.ª mayores y a la 1.ª, 4.ª y 5.ª
-    /// justas del número simple `ordinal`.
-    private static func cifra(semitonos: Int, numero: Int, ordinal: Int) -> String {
+    /// Lo que se aparta un grado de la 2.ª, 3.ª, 6.ª y 7.ª mayores y de la 1.ª, 4.ª y 5.ª justas del número simple
+    /// `ordinal`: −1 en la ♭9, −2 en la 𝄫7.
+    private static func alteracion(semitonos: Int, ordinal: Int) -> Alteracion {
         let natural = [0, 2, 4, 5, 7, 9, 11][modulo(ordinal - 1, 7)]
         var diferencia = modulo(semitonos - natural, 12)
         if diferencia > 6 { diferencia -= 12 }
-        return (diferencia == 0 ? "" : Alteracion(diferencia).simbolo(en: .unicodeConDobles)) + String(numero)
+        return Alteracion(diferencia)
     }
 }
 

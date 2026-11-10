@@ -65,31 +65,29 @@ import Testing
         #expect(TemperamentoCircular(nombre: "igual", quintas: Array(repeating: 700, count: 12)) != nil)
     }
 
-    @Test func catalogoDeTemperamentos() {
-        #expect(AfinacionHistorica.allCases.count == 8)
-        for temperamento in AfinacionHistorica.allCases {
+    @Test func temperamentosParaEscuchar() throws {
+        let paraEscuchar = TemperamentoConNombre.paraEscuchar
+        #expect(paraEscuchar.count == 8)
+        for temperamento in paraEscuchar {
             // Todos con el La4 de referencia en su sitio y la octava pura.
-            let afinacion = temperamento.afinacion(tonica: .la)
+            let afinacion = try #require(temperamento.afinacion(tonica: .la))
             #expect(abs(afinacion.frecuencia(de: "La4") - (440)) <= 1e-9, "\(temperamento)")
             #expect(abs(afinacion.frecuencia(de: "Mi5") / afinacion.frecuencia(de: "Mi4") - (2)) <= 1e-12)
-            let distingue = abs(afinacion.frecuencia(de: "Sol#4") - afinacion.frecuencia(de: "Lab4")) > 1e-6
-            #expect(distingue == temperamento.distingueEnarmonicas, "\(temperamento)")
-            #expect(AfinacionHistorica(rawValue: temperamento.rawValue) == temperamento)
         }
-        #expect(abs(AfinacionHistorica.igual.afinacion().desviacion(de: "Fa#3") - (0)) <= 1e-9)
-        #expect(abs(AfinacionHistorica.justa.afinacion(tonica: .re).desviacion(de: "Fa#4") - (-13.69)) <= 0.01)
-        #expect(
-            abs(
-                AfinacionHistorica.mesotonico.afinacion().cents(desde: "Do4", hasta: "Mi4")
-                    - (RazonDeFrecuencias(5, 4).cents)) <= 1e-9)
+        let distinguen = paraEscuchar.filter(\.distingueEnarmonicas)
+        #expect(distinguen == [.pitagorico, .mesotonicoCuartoDeComa, .afinacionJusta])
+        #expect(TemperamentoConNombre.divisiones31.distingueEnarmonicas)
+        #expect(!TemperamentoConNombre.comas53.distingueEnarmonicas)
+        let igual = try #require(TemperamentoConNombre.temperamentoIgual.afinacion())
+        #expect(abs(igual.desviacion(de: "Fa#3") - (0)) <= 1e-9)
+        let justa = try #require(TemperamentoConNombre.afinacionJusta.afinacion(tonica: .re))
+        #expect(abs(justa.desviacion(de: "Fa#4") - (-13.69)) <= 0.01)
+        let mesotonico = try #require(TemperamentoConNombre.mesotonicoCuartoDeComa.afinacion())
+        #expect(abs(mesotonico.cents(desde: "Do4", hasta: "Mi4") - (RazonDeFrecuencias(5, 4).cents)) <= 1e-9)
         for idioma in Idioma.allCases {
-            let nombres = AfinacionHistorica.allCases.map {
-                $0.nombre(en: Notacion.delIdioma(idioma))
-            }
+            let nombres = paraEscuchar.map { $0.nombre(en: Notacion.delIdioma(idioma)) }
             #expect(Set(nombres).count == nombres.count, "\(idioma)")
         }
-        #expect(AfinacionHistorica.justa.nombre(en: .ascii(.ingles)) == "just intonation")
-        #expect(AfinacionHistorica.kirnbergerIII.description == "Kirnberger III")
     }
 
     @Test func razonesJustas() {

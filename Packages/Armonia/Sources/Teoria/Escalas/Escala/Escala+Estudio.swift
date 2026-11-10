@@ -118,6 +118,7 @@ public struct CambioDeGrado: Hashable, Sendable {
 
 /// Dos escalas comparadas: las notas que comparten, las que solo están en una y, si tienen la misma tónica y el
 /// mismo número de notas, los grados que cambian.
+@available(*, deprecated, message: "Usa RelacionEntreEscalas, de Escala.relacion(con:)")
 public struct ComparacionDeEscalas: Hashable, Sendable {
     public let origen: Escala
     public let destino: Escala
@@ -134,24 +135,12 @@ public struct ComparacionDeEscalas: Hashable, Sendable {
 
 extension Escala {
     /// Esta escala y otra: notas comunes, las que solo están en una y los grados que cambian.
-    ///
-    ///     let lidio = Escala(.do).comparar(con: Escala(.do, .lidio))
-    ///     lidio.cambios.map(\.hasta)   // [Fa♯]
+    @available(*, deprecated, renamed: "relacion(con:)")
     public func comparar(con otra: Escala) -> ComparacionDeEscalas {
-        let suyas = Set(otra.notas.map(\.claseDeAltura))
-        let mias = Set(notas.map(\.claseDeAltura))
-        var cambios: [CambioDeGrado] = []
-        if tonica.claseDeAltura == otra.tonica.claseDeAltura && notas.count == otra.notas.count {
-            for (i, (desde, hasta)) in zip(notas, otra.notas).enumerated() {
-                if desde.claseDeAltura != hasta.claseDeAltura {
-                    cambios.append(CambioDeGrado(grado: i + 1, desde: desde, hasta: hasta))
-                }
-            }
-        }
+        let relacion = relacion(con: otra)
         return ComparacionDeEscalas(
-            origen: self, destino: otra, comunes: notas.filter { suyas.contains($0.claseDeAltura) },
-            soloEnOrigen: notas.filter { !suyas.contains($0.claseDeAltura) },
-            soloEnDestino: otra.notas.filter { !mias.contains($0.claseDeAltura) }, cambios: cambios)
+            origen: self, destino: otra, comunes: relacion.comunes, soloEnOrigen: relacion.soloEnOrigen,
+            soloEnDestino: relacion.soloEnDestino, cambios: relacion.cambios)
     }
 
     /// Las notas de esta escala que no estaban en `anterior`: lo que cambia al pasar de una a otra en una
@@ -187,8 +176,12 @@ public struct PentatonicaSobreElAcorde: Hashable, Sendable {
     public let escala: Escala
     public let notas: [NotaSobreElAcorde]
 
+    /// Las notas que suma al acorde como tensiones, con su grado: la 9, la ♯11, la 13.
+    public var notasDeTension: [NotaSobreElAcorde] { notas.filter { $0.papel == .tension } }
+
     /// Las tensiones que suma al acorde, como se cifran: «9», «♯11», «13».
-    public var tensiones: [String] { notas.filter { $0.papel == .tension }.map(\.cifra) }
+    @available(*, deprecated, message: "Usa notasDeTension, y su cifra o su numero y su alteracion")
+    public var tensiones: [String] { notasDeTension.map(\.cifra) }
 }
 
 extension Acorde {
@@ -247,7 +240,7 @@ extension Acorde {
             }
         }
         return resultado.enumerated().sorted {
-            ($0.element.tensiones.count, $0.offset) < ($1.element.tensiones.count, $1.offset)
+            ($0.element.notasDeTension.count, $0.offset) < ($1.element.notasDeTension.count, $1.offset)
         }.map(\.element)
     }
 }

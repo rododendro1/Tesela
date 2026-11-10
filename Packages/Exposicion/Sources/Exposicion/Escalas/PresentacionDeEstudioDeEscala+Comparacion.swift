@@ -25,7 +25,7 @@ extension PresentacionDeEstudioDeEscala {
         let margen = margenDeLaHoja
         let util = ancho - 2 * margen
         let datos = comparar(escala, con: otra, en: notacion)
-        let comparacion = datos.comparacion
+        let comparacion = datos.relacion
         let nombre = escala.nombre(en: notacion)
         let nombreDeLaOtra = otra.nombre(en: notacion)
         var cuerpo: [String] = []
@@ -80,7 +80,7 @@ extension PresentacionDeEstudioDeEscala {
     /// La tabla grado a grado: una fila con el número de cada grado y otra por escala, con las notas del color de
     /// la comparación y las columnas de los grados que cambian sombreadas. Da dónde termina.
     private static func tablaDeGrados(
-        _ comparacion: ComparacionDeEscalas, x: Double, y: Double, ancho: Double, notacion: Notacion,
+        _ comparacion: RelacionEntreEscalas, x: Double, y: Double, ancho: Double, notacion: Notacion,
         en cuerpo: inout [String]
     ) -> Double {
         let origen = comparacion.origen.notas
@@ -130,7 +130,7 @@ extension PresentacionDeEstudioDeEscala {
     /// Las dos escalas en el mismo reloj cromático: el polígono de la primera, en verde, y el de la segunda, en
     /// rojo y a trazos; cada hora, del color de la comparación, y las tónicas con el borde naranja. Da su alto.
     private static func relojDeLaComparacion(
-        _ comparacion: ComparacionDeEscalas, x: Double, y: Double, lado: Double, notacion: Notacion,
+        _ comparacion: RelacionEntreEscalas, x: Double, y: Double, lado: Double, notacion: Notacion,
         en cuerpo: inout [String]
     ) -> Double {
         let centro = (x: x + lado / 2, y: y + lado / 2)

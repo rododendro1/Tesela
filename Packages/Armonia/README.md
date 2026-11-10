@@ -221,7 +221,7 @@ Sources/
 │   ├── Textos/            TextosDeElementos y un fichero por idioma
 │   ├── Referencias/       Referencia (citas, BibTeX y CSL-JSON) y Referencias (el catálogo de obras, que citan
 │   │                      escalas, acordes, corales y partituras)
-│   └── Postonal/          ConjuntoDeClasesDeAltura, TablaForte, MedidasDeConjunto (Huron, Fourier, Tymoczko,
+│   └── Postonal/          ConjuntoDeClasesDeAltura, TablaForte, EstadisticasDeConjunto (Huron, Fourier, Tymoczko,
 │                          Hanson, Messiaen, Forte, Babbitt, Balzano…: lo que se mide de un conjunto) y
 │                          RelacionEntreConjuntos (Fourier, Isaacson, Morris y Forte: lo que se parecen dos)
 ├── Teoria/
@@ -275,9 +275,9 @@ Sources/
 │   ├── Funciones/         FuncionDeNota (grados, modo gregoriano, rāga, maqam, blue notes, adornos y notas extrañas)
 │   │   │                  y su catálogo
 │   │   └── Nombres/       NombresDeFunciones y un fichero por idioma (`NombresDeFunciones+Catalan.swift`…)
-│   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
+│   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa)
 │       │                  (las del botón «Escuchar»), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett
-│       │                  (números), MedidasDeAfinacionJusta (Euler, Tenney, Partch, Gill y Purves), JingFang,
+│       │                  (números), EstadisticasDeAfinacionJusta (Euler, Tenney, Partch, Gill y Purves), JingFang,
 │       │                  TemperamentoConNombre (el catálogo de temperamentos y sistemas de afinación: regulares,
 │       │                  circulares, justa, divisiones iguales y otras tradiciones, con su búsqueda),
 │       │                  EstadisticasDeTemperamento (pasos, razones justas, quinta del lobo, terceras) y

@@ -53,7 +53,7 @@ import Testing
     }
 
     @Test func compararDosEscalas() {
-        let lidio = Escala(.do).comparar(con: Escala(.do, .lidio))
+        let lidio = Escala(.do).relacion(con: Escala(.do, .lidio))
         #expect(lidio.cambios.map(\.grado) == [4])
         #expect(lidio.cambios.map(\.desde.nombre) == ["Fa"])
         #expect(lidio.cambios.map(\.hasta.nombre) == ["Fa♯"])
@@ -61,12 +61,13 @@ import Testing
         #expect(lidio.soloEnOrigen.map(\.nombre) == ["Fa"])
         #expect(lidio.soloEnDestino.map(\.nombre) == ["Fa♯"])
         #expect(lidio.distanciaEnQuintas == 1)
-        let sol = Escala(.do).comparar(con: Escala(.sol))
+        #expect(Escala(.do).distancia(hasta: Escala(.do, .lidio)) == 1)
+        let sol = Escala(.do).relacion(con: Escala(.sol))
         #expect(sol.cambios.isEmpty)
         #expect(sol.soloEnDestino.map(\.nombre) == ["Fa♯"])
-        let pentatonica = Escala(.do).comparar(con: Escala(.do, .pentatonicaMayor))
+        let pentatonica = Escala(.do).relacion(con: Escala(.do, .pentatonicaMayor))
         #expect(pentatonica.cambios.isEmpty)
-        #expect(pentatonica.distanciaEnQuintas == nil)
+        #expect(Escala(.do).distancia(hasta: Escala(.do, .pentatonicaMayor)) == nil)
         #expect(pentatonica.soloEnOrigen.map(\.nombre) == ["Fa", "Si"])
     }
 
@@ -92,11 +93,12 @@ import Testing
         let sobreDo7M = Acorde("Do7M").pentatonicas
         let primera = try #require(sobreDo7M.first)
         #expect(primera.escala == Escala(.do, .pentatonicaMayor))
-        #expect(primera.tensiones == ["9", "13"])
+        #expect(primera.notasDeTension.map(\.cifra) == ["9", "13"])
+        #expect(primera.notasDeTension.map(\.numero) == [9, 13])
         #expect(sobreDo7M.contains { $0.escala == Escala(.re, .pentatonicaMayor) })
         // Sin la tercera del acorde (Fa pentatónica no tiene Mi) o con notas a evitar (el Fa), no vale.
         #expect(!sobreDo7M.contains { $0.escala == Escala(.fa, .pentatonicaMayor) })
-        let tensiones = sobreDo7M.map(\.tensiones.count)
+        let tensiones = sobreDo7M.map(\.notasDeTension.count)
         #expect(tensiones == tensiones.sorted())
         // Sin tercera, cualquiera sin notas a evitar.
         #expect(!Acorde("Dosus4").pentatonicas.isEmpty)

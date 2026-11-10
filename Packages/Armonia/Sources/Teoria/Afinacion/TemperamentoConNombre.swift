@@ -95,7 +95,16 @@ public struct TemperamentoConNombre: Sendable {
         }
     }
 
+    /// `true` si distingue las notas enarmónicas (Sol♯ de La♭): el pitagórico, los mesotónicos, la justa y las
+    /// octavas partidas en otro número de partes que doce; no el igual ni los circulares, que tocan las doce teclas
+    /// del piano. `false` también en los sistemas de otras tradiciones, que no afinan notas.
+    public var distingueEnarmonicas: Bool {
+        guard let afinacion = afinacion() else { return false }
+        return abs(afinacion.cents(desde: "Sol#4", hasta: "Lab4")) > 1e-6
+    }
+
     /// La afinación histórica que es, para tocar con ella (`AfinacionHistorica`), si es una.
+    @available(*, deprecated, message: "Usa TemperamentoConNombre.paraEscuchar")
     public var historica: AfinacionHistorica? {
         AfinacionHistorica.allCases.first { $0.temperamento == self }
     }
@@ -169,8 +178,20 @@ extension TemperamentoConNombre {
     public static func todos(de familia: FamiliaDeTemperamento) -> [TemperamentoConNombre] {
         catalogo.filter { $0.familia == familia }
     }
+
+    /// Los que las apps ofrecen para oír las notas (el botón «Escuchar»): el igual, el pitagórico, el mesotónico de
+    /// ¼ de coma, Werckmeister III, Kirnberger III, Vallotti, Young y la justa. Todos afinan las doce notas, así que
+    /// su ``afinacion(tonica:frecuenciaDelLa4:)`` nunca es `nil`; la justa se construye sobre la tónica.
+    ///
+    ///     TemperamentoConNombre.paraEscuchar.count                        // 8
+    ///     TemperamentoConNombre.afinacionJusta.afinacion(tonica: .re)?.desviacion(de: "Fa#4")   // −13,69
+    public static let paraEscuchar: [TemperamentoConNombre] = [
+        .temperamentoIgual, .pitagorico, .mesotonicoCuartoDeComa, .werckmeisterIII, .kirnbergerIII, .vallotti,
+        .young, .afinacionJusta,
+    ]
 }
 
+@available(*, deprecated)
 extension AfinacionHistorica {
     /// El temperamento del catálogo que es.
     public var temperamento: TemperamentoConNombre {

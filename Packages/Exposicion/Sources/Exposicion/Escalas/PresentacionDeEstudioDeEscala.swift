@@ -40,7 +40,7 @@ public struct ModoPresentado: Hashable, Sendable, Encodable {
 
 /// Dos escalas comparadas, como lo enseñan las apps y la línea de comandos.
 public struct ComparacionDeEscalasPresentada: Hashable, Sendable {
-    public let comparacion: ComparacionDeEscalas
+    public let relacion: RelacionEntreEscalas
     /// «Do, Re, Mi…», o «ninguna».
     public let comunes: String
     /// «Solo en Do mayor: Fa», o vacío.
@@ -118,7 +118,7 @@ public enum PresentacionDeEstudioDeEscala {
         let brillo = modo.brillo.map { $0 > 0 ? "+\($0)" : "\($0)" }
         return ModoPresentado(
             escala: modo, nombre: modo.nombre(en: notacion), brillo: brillo ?? "",
-            cambios: cambios(escala.comparar(con: modo), notacion).joined(separator: ", "),
+            cambios: cambios(escala.relacion(con: modo), notacion).joined(separator: ", "),
             sonido: .escala(modo))
     }
 
@@ -131,24 +131,24 @@ public enum PresentacionDeEstudioDeEscala {
     public static func comparar(
         _ escala: Escala, con otra: Escala, en notacion: Notacion
     ) -> ComparacionDeEscalasPresentada {
-        let comparacion = escala.comparar(con: otra)
+        let relacion = escala.relacion(con: otra)
         func lista(_ notas: [Nota]) -> String { notas.map { $0.nombre(en: notacion) }.joined(separator: ", ") }
         func solo(_ en: Escala, _ notas: [Nota]) -> String {
             notas.isEmpty ? "" : notacion.texto { $0.soloEn(en.nombre(en: notacion)) } + ": " + lista(notas)
         }
         let ambas = (escala.alturas(octava: 4) + otra.alturas(octava: 4)).map { Evento($0, .corchea) }
         return ComparacionDeEscalasPresentada(
-            comparacion: comparacion,
-            comunes: comparacion.comunes.isEmpty ? notacion.texto(\.ningunaNotaComun) : lista(comparacion.comunes),
-            soloEnOrigen: solo(escala, comparacion.soloEnOrigen),
-            soloEnDestino: solo(otra, comparacion.soloEnDestino),
-            cambios: cambios(comparacion, notacion),
-            distancia: comparacion.distanciaEnQuintas.map { n in notacion.texto { $0.alteracionesDeDiferencia(n) } },
+            relacion: relacion,
+            comunes: relacion.comunes.isEmpty ? notacion.texto(\.ningunaNotaComun) : lista(relacion.comunes),
+            soloEnOrigen: solo(escala, relacion.soloEnOrigen),
+            soloEnDestino: solo(otra, relacion.soloEnDestino),
+            cambios: cambios(relacion, notacion),
+            distancia: escala.distancia(hasta: otra).map { n in notacion.texto { $0.alteracionesDeDiferencia(n) } },
             sonido: Escucha.voz(Voz(ambas)))
     }
 
-    private static func cambios(_ comparacion: ComparacionDeEscalas, _ notacion: Notacion) -> [String] {
-        comparacion.cambios.map {
+    private static func cambios(_ relacion: RelacionEntreEscalas, _ notacion: Notacion) -> [String] {
+        relacion.cambios.map {
             "\($0.grado): " + $0.desde.nombre(en: notacion) + " → " + $0.hasta.nombre(en: notacion)
         }
     }
@@ -169,7 +169,8 @@ public enum PresentacionDeEstudioDeEscala {
         acorde.pentatonicas.map { pentatonica in
             EscalaConDetallePresentada(
                 escala: pentatonica.escala, nombre: pentatonica.escala.nombre(en: notacion),
-                detalle: pentatonica.tensiones.joined(separator: " · "), sonido: .escala(pentatonica.escala))
+                detalle: pentatonica.notasDeTension.map(\.cifra).joined(separator: " · "),
+                sonido: .escala(pentatonica.escala))
         }
     }
 }

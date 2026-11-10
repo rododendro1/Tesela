@@ -5,7 +5,7 @@
 
     /// El menú para elegir la notación de las notas y, aparte, el idioma de los textos. Guarda la `clave`
     /// de la `Notacion` (combinada si los textos van en otro idioma). Con `temperamento`, también elige con qué
-    /// afinación suena «Escuchar» (el `rawValue` de una `AfinacionHistorica`), y con `octavasEnSubindice`, si la
+    /// afinación suena «Escuchar» (su `AjustesDeLasApps.claveDeTemperamento(_:)`), y con `octavasEnSubindice`, si la
     /// octava se escribe como subíndice (La₄). Lo habitual es ponerlo en la barra
     /// con `selectorDeNotacionEnLaBarra()`, que lo guarda todo en los ajustes que leen `notacionGuardada()` y el
     /// `Reproductor`.
@@ -51,8 +51,8 @@
                 }
                 if let temperamento {
                     Picker(notacion.texto(\.afinacionAlEscuchar), selection: temperamento) {
-                        ForEach(AfinacionHistorica.allCases, id: \.self) { opcion in
-                            Text(opcion.nombre(en: notacion)).tag(opcion.rawValue)
+                        ForEach(TemperamentoConNombre.paraEscuchar) { opcion in
+                            Text(opcion.nombre(en: notacion)).tag(AjustesDeLasApps.claveDeTemperamento(opcion))
                         }
                     }
                 }
@@ -98,7 +98,8 @@
     struct SelectorDeNotacionGuardada: View {
         @AppStorage(AjustesDeLasApps.claveDeNotacion) private var clave = Notacion.delSistema().clave
         @AppStorage(AjustesDeLasApps.claveDeOctavasEnSubindice) private var octavasEnSubindice: Bool?
-        @AppStorage(AjustesDeLasApps.claveDeTemperamento) private var temperamento = AfinacionHistorica.igual.rawValue
+        @AppStorage(AjustesDeLasApps.claveDeTemperamento) private var temperamento =
+            AjustesDeLasApps.claveDeTemperamento(.temperamentoIgual)
 
         var body: some View {
             // Sin tocar el ajuste, el interruptor enseña lo que hace la notación elegida (La₄ en las compactas).

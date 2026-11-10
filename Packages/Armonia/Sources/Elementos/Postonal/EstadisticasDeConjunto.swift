@@ -27,10 +27,10 @@ public struct CombinatoriedadHexacordal: Hashable, Sendable, Codable {
 /// (no de su ortografía ni de su disposición): Huron, Fourier, Tymoczko, Hanson, Forte, Messiaen, Zeitler, Balzano y
 /// Babbitt. Lo comparten `EstadisticasDeAcorde.conjunto` y `EstadisticasDeEscala.conjunto`.
 ///
-///     let mayor = ConjuntoDeClasesDeAltura([0, 2, 4, 5, 7, 9, 11]).medidas
+///     let mayor = ConjuntoDeClasesDeAltura([0, 2, 4, 5, 7, 9, 11]).estadisticas
 ///     mayor.analisisDeHanson   // "p⁶m³n⁴s⁵d²t"
 ///     mayor.parsimonia         // 2
-public struct MedidasDeConjunto: Hashable, Sendable {
+public struct EstadisticasDeConjunto: Hashable, Sendable {
     /// La consonancia diádica de Huron (1994): la suma de los pesos de consonancia de cada clase interválica de su
     /// vector. Cuanto más alta, más consonante: 2,22 la tríada mayor.
     public let consonanciaDiadica: Double
@@ -227,6 +227,12 @@ public struct MedidasDeConjunto: Hashable, Sendable {
 }
 
 extension ConjuntoDeClasesDeAltura {
-    /// Lo que dicen de él la teoría de conjuntos y las medidas que salen de sus clases (`MedidasDeConjunto`).
-    public var medidas: MedidasDeConjunto { MedidasDeConjunto(self) }
+    /// Lo que dicen de él la teoría de conjuntos y las medidas que salen de sus clases (`EstadisticasDeConjunto`).
+    public var estadisticas: EstadisticasDeConjunto { EstadisticasDeConjunto(self) }
+
+    @available(*, deprecated, renamed: "estadisticas")
+    public var medidas: EstadisticasDeConjunto { estadisticas }
 }
+
+@available(*, deprecated, renamed: "EstadisticasDeConjunto")
+public typealias MedidasDeConjunto = EstadisticasDeConjunto

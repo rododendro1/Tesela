@@ -8,9 +8,9 @@ import Testing
 
 /// El MIDI en las afinaciones del catálogo: cada nota se aparta de la temperada lo que diga la afinación.
 @Suite struct MIDIEnUnaAfinacionTests {
-    @Test(arguments: [AfinacionHistorica.mesotonico, .werckmeisterIII, .justa])
-    func unAcordeEnUnaAfinacionHistorica(_ historica: AfinacionHistorica) throws {
-        let afinacion = historica.afinacion()
+    @Test(arguments: [TemperamentoConNombre.mesotonicoCuartoDeComa, .werckmeisterIII, .afinacionJusta])
+    func unAcordeEnUnaAfinacionHistorica(_ temperamento: TemperamentoConNombre) throws {
+        let afinacion = try #require(temperamento.afinacion())
         let voz = try Voz(leyendo: "Do4+Mi4+Sol4:2 Re4+Fa♯4+La4:2")
         let pieza = try PiezaImportada(midi: voz.partitura().midi(afinacion: afinacion))
         // Todo en una parte, aunque las notas vayan por varios canales.

@@ -39,21 +39,27 @@
         private init() {}
 
         /// El temperamento guardado en los ajustes, o el igual si no hay ninguno.
-        public static var temperamentoGuardado: AfinacionHistorica {
-            UserDefaults.standard.string(forKey: AjustesDeLasApps.claveDeTemperamento).flatMap(AfinacionHistorica.init)
-                ?? .igual
+        public static var temperamentoGuardado: TemperamentoConNombre {
+            UserDefaults.standard.string(forKey: AjustesDeLasApps.claveDeTemperamento)
+                .flatMap(AjustesDeLasApps.temperamento(deClave:)) ?? .temperamentoIgual
         }
 
         /// Toca lo que suena en el temperamento guardado en los ajustes, y para lo que sonaba.
         public func tocar(_ sonido: Escucha) {
-            tocar(sonido, en: Reproductor.temperamentoGuardado)
+            tocar(sonido, con: Reproductor.temperamentoGuardado)
         }
 
         /// Toca lo que suena en ese temperamento, y para lo que sonaba.
+        @available(*, deprecated, message: "Usa tocar(_:con:), con un TemperamentoConNombre")
         public func tocar(_ sonido: Escucha, en temperamento: AfinacionHistorica) {
+            tocar(sonido, con: temperamento.temperamento)
+        }
+
+        /// Toca lo que suena en ese temperamento, y para lo que sonaba.
+        public func tocar(_ sonido: Escucha, con temperamento: TemperamentoConNombre) {
             detener()
             guard !sonido.notas.isEmpty, preparar() else { return }
-            let cambios = sonido.afinado(en: temperamento).cambios
+            let cambios = sonido.afinado(con: temperamento).cambios
             sonando = sonido
             tarea = Task {
                 var ahora = 0.0

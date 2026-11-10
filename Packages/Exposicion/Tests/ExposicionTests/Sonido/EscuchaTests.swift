@@ -53,10 +53,10 @@ import Testing
         #expect(bayati.notas.map(\.midi) == [62, 63, 65, 67, 69, 70, 72, 74])
         #expect(bayati.notas.map(\.microtono) == [0, 50, 0, 0, 0, 0, 0, 0])
         #expect(bayati.notas.map(\.desviacion) == [0, 50, 0, 0, 0, 0, 0, 0])
-        #expect(bayati.afinado(en: .igual).notas[1].desviacion == 50)
+        #expect(bayati.afinado(con: .temperamentoIgual).notas[1].desviacion == 50)
         // En otro temperamento se suma a la afinación de su nota escrita.
-        let justa = bayati.afinado(en: .justa)
-        let mib = Escucha.escala(Escala(.re, .frigio)).afinado(en: .justa).notas[1].desviacion
+        let justa = bayati.afinado(con: .afinacionJusta)
+        let mib = Escucha.escala(Escala(.re, .frigio)).afinado(con: .afinacionJusta).notas[1].desviacion
         #expect(abs(justa.notas[1].desviacion - (mib + 50)) < 1e-9)
         #expect(justa.cambios.first { $0.esInicio && $0.nota == 1 }?.desviacion == justa.notas[1].desviacion)
         // Las comas de un makam.
@@ -102,22 +102,24 @@ import Testing
         #expect(mi.tonica == .mi)
         let fa = Escucha.acorde(try Acorde(leyendo: "Fam"))
         #expect(fa.notas.map(\.altura) == ["Fa3", "Lab3", "Do4"])
-        let solSostenido = mi.afinado(en: .mesotonico).notas[1].desviacion
-        let laBemol = fa.afinado(en: .mesotonico).notas[1].desviacion
+        let solSostenido = mi.afinado(con: .mesotonicoCuartoDeComa).notas[1].desviacion
+        let laBemol = fa.afinado(con: .mesotonicoCuartoDeComa).notas[1].desviacion
         #expect(abs(solSostenido - laBemol - (-41.06)) <= 0.01) // la diesis menor
         // Sin elegir otro, suena en el temperamento igual.
         #expect(mi.notas.allSatisfy { $0.desviacion == 0 })
-        #expect(mi.afinado(en: .igual).notas.allSatisfy { abs($0.desviacion) < 1e-9 })
+        #expect(mi.afinado(con: .temperamentoIgual).notas.allSatisfy { abs($0.desviacion) < 1e-9 })
         // La justa, sobre la tónica: la del acorde, la de la escala o, si no se sabe, Do.
-        let justa = Escucha.acorde(try Acorde(leyendo: "Do")).afinado(en: .justa).notas.map {
+        let justa = Escucha.acorde(try Acorde(leyendo: "Do")).afinado(con: .afinacionJusta).notas.map {
             ($0.desviacion * 100).rounded() / 100
         }
         #expect(justa == [0, -13.69, 1.96])
         #expect(try Escucha.escala(Escala(leyendo: "Re mayor")).tonica == .re)
         #expect(Escucha.coral([["Do4"]]).tonica == nil)
-        #expect(abs(Escucha.coral([["Mi4"]]).conTonica(.do).afinado(en: .justa).notas[0].desviacion - (-13.69)) <= 0.01)
+        #expect(
+            abs(Escucha.coral([["Mi4"]]).conTonica(.do).afinado(con: .afinacionJusta).notas[0].desviacion - (-13.69))
+                <= 0.01)
         // Los cambios llevan la afinación y la nota a la que se refieren.
-        let cambios = Escucha.acorde(try Acorde(leyendo: "Do")).afinado(en: .justa).cambios
+        let cambios = Escucha.acorde(try Acorde(leyendo: "Do")).afinado(con: .afinacionJusta).cambios
         #expect(cambios.filter(\.esInicio).map(\.nota) == [0, 1, 2])
         #expect(abs((cambios.first { $0.nota == 1 && !$0.esInicio }?.desviacion ?? 0) - (-13.69)) <= 0.01)
     }
@@ -177,7 +179,7 @@ import Testing
         #expect(Escucha.silencio.duracion == 0)
         // Sin tónica se afina sobre Do: el Do queda igual y el Mi baja en la justa.
         let afinado = Escucha(notas: [.init(midi: 60, inicio: 0, duracion: 1), .init(midi: 64, inicio: 0, duracion: 1)])
-            .afinado(en: .justa)
+            .afinado(con: .afinacionJusta)
         #expect(abs(afinado.notas[0].desviacion - (0)) <= 1e-9)
         #expect(abs(afinado.notas[1].desviacion - (-13.7)) <= 0.1)
     }
