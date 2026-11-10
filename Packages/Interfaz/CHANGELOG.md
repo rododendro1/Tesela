@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.5.0 (2026-11-10)
 
 ### Cambios incompatibles
 
