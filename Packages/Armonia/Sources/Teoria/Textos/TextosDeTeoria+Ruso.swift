@@ -27,6 +27,12 @@ extension TextosDeTeoria {
         familiaDeTemperamentoJusta: "чистые строи",
         familiaDeTemperamentoDivisionesIguales: "равные деления октавы",
         familiaDeTemperamentoTradicional: "системы других традиций",
+        familiaDeNotaDiapason: "камертоны",
+        familiaDeNotaReferencia: "опорные ноты",
+        familiaDeNotaGuidoniana: "гвидонова рука",
+        familiaDeNotaArabe: "арабские ноты",
+        familiaDeNotaTurca: "турецкие перде",
+        familiaDeNotaGriega: "струны совершенной системы",
 
         // Acorde.swift
         conBajoEn: "{1}, с басом {2}",

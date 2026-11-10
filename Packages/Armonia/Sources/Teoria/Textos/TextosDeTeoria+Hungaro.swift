@@ -27,6 +27,12 @@ extension TextosDeTeoria {
         familiaDeTemperamentoJusta: "tiszta hangolások",
         familiaDeTemperamentoDivisionesIguales: "az oktáv egyenlő felosztásai",
         familiaDeTemperamentoTradicional: "más hagyományok rendszerei",
+        familiaDeNotaDiapason: "hangolási alaphangok",
+        familiaDeNotaReferencia: "viszonyítási hangok",
+        familiaDeNotaGuidoniana: "a guidói kéz",
+        familiaDeNotaArabe: "arab hangok",
+        familiaDeNotaTurca: "török perdék",
+        familiaDeNotaGriega: "a tökéletes rendszer húrjai",
 
         // Acorde.swift
         conBajoEn: "{1}, {2} a basszusban",

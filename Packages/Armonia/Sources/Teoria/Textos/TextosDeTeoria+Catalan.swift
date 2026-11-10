@@ -27,6 +27,12 @@ extension TextosDeTeoria {
         familiaDeTemperamentoJusta: "afinacions justes",
         familiaDeTemperamentoDivisionesIguales: "divisions iguals de l'octava",
         familiaDeTemperamentoTradicional: "sistemes d'altres tradicions",
+        familiaDeNotaDiapason: "diapasons",
+        familiaDeNotaReferencia: "notes de referència",
+        familiaDeNotaGuidoniana: "la mà guidoniana",
+        familiaDeNotaArabe: "notes àrabs",
+        familiaDeNotaTurca: "perdes turques",
+        familiaDeNotaGriega: "cordes del sistema perfecte",
 
         // Acorde.swift
         conBajoEn: "{1}, amb el baix en {2}",

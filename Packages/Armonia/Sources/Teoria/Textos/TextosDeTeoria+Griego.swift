@@ -27,6 +27,12 @@ extension TextosDeTeoria {
         familiaDeTemperamentoJusta: "φυσικά κουρδίσματα",
         familiaDeTemperamentoDivisionesIguales: "ίσες διαιρέσεις της οκτάβας",
         familiaDeTemperamentoTradicional: "συστήματα άλλων παραδόσεων",
+        familiaDeNotaDiapason: "διαπασών",
+        familiaDeNotaReferencia: "νότες αναφοράς",
+        familiaDeNotaGuidoniana: "το γκουιντόνιο χέρι",
+        familiaDeNotaArabe: "αραβικές νότες",
+        familiaDeNotaTurca: "τουρκικά περντέ",
+        familiaDeNotaGriega: "χορδές του τέλειου συστήματος",
 
         // Acorde.swift
         conBajoEn: "{1}, με μπάσο το {2}",

@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+- El catálogo de notas: `NotaConNombre`, 131 notas con nombre propio y su familia (`FamiliaDeNota`): 10 diapasones
+  (del La 440 y el La 415 barroco al Chorton, el diapasón normal francés de 1859 y el Do 256 científico), 5 notas de
+  referencia (el Do central, las notas extremas del piano y del MIDI), las 20 posiciones de la mano guidoniana y las
+  alturas con nombre de `NombresPorOctava`: 29 notas árabes, 49 perde turcas y 18 cuerdas griegas. Cada una tiene su
+  altura, lo que se aparta de la temperada en cents (`desvio`), su frecuencia, sus referencias y su nombre en los trece
+  idiomas (`buscar(nombre:)`, `buscar(conteniendo:)`, `todas(de:)`); `AlturaConNombre.notaConNombre` lleva a la suya.
+  Referencia nueva: Haynes (2002).
+- La consola: `notas [<texto>] [--familia diapason] [--estadisticas]`, también con `--json`, y `EjemploCatalogos`
+  escribe también `notas.tsv`.
+
 - `Ejemplos/EjemploCatalogos` escribe en TSV, un fichero por catálogo, los que no tenían ejemplo: los ritmos, los
   temperamentos, las escalas microtonales, las referencias, los encordados, los teclados isomórficos y cuadrados, los
   modos gregorianos y los instrumentos de la partitura.

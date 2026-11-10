@@ -459,6 +459,14 @@ extension Referencia {
         "sethares2005", .libro, autores: ["Sethares, William A."], titulo: "Tuning, Timbre, Spectrum, Scale",
         anio: 2005, editorial: "Springer", lugar: "Londres")
 
+    // MARK: Notas
+
+    /// Haynes, la historia del diapasón: del Chorton y el Cammerton del Barroco al La 440, pasando por el diapasón
+    /// normal francés, el filarmónico de Londres y el de Verdi.
+    public static let haynes2002 = Referencia(
+        "haynes2002", .libro, autores: ["Haynes, Bruce"], titulo: "A History of Performing Pitch: The Story of \"A\"",
+        anio: 2002, editorial: "Scarecrow Press", lugar: "Lanham")
+
     /// Todas las obras, en el orden de este fichero.
     public static let catalogo: [Referencia] = [
         .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .rowell1992, .touma1996, .farraj2019,
@@ -476,6 +484,6 @@ extension Referencia {
         .gerbino2001, .staiti2023, .sheinberg2016, .rosand1979, .doll2017,
         .soroker1995, .malaniczPrzybylska2018, .kodaly1960, .campbell2019, .cannon2002, .scherbaum2022, .bonifacic2001,
         .rechberger2008, .busoni1916, .toussaint2013, .clayton2000, .viswanathan2004, .brailoiu1951, .apel1953,
-        .fernandez2004, .lindley2001, .sethares2005,
+        .fernandez2004, .lindley2001, .sethares2005, .haynes2002,
     ]
 }

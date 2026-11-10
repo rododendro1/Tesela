@@ -266,6 +266,10 @@ Sources/
 │   │                      EstadisticasDeRitmo (Toussaint: distancias, euclídeo, profundo, síncopa)
 │   │   ├── Catalogo/      El catálogo: líneas de tiempo, flamenco, tāla, iqa'at, aksak y usul, modos rítmicos y danzas
 │   │   └── Nombres/       NombresDeRitmos y un fichero por idioma (`NombresDeRitmos+Catalan.swift`…)
+│   ├── Notas/             NotaConNombre (el catálogo de notas con nombre propio: diapasones, notas de referencia, la
+│   │   │                  mano guidoniana, notas árabes, perde turcas y cuerdas griegas, con su búsqueda)
+│   │   ├── Catalogo/      Los diapasones y las notas de referencia, y las que salen de ManoGuidoniana y NombresPorOctava
+│   │   └── Nombres/       NombresDeNotas y un fichero por idioma (`NombresDeNotas+Catalan.swift`…)
 │   ├── Psicoacustica/     Psicoacustica (Parncutt, Terhardt, Cook, Sethares, Vassilakis, Hutchinson y Knopoff,
 │   │                      Erlich), VozMedida y ProminenciaDeFundamental
 │   ├── Temperamentos/     TemperamentoConNombre (el catálogo de temperamentos y sistemas de afinación, con su búsqueda)

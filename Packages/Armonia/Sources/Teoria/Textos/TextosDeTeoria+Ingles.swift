@@ -27,6 +27,12 @@ extension TextosDeTeoria {
         familiaDeTemperamentoJusta: "just intonations",
         familiaDeTemperamentoDivisionesIguales: "equal divisions of the octave",
         familiaDeTemperamentoTradicional: "systems of other traditions",
+        familiaDeNotaDiapason: "pitch standards",
+        familiaDeNotaReferencia: "reference notes",
+        familiaDeNotaGuidoniana: "the Guidonian hand",
+        familiaDeNotaArabe: "Arabic notes",
+        familiaDeNotaTurca: "Turkish perdes",
+        familiaDeNotaGriega: "strings of the Greater Perfect System",
 
         // Acorde.swift
         conBajoEn: "{1} over {2}",

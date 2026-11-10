@@ -27,6 +27,12 @@ extension TextosDeTeoria {
         familiaDeTemperamentoJusta: "reine Stimmungen",
         familiaDeTemperamentoDivisionesIguales: "gleiche Teilungen der Oktave",
         familiaDeTemperamentoTradicional: "Systeme anderer Traditionen",
+        familiaDeNotaDiapason: "Stimmtöne",
+        familiaDeNotaReferencia: "Bezugstöne",
+        familiaDeNotaGuidoniana: "die Guidonische Hand",
+        familiaDeNotaArabe: "arabische Töne",
+        familiaDeNotaTurca: "türkische Perdes",
+        familiaDeNotaGriega: "Saiten des vollkommenen Systems",
 
         // Acorde.swift
         conBajoEn: "{1}, mit {2} im Bass",

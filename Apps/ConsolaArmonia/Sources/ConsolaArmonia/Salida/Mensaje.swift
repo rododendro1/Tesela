@@ -26,6 +26,7 @@ enum Mensaje {
     case ningunaProgresion
     case ningunRitmo
     case ningunTemperamento
+    case ningunaNota
     case ningunAcorde
     case tetracordos
     case sinTetracordos
@@ -77,6 +78,7 @@ enum Mensaje {
         case .ningunaProgresion: return TextosDeConsola.traduccion(\.mensajeNingunaProgresion)
         case .ningunRitmo: return TextosDeConsola.traduccion(\.mensajeNingunRitmo)
         case .ningunTemperamento: return TextosDeConsola.traduccion(\.mensajeNingunTemperamento)
+        case .ningunaNota: return TextosDeConsola.traduccion(\.mensajeNingunaNota)
         case .ningunAcorde: return TextosDeConsola.traduccion(\.mensajeNingunAcorde)
         case .tetracordos: return TextosDeConsola.traduccion(\.mensajeTetracordos)
         case .sinTetracordos: return TextosDeConsola.traduccion(\.mensajeSinTetracordos)

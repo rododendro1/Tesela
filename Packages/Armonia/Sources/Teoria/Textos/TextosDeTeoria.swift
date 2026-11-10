@@ -30,6 +30,12 @@ struct TextosDeTeoria: TextosTraducidos {
     let familiaDeTemperamentoJusta: String
     let familiaDeTemperamentoDivisionesIguales: String
     let familiaDeTemperamentoTradicional: String
+    let familiaDeNotaDiapason: String
+    let familiaDeNotaReferencia: String
+    let familiaDeNotaGuidoniana: String
+    let familiaDeNotaArabe: String
+    let familiaDeNotaTurca: String
+    let familiaDeNotaGriega: String
 
     // MARK: Acorde.swift
     /// Un acorde en estado fundamental con otro bajo: «Do mayor, con bajo en Re», «C major over D».
