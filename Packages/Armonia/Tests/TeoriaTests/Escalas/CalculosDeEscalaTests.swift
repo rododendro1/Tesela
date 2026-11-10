@@ -5,7 +5,7 @@ import Testing
 
 /// Lo que dicen de las escalas las teorías (Myhill, Rothenberg, Gamer, Hanson, Messiaen, Balzano…), en
 /// `EstadisticasDeEscala`.
-@Suite struct MedidasDeEscalaTests {
+@Suite struct CalculosDeEscalaTests {
     let mayor = Escala(.do, .mayor).estadisticas
     let menorArmonica = Escala(.do, .menorArmonica).estadisticas
     let pentatonica = Escala(.do, .pentatonicaMayor).estadisticas
@@ -36,7 +36,7 @@ import Testing
         #expect(pentatonica.intervalosGenericos.estabilidad == 1)
         #expect(menorArmonica.intervalosGenericos.estabilidad < mayor.intervalosGenericos.estabilidad)
         // Do Re♭ Re Mi♭ Sol: la segunda Mi♭–Sol (4 semitonos) es mayor que la tercera Do–Re (2).
-        #expect(MedidasDeEscala.rothenberg([0, 1, 2, 3, 7]).propiedad == .impropia)
+        #expect(CalculosDeEscala.rothenberg([0, 1, 2, 3, 7]).propiedad == .impropia)
         #expect(mayor.intervalosGenericos.anchuraDelEspectro == 1)
         #expect(pentatonica.intervalosGenericos.cocienteDeIgualdad == 1)
     }
@@ -93,8 +93,8 @@ import Testing
     @Test func losAcordesPorGradosSonLosDeSuCifrado() throws {
         for tipo in TipoDeEscala.catalogo where tipo.intervalos.count == 7 {
             let clases = Escala(.do, tipo).notas.map(\.claseDeAltura)
-            let cifrados = try #require(MedidasDeEscala.armonizacion(clases))
-            let tipos = try #require(MedidasDeEscala.acordesPorGrados(clases))
+            let cifrados = try #require(CalculosDeEscala.armonizacion(clases))
+            let tipos = try #require(CalculosDeEscala.acordesPorGrados(clases))
             for (cifrado, acorde) in zip(cifrados.triadas + cifrados.cuatriadas, tipos.triadas + tipos.cuatriadas) {
                 #expect((acorde == nil) == (cifrado == "?"), "\(tipo.nombre): \(cifrado)")
             }

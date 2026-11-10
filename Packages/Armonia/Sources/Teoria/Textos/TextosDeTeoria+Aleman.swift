@@ -6,15 +6,6 @@ import Elementos
 
 extension TextosDeTeoria {
     static let aleman = TextosDeTeoria(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "gleichstufige Stimmung",
-        pitagorico: "pythagoreische Stimmung",
-        mesotonico: "Viertelkomma-Mitteltönigkeit",
-        werckmeisterIII: "Werckmeister III",
-        kirnbergerIII: "Kirnberger III",
-        vallotti: "Vallotti",
-        young: "Young",
-        afinacionJusta: "reine Stimmung",
         familiaDeRitmoLineaDeTiempo: "Timelines",
         familiaDeRitmoFlamenco: "Flamenco-Compás",
         familiaDeRitmoTala: "indische Tālas",

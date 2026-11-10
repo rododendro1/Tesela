@@ -230,9 +230,4 @@ extension ConjuntoDeClasesDeAltura {
     /// Lo que dicen de él la teoría de conjuntos y las medidas que salen de sus clases (`EstadisticasDeConjunto`).
     public var estadisticas: EstadisticasDeConjunto { EstadisticasDeConjunto(self) }
 
-    @available(*, deprecated, renamed: "estadisticas")
-    public var medidas: EstadisticasDeConjunto { estadisticas }
 }
-
-@available(*, deprecated, renamed: "EstadisticasDeConjunto")
-public typealias MedidasDeConjunto = EstadisticasDeConjunto

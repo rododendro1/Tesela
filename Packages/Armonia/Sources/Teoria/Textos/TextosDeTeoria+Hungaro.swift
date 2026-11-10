@@ -6,15 +6,6 @@ import Elementos
 
 extension TextosDeTeoria {
     static let hungaro = TextosDeTeoria(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "kiegyenlített temperálás",
-        pitagorico: "püthagoraszi hangolás",
-        mesotonico: "negyedkommás középhangos hangolás",
-        werckmeisterIII: "Werckmeister III",
-        kirnbergerIII: "Kirnberger III",
-        vallotti: "Vallotti",
-        young: "Young",
-        afinacionJusta: "tiszta hangolás",
         familiaDeRitmoLineaDeTiempo: "időminták",
         familiaDeRitmoFlamenco: "flamenco compások",
         familiaDeRitmoTala: "indiai tálák",

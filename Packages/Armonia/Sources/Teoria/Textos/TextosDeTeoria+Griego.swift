@@ -6,15 +6,6 @@ import Elementos
 
 extension TextosDeTeoria {
     static let griego = TextosDeTeoria(
-        // AfinacionHistorica.swift
-        temperamentoIgual: "ίσος συγκερασμός",
-        pitagorico: "πυθαγόρειο κούρδισμα",
-        mesotonico: "μεσοτονικό ¼ κόμματος",
-        werckmeisterIII: "Βέρκμαϊστερ III",
-        kirnbergerIII: "Κίρνμπεργκερ III",
-        vallotti: "Βαλλόττι",
-        young: "Γιανγκ",
-        afinacionJusta: "φυσικό κούρδισμα",
         familiaDeRitmoLineaDeTiempo: "ρυθμικές γραμμές",
         familiaDeRitmoFlamenco: "κομπάς του φλαμένκο",
         familiaDeRitmoTala: "ινδικές τάλα",

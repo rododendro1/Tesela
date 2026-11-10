@@ -132,16 +132,16 @@ public struct IntervalosGenericosDeEscala: Hashable, Sendable {
 
     /// Los de unas clases de altura desde la tónica, con sus pasos.
     init(_ clases: [Int], pasos: [Int]) {
-        propiedadDeMyhill = MedidasDeEscala.propiedadDeMyhill(clases)
-        generador = MedidasDeEscala.generador(clases)
+        propiedadDeMyhill = CalculosDeEscala.propiedadDeMyhill(clases)
+        generador = CalculosDeEscala.generador(clases)
         bienFormada = generador != nil && (propiedadDeMyhill || Set(pasos).count == 1)
-        let rothenberg = MedidasDeEscala.rothenberg(clases)
+        let rothenberg = CalculosDeEscala.rothenberg(clases)
         propiedadDeRothenberg = rothenberg.propiedad
         ambiguedades = rothenberg.ambiguedades
         contradicciones = rothenberg.contradicciones
         estabilidad = rothenberg.estabilidad
-        cocienteDeIgualdad = MedidasDeEscala.cocienteDeIgualdad(clases, ambiguedades: rothenberg.ambiguedades)
-        anchuraDelEspectro = MedidasDeEscala.anchuraDelEspectro(clases)
+        cocienteDeIgualdad = CalculosDeEscala.cocienteDeIgualdad(clases, ambiguedades: rothenberg.ambiguedades)
+        anchuraDelEspectro = CalculosDeEscala.anchuraDelEspectro(clases)
     }
 }
 
@@ -154,18 +154,6 @@ public struct EstadisticasTonalesDeEscala: Hashable, Sendable {
     /// La cuatríada por terceras de cada grado (solo en las de siete notas): `.dominanteSeptima`, `.menorSeptima`,
     /// `.semidisminuido`…, o `nil` si no es ninguna de las nueve conocidas.
     public let cuatriadas: [TipoDeAcorde?]?
-    /// Las tríadas por terceras de cada grado (solo en las de siete notas): «», «m», «°», «+», «?».
-    @available(*, deprecated, message: "Usa triadas, con los tipos de acorde")
-    public var triadasPorGrados: [String]? { escritas?.triadas }
-    /// Las cuatríadas por terceras de cada grado (solo en las de siete notas): «maj7», «m7», «7», «ø7»…
-    @available(*, deprecated, message: "Usa cuatriadas, con los tipos de acorde")
-    public var cuatriadasPorGrados: [String]? { escritas?.cuatriadas }
-    /// Las de `triadasPorGrados` y `cuatriadasPorGrados`, mientras estén.
-    private let escritas: ArmonizacionEscrita?
-    private struct ArmonizacionEscrita: Hashable, Sendable {
-        let triadas: [String]
-        let cuatriadas: [String]
-    }
     /// La correlación de sus notas con el perfil de Krumhansl y Kessler de la tonalidad mayor sobre su tónica.
     public let perfilMayor: Double
     /// La correlación con el perfil de la tonalidad menor.
@@ -177,16 +165,13 @@ public struct EstadisticasTonalesDeEscala: Hashable, Sendable {
 
     /// Las de unas clases de altura desde la tónica.
     init(_ clases: [Int]) {
-        let acordes = MedidasDeEscala.acordesPorGrados(clases)
+        let acordes = CalculosDeEscala.acordesPorGrados(clases)
         triadas = acordes?.triadas
         cuatriadas = acordes?.cuatriadas
-        escritas = MedidasDeEscala.armonizacion(clases).map {
-            ArmonizacionEscrita(triadas: $0.triadas, cuatriadas: $0.cuatriadas)
-        }
-        perfilMayor = MedidasDeEscala.correlacion(clases, con: MedidasDeEscala.perfilMayor)
-        perfilMenor = MedidasDeEscala.correlacion(clases, con: MedidasDeEscala.perfilMenor)
+        perfilMayor = CalculosDeEscala.correlacion(clases, con: CalculosDeEscala.perfilMayor)
+        perfilMenor = CalculosDeEscala.correlacion(clases, con: CalculosDeEscala.perfilMenor)
         conSensible = clases.contains(11)
-        tetracordosIguales = MedidasDeEscala.tetracordosIguales(clases)
+        tetracordosIguales = CalculosDeEscala.tetracordosIguales(clases)
     }
 }
 
@@ -199,8 +184,8 @@ public struct PsicoacusticaDeEscala: Hashable, Sendable {
 
     /// Las de unas clases de altura desde la tónica.
     init(_ clases: [Int]) {
-        entropiaArmonica = MedidasDeEscala.entropiaArmonica(clases)
-        rugosidadMedia = MedidasDeEscala.rugosidadMedia(clases)
+        entropiaArmonica = CalculosDeEscala.entropiaArmonica(clases)
+        rugosidadMedia = CalculosDeEscala.rugosidadMedia(clases)
     }
 }
 
@@ -208,6 +193,3 @@ extension Escala {
     /// Lo que se mide de la escala (`EstadisticasDeEscala`): su cardinal, su brillo, sus intervalos, su simetría.
     public var estadisticas: EstadisticasDeEscala { EstadisticasDeEscala(self) }
 }
-
-@available(*, deprecated, renamed: "EstadisticasTonalesDeEscala")
-public typealias MedidasTonalesDeEscala = EstadisticasTonalesDeEscala

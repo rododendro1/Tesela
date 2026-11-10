@@ -51,7 +51,7 @@
                 }
                 if let temperamento {
                     Picker(notacion.texto(\.afinacionAlEscuchar), selection: temperamento) {
-                        ForEach(TemperamentoConNombre.paraEscuchar) { opcion in
+                        ForEach(TemperamentoQueAfina.paraEscuchar) { opcion in
                             Text(opcion.nombre(en: notacion)).tag(AjustesDeLasApps.claveDeTemperamento(opcion))
                         }
                     }

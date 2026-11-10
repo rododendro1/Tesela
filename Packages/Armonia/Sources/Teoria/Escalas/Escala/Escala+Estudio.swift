@@ -116,32 +116,7 @@ public struct CambioDeGrado: Hashable, Sendable {
     public let hasta: Nota
 }
 
-/// Dos escalas comparadas: las notas que comparten, las que solo están en una y, si tienen la misma tónica y el
-/// mismo número de notas, los grados que cambian.
-@available(*, deprecated, message: "Usa RelacionEntreEscalas, de Escala.relacion(con:)")
-public struct ComparacionDeEscalas: Hashable, Sendable {
-    public let origen: Escala
-    public let destino: Escala
-    /// Las notas de `origen` que también están en `destino`, aunque se escriban de otra forma.
-    public let comunes: [Nota]
-    public let soloEnOrigen: [Nota]
-    public let soloEnDestino: [Nota]
-    /// Vacío si las tónicas o el número de notas son distintos.
-    public let cambios: [CambioDeGrado]
-
-    /// Cuántas alteraciones cambian en la armadura, si las dos escalas son diatónicas: de Do mayor a Sol mayor, 1.
-    public var distanciaEnQuintas: Int? { origen.distancia(hasta: destino) }
-}
-
 extension Escala {
-    /// Esta escala y otra: notas comunes, las que solo están en una y los grados que cambian.
-    @available(*, deprecated, renamed: "relacion(con:)")
-    public func comparar(con otra: Escala) -> ComparacionDeEscalas {
-        let relacion = relacion(con: otra)
-        return ComparacionDeEscalas(
-            origen: self, destino: otra, comunes: relacion.comunes, soloEnOrigen: relacion.soloEnOrigen,
-            soloEnDestino: relacion.soloEnDestino, cambios: relacion.cambios)
-    }
 
     /// Las notas de esta escala que no estaban en `anterior`: lo que cambia al pasar de una a otra en una
     /// progresión (de Re dórico a Sol mixolidio, nada; de Do mayor a La frigio dominante, Si♭ y Do♯).
@@ -179,9 +154,6 @@ public struct PentatonicaSobreElAcorde: Hashable, Sendable {
     /// Las notas que suma al acorde como tensiones, con su grado: la 9, la ♯11, la 13.
     public var notasDeTension: [NotaSobreElAcorde] { notas.filter { $0.papel == .tension } }
 
-    /// Las tensiones que suma al acorde, como se cifran: «9», «♯11», «13».
-    @available(*, deprecated, message: "Usa notasDeTension, y su cifra o su numero y su alteracion")
-    public var tensiones: [String] { notasDeTension.map(\.cifra) }
 }
 
 extension Acorde {

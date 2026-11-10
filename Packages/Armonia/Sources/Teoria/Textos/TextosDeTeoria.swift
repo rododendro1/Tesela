@@ -9,15 +9,6 @@ import Elementos
 
 /// Los textos de Teoria en un idioma.
 struct TextosDeTeoria: TextosTraducidos {
-    // MARK: AfinacionHistorica.swift
-    let temperamentoIgual: String
-    let pitagorico: String
-    let mesotonico: String
-    let werckmeisterIII: String
-    let kirnbergerIII: String
-    let vallotti: String
-    let young: String
-    let afinacionJusta: String
     let familiaDeRitmoLineaDeTiempo: String
     let familiaDeRitmoFlamenco: String
     let familiaDeRitmoTala: String

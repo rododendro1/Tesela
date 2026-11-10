@@ -1,44 +1,27 @@
 import Armonia
 import Foundation
 
-// Recorre `TipoDeEscala.catalogo` (las occidentales y las de otras tradiciones, en su orden) y escribe una fila por
-// escala con lo que dice de ella la API pública: nombres (y su traducción a los otros doce idiomas), intervalos, tradición, estilos, regiones, categoría,
-// fuente, afinaciones, lo que se mide de sus notas (brillo, pasos, forma prima, simetría…), sus parientes en el
-// catálogo y las obras que la citan. Las listas de una celda van separadas por espacios (intervalos, notas, cents,
-// pasos) o por « · » (alias, variantes, estilos, regiones, escalas, citas); una celda vacía es un dato que la escala
-// no tiene, y las de sí o no dicen «sí» o «no».
-//
-//     swift run EjemploCatalogoDeEscalas [fichero | -] [--tradicion <tradición>] [--bibtex <fichero.bib>]
-//
-// `--tradicion` deja solo las escalas de una tradición, por su nombre («india», «mundoArabe», «Japón»), y `--bibtex`
-// escribe además las obras citadas por las escalas de la tabla, sin repetir, en BibTeX.
-
-/// Una celda de TSV: sin tabuladores ni saltos de línea, que partirían la fila.
-func celda(_ texto: String) -> String {
-    String(texto.map { $0 == "\t" || $0.isNewline ? " " : $0 })
-}
+// El catálogo de escalas (`TipoDeEscala.catalogo`: las occidentales y las de otras tradiciones, en su orden), una fila
+// por escala con lo que dice de ella la API pública: nombres (y su traducción a los otros doce idiomas), intervalos,
+// tradición, estilos, regiones, categoría, fuente, afinaciones, lo que se mide de sus notas (brillo, pasos, forma
+// prima, simetría…), sus parientes en el catálogo y las obras que la citan.
 
 /// Los cents con un decimal como mucho y punto decimal, sea cual sea la configuración regional: «0 151 294.1».
-func cents(_ valores: [Double]) -> String {
+private func cents(_ valores: [Double]) -> String {
     valores.map { Redondeo.texto($0, decimales: 1) }.joined(separator: " ")
 }
 
 /// Un número con dos decimales como mucho y punto decimal: «2», «-0.43».
-func decimal(_ valor: Double) -> String { Redondeo.texto(valor, decimales: 2) }
+private func decimal(_ valor: Double) -> String { Redondeo.texto(valor, decimales: 2) }
 
 /// Con tres decimales como mucho.
-func milesimas(_ valor: Double) -> String { Redondeo.texto(valor) }
+private func milesimas(_ valor: Double) -> String { Redondeo.texto(valor) }
 
-func siONo(_ valor: Bool) -> String { valor ? "sí" : "no" }
+private func numeros(_ valores: [Int]) -> String { valores.map(String.init).joined(separator: " ") }
 
-func numeros(_ valores: [Int]) -> String { valores.map(String.init).joined(separator: " ") }
+private func nombres(_ tipos: [TipoDeEscala]) -> String { tipos.map(\.nombre).joined(separator: " · ") }
 
-func nombres(_ tipos: [TipoDeEscala]) -> String { tipos.map(\.nombre).joined(separator: " · ") }
-
-/// Los idiomas a los que se traduce el nombre, en el orden de `Idioma.allCases`: todos menos el español.
-let traducciones = Idioma.allCases.filter { $0 != .espanol }
-
-let columnas: [String] =
+let columnasDeEscalas: [String] =
     ["nombre", "nombre_completo"] + traducciones.map { "nombre_en_\($0.rawValue)" } + [
         "alias", "variantes", "tradicion", "estilos", "regiones", "categoria", "clase", "fuente", "numero_de_notas",
         "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
@@ -58,8 +41,8 @@ let columnas: [String] =
         "equivalentes", "derivadas", "referencias",
     ]
 
-/// La fila de una escala, en el orden de `columnas`.
-func fila(_ tipo: TipoDeEscala) -> [String] {
+/// La fila de una escala, en el orden de `columnasDeEscalas`.
+func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
     let microtonal = tipo.microtonal
     let sobreDo = Escala(.do, tipo)
     let medidas = sobreDo.estadisticas
@@ -152,12 +135,12 @@ func fila(_ tipo: TipoDeEscala) -> [String] {
     return comoSeLlama + resto
 }
 
-// MARK: - Argumentos
-
-/// Termina con un mensaje en la salida de errores.
-func fallar(_ mensaje: String) -> Never {
-    FileHandle.standardError.write(Data((mensaje + "\n").utf8))
-    exit(1)
+/// Las escalas del catálogo, o solo las de una tradición.
+func escalas(de tradicion: Tradicion?) -> Catalogo {
+    let tipos = TipoDeEscala.catalogo.filter { tradicion == nil || $0.tradicion == tradicion }
+    return Catalogo(
+        fichero: "escalas.tsv", columnas: columnasDeEscalas, filas: tipos.map(filaDeTipoDeEscala),
+        obras: tipos.flatMap(\.referencias))
 }
 
 /// La tradición de un nombre, sin mirar mayúsculas ni tildes: el del caso («mundoArabe») o el que se lee («Japón»).
@@ -166,61 +149,4 @@ func tradicion(llamada nombre: String) -> Tradicion? {
         texto.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil).filter { !$0.isWhitespace }
     }
     return Tradicion.allCases.first { clave($0.rawValue) == clave(nombre) || clave($0.nombre) == clave(nombre) }
-}
-
-var destino = "catalogo-de-escalas.tsv"
-var soloDe: Tradicion?
-var destinoBibTeX: String?
-var argumentos = CommandLine.arguments.dropFirst()
-while let argumento = argumentos.popFirst() {
-    switch argumento {
-    case "--tradicion":
-        guard let nombre = argumentos.popFirst() else { fallar("Falta la tradición después de --tradicion") }
-        guard let elegida = tradicion(llamada: nombre) else {
-            fallar(
-                "«\(nombre)» no es una tradición; son: \(Tradicion.allCases.map(\.rawValue).joined(separator: ", "))")
-        }
-        soloDe = elegida
-    case "--bibtex":
-        guard let fichero = argumentos.popFirst() else { fallar("Falta el fichero después de --bibtex") }
-        destinoBibTeX = fichero
-    default:
-        destino = argumento
-    }
-}
-
-// MARK: - Salida
-
-let escalas = TipoDeEscala.catalogo.filter { soloDe == nil || $0.tradicion == soloDe }
-let filas = [columnas] + escalas.map(fila)
-let tsv = filas.map { $0.map(celda).joined(separator: "\t") }.joined(separator: "\n") + "\n"
-
-/// Escribe un texto en un fichero, o en la salida estándar si el fichero es «-».
-func escribir(_ texto: String, en fichero: String) {
-    if fichero == "-" {
-        print(texto, terminator: "")
-        return
-    }
-    do {
-        try texto.write(toFile: fichero, atomically: true, encoding: .utf8)
-    } catch {
-        fallar("No se pudo escribir \(fichero): \(error)")
-    }
-}
-
-func lugar(_ fichero: String) -> String { fichero == "-" ? "la salida estándar" : fichero }
-
-var resumen = ["\(escalas.count) escalas en \(lugar(destino))"]
-escribir(tsv, en: destino)
-if let destinoBibTeX {
-    let obras = Referencia.sinRepetir(escalas.flatMap(\.referencias))
-    escribir(Referencia.bibtex(obras), en: destinoBibTeX)
-    resumen.append("\(obras.count) obras en \(lugar(destinoBibTeX))")
-}
-// Con algo en la salida estándar, el resumen va a la de errores para no mezclarse con ello.
-let texto = resumen.joined(separator: "\n") + "\n"
-if destino == "-" || destinoBibTeX == "-" {
-    FileHandle.standardError.write(Data(texto.utf8))
-} else {
-    print(texto, terminator: "")
 }

@@ -28,10 +28,16 @@ import Testing
 
     /// Cada temperamento para escuchar y cada sistema microtonal (salvo el de cents cualesquiera) está en el catálogo.
     @Test func historicasYSistemas() throws {
-        for temperamento in TemperamentoConNombre.paraEscuchar {
-            #expect(TemperamentoConNombre.catalogo.contains(temperamento))
-            #expect(temperamento.afinacion(tonica: .re) != nil)
+        for temperamento in TemperamentoQueAfina.paraEscuchar {
+            #expect(TemperamentoConNombre.catalogo.contains(temperamento.temperamento))
         }
+        // Afinan las notas todos menos los sistemas de otras tradiciones.
+        #expect(TemperamentoQueAfina.todos.allSatisfy { $0.temperamento.sistemaMicrotonal == nil })
+        #expect(Set(TemperamentoQueAfina.paraEscuchar).isSubset(of: TemperamentoQueAfina.todos))
+        #expect(TemperamentoQueAfina(.comas53) == nil)
+        #expect(TemperamentoQueAfina(.vallotti) == .vallotti)
+        #expect(TemperamentoQueAfina.vallotti.id == TemperamentoConNombre.vallotti.id)
+        #expect(TemperamentoQueAfina.vallotti.description == TemperamentoConNombre.vallotti.description)
         for sistema in SistemaMicrotonal.allCases where sistema != .razones {
             #expect(sistema.temperamento?.sistemaMicrotonal == sistema)
             #expect(sistema.temperamento?.pasosPorOctava == sistema.pasosPorOctava)

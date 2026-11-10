@@ -118,6 +118,3 @@ enum CuentasDeAfinacionJusta {
         return 2
     }
 }
-
-@available(*, deprecated, renamed: "EstadisticasDeAfinacionJusta")
-public typealias MedidasDeAfinacionJusta = EstadisticasDeAfinacionJusta

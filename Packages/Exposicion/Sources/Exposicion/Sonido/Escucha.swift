@@ -66,19 +66,12 @@ public struct Escucha: Hashable, Sendable {
         Escucha(notas: notas, tonica: tonica)
     }
 
-    /// Lo mismo, con cada nota afinada en `temperamento`.
-    @available(*, deprecated, message: "Usa afinado(con:), con un TemperamentoConNombre")
-    public func afinado(en temperamento: AfinacionHistorica) -> Escucha {
-        afinado(con: temperamento.temperamento)
-    }
-
     /// Lo mismo, con cada nota afinada en `temperamento` (la justa, sobre la tónica, o sobre Do si no se conoce).
-    /// Los microtonos se conservan: se suman a la afinación de su nota escrita. Un sistema de otra tradición, que no
-    /// afina notas, lo deja como está.
+    /// Los microtonos se conservan: se suman a la afinación de su nota escrita.
     ///
     ///     Escucha.acorde(Acorde("Do")).afinado(con: .afinacionJusta).notas.map { Int($0.desviacion.rounded()) }   // [0, -14, 2]
-    public func afinado(con temperamento: TemperamentoConNombre) -> Escucha {
-        guard let afinacion = temperamento.afinacion(tonica: tonica ?? .do) else { return self }
+    public func afinado(con temperamento: TemperamentoQueAfina) -> Escucha {
+        let afinacion = temperamento.afinacion(tonica: tonica ?? .do)
         return Escucha(
             notas: notas.map { nota in
                 var afinada = nota
