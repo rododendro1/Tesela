@@ -255,7 +255,8 @@ extension PentagramaSVG {
     func dibujarElRitmo(
         _ ritmo: Ritmo, _ colocadas: [ColumnaColocada], pentagramas: Int, en lienzo: inout Lienzo
     ) {
-        let (trazos, arriba, abajo, plicasArriba) = trazosDelRitmo(ritmo, colocadas: colocadas, pentagramas: pentagramas)
+        let (trazos, arriba, abajo, plicasArriba) = trazosDelRitmo(
+            ritmo, colocadas: colocadas, pentagramas: pentagramas)
         lienzo.notas += trazos
         if arriba.isFinite { lienzo.minimoY = min(lienzo.minimoY, arriba) }
         if abajo.isFinite { lienzo.maximoY = max(lienzo.maximoY, abajo) }

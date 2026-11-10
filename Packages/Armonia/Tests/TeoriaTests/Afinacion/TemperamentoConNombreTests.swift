@@ -38,6 +38,9 @@ import Testing
         #expect(TemperamentoQueAfina(.vallotti) == .vallotti)
         #expect(TemperamentoQueAfina.vallotti.id == TemperamentoConNombre.vallotti.id)
         #expect(TemperamentoQueAfina.vallotti.description == TemperamentoConNombre.vallotti.description)
+        #expect(
+            TemperamentoQueAfina.young.nombre(en: .compacta(.ingles))
+                == TemperamentoConNombre.young.nombre(en: .compacta(.ingles)))
         for sistema in SistemaMicrotonal.allCases where sistema != .razones {
             #expect(sistema.temperamento?.sistemaMicrotonal == sistema)
             #expect(sistema.temperamento?.pasosPorOctava == sistema.pasosPorOctava)

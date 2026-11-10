@@ -2,10 +2,15 @@
 
 ## Sin publicar
 
+### Cambios incompatibles
+
+- `Escucha.afinado(en:)` se quita: `afinado(con:)`, que ahora toma un `TemperamentoQueAfina` y ya no deja la
+  escucha como está con un sistema de otra tradición (no se puede pasar).
+
+### Lo demás
+
 - `ComparacionPresentada` lleva `relacion` (`RelacionEntreAcordes`) y `disposiciones` en vez de `comparacion`, y
   `ComparacionDeEscalasPresentada`, `relacion` (`RelacionEntreEscalas`) en vez de `comparacion`.
-- `Escucha.afinado(con:)` toma un `TemperamentoConNombre`; `afinado(en:)`, con una `AfinacionHistorica`, queda
-  obsoleta.
 - `PresentacionDeEstudioDeEscala.grados(_:)` toma también los tipos de acorde de cada grado. Las cuatríadas con la
   quinta disminuida se escriben `V7(♭5)`, con el cifrado del acorde (antes `V7♭5`).
 

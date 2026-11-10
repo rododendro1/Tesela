@@ -278,7 +278,9 @@ extension LineaDeComandos {
             if tradicion == nil && categoria == nil && fuente == nil {
                 if let uso {
                     let delUso = uso.tipos.filter { cumple($0, en: notacion) }
-                    if !delUso.isEmpty { grupos.append((traducir(.habituales) + " · " + uso.nombre(en: notacion), delUso)) }
+                    if !delUso.isEmpty {
+                        grupos.append((traducir(.habituales) + " · " + uso.nombre(en: notacion), delUso))
+                    }
                 } else {
                     let habituales = TipoDeEscala.occidentales.filter { cumple($0, en: notacion) }
                     if !habituales.isEmpty { grupos.append((traducir(.habituales), habituales)) }

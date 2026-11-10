@@ -32,4 +32,5 @@ func filaDeProgresion(_ progresion: ProgresionConNombre) -> [String] {
 
 let progresiones = Catalogo(
     fichero: "progresiones.tsv", columnas: columnasDeProgresiones,
-    filas: ProgresionConNombre.catalogo.map(filaDeProgresion), obras: ProgresionConNombre.catalogo.flatMap(\.referencias))
+    filas: ProgresionConNombre.catalogo.map(filaDeProgresion),
+    obras: ProgresionConNombre.catalogo.flatMap(\.referencias))

@@ -2,9 +2,16 @@
 
 ## Sin publicar
 
-- `Reproductor.tocar(_:con:)` y `Reproductor.temperamentoGuardado` usan un `TemperamentoConNombre`;
-  `tocar(_:en:)`, con una `AfinacionHistorica`, queda obsoleta. `AjustesDeLasApps.claveDeTemperamento(_:)` y
-  `temperamento(deClave:)` pasan de un temperamento a lo que se guarda, con las mismas claves de antes.
+### Cambios incompatibles
+
+- `Reproductor.tocar(_:en:)` se quita: `tocar(_:con:)`. `tocar(_:con:)`, `Reproductor.temperamentoGuardado`,
+  `AjustesDeLasApps.claveDeTemperamento(_:)` y `temperamento(deClave:)` usan ahora un `TemperamentoQueAfina`; una
+  clave guardada de un sistema que no afina notas se lee como `nil`.
+
+### Lo demás
+
+- `AjustesDeLasApps.claveDeTemperamento(_:)` y `temperamento(deClave:)` pasan de un temperamento a lo que se guarda,
+  con las mismas claves de antes.
 
 ## 0.4.4 (2026-11-09)
 

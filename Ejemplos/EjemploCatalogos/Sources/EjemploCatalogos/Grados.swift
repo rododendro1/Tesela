@@ -32,13 +32,17 @@ private func secundarios(mayor: Bool) -> [Grado] {
 }
 
 private let gradosEnMayor: [Grado] =
-    ["I", "ii", "iii", "IV", "V", "vi", "vii°", "Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "viiø7"].map { Grado($0) }
+    ["I", "ii", "iii", "IV", "V", "vi", "vii°", "Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "viiø7"].map {
+        Grado($0)
+    }
     + ["i", "iv", "iv7", "♭III", "♭VI", "♭VII", "♭VImaj7", "vii°7"].map { Grado($0) }
     + secundarios(mayor: true)
 
 private let gradosEnMenor: [Grado] =
-    ["i", "ii°", "III", "iv", "v", "V", "VI", "VII", "vii°", "i7", "iiø7", "IIImaj7", "iv7", "v7", "V7", "VImaj7",
-        "VII7", "vii°7"].map { Grado($0) }
+    [
+        "i", "ii°", "III", "iv", "v", "V", "VI", "VII", "vii°", "i7", "iiø7", "IIImaj7", "iv7", "v7", "V7", "VImaj7",
+        "VII7", "vii°7",
+    ].map { Grado($0) }
     + ["I", "IV", "III+"].map { Grado($0) }
     + secundarios(mayor: false)
 

@@ -84,7 +84,8 @@ func filaDeNota(_ nota: NotaConNombre) -> [String] {
     return nombres + resto
 }
 
-let notas = Catalogo(fichero: "notas.tsv", columnas: columnasDeNotas, filas: NotaConNombre.catalogo.map(filaDeNota),
+let notas = Catalogo(
+    fichero: "notas.tsv", columnas: columnasDeNotas, filas: NotaConNombre.catalogo.map(filaDeNota),
     obras: NotaConNombre.catalogo.flatMap(\.referencias))
 
 let columnasDeFunciones: [String] =
