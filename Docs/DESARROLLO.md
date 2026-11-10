@@ -30,6 +30,7 @@ Ejemplos/
 ├── EjemploCatalogoDeAcordes/  El catálogo de acordes en un fichero TSV, una fila por acorde (SwiftPM)
 ├── EjemploCatalogoDeEscalas/  El catálogo de escalas en un fichero TSV, una fila por escala (SwiftPM)
 ├── EjemploCatalogoDeProgresiones/  El catálogo de progresiones en un fichero TSV, una fila por progresión (SwiftPM)
+├── EjemploCatalogos/   Los demás catálogos (ritmos, temperamentos, referencias, encordados…), un TSV por catálogo (SwiftPM)
 └── EjemploHexagonos/   Un recorrido por las rejillas hexagonales, con mapas dibujados en el terminal (SwiftPM)
 Herramientas/
 ├── FuzzArmonia/         Los lectores de ficheros y textos con datos al azar (libFuzzer; el CI lo pasa cada semana)
@@ -69,7 +70,7 @@ Package.swift       Los paquetes juntos, para usarlos desde otro proyecto por UR
 ArsHarmonicaApp ──┬──► Interfaz ───┬──► Exposicion ──► Armonia ──► Hexagonos
 TonnetzApp ───────┘               ├──► Armonia
                                   └──► Hexagonos
-ArsHarmonicaApp, TonnetzApp, ConsolaArmonia, EjemploArmonia, EjemploCatalogoDeEscalas, EjemploCatalogoDeAcordes, EjemploCatalogoDeProgresiones, RendimientoArmonia, FuzzArmonia ──► Armonia
+ArsHarmonicaApp, TonnetzApp, ConsolaArmonia, EjemploArmonia, EjemploCatalogoDeEscalas, EjemploCatalogoDeAcordes, EjemploCatalogoDeProgresiones, EjemploCatalogos, RendimientoArmonia, FuzzArmonia ──► Armonia
 ConsolaArmonia ──► Exposicion (sin SwiftUI) ──► Armonia
 EjemploHexagonos ──► Hexagonos
 ```
@@ -99,6 +100,7 @@ swift run --package-path Ejemplos/EjemploHexagonos EjemploHexagonos   # el de la
 swift run --package-path Ejemplos/EjemploCatalogoDeEscalas EjemploCatalogoDeEscalas escalas.tsv   # el catálogo en TSV
 swift run --package-path Ejemplos/EjemploCatalogoDeAcordes EjemploCatalogoDeAcordes acordes.tsv   # el de acordes
 swift run --package-path Ejemplos/EjemploCatalogoDeProgresiones EjemploCatalogoDeProgresiones progresiones.tsv
+swift run --package-path Ejemplos/EjemploCatalogos EjemploCatalogos tsv   # los demás catálogos, uno por fichero
 swift run -c release --package-path Herramientas/RendimientoArmonia RendimientoArmonia   # los tiempos del motor
 
 # Las apps (macOS, con XcodeGen)

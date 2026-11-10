@@ -9,6 +9,7 @@ Package.resolved
 Ejemplos/EjemploCatalogoDeEscalas/catalogo-de-escalas.tsv
 Ejemplos/EjemploCatalogoDeAcordes/catalogo-de-acordes.tsv
 Ejemplos/EjemploCatalogoDeProgresiones/catalogo-de-progresiones.tsv
+Ejemplos/EjemploCatalogos/catalogos/
 # Ajustes de tu equipo (copia de Config/Local.xcconfig.ejemplo)
 Config/Local.xcconfig
 .logs-compilacion/
