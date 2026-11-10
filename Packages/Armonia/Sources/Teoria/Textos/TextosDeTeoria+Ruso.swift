@@ -15,6 +15,13 @@ extension TextosDeTeoria {
         vallotti: "Валлотти",
         young: "Юнг",
         afinacionJusta: "чистый строй",
+        familiaDeRitmoLineaDeTiempo: "тайм-лайны",
+        familiaDeRitmoFlamenco: "компасы фламенко",
+        familiaDeRitmoTala: "индийские талы",
+        familiaDeRitmoIqa: "арабские ика",
+        familiaDeRitmoAksak: "аксак и усуль",
+        familiaDeRitmoModoRitmico: "ритмические модусы",
+        familiaDeRitmoDanza: "танцы",
 
         // Acorde.swift
         conBajoEn: "{1}, с басом {2}",

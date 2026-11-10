@@ -15,6 +15,13 @@ extension TextosDeTeoria {
         vallotti: "Βαλλόττι",
         young: "Γιανγκ",
         afinacionJusta: "φυσικό κούρδισμα",
+        familiaDeRitmoLineaDeTiempo: "ρυθμικές γραμμές",
+        familiaDeRitmoFlamenco: "κομπάς του φλαμένκο",
+        familiaDeRitmoTala: "ινδικές τάλα",
+        familiaDeRitmoIqa: "αραβικά ικά",
+        familiaDeRitmoAksak: "ακσάκ και ουσούλ",
+        familiaDeRitmoModoRitmico: "ρυθμικοί τρόποι",
+        familiaDeRitmoDanza: "χοροί",
 
         // Acorde.swift
         conBajoEn: "{1}, με μπάσο το {2}",

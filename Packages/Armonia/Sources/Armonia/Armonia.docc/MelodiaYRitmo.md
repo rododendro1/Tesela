@@ -119,6 +119,29 @@ tresContraDos.resultante() == [Duracion(1, 3), Duracion(1, 6), Duracion(1, 6), D
 tresContraDos.voces(compases: 2)[0].eventos.count                                                  // 6
 ```
 
+### Ritmos con nombre
+
+``RitmoConNombre`` es el catálogo de ritmos: las líneas de tiempo del Caribe y del África
+occidental (el tresillo, las claves, el bembé), los compases del flamenco, los tāla de la India,
+los iqa'at árabes, los aksak y los usul, los modos rítmicos de Notre Dame y unas danzas. Cada uno
+se escribe como Toussaint, en notación de caja (`x` fuerte, `o` débil, `.` silencio), con su
+agrupación y la figura de su pulso, y se busca por su nombre en cualquiera de los trece idiomas.
+``EstadisticasDeRitmo`` da sus medidas: el vector de distancias, si es euclídeo o profundo, la
+uniformidad, el contratiempo y la síncopa. `voz(en:ciclos:)` lo toca, con acento en los fuertes:
+
+```swift
+let clave = RitmoConNombre.claveDeSon
+clave.patron                                           // "x..x..x...x.x..."
+clave.intervalos                                       // [3, 3, 4, 2, 4]
+clave.compas.description                               // "4/4"
+clave.estadisticas.vectorDeDistancias                  // [0, 1, 2, 2, 0, 3, 2, 0]
+RitmoConNombre.tresillo.estadisticas.euclideo          // true
+RitmoConNombre.euclideo(ataques: 3, pulsos: 8)         // "x..x..x."
+clave.distanciaDeHamming(a: .claveDeRumba)             // 2
+RitmoConNombre.buscar(nombre: "son clave") == clave    // true
+clave.voz(ciclos: 2).eventos.count                     // 10
+```
+
 ## Métrica
 
 Cada compás agrupa sus unidades en pulsos: `[1, 1, 1, 1]` en 4/4, `[3, 3]` en 6/8, `[2, 2, 3]`

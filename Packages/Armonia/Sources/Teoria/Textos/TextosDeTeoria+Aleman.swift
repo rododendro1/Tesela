@@ -15,6 +15,13 @@ extension TextosDeTeoria {
         vallotti: "Vallotti",
         young: "Young",
         afinacionJusta: "reine Stimmung",
+        familiaDeRitmoLineaDeTiempo: "Timelines",
+        familiaDeRitmoFlamenco: "Flamenco-Compás",
+        familiaDeRitmoTala: "indische Tālas",
+        familiaDeRitmoIqa: "arabische Iqa'at",
+        familiaDeRitmoAksak: "Aksak und Usul",
+        familiaDeRitmoModoRitmico: "rhythmische Modi",
+        familiaDeRitmoDanza: "Tänze",
 
         // Acorde.swift
         conBajoEn: "{1}, mit {2} im Bass",

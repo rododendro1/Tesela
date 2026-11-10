@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- `RitmoPresentado`: un ritmo del catálogo con su ficha (familia, patrón, agrupación, compás) y lo que se mide de él,
+  con `ficha(en:)` y `datos(en:)`; `RelacionEntreRitmosPresentada`, las distancias de Hamming y de intercambio.
+  `TextosDeApps` tiene sus nombres en los trece idiomas.
+
 - Las medidas de relación, escritas y para el JSON: `RelacionEntreAcordesPresentada`,
   `AcordeEnLaTonalidadPresentado` (Krumhansl, función probable, tonalidades cercanas y escalas del catálogo),
   `RelacionEntreEscalasPresentada`, `RelacionEntreConjuntosPresentada` y `EstadisticasDeProgresionPresentadas`, cada una

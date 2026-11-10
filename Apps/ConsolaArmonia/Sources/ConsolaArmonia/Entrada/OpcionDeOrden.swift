@@ -168,6 +168,7 @@ extension OpcionDeOrden {
     static let tonalidades = marca("--tonalidades", "--keys")
     static let tonica = marca("--tonica", "--tonic")
     static let tradicion = valor("--tradicion", "--tradition")
+    static let familia = valor("--familia", "--family")
     static let traste = valor("--traste", "--fret")
     static let tresillos = marca("--tresillos", "--triplets")
     static let triadas = marca("--triadas", "--triads")

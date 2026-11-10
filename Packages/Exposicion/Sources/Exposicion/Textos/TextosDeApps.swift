@@ -314,6 +314,22 @@ public struct TextosDeApps: TextosTraducidos {
     public let notasFueraDeLaTonalidad: String
     public let cromatismo: String
     public let estadisticasDeLaProgresion: String
+    public let ritmo: String
+    public let familiaDeRitmo: String
+    public let patronDeRitmo: String
+    public let agrupacionDeRitmo: String
+    public let compasDeRitmo: String
+    public let pulsosGolpesYFuertes: String
+    public let intervalosDeRitmo: String
+    public let vectorDeDistancias: String
+    public let ritmoEuclideo: String
+    public let ritmoProfundo: String
+    public let simetriasPorRotacion: String
+    public let uniformidadDeRitmo: String
+    public let contratiempoDeToussaint: String
+    public let sincopaDeRitmo: String
+    public let distanciaDeHamming: String
+    public let distanciaDeIntercambio: String
     public let propiedades: String
     public let escaleraDeBrillo: String
     public let hojaDeEstudio: String
