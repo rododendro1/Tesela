@@ -18,6 +18,13 @@ struct TextosDeTeoria: TextosTraducidos {
     let vallotti: String
     let young: String
     let afinacionJusta: String
+    let familiaDeRitmoLineaDeTiempo: String
+    let familiaDeRitmoFlamenco: String
+    let familiaDeRitmoTala: String
+    let familiaDeRitmoIqa: String
+    let familiaDeRitmoAksak: String
+    let familiaDeRitmoModoRitmico: String
+    let familiaDeRitmoDanza: String
 
     // MARK: Acorde.swift
     /// Un acorde en estado fundamental con otro bajo: «Do mayor, con bajo en Re», «C major over D».

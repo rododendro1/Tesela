@@ -166,44 +166,14 @@ public enum FamiliaDeRitmo: String, Hashable, Sendable, Codable, CaseIterable, N
 
     /// «líneas de tiempo», «timelines»…
     public func nombre(en notacion: Notacion) -> String {
-        let traduccion: Traduccion
         switch self {
-        case .lineaDeTiempo:
-            traduccion = Traduccion(
-                "líneas de tiempo", "timelines", ca: "línies de temps", gl: "liñas de tempo", eu: "denbora-lerroak",
-                pt: "linhas-guia", fr: "lignes de temps", it: "linee del tempo", de: "Timelines",
-                el: "ρυθμικές γραμμές", ru: "тайм-лайны", hu: "időminták", sv: "tidslinjer")
-        case .flamenco:
-            traduccion = Traduccion(
-                "compases flamencos", "flamenco compás", ca: "compassos flamencs", gl: "compases flamencos",
-                eu: "flamenko konpasak", pt: "compassos flamencos", fr: "compás flamencos", it: "compás del flamenco",
-                de: "Flamenco-Compás", el: "κομπάς του φλαμένκο", ru: "компасы фламенко", hu: "flamenco compások",
-                sv: "flamencons compás")
-        case .tala:
-            traduccion = Traduccion(
-                "tāla de la India", "Indian tālas", ca: "tāla de l'Índia", gl: "tāla da India", eu: "Indiako tālak",
-                pt: "tālas da Índia", fr: "tālas indiens", it: "tāla indiani", de: "indische Tālas",
-                el: "ινδικές τάλα", ru: "индийские талы", hu: "indiai tálák", sv: "indiska tālor")
-        case .iqa:
-            traduccion = Traduccion(
-                "iqa'at árabes", "Arabic iqa'at", ca: "iqa'at àrabs", gl: "iqa'at árabes", eu: "iqa'at arabiarrak",
-                pt: "iqa'at árabes", fr: "iqa'at arabes", it: "iqa'at arabi", de: "arabische Iqa'at",
-                el: "αραβικά ικά", ru: "арабские ика", hu: "arab iqa'at", sv: "arabiska iqa'at")
-        case .aksak:
-            traduccion = Traduccion(
-                "aksak y usul", "aksak and usul", ca: "aksak i usul", gl: "aksak e usul", eu: "aksak eta usul",
-                pt: "aksak e usul", fr: "aksak et usul", it: "aksak e usul", de: "Aksak und Usul",
-                el: "ακσάκ και ουσούλ", ru: "аксак и усуль", hu: "aksak és usul", sv: "aksak och usul")
-        case .modoRitmico:
-            traduccion = Traduccion(
-                "modos rítmicos", "rhythmic modes", ca: "modes rítmics", gl: "modos rítmicos", eu: "modu erritmikoak",
-                pt: "modos rítmicos", fr: "modes rythmiques", it: "modi ritmici", de: "rhythmische Modi",
-                el: "ρυθμικοί τρόποι", ru: "ритмические модусы", hu: "ritmikai modusok", sv: "rytmiska modi")
-        case .danza:
-            traduccion = Traduccion(
-                "danzas", "dances", ca: "danses", gl: "danzas", eu: "dantzak", pt: "danças", fr: "danses",
-                it: "danze", de: "Tänze", el: "χοροί", ru: "танцы", hu: "táncok", sv: "danser")
+        case .lineaDeTiempo: TextosDeTeoria.en(notacion, \.familiaDeRitmoLineaDeTiempo)
+        case .flamenco: TextosDeTeoria.en(notacion, \.familiaDeRitmoFlamenco)
+        case .tala: TextosDeTeoria.en(notacion, \.familiaDeRitmoTala)
+        case .iqa: TextosDeTeoria.en(notacion, \.familiaDeRitmoIqa)
+        case .aksak: TextosDeTeoria.en(notacion, \.familiaDeRitmoAksak)
+        case .modoRitmico: TextosDeTeoria.en(notacion, \.familiaDeRitmoModoRitmico)
+        case .danza: TextosDeTeoria.en(notacion, \.familiaDeRitmoDanza)
         }
-        return traduccion.en(notacion)
     }
 }

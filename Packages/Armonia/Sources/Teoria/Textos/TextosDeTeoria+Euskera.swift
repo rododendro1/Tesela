@@ -15,6 +15,13 @@ extension TextosDeTeoria {
         vallotti: "Vallotti",
         young: "Young",
         afinacionJusta: "afinazio justua",
+        familiaDeRitmoLineaDeTiempo: "denbora-lerroak",
+        familiaDeRitmoFlamenco: "flamenko konpasak",
+        familiaDeRitmoTala: "Indiako tālak",
+        familiaDeRitmoIqa: "iqa'at arabiarrak",
+        familiaDeRitmoAksak: "aksak eta usul",
+        familiaDeRitmoModoRitmico: "modu erritmikoak",
+        familiaDeRitmoDanza: "dantzak",
 
         // Acorde.swift
         conBajoEn: "{1}, baxua {2} dela",
