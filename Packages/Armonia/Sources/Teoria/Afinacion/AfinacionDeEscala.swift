@@ -4,8 +4,8 @@ import Foundation
 // Las escalas y sus afinaciones.
 //
 // Una escala de otra tradición suena con sus microtonos (`AfinacionDeEscala`, de `TipoDeEscala.afinaciones`); una
-// escala de doce notas se puede medir en un temperamento histórico (`Escala.cents(en:)`), que depende de la tónica
-// cuando el temperamento es circular o justo. Cada tradición sugiere el suyo (`Tradicion.temperamentoSugerido`), y
+// escala de doce notas se puede medir en cualquier temperamento que afine notas (`Escala.cents(con:)`, con un
+// `TemperamentoQueAfina`), y eso depende de la tónica cuando el temperamento es circular o justo. Cada tradición sugiere el suyo (`Tradicion.temperamentoSugerido`), y
 // cada estilo de una escala occidental, también (`Estilo.temperamentoSugerido`).
 
 // MARK: - Una escala microtonal como afinación
@@ -68,7 +68,7 @@ extension Escala {
         AfinacionDeEscala(self, microtonal: microtonal, sentido: sentido, frecuenciaDelLa4: la4)
     }
 
-    /// Cents de cada grado desde la tónica en un temperamento del catálogo, como `TipoDeEscalaMicrotonal.cents`.
+    /// Cents de cada grado desde la tónica en un temperamento que afina notas, como `TipoDeEscalaMicrotonal.cents`.
     /// Depende de la tónica: en Werckmeister III, Do mayor y Re♭ mayor no miden lo mismo; en la justa, la tónica es
     /// la de la escala.
     ///
@@ -88,7 +88,7 @@ extension Escala {
 // MARK: - La afinación de cada tradición
 
 extension Tradicion {
-    /// El temperamento histórico que mejor le va a la tradición, para oír sus escalas de doce notas cuando no tienen
+    /// El temperamento que mejor le va a la tradición, para oír sus escalas de doce notas cuando no tienen
     /// versión microtonal: el pitagórico en el canto gregoriano, la Grecia antigua, Mesopotamia y China, que afinan
     /// por quintas puras; la justa en la India, cuyos śruti son razones de 2, 3 y 5; el mesotónico en el
     /// Renacimiento, el de su polifonía. `nil` en las demás, que tienen sus microtonos o no se ajustan a ninguno, y en

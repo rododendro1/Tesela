@@ -231,7 +231,8 @@ Sources/
 │   │                      catálogo con nombre tiene la misma forma: su tipo y su catálogo en la carpeta, y sus
 │   │                      nombres en `Nombres/`, un fichero por idioma
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
-│   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde,
+│   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
+│   │   │                  (con LecturaDeCifrado, el lector de cifrados),
 │   │   │                  CardinalDeAcorde y EstadisticasDeAcorde (lo que se mide de un acorde, con sus
 │   │   │                  bloques PsicoacusticaDeAcorde y DisposicionDeVoces), GrupoDeHindemith,
 │   │   │                  RelacionEntreAcordes (Tymoczko, Tonnetz, Lerdahl, Fourier, Forte)
@@ -275,8 +276,9 @@ Sources/
 │   ├── Funciones/         FuncionDeNota (grados, modo gregoriano, rāga, maqam, blue notes, adornos y notas extrañas)
 │   │   │                  y su catálogo
 │   │   └── Nombres/       NombresDeFunciones y un fichero por idioma (`NombresDeFunciones+Catalan.swift`…)
-│   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa)
-│       │                  (las del botón «Escuchar»), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett
+│   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa),
+│       │                  TemperamentoQueAfina (los del catálogo que afinan las doce notas, con los del botón
+│       │                  «Escuchar»), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett
 │       │                  (números), EstadisticasDeAfinacionJusta (Euler, Tenney, Partch, Gill y Purves), JingFang,
 │       │                  TemperamentoConNombre (el catálogo de temperamentos y sistemas de afinación: regulares,
 │       │                  circulares, justa, divisiones iguales y otras tradiciones, con su búsqueda),

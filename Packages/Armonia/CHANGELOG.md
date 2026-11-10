@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.5.0 (2026-11-10)
 
 ### Cambios incompatibles
 
@@ -41,23 +41,20 @@ Se quita todo lo que había quedado obsoleto. En su lugar:
 - Una sola relación entre dos acordes y entre dos escalas. `RelacionEntreAcordes` tiene ahora las notas comunes
   (`comunes`) y, con `voces(en:)`, cómo va cada voz en una disposición (`RelacionEntreAcordes.Voces`, con
   `movimientos` y `movimientoTotal`). `RelacionEntreEscalas` tiene `comunes`, `soloEnOrigen`, `soloEnDestino` y
-  `cambios`. Quedan obsoletos `Acorde.comparar(con:disposicion:)`, `Escala.comparar(con:)`, `ComparacionDeAcordes` y
-  `ComparacionDeEscalas`; la distancia por armaduras sigue en `Escala.distancia(hasta:)`.
-- Un solo camino a la afinación: los ocho temperamentos que las apps ofrecen para oír (ahora
-  `TemperamentoQueAfina.paraEscuchar`), y `TemperamentoConNombre.distingueEnarmonicas` dice si separa Sol♯ de La♭. `Escala.cents(con:sentido:)` y
-  `temperamentoSugerido` (en `Tradicion`, `Estilo` y `TipoDeEscala`) toman y dan un temperamento del catálogo. Quedan
-  obsoletos `AfinacionHistorica`, `TemperamentoConNombre.historica`, `Escala.cents(en:sentido:)` y
-  `afinacionSugerida`. Los nombres en ruso y en griego de Werckmeister, Kirnberger, Vallotti y Young van en su
-  alfabeto, como ya iban en `AfinacionHistorica`.
-- `estadisticas` en todas partes: `ConjuntoDeClasesDeAltura.estadisticas` (antes `medidas`, que queda obsoleta) y los
-  tipos `EstadisticasDeConjunto`, `EstadisticasTonalesDeEscala` y `EstadisticasDeAfinacionJusta` (antes
-  `MedidasDeConjunto`, `MedidasTonalesDeEscala` y `MedidasDeAfinacionJusta`, que quedan como alias obsoletos).
+  `cambios`, y sustituyen a `comparar(con:)` (arriba); la distancia por armaduras sigue en `Escala.distancia(hasta:)`.
+- Un solo camino a la afinación: `TemperamentoConNombre.distingueEnarmonicas` dice si un temperamento separa Sol♯
+  de La♭, y `Escala.cents(con:sentido:)` y `temperamentoSugerido` (en `Tradicion`, `Estilo` y `TipoDeEscala`) toman y
+  dan un temperamento del catálogo (un `TemperamentoQueAfina`, arriba). Los nombres en ruso y en griego de
+  Werckmeister, Kirnberger, Vallotti y Young van en su alfabeto.
+- `estadisticas` en todas partes: `ConjuntoDeClasesDeAltura.estadisticas` (antes `medidas`) y los tipos
+  `EstadisticasDeConjunto`, `EstadisticasTonalesDeEscala` y `EstadisticasDeAfinacionJusta` (antes `MedidasDeConjunto`,
+  `MedidasTonalesDeEscala` y `MedidasDeAfinacionJusta`).
 - Valores en vez de textos: `EstadisticasTonalesDeEscala.triadas` y `cuatriadas` dan el `TipoDeAcorde` de cada grado
-  (`nil` si no es ninguno conocido) en vez de `triadasPorGrados` y `cuatriadasPorGrados`, que quedan obsoletas.
+  (`nil` si no es ninguno conocido) en vez de `triadasPorGrados` y `cuatriadasPorGrados`.
   `NotaSobreElAcorde` tiene `numero` y `alteracion`, y `cifra` se escribe a partir de ellos.
-  `PentatonicaSobreElAcorde.notasDeTension` da las notas en vez de `tensiones`, que queda obsoleta.
-- `Ejemplos/EjemploCatalogos`: la columna `afinacion_historica` de `temperamentos.tsv` es ahora `para_escuchar`.
-  `EjemploCatalogoDeEscalas` escribe las tríadas y cuatríadas por grados con el cifrado de cada acorde (`m7(♭5)`).
+  `PentatonicaSobreElAcorde.notasDeTension` da las notas en vez de `tensiones`.
+- `Ejemplos/EjemploCatalogos`: la columna `afinacion_historica` de `temperamentos.tsv` es ahora `para_escuchar`, y
+  `escalas.tsv` escribe las tríadas y cuatríadas por grados con el cifrado de cada acorde (`m7(♭5)`).
 
 - Por dentro, sin cambios de API: Teoria se reordena. `Afinacion/` reúne los temperamentos con nombre, sus
   estadísticas y la psicoacústica; `Funciones/` es la carpeta del catálogo de funciones de nota; `ManoGuidoniana` y
