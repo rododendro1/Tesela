@@ -44,7 +44,7 @@ public struct NotaPresentada: Hashable, Sendable, Codable {
     }
 
     /// Unos hercios con tres decimales como mucho: «415», «261.626».
-    static func hercios(_ valor: Double) -> String { PresentacionDeEstadisticasDeAcorde.decimal(valor) + " Hz" }
+    static func hercios(_ valor: Double) -> String { Redondeo.texto(valor) + " Hz" }
 
     /// La ficha, un dato por fila: la familia, la altura, lo que se aparta de la temperada, la frecuencia, el La4 con
     /// que suena, el MIDI, el año, el nombre original y las alturas de la posición, los que tenga.

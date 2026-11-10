@@ -1,10 +1,12 @@
 import Armonia
+import Exposicion
 import Foundation
 
 // Recorre `AcordeConNombre.catalogo` (los genéricos y después los de nombre propio, en su orden) y escribe una fila por
 // acorde con lo que dice de él la API pública: nombres (y su traducción a los otros doce idiomas), intervalos, notas
-// sobre Do, el cifrado y el nombre de su tipo de acorde, lo que se mide de él (`EstadisticasDeAcorde`), estilos y las
-// obras que lo citan. Las listas de una celda van
+// sobre Do, el cifrado y el nombre de su tipo de acorde, lo que se mide de él, estilos y las obras que lo citan. Las
+// medidas son las de `MedidaDeAcorde.todas` que van al JSON, con su clave por columna y su valor en texto plano
+// (`ValorDeMedida.textoPlano`): una medida nueva sale aquí sin tocar este fichero. Las listas de una celda van
 // separadas por espacios (intervalos, semitonos, notas) o por « · » (alias, variantes, estilos, citas); una celda
 // vacía es un dato que el acorde no tiene.
 //
@@ -20,81 +22,40 @@ func celda(_ texto: String) -> String {
 /// Los idiomas a los que se traduce el nombre, en el orden de `Idioma.allCases`: todos menos el español.
 let traducciones = Idioma.allCases.filter { $0 != .espanol }
 
+/// Las medidas, en el orden en que se leen.
+let medidas = MedidaDeAcorde.todas.filter(\.vaAlJSON)
+
+/// Los nombres, como en la API: con ♭ y ♯ y en español.
+let notacion = Notacion.compacta(.espanol)
+
 let columnas: [String] =
     ["nombre"] + traducciones.map { "nombre_en_\($0.rawValue)" } + [
-        "alias", "variantes", "grupo", "numero_de_notas", "cardinal", "intervalos", "semitonos", "notas_sobre_do",
-        "cifrado", "nombre_del_tipo", "por_terceras", "brillo_por_quintas", "amplitud_en_quintas",
-        "vector_intervalico", "forma_prima", "forte", "transposiciones_distintas", "ambito", "consonancia_diadica",
-        "grupo_de_hindemith",
-        "fundamental_de_hindemith", "fundamental_de_parncutt", "intervalos_entre_voces", "gradus", "fourier",
-        "uniformidad", "triadas", "tension", "modalidad", "rugosidad", "rugosidad_de_vassilakis",
-        "disonancia_de_hutchinson_knopoff", "fusion_tonal", "altura_de_tenney", "limite_impar", "limite_primo",
-        "armonicidad", "entropia_armonica", "fundamental_virtual", "pareja_z", "complemento", "disposicion",
-        "estilos", "referencias",
-    ]
+        "alias", "variantes", "grupo", "intervalos", "semitonos", "notas_sobre_do", "cifrado", "nombre_del_tipo",
+    ] + medidas.map(\.clave) + ["estilos", "referencias"]
 
 let genericos = Set(AcordeConNombre.genericos)
-
-/// Un número con tres decimales como mucho.
-func decimal(_ valor: Double) -> String { Redondeo.texto(valor) }
-
-/// Las tríadas contenidas: mayores, menores, disminuidas y aumentadas, separadas por espacios.
-func triadas(_ t: TriadasContenidas) -> String {
-    [t.mayores, t.menores, t.disminuidas, t.aumentadas].map(String.init).joined(separator: " ")
-}
 
 /// La fila de un acorde, en el orden de `columnas`.
 func fila(_ acorde: AcordeConNombre) -> [String] {
     let comoSeLlama = [acorde.nombre] + traducciones.map { acorde.nombre(en: .delIdioma($0)) }
-    let medidas = acorde.estadisticas
-    let resto: [String] = [
+    let estadisticas = acorde.estadisticas
+    let antes: [String] = [
         acorde.alias.joined(separator: " · "),
         acorde.variantes.joined(separator: " · "),
         genericos.contains(acorde) ? "genérico" : "nombre propio",
-        // Las notas distintas: el acorde de la Sinfonía de los salmos tiene cuatro voces y tres notas.
-        String(medidas.numeroDeNotas),
-        medidas.cardinal?.nombre ?? "",
         acorde.intervalos.map(\.abreviatura).joined(separator: " "),
         acorde.intervalos.map { String($0.semitonos) }.joined(separator: " "),
         acorde.notas(sobre: .do).map(\.nombre).joined(separator: " "),
         acorde.tipo?.cifrado ?? "",
         acorde.tipo?.acordeConNombre?.nombre ?? "",
-        medidas.porTerceras ? "sí" : "no",
-        medidas.brilloPorQuintas.map { Redondeo.texto($0, decimales: 2) } ?? "",
-        String(medidas.amplitudEnQuintas),
-        medidas.vectorIntervalico.map(String.init).joined(separator: " "),
-        medidas.formaPrima.map(String.init).joined(separator: " "),
-        medidas.numeroDeForte ?? "",
-        String(medidas.transposicionesDistintas),
-        medidas.ambito.map(String.init) ?? "",
-        decimal(medidas.conjunto.consonanciaDiadica),
-        medidas.disposicionDeVoces.grupoDeHindemith.description,
-        medidas.disposicionDeVoces.fundamentalDeHindemith?.abreviatura ?? "",
-        medidas.psicoacustica.fundamentalDeParncutt?.abreviatura ?? "",
-        medidas.disposicionDeVoces.intervalosEntreVoces.map(String.init).joined(separator: " "),
-        String(medidas.afinacion.gradoDeSuavidad),
-        medidas.conjunto.magnitudesDeFourier.map(decimal).joined(separator: " "),
-        decimal(medidas.conjunto.distanciaALaUniformidad),
-        triadas(medidas.conjunto.triadasContenidas),
-        decimal(medidas.psicoacustica.tensionDeCook),
-        decimal(medidas.psicoacustica.modalidadDeCook),
-        decimal(medidas.psicoacustica.rugosidad),
-        decimal(medidas.psicoacustica.rugosidadDeVassilakis),
-        decimal(medidas.psicoacustica.rugosidadDeHutchinsonKnopoff),
-        decimal(medidas.psicoacustica.fusionTonal),
-        decimal(medidas.afinacion.alturaDeTenney),
-        String(medidas.afinacion.limiteImpar),
-        String(medidas.afinacion.limitePrimo),
-        decimal(medidas.afinacion.armonicidad),
-        decimal(medidas.psicoacustica.entropiaArmonica),
-        medidas.psicoacustica.fundamentalVirtual?.abreviatura ?? "",
-        medidas.conjunto.parejaZ ?? "",
-        medidas.conjunto.complemento ?? "",
-        medidas.disposicionDeVoces.disposicion?.rawValue ?? "abierta",
+    ]
+    // En `numeroDeNotas`, las notas distintas: el acorde de la Sinfonía de los salmos tiene cuatro voces y tres notas.
+    let valores = medidas.map { $0.valor(de: estadisticas, en: notacion)?.textoPlano ?? "" }
+    let despues = [
         acorde.estilos.map(\.nombre).joined(separator: " · "),
         acorde.referencias.map(\.cita).joined(separator: " · "),
     ]
-    return comoSeLlama + resto
+    return comoSeLlama + antes + valores + despues
 }
 
 var destino = "catalogo-de-acordes.tsv"

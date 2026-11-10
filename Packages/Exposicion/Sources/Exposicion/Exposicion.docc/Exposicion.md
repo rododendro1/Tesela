@@ -84,6 +84,8 @@ el selector de notación cambia la app entera.
 - ``ComparacionPresentada``
 - ``PresentacionDeEstadisticasDeAcorde``
 - ``EstadisticasDeAcordePresentadas``
+- ``MedidaDeAcorde``
+- ``ValorDeMedida``
 - ``ResumenDeAcordesPresentado``
 - ``PresentacionDeEstudioDeEscala``
 - ``EleccionDeEscala``

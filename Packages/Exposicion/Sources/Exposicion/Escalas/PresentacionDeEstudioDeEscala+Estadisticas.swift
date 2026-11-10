@@ -65,7 +65,7 @@ extension PresentacionDeEstudioDeEscala {
         func dato(_ campo: (TextosDeApps) -> String, _ valor: String) -> DatoPresentado {
             DatoPresentado(nombre: notacion.texto(campo), valor: valor)
         }
-        let decimal = PresentacionDeEstadisticasDeAcorde.decimal
+        let decimal = { (valor: Double) in Redondeo.texto(valor) }
         var datos = [dato(\.consonanciaDiadica, decimal(estadisticas.conjunto.consonanciaDiadica))]
         if let generador = estadisticas.intervalosGenericos.generador {
             datos.append(dato(\.generador, "\(generador)"))

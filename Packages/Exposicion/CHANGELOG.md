@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+- `MedidaDeAcorde`: cada medida de un acorde descrita una sola vez, con su clave, su título en `TextosDeApps` y cómo
+  se escribe su valor en texto y en JSON (`ValorDeMedida`). La lista de la consola y la app, la tabla de `acordes
+  --estadisticas`, el JSON (`EstadisticasDeAcordePresentadas`, ahora con `valores` por clave en vez de un campo por
+  medida) y el TSV de `EjemploCatalogoDeAcordes` recorren `MedidaDeAcorde.todas`. La tabla escribe el número de notas
+  con su cardinal, como la lista, y las columnas del TSV llevan la clave del JSON.
+
 - Las presentaciones redondean con `Redondeo`; el JSON lleva valores exactos.
 
 - `FuncionDeNotaPresentada`: una función de nota del catálogo con su ficha (familia, intervalo, cents y desvío), con
