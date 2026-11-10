@@ -227,7 +227,9 @@ Sources/
 ├── Teoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
 │   ├── Catalogo/          Lo que comparten los catálogos: Estilo (de escalas, acordes y progresiones),
-│   │                      FichaDelCatalogo y NombresDelCatalogo (los nombres de acordes y progresiones por idioma)
+│   │                      FichaDelCatalogo y NombresDelCatalogo (los nombres de cada catálogo por idioma). Cada
+│   │                      catálogo con nombre tiene la misma forma: su tipo y su catálogo en la carpeta, y sus
+│   │                      nombres en `Nombres/`, un fichero por idioma
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde,
 │   │   │                  CardinalDeAcorde y EstadisticasDeAcorde (lo que se mide de un acorde, con sus
@@ -244,43 +246,44 @@ Sources/
 │   │   │                  (MedidasDeEscala: Myhill, Rothenberg, Carey, Krumhansl y Kessler…) y RelacionEntreEscalas
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
 │   │   │                  `nombre(en:)`), FichaDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
-│   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala,
-│   │   │                  Subtradicion y FuenteTeorica
+│   │   │                  y Microtonos (SistemaMicrotonal, TipoDeEscalaMicrotonal)
+│   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala, Subtradicion,
+│   │   │                  FuenteTeorica, y los tipos de algunas tradiciones: CakraDeMela, ModoGregoriano y
+│   │   │                  Escala+Diao
 │   │   ├── Catalogo/      Un fichero por tradición (TipoDeEscala+Occidental y +Occidental+Exoticas, +India,
 │   │   │                  +MundoArabe, +Turquia, +GreciaAntigua…), cada uno con sus escalas (con su categoría, sus
 │   │   │                  microtonos, su padre y sus referencias) y sus listas; TipoDeEscala+Tradiciones
-│   │   │                  (`listasTradicionales` y `tradicionales`); ModoGregoriano, ManoGuidoniana y Escala+Diao,
-│   │   │                  junto a sus tradiciones
-│   │   ├── Microtonos/    Microtonos (SistemaMicrotonal, TipoDeEscalaMicrotonal) y NombresPorOctava (las notas
-│   │   │                  árabes, las perde turcas y el sistema perfecto griego)
+│   │   │                  (`listasTradicionales` y `tradicionales`)
 │   │   └── Nombres/       NombresDeEscalas y un fichero por idioma (`NombresDeEscalas+Catalan.swift`…): el nombre de cada
 │   │                      tipo, sus alias, las escalas de otras tradiciones y el nombre de cada clase
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
 │   │                      FuncionTonal y AcordeAnalizado), EspacioTonalDeLerdahl, AjusteTonal (Krumhansl y la
 │   │                      función probable)
-│   ├── Progresiones/      ProgresionConNombre (una progresión en cifrado romano, con su realización y su búsqueda) y
-│   │                      EstadisticasDeProgresion (Lerdahl, movimiento de las voces, cromatismo)
-│   │   ├── Catalogo/      El catálogo: cadencias, esquemas del barroco y del galante, jazz y blues, y pop
+│   ├── Progresiones/      ProgresionConNombre (una progresión en cifrado romano, con su realización y su búsqueda),
+│   │   │                  su catálogo (cadencias, esquemas del barroco y del galante, jazz y blues, y pop) y
+│   │   │                  EstadisticasDeProgresion (Lerdahl, movimiento de las voces, cromatismo)
 │   │   └── Nombres/       NombresDeProgresiones y un fichero por idioma (`NombresDeProgresiones+Catalan.swift`…)
-│   ├── Ritmos/            RitmoConNombre (un ritmo en notación de caja, con su familia y su búsqueda) y
-│   │                      EstadisticasDeRitmo (Toussaint: distancias, euclídeo, profundo, síncopa)
-│   │   ├── Catalogo/      El catálogo: líneas de tiempo, flamenco, tāla, iqa'at, aksak y usul, modos rítmicos y danzas
+│   ├── Ritmos/            RitmoConNombre (un ritmo en notación de caja, con su familia y su búsqueda), su catálogo
+│   │   │                  (líneas de tiempo, flamenco, tāla, iqa'at, aksak y usul, modos rítmicos y danzas) y
+│   │   │                  EstadisticasDeRitmo (Toussaint: distancias, euclídeo, profundo, síncopa)
 │   │   └── Nombres/       NombresDeRitmos y un fichero por idioma (`NombresDeRitmos+Catalan.swift`…)
 │   ├── Notas/             NotaConNombre (el catálogo de notas con nombre propio: diapasones, notas de referencia, la
-│   │   │                  mano guidoniana, notas árabes, perde turcas y cuerdas griegas, con su búsqueda)
-│   │   ├── Catalogo/      Los diapasones y las notas de referencia, y las que salen de ManoGuidoniana y NombresPorOctava
-│   │   ├── Funciones/     FuncionDeNota (grados, modo gregoriano, rāga, maqam, blue notes, adornos y notas extrañas), su
-│   │   │                  catálogo y NombresDeFunciones con un fichero por idioma
+│   │   │                  mano guidoniana, notas árabes, perde turcas y cuerdas griegas, con su búsqueda) y las
+│   │   │                  alturas con nombre de las que sale: ManoGuidoniana y NombresPorOctava (las notas árabes,
+│   │   │                  las perde turcas y el sistema perfecto griego)
 │   │   └── Nombres/       NombresDeNotas y un fichero por idioma (`NombresDeNotas+Catalan.swift`…)
-│   ├── Psicoacustica/     Psicoacustica (Parncutt, Terhardt, Cook, Sethares, Vassilakis, Hutchinson y Knopoff,
-│   │                      Erlich), VozMedida y ProminenciaDeFundamental
-│   ├── Temperamentos/     TemperamentoConNombre (el catálogo de temperamentos y sistemas de afinación, con su búsqueda)
-│   │   │                  y EstadisticasDeTemperamento (pasos, razones justas, quinta del lobo, terceras)
-│   │   ├── Catalogo/      Regulares, circulares, justa, divisiones iguales y sistemas de otras tradiciones
-│   │   └── Nombres/       NombresDeTemperamentos y un fichero por idioma (`NombresDeTemperamentos+Catalan.swift`…)
+│   ├── Funciones/         FuncionDeNota (grados, modo gregoriano, rāga, maqam, blue notes, adornos y notas extrañas)
+│   │   │                  y su catálogo
+│   │   └── Nombres/       NombresDeFunciones y un fichero por idioma (`NombresDeFunciones+Catalan.swift`…)
 │   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa), AfinacionHistorica
-│                          (el catálogo), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett (números),
-│                          MedidasDeAfinacionJusta (Euler, Tenney, Partch, Gill y Purves)
+│       │                  (las del botón «Escuchar»), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett
+│       │                  (números), MedidasDeAfinacionJusta (Euler, Tenney, Partch, Gill y Purves), JingFang,
+│       │                  TemperamentoConNombre (el catálogo de temperamentos y sistemas de afinación: regulares,
+│       │                  circulares, justa, divisiones iguales y otras tradiciones, con su búsqueda),
+│       │                  EstadisticasDeTemperamento (pasos, razones justas, quinta del lobo, terceras) y
+│       │                  Psicoacustica (Parncutt, Terhardt, Cook, Sethares, Vassilakis, Hutchinson y Knopoff,
+│       │                  Erlich), VozMedida y ProminenciaDeFundamental
+│       └── Nombres/       NombresDeTemperamentos y un fichero por idioma (`NombresDeTemperamentos+Catalan.swift`…)
 ├── Diagramas/
 │   ├── Color/         CorrespondenciaDeColores (colores)
 │   ├── Redes/         Tonnetz (la red de quintas y terceras, en SVG, con los recorridos y los ciclos

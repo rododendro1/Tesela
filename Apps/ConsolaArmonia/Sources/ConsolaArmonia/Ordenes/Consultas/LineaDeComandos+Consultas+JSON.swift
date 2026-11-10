@@ -8,8 +8,8 @@ import Foundation
 extension LineaDeComandos {
     // MARK: Acordes y escalas
     //
-    // Los datos son los de `Exposicion` (ConsultasPresentadas.swift), los mismos que da el texto: sus nombres
-    // son las claves del JSON.
+    // Los datos son los de `Exposicion` (`AcordePresentado`, `EscalaPresentada`…), los mismos que da el texto: sus
+    // nombres son las claves del JSON.
 
     /// `acorde Sol7 Do --json`: cada acorde con sus notas, una lista aunque sea uno solo; con `--estadisticas`, cada
     /// uno lleva también la clave `estadisticas` (`EstadisticasDeAcordePresentadas`).

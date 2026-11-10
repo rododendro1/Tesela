@@ -6,7 +6,7 @@ import Foundation
 // Los temperamentos y los sistemas de afinación con nombre: los regulares (el igual, el pitagórico, los mesotónicos),
 // los circulares del Barroco, la afinación justa, las octavas partidas en partes iguales y los sistemas de otras
 // tradiciones. Cada uno con cómo se afina, quién lo propuso y la obra donde se lee. Los nombres en los otros idiomas
-// están en `Temperamentos/Nombres/`.
+// están en `Afinacion/Nombres/`.
 
 extension TemperamentoConNombre {
     // MARK: Regulares

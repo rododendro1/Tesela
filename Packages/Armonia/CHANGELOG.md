@@ -2,6 +2,11 @@
 
 ## Sin publicar
 
+- Por dentro, sin cambios de API: Teoria se reordena. `Afinacion/` reúne los temperamentos con nombre, sus
+  estadísticas y la psicoacústica; `Funciones/` es la carpeta del catálogo de funciones de nota; `ManoGuidoniana` y
+  `NombresPorOctava` pasan a `Notas/`; `CakraDeMela`, `ModoGregoriano` y `Escala+Diao` a `Escalas/Clasificacion/`;
+  `Microtonos` a `Escalas/Tipo/`, y cada catálogo deja su subcarpeta `Catalogo/` y queda junto a su tipo.
+
 - `Redondeo`: el único formateador de números (`valor` y `texto`, tres decimales por omisión, sin −0). El motor da
   ahora valores exactos (medidas de conjunto y escala, relaciones, estadísticas de ritmo y progresión, psicoacústica,
   afinación justa, conducción parsimoniosa) y solo se redondea al presentar.

@@ -5,7 +5,7 @@ import Foundation
 //
 // Los papeles que hace una nota, con nombre: los grados de la escala, las notas del modo gregoriano, del rāga y del
 // maqam, las blue notes, los adornos y las notas extrañas al acorde. Los nombres en los otros idiomas están en
-// `Notas/Funciones/Nombres/`.
+// `Funciones/Nombres/`.
 
 extension FuncionDeNota {
     // MARK: Grados de la escala

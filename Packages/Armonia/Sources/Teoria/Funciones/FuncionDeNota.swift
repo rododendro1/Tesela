@@ -12,7 +12,7 @@ import Foundation
 ///     FuncionDeNota.septimaBlue.desvio                    // -31,17: la séptima armónica, 7/4
 ///     FuncionDeNota.buscar(nombre: "leading tone")        // .sensible
 ///
-/// Los nombres en los otros idiomas están en `Notas/Funciones/Nombres/`, un fichero por idioma. Dos funciones son
+/// Los nombres en los otros idiomas están en `Funciones/Nombres/`, un fichero por idioma. Dos funciones son
 /// iguales si se llaman igual.
 public struct FuncionDeNota: Sendable {
     /// El nombre en español: «dominante», «finalis», «tercera blue».
