@@ -91,6 +91,7 @@ if [ "$MOTOR_COMPILA" = 1 ]; then
     paso "Ejemplo del catálogo de acordes: ejecutar" Ejemplos/EjemploCatalogoDeAcordes swift run EjemploCatalogoDeAcordes
     paso "Ejemplo del catálogo de progresiones: ejecutar" Ejemplos/EjemploCatalogoDeProgresiones \
         swift run EjemploCatalogoDeProgresiones
+    paso "Ejemplo de los demás catálogos: ejecutar" Ejemplos/EjemploCatalogos swift run EjemploCatalogos
     paso "Rendimiento: compilar" Herramientas/RendimientoArmonia swift build
     paso "Interfaz: compilar" Packages/Interfaz swift build &&
         paso "Interfaz: pruebas" Packages/Interfaz swift test --parallel

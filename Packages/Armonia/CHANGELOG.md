@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- `Ejemplos/EjemploCatalogos` escribe en TSV, un fichero por catálogo, los que no tenían ejemplo: los ritmos, los
+  temperamentos, las escalas microtonales, las referencias, los encordados, los teclados isomórficos y cuadrados, los
+  modos gregorianos y los instrumentos de la partitura.
 - El catálogo de temperamentos: `TemperamentoConNombre`, 22 temperamentos y sistemas de afinación con su familia
   (`FamiliaDeTemperamento`: regulares, circulares, justa, divisiones iguales y de otras tradiciones), su autor, su año,
   sus referencias y su nombre en los trece idiomas (`buscar(nombre:)`, `buscar(conteniendo:)`, `todos(de:)`). Da los

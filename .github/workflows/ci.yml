@@ -134,6 +134,7 @@ jobs:
           - { nombre: EjemploCatalogoDeEscalas, ruta: Ejemplos/EjemploCatalogoDeEscalas }
           - { nombre: EjemploCatalogoDeAcordes, ruta: Ejemplos/EjemploCatalogoDeAcordes }
           - { nombre: EjemploCatalogoDeProgresiones, ruta: Ejemplos/EjemploCatalogoDeProgresiones }
+          - { nombre: EjemploCatalogos, ruta: Ejemplos/EjemploCatalogos }
           - { nombre: EjemploHexagonos, ruta: Ejemplos/EjemploHexagonos }
           - { nombre: RendimientoArmonia, ruta: Herramientas/RendimientoArmonia }
           - { nombre: FuzzArmonia, ruta: Herramientas/FuzzArmonia }
@@ -525,6 +526,7 @@ jobs:
           (cd Ejemplos/EjemploCatalogoDeEscalas && swift run EjemploCatalogoDeEscalas - > /dev/null)
           (cd Ejemplos/EjemploCatalogoDeAcordes && swift run EjemploCatalogoDeAcordes - > /dev/null)
           (cd Ejemplos/EjemploCatalogoDeProgresiones && swift run EjemploCatalogoDeProgresiones - > /dev/null)
+          (cd Ejemplos/EjemploCatalogos && swift run EjemploCatalogos - > /dev/null)
           (cd Ejemplos/EjemploHexagonos && swift run EjemploHexagonos > /dev/null)
       - name: Instalar XcodeGen
         run: brew install xcodegen
