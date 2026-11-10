@@ -196,6 +196,7 @@ extension TextosDeApps {
         relojDeLaEscala: "Scale clock",
         circuloCromatico: "Chromatic circle",
         circuloDeQuintas: "Circle of fifths",
+        circuloMicrotonal: "Microtonal circle",
         enLasDoceTonalidades: "In all twelve keys",
         acordesEnLasDoceTonalidades: "Chords in all twelve keys",
         conSeptima: "With sevenths",

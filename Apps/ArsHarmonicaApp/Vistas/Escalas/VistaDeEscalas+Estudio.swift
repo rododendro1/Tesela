@@ -120,23 +120,63 @@ struct SeccionDelMapaDeBrillo: View {
     }
 }
 
-/// La escala en un reloj de doce horas, en el círculo cromático o en el de quintas, para ver su forma.
+/// La escala en un reloj de doce horas, en el círculo cromático o en el de quintas, para ver su forma; si tiene
+/// microtonos, también en el círculo microtonal, cada grado en el ángulo de sus cents.
 struct SeccionDelReloj: View {
     let escala: Escala
     @Environment(\.notacion) private var notacion
-    /// El círculo del reloj: el cromático o el de quintas.
-    @State private var orden = RelojDeClasesDeAltura.Orden.cromatico
+    /// El círculo del reloj.
+    @State private var circulo = Circulo.cromatico
+    /// En el microtonal, cuál de las afinaciones de la escala (los echoi tienen dos).
+    @State private var afinacion = 0
+
+    /// Los círculos que se pueden elegir: el microtonal, solo si la escala tiene microtonos.
+    enum Circulo: Hashable {
+        case cromatico, quintas, microtonal
+    }
 
     var body: some View {
+        let afinaciones = escala.notasMicrotonales() == nil ? [] : escala.tipo.afinaciones
+        // Si la escala cambia y ya no tiene microtonos, el cromático.
+        let elegido = circulo == .microtonal && afinaciones.isEmpty ? Circulo.cromatico : circulo
         Section(notacion.texto(\.relojDeLaEscala)) {
-            Picker(notacion.texto(\.relojDeLaEscala), selection: $orden) {
-                Text(notacion.texto(\.circuloCromatico)).tag(RelojDeClasesDeAltura.Orden.cromatico)
-                Text(notacion.texto(\.circuloDeQuintas)).tag(RelojDeClasesDeAltura.Orden.quintas)
+            Picker(notacion.texto(\.relojDeLaEscala), selection: $circulo) {
+                Text(notacion.texto(\.circuloCromatico)).tag(Circulo.cromatico)
+                Text(notacion.texto(\.circuloDeQuintas)).tag(Circulo.quintas)
+                if !afinaciones.isEmpty {
+                    Text(notacion.texto(\.circuloMicrotonal)).tag(Circulo.microtonal)
+                }
             }
             .pickerStyle(.segmented)
-            VistaSVG(svg: PresentacionDeEstudioDeEscala.reloj(de: escala, orden: orden, en: notacion))
-                .frame(height: 300)
+            if elegido == .microtonal, afinaciones.count > 1 {
+                Picker(notacion.texto(\.circuloMicrotonal), selection: $afinacion) {
+                    ForEach(afinaciones.indices, id: \.self) { i in
+                        Text(nombre(de: afinaciones[i])).tag(i)
+                    }
+                }
+            }
+            VistaSVG(svg: svg(elegido, afinaciones: afinaciones))
+                .frame(height: elegido == .microtonal ? 320 : 300)
         }
+    }
+
+    /// El reloj elegido, en SVG.
+    private func svg(_ circulo: Circulo, afinaciones: [TipoDeEscalaMicrotonal]) -> String {
+        switch circulo {
+        case .cromatico: return PresentacionDeEstudioDeEscala.reloj(de: escala, orden: .cromatico, en: notacion)
+        case .quintas: return PresentacionDeEstudioDeEscala.reloj(de: escala, orden: .quintas, en: notacion)
+        case .microtonal:
+            let elegida = afinaciones.indices.contains(afinacion) ? afinaciones[afinacion] : nil
+            return PresentacionDeEstudioDeEscala.relojMicrotonal(de: escala, afinacion: elegida, en: notacion)
+                ?? PresentacionDeEstudioDeEscala.reloj(de: escala, en: notacion)
+        }
+    }
+
+    /// Cómo se llama una afinación en el selector: por su autor (Chrysanthos) o, la de su teoría de hoy, por su
+    /// sistema (72 moria).
+    private func nombre(de afinacion: TipoDeEscalaMicrotonal) -> String {
+        afinacion.fuente?.nombre(en: notacion) ?? afinacion.sistema.temperamento?.nombre(en: notacion)
+            ?? afinacion.sistema.rawValue
     }
 }
 

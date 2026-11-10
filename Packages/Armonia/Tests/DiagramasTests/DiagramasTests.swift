@@ -144,3 +144,73 @@ import Testing
         #expect(!sola.contains("<polygon") && !sola.contains("<title>"))
     }
 }
+
+/// El reloj de cents: las notas de una escala con microtonos en el ángulo de sus cents.
+@Suite struct RelojDeAlturasTests {
+    @Test func posiciones() throws {
+        let bayati = try #require(RelojDeAlturas(escala: Escala(.re, .bayati)))
+        // Desde Do: Re a 200, el Mi𝄳 a 350 (un cuarto de tono sobre Mi♭), y Do, la séptima, arriba.
+        #expect(bayati.posiciones == [200, 350, 500, 700, 900, 1000, 0])
+        #expect(bayati.tonica == 200)
+        #expect(bayati.marcas.map(\.rotulo) == ["Re", "Mi𝄳", "Fa", "Sol", "La", "Si♭", "Do"])
+        // Solo el Mi𝄳 se aparta de su nota temperada, el Mi♭.
+        #expect(bayati.marcas.compactMap(\.temperada) == [300])
+        // Las 24 rayitas de los cuartos de tono, cada 50 cents.
+        #expect(bayati.divisiones.count == 24 && bayati.divisiones.first == 0 && bayati.divisiones[1] == 50)
+        // Sīkāh empieza en Mi𝄳: la tónica también es un microtono.
+        let sikah = try #require(RelojDeAlturas(escala: Escala(.mi, .sikah)))
+        #expect(sikah.tonica == 350 && sikah.posiciones.first == 350)
+        // Sin microtonos, no hay reloj.
+        #expect(RelojDeAlturas(escala: Escala("Do mayor")) == nil)
+    }
+
+    @Test func sistemas() throws {
+        // En las 53 comas, las rayitas empiezan en la tónica temperada: en Sol Rast, a 700 cents de Do.
+        let rast = try #require(RelojDeAlturas(escala: Escala(.sol, .rastMakami)))
+        #expect(rast.divisiones.count == 53 && rast.divisiones.contains(700))
+        #expect(rast.marcas.map(\.rotulo) == ["Sol", "La", "Si⁻¹", "Do", "Re", "Mi", "Fa♯⁻¹"])
+        let si = rast.marcas[2]
+        #expect(abs(si.cents - (700 + 17 * 1200 / 53.0)) < 1e-9 && si.temperada == 1100)
+        // Los echoi, en los 72 moria o, con la afinación de Chrysanthos, en cents cualesquiera, sin rayitas.
+        let protos = Escala(.re, .echosProtos)
+        #expect(try #require(RelojDeAlturas(escala: protos)).divisiones.count == 72)
+        let chrysanthos = try #require(
+            RelojDeAlturas(escala: protos, afinacion: TipoDeEscala.echosProtos.afinaciones[1]))
+        #expect(chrysanthos.divisiones.isEmpty && chrysanthos.marcas[1].rotulo == "Mi(−29¢)")
+        #expect(RelojDeAlturas.divisiones(de: .sruti).count == 22)
+        // En otra notación, los nombres de esa notación.
+        let ingles = try #require(RelojDeAlturas(escala: Escala(.re, .bayati), notacion: .ascii(.ingles)))
+        #expect(ingles.marcas[1].rotulo == "Eqb")
+    }
+
+    @Test func marcas() {
+        // Los cents se reducen a una octava, y una nota que no se aparta no lleva arquito.
+        let marca = RelojDeAlturas.Marca(cents: 1250, temperada: 50, rotulo: "Do𝄲")
+        #expect(marca.cents == 50 && marca.temperada == nil)
+        #expect(RelojDeAlturas.Marca(cents: -50, temperada: 0, rotulo: "Do𝄳").cents == 1150)
+        let reloj = RelojDeAlturas(marcas: [marca], tonica: 1250, divisiones: [0, 600, 1200, -600])
+        #expect(reloj.tonica == 50 && reloj.divisiones == [0, 600])
+        #expect(RelojDeAlturas.diferencia(1150, 50) == 100 && RelojDeAlturas.diferencia(50, 1150) == -100)
+    }
+
+    @Test func dibujo() throws {
+        let reloj = try #require(RelojDeAlturas(escala: Escala(.re, .bayati)))
+        let svg = reloj.svg(opciones: .init(titulo: "Re Bayātī"))
+        #expect(svg.hasPrefix("<svg") && svg.hasSuffix("</svg>\n"))
+        // El círculo, las doce horas y las siete notas; las 24 rayitas y un solo arquito, el del Mi𝄳.
+        #expect(svg.components(separatedBy: "<circle").count == 21)
+        #expect(svg.components(separatedBy: "<line").count - 1 == 24)
+        #expect(svg.components(separatedBy: "<path").count - 1 == 1)
+        #expect(svg.contains("<polygon") && svg.contains(">Mi𝄳</text>") && svg.contains(">Fa♯</text>"))
+        #expect(svg.contains("<title>Re Bayātī</title>") && svg.contains(DibujoSVG.Color.primera))
+        // Sin nombres, las horas llevan su número; sin título, no hay cabecera.
+        let numeros = reloj.svg(opciones: .init(nombresDeLasNotas: false))
+        #expect(numeros.contains(">7</text>") && !numeros.contains("<title>"))
+        #expect(numeros.contains("width=\"280"))
+        let doble = reloj.svg(opciones: .init(escala: 2))
+        #expect(doble.contains("width=\"560"))
+        // Una sola nota no hace polígono.
+        let sola = RelojDeAlturas(marcas: [.init(cents: 350, rotulo: "Mi𝄳")]).svg()
+        #expect(!sola.contains("<polygon") && !sola.contains("<path"))
+    }
+}

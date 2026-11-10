@@ -196,6 +196,7 @@ extension TextosDeApps {
         relojDeLaEscala: "Ρολόι της κλίμακας",
         circuloCromatico: "Χρωματικός κύκλος",
         circuloDeQuintas: "Κύκλος των πεμπτών",
+        circuloMicrotonal: "Μικροτονικός κύκλος",
         enLasDoceTonalidades: "Και στις δώδεκα τονικότητες",
         acordesEnLasDoceTonalidades: "Συγχορδίες και στις δώδεκα τονικότητες",
         conSeptima: "Με έβδομη",

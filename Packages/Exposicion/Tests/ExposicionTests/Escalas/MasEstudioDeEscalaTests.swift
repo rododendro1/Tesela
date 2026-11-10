@@ -302,6 +302,19 @@ import Testing
         #expect(quintas.contains("Circle of fifths"))
     }
 
+    @Test func relojMicrotonal() throws {
+        let bayati = try #require(PresentacionDeEstudioDeEscala.relojMicrotonal(de: Escala(.re, .bayati), en: notacion))
+        #expect(bayati.contains("· Círculo microtonal</title>") && bayati.contains(">Mi𝄳</text>"))
+        #expect(bayati.components(separatedBy: "<line").count == 25)
+        // Con la afinación de Chrysanthos, los cents que se aparta cada grado, y en inglés.
+        let protos = Escala(.re, .echosProtos)
+        let chrysanthos = try #require(
+            PresentacionDeEstudioDeEscala.relojMicrotonal(
+                de: protos, afinacion: TipoDeEscala.echosProtos.afinaciones[1], en: .ascii(.ingles)))
+        #expect(chrysanthos.contains("Microtonal circle") && chrysanthos.contains(">E(-29c)</text>"))
+        #expect(PresentacionDeEstudioDeEscala.relojMicrotonal(de: Escala(.do), en: notacion) == nil)
+    }
+
     @Test func enLasDoceTonalidades() {
         let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(Escala(.do), en: notacion)
         #expect(hoja.titulo == "Do mayor · En las doce tonalidades")

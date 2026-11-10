@@ -1,5 +1,14 @@
 # Cambios
 
+## Sin publicar
+
+### Lo nuevo
+
+- `RelojDeAlturas`, el círculo cromático microtonal: un reloj de cents con cada nota en el ángulo de sus cents, las
+  doce horas temperadas en gris como referencia, una rayita en cada paso del sistema y un arquito en cada nota que se
+  aparta de su nota temperada. `RelojDeAlturas(escala:afinacion:sentido:notacion:)` lo hace con la versión
+  microtonal de una escala (`nil` si no tiene); `divisiones(de:)` da las rayitas de un `SistemaMicrotonal`.
+
 ## 0.5.0 (2026-11-10)
 
 ### Cambios incompatibles

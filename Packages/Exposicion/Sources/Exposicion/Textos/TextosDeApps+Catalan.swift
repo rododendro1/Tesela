@@ -196,6 +196,7 @@ extension TextosDeApps {
         relojDeLaEscala: "Rellotge de l'escala",
         circuloCromatico: "Cercle cromàtic",
         circuloDeQuintas: "Cercle de cinquenes",
+        circuloMicrotonal: "Cercle microtonal",
         enLasDoceTonalidades: "En les dotze tonalitats",
         acordesEnLasDoceTonalidades: "Acords en les dotze tonalitats",
         conSeptima: "Amb setena",

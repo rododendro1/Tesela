@@ -1,5 +1,13 @@
 # Cambios
 
+## Sin publicar
+
+### Lo nuevo
+
+- `PresentacionDeEstudioDeEscala.relojMicrotonal(de:afinacion:en:)`: la versión microtonal de una escala en el
+  reloj de cents (`RelojDeAlturas`), con el título «… · Círculo microtonal» (`TextosDeApps.circuloMicrotonal`, en los
+  trece idiomas).
+
 ## 0.5.0 (2026-11-10)
 
 ### Cambios incompatibles
