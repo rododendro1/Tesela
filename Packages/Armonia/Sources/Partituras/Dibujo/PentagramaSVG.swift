@@ -308,99 +308,37 @@ struct PentagramaSVG {
             """
     }
 
-    /// El dibujo, sin el `<svg>` que lo envuelve.
+    /// El dibujo, sin el `<svg>` que lo envuelve. Cada paso está en su función: el principio (`dibujarElPrincipio`),
+    /// las columnas (`colocarLasColumnas`), el ritmo, las marcas de octava, los dedos y la tablatura; después, lo que
+    /// piden de ancho los textos (`ajusteAlTexto`) y de alto las filas de debajo (`medidasVerticales`), y por último
+    /// las líneas, la llave y los textos.
     func dibujo() -> Dibujo {
         let sistema = disponerElSistema()
-        let claves = sistema.claves
-        let doble = sistema.doble
-        var lienzo = Lienzo(maximoY: doble ? 4.0 + PentagramaSVG.separacionDelPentagramaDoble : 4.0)
+        let pentagramas = sistema.claves.count
+        var lienzo = Lienzo(maximoY: sistema.doble ? 4.0 + PentagramaSVG.separacionDelPentagramaDoble : 4.0)
         let vigentes = dibujarElPrincipio(sistema, en: &lienzo)
         let maquetacion = colocarLasColumnas(sistema, vigentes: vigentes, en: &lienzo)
         var final = lienzo.x - maquetacion.ultimaSeparacion + (ritmo == nil ? 0.9 : conBarraFinal ? 2.0 : 1.2)
         if opciones.marcas.semitonos { dibujarLosSemitonos(maquetacion.notasSueltas, en: &lienzo) }
         // Un cifrado de una progresión puede sobresalir por la derecha.
         if let ultimo = maquetacion.cifrados.last { final = max(final, ultimo.x + ultimo.mitad + 0.6) }
-        // Las plicas, las barras de unión, las ligaduras y los tresillos.
-        if let ritmo {
-            let (trazos, arriba, abajo, plicasArriba) = trazosDelRitmo(
-                ritmo, colocadas: maquetacion.colocadas, pentagramas: claves.count)
-            lienzo.notas += trazos
-            if arriba.isFinite { lienzo.minimoY = min(lienzo.minimoY, arriba) }
-            if abajo.isFinite { lienzo.maximoY = max(lienzo.maximoY, abajo) }
-            dibujarLasArticulaciones(maquetacion.colocadas, plicasArriba: plicasArriba, en: &lienzo)
-        }
+        if let ritmo { dibujarElRitmo(ritmo, maquetacion.colocadas, pentagramas: pentagramas, en: &lienzo) }
         let marcasDeOctava = dibujarLasMarcasDeOctava(sistema, maquetacion, en: &lienzo)
         let textosDeLosDedos = dibujarLosDedos(maquetacion.centros, en: &lienzo)
         let tablaturaColocada = colocarLaTablatura(maquetacion.centros, en: &lienzo)
         lienzo.notas += textosDeLosDedos + (tablaturaColocada?.textos ?? [])
 
-        // Un cifrado o los nombres de un acorde pueden ser más anchos que el acorde: el pentagrama se alarga a la
-        // derecha y, si el texto sobresale por la izquierda, las notas se desplazan.
-        let proporcion = opciones.maquetacion.anchoDeLosCaracteres
-        let anchoDelTexto = max(
-            cifrado.map {
-                PentagramaSVG.anchoEstimado($0, cuerpoDeLetra: PentagramaSVG.letraDelCifrado, proporcion: proporcion)
-            } ?? 0,
-            cifrados[0].map {
-                PentagramaSVG.anchoEstimado($0, cuerpoDeLetra: PentagramaSVG.letraDelCifrado, proporcion: proporcion)
-            } ?? 0,
-            columnas.count == 1
-                ? (maquetacion.etiquetas.prefix(1) + maquetacion.intervalos.prefix(1)).map {
-                    PentagramaSVG.anchoEstimado(
-                        $0.texto, cuerpoDeLetra: PentagramaSVG.letraDeLasEtiquetas, proporcion: proporcion)
-                }.max() ?? 0 : 0)
-        let centroDelTexto = maquetacion.cifradoX ?? 0
-        let desplazamiento = max(0, anchoDelTexto / 2 + 0.2 - centroDelTexto)
-        final = max(final + desplazamiento, centroDelTexto + desplazamiento + anchoDelTexto / 2 + 0.6, finalMinimo)
-
-        // Medidas verticales: del punto más alto al más bajo, con las claves, las alteraciones y las notas.
-        let minimoY = lienzo.minimoY
-        let maximoY = lienzo.maximoY
-        let cima = cifrado == nil && maquetacion.cifrados.isEmpty ? minimoY - 0.4 : minimoY - 2.6
-        // Debajo, una fila por cada clase de etiqueta: los nombres, los intervalos y los grados.
-        let filas = (opciones.marcas.nombresDeLasNotas ? 1 : 0) + (maquetacion.intervalos.isEmpty ? 0 : 1)
-        let yDeLosGrados = maximoY + (filas == 0 ? 2.0 : 2.0 + 1.5 * Double(filas))
-        // El bajo cifrado, debajo de los grados (o donde irían), con las cifras una encima de otra.
-        let yDelBajoCifrado = maquetacion.grados.isEmpty ? yDeLosGrados - 0.2 : yDeLosGrados + 1.6
-        let cifrasPorColumna = maquetacion.bajoCifrado.map(\.cifras.count).max() ?? 0
-        let fondo =
-            cifrasPorColumna > 0
-            ? yDelBajoCifrado + PentagramaSVG.separacionDelBajoCifrado * Double(cifrasPorColumna - 1) + 0.6
-            : !maquetacion.grados.isEmpty
-                ? yDeLosGrados + 0.6 : filas == 0 ? maximoY + 0.4 : maximoY + 2.4 + 1.5 * Double(filas - 1)
+        let ajuste = ajusteAlTexto(maquetacion, final: final)
+        let medidas = medidasVerticales(maquetacion, minimoY: lienzo.minimoY, maximoY: lienzo.maximoY)
         // En el pentagrama doble, una llave a la izquierda, con el margen que pide.
-        let margen = doble ? PentagramaSVG.margenDeLaLlave : 0
-        let ancho = final + 0.6 + margen
-        let alto = fondo - cima
+        let margen = sistema.doble ? PentagramaSVG.margenDeLaLlave : 0
 
         let lineas = lineasDelSistema(
-            pentagramas: claves.count, tablatura: tablaturaColocada, barrasDeCompas: maquetacion.barrasDeCompas,
-            final: final, desplazamiento: desplazamiento)
-        let abajoDelSistema = PentagramaSVG.y(deLugar: 0, pentagrama: claves.count - 1)
-        // Con ritmo, las barras de compás (corridas con las notas).
-        let barrasDeCompasSVG = maquetacion.barrasDeCompas.map {
-            elemento("line").con("x1", $0).con("y1", 0).con("x2", $0).con("y2", abajoDelSistema)
-                .con("stroke-width", "0.16").vacio
-        }
-        // La llave de Bravura, estirada de sus 4 espacios a lo que miden los dos pentagramas (14).
-        let n = PentagramaSVG.n
-        let llave =
-            doble
-            ? elemento("path")
-                .con(
-                    "transform",
-                    "translate(\(n(-PentagramaSVG.margenDeLaLlave + 0.3)) \(n(abajoDelSistema))) scale(\(n(abajoDelSistema / 4)))"
-                )
-                .con("d", GlifosSMuFL.llave.trazado).vacio
-            : ""
-        let adicionalesSVG = maquetacion.lineasAdicionales.map {
-            linea(
-                desde: $0.desde, hasta: $0.hasta, y: PentagramaSVG.y(deLugar: $0.lugar, pentagrama: $0.pentagrama),
-                grosor: "0.16")
-        }
+            pentagramas: pentagramas, tablatura: tablaturaColocada, barrasDeCompas: maquetacion.barrasDeCompas,
+            final: ajuste.final, desplazamiento: ajuste.desplazamiento)
         let textos = textosDelSistema(
-            maquetacion, minimoY: minimoY, maximoY: maximoY, yDeLosGrados: yDeLosGrados,
-            yDelBajoCifrado: yDelBajoCifrado)
+            maquetacion, minimoY: medidas.minimoY, maximoY: medidas.maximoY, yDeLosGrados: medidas.yDeLosGrados,
+            yDelBajoCifrado: medidas.yDelBajoCifrado)
         if let tablaturaColocada { lienzo.cuerpo += rotuloDeLaTablatura(tablaturaColocada) }
 
         let color = EscrituraXML.escapar(opciones.colores.dibujo)
@@ -410,15 +348,16 @@ struct PentagramaSVG {
             \(lineas.joined(separator: "\n"))
             </g>
             <g fill="\(color)" stroke="none">
-            \(llave)
+            \(sistema.doble ? llave(pentagramas: pentagramas) : "")
             \(lienzo.cuerpo.joined(separator: "\n"))
             </g>
 
             """
+        let barras = soloLasNotas ? [] : barrasDeCompas(maquetacion, pentagramas: pentagramas)
         let contenido = """
-            \(soloLasNotas ? "" : fondoDelSistema)<g transform="translate(\(PentagramaSVG.n(desplazamiento)) 0)">
+            \(soloLasNotas ? "" : fondoDelSistema)<g transform="translate(\(PentagramaSVG.n(ajuste.desplazamiento)) 0)">
             <g stroke="\(color)" fill="none">
-            \((adicionalesSVG + (soloLasNotas ? [] : barrasDeCompasSVG)).joined(separator: "\n"))
+            \((lineasAdicionales(maquetacion) + barras).joined(separator: "\n"))
             </g>
             <g stroke="\(color)" fill="none" stroke-width="0.12">
             \(marcasDeOctava.joined(separator: "\n"))
@@ -430,9 +369,9 @@ struct PentagramaSVG {
             </g>
             """
         return Dibujo(
-            x: -margen, y: cima, ancho: ancho, alto: alto, descripcion: descripcion, contenido: contenido,
-            colocadas: maquetacion.colocadas, barras: maquetacion.barrasDeCompas,
-            desplazamiento: desplazamiento, final: final)
+            x: -margen, y: medidas.cima, ancho: ajuste.final + 0.6 + margen, alto: medidas.fondo - medidas.cima,
+            descripcion: descripcion, contenido: contenido, colocadas: maquetacion.colocadas,
+            barras: maquetacion.barrasDeCompas, desplazamiento: ajuste.desplazamiento, final: ajuste.final)
     }
 
     /// Un elemento con los números del pentagrama (en espacios, con tres decimales como mucho).
