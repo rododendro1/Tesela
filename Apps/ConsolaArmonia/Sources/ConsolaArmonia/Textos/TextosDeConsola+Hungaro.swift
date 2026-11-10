@@ -9,7 +9,7 @@ extension TextosDeConsola {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <akkordok> [--in <hangnem>] [--scales]",
         descripcionAnalizar: "fokszámok, funkciók, zárlatok és modulációk (közvetítő akkordjukkal; --in nélkül)\n--scales: minden akkord skálája, a feszültségekkel és kerülendő hangokkal",
-        notasAnalizar: "--guide-tones: két vezérhang-vonal, a terctől és a szeptimtől; --voice-leading: hogyan halad minden szólam egyik akkordról a következőre (drop 2-ben), a közös hangokkal; --compare: a másik változat akkordról akkordra, azzal, ami változik, a fokaival és a közös hangokkal; --walking-bass: walking basszus negyedekben, akkordonként egy ütem",
+        notasAnalizar: "--guide-tones: két vezérhang-vonal, a terctől és a szeptimtől; --voice-leading: hogyan halad minden szólam egyik akkordról a következőre (drop 2-ben), a közös hangokkal; --compare: a másik változat akkordról akkordra, azzal, ami változik, a fokaival és a közös hangokkal; --walking-bass: walking basszus negyedekben, akkordonként egy ütem; --estadisticas: a Lerdahl-feszültség akkordról akkordra, a szólamok mozgása, a valószínű funkciók és a kromatika",
         sintaxisAnalizarArchivo: "analyze --file <fájl> [--window <időtartam>]",
         descripcionAnalizarArchivo: "ugyanez egy MIDI-, MusicXML-, MEI- vagy ABC-fájl akkordjaival (ütésenként egy; --window 2: félhangonként egy)",
         sintaxisArmonizar: "harmonize <dallam> [--in <hangnem>] [--proposals 3]",
@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <akkordjelzés>…",
         descripcionAcorde: "hangok, típus és minden hang szerepe",
-        notasAcorde: "opciók: --voicings, --names, --keys, --substitutions (a --in C major hangnemében, a végén) és --compare C (közös hangok és szólamvezetés); --bebop és --pentatonics (skálák az improvizációhoz); --statistics (a hangok száma és neve, fényesség, intervallumvektor, Forte-szám…)",
+        notasAcorde: "opciók: --voicings, --names, --keys, --substitutions (a --in C major hangnemében, a végén) és --compare C (közös hangok és szólamvezetés); --bebop és --pentatonics (skálák az improvizációhoz); --statistics (a hangok száma és neve, fényesség, intervallumvektor, Forte-szám…); --estadisticas mellett azt is, hogyan illik a hangnembe (Krumhansl, valószínű funkció, skálák a katalógusban); --comparar mellett a Tymoczko-, Lerdahl-, Fourier- és Forte-távolságokat",
         sintaxisArpegio: "arpeggio <akkordjelzés> [--pattern <minta>]",
         descripcionArpegio: "a felbontás hangjai és az akkordhoz illő skálák (--pattern ascending, descending, up-down, down-up, broken, alberti)",
         notasArpegio: "opciók: --octaves 2 (1-től 4-ig), --no-octave, --from E (vagy 3: ezzel a hanggal kezd), --tensions 9,13, --degrees 1-5-3-8 (saját menet) és --approach below, above vagy enclosure (kromatikus hangok, amelyek mindegyikhez vezetnek)",

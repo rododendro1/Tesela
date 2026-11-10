@@ -9,7 +9,7 @@ extension TextosDeConsola {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <Akkorde> [--in <Tonart>] [--scales]",
         descripcionAnalizar: "Stufenbezeichnung, Funktionen, Kadenzen und Modulationen (mit ihrem Drehakkord; ohne --in)\n--scales: die Skala jedes Akkords, mit Spannungs- und Avoid-Tönen",
-        notasAnalizar: "--guide-tones: zwei Guide-Tone-Linien, ab der Terz und ab der Septime; --voice-leading: wie jede Stimme von einem Akkord zum nächsten geht (in Drop 2), mit den gemeinsamen Tönen; --compare: die andere Fassung Akkord für Akkord, mit dem, was sich ändert, ihren Stufen und den gemeinsamen Tönen; --walking-bass: eine Walking-Bass-Linie in Vierteln, ein Takt pro Akkord",
+        notasAnalizar: "--guide-tones: zwei Guide-Tone-Linien, ab der Terz und ab der Septime; --voice-leading: wie jede Stimme von einem Akkord zum nächsten geht (in Drop 2), mit den gemeinsamen Tönen; --compare: die andere Fassung Akkord für Akkord, mit dem, was sich ändert, ihren Stufen und den gemeinsamen Tönen; --walking-bass: eine Walking-Bass-Linie in Vierteln, ein Takt pro Akkord; --estadisticas: die Lerdahl-Spannung Akkord für Akkord, die Stimmbewegung, die wahrscheinlichen Funktionen und die Chromatik",
         sintaxisAnalizarArchivo: "analyze --file <Datei> [--window <Dauer>]",
         descripcionAnalizarArchivo: "dasselbe mit den Akkorden einer MIDI-, MusicXML-, MEI- oder ABC-Datei (einer pro Schlag; --window 2: einer pro Halbe)",
         sintaxisArmonizar: "harmonize <Melodie> [--in <Tonart>] [--proposals 3]",
@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <Akkordsymbol>…",
         descripcionAcorde: "Noten, Art und Funktion jeder Note",
-        notasAcorde: "Optionen: --voicings, --names, --keys, --substitutions (in der Tonart von --in C major, am Ende) und --compare C (gemeinsame Töne und Stimmführung); --bebop und --pentatonics (Skalen zum Improvisieren darüber); --statistics (Anzahl der Töne mit ihrem Namen, Helligkeit, Intervallvektor, Forte-Zahl…)",
+        notasAcorde: "Optionen: --voicings, --names, --keys, --substitutions (in der Tonart von --in C major, am Ende) und --compare C (gemeinsame Töne und Stimmführung); --bebop und --pentatonics (Skalen zum Improvisieren darüber); --statistics (Anzahl der Töne mit ihrem Namen, Helligkeit, Intervallvektor, Forte-Zahl…); mit --estadisticas auch, wie er in die Tonart passt (Krumhansl, wahrscheinliche Funktion, Skalen im Katalog); mit --comparar die Abstände nach Tymoczko, Lerdahl, Fourier und Forte",
         sintaxisArpegio: "arpeggio <Akkordsymbol> [--pattern <Muster>]",
         descripcionArpegio: "Töne des Arpeggios und passende Skalen (--pattern ascending, descending, up-down, down-up, broken, alberti)",
         notasArpegio: "Optionen: --octaves 2 (1 bis 4), --no-octave, --from E (oder 3: beginnt mit diesem Ton), --tensions 9,13, --degrees 1-5-3-8 (ein eigener Verlauf) und --approach below, above oder enclosure (chromatische Töne, die zu jedem führen)",

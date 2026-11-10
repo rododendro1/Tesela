@@ -95,6 +95,7 @@ extension LineaDeComandos {
         let conNotasGuia = acordes.quitarMarca(.notasGuia)
         let conConduccion = acordes.quitarMarca(.conduccion)
         let conBajo = acordes.quitarMarca(.bajo)
+        let conEstadisticas = acordes.quitarMarca(.estadisticas)
         let contra = try acordes.valorConPalabras(.comparar)
         guard let tonalidad = try acordes.quitarTonalidad(en: notacion) else { throw ErrorDeUso.faltaTonalidadTrasEn }
         let archivo = try acordes.valor(.archivo)
@@ -168,6 +169,11 @@ extension LineaDeComandos {
                 lineas.append("  " + acorde.cifrado(en: notacion) + ": " + compas)
             }
         }
+        // Con --estadisticas, lo que se mide de la progresión: Lerdahl, el movimiento de las voces, las funciones…
+        if conEstadisticas, let progresion = estadisticas(de: analisis, en: tonalidad, notacion) {
+            lineas.append(notacion.texto(\.estadisticasDeLaProgresion) + " (" + progresion.tonalidad + "):")
+            lineas += progresion.datos(en: notacion).map { "  " + $0.nombre + ": " + $0.valor }
+        }
         // Con --comparar, la otra versión acorde a acorde: lo que cambia, sus grados y sus notas comunes.
         if let contra {
             let otra = try contra.split(separator: " ").map { try Acorde(leyendo: String($0), enLaOrden: notacion) }
@@ -185,6 +191,16 @@ extension LineaDeComandos {
             }
         }
         return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// Lo que se mide de los acordes de un análisis en la tonalidad dada, en la del análisis si no modula o, si
+    /// modula, en la de su primer acorde. `nil` si no tiene acordes.
+    static func estadisticas(
+        de analisis: AnalisisPresentado, en tonalidad: Tonalidad?, _ notacion: Notacion
+    ) -> EstadisticasDeProgresionPresentadas? {
+        guard let primero = analisis.acordes.first else { return nil }
+        let enLa = tonalidad ?? analisis.tonalidad ?? primero.tonalidadPropia
+        return EstadisticasDeProgresionPresentadas(enLa.estadisticas(de: analisis.acordes), en: notacion)
     }
 
     // MARK: Teoría postonal

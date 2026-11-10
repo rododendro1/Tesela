@@ -115,6 +115,18 @@ import Hexagonos
     @Test func acordes10() throws {
         // Sources/Armonia/Armonia.docc/Acordes.md, bloque 10
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 10)
+        comprobar(Acorde("Sol7").relacion(con: Acorde("Do")).conduccion.semitonosMovidos, #"4"#, doc, 0)
+        comprobar(Acorde("Sol7").relacion(con: Acorde("Do")).conduccion.desplazamientoEuclideo, #"2.449"#, doc, 1)
+        comprobar(Acorde("Sol7").relacion(con: Acorde("Do")).distanciaDeLerdahl, #"5"#, doc, 2)
+        comprobar(Acorde("Do").relacion(con: Acorde("Lab")).distanciaEnElTonnetz, #"2"#, doc, 3)
+        comprobar(Acorde("Do").relacion(con: Acorde("Lab")).conjunto.distanciaDeFourier, #"0"#, doc, 4)
+        comprobar(Acorde("Sol7").ajustesTonales.first?.tonalidad.nombre, #""Sol mayor""#, doc, 5)
+        comprobarIgual(Tonalidad(.do).funcionProbable(de: Acorde("Reb7")), .dominante, doc, 6)
+    }
+
+    @Test func acordes11() throws {
+        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 11
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 11)
         comprobar(Acorde.identificar(midi: [60, 64, 68]).first, #"Do+"#, doc, 0)
         comprobar(Acorde.identificar(midi: [60, 63, 66, 69]).first, #"Do°7"#, doc, 1)
         comprobar(Acorde.identificar(midi: [61, 65, 68]).first, #"Re♭"#, doc, 2)
@@ -123,9 +135,9 @@ import Hexagonos
         comprobar(Acorde("Do+").ortografiar(midi: [60, 64, 68]), #"[Do4, Mi4, Sol♯4]"#, doc, 5)
     }
 
-    @Test func acordes11() throws {
-        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 11
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 11)
+    @Test func acordes12() throws {
+        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 12
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 12)
         let a: Acorde = "Sol13(b9)"
         comprobar(a.componentes.map { "\($0.nota) \($0.papel)" }, #"["Sol fundamental", "Si tercera", "Re quinta", "Fa séptima", "La♭ novena", "Mi decimotercera"]"#, doc, 1)
         _ = (a.tercera, a.quinta, a.septima)
@@ -135,9 +147,9 @@ import Hexagonos
         comprobar(TipoDeAcorde("7sus4").estructura.suspension, #"4ª justa"#, doc, 7)
     }
 
-    @Test func acordes12() throws {
-        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 12
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 12)
+    @Test func acordes13() throws {
+        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 13
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 13)
         comprobar(Acorde("Sol7").vecinosParsimoniosos().map(\.description) == ["Sol♯°7 (Sol→Sol♯)", "Solm7 (Si→Si♭)", "Mim7 (Fa→Mi)"], #"true"#, doc, 0)
         comprobar(Acorde("Sol7").vecinosParsimoniosos(voces: 2).contains { $0.acorde == Acorde("Reb7") }, #"true"#, doc, 1)
         comprobar(Acorde("Sol7").caminoParsimonioso(hasta: "Rem7")?.map(\.acorde.cifrado) == ["Sol♯°7", "Sim7(♭5)", "Rem7"], #"true"#, doc, 2)
@@ -146,17 +158,17 @@ import Hexagonos
         comprobar(Acorde("Domaj7").caminoParsimonioso(hasta: "Sol7")?.count == 3, #"true"#, doc, 5)
     }
 
-    @Test func acordes13() throws {
-        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 13
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 13)
+    @Test func acordes14() throws {
+        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 14
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 14)
         comprobar("\(Acorde("Sol7").conduccionMinima(hasta: "Do"))", #""Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos""#, doc, 0)
         comprobar(Acorde("Rem7").conduccionMinima(hasta: "Sol7").semitonosMovidos == 3, #"true"#, doc, 1)
         comprobar(Acorde("Do").conduccionMinima(hasta: "Lam").semitonosMovidos == 2, #"true"#, doc, 2)
     }
 
-    @Test func acordes14() throws {
-        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 14
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 14)
+    @Test func acordes15() throws {
+        // Sources/Armonia/Armonia.docc/Acordes.md, bloque 15
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 15)
         comprobar(Acorde("Sol7").disposiciones(.cuartal).isEmpty, #"false"#, doc, 0)
         comprobar(DisposicionDeAcorde.cuartal.voces, #"4"#, doc, 1)
     }
@@ -606,6 +618,14 @@ import Hexagonos
         comprobar(Escala(.do, .mayor).estadisticas.conjunto.analisisDeHanson, #""p⁶m³n⁴s⁵d²t""#, doc, 2)
         comprobar(Escala(.do, .tonosEnteros).estadisticas.conjunto.modoDeMessiaen, #"1"#, doc, 3)
         comprobar(Escala(.do, .mayor).estadisticas.conjunto.parsimonia, #"2"#, doc, 4)
+    }
+
+    @Test func escalas14() throws {
+        // Sources/Armonia/Armonia.docc/Escalas.md, bloque 14
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 14)
+        comprobar(Escala(.do, .mayor).relacion(con: Escala(.sol, .mayor)).distanciaEnQuintas, #"1"#, doc, 0)
+        comprobar(Escala(.do, .mayor).relacion(con: Escala(.do, .menorNatural)).distanciaEnQuintas, #"3"#, doc, 1)
+        comprobar(Escala(.do, .mayor).relacion(con: Escala(.do, .pentatonicaMayor)).conduccion?.semitonosMovidos, #"2"#, doc, 2)
     }
 
     @Test func escalasDelMundo1() throws {
@@ -1363,6 +1383,15 @@ import Hexagonos
     @Test func tonalidad8() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 8
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 8)
+        comprobar(Tonalidad(.do).distanciaDeLerdahl(de: Acorde("Do"), a: Acorde("Sol")), #"5"#, doc, 0)
+        comprobar(Tonalidad(.do).distanciaDeLerdahl(de: Acorde("Do"), a: Acorde("Rem")), #"8"#, doc, 1)
+        comprobar(Tonalidad(.do).estadisticas(de: [Acorde("Do"), Acorde("Fa"), Acorde("Sol7"), Acorde("Do")]).movimientos, #"[3, 5, 4]"#, doc, 2)
+        comprobar(Tonalidad(.do).estadisticas(de: [Acorde("Do"), Acorde("Lab"), Acorde("Reb7"), Acorde("Do")]).cromatismo, #"0.308"#, doc, 3)
+    }
+
+    @Test func tonalidad9() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 9
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 9)
         let cadencia = try AnalisisArmonico.analizar(leyendo: "Do Fa Sol7 Do").cadencias[0]
         comprobarIgual(cadencia.tipo, .autentica, doc, 1)
         comprobar(cadencia.esPerfecta, #"true"#, doc, 2)
@@ -1375,9 +1404,9 @@ import Hexagonos
         comprobar(Tonalidad(.do).analizar(["Do", "Fam", "Do"]).cadencias[0].description, #""Cadencia plagal menor iv–I (acordes 2 → 3)""#, doc, 10)
     }
 
-    @Test func tonalidad9() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 9
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 9)
+    @Test func tonalidad10() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 10
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 10)
         let recorrido = try RecorridoTonal(leyendo: "Do Fa Sol7 Do Lam Re7 Sol")
         comprobar(recorrido.tramos.map(\.tonalidad), #"[Do mayor, Sol mayor]"#, doc, 1)
         comprobar(recorrido.cifrados, #"["I", "IV", "V7", "I", "ii", "V7", "I"]"#, doc, 2)
@@ -1388,24 +1417,24 @@ import Hexagonos
         comprobar(try RecorridoTonal(leyendo: "Do Sol Do Fa Rem Mi7 Lam").modulaciones[0].description, #""De Do mayor a La menor en el acorde 5 (pivote: Rem = ii en Do mayor = iv en La menor)""#, doc, 8)
     }
 
-    @Test func tonalidad10() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 10
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 10)
-        comprobar(try RecorridoTonal(leyendo: "Do Lam Re7 Sol7 Do").modulaciones.isEmpty, #"true"#, doc, 0)
-    }
-
     @Test func tonalidad11() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 11
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 11)
+        comprobar(try RecorridoTonal(leyendo: "Do Lam Re7 Sol7 Do").modulaciones.isEmpty, #"true"#, doc, 0)
+    }
+
+    @Test func tonalidad12() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 12
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 12)
         let planes = Tonalidad(.do).modulaciones(hasta: Tonalidad(.sol))
         comprobarIgual(planes[0].tecnica, .acordeComun, doc, 1)
         comprobar(planes[0].pivote?.description, #""Lam = vi en Do mayor = ii en Sol mayor""#, doc, 2)
         comprobarIgual(Tonalidad(.do).modulaciones(hasta: Tonalidad(Nota.la.bemol))[0].tecnica, .disminuidaEnarmonica, doc, 3)
     }
 
-    @Test func tonalidad12() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 12
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 12)
+    @Test func tonalidad13() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 13
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 13)
         let c = try Coral(leyendo: "Do3 Sol3 Mi4 Do5 | Re3 La3 Fa4 Re5")
         comprobar(c.faltas.map(\.tipo) == [.quintasParalelas, .octavasParalelas], #"true"#, doc, 1)
         comprobar(c.faltas[0].voces, #"[0, 1]"#, doc, 2)
@@ -1415,31 +1444,31 @@ import Hexagonos
         comprobar(try Coral(voces: [["Do3", "Sol2"], ["Mi4", "Re4"], ["Sol4", "Sol4"], ["Do5", "Si4"]]).esCorrecta, #"true"#, doc, 7)
     }
 
-    @Test func tonalidad13() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 13
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 13)
+    @Test func tonalidad14() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 14
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 14)
         let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
         let partitura = coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia")).musicXML()
         comprobar(partitura.contains("<staves>2</staves>"), #"true"#, doc, 2)
     }
 
-    @Test func tonalidad14() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 14
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 14)
-        let cadencia = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-        comprobar(cadencia.partitura(conCifrados: true, conAnalisis: true).musicXML().contains("<text>V</text>"), #"true"#, doc, 1)
-    }
-
     @Test func tonalidad15() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 15
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 15)
-        let cierre = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-        comprobar(cierre.partitura(conCifrados: true, conAnalisis: true).mei().contains("<syl>V</syl>"), #"true"#, doc, 1)
+        let cadencia = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
+        comprobar(cadencia.partitura(conCifrados: true, conAnalisis: true).musicXML().contains("<text>V</text>"), #"true"#, doc, 1)
     }
 
     @Test func tonalidad16() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 16
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 16)
+        let cierre = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
+        comprobar(cierre.partitura(conCifrados: true, conAnalisis: true).mei().contains("<syl>V</syl>"), #"true"#, doc, 1)
+    }
+
+    @Test func tonalidad17() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 17
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 17)
         let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
         comprobar(coral.esCorrecta, #"true"#, doc, 1)
         comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 2)
@@ -1448,9 +1477,9 @@ import Hexagonos
         comprobar(Coral.realizar(["Do", "Rem"], soprano: ["Sol4", "La4"]), #"nil"#, doc, 6)
     }
 
-    @Test func tonalidad17() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 17
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 17)
+    @Test func tonalidad18() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 18
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 18)
         comprobar(Tonalidad(.do).acordes(para: .sol).prefix(3).map(\.valor), #"[Sol, Do, Sol7]"#, doc, 0)
         let propuestas = Tonalidad(.do).armonizar(melodia: ["Mi", "Fa", "Re", "Do"], propuestas: 3)
         comprobar(propuestas.map(\.valor.cifrados), #"[["I", "IV", "V", "I"], ["I", "IV", "V7", "I"], ["I", "ii", "V", "I"]]"#, doc, 3)
@@ -1458,18 +1487,18 @@ import Hexagonos
         comprobar(Tonalidad(.do).armonizar(melodia: ["Mi", "Fa#", "Sol", "Do"])[0].valor.cifrados, #"["I", "V/V", "V", "I"]"#, doc, 5)
     }
 
-    @Test func tonalidad18() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 18
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 18)
+    @Test func tonalidad19() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 19
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 19)
         let armonizada = Tonalidad(.do).armonizarACuatroVoces(["Mi4", "Fa4", "Re4", "Do4"])!
         comprobar(armonizada.armonizacion.cifrados, #"["I", "IV", "V", "I"]"#, doc, 1)
         comprobar(armonizada.coral.voz(3), #"[Mi4, Fa4, Re4, Do4]"#, doc, 2)
         comprobar(armonizada.coral.esCorrecta, #"true"#, doc, 3)
     }
 
-    @Test func tonalidad19() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 19
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 19)
+    @Test func tonalidad20() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 20
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 20)
         let esquemas = EsquemaArmonico.buscar(en: ["Do7M", "Lam7", "Rem7", "Sol7", "Do7M"])
         comprobar(esquemas.map(\.progresion), #"[turnaround, progresión por quintas, ii–V–I]"#, doc, 1)
         comprobar(esquemas.map(\.indices), #"[0..<4, 1..<5, 2..<5]"#, doc, 2)
@@ -1478,18 +1507,18 @@ import Hexagonos
         comprobar(EsquemaArmonico.buscar(en: ["Lam", "Sol", "Fa", "Mi"])[0].tonica, #"La"#, doc, 5)
     }
 
-    @Test func tonalidad20() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 20
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 20)
+    @Test func tonalidad21() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 21
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 21)
         comprobar(try Tonalidad(.do).acorde(romano: "ii65") == Acorde("Rem7/Fa"), #"true"#, doc, 0)
         comprobar(try Tonalidad(.do).acorde(romano: "V7/V") == Acorde("Re7"), #"true"#, doc, 1)
         comprobar(try Tonalidad(.la, .menor).acorde(romano: "vii°7") == Acorde("Sol#°7"), #"true"#, doc, 2)
         comprobar(try Tonalidad(.do).acordes(romanos: "I ♭VI ♭VII I") == ["Do", "Lab", "Sib", "Do"], #"true"#, doc, 3)
     }
 
-    @Test func tonalidad21() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 21
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 21)
+    @Test func tonalidad22() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 22
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 22)
         comprobar(ProgresionConNombre.monte.acordes(sobre: .do) == ["Do7", "Fa", "Re7", "Sol"], #"true"#, doc, 0)
         comprobar(ProgresionConNombre.andaluza.acordes(sobre: .la) == ["Lam", "Sol", "Fa", "Mi"], #"true"#, doc, 1)
         comprobar(ProgresionConNombre.andaluza.nombre(en: .conPalabras(.ingles)) == "Andalusian cadence", #"true"#, doc, 2)
@@ -1497,9 +1526,9 @@ import Hexagonos
         comprobar(ProgresionConNombre.buscar(conteniendo: "blues").count, #"3"#, doc, 4)
     }
 
-    @Test func tonalidad22() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 22
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 22)
+    @Test func tonalidad23() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 23
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 23)
         comprobar(try Tonalidad(.do).acorde(sobre: .si, cifras: "65"), #"Sol7/Si"#, doc, 0)
         comprobar(try Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#"), #"Mi"#, doc, 1)
         comprobar(try Tonalidad(.la, .menor).acordes(bajoCifrado: "La Fa:6 Mi:# La"), #"[Lam, Rem/Fa, Mi, Lam]"#, doc, 2)
@@ -1507,17 +1536,17 @@ import Hexagonos
         comprobar(realizado.esCorrecta, #"true"#, doc, 4)
     }
 
-    @Test func tonalidad23() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 23
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 23)
+    @Test func tonalidad24() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 24
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 24)
         comprobar(Tonalidad(.do).negativa(.mi) == Nota(.mi, .bemol), #"true"#, doc, 0)
         comprobar(Tonalidad(.do).negativo(Acorde("Do")) == Acorde("Dom"), #"true"#, doc, 1)
         comprobar(Tonalidad(.do).negativo(Acorde("Fa")) == Acorde("Solm"), #"true"#, doc, 2)
     }
 
-    @Test func tonalidad24() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 24
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 24)
+    @Test func tonalidad25() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 25
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 25)
         let melodia: [Altura] = ["Mi5", "Re5", "Do5", "Do5", "Si4", "Do5"]
         let notas = NotaDeLaMelodia.analizar(melodia, sobre: ["Do", "Do", "Fa", "Sol", "Sol", "Do"])!
         comprobar(notas[1].description, #""Re5 (nota de paso)""#, doc, 2)
@@ -1526,9 +1555,9 @@ import Hexagonos
         comprobar(NotaExtrana.apoyatura.nombre(en: .ascii(.ingles)), #""appoggiatura""#, doc, 5)
     }
 
-    @Test func tonalidad25() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 25
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 25)
+    @Test func tonalidad26() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 26
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 26)
         let cantus = "Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4"
         let fux = try Contrapunto(cantusFirmus: cantus, contrapunto: "La4 La4 Sol4 La4 Si4 Do5 Do5 Si4 Re5 Do#5 Re5", especie: .primera)
         comprobar(fux.esCorrecto, #"true"#, doc, 2)
@@ -1542,9 +1571,9 @@ import Hexagonos
         comprobar(try Contrapunto(cantusFirmus: "Re4 Mi4 Re4", contrapunto: "-:2 Re5:1 Do#5 Re5:1", especie: .cuarta).esCorrecto, #"true"#, doc, 13)
     }
 
-    @Test func tonalidad26() throws {
-        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 26
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 26)
+    @Test func tonalidad27() throws {
+        // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 27
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 27)
         let tres = try ContrapuntoAVariasVoces(cantusFirmus: "Re4 Fa4 Mi4 Re4", voces: [("La4 La4 Do#5 Re5", .primera), ("Re3 Re3 La2 Re3", .primera)])
         comprobar(tres.esCorrecto, #"true"#, doc, 1)
         let paralelas = try ContrapuntoAVariasVoces(cantusFirmus: "Re4 Fa4 Mi4 Re4", voces: [("La4 La4 Sol4 La4", .primera), ("Re3 Re3 Do3 Re3", .primera)])

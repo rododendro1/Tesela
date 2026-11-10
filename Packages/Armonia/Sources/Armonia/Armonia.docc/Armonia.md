@@ -50,6 +50,10 @@ Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first   // La meno
 - ``CardinalDeAcorde``
 - ``EstadisticasDeAcorde``
 - ``MedidasDeConjunto``
+- ``RelacionEntreConjuntos``
+- ``RelacionDeForte``
+- ``RelacionEntreAcordes``
+- ``AjusteTonal``
 - ``MedidasDeAfinacionJusta``
 - ``PsicoacusticaDeAcorde``
 - ``DisposicionDeVoces``
@@ -87,8 +91,11 @@ Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first   // La meno
 - ``PsicoacusticaDeEscala``
 - ``PropiedadDeRothenberg``
 - ``CombinatoriedadHexacordal``
+- ``RelacionEntreEscalas``
 - ``Tonalidad``
 - ``AnalisisArmonico``
+- ``EstadisticasDeProgresion``
+- ``TensionDeLerdahl``
 - ``Cadencia``
 - ``EsquemaArmonico``
 - ``ProgresionConNombre``

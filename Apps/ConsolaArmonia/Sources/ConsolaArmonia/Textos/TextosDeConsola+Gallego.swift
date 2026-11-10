@@ -9,7 +9,7 @@ extension TextosDeConsola {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <acordes> [--en <tonalidade>] [--escalas]",
         descripcionAnalizar: "cifrado romano, funcións, cadencias e modulacións (co seu acorde pivote; sen --en)\n--escalas: a escala de cada acorde, coas tensións e notas que evitar",
-        notasAnalizar: "--notas-guia: dúas liñas de notas guía, desde a terceira e desde a sétima; --conduccion: como vai cada voz dun acorde ao seguinte (en drop 2), coas notas comúns; --comparar: a outra versión acorde a acorde, co que cambia, os seus graos e as notas comúns; --bajo: un baixo camiñante en negras, un compás por acorde",
+        notasAnalizar: "--notas-guia: dúas liñas de notas guía, desde a terceira e desde a sétima; --conduccion: como vai cada voz dun acorde ao seguinte (en drop 2), coas notas comúns; --comparar: a outra versión acorde a acorde, co que cambia, os seus graos e as notas comúns; --bajo: un baixo camiñante en negras, un compás por acorde; --estadisticas: a tensión de Lerdahl acorde a acorde, o movemento das voces, as funcións probables e o cromatismo",
         sintaxisAnalizarArchivo: "analizar --archivo <ficheiro> [--ventana <duración>]",
         descripcionAnalizarArchivo: "o mesmo, cos acordes dun ficheiro MIDI, MusicXML, MEI ou ABC (un por pulso; --ventana 2: un por branca)",
         sintaxisArmonizar: "armonizar <melodía> [--en <tonalidade>] [--propuestas 3]",
@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <cifrado>…",
         descripcionAcorde: "notas, tipo e papel de cada nota",
-        notasAcorde: "opcións: --disposiciones, --nombres, --tonalidades, --sustituciones (na tonalidade de --en Do mayor, ao final) e --comparar Do (notas comúns e condución das voces); --bebop e --pentatonicas (escalas para improvisar enriba); --estadisticas (número de notas e o seu cardinal, brillo, vector interválico, número de Forte…)",
+        notasAcorde: "opcións: --disposiciones, --nombres, --tonalidades, --sustituciones (na tonalidade de --en Do mayor, ao final) e --comparar Do (notas comúns e condución das voces); --bebop e --pentatonicas (escalas para improvisar enriba); --estadisticas (número de notas e o seu cardinal, brillo, vector interválico, número de Forte…); con --estadisticas, tamén como encaixa na tonalidade (Krumhansl, función probable, escalas do catálogo); con --comparar, as distancias de Tymoczko, Lerdahl, Fourier e Forte",
         sintaxisArpegio: "arpegio <cifrado> [--patron <padrón>]",
         descripcionArpegio: "notas do arpexo e escalas do acorde (--patron ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado, alberti)",
         notasArpegio: "opcións: --octavas 2 (de 1 a 4), --sin-octava, --desde Mi (ou 3: empeza por esa nota), --tensiones 9,13, --grados 1-5-3-8 (un percorrido propio) e --aproximacion abajo, arriba ou encierro (notas cromáticas que levan a cada unha)",

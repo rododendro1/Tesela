@@ -289,6 +289,31 @@ public struct TextosDeApps: TextosTraducidos {
     public let simplicidad: String
     public let conSensible: String
     public let tetracordosIguales: String
+    public let tamanosDeTymoczko: String
+    public let pasosEnElTonnetz: String
+    public let distanciaDeLerdahl: String
+    public let distanciaDeFourier: String
+    public let distanciaIntervalica: String
+    public let asimilitudDeMorris: String
+    public let relacionesDeForte: String
+    public let conLaTonalidad: String
+    public let ajusteDeKrumhansl: String
+    public let funcionProbable: String
+    public let tonalidadesCercanas: String
+    public let escalasDelCatalogo: String
+    public let distanciaEnQuintas: String
+    public let notasQueCambian: String
+    public let conduccionMinima: String
+    public let tensionDeLerdahl: String
+    public let tensionDesdeLaTonica: String
+    public let tensionMedia: String
+    public let movimientoDeLasVoces: String
+    public let movimientoMedio: String
+    public let funcionesProbables: String
+    public let notasNuevas: String
+    public let notasFueraDeLaTonalidad: String
+    public let cromatismo: String
+    public let estadisticasDeLaProgresion: String
     public let propiedades: String
     public let escaleraDeBrillo: String
     public let hojaDeEstudio: String

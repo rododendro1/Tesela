@@ -221,6 +221,14 @@ public struct ConduccionMinima: Hashable, Sendable, CustomStringConvertible {
     public var semitonosMovidos: Int { movimientos.reduce(0) { $0 + abs($1.semitonos) } }
     /// Las voces que se mueven (sin las notas comunes).
     public var vocesQueSeMueven: [MovimientoDeVoz] { movimientos.filter { $0.semitonos != 0 } }
+    /// El tamaño euclídeo de la conducción (Tymoczko, *A Geometry of Music*, 2011): la raíz de la suma de los
+    /// cuadrados de lo que se mueve cada voz. Premia repartir el movimiento entre varias voces.
+    public var desplazamientoEuclideo: Double {
+        let cuadrados = movimientos.reduce(0) { $0 + $1.semitonos * $1.semitonos }
+        return (Double(cuadrados).squareRoot() * 1000).rounded() / 1000
+    }
+    /// Lo que se mueve la voz que más se mueve: la norma del máximo de Tymoczko.
+    public var desplazamientoMaximo: Int { movimientos.map { abs($0.semitonos) }.max() ?? 0 }
 
     /// "Sol→Sol, Si→Do (+1), Re→Do (−2), Fa→Mi (−1): 4 semitonos".
     public var description: String { texto(en: .compacta(.espanol)) }

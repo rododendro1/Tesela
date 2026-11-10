@@ -42,7 +42,7 @@ extension LineaDeComandos {
                 "armonia analizar Do Fa Sol7 Do Lam Re7 Sol",
                 "armonia analyze C F G7 C Am D7 G"),
             notas: TextosDeConsola.traduccion(\.notasAnalizar),
-            opciones: [.en, .escalas, .notasGuia, .conduccion, .comparar, .bajo]),
+            opciones: [.en, .escalas, .notasGuia, .conduccion, .comparar, .bajo, .estadisticas]),
         // analizar --archivo <fichero> [--ventana <duración>]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisAnalizarArchivo),

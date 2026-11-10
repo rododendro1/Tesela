@@ -9,7 +9,7 @@ extension TextosDeConsola {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <συγχορδίες> [--in <τονικότητα>] [--scales]",
         descripcionAnalizar: "ρωμαϊκή αρίθμηση, λειτουργίες, πτώσεις και μετατροπίες (με την κοινή τους συγχορδία· χωρίς --in)\n--scales: η κλίμακα κάθε συγχορδίας, με τις εντάσεις και τους φθόγγους προς αποφυγή",
-        notasAnalizar: "--guide-tones: δύο γραμμές νοτών-οδηγών, από την τρίτη και από την έβδομη· --voice-leading: πώς πηγαίνει κάθε φωνή από μια συγχορδία στην επόμενη (σε drop 2), με τις κοινές νότες· --compare: η άλλη εκδοχή συγχορδία προς συγχορδία, με ό,τι αλλάζει, τις βαθμίδες της και τις κοινές νότες· --walking-bass: μια γραμμή walking bass σε τέταρτα, ένα μέτρο ανά συγχορδία",
+        notasAnalizar: "--guide-tones: δύο γραμμές νοτών-οδηγών, από την τρίτη και από την έβδομη· --voice-leading: πώς πηγαίνει κάθε φωνή από μια συγχορδία στην επόμενη (σε drop 2), με τις κοινές νότες· --compare: η άλλη εκδοχή συγχορδία προς συγχορδία, με ό,τι αλλάζει, τις βαθμίδες της και τις κοινές νότες· --walking-bass: μια γραμμή walking bass σε τέταρτα, ένα μέτρο ανά συγχορδία; --estadisticas: η ένταση Lerdahl συγχορδία προς συγχορδία, η κίνηση των φωνών, οι πιθανές λειτουργίες και η χρωματικότητα",
         sintaxisAnalizarArchivo: "analyze --file <αρχείο> [--window <διάρκεια>]",
         descripcionAnalizarArchivo: "το ίδιο, με τις συγχορδίες ενός αρχείου MIDI, MusicXML, MEI ή ABC (μία ανά χρόνο; --window 2: μία ανά μισό)",
         sintaxisArmonizar: "harmonize <μελωδία> [--in <τονικότητα>] [--proposals 3]",
@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <σύμβολο>…",
         descripcionAcorde: "νότες, είδος και ρόλος κάθε νότας",
-        notasAcorde: "επιλογές: --voicings, --names, --keys, --substitutions (στην τονικότητα του --in C major, στο τέλος) και --compare C (κοινές νότες και οδήγηση φωνών); --bebop και --pentatonics (κλίμακες για αυτοσχεδιασμό)· --statistics (αριθμός φθόγγων και το όνομά του, φωτεινότητα, διάνυσμα διαστημάτων, αριθμός Forte…)",
+        notasAcorde: "επιλογές: --voicings, --names, --keys, --substitutions (στην τονικότητα του --in C major, στο τέλος) και --compare C (κοινές νότες και οδήγηση φωνών); --bebop και --pentatonics (κλίμακες για αυτοσχεδιασμό)· --statistics (αριθμός φθόγγων και το όνομά του, φωτεινότητα, διάνυσμα διαστημάτων, αριθμός Forte…); με --estadisticas, και πώς ταιριάζει στην τονικότητα (Krumhansl, πιθανή λειτουργία, κλίμακες του καταλόγου)· με --comparar, οι αποστάσεις Tymoczko, Lerdahl, Fourier και Forte",
         sintaxisArpegio: "arpeggio <σύμβολο> [--pattern <μοτίβο>]",
         descripcionArpegio: "νότες του αρπέζ και κλίμακες της συγχορδίας (--pattern ascending, descending, up-down, down-up, broken, alberti)",
         notasArpegio: "επιλογές: --octaves 2 (από 1 έως 4), --no-octave, --from E (ή 3: ξεκινά από αυτή τη νότα), --tensions 9,13, --degrees 1-5-3-8 (δική σας πορεία) και --approach below, above ή enclosure (χρωματικές νότες που οδηγούν σε καθεμία)",

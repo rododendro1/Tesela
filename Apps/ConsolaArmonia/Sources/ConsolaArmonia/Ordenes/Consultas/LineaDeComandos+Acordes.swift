@@ -95,12 +95,20 @@ extension LineaDeComandos {
             lineas.append("  " + notacion.texto(\.notasComunes) + ": " + comparacion.comunes)
             lineas += comparacion.voces.reversed().map { "  " + $0 }
             lineas.append("  " + comparacion.movimiento)
+            let relacion = RelacionEntreAcordesPresentada(
+                acorde.relacion(con: otro, en: pedido.tonalidad), en: notacion)
+            lineas += relacion.datos(en: notacion).map { "  " + $0.nombre + ": " + $0.valor }
         }
         if pedido.estadisticas {
             lineas.append(notacion.texto(\.estadisticas) + ":")
             lineas += PresentacionDeEstadisticasDeAcorde.estadisticas(
                 acorde.estadisticas, sobre: acorde.fundamental, en: notacion
             ).map {
+                "  " + $0.nombre + ": " + $0.valor
+            }
+            let tonalidad = pedido.tonalidad ?? acorde.tonalidadPropia
+            lineas.append(notacion.texto(\.conLaTonalidad) + " (" + tonalidad.nombre(en: notacion) + "):")
+            lineas += AcordeEnLaTonalidadPresentado(acorde, en: tonalidad, notacion: notacion).datos(en: notacion).map {
                 "  " + $0.nombre + ": " + $0.valor
             }
         }

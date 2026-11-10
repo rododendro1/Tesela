@@ -11,13 +11,33 @@ extension LineaDeComandos {
     /// `analizar Do Fa Sol7 Do [--en Do mayor] --json`: el análisis por tramos, como en el texto (el título, los
     /// tramos con su cabecera, «en Sol mayor» al modular, y sus acordes, y las cadencias: las claves de
     /// `AnalisisPresentado`).
-    static func analizarJSON(_ textos: [String], _ notacion: Notacion) throws -> AnalisisPresentado {
+    /// Con `--estadisticas`, también `estadisticas` (`EstadisticasDeProgresionPresentadas`).
+    static func analizarJSON(_ textos: [String], _ notacion: Notacion) throws -> AnalisisJSON {
         var argumentos = Argumentos(textos)
+        let conEstadisticas = argumentos.quitarMarca(.estadisticas)
         guard let tonalidad = try argumentos.quitarTonalidad(en: notacion) else {
             throw ErrorDeUso.faltaTonalidadTrasEn
         }
         let acordes = try palabras(argumentos, siFaltan: .faltanAcordesDelAnalisis)
-        return try PresentacionDeAnalisis.analizar(acordes.joined(separator: " "), en: tonalidad, notacion: notacion)
+        let analisis = try PresentacionDeAnalisis.analizar(
+            acordes.joined(separator: " "), en: tonalidad, notacion: notacion)
+        return AnalisisJSON(
+            analisis: analisis,
+            estadisticas: conEstadisticas ? estadisticas(de: analisis, en: tonalidad, notacion) : nil)
+    }
+
+    /// El análisis de `analizar --json`: las claves de `AnalisisPresentado` y, con `--estadisticas`, `estadisticas`.
+    struct AnalisisJSON: Encodable {
+        let analisis: AnalisisPresentado
+        let estadisticas: EstadisticasDeProgresionPresentadas?
+
+        private enum Clave: String, CodingKey { case estadisticas }
+
+        func encode(to encoder: any Encoder) throws {
+            try analisis.encode(to: encoder)
+            var contenedor = encoder.container(keyedBy: Clave.self)
+            try contenedor.encodeIfPresent(estadisticas, forKey: .estadisticas)
+        }
     }
 
     // MARK: Armonización y conducción de las voces

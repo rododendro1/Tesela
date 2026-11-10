@@ -222,7 +222,8 @@ Sources/
 │   ├── Referencias/       Referencia (citas, BibTeX y CSL-JSON) y Referencias (el catálogo de obras, que citan
 │   │                      escalas, acordes, corales y partituras)
 │   └── Postonal/          ConjuntoDeClasesDeAltura, TablaForte, MedidasDeConjunto (Huron, Fourier, Tymoczko,
-│                          Hanson, Messiaen, Forte, Babbitt, Balzano…: lo que se mide de un conjunto)
+│                          Hanson, Messiaen, Forte, Babbitt, Balzano…: lo que se mide de un conjunto) y
+│                          RelacionEntreConjuntos (Fourier, Isaacson, Morris y Forte: lo que se parecen dos)
 ├── Teoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
 │   ├── Catalogo/          Lo que comparten los catálogos: Estilo (de escalas, acordes y progresiones),
@@ -230,7 +231,8 @@ Sources/
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde,
 │   │   │                  CardinalDeAcorde y EstadisticasDeAcorde (lo que se mide de un acorde, con sus
-│   │   │                  bloques PsicoacusticaDeAcorde y DisposicionDeVoces), GrupoDeHindemith
+│   │   │                  bloques PsicoacusticaDeAcorde y DisposicionDeVoces), GrupoDeHindemith,
+│   │   │                  RelacionEntreAcordes (Tymoczko, Tonnetz, Lerdahl, Fourier, Forte)
 │   │   ├── Catalogo/      AcordeConNombre (el acorde del catálogo, con su ficha) y el catálogo
 │   │   ├── Nombres/       NombresDeAcordes y un fichero por idioma (`NombresDeAcordes+Catalan.swift`…)
 │   │   └── Neorriemanniana/   TransformacionNeorriemanniana (P, L, R y caminos), CicloNeorriemanniano
@@ -239,7 +241,7 @@ Sources/
 │   ├── Escalas/
 │   │   ├── Escala/        Escala (con NombreDeGrado, la búsqueda por notas y la ortografía) y lo que se hace con
 │   │   │                  ella: acordes, estudio, simetría, estadísticas, armonía modal, escalas propias y vecinas
-│   │   │                  (MedidasDeEscala: Myhill, Rothenberg, Carey, Krumhansl y Kessler…)
+│   │   │                  (MedidasDeEscala: Myhill, Rothenberg, Carey, Krumhansl y Kessler…) y RelacionEntreEscalas
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
 │   │   │                  `nombre(en:)`), FichaDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
 │   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala,
@@ -254,8 +256,10 @@ Sources/
 │   │   └── Nombres/       NombresDeEscalas y un fichero por idioma (`NombresDeEscalas+Catalan.swift`…): el nombre de cada
 │   │                      tipo, sus alias, las escalas de otras tradiciones y el nombre de cada clase
 │   ├── Tonalidad/         Tonalidad, Tonalidad+Deteccion, Cadencia, RecorridoTonal, AnalisisArmonico (con
-│   │                      FuncionTonal y AcordeAnalizado)
-│   ├── Progresiones/      ProgresionConNombre (una progresión en cifrado romano, con su realización y su búsqueda)
+│   │                      FuncionTonal y AcordeAnalizado), EspacioTonalDeLerdahl, AjusteTonal (Krumhansl y la
+│   │                      función probable)
+│   ├── Progresiones/      ProgresionConNombre (una progresión en cifrado romano, con su realización y su búsqueda) y
+│   │                      EstadisticasDeProgresion (Lerdahl, movimiento de las voces, cromatismo)
 │   │   ├── Catalogo/      El catálogo: cadencias, esquemas del barroco y del galante, jazz y blues, y pop
 │   │   └── Nombres/       NombresDeProgresiones y un fichero por idioma (`NombresDeProgresiones+Catalan.swift`…)
 │   ├── Psicoacustica/     Psicoacustica (Parncutt, Terhardt, Cook, Sethares, Vassilakis, Hutchinson y Knopoff,

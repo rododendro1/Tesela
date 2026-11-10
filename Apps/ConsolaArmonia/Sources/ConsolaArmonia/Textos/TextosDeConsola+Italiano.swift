@@ -9,7 +9,7 @@ extension TextosDeConsola {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <accordi> [--en <tonalità>] [--escalas]",
         descripcionAnalizar: "numeri romani, funzioni, cadenze e modulazioni (con l'accordo perno; senza --en)\n--escalas: la scala di ogni accordo, con tensioni e note da evitare",
-        notasAnalizar: "--notas-guia: due linee di note guida, dalla terza e dalla settima; --conduccion: come va ogni voce da un accordo al successivo (in drop 2), con le note comuni; --comparar: l’altra versione accordo per accordo, con ciò che cambia, i suoi gradi e le note comuni; --bajo: un walking bass in semiminime, una battuta per accordo",
+        notasAnalizar: "--notas-guia: due linee di note guida, dalla terza e dalla settima; --conduccion: come va ogni voce da un accordo al successivo (in drop 2), con le note comuni; --comparar: l’altra versione accordo per accordo, con ciò che cambia, i suoi gradi e le note comuni; --bajo: un walking bass in semiminime, una battuta per accordo; --estadisticas: la tensione di Lerdahl accordo per accordo, il movimento delle voci, le funzioni probabili e il cromatismo",
         sintaxisAnalizarArchivo: "analizar --archivo <file> [--ventana <durata>]",
         descripcionAnalizarArchivo: "lo stesso, con gli accordi di un file MIDI, MusicXML, MEI o ABC (uno per pulsazione; --ventana 2: uno per minima)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalità>] [--propuestas 3]",
@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <sigla>…",
         descripcionAcorde: "note, tipo e ruolo di ogni nota",
-        notasAcorde: "opzioni: --disposiciones, --nombres, --tonalidades, --sustituciones (nella tonalità di --en Do mayor, alla fine) e --comparar Do (note comuni e condotta delle voci); --bebop e --pentatonicas (scale per improvvisarci sopra); --estadisticas (numero di note e il suo cardinale, brillantezza, vettore intervallare, numero di Forte…)",
+        notasAcorde: "opzioni: --disposiciones, --nombres, --tonalidades, --sustituciones (nella tonalità di --en Do mayor, alla fine) e --comparar Do (note comuni e condotta delle voci); --bebop e --pentatonicas (scale per improvvisarci sopra); --estadisticas (numero di note e il suo cardinale, brillantezza, vettore intervallare, numero di Forte…); con --estadisticas, anche come si adatta alla tonalità (Krumhansl, funzione probabile, scale del catalogo); con --comparar, le distanze di Tymoczko, Lerdahl, Fourier e Forte",
         sintaxisArpegio: "arpegio <sigla> [--patron <schema>]",
         descripcionArpegio: "note dell'arpeggio e scale dell'accordo (--patron ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado, alberti)",
         notasArpegio: "opzioni: --octavas 2 (da 1 a 4), --sin-octava, --desde Mi (o 3: comincia da quella nota), --tensiones 9,13, --grados 1-5-3-8 (un percorso proprio) e --aproximacion abajo, arriba o encierro (note cromatiche che portano a ciascuna)",
