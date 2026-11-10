@@ -18,16 +18,16 @@ func celda(_ texto: String) -> String {
     String(texto.map { $0 == "\t" || $0.isNewline ? " " : $0 })
 }
 
-/// Los cents con un decimal y punto decimal, sea cual sea la configuración regional: «0.0 151.0 294.1».
+/// Los cents con un decimal como mucho y punto decimal, sea cual sea la configuración regional: «0 151 294.1».
 func cents(_ valores: [Double]) -> String {
-    valores.map { String(($0 * 10).rounded() / 10) }.joined(separator: " ")
+    valores.map { Redondeo.texto($0, decimales: 1) }.joined(separator: " ")
 }
 
-/// Un número con dos decimales como mucho y punto decimal: «2.0», «-0.43».
-func decimal(_ valor: Double) -> String { String((valor * 100).rounded() / 100) }
+/// Un número con dos decimales como mucho y punto decimal: «2», «-0.43».
+func decimal(_ valor: Double) -> String { Redondeo.texto(valor, decimales: 2) }
 
 /// Con tres decimales como mucho.
-func milesimas(_ valor: Double) -> String { String((valor * 1000).rounded() / 1000) }
+func milesimas(_ valor: Double) -> String { Redondeo.texto(valor) }
 
 func siONo(_ valor: Bool) -> String { valor ? "sí" : "no" }
 

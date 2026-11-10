@@ -78,7 +78,7 @@ public enum PresentacionDeEstadisticasDeAcorde {
         datos.append(dato(\.alturaDeTenney, decimal(estadisticas.afinacion.alturaDeTenney)))
         datos.append(dato(\.limiteImpar, "\(estadisticas.afinacion.limiteImpar)"))
         datos.append(dato(\.limitePrimo, "\(estadisticas.afinacion.limitePrimo)"))
-        datos.append(dato(\.armonicidad, decimal(estadisticas.afinacion.armonicidad)))
+        datos.append(dato(\.armonicidad, Redondeo.texto(estadisticas.afinacion.armonicidad, decimales: 1)))
         datos.append(dato(\.entropiaArmonica, decimal(estadisticas.psicoacustica.entropiaArmonica)))
         if let virtual = estadisticas.psicoacustica.fundamentalVirtual {
             datos.append(dato(\.fundamentalVirtual, nota(virtual)))
@@ -104,10 +104,7 @@ public enum PresentacionDeEstadisticasDeAcorde {
     }
 
     /// «2.22», «0», «0.062»: sin decimales si es entero y con tres como mucho si no.
-    static func decimal(_ valor: Double) -> String {
-        let redondeado = (valor * 1000).rounded() / 1000
-        return redondeado == redondeado.rounded() ? "\(Int(redondeado))" : "\(redondeado)"
-    }
+    static func decimal(_ valor: Double) -> String { Redondeo.texto(valor) }
 
     /// Los rasgos que tiene, separados por « · »: «no se lee por terceras · con tritono · simétrico por inversión»;
     /// vacío si no tiene ninguno.
@@ -237,7 +234,7 @@ public struct EstadisticasDeAcordePresentadas: Hashable, Sendable, Codable {
         cardinal = medidas.cardinal?.nombre(en: notacion)
         porTerceras = medidas.porTerceras
         tensiones = medidas.tensiones
-        brilloPorQuintas = medidas.brilloPorQuintas.map { ($0 * 100).rounded() / 100 }
+        brilloPorQuintas = medidas.brilloPorQuintas.map { Redondeo.valor($0, decimales: 2) }
         amplitudEnQuintas = medidas.amplitudEnQuintas
         vectorIntervalico = medidas.vectorIntervalico
         formaPrima = medidas.formaPrima

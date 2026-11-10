@@ -42,17 +42,17 @@ public struct RelacionEntreConjuntos: Hashable, Sendable {
         let fb = MedidasDeConjunto.magnitudesDeFourier(b.clases)
         var suma = 0.0
         for (x, y) in zip(fa, fb) { suma += (x - y) * (x - y) }
-        distanciaDeFourier = MedidasDeConjunto.redondear(suma.squareRoot())
+        distanciaDeFourier = MedidasDeConjunto.sinRuido(suma.squareRoot())
         let va = a.vectorIntervalico
         let vb = b.vectorIntervalico
         let diferencias = zip(va, vb).map { Double($0 - $1) }
         let media = diferencias.reduce(0, +) / 6
         var varianza = 0.0
         for d in diferencias { varianza += (d - media) * (d - media) }
-        distanciaIntervalica = MedidasDeConjunto.redondear((varianza / 6).squareRoot())
+        distanciaIntervalica = (varianza / 6).squareRoot()
         let total = (va + vb).reduce(0, +)
         let distinto = zip(va, vb).map { abs($0 - $1) }.reduce(0, +)
-        asimilitudDeMorris = total == 0 ? 0 : MedidasDeConjunto.redondear(Double(distinto) / Double(total))
+        asimilitudDeMorris = total == 0 ? 0 : Double(distinto) / Double(total)
         relacionDeForte = a.cardinalidad == b.cardinalidad ? Self.relacionDeForte(va, vb) : nil
         relacionRp = Self.relacionRp(a, b)
     }

@@ -253,7 +253,7 @@ extension LineaDeComandos {
             let medidas = escala.estadisticas
             datos.estadisticas = EscalaJSON.Estadisticas(
                 numeroDeNotas: medidas.numeroDeNotas, cardinal: medidas.cardinal?.nombre(en: notacion),
-                brillo: medidas.brillo, brilloPorQuintas: (medidas.brilloPorQuintas * 100).rounded() / 100,
+                brillo: medidas.brillo, brilloPorQuintas: Redondeo.valor(medidas.brilloPorQuintas, decimales: 2),
                 pasos: medidas.pasos, vectorIntervalico: medidas.vectorIntervalico, anhemitonica: medidas.anhemitonica,
                 cohemitonica: medidas.cohemitonica, transposicionesDistintas: medidas.transposicionesDistintas,
                 numeroDeForte: medidas.numeroDeForte, maximamenteRegular: medidas.maximamenteRegular,
@@ -262,7 +262,7 @@ extension LineaDeComandos {
         if pedido.escalera {
             let peldanos = PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, en: notacion)
             datos.escaleraDeBrillo = peldanos.map {
-                let brillo = ($0.escala.estadisticas.brilloPorQuintas * 100).rounded() / 100
+                let brillo = Redondeo.valor($0.escala.estadisticas.brilloPorQuintas, decimales: 2)
                 return EscalaJSON.Peldano(
                     nombre: $0.nombre, brilloPorQuintas: brillo, cambio: $0.cambio.isEmpty ? nil : $0.cambio,
                     dePartida: $0.esLaDePartida)

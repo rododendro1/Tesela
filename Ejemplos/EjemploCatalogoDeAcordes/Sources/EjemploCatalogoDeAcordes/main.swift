@@ -36,9 +36,7 @@ let columnas: [String] =
 let genericos = Set(AcordeConNombre.genericos)
 
 /// Un número con tres decimales como mucho.
-func decimal(_ valor: Double) -> String {
-    String((valor * 1000).rounded() / 1000)
-}
+func decimal(_ valor: Double) -> String { Redondeo.texto(valor) }
 
 /// Las tríadas contenidas: mayores, menores, disminuidas y aumentadas, separadas por espacios.
 func triadas(_ t: TriadasContenidas) -> String {
@@ -62,7 +60,7 @@ func fila(_ acorde: AcordeConNombre) -> [String] {
         acorde.tipo?.cifrado ?? "",
         acorde.tipo?.acordeConNombre?.nombre ?? "",
         medidas.porTerceras ? "sí" : "no",
-        medidas.brilloPorQuintas.map { String(($0 * 100).rounded() / 100) } ?? "",
+        medidas.brilloPorQuintas.map { Redondeo.texto($0, decimales: 2) } ?? "",
         String(medidas.amplitudEnQuintas),
         medidas.vectorIntervalico.map(String.init).joined(separator: " "),
         medidas.formaPrima.map(String.init).joined(separator: " "),

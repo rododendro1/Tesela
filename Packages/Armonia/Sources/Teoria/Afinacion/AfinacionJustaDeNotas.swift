@@ -95,7 +95,7 @@ enum CuentasDeAfinacionJusta {
     static func alturaDeTenney(_ razones: [RazonJusta]) -> Double {
         guard !razones.isEmpty else { return 0 }
         let suma = razones.map { log2(Double($0.numerador * $0.denominador)) }.reduce(0, +)
-        return MedidasDeConjunto.redondear(suma / Double(razones.count))
+        return suma / Double(razones.count)
     }
 
     /// La armonicidad de Gill y Purves (2009, «A biological rationale for musical scales», *PLoS ONE* 4: e8144): el
@@ -106,7 +106,7 @@ enum CuentasDeAfinacionJusta {
         let suma = razones.map {
             Double($0.numerador + $0.denominador - 1) / Double($0.numerador * $0.denominador) * 100
         }.reduce(0, +)
-        return (suma / Double(razones.count) * 10).rounded() / 10
+        return suma / Double(razones.count)
     }
 
     /// El límite primo (Partch, *Genesis of a Music*, 1949): el mayor primo de sus intervalos justos, 2, 3 o 5 en la

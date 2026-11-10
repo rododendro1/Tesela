@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- Las presentaciones redondean con `Redondeo`; el JSON lleva valores exactos.
+
 - `FuncionDeNotaPresentada`: una función de nota del catálogo con su ficha (familia, intervalo, cents y desvío), con
   `ficha(en:)`.
 

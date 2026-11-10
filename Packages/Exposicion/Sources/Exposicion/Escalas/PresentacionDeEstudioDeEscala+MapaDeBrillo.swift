@@ -23,7 +23,7 @@ extension PresentacionDeEstudioDeEscala {
         let arriba = 82.0
 
         // Las columnas, una por brillo (con dos decimales), y la fila de cada escala en la suya.
-        let brillos = mapa.escalas.map { ($0.estadisticas.brilloPorQuintas * 100).rounded() / 100 }
+        let brillos = mapa.escalas.map { Redondeo.valor($0.estadisticas.brilloPorQuintas, decimales: 2) }
         let columnas = Array(Set(brillos)).sorted()
         var filasPorColumna = [Double: Int]()
         var cajas: [(x: Double, y: Double)] = []

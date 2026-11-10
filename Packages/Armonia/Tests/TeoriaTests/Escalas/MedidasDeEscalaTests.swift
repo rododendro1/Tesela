@@ -47,7 +47,7 @@ import Testing
         #expect(mayor.conjunto.analisisDeHanson == "p⁶m³n⁴s⁵d²t")
         #expect(tonosEnteros.conjunto.analisisDeHanson == "m⁶s⁶t³")
         #expect(mayor.conjunto.consonanciaDiadica > menorArmonica.conjunto.consonanciaDiadica)
-        #expect(mayor.conjunto.entropiaIntervalica == 2.398)
+        #expect(casi(mayor.conjunto.entropiaIntervalica, 2.398))
     }
 
     @Test func fourierYUniformidad() {
@@ -56,7 +56,7 @@ import Testing
         #expect(!mayor.conjunto.equilibrado)
         #expect(tonosEnteros.conjunto.magnitudesDeFourier[5] == 6)
         #expect(tonosEnteros.conjunto.distanciaALaUniformidad == 0)
-        #expect(mayor.conjunto.distanciaALaUniformidad == 0.756)
+        #expect(casi(mayor.conjunto.distanciaALaUniformidad, 0.756))
         #expect(
             mayor.conjunto.triadasContenidas == TriadasContenidas(mayores: 3, menores: 3, disminuidas: 1, aumentadas: 0)
         )
@@ -103,7 +103,7 @@ import Testing
     }
 
     @Test func perfilTonalSensibleYTetracordos() {
-        #expect(mayor.tonal.perfilMayor == 0.756)
+        #expect(casi(mayor.tonal.perfilMayor, 0.756))
         #expect(mayor.tonal.perfilMayor > mayor.tonal.perfilMenor)
         #expect(menorArmonica.tonal.perfilMenor > menorArmonica.tonal.perfilMayor)
         #expect(mayor.tonal.conSensible)

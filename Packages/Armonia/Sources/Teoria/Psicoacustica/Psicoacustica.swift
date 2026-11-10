@@ -77,7 +77,7 @@ enum Psicoacustica {
                 }
             }
         }
-        return ((tension * 1000).rounded() / 1000, (modalidad * 1000).rounded() / 1000)
+        return (tension, modalidad)
     }
 
     /// Los seis primeros armónicos de cada voz, de amplitud 0,88ⁿ⁻¹, con la voz más grave en `grave` (MIDI).
@@ -104,7 +104,7 @@ enum Psicoacustica {
                 total += min(a.amplitud, b.amplitud) * (exp(-3.5 * s * diferencia) - exp(-5.75 * s * diferencia))
             }
         }
-        return (total * 1000).rounded() / 1000
+        return total
     }
 
     /// La rugosidad de Vassilakis (2001, *Perceptual and Physical Properties of Amplitude Fluctuation and their
@@ -124,7 +124,7 @@ enum Psicoacustica {
                 total += peso * (exp(-3.5 * s * diferencia) - exp(-5.75 * s * diferencia))
             }
         }
-        return MedidasDeConjunto.redondear(total)
+        return total
     }
 
     /// La disonancia de Hutchinson y Knopoff (1978, «The acoustic component of Western consonance», *Interface* 7:
@@ -145,7 +145,7 @@ enum Psicoacustica {
                 total += a.amplitud * b.amplitud * g
             }
         }
-        return MedidasDeConjunto.redondear(total / energia)
+        return total / energia
     }
 
     /// La fusión tonal (Huron 1991, «Tonal consonance versus tonal fusion in polyphonic sonorities», *Music
@@ -160,7 +160,7 @@ enum Psicoacustica {
                 pares += 1
             }
         }
-        return pares == 0 ? 0 : MedidasDeConjunto.redondear(Double(fundidos) / Double(pares))
+        return pares == 0 ? 0 : Double(fundidos) / Double(pares)
     }
 
     /// Las razones de la serie de Tenney n·d < 10 000 hasta cuatro octavas, con su tamaño en cents y su peso 1/√(n·d).
@@ -212,6 +212,6 @@ enum Psicoacustica {
                 pares += 1
             }
         }
-        return pares == 0 ? 0 : MedidasDeConjunto.redondear(suma / Double(pares))
+        return pares == 0 ? 0 : suma / Double(pares)
     }
 }

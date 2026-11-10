@@ -34,7 +34,7 @@ public struct MedidasDeConjunto: Hashable, Sendable {
     /// La consonancia diádica de Huron (1994): la suma de los pesos de consonancia de cada clase interválica de su
     /// vector. Cuanto más alta, más consonante: 2,22 la tríada mayor.
     public let consonanciaDiadica: Double
-    /// Las magnitudes de los coeficientes de Fourier |f1|…|f6| (Quinn 2006; Amiot 2016), con tres decimales: cuánto se
+    /// Las magnitudes de los coeficientes de Fourier |f1|…|f6| (Quinn 2006; Amiot 2016), exactas: cuánto se
     /// parece al cluster cromático (f1), al tritono (f2), al aumentado (f3), a la séptima disminuida (f4), a la escala
     /// diatónica (f5) y a la de tonos enteros (f6).
     public let magnitudesDeFourier: [Double]
@@ -77,7 +77,7 @@ public struct MedidasDeConjunto: Hashable, Sendable {
     public init(_ conjunto: ConjuntoDeClasesDeAltura) {
         let clases = conjunto.clases
         let vector = conjunto.vectorIntervalico
-        consonanciaDiadica = Self.redondear(zip(vector, Self.pesosDeHuron).map { Double($0) * $1 }.reduce(0, +))
+        consonanciaDiadica = zip(vector, Self.pesosDeHuron).map { Double($0) * $1 }.reduce(0, +)
         magnitudesDeFourier = Self.magnitudesDeFourier(clases)
         equilibrado = magnitudesDeFourier.first == 0
         distanciaALaUniformidad = Self.distanciaALaUniformidad(clases)
@@ -103,17 +103,18 @@ public struct MedidasDeConjunto: Hashable, Sendable {
     /// 11: 289–305) para cada clase interválica, del semitono al tritono.
     static let pesosDeHuron: [Double] = [-1.428, -0.582, 0.594, 0.386, 1.240, -0.453]
 
-    /// Tres decimales.
-    package static func redondear(_ valor: Double) -> Double { (valor * 1000).rounded() / 1000 }
-
     static func magnitudesDeFourier(_ clases: [Int]) -> [Double] {
         (1...6).map { k in
             let angulos = clases.map { -2 * Double.pi * Double(k * $0) / 12 }
             let real = angulos.map(cos).reduce(0, +)
             let imaginaria = angulos.map(sin).reduce(0, +)
-            return redondear((real * real + imaginaria * imaginaria).squareRoot())
+            return sinRuido((real * real + imaginaria * imaginaria).squareRoot())
         }
     }
+
+    /// 0 si es tan pequeño que solo es el error de redondeo de las sumas de senos y cosenos (|f1| del acorde aumentado
+    /// sale 4·10⁻¹⁶): así los que valen 0 dan 0.
+    package static func sinRuido(_ valor: Double) -> Double { abs(valor) < 1e-9 ? 0 : valor }
 
     static func distanciaALaUniformidad(_ clases: [Int]) -> Double {
         let ordenadas = clases.sorted()
@@ -122,7 +123,7 @@ public struct MedidasDeConjunto: Hashable, Sendable {
         let desvios = ordenadas.enumerated().map { Double($1) - 12 * Double($0) / n }
         let media = desvios.reduce(0, +) / n
         let suma = desvios.map { ($0 - media) * ($0 - media) }.reduce(0, +)
-        return redondear(suma.squareRoot())
+        return sinRuido(suma.squareRoot())
     }
 
     static func triadasContenidas(_ clases: Set<Int>) -> TriadasContenidas {
@@ -157,7 +158,7 @@ public struct MedidasDeConjunto: Hashable, Sendable {
             let p = Double(cuenta) / total
             entropia -= p * log2(p)
         }
-        return redondear(entropia)
+        return entropia
     }
 
     static func parejaZ(de conjunto: ConjuntoDeClasesDeAltura) -> String? {

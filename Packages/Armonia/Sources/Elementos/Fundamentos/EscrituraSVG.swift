@@ -18,10 +18,7 @@ package enum NumerosSVG: Hashable, Sendable {
         case .unDecimal:
             return String(format: "%.1f", valor)
         case .hastaTresDecimales:
-            let redondeado = (valor * 1000).rounded() / 1000
-            var texto = "\(redondeado)"
-            if texto.hasSuffix(".0") { texto.removeLast(2) }
-            return texto == "-0" ? "0" : texto
+            return Redondeo.texto(valor)
         }
     }
 }
