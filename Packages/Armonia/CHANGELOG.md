@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+- El catálogo de funciones de nota: `FuncionDeNota`, 34 papeles que hace una nota, con su familia
+  (`FamiliaDeFuncionDeNota`): los 8 grados de la escala, la finalis, el tenor y la confinalis del modo gregoriano, el
+  sa, el pa, el vādī, el saṃvādī y el nyāsa del rāga, el qarār, el ghammāz y el yeden del maqam, las blue notes (la
+  tercera neutra, la quinta disminuida y la séptima armónica), cuatro adornos (acciaccatura, mordente, grupeto y trino)
+  y las 8 notas extrañas. Cada una tiene sus referencias, su nombre en los trece idiomas y, si es siempre el mismo, su
+  intervalo desde la tónica (`intervalo`, `cents`, `desvio`, `nota(sobre:)`). `NombreDeGrado.funcion` y, en
+  Polifonia, `NotaExtrana.funcion` llevan a la suya. Referencia nueva: Neumann (1978).
+- La consola: `funciones [<texto>] [--familia blues] [--estadisticas]`, también con `--json`, y `EjemploCatalogos`
+  escribe también `funciones-de-nota.tsv`.
+
 - El catálogo de notas: `NotaConNombre`, 131 notas con nombre propio y su familia (`FamiliaDeNota`): 10 diapasones
   (del La 440 y el La 415 barroco al Chorton, el diapasón normal francés de 1859 y el Do 256 científico), 5 notas de
   referencia (el Do central, las notas extremas del piano y del MIDI), las 20 posiciones de la mano guidoniana y las

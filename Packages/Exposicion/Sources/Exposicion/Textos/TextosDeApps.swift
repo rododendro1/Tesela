@@ -350,6 +350,8 @@ public struct TextosDeApps: TextosTraducidos {
     public let anioDeLaNota: String
     public let nombreOriginalDeLaNota: String
     public let posicionGuidoniana: String
+    public let intervaloDeLaFuncion: String
+    public let centsDeLaFuncion: String
     public let propiedades: String
     public let escaleraDeBrillo: String
     public let hojaDeEstudio: String

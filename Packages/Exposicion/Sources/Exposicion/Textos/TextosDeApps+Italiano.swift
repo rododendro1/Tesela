@@ -334,6 +334,8 @@ extension TextosDeApps {
         anioDeLaNota: "Anno",
         nombreOriginalDeLaNota: "Nome originale",
         posicionGuidoniana: "Altezze della posizione",
+        intervaloDeLaFuncion: "Intervallo dalla tonica",
+        centsDeLaFuncion: "Cent dalla tonica",
         propiedades: "Proprietà",
         escaleraDeBrillo: "Scaletta di brillantezza",
         hojaDeEstudio: "Scheda di studio",

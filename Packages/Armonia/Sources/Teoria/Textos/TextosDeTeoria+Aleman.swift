@@ -33,6 +33,13 @@ extension TextosDeTeoria {
         familiaDeNotaArabe: "arabische Töne",
         familiaDeNotaTurca: "türkische Perdes",
         familiaDeNotaGriega: "Saiten des vollkommenen Systems",
+        familiaDeFuncionGrado: "Tonleiterstufen",
+        familiaDeFuncionGregoriana: "Töne des gregorianischen Modus",
+        familiaDeFuncionIndia: "Töne des Raga",
+        familiaDeFuncionMaqam: "Töne des Maqam",
+        familiaDeFuncionBlues: "Blue Notes",
+        familiaDeFuncionAdorno: "Verzierungen",
+        familiaDeFuncionNotaExtrana: "harmoniefremde Töne",
 
         // Acorde.swift
         conBajoEn: "{1}, mit {2} im Bass",

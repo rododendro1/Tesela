@@ -2,7 +2,7 @@ import Armonia
 import Foundation
 
 // Escribe en TSV, un fichero por catálogo, lo que dice la API pública de cada uno: los ritmos, los temperamentos, las
-// notas con nombre, las escalas microtonales, las referencias, los encordados, los teclados isomórficos y cuadrados, los modos gregorianos y
+// notas con nombre y sus funciones, las escalas microtonales, las referencias, los encordados, los teclados isomórficos y cuadrados, los modos gregorianos y
 // los instrumentos de la partitura. Las listas de una celda van separadas por espacios (pasos, notas) o por « · »
 // (alias, citas); una celda vacía es un dato que el elemento no tiene, y las de sí o no dicen «sí» o «no». Los
 // números se escriben con tres decimales como mucho.
@@ -123,6 +123,23 @@ func filaDeNota(_ nota: NotaConNombre) -> [String] {
 
 let notas = Catalogo(fichero: "notas.tsv", columnas: columnasDeNotas, filas: NotaConNombre.catalogo.map(filaDeNota))
 
+let columnasDeFunciones: [String] =
+    columnasDeNombres + ["alias", "familia", "intervalo", "cents", "desvio", "referencias"]
+
+/// Una función de nota: su familia y, si lo tiene, su intervalo desde la tónica.
+func filaDeFuncion(_ funcion: FuncionDeNota) -> [String] {
+    let nombres: [String] = [funcion.nombre] + traducciones.map { funcion.nombre(en: .delIdioma($0)) }
+    let intervalo: String = funcion.intervalo?.description ?? ""
+    let resto: [String] = [
+        funcion.alias.joined(separator: " · "), funcion.familia.nombre, intervalo, numero(funcion.cents),
+        numero(funcion.desvio), citas(funcion.referencias),
+    ]
+    return nombres + resto
+}
+
+let funciones = Catalogo(
+    fichero: "funciones-de-nota.tsv", columnas: columnasDeFunciones, filas: FuncionDeNota.catalogo.map(filaDeFuncion))
+
 /// Una escala microtonal: sus pasos, sus cents y lo que se apartan de la temperada.
 func filaDeEscala(_ escala: TipoDeEscalaMicrotonal) -> [String] {
     let descendentes: String = escala.pasosDescendentes.map(lista) ?? ""
@@ -218,7 +235,8 @@ let instrumentos = Catalogo(
     })
 
 let catalogos = [
-    ritmos, temperamentos, notas, escalasMicrotonales, referencias, encordados, tecladosIsomorficos, tecladosCuadrados,
+    ritmos, temperamentos, notas, funciones, escalasMicrotonales, referencias, encordados, tecladosIsomorficos,
+    tecladosCuadrados,
     modosGregorianos, instrumentos,
 ]
 

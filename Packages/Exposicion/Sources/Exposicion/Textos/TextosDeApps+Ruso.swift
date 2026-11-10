@@ -334,6 +334,8 @@ extension TextosDeApps {
         anioDeLaNota: "Год",
         nombreOriginalDeLaNota: "Исходное название",
         posicionGuidoniana: "Высоты позиции",
+        intervaloDeLaFuncion: "Интервал от тоники",
+        centsDeLaFuncion: "Центы от тоники",
         propiedades: "Свойства",
         escaleraDeBrillo: "Лестница яркости",
         hojaDeEstudio: "Учебный лист",

@@ -40,6 +40,9 @@ extension LineaDeComandos {
             nombres: ["notas", "notes"], ayuda: ayudaDeNotasConNombre, json: { try notasJSON($0, $1.notacion) },
             ejecutar: { try notas($0, $1.notacion) }),
         Orden(
+            nombres: ["funciones", "functions"], ayuda: ayudaDeFunciones,
+            json: { try funcionesJSON($0, $1.notacion) }, ejecutar: { try funciones($0, $1.notacion) }),
+        Orden(
             nombres: ["acordes", "chords"], ayuda: ayudaDeAcordesConNombre,
             json: { try acordesConNombreJSON($0, $1.notacion) },
             ejecutar: { try acordesConNombre($0, $1.notacion) }),
@@ -165,6 +168,17 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia notas diapasón barroco --estadisticas", "armonia notes baroque pitch --statistics"),
             notas: TextosDeConsola.traduccion(\.notasNotasConNombre),
+            opciones: [.familia, .estadisticas])
+    ]
+
+    static let ayudaDeFunciones: [EntradaDeAyuda] = [
+        // funciones [<texto>] [--familia <familia>] [--estadisticas]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisFunciones),
+            descripcion: TextosDeConsola.traduccion(\.descripcionFunciones),
+            ejemplo: ejemplo(
+                "armonia funciones --familia blues --estadisticas", "armonia functions --family blues --statistics"),
+            notas: TextosDeConsola.traduccion(\.notasFunciones),
             opciones: [.familia, .estadisticas])
     ]
 

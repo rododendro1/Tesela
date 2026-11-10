@@ -33,6 +33,13 @@ extension TextosDeTeoria {
         familiaDeNotaArabe: "nota arabiarrak",
         familiaDeNotaTurca: "perde turkiarrak",
         familiaDeNotaGriega: "sistema perfektuaren sokak",
+        familiaDeFuncionGrado: "eskalaren mailak",
+        familiaDeFuncionGregoriana: "modu gregoriarraren notak",
+        familiaDeFuncionIndia: "rāgaren notak",
+        familiaDeFuncionMaqam: "maqamaren notak",
+        familiaDeFuncionBlues: "blue noteak",
+        familiaDeFuncionAdorno: "apaingarriak",
+        familiaDeFuncionNotaExtrana: "nota arrotzak",
 
         // Acorde.swift
         conBajoEn: "{1}, baxua {2} dela",

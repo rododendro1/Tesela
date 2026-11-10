@@ -40,6 +40,7 @@ enum ErrorDeUso: ErrorDeArmonia {
     case ritmoDesconocido(String)
     case familiaDeTemperamentoDesconocida(String)
     case familiaDeNotaDesconocida(String)
+    case familiaDeFuncionDesconocida(String)
     case fuenteDesconocida(String)
     case usoDesconocido(String)
     case ordenDeEscalasDesconocido(String)
@@ -215,6 +216,9 @@ enum ErrorDeUso: ErrorDeArmonia {
         case .familiaDeNotaDesconocida(let familia):
             return LineaDeComandos.propuesta(
                 para: familia, entre: LineaDeComandos.nombresDeLasFamiliasDeNota.flatMap { [$0.espanol, $0.ingles] })
+        case .familiaDeFuncionDesconocida(let familia):
+            return LineaDeComandos.propuesta(
+                para: familia, entre: LineaDeComandos.nombresDeLasFamiliasDeFuncion.flatMap { [$0.espanol, $0.ingles] })
         case .ritmoDesconocido(let ritmo):
             return LineaDeComandos.propuesta(para: ritmo, entre: RitmoConNombre.catalogo.map(\.nombre))
         case .familiaDeRitmoDesconocida(let familia):
@@ -298,6 +302,8 @@ enum ErrorDeUso: ErrorDeArmonia {
             return TextosDeConsola.traduccion { $0.familiaDeTemperamentoDesconocida(familia) }
         case .familiaDeNotaDesconocida(let familia):
             return TextosDeConsola.traduccion { $0.familiaDeNotaDesconocida(familia) }
+        case .familiaDeFuncionDesconocida(let familia):
+            return TextosDeConsola.traduccion { $0.familiaDeFuncionDesconocida(familia) }
         case .ritmoDesconocido(let ritmo):
             return TextosDeConsola.traduccion { $0.ritmoDesconocido(ritmo) }
         case .familiaDeRitmoDesconocida(let familia):

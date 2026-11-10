@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- `FuncionDeNotaPresentada`: una función de nota del catálogo con su ficha (familia, intervalo, cents y desvío), con
+  `ficha(en:)`.
+
 - `NotaPresentada`: una nota del catálogo con su ficha (familia, altura, desvío, frecuencia, La4, MIDI, año, nombre
   original y alturas de la posición guidoniana), con `ficha(en:)`. `TextosDeApps` tiene sus nombres en los trece
   idiomas.

@@ -466,6 +466,11 @@ extension Referencia {
     public static let haynes2002 = Referencia(
         "haynes2002", .libro, autores: ["Haynes, Bruce"], titulo: "A History of Performing Pitch: The Story of \"A\"",
         anio: 2002, editorial: "Scarecrow Press", lugar: "Lanham")
+    /// Neumann, los adornos del Barroco y después: la acciaccatura, el mordente, el grupeto y el trino.
+    public static let neumann1978 = Referencia(
+        "neumann1978", .libro, autores: ["Neumann, Frederick"],
+        titulo: "Ornamentation in Baroque and Post-Baroque Music, with Special Emphasis on J. S. Bach", anio: 1978,
+        editorial: "Princeton University Press", lugar: "Princeton")
 
     /// Todas las obras, en el orden de este fichero.
     public static let catalogo: [Referencia] = [
@@ -484,6 +489,6 @@ extension Referencia {
         .gerbino2001, .staiti2023, .sheinberg2016, .rosand1979, .doll2017,
         .soroker1995, .malaniczPrzybylska2018, .kodaly1960, .campbell2019, .cannon2002, .scherbaum2022, .bonifacic2001,
         .rechberger2008, .busoni1916, .toussaint2013, .clayton2000, .viswanathan2004, .brailoiu1951, .apel1953,
-        .fernandez2004, .lindley2001, .sethares2005, .haynes2002,
+        .fernandez2004, .lindley2001, .sethares2005, .haynes2002, .neumann1978,
     ]
 }

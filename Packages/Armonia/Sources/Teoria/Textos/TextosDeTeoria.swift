@@ -36,6 +36,13 @@ struct TextosDeTeoria: TextosTraducidos {
     let familiaDeNotaArabe: String
     let familiaDeNotaTurca: String
     let familiaDeNotaGriega: String
+    let familiaDeFuncionGrado: String
+    let familiaDeFuncionGregoriana: String
+    let familiaDeFuncionIndia: String
+    let familiaDeFuncionMaqam: String
+    let familiaDeFuncionBlues: String
+    let familiaDeFuncionAdorno: String
+    let familiaDeFuncionNotaExtrana: String
 
     // MARK: Acorde.swift
     /// Un acorde en estado fundamental con otro bajo: «Do mayor, con bajo en Re», «C major over D».

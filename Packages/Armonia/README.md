@@ -269,6 +269,8 @@ Sources/
 │   ├── Notas/             NotaConNombre (el catálogo de notas con nombre propio: diapasones, notas de referencia, la
 │   │   │                  mano guidoniana, notas árabes, perde turcas y cuerdas griegas, con su búsqueda)
 │   │   ├── Catalogo/      Los diapasones y las notas de referencia, y las que salen de ManoGuidoniana y NombresPorOctava
+│   │   ├── Funciones/     FuncionDeNota (grados, modo gregoriano, rāga, maqam, blue notes, adornos y notas extrañas), su
+│   │   │                  catálogo y NombresDeFunciones con un fichero por idioma
 │   │   └── Nombres/       NombresDeNotas y un fichero por idioma (`NombresDeNotas+Catalan.swift`…)
 │   ├── Psicoacustica/     Psicoacustica (Parncutt, Terhardt, Cook, Sethares, Vassilakis, Hutchinson y Knopoff,
 │   │                      Erlich), VozMedida y ProminenciaDeFundamental
