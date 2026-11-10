@@ -33,6 +33,13 @@ extension TextosDeTeoria {
         familiaDeNotaArabe: "notas árabes",
         familiaDeNotaTurca: "perde turcas",
         familiaDeNotaGriega: "cuerdas del sistema perfecto",
+        familiaDeFuncionGrado: "grados de la escala",
+        familiaDeFuncionGregoriana: "notas del modo gregoriano",
+        familiaDeFuncionIndia: "notas del rāga",
+        familiaDeFuncionMaqam: "notas del maqam",
+        familiaDeFuncionBlues: "blue notes",
+        familiaDeFuncionAdorno: "adornos",
+        familiaDeFuncionNotaExtrana: "notas extrañas",
 
         // Acorde.swift
         conBajoEn: "{1}, con bajo en {2}",

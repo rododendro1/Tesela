@@ -334,6 +334,8 @@ extension TextosDeApps {
         anioDeLaNota: "Év",
         nombreOriginalDeLaNota: "Eredeti név",
         posicionGuidoniana: "A pozíció hangmagasságai",
+        intervaloDeLaFuncion: "Hangköz a tonikától",
+        centsDeLaFuncion: "Cent a tonikától",
         propiedades: "Tulajdonságok",
         escaleraDeBrillo: "Fényességlétra",
         hojaDeEstudio: "Gyakorlólap",

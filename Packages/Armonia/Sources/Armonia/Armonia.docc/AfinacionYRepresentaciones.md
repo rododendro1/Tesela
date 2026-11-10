@@ -85,6 +85,22 @@ NotaConNombre.do256.frecuenciaDelLa4                     // 430,54
 NombresPorOctava.griegoAntiguo.alturas[7].notaConNombre  // mésē
 ```
 
+``FuncionDeNota`` es el catálogo del papel que hace una nota: los grados de la escala (los de ``NombreDeGrado``), la
+finalis, el tenor y la confinalis del modo gregoriano, el sa, el pa, el vādī, el saṃvādī y el nyāsa del rāga, el
+qarār, el ghammāz y el yeden del maqam y el makam, las tres blue notes, cuatro adornos y las notas extrañas al acorde
+(las de `NotaExtrana`, en Polifonia, que tiene su `funcion`). Cada una tiene su familia
+(``FamiliaDeFuncionDeNota``), sus referencias, su nombre en los trece idiomas y, si es siempre el mismo, su intervalo
+desde la tónica, con lo que se aparta del temperado:
+
+```swift
+FuncionDeNota.dominante.nota(sobre: .re)                 // La
+FuncionDeNota.terceraBlue.cents                          // 350: la tercera neutra
+FuncionDeNota.septimaBlue.desvio                         // -31,17: la séptima armónica, 7/4
+FuncionDeNota.buscar(nombre: "leading tone") == .sensible   // true
+NombreDeGrado.subdominante.funcion == .subdominante      // true
+FuncionDeNota.tenor.intervalo                            // nil: cambia de un modo a otro
+```
+
 ### Escalas y afinaciones
 
 Una escala con microtonos (``TipoDeEscalaMicrotonal``, en <doc:EscalasDelMundo>) se puede oír como es:

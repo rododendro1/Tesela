@@ -334,6 +334,8 @@ extension TextosDeApps {
         anioDeLaNota: "Urtea",
         nombreOriginalDeLaNota: "Jatorrizko izena",
         posicionGuidoniana: "Posizioaren altuerak",
+        intervaloDeLaFuncion: "Tonikatik tartea",
+        centsDeLaFuncion: "Tonikatik zentimoak",
         propiedades: "Propietateak",
         escaleraDeBrillo: "Distira-eskailera",
         hojaDeEstudio: "Ikasketa-orria",

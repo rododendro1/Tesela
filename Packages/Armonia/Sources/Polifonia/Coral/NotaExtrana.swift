@@ -43,6 +43,22 @@ extension NotaExtrana: Nombrable {
     }
 }
 
+extension NotaExtrana {
+    /// La función del catálogo de funciones de nota que es: `.notaDePaso` es `FuncionDeNota.notaDePaso`.
+    public var funcion: FuncionDeNota {
+        switch self {
+        case .notaDePaso: .notaDePaso
+        case .bordadura: .bordadura
+        case .apoyatura: .apoyatura
+        case .retardo: .retardo
+        case .anticipacion: .anticipacion
+        case .escapada: .escapada
+        case .pedal: .notaPedal
+        case .libre: .notaLibre
+        }
+    }
+}
+
 // MARK: - NotaDeLaMelodia
 
 /// Una nota de una melodía con el acorde que suena con ella: si es del acorde y, si no, qué nota extraña es.

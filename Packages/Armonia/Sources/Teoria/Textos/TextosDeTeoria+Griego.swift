@@ -33,6 +33,13 @@ extension TextosDeTeoria {
         familiaDeNotaArabe: "αραβικές νότες",
         familiaDeNotaTurca: "τουρκικά περντέ",
         familiaDeNotaGriega: "χορδές του τέλειου συστήματος",
+        familiaDeFuncionGrado: "βαθμίδες της κλίμακας",
+        familiaDeFuncionGregoriana: "νότες του γρηγοριανού τρόπου",
+        familiaDeFuncionIndia: "νότες της ράγκα",
+        familiaDeFuncionMaqam: "νότες του μακάμ",
+        familiaDeFuncionBlues: "μπλου νότες",
+        familiaDeFuncionAdorno: "στολίδια",
+        familiaDeFuncionNotaExtrana: "ξένες νότες",
 
         // Acorde.swift
         conBajoEn: "{1}, με μπάσο το {2}",

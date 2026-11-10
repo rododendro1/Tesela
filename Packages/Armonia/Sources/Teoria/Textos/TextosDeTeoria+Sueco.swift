@@ -33,6 +33,13 @@ extension TextosDeTeoria {
         familiaDeNotaArabe: "arabiska toner",
         familiaDeNotaTurca: "turkiska perde",
         familiaDeNotaGriega: "det fullkomliga systemets strängar",
+        familiaDeFuncionGrado: "skalsteg",
+        familiaDeFuncionGregoriana: "den gregorianska modusens toner",
+        familiaDeFuncionIndia: "ragans toner",
+        familiaDeFuncionMaqam: "maqamens toner",
+        familiaDeFuncionBlues: "bluetoner",
+        familiaDeFuncionAdorno: "ornament",
+        familiaDeFuncionNotaExtrana: "ackordfrämmande toner",
 
         // Acorde.swift
         conBajoEn: "{1}, med {2} i basen",

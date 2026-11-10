@@ -33,6 +33,13 @@ extension TextosDeTeoria {
         familiaDeNotaArabe: "Arabic notes",
         familiaDeNotaTurca: "Turkish perdes",
         familiaDeNotaGriega: "strings of the Greater Perfect System",
+        familiaDeFuncionGrado: "scale degrees",
+        familiaDeFuncionGregoriana: "notes of the Gregorian mode",
+        familiaDeFuncionIndia: "notes of the rāga",
+        familiaDeFuncionMaqam: "notes of the maqam",
+        familiaDeFuncionBlues: "blue notes",
+        familiaDeFuncionAdorno: "ornaments",
+        familiaDeFuncionNotaExtrana: "nonchord tones",
 
         // Acorde.swift
         conBajoEn: "{1} over {2}",

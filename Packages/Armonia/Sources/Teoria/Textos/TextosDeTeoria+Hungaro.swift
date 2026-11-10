@@ -33,6 +33,13 @@ extension TextosDeTeoria {
         familiaDeNotaArabe: "arab hangok",
         familiaDeNotaTurca: "török perdék",
         familiaDeNotaGriega: "a tökéletes rendszer húrjai",
+        familiaDeFuncionGrado: "skálafokok",
+        familiaDeFuncionGregoriana: "a gregorián modus hangjai",
+        familiaDeFuncionIndia: "a rága hangjai",
+        familiaDeFuncionMaqam: "a makám hangjai",
+        familiaDeFuncionBlues: "blue note-ok",
+        familiaDeFuncionAdorno: "díszítések",
+        familiaDeFuncionNotaExtrana: "akkordidegen hangok",
 
         // Acorde.swift
         conBajoEn: "{1}, {2} a basszusban",

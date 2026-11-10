@@ -334,6 +334,8 @@ extension TextosDeApps {
         anioDeLaNota: "Έτος",
         nombreOriginalDeLaNota: "Πρωτότυπο όνομα",
         posicionGuidoniana: "Τονικά ύψη της θέσης",
+        intervaloDeLaFuncion: "Διάστημα από την τονική",
+        centsDeLaFuncion: "Σεντ από την τονική",
         propiedades: "Ιδιότητες",
         escaleraDeBrillo: "Σκάλα φωτεινότητας",
         hojaDeEstudio: "Φύλλο μελέτης",
