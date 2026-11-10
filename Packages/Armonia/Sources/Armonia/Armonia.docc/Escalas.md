@@ -361,3 +361,17 @@ Escala(.do, .mayor).estadisticas.conjunto.parsimonia                         // 
 
 En la línea de comandos, `armonia escala Do mayor --estadisticas` las escribe, también en `--json` (en
 `estadisticas.teoria`).
+
+### Lo que separa a dos escalas
+
+``RelacionEntreEscalas`` mide la distancia entre dos escalas: las quintas entre sus centros (la distancia de sus
+armaduras por el círculo de quintas, que vale también para las escalas sin armadura), las notas que cambian, la
+conducción mínima de una a otra (Tymoczko) y lo que se parecen sus contenidos (``RelacionEntreConjuntos``).
+
+```swift
+Escala(.do, .mayor).relacion(con: Escala(.sol, .mayor)).distanciaEnQuintas              // 1
+Escala(.do, .mayor).relacion(con: Escala(.do, .menorNatural)).distanciaEnQuintas        // 3
+Escala(.do, .mayor).relacion(con: Escala(.do, .pentatonicaMayor)).conduccion?.semitonosMovidos   // 2
+```
+
+`armonia escala Do mayor --comparar Sol mayor` las añade a la comparación.

@@ -162,6 +162,9 @@ extension LineaDeComandos {
             lineas.append("  " + notacion.texto(\.notasComunes) + ": " + comparacion.comunes)
             let resto = [comparacion.soloEnOrigen, comparacion.soloEnDestino] + comparacion.cambios
             lineas += (resto + [comparacion.distancia ?? ""]).filter { !$0.isEmpty }.map { "  " + $0 }
+            lineas += RelacionEntreEscalasPresentada(escala.relacion(con: otra), en: notacion).datos(en: notacion).map {
+                "  " + $0.nombre + ": " + $0.valor
+            }
         }
         return bien(lineas.joined(separator: "\n"))
     }

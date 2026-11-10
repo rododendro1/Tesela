@@ -16,6 +16,7 @@ terminal.
 | `Analisis/`          | El análisis armónico (y sus hojas, el bajo, las doce tonalidades), la tonalidad, las modulaciones, la transposición, el análisis postonal y la serie |
 | `CoralYContrapunto/` | El coral a cuatro voces, el contrapunto de especies y la rearmonización                     |
 | `Escalas/`           | El estudio de una escala: sus acordes, sus progresiones, sus estadísticas, el mapa de brillo y la comparación con otras |
+| `Relaciones/`        | Lo que separa a dos acordes, a dos escalas o a los acordes de una progresión, y cómo encaja un acorde en una tonalidad |
 | `Redes/`             | El Tonnetz, la tabla armónica y los teclados isomórficos, y el recorrido de una partitura     |
 | `Textos/`            | `TextosDeApps`, un fichero por idioma                                                        |
 

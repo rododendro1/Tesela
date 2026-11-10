@@ -51,6 +51,23 @@
   `Escala(.do, .mayor).estadisticas.intervalosGenericos.propiedadDeRothenberg`.
   Las medidas de acordes y escalas que son las mismas se calculan ahora con el mismo código, y `armonia escalas
   --orden brillo` tarda 0,06 s en vez de 0,54.
+- Las medidas de relación. `Acorde.relacion(con:en:)` (`RelacionEntreAcordes`) da la conducción mínima con los tres
+  tamaños de Tymoczko (`ConduccionMinima.desplazamientoEuclideo` y `desplazamientoMaximo`), los pasos en el Tonnetz, la
+  distancia de Lerdahl en una tonalidad y lo que se parecen sus contenidos. `ConjuntoDeClasesDeAltura.relacion(con:)`
+  (`RelacionEntreConjuntos`, en `Elementos`) da la distancia de Fourier, la de Isaacson, la asimilitud de Morris y las
+  relaciones R0, R1, R2 y Rp de Forte (`RelacionDeForte`). `Escala.relacion(con:)` (`RelacionEntreEscalas`) da las
+  quintas entre sus centros, las notas que cambian y la conducción mínima de una a otra.
+- El espacio tonal de Lerdahl: `Tonalidad.distanciaDeLerdahl(de:a:)` (Do → Sol, 5) y `tensionDeLerdahl(_:)`
+  (`TensionDeLerdahl`, desde el anterior y desde la tónica). `Tonalidad.ajuste(de:)` y `Acorde.ajustesTonales`
+  (`AjusteTonal`) miden cómo encaja un acorde en cada tonalidad según Krumhansl y Kessler, `Tonalidad.todas` da las 24,
+  `Tonalidad.funcionProbable(de:)` dice qué función hacen las notas de un acorde aunque no sea un grado (Re♭7 en Do,
+  dominante) y `Acorde.escalasDelCatalogo`, qué escalas de todo el catálogo lo contienen.
+- `EstadisticasDeProgresion` (`Tonalidad.estadisticas(de:)` y `ProgresionConNombre.estadisticas(en:)`): la tensión de
+  Lerdahl acorde a acorde, el movimiento de las voces (total y medio), las funciones probables, las notas nuevas, las
+  notas fuera de la tonalidad y el cromatismo.
+- La consola: `acorde Sol7 --comparar Do` añade las distancias, `acorde Sol7 --estadisticas` cómo encaja en la
+  tonalidad (la de `--en` o la suya), `escala Do mayor --comparar Sol mayor` la relación entre las escalas y `analizar
+  Do Fa Sol7 Do --estadisticas` lo que se mide de la progresión, también en `--json`.
 
 ## 0.4.5 (2026-11-09)
 

@@ -177,6 +177,30 @@ En la línea de comandos, `armonia acorde Sol7 --estadisticas` las escribe; `arm
 ellas (`--notas 4` o `--notas tétrada`, `--por-terceras`, `--sin-semitonos`, `--con-intervalo tritono`…), lo ordena
 con `--orden brillo` (o `notas`, o `consonancia`), lo pone en una tabla con `--estadisticas` y cuenta cuántos hay de cada clase con `--resumen`.
 
+### Lo que separa a dos acordes
+
+``RelacionEntreAcordes`` mide la distancia de un acorde a otro: la conducción de voces mínima con los tres tamaños
+de Tymoczko (*A Geometry of Music*, 2011: la suma de los semitonos, la euclídea y la del máximo), los pasos P, L y R
+del Tonnetz entre dos tríadas, la distancia de Lerdahl en una tonalidad (*Tonal Pitch Space*, 2001) y lo que se
+parecen sus contenidos (``RelacionEntreConjuntos``: Fourier, Isaacson, Morris y Forte). Con una tonalidad,
+``Tonalidad/ajuste(de:)`` da cómo encaja el acorde en ella según el perfil de Krumhansl y Kessler,
+``Acorde/ajustesTonales`` ordena las 24 tonalidades por ese ajuste, ``Tonalidad/funcionProbable(de:)`` dice qué
+función hacen sus notas aunque no sea uno de sus grados y ``Acorde/escalasDelCatalogo`` busca en todo el catálogo las
+escalas que lo contienen.
+
+```swift
+Acorde("Sol7").relacion(con: Acorde("Do")).conduccion.semitonosMovidos         // 4
+Acorde("Sol7").relacion(con: Acorde("Do")).conduccion.desplazamientoEuclideo   // 2.449
+Acorde("Sol7").relacion(con: Acorde("Do")).distanciaDeLerdahl                  // 5
+Acorde("Do").relacion(con: Acorde("Lab")).distanciaEnElTonnetz                 // 2
+Acorde("Do").relacion(con: Acorde("Lab")).conjunto.distanciaDeFourier          // 0
+Acorde("Sol7").ajustesTonales.first?.tonalidad.nombre                          // "Sol mayor"
+Tonalidad(.do).funcionProbable(de: Acorde("Reb7"))                             // .dominante
+```
+
+`armonia acorde Sol7 --comparar Do` añade estas distancias a la conducción, y `armonia acorde Sol7 --estadisticas`,
+cómo encaja en la tonalidad (la de `--en`, o la suya).
+
 ## Identificación desde alturas (MIDI)
 
 Un teclado o un archivo MIDI solo da alturas. `Acorde.candidatos(midi:)` y

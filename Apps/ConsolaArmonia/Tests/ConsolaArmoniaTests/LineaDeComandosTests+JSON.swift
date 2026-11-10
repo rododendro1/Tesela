@@ -31,9 +31,9 @@ extension LineaDeComandosTests {
         let ajeno = try #require(try json("acorde Do/Re") as? [[String: Any]])
         #expect(ajeno[0]["inversion"] is NSNull || ajeno[0]["inversion"] == nil)
         #expect(sol7["estadisticas"] == nil)
-        // Con `--estadisticas`, las mismas claves y además `estadisticas`.
+        // Con `--estadisticas`, las mismas claves y además `estadisticas` y `enLaTonalidad`.
         let conMedidas = try #require(try json("acorde Sol7/Si --estadisticas") as? [[String: Any]])
-        #expect(Set(conMedidas[0].keys) == Set(sol7.keys).union(["estadisticas"]))
+        #expect(Set(conMedidas[0].keys) == Set(sol7.keys).union(["estadisticas", "enLaTonalidad"]))
         let medidas = try #require(conMedidas[0]["estadisticas"] as? [String: Any])
         #expect(medidas["numeroDeForte"] as? String == "4-27")
         #expect(medidas["brilloPorQuintas"] as? Double == 0.75)

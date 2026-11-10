@@ -9,7 +9,7 @@ extension TextosDeConsola {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <akordeak> [--en <tonalitatea>] [--escalas]",
         descripcionAnalizar: "zifratu erromatarra, funtzioak, kadentziak eta modulazioak (pibota barne; --en gabe)\n--escalas: akorde bakoitzaren eskala, tentsio eta saihesteko notekin",
-        notasAnalizar: "--notas-guia: gida-noten bi lerro, hirugarrenetik eta zazpigarrenetik; --conduccion: ahots bakoitza akorde batetik hurrengora nola doan (drop 2-n), nota komunekin; --comparar: beste bertsioa akordez akorde, aldatzen denarekin, bere graduekin eta nota komunekin; --bajo: baxu ibiltaria beltzetan, konpas bat akorde bakoitzeko",
+        notasAnalizar: "--notas-guia: gida-noten bi lerro, hirugarrenetik eta zazpigarrenetik; --conduccion: ahots bakoitza akorde batetik hurrengora nola doan (drop 2-n), nota komunekin; --comparar: beste bertsioa akordez akorde, aldatzen denarekin, bere graduekin eta nota komunekin; --bajo: baxu ibiltaria beltzetan, konpas bat akorde bakoitzeko; --estadisticas: Lerdahlen tentsioa akordez akorde, ahotsen mugimendua, funtzio probableak eta kromatismoa",
         sintaxisAnalizarArchivo: "analizar --archivo <fitxategia> [--ventana <iraupena>]",
         descripcionAnalizarArchivo: "gauza bera, MIDI, MusicXML, MEI edo ABC fitxategi baten akordeekin (bat pultsuko; --ventana 2: bat zuriko)",
         sintaxisArmonizar: "armonizar <melodia> [--en <tonalitatea>] [--propuestas 3]",
@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <zifratua>…",
         descripcionAcorde: "notak, mota eta nota bakoitzaren papera",
-        notasAcorde: "aukerak: --disposiciones, --nombres, --tonalidades, --sustituciones (--en Do mayor tonalitatean, amaieran) eta --comparar Do (nota komunak eta ahotsen eramatea); --bebop eta --pentatonicas (gainean inprobisatzeko eskalak); --estadisticas (nota kopurua eta bere kardinala, distira, tarte-bektorea, Forte zenbakia…)",
+        notasAcorde: "aukerak: --disposiciones, --nombres, --tonalidades, --sustituciones (--en Do mayor tonalitatean, amaieran) eta --comparar Do (nota komunak eta ahotsen eramatea); --bebop eta --pentatonicas (gainean inprobisatzeko eskalak); --estadisticas (nota kopurua eta bere kardinala, distira, tarte-bektorea, Forte zenbakia…); --estadisticas-ekin, tonalitatean nola egokitzen den ere (Krumhansl, funtzio probablea, katalogoko eskalak); --comparar-ekin, Tymoczko, Lerdahl, Fourier eta Forteren distantziak",
         sintaxisArpegio: "arpegio <zifratua> [--patron <eredua>]",
         descripcionArpegio: "arpegioaren notak eta akordeari dagozkion eskalak (--patron ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado, alberti)",
         notasArpegio: "aukerak: --octavas 2 (1etik 4ra), --sin-octava, --desde Mi (edo 3: nota horretatik hasten da), --tensiones 9,13, --grados 1-5-3-8 (ibilbide propioa) eta --aproximacion abajo, arriba edo encierro (nota bakoitzera daramaten nota kromatikoak)",

@@ -13,8 +13,15 @@ extension LineaDeComandos {
 
     /// `acorde Sol7 Do --json`: cada acorde con sus notas, una lista aunque sea uno solo; con `--estadisticas`, cada
     /// uno lleva también la clave `estadisticas` (`EstadisticasDeAcordePresentadas`).
+    /// Con `--estadisticas`, también `enLaTonalidad` (`AcordeEnLaTonalidadPresentado`, en la de `--en` o en la suya), y
+    /// con `--comparar`, `relacion` (`RelacionEntreAcordesPresentada`).
     static func acordeJSON(_ textos: [String], _ notacion: Notacion) throws -> [AcordeJSON] {
         var argumentos = Argumentos(textos)
+        guard let tonalidad = try argumentos.quitarTonalidad(en: notacion) else {
+            throw ErrorDeUso.faltaTonalidadTrasEn
+        }
+        var otro: Acorde?
+        if let texto = try argumentos.valor(.comparar) { otro = try Acorde(leyendo: texto, enLaOrden: notacion) }
         let estadisticas = argumentos.quitarMarca(.estadisticas)
         return try palabras(argumentos, siFaltan: .faltaCifrado).map {
             let acorde = try Acorde(leyendo: $0, enLaOrden: notacion)
@@ -22,22 +29,32 @@ extension LineaDeComandos {
                 acorde: AcordePresentado(acorde, en: notacion),
                 estadisticas: estadisticas
                     ? EstadisticasDeAcordePresentadas(acorde.estadisticas, sobre: acorde.fundamental, en: notacion)
-                    : nil)
+                    : nil,
+                enLaTonalidad: estadisticas
+                    ? AcordeEnLaTonalidadPresentado(
+                        acorde, en: tonalidad ?? acorde.tonalidadPropia, notacion: notacion) : nil,
+                relacion: otro.map {
+                    RelacionEntreAcordesPresentada(acorde.relacion(con: $0, en: tonalidad), en: notacion)
+                })
         }
     }
 
-    /// Un acorde de `acorde --json`: las claves de `AcordePresentado` y, con `--estadisticas`, `estadisticas`.
+    /// Un acorde de `acorde --json`: las claves de `AcordePresentado` y, con `--estadisticas`, `estadisticas` y
+    /// `enLaTonalidad`; con `--comparar`, `relacion`.
     struct AcordeJSON: Encodable {
         let acorde: AcordePresentado
         let estadisticas: EstadisticasDeAcordePresentadas?
+        let enLaTonalidad: AcordeEnLaTonalidadPresentado?
+        let relacion: RelacionEntreAcordesPresentada?
 
-        private enum Clave: String, CodingKey { case estadisticas }
+        private enum Clave: String, CodingKey { case estadisticas, enLaTonalidad, relacion }
 
         func encode(to encoder: any Encoder) throws {
             try acorde.encode(to: encoder)
-            guard let estadisticas else { return }
             var contenedor = encoder.container(keyedBy: Clave.self)
-            try contenedor.encode(estadisticas, forKey: .estadisticas)
+            try contenedor.encodeIfPresent(estadisticas, forKey: .estadisticas)
+            try contenedor.encodeIfPresent(enLaTonalidad, forKey: .enLaTonalidad)
+            try contenedor.encodeIfPresent(relacion, forKey: .relacion)
         }
     }
 
@@ -106,6 +123,8 @@ extension LineaDeComandos {
             let soloEnDestino: String
             let cambios: [String]
             let distancia: String?
+            /// Lo que separa a las dos escalas: quintas, conducción mínima, Fourier, Isaacson, Morris y Forte.
+            let relacion: RelacionEntreEscalasPresentada
         }
 
         // Las de `EscalaPresentada`, como sin opciones. Las de las opciones son los tipos de Exposicion que enseña el
@@ -263,7 +282,8 @@ extension LineaDeComandos {
             datos.comparacion = EscalaJSON.Comparacion(
                 con: otra.nombre(en: notacion), comunes: comparacion.comunes, soloEnOrigen: comparacion.soloEnOrigen,
                 soloEnDestino: comparacion.soloEnDestino, cambios: comparacion.cambios,
-                distancia: comparacion.distancia)
+                distancia: comparacion.distancia,
+                relacion: RelacionEntreEscalasPresentada(escala.relacion(con: otra), en: notacion))
         }
         return datos
     }

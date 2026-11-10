@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- Las medidas de relación, escritas y para el JSON: `RelacionEntreAcordesPresentada`,
+  `AcordeEnLaTonalidadPresentado` (Krumhansl, función probable, tonalidades cercanas y escalas del catálogo),
+  `RelacionEntreEscalasPresentada`, `RelacionEntreConjuntosPresentada` y `EstadisticasDeProgresionPresentadas`, cada una
+  con `datos(en:)` para escribirla dato por dato. `TextosDeApps` tiene sus nombres en los trece idiomas.
 - `PresentacionDeEstadisticasDeAcorde`: lo que se mide de un acorde (`EstadisticasDeAcorde`), un dato por fila, la
   tabla para comparar varios del catálogo y su resumen (`ResumenDeAcordesPresentado`: cuántos hay de cada número de
   notas, de cada estilo y por terceras). `EstadisticasDeAcordePresentadas` es lo mismo para el JSON. Ars Harmonica lo

@@ -33,7 +33,7 @@ extension LineaDeComandosTests {
         #expect(sol7.contains("\nSustituciones (Do mayor):\n"))
         #expect(sol7.contains("Sol7 → Re♭7 (sustituto tritonal)"))
         #expect(sol7.contains("\nComparar con Do:\n  Notas comunes: Sol\n"))
-        #expect(sol7.hasSuffix(" semitonos\n"))
+        #expect(sol7.contains(" semitonos\n  Conducción de Tymoczko"))
         // Sin la fundamental: Do6 es Lam7/Do, y Sol7(♭9) sin su Sol es Si°7.
         let do6 = salida("acorde Do6 --nombres")
         #expect(do6.contains("\nOtros nombres: ") && do6.contains("Lam7/Do"))

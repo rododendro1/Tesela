@@ -9,7 +9,7 @@ extension TextosDeConsola {
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analyze <аккорды> [--in <тональность>] [--scales]",
         descripcionAnalizar: "римские цифры, функции, кадансы и модуляции (с общим аккордом; без --in)\n--scales: лад каждого аккорда, с напряжениями и избегаемыми звуками",
-        notasAnalizar: "--guide-tones: две линии направляющих нот, от терции и от септимы; --voice-leading: как каждый голос переходит от аккорда к следующему (в drop 2), с общими нотами; --compare: другая версия аккорд за аккордом, с тем, что меняется, её ступенями и общими нотами; --walking-bass: линия шагающего баса четвертями, по такту на аккорд",
+        notasAnalizar: "--guide-tones: две линии направляющих нот, от терции и от септимы; --voice-leading: как каждый голос переходит от аккорда к следующему (в drop 2), с общими нотами; --compare: другая версия аккорд за аккордом, с тем, что меняется, её ступенями и общими нотами; --walking-bass: линия шагающего баса четвертями, по такту на аккорд; --estadisticas: напряжение Лердала от аккорда к аккорду, движение голосов, вероятные функции и хроматизм",
         sintaxisAnalizarArchivo: "analyze --file <файл> [--window <длительность>]",
         descripcionAnalizarArchivo: "то же самое с аккордами файла MIDI, MusicXML, MEI или ABC (по одному на долю; --window 2: по одному на половинную)",
         sintaxisArmonizar: "harmonize <мелодия> [--in <тональность>] [--proposals 3]",
@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <обозначение>…",
         descripcionAcorde: "ноты, тип и роль каждой ноты",
-        notasAcorde: "параметры: --voicings, --names, --keys, --substitutions (в тональности --in C major, в конце) и --compare C (общие ноты и голосоведение); --bebop и --pentatonics (гаммы для импровизации); --statistics (число звуков и его название, яркость, интервальный вектор, номер Форта…)",
+        notasAcorde: "параметры: --voicings, --names, --keys, --substitutions (в тональности --in C major, в конце) и --compare C (общие ноты и голосоведение); --bebop и --pentatonics (гаммы для импровизации); --statistics (число звуков и его название, яркость, интервальный вектор, номер Форта…); с --estadisticas — ещё и как он вписывается в тональность (Крумхансл, вероятная функция, звукоряды каталога); с --comparar — расстояния Тимочко, Лердала, Фурье и Форта",
         sintaxisArpegio: "arpeggio <обозначение> [--pattern <рисунок>]",
         descripcionArpegio: "ноты арпеджио и подходящие гаммы (--pattern ascending, descending, up-down, down-up, broken, alberti)",
         notasArpegio: "параметры: --octaves 2 (от 1 до 4), --no-octave, --from E (или 3: начать с этой ноты), --tensions 9,13, --degrees 1-5-3-8 (свой рисунок) и --approach below, above или enclosure (хроматические ноты, ведущие к каждой)",

@@ -127,6 +127,22 @@ progresion.partitura(notacion: .ascii(.ingles)).mei().contains(">D7</harm>")    
 progresion.partitura().mei().contains("<syl>V7/V</syl>")                   // true
 ```
 
+### Tensión, movimiento y cromatismo
+
+``EstadisticasDeProgresion`` mide una progresión en una tonalidad: la tensión de Lerdahl de cada acorde
+(``TensionDeLerdahl``: desde el anterior y desde la tónica, con ``Tonalidad/distanciaDeLerdahl(de:a:)``), los
+semitonos que se mueven las voces de un acorde al siguiente con la conducción mínima, la función probable de cada
+acorde, las notas nuevas y las que no son de la tonalidad.
+
+```swift
+Tonalidad(.do).distanciaDeLerdahl(de: Acorde("Do"), a: Acorde("Sol"))                     // 5
+Tonalidad(.do).distanciaDeLerdahl(de: Acorde("Do"), a: Acorde("Rem"))                     // 8
+Tonalidad(.do).estadisticas(de: [Acorde("Do"), Acorde("Fa"), Acorde("Sol7"), Acorde("Do")]).movimientos   // [3, 5, 4]
+Tonalidad(.do).estadisticas(de: [Acorde("Do"), Acorde("Lab"), Acorde("Reb7"), Acorde("Do")]).cromatismo  // 0.308
+```
+
+`armonia analizar Do Fa Sol7 Do --estadisticas` las escribe debajo del análisis, también en `--json`.
+
 ## Cadencias
 
 `cadencias` busca en un análisis las parejas de acordes con forma de cadencia (`Cadencia.Tipo`):
