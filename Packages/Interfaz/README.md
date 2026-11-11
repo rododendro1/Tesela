@@ -13,6 +13,7 @@ Linux se compila y se prueba lo que no lo usa.
 |--------------|---------------------------------------------------------------------------------------------------|
 | `Ajustes/`   | Los ajustes y el entorno de las apps, el selector de notación y el tema                           |
 | `Diagramas/` | `DiagramaDeMastil`, `DiagramaDePentagrama`, `DiagramaDeTonnetz`, `DiagramaDeRejilla` y `VistaSVG` |
+| `Modelos/`   | Lo que eligen y calculan las vistas de acordes, de análisis y del Tonnetz, sin SwiftUI            |
 | `Sonido/`    | El reproductor de «Escuchar» y la entrada MIDI                                                    |
 
 Fuera de las carpetas están el botón y las exportaciones de «Exportar» y el selector para abrir una partitura. La

@@ -18,6 +18,9 @@
 - La consola: `reloj Re bayati --microtonal` dibuja el círculo microtonal, `--fuente chrysanthos` elige otra de sus
   afinaciones y `--colores` pinta cada grado del color de sus cents. `temperamentos 31 --reloj [--quintas]
   [--colores]` dibuja el reloj de un temperamento.
+- Cuatro obras más en las referencias del catálogo: Sam (1988) para el pinpeat, Williamson (2000) para el saung,
+  Kubik (1994) para la amadinda y Taruskin (1996) para el acorde de los augures. Con ellas, todas las escalas de otras
+  tradiciones citan alguna obra.
 
 ## 0.5.0 (2026-11-10)
 

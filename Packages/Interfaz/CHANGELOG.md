@@ -1,5 +1,12 @@
 # Cambios
 
+## Sin publicar
+
+- `ModeloDeAcordes`, `ModeloDeAnalisis` y `ModeloDelTonnetz`: lo que se elige en las vistas de acordes y de análisis
+  de Ars Harmonica y en la de Tonnetz, y lo que sale de ello (el acorde o la progresión leídos, el arpegio, la
+  partitura abierta, lo que se dibuja, lo que suena y lo que se exporta). No usan SwiftUI, así que se prueban en
+  Linux; las vistas los guardan en un `@State` y solo los dibujan.
+
 ## 0.5.0 (2026-11-10)
 
 ### Cambios incompatibles

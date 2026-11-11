@@ -13,13 +13,13 @@ extension TipoDeEscala {
     // la equiheptatónica del bajo Zambeze (siete de 171 cents), la del timbila de los chopi de Mozambique. Cada
     // instrumento se afina a su manera y se aparta bastante del ideal; aquí va el ideal, en doce notas con cada grado
     // redondeado al semitono más cercano y en cents en su versión microtonal.
-    // Fuente: Encyclopædia Britannica («African music: Equi-tonal systems»).
+    // Fuente: Encyclopædia Britannica («African music: Equi-tonal systems»); la del amadinda, en Kubik (1994).
 
     /// Amadinda (cinco partes iguales de 240 cents): Do Re Fa Sol Si♭ en doce notas, como el sléndro.
     public static let amadinda = TipoDeEscala(
         nombre: "Amadinda", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
         alias: ["Akadinda", "equipentatónica de Uganda"],
-        categoria: .afinacion, regiones: [.buganda], afinaciones: [.equipentatonica])
+        categoria: .afinacion, regiones: [.buganda], afinaciones: [.equipentatonica], referencias: [.kubik1994])
     /// Timbila (siete partes iguales de 171 cents): Do Re Mi♭ Fa Sol La Si♭ en doce notas, el dórico.
     public static let timbila = TipoDeEscala(
         nombre: "Timbila",

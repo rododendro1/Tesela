@@ -1,21 +1,24 @@
 # Huecos del catálogo de escalas y acordes
 
-Estado a 9 de noviembre de 2026, tras la 0.4.4, los acordes que faltaban y las fuentes de las europeas y las danzas.
+Estado a 11 de noviembre de 2026, tras la 0.5.0 y las fuentes del pinpeat, el saung, la amadinda y el acorde de los
+augures.
 
 ## Resumen
 
-Quedan 3 escalas de otras tradiciones y 29 escalas occidentales sin ninguna referencia, y ocho acordes sin fuente. El
-catálogo tiene 437 escalas en 49 listas de tradición y 55 acordes, todos con nombre en los doce idiomas. Las siete
-europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una obra cada una.
+Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 29 escalas occidentales sin ninguna referencia y
+siete acordes sin fuente. El catálogo tiene 437 escalas en 49 listas de tradición y 55 acordes, todos con nombre en
+los doce idiomas. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
+obra cada una.
 
-## Escalas sin ninguna referencia
+## Escalas de otras tradiciones sin referencia
 
-Son 3 escalas en 2 listas, según `comprobar_catalogo.py`.
+Ninguna, según `comprobar_catalogo.py`. Las tres que quedaban citan ahora una obra sobre su instrumento:
 
-| Lista | Escalas sin fuente | Total en la lista | Qué haría falta |
-| --- | --- | --- | --- |
-| Sudeste asiático | pinpeat, saung | 3 | Una fuente sobre la música jemer y otra sobre la birmana; el piphat ya cita a Morton (1976) |
-| Africanas | amadinda | 7 | Una fuente sobre el xilófono de Uganda; las otras seis citan a Tracey, Berliner o Knight |
+| Escala | Obra |
+| --- | --- |
+| Pinpeat | Sam (1988), la tesis sobre el conjunto pinpeat jemer |
+| Saung | Williamson (2000), el arpa birmana y sus afinaciones |
+| Amadinda | Kubik (1994), la teoría de la música africana, de donde viene la equipentatónica de Uganda |
 
 ## Tradiciones cortas o ausentes
 
@@ -45,8 +48,12 @@ tanto, Busoni no cubre.
 | Cromáticas con alteraciones | con uno, dos, tres y cinco bemoles, con cinco sostenidos | 5 |
 | De ocho o nueve notas | bebop locrio, bebop lidio, bebop menor armónica, argelina, blues de nueve notas, blues menor con 2ª | 6 |
 
-Las bebop podrían citar a Levine (1995), como ya hacen las otras bebop, si se comprueba que las trae. Las hexatónicas
-de dos tríadas encajarían en Cohn (1996), que ya está en el catálogo.
+Las bebop locria, lidia y menor armónica no están, que sepamos, en Levine (1995): sus bebop son la de dominante, la
+mayor, la dórica y la menor melódica, que ya lo citan. Hace falta otra obra que las traiga.
+
+Las hexatónicas de dos tríadas no encajan en Cohn (1996), como se pensaba: sus sistemas hexatónicos juntan dos
+tríadas a una tercera mayor, que es la escala aumentada (y esa ya lo cita). Las del catálogo juntan dos tríadas a un
+tono, la técnica de los «triad pairs» del jazz, y necesitan una obra de improvisación que la explique.
 
 ## Acordes que faltaban
 
@@ -57,7 +64,7 @@ Hay 43 acordes genéricos y 12 de nombre propio. Los que faltaban ya están, per
 | Sexta aumentada suiza | La♭ Do Re♯ Fa♯ (sobre La♭) | Aldwell, Schachter y Cadwallader (2011) | Nada: el lector ya admite la cuarta doble aumentada (`𝄪11`) |
 | m(add9) | Do Mi♭ Sol Re (sobre Do) | Ninguna | Buscar una obra que la traiga |
 | Acorde de Elektra | Do♯ Mi♯ Sol♯ + Mi Si | Ninguna | Confirmar la ortografía en la partitura, Kramer (1993) o Abbate (1989) |
-| Acorde de los augures | Fa♭ La♭ Do♭ + Mi♭ Sol Si♭ Re♭ | Ninguna | Citar a Taruskin (1996) o van den Toorn (1983) |
+| Acorde de los augures | Fa♭ La♭ Do♭ + Mi♭ Sol Si♭ Re♭ | Taruskin (1996) | Nada |
 | Acorde de la Sinfonía de los salmos | Mi Sol Si Sol | Ninguna | Citar a White (1979) |
 | Acorde alfa de Lendvai | Do Mi♭ Fa♯ La + Do♯ Mi Sol Si♭ | Ninguna | Confirmar en Lendvai (1971) qué notas da |
 
@@ -76,14 +83,16 @@ Comprobado en noviembre de 2026:
   curso de su capítulo de escalas, no en el libro.
 - Tymoczko trata las seis que se le citan en los capítulos 4 y 9 («Scales» y «Scales in Twentieth-Century Music»).
 
-Sin comprobar, porque no se ha podido ver el libro: que Levine trae cada uno de los modos de la menor melódica y de
+Sin comprobar, porque no se ha podido ver la obra: las páginas de Sam (1988), Williamson (2000), Kubik (1994) y
+Taruskin (1996) donde se tratan el pinpeat, el saung, la amadinda y el acorde de los augures, que se citan por la obra
+entera; que Levine trae cada uno de los modos de la menor melódica y de
 las bebop que se le citan (los temas sí están: menor melódica, disminuidas, tonos enteros, pentatónicas, blues y
 bebop), y las doce escalas que se citan de Rechberger (2008).
 
 Orden propuesto:
 
-1. El pinpeat, el saung y la amadinda: tres escalas que solo necesitan sus fuentes. De las europeas, falta comprobar
-   en Małanicz-Przybylska (2018) las notas exactas de la podhalańska.
-2. Las bebop y las hexatónicas de dos tríadas, con Levine y Cohn.
-3. Las fuentes de los acordes de nombre propio y de m(add9), con su ortografía.
-4. Las tradiciones ausentes, empezando por el shashmaqom, que es vecino de los dastgāh.
+1. De las europeas, comprobar en Małanicz-Przybylska (2018) las notas exactas de la podhalańska.
+2. Una obra para las bebop que faltan y otra para las hexatónicas de dos tríadas (los «triad pairs»).
+3. Las fuentes de los demás acordes de nombre propio y de m(add9), con su ortografía.
+4. Las tradiciones ausentes, empezando por el shashmaqom, que es vecino de los dastgāh. Cada una necesita una obra
+   que dé las notas de cada modo: no se añade ninguna escala sin ella.

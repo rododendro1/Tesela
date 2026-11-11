@@ -164,6 +164,15 @@ extension Referencia {
     public static let morton1976 = Referencia(
         "morton1976", .libro, autores: ["Morton, David"], titulo: "The Traditional Music of Thailand", anio: 1976,
         editorial: "University of California Press", lugar: "Berkeley")
+    /// Sam-Ang Sam, el conjunto pinpeat de Camboya: su historia, su música y su afinación.
+    public static let sam1988 = Referencia(
+        "sam1988", .tesis, autores: ["Sam, Sam-Ang"], titulo: "The Pin Peat Ensemble: Its History, Music, and Context",
+        anio: 1988, editorial: "Wesleyan University", lugar: "Middletown")
+    /// Williamson, el arpa birmana (saung gauk): su repertorio clásico, sus afinaciones y sus modos.
+    public static let williamson2000 = Referencia(
+        "williamson2000", .libro, autores: ["Williamson, Muriel C."],
+        titulo: "The Burmese Harp: Its Classical Music, Tunings, and Modes", anio: 2000,
+        editorial: "Northern Illinois University, Center for Southeast Asian Studies", lugar: "DeKalb")
     /// Surjodiningrat, Sudarjana y Susanto, las medidas de los gamelan de Java central.
     public static let surjodiningrat1972 = Referencia(
         "surjodiningrat1972", .libro, autores: ["Surjodiningrat, Wasisto", "Sudarjana, P. J.", "Susanto, Adhi"],
@@ -215,6 +224,10 @@ extension Referencia {
     public static let tracey1948 = Referencia(
         "tracey1948", .libro, autores: ["Tracey, Hugh"], titulo: "Chopi Musicians: Their Music, Poetry and Instruments",
         anio: 1948, editorial: "Oxford University Press", lugar: "Londres")
+    /// Kubik, la teoría de la música africana: el xilófono amadinda de Buganda y su afinación equipentatónica.
+    public static let kubik1994 = Referencia(
+        "kubik1994", .libro, autores: ["Kubik, Gerhard"], titulo: "Theory of African Music, vol. I", anio: 1994,
+        editorial: "Florian Noetzel", lugar: "Wilhelmshaven")
     /// Berliner, la mbira de los shona.
     public static let berliner1978 = Referencia(
         "berliner1978", .libro, autores: ["Berliner, Paul F."],
@@ -252,6 +265,11 @@ extension Referencia {
         "taruskin1987", .articulo, autores: ["Taruskin, Richard"],
         titulo: "Chez Pétrouchka: Harmony and Tonality chez Stravinsky", anio: 1987, publicadoEn: "19th-Century Music",
         volumen: "10 (3)", paginas: "265–286")
+    /// Taruskin, Stravinski y las tradiciones rusas: el acorde de los augures de «La consagración de la primavera».
+    public static let taruskin1996 = Referencia(
+        "taruskin1996", .libro, autores: ["Taruskin, Richard"],
+        titulo: "Stravinsky and the Russian Traditions: A Biography of the Works Through Mavra", anio: 1996,
+        editorial: "University of California Press", lugar: "Berkeley")
     /// Burkhart, el acorde de «Farben», la tercera de las Cinco piezas para orquesta de Schönberg.
     public static let burkhart1973 = Referencia(
         "burkhart1973", .articulo, autores: ["Burkhart, Charles"],
@@ -479,9 +497,11 @@ extension Referencia {
         .barker1989, .chalmers1993, .mathiesen1999, .chrysanthos1832, .pennanen1999, .apel1958, .glareano1547,
         .ramos1482,
         .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .garfias1975, .tranVanKhe1962, .morton1976,
+        .sam1988, .williamson2000,
         .surjodiningrat1972, .tenzer2000, .shin2024, .rubin2020, .kebede1971, .kilmer1971, .gurney1994, .west1994,
-        .tracey1948,
+        .tracey1948, .kubik1994,
         .berliner1978, .knight1973, .harcourt1925, .siqueira1981, .rothgeb1995, .samson1977, .taruskin1987,
+        .taruskin1996,
         .burkhart1973,
         .levine1989, .persichetti1961, .aldwell2011, .levine1995, .messiaen1944, .lendvai1971, .cohn1996,
         .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .gjerdingen2007, .hudson1982, .hudsonPassacaglia1982,

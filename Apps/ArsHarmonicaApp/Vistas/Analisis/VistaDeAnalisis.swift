@@ -10,35 +10,22 @@ import SwiftUI
 struct VistaDeAnalisis: View {
     @Environment(\.notacion) private var notacion
     @EnvironmentObject private var navegacion: Navegacion
-    @State private var texto = "Do Fa Sol7 Do Lam Re7 Sol"
-    /// El análisis de `texto`, que se rehace al cambiar el texto o la notación, no en cada redibujado.
+    /// Lo elegido y lo que sale de ello, que se prueba sin la vista.
+    @State private var modelo = ModeloDeAnalisis()
+    /// El análisis de lo escrito o abierto, que se rehace al cambiar el texto, el fichero o la notación, no en cada
+    /// redibujado.
     @State private var resultado: Result<AnalisisPresentado, Error>?
     @State private var abriendo = false
-    /// Por qué no se pudo abrir el último fichero; se borra al abrir otro o al cambiar el texto.
-    @State private var errorAlAbrir: Error?
-    /// La progresión del último fichero abierto, con su ritmo armónico: se usa mientras el campo diga lo mismo.
-    @State private var importada: ProgresionImportada?
-    @State private var patron = Arpegio.Patron.ascendente
-    @State private var figura = Figura.corchea
-    /// Si cada arpegio empieza por la nota más cercana a la última del anterior.
-    @State private var enlazados = false
-    /// La disposición de la progresión dispuesta (drop 2, shell…).
-    @State private var disposicion = DisposicionDeAcorde.drop2
-    /// Otra versión de la progresión (rearmonizada…), para compararlas acorde a acorde.
-    @State private var contra = ""
     /// Lo que está sonando, para resaltar el acorde que se oye.
     @ObservedObject private var reproductor = Reproductor.compartido
-
-    /// Las figuras que se ofrecen para las notas de la progresión arpegiada.
-    private static let figuras: [Figura] = [.negra, .corchea, .semicorchea]
 
     /// MIDI, MusicXML (.musicxml, .xml y .mxl), MEI y ABC.
     var body: some View {
         Form {
             Section(notacion.texto(\.progresion)) {
-                TextField(notacion.texto(\.campoDeProgresion), text: $texto)
+                TextField(notacion.texto(\.campoDeProgresion), text: $modelo.texto)
                     .comoCampoDeCifrado()
-                if let errorAlAbrir {
+                if let errorAlAbrir = modelo.errorAlAbrir {
                     Text(notacion.mensaje(de: errorAlAbrir)).foregroundColor(.red)
                 }
             }
@@ -112,16 +99,9 @@ struct VistaDeAnalisis: View {
                 BotonDeExportar(ficheros)
             }
         }
-        .selectorDePartituras(isPresented: $abriendo) { abrir($0) }
-        .onChange(of: texto) { _ in errorAlAbrir = nil }
-        .task(id: "\(texto)|\(notacion.clave)|\(importada?.hashValue ?? 0)") {
-            // Lo abierto, con el ritmo de la pieza, mientras no se retoque; si no, lo escrito.
-            let abierta = importada?.texto == texto ? importada : nil
-            if let abierta, let analisis = PresentacionDeAnalisis.analizar(abierta, notacion: notacion) {
-                resultado = .success(analisis)
-            } else {
-                resultado = Result { try PresentacionDeAnalisis.analizar(texto, notacion: notacion) }
-            }
+        .selectorDePartituras(isPresented: $abriendo) { modelo.abrir($0) }
+        .task(id: modelo.claveDelAnalisis(en: notacion)) {
+            resultado = modelo.analizar(en: notacion)
         }
     }
 
@@ -129,50 +109,14 @@ struct VistaDeAnalisis: View {
     /// estudio de la progresión, con la disposición elegida.
     private var ficheros: [FicheroParaExportar] {
         guard let analisis = try? resultado?.get() else { return [] }
-        let arpegiada = analisis.arpegiada(patron, figura: figura.duracion, enlazados: enlazados, en: notacion)
-        let dispuesta = PresentacionDeDisposiciones.progresion(
-            analisis.acordes, disposicion, en: notacion)
-        let guias = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
-            analisis.acordes, tonalidad: analisis.tonalidad, en: notacion
-        ).flatMap(\.ficheros)
-        let hoja = FicheroParaExportar.svg(
-            PresentacionDeAnalisis.hojaDeEstudio(analisis, disposicion: disposicion, en: notacion),
-            nombre: notacion.texto(\.hojaDeEstudio))
-        var todos: [FicheroParaExportar] = analisis.ficheros + [hoja]
-        if let tonalidad = tonalidadDeLasDoce(analisis) {
-            let svg = PresentacionDeAnalisis.hojaEnLasDoceTonalidades(
-                analisis.acordes, tonalidad: tonalidad, disposicion: disposicion, en: notacion)
-            let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.enLasDoceTonalidades)
-            todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
-        }
-        if let tonalidad = analisis.tonalidad {
-            let svg = PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, en: notacion)
-            let nombre = notacion.texto(\.hojaDeEstudio) + " · " + tonalidad.nombre(en: notacion)
-            todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
-        }
-        if let svg = PresentacionDeAnalisis.hojaDeLaComparacion(
-            analisis.acordes, con: otraVersion, en: analisis.tonalidad, disposicion: disposicion, notacion: notacion)
-        {
-            let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.compararCon)
-            todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
-        }
-        todos += PresentacionDeAnalisis.bajoCaminante(analisis.acordes, en: notacion)?.ficheros ?? []
-        todos += arpegiada?.ficheros ?? []
-        todos += dispuesta?.ficheros ?? []
-        return todos + guias
-    }
-
-    /// La tonalidad desde la que se lleva la progresión a las doce: la del análisis o, si modula, la del primer
-    /// acorde.
-    private func tonalidadDeLasDoce(_ analisis: AnalisisPresentado) -> Tonalidad? {
-        analisis.tonalidad ?? analisis.acordes.first?.tonalidadPropia
+        return modelo.ficheros(de: analisis, en: notacion)
     }
 
     /// La progresión en las doce tonalidades, de quinta en quinta, para escucharla en cada una; la hoja para
     /// practicarla se exporta con la barra.
     @ViewBuilder
     private func doceTonalidades(_ analisis: AnalisisPresentado) -> some View {
-        if let tonalidad = tonalidadDeLasDoce(analisis), !analisis.acordes.isEmpty {
+        if let tonalidad = ModeloDeAnalisis.tonalidadDeLasDoce(analisis), !analisis.acordes.isEmpty {
             Section(notacion.texto(\.enLasDoceTonalidades)) {
                 ForEach(
                     PresentacionDeAnalisis.enLasDoceTonalidades(
@@ -210,20 +154,15 @@ struct VistaDeAnalisis: View {
         }
     }
 
-    /// Los acordes de la otra versión que se pueden leer.
-    private var otraVersion: [Acorde] {
-        contra.split(separator: " ").compactMap { try? Acorde(leyendo: String($0)) }
-    }
-
     /// La progresión comparada con otra versión, acorde a acorde: lo que cambia, sus grados y las notas comunes,
     /// para escuchar las dos seguidas; la hoja de la comparación se exporta con la barra.
     @ViewBuilder
     private func comparar(_ analisis: AnalisisPresentado) -> some View {
         Section(notacion.texto(\.compararCon)) {
-            TextField(notacion.texto(\.campoDeProgresion), text: $contra)
+            TextField(notacion.texto(\.campoDeProgresion), text: $modelo.contra)
                 .comoCampoDeCifrado()
             if let comparacion = PresentacionDeAnalisis.comparar(
-                analisis.acordes, con: otraVersion, en: analisis.tonalidad, notacion: notacion)
+                analisis.acordes, con: modelo.otraVersion, en: analisis.tonalidad, notacion: notacion)
             {
                 HStack {
                     Text(comparacion.resumen).bold()
@@ -261,24 +200,13 @@ struct VistaDeAnalisis: View {
         if let analisis = try? resultado?.get(), let tonalidad = analisis.tonalidad {
             Menu {
                 ForEach(PresentacionDeTransposicion.destinos(desde: tonalidad), id: \.self) { destino in
-                    Button(destino.nombre(en: notacion)) { transponer(de: tonalidad, a: destino) }
+                    Button(destino.nombre(en: notacion)) {
+                        modelo.transponer(de: tonalidad, a: destino, en: notacion)
+                    }
                 }
             } label: {
                 Label(notacion.texto(\.transponer), systemImage: "arrow.up.arrow.down")
             }
-        }
-    }
-
-    private func transponer(de origen: Tonalidad, a destino: Tonalidad) {
-        if let abierta = importada, abierta.texto == texto {
-            let intervalo = origen.tonica.intervaloMasCorto(hasta: destino.tonica)
-            let transportada = PresentacionDeTransposicion.transponer(abierta, intervalo)
-            importada = transportada
-            texto = transportada.texto
-        } else if let nuevo = try? PresentacionDeTransposicion.transponer(
-            texto, de: origen, a: destino, en: notacion)
-        {
-            texto = nuevo
         }
     }
 
@@ -344,7 +272,7 @@ struct VistaDeAnalisis: View {
                         Spacer()
                         BotonDeEscuchar(propuesta.sonido)
                             .labelStyle(.iconOnly)
-                        Button(notacion.texto(\.aplicar)) { texto = propuesta.texto }
+                        Button(notacion.texto(\.aplicar)) { modelo.texto = propuesta.texto }
                     }
                     // Cada botón por su lado, no la fila entera.
                     .buttonStyle(.borderless)
@@ -357,17 +285,15 @@ struct VistaDeAnalisis: View {
     /// figura elegidos.
     @ViewBuilder
     private func arpegiar(_ analisis: AnalisisPresentado) -> some View {
-        if let arpegiada = analisis.arpegiada(
-            patron, figura: figura.duracion, enlazados: enlazados, en: notacion)
-        {
+        if let arpegiada = modelo.arpegiada(analisis, en: notacion) {
             Section(notacion.texto(\.arpegiar)) {
-                Picker(notacion.texto(\.patron), selection: $patron) {
+                Picker(notacion.texto(\.patron), selection: $modelo.patron) {
                     ForEach(Arpegio.Patron.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
                 }
-                Picker(notacion.texto(\.figura), selection: $figura) {
-                    ForEach(Self.figuras, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
+                Picker(notacion.texto(\.figura), selection: $modelo.figura) {
+                    ForEach(ModeloDeAnalisis.figuras, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
                 }
-                Toggle(notacion.texto(\.enlazarLosAcordes), isOn: $enlazados)
+                Toggle(notacion.texto(\.enlazarLosAcordes), isOn: $modelo.enlazados)
                 BotonDeEscuchar(arpegiada.sonido)
             }
         }
@@ -394,11 +320,11 @@ struct VistaDeAnalisis: View {
     @ViewBuilder
     private func disponer(_ analisis: AnalisisPresentado) -> some View {
         Section(notacion.texto(\.disposicion)) {
-            Picker(notacion.texto(\.disposicion), selection: $disposicion) {
+            Picker(notacion.texto(\.disposicion), selection: $modelo.disposicion) {
                 ForEach(DisposicionDeAcorde.allCases, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
             }
             if let dispuesta = PresentacionDeDisposiciones.progresion(
-                analisis.acordes, disposicion, en: notacion)
+                analisis.acordes, modelo.disposicion, en: notacion)
             {
                 let sonando = reproductor.paso(de: dispuesta.sonido)
                 DiagramaDePentagrama(dispuesta.pentagrama)
@@ -424,7 +350,7 @@ struct VistaDeAnalisis: View {
     @ViewBuilder
     private func conduccion(_ analisis: AnalisisPresentado) -> some View {
         if let voces = PresentacionDeAnalisis.conduccion(
-            analisis.acordes, disposicion: disposicion, en: notacion)
+            analisis.acordes, disposicion: modelo.disposicion, en: notacion)
         {
             Text(notacion.texto(\.conduccionDeVoces) + " · " + voces.disposicion).bold()
             ForEach(Array(voces.pasos.enumerated()), id: \.offset) { _, paso in
@@ -435,19 +361,6 @@ struct VistaDeAnalisis: View {
                 }
             }
             Text(voces.movimientoTotal).foregroundColor(.secondary)
-        }
-    }
-
-    /// Lee el fichero elegido y pone sus acordes en el campo de la progresión, que se analiza como si se
-    /// hubieran escrito.
-    private func abrir(_ elegida: Result<ProgresionImportada, any Error>) {
-        do {
-            let leida = try elegida.get()
-            importada = leida
-            texto = leida.texto
-            errorAlAbrir = nil
-        } catch {
-            errorAlAbrir = error
         }
     }
 }
