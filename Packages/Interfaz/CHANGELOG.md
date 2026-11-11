@@ -6,6 +6,11 @@
   de Ars Harmonica y en la de Tonnetz, y lo que sale de ello (el acorde o la progresión leídos, el arpegio, la
   partitura abierta, lo que se dibuja, lo que suena y lo que se exporta). No usan SwiftUI, así que se prueban en
   Linux; las vistas los guardan en un `@State` y solo los dibujan.
+- `ModeloDelCatalogo`: la pestaña «Catálogo» de Ars Harmonica. Busca en las progresiones, los acordes con nombre y
+  los ritmos por su nombre en cualquier idioma y da una ficha por elemento, con lo que es, sus estilos, sus fuentes,
+  cómo suena y si se abre en Análisis o en Acordes.
+- `ModeloDeAcordes.nombresDelCatalogo(en:)`: los nombres del acorde leído en el catálogo («novena añadida, acorde
+  mu»).
 - `ModeloDeAcordes.ficheros(digitaciones:en:)` y `ModeloDeAnalisis.ficheros(de:en:)` dan también las hojas de estudio
   en HTML.
 

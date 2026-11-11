@@ -380,6 +380,18 @@ public struct TextosDeApps: TextosTraducidos {
     public let progresionesEnLaEscala: String
     /// «Fuera de La menor: Re♯, Sol♯»: las notas de una progresión que no son de esa escala.
     public let notasFueraDe: Plantilla  // {1} escala, {2} notas
+    /// La pestaña de los catálogos de Ars Harmonica y sus listas.
+    public let catalogo: String
+    public let progresionesConNombre: String
+    public let acordesConNombre: String
+    public let ritmosConNombre: String
+    public let buscarEnElCatalogo: String
+    /// Las obras donde se lee una entrada del catálogo.
+    public let fuentes: String
+    public let verEnAnalisis: String
+    public let sinResultados: String
+    /// El nombre de un acorde en el catálogo («séptima de dominante», «acorde de Tristán»).
+    public let nombrePropio: String
 
     // MARK: PresentacionDeEscalaYAcorde.swift
     public let tensiones: String

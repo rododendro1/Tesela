@@ -280,6 +280,9 @@ struct VistaDeAcordes: View {
         Section(notacion.texto(\.informacion)) {
             LabeledContent(notacion.texto(\.nombre), value: acorde.nombre(en: notacion))
             LabeledContent(notacion.texto(\.cifrado), value: acorde.cifrado(en: notacion))
+            if let nombres = modelo.nombresDelCatalogo(en: notacion) {
+                LabeledContent(notacion.texto(\.nombrePropio), value: nombres)
+            }
             LabeledContent(
                 notacion.texto(\.notas),
                 value: acorde.notasDesdeElBajo.map { $0.nombre(en: notacion) }.joined(separator: " "))

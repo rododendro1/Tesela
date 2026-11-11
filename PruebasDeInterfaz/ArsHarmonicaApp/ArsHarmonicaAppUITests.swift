@@ -1,6 +1,6 @@
 import XCTest
 
-/// Recorre las cinco pestañas de Ars Harmonica y las vistas que se abren desde ellas (contrapunto y serie
+/// Recorre las seis pestañas de Ars Harmonica y las vistas que se abren desde ellas (contrapunto y serie
 /// dodecafónica) con los textos de ejemplo de cada una y comprueba que se ve el resultado.
 @MainActor
 final class ArsHarmonicaAppUITests: XCTestCase {
@@ -91,7 +91,7 @@ final class ArsHarmonicaAppUITests: XCTestCase {
     /// una columna, esa inversión. Una serie a la que le faltan clases da un aviso.
     func testSerieDodecafonica() {
         let app = XCUIApplication.enEspanol()
-        app.opcion("Identificar").tap()
+        app.abrirPestana("Identificar")
         app.buttons["Serie dodecafónica"].tap()
         esperar(app.texto("6-32 · 6-32"), "los hexacordos de la serie de Berg")
         esperar(app.texto("De todos los intervalos"), "que es de todos los intervalos")
@@ -104,7 +104,7 @@ final class ArsHarmonicaAppUITests: XCTestCase {
 
     func testIdentificar() {
         let app = XCUIApplication.enEspanol()
-        app.opcion("Identificar").tap()
+        app.abrirPestana("Identificar")
         esperar(app.texto("Toca el mástil"), "la indicación del mástil")
     }
 
@@ -137,5 +137,16 @@ final class ArsHarmonicaAppUITests: XCTestCase {
         waitForExpectations(timeout: 15)
         exportar.tap()
         esperar(app.etiqueta("Partitura MusicXML"), "la partitura MusicXML en el menú")
+    }
+
+    /// El catálogo empieza en las progresiones sobre Do; la cadencia andaluza se busca y se abre en Análisis.
+    func testCatalogo() {
+        let app = XCUIApplication.enEspanol()
+        app.abrirPestana("Catálogo")
+        esperar(app.texto("V7 I · Sol7 Do"), "la cadencia perfecta")
+        app.reemplazar(en: app.textFields.firstMatch, por: "andaluza")
+        esperar(app.texto("i VII VI V · Dom"), "los acordes de la cadencia andaluza sobre Do")
+        app.buscandoHaciaAbajo(app.buttons["Ver en Análisis"]).tap()
+        esperar(app.texto("en Do menor"), "el análisis de la cadencia andaluza")
     }
 }

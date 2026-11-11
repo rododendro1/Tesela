@@ -162,6 +162,14 @@ public struct ModeloDeAcordes: Sendable {
         return PresentacionDeRelacionesDeAcorde.comparar(acorde, con: otro, en: notacion)
     }
 
+    /// Los nombres que tiene el acorde leído en el catálogo, el genérico primero («séptima de dominante»; «novena
+    /// añadida, acorde mu»), o `nil` si no tiene ninguno o el texto no se lee.
+    public func nombresDelCatalogo(en notacion: Notacion) -> String? {
+        guard let acorde else { return nil }
+        let nombres = acorde.tipo.acordesConNombre.map { $0.nombre(en: notacion) }
+        return nombres.isEmpty ? nil : nombres.joined(separator: ", ")
+    }
+
     private static func leer(_ texto: String) -> Result<Acorde, any Error> {
         Result { try Acorde(leyendo: texto) }
     }

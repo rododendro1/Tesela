@@ -192,6 +192,19 @@ import Testing
         #expect(abs(afinado.notas[0].desviacion - (0)) <= 1e-9)
         #expect(abs(afinado.notas[1].desviacion - (-13.7)) <= 0.1)
     }
+
+    @Test func unRitmoDelCatalogoSuenaEnSuPulso() {
+        let clave = Escucha.ritmo(.claveDeSon, vueltas: 1, tempo: Tempo(60))
+        #expect(clave.notas.map(\.inicio) == [0, 0.75, 1.5, 2.5, 3])
+        #expect(Set(clave.notas.map(\.midi)) == [48])
+        // El tīntāl va por negras, con golpes fuertes y débiles; la segunda vuelta empieza tras sus 16 pulsos.
+        let tintal = Escucha.ritmo(.tintal)
+        let pulso = 60 / Escucha.tempoDeRitmo.negrasPorMinuto
+        #expect(tintal.notas.count == 2 * RitmoConNombre.tintal.ataques.count)
+        #expect(Set(tintal.notas.map(\.midi)) == [48, 67])
+        #expect(tintal.notas.contains { abs($0.inicio - 16 * pulso) < 1e-9 })
+        #expect(Escucha.ritmo(.tintal, vueltas: 0).notas.isEmpty)
+    }
 }
 
 extension Double {
