@@ -244,6 +244,10 @@ de piano y el reloj también nombran en la notación las notas sin rótulo; con 
 marca sin texto y el reloj escribe el número de cada clase (0 es Do). Marcadas con sus alturas
 (`MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))`), o un reloj hecho con notas
 (`RelojDeClasesDeAltura(notas:tonica:orden:)`), las notas se nombran como se escriben: Si♭, y no La♯, en Fa mayor.
+Las escalas con microtonos tienen además ``RelojDeAlturas``, un reloj de cents: cada grado en el ángulo de sus cents
+(el Mi𝄳 de Re Bayātī, a 350 de Do, entre Mi♭ y Mi), las doce horas temperadas en gris, una rayita en cada paso del
+sistema (24 cuartos de tono, 53 comas, 72 moria, 22 śruti) y un arquito en cada nota que se aparta de su nota
+temperada.
 
 ```swift
 let dibujo = Tonnetz(Escala(.re, .dorico)).svg()          // con el título «Re dórico» y su leyenda
@@ -254,6 +258,7 @@ RelojDeClasesDeAltura(clases: [0, 4, 7]).svg(opciones: .init(notacion: .ascii(.i
 TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: [61], opciones: .init(ventana: .bemoles)).contains(">Re♭</text>")   // true
 TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))).contains(">Si♭</text>")   // true
 RelojDeClasesDeAltura(notas: Escala("Fa mayor").notas).svg().contains(">Si♭</text>")   // true
+RelojDeAlturas(escala: Escala(.re, .bayati))!.posiciones   // [200.0, 350.0, 500.0, 700.0, 900.0, 1000.0, 0.0]
 ```
 
 ### Transformaciones neorriemannianas

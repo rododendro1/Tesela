@@ -196,6 +196,7 @@ extension TextosDeApps {
         relojDeLaEscala: "Reloj de la escala",
         circuloCromatico: "Círculo cromático",
         circuloDeQuintas: "Círculo de quintas",
+        circuloMicrotonal: "Círculo microtonal",
         enLasDoceTonalidades: "En las doce tonalidades",
         acordesEnLasDoceTonalidades: "Acordes en las doce tonalidades",
         conSeptima: "Con séptima",

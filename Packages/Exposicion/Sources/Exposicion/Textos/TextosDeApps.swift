@@ -209,6 +209,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let relojDeLaEscala: String
     public let circuloCromatico: String
     public let circuloDeQuintas: String
+    public let circuloMicrotonal: String
     public let enLasDoceTonalidades: String
     public let acordesEnLasDoceTonalidades: String
     public let conSeptima: String
