@@ -153,6 +153,7 @@ struct VistaDeEscalas: View {
         ficheros += secuencia.ficheros + Estudio.ficherosDeLosTeclados(de: escala, en: notacion)
         if let otra = try? Escala(leyendo: otraEscala) {
             ficheros.append(Estudio.ficheroDeLaComparacion(escala, con: otra, en: notacion))
+            ficheros.append(Estudio.ficheroDeLaComparacionHTML(escala, con: otra, en: notacion))
         }
         return ficheros + Estudio.enLasDoceTonalidades(escala, en: notacion).ficheros
     }

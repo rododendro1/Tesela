@@ -68,4 +68,13 @@ extension PresentacionDeEstudioDeEscala {
             comparacionNotaANota(escala, con: otra, en: notacion),
             nombre: escala.nombre(en: notacion) + " · " + otra.nombre(en: notacion))
     }
+
+    /// La misma comparación como página HTML (`comparacionNotaANotaHTML(_:con:en:)`).
+    public static func ficheroDeLaComparacionHTML(
+        _ escala: Escala, con otra: Escala, en notacion: Notacion
+    ) -> FicheroParaExportar {
+        FicheroParaExportar.html(
+            comparacionNotaANotaHTML(escala, con: otra, en: notacion),
+            nombre: escala.nombre(en: notacion) + " · " + otra.nombre(en: notacion))
+    }
 }
