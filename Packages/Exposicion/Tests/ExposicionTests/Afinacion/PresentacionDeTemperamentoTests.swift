@@ -37,4 +37,13 @@ import Testing
         let werckmeister = TemperamentoPresentado(.werckmeisterIII, en: notacion).datos(en: notacion)
         #expect(werckmeister.first?.valor == "90.225 · 107.82")
     }
+
+    @Test func reloj() throws {
+        let werckmeister = try #require(TemperamentoPresentado.reloj(de: .werckmeisterIII, en: .compacta(.espanol)))
+        #expect(werckmeister.contains("<title>Werckmeister III · Círculo cromático</title>"))
+        let quintas = try #require(
+            TemperamentoPresentado.reloj(de: .divisiones31, quintas: true, colores: true, en: .ascii(.ingles)))
+        #expect(quintas.contains("Circle of fifths</title>") && quintas.contains(">18</text>"))
+        #expect(TemperamentoPresentado.reloj(de: .vallotti, quintas: true, en: .compacta(.espanol)) == nil)
+    }
 }

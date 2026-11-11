@@ -116,3 +116,24 @@ public struct TemperamentoPresentado: Hashable, Sendable, Codable {
         return datos
     }
 }
+
+// MARK: - El reloj de un temperamento
+
+extension TemperamentoPresentado {
+    /// Los pasos de un temperamento en un reloj de cents (SVG), con su nombre y el círculo en el título: las doce
+    /// teclas de Werckmeister III apartándose del igual, los 31 pasos de Huygens… Con `quintas`, de quinta en quinta,
+    /// si su quinta recorre todos los pasos (`nil` si no: los circulares, la justa, los 24 cuartos de tono…); con
+    /// `colores`, cada paso con el color de sus cents.
+    public static func reloj(
+        de temperamento: TemperamentoConNombre, quintas: Bool = false, colores: Bool = false, en notacion: Notacion
+    ) -> String? {
+        let elegido =
+            quintas
+            ? RelojDeAlturas(quintasDe: temperamento, notacion: notacion)
+            : RelojDeAlturas(temperamento: temperamento, notacion: notacion)
+        guard let reloj = elegido else { return nil }
+        let circulo = notacion.texto { quintas ? $0.circuloDeQuintas : $0.circuloCromatico }
+        let titulo = temperamento.nombre(en: notacion) + " · " + circulo
+        return reloj.svg(opciones: .init(notacion: notacion, titulo: titulo), colores: colores)
+    }
+}

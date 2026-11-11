@@ -4,9 +4,11 @@
 
 ### Lo nuevo
 
-- `PresentacionDeEstudioDeEscala.relojMicrotonal(de:afinacion:en:)`: la versión microtonal de una escala en el
+- `PresentacionDeEstudioDeEscala.relojMicrotonal(de:afinacion:colores:en:)`: la versión microtonal de una escala en el
   reloj de cents (`RelojDeAlturas`), con el título «… · Círculo microtonal» (`TextosDeApps.circuloMicrotonal`, en los
-  trece idiomas).
+  trece idiomas), con `colores` para pintar cada grado del color de sus cents.
+- `TemperamentoPresentado.reloj(de:quintas:colores:en:)`: un temperamento del catálogo en el reloj de cents, o en su
+  círculo de quintas si lo tiene.
 
 ## 0.5.0 (2026-11-10)
 

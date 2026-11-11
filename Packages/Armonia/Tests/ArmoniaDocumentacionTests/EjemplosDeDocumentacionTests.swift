@@ -323,6 +323,8 @@ import Hexagonos
         comprobar(TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))).contains(">Si♭</text>"), #"true"#, doc, 6)
         comprobar(RelojDeClasesDeAltura(notas: Escala("Fa mayor").notas).svg().contains(">Si♭</text>"), #"true"#, doc, 7)
         comprobar(RelojDeAlturas(escala: Escala(.re, .bayati))!.posiciones, #"[200.0, 350.0, 500.0, 700.0, 900.0, 1000.0, 0.0]"#, doc, 8)
+        comprobar(RelojDeAlturas(quintasDe: .divisiones19)!.marcas[1].rotulo, #""11""#, doc, 9)
+        comprobar(RelojDeAlturas(quintasDe: .cuartosDeTono) == nil, #"true"#, doc, 10)
         _ = (dibujo, sinLeyenda, ingles, toro)
     }
 

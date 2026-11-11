@@ -213,4 +213,49 @@ import Testing
         let sola = RelojDeAlturas(marcas: [.init(cents: 350, rotulo: "Mi𝄳")]).svg()
         #expect(!sola.contains("<polygon") && !sola.contains("<path"))
     }
+
+    @Test func temperamentos() throws {
+        // Werckmeister III: las doce teclas con su nombre, y un arquito en las que se apartan del igual.
+        let werckmeister = RelojDeAlturas(temperamento: .werckmeisterIII)
+        #expect(werckmeister.marcas.map(\.rotulo).prefix(4) == ["Do", "Do♯", "Re", "Mi♭"])
+        #expect(werckmeister.marcas.contains { $0.temperada != nil } && werckmeister.tonica == 0)
+        #expect(RelojDeAlturas(temperamento: .temperamentoIgual).marcas.allSatisfy { $0.temperada == nil })
+        // Los de otros pasos, con su número hasta 31; los 53, sin rótulo y con puntos más pequeños.
+        let treintaYUno = RelojDeAlturas(temperamento: .divisiones31)
+        #expect(treintaYUno.marcas.count == 31 && treintaYUno.marcas[30].rotulo == "30")
+        let comas = RelojDeAlturas(temperamento: .comas53)
+        #expect(comas.marcas.count == 53 && comas.marcas.allSatisfy { $0.rotulo.isEmpty })
+        let svg = comas.svg()
+        #expect(svg.contains("r=\"4.1\"") && !svg.contains("r=\"7.0\""))
+    }
+
+    @Test func quintas() throws {
+        #expect(RelojDeAlturas.pasosDeLaQuinta(de: .mesotonicoCuartoDeComa) == 7)
+        #expect(RelojDeAlturas.pasosDeLaQuinta(de: .divisiones19) == 11)
+        #expect(RelojDeAlturas.pasosDeLaQuinta(de: .comas53) == 31)
+        #expect(RelojDeAlturas.pasosDeLaQuinta(de: .sruti22) == nil)
+        #expect(RelojDeAlturas.pasosDeLaQuinta(de: .divisiones41) == 24)
+        #expect(RelojDeAlturas.pasosDeLaQuinta(de: .cuartosDeTono) == nil)
+        #expect(RelojDeAlturas.pasosDeLaQuinta(de: .werckmeisterIII) == nil)
+        let pitagorico = try #require(RelojDeAlturas(quintasDe: .pitagorico))
+        #expect(pitagorico.marcas.map(\.rotulo).prefix(3) == ["Do", "Sol", "Re"] && !pitagorico.horas)
+        let diecinueve = try #require(RelojDeAlturas(quintasDe: .divisiones19))
+        #expect(diecinueve.marcas.map(\.rotulo).prefix(3) == ["0", "11", "3"])
+        #expect(abs(diecinueve.marcas[1].cents - 1200 / 19.0) < 1e-9)
+        // Sin las doce horas, solo el círculo y sus 19 puntos.
+        #expect(diecinueve.svg().components(separatedBy: "<circle").count == 21)
+        #expect(RelojDeAlturas(quintasDe: .vallotti) == nil && RelojDeAlturas(quintasDe: .moria72) == nil)
+        #expect(RelojDeAlturas(quintasDe: .comas53)?.marcas.count == 53)
+        // Un título largo ensancha el dibujo para caber.
+        let largo = try #require(RelojDeAlturas(quintasDe: .comas53)).svg(
+            opciones: .init(titulo: String(repeating: "x", count: 50)))
+        #expect(largo.contains("width=\"416"))
+    }
+
+    @Test func colores() {
+        #expect(RelojDeAlturas.color(deCents: 400).hexadecimal == "#36D936")
+        #expect(RelojDeAlturas.color(deCents: 0) == RelojDeAlturas.color(deCents: 1200))
+        let reloj = RelojDeAlturas(marcas: [.init(cents: 400, rotulo: "Mi")])
+        #expect(reloj.svg(colores: true).contains("#36D936") && !reloj.svg().contains("#36D936"))
+    }
 }

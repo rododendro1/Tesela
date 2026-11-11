@@ -42,12 +42,17 @@ public struct RelojDeAlturas: Hashable, Sendable {
     public let tonica: Double?
     /// Las rayitas del borde, en cents desde Do: un paso del sistema cada una. Vacío, ninguna.
     public let divisiones: [Double]
+    /// Si se dibujan, en gris, las doce horas temperadas (no en el círculo de quintas de un temperamento, donde no
+    /// caen en su sitio).
+    public let horas: Bool
 
-    /// Un reloj con esas notas, la tónica en esos cents y las rayitas en esos otros (todo reducido a una octava).
-    public init(marcas: [Marca], tonica: Double? = nil, divisiones: [Double] = []) {
+    /// Un reloj con esas notas, la tónica en esos cents y las rayitas en esos otros (todo reducido a una octava), con
+    /// las doce horas temperadas o sin ellas.
+    public init(marcas: [Marca], tonica: Double? = nil, divisiones: [Double] = [], horas: Bool = true) {
         self.marcas = marcas
         self.tonica = tonica.map(Self.reducir)
         self.divisiones = Array(Set(divisiones.map(Self.reducir))).sorted()
+        self.horas = horas
     }
 
     /// El reloj de la versión microtonal de una escala (la de su teoría de hoy, o `afinacion`), con las rayitas de
@@ -84,6 +89,79 @@ public struct RelojDeAlturas: Hashable, Sendable {
     /// Los cents de las notas, en el orden de `marcas`.
     public var posiciones: [Double] { marcas.map(\.cents) }
 
+    // MARK: Temperamentos
+
+    /// Los pasos de un temperamento del catálogo, desde Do. En los de doce notas, cada tecla con su nombre (Do, Do♯,
+    /// Re, Mi♭…) y un arquito desde su hora del temperamento igual: las de Werckmeister III, apartándose unos cents.
+    /// En los demás (19, 31, 53 pasos…), cada paso con su número, si son 31 o menos.
+    ///
+    ///     RelojDeAlturas(temperamento: .divisiones31).marcas.count   // 31
+    public init(temperamento: TemperamentoConNombre, notacion: Notacion = .compacta(.espanol)) {
+        let pasos = temperamento.pasos
+        let marcas: [Marca]
+        if pasos.count == 12 {
+            marcas = pasos.enumerated().map { i, cents in
+                Marca(cents: cents, temperada: Double(100 * i), rotulo: Self.teclas[i].nombre(en: notacion))
+            }
+        } else {
+            marcas = pasos.enumerated().map { i, cents in
+                Marca(cents: cents, rotulo: pasos.count <= 31 ? String(i) : "")
+            }
+        }
+        self.init(marcas: marcas, tonica: 0)
+    }
+
+    /// El círculo de quintas de un temperamento del catálogo, de quinta en quinta desde Do, si lo tiene: los de doce
+    /// notas con todas las quintas iguales (el igual, el pitagórico, los mesotónicos), con el nombre de cada tecla, y
+    /// las octavas partidas en partes iguales cuya quinta las recorre todas (19, 22, 31, 41 y las 53 comas), con el
+    /// número de cada paso si son 31 o menos. `nil` en los demás: los circulares y la justa, de quintas desiguales, y
+    /// los 22 śruti, que no son iguales; en los 24 cuartos de tono o los 72 moria, la quinta (14 o 42 pasos) solo pasa
+    /// por las doce teclas.
+    ///
+    ///     RelojDeAlturas(quintasDe: .divisiones19)?.marcas[1].rotulo   // "11": la quinta, de 11 pasos
+    ///     RelojDeAlturas(quintasDe: .cuartosDeTono)                   // nil
+    public init?(quintasDe temperamento: TemperamentoConNombre, notacion: Notacion = .compacta(.espanol)) {
+        guard let pasosDeLaQuinta = Self.pasosDeLaQuinta(de: temperamento) else { return nil }
+        let n = temperamento.pasosPorOctava
+        let marcas = (0..<n).map { k in
+            let paso = (k * pasosDeLaQuinta) % n
+            let rotulo = n == 12 ? Self.teclas[paso].nombre(en: notacion) : n <= 31 ? String(paso) : ""
+            return Marca(cents: Double(k) * 1200 / Double(n), rotulo: rotulo)
+        }
+        self.init(marcas: marcas, tonica: 0, horas: false)
+    }
+
+    /// Cuántos pasos de su octava tiene la quinta de un temperamento, si va de quinta en quinta por todos ellos: 7 en
+    /// los regulares de doce notas, 11 en el de 19, 31 en las 53 comas; `nil` si no tiene una sola quinta o si su círculo
+    /// de quintas se cierra antes (14 de 24, 42 de 72).
+    public static func pasosDeLaQuinta(de temperamento: TemperamentoConNombre) -> Int? {
+        // Los sistemas de pasos iguales (cuartos de tono, 53 comas, 72 moria) tienen la quinta más cercana a la pura.
+        let iguales: Set<SistemaMicrotonal> = [.cuartosDeTono, .persa, .comas53, .moria72]
+        let deUnSistema = temperamento.sistemaMicrotonal.map(iguales.contains) == true ? 1200 * log2(1.5) : nil
+        guard let quinta = temperamento.quinta ?? deUnSistema else { return nil }
+        let n = temperamento.pasosPorOctava
+        if n == 12 { return 7 }
+        let pasos = Int((quinta * Double(n) / 1200).rounded())
+        func mcd(_ a: Int, _ b: Int) -> Int { b == 0 ? a : mcd(b, a % b) }
+        return mcd(pasos, n) == 1 ? pasos : nil
+    }
+
+    /// Las doce teclas desde Do, como se escriben en los temperamentos: de Mi♭ a Sol♯ por quintas.
+    static let teclas: [Nota] = [
+        Nota(.do), Nota(.do, .sostenido), Nota(.re), Nota(.mi, .bemol), Nota(.mi), Nota(.fa), Nota(.fa, .sostenido),
+        Nota(.sol), Nota(.sol, .sostenido), Nota(.la), Nota(.si, .bemol), Nota(.si),
+    ]
+
+    // MARK: Color
+
+    /// El color de unos cents, que da la vuelta al círculo de los colores en una octava: Do rojo, Mi verdoso, Sol♯
+    /// azul… Un microtono cae entre los colores de sus dos vecinos.
+    ///
+    ///     RelojDeAlturas.color(deCents: 400).hexadecimal   // "#36D936": el de 120°, verde
+    public static func color(deCents cents: Double) -> ColorRGB {
+        ColorRGB(tono: reducir(cents) / 1200 * 360, saturacion: 0.75, brillo: 0.85)
+    }
+
     // MARK: Cuentas
 
     /// Unos cents en una octava, de 0 a 1200 (sin el 1200).
@@ -119,10 +197,12 @@ public struct RelojDeAlturas: Hashable, Sendable {
     /// su nota por dentro, en `opciones.notacion`), el polígono de las notas con su rótulo por fuera, el arquito de
     /// las que se apartan de su nota temperada y, encima, el título de `opciones`, si lo hay; `opciones.escala`
     /// cambia el tamaño.
-    public func svg(opciones: OpcionesDeDiagrama = OpcionesDeDiagrama()) -> String {
+    /// Con `colores`, cada nota lleva el color de sus cents (``color(deCents:)``) en lugar del azul.
+    public func svg(opciones: OpcionesDeDiagrama = OpcionesDeDiagrama(), colores: Bool = false) -> String {
         let titulo = opciones.titulo ?? ""
         let arriba = titulo.isEmpty ? 0 : Self.altoDelTitulo
-        let ancho = Self.lado
+        // Más ancho si el título no cabe («53 comas de Arel-Ezgi-Uzdilek · Círculo de quintas»), a unos 8 px por letra.
+        let ancho = max(Self.lado, Double(titulo.count) * 8 + 16)
         let alto = Self.lado + arriba
         let centro = (x: ancho / 2, y: arriba + Self.lado / 2)
         let radio = Self.radio
@@ -151,7 +231,7 @@ public struct RelojDeAlturas: Hashable, Sendable {
                     .con("stroke", "#bbbbbb").con("stroke-width", 1.0).vacio)
         }
         // Las doce horas temperadas, en gris, con su nombre por dentro.
-        for clase in 0..<12 {
+        for clase in 0..<(horas ? 12 : 0) {
             let cents = Double(100 * clase)
             let punto = Self.punto(cents: cents, radio: radio, centro: centro)
             svg += linea(
@@ -185,15 +265,17 @@ public struct RelojDeAlturas: Hashable, Sendable {
                 ElementoSVG("path").con("d", d).con("fill", "none").con("stroke", DibujoSVG.Color.flecha)
                     .con("stroke-width", 2.0).con("stroke-linecap", "round").vacio)
         }
-        // Las notas, con su rótulo por fuera.
+        // Las notas, con su rótulo por fuera; más pequeñas si son muchas, para que no se monten.
+        let tamano = min(7, max(3, 0.35 * 2 * Double.pi * radio / Double(max(marcas.count, 1))))
         for marca in marcas {
             let punto = Self.punto(cents: marca.cents, radio: radio, centro: centro)
             let primera = tonica.map { abs(Self.diferencia($0, marca.cents)) < 1e-6 } ?? false
             svg += linea(
-                ElementoSVG("circle").con("cx", punto.x).con("cy", punto.y).con("r", 7.0)
-                    .con("fill", DibujoSVG.Color.nota)
+                ElementoSVG("circle").con("cx", punto.x).con("cy", punto.y).con("r", tamano)
+                    .con("fill", colores ? Self.color(deCents: marca.cents).hexadecimal : DibujoSVG.Color.nota)
                     .con("stroke", primera ? DibujoSVG.Color.primera : "#ffffff")
                     .con("stroke-width", primera ? 3.0 : 1.0).vacio)
+            guard !marca.rotulo.isEmpty else { continue }
             let rotulo = Self.punto(cents: marca.cents, radio: radio + 26, centro: centro)
             svg += linea(
                 ElementoSVG("text").con("x", rotulo.x).con("y", rotulo.y).con("text-anchor", "middle")
