@@ -131,15 +131,21 @@ extension XCUIApplication {
             // La rueda, cerca de lo alto de la ventana (que siempre está en la pantalla): hacia abajo o, si el
             // elemento quedó por encima, hacia arriba. Cada vuelta mueve la vista mucho menos que su delta. Si la
             // vista no se ha movido, la rueda cayó en algo que se queda con ella (un pentagrama ancho, que se
-            // desplaza de lado): se prueba en otro punto, en el margen de la derecha o más abajo.
+            // desplaza de lado): se prueba en otro punto, en el margen de la derecha o más abajo. Si el elemento
+            // pasó al otro lado, el paso se queda en la mitad: con el mismo paso podía saltar de debajo de la
+            // ventana a encima de ella y volver, vuelta tras vuelta, sin dejarlo nunca a la vista.
             let ventana = windows.firstMatch
             let puntos = [CGVector(dx: 0.5, dy: 0.25), CGVector(dx: 0.98, dy: 0.5), CGVector(dx: 0.02, dy: 0.75)]
             var punto = 0
+            var paso = 1000.0
+            var ibaArriba: Bool?
             while elemento.exists && !elemento.isHittable && intento < intentos {
                 let antes = elemento.frame
                 let arriba = antes.midY < ventana.frame.midY
+                if let ibaArriba, ibaArriba != arriba { paso = max(paso / 2, 60) }
+                ibaArriba = arriba
                 ventana.coordinate(withNormalizedOffset: puntos[punto]).scroll(
-                    byDeltaX: 0, deltaY: arriba ? 1000 : -1000)
+                    byDeltaX: 0, deltaY: arriba ? paso : -paso)
                 if elemento.frame == antes { punto = (punto + 1) % puntos.count }
                 intento += 1
             }
