@@ -119,9 +119,9 @@ public struct ModeloDeAcordes: Sendable {
         return mastil(trastes: Self.trastesDeLasDigitaciones).digitaciones(de: acorde, exigirQuinta: false, limite: 6)
     }
 
-    /// Los pentagramas del acorde leído y de su arpegio como SVG, la hoja de estudio, la disposición elegida, el
-    /// arpegio en MusicXML, MEI y MIDI, y las `digitaciones` (si ya están) y el arpegio en el mástil como tablaturas
-    /// MusicXML; o nada si el texto no se lee.
+    /// Los pentagramas del acorde leído y de su arpegio como SVG, la hoja de estudio (en SVG y en HTML), la
+    /// disposición elegida, el arpegio en MusicXML, MEI y MIDI, y las `digitaciones` (si ya están) y el arpegio en el
+    /// mástil como tablaturas MusicXML; o nada si el texto no se lee.
     public func ficheros(digitaciones: [Digitacion]?, en notacion: Notacion) -> [FicheroParaExportar] {
         guard let acorde else { return [] }
         let arpegio = self.arpegio(de: acorde)
@@ -130,6 +130,9 @@ public struct ModeloDeAcordes: Sendable {
             pentagrama(de: arpegio, en: notacion).fichero,
             FicheroParaExportar.svg(
                 PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, en: notacion),
+                nombre: notacion.texto(\.hojaDeEstudio) + " " + acorde.cifrado(en: notacion)),
+            FicheroParaExportar.html(
+                PresentacionDeRelacionesDeAcorde.hojaDeEstudioHTML(de: acorde, en: notacion),
                 nombre: notacion.texto(\.hojaDeEstudio) + " " + acorde.cifrado(en: notacion)),
         ]
         if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, en: notacion) {

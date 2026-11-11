@@ -95,6 +95,7 @@ import Testing
         #expect(!sin.isEmpty)
         #expect(modelo.arpegiada(analisis, en: espanol) != nil)
         modelo.contra = "Do Rem7 Sol7 Do"
-        #expect(modelo.ficheros(de: analisis, en: espanol).count == sin.count + 1)
+        // La hoja de la comparación, en SVG y en HTML.
+        #expect(modelo.ficheros(de: analisis, en: espanol).count == sin.count + 2)
     }
 }

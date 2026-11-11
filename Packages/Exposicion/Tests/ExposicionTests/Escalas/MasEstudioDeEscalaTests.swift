@@ -159,6 +159,93 @@ import Testing
         #expect(PresentacionDeEstudioDeEscala.tamano(deUnSVG: "<svg/>") == nil)
     }
 
+    /// La hoja de estudio en HTML: los textos como HTML, los dibujos como SVG dentro, y las mismas secciones.
+    @Test func hojaDeEstudioHTML() {
+        let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(de: Escala(.re, .dorico), en: notacion)
+        #expect(hoja.hasPrefix("<!doctype html>\n<html lang=\"es\">"))
+        #expect(hoja.hasSuffix("</html>"))
+        #expect(hoja.contains("<title>Hoja de estudio · Re dórico</title>"))
+        #expect(hoja.contains("<h1>Re dórico</h1>"))
+        #expect(hoja.contains("<li>Re</li><li>Mi</li>"))
+        #expect(hoja.contains("<h2>Estadísticas</h2>"))
+        #expect(hoja.contains("<dt>Brillo por quintas</dt><dd>0</dd>"))
+        #expect(hoja.contains("<h2>Escalera de brillo</h2>") && hoja.contains("<li aria-current=\"true\">"))
+        #expect(hoja.contains("prefers-color-scheme:dark") && hoja.contains("@media print"))
+        // El pentagrama, el reloj y los dos teclados, cada uno en su figura, sin declaración XML.
+        #expect(hoja.components(separatedBy: "<figure").count - 1 == 4)
+        #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
+        #expect(!hoja.contains("<?xml"))
+        // Con secciones: solo las pedidas; con microtonos, el reloj lleva también el círculo microtonal.
+        let bayati = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
+            de: Escala(.re, .bayati), en: notacion, secciones: [.reloj])
+        #expect(bayati.components(separatedBy: "<figure").count - 1 == 2 && bayati.contains(">Mi𝄳</text>"))
+        #expect(!bayati.contains("<h2>Estadísticas</h2>") && !bayati.contains("<h2>Pentagrama</h2>"))
+        let soloElNombre = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
+            de: Escala(.do), en: .ascii(.ingles), secciones: [])
+        #expect(soloElNombre.contains("<html lang=\"en\">") && soloElNombre.contains("<h1>C major</h1>"))
+        #expect(!soloElNombre.contains("<figure") && !soloElNombre.contains("<section"))
+        #expect(PresentacionDeEstudioDeEscala.figura("sin dibujo", clase: "x") == "")
+        let figura = PresentacionDeEstudioDeEscala.figura("<?xml version=\"1.0\"?><svg/>", clase: "x")
+        #expect(figura == "<figure class=\"x\"><svg/></figure>")
+        // El fichero para exportarla.
+        let fichero = PresentacionDeEstudioDeEscala.ficheroDeLaHojaHTML(de: Escala(.do), en: notacion)
+        #expect(fichero.nombreDeFichero == "Hoja de estudio Do mayor.html" && fichero.formato == .html)
+    }
+
+    /// Las demás hojas en HTML: la de un acorde, la de una progresión (también en las doce tonalidades y comparada
+    /// con otra), la de una tonalidad y la comparación de dos escalas.
+    @Test func lasDemasHojasEnHTML() throws {
+        func esPagina(_ hoja: String) -> Bool {
+            hoja.hasPrefix("<!doctype html>\n<html lang=\"es\">") && hoja.hasSuffix("</html>")
+                && hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count
+        }
+        let acorde = PresentacionDeRelacionesDeAcorde.hojaDeEstudioHTML(de: Acorde("Sol7"), en: notacion)
+        #expect(esPagina(acorde) && acorde.contains("<h1>Sol7</h1>") && acorde.contains("<h2>Digitaciones</h2>"))
+        // Cinco diagramas de guitarra, cada uno en su figura, con la tablatura.
+        #expect(acorde.components(separatedBy: "<figure class=\"diagrama\"").count - 1 == 5)
+        #expect(acorde.contains(">320001</text>"))
+
+        let analisis = try PresentacionDeAnalisis.analizar("Rem7 Sol7 Do7M", en: Tonalidad(.do), notacion: notacion)
+        let progresion = PresentacionDeAnalisis.hojaDeEstudioHTML(analisis, en: notacion)
+        #expect(esPagina(progresion) && progresion.contains("<h1>Rem7 – Sol7 – Domaj7</h1>"))
+        #expect(progresion.contains("<td>Sol7</td><td>V7</td>"))
+        #expect(progresion.contains("<h2>Conducción de voces · Drop 2</h2>"))
+        #expect(progresion.contains("<h2>Líneas de notas guía</h2>"))
+
+        let doce = PresentacionDeAnalisis.hojaEnLasDoceTonalidadesHTML(
+            analisis.acordes, tonalidad: Tonalidad(.do), en: notacion)
+        #expect(esPagina(doce) && doce.components(separatedBy: "<section>").count - 1 == 12)
+        #expect(doce.contains("<h2>Sol mayor</h2><p>Lam7 Re7 Solmaj7</p>"))
+
+        let comparada = try #require(
+            PresentacionDeAnalisis.hojaDeLaComparacionHTML(
+                [Acorde("Do"), Acorde("Lam"), Acorde("Rem"), Acorde("Sol7")],
+                con: [Acorde("Do"), Acorde("La7"), Acorde("Rem7"), Acorde("Sol7")], notacion: notacion))
+        #expect(esPagina(comparada) && comparada.components(separatedBy: "<tr class=\"cambia\">").count - 1 == 2)
+        #expect(comparada.contains("<strong>Cambian 2 de 4 acordes</strong>"))
+        #expect(PresentacionDeAnalisis.hojaDeLaComparacionHTML([], con: [Acorde("Do")], notacion: notacion) == nil)
+
+        let tonalidad = PresentacionDeTonalidad.hojaDeEstudioHTML(de: Tonalidad(.re), en: notacion)
+        #expect(esPagina(tonalidad) && tonalidad.contains("<h1>Re mayor</h1>"))
+        #expect(tonalidad.contains("<li><strong>V7</strong><span>La7</span><small>dominante</small></li>"))
+        #expect(tonalidad.contains("<td>cadencia auténtica</td><td>V7–I</td><td>La7 – Re</td>"))
+
+        let escalas = PresentacionDeEstudioDeEscala.comparacionNotaANotaHTML(
+            Escala(.do), con: Escala(.do, .dorico), en: notacion)
+        #expect(esPagina(escalas) && escalas.contains("<h1>Do mayor → Do dórico</h1>"))
+        // Mi y Si cambian: resaltados en las dos filas, en el color de cada escala.
+        #expect(escalas.contains("<td class=\"origen propia cambio\">Mi</td>"))
+        #expect(escalas.contains("<td class=\"destino propia cambio\">Mi♭</td>"))
+        #expect(escalas.contains("<td class=\"comun\">Re</td>"))
+        let fichero = PresentacionDeEstudioDeEscala.ficheroDeLaComparacionHTML(
+            Escala(.do), con: Escala(.do, .dorico), en: notacion)
+        #expect(fichero.nombreDeFichero == "Do mayor · Do dórico.html")
+        // Una figura no pasa del doble de su ancho.
+        #expect(
+            PresentacionDeEstudioDeEscala.figura("<svg width=\"100\" viewBox=\"0 0 1 1\"/>", clase: "x")
+                .hasPrefix("<figure class=\"x\" style=\"max-width:200px\">"))
+    }
+
     /// El mapa de brillo en SVG: el título con la tónica, una caja por escala y la resaltada en otro color.
     @Test func mapaDeBrillo() {
         let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(en: notacion)

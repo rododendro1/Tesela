@@ -11,6 +11,8 @@
   cómo suena y si se abre en Análisis o en Acordes.
 - `ModeloDeAcordes.nombresDelCatalogo(en:)`: los nombres del acorde leído en el catálogo («novena añadida, acorde
   mu»).
+- `ModeloDeAcordes.ficheros(digitaciones:en:)` y `ModeloDeAnalisis.ficheros(de:en:)` dan también las hojas de estudio
+  en HTML.
 
 ## 0.5.0 (2026-11-10)
 

@@ -129,7 +129,7 @@ extension PresentacionDeEstudioDeEscala {
 
     /// Las dos escalas en el mismo reloj cromático: el polígono de la primera, en verde, y el de la segunda, en
     /// rojo y a trazos; cada hora, del color de la comparación, y las tónicas con el borde naranja. Da su alto.
-    private static func relojDeLaComparacion(
+    static func relojDeLaComparacion(
         _ comparacion: RelacionEntreEscalas, x: Double, y: Double, lado: Double, notacion: Notacion,
         en cuerpo: inout [String]
     ) -> Double {

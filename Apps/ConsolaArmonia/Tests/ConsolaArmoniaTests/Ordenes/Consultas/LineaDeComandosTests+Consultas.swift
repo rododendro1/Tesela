@@ -233,6 +233,19 @@ extension LineaDeComandosTests {
         #expect(hoja.hasPrefix("<svg "), Comment(rawValue: String(hoja.prefix(200))))
         #expect(hoja.contains(">Re dórico</text>"))
         #expect(salida("sheet D dorian --ingles").contains(">D dorian</text>"))
+        // Con --html, como página HTML; grabar no la pasa a PDF, que no es un dibujo.
+        let html = salida("hoja Re dórico --html")
+        #expect(html.hasPrefix("<!doctype html>"), Comment(rawValue: String(html.prefix(200))))
+        #expect(html.contains("<h1>Re dórico</h1>"))
+        #expect(salida("sheet D dorian --html --ingles").contains("<h1>D dorian</h1>"))
+        #expect(resultado("grabar", "hoja", "Re", "dórico", "--html").codigo != 0)
+        #expect(salida("hoja acorde Sol7 --html").contains("<h1>Sol7</h1>"))
+        #expect(salida("hoja tonalidad Re mayor --html").contains("<h1>Re mayor</h1>"))
+        #expect(salida("hoja acordes Rem7 Sol7 Do7M --html").contains("<h1>Rem7 – Sol7 – Domaj7</h1>"))
+        #expect(salida("hoja acordes Rem7 Sol7 Do7M --doce --html --en Do mayor").contains("<h2>Sol mayor</h2>"))
+        #expect(
+            salida("hoja acordes Do Lam --comparar Do La7 --html").contains("<tr class=\"cambia\">"))
+        #expect(salida("hoja Do mayor --comparar Do dórico --html").contains("<h1>Do mayor → Do dórico</h1>"))
         #expect(resultado("hoja").codigo == 2)
         #expect(resultado("hoja").error.contains("armonia hoja Re mayor"))
         // La de un acorde.
