@@ -223,6 +223,8 @@ struct TextosDeConsola: TextosTraducidos {
     let familiaDeFuncionDesconocida: Plantilla  // {1} familia
     let categoriaDesconocida: Plantilla  // {1} categoria
     let fuenteDesconocida: Plantilla  // {1} fuente
+    let escalaSinMicrotonos: Plantilla  // {1} escala
+    let sinCirculoDeQuintas: Plantilla  // {1} temperamento
     let usoDesconocido: Plantilla  // {1} uso
     let ordenDeEscalasDesconocido: Plantilla  // {1} orden
     let ordenDeAcordesDesconocido: Plantilla  // {1} orden

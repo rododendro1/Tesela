@@ -69,14 +69,14 @@ extension PresentacionDeEstudioDeEscala {
 
     /// La versión microtonal de la escala en un reloj de cents (SVG): cada grado en el ángulo de sus cents, con su
     /// nombre microtonal (el Mi𝄳 de Re Bayātī, entre Mi♭ y Mi), las rayitas de su sistema y las doce horas
-    /// temperadas en gris. Con `afinacion`, en otra de las de `escala.tipo.afinaciones`. `nil` si la escala no tiene
-    /// microtonos.
+    /// temperadas en gris. Con `afinacion`, en otra de las de `escala.tipo.afinaciones`; con `colores`, cada grado
+    /// con el color de sus cents. `nil` si la escala no tiene microtonos.
     public static func relojMicrotonal(
-        de escala: Escala, afinacion: TipoDeEscalaMicrotonal? = nil, en notacion: Notacion
+        de escala: Escala, afinacion: TipoDeEscalaMicrotonal? = nil, colores: Bool = false, en notacion: Notacion
     ) -> String? {
         guard let reloj = RelojDeAlturas(escala: escala, afinacion: afinacion, notacion: notacion) else { return nil }
         let titulo = escala.nombre(en: notacion) + " · " + notacion.texto(\.circuloMicrotonal)
-        return reloj.svg(opciones: .init(notacion: notacion, titulo: titulo))
+        return reloj.svg(opciones: .init(notacion: notacion, titulo: titulo), colores: colores)
     }
 
     // MARK: Las doce tonalidades

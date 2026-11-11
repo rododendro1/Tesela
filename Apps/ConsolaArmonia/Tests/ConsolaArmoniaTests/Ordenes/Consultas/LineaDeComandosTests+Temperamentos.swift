@@ -23,6 +23,25 @@ extension LineaDeComandosTests {
         #expect(familia.error.contains("circular"), Comment(rawValue: familia.error))
     }
 
+    /// `temperamentos … --reloj`: el primero que se encuentra, en un reloj de cents; con `--quintas`, de quinta en
+    /// quinta, si su quinta recorre todos sus pasos.
+    @Test func relojDeUnTemperamento() {
+        let werckmeister = salida("temperamentos werckmeister --reloj")
+        #expect(werckmeister.hasPrefix("<svg"), Comment(rawValue: werckmeister))
+        #expect(werckmeister.contains("<title>Werckmeister III · Círculo cromático</title>"))
+        #expect(werckmeister.contains(">Mi♭</text>") && werckmeister.contains("<path"))
+        let diecinueve = salida("temperamentos 19-TET --reloj --quintas --colores")
+        #expect(diecinueve.contains("· Círculo de quintas</title>") && diecinueve.contains(">11</text>"))
+        #expect(!diecinueve.contains("#1f4e9c\" stroke=\"#ffffff"), Comment(rawValue: diecinueve))
+        #expect(salida("temperaments 53 --clock --fifths --ingles").contains("Circle of fifths</title>"))
+        let cuartos = resultado("temperamentos", "cuartos de tono", "--reloj", "--quintas")
+        #expect(
+            cuartos.codigo == 2 && cuartos.error.contains("no tiene círculo de quintas"),
+            Comment(rawValue: cuartos.error))
+        #expect(resultado("temperamentos", "nadie", "--reloj").codigo == 1)
+        #expect(salida("ayuda temperamentos").contains("--reloj [--quintas] [--colores]"))
+    }
+
     /// `temperamentos … --estadisticas` y `--json`: la ficha, los errores de las razones justas y, en los de doce
     /// notas, la quinta del lobo.
     @Test func temperamentosConEstadisticas() throws {

@@ -247,7 +247,9 @@ marca sin texto y el reloj escribe el número de cada clase (0 es Do). Marcadas 
 Las escalas con microtonos tienen además ``RelojDeAlturas``, un reloj de cents: cada grado en el ángulo de sus cents
 (el Mi𝄳 de Re Bayātī, a 350 de Do, entre Mi♭ y Mi), las doce horas temperadas en gris, una rayita en cada paso del
 sistema (24 cuartos de tono, 53 comas, 72 moria, 22 śruti) y un arquito en cada nota que se aparta de su nota
-temperada.
+temperada. También dibuja los pasos de un temperamento (`RelojDeAlturas(temperamento: .werckmeisterIII)`) y, si su
+quinta recorre todos sus pasos, su círculo de quintas (`RelojDeAlturas(quintasDe: .divisiones19)`); con
+`svg(colores: true)`, cada nota lleva el color de sus cents.
 
 ```swift
 let dibujo = Tonnetz(Escala(.re, .dorico)).svg()          // con el título «Re dórico» y su leyenda
@@ -259,6 +261,8 @@ TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: [61], opciones: .init(ventana
 TecladoDePiano(desde: 60, hasta: 72).svg(marcadas: MarcasDeDiagrama(Escala("Fa mayor").alturas(octava: 4))).contains(">Si♭</text>")   // true
 RelojDeClasesDeAltura(notas: Escala("Fa mayor").notas).svg().contains(">Si♭</text>")   // true
 RelojDeAlturas(escala: Escala(.re, .bayati))!.posiciones   // [200.0, 350.0, 500.0, 700.0, 900.0, 1000.0, 0.0]
+RelojDeAlturas(quintasDe: .divisiones19)!.marcas[1].rotulo   // "11"
+RelojDeAlturas(quintasDe: .cuartosDeTono) == nil   // true
 ```
 
 ### Transformaciones neorriemannianas

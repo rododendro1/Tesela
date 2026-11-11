@@ -150,14 +150,14 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeTemperamentos: [EntradaDeAyuda] = [
-        // temperamentos [<texto>] [--familia <familia>] [--estadisticas]
+        // temperamentos [<texto>] [--familia <familia>] [--estadisticas | --reloj [--quintas] [--colores]]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisTemperamentos),
             descripcion: TextosDeConsola.traduccion(\.descripcionTemperamentos),
             ejemplo: ejemplo(
                 "armonia temperamentos mesotonico --estadisticas", "armonia temperaments meantone --statistics"),
             notas: TextosDeConsola.traduccion(\.notasTemperamentos),
-            opciones: [.familia, .estadisticas])
+            opciones: [.familia, .estadisticas, .reloj, .quintas, .colores])
     ]
 
     static let ayudaDeNotasConNombre: [EntradaDeAyuda] = [

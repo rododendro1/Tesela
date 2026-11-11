@@ -335,19 +335,7 @@ extension LineaDeComandos {
         }
         // `--fuente ptolomeo`, `--source ptolemy`: las escalas que definió o afinó un teórico, por su clave o por su
         // nombre en español, en inglés o en el idioma de la notación.
-        if let texto = try entrada.valor(.fuente) {
-            let clave = claveDeBusqueda(texto)
-            let nombres = { (candidata: FuenteTeorica) in
-                [
-                    candidata.rawValue, candidata.nombre, candidata.nombre(en: .compacta(.ingles)),
-                    candidata.nombre(en: notacion),
-                ].map(claveDeBusqueda)
-            }
-            guard let encontrada = FuenteTeorica.allCases.first(where: { nombres($0).contains(clave) }) else {
-                throw ErrorDeUso.fuenteDesconocida(texto)
-            }
-            filtro.fuente = encontrada
-        }
+        if let texto = try entrada.valor(.fuente) { filtro.fuente = try fuenteTeorica(leyendo: texto, notacion) }
         if let texto = try entrada.valor(.uso) { filtro.uso = try estiloDeUso(leyendo: texto, notacion) }
         // `--notas 5`: solo las de cinco notas (las pentatónicas).
         filtro.numeroDeNotas = try numeroDeNotasPedido(&entrada)
@@ -388,5 +376,23 @@ extension LineaDeComandos {
                     ).en(notacion))
             } : Mensaje.ningunaEscala.texto(en: notacion)
         return ResultadoDeOrden(salida: "", error: "armonia: " + texto + "\n", codigo: 1)
+    }
+}
+
+extension LineaDeComandos {
+    /// El teórico de `--fuente ptolomeo` (`--source ptolemy`): por su clave o por su nombre en español, en inglés o
+    /// en el idioma de la notación.
+    static func fuenteTeorica(leyendo texto: String, _ notacion: Notacion) throws -> FuenteTeorica {
+        let clave = claveDeBusqueda(texto)
+        let nombres = { (candidata: FuenteTeorica) in
+            [
+                candidata.rawValue, candidata.nombre, candidata.nombre(en: .compacta(.ingles)),
+                candidata.nombre(en: notacion),
+            ].map(claveDeBusqueda)
+        }
+        guard let encontrada = FuenteTeorica.allCases.first(where: { nombres($0).contains(clave) }) else {
+            throw ErrorDeUso.fuenteDesconocida(texto)
+        }
+        return encontrada
     }
 }

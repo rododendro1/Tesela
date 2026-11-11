@@ -24,13 +24,29 @@ extension LineaDeComandos {
         return bien(svg.trimmingCharacters(in: "\n"))
     }
 
-    /// `reloj Do disminuida [--quintas]`: la escala en un reloj de doce horas, en SVG.
+    /// `reloj Do disminuida [--quintas]`: la escala en un reloj de doce horas, en SVG. Con `--microtonal`, el
+    /// círculo microtonal, cada grado en el ángulo de sus cents: `reloj Re bayati --microtonal`; `--fuente` elige
+    /// otra de sus afinaciones (`reloj Re echos protos --microtonal --fuente chrysanthos`).
     static func reloj(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
         let quintas = argumentos.quitarMarca(.quintas)
+        let microtonal = argumentos.quitarMarca(.microtonal)
+        let colores = argumentos.quitarMarca(.colores)
+        let fuente = try argumentos.valor(.fuente).map { try fuenteTeorica(leyendo: $0, notacion) }
         try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDelReloj }
         let escala = try Escala(leyendo: argumentos.unidos, enLaOrden: notacion)
+        if microtonal || fuente != nil || colores {
+            let afinacion = fuente.flatMap { fuente in escala.tipo.afinaciones.first { $0.fuente == fuente } }
+            guard fuente == nil || afinacion != nil,
+                let svg = PresentacionDeEstudioDeEscala.relojMicrotonal(
+                    de: escala, afinacion: afinacion, colores: colores, en: notacion)
+            else {
+                let nombre = escala.nombre(en: notacion) + (fuente.map { " (" + $0.nombre(en: notacion) + ")" } ?? "")
+                throw ErrorDeUso.escalaSinMicrotonos(nombre)
+            }
+            return bien(svg.trimmingCharacters(in: "\n"))
+        }
         let svg = PresentacionDeEstudioDeEscala.reloj(
             de: escala, orden: quintas ? .quintas : .cromatico, en: notacion)
         return bien(svg.trimmingCharacters(in: "\n"))

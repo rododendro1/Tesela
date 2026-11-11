@@ -112,6 +112,10 @@ enum ErrorDeUso: ErrorDeArmonia {
     case noEsPentatonica
     /// `reloj` sin escala.
     case faltaEscalaDelReloj
+    /// `reloj … --microtonal` con una escala sin versión microtonal (o sin la de `--fuente`).
+    case escalaSinMicrotonos(String)
+    /// `temperamentos … --reloj --quintas` con un temperamento cuya quinta no recorre todos sus pasos.
+    case sinCirculoDeQuintas(String)
     case faltaEscalaDeLaHoja
     /// `hoja acordes` sin acordes.
     case faltanLosAcordesDeLaHoja
@@ -398,6 +402,10 @@ enum ErrorDeUso: ErrorDeArmonia {
                 "armonia positions A minor pentatonic --shapes")
         case .faltaEscalaDelReloj:
             return Self.conEjemplo(\.faltaEscala, "armonia reloj Re mayor", "armonia clock D major")
+        case .escalaSinMicrotonos(let escala):
+            return TextosDeConsola.traduccion { $0.escalaSinMicrotonos(escala) }
+        case .sinCirculoDeQuintas(let temperamento):
+            return TextosDeConsola.traduccion { $0.sinCirculoDeQuintas(temperamento) }
         case .faltaEscalaDeLaHoja:
             return Self.conEjemplo(\.faltaEscala, "armonia hoja Re mayor", "armonia sheet D major")
         case .faltanLosAcordesDeLaHoja:
