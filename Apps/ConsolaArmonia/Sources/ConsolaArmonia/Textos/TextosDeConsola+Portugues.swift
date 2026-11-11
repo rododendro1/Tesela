@@ -158,7 +158,7 @@ extension TextosDeConsola {
         sintaxisReloj: "reloj <escala> [--quintas | --microtonal [--fuente <teórico>]] [--colores]",
         descripcionReloj: "a escala num relógio de doze horas (SVG): o círculo cromático ou, com --quintas, o de quintas; com --microtonal, o círculo microtonal, cada grau no ângulo dos seus cents (--fuente escolhe outra afinação, como chrysanthos); --colores pinta cada nota da cor dos seus cents",
         sintaxisHoja: "hoja <escala>",
-        descripcionHoja: "a escala numa folha de estudo para imprimir (SVG): pauta, teclado com os dedos, relógio, estatísticas, acordes e escada de brilho; armonia grabar hoja … passa-a para PDF; --comparar Do dórico (a comparação nota a nota, na pauta e no relógio, em SVG)",
+        descripcionHoja: "a escala numa folha de estudo para imprimir (SVG): pauta, teclado com os dedos, relógio, estatísticas, acordes e escada de brilho; armonia grabar hoja … passa-a para PDF; --comparar Do dórico (a comparação nota a nota, na pauta e no relógio, em SVG); --html (a mesma folha como página HTML, que se adapta ao ecrã e segue o modo escuro)",
         sintaxisHojaDeAcorde: "hoja acorde <cifra>",
         descripcionHojaDeAcorde: "o acorde numa folha de estudo para imprimir (SVG): notas e outros nomes, pauta, disposições, dedilhados de guitarra, escalas compatíveis e substituições",
         sintaxisHojaDeAcordes: "hoja acordes <acordes> [--en <tonalidade>] [--doce] [--comparar <acordes>]",

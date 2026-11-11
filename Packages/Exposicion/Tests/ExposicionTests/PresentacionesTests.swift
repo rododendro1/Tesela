@@ -14,6 +14,9 @@ import Testing
         #expect(FicheroParaExportar.lilyPond("", nombre: "Coral").nombreDeFichero == "Coral.ly")
         #expect(FicheroParaExportar.abc("", nombre: "Coral").nombreDeFichero == "Coral.abc")
         #expect(FicheroParaExportar.svg("", nombre: "  ").nombreDeFichero == "Tesela.svg")
+        #expect(FicheroParaExportar.html("", nombre: "Hoja").nombreDeFichero == "Hoja.html")
+        #expect(FicheroParaExportar.Formato.html.partitura == nil)
+        #expect(FicheroParaExportar.Formato.html.titulo(en: .ascii(.ingles)) == "HTML page")
         #expect(
             FicheroParaExportar.svg("", nombre: String(repeating: "a", count: 200)).nombreDeFichero.count
                 == (80 + ".svg".count))

@@ -367,6 +367,7 @@ extension TextosDeApps {
         partituraLilyPond: "LilyPond-kotta",
         partituraGUIDO: "GUIDO-kotta",
         partituraABC: "ABC-kotta",
-        dibujoSVG: "SVG-rajz"
+        dibujoSVG: "SVG-rajz",
+        paginaHTML: "HTML-oldal"
     )
 }

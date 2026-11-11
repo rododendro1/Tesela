@@ -138,8 +138,8 @@ struct VistaDeEscalas: View {
         }
     }
 
-    /// Lo que se exporta con la barra: el pentagrama, la hoja de estudio, el mapa de brillo, la secuencia, los
-    /// teclados de cada mano, la comparación (si la otra escala se lee) y las doce tonalidades.
+    /// Lo que se exporta con la barra: el pentagrama, la hoja de estudio (en SVG y en HTML), el mapa de brillo, la
+    /// secuencia, los teclados de cada mano, la comparación (si la otra escala se lee) y las doce tonalidades.
     private func ficheros(
         de escala: Escala, pentagrama: PentagramaPresentado, secuencia: SecuenciaPresentada
     ) -> [FicheroParaExportar] {
@@ -147,6 +147,7 @@ struct VistaDeEscalas: View {
         var ficheros = [
             pentagrama.fichero,
             Estudio.ficheroDeLaHoja(de: escala, secciones: seccionesDeLaHoja, en: notacion),
+            Estudio.ficheroDeLaHojaHTML(de: escala, secciones: seccionesDeLaHoja, en: notacion),
             Estudio.ficheroDelMapaDeBrillo(de: escala, en: notacion),
         ]
         ficheros += secuencia.ficheros + Estudio.ficherosDeLosTeclados(de: escala, en: notacion)

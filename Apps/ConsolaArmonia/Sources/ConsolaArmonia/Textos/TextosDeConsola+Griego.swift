@@ -158,7 +158,7 @@ extension TextosDeConsola {
         sintaxisReloj: "clock <scale> [--fifths | --microtonal [--source <theorist>]] [--colors]",
         descripcionReloj: "η κλίμακα σε ρολόι δώδεκα ωρών (SVG): ο χρωματικός κύκλος ή, με --fifths, ο κύκλος των πεμπτών· με --microtonal, ο μικροτονικός κύκλος, κάθε βαθμίδα στη γωνία των cents της (το --source επιλέγει άλλο κούρδισμα, όπως chrysanthos)· το --colors χρωματίζει κάθε νότα με το χρώμα των cents της",
         sintaxisHoja: "sheet <scale>",
-        descripcionHoja: "η κλίμακα σε φύλλο μελέτης για εκτύπωση (SVG): πεντάγραμμο, πληκτρολόγιο με δακτυλοθεσία, ρολόι, στατιστικά, συγχορδίες και σκάλα φωτεινότητας· το armonia engrave sheet … τη μετατρέπει σε PDF· --compare C dorian (η σύγκριση νότα προς νότα, στο πεντάγραμμο και στο ρολόι, σε SVG)",
+        descripcionHoja: "η κλίμακα σε φύλλο μελέτης για εκτύπωση (SVG): πεντάγραμμο, πληκτρολόγιο με δακτυλοθεσία, ρολόι, στατιστικά, συγχορδίες και σκάλα φωτεινότητας· το armonia engrave sheet … τη μετατρέπει σε PDF· --compare C dorian (η σύγκριση νότα προς νότα, στο πεντάγραμμο και στο ρολόι, σε SVG)· --html (το ίδιο φύλλο ως σελίδα HTML, που προσαρμόζεται στην οθόνη και ακολουθεί τη σκοτεινή λειτουργία)",
         sintaxisHojaDeAcorde: "sheet chord <symbol>",
         descripcionHojaDeAcorde: "η συγχορδία σε φύλλο μελέτης για εκτύπωση (SVG): φθόγγοι και άλλα ονόματα, πεντάγραμμο, διατάξεις, δακτυλοθεσίες κιθάρας, συμβατές κλίμακες και υποκαταστάσεις",
         sintaxisHojaDeAcordes: "sheet chords <chords> [--in <key>] [--all-keys] [--compare <chords>]",

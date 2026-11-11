@@ -18,6 +18,7 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
         case abc
         case midi
         case svg
+        case html
 
         /// El de una partitura.
         public init(_ partitura: FormatoDePartitura) {
@@ -31,7 +32,7 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             }
         }
 
-        /// El formato de partitura que es; `nil` el dibujo SVG.
+        /// El formato de partitura que es; `nil` el dibujo SVG y la página HTML.
         public var partitura: FormatoDePartitura? {
             switch self {
             case .musicXML: return .musicXML
@@ -40,12 +41,12 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             case .guido: return .guido
             case .abc: return .abc
             case .midi: return .midi
-            case .svg: return nil
+            case .svg, .html: return nil
             }
         }
 
         /// La extensión del fichero, sin el punto.
-        public var extensionDeFichero: String { partitura?.extensionDeFichero ?? "svg" }
+        public var extensionDeFichero: String { partitura?.extensionDeFichero ?? (self == .html ? "html" : "svg") }
 
         /// Cómo se llama el formato en el menú.
         public var titulo: String {
@@ -57,6 +58,7 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             case .abc: return "Partitura ABC"
             case .midi: return "MIDI"
             case .svg: return "Dibujo SVG"
+            case .html: return "Página HTML"
             }
         }
 
@@ -70,6 +72,7 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             case .abc: return "text.alignleft"
             case .midi: return "pianokeys"
             case .svg: return "photo"
+            case .html: return "globe"
             }
         }
     }
@@ -135,6 +138,11 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
         FicheroParaExportar(nombre: nombre, formato: .svg, datos: Data(svg.utf8))
     }
 
+    /// Una página HTML con ese texto.
+    public static func html(_ html: String, nombre: String) -> FicheroParaExportar {
+        FicheroParaExportar(nombre: nombre, formato: .html, datos: Data(html.utf8))
+    }
+
     public var id: String { nombreDeFichero }
 
     /// El nombre con su extensión, sin los caracteres que no admiten los sistemas de ficheros
@@ -185,6 +193,8 @@ extension FicheroParaExportar.Formato {
             return "MIDI"
         case .svg:
             traduccion = TextosDeApps.traduccion(\.dibujoSVG)
+        case .html:
+            traduccion = TextosDeApps.traduccion(\.paginaHTML)
         }
         return traduccion.en(notacion)
     }

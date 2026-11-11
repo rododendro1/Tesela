@@ -158,7 +158,7 @@ extension TextosDeConsola {
         sintaxisReloj: "clock <scale> [--fifths | --microtonal [--source <theorist>]] [--colors]",
         descripcionReloj: "a skála egy tizenkét órás számlapon (SVG): a kromatikus kör vagy --fifths mellett a kvintkör; --microtonal mellett a mikrotonális kör, minden fok a centjei szögében (a --source más hangolást választ, például chrysanthos); a --colors minden hangot a centjei színére fest",
         sintaxisHoja: "sheet <scale>",
-        descripcionHoja: "a skála nyomtatható gyakorlólapon (SVG): kottasor, billentyűzet ujjrenddel, óra, statisztika, akkordok és fényességlétra; az armonia engrave sheet … PDF-be alakítja; --compare C dorian (hangonkénti összehasonlítás, kottán és órán, SVG-ben)",
+        descripcionHoja: "a skála nyomtatható gyakorlólapon (SVG): kottasor, billentyűzet ujjrenddel, óra, statisztika, akkordok és fényességlétra; az armonia engrave sheet … PDF-be alakítja; --compare C dorian (hangonkénti összehasonlítás, kottán és órán, SVG-ben); --html (ugyanez a lap HTML-oldalként, amely a képernyőhöz igazodik és követi a sötét módot)",
         sintaxisHojaDeAcorde: "sheet chord <symbol>",
         descripcionHojaDeAcorde: "az akkord nyomtatható gyakorlólapon (SVG): hangok és más nevek, kottasor, fekvések, gitárfogások, illeszkedő skálák és helyettesítések",
         sintaxisHojaDeAcordes: "sheet chords <chords> [--in <key>] [--all-keys] [--compare <chords>]",

@@ -158,7 +158,7 @@ extension TextosDeConsola {
         sintaxisReloj: "clock <scale> [--fifths | --microtonal [--source <theorist>]] [--colors]",
         descripcionReloj: "die Skala auf einer Zwölf-Stunden-Uhr (SVG): der chromatische Kreis oder, mit --fifths, der Quintenzirkel; mit --microtonal der mikrotonale Kreis, jede Stufe im Winkel ihrer Cent (--source wählt eine andere Stimmung, etwa chrysanthos); --colors färbt jede Note in der Farbe ihrer Cent",
         sintaxisHoja: "sheet <scale>",
-        descripcionHoja: "die Skala auf einem druckbaren Übungsblatt (SVG): Notensystem, Klaviatur mit Fingersatz, Uhr, Statistik, Akkorde und Helligkeitsleiter; armonia engrave sheet … macht daraus ein PDF; --compare C dorian (der Vergleich Ton für Ton, im Notensystem und in der Uhr, als SVG)",
+        descripcionHoja: "die Skala auf einem druckbaren Übungsblatt (SVG): Notensystem, Klaviatur mit Fingersatz, Uhr, Statistik, Akkorde und Helligkeitsleiter; armonia engrave sheet … macht daraus ein PDF; --compare C dorian (der Vergleich Ton für Ton, im Notensystem und in der Uhr, als SVG); --html (dasselbe Blatt als HTML-Seite, die sich dem Bildschirm anpasst und dem Dunkelmodus folgt)",
         sintaxisHojaDeAcorde: "sheet chord <symbol>",
         descripcionHojaDeAcorde: "der Akkord auf einem druckbaren Übungsblatt (SVG): Töne und andere Namen, Notensystem, Voicings, Gitarrengriffe, passende Skalen und Substitutionen",
         sintaxisHojaDeAcordes: "sheet chords <chords> [--in <key>] [--all-keys] [--compare <chords>]",

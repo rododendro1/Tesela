@@ -158,7 +158,7 @@ extension TextosDeConsola {
         sintaxisReloj: "reloj <eskala> [--quintas | --microtonal [--fuente <teorikoa>]] [--colores]",
         descripcionReloj: "eskala hamabi orduko erloju batean (SVG): zirkulu kromatikoa edo, --quintas-ekin, bosgarrenen zirkulua; --microtonal-ekin, zirkulu mikrotonala, gradu bakoitza bere zentimoen angeluan (--fuente-k beste afinazio bat aukeratzen du, chrysanthos esaterako); --colores-ek nota bakoitza bere zentimoen kolorez margotzen du",
         sintaxisHoja: "hoja <eskala>",
-        descripcionHoja: "eskala inprimatzeko ikasketa-orri batean (SVG): pentagrama, teklatua hatzekin, erlojua, estatistikak, akordeak eta distira-eskailera; armonia grabar hoja … PDF bihurtzen du; --comparar Do dórico (bi eskalak notaz nota alderatuta, pentagraman eta erlojuan, SVGn)",
+        descripcionHoja: "eskala inprimatzeko ikasketa-orri batean (SVG): pentagrama, teklatua hatzekin, erlojua, estatistikak, akordeak eta distira-eskailera; armonia grabar hoja … PDF bihurtzen du; --comparar Do dórico (bi eskalak notaz nota alderatuta, pentagraman eta erlojuan, SVGn); --html (orri bera HTML orri gisa, pantailara egokitzen dena eta modu iluna jarraitzen duena)",
         sintaxisHojaDeAcorde: "hoja acorde <zifratua>",
         descripcionHojaDeAcorde: "akordea inprimatzeko ikasketa-orri batean (SVG): notak eta beste izenak, pentagrama, antolaerak, gitarra-hatzkerak, eskala bateragarriak eta ordezkapenak",
         sintaxisHojaDeAcordes: "hoja acordes <akordeak> [--en <tonalitatea>] [--doce] [--comparar <akordeak>]",

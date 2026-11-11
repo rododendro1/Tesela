@@ -158,7 +158,7 @@ extension TextosDeConsola {
         sintaxisReloj: "clock <scale> [--fifths | --microtonal [--source <theorist>]] [--colors]",
         descripcionReloj: "гамма на двенадцатичасовом циферблате (SVG): хроматический круг или, с --fifths, квинтовый круг; с --microtonal — микротоновый круг, каждая ступень под углом своих центов (--source выбирает другой строй, например chrysanthos); --colors окрашивает каждую ноту в цвет её центов",
         sintaxisHoja: "sheet <scale>",
-        descripcionHoja: "гамма на учебном листе для печати (SVG): нотный стан, клавиатура с аппликатурой, часы, статистика, аккорды и лестница яркости; armonia engrave sheet … превращает его в PDF; --compare C dorian (сравнение нота за нотой, на нотном стане и на циферблате, в SVG)",
+        descripcionHoja: "гамма на учебном листе для печати (SVG): нотный стан, клавиатура с аппликатурой, часы, статистика, аккорды и лестница яркости; armonia engrave sheet … превращает его в PDF; --compare C dorian (сравнение нота за нотой, на нотном стане и на циферблате, в SVG); --html (тот же лист как страница HTML, которая подстраивается под экран и тёмный режим)",
         sintaxisHojaDeAcorde: "sheet chord <symbol>",
         descripcionHojaDeAcorde: "аккорд на учебном листе для печати (SVG): звуки и другие названия, нотный стан, расположения, аппликатуры для гитары, подходящие лады и замены",
         sintaxisHojaDeAcordes: "sheet chords <chords> [--in <key>] [--all-keys] [--compare <chords>]",

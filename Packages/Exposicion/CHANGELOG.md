@@ -12,6 +12,12 @@
 - `Escucha.grados(de:afinacion:)`: cada grado de la escala solo, con su microtono, para tocarlo en el círculo
   microtonal; `Escucha.escala(_:afinacion:)` suena también en otra de sus afinaciones (la de Chrysanthos).
 - La hoja de estudio de una escala con microtonos lleva, con el reloj, su círculo microtonal.
+- `PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(de:en:secciones:)`: la hoja de estudio como página HTML, con
+  los textos en HTML y los dibujos como SVG dentro; se adapta al ancho (las columnas se apilan en una pantalla
+  estrecha), sigue el modo oscuro y se imprime en A4. `ficheroDeLaHojaHTML(de:secciones:en:)` la da para exportarla,
+  con `FicheroParaExportar.html(_:nombre:)` y el formato nuevo `.html` («Página HTML», `TextosDeApps.paginaHTML`, en
+  los trece idiomas). Quien recorra `FicheroParaExportar.Formato` con un `switch` sin `default` tiene que añadir el
+  caso. En la línea de comandos, `armonia hoja Re dórico --html`; en Ars Harmonica, se exporta también en HTML.
 
 ## 0.5.0 (2026-11-10)
 

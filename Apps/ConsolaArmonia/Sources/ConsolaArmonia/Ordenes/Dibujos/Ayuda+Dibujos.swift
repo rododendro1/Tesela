@@ -25,14 +25,14 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeHoja: [EntradaDeAyuda] = [
-        // hoja <escala> [--comparar <escala>]
+        // hoja <escala> [--comparar <escala> | --html]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHoja),
             descripcion: TextosDeConsola.traduccion(\.descripcionHoja),
             ejemplo: ejemplo(
                 "armonia hoja Re dórico > dorico.svg",
                 "armonia sheet D dorian > dorian.svg"),
-            opciones: [.comparar]),
+            opciones: [.comparar, .html]),
         // hoja acorde <cifrado>
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHojaDeAcorde),
