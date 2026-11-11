@@ -145,8 +145,8 @@ final class ArsHarmonicaAppUITests: XCTestCase {
         app.abrirPestana("Catálogo")
         esperar(app.texto("V7 I · Sol7 Do"), "la cadencia perfecta")
         app.reemplazar(en: app.textFields.firstMatch, por: "andaluza")
-        esperar(app.texto("Lam Sol Fa Mi"), "los acordes de la cadencia andaluza")
+        esperar(app.texto("i VII VI V · Dom"), "los acordes de la cadencia andaluza sobre Do")
         app.buscandoHaciaAbajo(app.buttons["Ver en Análisis"]).tap()
-        esperar(app.texto("en La menor"), "el análisis de la cadencia andaluza")
+        esperar(app.texto("en Do menor"), "el análisis de la cadencia andaluza")
     }
 }
