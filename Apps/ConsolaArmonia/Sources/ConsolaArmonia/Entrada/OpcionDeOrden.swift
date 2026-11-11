@@ -126,6 +126,8 @@ extension OpcionDeOrden {
     static let mano = valor("--mano", "--hand")
     static let mapa = marca("--mapa", "--map")
     static let margen = valor("--margen", "--margin")
+    /// El reloj de `reloj` en cents, con los microtonos de la escala.
+    static let microtonal = marca("--microtonal")
     static let modos = marca("--modos", "--modes")
     static let modulaciones = valor("--modulaciones", "--modulations")
     static let motor = valor("--motor", "--engine")
@@ -150,6 +152,10 @@ extension OpcionDeOrden {
     static let propuestas = valor("--propuestas", "--proposals")
     static let quintas = marca("--quintas", "--fifths")
     static let regulares = marca("--regulares", "--maximally-even")
+    /// `temperamentos … --reloj`: el temperamento en un reloj de cents, en SVG.
+    static let reloj = marca("--reloj", "--clock")
+    /// El reloj con cada nota del color de sus cents.
+    static let colores = marca("--colores", "--colors")
     static let resumen = marca("--resumen", "--summary")
     static let rejilla = valor("--rejilla", "--grid")
     static let romanos = marca("--romanos", "--roman")

@@ -58,14 +58,14 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeReloj: [EntradaDeAyuda] = [
-        // reloj <escala> [--quintas]
+        // reloj <escala> [--quintas | --microtonal [--fuente <teórico>]] [--colores]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisReloj),
             descripcion: TextosDeConsola.traduccion(\.descripcionReloj),
             ejemplo: ejemplo(
                 "armonia reloj Do disminuida --quintas > disminuida.svg",
                 "armonia clock C diminished --fifths > diminished.svg"),
-            opciones: [.quintas])
+            opciones: [.quintas, .microtonal, .fuente, .colores])
     ]
 
     static let ayudaDePentagrama: [EntradaDeAyuda] = [

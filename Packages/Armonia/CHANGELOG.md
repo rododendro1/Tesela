@@ -8,6 +8,16 @@
   doce horas temperadas en gris como referencia, una rayita en cada paso del sistema y un arquito en cada nota que se
   aparta de su nota temperada. `RelojDeAlturas(escala:afinacion:sentido:notacion:)` lo hace con la versión
   microtonal de una escala (`nil` si no tiene); `divisiones(de:)` da las rayitas de un `SistemaMicrotonal`.
+- `RelojDeAlturas(temperamento:notacion:)`: los pasos de un temperamento del catálogo en el reloj de cents, las
+  doce teclas con su nombre y un arquito desde su hora del temperamento igual (Werckmeister III), o cada paso con su
+  número (los 31 de Huygens). `RelojDeAlturas(quintasDe:notacion:)`: su círculo de quintas, si su quinta recorre todos
+  sus pasos (los regulares de doce notas, 19, 22, 31, 41 y las 53 comas; no los 24 cuartos de tono ni los 72 moria,
+  cuya quinta solo pasa por las doce teclas), con `pasosDeLaQuinta(de:)`.
+- `RelojDeAlturas.color(deCents:)`: un color que da la vuelta al círculo de los colores en una octava, para que cada
+  microtono tenga el suyo; `svg(opciones:colores:)` pinta así cada nota.
+- La consola: `reloj Re bayati --microtonal` dibuja el círculo microtonal, `--fuente chrysanthos` elige otra de sus
+  afinaciones y `--colores` pinta cada grado del color de sus cents. `temperamentos 31 --reloj [--quintas]
+  [--colores]` dibuja el reloj de un temperamento.
 - Cuatro obras más en las referencias del catálogo: Sam (1988) para el pinpeat, Williamson (2000) para el saung,
   Kubik (1994) para la amadinda y Taruskin (1996) para el acorde de los augures. Con ellas, todas las escalas de otras
   tradiciones citan alguna obra.
