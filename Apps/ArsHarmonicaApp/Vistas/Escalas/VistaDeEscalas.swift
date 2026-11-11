@@ -83,6 +83,7 @@ struct VistaDeEscalas: View {
             SeccionDeLaEscaleraDeBrillo(escala: escala)
             SeccionDelMapaDeBrillo(escala: escala)
             SeccionDelReloj(escala: escala)
+            SeccionDelTemperamento()
             ListaDeEscalas(
                 PresentacionDeEstudioDeEscala.vecinas(de: escala, en: notacion),
                 titulo: notacion.texto(\.escalasVecinas))

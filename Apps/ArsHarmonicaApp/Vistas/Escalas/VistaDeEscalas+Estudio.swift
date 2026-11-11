@@ -157,7 +157,25 @@ struct SeccionDelReloj: View {
             }
             VistaSVG(svg: svg(elegido, afinaciones: afinaciones))
                 .frame(height: elegido == .microtonal ? 320 : 300)
+            // En el microtonal, cada grado se puede tocar solo, con su microtono, y la escala entera en esa afinación.
+            if elegido == .microtonal, let notas = escala.notasMicrotonales(afinacion: afinacionElegida(afinaciones)) {
+                let grados = Escucha.grados(de: escala, afinacion: afinacionElegida(afinaciones))
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach(Array(zip(notas, grados).enumerated()), id: \.offset) { _, par in
+                            Button(par.0.nombre(en: notacion)) { Reproductor.compartido.tocar(par.1) }
+                                .buttonStyle(.bordered)
+                        }
+                    }
+                }
+                BotonDeEscuchar(Escucha.escala(escala, afinacion: afinacionElegida(afinaciones)))
+            }
         }
+    }
+
+    /// La afinación elegida en el selector, si la escala tiene más de una; `nil`, la de su teoría de hoy.
+    private func afinacionElegida(_ afinaciones: [TipoDeEscalaMicrotonal]) -> TipoDeEscalaMicrotonal? {
+        afinaciones.indices.contains(afinacion) ? afinaciones[afinacion] : nil
     }
 
     /// El reloj elegido, en SVG.
@@ -166,8 +184,8 @@ struct SeccionDelReloj: View {
         case .cromatico: return PresentacionDeEstudioDeEscala.reloj(de: escala, orden: .cromatico, en: notacion)
         case .quintas: return PresentacionDeEstudioDeEscala.reloj(de: escala, orden: .quintas, en: notacion)
         case .microtonal:
-            let elegida = afinaciones.indices.contains(afinacion) ? afinaciones[afinacion] : nil
-            return PresentacionDeEstudioDeEscala.relojMicrotonal(de: escala, afinacion: elegida, en: notacion)
+            return PresentacionDeEstudioDeEscala.relojMicrotonal(
+                de: escala, afinacion: afinacionElegida(afinaciones), en: notacion)
                 ?? PresentacionDeEstudioDeEscala.reloj(de: escala, en: notacion)
         }
     }
@@ -177,6 +195,37 @@ struct SeccionDelReloj: View {
     private func nombre(de afinacion: TipoDeEscalaMicrotonal) -> String {
         afinacion.fuente?.nombre(en: notacion) ?? afinacion.sistema.temperamento?.nombre(en: notacion)
             ?? afinacion.sistema.rawValue
+    }
+}
+
+/// El temperamento con que suena «Escuchar» (el del selector de la barra) en un reloj de cents: las doce teclas y lo
+/// que se apartan del temperamento igual o, si su quinta recorre todos sus pasos, su círculo de quintas. Debajo, su
+/// quinta, su paso menor y mayor y, en los de doce notas, la quinta del lobo.
+struct SeccionDelTemperamento: View {
+    @Environment(\.notacion) private var notacion
+    @AppStorage(AjustesDeLasApps.claveDeTemperamento) private var clave =
+        AjustesDeLasApps.claveDeTemperamento(.temperamentoIgual)
+    /// De quinta en quinta, si el temperamento lo permite.
+    @State private var quintas = false
+
+    var body: some View {
+        let temperamento = (AjustesDeLasApps.temperamento(deClave: clave) ?? .temperamentoIgual).temperamento
+        let conQuintas = quintas && RelojDeAlturas.pasosDeLaQuinta(de: temperamento) != nil
+        Section(notacion.texto(\.afinacionAlEscuchar)) {
+            Picker(notacion.texto(\.afinacionAlEscuchar), selection: $quintas) {
+                Text(notacion.texto(\.circuloCromatico)).tag(false)
+                if RelojDeAlturas.pasosDeLaQuinta(de: temperamento) != nil {
+                    Text(notacion.texto(\.circuloDeQuintas)).tag(true)
+                }
+            }
+            .pickerStyle(.segmented)
+            if let svg = TemperamentoPresentado.reloj(de: temperamento, quintas: conQuintas, en: notacion) {
+                VistaSVG(svg: svg).frame(height: 320)
+            }
+            ForEach(TemperamentoPresentado(temperamento, en: notacion).datos(en: notacion), id: \.nombre) { dato in
+                LabeledContent(dato.nombre, value: dato.valor)
+            }
+        }
     }
 }
 

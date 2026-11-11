@@ -25,7 +25,8 @@ import Testing
 }
 
 /// Un dibujo por caso: lo bastante variados para pasar por las claves, las alteraciones, el pentagrama doble, los
-/// textos en otro idioma, las flechas de los recorridos y cada forma de rejilla.
+/// textos en otro idioma, las flechas de los recorridos, cada forma de rejilla y los relojes: el de doce horas y el de
+/// cents, con microtonos, en colores, con un temperamento y en un círculo de quintas.
 enum DibujoDeReferencia: String, CaseIterable, CustomTestStringConvertible {
     case pentagramaReDorico = "pentagrama-re-dorico"
     case pentagramaLaMenorMelodica = "pentagrama-la-menor-melodica"
@@ -40,6 +41,11 @@ enum DibujoDeReferencia: String, CaseIterable, CustomTestStringConvertible {
     case tablaArmonicaRecorrido = "tabla-armonica-recorrido"
     case tecladoWickiHayden = "teclado-wicki-hayden"
     case tecladoAcordeonC = "teclado-acordeon-c"
+    case relojDeClasesFaMayor = "reloj-de-clases-fa-mayor"
+    case relojMicrotonalReBayati = "reloj-microtonal-re-bayati"
+    case relojMicrotonalSolRastEnColores = "reloj-microtonal-sol-rast-en-colores"
+    case relojDeWerckmeister = "reloj-werckmeister-iii"
+    case relojDeQuintasDe19 = "reloj-quintas-19-divisiones"
 
     var testDescription: String { rawValue }
 
@@ -76,6 +82,17 @@ enum DibujoDeReferencia: String, CaseIterable, CustomTestStringConvertible {
             return TecladoIsomorfico.acordeonC.svg(
                 FormasDeMapa.rectangulo(columnas: 6, filas: 6, .columnasImpares), marcadas: [50, 53, 57],
                 opciones: .init(ventana: .bemoles))
+        case .relojDeClasesFaMayor:
+            let fa = Escala("Fa mayor")
+            return RelojDeClasesDeAltura(notas: fa.notas, tonica: fa.tonica, orden: .quintas).svg()
+        case .relojMicrotonalReBayati:
+            return RelojDeAlturas(escala: Escala(.re, .bayati))!.svg(opciones: .init(titulo: "Re Bayātī"))
+        case .relojMicrotonalSolRastEnColores:
+            return RelojDeAlturas(escala: Escala(.sol, .rastMakami), sentido: .descendente)!.svg(colores: true)
+        case .relojDeWerckmeister:
+            return RelojDeAlturas(temperamento: .werckmeisterIII).svg(opciones: .init(notacion: .ascii(.ingles)))
+        case .relojDeQuintasDe19:
+            return RelojDeAlturas(quintasDe: .divisiones19)!.svg(opciones: .init(titulo: "19-TET"))
         }
     }
 }

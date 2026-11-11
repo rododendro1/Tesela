@@ -54,6 +54,15 @@ import Testing
         #expect(bayati.notas.map(\.microtono) == [0, 50, 0, 0, 0, 0, 0, 0])
         #expect(bayati.notas.map(\.desviacion) == [0, 50, 0, 0, 0, 0, 0, 0])
         #expect(bayati.afinado(con: .temperamentoIgual).notas[1].desviacion == 50)
+        // Cada grado solo, para tocarlo en el círculo microtonal; y la afinación de Chrysanthos, si se pide.
+        let grados = Escucha.grados(de: Escala(.re, .bayati))
+        #expect(grados.count == 7 && grados.map { $0.notas.count } == Array(repeating: 1, count: 7))
+        #expect(grados[1].notas[0].midi == 63 && grados[1].notas[0].microtono == 50 && grados[1].tonica == .re)
+        #expect(Escucha.grados(de: Escala(.do)).allSatisfy { $0.notas[0].microtono == 0 })
+        let chrysanthos = TipoDeEscala.echosProtos.afinaciones[1]
+        let protos = Escucha.escala(Escala(.re, .echosProtos), afinacion: chrysanthos)
+        #expect(protos.notas.prefix(3).map(\.microtono) == [12, -29, -6])
+        #expect(Escucha.grados(de: Escala(.re, .bayati), afinacion: chrysanthos)[1].notas[0].microtono == 0)
         // En otro temperamento se suma a la afinación de su nota escrita.
         let justa = bayati.afinado(con: .afinacionJusta)
         let mib = Escucha.escala(Escala(.re, .frigio)).afinado(con: .afinacionJusta).notas[1].desviacion
