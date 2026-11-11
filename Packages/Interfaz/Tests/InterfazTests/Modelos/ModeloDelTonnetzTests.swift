@@ -116,11 +116,12 @@ import Testing
         #expect(modelo.identificado(en: espanol) == "Re")
     }
 
-    @Test func unAcordeSinOtrasLecturasNoLasEnumera() {
+    @Test func elAcordeVaEnLaPrimeraLinea() throws {
         var modelo = ModeloDelTonnetz()
         modelo.clasesTocadas = [0, 4, 7]
-        let lineas = modelo.identificado(en: espanol).split(separator: "\n")
-        #expect(lineas.first == "Do · " + (try! Acorde(leyendo: "Do")).nombre(en: espanol))
+        let primera = String(modelo.identificado(en: espanol).split(separator: "\n").first ?? "")
+        let esperada: String = "Do · " + (try Acorde(leyendo: "Do")).nombre(en: espanol)
+        #expect(primera == esperada)
     }
 
     @Test func tocarEnIdentificarMarcaYDesmarca() throws {
