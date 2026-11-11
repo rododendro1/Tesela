@@ -34,11 +34,21 @@ struct VistaDeEscala: View {
 ```
 
 Las vistas están tras `#if canImport(SwiftUI)`: en Linux el módulo compila solo con lo que no dibuja (la notación
-guardada, dónde se toca un mástil o una rejilla), que es lo que se prueba allí. Las redes de notas que dibuja
+guardada, dónde se toca un mástil o una rejilla, y los modelos de las vistas), que es lo que se prueba allí. Las redes de notas que dibuja
 ``DiagramaDeTonnetz`` (`RedDeNotas`, `ContenidoDeRed`, `PresentacionDeRedes`, `AjusteUIL` y `AjusteCuadrado`) están
 en `Exposicion`, que este módulo reexporta, porque también las dibuja la línea de comandos.
 
+Las vistas más grandes de las apps guardan lo que se elige en un modelo de valor, en un solo `@State`:
+``ModeloDeAcordes``, ``ModeloDeAnalisis`` y ``ModeloDelTonnetz``. El modelo lee lo escrito, decide qué se dibuja,
+qué suena y qué se exporta, y la vista solo lo pinta, así que lo que hace cada vista se prueba también en Linux.
+
 ## Topics
+
+### Modelos de las vistas
+
+- ``ModeloDeAcordes``
+- ``ModeloDeAnalisis``
+- ``ModeloDelTonnetz``
 
 ### Dibujos
 

@@ -38,7 +38,8 @@ Packages/
 │                   y los mástiles, afinaciones, digitaciones de acordes y escalas por posiciones (guitarra, bajo, ukelele…)
 ├── Interfaz/       Componentes SwiftUI (DiagramaDeMastil, DiagramaDePentagrama, DiagramaDeTonnetz, DiagramaDeRejilla, VistaSVG, tema) y lo que comparten las apps:
 │                   el selector de notación y su ajuste (en el entorno), los textos de la interfaz en trece
-│                   idiomas, lo que enseña cada vista, el cálculo en segundo plano, el selector para abrir una
+│                   idiomas, lo que enseña cada vista, los modelos de las vistas de acordes, análisis y Tonnetz
+│                   (sin SwiftUI, se prueban en Linux), el cálculo en segundo plano, el selector para abrir una
 │                   partitura y el menú para exportar
 ├── Exposicion/     Lo que enseñan las apps y la línea de comandos, sin SwiftUI: el análisis, el coral, la
 │                   transposición, la tablatura, la escucha, los ficheros para exportar y los textos de la
