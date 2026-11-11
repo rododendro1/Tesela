@@ -148,6 +148,13 @@ import Testing
         let soloElNombre = PresentacionDeEstudioDeEscala.hojaDeEstudio(
             de: Escala(.do), en: notacion, secciones: [])
         #expect(!soloElNombre.contains("<svg x="))
+        // Con microtonos, el reloj lleva debajo el círculo microtonal; sin el reloj, tampoco va.
+        let bayati = PresentacionDeEstudioDeEscala.hojaDeEstudio(
+            de: Escala(.re, .bayati), en: notacion, secciones: [.reloj])
+        #expect(bayati.components(separatedBy: "<svg x=").count - 1 == 2 && bayati.contains(">Mi𝄳</text>"))
+        let sinReloj = PresentacionDeEstudioDeEscala.hojaDeEstudio(
+            de: Escala(.re, .bayati), en: notacion, secciones: [.acordes])
+        #expect(!sinReloj.contains(">Mi𝄳</text>"))
         #expect(SeccionDeLaHoja.teclados.nombre(en: notacion) == "Digitación de piano")
         #expect(PresentacionDeEstudioDeEscala.tamano(deUnSVG: "<svg/>") == nil)
     }

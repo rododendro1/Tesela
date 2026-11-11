@@ -9,6 +9,9 @@
   trece idiomas), con `colores` para pintar cada grado del color de sus cents.
 - `TemperamentoPresentado.reloj(de:quintas:colores:en:)`: un temperamento del catálogo en el reloj de cents, o en su
   círculo de quintas si lo tiene.
+- `Escucha.grados(de:afinacion:)`: cada grado de la escala solo, con su microtono, para tocarlo en el círculo
+  microtonal; `Escucha.escala(_:afinacion:)` suena también en otra de sus afinaciones (la de Chrysanthos).
+- La hoja de estudio de una escala con microtonos lleva, con el reloj, su círculo microtonal.
 
 ## 0.5.0 (2026-11-10)
 

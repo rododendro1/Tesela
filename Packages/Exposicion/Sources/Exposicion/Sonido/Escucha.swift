@@ -171,12 +171,14 @@ public struct Escucha: Hashable, Sendable {
     /// tiene microtonos, suenan: el Mi𝄳 de Re Bayātī, un cuarto de tono sobre el Mi♭.
     ///
     ///     Escucha.escala(Escala(.re, .bayati)).notas.map(\.microtono)   // [0, 50, 0, 0, 0, 0, 0, 0]
-    public static func escala(_ escala: Escala) -> Escucha {
+    ///
+    /// Con `afinacion`, los microtonos de otra de las de `escala.tipo.afinaciones` (la de Chrysanthos en los echoi).
+    public static func escala(_ escala: Escala, afinacion: TipoDeEscalaMicrotonal? = nil) -> Escucha {
         let subida = cerrada(escala.notas, desde: 60)
         guard let tonica = subida.first else { return .silencio }
         let alturas = subida + [tonica + .octava]
         // La tónica de arriba, como la de abajo: en Sīkāh, las dos son Mi𝄳.
-        let desvios: [Double] = escala.tipo.microtonal?.desvios(sentido: .ascendente) ?? []
+        let desvios = Self.desvios(de: escala, afinacion: afinacion)
         let microtonos: [Double] = desvios + [desvios.first ?? 0]
         let paso = 0.3
         return Escucha(
@@ -185,6 +187,31 @@ public struct Escucha: Hashable, Sendable {
                     altura: altura, inicio: paso * Double(i), duracion: paso * 0.9,
                     microtono: microtonos.indices.contains(i) ? microtonos[i] : 0)
             }, tonica: escala.tonica)
+    }
+
+    /// Cada grado de la escala solo, desde la tónica en la octava 4 y con su microtono si lo tiene: lo que suena al
+    /// tocar un grado del círculo microtonal. Con `afinacion`, como en `escala(_:afinacion:)`.
+    ///
+    ///     Escucha.grados(de: Escala(.re, .bayati))[1].notas.first?.microtono   // 50: el Mi𝄳
+    public static func grados(de escala: Escala, afinacion: TipoDeEscalaMicrotonal? = nil) -> [Escucha] {
+        let desvios = Self.desvios(de: escala, afinacion: afinacion)
+        return cerrada(escala.notas, desde: 60).enumerated().map { i, altura in
+            Escucha(
+                notas: [
+                    NotaMIDI(
+                        altura: altura, inicio: 0, duracion: 0.8,
+                        microtono: desvios.indices.contains(i) ? desvios[i] : 0)
+                ], tonica: escala.tonica)
+        }
+    }
+
+    /// Los cents que se aparta cada grado de su nota al subir, en `afinacion` o en la de la escala; vacío si no tiene
+    /// microtonos (o si `afinacion` es de otra escala).
+    private static func desvios(de escala: Escala, afinacion: TipoDeEscalaMicrotonal?) -> [Double] {
+        guard let microtonal = afinacion ?? escala.tipo.microtonal, microtonal.temperada == escala.tipo else {
+            return []
+        }
+        return microtonal.desvios(sentido: .ascendente)
     }
 
     /// Un arpegio nota a nota, en el orden de su patrón, desde el bajo del acorde en la octava 3. Su tónica es la
