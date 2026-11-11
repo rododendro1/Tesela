@@ -26,7 +26,7 @@ extension TipoDeEscala {
         intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["camboyana", "jemer"], variantes: ["ពិណពាទ្យ"],
         categoria: .afinacion, regiones: [.camboya],
-        afinaciones: [.equiheptatonica])
+        afinaciones: [.equiheptatonica], referencias: [.sam1988])
 
     // MARK: El arpa birmana
     //
@@ -41,7 +41,7 @@ extension TipoDeEscala {
         alias: ["saung gauk", "arpa birmana", "birmana"],
         categoria: .afinacion, regiones: [.birmania],
         // En cents: 182, 182, 327, 182 y 327.
-        afinaciones: [.init(.razones, pasos: [0, 182, 364, 691, 873])])
+        afinaciones: [.init(.razones, pasos: [0, 182, 364, 691, 873])], referencias: [.williamson2000])
 
     package static let sudesteAsiaticas: [TipoDeEscala] = [.piphat, .pinpeat, .saung]
 }

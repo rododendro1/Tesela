@@ -70,7 +70,7 @@ extension AcordeConNombre {
             .unisono, .terceraMayor, .quintaJusta, .septimaMayor, .novenaAumentada, .undecimaAumentada,
             .decimoterceraMayor,
         ],
-        alias: ["acorde de La consagración de la primavera"], estilos: [.sigloXX])
+        alias: ["acorde de La consagración de la primavera"], estilos: [.sigloXX], referencias: [.taruskin1996])
     /// El acorde con que empieza la «Sinfonía de los salmos» (Stravinski, 1930): Mi menor con la tercera doblada,
     /// Mi Sol Si Sol.
     public static let salmos = AcordeConNombre(

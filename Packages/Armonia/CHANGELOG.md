@@ -8,6 +8,9 @@
   doce horas temperadas en gris como referencia, una rayita en cada paso del sistema y un arquito en cada nota que se
   aparta de su nota temperada. `RelojDeAlturas(escala:afinacion:sentido:notacion:)` lo hace con la versión
   microtonal de una escala (`nil` si no tiene); `divisiones(de:)` da las rayitas de un `SistemaMicrotonal`.
+- Cuatro obras más en las referencias del catálogo: Sam (1988) para el pinpeat, Williamson (2000) para el saung,
+  Kubik (1994) para la amadinda y Taruskin (1996) para el acorde de los augures. Con ellas, todas las escalas de otras
+  tradiciones citan alguna obra.
 
 ## 0.5.0 (2026-11-10)
 
