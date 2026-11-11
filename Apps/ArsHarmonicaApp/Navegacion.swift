@@ -6,7 +6,7 @@ import SwiftUI
 @MainActor
 final class Navegacion: ObservableObject {
     enum Pestana: Hashable {
-        case acordes, escalas, analisis, coral, identificar
+        case acordes, escalas, analisis, coral, identificar, catalogo
     }
 
     @Published var pestana = Pestana.acordes
@@ -14,6 +14,8 @@ final class Navegacion: ObservableObject {
     @Published var acordePedido: Acorde?
     /// La escala que tiene que mostrar la pestaña de escalas; la vista la recoge y la vacía.
     @Published var escalaPedida: Escala?
+    /// La progresión escrita que tiene que analizar la pestaña de análisis; la vista la recoge y la vacía.
+    @Published var progresionPedida: String?
 
     func ver(_ acorde: Acorde) {
         acordePedido = acorde
@@ -23,5 +25,10 @@ final class Navegacion: ObservableObject {
     func ver(_ escala: Escala) {
         escalaPedida = escala
         pestana = .escalas
+    }
+
+    func ver(progresion: String) {
+        progresionPedida = progresion
+        pestana = .analisis
     }
 }

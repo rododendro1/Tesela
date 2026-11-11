@@ -103,6 +103,15 @@ struct VistaDeAnalisis: View {
         .task(id: modelo.claveDelAnalisis(en: notacion)) {
             resultado = modelo.analizar(en: notacion)
         }
+        // Una progresión pedida desde otra pestaña («Ver en Análisis»), ahora o si se pidió antes de abrir esta.
+        .onChange(of: navegacion.progresionPedida) { _ in tomarLaProgresionPedida() }
+        .onAppear(perform: tomarLaProgresionPedida)
+    }
+
+    private func tomarLaProgresionPedida() {
+        guard let progresion = navegacion.progresionPedida else { return }
+        navegacion.progresionPedida = nil
+        modelo.texto = progresion
     }
 
     /// Las partituras y el MIDI de la progresión y de la progresión arpegiada con el patrón elegido, y la hoja de

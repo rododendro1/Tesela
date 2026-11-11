@@ -4,6 +4,9 @@
 
 ### Lo nuevo
 
+- `Escucha.ritmo(_:vueltas:tempo:)`: un ritmo del catálogo, con los golpes fuertes graves y los débiles agudos, en su
+  pulso. `TextosDeApps` tiene los textos de la pestaña «Catálogo» de Ars Harmonica (`catalogo`, `fuentes`,
+  `verEnAnalisis`, `nombrePropio`…) en los trece idiomas.
 - `PresentacionDeEstudioDeEscala.relojMicrotonal(de:afinacion:colores:en:)`: la versión microtonal de una escala en el
   reloj de cents (`RelojDeAlturas`), con el título «… · Círculo microtonal» (`TextosDeApps.circuloMicrotonal`, en los
   trece idiomas), con `colores` para pintar cada grado del color de sus cents.

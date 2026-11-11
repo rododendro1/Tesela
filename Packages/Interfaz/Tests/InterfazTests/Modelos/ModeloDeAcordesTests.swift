@@ -104,4 +104,15 @@ import Testing
         modelo.otroAcorde = "Xq"
         #expect(modelo.comparacion(en: espanol) == nil)
     }
+
+    @Test func losNombresDelCatalogoVanConElGenericoPrimero() {
+        var modelo = ModeloDeAcordes(texto: "Doadd9")
+        #expect(modelo.nombresDelCatalogo(en: espanol) == "novena añadida, acorde mu")
+        modelo.texto = "Sol7"
+        #expect(modelo.nombresDelCatalogo(en: espanol) == "séptima de dominante")
+        modelo.texto = "Do7(b9,#11)"
+        #expect(modelo.nombresDelCatalogo(en: espanol) == nil)
+        modelo.texto = "Xq"
+        #expect(modelo.nombresDelCatalogo(en: espanol) == nil)
+    }
 }

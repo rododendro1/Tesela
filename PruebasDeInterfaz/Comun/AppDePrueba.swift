@@ -33,6 +33,21 @@ extension XCUIApplication {
         #endif
     }
 
+    /// Abre una pestaña. En el iPhone caben cinco en la barra: con más, las últimas van a la pestaña «Más» (la
+    /// última de la barra), que las enseña en una lista.
+    func abrirPestana(_ titulo: String) {
+        #if os(iOS)
+            let enLaBarra = tabBars.buttons[titulo]
+            guard !enLaBarra.waitForExistence(timeout: 5) else { return enLaBarra.tap() }
+            let barra = tabBars.buttons
+            barra.element(boundBy: barra.count - 1).tap()
+            let fila = cells.staticTexts[titulo]
+            (fila.waitForExistence(timeout: 5) ? fila : staticTexts[titulo]).tap()
+        #else
+            opcion(titulo).tap()
+        #endif
+    }
+
     /// Abre la app sin fijar la notación: la que se eligió la última vez o, si no, la del idioma del sistema.
     /// Para probar el selector, que guarda en los ajustes de la app (los argumentos de `enEspanol()` mandan
     /// sobre ellos y no dejarían ver el cambio).

@@ -16,7 +16,7 @@ struct ArsHarmonicaApp: App {
     }
 }
 
-/// Las cinco vistas de la app. Cada una tiene en su barra el selector de notación; la elegida está en el
+/// Las seis vistas de la app. Cada una tiene en su barra el selector de notación; la elegida está en el
 /// entorno (`notacionGuardada()`) y decide también el idioma de la interfaz. La pestaña elegida y lo que unas
 /// le piden a otras van en `Navegacion`.
 struct VistaRaiz: View {
@@ -40,6 +40,9 @@ struct VistaRaiz: View {
             NavigationStack { VistaDeIdentificar() }
                 .tabItem { Label(notacion.texto(\.identificar), systemImage: "hand.tap") }
                 .tag(Navegacion.Pestana.identificar)
+            NavigationStack { VistaDelCatalogo() }
+                .tabItem { Label(notacion.texto(\.catalogo), systemImage: "books.vertical") }
+                .tag(Navegacion.Pestana.catalogo)
         }
         #if os(macOS)
             // En macOS, un `Form` con su estilo de columnas no se desplaza: la ventana no puede ser más baja que su
