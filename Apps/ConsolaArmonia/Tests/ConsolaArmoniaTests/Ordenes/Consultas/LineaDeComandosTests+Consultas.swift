@@ -233,6 +233,12 @@ extension LineaDeComandosTests {
         #expect(hoja.hasPrefix("<svg "), Comment(rawValue: String(hoja.prefix(200))))
         #expect(hoja.contains(">Re dórico</text>"))
         #expect(salida("sheet D dorian --ingles").contains(">D dorian</text>"))
+        // Con --html, como página HTML; grabar no la pasa a PDF, que no es un dibujo.
+        let html = salida("hoja Re dórico --html")
+        #expect(html.hasPrefix("<!doctype html>"), Comment(rawValue: String(html.prefix(200))))
+        #expect(html.contains("<h1>Re dórico</h1>"))
+        #expect(salida("sheet D dorian --html --ingles").contains("<h1>D dorian</h1>"))
+        #expect(resultado("grabar", "hoja", "Re", "dórico", "--html").codigo != 0)
         #expect(resultado("hoja").codigo == 2)
         #expect(resultado("hoja").error.contains("armonia hoja Re mayor"))
         // La de un acorde.

@@ -159,6 +159,39 @@ import Testing
         #expect(PresentacionDeEstudioDeEscala.tamano(deUnSVG: "<svg/>") == nil)
     }
 
+    /// La hoja de estudio en HTML: los textos como HTML, los dibujos como SVG dentro, y las mismas secciones.
+    @Test func hojaDeEstudioHTML() {
+        let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(de: Escala(.re, .dorico), en: notacion)
+        #expect(hoja.hasPrefix("<!doctype html>\n<html lang=\"es\">"))
+        #expect(hoja.hasSuffix("</html>"))
+        #expect(hoja.contains("<title>Hoja de estudio · Re dórico</title>"))
+        #expect(hoja.contains("<h1>Re dórico</h1>"))
+        #expect(hoja.contains("<li>Re</li><li>Mi</li>"))
+        #expect(hoja.contains("<h2>Estadísticas</h2>"))
+        #expect(hoja.contains("<dt>Brillo por quintas</dt><dd>0</dd>"))
+        #expect(hoja.contains("<h2>Escalera de brillo</h2>") && hoja.contains("<li aria-current=\"true\">"))
+        #expect(hoja.contains("prefers-color-scheme:dark") && hoja.contains("@media print"))
+        // El pentagrama, el reloj y los dos teclados, cada uno en su figura, sin declaración XML.
+        #expect(hoja.components(separatedBy: "<figure").count - 1 == 4)
+        #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
+        #expect(!hoja.contains("<?xml"))
+        // Con secciones: solo las pedidas; con microtonos, el reloj lleva también el círculo microtonal.
+        let bayati = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
+            de: Escala(.re, .bayati), en: notacion, secciones: [.reloj])
+        #expect(bayati.components(separatedBy: "<figure").count - 1 == 2 && bayati.contains(">Mi𝄳</text>"))
+        #expect(!bayati.contains("<h2>Estadísticas</h2>") && !bayati.contains("<h2>Pentagrama</h2>"))
+        let soloElNombre = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
+            de: Escala(.do), en: .ascii(.ingles), secciones: [])
+        #expect(soloElNombre.contains("<html lang=\"en\">") && soloElNombre.contains("<h1>C major</h1>"))
+        #expect(!soloElNombre.contains("<figure") && !soloElNombre.contains("<section"))
+        #expect(PresentacionDeEstudioDeEscala.figura("sin dibujo", clase: "x") == "")
+        let figura = PresentacionDeEstudioDeEscala.figura("<?xml version=\"1.0\"?><svg/>", clase: "x")
+        #expect(figura == "<figure class=\"x\"><svg/></figure>")
+        // El fichero para exportarla.
+        let fichero = PresentacionDeEstudioDeEscala.ficheroDeLaHojaHTML(de: Escala(.do), en: notacion)
+        #expect(fichero.nombreDeFichero == "Hoja de estudio Do mayor.html" && fichero.formato == .html)
+    }
+
     /// El mapa de brillo en SVG: el título con la tónica, una caja por escala y la resaltada en otro color.
     @Test func mapaDeBrillo() {
         let mapa = PresentacionDeEstudioDeEscala.mapaDeBrillo(en: notacion)

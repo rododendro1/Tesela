@@ -5,8 +5,8 @@ import Foundation
 // MARK: - La hoja de estudio: acordes, un acorde o una escala
 
 extension LineaDeComandos {
-    /// `hoja Re dórico` (o `hoja escala Re dórico`): la escala en una hoja de estudio para imprimir, en SVG, y, con
-    /// `--comparar Do dórico`, comparada nota a nota con otra; `hoja acorde Sol7`, la de un acorde; `hoja tonalidad Do
+    /// `hoja Re dórico` (o `hoja escala Re dórico`): la escala en una hoja de estudio para imprimir, en SVG (con
+    /// `--html`, como página HTML), y, con `--comparar Do dórico`, comparada nota a nota con otra; `hoja acorde Sol7`, la de un acorde; `hoja tonalidad Do
     /// mayor`, la de una tonalidad, y `hoja acordes Rem7 Sol7 Do7M [--en Do mayor] [--doce] [--comparar …]`, la de una
     /// progresión, en las doce tonalidades o comparada con otra. `grabar hoja …` la pasa a PDF.
     static func hoja(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
@@ -55,6 +55,7 @@ extension LineaDeComandos {
         }
         // `hoja Do mayor --comparar Do dórico`: las dos escalas nota a nota, en el pentagrama y en el reloj.
         let otra = try argumentos.valorConPalabras(.comparar)
+        let html = argumentos.quitarMarca(.html)
         try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscalaDeLaHoja }
         let escala = try Escala(leyendo: argumentos.unidos, enLaOrden: notacion)
@@ -64,6 +65,7 @@ extension LineaDeComandos {
                     escala, con: try Escala(leyendo: otra, enLaOrden: notacion), en: notacion)
             )
         }
+        if html { return bien(PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(de: escala, en: notacion)) }
         return bien(PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, en: notacion))
     }
 }

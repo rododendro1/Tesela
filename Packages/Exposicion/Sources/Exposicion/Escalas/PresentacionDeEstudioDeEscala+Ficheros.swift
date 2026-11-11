@@ -39,6 +39,15 @@ extension PresentacionDeEstudioDeEscala {
             nombre: notacion.texto(\.hojaDeEstudio) + " " + escala.nombre(en: notacion))
     }
 
+    /// La misma hoja de estudio como página HTML (`hojaDeEstudioHTML(de:en:secciones:)`), para abrirla en el navegador.
+    public static func ficheroDeLaHojaHTML(
+        de escala: Escala, secciones: Set<SeccionDeLaHoja> = Set(SeccionDeLaHoja.allCases), en notacion: Notacion
+    ) -> FicheroParaExportar {
+        FicheroParaExportar.html(
+            hojaDeEstudioHTML(de: escala, en: notacion, secciones: secciones),
+            nombre: notacion.texto(\.hojaDeEstudio) + " " + escala.nombre(en: notacion))
+    }
+
     /// El mapa de brillo de las escalas con tantas notas como esta y su tónica, con esta resaltada.
     public static func mapaDeBrillo(de escala: Escala, en notacion: Notacion) -> String {
         mapaDeBrillo(numeroDeNotas: escala.tipo.numeroDeNotas, resaltada: escala, en: notacion)

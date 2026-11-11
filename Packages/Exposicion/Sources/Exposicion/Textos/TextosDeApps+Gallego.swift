@@ -367,6 +367,7 @@ extension TextosDeApps {
         partituraLilyPond: "Partitura LilyPond",
         partituraGUIDO: "Partitura GUIDO",
         partituraABC: "Partitura ABC",
-        dibujoSVG: "Debuxo SVG"
+        dibujoSVG: "Debuxo SVG",
+        paginaHTML: "Páxina HTML"
     )
 }

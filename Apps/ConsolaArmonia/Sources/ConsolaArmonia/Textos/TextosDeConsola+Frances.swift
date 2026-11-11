@@ -158,7 +158,7 @@ extension TextosDeConsola {
         sintaxisReloj: "reloj <gamme> [--quintas | --microtonal [--fuente <théoricien>]] [--colores]",
         descripcionReloj: "la gamme sur une horloge de douze heures (SVG) : le cercle chromatique ou, avec --quintas, le cercle des quintes ; avec --microtonal, le cercle microtonal, chaque degré à l'angle de ses cents (--fuente choisit un autre accord, comme chrysanthos) ; --colores peint chaque note de la couleur de ses cents",
         sintaxisHoja: "hoja <gamme>",
-        descripcionHoja: "la gamme sur une fiche d'étude à imprimer (SVG) : portée, clavier avec les doigtés, horloge, statistiques, accords et échelle de brillance ; armonia grabar hoja … la convertit en PDF ; --comparar Do dórico (la comparaison note à note, sur la portée et l’horloge, en SVG)",
+        descripcionHoja: "la gamme sur une fiche d'étude à imprimer (SVG) : portée, clavier avec les doigtés, horloge, statistiques, accords et échelle de brillance ; armonia grabar hoja … la convertit en PDF ; --comparar Do dórico (la comparaison note à note, sur la portée et l’horloge, en SVG) ; --html (la même fiche en page HTML, qui s’adapte à l’écran et suit le mode sombre)",
         sintaxisHojaDeAcorde: "hoja acorde <chiffrage>",
         descripcionHojaDeAcorde: "l'accord sur une fiche d'étude à imprimer (SVG) : notes et autres noms, portée, voicings, doigtés de guitare, gammes compatibles et substitutions",
         sintaxisHojaDeAcordes: "hoja acordes <accords> [--en <tonalité>] [--doce] [--comparar <accords>]",

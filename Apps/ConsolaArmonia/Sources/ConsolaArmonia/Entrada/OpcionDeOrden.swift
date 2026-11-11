@@ -122,6 +122,8 @@ extension OpcionDeOrden {
     static let idaYVuelta = marca("--ida-y-vuelta", "--up-and-down")
     static let instrumento = valor("--instrumento", "--instrument")
     static let intervalos = marca("--intervalos", "--intervals")
+    /// `hoja … --html`: la hoja de estudio como página HTML.
+    static let html = marca("--html")
     static let limite = valor("--limite", "--limit")
     static let mano = valor("--mano", "--hand")
     static let mapa = marca("--mapa", "--map")

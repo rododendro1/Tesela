@@ -394,6 +394,7 @@ public struct TextosDeApps: TextosTraducidos {
     public let partituraGUIDO: String
     public let partituraABC: String
     public let dibujoSVG: String
+    public let paginaHTML: String
 
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
