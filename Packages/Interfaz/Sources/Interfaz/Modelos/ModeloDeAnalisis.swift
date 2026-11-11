@@ -95,8 +95,8 @@ public struct ModeloDeAnalisis: Sendable {
     }
 
     /// Las partituras y el MIDI de la progresión y de la progresión arpegiada con el patrón elegido, las hojas de
-    /// estudio (de la progresión, en las doce tonalidades, de la tonalidad y de la comparación), el bajo
-    /// caminante, la progresión dispuesta y las líneas de notas guía.
+    /// estudio en SVG y en HTML (de la progresión, en las doce tonalidades, de la tonalidad y de la comparación), el
+    /// bajo caminante, la progresión dispuesta y las líneas de notas guía.
     public func ficheros(de analisis: AnalisisPresentado, en notacion: Notacion) -> [FicheroParaExportar] {
         let dispuesta = PresentacionDeDisposiciones.progresion(analisis.acordes, disposicion, en: notacion)
         let guias = PresentacionDeEstudioDeEscala.lineasDeNotasGuia(
@@ -105,23 +105,38 @@ public struct ModeloDeAnalisis: Sendable {
         let hoja = FicheroParaExportar.svg(
             PresentacionDeAnalisis.hojaDeEstudio(analisis, disposicion: disposicion, en: notacion),
             nombre: notacion.texto(\.hojaDeEstudio))
-        var todos: [FicheroParaExportar] = analisis.ficheros + [hoja]
+        let hojaHTML = FicheroParaExportar.html(
+            PresentacionDeAnalisis.hojaDeEstudioHTML(analisis, disposicion: disposicion, en: notacion),
+            nombre: notacion.texto(\.hojaDeEstudio))
+        var todos: [FicheroParaExportar] = analisis.ficheros + [hoja, hojaHTML]
         if let tonalidad = Self.tonalidadDeLasDoce(analisis) {
             let svg = PresentacionDeAnalisis.hojaEnLasDoceTonalidades(
                 analisis.acordes, tonalidad: tonalidad, disposicion: disposicion, en: notacion)
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.enLasDoceTonalidades)
             todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
+            let html = PresentacionDeAnalisis.hojaEnLasDoceTonalidadesHTML(
+                analisis.acordes, tonalidad: tonalidad, disposicion: disposicion, en: notacion)
+            todos.append(FicheroParaExportar.html(html, nombre: nombre))
         }
         if let tonalidad = analisis.tonalidad {
             let svg = PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, en: notacion)
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + tonalidad.nombre(en: notacion)
             todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
+            todos.append(
+                FicheroParaExportar.html(
+                    PresentacionDeTonalidad.hojaDeEstudioHTML(de: tonalidad, en: notacion), nombre: nombre))
         }
         if let svg = PresentacionDeAnalisis.hojaDeLaComparacion(
             analisis.acordes, con: otraVersion, en: analisis.tonalidad, disposicion: disposicion, notacion: notacion)
         {
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.compararCon)
             todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
+        }
+        if let html = PresentacionDeAnalisis.hojaDeLaComparacionHTML(
+            analisis.acordes, con: otraVersion, en: analisis.tonalidad, disposicion: disposicion, notacion: notacion)
+        {
+            let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.compararCon)
+            todos.append(FicheroParaExportar.html(html, nombre: nombre))
         }
         let bajo = PresentacionDeAnalisis.bajoCaminante(analisis.acordes, en: notacion)
         let partes: [[FicheroParaExportar]?] = [
