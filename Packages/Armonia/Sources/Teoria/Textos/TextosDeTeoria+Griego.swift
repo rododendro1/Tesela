@@ -171,8 +171,11 @@ extension TextosDeTeoria {
         usoClasica: "κλασική",
         usoJazz: "τζαζ",
         usoBlues: "μπλουζ",
-        usoSigloXX: "20ός αιώνας",
+        usoDeCompositor: "συνθετών",
         usoPopular: "λαϊκή",
+        usoFolclore: "δημοτική",
+        usoFlamenco: "φλαμένκο",
+        usoPopRock: "ποπ και ροκ",
         usoSintetica: "συνθετική",
         // CardinalDeEscala.swift
         cardinalMonotonica: "μονοτονική",

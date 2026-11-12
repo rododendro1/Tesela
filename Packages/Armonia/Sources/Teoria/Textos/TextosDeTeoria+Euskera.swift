@@ -174,8 +174,11 @@ extension TextosDeTeoria {
         usoClasica: "klasikoa",
         usoJazz: "jazza",
         usoBlues: "bluesa",
-        usoSigloXX: "XX. mendea",
+        usoDeCompositor: "konpositoreenak",
         usoPopular: "herrikoia",
+        usoFolclore: "folklorea",
+        usoFlamenco: "flamenkoa",
+        usoPopRock: "pop eta rocka",
         usoSintetica: "sintetikoa",
         // CardinalDeEscala.swift
         cardinalMonotonica: "monotonikoa",

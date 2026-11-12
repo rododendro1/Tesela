@@ -52,9 +52,11 @@ package struct FichaDeEscala: Sendable {
         }
     }
 
-    /// En qué estilos se usa, en el orden de `Estilo.allCases`: los escritos en la declaración o, si no los
-    /// hay, el que da la categoría (`Estilo.de(_:)`).
+    /// En qué estilos occidentales se usa, en el orden de `Estilo.allCases`.
     package let estilos: [Estilo]
+    /// En qué escuelas de otra tradición se usa, en el orden de `Escuela.allCases`: las escritas en la declaración o,
+    /// si no las hay, la que da la categoría (`Escuela.de(_:)`).
+    package let escuelas: [Escuela]
     /// De qué regiones viene, en el orden de `RegionDeEscala.allCases`.
     package let regiones: [RegionDeEscala]
     /// La tradición: la que se escribe en la declaración o, si no, la de su categoría (un rāga es de la India), la de
@@ -75,18 +77,20 @@ package struct FichaDeEscala: Sendable {
     package let documentada: Referencia?
 
     package init(
-        tradicion: Tradicion? = nil, estilos: [Estilo] = [], regiones: [RegionDeEscala] = [],
+        tradicion: Tradicion? = nil, estilos: [Estilo] = [], escuelas: [Escuela] = [], regiones: [RegionDeEscala] = [],
         categoria: CategoriaTradicional? = nil,
         padre: IdentidadDeEscala? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil,
         referencias: [Referencia] = [], documentada: Referencia? = nil
     ) {
         self.referencias = referencias
         self.documentada = documentada
-        let estilos = estilos.isEmpty ? (categoria.flatMap(Estilo.de).map { [$0] } ?? []) : estilos
         self.estilos = Estilo.allCases.filter { estilos.contains($0) }
+        let escuelas = escuelas.isEmpty ? (categoria.flatMap(Escuela.de).map { [$0] } ?? []) : escuelas
+        self.escuelas = Escuela.allCases.filter { escuelas.contains($0) }
         self.regiones = RegionDeEscala.allCases.filter { regiones.contains($0) }
         self.tradicion =
-            tradicion ?? categoria?.tradicion ?? estilos.first?.tradicion ?? regiones.first?.tradicion
+            tradicion ?? categoria?.tradicion ?? (estilos.isEmpty ? nil : .occidental) ?? escuelas.first?.tradicion
+            ?? regiones.first?.tradicion
             ?? fuente?.tradicion
         self.categoria = categoria
         self.padre = padre

@@ -137,8 +137,16 @@ extension LineaDeComandosTests {
         let jazz = salida("escalas --uso jazz")
         #expect(jazz.contains("  alterada: "), Comment(rawValue: jazz))
         #expect(!jazz.contains("  menor melódica: "), Comment(rawValue: jazz))
-        #expect(salida("escalas --use 20th-century") == salida("escalas --uso siglo-xx"))
-        #expect(salida("escalas --uso siglo-xx").contains("  modo 3 de Messiaen: "))
+        #expect(salida("escalas --use composer") == salida("escalas --uso de-compositor"))
+        #expect(salida("escalas --uso siglo-xx") == salida("escalas --uso de-compositor"))
+        #expect(salida("escalas --uso de-compositor").hasPrefix("habituales · de compositor ("))
+        #expect(salida("escalas --uso de-compositor").contains("  modo 3 de Messiaen: "))
+        // Los populares: el folclore, el flamenco y el pop y el rock, cada uno o los tres con `popular`.
+        #expect(salida("escalas --uso flamenco").hasPrefix("habituales · flamenco (2)\n"))
+        #expect(salida("escalas --use folk").contains("  mayor rumana: "))
+        let populares = salida("escalas --uso popular")
+        #expect(populares.hasPrefix("habituales · popular ("), Comment(rawValue: populares))
+        #expect(populares.contains("  flamenca: ") && populares.contains("  mayor rumana: "))
         #expect(salida("scales --use jazz --ingles").hasPrefix("common · jazz ("))
         // Con un texto, busca dentro del uso; con una tradición, no hay ninguna.
         #expect(salida("escalas bebop --uso jazz").hasPrefix("habituales · jazz (7)\n"))

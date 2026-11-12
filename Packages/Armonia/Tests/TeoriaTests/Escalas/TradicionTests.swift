@@ -83,11 +83,12 @@ import Testing
         #expect(Tradicion.mundoArabe.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Arab world")
     }
 
-    /// Los estilos y las regiones: los de la declaración, o el estilo que da la categoría (en la India).
+    /// Las escuelas y las regiones: las de la declaración, o la escuela que da la categoría (en la India).
     @Test func lasSubtradiciones() {
-        #expect(TipoDeEscala.mohanam.estilos == [.carnatica])
-        #expect(TipoDeEscala.melakarta(15)?.estilos == [.carnatica])
-        #expect(TipoDeEscala.kafi.estilos == [.indostanica])
+        #expect(TipoDeEscala.mohanam.escuelas == [.carnatica])
+        #expect(TipoDeEscala.melakarta(15)?.escuelas == [.carnatica])
+        #expect(TipoDeEscala.kafi.escuelas == [.indostanica])
+        #expect(TipoDeEscala.kafi.subtradiciones == [.escuela(.indostanica)])
         #expect(TipoDeEscala.pelogTembung.regiones == [.bali])
         #expect(TipoDeEscala.pelogLima.regiones == [.java])
         #expect(TipoDeEscala.gaitaEscocesa.regiones == [.escocia])
@@ -102,17 +103,18 @@ import Testing
         #expect(TipoDeEscala.degung.regiones == [.sunda] && RegionDeEscala.sunda.tradicion == .indonesia)
         #expect(RegionDeEscala.bali.tipos.count == 4)
         #expect(Subtradicion.region(.bali).tipos == RegionDeEscala.bali.tipos)
-        #expect(Subtradicion.estilo(.gagaku).tradicion == .japon)
-        // Toda escala de la India tiene estilo, y cada estilo y cada región tiene alguna escala.
+        #expect(Subtradicion.escuela(.gagaku).tradicion == .japon)
+        #expect(Subtradicion.estilo(.jazz).tradicion == .occidental)
+        // Toda escala de la India tiene escuela, y cada estilo, cada escuela y cada región tiene alguna escala.
         for tipo in TipoDeEscala.tradicionales(tradicion: .india) {
-            #expect(!tipo.estilos.isEmpty, Comment(rawValue: tipo.nombre))
+            #expect(!tipo.escuelas.isEmpty, Comment(rawValue: tipo.nombre))
         }
         for subtradicion in Subtradicion.todas {
             #expect(!subtradicion.tipos.isEmpty, "\(subtradicion)")
             #expect(subtradicion.tipos.allSatisfy { $0.tradicion == subtradicion.tradicion }, "\(subtradicion)")
         }
-        #expect(Estilo.carnatica.nombre == "Carnática")
-        #expect(Estilo.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Carnatic")
+        #expect(Escuela.carnatica.nombre == "Carnática")
+        #expect(Escuela.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Carnatic")
         #expect(RegionDeEscala.java.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ruso)) == "Ява")
         #expect(Subtradicion.region(.java).nombre == "Java")
     }
@@ -127,11 +129,14 @@ import Testing
                     Comment(rawValue: "\(subtradicion) en \(idioma)"))
             }
         }
-        #expect(Subtradicion.todas.count == Estilo.allCases.count + RegionDeEscala.allCases.count)
+        #expect(
+            Subtradicion.todas.count == Estilo.allCases.count + Escuela.allCases.count + RegionDeEscala.allCases.count)
         for estilo in Estilo.allCases { #expect(Estilo(rawValue: estilo.rawValue) == estilo) }
         for region in RegionDeEscala.allCases { #expect(RegionDeEscala(rawValue: region.rawValue) == region) }
         let estilos = try JSONEncoder().encode(Estilo.allCases)
-        #expect(String(decoding: estilos, as: UTF8.self).contains("\"indostanica\""))
+        #expect(String(decoding: estilos, as: UTF8.self).contains("\"deCompositor\""))
+        let escuelas = try JSONEncoder().encode(Escuela.allCases)
+        #expect(String(decoding: escuelas, as: UTF8.self).contains("\"indostanica\""))
         #expect(try JSONDecoder().decode([Estilo].self, from: estilos) == Estilo.allCases)
         let todas = try JSONEncoder().encode(Subtradicion.todas)
         #expect(try JSONDecoder().decode([Subtradicion].self, from: todas) == Subtradicion.todas)

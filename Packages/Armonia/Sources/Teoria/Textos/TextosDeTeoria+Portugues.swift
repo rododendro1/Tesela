@@ -171,8 +171,11 @@ extension TextosDeTeoria {
         usoClasica: "clássica",
         usoJazz: "jazz",
         usoBlues: "blues",
-        usoSigloXX: "século XX",
+        usoDeCompositor: "de compositor",
         usoPopular: "popular",
+        usoFolclore: "folclore",
+        usoFlamenco: "flamenco",
+        usoPopRock: "pop e rock",
         usoSintetica: "sintética",
         // CardinalDeEscala.swift
         cardinalMonotonica: "monotónica",

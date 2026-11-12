@@ -207,20 +207,20 @@ TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
 CategoriaTradicional.escala.nombre(en: Notacion.compacta(.espanol).conTextos(en: .frances))   // "gamme"
 ```
 
-Las subtradiciones dicen de dónde es una escala dentro de su tradición, de dos maneras: `estilos`, el estilo o
-repertorio en que se usa (la música carnática o la indostánica en la India, el gagaku en Japón, la clásica o el jazz en
-la occidental), y `regiones`, la región, el país o el pueblo de donde viene (Java, Bali o Sunda en Indonesia, el de una
-escala de África, de Europa o del sudeste asiático, las Ryūkyū en Japón). En la India el estilo lo da la categoría (un
-mēḷa es carnático, un thāṭ indostánico); en las demás se escriben en la declaración de la escala, y puede haber varios:
-el sléndro se toca en Java y en Bali. `subtradiciones` da los dos juntos, como `Subtradicion`.
+Las subtradiciones dicen de dónde es una escala dentro de su tradición, de tres maneras: `estilos`, el estilo o
+repertorio occidental en que se usa (la clásica o el jazz); `escuelas`, el de otra tradición (``Escuela``: la música
+carnática o la indostánica en la India, el gagaku en Japón), y `regiones`, la región, el país o el pueblo de donde viene (Java, Bali o Sunda en Indonesia, el de una
+escala de África, de Europa o del sudeste asiático, las Ryūkyū en Japón). En la India la escuela la da la categoría (un
+mēḷa es carnático, un thāṭ indostánico); en las demás se escriben en la declaración de la escala, y puede haber varias:
+el sléndro se toca en Java y en Bali. `subtradiciones` da las tres juntas, como `Subtradicion`.
 
 ```swift
-TipoDeEscala.mohanam.estilos == [.carnatica]       // true
+TipoDeEscala.mohanam.escuelas == [.carnatica]      // true
 TipoDeEscala.pelogTembung.regiones == [.bali]      // true
 TipoDeEscala.slendro.regiones == [.java, .bali]    // true
 RegionDeEscala.bali.tradicion                      // .indonesia
 RegionDeEscala.java.tipos.count                    // 7
-Estilo.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles))   // "Carnatic"
+Escuela.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles))   // "Carnatic"
 ```
 
 `fuente` dice qué teórico definió una escala: el autor de unas razones (los géneros de Arquitas, Dídimo, Eratóstenes y

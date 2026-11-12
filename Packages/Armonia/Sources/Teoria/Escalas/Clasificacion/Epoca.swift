@@ -146,8 +146,9 @@ extension Estilo {
         switch self {
         case .clasica: Epoca.tonales
         case .jazz, .blues: [.sigloXX, .sigloXXI]
-        case .sigloXX: [.sigloXX]
-        case .popular, .sintetica, .carnatica, .indostanica, .indiaAntigua, .gagaku: []
+        case .deCompositor: [.sigloXX]
+        case .popRock: [.sigloXX, .sigloXXI]
+        case .folclore, .flamenco, .sintetica: []
         }
     }
 }
@@ -194,7 +195,7 @@ extension TipoDeEscala {
         {
             return epoca
         }
-        if estilos.contains(.sintetica) || estilos.contains(.popular),
+        if estilos.contains(.sintetica) || estilos.contains(where: \.esPopular),
             let epoca = TipoDeEscala.occidentalesQueFechanSusModos
                 .filter({ esModo(de: $0) && ($0.documentada != nil || estilos.contains(.sintetica)) })
                 .compactMap(\.epocaDeOrigen).min()
@@ -210,7 +211,7 @@ extension TipoDeEscala {
     /// Las populares solo la toman de las documentadas: la flamenca tiene las notas de un modo de una escala de jazz,
     /// pero no viene del jazz.
     static let occidentalesQueFechanSusModos = TipoDeEscala.occidentales.filter {
-        $0.documentada != nil || !($0.estilos.contains(.sintetica) || $0.estilos.contains(.popular))
+        $0.documentada != nil || !($0.estilos.contains(.sintetica) || $0.estilos.contains(where: \.esPopular))
     }
 
     /// Es otro modo de esa escala: tiene sus mismos intervalos empezando en otro grado.

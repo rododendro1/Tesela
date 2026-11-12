@@ -557,8 +557,8 @@ import Hexagonos
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 3)
         comprobar(TipoDeEscala.dorico.estilos == [.clasica, .jazz], #"true"#, doc, 0)
         comprobar(Estilo.blues.tipos.count, #"6"#, doc, 1)
-        comprobar(Estilo.sigloXX.nombre, #""siglo XX""#, doc, 2)
-        comprobar(TipoDeEscala.kafi.estilos == [.indostanica], #"true"#, doc, 3)
+        comprobar(Estilo.deCompositor.nombre, #""de compositor""#, doc, 2)
+        comprobar(TipoDeEscala.kafi.escuelas == [.indostanica], #"true"#, doc, 3)
         comprobarIgual(TipoDeEscala.dorico.tradicion, .occidental, doc, 4)
     }
 
@@ -747,12 +747,12 @@ import Hexagonos
     @Test func escalasDelMundo3() throws {
         // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 3
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 3)
-        comprobar(TipoDeEscala.mohanam.estilos == [.carnatica], #"true"#, doc, 0)
+        comprobar(TipoDeEscala.mohanam.escuelas == [.carnatica], #"true"#, doc, 0)
         comprobar(TipoDeEscala.pelogTembung.regiones == [.bali], #"true"#, doc, 1)
         comprobar(TipoDeEscala.slendro.regiones == [.java, .bali], #"true"#, doc, 2)
         comprobarIgual(RegionDeEscala.bali.tradicion, .indonesia, doc, 3)
         comprobar(RegionDeEscala.java.tipos.count, #"7"#, doc, 4)
-        comprobar(Estilo.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)), #""Carnatic""#, doc, 5)
+        comprobar(Escuela.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)), #""Carnatic""#, doc, 5)
     }
 
     @Test func escalasDelMundo4() throws {

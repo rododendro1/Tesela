@@ -2,6 +2,21 @@
 
 ## Sin publicar
 
+### Cambios incompatibles
+
+- `Estilo` es solo occidental. La música carnática, la indostánica, la del Nāṭyaśāstra y el gagaku pasan a ser una
+  `Escuela`, con su tradición, su categoría (`Escuela.de(_:)`), sus escalas y su nombre en los trece idiomas:
+  `TipoDeEscala.escuelas` las da (`.kafi.escuelas == [.indostanica]`), y `Subtradicion.escuela`, como subtradición.
+  `Estilo.tradicion` y `Estilo.de(_:)` se van.
+- `Estilo.sigloXX` pasa a ser `Estilo.deCompositor` («de compositor»): el siglo XX ya es una época (`Epoca.sigloXX`).
+- `Estilo.popular` se reparte en tres: `folclore` (la mayor rumana, las húngaras, las gaélicas, las pentatónicas),
+  `flamenco` (la flamenca y el frigio dominante) y `popRock`, el pop y el rock, también el metal (el frigio
+  dominante, la doble armónica, las pentatónicas, el power chord, la progresión de los cuatro acordes).
+  `Estilo.populares` y `esPopular` los juntan. El jazz y el blues se usan en los siglos XX y XXI, y el flamenco es de
+  España (`Estilo.paises`).
+- La consola: `--uso` acepta `de-compositor` (`composer`), `folclore` (`folk`), `flamenco` y `pop-rock`; `popular` da
+  los tres populares y `siglo-xx` sigue valiendo, por las de compositor.
+
 ### Lo nuevo
 
 - La época tonal se parte en tres: `Epoca` tiene ahora el Barroco (1600–1750), el Clasicismo (1750–1820) y el

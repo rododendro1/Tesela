@@ -171,8 +171,11 @@ extension TextosDeTeoria {
         usoClasica: "klasszikus",
         usoJazz: "jazz",
         usoBlues: "blues",
-        usoSigloXX: "20. század",
-        usoPopular: "népi",
+        usoDeCompositor: "zeneszerzői",
+        usoPopular: "populáris",
+        usoFolclore: "népzene",
+        usoFlamenco: "flamenco",
+        usoPopRock: "pop és rock",
         usoSintetica: "szintetikus",
         // CardinalDeEscala.swift
         cardinalMonotonica: "monoton",

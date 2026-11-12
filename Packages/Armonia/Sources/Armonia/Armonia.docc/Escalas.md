@@ -115,21 +115,25 @@ el lidio dominante es la acústica de Bartók. Lo dice el estilo, y `TipoDeEscal
 - **jazz**: la escala se elige acorde a acorde (los modos de la menor melódica, las bebop, las disminuidas, las
   pentatónicas del jazz y las de dos tríadas, y los siete modos de la mayor).
 - **blues**: las blues y las pentatónicas de las que salen.
-- **siglo XX**: las simétricas y las de compositor (tonos enteros, disminuidas, Messiaen, Prometeo, Petrushka, la
-  acústica, la cromática).
-- **popular**: las que vienen de una música popular (flamenca, mayor rumana, menor húngara, pentatónicas, gaélicas).
+- **de compositor**: las simétricas y las de compositor (tonos enteros, disminuidas, Messiaen, Prometeo, Petrushka,
+  la acústica, la cromática).
+- **folclore**: las que vienen de una música tradicional europea (mayor rumana, menor húngara, pentatónicas,
+  gaélicas, dórico ♯4).
+- **flamenco**: la flamenca y el frigio dominante.
+- **pop y rock**, también el metal: el frigio dominante, la doble armónica, las pentatónicas.
 - **sintética**: las que salen de rotar o alterar otra, sin repertorio propio (casi todos los modos de la menor y la
   mayor armónicas, de la doble armónica y de las napolitanas).
 
-Las escalas de `todos` son de la tradición occidental (`Tradicion.occidental`), y estos son sus estilos, como la música
-carnática o el gagaku lo son de la India o de Japón. `Estilo.tipos` da las de un estilo, en el orden del
+Los tres últimos son los populares (`Estilo.populares`, `esPopular`). Las escalas de `todos` son de la tradición
+occidental (`Tradicion.occidental`), y estos son sus estilos; las de otras tradiciones tienen escuelas (``Escuela``):
+la música carnática o el gagaku, de la India o de Japón. `Estilo.tipos` da las de un estilo, en el orden del
 catálogo, y en la línea de comandos `armonia escalas --uso jazz` las lista.
 
 ```swift
 TipoDeEscala.dorico.estilos == [.clasica, .jazz]    // true
 Estilo.blues.tipos.count                            // 6
-Estilo.sigloXX.nombre                               // "siglo XX"
-TipoDeEscala.kafi.estilos == [.indostanica]         // true
+Estilo.deCompositor.nombre                          // "de compositor"
+TipoDeEscala.kafi.escuelas == [.indostanica]        // true
 TipoDeEscala.dorico.tradicion                        // .occidental
 ```
 
