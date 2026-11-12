@@ -205,6 +205,8 @@ import Testing
         #expect(Escala("Do nueve notas").tipo == .messiaen3)
         #expect(Escala("Do Petrushka menor").tipo == .petrushkaMenor)
         #expect(Escala("C minor Petrushka").tipo == .petrushkaMenor)
+        #expect(TipoDeEscala.tcherepnin.documentada?.anio == 1968)
+        #expect(TipoDeEscala.petrushkaMenor.epocaDeOrigen == .sigloXX)
         #expect(Escala("C Messiaen mode 7").tipo == .messiaen7)
         #expect(Escala("Mi andaluza").tipo == .flamenca)
         #expect(Escala("E flamenco").tipo == .flamenca)

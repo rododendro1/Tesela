@@ -7,7 +7,8 @@ import Elementos
 /// harmoniai de Arístides Quintiliano) o de un sistema (los hexacordos de Guido d'Arezzo, los modos que añadió
 /// Glareano, los shudūd de Ṣafī al-Dīn, las cinco notas del Guanzi, los doce lü del Lüshi chunqiu y los géneros de
 /// Vicentino); o el que midió de otra manera una escala que ya había (los echoi de Crisanto, la entonación justa de
-/// Ramos de Pareja, Zarlino y Salinas, el temperamento igual de Zhu Zaiyu).
+/// Ramos de Pareja, Zarlino y Salinas, el temperamento igual de Zhu Zaiyu) o el que ordenó un sistema que ya había
+/// (los çeşni de Arel-Ezgi-Uzdilek).
 ///
 /// Una escala la lleva en su declaración (`fuente: .ptolomeo`), y una afinación en la suya
 /// (`.init(.razones, pasos: […], fuente: .zarlino)`). Las que no son de un autor concreto (las siete harmoniai, los
@@ -51,6 +52,9 @@ public enum FuenteTeorica: String, Sendable, Codable, CaseIterable {
     case salinas
     /// Zhu Zaiyu (朱載堉): el temperamento igual de los doce lü (1584), con la raíz duodécima de dos.
     case zhuZaiyu
+    /// Hüseyin Sadettin Arel, Suphi Ezgi y Salih Murat Uzdilek: la teoría turca de hoy, en 53 comas, y sus çeşni de
+    /// cuatro y de cinco notas (dörtlü y beşli), de la primera mitad del siglo XX.
+    case arelEzgiUzdilek
 
     /// La tradición de sus escalas. El `switch` no tiene `default`: una fuente nueva no compila sin la suya.
     public var tradicion: Tradicion {
@@ -61,6 +65,7 @@ public enum FuenteTeorica: String, Sendable, Codable, CaseIterable {
         case .guanzi, .lushiChunqiu, .zhuZaiyu: .china
         case .vicentino, .ramosDePareja, .zarlino, .salinas: .renacimiento
         case .chrysanthos: .bizancio
+        case .arelEzgiUzdilek: .turquia
         }
     }
 
@@ -88,6 +93,7 @@ public enum FuenteTeorica: String, Sendable, Codable, CaseIterable {
         case .zarlino: TextosDeTeoria.traduccion(\.fuenteZarlino)
         case .salinas: TextosDeTeoria.traduccion(\.fuenteSalinas)
         case .zhuZaiyu: TextosDeTeoria.traduccion(\.fuenteZhuZaiyu)
+        case .arelEzgiUzdilek: TextosDeTeoria.traduccion(\.fuenteArelEzgiUzdilek)
         }
     }
 }
@@ -126,6 +132,7 @@ extension FuenteTeorica {
         case .zarlino: .zarlino1558
         case .salinas: .salinas1577
         case .zhuZaiyu: .barbour1951
+        case .arelEzgiUzdilek: .ezgi1933
         }
     }
 }

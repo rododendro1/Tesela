@@ -2,8 +2,85 @@
 
 ## Sin publicar
 
+### Cambios incompatibles
+
+- `Estilo` es solo occidental. La música carnática, la indostánica, la del Nāṭyaśāstra y el gagaku pasan a ser una
+  `Escuela`, con su tradición, su categoría (`Escuela.de(_:)`), sus escalas y su nombre en los trece idiomas:
+  `TipoDeEscala.escuelas` las da (`.kafi.escuelas == [.indostanica]`), y `Subtradicion.escuela`, como subtradición.
+  `Estilo.tradicion` y `Estilo.de(_:)` se van.
+- `Estilo.sigloXX` pasa a ser `Estilo.deCompositor` («de compositor»): el siglo XX ya es una época (`Epoca.sigloXX`).
+- `Estilo.popular` se reparte en tres: `folclore` (la mayor rumana, las húngaras, las gaélicas, las pentatónicas),
+  `flamenco` (la flamenca y el frigio dominante) y `popRock`, el pop y el rock, también el metal (el frigio
+  dominante, la doble armónica, las pentatónicas, el power chord, la progresión de los cuatro acordes).
+  `Estilo.populares` y `esPopular` los juntan. El jazz y el blues se usan en los siglos XX y XXI, y el flamenco es de
+  España (`Estilo.paises`).
+- La consola: `--uso` acepta `de-compositor` (`composer`), `folclore` (`folk`), `flamenco` y `pop-rock`; `popular` da
+  los tres populares y `siglo-xx` sigue valiendo, por las de compositor.
+- Los estilos de una escala, un acorde o una progresión van de más a menos importante, en el orden de su declaración,
+  y no en el de `Estilo.allCases`: el dórico es `[.jazz, .clasica]`, central en el jazz modal y raro en la clásica,
+  y el frigio dominante `[.flamenco, .jazz, .popRock]`. `TipoDeEscala.estiloPrincipal` da el primero.
+
 ### Lo nuevo
 
+- La época tonal se parte en tres: `Epoca` tiene ahora el Barroco (1600–1750), el Clasicismo (1750–1820) y el
+  Romanticismo (1820–1900), y el siglo XXI (desde 2000). `Epoca.tonales` y `esTonal` las juntan, y
+  `Epoca.nombreDeLaEpocaTonal(en:)` da «época tonal». `Estilo.epocasDeUso` da varias: la clásica, las tres tonales;
+  el jazz y el blues, los siglos XX y XXI.
+- Más escalas con la obra que las documenta, y con ella su año: los tonos enteros, «Ruslán y Liudmila» de Glinka
+  (1842); las octatónicas, «Sadkó» de Rimski-Kórsakov (1867); la enigmática, el «Ave Maria» de Verdi (1889); Prometeo,
+  el de Skriabin (1910); Petrushka, el de Stravinski (1911), y los modos 3 a 7 de Messiaen, su «Technique de mon
+  langage musical» (1944). `Referencia.Clase.partitura`, para las obras musicales (`@misc` en BibTeX y
+  `musical_score` en CSL-JSON).
+- `TipoDeEscala.epocaDelNombre`, la época del nombre, que no es la de las notas en la mayor y la menor (se llaman así
+  desde el Barroco, aunque sus notas son las del jónico y el eólico de Glareano) ni en los modos, que llevan los nombres
+  griegos desde la «Alia musica» (hacia 900).
+- `PeriodoMusical.periodos(de:)`, los períodos de una tradición en orden, y `TipoDeEscala.periodosDeUso`, los que
+  vienen después del suyo, en los que se sigue usando: Rast makamı, el de Selim III y el de Arel-Ezgi-Uzdilek.
+- `Epoca`, la época de una escala: antigüedad, Edad Media, Renacimiento, época tonal y siglo XX (después partida en
+  más: ver arriba), con su nombre en los
+  trece idiomas. `TipoDeEscala.epocaDeOrigen` la calcula con lo que ya sabe el catálogo (su fuente teórica, su
+  tradición, las escalas gregorianas y renacentistas con sus mismas notas, su escala madre o sus estilos), y
+  `epocasDeUso` da las de sus estilos: el dórico es medieval y se usa en la época tonal y en el siglo XX.
+  `FuenteTeorica.epoca`, `Tradicion.epoca` y `Estilo.epocasDeUso` dan las de cada una.
+- `TipoDeEscala.documentada`, la obra más antigua que da una escala, con su año: su época de origen sale de ahí antes
+  que de ninguna otra regla (`Epoca(anio:)`). La tienen la menor húngara (Liszt, 1859), los echoi bizantinos
+  (Chrysanthos, 1832) y los makamlar que ya están en Cantemir (hacia 1700). Las sintéticas toman además la época de
+  las escalas de las que son un modo, y las populares, la de las documentadas: la doble armónica y sus modos son de la
+  época tonal por la menor húngara, y la mayor locria, por la napolitana mayor.
+- `PeriodoMusical`, el período de una escala en su tradición, con los nombres que se usan en ella y en los trece
+  idiomas: en la India, del Nāṭyaśāstra, del Saṅgītaratnākara, de los mēḷa, de Bhātkhaṇḍe; en el mundo árabe, Persia,
+  Turquía y Azerbaiyán, abasí, sistematista, otomano y safávida, qayar, desde el Congreso de El Cairo, de Cantemir, de Selim
+  III, de Arel-Ezgi-Uzdilek; las dinastías chinas y los períodos japoneses. `TipoDeEscala.periodo` lo da con
+  `PeriodoMusical.de(_:anio:)`, por su tradición y su año.
+- `TipoDeEscala.anioDeOrigen`, el año en que aparece una escala: el de la obra que la documenta, el de su fuente
+  (`FuenteTeorica.anio`) o el de su categoría (`CategoriaTradicional.anio`: los mēḷa, de 1660; los thāṭ, de 1909; los
+  grāma y las mūrchanā, del Nāṭyaśāstra; los dastgāh, de hacia 1880; los mugam, de 1945; los dromoi, de 1920). La época de origen sale de él, así que los mēḷa son de la época tonal, los
+  thāṭ del siglo XX y las mūrchanā de la antigüedad, y `FuenteTeorica.epoca` es la de su año.
+- `FuenteTeorica.arelEzgiUzdilek`, la teoría turca de hoy: los doce çeşni (dörtlü y beşli) son suyos, del siglo XX.
+- `Lugar`, de dónde viene una escala, en tres niveles: `Continente`, `Pais` (con su `codigoISO` y su continente) y
+  `RegionDeEscala`, con su nombre en los trece idiomas; `contenidoEn` da los que lo contienen (Andalucía, en España,
+  en Europa). `RegionDeEscala.paises`, `Tradicion.paises` y `Tradicion.continentes` dicen dónde está cada una.
+- `TipoDeEscala.lugaresDeOrigen`, los más concretos que se saben (su región o su pueblo; si no, el lugar histórico de
+  su tradición, sus zonas, los países de sus estilos o de su tradición, y si no sus continentes), con
+  `paisesDeOrigen` y `continentesDeOrigen`. El jazz y el blues son de Estados Unidos (`Estilo.paises`): la alterada
+  viene de allí.
+- `TipoDeEscala.lugaresDeUso`, dónde se usa también, por los países de sus estilos (el dórico, en Estados Unidos por
+  el jazz) y por sus parientes, escritos a mano en familias (`parientes`: el frigio dominante, con Ḥijāz, Hicaz makamı,
+  el dromos Hitzáz y el Freygish); y `lugaresQueCoinciden`, los de las demás escalas con sus mismas notas, que son
+  coincidencias y no parentescos (la mayor y Bilāval).
+- `ZonaMusical`, las zonas del mundo árabe (el Levante, Egipto, Irak, el Golfo y el Magreb), con sus países;
+  `Pueblo`, los pueblos repartidos entre países (el gitano, por la menor húngara, y los judíos asquenazíes, por el
+  klezmer); y `LugarHistorico` (Bizancio, Mesopotamia y la Grecia antigua), con los países de hoy. Los tres son
+  casos de `Lugar`, que tiene `todos`, `clave`, `esta(en:)` y diecisiete países más.
+- Las occidentales populares que vienen de un lugar declaran su región: la flamenca, Andalucía; la mayor rumana,
+  Rumanía; las húngaras, Hungría; la pentatónica escocesa, Escocia, y el dórico ♯4, Ucrania y Rumanía.
+  `RegionDeEscala` tiene Andalucía y Rumanía, y `RegionDeEscala.tipos` da también esas occidentales; como
+  subtradición, una región solo da las de su tradición (`Subtradicion.region(.hungria)`, la pentatónica húngara).
+- `TipoDeEscala.nombresGeograficosSinOrigen` y `nombreGeograficoSinOrigen`: la persa, la egipcia, la oriental y las
+  napolitanas tienen nombre de lugar pero no vienen de él, y son de Europa como las demás occidentales.
+- La consola: `escalas --lugar espana` (`--place spain`, o el código ISO, `US`) deja las escalas de un lugar, de
+  origen o de uso, y `--agrupar continente` (o `pais`; `--group-by continent`, `country`) las agrupa por su lugar de
+  origen. `escalas --json` da de cada una sus lugares de origen y de uso, sus países (códigos ISO) y sus continentes.
 - `RelojDeAlturas`, el círculo cromático microtonal: un reloj de cents con cada nota en el ángulo de sus cents, las
   doce horas temperadas en gris como referencia, una rayita en cada paso del sistema y un arquito en cada nota que se
   aparta de su nota temperada. `RelojDeAlturas(escala:afinacion:sentido:notacion:)` lo hace con la versión
@@ -38,6 +115,13 @@
 - «Tcherepnin» y «de Tcherepnin» son ahora la escala `tcherepnin`, no un alias del modo 3 de Messiaen, que tiene sus
   mismas notas desde otro grado.
 - `TipoDeEscala.enigmatica` ya no es `==` a un tipo con solo sus intervalos ascendentes, porque ahora baja distinto.
+
+### Rendimiento
+
+- Un `TipoDeEscala` ocupa unos 56 bytes y no 328: su ficha (estilos, escuelas, regiones, afinaciones, referencias…)
+  se guarda aparte y la comparten sus copias. Sin optimizar, las listas de nombres del ruso y el griego ocupaban casi
+  500 KB de pila al inicializarse y desbordaban la de un hilo secundario con la cobertura activada; una prueba avisa
+  si el tipo vuelve a crecer.
 
 ## 0.5.0 (2026-11-10)
 

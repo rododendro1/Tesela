@@ -185,8 +185,11 @@ struct TextosDeTeoria: TextosTraducidos {
     let usoClasica: String
     let usoJazz: String
     let usoBlues: String
-    let usoSigloXX: String
+    let usoDeCompositor: String
     let usoPopular: String
+    let usoFolclore: String
+    let usoFlamenco: String
+    let usoPopRock: String
     let usoSintetica: String
 
     // MARK: CardinalDeEscala.swift
@@ -202,6 +205,42 @@ struct TextosDeTeoria: TextosTraducidos {
     let cardinalDecatonica: String
     let cardinalEndecatonica: String
     let cardinalDodecatonica: String
+
+    // MARK: Epoca.swift
+    let epocaAntiguedad: String
+    let epocaEdadMedia: String
+    let epocaRenacimiento: String
+    let epocaTonal: String
+    let epocaBarroco: String
+    let epocaClasicismo: String
+    let epocaRomanticismo: String
+    let epocaSigloXX: String
+    let epocaSigloXXI: String
+    let periodoVedico: String
+    let periodoNatyasastra: String
+    let periodoSangitaratnakara: String
+    let periodoMela: String
+    let periodoBhatkhande: String
+    let periodoAbasi: String
+    let periodoSistematista: String
+    let periodoOtomanoSafavi: String
+    let periodoQayar: String
+    let periodoCongresoDelCairo: String
+    let periodoCantemir: String
+    let periodoSelimIII: String
+    let periodoArelEzgiUzdilek: String
+    let periodoZhou: String
+    let periodoQinHan: String
+    let periodoSeisDinastias: String
+    let periodoTang: String
+    let periodoSong: String
+    let periodoYuan: String
+    let periodoMing: String
+    let periodoQing: String
+    let periodoNaraHeian: String
+    let periodoKamakuraMuromachi: String
+    let periodoEdo: String
+    let periodoModerno: String
 
     // MARK: CardinalDeAcorde.swift
     let cardinalDiada: String
@@ -259,6 +298,75 @@ struct TextosDeTeoria: TextosTraducidos {
     let subtradicionEscocia: String
     let subtradicionGeorgia: String
     let subtradicionIstria: String
+    let subtradicionAndalucia: String
+    let subtradicionRumania: String
+
+    // MARK: Geografia.swift
+    let continenteEuropa: String
+    let continenteAsia: String
+    let continenteAfrica: String
+    let continenteAmerica: String
+    let continenteOceania: String
+    let paisEspana: String
+    let paisReinoUnido: String
+    let paisSuiza: String
+    let paisAustria: String
+    let paisCroacia: String
+    let paisEslovenia: String
+    let paisUcrania: String
+    let paisPolonia: String
+    let paisHungria: String
+    let paisRumania: String
+    let paisGeorgia: String
+    let paisGrecia: String
+    let paisTurquia: String
+    let paisAzerbaiyan: String
+    let paisIran: String
+    let paisIrak: String
+    let paisIndia: String
+    let paisChina: String
+    let paisJapon: String
+    let paisCoreaDelSur: String
+    let paisCoreaDelNorte: String
+    let paisVietnam: String
+    let paisIndonesia: String
+    let paisTailandia: String
+    let paisCamboya: String
+    let paisMyanmar: String
+    let paisUganda: String
+    let paisMozambique: String
+    let paisZimbabue: String
+    let paisMali: String
+    let paisSenegal: String
+    let paisGambia: String
+    let paisGuinea: String
+    let paisEtiopia: String
+    let paisBrasil: String
+    let paisPeru: String
+    let paisBolivia: String
+    let paisEcuador: String
+    let paisEstadosUnidos: String
+    let paisSiria: String
+    let paisLibano: String
+    let paisPalestina: String
+    let paisJordania: String
+    let paisEgipto: String
+    let paisArabiaSaudi: String
+    let paisKuwait: String
+    let paisBarein: String
+    let paisCatar: String
+    let paisEmiratos: String
+    let paisOman: String
+    let paisYemen: String
+    let paisMarruecos: String
+    let paisArgelia: String
+    let paisTunez: String
+    let paisLibia: String
+    let zonaLevante: String
+    let zonaGolfo: String
+    let zonaMagreb: String
+    let puebloRomani: String
+    let puebloAsquenazi: String
     let subtradicionGagaku: String
     let subtradicionRyukyu: String
 
@@ -280,6 +388,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let fuenteZarlino: String
     let fuenteSalinas: String
     let fuenteZhuZaiyu: String
+    let fuenteArelEzgiUzdilek: String
 
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».

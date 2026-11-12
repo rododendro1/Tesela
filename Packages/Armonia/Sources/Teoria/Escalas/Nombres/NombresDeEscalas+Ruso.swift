@@ -3,7 +3,11 @@
 // Los nombres de los tipos de escala en ruso, con las otras formas con que se lee. Qué es cada campo, en `NombresDeEscalas.swift`.
 
 extension NombresDeEscalas {
-    static let ruso = NombresDeEscalas([
+    static let ruso = NombresDeEscalas(occidentalesEnRuso + deOtrasTradicionesEnRuso)
+
+    // Dos listas y no una: cada una se construye en su propia función. Sin optimizar, la de una sola lista
+    // ocupaba casi 500 KB de pila, y desbordaba la de un hilo secundario de macOS (512 KB).
+    private static let occidentalesEnRuso: [Fila] = [
         .init(.mayor, "мажор", alias: ["натуральный мажор", "ионийский"], variantes: ["ионийская"]),
         .init(.dorico, "дорийский", variantes: ["дорийская"]),
         .init(.frigio, "фригийский", variantes: ["фригийская"]),
@@ -122,7 +126,9 @@ extension NombresDeEscalas {
         .init(.jonicoSegundaMenor, "ионийский ♭2"),
         .init(.jonicoQuintaDisminuida, "ионийский ♭5"),
         .init(.jonicoSextaAumentada, "ионийский ♯6"),
+    ]
 
+    private static let deOtrasTradicionesEnRuso: [Fila] = [
         // Escalas de otras tradiciones: nombres propios, iguales en todos los idiomas salvo los que se traducen.
         // Para traducir una: `.tradicional(.hitzaz, "…")`. Los alias (Hijaz, Hicaz…) están en el catálogo.
         // Solo llevan fila las que se traducen o tienen alias en este idioma: sin fila, una escala conserva su nombre
@@ -503,5 +509,5 @@ extension NombresDeEscalas {
         .categoria(.harmonia, "гармония"),
         .categoria(.afinacion, "строй"),
         .categoria(.escala, "гамма"),
-    ])
+    ]
 }

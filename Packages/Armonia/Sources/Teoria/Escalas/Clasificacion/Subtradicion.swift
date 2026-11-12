@@ -13,25 +13,30 @@ import Elementos
 ///     TipoDeEscala.dorico.subtradiciones    // [.estilo(.clasica), .estilo(.jazz)]
 public enum Subtradicion: Hashable, Sendable, Codable {
     case estilo(Estilo)
+    case escuela(Escuela)
     case region(RegionDeEscala)
 
-    /// Todas: primero los estilos y después las regiones, en el orden de sus casos.
+    /// Todas: primero los estilos, después las escuelas y por último las regiones, en el orden de sus casos.
     public static let todas: [Subtradicion] =
-        Estilo.allCases.map(Subtradicion.estilo) + RegionDeEscala.allCases.map(Subtradicion.region)
+        Estilo.allCases.map(Subtradicion.estilo) + Escuela.allCases.map(Subtradicion.escuela)
+        + RegionDeEscala.allCases.map(Subtradicion.region)
 
     /// La tradición a la que pertenece.
     public var tradicion: Tradicion {
         switch self {
-        case .estilo(let estilo): estilo.tradicion
+        case .estilo: .occidental
+        case .escuela(let escuela): escuela.tradicion
         case .region(let region): region.tradicion
         }
     }
 
-    /// Las escalas del catálogo de esta subtradición (`Estilo.tipos` o `RegionDeEscala.tipos`).
+    /// Las escalas del catálogo de esta subtradición (`Estilo.tipos` o `RegionDeEscala.tipos`), solo las de su
+    /// tradición: `.region(.hungria)` da la pentatónica húngara, y no las occidentales populares que vienen de Hungría.
     public var tipos: [TipoDeEscala] {
         switch self {
         case .estilo(let estilo): estilo.tipos
-        case .region(let region): region.tipos
+        case .escuela(let escuela): escuela.tipos
+        case .region(let region): region.tipos.filter { $0.tradicion == region.tradicion }
         }
     }
 
@@ -39,6 +44,7 @@ public enum Subtradicion: Hashable, Sendable, Codable {
     public func nombre(en notacion: Notacion) -> String {
         switch self {
         case .estilo(let estilo): estilo.nombre(en: notacion)
+        case .escuela(let escuela): escuela.nombre(en: notacion)
         case .region(let region): region.nombre(en: notacion)
         }
     }
@@ -47,6 +53,10 @@ public enum Subtradicion: Hashable, Sendable, Codable {
 extension Subtradicion: Nombrable {}
 
 extension TipoDeEscala {
-    /// Los estilos y las regiones, por ese orden.
-    public var subtradiciones: [Subtradicion] { estilos.map(Subtradicion.estilo) + regiones.map(Subtradicion.region) }
+    /// Los estilos, las escuelas y las regiones de su tradición, por ese orden: la menor húngara, occidental, no tiene
+    /// la región de Hungría, que es de la tradición europea.
+    public var subtradiciones: [Subtradicion] {
+        estilos.map(Subtradicion.estilo) + escuelas.map(Subtradicion.escuela)
+            + regiones.filter { $0.tradicion == tradicion }.map(Subtradicion.region)
+    }
 }

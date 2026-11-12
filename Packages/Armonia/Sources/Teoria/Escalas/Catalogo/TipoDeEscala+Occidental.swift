@@ -27,7 +27,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["menor rumana", "rumana"],
-        estilos: [.popular])
+        estilos: [.folclore], regiones: [.ucrania, .rumania])
     public static let frigioDominante = TipoDeEscala(
         nombre: "frigio dominante",
         intervalos: [
@@ -35,7 +35,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["española", "frigio español", "frigio mayor", "frigio ♯3", "frigio ♮3", "dominante ♭9 ♭13"],
-        estilos: [.jazz, .popular])
+        estilos: [.flamenco, .jazz, .popRock])
     public static let lidioSegundaAumentada = TipoDeEscala(
         nombre: "lidio ♯2",
         intervalos: [
@@ -79,7 +79,7 @@ extension TipoDeEscala {
             "acústica", "lidio ♭7", "mixolidio ♯4", "de los armónicos", "armónicos", "de Bartók", "Bartók",
             "nordestina", "escala nordestina",
         ],
-        estilos: [.jazz, .sigloXX])
+        estilos: [.jazz, .deCompositor])
     public static let mixolidioSextaMenor = TipoDeEscala(
         nombre: "mixolidio ♭6",
         intervalos: [

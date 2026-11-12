@@ -116,22 +116,140 @@ el lidio dominante es la acústica de Bartók. Lo dice el estilo, y `TipoDeEscal
 - **jazz**: la escala se elige acorde a acorde (los modos de la menor melódica, las bebop, las disminuidas, las
   pentatónicas del jazz y las de dos tríadas, y los siete modos de la mayor).
 - **blues**: las blues y las pentatónicas de las que salen.
-- **siglo XX**: las simétricas y las de compositor (tonos enteros, disminuidas, Messiaen, Prometeo, Petrushka, la
-  acústica, la cromática).
-- **popular**: las que vienen de una música popular (flamenca, mayor rumana, menor húngara, pentatónicas, gaélicas).
+- **de compositor**: las simétricas y las de compositor (tonos enteros, disminuidas, Messiaen, Prometeo, Petrushka,
+  la acústica, la cromática).
+- **folclore**: las que vienen de una música tradicional europea (mayor rumana, menor húngara, pentatónicas,
+  gaélicas, dórico ♯4).
+- **flamenco**: la flamenca y el frigio dominante.
+- **pop y rock**, también el metal: el frigio dominante, la doble armónica, las pentatónicas.
 - **sintética**: las que salen de rotar o alterar otra, sin repertorio propio (casi todos los modos de la menor y la
   mayor armónicas, de la doble armónica y de las napolitanas).
 
-Las escalas de `todos` son de la tradición occidental (`Tradicion.occidental`), y estos son sus estilos, como la música
-carnática o el gagaku lo son de la India o de Japón. `Estilo.tipos` da las de un estilo, en el orden del
+Los tres últimos son los populares (`Estilo.populares`, `esPopular`). Las escalas de `todos` son de la tradición
+occidental (`Tradicion.occidental`), y estos son sus estilos; las de otras tradiciones tienen escuelas (``Escuela``):
+la música carnática o el gagaku, de la India o de Japón. `Estilo.tipos` da las de un estilo, en el orden del
 catálogo, y en la línea de comandos `armonia escalas --uso jazz` las lista.
 
 ```swift
-TipoDeEscala.dorico.estilos == [.clasica, .jazz]    // true
+TipoDeEscala.dorico.estilos == [.jazz, .clasica]    // true
 Estilo.blues.tipos.count                            // 6
-Estilo.sigloXX.nombre                               // "siglo XX"
-TipoDeEscala.kafi.estilos == [.indostanica]         // true
+Estilo.deCompositor.nombre                          // "de compositor"
+TipoDeEscala.kafi.escuelas == [.indostanica]        // true
 TipoDeEscala.dorico.tradicion                        // .occidental
+```
+
+## Antigua, medieval, tonal: la época de una escala
+
+`TipoDeEscala.epocaDeOrigen` dice cuándo aparece una escala, y `epocasDeUso`, en qué épocas se usa. Las dos son una
+``Epoca`` (antigüedad, Edad Media, Renacimiento, las tres de la época tonal, que son el Barroco, el Clasicismo y el
+Romanticismo, y los siglos XX y XXI), y ninguna se escribe en el catálogo: se
+calculan con lo que ya sabe de cada escala. La de origen es la primera de estas que da algo:
+
+1. la de su año (`TipoDeEscala.anioDeOrigen`, con `Epoca(anio:)`): el de la obra más antigua que da la escala
+   (`documentada`: la menor húngara es del Romanticismo por el libro de Liszt sobre la música gitana de Hungría,
+   de 1859; los tonos enteros, por «Ruslán y Liudmila» de Glinka, de 1842; las octatónicas, por «Sadkó» de
+   Rimski-Kórsakov, de 1867; los modos de Messiaen, por su «Technique de mon langage musical», de 1944; los echoi, por el Theōrētikon de Chrysanthos, de 1832; los makamlar que ya están en Cantemir, por su
+   tratado, de hacia 1700), el de su fuente teórica (`FuenteTeorica.anio`: los géneros de Ptolomeo son de la
+   antigüedad, y los çeşni de Arel-Ezgi-Uzdilek, del siglo XX) o el de su categoría (`CategoriaTradicional.anio`:
+   los mēḷa, de 1660; los thāṭ, de 1909; los grāma y las mūrchanā, del Nāṭyaśāstra; los dastgāh, del radif de
+   hacia 1880; los mugam, de Hacıbəyov, de 1945; los dromoi, del rebético, de los años veinte);
+2. la de su tradición, si es una época (`Tradicion.epoca`): la Grecia antigua, Mesopotamia, el canto gregoriano y el
+   Renacimiento;
+3. en las occidentales de la música clásica, la de las escalas gregorianas y renacentistas con sus mismas notas: el
+   dórico es medieval por el protus, y la mayor renacentista por el jónico de Glareano;
+4. en las sintéticas, la de la escala de la que son modo (`Escala.escalaMadre`);
+5. en las sintéticas y las populares, la de las escalas de las que son un modo: la doble armónica y el ultrafrigio,
+   la de la menor húngara; la mayor locria, la de la napolitana mayor. Las populares solo la toman de una escala
+   documentada: la flamenca tiene las notas de un modo de una escala de jazz, pero no viene del jazz;
+6. la más antigua de las de uso de sus estilos (`Estilo.epocasDeUso`): la clásica da el Barroco, y el jazz, el
+   blues y el siglo XX, el siglo XX.
+
+Las de uso son las de sus estilos, sin la de origen: la clásica da las tres de la época tonal (`Epoca.tonales`), el
+jazz y el blues, los siglos XX y XXI, y las de compositor, el XX. Las populares que no salen por ninguna regla (la flamenca, la
+mayor rumana) no tienen época de origen.
+
+```swift
+TipoDeEscala.dorico.epocaDeOrigen == .edadMedia              // true
+TipoDeEscala.dorico.epocasDeUso.first == .barroco           // true
+TipoDeEscala.mayor.epocaDeOrigen == .renacimiento            // true
+TipoDeEscala.alterada.epocaDeOrigen == .sigloXX              // true
+TipoDeEscala.menorHungara.documentada?.anio == 1859          // true
+TipoDeEscala.dobleArmonica.epocaDeOrigen == .romanticismo    // true
+Epoca.romanticismo.nombre                                    // "Romanticismo"
+```
+
+La época de origen es la de sus notas. La de su nombre (`TipoDeEscala.epocaDelNombre`) es otra en las que se llaman
+como se llaman desde otra época: la mayor tiene las notas del jónico de Glareano, del Renacimiento, pero se llama
+«mayor» desde que la teoría francesa del Barroco deja solo dos modos; los modos llevan los nombres griegos desde la
+«Alia musica», de hacia 900.
+
+```swift
+TipoDeEscala.mayor.epocaDelNombre == .barroco                // true
+TipoDeEscala.dorico.epocaDelNombre == .edadMedia             // true
+```
+
+### El período en cada tradición
+
+Las épocas son europeas: que un tratado indio sea «de la Edad Media» es una etiqueta de fuera. `TipoDeEscala.periodo`
+da el ``PeriodoMusical`` de su tradición en que aparece, con los nombres que se usan en ella: en la India, el védico,
+el del Nāṭyaśāstra, el del Saṅgītaratnākara, el de los mēḷa y el de Bhātkhaṇḍe; en el mundo árabe, Persia y
+Azerbaiyán, el abasí, la escuela sistematista, el otomano y safávida y, en el mundo árabe, desde el Congreso de El
+Cairo, y en Persia, el qayar; en Turquía, además, los de Cantemir, de Selim III y de Arel-Ezgi-Uzdilek; en China, las dinastías, y en Japón,
+los períodos de su historia. Sale de su tradición y de su año, con `PeriodoMusical.de(_:anio:)`, y es `nil` en las
+tradiciones sin períodos propios y en las escalas sin año. `PeriodoMusical.periodos(de:)` da los de una tradición, en
+orden, y `TipoDeEscala.periodosDeUso`, los que vienen después del suyo, en los que se sigue usando: las tradiciones
+con períodos siguen vivas, salvo la del Nāṭyaśāstra.
+
+```swift
+TipoDeEscala.melakarta(29)?.periodo == .mela                // true
+TipoDeEscala.rastMakami.periodo == .cantemir                // true
+TipoDeEscala.rastDortlusu.periodo == .arelEzgiUzdilek       // true
+TipoDeEscala.rastMakami.periodosDeUso == [.selimIII, .arelEzgiUzdilek]   // true
+PeriodoMusical.mela.nombre                                  // "período de los mēḷa"
+```
+
+## Flamenca, rumana, persa: de dónde viene una escala
+
+La tradición (`TipoDeEscala.tradicion`) dice de qué música es una escala; los lugares, de dónde viene y dónde se usa.
+Un ``Lugar`` es un ``Continente``, una ``ZonaMusical`` (las del mundo árabe: el Levante, Egipto, Irak, el Golfo y el
+Magreb), un ``Pais``, un ``LugarHistorico`` (Bizancio, Mesopotamia, la Grecia antigua, con los países de hoy en su
+territorio), un ``Pueblo`` que vive en varios países (el gitano, los judíos asquenazíes) o una ``RegionDeEscala`` (una
+región o un pueblo de un sitio, como los mandinga). `contenidoEn` da los que lo contienen (Andalucía está en España,
+que está en Europa) y `esta(en:)` lo pregunta.
+
+`TipoDeEscala.lugaresDeOrigen` da los más concretos que se saben:
+
+1. sus regiones y sus pueblos: el sléndro es de Java y de Bali; las occidentales populares que vienen de un lugar lo
+   declaran también (la flamenca, de Andalucía; la mayor rumana, de Rumanía); la menor húngara es de Hungría y del
+   pueblo gitano, y el klezmer, de los judíos asquenazíes;
+2. el lugar histórico de su tradición: los echoi, de Bizancio;
+3. las zonas de su tradición: Bayātī, del Levante, Egipto, Irak, el Golfo y el Magreb;
+4. los países de sus estilos, si todos los tienen (la alterada y la blues, de Estados Unidos por el jazz y el blues),
+   o los de su tradición (Bilāval, de la India);
+5. los continentes de su tradición: la mayor, de Europa.
+
+`paisesDeOrigen` y `continentesDeOrigen` dan los de cada nivel.
+
+`TipoDeEscala.lugaresDeUso` da dónde se usa también, aunque no venga de allí: los países de sus estilos que no son de
+origen (el dórico, de Europa, también en Estados Unidos por el jazz) y los lugares de origen de sus parientes, las
+escalas de otras tradiciones que son la misma con un nombre que viene de ella (`TipoDeEscala.familias`). El frigio
+dominante se usa así en el mundo árabe (Ḥijāz), en Turquía (Hicaz makamı), en Grecia (el dromos Hitzáz) y entre los
+judíos asquenazíes (el Freygish). Las demás escalas con sus mismas notas son coincidencias, no usos, y van aparte en
+`lugaresQueCoinciden`: la mayor coincide con Bilāval, pero no se usa en la India.
+
+Hay nombres que parecen decir de dónde viene la escala y no lo dicen. La persa, la egipcia y la oriental son etiquetas
+exóticas de los libros de escalas, y las napolitanas se llaman así por la sexta napolitana: están en
+`TipoDeEscala.nombresGeograficosSinOrigen`, `nombreGeograficoSinOrigen` lo dice de cada una, y son de Europa, como las
+demás occidentales.
+
+```swift
+TipoDeEscala.flamenca.lugaresDeOrigen == [.region(.andalucia)]   // true
+TipoDeEscala.flamenca.paisesDeOrigen == [.espana]                // true
+TipoDeEscala.mayor.lugaresDeOrigen == [.continente(.europa)]     // true
+TipoDeEscala.alterada.lugaresDeOrigen == [.pais(.estadosUnidos)] // true
+TipoDeEscala.echosProtos.paisesDeOrigen == [.grecia, .turquia]   // true
+TipoDeEscala.persa.nombreGeograficoSinOrigen                     // true
+Lugar.region(.andalucia).contenidoEn == [.pais(.espana), .continente(.europa)] // true
 ```
 
 ## Escalas de otras tradiciones

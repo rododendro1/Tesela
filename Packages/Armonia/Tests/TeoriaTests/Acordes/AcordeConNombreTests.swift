@@ -55,7 +55,7 @@ import Testing
         #expect(AcordeConNombre.mistico.referencias.map(\.id) == ["samson1977:156–157"])
         #expect(AcordeConNombre.mistico.alias == ["acorde de Prometeo"])
         #expect(AcordeConNombre.soWhat.estilos == [.jazz])
-        #expect(AcordeConNombre.porCuartas.estilos == [.jazz, .sigloXX])
+        #expect(AcordeConNombre.porCuartas.estilos == [.jazz, .deCompositor])
         #expect(AcordeConNombre.tristan.nombre(en: .conPalabras(.ingles)) == "Tristan chord")
         #expect(AcordeConNombre.mistico.nombre(en: .conPalabras(.aleman)) == "mystischer Akkord")
     }

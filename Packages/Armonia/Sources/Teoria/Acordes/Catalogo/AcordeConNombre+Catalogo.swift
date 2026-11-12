@@ -20,7 +20,7 @@ extension AcordeConNombre {
     public static let sus4 = AcordeConNombre(
         nombre: "suspendido de cuarta", intervalos: [.unisono, .cuartaJusta, .quintaJusta], referencias: [.levine1995])
     public static let potencia = AcordeConNombre(
-        nombre: "quinta (acorde de potencia)", intervalos: [.unisono, .quintaJusta], estilos: [.popular],
+        nombre: "quinta (acorde de potencia)", intervalos: [.unisono, .quintaJusta], estilos: [.popRock],
         referencias: [.walser1993])
     public static let dominanteSeptima = AcordeConNombre(
         nombre: "séptima de dominante", intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMenor],

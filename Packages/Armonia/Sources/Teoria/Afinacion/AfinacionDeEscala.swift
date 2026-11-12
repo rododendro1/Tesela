@@ -115,8 +115,7 @@ extension Estilo {
     public var temperamentoSugerido: TemperamentoQueAfina? {
         switch self {
         case .clasica: return .werckmeisterIII
-        case .jazz, .blues, .sigloXX, .popular, .sintetica: return .temperamentoIgual
-        case .carnatica, .indostanica, .indiaAntigua, .gagaku: return nil
+        case .jazz, .blues, .deCompositor, .folclore, .flamenco, .popRock, .sintetica: return .temperamentoIgual
         }
     }
 

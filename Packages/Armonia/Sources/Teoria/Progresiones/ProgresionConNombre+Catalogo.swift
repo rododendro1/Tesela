@@ -50,7 +50,7 @@ extension ProgresionConNombre {
     public static let romanesca = ProgresionConNombre(
         nombre: "romanesca", cifrado: "I V vi iii", estilos: [.clasica], referencias: [.gjerdingen2007])
     public static let pachelbel = ProgresionConNombre(
-        nombre: "canon de Pachelbel", cifrado: "I V vi iii IV I IV V", estilos: [.clasica, .popular],
+        nombre: "canon de Pachelbel", cifrado: "I V vi iii IV I IV V", estilos: [.clasica, .popRock],
         referencias: [.gjerdingen2007])
     /// La misma cadencia dos veces, un grado más arriba.
     public static let monte = ProgresionConNombre(
@@ -134,10 +134,10 @@ extension ProgresionConNombre {
     /// Un acorde por compás.
     public static let blues = ProgresionConNombre(
         nombre: "blues de 12 compases", cifrado: "I7 I7 I7 I7 IV7 IV7 I7 I7 V7 IV7 I7 I7", alias: ["blues"],
-        estilos: [.jazz, .blues], referencias: [.levine1995])
+        estilos: [.blues, .jazz], referencias: [.levine1995])
     public static let bluesMenor = ProgresionConNombre(
         nombre: "blues menor", cifrado: "i7 i7 i7 i7 iv7 iv7 i7 i7 VI7 V7 i7 i7", modo: .menor,
-        estilos: [.jazz, .blues], referencias: [.levine1995])
+        estilos: [.blues, .jazz], referencias: [.levine1995])
     /// La sección A de «I Got Rhythm» (Gershwin, 1930).
     public static let rhythmChanges = ProgresionConNombre(
         nombre: "rhythm changes", cifrado: "Imaj7 vi7 ii7 V7 iii7 vi7 ii7 V7 Imaj7 I7 IVmaj7 iv7 iii7 vi7 ii7 V7",
@@ -167,25 +167,25 @@ extension ProgresionConNombre {
 
     public static let ejePop = ProgresionConNombre(
         nombre: "I–V–vi–IV", cifrado: "I V vi IV", alias: ["progresión de los cuatro acordes"],
-        estilos: [.popular], referencias: [.doll2017])
+        estilos: [.popRock], referencias: [.doll2017])
     public static let deLos50 = ProgresionConNombre(
-        nombre: "progresión de los 50", cifrado: "I vi IV V", alias: ["progresión doo-wop"], estilos: [.popular],
+        nombre: "progresión de los 50", cifrado: "I vi IV V", alias: ["progresión doo-wop"], estilos: [.popRock],
         referencias: [.doll2017])
     public static let eolica = ProgresionConNombre(
-        nombre: "♭VI–♭VII–I", cifrado: "♭VI ♭VII I", alias: ["cadencia eólica"], estilos: [.popular],
+        nombre: "♭VI–♭VII–I", cifrado: "♭VI ♭VII I", alias: ["cadencia eólica"], estilos: [.popRock],
         referencias: [.doll2017])
     public static let andaluza = ProgresionConNombre(
         nombre: "cadencia andaluza", cifrado: "i VII VI V", modo: .menor, alias: ["tetracordo andaluz"],
-        estilos: [.popular], referencias: [.manuel1989])
+        estilos: [.flamenco, .popRock], referencias: [.manuel1989])
     public static let mixolidia = ProgresionConNombre(
-        nombre: "I–♭VII–IV", cifrado: "I ♭VII IV", alias: ["progresión mixolidia"], estilos: [.popular])
+        nombre: "I–♭VII–IV", cifrado: "I ♭VII IV", alias: ["progresión mixolidia"], estilos: [.popRock])
     public static let eolicaRock = ProgresionConNombre(
-        nombre: "i–♭VII–♭VI–♭VII", cifrado: "i VII VI VII", modo: .menor, estilos: [.popular])
+        nombre: "i–♭VII–♭VI–♭VII", cifrado: "i VII VI VII", modo: .menor, estilos: [.popRock])
     public static let laBamba = ProgresionConNombre(
-        nombre: "I–IV–V–IV", cifrado: "I IV V IV", alias: ["progresión de La Bamba"], estilos: [.popular])
+        nombre: "I–IV–V–IV", cifrado: "I IV V IV", alias: ["progresión de La Bamba"], estilos: [.popRock])
     /// La de «Creep» (Radiohead, 1992), con el III mayor y el iv prestado.
     public static let creep = ProgresionConNombre(
-        nombre: "I–III–IV–iv", cifrado: "I III IV iv", alias: ["progresión de Creep"], estilos: [.popular])
+        nombre: "I–III–IV–iv", cifrado: "I III IV iv", alias: ["progresión de Creep"], estilos: [.popRock])
 
     /// Todas, en este orden: la armonía tonal, el barroco, el galante y las danzas, el jazz y el blues, y el pop.
     public static let catalogo: [ProgresionConNombre] = [

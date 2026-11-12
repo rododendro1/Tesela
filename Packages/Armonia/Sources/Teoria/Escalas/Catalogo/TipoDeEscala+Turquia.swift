@@ -33,7 +33,7 @@ extension TipoDeEscala {
         categoria: .makam,
         afinaciones: [
             .init(.comas53, pasos: [0, 9, 17, 22, 31, 40, 48], pasosDescendentes: [0, 9, 17, 22, 31, 40, 44])
-        ])
+        ], documentada: .cantemir1700)
     /// Hicaz (La Si♭ Do♯ Re | Mi Fa♯ Sol): un tetracordo Hicaz y, al subir, un pentacordo Rast en la cuarta;
     /// al bajar, Fa, como el frigio dominante.
     public static let hicazMakami = TipoDeEscala(
@@ -46,7 +46,7 @@ extension TipoDeEscala {
         categoria: .makam,
         afinaciones: [
             .init(.comas53, pasos: [0, 5, 17, 22, 31, 39, 44], pasosDescendentes: [0, 5, 17, 22, 30, 35, 44])
-        ])
+        ], documentada: .cantemir1700)
     /// Hicazkâr (Sol La♭ Si Do Re Mi♭ Fa♯): la doble armónica.
     public static let hicazkarMakami = TipoDeEscala(
         nombre: "Hicazkâr makamı",
@@ -74,7 +74,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Kürdî"],
-        categoria: .makam)
+        categoria: .makam, documentada: .cantemir1700)
     /// Bûselik (La Si Do Re Mi Fa Sol): un pentacordo Bûselik y un tetracordo Kürdî, la menor natural.
     public static let buselikMakami = TipoDeEscala(
         nombre: "Bûselik makamı",
@@ -83,7 +83,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Bûselik"],
-        categoria: .makam)
+        categoria: .makam, documentada: .cantemir1700)
     /// Çârgâh (Do Re Mi Fa Sol La Si): la mayor.
     public static let cargahMakami = TipoDeEscala(
         nombre: "Çârgâh makamı",
@@ -92,7 +92,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         alias: ["makam Çârgâh"],
-        categoria: .makam)
+        categoria: .makam, documentada: .cantemir1700)
     /// Uşşak (La Si Do Re Mi Fa Sol, con Si una koma y media bajo: la segâh): un tetracordo Uşşak y un pentacordo
     /// Bûselik en la cuarta. Aproximado: la menor natural; su segâh solo suena en la versión microtonal.
     public static let ussakMakami = TipoDeEscala(
@@ -102,7 +102,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Uşşak"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31, 35, 44])])
+        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31, 35, 44])], documentada: .cantemir1700
+    )
     /// Hüseynî (La Si Do Re Mi Fa♯ Sol, con la segâh y Fa♯ una koma bajo): un pentacordo Hüseynî y un tetracordo
     /// Uşşak en la quinta; al bajar, Fa. Aproximado: sube como el dórico y baja como la menor natural.
     public static let huseyniMakami = TipoDeEscala(
@@ -115,7 +116,7 @@ extension TipoDeEscala {
         categoria: .makam,
         afinaciones: [
             .init(.comas53, pasos: [0, 8, 13, 22, 31, 39, 44], pasosDescendentes: [0, 8, 13, 22, 31, 35, 44])
-        ])
+        ], documentada: .cantemir1700)
     /// Segâh (Si Do Re Mi Fa♯ Sol La, con Si y Fa♯ una koma bajos): un pentacordo Segâh desde la segâh y un
     /// tetracordo Uşşak en la eviç. Aproximado sobre Si: el frigio.
     public static let segahMakami = TipoDeEscala(
@@ -127,7 +128,7 @@ extension TipoDeEscala {
         alias: ["makam Segâh"],
         categoria: .makam,
         // Segâh, desde la segâh (Si una koma bajo): sobre Si, el primer paso es −1.
-        afinaciones: [.init(.comas53, pasos: [-1, 4, 13, 22, 30, 35, 44])])
+        afinaciones: [.init(.comas53, pasos: [-1, 4, 13, 22, 30, 35, 44])], documentada: .cantemir1700)
     /// Hüzzam (Si Do Re Mi♭ Fa♯ Sol La, desde la segâh, con Si y Fa♯ una koma bajos y Mi♭ una alto): un pentacordo
     /// Hüzzam y un tetracordo Hicaz en la nevâ. Aproximado sobre Si.
     public static let huzzamMakami = TipoDeEscala(
@@ -149,7 +150,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Saba"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 18, 31, 35, 44])])
+        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 18, 31, 35, 44])], documentada: .cantemir1700
+    )
     /// Karcığar (La Si Do Re Mi♭ Fa♯ Sol): un tetracordo Uşşak y un pentacordo Hicaz en la cuarta, como el dromos
     /// Kartzigár.
     public static let karcigarMakami = TipoDeEscala(
@@ -196,7 +198,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         alias: ["makam Mâhur"],
-        categoria: .makam)
+        categoria: .makam, documentada: .cantemir1700)
     /// Acemaşiran (Fa Sol La Si♭ Do Re Mi): Çârgâh llevado a la acemaşiran, con el Si♭ (kürdî) en la armadura.
     public static let acemasiranMakami = TipoDeEscala(
         nombre: "Acemaşiran makamı",
@@ -241,7 +243,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Hümâyun"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 35, 44])])
+        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 35, 44])], documentada: .cantemir1700
+    )
     /// Uzzâl (La Si♭ Do♯ Re Mi Fa♯ Sol): un pentacordo Hicaz y un tetracordo Uşşak en la hüseynî, con las notas
     /// de Hicaz al subir.
     public static let uzzalMakami = TipoDeEscala(
@@ -251,7 +254,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["makam Uzzâl"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 39, 44])])
+        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 39, 44])], documentada: .cantemir1700
+    )
     /// Zirgüleli Hicaz (La Si♭ Do♯ Re Mi Fa Sol♯): un pentacordo Hicaz y un tetracordo Hicaz en la hüseynî, la doble
     /// armónica.
     public static let zirguleliHicazMakami = TipoDeEscala(
@@ -282,7 +286,8 @@ extension TipoDeEscala {
         nombre: "Muhayyer makamı",
         intervalos: TipoDeEscala.dorico.intervalos,
         alias: ["makam Muhayyer"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31, 39, 44])])
+        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31, 39, 44])], documentada: .cantemir1700
+    )
     /// Ferahfezâ (Re Mi Fa Sol La Si♭ Do): las notas de Acemaşiran con un pentacordo Bûselik en la yegâh, donde
     /// reposa: la menor natural sobre Re.
     public static let ferahfezaMakami = TipoDeEscala(
@@ -302,7 +307,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Isfahan"], variantes: ["İsfahan makamı"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31, 35, 44])])
+        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31, 35, 44])], documentada: .cantemir1700
+    )
 
     /// Los makamlar: los que el temperamento igual escribe sin cambiarles el carácter y los que solo se oyen bien
     /// con su versión microtonal (Uşşak, Hüseynî y Segâh).
@@ -324,53 +330,53 @@ extension TipoDeEscala {
     /// Do Re Mi Fa.
     public static let cargahDortlusu = TipoDeEscala(
         nombre: "Çârgâh dörtlüsü", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta],
-        categoria: .cesni)
+        categoria: .cesni, fuente: .arelEzgiUzdilek)
     /// Do Re Mi Fa Sol.
     public static let cargahBeslisi = TipoDeEscala(
         nombre: "Çârgâh beşlisi", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta],
-        categoria: .cesni)
+        categoria: .cesni, fuente: .arelEzgiUzdilek)
     /// La Si Do Re.
     public static let buselikDortlusu = TipoDeEscala(
         nombre: "Bûselik dörtlüsü", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta],
-        categoria: .cesni)
+        categoria: .cesni, fuente: .arelEzgiUzdilek)
     /// La Si Do Re Mi.
     public static let buselikBeslisi = TipoDeEscala(
         nombre: "Bûselik beşlisi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta],
-        categoria: .cesni)
+        categoria: .cesni, fuente: .arelEzgiUzdilek)
     /// La Si♭ Do Re.
     public static let kurdiDortlusu = TipoDeEscala(
         nombre: "Kürdî dörtlüsü", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta],
-        categoria: .cesni)
+        categoria: .cesni, fuente: .arelEzgiUzdilek)
     /// La Si♭ Do Re Mi.
     public static let kurdiBeslisi = TipoDeEscala(
         nombre: "Kürdî beşlisi", intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta],
-        categoria: .cesni)
+        categoria: .cesni, fuente: .arelEzgiUzdilek)
     /// Sol La Si Do, con Si una koma bajo.
     public static let rastDortlusu = TipoDeEscala(
         nombre: "Rast dörtlüsü", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta],
-        categoria: .cesni,
+        categoria: .cesni, fuente: .arelEzgiUzdilek,
         // Çeşni.
         afinaciones: [.init(.comas53, pasos: [0, 9, 17, 22])])
     /// Sol La Si Do Re, con Si una koma bajo.
     public static let rastBeslisi = TipoDeEscala(
         nombre: "Rast beşlisi", intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta],
-        categoria: .cesni, afinaciones: [.init(.comas53, pasos: [0, 9, 17, 22, 31])])
+        categoria: .cesni, fuente: .arelEzgiUzdilek, afinaciones: [.init(.comas53, pasos: [0, 9, 17, 22, 31])])
     /// La Si Do Re, con la segâh (Si una koma bajo). Aproximado: La Si Do Re.
     public static let ussakDortlusu = TipoDeEscala(
         nombre: "Uşşak dörtlüsü", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta],
-        categoria: .cesni, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22])])
+        categoria: .cesni, fuente: .arelEzgiUzdilek, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22])])
     /// La Si Do Re Mi, con la segâh.
     public static let ussakBeslisi = TipoDeEscala(
         nombre: "Uşşak beşlisi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta],
-        categoria: .cesni, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31])])
+        categoria: .cesni, fuente: .arelEzgiUzdilek, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31])])
     /// La Si♭ Do♯ Re.
     public static let hicazDortlusu = TipoDeEscala(
         nombre: "Hicaz dörtlüsü", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta],
-        categoria: .cesni, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22])])
+        categoria: .cesni, fuente: .arelEzgiUzdilek, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22])])
     /// La Si♭ Do♯ Re Mi.
     public static let hicazBeslisi = TipoDeEscala(
         nombre: "Hicaz beşlisi", intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta],
-        categoria: .cesni, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31])])
+        categoria: .cesni, fuente: .arelEzgiUzdilek, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31])])
 
     package static let cesniler: [TipoDeEscala] = [
         .cargahDortlusu, .cargahBeslisi, .buselikDortlusu, .buselikBeslisi, .kurdiDortlusu, .kurdiBeslisi,

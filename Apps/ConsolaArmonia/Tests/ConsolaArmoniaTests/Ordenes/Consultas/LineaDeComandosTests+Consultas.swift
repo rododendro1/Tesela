@@ -137,14 +137,49 @@ extension LineaDeComandosTests {
         let jazz = salida("escalas --uso jazz")
         #expect(jazz.contains("  alterada: "), Comment(rawValue: jazz))
         #expect(!jazz.contains("  menor melódica: "), Comment(rawValue: jazz))
-        #expect(salida("escalas --use 20th-century") == salida("escalas --uso siglo-xx"))
-        #expect(salida("escalas --uso siglo-xx").contains("  modo 3 de Messiaen: "))
+        #expect(salida("escalas --use composer") == salida("escalas --uso de-compositor"))
+        #expect(salida("escalas --uso siglo-xx") == salida("escalas --uso de-compositor"))
+        #expect(salida("escalas --uso de-compositor").hasPrefix("habituales · de compositor ("))
+        #expect(salida("escalas --uso de-compositor").contains("  modo 3 de Messiaen: "))
+        // Los populares: el folclore, el flamenco y el pop y el rock, cada uno o los tres con `popular`.
+        #expect(salida("escalas --uso flamenco").hasPrefix("habituales · flamenco (2)\n"))
+        #expect(salida("escalas --use folk").contains("  mayor rumana: "))
+        let populares = salida("escalas --uso popular")
+        #expect(populares.hasPrefix("habituales · popular ("), Comment(rawValue: populares))
+        #expect(populares.contains("  flamenca: ") && populares.contains("  mayor rumana: "))
         #expect(salida("scales --use jazz --ingles").hasPrefix("common · jazz ("))
         // Con un texto, busca dentro del uso; con una tradición, no hay ninguna.
         #expect(salida("escalas bebop --uso jazz").hasPrefix("habituales · jazz (7)\n"))
         #expect(resultado("escalas", "--uso", "jazz", "--tradicion", "japon").codigo == 1)
         #expect(resultado("escalas", "--uso", "jaz").error.contains("«jazz»"))
         #expect(resultado("escalas", "--uso").codigo == 2)
+    }
+
+    /// `escalas --lugar`: las de un lugar, de origen o de uso, por su clave, su nombre o su código ISO; `--agrupar`,
+    /// por continente o por país de origen.
+    @Test func escalasPorLugar() {
+        let andalucia = salida("escalas --lugar andalucia")
+        #expect(andalucia == "habituales (1)\n  flamenca: Do Re♭ Mi♭ Mi Fa Sol La♭ Si♭\n", Comment(rawValue: andalucia))
+        #expect(salida("escalas --place andalusia") == andalucia)
+        #expect(salida("escalas --lugar Andalucía") == andalucia)
+        // Andalucía está en España y en Europa: las de España están entre las de Europa.
+        #expect(salida("escalas --lugar espana").contains("  flamenca: "))
+        #expect(salida("escalas --lugar europa").contains("  flamenca: "))
+        #expect(salida("escalas --lugar romani").contains("  menor húngara: "))
+        // Las de uso también: el frigio dominante se usa en el Levante por Ḥijāz.
+        let levante = salida("escalas --lugar levante")
+        #expect(levante.contains("  frigio dominante: "), Comment(rawValue: levante))
+        #expect(salida("escalas --lugar US --notas 5").contains("  pentatónica mayor: "))
+        #expect(resultado("escalas", "--lugar", "espanya").error.contains("«espana»"))
+        #expect(resultado("escalas", "--lugar").codigo == 2)
+        let continentes = salida("escalas --agrupar continente")
+        #expect(continentes.hasPrefix("Europa ("), Comment(rawValue: String(continentes.prefix(200))))
+        #expect(continentes.contains("\n\nAsia ("))
+        #expect(salida("scales --group-by continent --ingles").hasPrefix("Europe ("))
+        let paises = salida("escalas --agrupar pais --lugar europa")
+        #expect(paises.hasPrefix("España (1)\n  flamenca: "), Comment(rawValue: String(paises.prefix(200))))
+        #expect(paises.contains("\n\nEuropa ("), Comment(rawValue: paises))
+        #expect(resultado("escalas", "--agrupar", "x").error.contains("continente"))
     }
 
     /// `escalas --notas 5`: solo las de cinco notas, de las habituales y de las otras tradiciones.
