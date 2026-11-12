@@ -310,6 +310,7 @@ extension TextosDeTeoria {
         fuenteZarlino: "Zarlino",
         fuenteSalinas: "Salinas",
         fuenteZhuZaiyu: "Csu Caj-jü",
+        fuenteArelEzgiUzdilek: "Arel–Ezgi–Uzdilek",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{2} {1}",
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).

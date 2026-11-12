@@ -313,6 +313,7 @@ extension TextosDeTeoria {
         fuenteZarlino: "Zarlino",
         fuenteSalinas: "Salinas",
         fuenteZhuZaiyu: "Zhu Zaiyu",
+        fuenteArelEzgiUzdilek: "Arel-Ezgi-Uzdilek",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{2} {1}",
         enLaTonalidad: { tonalidad in Tonalidad.declinar(tonalidad, "ean") }

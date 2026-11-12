@@ -310,6 +310,7 @@ extension TextosDeTeoria {
         fuenteZarlino: "Τσαρλίνο",
         fuenteSalinas: "Σαλίνας",
         fuenteZhuZaiyu: "Τζου Τσάιγιου",
+        fuenteArelEzgiUzdilek: "Αρέλ-Εζγκί-Ουζντιλέκ",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{1} στο {2}",
         enLaTonalidad: { tonalidad in "σε " + tonalidad }

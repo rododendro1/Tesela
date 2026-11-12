@@ -310,6 +310,7 @@ extension TextosDeTeoria {
         fuenteZarlino: "Царлино",
         fuenteSalinas: "Салинас",
         fuenteZhuZaiyu: "Чжу Цзайюй",
+        fuenteArelEzgiUzdilek: "Арел-Эзги-Уздилек",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{1} от {2}",
         enLaTonalidad: { tonalidad in "в " + (tonalidad.hasSuffix("мажор") || tonalidad.hasSuffix("минор") ? tonalidad + "е" : tonalidad) }

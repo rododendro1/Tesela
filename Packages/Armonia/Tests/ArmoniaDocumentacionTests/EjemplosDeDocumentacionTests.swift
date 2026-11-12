@@ -569,7 +569,9 @@ import Hexagonos
         comprobar(TipoDeEscala.dorico.epocasDeUso == [.tonal, .sigloXX], #"true"#, doc, 1)
         comprobar(TipoDeEscala.mayor.epocaDeOrigen == .renacimiento, #"true"#, doc, 2)
         comprobar(TipoDeEscala.alterada.epocaDeOrigen == .sigloXX, #"true"#, doc, 3)
-        comprobar(Epoca.tonal.nombre, #""época tonal""#, doc, 4)
+        comprobar(TipoDeEscala.menorHungara.documentada?.anio == 1859, #"true"#, doc, 4)
+        comprobar(TipoDeEscala.dobleArmonica.epocaDeOrigen == .tonal, #"true"#, doc, 5)
+        comprobar(Epoca.tonal.nombre, #""época tonal""#, doc, 6)
     }
 
     @Test func escalas5() throws {

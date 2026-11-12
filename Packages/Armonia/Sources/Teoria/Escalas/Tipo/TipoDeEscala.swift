@@ -61,12 +61,13 @@ public struct TipoDeEscala: Sendable, Codable {
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
         variantes: [String] = [], estilos: [Estilo], regiones: [RegionDeEscala] = [],
-        afinaciones: [FichaDeEscala.Afinacion] = []
+        afinaciones: [FichaDeEscala.Afinacion] = [], documentada: Referencia? = nil
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
             variantes: variantes,
-            ficha: FichaDeEscala(estilos: estilos, regiones: regiones, afinaciones: afinaciones))
+            ficha: FichaDeEscala(
+                estilos: estilos, regiones: regiones, afinaciones: afinaciones, documentada: documentada))
     }
 
     /// Una escala de otra tradición, con su categoría y, si los tiene, sus estilos (si no los da la categoría), sus
@@ -78,7 +79,7 @@ public struct TipoDeEscala: Sendable, Codable {
         variantes: [String] = [], tradicion: Tradicion? = nil, categoria: CategoriaTradicional,
         estilos: [Estilo] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
         padre: TipoDeEscala? = nil,
-        afinaciones: [FichaDeEscala.Afinacion] = [], referencias: [Referencia] = []
+        afinaciones: [FichaDeEscala.Afinacion] = [], referencias: [Referencia] = [], documentada: Referencia? = nil
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
@@ -87,7 +88,7 @@ public struct TipoDeEscala: Sendable, Codable {
                 tradicion: tradicion, estilos: estilos, regiones: regiones, categoria: categoria,
                 padre: padre?.identidad,
                 afinaciones: afinaciones,
-                fuente: fuente, referencias: referencias))
+                fuente: fuente, referencias: referencias, documentada: documentada))
     }
 
     init(

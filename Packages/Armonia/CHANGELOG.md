@@ -9,6 +9,12 @@
   tradición, las escalas gregorianas y renacentistas con sus mismas notas, su escala madre o sus estilos), y
   `epocasDeUso` da las de sus estilos: el dórico es medieval y se usa en la época tonal y en el siglo XX.
   `FuenteTeorica.epoca`, `Tradicion.epoca` y `Estilo.epocaDeUso` dan las de cada una.
+- `TipoDeEscala.documentada`, la obra más antigua que da una escala, con su año: su época de origen sale de ahí antes
+  que de ninguna otra regla (`Epoca(anio:)`). La tienen la menor húngara (Liszt, 1859), los echoi bizantinos
+  (Chrysanthos, 1832) y los makamlar que ya están en Cantemir (hacia 1700). Las sintéticas toman además la época de
+  las escalas de las que son un modo, y las populares, la de las documentadas: la doble armónica y sus modos son de la
+  época tonal por la menor húngara, y la mayor locria, por la napolitana mayor.
+- `FuenteTeorica.arelEzgiUzdilek`, la teoría turca de hoy: los doce çeşni (dörtlü y beşli) son suyos, del siglo XX.
 - `Lugar`, de dónde viene una escala, en tres niveles: `Continente`, `Pais` (con su `codigoISO` y su continente) y
   `RegionDeEscala`, con su nombre en los trece idiomas; `contenidoEn` da los que lo contienen (Andalucía, en España,
   en Europa). `RegionDeEscala.paises`, `Tradicion.paises` y `Tradicion.continentes` dicen dónde está cada una.

@@ -71,14 +71,17 @@ package struct FichaDeEscala: Sendable {
     package let fuente: FuenteTeorica?
     /// Dónde se lee la escala, además de las obras de su lista en `listasTradicionales` y la de su fuente.
     package let referencias: [Referencia]
+    /// La obra más antigua que da la escala, con su año: de ahí sale su época de origen.
+    package let documentada: Referencia?
 
     package init(
         tradicion: Tradicion? = nil, estilos: [Estilo] = [], regiones: [RegionDeEscala] = [],
         categoria: CategoriaTradicional? = nil,
         padre: IdentidadDeEscala? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil,
-        referencias: [Referencia] = []
+        referencias: [Referencia] = [], documentada: Referencia? = nil
     ) {
         self.referencias = referencias
+        self.documentada = documentada
         let estilos = estilos.isEmpty ? (categoria.flatMap(Estilo.de).map { [$0] } ?? []) : estilos
         self.estilos = Estilo.allCases.filter { estilos.contains($0) }
         self.regiones = RegionDeEscala.allCases.filter { regiones.contains($0) }
@@ -136,20 +139,27 @@ extension TipoDeEscala {
                     referencias: $0.referencias)
             }
             let referencias = Referencia.unicas(
-                tipo.ficha.referencias + [tipo.ficha.fuente?.referencia].compactMap { $0 }
+                tipo.ficha.referencias + [tipo.ficha.documentada, tipo.ficha.fuente?.referencia].compactMap { $0 }
                     + (deSuLista[tipo.identidad] ?? []) + afinaciones.flatMap(\.referencias))
             tabla[tipo.identidad] = EntradaDelCatalogo(tipo: tipo, afinaciones: afinaciones, referencias: referencias)
         }
         return tabla
     }()
 
-    /// Dónde se lee la escala: las obras que cita su declaración, la de su fuente, las de su lista y las de sus
+    /// Dónde se lee la escala: las obras que cita su declaración, la que la documenta, la de su fuente, las de su lista y las de sus
     /// afinaciones, sin repetir; en las occidentales, las de `referenciasOccidentales`. Vacío en las propias y en las
     /// occidentales sintéticas.
     ///
     ///     TipoDeEscala.bayati.referencias.map(\.cita)   // ["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019"]
     ///     TipoDeEscala.lidioDominante.referencias.map(\.cita)   // ["Levine 1995", "Persichetti 1961", "Lendvai 1971", "Tymoczko 2011"]
     public var referencias: [Referencia] { TipoDeEscala.delCatalogo[identidad]?.referencias ?? [] }
+
+    /// La obra más antigua que da la escala, con su año (`Referencia.anio`), si se sabe: la menor húngara, el libro de
+    /// Liszt sobre la música gitana de Hungría (1859); los echoi, el Theōrētikon de Chrysanthos (1832). De ahí sale
+    /// su época de origen, por delante de las demás reglas (`epocaDeOrigen`). `nil` en las demás. Por su identidad.
+    ///
+    ///     TipoDeEscala.menorHungara.documentada?.anio   // 1859
+    public var documentada: Referencia? { fichaDelCatalogo.documentada }
 
     /// Una copia con estos estilos: para las escalas del catálogo que salen de una función (las cromáticas).
     package func con(estilos: [Estilo]) -> TipoDeEscala {
