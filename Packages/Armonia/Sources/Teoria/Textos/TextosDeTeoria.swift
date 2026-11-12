@@ -338,6 +338,28 @@ struct TextosDeTeoria: TextosTraducidos {
     let paisPeru: String
     let paisBolivia: String
     let paisEcuador: String
+    let paisEstadosUnidos: String
+    let paisSiria: String
+    let paisLibano: String
+    let paisPalestina: String
+    let paisJordania: String
+    let paisEgipto: String
+    let paisArabiaSaudi: String
+    let paisKuwait: String
+    let paisBarein: String
+    let paisCatar: String
+    let paisEmiratos: String
+    let paisOman: String
+    let paisYemen: String
+    let paisMarruecos: String
+    let paisArgelia: String
+    let paisTunez: String
+    let paisLibia: String
+    let zonaLevante: String
+    let zonaGolfo: String
+    let zonaMagreb: String
+    let puebloRomani: String
+    let puebloAsquenazi: String
     let subtradicionGagaku: String
     let subtradicionRyukyu: String
 

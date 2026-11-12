@@ -189,19 +189,32 @@ PeriodoMusical.mela.nombre                                  // "período de los 
 
 ## Flamenca, rumana, persa: de dónde viene una escala
 
-La tradición (`TipoDeEscala.tradicion`) dice de qué música es una escala; los lugares, de dónde viene y dónde se toca.
-Un ``Lugar`` es de uno de tres niveles: un ``Continente``, un ``Pais`` o una ``RegionDeEscala`` (una región o un
-pueblo), y `contenidoEn` da los que lo contienen: Andalucía está en España, que está en Europa.
+La tradición (`TipoDeEscala.tradicion`) dice de qué música es una escala; los lugares, de dónde viene y dónde se usa.
+Un ``Lugar`` es un ``Continente``, una ``ZonaMusical`` (las del mundo árabe: el Levante, Egipto, Irak, el Golfo y el
+Magreb), un ``Pais``, un ``LugarHistorico`` (Bizancio, Mesopotamia, la Grecia antigua, con los países de hoy en su
+territorio), un ``Pueblo`` que vive en varios países (el gitano, los judíos asquenazíes) o una ``RegionDeEscala`` (una
+región o un pueblo de un sitio, como los mandinga). `contenidoEn` da los que lo contienen (Andalucía está en España,
+que está en Europa) y `esta(en:)` lo pregunta.
 
-`TipoDeEscala.lugaresDeOrigen` da los más concretos que se saben. Primero, las regiones de su ficha (`regiones`): el
-sléndro es de Java y de Bali, y las occidentales populares que vienen de un lugar lo declaran también, la flamenca de
-Andalucía, la mayor rumana de Rumanía, las húngaras de Hungría. Si no tiene región, los países de su tradición
-(`Tradicion.paises`: Bilāval, de la India); y si tampoco, sus continentes (`Tradicion.continentes`: la mayor, de
-Europa; Bayātī, del mundo árabe, de Asia y de África). `paisesDeOrigen` y `continentesDeOrigen` dan los de cada nivel.
+`TipoDeEscala.lugaresDeOrigen` da los más concretos que se saben:
 
-`TipoDeEscala.lugaresDeUso` da dónde se toca también, aunque no venga de allí: los lugares de origen de las otras
-escalas del catálogo con sus mismas notas, sin los que ya son de origen. El frigio dominante es de Europa y se toca en
-el mundo árabe (Ḥijāz), en Turquía (Hicaz makamı) y en Grecia (el dromos Hitzáz).
+1. sus regiones y sus pueblos: el sléndro es de Java y de Bali; las occidentales populares que vienen de un lugar lo
+   declaran también (la flamenca, de Andalucía; la mayor rumana, de Rumanía); la menor húngara es de Hungría y del
+   pueblo gitano, y el klezmer, de los judíos asquenazíes;
+2. el lugar histórico de su tradición: los echoi, de Bizancio;
+3. las zonas de su tradición: Bayātī, del Levante, Egipto, Irak, el Golfo y el Magreb;
+4. los países de sus estilos, si todos los tienen (la alterada y la blues, de Estados Unidos por el jazz y el blues),
+   o los de su tradición (Bilāval, de la India);
+5. los continentes de su tradición: la mayor, de Europa.
+
+`paisesDeOrigen` y `continentesDeOrigen` dan los de cada nivel.
+
+`TipoDeEscala.lugaresDeUso` da dónde se usa también, aunque no venga de allí: los países de sus estilos que no son de
+origen (el dórico, de Europa, también en Estados Unidos por el jazz) y los lugares de origen de sus parientes, las
+escalas de otras tradiciones que son la misma con un nombre que viene de ella (`TipoDeEscala.familias`). El frigio
+dominante se usa así en el mundo árabe (Ḥijāz), en Turquía (Hicaz makamı), en Grecia (el dromos Hitzáz) y entre los
+judíos asquenazíes (el Freygish). Las demás escalas con sus mismas notas son coincidencias, no usos, y van aparte en
+`lugaresQueCoinciden`: la mayor coincide con Bilāval, pero no se usa en la India.
 
 Hay nombres que parecen decir de dónde viene la escala y no lo dicen. La persa, la egipcia y la oriental son etiquetas
 exóticas de los libros de escalas, y las napolitanas se llaman así por la sexta napolitana: están en
@@ -212,8 +225,9 @@ demás occidentales.
 TipoDeEscala.flamenca.lugaresDeOrigen == [.region(.andalucia)]   // true
 TipoDeEscala.flamenca.paisesDeOrigen == [.espana]                // true
 TipoDeEscala.mayor.lugaresDeOrigen == [.continente(.europa)]     // true
+TipoDeEscala.alterada.lugaresDeOrigen == [.pais(.estadosUnidos)] // true
+TipoDeEscala.echosProtos.paisesDeOrigen == [.grecia, .turquia]   // true
 TipoDeEscala.persa.nombreGeograficoSinOrigen                     // true
-TipoDeEscala.persa.continentesDeOrigen == [.europa]              // true
 Lugar.region(.andalucia).contenidoEn == [.pais(.espana), .continente(.europa)] // true
 ```
 

@@ -589,9 +589,10 @@ import Hexagonos
         comprobar(TipoDeEscala.flamenca.lugaresDeOrigen == [.region(.andalucia)], #"true"#, doc, 0)
         comprobar(TipoDeEscala.flamenca.paisesDeOrigen == [.espana], #"true"#, doc, 1)
         comprobar(TipoDeEscala.mayor.lugaresDeOrigen == [.continente(.europa)], #"true"#, doc, 2)
-        comprobar(TipoDeEscala.persa.nombreGeograficoSinOrigen, #"true"#, doc, 3)
-        comprobar(TipoDeEscala.persa.continentesDeOrigen == [.europa], #"true"#, doc, 4)
-        comprobar(Lugar.region(.andalucia).contenidoEn == [.pais(.espana), .continente(.europa)], #"true"#, doc, 5)
+        comprobar(TipoDeEscala.alterada.lugaresDeOrigen == [.pais(.estadosUnidos)], #"true"#, doc, 3)
+        comprobar(TipoDeEscala.echosProtos.paisesDeOrigen == [.grecia, .turquia], #"true"#, doc, 4)
+        comprobar(TipoDeEscala.persa.nombreGeograficoSinOrigen, #"true"#, doc, 5)
+        comprobar(Lugar.region(.andalucia).contenidoEn == [.pais(.espana), .continente(.europa)], #"true"#, doc, 6)
     }
 
     @Test func escalas7() throws {

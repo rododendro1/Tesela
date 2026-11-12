@@ -43,7 +43,19 @@ import Testing
         #expect(TipoDeEscala.bilaval.lugaresDeOrigen == [.pais(.india)])
         #expect(TipoDeEscala.mayor.lugaresDeOrigen == [.continente(.europa)])
         #expect(TipoDeEscala.mayor.paisesDeOrigen.isEmpty)
-        #expect(TipoDeEscala.bayati.lugaresDeOrigen == [.continente(.asia), .continente(.africa)])
+        #expect(TipoDeEscala.bayati.lugaresDeOrigen == ZonaMusical.allCases.map(Lugar.zona))
+        #expect(TipoDeEscala.bayati.continentesDeOrigen == [.asia, .africa])
+        #expect(TipoDeEscala.echosProtos.lugaresDeOrigen == [.historico(.bizancio)])
+        #expect(TipoDeEscala.echosProtos.paisesDeOrigen == [.grecia, .turquia])
+        #expect(TipoDeEscala.freygish.lugaresDeOrigen == [.pueblo(.asquenazi)])
+        #expect(
+            TipoDeEscala.menorHungara.lugaresDeOrigen
+                == [.pueblo(.romani), .region(.hungria)].sorted { $0.orden < $1.orden })
+        #expect(TipoDeEscala.menorHungara.paisesDeOrigen == [.hungria])
+        // El jazz y el blues son de Estados Unidos.
+        #expect(TipoDeEscala.alterada.lugaresDeOrigen == [.pais(.estadosUnidos)])
+        #expect(TipoDeEscala.alterada.continentesDeOrigen == [.america])
+        #expect(TipoDeEscala.dorico.lugaresDeOrigen == [.continente(.europa)])
         #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).lugaresDeOrigen.isEmpty)
         // Todas las del catálogo tienen alguno.
         for tipo in TipoDeEscala.catalogo {
@@ -70,12 +82,17 @@ import Testing
     /// Los lugares de uso son los de origen de las escalas con sus mismas notas, sin los de origen.
     @Test func lugaresDeUso() {
         let frigioDominante = TipoDeEscala.frigioDominante.lugaresDeUso
-        #expect(frigioDominante.contains(.continente(.asia)) && frigioDominante.contains(.continente(.africa)))
+        #expect(frigioDominante.contains(.zona(.levante)) && frigioDominante.contains(.zona(.magreb)))
         #expect(frigioDominante.contains(.pais(.turquia)) && frigioDominante.contains(.pais(.grecia)))
+        #expect(frigioDominante.contains(.pueblo(.asquenazi)))
         #expect(!frigioDominante.contains(.continente(.europa)))
         // Primero los continentes, luego los países y luego las regiones.
         #expect(frigioDominante == frigioDominante.sorted { $0.orden < $1.orden })
-        #expect(TipoDeEscala.dorico.lugaresDeUso.contains(.region(.georgia)))
+        #expect(TipoDeEscala.dorico.lugaresDeUso == [.pais(.estadosUnidos)])
+        // Las notas iguales son coincidencias, no usos: el dórico coincide con la georgiana y la mayor con Bilāval.
+        #expect(TipoDeEscala.dorico.lugaresQueCoinciden.contains(.region(.georgia)))
+        #expect(TipoDeEscala.mayor.lugaresQueCoinciden.contains(.pais(.india)))
+        #expect(!TipoDeEscala.mayor.lugaresDeUso.contains(.pais(.india)))
         // El dórico ucraniano es de Ucrania, que ya es de origen del dórico ♯4.
         #expect(!TipoDeEscala.doricoCuartaAumentada.lugaresDeUso.contains(.region(.ucrania)))
         #expect(TipoDeEscala.persa.lugaresDeUso.isEmpty)
@@ -120,5 +137,44 @@ import Testing
         #expect(Set(codigos).count == codigos.count)
         #expect(codigos.allSatisfy { $0.count == 2 && $0.allSatisfy(\.isUppercase) })
         #expect(Pais.espana.codigoISO == "ES" && Pais.reinoUnido.codigoISO == "GB")
+    }
+
+    /// Las familias tienen las mismas notas, al subir o al bajar, y sus escalas no se repiten.
+    @Test func lasFamilias() {
+        var vistas: [TipoDeEscala] = []
+        for familia in TipoDeEscala.familias {
+            for tipo in familia {
+                let bajando = tipo.intervalosDescendentes.map { TipoDeEscala(nombre: "", intervalos: $0) }
+                #expect(tipo == familia[0] || bajando == familia[0], Comment(rawValue: tipo.nombre))
+                #expect(!vistas.contains { $0.esIdentico(a: tipo) }, Comment(rawValue: tipo.nombre))
+                vistas.append(tipo)
+            }
+        }
+        #expect(TipoDeEscala.hiyaz.parientes.contains(.frigioDominante))
+        #expect(TipoDeEscala.mayor.parientes.isEmpty)
+    }
+
+    /// Las zonas, los pueblos y los lugares históricos, con sus países y sus nombres.
+    @Test func zonasPueblosYLugaresHistoricos() {
+        #expect(Lugar.zona(.levante).contenidoEn.contains(.pais(.siria)))
+        #expect(Lugar.zona(.magreb).contenidoEn.contains(.continente(.africa)))
+        #expect(
+            Lugar.historico(.bizancio).contenidoEn == [
+                .pais(.grecia), .pais(.turquia), .continente(.europa), .continente(.asia),
+            ])
+        #expect(Lugar.pueblo(.romani).contenidoEn == [.continente(.europa)])
+        #expect(Lugar.region(.andalucia).esta(en: .continente(.europa)))
+        #expect(!Lugar.region(.andalucia).esta(en: .pais(.grecia)))
+        #expect(LugarHistorico.bizancio.nombre == Tradicion.bizancio.nombre)
+        #expect(ZonaMusical.egipto.nombre == Pais.egipto.nombre)
+        #expect(Pais.estadosUnidos.codigoISO == "US" && Pais.estadosUnidos.continente == .america)
+        #expect(Set(Lugar.todos).count == Lugar.todos.count)
+        for idioma in Idioma.allCases {
+            let notacion = Notacion.delIdioma(idioma)
+            for lugar in Lugar.todos {
+                #expect(!lugar.nombre(en: notacion).isEmpty, "\(lugar) \(idioma)")
+            }
+        }
+        for zona in ZonaMusical.allCases { #expect(!zona.paises.isEmpty) }
     }
 }

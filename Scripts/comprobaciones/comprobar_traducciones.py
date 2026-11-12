@@ -58,6 +58,17 @@ EXCEPCIONES = {
     "Iran",  # alemán: el nombre del país
     "Mali",  # alemán: el nombre del país
     "Peru",  # alemán: el nombre del país
+    "Palestine",  # el nombre del lugar
+    "Saudi Arabia",  # el nombre del lugar
+    "Kuwait",  # el nombre del lugar
+    "Bahrain",  # el nombre del lugar
+    "Qatar",  # el nombre del lugar
+    "Oman",  # el nombre del lugar
+    "Yemen",  # el nombre del lugar
+    "Algeria",  # el nombre del lugar
+    "Tunisia",  # el nombre del lugar
+    "Levant",  # el nombre del lugar
+    "Maghreb",  # el nombre del lugar
 }
 
 _TEXTO = r'"((?:[^"\\]|\\.)*)"'
