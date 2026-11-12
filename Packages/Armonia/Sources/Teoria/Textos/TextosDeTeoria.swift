@@ -203,6 +203,13 @@ struct TextosDeTeoria: TextosTraducidos {
     let cardinalEndecatonica: String
     let cardinalDodecatonica: String
 
+    // MARK: Epoca.swift
+    let epocaAntiguedad: String
+    let epocaEdadMedia: String
+    let epocaRenacimiento: String
+    let epocaTonal: String
+    let epocaSigloXX: String
+
     // MARK: CardinalDeAcorde.swift
     let cardinalDiada: String
     let cardinalTriada: String

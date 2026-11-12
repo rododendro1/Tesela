@@ -187,6 +187,11 @@ extension TextosDeTeoria {
         cardinalDecatonica: "dekaton",
         cardinalEndecatonica: "hendekaton",
         cardinalDodecatonica: "dodekaton",
+        epocaAntiguedad: "ókor",
+        epocaEdadMedia: "középkor",
+        epocaRenacimiento: "reneszánsz",
+        epocaTonal: "tonális korszak",
+        epocaSigloXX: "20. század",
         // CardinalDeAcorde.swift
         cardinalDiada: "kéthangzat",
         cardinalTriada: "hármashangzat",

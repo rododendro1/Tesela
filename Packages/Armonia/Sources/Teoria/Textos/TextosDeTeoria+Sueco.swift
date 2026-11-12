@@ -190,6 +190,11 @@ extension TextosDeTeoria {
         cardinalDecatonica: "dekatonik",
         cardinalEndecatonica: "hendekatonik",
         cardinalDodecatonica: "dodekatonik",
+        epocaAntiguedad: "antiken",
+        epocaEdadMedia: "medeltiden",
+        epocaRenacimiento: "renässansen",
+        epocaTonal: "den tonala epoken",
+        epocaSigloXX: "1900-talet",
         // CardinalDeAcorde.swift
         cardinalDiada: "tvåklang",
         cardinalTriada: "treklang",

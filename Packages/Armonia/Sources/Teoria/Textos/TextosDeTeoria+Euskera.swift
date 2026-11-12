@@ -190,6 +190,11 @@ extension TextosDeTeoria {
         cardinalDecatonica: "dekatonikoa",
         cardinalEndecatonica: "hendekatonikoa",
         cardinalDodecatonica: "dodekatonikoa",
+        epocaAntiguedad: "Antzinaroa",
+        epocaEdadMedia: "Erdi Aroa",
+        epocaRenacimiento: "Errenazimendua",
+        epocaTonal: "aro tonala",
+        epocaSigloXX: "XX. mendea",
         // CardinalDeAcorde.swift
         cardinalDiada: "diada",
         cardinalTriada: "triada",

@@ -4,6 +4,11 @@
 
 ### Lo nuevo
 
+- `Epoca`, la época de una escala: antigüedad, Edad Media, Renacimiento, época tonal y siglo XX, con su nombre en los
+  trece idiomas. `TipoDeEscala.epocaDeOrigen` la calcula con lo que ya sabe el catálogo (su fuente teórica, su
+  tradición, las escalas gregorianas y renacentistas con sus mismas notas, su escala madre o sus estilos), y
+  `epocasDeUso` da las de sus estilos: el dórico es medieval y se usa en la época tonal y en el siglo XX.
+  `FuenteTeorica.epoca`, `Tradicion.epoca` y `Estilo.epocaDeUso` dan las de cada una.
 - `RelojDeAlturas`, el círculo cromático microtonal: un reloj de cents con cada nota en el ángulo de sus cents, las
   doce horas temperadas en gris como referencia, una rayita en cada paso del sistema y un arquito en cada nota que se
   aparta de su nota temperada. `RelojDeAlturas(escala:afinacion:sentido:notacion:)` lo hace con la versión

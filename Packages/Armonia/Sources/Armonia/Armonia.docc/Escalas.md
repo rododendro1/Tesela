@@ -133,6 +133,32 @@ TipoDeEscala.kafi.estilos == [.indostanica]         // true
 TipoDeEscala.dorico.tradicion                        // .occidental
 ```
 
+## Antigua, medieval, tonal: la época de una escala
+
+`TipoDeEscala.epocaDeOrigen` dice cuándo aparece una escala, y `epocasDeUso`, en qué épocas se usa. Las dos son una
+``Epoca`` (antigüedad, Edad Media, Renacimiento, época tonal y siglo XX), y ninguna se escribe en el catálogo: se
+calculan con lo que ya sabe de cada escala. La de origen es la primera de estas que da algo:
+
+1. la época de su fuente teórica (`FuenteTeorica.epoca`): los géneros de Ptolomeo son de la antigüedad;
+2. la de su tradición, si es una época (`Tradicion.epoca`): la Grecia antigua, Mesopotamia, el canto gregoriano y el
+   Renacimiento;
+3. en las occidentales de la música clásica, la de las escalas gregorianas y renacentistas con sus mismas notas: el
+   dórico es medieval por el protus, y la mayor renacentista por el jónico de Glareano;
+4. en las sintéticas, la de la escala de la que son modo (`Escala.escalaMadre`);
+5. la más antigua de las de uso de sus estilos (`Estilo.epocaDeUso`): la clásica da la época tonal, y el jazz, el
+   blues y el siglo XX, el siglo XX.
+
+Las de uso son las de sus estilos, sin la de origen. Las populares que no salen por ninguna regla (la flamenca, la
+mayor rumana) no tienen época de origen.
+
+```swift
+TipoDeEscala.dorico.epocaDeOrigen == .edadMedia              // true
+TipoDeEscala.dorico.epocasDeUso == [.tonal, .sigloXX]        // true
+TipoDeEscala.mayor.epocaDeOrigen == .renacimiento            // true
+TipoDeEscala.alterada.epocaDeOrigen == .sigloXX              // true
+Epoca.tonal.nombre                                           // "época tonal"
+```
+
 ## Escalas de otras tradiciones
 
 Las escalas de otras tradiciones (rāgas, maqamat, dromoi, las escalas chinas y japonesas, las griegas antiguas, los

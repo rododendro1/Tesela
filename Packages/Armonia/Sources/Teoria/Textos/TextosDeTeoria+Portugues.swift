@@ -187,6 +187,11 @@ extension TextosDeTeoria {
         cardinalDecatonica: "decatónica",
         cardinalEndecatonica: "hendecatónica",
         cardinalDodecatonica: "dodecatónica",
+        epocaAntiguedad: "Antiguidade",
+        epocaEdadMedia: "Idade Média",
+        epocaRenacimiento: "Renascimento",
+        epocaTonal: "época tonal",
+        epocaSigloXX: "século XX",
         // CardinalDeAcorde.swift
         cardinalDiada: "díade",
         cardinalTriada: "tríade",
