@@ -3,7 +3,11 @@
 // Los nombres de los tipos de escala en griego, con las otras formas con que se lee. Qué es cada campo, en `NombresDeEscalas.swift`.
 
 extension NombresDeEscalas {
-    static let griego = NombresDeEscalas([
+    static let griego = NombresDeEscalas(occidentalesEnGriego + deOtrasTradicionesEnGriego)
+
+    // Dos listas y no una: cada una se construye en su propia función. Sin optimizar, la de una sola lista
+    // ocupaba casi 500 KB de pila, y desbordaba la de un hilo secundario de macOS (512 KB).
+    private static let occidentalesEnGriego: [Fila] = [
         .init(.mayor, "μείζονα", alias: ["ιωνικός"], variantes: ["ιωνική"]),
         .init(.dorico, "δώριος", variantes: ["δωρική"]),
         .init(.frigio, "φρύγιος", variantes: ["φρυγική"]),
@@ -116,7 +120,9 @@ extension NombresDeEscalas {
         .init(.menorMelodicaQuintaAumentada, "μελωδική ελάσσονα ♯5", alias: ["μελωδική ελάσσονα τζαζ ♯5"]),
         .init(.doricoSegundaMenorCuartaAumentada, "δώριος ♭2 ♯4", alias: ["δώριος ♭9 ♯11"]),
         .init(.lidioAumentadoTerceraAumentada, "λύδιος αυξημένος ♯3"),
+    ]
 
+    private static let deOtrasTradicionesEnGriego: [Fila] = [
         // Escalas de otras tradiciones: nombres propios, iguales en todos los idiomas salvo los que se traducen.
         // Para traducir una: `.tradicional(.hitzaz, "…")`. Los alias (Hijaz, Hicaz…) están en el catálogo.
         // Solo llevan fila las que se traducen o tienen alias en este idioma: sin fila, una escala conserva su nombre
@@ -497,5 +503,5 @@ extension NombresDeEscalas {
         .categoria(.harmonia, "αρμονία"),
         .categoria(.afinacion, "κούρδισμα"),
         .categoria(.escala, "κλίμακα"),
-    ])
+    ]
 }
