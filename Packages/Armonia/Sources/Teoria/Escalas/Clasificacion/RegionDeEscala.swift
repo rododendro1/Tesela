@@ -16,8 +16,9 @@ public enum RegionDeEscala: String, Sendable, Codable, CaseIterable {
     /// África: el amadinda de Buganda (Uganda), el timbila de los chopi (Mozambique), la kora mandinga y la mbira de
     /// los shona (Zimbabue).
     case buganda, chopi, mandinga, shona
-    /// Europa: el país o la región de cada escala popular.
-    case ucrania, polonia, hungria, alpes, escocia, georgia, istria
+    /// Europa: el país o la región de cada escala popular. Andalucía y Rumanía solo las tienen occidentales (la flamenca,
+    /// la mayor rumana), por `TipoDeEscala.regionesDeOrigen`.
+    case ucrania, polonia, hungria, alpes, escocia, georgia, istria, andalucia, rumania
     /// Japón: la música de Okinawa (Ryūkyū).
     case ryukyu
 
@@ -27,14 +28,16 @@ public enum RegionDeEscala: String, Sendable, Codable, CaseIterable {
         case .java, .bali, .sunda: .indonesia
         case .tailandia, .camboya, .birmania: .sudesteAsiatico
         case .buganda, .chopi, .mandinga, .shona: .africa
-        case .ucrania, .polonia, .hungria, .alpes, .escocia, .georgia, .istria: .europa
+        case .ucrania, .polonia, .hungria, .alpes, .escocia, .georgia, .istria, .andalucia, .rumania: .europa
         case .ryukyu: .japon
         }
     }
 
-    /// Las escalas de otras tradiciones de esta región, en el orden de `TipoDeEscala.tradicionales`:
-    /// `RegionDeEscala.java.tipos` da los pathet de Java y el sléndro.
-    public var tipos: [TipoDeEscala] { TipoDeEscala.tradicionales.filter { $0.regiones.contains(self) } }
+    /// Las escalas del catálogo que vienen de esta región (`TipoDeEscala.regionesDeOrigen`), en el orden de
+    /// `TipoDeEscala.catalogo`: primero las occidentales populares que vienen de ella y luego las de otras tradiciones.
+    /// `RegionDeEscala.java.tipos` da los pathet de Java y el sléndro; `RegionDeEscala.hungria.tipos`, las húngaras
+    /// occidentales y la pentatónica húngara, y `RegionDeEscala.andalucia.tipos`, la flamenca.
+    public var tipos: [TipoDeEscala] { TipoDeEscala.catalogo.filter { $0.regionesDeOrigen.contains(self) } }
 
     /// El nombre en el idioma de los textos de la notación: «Java», «Escocia», «Scotland», «Σκωτία». En español,
     /// también `nombre` (de `Nombrable`).
@@ -60,6 +63,8 @@ public enum RegionDeEscala: String, Sendable, Codable, CaseIterable {
         case .escocia: TextosDeTeoria.traduccion(\.subtradicionEscocia)
         case .georgia: TextosDeTeoria.traduccion(\.subtradicionGeorgia)
         case .istria: TextosDeTeoria.traduccion(\.subtradicionIstria)
+        case .andalucia: TextosDeTeoria.traduccion(\.subtradicionAndalucia)
+        case .rumania: TextosDeTeoria.traduccion(\.subtradicionRumania)
         case .ryukyu: TextosDeTeoria.traduccion(\.subtradicionRyukyu)
         }
     }
@@ -69,7 +74,8 @@ extension RegionDeEscala: Nombrable {}
 
 extension TipoDeEscala {
     /// Las regiones de donde viene, en el orden de `RegionDeEscala.allCases`; vacío en las occidentales, en las
-    /// propias y en las de otras tradiciones sin una clara. Como `estilos`, por su identidad.
+    /// propias y en las de otras tradiciones sin una clara. Como `estilos`, por su identidad. Las de las occidentales
+    /// populares (la flamenca, de Andalucía) las da `regionesDeOrigen`.
     ///
     ///     TipoDeEscala.pelogTembung.regiones   // [.bali]
     ///     TipoDeEscala.slendro.regiones        // [.java, .bali]

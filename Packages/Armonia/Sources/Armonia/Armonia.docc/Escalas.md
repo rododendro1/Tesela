@@ -159,6 +159,26 @@ TipoDeEscala.alterada.epocaDeOrigen == .sigloXX              // true
 Epoca.tonal.nombre                                           // "época tonal"
 ```
 
+## Flamenca, rumana, persa: de dónde viene una escala
+
+La tradición (`TipoDeEscala.tradicion`) dice de qué música es una escala, y `TipoDeEscala.regionesDeOrigen`, de qué
+lugar viene, con una o varias ``RegionDeEscala``. En las de otras tradiciones son las de su ficha (`regiones`: el
+sléndro, de Java y de Bali). Las occidentales solo tienen región si son populares y vienen de un lugar: la flamenca,
+de Andalucía; la mayor rumana, de Rumanía; las húngaras, de Hungría. Las que tienen las notas de una escala popular
+europea toman también su región: el dórico ♯4, la «menor rumana», es de Rumanía y, por el dórico ucraniano, de Ucrania.
+La mayor y el dórico, que no vienen de un lugar concreto, no tienen ninguna.
+
+Hay nombres que parecen decir de dónde viene la escala y no lo dicen. La persa, la egipcia y la oriental son etiquetas
+exóticas de los libros de escalas, y las napolitanas se llaman así por la sexta napolitana: están en
+`TipoDeEscala.nombresGeograficosSinOrigen`, `nombreGeograficoSinOrigen` lo dice de cada una, y no tienen región.
+
+```swift
+TipoDeEscala.flamenca.regionesDeOrigen == [.andalucia]                     // true
+TipoDeEscala.doricoCuartaAumentada.regionesDeOrigen == [.ucrania, .rumania] // true
+TipoDeEscala.persa.nombreGeograficoSinOrigen                               // true
+TipoDeEscala.persa.regionesDeOrigen.isEmpty                                // true
+```
+
 ## Escalas de otras tradiciones
 
 Las escalas de otras tradiciones (rāgas, maqamat, dromoi, las escalas chinas y japonesas, las griegas antiguas, los

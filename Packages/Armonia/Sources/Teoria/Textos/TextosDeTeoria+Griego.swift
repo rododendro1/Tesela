@@ -246,6 +246,8 @@ extension TextosDeTeoria {
         subtradicionEscocia: "Σκωτία",
         subtradicionGeorgia: "Γεωργία",
         subtradicionIstria: "Ίστρια",
+        subtradicionAndalucia: "Ανδαλουσία",
+        subtradicionRumania: "Ρουμανία",
         subtradicionGagaku: "Γκαγκάκου",
         subtradicionRyukyu: "Ριουκιού",
         fuenteArquitas: "Αρχύτας",

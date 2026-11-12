@@ -109,7 +109,10 @@ import Testing
         }
         for subtradicion in Subtradicion.todas {
             #expect(!subtradicion.tipos.isEmpty, "\(subtradicion)")
-            #expect(subtradicion.tipos.allSatisfy { $0.tradicion == subtradicion.tradicion }, "\(subtradicion)")
+            // Las de una región son de su tradición, o occidentales populares que vienen de ella (la flamenca).
+            #expect(
+                subtradicion.tipos.allSatisfy { $0.tradicion == subtradicion.tradicion || $0.tradicion == .occidental },
+                "\(subtradicion)")
         }
         #expect(Estilo.carnatica.nombre == "Carnática")
         #expect(Estilo.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Carnatic")
