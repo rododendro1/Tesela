@@ -176,6 +176,12 @@ extension TextosDeTeoria {
         usoFolclore: "folk",
         usoFlamenco: "flamenco",
         usoPopRock: "pop and rock",
+        corrienteBebop: "bebop",
+        corrienteModal: "modal jazz",
+        corrienteImpresionismo: "impressionism",
+        corrienteRock: "rock",
+        corrienteHeavyMetal: "heavy metal",
+        corrienteMetalNeoclasico: "neoclassical metal",
         usoSintetica: "synthetic",
         // CardinalDeEscala.swift
         cardinalMonotonica: "monotonic",

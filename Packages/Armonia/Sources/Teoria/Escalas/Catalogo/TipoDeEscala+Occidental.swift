@@ -35,7 +35,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["española", "frigio español", "frigio mayor", "frigio ♯3", "frigio ♮3", "dominante ♭9 ♭13"],
-        estilos: [.flamenco, .jazz, .popRock])
+        estilos: [.flamenco, .jazz, .popRock], corrientes: [.heavyMetal, .metalNeoclasico])
     public static let lidioSegundaAumentada = TipoDeEscala(
         nombre: "lidio ♯2",
         intervalos: [
@@ -79,7 +79,7 @@ extension TipoDeEscala {
             "acústica", "lidio ♭7", "mixolidio ♯4", "de los armónicos", "armónicos", "de Bartók", "Bartók",
             "nordestina", "escala nordestina",
         ],
-        estilos: [.jazz, .deCompositor])
+        estilos: [.jazz, .deCompositor], corrientes: [.modal])
     public static let mixolidioSextaMenor = TipoDeEscala(
         nombre: "mixolidio ♭6",
         intervalos: [
@@ -103,7 +103,7 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         alias: ["superlocrio"], variantes: ["superlocria"],
-        estilos: [.jazz])
+        estilos: [.jazz], corrientes: [.bebop])
 
     // Otras.
     public static let mayorArmonica = TipoDeEscala(
@@ -120,7 +120,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor, .septimaMayor,
         ],
         alias: ["bebop"],
-        estilos: [.jazz])
+        estilos: [.jazz], corrientes: [.bebop])
     /// La mayor con la 5ª aumentada de paso (Do Re Mi Fa Sol Sol♯ La Si). Es también la «sexta disminuida» de Barry
     /// Harris: el acorde de sexta (Do Mi Sol La) y el de séptima disminuida de la sensible (Si Re Fa Sol♯) alternados.
     public static let bebopMayor = TipoDeEscala(
@@ -130,7 +130,7 @@ extension TipoDeEscala {
             .quintaJusta, .quintaAumentada, .sextaMayor, .septimaMayor,
         ],
         alias: ["sexta disminuida", "sexta mayor disminuida", "de sexta disminuida", "Barry Harris"],
-        estilos: [.jazz])
+        estilos: [.jazz], corrientes: [.bebop])
     public static let bebopDorico = TipoDeEscala(
         nombre: "bebop dórico",
         intervalos: [
@@ -138,7 +138,7 @@ extension TipoDeEscala {
             .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["bebop menor"],
-        estilos: [.jazz])
+        estilos: [.jazz], corrientes: [.bebop])
     /// El locrio con la 5ª justa de paso (Do Re♭ Mi♭ Fa Sol♭ Sol La♭ Si♭), la del acorde semidisminuido.
     public static let bebopLocrio = TipoDeEscala(
         nombre: "bebop locrio",
@@ -146,7 +146,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        estilos: [.jazz])
+        estilos: [.jazz], corrientes: [.bebop])
     /// El lidio con la 5ª aumentada de paso (Do Re Mi Fa♯ Sol Sol♯ La Si), como la bebop mayor.
     public static let bebopLidio = TipoDeEscala(
         nombre: "bebop lidio",
@@ -154,7 +154,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .quintaAumentada, .sextaMayor, .septimaMayor,
         ],
-        estilos: [.jazz])
+        estilos: [.jazz], corrientes: [.bebop])
 
     // Modos de la mayor armónica (2.º a 7.º grado).
     public static let doricoQuintaDisminuida = TipoDeEscala(

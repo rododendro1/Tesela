@@ -532,11 +532,12 @@ extension Estilo {
 // MARK: Los lugares de una escala
 
 extension TipoDeEscala {
-    /// Las occidentales cuyo nombre es geográfico pero no dice de dónde vienen: la persa, la egipcia y la oriental son
-    /// etiquetas exóticas de los libros de escalas, sin nada que ver con la música de esos lugares, y las napolitanas
+    /// Las occidentales cuyo nombre es geográfico pero no dice de dónde vienen: la persa, la egipcia, la oriental y la
+    /// argelina son etiquetas exóticas de los libros de escalas, sin nada que ver con la música de esos lugares (la
+    /// argelina, la de los libros de los años ochenta, no es la de once notas que Ibert usó en «Escales»), y las napolitanas
     /// se llaman así por la sexta napolitana, no por Nápoles. Como las demás occidentales, son de Europa.
     public static let nombresGeograficosSinOrigen: [TipoDeEscala] = [
-        .persa, .egipcia, .oriental, .napolitanaMenor, .napolitanaMayor,
+        .persa, .egipcia, .oriental, .argelina, .napolitanaMenor, .napolitanaMayor,
     ]
 
     /// Su nombre es de un lugar del que no viene (`nombresGeograficosSinOrigen`): la persa, la egipcia, la oriental y

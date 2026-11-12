@@ -190,6 +190,13 @@ struct TextosDeTeoria: TextosTraducidos {
     let usoFolclore: String
     let usoFlamenco: String
     let usoPopRock: String
+    /// Las corrientes de los estilos (`Corriente`).
+    let corrienteBebop: String
+    let corrienteModal: String
+    let corrienteImpresionismo: String
+    let corrienteRock: String
+    let corrienteHeavyMetal: String
+    let corrienteMetalNeoclasico: String
     let usoSintetica: String
 
     // MARK: CardinalDeEscala.swift

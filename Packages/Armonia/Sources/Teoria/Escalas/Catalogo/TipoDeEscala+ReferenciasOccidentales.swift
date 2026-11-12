@@ -12,6 +12,7 @@ extension TipoDeEscala {
     /// Cada obra con las escalas occidentales que trata.
     package static let referenciasOccidentales: [(obra: Referencia, tipos: [TipoDeEscala])] = [
         (.aldwell2011, [.mayor, .menorNatural, .menorArmonica, .menorMelodica, .cromatica]),
+        (.finkRicci1975, [.argelina]),
         (.powers2001, [.mayor, .dorico, .frigio, .lidio, .mixolidio, .menorNatural, .locrio]),
         (
             .levine1995,

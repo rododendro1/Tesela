@@ -426,6 +426,16 @@ extension Referencia {
     public static let liszt1859 = Referencia(
         "liszt1859", .libro, autores: ["Liszt, Franz"], titulo: "Des Bohémiens et de leur musique en Hongrie",
         anio: 1859, editorial: "A. Bourdilliat", lugar: "París")
+    /// Rameau, el «Tratado de la armonía»: el modo menor, que sube con la sexta y la séptima mayores y baja con las
+    /// menores, la escala menor melódica.
+    public static let rameau1722 = Referencia(
+        "rameau1722", .tratado, autores: ["Rameau, Jean-Philippe"],
+        titulo: "Traité de l'harmonie réduite à ses principes naturels", anio: 1722, lugar: "París")
+    /// Fink y Ricci, el diccionario de términos de la música del siglo XX: la escala argelina.
+    public static let finkRicci1975 = Referencia(
+        "finkRicci1975", .libro, autores: ["Fink, Robert", "Ricci, Robert"],
+        titulo: "The Language of Twentieth Century Music: A Dictionary of Terms", anio: 1975,
+        editorial: "Schirmer Books", lugar: "Nueva York")
     /// Glinka, «Ruslán y Liudmila»: el tema de Chernomor, la primera escala de tonos enteros de una obra conocida.
     public static let glinka1842 = Referencia(
         "glinka1842", .partitura, autores: ["Glinka, Mikhail"], titulo: "Ruslan and Lyudmila", anio: 1842)
@@ -554,7 +564,8 @@ extension Referencia {
         .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .gjerdingen2007, .hudson1982, .hudsonPassacaglia1982,
         .hudsonChaconne1982,
         .gerbino2001, .staiti2023, .sheinberg2016, .rosand1979, .doll2017,
-        .soroker1995, .malaniczPrzybylska2018, .kodaly1960, .liszt1859, .glinka1842, .rimskiKorsakov1867, .verdi1889,
+        .soroker1995, .malaniczPrzybylska2018, .kodaly1960, .liszt1859, .rameau1722, .finkRicci1975, .glinka1842,
+        .rimskiKorsakov1867, .verdi1889,
         .skriabin1910, .stravinski1911, .campbell2019, .cannon2002, .scherbaum2022,
         .bonifacic2001,
         .rechberger2008, .busoni1916, .toussaint2013, .clayton2000, .viswanathan2004, .brailoiu1951, .apel1953,

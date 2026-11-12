@@ -153,6 +153,16 @@ extension LineaDeComandosTests {
         #expect(resultado("escalas", "--uso", "jazz", "--tradicion", "japon").codigo == 1)
         #expect(resultado("escalas", "--uso", "jaz").error.contains("«jazz»"))
         #expect(resultado("escalas", "--uso").codigo == 2)
+        // Una corriente de un estilo: el bebop o el jazz modal, el heavy metal o el metal neoclásico.
+        let modal = salida("escalas --uso modal")
+        #expect(modal.hasPrefix("habituales · jazz modal ("), Comment(rawValue: modal))
+        #expect(modal.contains("  dórico: ") && !modal.contains("  alterada: "), Comment(rawValue: modal))
+        #expect(salida("escalas --uso bebop").contains("  alterada: "))
+        #expect(resultado("escalas", "--uso", "jazz modal").salida == modal)
+        let neoclasico = salida("escalas --use neoclassical-metal")
+        #expect(neoclasico.hasPrefix("habituales · metal neoclásico (2)\n"), Comment(rawValue: neoclasico))
+        #expect(salida("scales --use modal --ingles").hasPrefix("common · modal jazz ("))
+        #expect(resultado("escalas", "--uso", "bebob").error.contains("«bebop»"))
     }
 
     /// `escalas --lugar`: las de un lugar, de origen o de uso, por su clave, su nombre o su código ISO; `--agrupar`,
