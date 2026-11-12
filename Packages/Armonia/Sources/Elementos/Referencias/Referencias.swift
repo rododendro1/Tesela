@@ -413,20 +413,20 @@ extension Referencia {
         anio: 1859, editorial: "A. Bourdilliat", lugar: "París")
     /// Glinka, «Ruslán y Liudmila»: el tema de Chernomor, la primera escala de tonos enteros de una obra conocida.
     public static let glinka1842 = Referencia(
-        "glinka1842", .partitura, autores: ["Glinka, Mijaíl"], titulo: "Ruslán y Liudmila", anio: 1842)
+        "glinka1842", .partitura, autores: ["Glinka, Mikhail"], titulo: "Ruslan and Lyudmila", anio: 1842)
     /// Rimski-Kórsakov, «Sadkó», op. 5: la primera vez que se usa la escala octatónica, la «escala de Rimski-Kórsakov».
     public static let rimskiKorsakov1867 = Referencia(
-        "rimskiKorsakov1867", .partitura, autores: ["Rimski-Kórsakov, Nikolái"], titulo: "Sadkó, op. 5", anio: 1867)
+        "rimskiKorsakov1867", .partitura, autores: ["Rimsky-Korsakov, Nikolai"], titulo: "Sadko, Op. 5", anio: 1867)
     /// Verdi, el «Ave Maria» sobre la «scala enigmatica», la primera de las «Quattro pezzi sacri».
     public static let verdi1889 = Referencia(
         "verdi1889", .partitura, autores: ["Verdi, Giuseppe"], titulo: "Ave Maria sulla scala enigmatica", anio: 1889)
     /// Skriabin, «Prometeo: el poema del fuego», op. 60, sobre el acorde místico.
     public static let skriabin1910 = Referencia(
-        "skriabin1910", .partitura, autores: ["Skriabin, Aleksandr"], titulo: "Prometeo: el poema del fuego, op. 60",
+        "skriabin1910", .partitura, autores: ["Scriabin, Alexander"], titulo: "Prometheus: The Poem of Fire, Op. 60",
         anio: 1910)
     /// Stravinski, «Petrushka», el ballet del acorde de dos tríadas a un tritono.
     public static let stravinski1911 = Referencia(
-        "stravinski1911", .partitura, autores: ["Stravinski, Ígor"], titulo: "Petrushka", anio: 1911)
+        "stravinski1911", .partitura, autores: ["Stravinsky, Igor"], titulo: "Petrushka", anio: 1911)
     /// Campbell, el cuerno de los Alpes y sus armónicos, en la Cambridge Encyclopedia of Brass Instruments.
     public static let campbell2019 = Referencia(
         "campbell2019", .capitulo, autores: ["Campbell, Murray"], titulo: "Alphorn", anio: 2019,
