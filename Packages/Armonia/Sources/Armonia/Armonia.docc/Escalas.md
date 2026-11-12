@@ -161,22 +161,32 @@ Epoca.tonal.nombre                                           // "época tonal"
 
 ## Flamenca, rumana, persa: de dónde viene una escala
 
-La tradición (`TipoDeEscala.tradicion`) dice de qué música es una escala, y `TipoDeEscala.regionesDeOrigen`, de qué
-lugar viene, con una o varias ``RegionDeEscala``. En las de otras tradiciones son las de su ficha (`regiones`: el
-sléndro, de Java y de Bali). Las occidentales solo tienen región si son populares y vienen de un lugar: la flamenca,
-de Andalucía; la mayor rumana, de Rumanía; las húngaras, de Hungría. Las que tienen las notas de una escala popular
-europea toman también su región: el dórico ♯4, la «menor rumana», es de Rumanía y, por el dórico ucraniano, de Ucrania.
-La mayor y el dórico, que no vienen de un lugar concreto, no tienen ninguna.
+La tradición (`TipoDeEscala.tradicion`) dice de qué música es una escala; los lugares, de dónde viene y dónde se toca.
+Un ``Lugar`` es de uno de tres niveles: un ``Continente``, un ``Pais`` o una ``RegionDeEscala`` (una región o un
+pueblo), y `contenidoEn` da los que lo contienen: Andalucía está en España, que está en Europa.
+
+`TipoDeEscala.lugaresDeOrigen` da los más concretos que se saben. Primero, las regiones de su ficha (`regiones`): el
+sléndro es de Java y de Bali, y las occidentales populares que vienen de un lugar lo declaran también, la flamenca de
+Andalucía, la mayor rumana de Rumanía, las húngaras de Hungría. Si no tiene región, los países de su tradición
+(`Tradicion.paises`: Bilāval, de la India); y si tampoco, sus continentes (`Tradicion.continentes`: la mayor, de
+Europa; Bayātī, del mundo árabe, de Asia y de África). `paisesDeOrigen` y `continentesDeOrigen` dan los de cada nivel.
+
+`TipoDeEscala.lugaresDeUso` da dónde se toca también, aunque no venga de allí: los lugares de origen de las otras
+escalas del catálogo con sus mismas notas, sin los que ya son de origen. El frigio dominante es de Europa y se toca en
+el mundo árabe (Ḥijāz), en Turquía (Hicaz makamı) y en Grecia (el dromos Hitzáz).
 
 Hay nombres que parecen decir de dónde viene la escala y no lo dicen. La persa, la egipcia y la oriental son etiquetas
 exóticas de los libros de escalas, y las napolitanas se llaman así por la sexta napolitana: están en
-`TipoDeEscala.nombresGeograficosSinOrigen`, `nombreGeograficoSinOrigen` lo dice de cada una, y no tienen región.
+`TipoDeEscala.nombresGeograficosSinOrigen`, `nombreGeograficoSinOrigen` lo dice de cada una, y son de Europa, como las
+demás occidentales.
 
 ```swift
-TipoDeEscala.flamenca.regionesDeOrigen == [.andalucia]                     // true
-TipoDeEscala.doricoCuartaAumentada.regionesDeOrigen == [.ucrania, .rumania] // true
-TipoDeEscala.persa.nombreGeograficoSinOrigen                               // true
-TipoDeEscala.persa.regionesDeOrigen.isEmpty                                // true
+TipoDeEscala.flamenca.lugaresDeOrigen == [.region(.andalucia)]   // true
+TipoDeEscala.flamenca.paisesDeOrigen == [.espana]                // true
+TipoDeEscala.mayor.lugaresDeOrigen == [.continente(.europa)]     // true
+TipoDeEscala.persa.nombreGeograficoSinOrigen                     // true
+TipoDeEscala.persa.continentesDeOrigen == [.europa]              // true
+Lugar.region(.andalucia).contenidoEn == [.pais(.espana), .continente(.europa)] // true
 ```
 
 ## Escalas de otras tradiciones

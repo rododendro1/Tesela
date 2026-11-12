@@ -27,7 +27,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["menor rumana", "rumana"],
-        estilos: [.popular])
+        estilos: [.popular], regiones: [.ucrania, .rumania])
     public static let frigioDominante = TipoDeEscala(
         nombre: "frigio dominante",
         intervalos: [

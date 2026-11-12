@@ -575,10 +575,12 @@ import Hexagonos
     @Test func escalas5() throws {
         // Sources/Armonia/Armonia.docc/Escalas.md, bloque 5
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 5)
-        comprobar(TipoDeEscala.flamenca.regionesDeOrigen == [.andalucia], #"true"#, doc, 0)
-        comprobar(TipoDeEscala.doricoCuartaAumentada.regionesDeOrigen == [.ucrania, .rumania], #"true"#, doc, 1)
-        comprobar(TipoDeEscala.persa.nombreGeograficoSinOrigen, #"true"#, doc, 2)
-        comprobar(TipoDeEscala.persa.regionesDeOrigen.isEmpty, #"true"#, doc, 3)
+        comprobar(TipoDeEscala.flamenca.lugaresDeOrigen == [.region(.andalucia)], #"true"#, doc, 0)
+        comprobar(TipoDeEscala.flamenca.paisesDeOrigen == [.espana], #"true"#, doc, 1)
+        comprobar(TipoDeEscala.mayor.lugaresDeOrigen == [.continente(.europa)], #"true"#, doc, 2)
+        comprobar(TipoDeEscala.persa.nombreGeograficoSinOrigen, #"true"#, doc, 3)
+        comprobar(TipoDeEscala.persa.continentesDeOrigen == [.europa], #"true"#, doc, 4)
+        comprobar(Lugar.region(.andalucia).contenidoEn == [.pais(.espana), .continente(.europa)], #"true"#, doc, 5)
     }
 
     @Test func escalas6() throws {

@@ -10,7 +10,7 @@ import Testing
         for tipo in TipoDeEscala.occidentales {
             #expect(!tipo.estilos.isEmpty, Comment(rawValue: tipo.nombre))
             #expect(tipo.estilos.allSatisfy { $0.tradicion == .occidental }, Comment(rawValue: tipo.nombre))
-            #expect(tipo.regiones.isEmpty, Comment(rawValue: tipo.nombre))
+            #expect(tipo.regiones.isEmpty || tipo.estilos == [.popular], Comment(rawValue: tipo.nombre))
             #expect(tipo.tradicion == .occidental, Comment(rawValue: tipo.nombre))
         }
         for tipo in TipoDeEscala.tradicionales {
