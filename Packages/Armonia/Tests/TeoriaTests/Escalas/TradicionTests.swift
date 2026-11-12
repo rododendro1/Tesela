@@ -14,8 +14,9 @@ import Testing
             for tipo in lista.tipos {
                 #expect(vistas.insert(tipo.nombre).inserted, "\(tipo.nombre) está en dos listas")
                 #expect(tipo.tradicion == lista.tradicion, Comment(rawValue: tipo.nombre))
-                for subtradicion in tipo.subtradiciones {
-                    #expect(subtradicion.tradicion == lista.tradicion, Comment(rawValue: tipo.nombre))
+                #expect(tipo.estilos.isEmpty, Comment(rawValue: tipo.nombre))
+                for escuela in tipo.escuelas {
+                    #expect(escuela.tradicion == lista.tradicion, Comment(rawValue: tipo.nombre))
                 }
                 #expect(tipo.ficha.categoria != nil, Comment(rawValue: tipo.nombre))
                 #expect(tipo.categoria == tipo.ficha.categoria, Comment(rawValue: tipo.nombre))
@@ -47,7 +48,8 @@ import Testing
             let tradicion = tipo.ficha.tradicion
             #expect(tradicion != nil, nombre)
             if let deLaCategoria = tipo.ficha.categoria?.tradicion { #expect(deLaCategoria == tradicion, nombre) }
-            for subtradicion in tipo.subtradiciones { #expect(subtradicion.tradicion == tradicion, nombre) }
+            if !tipo.estilos.isEmpty { #expect(tradicion == .occidental, nombre) }
+            for escuela in tipo.escuelas { #expect(escuela.tradicion == tradicion, nombre) }
             if let fuente = tipo.ficha.fuente { #expect(fuente.tradicion == tradicion, nombre) }
             for afinacion in tipo.ficha.afinaciones {
                 if let fuente = afinacion.fuente { #expect(fuente.tradicion == tradicion, nombre) }
@@ -84,6 +86,7 @@ import Testing
     }
 
     /// Las escuelas y las regiones: las de la declaración, o la escuela que da la categoría (en la India).
+    @available(*, deprecated, message: "prueba Subtradicion, que es obsoleta")
     @Test func lasSubtradiciones() {
         #expect(TipoDeEscala.mohanam.escuelas == [.carnatica])
         #expect(TipoDeEscala.melakarta(15)?.escuelas == [.carnatica])
@@ -120,6 +123,7 @@ import Testing
     }
 
     /// Cada subtradición tiene nombre en los trece idiomas y se codifica por su nombre de caso.
+    @available(*, deprecated, message: "prueba Subtradicion, que es obsoleta")
     @Test func lasSubtradicionesSeTraducenYSeCodifican() throws {
         for subtradicion in Subtradicion.todas {
             #expect(subtradicion.nombre(en: .compacta(.espanol)) == subtradicion.nombre)

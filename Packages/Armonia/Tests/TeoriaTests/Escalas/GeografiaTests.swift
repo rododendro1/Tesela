@@ -24,6 +24,7 @@ import Testing
 
     /// Como subtradición, una región solo da las escalas de su tradición: la de Hungría, que es europea, no da las
     /// húngaras occidentales; la de Andalucía, que es occidental, da la flamenca.
+    @available(*, deprecated, message: "prueba Subtradicion, que es obsoleta")
     @Test func lasSubtradicionesSonDeSuTradicion() {
         #expect(Subtradicion.region(.hungria).tipos.contains(.pentatonicaHungara))
         #expect(!Subtradicion.region(.hungria).tipos.contains(.menorHungara))

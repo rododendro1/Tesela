@@ -1,16 +1,19 @@
 import Elementos
 
-// MARK: - Subtradiciones de una escala: su estilo y su región
+// MARK: - Subtradiciones de una escala (obsoleto)
 //
-// Una escala puede tener dos clases de subtradición dentro de su `Tradicion`: el estilo o repertorio en que se usa
-// (la música carnática, el gagaku, el jazz) y la región o el pueblo de donde viene (Java, Escocia, los chopi). Son dos
-// tipos, `Estilo` y `RegionDeEscala`, y `Subtradicion` reúne los dos. Una escala puede tener varios de cada
-// uno: el dórico es clásico y de jazz, y el sléndro se toca en Java y en Bali.
+// `Subtradicion` juntaba en un tipo tres cosas que ya tienen el suyo: el estilo occidental en que se usa una escala
+// (`Estilo`: la clásica, el jazz), la escuela de otra tradición (`Escuela`: la música carnática, el gagaku) y la región
+// o el pueblo de donde viene (`RegionDeEscala`: Java, Escocia, los chopi). La región es un lugar: está en `Lugar`, con
+// los países y los continentes que la contienen, y una escala la da en `lugaresDeOrigen`. Se usan `estilos`,
+// `escuelas` y `lugaresDeOrigen` (o `regiones`); `Subtradicion` y `subtradiciones` se van en la 0.6.0.
 
-/// Una subtradición: un estilo (`Estilo`) o una región (`RegionDeEscala`) dentro de una tradición.
+/// Una subtradición: un estilo (`Estilo`), una escuela (`Escuela`) o una región (`RegionDeEscala`) dentro de una
+/// tradición. Obsoleto: se usan `TipoDeEscala.estilos`, `escuelas` y `lugaresDeOrigen`.
 ///
 ///     TipoDeEscala.slendro.subtradiciones   // [.region(.java), .region(.bali)]
 ///     TipoDeEscala.dorico.subtradiciones    // [.estilo(.clasica), .estilo(.jazz)]
+@available(*, deprecated, message: "usa Estilo, Escuela y Lugar: TipoDeEscala.estilos, escuelas y lugaresDeOrigen")
 public enum Subtradicion: Hashable, Sendable, Codable {
     case estilo(Estilo)
     case escuela(Escuela)
@@ -50,11 +53,13 @@ public enum Subtradicion: Hashable, Sendable, Codable {
     }
 }
 
+@available(*, deprecated)
 extension Subtradicion: Nombrable {}
 
 extension TipoDeEscala {
     /// Los estilos, las escuelas y las regiones de su tradición, por ese orden: la menor húngara, occidental, no tiene
-    /// la región de Hungría, que es de la tradición europea.
+    /// la región de Hungría, que es de la tradición europea. Obsoleto: `estilos`, `escuelas` y `lugaresDeOrigen`.
+    @available(*, deprecated, message: "usa estilos, escuelas y lugaresDeOrigen")
     public var subtradiciones: [Subtradicion] {
         estilos.map(Subtradicion.estilo) + escuelas.map(Subtradicion.escuela)
             + regiones.filter { $0.tradicion == tradicion }.map(Subtradicion.region)
