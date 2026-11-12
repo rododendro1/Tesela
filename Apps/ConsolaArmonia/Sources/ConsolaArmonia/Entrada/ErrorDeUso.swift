@@ -235,7 +235,9 @@ enum ErrorDeUso: ErrorDeArmonia {
         case .fuenteDesconocida(let fuente):
             return LineaDeComandos.propuesta(para: fuente, entre: FuenteTeorica.allCases.map(\.rawValue))
         case .usoDesconocido(let uso):
-            let claves = LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }
+            let claves =
+                LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }
+                + LineaDeComandos.nombresDeLasCorrientes.flatMap { [$0.espanol, $0.ingles] }
             return LineaDeComandos.propuesta(para: uso, entre: claves)
         case .lugarDesconocido(let lugar):
             return LineaDeComandos.propuesta(para: lugar, entre: Lugar.todos.map(\.clave))

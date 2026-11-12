@@ -111,6 +111,8 @@ import Testing
             #expect(TipoDeEscala.occidentales.contains { $0.esIdentico(a: tipo) }, Comment(rawValue: tipo.nombre))
         }
         #expect(!TipoDeEscala.flamenca.nombreGeograficoSinOrigen)
+        #expect(TipoDeEscala.argelina.nombreGeograficoSinOrigen)
+        #expect(TipoDeEscala.argelina.referencias.contains(.finkRicci1975))
         #expect(!TipoDeEscala(nombre: "persa", intervalos: [.unisono, .quintaJusta]).nombreGeograficoSinOrigen)
     }
 

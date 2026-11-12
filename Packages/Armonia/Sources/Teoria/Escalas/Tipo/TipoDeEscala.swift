@@ -64,14 +64,15 @@ public struct TipoDeEscala: Sendable, Codable {
     /// de Andalucía) y, si las tiene, sus versiones microtonales.
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
-        variantes: [String] = [], estilos: [Estilo], regiones: [RegionDeEscala] = [],
+        variantes: [String] = [], estilos: [Estilo], corrientes: [Corriente] = [], regiones: [RegionDeEscala] = [],
         afinaciones: [FichaDeEscala.Afinacion] = [], documentada: Referencia? = nil
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
             variantes: variantes,
             ficha: FichaDeEscala(
-                estilos: estilos, regiones: regiones, afinaciones: afinaciones, documentada: documentada))
+                estilos: estilos, corrientes: corrientes, regiones: regiones, afinaciones: afinaciones,
+                documentada: documentada))
     }
 
     /// Una escala de otra tradición, con su categoría y, si los tiene, sus estilos (si no los da la categoría), sus
@@ -271,7 +272,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["menor dórica"], variantes: ["dórica"],
-        estilos: [.jazz, .clasica])
+        estilos: [.jazz, .clasica], corrientes: [.modal])
     public static let frigio = TipoDeEscala(
         nombre: "frigio",
         intervalos: [
@@ -279,7 +280,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         variantes: ["frigia"],
-        estilos: [.clasica, .jazz])
+        estilos: [.clasica, .jazz], corrientes: [.modal])
     public static let lidio = TipoDeEscala(
         nombre: "lidio",
         intervalos: [
@@ -287,7 +288,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         variantes: ["lidia"],
-        estilos: [.jazz, .clasica])
+        estilos: [.jazz, .clasica], corrientes: [.modal])
     public static let mixolidio = TipoDeEscala(
         nombre: "mixolidio",
         intervalos: [
@@ -295,7 +296,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         variantes: ["mixolidia"],
-        estilos: [.jazz, .clasica])
+        estilos: [.jazz, .clasica], corrientes: [.modal])
     public static let menorNatural = TipoDeEscala(
         nombre: "menor natural",
         intervalos: [
@@ -311,14 +312,14 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         variantes: ["locria"],
-        estilos: [.jazz, .clasica])
+        estilos: [.jazz, .clasica], corrientes: [.bebop])
     public static let menorArmonica = TipoDeEscala(
         nombre: "menor armónica",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        estilos: [.clasica])
+        estilos: [.clasica, .popRock], corrientes: [.metalNeoclasico])
     /// Sube con la 6ª y la 7ª mayores y baja como la menor natural.
     public static let menorMelodica = TipoDeEscala(
         nombre: "menor melódica",
@@ -331,7 +332,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["menor melódica clásica"],
-        estilos: [.clasica])
+        estilos: [.clasica], documentada: .rameau1722)
     /// La menor melódica tal como se usa en el jazz: con la 6ª y la 7ª mayores también al bajar.
     /// En los conservatorios españoles es la «menor bachiana», la que Bach usa al subir y al bajar.
     /// Es el mismo contenido que el mēḷa 23 (Gaurīmanoharī), y la escala madre de los modos
@@ -343,16 +344,16 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         alias: ["menor de jazz", "menor melódica ascendente", "bachiana", "menor bachiana", "de Bach"],
-        estilos: [.jazz])
+        estilos: [.jazz], corrientes: [.modal])
     public static let pentatonicaMayor = TipoDeEscala(
         nombre: "pentatónica mayor",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         alias: ["pentatónica"],
-        estilos: [.folclore, .popRock, .blues])
+        estilos: [.folclore, .popRock, .blues], corrientes: [.rock])
     public static let pentatonicaMenor = TipoDeEscala(
         nombre: "pentatónica menor",
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        estilos: [.blues, .popRock, .folclore])
+        estilos: [.blues, .popRock, .folclore], corrientes: [.rock])
     public static let blues = TipoDeEscala(
         nombre: "blues",
         intervalos: [
@@ -367,7 +368,7 @@ extension TipoDeEscala {
             .quintaAumentada, .sextaAumentada,
         ],
         alias: ["hexatónica", "modo 1 de Messiaen", "de Debussy", "Debussy", "aumentada auxiliar"],
-        estilos: [.deCompositor, .jazz], documentada: .glinka1842)
+        estilos: [.deCompositor, .jazz], corrientes: [.impresionismo, .bebop], documentada: .glinka1842)
     public static let disminuida = TipoDeEscala(
         nombre: "disminuida tono-semitono",
         intervalos: [

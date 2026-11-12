@@ -22,6 +22,17 @@
 
 ### Lo nuevo
 
+- Las corrientes de los estilos (`Corriente`), con el año en que empiezan: el bebop (1945) y el jazz modal (1959), el
+  impresionismo (1890), el rock (1955), el heavy metal (1970) y el metal neoclásico (1984). Una escala las lleva en
+  orden de importancia (`TipoDeEscala.corrientes`: el dórico, `[.modal]`; el frigio dominante, `[.heavyMetal,
+  .metalNeoclasico]`), y precisan las épocas de uso de su estilo: la de tonos enteros, por el impresionismo, se usa
+  ya en el Romanticismo. La menor armónica es también de pop y rock, por el metal neoclásico. Sus nombres, en los
+  trece idiomas. En la consola, `escalas --uso bebop` (o `modal`, `impresionismo`, `rock`, `heavy-metal`,
+  `metal-neoclasico`).
+- La menor melódica es del Barroco, por el modo menor del «Traité de l'harmonie» de Rameau (1722), y no del
+  Renacimiento. La mayor húngara es del siglo XX, por Persichetti (1961), y con ella sus seis modos sintéticos: las
+  occidentales sin época pasan de 18 a 11. La argelina es un nombre geográfico sin origen, como la persa y la egipcia,
+  con el diccionario de Fink y Ricci (1975) como referencia.
 - La época tonal se parte en tres: `Epoca` tiene ahora el Barroco (1600–1750), el Clasicismo (1750–1820) y el
   Romanticismo (1820–1900), y el siglo XXI (desde 2000). `Epoca.tonales` y `esTonal` las juntan, y
   `Epoca.nombreDeLaEpocaTonal(en:)` da «época tonal». `Estilo.epocasDeUso` da varias: la clásica, las tres tonales;

@@ -54,6 +54,8 @@ package struct FichaDeEscala: Sendable {
 
     /// En qué estilos occidentales se usa, de más a menos importante: el primero es su uso principal.
     package let estilos: [Estilo]
+    /// En qué corrientes de sus estilos se usa, de más a menos importante (el jazz modal en el dórico).
+    package let corrientes: [Corriente]
     /// En qué escuelas de otra tradición se usa, en el orden de `Escuela.allCases`: las escritas en la declaración o,
     /// si no las hay, la que da la categoría (`Escuela.de(_:)`).
     package let escuelas: [Escuela]
@@ -77,7 +79,8 @@ package struct FichaDeEscala: Sendable {
     package let documentada: Referencia?
 
     package init(
-        tradicion: Tradicion? = nil, estilos: [Estilo] = [], escuelas: [Escuela] = [], regiones: [RegionDeEscala] = [],
+        tradicion: Tradicion? = nil, estilos: [Estilo] = [], corrientes: [Corriente] = [], escuelas: [Escuela] = [],
+        regiones: [RegionDeEscala] = [],
         categoria: CategoriaTradicional? = nil,
         padre: IdentidadDeEscala? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil,
         referencias: [Referencia] = [], documentada: Referencia? = nil
@@ -85,6 +88,8 @@ package struct FichaDeEscala: Sendable {
         self.referencias = referencias
         self.documentada = documentada
         self.estilos = Estilo.sinRepetir(estilos)
+        var vistas = Set<Corriente>()
+        self.corrientes = corrientes.filter { vistas.insert($0).inserted }
         let escuelas = escuelas.isEmpty ? (categoria.flatMap(Escuela.de).map { [$0] } ?? []) : escuelas
         self.escuelas = Escuela.allCases.filter { escuelas.contains($0) }
         self.regiones = RegionDeEscala.allCases.filter { regiones.contains($0) }
