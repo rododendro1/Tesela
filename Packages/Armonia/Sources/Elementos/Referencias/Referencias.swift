@@ -320,6 +320,21 @@ extension Referencia {
         "cohn1996", .articulo, autores: ["Cohn, Richard"],
         titulo: "Maximally Smooth Cycles, Hexatonic Systems, and the Analysis of Late-Romantic Triadic Progressions",
         anio: 1996, publicadoEn: "Music Analysis", volumen: "15 (1)", paginas: "9–40")
+    /// Slonimsky, el tesauro de escalas: las divisiones de la octava en partes iguales (tritono, ditono, sesquitono) con
+    /// notas interpoladas, de donde salen la aumentada semitono-tercera y Petrushka menor.
+    public static let slonimsky1947 = Referencia(
+        "slonimsky1947", .libro, autores: ["Slonimsky, Nicolas"], titulo: "Thesaurus of Scales and Melodic Patterns",
+        anio: 1947, editorial: "Coleman-Ross", lugar: "Nueva York")
+    /// Slonimsky, la música de Tcherepnin: su escala de nueve pasos, de tres tetracordos de semitono, tono y semitono.
+    public static let slonimsky1968 = Referencia(
+        "slonimsky1968", .articulo, autores: ["Slonimsky, Nicolas"], titulo: "Alexander Tcherepnin Septuagenarian",
+        anio: 1968, publicadoEn: "Tempo")
+    /// Burke, la escala enigmática de Verdi y Puccini: el acertijo de Crescentini y su forma descendente, con Fa♮.
+    public static let burke2015 = Referencia(
+        "burke2015", .articulo, autores: ["Burke, Richard"],
+        titulo: "“That Awkward Scale”: Verdi, Puccini, and the Scala enigmatica", anio: 2015,
+        publicadoEn: "Music Theory Online", volumen: "21 (2)",
+        url: "https://mtosmt.org/issues/mto.15.21.2/mto.15.21.2.burke.html")
     /// Tymoczko, las escalas del siglo XX y del jazz: la acústica, la de tonos enteros, la octatónica, la hexatónica
     /// y las armónicas menor y mayor.
     public static let tymoczko2011 = Referencia(
@@ -545,6 +560,7 @@ extension Referencia {
         .taruskin1996,
         .burkhart1973,
         .levine1989, .persichetti1961, .aldwell2011, .levine1995, .messiaen1944, .lendvai1971, .cohn1996,
+        .slonimsky1947, .slonimsky1968, .burke2015,
         .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .gjerdingen2007, .hudson1982, .hudsonPassacaglia1982,
         .hudsonChaconne1982,
         .gerbino2001, .staiti2023, .sheinberg2016, .rosand1979, .doll2017,

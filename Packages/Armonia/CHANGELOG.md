@@ -109,6 +109,23 @@
 - Cuatro obras más en las referencias del catálogo: Sam (1988) para el pinpeat, Williamson (2000) para el saung,
   Kubik (1994) para la amadinda y Taruskin (1996) para el acorde de los augures. Con ellas, todas las escalas de otras
   tradiciones citan alguna obra.
+- Tres escalas sintéticas más: la aumentada semitono-tercera (Do Re♭ Mi Fa Sol♯ La, el modelo 1:3 de Lendvai),
+  Tcherepnin (Do Re♭ Mi♭ Mi Fa Sol La♭ La Si, sus tres tetracordos de semitono, tono y semitono) y Petrushka menor
+  (Do Re♭ Mi♭ Fa♯ Sol La, dos acordes menores a un tritono), con sus nombres en los trece idiomas. Con ellas, el
+  catálogo tiene todas las escalas de transposición limitada de cinco a diez notas.
+- Tres heptatónicas sintéticas de Busoni: jónico ♭2 (Do Re♭ Mi Fa Sol La Si, con las notas de Sabáh), jónico ♭5
+  (Do Re Mi Fa Sol♭ La Si, con las de Mārvā) y jónico ♯6 (Do Re Mi Fa Sol La♯ Si). Son las únicas que faltaban de las
+  que alteran un solo grado de la mayor.
+- La enigmática tiene forma descendente: baja con Fa♮ (Do Si La♯ Sol♯ Fa Mi Re♭), como en el acertijo que armonizó
+  Verdi.
+- Tres obras más en las referencias: Slonimsky (1947), Slonimsky (1968) y Burke (2015). Lendvai (1971) cita también
+  la disminuida semitono-tono y la aumentada semitono-tercera (sus modelos 1:2 y 1:3).
+
+### Cambios
+
+- «Tcherepnin» y «de Tcherepnin» son ahora la escala `tcherepnin`, no un alias del modo 3 de Messiaen, que tiene sus
+  mismas notas desde otro grado.
+- `TipoDeEscala.enigmatica` ya no es `==` a un tipo con solo sus intervalos ascendentes, porque ahora baja distinto.
 
 ### Rendimiento
 

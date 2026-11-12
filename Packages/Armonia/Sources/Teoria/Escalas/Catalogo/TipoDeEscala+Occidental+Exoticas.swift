@@ -48,11 +48,16 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         estilos: [.clasica])
-    /// La «escala enigmática» del Ave Maria de Verdi (Do Re♭ Mi Fa♯ Sol♯ La♯ Si).
+    /// La «escala enigmática» del Ave Maria de Verdi (Do Re♭ Mi Fa♯ Sol♯ La♯ Si). Baja con Fa♮, con otra
+    /// 2ª aumentada entre el 4º y el 5º grado (Do Si La♯ Sol♯ Fa Mi Re♭), como en el acertijo de Crescentini.
     public static let enigmatica = TipoDeEscala(
         nombre: "enigmática",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
+            .quintaAumentada, .sextaAumentada, .septimaMayor,
+        ],
+        intervalosDescendentes: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaAumentada, .sextaAumentada, .septimaMayor,
         ],
         alias: ["de Verdi", "Verdi"],
@@ -125,6 +130,17 @@ extension TipoDeEscala {
         ],
         alias: ["hexatónica aumentada", "simétrica aumentada", "de Weitzmann", "Weitzmann"],
         estilos: [.jazz, .deCompositor])
+    /// La aumentada que empieza por semitono (Do Re♭ Mi Fa Sol♯ La): dos acordes aumentados a un semitono, Do Mi Sol♯
+    /// y Re♭ Fa La. Es el modelo 1:3 de Lendvai en Bartók (como la disminuida semitono-tono es el 1:2), la progresión
+    /// de ditono con interpolación de una nota de Slonimsky y la «escala cromática perfecta» de Tcherepnin.
+    public static let aumentadaSemitonoTercera = TipoDeEscala(
+        nombre: "aumentada semitono-tercera",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaAumentada, .sextaMayor,
+        ],
+        alias: ["aumentada inversa", "modelo 1:3", "modelo 1:3 de Lendvai", "cromática perfecta"],
+        estilos: [.jazz, .deCompositor], documentada: .slonimsky1947)
     /// Do Re Mi♭ Mi Sol La: la pentatónica mayor con la 3ª menor de paso.
     public static let bluesMayor = TipoDeEscala(
         nombre: "blues mayor",
@@ -285,6 +301,17 @@ extension TipoDeEscala {
         ],
         alias: ["de Petrushka", "de tritono", "tritono"], variantes: ["Petrouchka"],
         estilos: [.deCompositor], documentada: .stravinski1911)
+    /// La inversión de Petrushka: dos acordes menores a distancia de tritono (Do Re♭ Mi♭ Fa♯ Sol La, con Re♭ por
+    /// Do♯). Es una de las progresiones de tritono con interpolación de dos notas de Slonimsky, y la única escala de
+    /// transposición limitada de cinco a diez notas que no tenía el catálogo.
+    public static let petrushkaMenor = TipoDeEscala(
+        nombre: "Petrushka menor",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaAumentada,
+            .quintaJusta, .sextaMayor,
+        ],
+        alias: ["de dos tríadas menores a un tritono", "tritono menor"], variantes: ["Petrouchka menor"],
+        estilos: [.deCompositor], documentada: .slonimsky1947)
     /// Dos tricordos cromáticos a distancia de tritono (Do Re♭ Re Fa♯ Sol La♭). Tiene las notas del modo 5 de
     /// Messiaen, desde su cuarto grado.
     public static let tritonoDeDosSemitonos = TipoDeEscala(
@@ -430,16 +457,26 @@ extension TipoDeEscala {
     // disminuida semitono-tono). Cada uno se repite dentro de la octava, así que solo tiene
     // unas pocas transposiciones distintas.
 
-    /// Tono, semitono, semitono, tres veces (Do Re Mi♭ Mi Fa♯ Sol La♭ Si♭ Si): la escala de nueve
-    /// notas de Tcherepnin. Cuatro transposiciones.
+    /// Tono, semitono, semitono, tres veces (Do Re Mi♭ Mi Fa♯ Sol La♭ Si♭ Si). Cuatro transposiciones. La escala
+    /// de nueve notas de Tcherepnin tiene sus notas, desde el 3er grado (`tcherepnin`).
     public static let messiaen3 = TipoDeEscala(
         nombre: "modo 3 de Messiaen",
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMenor, .septimaMayor,
         ],
-        alias: ["Messiaen 3", "Tcherepnin", "de Tcherepnin", "nueve notas", "de nueve notas"],
+        alias: ["Messiaen 3", "nueve notas", "de nueve notas"],
         estilos: [.deCompositor], documentada: .messiaen1944)
+    /// La escala de nueve pasos de Tcherepnin: tres tetracordos conjuntos de semitono, tono y semitono (Do Re♭ Mi♭ Mi,
+    /// Mi Fa Sol La♭, La♭ La Si Do). Tiene las notas del modo 3 de Messiaen, desde su 3er grado.
+    public static let tcherepnin = TipoDeEscala(
+        nombre: "Tcherepnin",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["de Tcherepnin", "nueve pasos de Tcherepnin", "eneatónica de Tcherepnin"],
+        estilos: [.deCompositor], documentada: .slonimsky1968)
     /// Semitono, semitono, tercera menor, semitono, dos veces (Do Re♭ Re Fa Fa♯ Sol La♭ Si). Seis
     /// transposiciones.
     public static let messiaen4 = TipoDeEscala(

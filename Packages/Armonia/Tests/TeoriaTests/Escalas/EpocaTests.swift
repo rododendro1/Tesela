@@ -110,9 +110,9 @@ import Testing
         #expect(cuenta[.barroco] == 34)
         #expect(cuenta[.clasicismo] == nil)
         #expect(cuenta[.romanticismo] == 11)
-        #expect(cuenta[.sigloXX] == 49)
+        #expect(cuenta[.sigloXX] == 52)
         #expect(cuenta[.sigloXXI] == nil)
-        #expect(cuenta[nil] == 11)
+        #expect(cuenta[nil] == 14)
     }
 
     /// La regla 0: el año de la obra que documenta la escala va por delante de todas.

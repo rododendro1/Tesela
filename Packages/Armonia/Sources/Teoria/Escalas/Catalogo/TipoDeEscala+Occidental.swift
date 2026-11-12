@@ -398,4 +398,36 @@ extension TipoDeEscala {
             .quintaAumentada, .sextaMayor, .septimaMayor,
         ],
         estilos: [.sintetica])
+
+    // Las tres heptatónicas de Busoni que alteran un solo grado de la mayor y no son de otra familia del catálogo.
+
+    /// La mayor con la 2ª menor (Do Re♭ Mi Fa Sol La Si). Tiene las notas del dromos Sabáh y del makam Saba, desde
+    /// su 6º grado.
+    public static let jonicoSegundaMenor = TipoDeEscala(
+        nombre: "jónico ♭2",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["mayor ♭2"],
+        estilos: [.sintetica])
+    /// La mayor con la 5ª disminuida (Do Re Mi Fa Sol♭ La Si), sin 5ª justa. Tiene las notas del rāga Mārvā desde su
+    /// 4º grado.
+    public static let jonicoQuintaDisminuida = TipoDeEscala(
+        nombre: "jónico ♭5",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaDisminuida, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["mayor ♭5"],
+        estilos: [.sintetica])
+    /// La mayor con la 6ª aumentada (Do Re Mi Fa Sol La♯ Si): la ♯6 suena como la ♭7, así que tiene las dos séptimas.
+    public static let jonicoSextaAumentada = TipoDeEscala(
+        nombre: "jónico ♯6",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaAumentada, .septimaMayor,
+        ],
+        alias: ["mayor ♯6"],
+        estilos: [.sintetica])
 }

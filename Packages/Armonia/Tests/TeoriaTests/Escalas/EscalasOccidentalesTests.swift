@@ -28,6 +28,28 @@ import Testing
         #expect(TipoDeEscala.pentatonicaMayorTerceraMenor.equivalentes.contains { $0.esIdentico(a: .kumoijoshi) })
         #expect(notas(.disminuidaSemitonoTono) == "Do Re♭ Mi♭ Mi Fa♯ Sol La Si♭")
         #expect(notas(.aumentada) == "Do Mi♭ Mi Sol Sol♯ Si")
+        #expect(notas(.jonicoSegundaMenor) == "Do Re♭ Mi Fa Sol La Si")
+        #expect(notas(.jonicoQuintaDisminuida) == "Do Re Mi Fa Sol♭ La Si")
+        #expect(notas(.jonicoSextaAumentada) == "Do Re Mi Fa Sol La♯ Si")
+        // Las de Busoni de un solo grado alterado: dos tienen las notas de una escala de otra tradición.
+        #expect(
+            TipoDeEscala.jonicoSegundaMenor.modo(grado: 6).intervalos.map(\.semitonos)
+                == TipoDeEscala.sabah.intervalos.map(\.semitonos))
+        #expect(
+            TipoDeEscala.jonicoQuintaDisminuida.modo(grado: 4).intervalos.map(\.semitonos)
+                == TipoDeEscala.marva.intervalos.map(\.semitonos))
+        #expect(Escala("Do mayor ♭2").tipo == .jonicoSegundaMenor)
+        #expect(Escala("C ionian #6").tipo == .jonicoSextaAumentada)
+        #expect(notas(.aumentadaSemitonoTercera) == "Do Re♭ Mi Fa Sol♯ La")
+        // Las aumentadas suenan como rotaciones la una de la otra, como las disminuidas.
+        #expect(
+            TipoDeEscala.aumentada.modo(grado: 2).intervalos.map(\.semitonos)
+                == TipoDeEscala.aumentadaSemitonoTercera.intervalos.map(\.semitonos))
+        #expect(Escala("Do modelo 1:3").tipo == .aumentadaSemitonoTercera)
+        #expect(Escala("C inverse augmented").tipo == .aumentadaSemitonoTercera)
+        // La enigmática baja con Fa♮.
+        #expect(
+            TipoDeEscala.enigmatica.intervalosDescendentes?.map(\.semitonos) == [0, 1, 4, 5, 8, 10, 11])
         #expect(notas(.bluesMayor) == "Do Re Mi♭ Mi Sol La")
         #expect(notas(.egipcia) == "Do Re Fa Sol Si♭")
         #expect(notas(.cromatica) == "Do Re♭ Re Mi♭ Mi Fa Fa♯ Sol La♭ La Si♭ Si")
@@ -148,6 +170,8 @@ import Testing
         #expect(notas(.messiaen7) == "Do Re♭ Re Mi♭ Fa Fa♯ Sol La♭ La Si")
         #expect(notas(.flamenca) == "Do Re♭ Mi♭ Mi Fa Sol La♭ Si♭")
         #expect(notas(.petrushka) == "Do Re♭ Mi Fa♯ Sol Si♭")
+        #expect(notas(.petrushkaMenor) == "Do Re♭ Mi♭ Fa♯ Sol La")
+        #expect(notas(.tcherepnin) == "Do Re♭ Mi♭ Mi Fa Sol La♭ La Si")
         #expect(notas(.bebopMenorMelodica) == "Do Re Mi♭ Fa Sol Sol♯ La Si")
         #expect(notas(.bebopMenorArmonica) == "Do Re Mi♭ Fa Sol La♭ Si♭ Si")
 
@@ -159,6 +183,16 @@ import Testing
         #expect(
             [TipoDeEscala.tonosEnteros, .disminuida, .messiaen3, .messiaen4, .messiaen5, .messiaen6, .messiaen7]
                 .map(transposiciones) == [2, 3, 4, 6, 6, 6, 6])
+        #expect(
+            [TipoDeEscala.aumentadaSemitonoTercera, .petrushkaMenor, .tcherepnin].map(transposiciones) == [4, 6, 4])
+        // Tcherepnin tiene las notas del modo 3 desde su 3er grado.
+        #expect(
+            TipoDeEscala.messiaen3.modo(grado: 3).intervalos.map(\.semitonos)
+                == TipoDeEscala.tcherepnin.intervalos.map(\.semitonos))
+        // Petrushka menor: los acordes menores de Do y de Fa♯.
+        #expect(
+            Set(Escala(.do, .petrushkaMenor).notas.map(\.claseDeAltura))
+                == Set((Acorde("Dom").notas + Acorde("Fa#m").notas).map(\.claseDeAltura)))
         // Petrushka: los acordes mayores de Do y de Fa♯ (con Re♭ por Do♯ y Si♭ por La♯).
         #expect(
             Set(Escala(.do, .petrushka).notas.map(\.claseDeAltura))
@@ -166,7 +200,13 @@ import Testing
 
         // Nombres y alias.
         #expect(Escala("Do modo 3 de Messiaen").tipo == .messiaen3)
-        #expect(Escala("Do Tcherepnin").tipo == .messiaen3)
+        #expect(Escala("Do Tcherepnin").tipo == .tcherepnin)
+        #expect(Escala("C Tcherepnin").tipo == .tcherepnin)
+        #expect(Escala("Do nueve notas").tipo == .messiaen3)
+        #expect(Escala("Do Petrushka menor").tipo == .petrushkaMenor)
+        #expect(Escala("C minor Petrushka").tipo == .petrushkaMenor)
+        #expect(TipoDeEscala.tcherepnin.documentada?.anio == 1968)
+        #expect(TipoDeEscala.petrushkaMenor.epocaDeOrigen == .sigloXX)
         #expect(Escala("C Messiaen mode 7").tipo == .messiaen7)
         #expect(Escala("Mi andaluza").tipo == .flamenca)
         #expect(Escala("E flamenco").tipo == .flamenca)

@@ -32,6 +32,7 @@ extension NombresDeEscalas {
         .init(.prometeoNapolitano, "Prométhée napolitain"),
         .init(.disminuidaSemitonoTono, "diminuée demi-ton-ton", alias: ["diminuée dominante", "dominante diminuée", "mode 2 de Messiaen", "de Rimski-Korsakov", "Rimsky-Korsakov", "de Stravinsky", "Stravinsky", "diminuée auxiliaire blues"]),
         .init(.aumentada, "augmentée", alias: ["hexatonique augmentée", "symétrique augmentée", "Weitzmann", "de Weitzmann"]),
+        .init(.aumentadaSemitonoTercera, "augmentée demi-ton–tierce", alias: ["augmentée inverse", "modèle 1:3", "chromatique parfaite"]),
         .init(.bluesMayor, "blues majeur"),
         .init(.egipcia, "égyptienne", alias: ["pentatonique suspendue"]),
         .init(.cromatica, "chromatique", alias: ["chromatique à quatre bémols", "chromatique −5…6"]),
@@ -49,6 +50,7 @@ extension NombresDeEscalas {
         .init(.mayorRumana, "majeur roumain"),
         .init(.argelina, "algérienne"),
         .init(.petrushka, "Petrouchka", alias: ["de Petrouchka", "de triton", "triton"], variantes: ["Petrushka"]),
+        .init(.petrushkaMenor, "Petrouchka mineure", alias: ["triton mineur"], variantes: ["Petrushka mineure"]),
         .init(.tritonoDeDosSemitonos, "triton à deux demi-tons"),
         .init(.hexatonicaDeArmonicos, "hexatonique des harmoniques"),
         .init(.bebopMenorMelodica, "bebop mineur mélodique", alias: ["bebop mélodique", "sixte mineure diminuée", "de sixte mineure diminuée"]),
@@ -66,7 +68,8 @@ extension NombresDeEscalas {
         .init(.bluesDeNueveNotas, "blues à neuf notes", alias: ["blues à 9 notes", "blues ennéatonique"]),
         .init(.bluesMenorConSegunda, "blues mineur avec seconde", alias: ["blues avec seconde"]),
         .init(.hexacordo, "hexacorde", alias: ["hexacorde de Guido", "ut re mi fa sol la"]),
-        .init(.messiaen3, "mode 3 de Messiaen", alias: ["Messiaen 3", "Tcherepnin", "de Tcherepnine", "neuf notes", "de neuf notes"]),
+        .init(.messiaen3, "mode 3 de Messiaen", alias: ["Messiaen 3", "neuf notes", "de neuf notes"]),
+        .init(.tcherepnin, "Tcherepnine", alias: ["de Tcherepnine"], variantes: ["Tcherepnin"]),
         .init(.messiaen4, "mode 4 de Messiaen", alias: ["Messiaen 4"]),
         .init(.messiaen5, "mode 5 de Messiaen", alias: ["Messiaen 5"]),
         .init(.messiaen6, "mode 6 de Messiaen", alias: ["Messiaen 6"]),
@@ -116,6 +119,9 @@ extension NombresDeEscalas {
         .init(.menorMelodicaQuintaAumentada, "mineur mélodique ♯5", alias: ["mineur de jazz ♯5"]),
         .init(.doricoSegundaMenorCuartaAumentada, "dorien ♭2 ♯4", alias: ["dorien ♭9 ♯11"]),
         .init(.lidioAumentadoTerceraAumentada, "lydien augmenté ♯3"),
+        .init(.jonicoSegundaMenor, "ionien ♭2", alias: ["majeure ♭2"]),
+        .init(.jonicoQuintaDisminuida, "ionien ♭5", alias: ["majeure ♭5"]),
+        .init(.jonicoSextaAumentada, "ionien ♯6", alias: ["majeure ♯6"]),
 
         // Escalas de otras tradiciones: nombres propios, iguales en todos los idiomas salvo los que se traducen.
         // Para traducir una: `.tradicional(.hitzaz, "…")`. Los alias (Hijaz, Hicaz…) están en el catálogo.
