@@ -32,10 +32,11 @@ import Testing
         #expect(TipoDeEscala.hexacordo.epocaDeOrigen == .edadMedia)
     }
 
-    /// Kāfī tiene las notas del dórico, pero no es occidental: no se fecha por los modos gregorianos.
+    /// Kāfī tiene las notas del dórico, pero no es occidental: no se fecha por los modos gregorianos, sino por los thāṭ
+    /// de Bhātkhaṇḍe (1909).
     @Test func soloLasOccidentalesSeFechanPorSusNotas() {
         #expect(TipoDeEscala.kafi == .dorico)
-        #expect(TipoDeEscala.kafi.epocaDeOrigen == nil)
+        #expect(TipoDeEscala.kafi.epocaDeOrigen == .sigloXX)
         #expect(TipoDeEscala(nombre: "mía", intervalos: TipoDeEscala.dorico.intervalos).epocaDeOrigen == nil)
     }
 

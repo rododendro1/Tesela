@@ -67,17 +67,33 @@ extension Epoca: Nombrable {}
 // MARK: - La época de lo que ya hay en el catálogo
 
 extension FuenteTeorica {
-    /// La época del teórico. El `switch` no tiene `default`: una fuente nueva no compila sin la suya.
-    public var epoca: Epoca {
+    /// El año de su obra, aproximado en las antiguas (los años antes de Cristo son negativos): Arquitas, hacia 380 a. C.;
+    /// Glareano, 1547. El `switch` no tiene `default`: una fuente nueva no compila sin el suyo.
+    public var anio: Int {
         switch self {
-        case .arquitas, .aristoxeno, .eratostenes, .didimo, .ptolomeo, .aristides, .guanzi, .lushiChunqiu:
-            .antiguedad
-        case .guido, .safiAlDin: .edadMedia
-        case .ramosDePareja, .glareano, .vicentino, .zarlino, .salinas, .zhuZaiyu: .renacimiento
-        case .chrysanthos: .tonal
-        case .arelEzgiUzdilek: .sigloXX
+        case .arquitas: -380
+        case .aristoxeno: -330
+        case .guanzi: -350
+        case .eratostenes: -240
+        case .lushiChunqiu: -239
+        case .didimo: -30
+        case .ptolomeo: 150
+        case .aristides: 300
+        case .guido: 1026
+        case .safiAlDin: 1252
+        case .ramosDePareja: 1482
+        case .glareano: 1547
+        case .vicentino: 1555
+        case .zarlino: 1558
+        case .salinas: 1577
+        case .zhuZaiyu: 1584
+        case .chrysanthos: 1832
+        case .arelEzgiUzdilek: 1933
         }
     }
+
+    /// La época del teórico, la de su año.
+    public var epoca: Epoca { Epoca(anio: anio) }
 }
 
 extension Tradicion {
@@ -120,10 +136,9 @@ extension TipoDeEscala {
 
     /// La época en que aparece la escala. Es la primera de estas que da algo:
     ///
-    /// 0. la del año de la obra más antigua que la da (`documentada`): la menor húngara, la época tonal por Liszt
-    ///    (1859); Rast makamı, por Cantemir (hacia 1700);
-    /// 1. la de su fuente teórica (`fuente`): los géneros de Ptolomeo son de la antigüedad, los modos de Glareano del
-    ///    Renacimiento;
+    /// 1. la de su año (`anioDeOrigen`): el de la obra más antigua que la da (`documentada`: la menor húngara, la
+    ///    época tonal por Liszt en 1859), el de su fuente teórica (los géneros de Ptolomeo son de la antigüedad, los
+    ///    modos de Glareano del Renacimiento) o el de su categoría (los mēḷa, de 1660);
     /// 2. la de su tradición, si es una época (`Tradicion.epoca`): las harmoniai son de la antigüedad, los modos
     ///    gregorianos de la Edad Media;
     /// 3. en las occidentales de la música clásica (las de estilo `.clasica`, cuyos nombres vienen de los modos), la
@@ -139,8 +154,8 @@ extension TipoDeEscala {
     /// `nil` si ninguna da nada: las populares (la flamenca, la mayor rumana), las de otras tradiciones que no son de
     /// una época y las propias.
     public var epocaDeOrigen: Epoca? {
-        if let anio = documentada?.anio { return Epoca(anio: anio) }
-        if let epoca = fuente?.epoca ?? tradicion?.epoca { return epoca }
+        if let anio = anioDeOrigen { return Epoca(anio: anio) }
+        if let epoca = tradicion?.epoca { return epoca }
         guard tradicion == .occidental else { return nil }
         if estilos.contains(.clasica) {
             let equivalentes = TipoDeEscala.tradicionales.filter {

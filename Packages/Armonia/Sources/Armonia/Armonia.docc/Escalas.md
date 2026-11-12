@@ -139,20 +139,21 @@ TipoDeEscala.dorico.tradicion                        // .occidental
 ``Epoca`` (antigüedad, Edad Media, Renacimiento, época tonal y siglo XX), y ninguna se escribe en el catálogo: se
 calculan con lo que ya sabe de cada escala. La de origen es la primera de estas que da algo:
 
-1. la del año de la obra más antigua que da la escala (`TipoDeEscala.documentada`, con `Epoca(anio:)`): la menor
-   húngara es de la época tonal por el libro de Liszt sobre la música gitana de Hungría (1859); los echoi, por el
-   Theōrētikon de Chrysanthos (1832), y los makamlar que ya están en Cantemir, por su tratado (hacia 1700);
-2. la época de su fuente teórica (`FuenteTeorica.epoca`): los géneros de Ptolomeo son de la antigüedad, y los çeşni de
-   Arel-Ezgi-Uzdilek, del siglo XX;
-3. la de su tradición, si es una época (`Tradicion.epoca`): la Grecia antigua, Mesopotamia, el canto gregoriano y el
+1. la de su año (`TipoDeEscala.anioDeOrigen`, con `Epoca(anio:)`): el de la obra más antigua que da la escala
+   (`documentada`: la menor húngara es de la época tonal por el libro de Liszt sobre la música gitana de Hungría,
+   de 1859; los echoi, por el Theōrētikon de Chrysanthos, de 1832; los makamlar que ya están en Cantemir, por su
+   tratado, de hacia 1700), el de su fuente teórica (`FuenteTeorica.anio`: los géneros de Ptolomeo son de la
+   antigüedad, y los çeşni de Arel-Ezgi-Uzdilek, del siglo XX) o el de su categoría (`CategoriaTradicional.anio`:
+   los mēḷa, de 1660; los thāṭ, de 1909; los grāma y las mūrchanā, del Nāṭyaśāstra);
+2. la de su tradición, si es una época (`Tradicion.epoca`): la Grecia antigua, Mesopotamia, el canto gregoriano y el
    Renacimiento;
-4. en las occidentales de la música clásica, la de las escalas gregorianas y renacentistas con sus mismas notas: el
+3. en las occidentales de la música clásica, la de las escalas gregorianas y renacentistas con sus mismas notas: el
    dórico es medieval por el protus, y la mayor renacentista por el jónico de Glareano;
-5. en las sintéticas, la de la escala de la que son modo (`Escala.escalaMadre`);
-6. en las sintéticas y las populares, la de las escalas de las que son un modo: la doble armónica y el ultrafrigio,
+4. en las sintéticas, la de la escala de la que son modo (`Escala.escalaMadre`);
+5. en las sintéticas y las populares, la de las escalas de las que son un modo: la doble armónica y el ultrafrigio,
    la de la menor húngara; la mayor locria, la de la napolitana mayor. Las populares solo la toman de una escala
    documentada: la flamenca tiene las notas de un modo de una escala de jazz, pero no viene del jazz;
-7. la más antigua de las de uso de sus estilos (`Estilo.epocaDeUso`): la clásica da la época tonal, y el jazz, el
+6. la más antigua de las de uso de sus estilos (`Estilo.epocaDeUso`): la clásica da la época tonal, y el jazz, el
    blues y el siglo XX, el siglo XX.
 
 Las de uso son las de sus estilos, sin la de origen. Las populares que no salen por ninguna regla (la flamenca, la
@@ -166,6 +167,23 @@ TipoDeEscala.alterada.epocaDeOrigen == .sigloXX              // true
 TipoDeEscala.menorHungara.documentada?.anio == 1859          // true
 TipoDeEscala.dobleArmonica.epocaDeOrigen == .tonal           // true
 Epoca.tonal.nombre                                           // "época tonal"
+```
+
+### El período en cada tradición
+
+Las épocas son europeas: que un tratado indio sea «de la Edad Media» es una etiqueta de fuera. `TipoDeEscala.periodo`
+da el ``PeriodoMusical`` de su tradición en que aparece, con los nombres que se usan en ella: en la India, el védico,
+el del Nāṭyaśāstra, el del Saṅgītaratnākara, el de los mēḷa y el de Bhātkhaṇḍe; en el mundo árabe, Persia y
+Azerbaiyán, el abasí, la escuela sistematista, el otomano y safávida y, en el mundo árabe, desde el Congreso de El
+Cairo; en Turquía, además, los de Cantemir, de Selim III y de Arel-Ezgi-Uzdilek; en China, las dinastías, y en Japón,
+los períodos de su historia. Sale de su tradición y de su año, con `PeriodoMusical.de(_:anio:)`, y es `nil` en las
+tradiciones sin períodos propios y en las escalas sin año.
+
+```swift
+TipoDeEscala.melakarta(29)?.periodo == .mela                // true
+TipoDeEscala.rastMakami.periodo == .cantemir                // true
+TipoDeEscala.rastDortlusu.periodo == .arelEzgiUzdilek       // true
+PeriodoMusical.mela.nombre                                  // "período de los mēḷa"
 ```
 
 ## Flamenca, rumana, persa: de dónde viene una escala

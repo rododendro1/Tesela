@@ -209,6 +209,30 @@ struct TextosDeTeoria: TextosTraducidos {
     let epocaRenacimiento: String
     let epocaTonal: String
     let epocaSigloXX: String
+    let periodoVedico: String
+    let periodoNatyasastra: String
+    let periodoSangitaratnakara: String
+    let periodoMela: String
+    let periodoBhatkhande: String
+    let periodoAbasi: String
+    let periodoSistematista: String
+    let periodoOtomanoSafavi: String
+    let periodoCongresoDelCairo: String
+    let periodoCantemir: String
+    let periodoSelimIII: String
+    let periodoArelEzgiUzdilek: String
+    let periodoZhou: String
+    let periodoQinHan: String
+    let periodoSeisDinastias: String
+    let periodoTang: String
+    let periodoSong: String
+    let periodoYuan: String
+    let periodoMing: String
+    let periodoQing: String
+    let periodoNaraHeian: String
+    let periodoKamakuraMuromachi: String
+    let periodoEdo: String
+    let periodoModerno: String
 
     // MARK: CardinalDeAcorde.swift
     let cardinalDiada: String
