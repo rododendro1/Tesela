@@ -144,7 +144,8 @@ calculan con lo que ya sabe de cada escala. La de origen es la primera de estas 
    de 1859; los echoi, por el Theōrētikon de Chrysanthos, de 1832; los makamlar que ya están en Cantemir, por su
    tratado, de hacia 1700), el de su fuente teórica (`FuenteTeorica.anio`: los géneros de Ptolomeo son de la
    antigüedad, y los çeşni de Arel-Ezgi-Uzdilek, del siglo XX) o el de su categoría (`CategoriaTradicional.anio`:
-   los mēḷa, de 1660; los thāṭ, de 1909; los grāma y las mūrchanā, del Nāṭyaśāstra);
+   los mēḷa, de 1660; los thāṭ, de 1909; los grāma y las mūrchanā, del Nāṭyaśāstra; los dastgāh, del radif de
+   hacia 1880; los mugam, de Hacıbəyov, de 1945; los dromoi, del rebético, de los años veinte);
 2. la de su tradición, si es una época (`Tradicion.epoca`): la Grecia antigua, Mesopotamia, el canto gregoriano y el
    Renacimiento;
 3. en las occidentales de la música clásica, la de las escalas gregorianas y renacentistas con sus mismas notas: el
@@ -175,7 +176,7 @@ Las épocas son europeas: que un tratado indio sea «de la Edad Media» es una e
 da el ``PeriodoMusical`` de su tradición en que aparece, con los nombres que se usan en ella: en la India, el védico,
 el del Nāṭyaśāstra, el del Saṅgītaratnākara, el de los mēḷa y el de Bhātkhaṇḍe; en el mundo árabe, Persia y
 Azerbaiyán, el abasí, la escuela sistematista, el otomano y safávida y, en el mundo árabe, desde el Congreso de El
-Cairo; en Turquía, además, los de Cantemir, de Selim III y de Arel-Ezgi-Uzdilek; en China, las dinastías, y en Japón,
+Cairo, y en Persia, el qayar; en Turquía, además, los de Cantemir, de Selim III y de Arel-Ezgi-Uzdilek; en China, las dinastías, y en Japón,
 los períodos de su historia. Sale de su tradición y de su año, con `PeriodoMusical.de(_:anio:)`, y es `nil` en las
 tradiciones sin períodos propios y en las escalas sin año.
 

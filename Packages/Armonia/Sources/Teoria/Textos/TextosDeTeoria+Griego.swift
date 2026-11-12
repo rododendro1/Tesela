@@ -200,6 +200,7 @@ extension TextosDeTeoria {
         periodoAbasi: "περίοδος των Αββασιδών",
         periodoSistematista: "συστηματική σχολή",
         periodoOtomanoSafavi: "οθωμανική και σαφαβιδική περίοδος",
+        periodoQayar: "περίοδος των Κατζάρ",
         periodoCongresoDelCairo: "από το Συνέδριο του Καΐρου",
         periodoCantemir: "περίοδος του Καντεμίρ",
         periodoSelimIII: "περίοδος του Σελίμ Γ΄",

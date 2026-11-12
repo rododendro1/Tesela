@@ -200,6 +200,7 @@ extension TextosDeTeoria {
         periodoAbasi: "Abbászida-kor",
         periodoSistematista: "szisztematikus iskola",
         periodoOtomanoSafavi: "oszmán és szafavida kor",
+        periodoQayar: "Kádzsár-kor",
         periodoCongresoDelCairo: "a kairói kongresszus óta",
         periodoCantemir: "Cantemir kora",
         periodoSelimIII: "III. Szelim kora",

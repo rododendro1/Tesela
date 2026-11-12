@@ -200,6 +200,7 @@ extension TextosDeTeoria {
         periodoAbasi: "период Аббасидов",
         periodoSistematista: "школа систематистов",
         periodoOtomanoSafavi: "османский и сефевидский период",
+        periodoQayar: "каджарский период",
         periodoCongresoDelCairo: "после Каирского конгресса",
         periodoCantemir: "период Кантемира",
         periodoSelimIII: "период Селима III",

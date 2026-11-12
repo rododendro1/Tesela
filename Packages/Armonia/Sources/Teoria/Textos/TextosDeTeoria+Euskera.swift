@@ -203,6 +203,7 @@ extension TextosDeTeoria {
         periodoAbasi: "garai abbastarra",
         periodoSistematista: "eskola sistematista",
         periodoOtomanoSafavi: "garai otomandarra eta safavitarra",
+        periodoQayar: "garai qajartarra",
         periodoCongresoDelCairo: "Kairoko Biltzarraz geroztik",
         periodoCantemir: "Cantemirren garaia",
         periodoSelimIII: "Selim III.aren garaia",

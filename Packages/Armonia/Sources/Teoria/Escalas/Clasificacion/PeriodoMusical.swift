@@ -30,9 +30,11 @@ public enum PeriodoMusical: String, Sendable, Codable, CaseIterable {
     case abasi
     /// De 1250 a 1500: Ṣafī al-Dīn y la escuela sistematista, con sus diecisiete notas.
     case sistematista
-    /// De 1500 a 1932 en el mundo árabe (y hasta 1900 en Persia y Azerbaiyán, y 1650 en Turquía): los imperios otomano y
-    /// safávida.
+    /// De 1500 a 1932 en el mundo árabe (y hasta 1736 en Persia, 1900 en Azerbaiyán y 1650 en Turquía): los imperios
+    /// otomano y safávida.
     case otomanoSafavi
+    /// De 1736 a 1925 en Persia: la corte qayar, donde Mirzā ʿAbdollāh fijó el radif y sus dastgāh.
+    case qayar
     /// Desde 1932: el Congreso de Música Árabe de El Cairo y la teoría árabe de hoy.
     case congresoDelCairo
     /// De 1650 a 1789 en Turquía: Cantemir y su notación por letras.
@@ -68,7 +70,7 @@ public enum PeriodoMusical: String, Sendable, Codable, CaseIterable {
     /// De 1603 a 1868: el koto, el shamisen y la escala in.
     case edo
 
-    /// Desde 1900 en Persia y Azerbaiyán, desde 1912 en China y desde 1868 en Japón.
+    /// Desde 1925 en Persia, desde 1900 en Azerbaiyán, desde 1912 en China y desde 1868 en Japón.
     case moderno
 
     /// El período de un año en una tradición, o `nil` si la tradición no tiene períodos propios o el año cae antes del
@@ -86,7 +88,7 @@ public enum PeriodoMusical: String, Sendable, Codable, CaseIterable {
             case ..<1900: .mela
             default: .bhatkhande
             }
-        case .mundoArabe, .persia, .azerbaiyan:
+        case .mundoArabe, .azerbaiyan:
             switch anio {
             case ..<750: nil
             case ..<1250: .abasi
@@ -94,6 +96,15 @@ public enum PeriodoMusical: String, Sendable, Codable, CaseIterable {
             case ..<1900: .otomanoSafavi
             case ..<1932 where tradicion == .mundoArabe: .otomanoSafavi
             default: tradicion == .mundoArabe ? .congresoDelCairo : .moderno
+            }
+        case .persia:
+            switch anio {
+            case ..<750: nil
+            case ..<1250: .abasi
+            case ..<1500: .sistematista
+            case ..<1736: .otomanoSafavi
+            case ..<1925: .qayar
+            default: .moderno
             }
         case .turquia:
             switch anio {
@@ -148,6 +159,7 @@ public enum PeriodoMusical: String, Sendable, Codable, CaseIterable {
         case .abasi: TextosDeTeoria.traduccion(\.periodoAbasi)
         case .sistematista: TextosDeTeoria.traduccion(\.periodoSistematista)
         case .otomanoSafavi: TextosDeTeoria.traduccion(\.periodoOtomanoSafavi)
+        case .qayar: TextosDeTeoria.traduccion(\.periodoQayar)
         case .congresoDelCairo: TextosDeTeoria.traduccion(\.periodoCongresoDelCairo)
         case .cantemir: TextosDeTeoria.traduccion(\.periodoCantemir)
         case .selimIII: TextosDeTeoria.traduccion(\.periodoSelimIII)
@@ -173,16 +185,20 @@ extension PeriodoMusical: Nombrable {}
 // MARK: - El año de una escala
 
 extension CategoriaTradicional {
-    /// El año de las categorías que son el sistema de un tratado: los mēḷa, de la Caturdaṇḍīprakāśikā de
-    /// Veṅkaṭamakhin (1660); los thāṭ, de la Hindustani Sangeet Paddhati de Bhātkhaṇḍe (1909); los grāma y las
-    /// mūrchanā, del Nāṭyaśāstra (entre 200 a. C. y 200; se toma el año 0). `nil` en las demás, que no son de un
-    /// tratado. El `switch` no tiene `default`: una categoría nueva no compila sin decir el suyo.
+    /// El año de las categorías que son el sistema de un tratado o de un repertorio: los mēḷa, de la
+    /// Caturdaṇḍīprakāśikā de Veṅkaṭamakhin (1660); los thāṭ, de la Hindustani Sangeet Paddhati de Bhātkhaṇḍe (1909);
+    /// los grāma y las mūrchanā, del Nāṭyaśāstra (entre 200 a. C. y 200; se toma el año 0); los dastgāh, del radif de
+    /// Mirzā ʿAbdollāh (hacia 1880); los mugam, de los «Fundamentos de la música popular azerbaiyana» de Hacıbəyov
+    /// (1945); los dromoi, del rebético (desde los años veinte; se toma 1920). `nil` en las demás. El `switch` no tiene `default`: una categoría nueva no compila sin decir el suyo.
     public var anio: Int? {
         switch self {
         case .melakarta: 1660
         case .thaat: 1909
         case .grama, .murchana: 0
-        case .raga, .janya, .dromos, .maqam, .dastgah, .makam, .mugam, .echos, .shteyger, .qenet, .laras, .pathet,
+        case .dastgah: 1880
+        case .mugam: 1945
+        case .dromos: 1920
+        case .raga, .janya, .maqam, .makam, .echos, .shteyger, .qenet, .laras, .pathet,
             .diao, .jo, .tetracordo, .jins, .cesni, .harmonia, .afinacion, .modoGregoriano, .hexacordo, .escala:
             nil
         }

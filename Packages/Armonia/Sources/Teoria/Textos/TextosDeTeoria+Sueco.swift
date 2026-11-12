@@ -203,6 +203,7 @@ extension TextosDeTeoria {
         periodoAbasi: "abbasidiska perioden",
         periodoSistematista: "systematiska skolan",
         periodoOtomanoSafavi: "osmanska och safavidiska perioden",
+        periodoQayar: "qajariska perioden",
         periodoCongresoDelCairo: "sedan Kairokongressen",
         periodoCantemir: "Cantemirs tid",
         periodoSelimIII: "Selim III:s tid",

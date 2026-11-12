@@ -200,6 +200,7 @@ extension TextosDeTeoria {
         periodoAbasi: "Abbasidenzeit",
         periodoSistematista: "systematistische Schule",
         periodoOtomanoSafavi: "osmanische und safawidische Zeit",
+        periodoQayar: "Kadscharenzeit",
         periodoCongresoDelCairo: "seit dem Kairoer Kongress",
         periodoCantemir: "Zeit Cantemirs",
         periodoSelimIII: "Zeit Selims III.",

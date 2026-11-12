@@ -217,6 +217,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let periodoAbasi: String
     let periodoSistematista: String
     let periodoOtomanoSafavi: String
+    let periodoQayar: String
     let periodoCongresoDelCairo: String
     let periodoCantemir: String
     let periodoSelimIII: String

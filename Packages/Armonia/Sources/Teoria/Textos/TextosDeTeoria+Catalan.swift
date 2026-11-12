@@ -200,6 +200,7 @@ extension TextosDeTeoria {
         periodoAbasi: "període abbàssida",
         periodoSistematista: "escola sistematista",
         periodoOtomanoSafavi: "període otomà i safàvida",
+        periodoQayar: "període qajar",
         periodoCongresoDelCairo: "des del Congrés del Caire",
         periodoCantemir: "període de Cantemir",
         periodoSelimIII: "període de Selim III",
