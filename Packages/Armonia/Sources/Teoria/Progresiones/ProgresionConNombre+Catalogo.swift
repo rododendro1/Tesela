@@ -48,19 +48,23 @@ extension ProgresionConNombre {
 
     /// La romanesca galante: baja una cuarta y sube una segunda, dos veces.
     public static let romanesca = ProgresionConNombre(
-        nombre: "romanesca", cifrado: "I V vi iii", estilos: [.clasica], referencias: [.gjerdingen2007])
+        nombre: "romanesca", cifrado: "I V vi iii", estilos: [.clasica], referencias: [.gjerdingen2007],
+        documentada: .ortiz1553)
     public static let pachelbel = ProgresionConNombre(
         nombre: "canon de Pachelbel", cifrado: "I V vi iii IV I IV V", estilos: [.clasica, .popRock],
         referencias: [.gjerdingen2007])
     /// La misma cadencia dos veces, un grado más arriba.
     public static let monte = ProgresionConNombre(
-        nombre: "monte", cifrado: "V7/IV IV V7/V V", estilos: [.clasica], referencias: [.gjerdingen2007])
+        nombre: "monte", cifrado: "V7/IV IV V7/V V", estilos: [.clasica], referencias: [.gjerdingen2007],
+        documentada: .riepel1755)
     /// La misma cadencia dos veces, un grado más abajo, la primera en menor.
     public static let fonte = ProgresionConNombre(
-        nombre: "fonte", cifrado: "V7/ii ii V7 I", estilos: [.clasica], referencias: [.gjerdingen2007])
+        nombre: "fonte", cifrado: "V7/ii ii V7 I", estilos: [.clasica], referencias: [.gjerdingen2007],
+        documentada: .riepel1755)
     /// La dominante que se mantiene sobre su bajo antes de ir a la tónica.
     public static let ponte = ProgresionConNombre(
-        nombre: "ponte", cifrado: "V V7 I", estilos: [.clasica], referencias: [.gjerdingen2007])
+        nombre: "ponte", cifrado: "V V7 I", estilos: [.clasica], referencias: [.gjerdingen2007],
+        documentada: .riepel1755)
     /// El bajo 1–7–1 bajo la melodía 1–2–3.
     public static let doReMi = ProgresionConNombre(
         nombre: "do-re-mi", cifrado: "I V6 I", estilos: [.clasica], referencias: [.gjerdingen2007])
@@ -85,7 +89,7 @@ extension ProgresionConNombre {
     /// La folía: i–V–i–VII–III–VII–i–V, en menor.
     public static let folia = ProgresionConNombre(
         nombre: "folía", cifrado: "i V i VII III VII i V", modo: .menor, alias: ["follia", "folia de España"],
-        estilos: [.clasica], referencias: [.hudson1982])
+        estilos: [.clasica], referencias: [.hudson1982], documentada: .ortiz1553)
     /// El bajo que baja por grados de la tónica a la dominante: i–v6–iv6–V.
     public static let bajoDeLamento = ProgresionConNombre(
         nombre: "bajo de lamento", cifrado: "i v6 iv6 V", modo: .menor, alias: ["tetracordo descendente"],
@@ -97,11 +101,11 @@ extension ProgresionConNombre {
     /// El bajo de danza del Renacimiento en menor: i–♭VII–i–V–III–♭VII–i–V–i.
     public static let passamezzoAntico = ProgresionConNombre(
         nombre: "passamezzo antico", cifrado: "i VII i V III VII i V i", modo: .menor, estilos: [.clasica],
-        referencias: [.gerbino2001])
+        referencias: [.gerbino2001], documentada: .ortiz1553)
     /// El bajo de danza del Renacimiento en mayor: I–IV–I–V–I–IV–I–V–I.
     public static let passamezzoModerno = ProgresionConNombre(
         nombre: "passamezzo moderno", cifrado: "I IV I V I IV I V I", estilos: [.clasica],
-        referencias: [.gerbino2001])
+        referencias: [.gerbino2001], documentada: .ortiz1553)
     /// El bajo de danza 1–4–2–5, 1–4–5–1.
     public static let ruggiero = ProgresionConNombre(
         nombre: "ruggiero", cifrado: "I IV ii V I IV V I", estilos: [.clasica], referencias: [.staiti2023])

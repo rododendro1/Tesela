@@ -449,6 +449,32 @@ extension Referencia {
     public static let skriabin1910 = Referencia(
         "skriabin1910", .partitura, autores: ["Scriabin, Alexander"], titulo: "Prometheus: The Poem of Fire, Op. 60",
         anio: 1910)
+    /// Wagner, «Tristan und Isolde»: el acorde de Tristán, en el segundo compás del preludio.
+    public static let wagner1859 = Referencia(
+        "wagner1859", .partitura, autores: ["Wagner, Richard"], titulo: "Tristan und Isolde", anio: 1859)
+    /// Schönberg, las Cinco piezas para orquesta, op. 16: el acorde de «Farben», la tercera.
+    public static let schoenberg1909 = Referencia(
+        "schoenberg1909", .partitura, autores: ["Schoenberg, Arnold"], titulo: "Five Pieces for Orchestra, Op. 16",
+        anio: 1909)
+    /// Strauss, «Elektra», op. 58: el acorde de Elektra.
+    public static let strauss1909 = Referencia(
+        "strauss1909", .partitura, autores: ["Strauss, Richard"], titulo: "Elektra, Op. 58", anio: 1909)
+    /// Stravinski, «La consagración de la primavera»: el acorde de los augures.
+    public static let stravinski1913 = Referencia(
+        "stravinski1913", .partitura, autores: ["Stravinsky, Igor"], titulo: "The Rite of Spring", anio: 1913)
+    /// Stravinski, la «Sinfonía de los salmos»: el acorde con que empieza.
+    public static let stravinski1930 = Referencia(
+        "stravinski1930", .partitura, autores: ["Stravinsky, Igor"], titulo: "Symphony of Psalms", anio: 1930)
+    /// Ortiz, el «Trattado de glosas»: las recercadas sobre el passamezzo antico y el moderno, la romanesca y la folía.
+    public static let ortiz1553 = Referencia(
+        "ortiz1553", .tratado, autores: ["Ortiz, Diego"],
+        titulo: "Trattado de glosas sopra clausulas y otros generos de puntos en la musica de violones", anio: 1553,
+        lugar: "Roma")
+    /// Riepel, los «Anfangsgründe zur musicalischen Setzkunst»: el monte, la fonte y el ponte, con esos nombres.
+    public static let riepel1755 = Referencia(
+        "riepel1755", .tratado, autores: ["Riepel, Joseph"],
+        titulo: "Anfangsgründe zur musicalischen Setzkunst: Grundregeln zur Tonordnung insgemein", anio: 1755,
+        lugar: "Fráncfort y Leipzig")
     /// Stravinski, «Petrushka», el ballet del acorde de dos tríadas a un tritono.
     public static let stravinski1911 = Referencia(
         "stravinski1911", .partitura, autores: ["Stravinsky, Igor"], titulo: "Petrushka", anio: 1911)
@@ -566,7 +592,8 @@ extension Referencia {
         .gerbino2001, .staiti2023, .sheinberg2016, .rosand1979, .doll2017,
         .soroker1995, .malaniczPrzybylska2018, .kodaly1960, .liszt1859, .rameau1722, .finkRicci1975, .glinka1842,
         .rimskiKorsakov1867, .verdi1889,
-        .skriabin1910, .stravinski1911, .campbell2019, .cannon2002, .scherbaum2022,
+        .skriabin1910, .stravinski1911, .wagner1859, .schoenberg1909, .strauss1909, .stravinski1913, .stravinski1930,
+        .ortiz1553, .riepel1755, .campbell2019, .cannon2002, .scherbaum2022,
         .bonifacic2001,
         .rechberger2008, .busoni1916, .toussaint2013, .clayton2000, .viswanathan2004, .brailoiu1951, .apel1953,
         .fernandez2004, .lindley2001, .sethares2005, .haynes2002, .neumann1978,

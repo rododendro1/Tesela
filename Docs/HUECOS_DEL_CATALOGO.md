@@ -5,7 +5,7 @@ Estado a 12 de noviembre de 2026, tras las escalas sintéticas, los lugares, las
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 28 escalas occidentales sin ninguna referencia y
-seis acordes sin fuente. El catálogo tiene 443 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
+cuatro acordes sin fuente. El catálogo tiene 443 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
 los doce idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -75,9 +75,9 @@ Hay 43 acordes genéricos y 12 de nombre propio. Los que faltaban ya están, per
 | --- | --- | --- | --- |
 | Sexta aumentada suiza | La♭ Do Re♯ Fa♯ (sobre La♭) | Aldwell, Schachter y Cadwallader (2011) | Nada: el lector ya admite la cuarta doble aumentada (`𝄪11`) |
 | m(add9) | Do Mi♭ Sol Re (sobre Do) | Ninguna | Buscar una obra que la traiga |
-| Acorde de Elektra | Do♯ Mi♯ Sol♯ + Mi Si | Ninguna | Confirmar la ortografía en la partitura, Kramer (1993) o Abbate (1989) |
+| Acorde de Elektra | Do♯ Mi♯ Sol♯ + Mi Si | La partitura (Strauss, 1909) | Confirmar la ortografía en la partitura, Kramer (1993) o Abbate (1989) |
 | Acorde de los augures | Fa♭ La♭ Do♭ + Mi♭ Sol Si♭ Re♭ | Taruskin (1996) | Nada |
-| Acorde de la Sinfonía de los salmos | Mi Sol Si Sol | Ninguna | Citar a White (1979) |
+| Acorde de la Sinfonía de los salmos | Mi Sol Si Sol | La partitura (Stravinski, 1930) | Citar a White (1979) |
 | Acorde alfa de Lendvai | Do Mi♭ Fa♯ La + Do♯ Mi Sol Si♭ | Ninguna | Confirmar en Lendvai (1971) qué notas da |
 
 Los acordes de Hendrix y mu tampoco citan ninguna obra.

@@ -67,7 +67,7 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Acordes.md, bloque 5
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 5)
         comprobar(AcordeConNombre.tristan.notas(sobre: .fa), #"[Fa, Si, Re♯, Sol♯]"#, doc, 0)
-        comprobar(AcordeConNombre.tristan.referencias.map(\.cita), #"["Rothgeb 1995"]"#, doc, 1)
+        comprobar(AcordeConNombre.tristan.referencias.map(\.cita), #"["Wagner 1859", "Rothgeb 1995"]"#, doc, 1)
         comprobar(AcordeConNombre.dominanteSeptima.referencias.map(\.cita), #"["Aldwell et al. 2011", "Levine 1995"]"#, doc, 2)
         comprobar(AcordeConNombre.petrushka.tipo, #"nil"#, doc, 3)
         comprobar(TipoDeAcorde.mayorNovenaAnadida.acordesConNombre, #"[novena añadida, acorde mu]"#, doc, 4)

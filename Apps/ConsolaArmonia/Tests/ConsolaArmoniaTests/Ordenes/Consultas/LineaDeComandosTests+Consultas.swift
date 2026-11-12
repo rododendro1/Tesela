@@ -218,6 +218,19 @@ extension LineaDeComandosTests {
         #expect(salida("scales --group-by era --ingles --use jazz").hasPrefix("Middle Ages · 500–1400 ("))
     }
 
+    /// `acordes --epoca` y `progresiones --epoca`: los de una época, de origen o de uso; en JSON, su año y sus épocas.
+    @Test func acordesYProgresionesPorEpoca() throws {
+        let romanticos = salida("acordes --epoca romanticismo")
+        #expect(romanticos.contains("acorde de Tristán: "), Comment(rawValue: romanticos))
+        #expect(!romanticos.contains("acorde de Petrushka"))
+        #expect(salida("chords --era romanticism") == romanticos)
+        let renacentistas = salida("progresiones --epoca renacimiento")
+        #expect(renacentistas.hasPrefix("romanesca: "), Comment(rawValue: renacentistas))
+        #expect(renacentistas.contains("passamezzo antico: ") && !renacentistas.contains("ii–V–I"))
+        #expect(salida("progresiones --epoca siglo-xx").contains("ii–V–I: "))
+        #expect(resultado("progresiones", "--epoca", "x").codigo != 0)
+    }
+
     /// `escala`: la época, los lugares, los estilos y, en las de otras tradiciones, el período y la escuela.
     @Test func elOrigenDeUnaEscala() {
         let hungara = salida("escala La menor húngara")
