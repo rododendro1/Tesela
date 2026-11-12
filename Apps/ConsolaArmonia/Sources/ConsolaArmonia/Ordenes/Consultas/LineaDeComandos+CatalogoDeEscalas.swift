@@ -227,8 +227,8 @@ extension LineaDeComandos {
     }
 
     /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--fuente <fuente>] [--uso <uso>]
-    /// [--lugar <lugar>] [--epoca <época>] [--escuela <escuela>] [--orden brillo] [--con-intervalo tritono] [--comparar Do mayor, Do lidio]`: el
-    /// catálogo de escalas, las habituales y las de otras tradiciones agrupadas por tradición y categoría, cada una
+    /// [--lugar <lugar>] [--epoca <época>] [--escuela <escuela>] [--orden brillo] [--con-intervalo tritono]
+    /// [--comparar Do mayor, Do lidio]`: el catálogo de escalas, las habituales y las de otras tradiciones agrupadas por tradición y categoría, cada una
     /// con sus notas desde Do (y la marca de los microtonos, si los tiene). Un texto suelto busca en los nombres.
     /// `--uso jazz` deja solo las habituales de ese uso (las de otras tradiciones no tienen), y `--notas 5`, las de
     /// cinco notas. `--comparar` deja el catálogo y pone las escalas que se le dan en una tabla, una por fila, y

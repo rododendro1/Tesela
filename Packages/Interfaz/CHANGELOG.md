@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- `ModeloDelCatalogo`: la ficha de una progresión o un acorde con nombre lleva también su época de origen, con el año
+  de su obra si lo tiene («clásica · Romanticismo (1859)»). La pestaña de escalas de Ars Harmonica tiene una sección
+  «Origen» con la época, los lugares, los estilos y las escuelas de la escala.
+
 - `ModeloDeAcordes`, `ModeloDeAnalisis` y `ModeloDelTonnetz`: lo que se elige en las vistas de acordes y de análisis
   de Ars Harmonica y en la de Tonnetz, y lo que sale de ello (el acorde o la progresión leídos, el arpegio, la
   partitura abierta, lo que se dibuja, lo que suena y lo que se exporta). No usan SwiftUI, así que se prueban en

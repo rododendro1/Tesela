@@ -21,7 +21,8 @@ extension FichaDelCatalogo {
     var epocasDeUso: [Epoca] {
         let origen = epocaDeOrigen
         return Epoca.allCases.filter { epoca in
-            epoca != origen && (origen.map { $0 < epoca } ?? true) && estilos.contains { $0.epocasDeUso.contains(epoca) }
+            epoca != origen && (origen.map { $0 < epoca } ?? true)
+                && estilos.contains { $0.epocasDeUso.contains(epoca) }
         }
     }
 

@@ -10,7 +10,7 @@ import Testing
         #expect(AcordeConNombre.tristan.anioDeOrigen == 1859)
         #expect(AcordeConNombre.tristan.epocaDeOrigen == .romanticismo)
         #expect(AcordeConNombre.tristan.referencias.first == .wagner1859)
-        #expect(AcordeConNombre.tristan.epocasDeUso.isEmpty)  // la clásica no se usa después del Romanticismo
+        #expect(AcordeConNombre.tristan.epocasDeUso.isEmpty) // la clásica no se usa después del Romanticismo
         #expect(AcordeConNombre.mistico.epocaDeOrigen == .sigloXX)
         #expect(AcordeConNombre.augures.anioDeOrigen == 1913)
         #expect(AcordeConNombre.salmos.referencias == [.stravinski1930])
@@ -34,7 +34,8 @@ import Testing
 
     /// Las progresiones: el monte, por Riepel; la folía y los passamezzi, por Ortiz; las de jazz, del siglo XX.
     @Test func lasProgresiones() throws {
-        #expect(ProgresionConNombre.monte.anioDeOrigen == 1755 && ProgresionConNombre.monte.epocaDeOrigen == .clasicismo)
+        #expect(
+            ProgresionConNombre.monte.anioDeOrigen == 1755 && ProgresionConNombre.monte.epocaDeOrigen == .clasicismo)
         #expect(ProgresionConNombre.monte.epocasDeUso == [.romanticismo])
         #expect(ProgresionConNombre.folia.epocaDeOrigen == .renacimiento)
         #expect(ProgresionConNombre.folia.epocasDeUso == Epoca.tonales)

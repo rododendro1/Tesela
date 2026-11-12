@@ -83,7 +83,9 @@ import Testing
         #expect(
             PeriodoMusical.cantemir.nombreConAnios(en: .turquia, notacion: .compacta(.espanol))
                 == PeriodoMusical.cantemir.nombre + " (1650–1789)")
-        #expect(PeriodoMusical.cantemir.nombreConAnios(en: .india, notacion: .compacta(.espanol)) == PeriodoMusical.cantemir.nombre)
+        #expect(
+            PeriodoMusical.cantemir.nombreConAnios(en: .india, notacion: .compacta(.espanol))
+                == PeriodoMusical.cantemir.nombre)
     }
 
     /// El período de una escala sale de su tradición y de su año.

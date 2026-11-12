@@ -96,7 +96,8 @@ public struct ModeloDelCatalogo: Sendable {
         }
         return Ficha(
             id: acorde.nombre, nombre: acorde.nombre(en: notacion), detalle: detalle,
-            estilos: Self.estilos(acorde.estilos, acorde.epocaDeOrigen, acorde.anioDeOrigen, en: notacion), fuentes: acorde.referencias.map(\.cita),
+            estilos: Self.estilos(acorde.estilos, acorde.epocaDeOrigen, acorde.anioDeOrigen, en: notacion),
+            fuentes: acorde.referencias.map(\.cita),
             sonido: sonido, destino: delTipo.map { .acordes($0) })
     }
 

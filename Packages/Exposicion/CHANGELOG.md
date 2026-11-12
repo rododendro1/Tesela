@@ -4,6 +4,12 @@
 
 ### Lo nuevo
 
+- `OrigenDeEscalaPresentado`: de cuándo y de dónde es una escala, escrito (su año, su época, las de uso, el período
+  de su tradición, sus lugares, sus estilos con sus corrientes y sus escuelas), con `datos(en:)` para dibujarlo.
+  `EscalaPresentada.origen` lo lleva, y la hoja de estudio en HTML, en una sección «Origen» con las estadísticas. Sus
+  rótulos, en `TextosDeApps` (`origen`, `epocaDeOrigen`, `epocasDeUso`, `periodo`, `periodosDeUso`,
+  `lugaresDeOrigen`, `lugaresDeUso`, `estilos`, `escuelas`), en los trece idiomas.
+
 - `Escucha.ritmo(_:vueltas:tempo:)`: un ritmo del catálogo, con los golpes fuertes graves y los débiles agudos, en su
   pulso. `TextosDeApps` tiene los textos de la pestaña «Catálogo» de Ars Harmonica (`catalogo`, `fuentes`,
   `verEnAnalisis`, `nombrePropio`…) en los trece idiomas.

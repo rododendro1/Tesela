@@ -205,7 +205,8 @@ extension LineaDeComandos {
                 "armonia scales --tradition turkey"),
             notas: TextosDeConsola.traduccion(\.notasEscalas),
             opciones: [
-                .tradicion, .categoria, .fuente, .uso, .lugar, .agrupar, .epoca, .escuela, .notas, .orden, .sinSemitonos, .regulares,
+                .tradicion, .categoria, .fuente, .uso, .lugar, .agrupar, .epoca, .escuela, .notas, .orden,
+                .sinSemitonos, .regulares,
                 .conIntervalo,
                 .sinIntervalo,
                 .conPaso, .comparar, .vecinasDe, .parecidasA, .escaleraDe, .mapa,
