@@ -13,11 +13,12 @@ estudia una escala. Las de otras tradiciones están en <doc:EscalasDelMundo>.
 - Escalas de colores «exóticos»: doble armónica (bizantina), menor y mayor húngaras,
   napolitanas menor y mayor, enigmática (Verdi), persa, mayor locria (árabe), lidio menor y
   Prometeo (Skriabin).
-- Simétricas y otras: disminuida semitono-tono (además de la tono-semitono), aumentada, blues
-  mayor, egipcia (pentatónica suspendida), Petrushka (dos acordes mayores a un tritono) y
+- Simétricas y otras: disminuida semitono-tono (además de la tono-semitono), aumentada y
+  aumentada semitono-tercera (el modelo 1:3 de Lendvai), blues mayor, egipcia (pentatónica
+  suspendida), Petrushka (dos acordes mayores a un tritono), Petrushka menor (dos menores) y
   cromática. Los modos de Messiaen 1 y 2 se leen como tonos enteros y disminuida
-  semitono-tono, y del 3 al 7 tienen tipo propio (el 3 es también la escala de nueve notas de
-  Tcherepnin).
+  semitono-tono, y del 3 al 7 tienen tipo propio. La escala de nueve pasos de Tcherepnin tiene
+  las notas del modo 3, desde su 3er grado. La enigmática baja con Fa♮, como en Verdi.
 - La escala flamenca o andaluza: el frigio con la tercera mayor y la menor, de ocho notas.
 - Los modos de la doble armónica (lidio ♯2 ♯6, ultrafrigio, menor húngara, oriental,
   jónico ♯2 ♯5, locrio ♭♭3 ♭♭7), de la napolitana mayor (lidio aumentado ♯6 o tonos enteros

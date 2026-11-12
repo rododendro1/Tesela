@@ -32,6 +32,7 @@ extension NombresDeEscalas {
         .init(.prometeoNapolitano, "nápolyi Prométheusz"),
         .init(.disminuidaSemitonoTono, "fél-egész", alias: ["szűkített domináns", "domináns szűkített", "Messiaen 2. modusa", "Rimszkij-Korszakov", "Sztravinszkij", "szűkített blues"], variantes: ["Rimsky-Korsakov"]),
         .init(.aumentada, "bővített", alias: ["bővített hexaton", "szimmetrikus bővített", "Weitzmann"]),
+        .init(.aumentadaSemitonoTercera, "bővített félhang-terc", alias: ["fordított bővített", "1:3 modell", "1:3-as modell"]),
         .init(.bluesMayor, "dúr blues"),
         .init(.egipcia, "egyiptomi", alias: ["felfüggesztett pentaton"]),
         .init(.cromatica, "kromatikus", alias: ["kromatikus négy bével", "kromatikus −5…6"]),
@@ -49,6 +50,7 @@ extension NombresDeEscalas {
         .init(.mayorRumana, "román dúr"),
         .init(.argelina, "algériai"),
         .init(.petrushka, "Petruska", alias: ["tritónusz"], variantes: ["Petrouchka"]),
+        .init(.petrushkaMenor, "moll Petruska", alias: ["moll tritónusz"]),
         .init(.tritonoDeDosSemitonos, "kétfélhangos tritónusz"),
         .init(.hexatonicaDeArmonicos, "felhangsor-hexaton"),
         .init(.bebopMenorMelodica, "bebop dallamos moll", alias: ["bebop dallamos", "moll szűkített szext"]),
@@ -66,7 +68,8 @@ extension NombresDeEscalas {
         .init(.bluesDeNueveNotas, "kilenchangú blues", alias: ["9 hangú blues"]),
         .init(.bluesMenorConSegunda, "moll blues 2-vel", alias: ["blues második fokkal", "blues 2-vel"]),
         .init(.hexacordo, "hexachord", alias: ["guidói hexachord", "ut re mi fa sol la"]),
-        .init(.messiaen3, "Messiaen 3. modusa", alias: ["Messiaen 3", "Tcherepnin", "kilenc hang", "kilenchangú"], variantes: ["Cserepnyin"]),
+        .init(.messiaen3, "Messiaen 3. modusa", alias: ["Messiaen 3", "kilenc hang", "kilenchangú"]),
+        .init(.tcherepnin, "Cserepnyin", variantes: ["Tcherepnin"]),
         .init(.messiaen4, "Messiaen 4. modusa", alias: ["Messiaen 4"]),
         .init(.messiaen5, "Messiaen 5. modusa", alias: ["Messiaen 5"]),
         .init(.messiaen6, "Messiaen 6. modusa", alias: ["Messiaen 6"]),
@@ -116,6 +119,9 @@ extension NombresDeEscalas {
         .init(.menorMelodicaQuintaAumentada, "dallamos moll ♯5", alias: ["jazz-moll ♯5"]),
         .init(.doricoSegundaMenorCuartaAumentada, "dór ♭2 ♯4", alias: ["dór ♭9 ♯11"]),
         .init(.lidioAumentadoTerceraAumentada, "bővített líd ♯3"),
+        .init(.jonicoSegundaMenor, "ión ♭2"),
+        .init(.jonicoQuintaDisminuida, "ión ♭5"),
+        .init(.jonicoSextaAumentada, "ión ♯6"),
 
         // Escalas de otras tradiciones: nombres propios, iguales en todos los idiomas salvo los que se traducen.
         // Para traducir una: `.tradicional(.hitzaz, "…")`. Los alias (Hijaz, Hicaz…) están en el catálogo.

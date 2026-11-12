@@ -382,12 +382,12 @@ extension TipoDeEscala {
         .lidioAumentadoSegundaAumentada, .locrioSeptimaDisminuida,
         .dobleArmonica, .menorHungara, .mayorHungara, .napolitanaMenor, .napolitanaMayor,
         .enigmatica, .persa, .mayorLocria, .lidioMenor, .prometeo, .prometeoNapolitano,
-        .disminuidaSemitonoTono, .aumentada, .bluesMayor, .egipcia, .cromatica,
+        .disminuidaSemitonoTono, .aumentada, .aumentadaSemitonoTercera, .bluesMayor, .egipcia, .cromatica,
         .cromaticaConCincoBemoles, .cromaticaConTresBemoles, .cromaticaConDosBemoles, .cromaticaConUnBemol,
         .cromaticaConCincoSostenidos,
-        .bebopMenorMelodica, .bebopMenorArmonica, .flamenca, .petrushka, .tritonoDeDosSemitonos,
+        .bebopMenorMelodica, .bebopMenorArmonica, .flamenca, .petrushka, .petrushkaMenor, .tritonoDeDosSemitonos,
         .hexatonicaDeArmonicos,
-        .messiaen3, .messiaen4, .messiaen5, .messiaen6, .messiaen7,
+        .messiaen3, .tcherepnin, .messiaen4, .messiaen5, .messiaen6, .messiaen7,
         .lidioSegundaSextaAumentadas, .ultrafrigio, .oriental, .jonicoSegundaQuintaAumentadas,
         .locrioTerceraSeptimaDisminuidas,
         .lidioAumentadoSextaAumentada, .lidioDominanteAumentado, .locrioSegundaNaturalCuartaDisminuida,
@@ -401,6 +401,7 @@ extension TipoDeEscala {
         .hexatonicaMenorDeDosTriadas, .mayorRumana,
         .ultralocrioSextaDisminuida, .menorArmonicaQuintaDisminuida, .superlocrioSextaNatural,
         .menorMelodicaQuintaAumentada, .doricoSegundaMenorCuartaAumentada, .lidioAumentadoTerceraAumentada,
+        .jonicoSegundaMenor, .jonicoQuintaDisminuida, .jonicoSextaAumentada,
         .pentatonicaMixolidia, .pentatonicaLidia, .pentatonicaEscocesa,
     ]
 

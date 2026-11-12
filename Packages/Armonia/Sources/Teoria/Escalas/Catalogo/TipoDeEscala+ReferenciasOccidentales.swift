@@ -31,7 +31,10 @@ extension TipoDeEscala {
                 .lidioAumentadoSextaAumentada, .dobleArmonica, .prometeo, .prometeoNapolitano,
             ]
         ),
-        (.lendvai1971, [.lidioDominante]),
+        (.lendvai1971, [.lidioDominante, .disminuidaSemitonoTono, .aumentadaSemitonoTercera]),
+        (.slonimsky1947, [.aumentadaSemitonoTercera, .petrushkaMenor]),
+        (.slonimsky1968, [.tcherepnin]),
+        (.burke2015, [.enigmatica]),
         (.tymoczko2011, [.lidioDominante, .tonosEnteros, .disminuida, .aumentada, .menorArmonica, .mayorArmonica]),
         (.cohn1996, [.aumentada]),
         (.taruskin1987, [.disminuida, .petrushka]),
@@ -57,7 +60,8 @@ extension TipoDeEscala {
                 .superlocrioTerceraDisminuida, .lidioSextaAumentada, .mixolidioAumentado, .locrioDominante,
                 .jonicoSegundaAumentada, .ultralocrioTerceraDisminuida, .mayorRumana, .ultralocrioSextaDisminuida,
                 .menorArmonicaQuintaDisminuida, .superlocrioSextaNatural, .menorMelodicaQuintaAumentada,
-                .doricoSegundaMenorCuartaAumentada, .lidioAumentadoTerceraAumentada,
+                .doricoSegundaMenorCuartaAumentada, .lidioAumentadoTerceraAumentada, .jonicoSegundaMenor,
+                .jonicoQuintaDisminuida, .jonicoSextaAumentada,
             ]
         ),
     ]

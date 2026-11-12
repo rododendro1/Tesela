@@ -32,6 +32,7 @@ extension NombresDeEscalas {
         .init(.prometeoNapolitano, "ναπολιτάνικη του Προμηθέα"),
         .init(.disminuidaSemitonoTono, "ελαττωμένη ημιτόνιο-τόνος", alias: ["ελαττωμένη δεσπόζουσας", "δεσπόζουσα ελαττωμένη", "2ος τρόπος του Μεσιάν", "Ρίμσκι-Κόρσακοφ", "Στραβίνσκι", "ελαττωμένη μπλουζ"]),
         .init(.aumentada, "αυξημένη", alias: ["αυξημένη εξατονική", "συμμετρική αυξημένη", "Βάιτσμαν"]),
+        .init(.aumentadaSemitonoTercera, "αυξημένη ημιτονίου-τρίτης", alias: ["αντίστροφη αυξημένη", "μοντέλο 1:3"]),
         .init(.bluesMayor, "μείζονα μπλουζ"),
         .init(.egipcia, "αιγυπτιακή", alias: ["αιγυπτιακή πεντατονική"]),
         .init(.cromatica, "χρωματική", alias: ["χρωματική με τέσσερις υφέσεις", "χρωματική −5…6"]),
@@ -49,6 +50,7 @@ extension NombresDeEscalas {
         .init(.mayorRumana, "ρουμανική μείζονα"),
         .init(.argelina, "αλγερινή"),
         .init(.petrushka, "Πετρούσκα", alias: ["τριτόνου"], variantes: ["Petrushka", "Petrouchka"]),
+        .init(.petrushkaMenor, "ελάσσονα Πετρούσκα", alias: ["ελάσσον τρίτονο"]),
         .init(.tritonoDeDosSemitonos, "τρίτονο δύο ημιτονίων"),
         .init(.hexatonicaDeArmonicos, "εξατονική των αρμονικών"),
         .init(.bebopMenorMelodica, "μπίμποπ μελωδική ελάσσονα", alias: ["μπίμποπ μελωδική", "ελάσσονα ελαττωμένη έκτη"]),
@@ -66,7 +68,8 @@ extension NombresDeEscalas {
         .init(.bluesDeNueveNotas, "μπλουζ εννέα φθόγγων", alias: ["μπλουζ 9 φθόγγων", "εννεάφθογγο μπλουζ"]),
         .init(.bluesMenorConSegunda, "ελάσσονα μπλουζ με 2η", alias: ["μπλουζ με 2η", "ελάσσονα μπλουζ με δεύτερη"]),
         .init(.hexacordo, "εξάχορδο", alias: ["εξάχορδο του Γκουίντο", "ut re mi fa sol la"]),
-        .init(.messiaen3, "3ος τρόπος του Μεσιάν", alias: ["Μεσιάν 3", "Τσερεπνίν", "εννεάφθογγη"]),
+        .init(.messiaen3, "3ος τρόπος του Μεσιάν", alias: ["Μεσιάν 3", "εννεάφθογγη"]),
+        .init(.tcherepnin, "Τσερεπνίν"),
         .init(.messiaen4, "4ος τρόπος του Μεσιάν", alias: ["Μεσιάν 4"]),
         .init(.messiaen5, "5ος τρόπος του Μεσιάν", alias: ["Μεσιάν 5"]),
         .init(.messiaen6, "6ος τρόπος του Μεσιάν", alias: ["Μεσιάν 6"]),
@@ -116,6 +119,9 @@ extension NombresDeEscalas {
         .init(.menorMelodicaQuintaAumentada, "μελωδική ελάσσονα ♯5", alias: ["μελωδική ελάσσονα τζαζ ♯5"]),
         .init(.doricoSegundaMenorCuartaAumentada, "δώριος ♭2 ♯4", alias: ["δώριος ♭9 ♯11"]),
         .init(.lidioAumentadoTerceraAumentada, "λύδιος αυξημένος ♯3"),
+        .init(.jonicoSegundaMenor, "ιωνικός ♭2"),
+        .init(.jonicoQuintaDisminuida, "ιωνικός ♭5"),
+        .init(.jonicoSextaAumentada, "ιωνικός ♯6"),
 
         // Escalas de otras tradiciones: nombres propios, iguales en todos los idiomas salvo los que se traducen.
         // Para traducir una: `.tradicional(.hitzaz, "…")`. Los alias (Hijaz, Hicaz…) están en el catálogo.
