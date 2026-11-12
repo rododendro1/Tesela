@@ -136,12 +136,14 @@ TipoDeEscala.dorico.tradicion                        // .occidental
 ## Antigua, medieval, tonal: la época de una escala
 
 `TipoDeEscala.epocaDeOrigen` dice cuándo aparece una escala, y `epocasDeUso`, en qué épocas se usa. Las dos son una
-``Epoca`` (antigüedad, Edad Media, Renacimiento, época tonal y siglo XX), y ninguna se escribe en el catálogo: se
+``Epoca`` (antigüedad, Edad Media, Renacimiento, las tres de la época tonal, que son el Barroco, el Clasicismo y el
+Romanticismo, y los siglos XX y XXI), y ninguna se escribe en el catálogo: se
 calculan con lo que ya sabe de cada escala. La de origen es la primera de estas que da algo:
 
 1. la de su año (`TipoDeEscala.anioDeOrigen`, con `Epoca(anio:)`): el de la obra más antigua que da la escala
-   (`documentada`: la menor húngara es de la época tonal por el libro de Liszt sobre la música gitana de Hungría,
-   de 1859; los echoi, por el Theōrētikon de Chrysanthos, de 1832; los makamlar que ya están en Cantemir, por su
+   (`documentada`: la menor húngara es del Romanticismo por el libro de Liszt sobre la música gitana de Hungría,
+   de 1859; los tonos enteros, por «Ruslán y Liudmila» de Glinka, de 1842; las octatónicas, por «Sadkó» de
+   Rimski-Kórsakov, de 1867; los modos de Messiaen, por su «Technique de mon langage musical», de 1944; los echoi, por el Theōrētikon de Chrysanthos, de 1832; los makamlar que ya están en Cantemir, por su
    tratado, de hacia 1700), el de su fuente teórica (`FuenteTeorica.anio`: los géneros de Ptolomeo son de la
    antigüedad, y los çeşni de Arel-Ezgi-Uzdilek, del siglo XX) o el de su categoría (`CategoriaTradicional.anio`:
    los mēḷa, de 1660; los thāṭ, de 1909; los grāma y las mūrchanā, del Nāṭyaśāstra; los dastgāh, del radif de
@@ -154,20 +156,31 @@ calculan con lo que ya sabe de cada escala. La de origen es la primera de estas 
 5. en las sintéticas y las populares, la de las escalas de las que son un modo: la doble armónica y el ultrafrigio,
    la de la menor húngara; la mayor locria, la de la napolitana mayor. Las populares solo la toman de una escala
    documentada: la flamenca tiene las notas de un modo de una escala de jazz, pero no viene del jazz;
-6. la más antigua de las de uso de sus estilos (`Estilo.epocaDeUso`): la clásica da la época tonal, y el jazz, el
+6. la más antigua de las de uso de sus estilos (`Estilo.epocasDeUso`): la clásica da el Barroco, y el jazz, el
    blues y el siglo XX, el siglo XX.
 
-Las de uso son las de sus estilos, sin la de origen. Las populares que no salen por ninguna regla (la flamenca, la
+Las de uso son las de sus estilos, sin la de origen: la clásica da las tres de la época tonal (`Epoca.tonales`), el
+jazz y el blues, los siglos XX y XXI, y las de compositor, el XX. Las populares que no salen por ninguna regla (la flamenca, la
 mayor rumana) no tienen época de origen.
 
 ```swift
 TipoDeEscala.dorico.epocaDeOrigen == .edadMedia              // true
-TipoDeEscala.dorico.epocasDeUso == [.tonal, .sigloXX]        // true
+TipoDeEscala.dorico.epocasDeUso.first == .barroco           // true
 TipoDeEscala.mayor.epocaDeOrigen == .renacimiento            // true
 TipoDeEscala.alterada.epocaDeOrigen == .sigloXX              // true
 TipoDeEscala.menorHungara.documentada?.anio == 1859          // true
-TipoDeEscala.dobleArmonica.epocaDeOrigen == .tonal           // true
-Epoca.tonal.nombre                                           // "época tonal"
+TipoDeEscala.dobleArmonica.epocaDeOrigen == .romanticismo    // true
+Epoca.romanticismo.nombre                                    // "Romanticismo"
+```
+
+La época de origen es la de sus notas. La de su nombre (`TipoDeEscala.epocaDelNombre`) es otra en las que se llaman
+como se llaman desde otra época: la mayor tiene las notas del jónico de Glareano, del Renacimiento, pero se llama
+«mayor» desde que la teoría francesa del Barroco deja solo dos modos; los modos llevan los nombres griegos desde la
+«Alia musica», de hacia 900.
+
+```swift
+TipoDeEscala.mayor.epocaDelNombre == .barroco                // true
+TipoDeEscala.dorico.epocaDelNombre == .edadMedia             // true
 ```
 
 ### El período en cada tradición
@@ -178,12 +191,15 @@ el del Nāṭyaśāstra, el del Saṅgītaratnākara, el de los mēḷa y el de 
 Azerbaiyán, el abasí, la escuela sistematista, el otomano y safávida y, en el mundo árabe, desde el Congreso de El
 Cairo, y en Persia, el qayar; en Turquía, además, los de Cantemir, de Selim III y de Arel-Ezgi-Uzdilek; en China, las dinastías, y en Japón,
 los períodos de su historia. Sale de su tradición y de su año, con `PeriodoMusical.de(_:anio:)`, y es `nil` en las
-tradiciones sin períodos propios y en las escalas sin año.
+tradiciones sin períodos propios y en las escalas sin año. `PeriodoMusical.periodos(de:)` da los de una tradición, en
+orden, y `TipoDeEscala.periodosDeUso`, los que vienen después del suyo, en los que se sigue usando: las tradiciones
+con períodos siguen vivas, salvo la del Nāṭyaśāstra.
 
 ```swift
 TipoDeEscala.melakarta(29)?.periodo == .mela                // true
 TipoDeEscala.rastMakami.periodo == .cantemir                // true
 TipoDeEscala.rastDortlusu.periodo == .arelEzgiUzdilek       // true
+TipoDeEscala.rastMakami.periodosDeUso == [.selimIII, .arelEzgiUzdilek]   // true
 PeriodoMusical.mela.nombre                                  // "período de los mēḷa"
 ```
 

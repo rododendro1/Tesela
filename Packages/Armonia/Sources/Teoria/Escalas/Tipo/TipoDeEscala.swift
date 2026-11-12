@@ -354,7 +354,7 @@ extension TipoDeEscala {
             .quintaAumentada, .sextaAumentada,
         ],
         alias: ["hexatónica", "modo 1 de Messiaen", "de Debussy", "Debussy", "aumentada auxiliar"],
-        estilos: [.jazz, .sigloXX])
+        estilos: [.jazz, .sigloXX], documentada: .glinka1842)
     public static let disminuida = TipoDeEscala(
         nombre: "disminuida tono-semitono",
         intervalos: [
@@ -362,7 +362,7 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaMenor, .sextaMayor, .septimaMayor,
         ],
         alias: ["disminuida", "octatónica", "modo 2 de Messiaen inverso", "disminuida auxiliar"],
-        estilos: [.jazz, .sigloXX])
+        estilos: [.jazz, .sigloXX], documentada: .rimskiKorsakov1867)
 }
 
 // El catálogo de búsqueda: `occidentales` (el orden decide qué escala gana al identificar), `catalogo` (todas, en el

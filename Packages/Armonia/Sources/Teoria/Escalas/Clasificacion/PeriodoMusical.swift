@@ -143,6 +143,22 @@ public enum PeriodoMusical: String, Sendable, Codable, CaseIterable {
         }
     }
 
+    /// Los períodos de una tradición, en orden; vacío si no los tiene. Son los que da `de(_:anio:)` de un año a otro.
+    public static func periodos(de tradicion: Tradicion) -> [PeriodoMusical] {
+        switch tradicion {
+        case .india: [.vedico, .natyasastra, .sangitaratnakara, .mela, .bhatkhande]
+        case .mundoArabe: [.abasi, .sistematista, .otomanoSafavi, .congresoDelCairo]
+        case .azerbaiyan: [.abasi, .sistematista, .otomanoSafavi, .moderno]
+        case .persia: [.abasi, .sistematista, .otomanoSafavi, .qayar, .moderno]
+        case .turquia: [.abasi, .sistematista, .otomanoSafavi, .cantemir, .selimIII, .arelEzgiUzdilek]
+        case .china: [.zhou, .qinHan, .seisDinastias, .tang, .song, .yuan, .ming, .qing, .moderno]
+        case .japon: [.naraHeian, .kamakuraMuromachi, .edo, .moderno]
+        case .occidental, .grecia, .greciaAntigua, .mesopotamia, .gregoriano, .renacimiento, .corea, .etiopia,
+            .indonesia, .klezmer, .andes, .bizancio, .africa, .sudesteAsiatico, .europa, .vietnam, .brasil:
+            []
+        }
+    }
+
     /// El nombre en el idioma de los textos de la notación: «período de los mēḷa», «mēḷa period». En español, también
     /// `nombre` (de `Nombrable`).
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
@@ -219,5 +235,18 @@ extension TipoDeEscala {
     public var periodo: PeriodoMusical? {
         guard let tradicion, let anio = anioDeOrigen else { return nil }
         return PeriodoMusical.de(tradicion, anio: anio)
+    }
+}
+
+extension TipoDeEscala {
+    /// Los períodos de su tradición en que se sigue usando, después del de origen y hasta hoy: los makamlar de
+    /// Cantemir, el de Selim III y el de Arel-Ezgi-Uzdilek; los mēḷa, el de Bhātkhaṇḍe. Las tradiciones con períodos
+    /// siguen vivas, así que sus escalas se siguen usando; las del Nāṭyaśāstra (los grāma y las mūrchanā, de estilo
+    /// `.indiaAntigua`), no. Vacío si no tiene período.
+    public var periodosDeUso: [PeriodoMusical] {
+        guard let tradicion, let periodo, !estilos.contains(.indiaAntigua) else { return [] }
+        let todos = PeriodoMusical.periodos(de: tradicion)
+        guard let i = todos.firstIndex(of: periodo) else { return [] }
+        return Array(todos[(i + 1)...])
     }
 }

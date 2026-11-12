@@ -30,6 +30,8 @@ public struct Referencia: Hashable, Sendable, Identifiable {
         case tratado
         /// Una página web.
         case web
+        /// Una partitura, con su compositor en `autores` y el año en que se compuso.
+        case partitura
     }
 
     /// La clave de la obra, la de su constante y la de BibTeX: «west1992».
@@ -182,6 +184,7 @@ extension Referencia {
             case .capitulo: "incollection"
             case .tesis: "phdthesis"
             case .web: "online"
+            case .partitura: "misc"
             }
         var campos: [(String, String)] = [("author", autores.joined(separator: " and ")), ("title", titulo)]
         if let publicadoEn { campos.append((clase == .articulo ? "journal" : "booktitle", publicadoEn)) }
@@ -203,6 +206,7 @@ extension Referencia {
             case .capitulo: "chapter"
             case .tesis: "thesis"
             case .web: "webpage"
+            case .partitura: "musical_score"
             }
         var objeto: [String: Any] = [
             "id": clave, "type": tipo, "title": titulo,
