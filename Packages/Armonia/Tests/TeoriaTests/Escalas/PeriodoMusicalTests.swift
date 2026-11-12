@@ -18,9 +18,9 @@ import Testing
         #expect(FuenteTeorica.ptolomeo.epoca == .antiguedad)
         #expect(FuenteTeorica.safiAlDin.epoca == .edadMedia)
         #expect(FuenteTeorica.zhuZaiyu.epoca == .renacimiento)
-        #expect(FuenteTeorica.chrysanthos.epoca == .tonal)
+        #expect(FuenteTeorica.chrysanthos.epoca == .romanticismo)
         // Las categorías con año dan su época a sus escalas.
-        #expect(TipoDeEscala.melakarta(29)?.epocaDeOrigen == .tonal)
+        #expect(TipoDeEscala.melakarta(29)?.epocaDeOrigen == .barroco)
         #expect(
             TipoDeEscala.tradicionales.filter { $0.categoria == .thaat }.allSatisfy { $0.epocaDeOrigen == .sigloXX })
         #expect(
@@ -82,6 +82,30 @@ import Testing
             let nombres = PeriodoMusical.allCases.map { $0.nombre(en: .delIdioma(idioma)) }
             #expect(nombres.allSatisfy { !$0.isEmpty }, "\(idioma)")
             #expect(Set(nombres).count == nombres.count, "\(idioma)")
+        }
+    }
+
+    /// `periodos(de:)` da, en orden, los mismos que `de(_:anio:)` de un año a otro.
+    @Test func losPeriodosEnOrden() {
+        for tradicion in Tradicion.allCases {
+            var vistos: [PeriodoMusical] = []
+            for anio in stride(from: -3000, through: 2025, by: 1) {
+                if let periodo = PeriodoMusical.de(tradicion, anio: anio), vistos.last != periodo {
+                    vistos.append(periodo)
+                }
+            }
+            #expect(vistos == PeriodoMusical.periodos(de: tradicion), "\(tradicion)")
+        }
+    }
+
+    /// Las escalas de las tradiciones vivas se siguen usando hasta hoy; las del Nāṭyaśāstra, no.
+    @Test func losPeriodosDeUso() {
+        #expect(TipoDeEscala.rastMakami.periodosDeUso == [.selimIII, .arelEzgiUzdilek])
+        #expect(TipoDeEscala.melakarta(29)?.periodosDeUso == [.bhatkhande])
+        #expect(TipoDeEscala.rastDortlusu.periodosDeUso.isEmpty)
+        #expect(TipoDeEscala.mayor.periodosDeUso.isEmpty)
+        for tipo in TipoDeEscala.tradicionales where tipo.categoria == .murchana {
+            #expect(tipo.periodosDeUso.isEmpty, Comment(rawValue: tipo.nombre))
         }
     }
 }

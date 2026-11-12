@@ -208,7 +208,11 @@ struct TextosDeTeoria: TextosTraducidos {
     let epocaEdadMedia: String
     let epocaRenacimiento: String
     let epocaTonal: String
+    let epocaBarroco: String
+    let epocaClasicismo: String
+    let epocaRomanticismo: String
     let epocaSigloXX: String
+    let epocaSigloXXI: String
     let periodoVedico: String
     let periodoNatyasastra: String
     let periodoSangitaratnakara: String

@@ -4,11 +4,26 @@
 
 ### Lo nuevo
 
-- `Epoca`, la época de una escala: antigüedad, Edad Media, Renacimiento, época tonal y siglo XX, con su nombre en los
+- La época tonal se parte en tres: `Epoca` tiene ahora el Barroco (1600–1750), el Clasicismo (1750–1820) y el
+  Romanticismo (1820–1900), y el siglo XXI (desde 2000). `Epoca.tonales` y `esTonal` las juntan, y
+  `Epoca.nombreDeLaEpocaTonal(en:)` da «época tonal». `Estilo.epocasDeUso` da varias: la clásica, las tres tonales;
+  el jazz y el blues, los siglos XX y XXI.
+- Más escalas con la obra que las documenta, y con ella su año: los tonos enteros, «Ruslán y Liudmila» de Glinka
+  (1842); las octatónicas, «Sadkó» de Rimski-Kórsakov (1867); la enigmática, el «Ave Maria» de Verdi (1889); Prometeo,
+  el de Skriabin (1910); Petrushka, el de Stravinski (1911), y los modos 3 a 7 de Messiaen, su «Technique de mon
+  langage musical» (1944). `Referencia.Clase.partitura`, para las obras musicales (`@misc` en BibTeX y
+  `musical_score` en CSL-JSON).
+- `TipoDeEscala.epocaDelNombre`, la época del nombre, que no es la de las notas en la mayor y la menor (se llaman así
+  desde el Barroco, aunque sus notas son las del jónico y el eólico de Glareano) ni en los modos, que llevan los nombres
+  griegos desde la «Alia musica» (hacia 900).
+- `PeriodoMusical.periodos(de:)`, los períodos de una tradición en orden, y `TipoDeEscala.periodosDeUso`, los que
+  vienen después del suyo, en los que se sigue usando: Rast makamı, el de Selim III y el de Arel-Ezgi-Uzdilek.
+- `Epoca`, la época de una escala: antigüedad, Edad Media, Renacimiento, época tonal y siglo XX (después partida en
+  más: ver arriba), con su nombre en los
   trece idiomas. `TipoDeEscala.epocaDeOrigen` la calcula con lo que ya sabe el catálogo (su fuente teórica, su
   tradición, las escalas gregorianas y renacentistas con sus mismas notas, su escala madre o sus estilos), y
   `epocasDeUso` da las de sus estilos: el dórico es medieval y se usa en la época tonal y en el siglo XX.
-  `FuenteTeorica.epoca`, `Tradicion.epoca` y `Estilo.epocaDeUso` dan las de cada una.
+  `FuenteTeorica.epoca`, `Tradicion.epoca` y `Estilo.epocasDeUso` dan las de cada una.
 - `TipoDeEscala.documentada`, la obra más antigua que da una escala, con su año: su época de origen sale de ahí antes
   que de ninguna otra regla (`Epoca(anio:)`). La tienen la menor húngara (Liszt, 1859), los echoi bizantinos
   (Chrysanthos, 1832) y los makamlar que ya están en Cantemir (hacia 1700). Las sintéticas toman además la época de

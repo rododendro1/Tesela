@@ -56,7 +56,7 @@ extension TipoDeEscala {
             .quintaAumentada, .sextaAumentada, .septimaMayor,
         ],
         alias: ["de Verdi", "Verdi"],
-        estilos: [.clasica])
+        estilos: [.clasica], documentada: .verdi1889)
     /// Do Re♭ Mi Fa Sol♭ La♭ Si.
     public static let persa = TipoDeEscala(
         nombre: "persa",
@@ -90,7 +90,7 @@ extension TipoDeEscala {
             .sextaMayor, .septimaMenor,
         ],
         alias: ["mística", "de Prometeo", "Skriabin"], variantes: ["Scriabin"],
-        estilos: [.sigloXX])
+        estilos: [.sigloXX], documentada: .skriabin1910)
     /// El Prometeo con la segunda menor (Do Re♭ Mi Fa♯ La Si♭), el otro modo de Skriabin.
     public static let prometeoNapolitano = TipoDeEscala(
         nombre: "Prometeo napolitano",
@@ -115,7 +115,7 @@ extension TipoDeEscala {
             "Rimski-Kórsakov", "de Stravinski", "Stravinski", "disminuida auxiliar blues",
         ],
         variantes: ["Rimsky-Korsakov"],
-        estilos: [.jazz, .sigloXX])
+        estilos: [.jazz, .sigloXX], documentada: .rimskiKorsakov1867)
     /// Terceras menores y semitonos alternos (Do Mi♭ Mi Sol Sol♯ Si).
     public static let aumentada = TipoDeEscala(
         nombre: "aumentada",
@@ -282,7 +282,7 @@ extension TipoDeEscala {
             .quintaJusta, .septimaMenor,
         ],
         alias: ["de Petrushka", "de tritono", "tritono"], variantes: ["Petrouchka"],
-        estilos: [.sigloXX])
+        estilos: [.sigloXX], documentada: .stravinski1911)
     /// Dos tricordos cromáticos a distancia de tritono (Do Re♭ Re Fa♯ Sol La♭). Tiene las notas del modo 5 de
     /// Messiaen, desde su cuarto grado.
     public static let tritonoDeDosSemitonos = TipoDeEscala(
@@ -437,7 +437,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor, .septimaMayor,
         ],
         alias: ["Messiaen 3", "Tcherepnin", "de Tcherepnin", "nueve notas", "de nueve notas"],
-        estilos: [.sigloXX])
+        estilos: [.sigloXX], documentada: .messiaen1944)
     /// Semitono, semitono, tercera menor, semitono, dos veces (Do Re♭ Re Fa Fa♯ Sol La♭ Si). Seis
     /// transposiciones.
     public static let messiaen4 = TipoDeEscala(
@@ -447,13 +447,13 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         alias: ["Messiaen 4"],
-        estilos: [.sigloXX])
+        estilos: [.sigloXX], documentada: .messiaen1944)
     /// Semitono, tercera mayor, semitono, dos veces (Do Re♭ Fa Fa♯ Sol Si). Seis transposiciones.
     public static let messiaen5 = TipoDeEscala(
         nombre: "modo 5 de Messiaen",
         intervalos: [.unisono, .segundaMenor, .cuartaJusta, .cuartaAumentada, .quintaJusta, .septimaMayor],
         alias: ["Messiaen 5"],
-        estilos: [.sigloXX])
+        estilos: [.sigloXX], documentada: .messiaen1944)
     /// Tono, tono, semitono, semitono, dos veces (Do Re Mi Fa Fa♯ Sol♯ La♯ Si). Seis transposiciones.
     public static let messiaen6 = TipoDeEscala(
         nombre: "modo 6 de Messiaen",
@@ -462,7 +462,7 @@ extension TipoDeEscala {
             .quintaAumentada, .sextaAumentada, .septimaMayor,
         ],
         alias: ["Messiaen 6"],
-        estilos: [.sigloXX])
+        estilos: [.sigloXX], documentada: .messiaen1944)
     /// Semitono, semitono, semitono, tono, semitono, dos veces (Do Re♭ Re Mi♭ Fa Fa♯ Sol La♭ La Si).
     /// Seis transposiciones.
     public static let messiaen7 = TipoDeEscala(
@@ -472,5 +472,5 @@ extension TipoDeEscala {
             .cuartaAumentada, .quintaJusta, .sextaMenor, .sextaMayor, .septimaMayor,
         ],
         alias: ["Messiaen 7"],
-        estilos: [.sigloXX])
+        estilos: [.sigloXX], documentada: .messiaen1944)
 }
