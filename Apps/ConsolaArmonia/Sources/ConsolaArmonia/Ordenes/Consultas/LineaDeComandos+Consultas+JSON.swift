@@ -443,6 +443,12 @@ extension LineaDeComandos {
         let tradicion: String?
         let categoria: String?
         let fuente: String?
+        /// Los nombres de sus lugares de origen y de uso (`TipoDeEscala.lugaresDeOrigen`, `lugaresDeUso`), los
+        /// códigos ISO de sus países de origen y las claves de sus continentes de origen.
+        let lugaresDeOrigen: [String]
+        let lugaresDeUso: [String]
+        let paises: [String]
+        let continentes: [String]
     }
 
     /// Un grupo de `escalas --json`: «Japón · escala» y sus escalas, en el orden de `--orden`.
@@ -467,7 +473,11 @@ extension LineaDeComandos {
                             nombre: tipo.nombre(en: notacion), notas: escala.notas.map { $0.nombre(en: notacion) },
                             clases: escala.notas.map(\.claseDeAltura), microtonal: tipo.microtonal != nil,
                             brilloPorQuintas: escala.estadisticas.brilloPorQuintas, tradicion: tipo.tradicion?.rawValue,
-                            categoria: tipo.categoria?.rawValue, fuente: tipo.fuente?.rawValue)
+                            categoria: tipo.categoria?.rawValue, fuente: tipo.fuente?.rawValue,
+                            lugaresDeOrigen: tipo.lugaresDeOrigen.map { $0.nombre(en: notacion) },
+                            lugaresDeUso: tipo.lugaresDeUso.map { $0.nombre(en: notacion) },
+                            paises: tipo.paisesDeOrigen.map(\.codigoISO),
+                            continentes: tipo.continentesDeOrigen.map(\.rawValue))
                     })
             }
         }

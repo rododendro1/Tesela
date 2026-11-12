@@ -27,16 +27,27 @@
 - `Lugar`, de dónde viene una escala, en tres niveles: `Continente`, `Pais` (con su `codigoISO` y su continente) y
   `RegionDeEscala`, con su nombre en los trece idiomas; `contenidoEn` da los que lo contienen (Andalucía, en España,
   en Europa). `RegionDeEscala.paises`, `Tradicion.paises` y `Tradicion.continentes` dicen dónde está cada una.
-- `TipoDeEscala.lugaresDeOrigen`, los más concretos que se saben (su región, si no los países de su tradición y si no
-  sus continentes), con `paisesDeOrigen` y `continentesDeOrigen`; y `lugaresDeUso`, dónde se tocan también sus notas,
-  por las escalas del catálogo con su mismo contenido: el frigio dominante, de Europa, también en el mundo árabe, en
-  Turquía y en Grecia.
+- `TipoDeEscala.lugaresDeOrigen`, los más concretos que se saben (su región o su pueblo; si no, el lugar histórico de
+  su tradición, sus zonas, los países de sus estilos o de su tradición, y si no sus continentes), con
+  `paisesDeOrigen` y `continentesDeOrigen`. El jazz y el blues son de Estados Unidos (`Estilo.paises`): la alterada
+  viene de allí.
+- `TipoDeEscala.lugaresDeUso`, dónde se usa también, por los países de sus estilos (el dórico, en Estados Unidos por
+  el jazz) y por sus parientes, escritos a mano en familias (`parientes`: el frigio dominante, con Ḥijāz, Hicaz makamı,
+  el dromos Hitzáz y el Freygish); y `lugaresQueCoinciden`, los de las demás escalas con sus mismas notas, que son
+  coincidencias y no parentescos (la mayor y Bilāval).
+- `ZonaMusical`, las zonas del mundo árabe (el Levante, Egipto, Irak, el Golfo y el Magreb), con sus países;
+  `Pueblo`, los pueblos repartidos entre países (el gitano, por la menor húngara, y los judíos asquenazíes, por el
+  klezmer); y `LugarHistorico` (Bizancio, Mesopotamia y la Grecia antigua), con los países de hoy. Los tres son
+  casos de `Lugar`, que tiene `todos`, `clave`, `esta(en:)` y diecisiete países más.
 - Las occidentales populares que vienen de un lugar declaran su región: la flamenca, Andalucía; la mayor rumana,
   Rumanía; las húngaras, Hungría; la pentatónica escocesa, Escocia, y el dórico ♯4, Ucrania y Rumanía.
   `RegionDeEscala` tiene Andalucía y Rumanía, y `RegionDeEscala.tipos` da también esas occidentales; como
   subtradición, una región solo da las de su tradición (`Subtradicion.region(.hungria)`, la pentatónica húngara).
 - `TipoDeEscala.nombresGeograficosSinOrigen` y `nombreGeograficoSinOrigen`: la persa, la egipcia, la oriental y las
   napolitanas tienen nombre de lugar pero no vienen de él, y son de Europa como las demás occidentales.
+- La consola: `escalas --lugar espana` (`--place spain`, o el código ISO, `US`) deja las escalas de un lugar, de
+  origen o de uso, y `--agrupar continente` (o `pais`; `--group-by continent`, `country`) las agrupa por su lugar de
+  origen. `escalas --json` da de cada una sus lugares de origen y de uso, sus países (códigos ISO) y sus continentes.
 - `RelojDeAlturas`, el círculo cromático microtonal: un reloj de cents con cada nota en el ángulo de sus cents, las
   doce horas temperadas en gris como referencia, una rayita en cada paso del sistema y un arquito en cada nota que se
   aparta de su nota temperada. `RelojDeAlturas(escala:afinacion:sentido:notacion:)` lo hace con la versión

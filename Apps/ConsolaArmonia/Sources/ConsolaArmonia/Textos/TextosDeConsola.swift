@@ -226,6 +226,8 @@ struct TextosDeConsola: TextosTraducidos {
     let escalaSinMicrotonos: Plantilla  // {1} escala
     let sinCirculoDeQuintas: Plantilla  // {1} temperamento
     let usoDesconocido: Plantilla  // {1} uso
+    let lugarDesconocido: Plantilla  // {1} lugar
+    let agrupacionDesconocida: Plantilla  // {1} agrupacion
     let ordenDeEscalasDesconocido: Plantilla  // {1} orden
     let ordenDeAcordesDesconocido: Plantilla  // {1} orden
     let intervaloDeEscalasDesconocido: Plantilla  // {1} intervalo
@@ -344,6 +346,7 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeReferencias: String
     let mensajeEscalas: String
     let mensajeHabituales: String
+    let mensajeSinLugar: String
     let mensajeNingunaEscala: String
     let mensajeNingunaProgresion: String
     let mensajeNingunRitmo: String

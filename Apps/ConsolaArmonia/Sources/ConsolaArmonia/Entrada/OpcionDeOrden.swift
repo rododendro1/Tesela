@@ -44,6 +44,10 @@ extension OpcionDeOrden {
     static let sistema = valor("--sistema", "--system")
     static let grafia = valor("--grafia", "--script")
     static let fuente = valor("--fuente", "--source")
+    /// `escalas --lugar espana`: las de un lugar, de origen o de uso.
+    static let lugar = valor("--lugar", "--place")
+    /// `escalas --agrupar continente`: por el continente o el país de origen.
+    static let agrupar = valor("--agrupar", "--group-by")
     static let subindices = marca("--subindices", "--subscripts")
     static let cifras = marca("--cifras", "--digits")
     static let json = marca("--json")

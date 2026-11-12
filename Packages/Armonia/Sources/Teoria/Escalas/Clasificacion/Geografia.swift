@@ -389,6 +389,19 @@ public enum Lugar: Hashable, Sendable, Codable {
         }
     }
 
+    /// La clave del lugar, la de su caso: «andalucia», «espana», «europa». La zona y el país de Egipto (o de Irak)
+    /// tienen la misma.
+    public var clave: String {
+        switch self {
+        case .continente(let continente): continente.rawValue
+        case .pais(let pais): pais.rawValue
+        case .zona(let zona): zona.rawValue
+        case .historico(let lugar): lugar.rawValue
+        case .pueblo(let pueblo): pueblo.rawValue
+        case .region(let region): region.rawValue
+        }
+    }
+
     /// Para ordenar: primero los continentes, luego las zonas, los países, los lugares históricos, los pueblos y las
     /// regiones, cada uno en el orden de sus casos.
     var orden: Int {

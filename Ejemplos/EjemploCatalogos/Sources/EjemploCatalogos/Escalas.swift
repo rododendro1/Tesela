@@ -3,7 +3,7 @@ import Foundation
 
 // El catálogo de escalas (`TipoDeEscala.catalogo`: las occidentales y las de otras tradiciones, en su orden), una fila
 // por escala con lo que dice de ella la API pública: nombres (y su traducción a los otros doce idiomas), intervalos,
-// tradición, estilos, regiones, categoría, fuente, afinaciones, lo que se mide de sus notas (brillo, pasos, forma
+// tradición, estilos, regiones, lugares y épocas, categoría, fuente, afinaciones, lo que se mide de sus notas (brillo, pasos, forma
 // prima, simetría…), sus parientes en el catálogo y las obras que la citan.
 
 /// Los cents con un decimal como mucho y punto decimal, sea cual sea la configuración regional: «0 151 294.1».
@@ -23,7 +23,9 @@ private func nombres(_ tipos: [TipoDeEscala]) -> String { tipos.map(\.nombre).jo
 
 let columnasDeEscalas: [String] =
     ["nombre", "nombre_completo"] + traducciones.map { "nombre_en_\($0.rawValue)" } + [
-        "alias", "variantes", "tradicion", "estilos", "regiones", "categoria", "clase", "fuente", "numero_de_notas",
+        "alias", "variantes", "tradicion", "estilos", "regiones", "lugares_de_origen", "paises_de_origen",
+        "continentes_de_origen", "lugares_de_uso", "epoca_de_origen", "epocas_de_uso", "categoria", "clase", "fuente",
+        "numero_de_notas",
         "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
         "melakarta", "padre", "afinaciones", "sistema_microtonal", "cents",
         // Lo que se mide de sus notas, sobre Do (`EstadisticasDeEscala`).
@@ -54,6 +56,12 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         tipo.tradicion?.nombre ?? "",
         tipo.estilos.map(\.nombre).joined(separator: " · "),
         tipo.regiones.map(\.nombre).joined(separator: " · "),
+        tipo.lugaresDeOrigen.map(\.nombre).joined(separator: " · "),
+        tipo.paisesDeOrigen.map(\.codigoISO).joined(separator: " "),
+        tipo.continentesDeOrigen.map(\.nombre).joined(separator: " · "),
+        tipo.lugaresDeUso.map(\.nombre).joined(separator: " · "),
+        tipo.epocaDeOrigen?.nombre ?? "",
+        tipo.epocasDeUso.map(\.nombre).joined(separator: " · "),
         tipo.categoria?.nombre ?? "",
         tipo.clase?.rawValue ?? "",
         tipo.fuente?.nombre ?? "",

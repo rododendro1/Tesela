@@ -43,6 +43,8 @@ enum ErrorDeUso: ErrorDeArmonia {
     case familiaDeFuncionDesconocida(String)
     case fuenteDesconocida(String)
     case usoDesconocido(String)
+    case lugarDesconocido(String)
+    case agrupacionDesconocida(String)
     case ordenDeEscalasDesconocido(String)
     case ordenDeAcordesDesconocido(String)
     case intervaloDeEscalasDesconocido(String)
@@ -235,6 +237,11 @@ enum ErrorDeUso: ErrorDeArmonia {
         case .usoDesconocido(let uso):
             let claves = LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }
             return LineaDeComandos.propuesta(para: uso, entre: claves)
+        case .lugarDesconocido(let lugar):
+            return LineaDeComandos.propuesta(para: lugar, entre: Lugar.todos.map(\.clave))
+        case .agrupacionDesconocida(let agrupacion):
+            let claves = LineaDeComandos.nombresDeLasAgrupaciones.flatMap { [$0.espanol, $0.ingles] }
+            return LineaDeComandos.propuesta(para: agrupacion, entre: claves)
         case .intervaloDeEscalasDesconocido(let intervalo):
             return LineaDeComandos.propuesta(
                 para: intervalo, entre: Array(LineaDeComandos.clasesIntervalicasPorNombre.keys))
@@ -316,6 +323,10 @@ enum ErrorDeUso: ErrorDeArmonia {
             return TextosDeConsola.traduccion { $0.fuenteDesconocida(fuente) }
         case .usoDesconocido(let uso):
             return TextosDeConsola.traduccion { $0.usoDesconocido(uso) }
+        case .lugarDesconocido(let lugar):
+            return TextosDeConsola.traduccion { $0.lugarDesconocido(lugar) }
+        case .agrupacionDesconocida(let agrupacion):
+            return TextosDeConsola.traduccion { $0.agrupacionDesconocida(agrupacion) }
         case .ordenDeEscalasDesconocido(let orden):
             return TextosDeConsola.traduccion { $0.ordenDeEscalasDesconocido(orden) }
         case .ordenDeAcordesDesconocido(let orden):

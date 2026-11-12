@@ -22,6 +22,7 @@ enum Mensaje {
     case referencias
     case escalas
     case habituales
+    case sinLugar
     case ningunaEscala
     case ningunaProgresion
     case ningunRitmo
@@ -75,6 +76,7 @@ enum Mensaje {
         case .referencias: return TextosDeConsola.traduccion(\.mensajeReferencias)
         case .escalas: return TextosDeConsola.traduccion(\.mensajeEscalas)
         case .habituales: return TextosDeConsola.traduccion(\.mensajeHabituales)
+        case .sinLugar: return TextosDeConsola.traduccion(\.mensajeSinLugar)
         case .ningunaEscala: return TextosDeConsola.traduccion(\.mensajeNingunaEscala)
         case .ningunaProgresion: return TextosDeConsola.traduccion(\.mensajeNingunaProgresion)
         case .ningunRitmo: return TextosDeConsola.traduccion(\.mensajeNingunRitmo)
