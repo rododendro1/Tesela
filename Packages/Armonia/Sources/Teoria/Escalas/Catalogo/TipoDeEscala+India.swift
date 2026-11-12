@@ -272,7 +272,7 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMayor,
-        ], alias: ["Yaman"], variantes: ["कल्याण"],
+        ], variantes: ["कल्याण"],
         categoria: .thaat, afinaciones: [.init(.sruti, pasos: [0, 3, 7, 11, 13, 16, 20])])
     public static let khamaj = TipoDeEscala(
         nombre: "Khamāj",

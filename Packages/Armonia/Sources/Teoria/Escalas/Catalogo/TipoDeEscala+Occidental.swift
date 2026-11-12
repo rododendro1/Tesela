@@ -163,7 +163,6 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMayor, .septimaMenor,
         ],
-        variantes: ["dórico b5"],
         estilos: [.sintetica])
     public static let frigioCuartaDisminuida = TipoDeEscala(
         nombre: "frigio ♭4",

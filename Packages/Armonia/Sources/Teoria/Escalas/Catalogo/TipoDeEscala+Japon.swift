@@ -32,7 +32,7 @@ extension TipoDeEscala {
     /// 都節, la escala de la música urbana de Edo, con semitonos (Mi Fa La Si Do).
     public static let miyakobushi = TipoDeEscala(
         nombre: "Miyakobushi", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
-        variantes: ["Miyako-bushi", "Miyako bushi", "都節", "都節音階"],
+        variantes: ["Miyako-bushi", "都節", "都節音階"],
         tradicion: .japon, categoria: .escala)
     /// 陰音階, la escala in: la contrapartida con semitonos de la yō (Mi Fa La Si Do).
     public static let `in` = TipoDeEscala(

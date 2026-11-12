@@ -74,6 +74,23 @@ import Testing
         }
     }
 
+    /// Lo mismo en las escalas de otras tradiciones, también en español: un alias o una variante que es el nombre de
+    /// otra escala no se lee nunca como la suya («Yaman» es una escala; «Kalyāṇ» no puede llamarse así).
+    @Test func cadaAliasDeLasTradicionalesSeLeeComoSuEscala() {
+        for idioma in Idioma.allCases {
+            let nombres = NombresDeEscalas.de(idioma)
+            for tipo in TipoDeEscala.tradicionales {
+                guard let entrada = nombres.tradicionales[tipo.identidad] else { continue }
+                for alias in [entrada.nombre] + entrada.alias + entrada.variantes {
+                    let leido = nombres.indice[TipoDeEscala.normalizar(alias)]
+                    #expect(
+                        leido?.esIdentico(a: tipo) == true,
+                        "\(idioma): \(alias) (\(entrada.nombre)) se lee \(leido?.nombre ?? "-")")
+                }
+            }
+        }
+    }
+
     /// Los idiomas con alias los tienen en todas las familias de tipos más comunes: los modos con otro nombre
     /// («jónico», «eólico») y los modos con alteraciones.
     @Test func losModosTienenSusSinonimosEnTodosLosIdiomas() {
@@ -202,14 +219,21 @@ import Testing
     // MARK: Alias escritos y alias normalizados
 
     /// `alias` y `variantes` guardan solo grafías correctas; las simplificadas (sin diacríticos, `#`/`b`) las da
-    /// `aliasNormalizados`.
+    /// `aliasNormalizados`: ni «dorico» ni «dórico b5» junto a «dórico ♭5».
     @Test func losAliasGuardadosNoSonSoloFormasNormalizadas() {
         for tipo in TipoDeEscala.occidentales + TipoDeEscala.tradicionales {
             let escritas = [tipo.nombre] + tipo.alias + tipo.variantes
-            for alias in tipo.alias + tipo.variantes where alias.unicodeScalars.allSatisfy(\.isASCII) {
+            for alias in tipo.alias + tipo.variantes {
+                let conAlteracionesASCII = alias.replacing("♯", with: "#").replacing("♭", with: "b")
                 let redundante = escritas.contains {
-                    $0 != alias && TipoDeEscala.normalizar($0) == TipoDeEscala.normalizar(alias)
-                        && (!$0.unicodeScalars.allSatisfy(\.isASCII) || $0 == tipo.nombre)
+                    guard $0 != alias, TipoDeEscala.normalizar($0) == TipoDeEscala.normalizar(alias) else {
+                        return false
+                    }
+                    if alias.unicodeScalars.allSatisfy(\.isASCII) {
+                        return !$0.unicodeScalars.allSatisfy(\.isASCII) || $0 == tipo.nombre
+                    }
+                    // Solo cambia ♯ y ♭ por # y b.
+                    return $0.replacing("♯", with: "#").replacing("♭", with: "b") == conAlteracionesASCII
                 }
                 #expect(!redundante, "\(tipo.nombre): «\(alias)» se deduce de otra grafía")
             }
@@ -265,7 +289,7 @@ import Testing
         #expect(TipoDeEscala.dorico.alias == ["menor dórica"])
         #expect(TipoDeEscala.dorico.variantes == ["dórica"])
         #expect(TipoDeEscala.hitzaz.alias.isEmpty)
-        #expect(TipoDeEscala.hitzaz.variantes == ["Hijaz", "Hicaz", "Χιτζάζ"])
+        #expect(TipoDeEscala.hitzaz.variantes == ["Hicaz", "Χιτζάζ"])
         #expect(try TipoDeEscala(leyendo: "dórica") == .dorico)
         #expect(try TipoDeEscala(leyendo: "Χιτζάζ").esIdentico(a: .hitzaz))
         #expect(NombresDeEscalas.de(.catalan).porTipo[.dorico]?.variantes == ["dòrica"])

@@ -368,7 +368,7 @@ nombre gana siempre a un alias o a una variante:
 ```swift
 TipoDeEscala.propio(TipoDeEscala.kafi.intervalos).nombre   // "dórico"
 TipoDeEscala.kafi.equivalentes.first?.nombre               // "dórico"
-try TipoDeEscala(leyendo: "Hijaz").nombre                 // "Ḥijāz" (el maqam; el dromos Hitzáz lo tiene de variante)
+try TipoDeEscala(leyendo: "Hijaz").nombre                 // "Ḥijāz" (el maqam; el dromos griego es «Hitzáz»)
 ```
 
 ## Arpegios

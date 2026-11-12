@@ -148,6 +148,14 @@
 - `TipoDeEscala.enigmatica` ya no es `==` a un tipo con solo sus intervalos ascendentes, porque ahora baja distinto.
 - `Docs/HUECOS_DEL_CATALOGO.md`, al día, con las escalas que no tienen época; `comprobar_catalogo.py` comprueba sus
   cifras con las del catálogo. Toda occidental de un estilo con épocas tiene la suya (`EpocaTests`).
+- Ningún alias ni variante de una escala es el nombre de otra, en ningún idioma, también en las de otras tradiciones
+  (`cadaAliasDeLasTradicionalesSeLeeComoSuEscala`). Por eso Kalyāṇ ya no tiene el alias «Yaman» (es su rāga, con
+  ficha propia), el dromos Hitzáz pierde la variante «Hijaz» (se leía Ḥijāz) y Niavént la variante «Nihavent», que
+  ahora lleva a Nahāwand; en ruso, Ḥusaynī se llama «Хусайни» y no «Хусейни», que era Houseïní.
+- Fuera las variantes que solo cambian ♭ por b o un guion por un espacio («dórico b5», «Miyako bushi»): las da la
+  búsqueda.
+- En inglés, los modos van en minúscula también en «dorian b2 #4», «ionian no 4», «lydian pentatonic»…, como el
+  resto; «Spanish phrygian», con mayúscula.
 
 ### Obsoleto
 
