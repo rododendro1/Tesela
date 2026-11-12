@@ -333,6 +333,10 @@ extension LineaDeComandos {
                 lineas.append("  ¢ ↓: " + cents(bajada))
             }
         }
+        // De cuándo y de dónde es: «Época: Romanticismo (1859)», «Lugares de origen: Hungría · gitano».
+        if let origen = datos.origen {
+            lineas += origen.datos(en: notacion).map { "  " + $0.nombre + ": " + $0.valor }
+        }
         // Dónde se lee la escala: «West 1992; Barker 1989».
         let referencias = escala.tipo.referencias
         if !referencias.isEmpty {

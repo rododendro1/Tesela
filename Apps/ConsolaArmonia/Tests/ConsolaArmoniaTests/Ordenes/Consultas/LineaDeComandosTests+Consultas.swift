@@ -192,6 +192,44 @@ extension LineaDeComandosTests {
         #expect(resultado("escalas", "--agrupar", "x").error.contains("continente"))
     }
 
+    /// `escalas --epoca`: las de una época, de origen o de uso, por su clave en español o en inglés o por su nombre;
+    /// `tonal`, las tres de la época tonal. `--escuela`, las de una escuela, y `--agrupar epoca`, por la de origen.
+    @Test func escalasPorEpocaYEscuela() {
+        let barrocas = salida("escalas --epoca barroco")
+        #expect(barrocas.contains("  dórico: "), Comment(rawValue: String(barrocas.prefix(300))))
+        #expect(barrocas.contains("  Kanakāṅgī: "))
+        #expect(!barrocas.contains("  alterada: "))
+        #expect(salida("escalas --era baroque") == barrocas)
+        #expect(salida("escalas --epoca Barroco") == barrocas)
+        #expect(salida("escalas --epoca tonal").contains("  menor húngara: "))
+        #expect(salida("escalas --epoca siglo-xx --uso jazz").contains("  alterada: "))
+        #expect(resultado("escalas", "--epoca", "barocco").error.contains("«barroco»"))
+        #expect(resultado("escalas", "--epoca").codigo == 2)
+        let carnaticas = salida("escalas --escuela carnatica")
+        #expect(carnaticas.hasPrefix("India · mēḷa (72)\n"), Comment(rawValue: String(carnaticas.prefix(200))))
+        #expect(!carnaticas.contains("habituales"))
+        #expect(salida("escalas --school carnatic") == carnaticas)
+        #expect(salida("escalas --escuela gagaku").hasPrefix("Japón · "))
+        #expect(resultado("escalas", "--escuela", "carnatik").error.contains("«carnatic»"))
+        let porEpoca = salida("escalas --agrupar epoca --uso jazz")
+        #expect(porEpoca.hasPrefix("Edad Media · 500–1400 ("), Comment(rawValue: String(porEpoca.prefix(200))))
+        #expect(porEpoca.contains("\n\nsiglo XX · 1900–2000 ("))
+        #expect(salida("escalas --agrupar epoca").contains("\n\nsin época ("))
+        #expect(salida("scales --group-by era --ingles --use jazz").hasPrefix("Middle Ages · 500–1400 ("))
+    }
+
+    /// `escala`: la época, los lugares, los estilos y, en las de otras tradiciones, el período y la escuela.
+    @Test func elOrigenDeUnaEscala() {
+        let hungara = salida("escala La menor húngara")
+        #expect(hungara.contains("\n  Época: Romanticismo (1859)\n"), Comment(rawValue: hungara))
+        #expect(hungara.contains("\n  Estilos: folclore\n"))
+        let dorico = salida("escala Re dórico")
+        #expect(dorico.contains("\n  Épocas de uso: Barroco · Clasicismo"), Comment(rawValue: dorico))
+        let rast = salida("escala Do Rast makamı")
+        #expect(rast.contains("\n  Período: período de Cantemir\n"), Comment(rawValue: rast))
+        #expect(salida("scale A hungarian minor --ingles").contains("\n  Era: Romantic period (1859)\n"))
+    }
+
     /// `escalas --notas 5`: solo las de cinco notas, de las habituales y de las otras tradiciones.
     @Test func escalasPorNumeroDeNotas() {
         let pentatonicas = salida("escalas --notas 5")

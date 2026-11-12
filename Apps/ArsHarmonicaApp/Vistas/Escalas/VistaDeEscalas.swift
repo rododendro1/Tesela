@@ -79,6 +79,7 @@ struct VistaDeEscalas: View {
                 escala: escala, secuencia: secuencia, bajando: bajando, caged: caged, mastil: mastil)
             SeccionDeLaDigitacionDePiano(escala: escala)
             SeccionDeLaSimetria(escala: escala)
+            SeccionDelOrigen(escala: escala)
             SeccionDeLasEstadisticas(escala: escala)
             SeccionDeLaEscaleraDeBrillo(escala: escala)
             SeccionDelMapaDeBrillo(escala: escala)

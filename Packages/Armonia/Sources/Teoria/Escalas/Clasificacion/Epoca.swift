@@ -3,8 +3,8 @@ import Elementos
 // MARK: - La época de una escala
 
 /// La época de la historia de la música occidental en que aparece o se usa una escala: la antigüedad, la Edad Media,
-/// el Renacimiento, las tres de la época tonal (el Barroco, el Clasicismo y el Romanticismo, de 1600 a 1900, la que en
-/// inglés se llama «common practice»), el siglo XX y el XXI.
+/// el Renacimiento, las tres de la época tonal (el Barroco, el Clasicismo y el Romanticismo, la que en inglés se llama
+/// «common practice»), el siglo XX y el XXI. Sus años están en `anios`.
 ///
 /// No se escribe en las escalas: se calcula con lo que el catálogo ya sabe de ellas. La de origen
 /// (`TipoDeEscala.epocaDeOrigen`), con la obra que la documenta, su fuente teórica, su tradición, las escalas
@@ -15,46 +15,66 @@ import Elementos
 ///     TipoDeEscala.dorico.epocasDeUso        // [.barroco, .clasicismo, .romanticismo, .sigloXX, .sigloXXI]
 ///     TipoDeEscala.alterada.epocaDeOrigen    // .sigloXX
 public enum Epoca: String, Sendable, Codable, CaseIterable, Comparable {
-    /// Antes del año 500: la Grecia antigua, Mesopotamia, los teóricos griegos y chinos antiguos.
+    /// La Grecia antigua, Mesopotamia, los teóricos griegos y chinos antiguos.
     case antiguedad
-    /// De 500 a 1400: los modos gregorianos, Guido d'Arezzo, Ṣafī al-Dīn.
+    /// Los modos gregorianos, Guido d'Arezzo, Ṣafī al-Dīn.
     case edadMedia
-    /// De 1400 a 1600: Ramos de Pareja, Glareano, Vicentino, Zarlino, Salinas.
+    /// Ramos de Pareja, Glareano, Vicentino, Zarlino, Salinas.
     case renacimiento
-    /// De 1600 a 1750: el bajo continuo y la llegada de la mayor y la menor.
+    /// El bajo continuo y la llegada de la mayor y la menor.
     case barroco
-    /// De 1750 a 1820: Haydn, Mozart, Beethoven.
+    /// Haydn, Mozart, Beethoven.
     case clasicismo
-    /// De 1820 a 1900: Liszt, Chrysanthos, Glinka, Rimski-Kórsakov.
+    /// Liszt, Chrysanthos, Glinka, Rimski-Kórsakov.
     case romanticismo
-    /// De 1900 a 2000: el jazz, el blues y las escalas de compositor.
+    /// El jazz, el blues y las escalas de compositor.
     case sigloXX
-    /// Desde 2000.
+    /// Lo que se escribe hoy.
     case sigloXXI
 
-    /// Las tres de la época tonal, de 1600 a 1900.
+    /// Las tres de la época tonal, del Barroco al Romanticismo.
     public static let tonales: [Epoca] = [.barroco, .clasicismo, .romanticismo]
 
     /// Es una de las de la época tonal: el Barroco, el Clasicismo o el Romanticismo.
     public var esTonal: Bool { Epoca.tonales.contains(self) }
 
-    /// La de un año: antes de 500, la antigüedad; antes de 1400, la Edad Media; antes de 1600, el Renacimiento; antes
-    /// de 1750, el Barroco; antes de 1820, el Clasicismo; antes de 1900, el Romanticismo; antes de 2000, el siglo XX;
-    /// desde 2000, el XXI.
+    /// Sus años: desde el primero y hasta el anterior al de la siguiente. Es la única tabla de los límites: de ella
+    /// salen `init(anio:)`, `inicio`, `fin` y el texto de `nombreConAnios(en:)`. La antigüedad empieza en `Int.min` y
+    /// el siglo XXI acaba en `Int.max`, así que todo año tiene época. El `switch` no tiene `default`: una época nueva
+    /// no compila sin los suyos.
+    ///
+    ///     Epoca.barroco.anios   // 1600..<1750
+    public var anios: Range<Int> {
+        switch self {
+        case .antiguedad: Int.min..<500
+        case .edadMedia: 500..<1400
+        case .renacimiento: 1400..<1600
+        case .barroco: 1600..<1750
+        case .clasicismo: 1750..<1820
+        case .romanticismo: 1820..<1900
+        case .sigloXX: 1900..<2000
+        case .sigloXXI: 2000..<Int.max
+        }
+    }
+
+    /// El primer año, o `nil` en la antigüedad, que no tiene.
+    public var inicio: Int? { anios.lowerBound == Int.min ? nil : anios.lowerBound }
+
+    /// El año en que empieza la siguiente, o `nil` en el siglo XXI, que no ha acabado.
+    public var fin: Int? { anios.upperBound == Int.max ? nil : anios.upperBound }
+
+    /// La de un año, la que lo tiene en sus `anios`.
     ///
     ///     Epoca(anio: 1859)   // .romanticismo
     public init(anio: Int) {
-        switch anio {
-        case ..<500: self = .antiguedad
-        case ..<1400: self = .edadMedia
-        case ..<1600: self = .renacimiento
-        case ..<1750: self = .barroco
-        case ..<1820: self = .clasicismo
-        case ..<1900: self = .romanticismo
-        case ..<2000: self = .sigloXX
-        default: self = .sigloXXI
-        }
+        self = Epoca.allCases.first { $0.anios.contains(anio) }!
     }
+
+    /// Sus años escritos, de `anios`, con «…» donde no tiene: «1600–1750», «…–500», «2000–…».
+    public var textoDeLosAnios: String { (inicio.map(String.init) ?? "…") + "–" + (fin.map(String.init) ?? "…") }
+
+    /// El nombre con sus años (`textoDeLosAnios`): «Barroco (1600–1750)», «antigüedad (…–500)», «siglo XXI (2000–…)».
+    public func nombreConAnios(en notacion: Notacion) -> String { nombre(en: notacion) + " (" + textoDeLosAnios + ")" }
 
     /// Por orden cronológico, el de `allCases`.
     public static func < (a: Epoca, b: Epoca) -> Bool {
@@ -163,9 +183,10 @@ extension TipoDeEscala {
 
     /// La época en que aparece la escala. Es la primera de estas que da algo:
     ///
-    /// 1. la de su año (`anioDeOrigen`): el de la obra más antigua que la da (`documentada`: la menor húngara, la
-    ///    el Romanticismo por Liszt en 1859; los tonos enteros, por Glinka en 1842), el de su fuente teórica (los géneros de Ptolomeo son de la antigüedad, los
-    ///    modos de Glareano del Renacimiento) o el de su categoría (los mēḷa, de 1660);
+    /// 1. la de su año (`anioDeOrigen`): el de la obra más antigua que la da (`documentada`: la menor húngara es del
+    ///    Romanticismo por Liszt, en 1859, y los tonos enteros, por Glinka, en 1842), el de su fuente teórica (los
+    ///    géneros de Ptolomeo son de la antigüedad, los modos de Glareano, del Renacimiento) o el de su categoría (los
+    ///    mēḷa, de 1660);
     /// 2. la de su tradición, si es una época (`Tradicion.epoca`): las harmoniai son de la antigüedad, los modos
     ///    gregorianos de la Edad Media;
     /// 3. en las occidentales de la música clásica (las de estilo `.clasica`, cuyos nombres vienen de los modos), la

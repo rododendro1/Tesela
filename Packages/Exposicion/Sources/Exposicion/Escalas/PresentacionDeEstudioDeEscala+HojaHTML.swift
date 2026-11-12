@@ -4,8 +4,8 @@ import Armonia
 
 extension PresentacionDeEstudioDeEscala {
     /// La hoja de estudio de la escala como página HTML: lo mismo que `hojaDeEstudio(de:en:secciones:)`, pero con los
-    /// textos en HTML (el nombre, las notas, las estadísticas en una lista de definiciones, los acordes de los grados
-    /// y la escalera de brillo en listas) y los dibujos (el pentagrama, el reloj, el círculo microtonal y los
+    /// textos en HTML (el nombre, las notas, el origen y las estadísticas en listas de definiciones, los acordes de
+    /// los grados y la escalera de brillo en listas) y los dibujos (el pentagrama, el reloj, el círculo microtonal y los
     /// teclados) como SVG dentro. Se adapta al ancho de la pantalla (en una estrecha, las columnas se apilan), sigue
     /// el modo oscuro del sistema y se imprime en A4. Una sola página, sin nada de fuera.
     /// `armonia hoja Do mayor --html` la escribe.
@@ -32,6 +32,14 @@ extension PresentacionDeEstudioDeEscala {
                 seccion(
                     .pentagrama, en: notacion,
                     figura(PentagramaPresentado(escala, en: notacion).svg, clase: "ancha")))
+        }
+
+        // De cuándo y de dónde es, con las estadísticas: la época, los lugares, los estilos…
+        if secciones.contains(.estadisticas), let origen = OrigenDeEscalaPresentado(escala.tipo, en: notacion) {
+            let datos = origen.datos(en: notacion).map {
+                "<div><dt>" + html($0.nombre) + "</dt><dd>" + html($0.valor) + "</dd></div>"
+            }
+            cuerpo.append(seccionHTML(notacion.texto(\.origen), "<dl>" + datos.joined() + "</dl>", clase: "seccion-origen"))
         }
 
         // Las estadísticas y el reloj (con el círculo microtonal, si tiene microtonos), en dos columnas.

@@ -236,6 +236,16 @@ public struct TextosDeApps: TextosTraducidos {
     public let porNumeroDeNotas: String
     public let porEstilo: String
     public let sinEstilo: String
+    // OrigenDeEscalaPresentado.swift
+    public let origen: String
+    public let epocaDeOrigen: String
+    public let epocasDeUso: String
+    public let periodo: String
+    public let periodosDeUso: String
+    public let lugaresDeOrigen: String
+    public let lugaresDeUso: String
+    public let estilos: String
+    public let escuelas: String
     public let porTerceras: String
     public let consonanciaDiadica: String
     public let grupoDeHindemith: String

@@ -65,8 +65,8 @@ extension LineaDeComandosTests {
         let acordes = try #require(dorico["acordes"] as? [[String: String]])
         #expect(acordes.count == 7)
         #expect(acordes.first?["cifrado"] == "Rem7")
-        // Sin opciones, solo esas claves (y sus referencias, Powers y Levine).
-        #expect(Set(dorico.keys) == ["nombre", "notas", "clases", "modo", "acordes", "referencias"])
+        // Sin opciones, solo esas claves (y sus referencias, Powers y Levine, y su origen).
+        #expect(Set(dorico.keys) == ["nombre", "notas", "clases", "modo", "acordes", "referencias", "origen"])
     }
 
     /// Una escala de otra tradición lleva sus referencias, con su clave, su cita y la referencia completa.
@@ -225,6 +225,19 @@ extension LineaDeComandosTests {
         let dorico = try #require(try json("escalas dórico --uso clasica") as? [[String: Any]])
         let doricos = try #require(dorico.first?["escalas"] as? [[String: Any]])
         #expect(doricos.first?["lugaresDeUso"] as? [String] == ["Estados Unidos"])
+        // Las claves de la época, el período, los estilos, las corrientes y las escuelas.
+        #expect(doricos.first?["epoca"] as? String == "edadMedia")
+        #expect((doricos.first?["epocasDeUso"] as? [String])?.first == "barroco")
+        #expect(doricos.first?["estilos"] as? [String] == ["jazz", "clasica"])
+        #expect(doricos.first?["corrientes"] as? [String] == ["modal"])
+        let carnaticas = try #require(try json("escalas --escuela carnatica") as? [[String: Any]])
+        let melas = try #require(carnaticas.first?["escalas"] as? [[String: Any]])
+        #expect(melas.first?["anio"] as? Int == 1660 && melas.first?["periodo"] as? String == "mela")
+        #expect(melas.first?["escuelas"] as? [String] == ["carnatica"])
+        // Y en `escala --json`, su origen escrito.
+        let hungara = try #require(try json("escala La menor húngara") as? [String: Any])
+        let origen = try #require(hungara["origen"] as? [String: Any])
+        #expect(origen["anio"] as? Int == 1859 && origen["epoca"] as? String == "Romanticismo")
         let ptolomeo = try #require(try json("escalas --fuente ptolomeo") as? [[String: Any]])
         let generos = try #require(ptolomeo.first?["escalas"] as? [[String: Any]])
         #expect(generos.allSatisfy { $0["fuente"] as? String == "ptolomeo" && $0["microtonal"] as? Bool == true })

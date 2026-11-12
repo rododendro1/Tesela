@@ -72,8 +72,58 @@ extension LineaDeComandos {
     /// Cómo se escribe cada forma de agrupar en `--agrupar`, en español y en inglés (se aceptan los dos en cualquier
     /// idioma): `--agrupar pais`, `--group-by country`.
     static let nombresDeLasAgrupaciones: [(agrupacion: AgrupacionDeEscalas, espanol: String, ingles: String)] = [
-        (.continente, "continente", "continent"), (.pais, "pais", "country"),
+        (.continente, "continente", "continent"), (.pais, "pais", "country"), (.epoca, "epoca", "era"),
     ]
+
+    /// Cómo se escribe cada época en `--epoca`, en español y en inglés (se aceptan los dos en cualquier idioma):
+    /// `--epoca edad-media`, `--era middle-ages`. `tonal` da las tres de la época tonal.
+    static let nombresDeLasEpocas: [(epocas: [Epoca], espanol: String, ingles: String)] = [
+        ([.antiguedad], "antiguedad", "antiquity"), ([.edadMedia], "edad-media", "middle-ages"),
+        ([.renacimiento], "renacimiento", "renaissance"), ([.barroco], "barroco", "baroque"),
+        ([.clasicismo], "clasicismo", "classicism"), ([.romanticismo], "romanticismo", "romanticism"),
+        ([.sigloXX], "siglo-xx", "20th-century"), ([.sigloXXI], "siglo-xxi", "21st-century"),
+        (Epoca.tonales, "tonal", "tonal"),
+    ]
+
+    /// Las épocas de `--epoca barroco`, por su clave, en español o en inglés, o por su nombre en español o en el
+    /// idioma de la notación («Barroco», «Baroque»); lanza `epocaDesconocida` si no es ninguna.
+    static func epocas(leyendo texto: String, _ notacion: Notacion) throws -> [Epoca] {
+        let clave = claveDeBusqueda(texto)
+        if let porClave = nombresDeLasEpocas.first(where: {
+            claveDeBusqueda($0.espanol) == clave || claveDeBusqueda($0.ingles) == clave
+        }) {
+            return porClave.epocas
+        }
+        guard
+            let porNombre = Epoca.allCases.first(where: {
+                [$0.nombre, $0.nombre(en: notacion)].map(claveDeBusqueda).contains(clave)
+            })
+        else { throw ErrorDeUso.epocaDesconocida(texto) }
+        return [porNombre]
+    }
+
+    /// Cómo se escribe cada escuela en `--escuela`, en español y en inglés: `--escuela carnatica`, `--school carnatic`.
+    static let nombresDeLasEscuelas: [(escuela: Escuela, espanol: String, ingles: String)] = [
+        (.carnatica, "carnatica", "carnatic"), (.indostanica, "indostanica", "hindustani"),
+        (.indiaAntigua, "india-antigua", "ancient-india"), (.gagaku, "gagaku", "gagaku"),
+    ]
+
+    /// La escuela de `--escuela carnatica`, por su clave, en español o en inglés, o por su nombre en español o en el
+    /// idioma de la notación; lanza `escuelaDesconocida` si no es ninguna.
+    static func escuela(leyendo texto: String, _ notacion: Notacion) throws -> Escuela {
+        let clave = claveDeBusqueda(texto)
+        if let porClave = nombresDeLasEscuelas.first(where: {
+            claveDeBusqueda($0.espanol) == clave || claveDeBusqueda($0.ingles) == clave
+        }) {
+            return porClave.escuela
+        }
+        guard
+            let porNombre = Escuela.allCases.first(where: {
+                [$0.nombre, $0.nombre(en: notacion)].map(claveDeBusqueda).contains(clave)
+            })
+        else { throw ErrorDeUso.escuelaDesconocida(texto) }
+        return porNombre
+    }
 
     /// Los lugares de `--lugar espana`: los del catálogo (`Lugar.todos`) cuya clave o cuyo nombre, en español, en
     /// inglés o en el idioma de la notación, o el código ISO de un país (`US`), es el texto. Pueden ser varios: «egipto» es la zona y el país, y
@@ -176,8 +226,8 @@ extension LineaDeComandos {
         return clase
     }
 
-    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--fuente <fuente>] [--uso <uso>] [--lugar <lugar>]
-    /// [--orden brillo] [--con-intervalo tritono] [--comparar Do mayor, Do lidio]`: el
+    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--fuente <fuente>] [--uso <uso>]
+    /// [--lugar <lugar>] [--epoca <época>] [--escuela <escuela>] [--orden brillo] [--con-intervalo tritono] [--comparar Do mayor, Do lidio]`: el
     /// catálogo de escalas, las habituales y las de otras tradiciones agrupadas por tradición y categoría, cada una
     /// con sus notas desde Do (y la marca de los microtonos, si los tiene). Un texto suelto busca en los nombres.
     /// `--uso jazz` deja solo las habituales de ese uso (las de otras tradiciones no tienen), y `--notas 5`, las de
@@ -282,9 +332,10 @@ extension LineaDeComandos {
         return n
     }
 
-    /// Cómo agrupa `--agrupar` las escalas: por el continente o por el país de donde vienen.
+    /// Cómo agrupa `--agrupar` las escalas: por el continente o por el país de donde vienen, o por su época de
+    /// origen.
     enum AgrupacionDeEscalas {
-        case continente, pais
+        case continente, pais, epoca
     }
 
     /// Lo que deja `escalas` del catálogo: la tradición, la categoría, la fuente, el uso, el número de notas, lo que
@@ -299,6 +350,10 @@ extension LineaDeComandos {
         var corriente: Corriente?
         /// Los de `--lugar`: la escala pasa si uno de sus lugares de origen o de uso es uno de ellos o está en él.
         var lugares: [Lugar] = []
+        /// Las de `--epoca`: la escala pasa si una de sus épocas, de origen o de uso, es una de ellas.
+        var epocas: [Epoca] = []
+        /// La de `--escuela`: solo las de esa escuela.
+        var escuela: Escuela?
         var agrupacion: AgrupacionDeEscalas?
         var numeroDeNotas: Int?
         var orden: OrdenDeEscalas?
@@ -321,6 +376,8 @@ extension LineaDeComandos {
                 let suyos = Set((tipo.lugaresDeOrigen + tipo.lugaresDeUso).flatMap(\.conLosQueLoContienen))
                 guard lugares.contains(where: suyos.contains) else { return false }
             }
+            if !epocas.isEmpty, !tipo.epocas.contains(where: epocas.contains) { return false }
+            if let escuela, !tipo.escuelas.contains(escuela) { return false }
             if conIntervalo != nil || sinIntervalo != nil || conPaso != nil {
                 let medidas = estadisticas(tipo)
                 if let conIntervalo, medidas.vectorIntervalico[conIntervalo - 1] == 0 { return false }
@@ -369,11 +426,23 @@ extension LineaDeComandos {
 
         /// Con `--agrupar continente`, un grupo por continente de origen, en el orden de `Continente.allCases`; con
         /// `--agrupar pais`, uno por país, y después uno por continente con las que no tienen país (la mayor, en
-        /// Europa). Una escala de varios sale en todos los suyos; las que no tienen lugar (las propias), al final.
+        /// Europa). Una escala de varios sale en todos los suyos; las que no tienen lugar (las propias), al final. Con
+        /// `--agrupar epoca`, uno por época de origen, en orden, y al final las que no tienen.
         func agrupados(
             _ tipos: [TipoDeEscala], por agrupacion: AgrupacionDeEscalas, en notacion: Notacion
         ) -> [GrupoDeEscalas] {
             var grupos: [GrupoDeEscalas] = []
+            if agrupacion == .epoca {
+                // Por su época de origen, en orden, con sus años: «Barroco · 1600–1750».
+                for epoca in Epoca.allCases {
+                    let deLaEpoca = tipos.filter { $0.epocaDeOrigen == epoca }
+                    let titulo = epoca.nombre(en: notacion) + " · " + epoca.textoDeLosAnios
+                    if !deLaEpoca.isEmpty { grupos.append((titulo, deLaEpoca)) }
+                }
+                let sinEpoca = tipos.filter { $0.epocaDeOrigen == nil }
+                if !sinEpoca.isEmpty { grupos.append((Mensaje.sinEpoca.texto(en: notacion), sinEpoca)) }
+                return grupos
+            }
             if agrupacion == .pais {
                 for pais in Pais.allCases {
                     let delPais = tipos.filter { $0.paisesDeOrigen.contains(pais) }
@@ -438,6 +507,10 @@ extension LineaDeComandos {
         }
         // `--lugar espana`, `--place spain`: las de un lugar, de origen o de uso; `--agrupar continente`, por el suyo.
         if let texto = try entrada.valor(.lugar) { filtro.lugares = try lugares(leyendo: texto, notacion) }
+        // `--epoca barroco`, `--era baroque`: las de una época, de origen o de uso; `--escuela carnatica`, las de una
+        // escuela.
+        if let texto = try entrada.valor(.epoca) { filtro.epocas = try epocas(leyendo: texto, notacion) }
+        if let texto = try entrada.valor(.escuela) { filtro.escuela = try escuela(leyendo: texto, notacion) }
         if let texto = try entrada.valor(.agrupar) {
             let clave = claveDeBusqueda(texto)
             guard

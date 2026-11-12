@@ -46,8 +46,12 @@ extension OpcionDeOrden {
     static let fuente = valor("--fuente", "--source")
     /// `escalas --lugar espana`: las de un lugar, de origen o de uso.
     static let lugar = valor("--lugar", "--place")
-    /// `escalas --agrupar continente`: por el continente o el país de origen.
+    /// `escalas --agrupar continente`: por el continente, el país o la época de origen.
     static let agrupar = valor("--agrupar", "--group-by")
+    /// `escalas --epoca barroco`: las de una época, de origen o de uso.
+    static let epoca = valor("--epoca", "--era")
+    /// `escalas --escuela carnatica`: las de una escuela de otra tradición.
+    static let escuela = valor("--escuela", "--school")
     static let subindices = marca("--subindices", "--subscripts")
     static let cifras = marca("--cifras", "--digits")
     static let json = marca("--json")

@@ -14,6 +14,27 @@ import Testing
         #expect(Epoca.antiguedad < .sigloXX)
     }
 
+    /// Los años de las épocas se suceden sin huecos ni solapes, de `Int.min` a `Int.max`, y `init(anio:)` sale de
+    /// ellos.
+    @Test func losAnios() {
+        let epocas = Epoca.allCases
+        #expect(epocas.first?.anios.lowerBound == Int.min && epocas.last?.anios.upperBound == Int.max)
+        for (una, siguiente) in zip(epocas, epocas.dropFirst()) {
+            #expect(una.anios.upperBound == siguiente.anios.lowerBound, "\(una)")
+            #expect(una.fin == siguiente.inicio)
+        }
+        for epoca in epocas {
+            if let inicio = epoca.inicio { #expect(Epoca(anio: inicio) == epoca) }
+            if let fin = epoca.fin { #expect(Epoca(anio: fin - 1) == epoca) }
+        }
+        #expect(Epoca.barroco.anios == 1600..<1750)
+        #expect(Epoca(anio: -380) == .antiguedad && Epoca(anio: 2026) == .sigloXXI)
+        #expect(Epoca.antiguedad.inicio == nil && Epoca.sigloXXI.fin == nil)
+        #expect(Epoca.barroco.nombreConAnios(en: .compacta(.espanol)) == "Barroco (1600–1750)")
+        #expect(Epoca.antiguedad.nombreConAnios(en: .compacta(.espanol)).hasSuffix("(…–500)"))
+        #expect(Epoca.sigloXXI.nombreConAnios(en: .compacta(.espanol)).hasSuffix("(2000–…)"))
+    }
+
     /// Cada época tiene nombre en los trece idiomas, distinto en cada uno de los cinco.
     @Test func nombres() {
         #expect(Epoca.romanticismo.nombre == "Romanticismo")
