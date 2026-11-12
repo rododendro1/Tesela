@@ -134,10 +134,10 @@ extension ProgresionConNombre {
     /// Un acorde por compás.
     public static let blues = ProgresionConNombre(
         nombre: "blues de 12 compases", cifrado: "I7 I7 I7 I7 IV7 IV7 I7 I7 V7 IV7 I7 I7", alias: ["blues"],
-        estilos: [.jazz, .blues], referencias: [.levine1995])
+        estilos: [.blues, .jazz], referencias: [.levine1995])
     public static let bluesMenor = ProgresionConNombre(
         nombre: "blues menor", cifrado: "i7 i7 i7 i7 iv7 iv7 i7 i7 VI7 V7 i7 i7", modo: .menor,
-        estilos: [.jazz, .blues], referencias: [.levine1995])
+        estilos: [.blues, .jazz], referencias: [.levine1995])
     /// La sección A de «I Got Rhythm» (Gershwin, 1930).
     public static let rhythmChanges = ProgresionConNombre(
         nombre: "rhythm changes", cifrado: "Imaj7 vi7 ii7 V7 iii7 vi7 ii7 V7 Imaj7 I7 IVmaj7 iv7 iii7 vi7 ii7 V7",

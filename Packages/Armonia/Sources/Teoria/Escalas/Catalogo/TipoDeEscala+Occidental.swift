@@ -35,7 +35,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["española", "frigio español", "frigio mayor", "frigio ♯3", "frigio ♮3", "dominante ♭9 ♭13"],
-        estilos: [.jazz, .flamenco, .popRock])
+        estilos: [.flamenco, .jazz, .popRock])
     public static let lidioSegundaAumentada = TipoDeEscala(
         nombre: "lidio ♯2",
         intervalos: [

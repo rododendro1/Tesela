@@ -29,7 +29,11 @@ public struct TipoDeEscala: Sendable, Codable {
     /// Lo demás que el catálogo sabe de la escala (estilos, regiones, categoría, mēḷa, microtonos), escrito en su
     /// declaración. No se codifica ni cuenta para `==`, y las propiedades públicas no lo leen de aquí sino de la
     /// escala del catálogo con la misma identidad (`fichaDelCatalogo`).
-    package let ficha: FichaDeEscala
+    package var ficha: FichaDeEscala { caja.ficha }
+    /// La ficha, guardada aparte y compartida entre las copias: así un `TipoDeEscala` ocupa unos 50 bytes y no
+    /// unos 330. Sin optimizar, cada fila de las listas de nombres (`Nombres/`) construye en la pila su tipo, y con
+    /// la ficha dentro las del ruso y el griego llegaron a desbordar la pila de un hilo secundario (512 KB).
+    private let caja: CajaDeFicha
 
     /// Nombre, alias y variantes en forma normalizada (`normalizar`: sin diacríticos ni mayúsculas, `#`/`b`), sin
     /// repetidos. Es lo que se compara al buscar por nombre.
@@ -53,7 +57,7 @@ public struct TipoDeEscala: Sendable, Codable {
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
-            variantes: variantes, ficha: .vacia)
+            variantes: variantes, ficha: nil)
     }
 
     /// Una escala occidental del catálogo, con sus estilos, las regiones de donde viene (las populares: la flamenca,
@@ -93,7 +97,7 @@ public struct TipoDeEscala: Sendable, Codable {
 
     init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]?, alias: [String],
-        variantes: [String], ficha: FichaDeEscala
+        variantes: [String], ficha: FichaDeEscala?
     ) {
         self.nombre = nombre
         let subida = TipoDeEscala.ordenar(intervalos)
@@ -102,7 +106,7 @@ public struct TipoDeEscala: Sendable, Codable {
         self.intervalosDescendentes = bajada == subida ? nil : bajada
         self.alias = alias
         self.variantes = variantes
-        self.ficha = ficha
+        caja = ficha.map(CajaDeFicha.init) ?? .vacia
     }
 
     /// Las escalas guardadas antes de que hubiera `variantes` se leen sin ellas.
@@ -113,7 +117,7 @@ public struct TipoDeEscala: Sendable, Codable {
         intervalosDescendentes = try datos.decodeIfPresent([Intervalo].self, forKey: .intervalosDescendentes)
         alias = try datos.decode([String].self, forKey: .alias)
         variantes = try datos.decodeIfPresent([String].self, forKey: .variantes) ?? []
-        ficha = .vacia
+        caja = .vacia
     }
 
     package static func ordenar(_ intervalos: [Intervalo]) -> [Intervalo] {
@@ -181,6 +185,15 @@ public struct TipoDeEscala: Sendable, Codable {
         return TipoDeEscala.occidentales.first { $0 == candidato }
             ?? TipoDeEscala.occidentales.first { $0.intervalos == candidato.intervalos } ?? candidato
     }
+}
+
+/// La ficha de un `TipoDeEscala`, en el montón. Es inmutable, así que compartirla entre copias y entre hilos es
+/// seguro.
+private final class CajaDeFicha: Sendable {
+    let ficha: FichaDeEscala
+    init(_ ficha: FichaDeEscala) { self.ficha = ficha }
+    /// La de las escalas sin ficha (las propias, las leídas de JSON): una sola para todas.
+    static let vacia = CajaDeFicha(.vacia)
 }
 
 /// La identidad de un `TipoDeEscala` (`TipoDeEscala.identidad`): su nombre y su contenido. Dos tipos con los mismos
@@ -258,7 +271,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["menor dórica"], variantes: ["dórica"],
-        estilos: [.clasica, .jazz])
+        estilos: [.jazz, .clasica])
     public static let frigio = TipoDeEscala(
         nombre: "frigio",
         intervalos: [
@@ -274,7 +287,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         variantes: ["lidia"],
-        estilos: [.clasica, .jazz])
+        estilos: [.jazz, .clasica])
     public static let mixolidio = TipoDeEscala(
         nombre: "mixolidio",
         intervalos: [
@@ -282,7 +295,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         variantes: ["mixolidia"],
-        estilos: [.clasica, .jazz])
+        estilos: [.jazz, .clasica])
     public static let menorNatural = TipoDeEscala(
         nombre: "menor natural",
         intervalos: [
@@ -298,7 +311,7 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         variantes: ["locria"],
-        estilos: [.clasica, .jazz])
+        estilos: [.jazz, .clasica])
     public static let menorArmonica = TipoDeEscala(
         nombre: "menor armónica",
         intervalos: [
@@ -335,11 +348,11 @@ extension TipoDeEscala {
         nombre: "pentatónica mayor",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         alias: ["pentatónica"],
-        estilos: [.blues, .folclore, .popRock])
+        estilos: [.folclore, .popRock, .blues])
     public static let pentatonicaMenor = TipoDeEscala(
         nombre: "pentatónica menor",
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        estilos: [.blues, .folclore, .popRock])
+        estilos: [.blues, .popRock, .folclore])
     public static let blues = TipoDeEscala(
         nombre: "blues",
         intervalos: [
@@ -354,7 +367,7 @@ extension TipoDeEscala {
             .quintaAumentada, .sextaAumentada,
         ],
         alias: ["hexatónica", "modo 1 de Messiaen", "de Debussy", "Debussy", "aumentada auxiliar"],
-        estilos: [.jazz, .deCompositor], documentada: .glinka1842)
+        estilos: [.deCompositor, .jazz], documentada: .glinka1842)
     public static let disminuida = TipoDeEscala(
         nombre: "disminuida tono-semitono",
         intervalos: [
@@ -362,7 +375,7 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaMenor, .sextaMayor, .septimaMayor,
         ],
         alias: ["disminuida", "octatónica", "modo 2 de Messiaen inverso", "disminuida auxiliar"],
-        estilos: [.jazz, .deCompositor], documentada: .rimskiKorsakov1867)
+        estilos: [.deCompositor, .jazz], documentada: .rimskiKorsakov1867)
 }
 
 // El catálogo de búsqueda: `occidentales` (el orden decide qué escala gana al identificar), `catalogo` (todas, en el
