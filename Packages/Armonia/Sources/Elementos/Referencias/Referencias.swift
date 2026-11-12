@@ -103,6 +103,16 @@ extension Referencia {
         "chrysanthos1832", .tratado, autores: ["Chrysanthos de Madytos"], titulo: "Θεωρητικὸν μέγα τῆς μουσικῆς",
         anio: 1832, lugar: "Trieste")
 
+    /// Cantemir, el «Libro de la ciencia de la música» (hacia 1700): los makamlar de la música otomana de su tiempo, con
+    /// su notación por letras (manuscrito; el año es aproximado).
+    public static let cantemir1700 = Referencia(
+        "cantemir1700", .tratado, autores: ["Cantemir, Dimitrie"],
+        titulo: "Kitâbu ʿİlmiʾl-Mûsikî ʿalâ vechiʾl-Hurûfât", anio: 1700, lugar: "Estambul")
+    /// Ezgi, el primer volumen de la teoría de Arel-Ezgi-Uzdilek: las 53 comas y los çeşni.
+    public static let ezgi1933 = Referencia(
+        "ezgi1933", .libro, autores: ["Ezgi, Suphi"], titulo: "Nazarî-Amelî Türk Mûsikîsi", anio: 1933,
+        editorial: "İstanbul Konservatuarı", lugar: "Estambul")
+
     // MARK: Grecia moderna
 
     /// Pennanen, la música popular griega del siglo XX: los dromoi del rebético y del laikó, con sus escalas y los makam
@@ -397,6 +407,10 @@ extension Referencia {
     public static let kodaly1960 = Referencia(
         "kodaly1960", .libro, autores: ["Kodály, Zoltán"], titulo: "Folk Music of Hungary", anio: 1960,
         editorial: "Barrie and Rockliff", lugar: "Londres")
+    /// Liszt, el libro sobre los gitanos y su música en Hungría: la escala húngara, con sus dos segundas aumentadas.
+    public static let liszt1859 = Referencia(
+        "liszt1859", .libro, autores: ["Liszt, Franz"], titulo: "Des Bohémiens et de leur musique en Hongrie",
+        anio: 1859, editorial: "A. Bourdilliat", lugar: "París")
     /// Campbell, el cuerno de los Alpes y sus armónicos, en la Cambridge Encyclopedia of Brass Instruments.
     public static let campbell2019 = Referencia(
         "campbell2019", .capitulo, autores: ["Campbell, Murray"], titulo: "Alphorn", anio: 2019,
@@ -494,7 +508,8 @@ extension Referencia {
     public static let catalogo: [Referencia] = [
         .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .rowell1992, .touma1996, .farraj2019,
         .maqamWorld, .wright1978, .farhat1990, .signell1977, .tdvIslamAnsiklopedisi, .hacibeyov1945, .west1992,
-        .barker1989, .chalmers1993, .mathiesen1999, .chrysanthos1832, .pennanen1999, .apel1958, .glareano1547,
+        .barker1989, .chalmers1993, .mathiesen1999, .chrysanthos1832, .cantemir1700, .ezgi1933, .pennanen1999,
+        .apel1958, .glareano1547,
         .ramos1482,
         .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .garfias1975, .tranVanKhe1962, .morton1976,
         .sam1988, .williamson2000,
@@ -507,7 +522,8 @@ extension Referencia {
         .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .gjerdingen2007, .hudson1982, .hudsonPassacaglia1982,
         .hudsonChaconne1982,
         .gerbino2001, .staiti2023, .sheinberg2016, .rosand1979, .doll2017,
-        .soroker1995, .malaniczPrzybylska2018, .kodaly1960, .campbell2019, .cannon2002, .scherbaum2022, .bonifacic2001,
+        .soroker1995, .malaniczPrzybylska2018, .kodaly1960, .liszt1859, .campbell2019, .cannon2002, .scherbaum2022,
+        .bonifacic2001,
         .rechberger2008, .busoni1916, .toussaint2013, .clayton2000, .viswanathan2004, .brailoiu1951, .apel1953,
         .fernandez2004, .lindley2001, .sethares2005, .haynes2002, .neumann1978,
     ]

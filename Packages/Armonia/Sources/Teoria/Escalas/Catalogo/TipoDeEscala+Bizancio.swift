@@ -29,7 +29,7 @@ extension TipoDeEscala {
             // Los diatónicos en los 68 moria de Chrysanthos de Madytos (Θεωρητικόν μέγα, 1832), la teoría anterior: Ni
             // 0, Pa 12, Vou 21, Ga 28, Di 40, Ke 52, Zo 61 (tonos de 12, 9 y 7 moria), en cents desde Ni = Do.
             .init(.razones, pasos: [12, 171, 294, 506, 718, 876, 1000], fuente: .chrysanthos),
-        ])
+        ], documentada: .chrysanthos1832)
     /// El plagal del primero (La Si Do Re Mi Fa Sol, sobre Ke): diatónico.
     public static let echosPlagiosProtos = TipoDeEscala(
         nombre: "échos plágios prótos",
@@ -39,25 +39,27 @@ extension TipoDeEscala {
         afinaciones: [
             .init(.moria72, pasos: [0, 10, 18, 30, 40, 48, 60]),
             .init(.razones, pasos: [18, 176, 300, 512, 671, 794, 1006], fuente: .chrysanthos),
-        ])
+        ], documentada: .chrysanthos1832)
     /// El segundo (Sol La♭ Si Do Re Mi♭ Fa♯, sobre Di): cromático blando, aproximado a la doble armónica.
     public static let echosDefteros = TipoDeEscala(
         nombre: "échos défteros",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
         variantes: ["echos deuteros", "ichos defteros", "Ήχος δεύτερος"],
-        categoria: .echos, afinaciones: [.init(.moria72, pasos: [0, 8, 22, 30, 42, 50, 64])])
+        categoria: .echos, afinaciones: [.init(.moria72, pasos: [0, 8, 22, 30, 42, 50, 64])],
+        documentada: .chrysanthos1832)
     /// El plagal del segundo (Re Mi♭ Fa♯ Sol La Si♭ Do♯, sobre Pa): cromático duro, la doble armónica.
     public static let echosPlagiosDefteros = TipoDeEscala(
         nombre: "échos plágios défteros",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
         alias: ["plagal defteros"], variantes: ["echos plagios deuteros", "Ήχος πλάγιος του δευτέρου"],
-        categoria: .echos, afinaciones: [.init(.moria72, pasos: [0, 6, 26, 30, 42, 48, 68])])
+        categoria: .echos, afinaciones: [.init(.moria72, pasos: [0, 6, 26, 30, 42, 48, 68])],
+        documentada: .chrysanthos1832)
     /// El tercero (Fa Sol La Si♭ Do Re Mi, sobre Ga): enarmónico, que en la teoría de 1881 ya es la escala mayor.
     public static let echosTritos = TipoDeEscala(
         nombre: "échos trítos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
         variantes: ["ichos tritos", "Ήχος τρίτος"],
-        categoria: .echos)
+        categoria: .echos, documentada: .chrysanthos1832)
     /// El grave, el plagal del tercero (Si Do Re Mi Fa Sol La, sobre Zo): diatónico, con la tónica dos moria bajo Si.
     public static let echosVarys = TipoDeEscala(
         nombre: "échos varýs",
@@ -69,7 +71,7 @@ extension TipoDeEscala {
         afinaciones: [
             .init(.moria72, pasos: [-2, 6, 18, 28, 36, 48, 60]),
             .init(.razones, pasos: [-24, 100, 312, 471, 594, 806, 1018], fuente: .chrysanthos),
-        ])
+        ], documentada: .chrysanthos1832)
     /// El cuarto (Sol La Si Do Re Mi Fa, sobre Di): diatónico.
     public static let echosTetartos = TipoDeEscala(
         nombre: "échos tétartos",
@@ -79,7 +81,7 @@ extension TipoDeEscala {
         afinaciones: [
             .init(.moria72, pasos: [0, 12, 22, 30, 42, 52, 60]),
             .init(.razones, pasos: [6, 218, 376, 500, 712, 871, 994], fuente: .chrysanthos),
-        ])
+        ], documentada: .chrysanthos1832)
     /// El plagal del cuarto (Do Re Mi Fa Sol La Si, sobre Ni): diatónico.
     public static let echosPlagiosTetartos = TipoDeEscala(
         nombre: "échos plágios tétartos",
@@ -89,7 +91,7 @@ extension TipoDeEscala {
         afinaciones: [
             .init(.moria72, pasos: [0, 12, 22, 30, 42, 54, 64]),
             .init(.razones, pasos: [0, 212, 371, 494, 706, 918, 1076], fuente: .chrysanthos),
-        ])
+        ], documentada: .chrysanthos1832)
     /// El légetos (Mi Fa Sol La Si Do Re, sobre Vou): el cuarto en su forma de los himnos breves, con la tónica dos
     /// moria bajo Mi.
     public static let echosLegetos = TipoDeEscala(
@@ -100,7 +102,7 @@ extension TipoDeEscala {
         afinaciones: [
             .init(.moria72, pasos: [-2, 6, 18, 30, 40, 48, 60]),
             .init(.razones, pasos: [-29, 94, 306, 518, 676, 800, 1012], fuente: .chrysanthos),
-        ])
+        ], documentada: .chrysanthos1832)
 
     package static let echoi: [TipoDeEscala] = [
         .echosProtos, .echosPlagiosProtos, .echosDefteros, .echosPlagiosDefteros, .echosTritos, .echosVarys,

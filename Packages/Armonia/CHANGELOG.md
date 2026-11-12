@@ -9,6 +9,21 @@
   tradición, las escalas gregorianas y renacentistas con sus mismas notas, su escala madre o sus estilos), y
   `epocasDeUso` da las de sus estilos: el dórico es medieval y se usa en la época tonal y en el siglo XX.
   `FuenteTeorica.epoca`, `Tradicion.epoca` y `Estilo.epocaDeUso` dan las de cada una.
+- `TipoDeEscala.documentada`, la obra más antigua que da una escala, con su año: su época de origen sale de ahí antes
+  que de ninguna otra regla (`Epoca(anio:)`). La tienen la menor húngara (Liszt, 1859), los echoi bizantinos
+  (Chrysanthos, 1832) y los makamlar que ya están en Cantemir (hacia 1700). Las sintéticas toman además la época de
+  las escalas de las que son un modo, y las populares, la de las documentadas: la doble armónica y sus modos son de la
+  época tonal por la menor húngara, y la mayor locria, por la napolitana mayor.
+- `PeriodoMusical`, el período de una escala en su tradición, con los nombres que se usan en ella y en los trece
+  idiomas: en la India, del Nāṭyaśāstra, del Saṅgītaratnākara, de los mēḷa, de Bhātkhaṇḍe; en el mundo árabe, Persia,
+  Turquía y Azerbaiyán, abasí, sistematista, otomano y safávida, qayar, desde el Congreso de El Cairo, de Cantemir, de Selim
+  III, de Arel-Ezgi-Uzdilek; las dinastías chinas y los períodos japoneses. `TipoDeEscala.periodo` lo da con
+  `PeriodoMusical.de(_:anio:)`, por su tradición y su año.
+- `TipoDeEscala.anioDeOrigen`, el año en que aparece una escala: el de la obra que la documenta, el de su fuente
+  (`FuenteTeorica.anio`) o el de su categoría (`CategoriaTradicional.anio`: los mēḷa, de 1660; los thāṭ, de 1909; los
+  grāma y las mūrchanā, del Nāṭyaśāstra; los dastgāh, de hacia 1880; los mugam, de 1945; los dromoi, de 1920). La época de origen sale de él, así que los mēḷa son de la época tonal, los
+  thāṭ del siglo XX y las mūrchanā de la antigüedad, y `FuenteTeorica.epoca` es la de su año.
+- `FuenteTeorica.arelEzgiUzdilek`, la teoría turca de hoy: los doce çeşni (dörtlü y beşli) son suyos, del siglo XX.
 - `Lugar`, de dónde viene una escala, en tres niveles: `Continente`, `Pais` (con su `codigoISO` y su continente) y
   `RegionDeEscala`, con su nombre en los trece idiomas; `contenidoEn` da los que lo contienen (Andalucía, en España,
   en Europa). `RegionDeEscala.paises`, `Tradicion.paises` y `Tradicion.continentes` dicen dónde está cada una.

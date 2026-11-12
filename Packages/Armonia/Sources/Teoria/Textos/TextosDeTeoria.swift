@@ -209,6 +209,31 @@ struct TextosDeTeoria: TextosTraducidos {
     let epocaRenacimiento: String
     let epocaTonal: String
     let epocaSigloXX: String
+    let periodoVedico: String
+    let periodoNatyasastra: String
+    let periodoSangitaratnakara: String
+    let periodoMela: String
+    let periodoBhatkhande: String
+    let periodoAbasi: String
+    let periodoSistematista: String
+    let periodoOtomanoSafavi: String
+    let periodoQayar: String
+    let periodoCongresoDelCairo: String
+    let periodoCantemir: String
+    let periodoSelimIII: String
+    let periodoArelEzgiUzdilek: String
+    let periodoZhou: String
+    let periodoQinHan: String
+    let periodoSeisDinastias: String
+    let periodoTang: String
+    let periodoSong: String
+    let periodoYuan: String
+    let periodoMing: String
+    let periodoQing: String
+    let periodoNaraHeian: String
+    let periodoKamakuraMuromachi: String
+    let periodoEdo: String
+    let periodoModerno: String
 
     // MARK: CardinalDeAcorde.swift
     let cardinalDiada: String
@@ -334,6 +359,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let fuenteZarlino: String
     let fuenteSalinas: String
     let fuenteZhuZaiyu: String
+    let fuenteArelEzgiUzdilek: String
 
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».

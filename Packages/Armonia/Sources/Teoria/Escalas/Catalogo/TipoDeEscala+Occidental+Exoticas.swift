@@ -23,7 +23,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         alias: ["gitana menor", "doble armónica menor", "de Liszt", "Liszt"],
-        estilos: [.popular], regiones: [.hungria])
+        estilos: [.popular], regiones: [.hungria], documentada: .liszt1859)
     /// Do Re♯ Mi Fa♯ Sol La Si♭.
     public static let mayorHungara = TipoDeEscala(
         nombre: "mayor húngara",

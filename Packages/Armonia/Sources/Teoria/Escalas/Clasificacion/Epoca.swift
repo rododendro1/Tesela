@@ -25,6 +25,20 @@ public enum Epoca: String, Sendable, Codable, CaseIterable, Comparable {
     /// Desde 1900: el jazz, el blues y las escalas de compositor.
     case sigloXX
 
+    /// La de un año: antes de 500, la antigüedad; antes de 1400, la Edad Media; antes de 1600, el Renacimiento; antes
+    /// de 1900, la época tonal; desde 1900, el siglo XX.
+    ///
+    ///     Epoca(anio: 1859)   // .tonal
+    public init(anio: Int) {
+        switch anio {
+        case ..<500: self = .antiguedad
+        case ..<1400: self = .edadMedia
+        case ..<1600: self = .renacimiento
+        case ..<1900: self = .tonal
+        default: self = .sigloXX
+        }
+    }
+
     /// Por orden cronológico, el de `allCases`.
     public static func < (a: Epoca, b: Epoca) -> Bool {
         let orden = Epoca.allCases
@@ -53,16 +67,33 @@ extension Epoca: Nombrable {}
 // MARK: - La época de lo que ya hay en el catálogo
 
 extension FuenteTeorica {
-    /// La época del teórico. El `switch` no tiene `default`: una fuente nueva no compila sin la suya.
-    public var epoca: Epoca {
+    /// El año de su obra, aproximado en las antiguas (los años antes de Cristo son negativos): Arquitas, hacia 380 a. C.;
+    /// Glareano, 1547. El `switch` no tiene `default`: una fuente nueva no compila sin el suyo.
+    public var anio: Int {
         switch self {
-        case .arquitas, .aristoxeno, .eratostenes, .didimo, .ptolomeo, .aristides, .guanzi, .lushiChunqiu:
-            .antiguedad
-        case .guido, .safiAlDin: .edadMedia
-        case .ramosDePareja, .glareano, .vicentino, .zarlino, .salinas, .zhuZaiyu: .renacimiento
-        case .chrysanthos: .tonal
+        case .arquitas: -380
+        case .aristoxeno: -330
+        case .guanzi: -350
+        case .eratostenes: -240
+        case .lushiChunqiu: -239
+        case .didimo: -30
+        case .ptolomeo: 150
+        case .aristides: 300
+        case .guido: 1026
+        case .safiAlDin: 1252
+        case .ramosDePareja: 1482
+        case .glareano: 1547
+        case .vicentino: 1555
+        case .zarlino: 1558
+        case .salinas: 1577
+        case .zhuZaiyu: 1584
+        case .chrysanthos: 1832
+        case .arelEzgiUzdilek: 1933
         }
     }
+
+    /// La época del teórico, la de su año.
+    public var epoca: Epoca { Epoca(anio: anio) }
 }
 
 extension Tradicion {
@@ -105,8 +136,9 @@ extension TipoDeEscala {
 
     /// La época en que aparece la escala. Es la primera de estas que da algo:
     ///
-    /// 1. la de su fuente teórica (`fuente`): los géneros de Ptolomeo son de la antigüedad, los modos de Glareano del
-    ///    Renacimiento;
+    /// 1. la de su año (`anioDeOrigen`): el de la obra más antigua que la da (`documentada`: la menor húngara, la
+    ///    época tonal por Liszt en 1859), el de su fuente teórica (los géneros de Ptolomeo son de la antigüedad, los
+    ///    modos de Glareano del Renacimiento) o el de su categoría (los mēḷa, de 1660);
     /// 2. la de su tradición, si es una época (`Tradicion.epoca`): las harmoniai son de la antigüedad, los modos
     ///    gregorianos de la Edad Media;
     /// 3. en las occidentales de la música clásica (las de estilo `.clasica`, cuyos nombres vienen de los modos), la
@@ -114,12 +146,16 @@ extension TipoDeEscala {
     ///    protus, y la mayor, renacentista por el jónico de Glareano;
     /// 4. en las occidentales sintéticas, la de la escala de la que son modo (`Escala.escalaMadre`): el locrio ♮6, la
     ///    de la menor armónica;
-    /// 5. la más antigua de las de uso de sus estilos (`Estilo.epocaDeUso`): la alterada, el siglo XX por el jazz.
+    /// 5. en las occidentales sintéticas y populares, la más antigua de las escalas de las que son un modo
+    ///    (`occidentalesQueFechanSusModos`; en las populares, solo las documentadas): el ultrafrigio y la doble
+    ///    armónica, la época tonal por la menor húngara; la mayor locria, por la napolitana mayor;
+    /// 6. la más antigua de las de uso de sus estilos (`Estilo.epocaDeUso`): la alterada, el siglo XX por el jazz.
     ///
     /// `nil` si ninguna da nada: las populares (la flamenca, la mayor rumana), las de otras tradiciones que no son de
     /// una época y las propias.
     public var epocaDeOrigen: Epoca? {
-        if let epoca = fuente?.epoca ?? tradicion?.epoca { return epoca }
+        if let anio = anioDeOrigen { return Epoca(anio: anio) }
+        if let epoca = tradicion?.epoca { return epoca }
         guard tradicion == .occidental else { return nil }
         if estilos.contains(.clasica) {
             let equivalentes = TipoDeEscala.tradicionales.filter {
@@ -132,7 +168,29 @@ extension TipoDeEscala {
         {
             return epoca
         }
+        if estilos.contains(.sintetica) || estilos.contains(.popular),
+            let epoca = TipoDeEscala.occidentalesQueFechanSusModos
+                .filter({ esModo(de: $0) && ($0.documentada != nil || estilos.contains(.sintetica)) })
+                .compactMap(\.epocaDeOrigen).min()
+        {
+            return epoca
+        }
         return estilos.compactMap(\.epocaDeUso).min()
+    }
+
+    /// Las occidentales de cuyos modos toman la época las sintéticas y las populares: las que tienen una obra que las
+    /// documenta (`documentada`: la menor húngara) y las que no son sintéticas ni populares (las napolitanas, de la
+    /// música clásica). Las sintéticas y las populares sin obra no cuentan: su época sale de esta misma regla.
+    /// Las populares solo la toman de las documentadas: la flamenca tiene las notas de un modo de una escala de jazz,
+    /// pero no viene del jazz.
+    static let occidentalesQueFechanSusModos = TipoDeEscala.occidentales.filter {
+        $0.documentada != nil || !($0.estilos.contains(.sintetica) || $0.estilos.contains(.popular))
+    }
+
+    /// Es otro modo de esa escala: tiene sus mismos intervalos empezando en otro grado.
+    func esModo(de otra: TipoDeEscala) -> Bool {
+        !esIdentico(a: otra) && !esDireccional && !otra.esDireccional && intervalos.count == otra.intervalos.count
+            && (1...otra.intervalos.count).contains { otra.modo(grado: $0) == self }
     }
 
     /// Las épocas en que se usa la escala, por sus estilos (`Estilo.epocaDeUso`), en orden y sin la de origen: el
