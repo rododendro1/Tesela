@@ -185,8 +185,11 @@ struct TextosDeTeoria: TextosTraducidos {
     let usoClasica: String
     let usoJazz: String
     let usoBlues: String
-    let usoSigloXX: String
+    let usoDeCompositor: String
     let usoPopular: String
+    let usoFolclore: String
+    let usoFlamenco: String
+    let usoPopRock: String
     let usoSintetica: String
 
     // MARK: CardinalDeEscala.swift

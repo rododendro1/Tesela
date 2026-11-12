@@ -22,25 +22,31 @@ extension LineaDeComandos {
     ]
 
     /// Cómo se escribe cada estilo occidental en `--uso`, en español y en inglés (se aceptan los dos en cualquier
-    /// idioma): `--uso siglo-xx`, `--use 20th-century`.
-    static let nombresDeLosUsos: [(uso: Estilo, espanol: String, ingles: String)] = [
-        (.clasica, "clasica", "classical"), (.jazz, "jazz", "jazz"), (.blues, "blues", "blues"),
-        (.sigloXX, "siglo-xx", "20th-century"), (.popular, "popular", "popular"),
-        (.sintetica, "sintetica", "synthetic"),
+    /// idioma): `--uso de-compositor`, `--use composer`. `popular` da los tres populares, y `siglo-xx`, el nombre de
+    /// antes, las de compositor.
+    static let nombresDeLosUsos: [(usos: [Estilo], espanol: String, ingles: String)] = [
+        ([.clasica], "clasica", "classical"), ([.jazz], "jazz", "jazz"), ([.blues], "blues", "blues"),
+        ([.deCompositor], "de-compositor", "composer"), ([.folclore], "folclore", "folk"),
+        ([.flamenco], "flamenco", "flamenco"), ([.popRock], "pop-rock", "pop-rock"),
+        (Estilo.populares, "popular", "popular"), ([.sintetica], "sintetica", "synthetic"),
+        ([.deCompositor], "siglo-xx", "20th-century"),
     ]
 
-    /// El estilo de `--uso jazz`, por su clave (`siglo-xx`), en español o en inglés, o por su nombre en español o en el
-    /// idioma de la notación; lanza `usoDesconocido` si no es ninguno.
-    static func estiloDeUso(leyendo texto: String, _ notacion: Notacion) throws -> Estilo {
+    /// Los estilos de `--uso jazz`, por su clave (`de-compositor`), en español o en inglés, o por el nombre de un
+    /// estilo en español o en el idioma de la notación; lanza `usoDesconocido` si no es ninguno.
+    static func estilosDeUso(leyendo texto: String, _ notacion: Notacion) throws -> [Estilo] {
         let clave = claveDeBusqueda(texto)
-        let nombres = { (candidato: Estilo) -> [String] in
-            let claves = nombresDeLosUsos.first { $0.uso == candidato }.map { [$0.espanol, $0.ingles] } ?? []
-            return (claves + [candidato.nombre, candidato.nombre(en: notacion)]).map(claveDeBusqueda)
+        if let porClave = nombresDeLosUsos.first(where: {
+            claveDeBusqueda($0.espanol) == clave || claveDeBusqueda($0.ingles) == clave
+        }) {
+            return porClave.usos
         }
-        guard let encontrado = nombresDeLosUsos.map(\.uso).first(where: { nombres($0).contains(clave) }) else {
-            throw ErrorDeUso.usoDesconocido(texto)
-        }
-        return encontrado
+        guard
+            let porNombre = Estilo.allCases.first(where: {
+                [$0.nombre, $0.nombre(en: notacion)].map(claveDeBusqueda).contains(clave)
+            })
+        else { throw ErrorDeUso.usoDesconocido(texto) }
+        return [porNombre]
     }
 
     /// Cómo se escribe cada forma de agrupar en `--agrupar`, en español y en inglés (se aceptan los dos en cualquier
@@ -267,7 +273,8 @@ extension LineaDeComandos {
         var tradicion: Tradicion?
         var categoria: CategoriaTradicional?
         var fuente: FuenteTeorica?
-        var uso: Estilo?
+        /// Los de `--uso`: uno, o los tres populares con `--uso popular`.
+        var usos: [Estilo] = []
         /// Los de `--lugar`: la escala pasa si uno de sus lugares de origen o de uso es uno de ellos o está en él.
         var lugares: [Lugar] = []
         var agrupacion: AgrupacionDeEscalas?
@@ -308,17 +315,19 @@ extension LineaDeComandos {
             let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
             var grupos: [GrupoDeEscalas] = []
             if tradicion == nil && categoria == nil && fuente == nil {
-                if let uso {
-                    let delUso = uso.tipos.filter { cumple($0, en: notacion) }
-                    if !delUso.isEmpty {
-                        grupos.append((traducir(.habituales) + " · " + uso.nombre(en: notacion), delUso))
+                if !usos.isEmpty {
+                    let delUso = TipoDeEscala.occidentales.filter { tipo in
+                        tipo.estilos.contains(where: usos.contains) && cumple(tipo, en: notacion)
                     }
+                    let nombre =
+                        usos.count == 1 ? usos[0].nombre(en: notacion) : Estilo.nombreDeLosPopulares(en: notacion)
+                    if !delUso.isEmpty { grupos.append((traducir(.habituales) + " · " + nombre, delUso)) }
                 } else {
                     let habituales = TipoDeEscala.occidentales.filter { cumple($0, en: notacion) }
                     if !habituales.isEmpty { grupos.append((traducir(.habituales), habituales)) }
                 }
             }
-            for tipo in TipoDeEscala.tradicionales where uso == nil && cumple(tipo, en: notacion) {
+            for tipo in TipoDeEscala.tradicionales where usos.isEmpty && cumple(tipo, en: notacion) {
                 guard let suya = tipo.tradicion, let deTipo = tipo.categoria else { continue }
                 guard tradicion == nil || tradicion == suya, categoria == nil || categoria == deTipo,
                     fuente == nil || fuente == tipo.fuente || tipo.afinaciones.contains(where: { $0.fuente == fuente })
@@ -394,7 +403,7 @@ extension LineaDeComandos {
         // `--fuente ptolomeo`, `--source ptolemy`: las escalas que definió o afinó un teórico, por su clave o por su
         // nombre en español, en inglés o en el idioma de la notación.
         if let texto = try entrada.valor(.fuente) { filtro.fuente = try fuenteTeorica(leyendo: texto, notacion) }
-        if let texto = try entrada.valor(.uso) { filtro.uso = try estiloDeUso(leyendo: texto, notacion) }
+        if let texto = try entrada.valor(.uso) { filtro.usos = try estilosDeUso(leyendo: texto, notacion) }
         // `--lugar espana`, `--place spain`: las de un lugar, de origen o de uso; `--agrupar continente`, por el suyo.
         if let texto = try entrada.valor(.lugar) { filtro.lugares = try lugares(leyendo: texto, notacion) }
         if let texto = try entrada.valor(.agrupar) {

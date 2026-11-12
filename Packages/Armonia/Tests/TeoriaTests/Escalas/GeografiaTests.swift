@@ -13,7 +13,7 @@ import Testing
         #expect(TipoDeEscala.pentatonicaEscocesa.regiones == [.escocia])
         #expect(TipoDeEscala.doricoCuartaAumentada.regiones == [.ucrania, .rumania])
         for tipo in TipoDeEscala.occidentales where !tipo.regiones.isEmpty {
-            #expect(tipo.estilos == [.popular], Comment(rawValue: tipo.nombre))
+            #expect(tipo.estilos.allSatisfy { $0.esPopular }, Comment(rawValue: tipo.nombre))
             #expect(tipo.tradicion == .occidental, Comment(rawValue: tipo.nombre))
         }
         #expect(TipoDeEscala.occidentales.filter { !$0.regiones.isEmpty }.count == 6)
@@ -28,8 +28,8 @@ import Testing
         #expect(Subtradicion.region(.hungria).tipos.contains(.pentatonicaHungara))
         #expect(!Subtradicion.region(.hungria).tipos.contains(.menorHungara))
         #expect(Subtradicion.region(.andalucia).tipos == [.flamenca])
-        #expect(TipoDeEscala.menorHungara.subtradiciones == [.estilo(.popular)])
-        #expect(TipoDeEscala.flamenca.subtradiciones == [.estilo(.popular), .region(.andalucia)])
+        #expect(TipoDeEscala.menorHungara.subtradiciones == [.estilo(.folclore)])
+        #expect(TipoDeEscala.flamenca.subtradiciones == [.estilo(.flamenco), .region(.andalucia)])
     }
 
     /// Los lugares de origen son los más concretos que se saben: la región, el país o el continente.

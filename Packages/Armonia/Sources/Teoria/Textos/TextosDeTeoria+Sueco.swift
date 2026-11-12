@@ -174,8 +174,11 @@ extension TextosDeTeoria {
         usoClasica: "klassisk",
         usoJazz: "jazz",
         usoBlues: "blues",
-        usoSigloXX: "1900-talet",
-        usoPopular: "folkmusik",
+        usoDeCompositor: "tonsättarskalor",
+        usoPopular: "populärmusik",
+        usoFolclore: "folkmusik",
+        usoFlamenco: "flamenco",
+        usoPopRock: "pop och rock",
         usoSintetica: "syntetisk",
         // CardinalDeEscala.swift
         cardinalMonotonica: "monotonik",

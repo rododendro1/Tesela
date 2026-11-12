@@ -523,7 +523,8 @@ extension Estilo {
     public var paises: [Pais] {
         switch self {
         case .jazz, .blues: [.estadosUnidos]
-        case .clasica, .popular, .sintetica, .sigloXX, .carnatica, .indostanica, .indiaAntigua, .gagaku: []
+        case .flamenco: [.espana]
+        case .clasica, .folclore, .popRock, .sintetica, .deCompositor: []
         }
     }
 }

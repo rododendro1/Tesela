@@ -81,8 +81,8 @@ extension LineaDeComandos {
         var argumentos = Argumentos(textos)
         var sobre = Nota.do
         if let texto = try argumentos.valorConPalabras(.sobre) { sobre = try Nota(leyendo: texto, enLaOrden: notacion) }
-        var uso: Estilo?
-        if let texto = try argumentos.valor(.uso) { uso = try estiloDeUso(leyendo: texto, notacion) }
+        var usos: [Estilo] = []
+        if let texto = try argumentos.valor(.uso) { usos = try estilosDeUso(leyendo: texto, notacion) }
         // `--notas 4` o `--notas tétrada`: solo los de cuatro notas.
         var numeroDeNotas: Int?
         if let texto = try argumentos.valor(.notas, siFalta: .notasFueraDeRango) {
@@ -110,7 +110,7 @@ extension LineaDeComandos {
         let hallados = AcordeConNombre.buscar(nombre: texto).map { [$0] } ?? AcordeConNombre.buscar(conteniendo: texto)
         let elegidos = hallados.filter { acorde in
             let medidas = acorde.estadisticas
-            if let uso, !acorde.estilos.contains(uso) { return false }
+            if !usos.isEmpty, !acorde.estilos.contains(where: usos.contains) { return false }
             if let numeroDeNotas, medidas.numeroDeNotas != numeroDeNotas { return false }
             if porTerceras && !medidas.porTerceras { return false }
             if noPorTerceras && medidas.porTerceras { return false }

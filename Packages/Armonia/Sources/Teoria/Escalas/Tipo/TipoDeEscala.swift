@@ -77,7 +77,7 @@ public struct TipoDeEscala: Sendable, Codable {
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
         variantes: [String] = [], tradicion: Tradicion? = nil, categoria: CategoriaTradicional,
-        estilos: [Estilo] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
+        escuelas: [Escuela] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
         padre: TipoDeEscala? = nil,
         afinaciones: [FichaDeEscala.Afinacion] = [], referencias: [Referencia] = [], documentada: Referencia? = nil
     ) {
@@ -85,7 +85,7 @@ public struct TipoDeEscala: Sendable, Codable {
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
             variantes: variantes,
             ficha: FichaDeEscala(
-                tradicion: tradicion, estilos: estilos, regiones: regiones, categoria: categoria,
+                tradicion: tradicion, escuelas: escuelas, regiones: regiones, categoria: categoria,
                 padre: padre?.identidad,
                 afinaciones: afinaciones,
                 fuente: fuente, referencias: referencias, documentada: documentada))
@@ -335,11 +335,11 @@ extension TipoDeEscala {
         nombre: "pentatónica mayor",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         alias: ["pentatónica"],
-        estilos: [.blues, .popular])
+        estilos: [.blues, .folclore, .popRock])
     public static let pentatonicaMenor = TipoDeEscala(
         nombre: "pentatónica menor",
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        estilos: [.blues, .popular])
+        estilos: [.blues, .folclore, .popRock])
     public static let blues = TipoDeEscala(
         nombre: "blues",
         intervalos: [
@@ -354,7 +354,7 @@ extension TipoDeEscala {
             .quintaAumentada, .sextaAumentada,
         ],
         alias: ["hexatónica", "modo 1 de Messiaen", "de Debussy", "Debussy", "aumentada auxiliar"],
-        estilos: [.jazz, .sigloXX], documentada: .glinka1842)
+        estilos: [.jazz, .deCompositor], documentada: .glinka1842)
     public static let disminuida = TipoDeEscala(
         nombre: "disminuida tono-semitono",
         intervalos: [
@@ -362,7 +362,7 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaMenor, .sextaMayor, .septimaMayor,
         ],
         alias: ["disminuida", "octatónica", "modo 2 de Messiaen inverso", "disminuida auxiliar"],
-        estilos: [.jazz, .sigloXX], documentada: .rimskiKorsakov1867)
+        estilos: [.jazz, .deCompositor], documentada: .rimskiKorsakov1867)
 }
 
 // El catálogo de búsqueda: `occidentales` (el orden decide qué escala gana al identificar), `catalogo` (todas, en el

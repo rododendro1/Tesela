@@ -241,10 +241,10 @@ extension TipoDeEscala {
 extension TipoDeEscala {
     /// Los períodos de su tradición en que se sigue usando, después del de origen y hasta hoy: los makamlar de
     /// Cantemir, el de Selim III y el de Arel-Ezgi-Uzdilek; los mēḷa, el de Bhātkhaṇḍe. Las tradiciones con períodos
-    /// siguen vivas, así que sus escalas se siguen usando; las del Nāṭyaśāstra (los grāma y las mūrchanā, de estilo
-    /// `.indiaAntigua`), no. Vacío si no tiene período.
+    /// siguen vivas, así que sus escalas se siguen usando; las del Nāṭyaśāstra (los grāma y las mūrchanā, de
+    /// escuela `.indiaAntigua`), no. Vacío si no tiene período.
     public var periodosDeUso: [PeriodoMusical] {
-        guard let tradicion, let periodo, !estilos.contains(.indiaAntigua) else { return [] }
+        guard let tradicion, let periodo, !escuelas.contains(.indiaAntigua) else { return [] }
         let todos = PeriodoMusical.periodos(de: tradicion)
         guard let i = todos.firstIndex(of: periodo) else { return [] }
         return Array(todos[(i + 1)...])
