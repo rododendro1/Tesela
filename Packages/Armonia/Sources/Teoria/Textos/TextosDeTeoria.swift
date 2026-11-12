@@ -203,6 +203,13 @@ struct TextosDeTeoria: TextosTraducidos {
     let cardinalEndecatonica: String
     let cardinalDodecatonica: String
 
+    // MARK: Epoca.swift
+    let epocaAntiguedad: String
+    let epocaEdadMedia: String
+    let epocaRenacimiento: String
+    let epocaTonal: String
+    let epocaSigloXX: String
+
     // MARK: CardinalDeAcorde.swift
     let cardinalDiada: String
     let cardinalTriada: String
@@ -259,6 +266,53 @@ struct TextosDeTeoria: TextosTraducidos {
     let subtradicionEscocia: String
     let subtradicionGeorgia: String
     let subtradicionIstria: String
+    let subtradicionAndalucia: String
+    let subtradicionRumania: String
+
+    // MARK: Geografia.swift
+    let continenteEuropa: String
+    let continenteAsia: String
+    let continenteAfrica: String
+    let continenteAmerica: String
+    let continenteOceania: String
+    let paisEspana: String
+    let paisReinoUnido: String
+    let paisSuiza: String
+    let paisAustria: String
+    let paisCroacia: String
+    let paisEslovenia: String
+    let paisUcrania: String
+    let paisPolonia: String
+    let paisHungria: String
+    let paisRumania: String
+    let paisGeorgia: String
+    let paisGrecia: String
+    let paisTurquia: String
+    let paisAzerbaiyan: String
+    let paisIran: String
+    let paisIrak: String
+    let paisIndia: String
+    let paisChina: String
+    let paisJapon: String
+    let paisCoreaDelSur: String
+    let paisCoreaDelNorte: String
+    let paisVietnam: String
+    let paisIndonesia: String
+    let paisTailandia: String
+    let paisCamboya: String
+    let paisMyanmar: String
+    let paisUganda: String
+    let paisMozambique: String
+    let paisZimbabue: String
+    let paisMali: String
+    let paisSenegal: String
+    let paisGambia: String
+    let paisGuinea: String
+    let paisEtiopia: String
+    let paisBrasil: String
+    let paisPeru: String
+    let paisBolivia: String
+    let paisEcuador: String
     let subtradicionGagaku: String
     let subtradicionRyukyu: String
 

@@ -27,11 +27,12 @@ public enum Subtradicion: Hashable, Sendable, Codable {
         }
     }
 
-    /// Las escalas del catálogo de esta subtradición (`Estilo.tipos` o `RegionDeEscala.tipos`).
+    /// Las escalas del catálogo de esta subtradición (`Estilo.tipos` o `RegionDeEscala.tipos`), solo las de su
+    /// tradición: `.region(.hungria)` da la pentatónica húngara, y no las occidentales populares que vienen de Hungría.
     public var tipos: [TipoDeEscala] {
         switch self {
         case .estilo(let estilo): estilo.tipos
-        case .region(let region): region.tipos
+        case .region(let region): region.tipos.filter { $0.tradicion == region.tradicion }
         }
     }
 
@@ -47,6 +48,9 @@ public enum Subtradicion: Hashable, Sendable, Codable {
 extension Subtradicion: Nombrable {}
 
 extension TipoDeEscala {
-    /// Los estilos y las regiones, por ese orden.
-    public var subtradiciones: [Subtradicion] { estilos.map(Subtradicion.estilo) + regiones.map(Subtradicion.region) }
+    /// Los estilos y las regiones de su tradición, por ese orden: la menor húngara, occidental, no tiene la región de
+    /// Hungría, que es de la tradición europea.
+    public var subtradiciones: [Subtradicion] {
+        estilos.map(Subtradicion.estilo) + regiones.filter { $0.tradicion == tradicion }.map(Subtradicion.region)
+    }
 }

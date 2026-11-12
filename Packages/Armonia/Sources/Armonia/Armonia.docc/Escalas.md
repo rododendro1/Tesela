@@ -133,6 +133,62 @@ TipoDeEscala.kafi.estilos == [.indostanica]         // true
 TipoDeEscala.dorico.tradicion                        // .occidental
 ```
 
+## Antigua, medieval, tonal: la época de una escala
+
+`TipoDeEscala.epocaDeOrigen` dice cuándo aparece una escala, y `epocasDeUso`, en qué épocas se usa. Las dos son una
+``Epoca`` (antigüedad, Edad Media, Renacimiento, época tonal y siglo XX), y ninguna se escribe en el catálogo: se
+calculan con lo que ya sabe de cada escala. La de origen es la primera de estas que da algo:
+
+1. la época de su fuente teórica (`FuenteTeorica.epoca`): los géneros de Ptolomeo son de la antigüedad;
+2. la de su tradición, si es una época (`Tradicion.epoca`): la Grecia antigua, Mesopotamia, el canto gregoriano y el
+   Renacimiento;
+3. en las occidentales de la música clásica, la de las escalas gregorianas y renacentistas con sus mismas notas: el
+   dórico es medieval por el protus, y la mayor renacentista por el jónico de Glareano;
+4. en las sintéticas, la de la escala de la que son modo (`Escala.escalaMadre`);
+5. la más antigua de las de uso de sus estilos (`Estilo.epocaDeUso`): la clásica da la época tonal, y el jazz, el
+   blues y el siglo XX, el siglo XX.
+
+Las de uso son las de sus estilos, sin la de origen. Las populares que no salen por ninguna regla (la flamenca, la
+mayor rumana) no tienen época de origen.
+
+```swift
+TipoDeEscala.dorico.epocaDeOrigen == .edadMedia              // true
+TipoDeEscala.dorico.epocasDeUso == [.tonal, .sigloXX]        // true
+TipoDeEscala.mayor.epocaDeOrigen == .renacimiento            // true
+TipoDeEscala.alterada.epocaDeOrigen == .sigloXX              // true
+Epoca.tonal.nombre                                           // "época tonal"
+```
+
+## Flamenca, rumana, persa: de dónde viene una escala
+
+La tradición (`TipoDeEscala.tradicion`) dice de qué música es una escala; los lugares, de dónde viene y dónde se toca.
+Un ``Lugar`` es de uno de tres niveles: un ``Continente``, un ``Pais`` o una ``RegionDeEscala`` (una región o un
+pueblo), y `contenidoEn` da los que lo contienen: Andalucía está en España, que está en Europa.
+
+`TipoDeEscala.lugaresDeOrigen` da los más concretos que se saben. Primero, las regiones de su ficha (`regiones`): el
+sléndro es de Java y de Bali, y las occidentales populares que vienen de un lugar lo declaran también, la flamenca de
+Andalucía, la mayor rumana de Rumanía, las húngaras de Hungría. Si no tiene región, los países de su tradición
+(`Tradicion.paises`: Bilāval, de la India); y si tampoco, sus continentes (`Tradicion.continentes`: la mayor, de
+Europa; Bayātī, del mundo árabe, de Asia y de África). `paisesDeOrigen` y `continentesDeOrigen` dan los de cada nivel.
+
+`TipoDeEscala.lugaresDeUso` da dónde se toca también, aunque no venga de allí: los lugares de origen de las otras
+escalas del catálogo con sus mismas notas, sin los que ya son de origen. El frigio dominante es de Europa y se toca en
+el mundo árabe (Ḥijāz), en Turquía (Hicaz makamı) y en Grecia (el dromos Hitzáz).
+
+Hay nombres que parecen decir de dónde viene la escala y no lo dicen. La persa, la egipcia y la oriental son etiquetas
+exóticas de los libros de escalas, y las napolitanas se llaman así por la sexta napolitana: están en
+`TipoDeEscala.nombresGeograficosSinOrigen`, `nombreGeograficoSinOrigen` lo dice de cada una, y son de Europa, como las
+demás occidentales.
+
+```swift
+TipoDeEscala.flamenca.lugaresDeOrigen == [.region(.andalucia)]   // true
+TipoDeEscala.flamenca.paisesDeOrigen == [.espana]                // true
+TipoDeEscala.mayor.lugaresDeOrigen == [.continente(.europa)]     // true
+TipoDeEscala.persa.nombreGeograficoSinOrigen                     // true
+TipoDeEscala.persa.continentesDeOrigen == [.europa]              // true
+Lugar.region(.andalucia).contenidoEn == [.pais(.espana), .continente(.europa)] // true
+```
+
 ## Escalas de otras tradiciones
 
 Las escalas de otras tradiciones (rāgas, maqamat, dromoi, las escalas chinas y japonesas, las griegas antiguas, los

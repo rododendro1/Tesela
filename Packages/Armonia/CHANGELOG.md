@@ -4,6 +4,24 @@
 
 ### Lo nuevo
 
+- `Epoca`, la época de una escala: antigüedad, Edad Media, Renacimiento, época tonal y siglo XX, con su nombre en los
+  trece idiomas. `TipoDeEscala.epocaDeOrigen` la calcula con lo que ya sabe el catálogo (su fuente teórica, su
+  tradición, las escalas gregorianas y renacentistas con sus mismas notas, su escala madre o sus estilos), y
+  `epocasDeUso` da las de sus estilos: el dórico es medieval y se usa en la época tonal y en el siglo XX.
+  `FuenteTeorica.epoca`, `Tradicion.epoca` y `Estilo.epocaDeUso` dan las de cada una.
+- `Lugar`, de dónde viene una escala, en tres niveles: `Continente`, `Pais` (con su `codigoISO` y su continente) y
+  `RegionDeEscala`, con su nombre en los trece idiomas; `contenidoEn` da los que lo contienen (Andalucía, en España,
+  en Europa). `RegionDeEscala.paises`, `Tradicion.paises` y `Tradicion.continentes` dicen dónde está cada una.
+- `TipoDeEscala.lugaresDeOrigen`, los más concretos que se saben (su región, si no los países de su tradición y si no
+  sus continentes), con `paisesDeOrigen` y `continentesDeOrigen`; y `lugaresDeUso`, dónde se tocan también sus notas,
+  por las escalas del catálogo con su mismo contenido: el frigio dominante, de Europa, también en el mundo árabe, en
+  Turquía y en Grecia.
+- Las occidentales populares que vienen de un lugar declaran su región: la flamenca, Andalucía; la mayor rumana,
+  Rumanía; las húngaras, Hungría; la pentatónica escocesa, Escocia, y el dórico ♯4, Ucrania y Rumanía.
+  `RegionDeEscala` tiene Andalucía y Rumanía, y `RegionDeEscala.tipos` da también esas occidentales; como
+  subtradición, una región solo da las de su tradición (`Subtradicion.region(.hungria)`, la pentatónica húngara).
+- `TipoDeEscala.nombresGeograficosSinOrigen` y `nombreGeograficoSinOrigen`: la persa, la egipcia, la oriental y las
+  napolitanas tienen nombre de lugar pero no vienen de él, y son de Europa como las demás occidentales.
 - `RelojDeAlturas`, el círculo cromático microtonal: un reloj de cents con cada nota en el ángulo de sus cents, las
   doce horas temperadas en gris como referencia, una rayita en cada paso del sistema y un arquito en cada nota que se
   aparta de su nota temperada. `RelojDeAlturas(escala:afinacion:sentido:notacion:)` lo hace con la versión

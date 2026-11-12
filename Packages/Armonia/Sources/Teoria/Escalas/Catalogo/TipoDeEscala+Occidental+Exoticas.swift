@@ -23,7 +23,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         alias: ["gitana menor", "doble armónica menor", "de Liszt", "Liszt"],
-        estilos: [.popular])
+        estilos: [.popular], regiones: [.hungria])
     /// Do Re♯ Mi Fa♯ Sol La Si♭.
     public static let mayorHungara = TipoDeEscala(
         nombre: "mayor húngara",
@@ -31,7 +31,7 @@ extension TipoDeEscala {
             .unisono, .segundaAumentada, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        estilos: [.popular])
+        estilos: [.popular], regiones: [.hungria])
     /// La menor armónica con la 2ª menor (Do Re♭ Mi♭ Fa Sol La♭ Si).
     public static let napolitanaMenor = TipoDeEscala(
         nombre: "napolitana menor",
@@ -262,7 +262,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        estilos: [.popular])
+        estilos: [.popular], regiones: [.rumania])
 
     /// La menor húngara con la 4ª justa además de la aumentada, de ocho notas
     /// (Do Re Mi♭ Fa Fa♯ Sol La♭ Si).
@@ -337,7 +337,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["andaluza", "frigio flamenco", "española de ocho notas", "gitana española"],
-        estilos: [.popular])
+        estilos: [.popular], regiones: [.andalucia])
 
     // Pentatónicas del jazz.
 
@@ -389,7 +389,7 @@ extension TipoDeEscala {
         nombre: "pentatónica escocesa",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         alias: ["escocesa"],
-        estilos: [.popular])
+        estilos: [.popular], regiones: [.escocia])
 
     // Blues ampliadas.
 
