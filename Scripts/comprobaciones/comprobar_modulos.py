@@ -61,9 +61,10 @@ IGNORAR = {
 
 
 def limpiar(texto: str) -> str:
-    texto = re.sub(r'"""[\s\S]*?"""', '""', texto)
-    texto = re.sub(r"//.*", "", texto)
-    return re.sub(r'"(?:\\.|[^"\\])*"', '""', texto)
+    """Quita los comentarios y el contenido de las cadenas, en una sola pasada: así el `//` de una URL dentro de una
+    cadena no se toma por un comentario (y no descuadra las comillas que siguen)."""
+    patron = re.compile(r'"""[\s\S]*?"""|"(?:\\.|[^"\\\n])*"|//[^\n]*')
+    return patron.sub(lambda m: "" if m.group(0).startswith("//") else '""', texto)
 
 
 def objetivos_de_package() -> dict:
