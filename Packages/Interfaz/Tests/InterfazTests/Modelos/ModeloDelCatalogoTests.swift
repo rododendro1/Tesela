@@ -62,7 +62,7 @@ import Testing
         #expect(mistico.nombre == "acorde místico")
         // No nombra a su tipo: no lleva cifrado delante de las notas.
         #expect(mistico.detalle == "Do Fa♯ Si♭ Mi La Re")
-        #expect(mistico.estilos == "siglo XX")
+        #expect(mistico.estilos == "de compositor")
         #expect(mistico.sonido.notas.map(\.midi) == [60, 66, 70, 76, 81, 86])
         let tipo = try #require(AcordeConNombre.mistico.tipo)
         #expect(mistico.destino == .acordes(Acorde(.do, tipo)))
