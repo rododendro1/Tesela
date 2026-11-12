@@ -32,6 +32,26 @@ extension LineaDeComandos {
         ([.deCompositor], "siglo-xx", "20th-century"),
     ]
 
+    /// Cómo se escribe cada corriente en `escalas --uso`, en español y en inglés: `--uso bebop`, `--use
+    /// neoclassical-metal`.
+    static let nombresDeLasCorrientes: [(corriente: Corriente, espanol: String, ingles: String)] = [
+        (.bebop, "bebop", "bebop"), (.modal, "modal", "modal"), (.impresionismo, "impresionismo", "impressionism"),
+        (.rock, "rock", "rock"), (.heavyMetal, "heavy-metal", "heavy-metal"),
+        (.metalNeoclasico, "metal-neoclasico", "neoclassical-metal"),
+    ]
+
+    /// La corriente de `escalas --uso modal`, por su clave, en español o en inglés, o por su nombre en español o en el
+    /// idioma de la notación («jazz modal»); `nil` si no es ninguna.
+    static func corriente(leyendo texto: String, _ notacion: Notacion) -> Corriente? {
+        let clave = claveDeBusqueda(texto)
+        if let porClave = nombresDeLasCorrientes.first(where: {
+            claveDeBusqueda($0.espanol) == clave || claveDeBusqueda($0.ingles) == clave
+        }) {
+            return porClave.corriente
+        }
+        return Corriente.allCases.first { [$0.nombre, $0.nombre(en: notacion)].map(claveDeBusqueda).contains(clave) }
+    }
+
     /// Los estilos de `--uso jazz`, por su clave (`de-compositor`), en español o en inglés, o por el nombre de un
     /// estilo en español o en el idioma de la notación; lanza `usoDesconocido` si no es ninguno.
     static func estilosDeUso(leyendo texto: String, _ notacion: Notacion) throws -> [Estilo] {
@@ -275,6 +295,8 @@ extension LineaDeComandos {
         var fuente: FuenteTeorica?
         /// Los de `--uso`: uno, o los tres populares con `--uso popular`.
         var usos: [Estilo] = []
+        /// La de `--uso bebop`: solo las escalas de esa corriente (y `usos`, su estilo).
+        var corriente: Corriente?
         /// Los de `--lugar`: la escala pasa si uno de sus lugares de origen o de uso es uno de ellos o está en él.
         var lugares: [Lugar] = []
         var agrupacion: AgrupacionDeEscalas?
@@ -317,10 +339,12 @@ extension LineaDeComandos {
             if tradicion == nil && categoria == nil && fuente == nil {
                 if !usos.isEmpty {
                     let delUso = TipoDeEscala.occidentales.filter { tipo in
-                        tipo.estilos.contains(where: usos.contains) && cumple(tipo, en: notacion)
+                        tipo.estilos.contains(where: usos.contains)
+                            && (corriente.map(tipo.corrientes.contains) ?? true) && cumple(tipo, en: notacion)
                     }
                     let nombre =
-                        usos.count == 1 ? usos[0].nombre(en: notacion) : Estilo.nombreDeLosPopulares(en: notacion)
+                        corriente?.nombre(en: notacion)
+                        ?? (usos.count == 1 ? usos[0].nombre(en: notacion) : Estilo.nombreDeLosPopulares(en: notacion))
                     if !delUso.isEmpty { grupos.append((traducir(.habituales) + " · " + nombre, delUso)) }
                 } else {
                     let habituales = TipoDeEscala.occidentales.filter { cumple($0, en: notacion) }
@@ -403,7 +427,15 @@ extension LineaDeComandos {
         // `--fuente ptolomeo`, `--source ptolemy`: las escalas que definió o afinó un teórico, por su clave o por su
         // nombre en español, en inglés o en el idioma de la notación.
         if let texto = try entrada.valor(.fuente) { filtro.fuente = try fuenteTeorica(leyendo: texto, notacion) }
-        if let texto = try entrada.valor(.uso) { filtro.usos = try estilosDeUso(leyendo: texto, notacion) }
+        // `--uso jazz`, o una corriente de un estilo: `--uso bebop`, `--use neoclassical-metal`.
+        if let texto = try entrada.valor(.uso) {
+            if let corriente = corriente(leyendo: texto, notacion) {
+                filtro.corriente = corriente
+                filtro.usos = [corriente.estilo]
+            } else {
+                filtro.usos = try estilosDeUso(leyendo: texto, notacion)
+            }
+        }
         // `--lugar espana`, `--place spain`: las de un lugar, de origen o de uso; `--agrupar continente`, por el suyo.
         if let texto = try entrada.valor(.lugar) { filtro.lugares = try lugares(leyendo: texto, notacion) }
         if let texto = try entrada.valor(.agrupar) {

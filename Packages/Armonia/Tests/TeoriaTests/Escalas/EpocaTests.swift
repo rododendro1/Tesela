@@ -73,11 +73,25 @@ import Testing
         #expect(TipoDeEscala.mayorRumana.epocaDeOrigen == nil)
     }
 
+    /// La menor melódica es del Barroco, por el modo menor de Rameau (1722), aunque sus notas estén en una escala del
+    /// Renacimiento.
+    /// La mayor húngara es del siglo XX, por Persichetti (1961), y con ella sus seis modos sintéticos.
+    @Test func laMayorHungaraEsDelSigloXX() {
+        #expect(TipoDeEscala.mayorHungara.epocaDeOrigen == .sigloXX)
+        #expect(TipoDeEscala.ultralocrioSextaDisminuida.epocaDeOrigen == .sigloXX)
+    }
+
+    @Test func laMenorMelodicaEsBarroca() {
+        #expect(TipoDeEscala.menorMelodica.documentada == .rameau1722)
+        #expect(TipoDeEscala.menorMelodica.epocaDeOrigen == .barroco)
+    }
+
     /// La de origen no se repite en las de uso, y `epocas` las junta en orden.
     @Test func origenYUso() {
         #expect(TipoDeEscala.dorico.epocasDeUso == [.barroco, .clasicismo, .romanticismo, .sigloXX, .sigloXXI])
         #expect(TipoDeEscala.dorico.epocas.first == .edadMedia && TipoDeEscala.dorico.epocas.count == 6)
-        #expect(TipoDeEscala.menorArmonica.epocasDeUso == [.clasicismo, .romanticismo])
+        // La menor armónica, también en los siglos XX y XXI, por el metal neoclásico.
+        #expect(TipoDeEscala.menorArmonica.epocasDeUso == [.clasicismo, .romanticismo, .sigloXX, .sigloXXI])
         #expect(TipoDeEscala.locrio.epocas == Epoca.tonales + [.sigloXX, .sigloXXI])
         for tipo in TipoDeEscala.catalogo {
             #expect(!tipo.epocasDeUso.contains { $0 == tipo.epocaDeOrigen }, Comment(rawValue: tipo.nombre))
@@ -92,13 +106,13 @@ import Testing
         for tipo in TipoDeEscala.occidentales { cuenta[tipo.epocaDeOrigen, default: 0] += 1 }
         #expect(cuenta[.antiguedad] == nil)
         #expect(cuenta[.edadMedia] == 5)
-        #expect(cuenta[.renacimiento] == 3)
-        #expect(cuenta[.barroco] == 33)
+        #expect(cuenta[.renacimiento] == 2)
+        #expect(cuenta[.barroco] == 34)
         #expect(cuenta[.clasicismo] == nil)
         #expect(cuenta[.romanticismo] == 11)
-        #expect(cuenta[.sigloXX] == 42)
+        #expect(cuenta[.sigloXX] == 49)
         #expect(cuenta[.sigloXXI] == nil)
-        #expect(cuenta[nil] == 18)
+        #expect(cuenta[nil] == 11)
     }
 
     /// La regla 0: el año de la obra que documenta la escala va por delante de todas.
@@ -131,9 +145,9 @@ import Testing
         #expect(TipoDeEscala.ultrafrigio.epocaDeOrigen == .romanticismo)
         #expect(TipoDeEscala.mayorLocria.epocaDeOrigen == .barroco) // por la napolitana mayor
         #expect(!TipoDeEscala.menorHungara.esModo(de: .menorHungara))
-        // La mayor húngara no tiene fuente, ni sus modos época.
-        #expect(TipoDeEscala.mayorHungara.epocaDeOrigen == nil)
-        #expect(TipoDeEscala.superlocrioSextaNatural.epocaDeOrigen == nil)
+        // La mayor húngara, por Persichetti (1961), y con ella sus modos.
+        #expect(TipoDeEscala.mayorHungara.epocaDeOrigen == .sigloXX)
+        #expect(TipoDeEscala.superlocrioSextaNatural.epocaDeOrigen == .sigloXX)
     }
 
     /// Los çeşni son de Arel-Ezgi-Uzdilek, del siglo XX.

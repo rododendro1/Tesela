@@ -137,6 +137,24 @@ TipoDeEscala.kafi.escuelas == [.indostanica]        // true
 TipoDeEscala.dorico.tradicion                        // .occidental
 ```
 
+### Lo principal primero, y las corrientes
+
+Los estilos de una escala van de más a menos importante, en el orden de su declaración: el dórico es central en el
+jazz modal y raro en la música clásica, y el frigio dominante es sobre todo flamenco. `estiloPrincipal` da el
+primero. Dentro de un estilo, una escala puede ser de una o varias corrientes (``Corriente``), cada una con el año en
+que empieza: el bebop (1945) y el jazz modal (1959) en el jazz, el impresionismo (1890) en las de compositor, y el
+rock (1955), el heavy metal (1970) y el metal neoclásico (1984) en el pop y el rock. Las corrientes precisan las
+épocas de uso de su estilo: la escala de tonos enteros, por el impresionismo, ya se usa en el Romanticismo. En la
+línea de comandos, `armonia escalas --uso modal` o `--uso metal-neoclasico` las lista.
+
+```swift
+TipoDeEscala.frigioDominante.estiloPrincipal                    // .flamenco
+TipoDeEscala.dorico.corrientes == [.modal]                      // true
+TipoDeEscala.menorArmonica.corrientes == [.metalNeoclasico]     // true
+Corriente.modal.anio                                            // 1959
+Corriente.impresionismo.epocasDeUso == [.romanticismo, .sigloXX]  // true
+```
+
 ## Antigua, medieval, tonal: la época de una escala
 
 `TipoDeEscala.epocaDeOrigen` dice cuándo aparece una escala, y `epocasDeUso`, en qué épocas se usa. Las dos son una

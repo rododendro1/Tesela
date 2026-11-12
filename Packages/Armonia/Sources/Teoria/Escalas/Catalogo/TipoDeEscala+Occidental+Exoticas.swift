@@ -14,7 +14,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         alias: ["doble armónica mayor", "bizantina", "gitana mayor"],
-        estilos: [.folclore, .popRock])
+        estilos: [.folclore, .popRock], corrientes: [.heavyMetal])
     /// La menor armónica con la 4ª aumentada (Do Re Mi♭ Fa♯ Sol La♭ Si).
     public static let menorHungara = TipoDeEscala(
         nombre: "menor húngara",
@@ -31,7 +31,7 @@ extension TipoDeEscala {
             .unisono, .segundaAumentada, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        estilos: [.folclore], regiones: [.hungria])
+        estilos: [.folclore], regiones: [.hungria], documentada: .persichetti1961)
     /// La menor armónica con la 2ª menor (Do Re♭ Mi♭ Fa Sol La♭ Si).
     public static let napolitanaMenor = TipoDeEscala(
         nombre: "napolitana menor",
@@ -115,7 +115,7 @@ extension TipoDeEscala {
             "Rimski-Kórsakov", "de Stravinski", "Stravinski", "disminuida auxiliar blues",
         ],
         variantes: ["Rimsky-Korsakov"],
-        estilos: [.jazz, .deCompositor], documentada: .rimskiKorsakov1867)
+        estilos: [.jazz, .deCompositor], corrientes: [.bebop], documentada: .rimskiKorsakov1867)
     /// Terceras menores y semitonos alternos (Do Mi♭ Mi Sol Sol♯ Si).
     public static let aumentada = TipoDeEscala(
         nombre: "aumentada",
@@ -319,7 +319,7 @@ extension TipoDeEscala {
             .quintaJusta, .quintaAumentada, .sextaMayor, .septimaMayor,
         ],
         alias: ["bebop melódica", "sexta menor disminuida", "de sexta menor disminuida"],
-        estilos: [.jazz])
+        estilos: [.jazz], corrientes: [.bebop])
     /// La menor armónica con la 7ª menor de paso (Do Re Mi♭ Fa Sol La♭ Si♭ Si).
     public static let bebopMenorArmonica = TipoDeEscala(
         nombre: "bebop menor armónica",
@@ -328,7 +328,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor, .septimaMayor,
         ],
         alias: ["bebop armónica"],
-        estilos: [.jazz])
+        estilos: [.jazz], corrientes: [.bebop])
 
     /// El frigio con la 3ª mayor y la menor, de ocho notas (Do Re♭ Mi♭ Mi Fa Sol La♭ Si♭): la del
     /// flamenco, sobre la cadencia andaluza.

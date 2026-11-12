@@ -176,6 +176,12 @@ extension TextosDeTeoria {
         usoFolclore: "δημοτική",
         usoFlamenco: "φλαμένκο",
         usoPopRock: "ποπ και ροκ",
+        corrienteBebop: "μπίμποπ",
+        corrienteModal: "τροπική τζαζ",
+        corrienteImpresionismo: "ιμπρεσιονισμός",
+        corrienteRock: "ροκ",
+        corrienteHeavyMetal: "χέβι μέταλ",
+        corrienteMetalNeoclasico: "νεοκλασικό μέταλ",
         usoSintetica: "συνθετική",
         // CardinalDeEscala.swift
         cardinalMonotonica: "μονοτονική",

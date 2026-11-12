@@ -176,7 +176,8 @@ extension TipoDeEscala {
     /// 5. en las occidentales sintéticas y populares, la más antigua de las escalas de las que son un modo
     ///    (`occidentalesQueFechanSusModos`; en las populares, solo las documentadas): el ultrafrigio y la doble
     ///    armónica, el Romanticismo por la menor húngara; la mayor locria, por la napolitana mayor;
-    /// 6. la más antigua de las de uso de sus estilos (`Estilo.epocasDeUso`): la alterada, el siglo XX por el jazz.
+    /// 6. la más antigua de las de uso de sus estilos, o de sus corrientes si las tiene (`epocasDeUso(de:)`): la
+    ///    alterada, el siglo XX por el bebop.
     ///
     /// `nil` si ninguna da nada: las populares (la flamenca, la mayor rumana), las de otras tradiciones que no son de
     /// una época y las propias.
@@ -202,7 +203,7 @@ extension TipoDeEscala {
         {
             return epoca
         }
-        return estilos.flatMap(\.epocasDeUso).min()
+        return estilos.flatMap(epocasDeUso(de:)).min()
     }
 
     /// Las occidentales de cuyos modos toman la época las sintéticas y las populares: las que tienen una obra que las
@@ -220,11 +221,14 @@ extension TipoDeEscala {
             && (1...otra.intervalos.count).contains { otra.modo(grado: $0) == self }
     }
 
-    /// Las épocas en que se usa la escala, por sus estilos (`Estilo.epocasDeUso`), en orden y sin la de origen: el
-    /// dórico, las tres tonales, el siglo XX y el XXI (es clásica y de jazz). Vacío si sus estilos no dan ninguna.
+    /// Las épocas en que se usa la escala, por sus estilos o, en los que las tienen, por sus corrientes
+    /// (`epocasDeUso(de:)`), en orden y sin la de origen: el dórico, las tres tonales, el siglo XX y el XXI (es
+    /// clásica y de jazz modal). Vacío si sus estilos no dan ninguna.
     public var epocasDeUso: [Epoca] {
         let origen = epocaDeOrigen
-        return Epoca.allCases.filter { epoca in epoca != origen && estilos.contains { $0.epocasDeUso.contains(epoca) } }
+        return Epoca.allCases.filter { epoca in
+            epoca != origen && estilos.contains { epocasDeUso(de: $0).contains(epoca) }
+        }
     }
 
     /// La de origen y las de uso, en orden: el dórico, la Edad Media, las tres tonales, el siglo XX y el XXI.
