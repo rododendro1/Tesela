@@ -76,6 +76,8 @@ extension LineaDeComandos {
         ),
         (nombres(.fuente), FuenteTeorica.allCases.map(\.rawValue)),
         (nombres(.uso), LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }),
+        (nombres(.lugar), Lugar.todos.map(\.clave).reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }),
+        (nombres(.agrupar), LineaDeComandos.nombresDeLasAgrupaciones.flatMap { [$0.espanol, $0.ingles] }),
         (nombres(.orden), ["brillo", "notas", "brightness", "notes"]),
         (
             nombres(.conIntervalo, .sinIntervalo),
