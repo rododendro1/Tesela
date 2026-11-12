@@ -130,7 +130,7 @@ la música carnática o el gagaku, de la India o de Japón. `Estilo.tipos` da la
 catálogo, y en la línea de comandos `armonia escalas --uso jazz` las lista.
 
 ```swift
-TipoDeEscala.dorico.estilos == [.clasica, .jazz]    // true
+TipoDeEscala.dorico.estilos == [.jazz, .clasica]    // true
 Estilo.blues.tipos.count                            // 6
 Estilo.deCompositor.nombre                          // "de compositor"
 TipoDeEscala.kafi.escuelas == [.indostanica]        // true

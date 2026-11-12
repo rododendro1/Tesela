@@ -95,7 +95,7 @@ import Testing
         // El sléndro se toca en Java y en Bali.
         #expect(TipoDeEscala.slendro.regiones == [.java, .bali])
         #expect(TipoDeEscala.slendro.subtradiciones == [.region(.java), .region(.bali)])
-        #expect(TipoDeEscala.dorico.subtradiciones == [.estilo(.clasica), .estilo(.jazz)])
+        #expect(TipoDeEscala.dorico.subtradiciones == [.estilo(.jazz), .estilo(.clasica)])
         #expect(TipoDeEscala.hitzaz.subtradiciones.isEmpty)
         #expect(TipoDeEscala.mayor.regiones.isEmpty)
         #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).subtradiciones.isEmpty)

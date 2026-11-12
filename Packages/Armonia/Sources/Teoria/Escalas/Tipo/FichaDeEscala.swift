@@ -10,7 +10,7 @@ import Elementos
 ///
 ///     public static let dorico = TipoDeEscala(
 ///         nombre: "dórico", intervalos: […], alias: ["menor dórica"], variantes: ["dórica"],
-///         estilos: [.clasica, .jazz])
+///         estilos: [.jazz, .clasica])
 ///     public static let mohanam = TipoDeEscala(
 ///         nombre: "Mohanam", intervalos: […], categoria: .janya, padre: .melakarta(28))
 ///     public static let pelogTembung = TipoDeEscala(nombre: "Pélog tembung", intervalos: […], categoria: .pathet,
@@ -52,7 +52,7 @@ package struct FichaDeEscala: Sendable {
         }
     }
 
-    /// En qué estilos occidentales se usa, en el orden de `Estilo.allCases`.
+    /// En qué estilos occidentales se usa, de más a menos importante: el primero es su uso principal.
     package let estilos: [Estilo]
     /// En qué escuelas de otra tradición se usa, en el orden de `Escuela.allCases`: las escritas en la declaración o,
     /// si no las hay, la que da la categoría (`Escuela.de(_:)`).
@@ -84,7 +84,7 @@ package struct FichaDeEscala: Sendable {
     ) {
         self.referencias = referencias
         self.documentada = documentada
-        self.estilos = Estilo.allCases.filter { estilos.contains($0) }
+        self.estilos = Estilo.sinRepetir(estilos)
         let escuelas = escuelas.isEmpty ? (categoria.flatMap(Escuela.de).map { [$0] } ?? []) : escuelas
         self.escuelas = Escuela.allCases.filter { escuelas.contains($0) }
         self.regiones = RegionDeEscala.allCases.filter { regiones.contains($0) }

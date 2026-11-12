@@ -60,7 +60,7 @@ public struct ProgresionConNombre: Sendable {
 
     // MARK: Propiedades
 
-    /// En qué estilos se usa, en el orden de `Estilo.allCases`.
+    /// En qué estilos se usa, de más a menos importante: el primero es su uso principal.
     public var estilos: [Estilo] { ficha.estilos }
 
     /// Dónde se lee la progresión.

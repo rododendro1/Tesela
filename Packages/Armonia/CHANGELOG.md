@@ -16,6 +16,9 @@
   España (`Estilo.paises`).
 - La consola: `--uso` acepta `de-compositor` (`composer`), `folclore` (`folk`), `flamenco` y `pop-rock`; `popular` da
   los tres populares y `siglo-xx` sigue valiendo, por las de compositor.
+- Los estilos de una escala, un acorde o una progresión van de más a menos importante, en el orden de su declaración,
+  y no en el de `Estilo.allCases`: el dórico es `[.jazz, .clasica]`, central en el jazz modal y raro en la clásica,
+  y el frigio dominante `[.flamenco, .jazz, .popRock]`. `TipoDeEscala.estiloPrincipal` da el primero.
 
 ### Lo nuevo
 
@@ -95,6 +98,13 @@
 - Cuatro obras más en las referencias del catálogo: Sam (1988) para el pinpeat, Williamson (2000) para el saung,
   Kubik (1994) para la amadinda y Taruskin (1996) para el acorde de los augures. Con ellas, todas las escalas de otras
   tradiciones citan alguna obra.
+
+### Rendimiento
+
+- Un `TipoDeEscala` ocupa unos 56 bytes y no 328: su ficha (estilos, escuelas, regiones, afinaciones, referencias…)
+  se guarda aparte y la comparten sus copias. Sin optimizar, las listas de nombres del ruso y el griego ocupaban casi
+  500 KB de pila al inicializarse y desbordaban la de un hilo secundario con la cobertura activada; una prueba avisa
+  si el tipo vuelve a crecer.
 
 ## 0.5.0 (2026-11-10)
 

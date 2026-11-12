@@ -555,7 +555,7 @@ import Hexagonos
     @Test func escalas3() throws {
         // Sources/Armonia/Armonia.docc/Escalas.md, bloque 3
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 3)
-        comprobar(TipoDeEscala.dorico.estilos == [.clasica, .jazz], #"true"#, doc, 0)
+        comprobar(TipoDeEscala.dorico.estilos == [.jazz, .clasica], #"true"#, doc, 0)
         comprobar(Estilo.blues.tipos.count, #"6"#, doc, 1)
         comprobar(Estilo.deCompositor.nombre, #""de compositor""#, doc, 2)
         comprobar(TipoDeEscala.kafi.escuelas == [.indostanica], #"true"#, doc, 3)

@@ -44,7 +44,7 @@ extension AcordeConNombre {
     public static let hendrix = AcordeConNombre(
         nombre: "acorde de Hendrix",
         intervalos: [.unisono, .terceraMayor, .septimaMenor, .novenaAumentada],
-        estilos: [.blues, .popRock])
+        estilos: [.popRock, .blues])
     /// El acorde mu de Steely Dan: la tríada mayor con la segunda añadida junto a la tercera, Do Re Mi Sol.
     public static let mu = AcordeConNombre(
         nombre: "acorde mu",
@@ -55,7 +55,7 @@ extension AcordeConNombre {
         nombre: "acorde por cuartas",
         intervalos: [.unisono, .cuartaJusta, .septimaMenor, .terceraMenor + .octava],
         alias: ["acorde cuartal"],
-        estilos: [.deCompositor, .jazz], referencias: [.persichetti1961])
+        estilos: [.jazz, .deCompositor], referencias: [.persichetti1961])
     /// El acorde de «Elektra» (Strauss, 1909), el del motivo de Elektra: Mi mayor sobre Re♭ mayor, escrito sobre Do♯
     /// (Do♯ Mi♯ Sol♯ Mi Si). Su ortografía cambia de una fuente a otra.
     public static let elektra = AcordeConNombre(

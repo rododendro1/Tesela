@@ -25,9 +25,25 @@ import Testing
     /// Se busca por el nombre: Kāfī tiene las notas del dórico, pero no sus estilos.
     @Test func losEstilosSonDelNombre() {
         #expect(TipoDeEscala.kafi == .dorico)
-        #expect(TipoDeEscala.dorico.estilos == [.clasica, .jazz])
+        #expect(TipoDeEscala.dorico.estilos == [.jazz, .clasica])
         #expect(TipoDeEscala.kafi.estilos.isEmpty && TipoDeEscala.kafi.escuelas == [.indostanica])
         #expect(TipoDeEscala(nombre: "dórico", intervalos: [.unisono, .quintaJusta]).estilos.isEmpty)
+    }
+
+    /// Los estilos van de más a menos importante, en el orden de la declaración: el primero es el uso principal.
+    @Test func elPrimerEstiloEsElPrincipal() {
+        #expect(TipoDeEscala.dorico.estiloPrincipal == .jazz)
+        #expect(TipoDeEscala.lidio.estiloPrincipal == .jazz)
+        #expect(TipoDeEscala.mayor.estiloPrincipal == .clasica)
+        #expect(TipoDeEscala.frigioDominante.estiloPrincipal == .flamenco)
+        #expect(TipoDeEscala.pentatonicaMayor.estiloPrincipal == .folclore)
+        #expect(TipoDeEscala.tonosEnteros.estiloPrincipal == .deCompositor)
+        #expect(TipoDeEscala.disminuidaSemitonoTono.estiloPrincipal == .jazz)
+        #expect(TipoDeEscala.kafi.estiloPrincipal == nil)
+        #expect(ProgresionConNombre.blues.estilos.first == .blues)
+        #expect(Estilo.sinRepetir([.jazz, .clasica, .jazz]) == [.jazz, .clasica])
+        // Las escalas de un estilo no cambian: el orden solo dice cuál pesa más.
+        #expect(Estilo.clasica.tipos.contains(.dorico) && Estilo.jazz.tipos.contains(.mayor))
     }
 
     @Test func ejemplosDeCadaEstilo() {
@@ -35,11 +51,11 @@ import Testing
         #expect(TipoDeEscala.menorMelodica.estilos == [.clasica])
         #expect(TipoDeEscala.menorMelodicaJazz.estilos == [.jazz])
         #expect(TipoDeEscala.blues.estilos == [.blues])
-        #expect(TipoDeEscala.pentatonicaMenor.estilos == [.blues, .folclore, .popRock])
-        #expect(TipoDeEscala.disminuida.estilos == [.jazz, .deCompositor])
+        #expect(TipoDeEscala.pentatonicaMenor.estilos == [.blues, .popRock, .folclore])
+        #expect(TipoDeEscala.disminuida.estilos == [.deCompositor, .jazz])
         #expect(TipoDeEscala.lidioDominante.estilos == [.jazz, .deCompositor])
         #expect(TipoDeEscala.flamenca.estilos == [.flamenco])
-        #expect(TipoDeEscala.frigioDominante.estilos == [.jazz, .flamenco, .popRock])
+        #expect(TipoDeEscala.frigioDominante.estilos == [.flamenco, .jazz, .popRock])
         #expect(TipoDeEscala.mayorRumana.estilos == [.folclore])
         #expect(TipoDeEscala.mayorRumana.estilos.allSatisfy { $0.esPopular } && !Estilo.jazz.esPopular)
         #expect(TipoDeEscala.ultrafrigio.estilos == [.sintetica])

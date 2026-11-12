@@ -73,6 +73,14 @@ public enum Estilo: String, Sendable, Codable, CaseIterable {
 
 extension Estilo: Nombrable {}
 
+extension Estilo {
+    /// Los estilos de una declaración en su orden, que es el de importancia, sin repetir ninguno.
+    static func sinRepetir(_ estilos: [Estilo]) -> [Estilo] {
+        var vistos = Set<Estilo>()
+        return estilos.filter { vistos.insert($0).inserted }
+    }
+}
+
 // MARK: - Ficha de un acorde o una progresión del catálogo
 
 /// Lo que el catálogo sabe de un acorde o una progresión además de su nombre y sus notas o sus grados. Se escribe en
@@ -82,24 +90,30 @@ extension Estilo: Nombrable {}
 ///         nombre: "sexta aumentada alemana", intervalos: [.unisono, .terceraMayor, .quintaJusta, .sextaAumentada],
 ///         estilos: [.clasica])
 package struct FichaDelCatalogo: Sendable {
-    /// En qué estilos se usa, en el orden de `Estilo.allCases`.
+    /// En qué estilos se usa, de más a menos importante: el primero es su uso principal.
     package let estilos: [Estilo]
     /// Dónde se lee.
     package let referencias: [Referencia]
 
     package init(estilos: [Estilo] = [], referencias: [Referencia] = []) {
-        self.estilos = Estilo.allCases.filter(estilos.contains)
+        self.estilos = Estilo.sinRepetir(estilos)
         self.referencias = referencias
     }
 }
 
 extension TipoDeEscala {
-    /// Los estilos occidentales en que se usa la escala, en el orden de `Estilo.allCases`: `[.clasica, .jazz]` en el
-    /// dórico. Vacío en las propias y en las de otras tradiciones, que tienen sus escuelas (`escuelas`). Se busca por
+    /// Los estilos occidentales en que se usa la escala, de más a menos importante: `[.jazz, .clasica]` en el dórico,
+    /// central en el jazz modal y raro en la música clásica. Vacío en las propias y en las de otras tradiciones, que tienen sus escuelas (`escuelas`). Se busca por
     /// su `identidad`, como `tradicion`: Kāfī tiene las notas del dórico, pero no sus estilos.
     ///
-    ///     TipoDeEscala.dorico.estilos   // [.clasica, .jazz]
+    ///     TipoDeEscala.dorico.estilos   // [.jazz, .clasica]
     public var estilos: [Estilo] { fichaDelCatalogo.estilos }
+
+    /// El estilo en que más se usa la escala, el primero de `estilos`: el flamenco en el frigio dominante, aunque
+    /// también se use en el jazz y en el rock. `nil` si no tiene estilos.
+    ///
+    ///     TipoDeEscala.frigioDominante.estiloPrincipal   // .flamenco
+    public var estiloPrincipal: Estilo? { estilos.first }
 
     /// Las escuelas de su tradición en que se usa, en el orden de `Escuela.allCases`: la carnática en los mēḷa, el
     /// gagaku en las escalas japonesas de la corte. Vacío en las occidentales y en las de tradiciones sin escuelas.
