@@ -1,11 +1,12 @@
 import Armonia
 import Foundation
 
-// Escribe en TSV, un fichero por catálogo, lo que dice la API pública de cada uno: las escalas, los acordes, los grados, las
-// progresiones, los ritmos, los temperamentos, las notas con nombre y sus funciones, las escalas microtonales, las
-// referencias, los encordados, los teclados isomórficos y cuadrados, los modos gregorianos y los instrumentos de la
-// partitura. Las listas de una celda van separadas por espacios (intervalos, pasos, notas) o por « · » (alias,
-// estilos, citas); una celda vacía es un dato que el elemento no tiene, y las de sí o no dicen «sí» o «no».
+// Escribe en TSV, un fichero por catálogo, lo que dice la API pública de cada uno: las escalas, los acordes, los
+// grados, las progresiones, los ritmos, los temperamentos, las notas con nombre y sus funciones, las escalas
+// microtonales, las referencias, los encordados, los teclados isomórficos y cuadrados, los modos gregorianos y los
+// instrumentos de la partitura. Las listas de una celda van separadas por espacios (intervalos, pasos, notas) o
+// por « · » (alias, estilos, citas); una celda vacía es un dato que el elemento no tiene, y las de sí o no dicen «sí»
+// o «no».
 //
 //     swift run EjemploCatalogos [carpeta | -] [--solo <catálogo>]… [--tradicion <tradición>] [--bibtex <fichero.bib>]
 //

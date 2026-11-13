@@ -63,6 +63,10 @@ Las tablas de datos (los nombres de escalas y los textos traducidos) y las prueb
 `// swift-format-ignore-file`: tienen una fila por línea, que es como las leen los scripts de `Scripts/`, y no se
 formatean. Si añades otra tabla así, ponle esa marca.
 
+swift-format no parte los comentarios: un comentario de más de 120 columnas lo señala
+`Scripts/comprobaciones/comprobar_higiene.py`. Se salvan los ejemplos de código de la documentación (sangrados cuatro
+espacios tras el `///`) y las filas de las tablas, porque ni una orden ni una fila se parten.
+
 Los commits que solo cambian el formato o mueven ficheros van en `.git-blame-ignore-revs`, para que `git blame`
 los salte (GitHub lo hace solo; en local, `git config blame.ignoreRevsFile .git-blame-ignore-revs`). Si haces uno
 así, añádelo después de fusionarlo.
@@ -78,6 +82,7 @@ python3 Scripts/comprobaciones/comprobar_modulos.py
 python3 Scripts/comprobaciones/comprobar_catalogo.py
 python3 Scripts/comprobaciones/comprobar_enlaces_docc.py
 python3 Scripts/comprobaciones/comprobar_simbolos_en_comentarios.py
+python3 Scripts/comprobaciones/comprobar_arboles.py
 python3 Scripts/comprobaciones/comprobar_traducciones.py
 python3 Scripts/generadores/generar_paquete_raiz.py --comprobar
 python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar

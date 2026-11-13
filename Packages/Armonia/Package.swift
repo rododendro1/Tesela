@@ -88,8 +88,8 @@ let package = Package(
         // Las que cruzan capas: entradas no válidas y propiedades de todo el motor, la API poco usada, y los dibujos
         // guardados en `Referencias` con que se comparan los de ahora (ReferenciasSVGTests).
         .testTarget(name: "ArmoniaTests", dependencies: modulos + ["ApoyoDePruebas"], exclude: ["Referencias"]),
-        // Lo que comparten las pruebas de varios módulos (el generador al azar con semilla y el lector de XML con que se
-        // comprueban los ficheros exportados y los dibujos). No es parte del motor.
+        // Lo que comparten las pruebas de varios módulos (el generador al azar con semilla y el lector de XML con que
+        // se comprueban los ficheros exportados y los dibujos). No es parte del motor.
         .target(name: "ApoyoDePruebas", path: "Tests/ApoyoDePruebas"),
         .testTarget(name: "ArmoniaExhaustivasTests", dependencies: modulos),
         // Los ejemplos de la documentación usan también la rejilla (`CoordenadaAxial`, `FormasDeMapa`…).

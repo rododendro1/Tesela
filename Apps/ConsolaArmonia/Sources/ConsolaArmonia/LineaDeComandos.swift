@@ -158,7 +158,8 @@ public enum LineaDeComandos {
             resto = conLaEntrada(resto, de: orden, estandar, entradaEsTerminal: entradaEsTerminal)
         }
 
-        // Los errores de uso de la orden remiten a su ayuda y proponen sus opciones (ErrorDeUso.mensajeDeUso(en:enCurso:)).
+        // Los errores de uso de la orden remiten a su ayuda y proponen sus opciones
+        // (ErrorDeUso.mensajeDeUso(en:enCurso:)).
         let enCurso = orden.nombres.contains("ayuda") ? nil : OrdenEnCurso(orden: orden, nombre: nombre)
         let contexto = ContextoDeOrden(notacion: notacion, entrada: estandar, movil: movil)
         let resultado = conLasNotasDelIdioma(resto, en: notacion) { resto in

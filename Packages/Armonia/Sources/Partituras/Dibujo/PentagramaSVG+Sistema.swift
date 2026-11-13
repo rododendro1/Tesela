@@ -29,8 +29,8 @@ extension PentagramaSVG {
         let claves = clavesDelPentagrama()
         let doble = claves.count == 2
         let doCentral = PentagramaSVG.doCentral
-        // Con cambios de clave (una sola clave, sin elegir), cada columna lleva la de sol o la de fa según su registro, y
-        // no hace falta la marca de octava.
+        // Con cambios de clave (una sola clave, sin elegir), cada columna lleva la de sol o la de fa según su registro,
+        // y no hace falta la marca de octava.
         let conCambios = opciones.maquetacion.cambiosDeClave && !doble && opciones.maquetacion.clave == nil
         let clavesDeLasColumnas = conCambios ? PentagramaSVG.clavesPorRegistro(columnas, desde: claves[0]) : []
         // Una octava más cerca del pentagrama, con la marca 8va u 8vb, si con la clave elegida harían falta demasiadas

@@ -80,8 +80,8 @@ public struct TemperamentoPresentado: Hashable, Sendable, Codable {
         return (valor < 0 ? "−" : "+") + texto
     }
 
-    /// La ficha, un dato por fila: la familia, el autor, los otros nombres y la época con el año (`datosDelCatalogo(en:)`), los pasos por octava
-    /// y la quinta, los que tenga.
+    /// La ficha, un dato por fila: la familia, el autor, los otros nombres y la época con el año
+    /// (`datosDelCatalogo(en:)`), los pasos por octava y la quinta, los que tenga.
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
         var datos = [DatoPresentado(nombre: notacion.texto(\.familiaDeTemperamento), valor: familia)]
         if let autor { datos.append(DatoPresentado(nombre: notacion.texto(\.autorDelTemperamento), valor: autor)) }

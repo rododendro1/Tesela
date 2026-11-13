@@ -44,7 +44,16 @@ public enum RegionDeEscala: String, Sendable, Codable, CaseIterable {
     /// tradiciones.
     /// `RegionDeEscala.java.tipos` da los pathet de Java y el sléndro; `RegionDeEscala.hungria.tipos`, las húngaras
     /// occidentales y la pentatónica húngara, y `RegionDeEscala.andalucia.tipos`, la flamenca.
-    public var tipos: [TipoDeEscala] { TipoDeEscala.catalogo.filter { $0.regiones.contains(self) } }
+    public var tipos: [TipoDeEscala] { RegionDeEscala.tiposPorRegion[self] ?? [] }
+
+    /// Región → las escalas del catálogo que vienen de ella, en su orden.
+    private static let tiposPorRegion: [RegionDeEscala: [TipoDeEscala]] = {
+        var tabla: [RegionDeEscala: [TipoDeEscala]] = [:]
+        for tipo in TipoDeEscala.catalogo {
+            for region in tipo.regiones { tabla[region, default: []].append(tipo) }
+        }
+        return tabla
+    }()
 
     /// El nombre en el idioma de los textos de la notación: «Java», «Escocia», «Scotland», «Σκωτία». En español,
     /// también `nombre` (de `Nombrable`).

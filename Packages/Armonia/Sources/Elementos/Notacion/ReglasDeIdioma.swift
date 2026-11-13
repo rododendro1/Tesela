@@ -81,9 +81,9 @@ public struct ReglasDeIdioma: Hashable, Sendable {
     /// (que por eso tienen tres escrituras), a la alemana en alemán (que tiene dos: con palabras y compacta) y con
     /// palabras en los demás.
     public let alteraciones: EscrituraDeLaAlteracion
-    /// En la escritura a la alemana, lo que se añade al nombre para el sostenido y para el bemol: «is» y «es» en
-    /// alemán (Fis, Des), «isz» y «esz» en húngaro (Fisz, Desz), «iss» y «ess» en sueco (Fiss, Dess). Tras una vocal (Mi♭, La♭) el bemol pierde la «e»:
-    /// Es, As; Esz, Asz. En los demás idiomas no se usan.
+    /// En la escritura a la alemana, lo que se añade al nombre para el sostenido y para el bemol: «is» y «es» en alemán
+    /// (Fis, Des), «isz» y «esz» en húngaro (Fisz, Desz), «iss» y «ess» en sueco (Fiss, Dess). Tras una vocal (Mi♭,
+    /// La♭) el bemol pierde la «e»: Es, As; Esz, Asz. En los demás idiomas no se usan.
     public let sufijoDeSostenido: String
     public let sufijoDeBemol: String
     /// Los signos de sus cifrados: # y b en alemán, ♯ y ♭ en los demás. En español e inglés lo elige la

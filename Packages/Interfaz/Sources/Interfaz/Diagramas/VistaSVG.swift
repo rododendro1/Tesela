@@ -18,7 +18,8 @@
         }
 
         /// El SVG dentro de una página sin márgenes, ocupándola entera (`display:block`, sin el hueco de la línea
-        /// base), para que `alTocarElSVG` sepa dónde cae cada toque. Los dibujos del motor traen su propio fondo blanco.
+        /// base), para que `alTocarElSVG` sepa dónde cae cada toque. Los dibujos del motor traen su propio fondo
+        /// blanco.
         static func pagina(_ svg: String, adaptable: Bool = false) -> String {
             let colores = adaptable ? "color-scheme:light dark;background:Canvas;color:CanvasText" : "background:#fff"
             return """

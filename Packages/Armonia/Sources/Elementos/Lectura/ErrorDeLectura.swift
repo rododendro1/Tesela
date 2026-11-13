@@ -96,7 +96,8 @@ extension ErrorDeLectura.Motivo {
     }
 }
 
-// Los mensajes de `ErrorDeLectura` al leer las notas, las alteraciones, las octavas y los intervalos, en los trece idiomas de los textos.
+// Los mensajes de `ErrorDeLectura` al leer las notas, las alteraciones, las octavas y los intervalos, en los trece
+// idiomas de los textos.
 
 extension ErrorDeLectura {
     enum TextosDeNotas {

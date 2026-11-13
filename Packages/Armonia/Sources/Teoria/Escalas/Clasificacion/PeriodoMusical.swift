@@ -188,7 +188,8 @@ extension CategoriaTradicional {
     /// Caturdaṇḍīprakāśikā de Veṅkaṭamakhin (1660); los thāṭ, de la Hindustani Sangeet Paddhati de Bhātkhaṇḍe (1909);
     /// los grāma y las mūrchanā, del Nāṭyaśāstra (entre 200 a. C. y 200; se toma el año 0); los dastgāh, del radif de
     /// Mirzā ʿAbdollāh (hacia 1880); los mugam, de los «Fundamentos de la música popular azerbaiyana» de Hacıbəyov
-    /// (1945); los dromoi, del rebético (desde los años veinte; se toma 1920). `nil` en las demás. El `switch` no tiene `default`: una categoría nueva no compila sin decir el suyo.
+    /// (1945); los dromoi, del rebético (desde los años veinte; se toma 1920). `nil` en las demás. El `switch` no tiene
+    /// `default`: una categoría nueva no compila sin decir el suyo.
     public var anio: Int? {
         switch self {
         case .melakarta: 1660

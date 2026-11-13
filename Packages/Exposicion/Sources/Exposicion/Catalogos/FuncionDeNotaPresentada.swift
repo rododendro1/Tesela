@@ -35,7 +35,8 @@ public struct FuncionDeNotaPresentada: Hashable, Sendable, Codable {
         origen = OrigenPresentado(funcion, en: notacion)
     }
 
-    /// La ficha, un dato por fila: la familia, los otros nombres y la época (`datosDelCatalogo(en:)`), el intervalo, los cents y el desvío, los que tenga.
+    /// La ficha, un dato por fila: la familia, los otros nombres y la época (`datosDelCatalogo(en:)`), el intervalo,
+    /// los cents y el desvío, los que tenga.
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
         var datos = [DatoPresentado(nombre: notacion.texto(\.familiaDeLaNota), valor: familia)]
         datos += datosDelCatalogo(en: notacion)

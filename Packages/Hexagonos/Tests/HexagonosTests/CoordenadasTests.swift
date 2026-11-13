@@ -189,7 +189,8 @@ import Testing
                 #expect(d.distancia(hasta: vecina, desplazamiento) == 1)
             }
         }
-        // En una fila impar con filas impares desplazadas, la vecina de arriba a la derecha está en la columna siguiente.
+        // En una fila impar con filas impares desplazadas, la vecina de arriba a la derecha está en la columna
+        // siguiente.
         #expect(d.vecinos(.filasImpares).contains(CoordenadaDesplazada(columna: 3, fila: 2)))
         #expect(!(d.vecinos(.filasPares).contains(CoordenadaDesplazada(columna: 3, fila: 2))))
     }

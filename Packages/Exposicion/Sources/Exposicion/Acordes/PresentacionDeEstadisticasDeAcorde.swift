@@ -7,14 +7,14 @@ import Armonia
 /// `PresentacionDeEstudioDeEscala.estadisticas(de:en:)`.
 public enum PresentacionDeEstadisticasDeAcorde {
     /// Un dato por fila: el número de notas con su cardinal, las tensiones, el brillo por quintas, la amplitud en
-    /// quintas, el vector interválico, la forma prima, el número de Forte, las transposiciones distintas, el ámbito
-    /// (en los acordes con nombre) y los rasgos (si tiene alguno); y después las medidas de las teorías de acordes:
-    /// la consonancia de Huron, el grupo y la fundamental de Hindemith, la fundamental de Parncutt, los intervalos
-    /// entre voces, el gradus de Euler, los coeficientes de Fourier, la distancia a la uniformidad, las tríadas que
-    /// contiene, la tensión y la modalidad de Cook, las rugosidades de Sethares, Vassilakis y Hutchinson y Knopoff, la
-    /// fusión tonal, la altura de Tenney, los límites impar y primo, la armonicidad, la entropía armónica, la
-    /// fundamental virtual, la pareja Z y el complemento, y la disposición. Con `sobre`, las fundamentales se escriben como
-    /// notas sobre esa; sin ella, como intervalos desde la nota de referencia.
+    /// quintas, el vector interválico, la forma prima, el número de Forte, las transposiciones distintas, el ámbito (en
+    /// los acordes con nombre) y los rasgos (si tiene alguno); y después las medidas de las teorías de acordes: la
+    /// consonancia de Huron, el grupo y la fundamental de Hindemith, la fundamental de Parncutt, los intervalos entre
+    /// voces, el gradus de Euler, los coeficientes de Fourier, la distancia a la uniformidad, las tríadas que contiene,
+    /// la tensión y la modalidad de Cook, las rugosidades de Sethares, Vassilakis y Hutchinson y Knopoff, la fusión
+    /// tonal, la altura de Tenney, los límites impar y primo, la armonicidad, la entropía armónica, la fundamental
+    /// virtual, la pareja Z y el complemento, y la disposición. Con `sobre`, las fundamentales se escriben como notas
+    /// sobre esa; sin ella, como intervalos desde la nota de referencia.
     ///
     ///     let datos = PresentacionDeEstadisticasDeAcorde.estadisticas(
     ///         TipoDeAcorde.dominanteSeptima.estadisticas, en: .compacta(.espanol))

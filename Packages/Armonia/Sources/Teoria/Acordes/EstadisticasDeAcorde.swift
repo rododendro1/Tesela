@@ -61,8 +61,8 @@ public struct EstadisticasDeAcorde: Hashable, Sendable {
     /// Fourier, la uniformidad, las tríadas contenidas, la pareja Z y el complemento…
     public var conjunto: EstadisticasDeConjunto { clases.estadisticas }
 
-    /// Lo que dice la afinación justa de sus notas (`EstadisticasDeAfinacionJusta`): el gradus de Euler, Tenney, Partch y
-    /// la armonicidad.
+    /// Lo que dice la afinación justa de sus notas (`EstadisticasDeAfinacionJusta`): el gradus de Euler, Tenney, Partch
+    /// y la armonicidad.
     public var afinacion: EstadisticasDeAfinacionJusta { EstadisticasDeAfinacionJusta(pasosDeQuinta: pasosDeQuinta) }
 
     /// Cómo se perciben sus voces (`PsicoacusticaDeAcorde`): las fundamentales de Parncutt y Terhardt, Cook, las

@@ -1,5 +1,13 @@
 # Cambios
 
+## Sin publicar
+
+### Rendimiento
+
+- Las búsquedas por contenido del catálogo de escalas (`TipoDeEscala.equivalentes`, los lugares que coinciden, las
+  escalas de una región y la época de los modos) van por un índice y no recorren el catálogo entero: `armonia escalas
+  --agrupar epoca` tarda un tercio de lo que tardaba.
+
 ## 0.5.1 (2026-11-13)
 
 ### Cambios incompatibles

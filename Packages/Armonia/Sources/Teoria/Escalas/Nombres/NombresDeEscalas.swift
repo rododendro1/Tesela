@@ -248,10 +248,10 @@ extension NombresDeEscalas {
 }
 
 extension TipoDeEscala {
-    /// El tipo de escala escrito junto a una tónica en la notación dada ("Fis dorisch", "ре дорийский",
-    /// "re dòric"). Con la tónica en inglés se acepta el nombre en inglés o en español; en ruso y griego, el suyo
-    /// o el inglés; en alemán, en húngaro y en sueco, cualquiera de los tres ("H mayor" no es una escala); en las demás, los de las lenguas
-    /// peninsulares y romances o, si no, el español (sin inglés: "Re dorian" mezclaría idiomas).
+    /// El tipo de escala escrito junto a una tónica en la notación dada ("Fis dorisch", "ре дорийский", "re dòric").
+    /// Con la tónica en inglés se acepta el nombre en inglés o en español; en ruso y griego, el suyo o el inglés; en
+    /// alemán, en húngaro y en sueco, cualquiera de los tres ("H mayor" no es una escala); en las demás, los de las
+    /// lenguas peninsulares y romances o, si no, el español (sin inglés: "Re dorian" mezclaría idiomas).
     package static func buscar(nombre: String, conTonicaEn notacion: Notacion) -> TipoDeEscala? {
         if notacion == .conPalabras(.ingles) { return buscar(nombre: nombre, aceptarIngles: true) }
         let normalizado = normalizar(nombre)

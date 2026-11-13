@@ -51,8 +51,8 @@ public struct NotaPresentada: Hashable, Sendable, Codable {
     static func hercios(_ valor: Double) -> String { Redondeo.texto(valor) + " Hz" }
 
     /// La ficha, un dato por fila: la familia, la altura, lo que se aparta de la temperada, la frecuencia, el La4 con
-    /// que suena, el MIDI, los otros nombres y la época con el año (`datosDelCatalogo(en:)`), el nombre original y las alturas de la posición,
-    /// los que tenga.
+    /// que suena, el MIDI, los otros nombres y la época con el año (`datosDelCatalogo(en:)`), el nombre original y las
+    /// alturas de la posición, los que tenga.
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
         var datos = [
             DatoPresentado(nombre: notacion.texto(\.familiaDeLaNota), valor: familia),

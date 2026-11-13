@@ -214,8 +214,9 @@ ortografía de las escalas. La conformidad a cada protocolo va en el fichero del
 Sources/
 ├── Elementos/
 │   ├── Fundamentos/       Nota (con NotaNatural y Alteracion), Altura, Intervalo (con SentidoDelIntervalo,
-│   │                      CalidadDeIntervalo, Consonancia), Candidato, Protocolos, Aritmetica, y los
-│   │                      nombres de notas e intervalos en cada idioma (al final de Nota e Intervalo)
+│   │                      CalidadDeIntervalo, Consonancia), Candidato, Protocolos, Aritmetica, SistemaDeAfinacion
+│   │                      (el protocolo de los temperamentos), y los nombres de notas e intervalos en cada idioma
+│   │                      (al final de Nota e Intervalo)
 │   ├── Notacion/          Notacion (con EscrituraDeNotas e Idioma), ReglasDeIdioma, EstiloDeCifrado, Traduccion
 │   ├── Lectura/           Lector, ErrorDeArmonia (con ErrorAlLeer y MotivoDeLectura), ErrorDeLectura
 │   ├── Textos/            TextosDeElementos y un fichero por idioma
@@ -226,6 +227,7 @@ Sources/
 │                          RelacionEntreConjuntos (Fourier, Isaacson, Morris y Forte: lo que se parecen dos)
 ├── Teoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
+│   ├── Textos/            TextosDeTeoria y un fichero por idioma
 │   ├── Catalogo/          Lo que comparten los catálogos: ElementoConNombre, Estilo (de escalas, acordes,
 │   │                      progresiones y ritmos) con su Corriente, Escuela, Epoca, Caracter (lo que dicen sus
 │   │                      fuentes), DatosDelCatalogo y NombresDelCatalogo (los nombres de cada catálogo por
@@ -282,7 +284,7 @@ Sources/
 │   ├── Funciones/         FuncionDeNota (grados, modo gregoriano, rāga, maqam, blue notes, adornos y notas extrañas)
 │   │   │                  y su catálogo
 │   │   └── Nombres/       NombresDeFunciones y un fichero por idioma (`NombresDeFunciones+Catalan.swift`…)
-│   └── Afinacion/         SistemaDeAfinacion (frecuencias: temperamentos regulares y circulares, justa),
+│   └── Afinacion/         TemperamentoRegular, TemperamentoCircular y AfinacionJusta (las frecuencias),
 │       │                  TemperamentoQueAfina (los del catálogo que afinan las doce notas, con los del botón
 │       │                  «Escuchar»), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett
 │       │                  (números), EstadisticasDeAfinacionJusta (Euler, Tenney, Partch, Gill y Purves), JingFang,
@@ -296,15 +298,19 @@ Sources/
 │   ├── Color/         CorrespondenciaDeColores (colores)
 │   ├── Redes/         Tonnetz (la red de quintas y terceras, en SVG, con los recorridos y los ciclos
 │   │                  neorriemannianos), TablaArmonica (hexágonos de teclado isomórfico, en SVG), FormatoUIL
-│   └── Dibujo/        DibujoSVG (título, leyenda y colores comunes de los dibujos)
+│   ├── Dibujo/        DibujoSVG (título, leyenda y colores comunes de los dibujos)
+│   └── Textos/        TextosDeDiagramas y un fichero por idioma
 ├── Partituras/
 │   ├── Modelo/        Duracion (con Figura y Tempo), Compas, Evento, Melodia (con Voz), ErrorDeLecturaDePartitura,
 │   │                  Pentagrama (Clave, PosicionEnElPentagrama, InstrumentoDePartitura), SignoMicrotonal
-│   └── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
+│   ├── Dibujo/        PentagramaSVG (con sus opciones y los glifos SMuFL)
+│   └── Textos/        TextosDePartituras y un fichero por idioma
 ├── Polifonia/
 │   ├── Coral/         Coral (quintas y octavas paralelas, cruces…), Coral+Realizacion, Armonizacion, BajoCifrado,
 │   │                  NotaExtrana, Coral+Partitura (el coral en dos pentagramas)
-│   └── Contrapunto/   Contrapunto (contrapunto de especies, a dos voces y a varias, con sus faltas y su partitura)
+│   ├── Contrapunto/   Contrapunto (contrapunto de especies, a dos voces y a varias, con sus faltas y su partitura)
+│   ├── Conduccion/    Conduccion (las reglas de conducción de voces que comparten el coral y el contrapunto)
+│   └── Textos/        TextosDePolifonia y un fichero por idioma
 ├── Formatos/          FormatoDePartitura y Partitura+Formatos (exportar a cada formato)
 │   ├── MusicXML/      MusicXML (exportación de voces, corales y progresiones) y su lectura, también en MXL
 │   ├── MEI/           MEI y su lectura
@@ -313,10 +319,12 @@ Sources/
 │   ├── LilyPond/      LilyPond
 │   ├── GUIDO/         GUIDO
 │   ├── Exportacion/   Exportacion y EscritorDeLineas, lo que comparten los formatos
-│   └── Importacion/   Importacion (con ErrorDeLecturaDeFichero, las escalas, la partitura y las repeticiones)
-│                      y el lector de XML propio (LectorXML)
+│   ├── Importacion/   Importacion (con ErrorDeLecturaDeFichero, las escalas, la partitura y las repeticiones)
+│   │                  y el lector de XML propio (LectorXML)
+│   └── Textos/        TextosDeFormatos y un fichero por idioma
 ├── Trastes/           Encordado (afinaciones del instrumento), Mastil (con PosicionEnElMastil: dónde suena cada nota),
-│                      Digitacion (formas de tocar un acorde en el mástil)
+│   │                  Digitacion (formas de tocar un acorde en el mástil)
+│   └── Textos/        TextosDeTrastes y un fichero por idioma
 └── Armonia/           el módulo paraguas, sin código propio: Exportaciones (reexporta los siete)
     │                  y la documentación
     └── Armonia.docc/  portada y un artículo por tema

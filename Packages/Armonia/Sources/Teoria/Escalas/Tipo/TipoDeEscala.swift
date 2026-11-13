@@ -214,7 +214,7 @@ public struct TipoDeEscala: Sendable, Codable {
     /// Otras escalas del catálogo (`catalogo`, en su orden) con el mismo contenido y otro
     /// nombre: para la mayor, Bilāval, Dhīraśaṅkarābharaṇam y Qīngyuè.
     public var equivalentes: [TipoDeEscala] {
-        TipoDeEscala.catalogo.filter { $0 == self && $0.nombre != nombre }
+        TipoDeEscala.delCatalogo(todasCon: contenido).filter { $0.nombre != nombre }
     }
 
     /// El modo que empieza en el grado `grado` (1 = la propia escala): la rotación de sus intervalos al subir.
@@ -223,15 +223,26 @@ public struct TipoDeEscala: Sendable, Codable {
     ///
     ///     TipoDeEscala.mayor.modo(grado: 6)   // .menorNatural
     public func modo(grado: Int) -> TipoDeEscala {
-        let n = intervalos.count
-        let desde = modulo(grado - 1, n)
+        let desde = modulo(grado - 1, intervalos.count)
         if desde == 0 { return self }
-        let nuevos = (0..<n).map { i in
-            Intervalo.simpleAscendente(
-                pasosDeQuinta: intervalos[(desde + i) % n].pasosDeQuinta - intervalos[desde].pasosDeQuinta)
-        }
-        let candidato = TipoDeEscala(nombre: "\(nombre), modo \(desde + 1)", intervalos: nuevos)
+        let candidato = TipoDeEscala(nombre: "\(nombre), modo \(desde + 1)", intervalos: rotacion(desde: desde))
         return TipoDeEscala.delCatalogo(con: candidato.contenido) ?? candidato
+    }
+
+    /// Lo que suena cada uno de sus modos (`modo(grado:)`, del primero al último), sin buscarlos en el catálogo.
+    package var contenidosDeSusModos: [Contenido] {
+        intervalos.indices.map {
+            Contenido(intervalos: TipoDeEscala.ordenar(rotacion(desde: $0)), intervalosDescendentes: nil)
+        }
+    }
+
+    /// Sus intervalos al subir, empezando en el grado `desde + 1`.
+    private func rotacion(desde: Int) -> [Intervalo] {
+        intervalos.indices.map { i in
+            Intervalo.simpleAscendente(
+                pasosDeQuinta: intervalos[(desde + i) % intervalos.count].pasosDeQuinta
+                    - intervalos[desde].pasosDeQuinta)
+        }
     }
 
     // MARK: Contenido
@@ -254,14 +265,13 @@ public struct TipoDeEscala: Sendable, Codable {
     }
 
     /// La primera escala de `catalogo` con ese contenido, si la hay.
-    package static func delCatalogo(con contenido: Contenido) -> TipoDeEscala? { porContenido[contenido] }
+    package static func delCatalogo(con contenido: Contenido) -> TipoDeEscala? { porContenido[contenido]?.first }
 
-    /// Contenido → la primera escala de `catalogo` que suena así.
-    private static let porContenido: [Contenido: TipoDeEscala] = {
-        var tabla: [Contenido: TipoDeEscala] = [:]
-        for tipo in catalogo where tabla[tipo.contenido] == nil { tabla[tipo.contenido] = tipo }
-        return tabla
-    }()
+    /// Las escalas de `catalogo` con ese contenido, en su orden: las que se llaman distinto y suenan igual.
+    package static func delCatalogo(todasCon contenido: Contenido) -> [TipoDeEscala] { porContenido[contenido] ?? [] }
+
+    /// Contenido → las escalas de `catalogo` que suenan así, en su orden.
+    private static let porContenido: [Contenido: [TipoDeEscala]] = Dictionary(grouping: catalogo, by: \.contenido)
 }
 
 /// Los datos y la clave de un `TipoDeEscala`, en el montón. Son inmutables, así que compartirlos entre copias y entre

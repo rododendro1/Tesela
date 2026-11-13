@@ -46,9 +46,9 @@ public struct Digitacion: Hashable, Sendable, CustomStringConvertible {
         self.init(mastil: mastil, trastes: trastes)
     }
 
-    /// Lee la tablatura que escribe `tablatura`: «x32010», o con guiones si algún traste pasa de 9 («x-10-12-12-11-10»).
-    /// Lanza `ErrorDeLecturaDeTeoria` si un traste no se entiende o no está en el mástil (`.trasteNoValido`, en
-    /// su carácter) o si no hay uno por cuerda (`.cuerdasDistintas`).
+    /// Lee la tablatura que escribe `tablatura`: «x32010», o con guiones si algún traste pasa de 9
+    /// («x-10-12-12-11-10»). Lanza `ErrorDeLecturaDeTeoria` si un traste no se entiende o no está en el mástil
+    /// (`.trasteNoValido`, en su carácter) o si no hay uno por cuerda (`.cuerdasDistintas`).
     public init(leyendo tablatura: String, en mastil: Mastil) throws {
         let conGuiones = tablatura.contains("-")
         let partes =
@@ -170,7 +170,8 @@ extension Mastil {
     /// Formas de tocar un acorde en este mástil, de la más cómoda a la menos.
     ///
     /// Una forma vale si:
-    /// - toca todas las notas del acorde (con `exigirQuinta: false`, la quinta puede faltar en los acordes de cuatro notas o más);
+    /// - toca todas las notas del acorde (con `exigirQuinta: false`, la quinta puede faltar en los acordes de cuatro
+    ///   notas o más);
     /// - la nota más grave que suena es el bajo del acorde (Sol7/Si tiene a Si debajo). En un instrumento
     ///   reentrante (``Encordado/esReentrante``) esto solo se exige a un acorde con bajo propio: el La menor
     ///   del ukelele, `2000`, suena con el Do más grave y es un La menor;

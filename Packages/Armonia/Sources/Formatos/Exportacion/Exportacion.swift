@@ -291,8 +291,8 @@ extension EscritorDePartitura {
 
 extension Exportacion {
     /// La partitura en el formato de `Escritor`: cada pentagrama con su clave (la que pidan sus notas si no lleva
-    /// ninguna), cada voz en el suyo con sus cifrados y su análisis, y la tonalidad del análisis debajo del último.
-    /// En MusicXML, la tablatura de un pentagrama con `numeroDeCuerdas` va en un pentagrama de tablatura debajo de todos.
+    /// ninguna), cada voz en el suyo con sus cifrados y su análisis, y la tonalidad del análisis debajo del último. En
+    /// MusicXML, la tablatura de un pentagrama con `numeroDeCuerdas` va en un pentagrama de tablatura debajo de todos.
     package static func documento<Escritor: EscritorDePartitura>(
         _: Escritor.Type, de partitura: Partitura
     ) -> String {

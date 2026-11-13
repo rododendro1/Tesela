@@ -112,7 +112,8 @@ import Testing
             let p = PuntoDeLaRed(casilla)
             #expect(teclado.midi(en: TablaArmonica.coordenada(de: p)) == TablaArmonica.midi(de: p))
         }
-        // Arriba (el norte de los planos), una quinta; arriba a la derecha, una tercera mayor; arriba a la izquierda, una menor.
+        // Arriba (el norte de los planos), una quinta; arriba a la derecha, una tercera mayor; arriba a la izquierda,
+        // una menor.
         #expect(teclado.semitonos(hacia: DireccionHexagonal(.norte, .plana)!) == 7)
         #expect(teclado.semitonos(hacia: DireccionHexagonal(.noreste, .plana)!) == 4)
         #expect(teclado.semitonos(hacia: DireccionHexagonal(.noroeste, .plana)!) == 3)

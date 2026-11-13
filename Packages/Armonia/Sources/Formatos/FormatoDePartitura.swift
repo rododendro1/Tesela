@@ -3,10 +3,10 @@ import Foundation
 import Partituras
 import Teoria
 
-// Los formatos de partitura como un solo tipo. Cada formato tiene su función en la `Partitura` (`musicXML()`, `guido()`,
-// `midi()`…), y `partitura.exportar(como:)` elige una de ellas: así, quien ofrece todos los formatos (el menú de
-// exportar de las apps, la línea de comandos, `armonia grabar`) los recorre con `FormatoDePartitura.allCases` y no
-// repite la llamada de cada uno. Un formato nuevo es un caso más aquí y una rama más en `exportar`.
+// Los formatos de partitura como un solo tipo. Cada formato tiene su función en la `Partitura` (`musicXML()`,
+// `guido()`, `midi()`…), y `partitura.exportar(como:)` elige una de ellas: así, quien ofrece todos los formatos (el
+// menú de exportar de las apps, la línea de comandos, `armonia grabar`) los recorre con `FormatoDePartitura.allCases` y
+// no repite la llamada de cada uno. Un formato nuevo es un caso más aquí y una rama más en `exportar`.
 
 /// Un formato de fichero en que se exporta una partitura: MusicXML, MEI, LilyPond, GUIDO, ABC o MIDI.
 ///

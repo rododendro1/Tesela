@@ -4,7 +4,8 @@ import Testing
 @testable import Elementos
 @testable import Teoria
 
-/// Las tres modalidades del español y del inglés: con palabras (`.conPalabras(.espanol)`, `.conPalabras(.ingles)`), ASCII y Unicode.
+/// Las tres modalidades del español y del inglés: con palabras (`.conPalabras(.espanol)`, `.conPalabras(.ingles)`),
+/// ASCII y Unicode.
 @Suite struct NotacionesConPalabrasTests {
     @Test func nombresDeNota() {
         let casos: [(String, String, String, String, String, String, String)] = [

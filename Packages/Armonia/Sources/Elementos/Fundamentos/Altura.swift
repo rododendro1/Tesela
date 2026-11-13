@@ -58,8 +58,8 @@ public struct Altura: Hashable, Sendable {
     }
 
     /// Lee una nota escrita en una notación concreta: `Altura(leyendo: "Fis4", en: .compacta(.aleman))`,
-    /// `Altura(leyendo: "ré bémol 3", en: .conPalabras(.frances))`. La octava es la científica (Do4 = do central), con cifras o
-    /// en subíndice ("ré bémol ₃").
+    /// `Altura(leyendo: "ré bémol 3", en: .conPalabras(.frances))`. La octava es la científica (Do4 = do central), con
+    /// cifras o en subíndice ("ré bémol ₃").
     public init(leyendo texto: String, en notacion: Notacion) throws {
         let notacion = notacion.notacionDeLasNotas
         // En español e inglés con signos, el lector de siempre («Fa#4»). En los demás casos, el nombre y la octava por

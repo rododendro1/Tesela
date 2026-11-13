@@ -451,9 +451,10 @@ extension Nota {
     public var nombreASCII: String { natural.nombre + alteracion.simboloASCII }
 
     /// Nombre en la notación indicada: `.conPalabras(.espanol)` → "Fa sostenido", `.ascii(.espanol)` → "Fa#",
-    /// `.compacta(.espanol)` → "Fa♯", `.conPalabras(.ingles)` → "F sharp", `.ascii(.ingles)` → "F#", `.compacta(.ingles)` → "F♯",
-    /// `.conPalabras(.aleman)` → "F Kreuz", `.compacta(.aleman)` → "Fis", `.conPalabras(.frances)` → "fa dièse",
-    /// `.conPalabras(.italiano)` → "fa diesis", `.conPalabras(.ruso)` → "фа-диез", `.conPalabras(.griego)` → "φα δίεση", `.compacta(.frances)` → "Fa♯".
+    /// `.compacta(.espanol)` → "Fa♯", `.conPalabras(.ingles)` → "F sharp", `.ascii(.ingles)` → "F#",
+    /// `.compacta(.ingles)` → "F♯", `.conPalabras(.aleman)` → "F Kreuz", `.compacta(.aleman)` → "Fis",
+    /// `.conPalabras(.frances)` → "fa dièse", `.conPalabras(.italiano)` → "fa diesis", `.conPalabras(.ruso)` →
+    /// "фа-диез", `.conPalabras(.griego)` → "φα δίεση", `.compacta(.frances)` → "Fa♯".
     public func nombre(en notacion: Notacion) -> String {
         // Los de otra tradición (Ga♯ en bizantino, 嬰ヘ en japonés), como los escriba su sistema.
         if let sistema = notacion.escritura.sistema {
@@ -481,7 +482,8 @@ extension Nota {
     package var nombreAleman: String { nombreConSufijos(en: .aleman) }
 
     /// Nombre a la alemana, con los sufijos del idioma (``ReglasDeIdioma/sufijoDeSostenido`` y
-    /// ``ReglasDeIdioma/sufijoDeBemol``): Fis, Eses, Asas, Heses en alemán; Fisz, Eszesz, Aszasz, Heszesz en húngaro; Fiss, Essess, Assass, Hessess en sueco.
+    /// ``ReglasDeIdioma/sufijoDeBemol``): Fis, Eses, Asas, Heses en alemán; Fisz, Eszesz, Aszasz, Heszesz en húngaro;
+    /// Fiss, Essess, Assass, Hessess en sueco.
     package func nombreConSufijos(en idioma: Idioma) -> String {
         let reglas = idioma.reglas
         let letra = reglas.naturales[natural.rawValue]
