@@ -54,6 +54,10 @@
 
 ### Lo nuevo
 
+- `TipoDeEscala.clave`: la clave fija de cada escala del catálogo («kafi», «rast-makami»). Sale de su nombre en
+  español, pero no cambia si el nombre cambia. Es lo que identifica a la escala (su tradición, su categoría, sus
+  nombres en otros idiomas) y lo que guarda el JSON, así que lo guardado sigue siendo la misma escala aunque se
+  corrija su nombre. Lo guardado sin clave se reconoce, como antes, por el nombre y las notas.
 - Los ritmos tienen `estilos`, `epocasDeUso` y `epocas`, como los acordes: el flamenco en la soleá, la bulería y la
   seguiriya, el folclore en los aksak búlgaros, la clásica en los modos rítmicos, el vals, la polonesa, la siciliana
   y la habanera, y el jazz en el charleston y la bossa nova. Los de otras tradiciones (los tala, los iqa', los usul)
