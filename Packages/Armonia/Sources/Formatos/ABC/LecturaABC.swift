@@ -121,7 +121,7 @@ struct LectorABC {
             let linea = String(linea)
             let limpia = linea.trimmingCharacters(in: .whitespaces)
             if limpia.hasPrefix("X:") {
-                if empezada { break }  // la melodía siguiente
+                if empezada { break } // la melodía siguiente
                 empezada = true
                 continue
             }
@@ -180,7 +180,7 @@ struct LectorABC {
             let nombre = String(valor.prefix { !$0.isWhitespace })
             cambiarDeVoz(nombre.isEmpty ? "1" : nombre)
         default:
-            break  // w:, W:, P:, R:, C:, N:… no cambian las notas
+            break // w:, W:, P:, R:, C:, N:… no cambian las notas
         }
     }
 

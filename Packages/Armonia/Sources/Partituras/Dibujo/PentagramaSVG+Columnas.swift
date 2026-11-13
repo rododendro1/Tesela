@@ -309,7 +309,7 @@ extension PentagramaSVG {
                 grupos[k][i].desplazada = true
             }
             // Alteraciones: las que no da la armadura, en columnas a la izquierda sin pisarse.
-            var fondoDeLaColumna: [Double] = []  // hasta dónde baja el último glifo de cada columna
+            var fondoDeLaColumna: [Double] = [] // hasta dónde baja el último glifo de cada columna
             for i in grupos[k].indices.reversed() {
                 let semitonos = grupos[k][i].altura.nota.alteracion.semitonos
                 // Lo que vale en esa línea o espacio: lo último que se escribió o, si nada, la armadura. Así la
