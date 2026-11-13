@@ -36,6 +36,20 @@ cifras de las que sí están son las escalas declaradas en su fichero del catál
 
 Son más largas India (62), Turquía (39) y el mundo árabe (35).
 
+### Dónde buscar las que faltan
+
+Se buscaron en noviembre de 2026 los muqam uigures y los ṭubūʿ del Magreb, y no se añadió ninguno: lo que se puede
+leer en abierto no da sus escalas en texto, y sin una obra que las dé no se escriben de memoria.
+
+- **Uigures:** Harris (2008), *The Making of a Musical Canon in Chinese Central Asia: The Uyghur Twelve Muqam*, y
+  Light (2008), *Intimate Heritage*, no están en abierto. Zhou Ji (周吉), «维吾尔木卡姆音体系研究», da el
+  conjunto de notas del tema de cada uno de los doce muqam, pero en una tabla que es una imagen.
+- **Magreb:** la Jewish Music Research Centre de la Universidad Hebrea («Andalusian Nuba») muestra las escalas de
+  los once ṭubūʿ marroquíes, también en imágenes, sacadas del árbol de los modos del manuscrito al-Ḥāʾik (Tetuán).
+  Según esa página son escalas de tonos y semitonos, sin microtonos.
+
+Con una de esas tablas en texto, o con un escaneo de las obras, se pueden añadir.
+
 ## Escalas occidentales sin fuente
 
 De las 118 escalas occidentales, 28 no citan ninguna obra. Son las alteradas que no tienen siete notas y que, por
