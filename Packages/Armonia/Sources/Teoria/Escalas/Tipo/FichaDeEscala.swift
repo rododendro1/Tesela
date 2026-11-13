@@ -151,16 +151,18 @@ extension TipoDeEscala {
                     tipo, $0.sistema, pasos: $0.pasos, pasosDescendentes: $0.pasosDescendentes, fuente: $0.fuente,
                     referencias: $0.referencias)
             }
+            let propias: [Referencia] = [tipo.ficha.documentada, tipo.ficha.fuente?.referencia].compactMap { $0 }
+            let deSuCaracter: [Referencia] = (caracterPorIdentidad[tipo.identidad] ?? []).map(\.fuente)
             let referencias = Referencia.unicas(
-                tipo.ficha.referencias + [tipo.ficha.documentada, tipo.ficha.fuente?.referencia].compactMap { $0 }
-                    + (deSuLista[tipo.identidad] ?? []) + afinaciones.flatMap(\.referencias))
+                tipo.ficha.referencias + propias + (deSuLista[tipo.identidad] ?? [])
+                    + afinaciones.flatMap(\.referencias) + deSuCaracter)
             tabla[tipo.identidad] = EntradaDelCatalogo(tipo: tipo, afinaciones: afinaciones, referencias: referencias)
         }
         return tabla
     }()
 
-    /// Dónde se lee la escala: las obras que cita su declaración, la que la documenta, la de su fuente, las de su lista
-    /// y las de sus afinaciones, sin repetir; en las occidentales, las de `referenciasOccidentales`. Vacío en las
+    /// Dónde se lee la escala: las obras que cita su declaración, la que la documenta, la de su fuente, las de su lista,
+    /// las de sus afinaciones y las de su carácter, sin repetir; en las occidentales, las de `referenciasOccidentales`. Vacío en las
     /// propias y en las occidentales sintéticas.
     ///
     ///     TipoDeEscala.bayati.referencias.map(\.cita)   // ["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019"]

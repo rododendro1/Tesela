@@ -20,6 +20,7 @@ enum Mensaje {
     case acordes
     case microtonos
     case referencias
+    case caracter
     case escalas
     case habituales
     case sinLugar
@@ -75,6 +76,7 @@ enum Mensaje {
         case .acordes: return TextosDeConsola.traduccion(\.mensajeAcordes)
         case .microtonos: return TextosDeConsola.traduccion(\.mensajeMicrotonos)
         case .referencias: return TextosDeConsola.traduccion(\.mensajeReferencias)
+        case .caracter: return TextosDeConsola.traduccion(\.mensajeCaracter)
         case .escalas: return TextosDeConsola.traduccion(\.mensajeEscalas)
         case .habituales: return TextosDeConsola.traduccion(\.mensajeHabituales)
         case .sinLugar: return TextosDeConsola.traduccion(\.mensajeSinLugar)
