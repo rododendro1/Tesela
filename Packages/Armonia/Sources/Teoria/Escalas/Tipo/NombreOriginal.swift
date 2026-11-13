@@ -10,7 +10,7 @@ import Elementos
 ///     TipoDeEscala.yo.nombresOriginales.map(\.texto)      // ["陽", "陽音階"]
 ///     TipoDeEscala.yo.nombresOriginales[1].lectura        // "Yō onkai"
 public struct NombreOriginal: Sendable, Hashable {
-    /// El texto, en NFC: «حجاز», «陽音階», «سه‌گاه» (con su ZWNJ).
+    /// El texto, en NFC: «حجاز», «陽音階», «سه\u{200C}گاه» (con su ZWNJ).
     public let texto: String
     public let idioma: IdiomaOriginal
     /// Cómo se lee, si no es el `nombre` de la escala: «Yō onkai» para 陽音階, «Liùlǜ» para 六律. `nil` si es el
@@ -134,7 +134,7 @@ public enum Escritura: String, Sendable, CaseIterable, Codable {
         }
     }
 
-    /// ¿Usa ZWNJ y ZWJ dentro de las palabras? El persa (سه‌گاه) y las escrituras índicas.
+    /// ¿Usa ZWNJ y ZWJ dentro de las palabras? El persa (سه\u{200C}گاه) y las escrituras índicas.
     package var admiteUnionesDeAnchoCero: Bool {
         switch self {
         case .arabe, .devanagari: true
