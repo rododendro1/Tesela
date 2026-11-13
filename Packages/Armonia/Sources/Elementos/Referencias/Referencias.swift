@@ -111,8 +111,8 @@ extension Referencia {
         "monro1894", .libro, autores: ["Monro, D. B."], titulo: "The Modes of Ancient Greek Music", anio: 1894,
         editorial: "Clarendon Press", lugar: "Oxford")
 
-    /// Cantemir, el «Libro de la ciencia de la música» (hacia 1700): los makamlar de la música otomana de su tiempo, con
-    /// su notación por letras (manuscrito; el año es aproximado).
+    /// Cantemir, el «Libro de la ciencia de la música» (hacia 1700): los makamlar de la música otomana de su tiempo,
+    /// con su notación por letras (manuscrito; el año es aproximado).
     public static let cantemir1700 = Referencia(
         "cantemir1700", .tratado, autores: ["Cantemir, Dimitrie"],
         titulo: "Kitâbu ʿİlmiʾl-Mûsikî ʿalâ vechiʾl-Hurûfât", anio: 1700, lugar: "Estambul")
@@ -123,8 +123,8 @@ extension Referencia {
 
     // MARK: Grecia moderna
 
-    /// Pennanen, la música popular griega del siglo XX: los dromoi del rebético y del laikó, con sus escalas y los makam
-    /// de los que vienen (tesis doctoral).
+    /// Pennanen, la música popular griega del siglo XX: los dromoi del rebético y del laikó, con sus escalas y los
+    /// makam de los que vienen (tesis doctoral).
     public static let pennanen1999 = Referencia(
         "pennanen1999", .tesis, autores: ["Pennanen, Risto Pekka"],
         titulo: "Westernisation and Modernisation in Greek Popular Music", anio: 1999,
@@ -321,7 +321,8 @@ extension Referencia {
 
     // MARK: Escalas occidentales
 
-    /// Aldwell, Schachter y Cadwallader (4.ª ed.), la armonía tonal: las escalas mayor y menores, y los acordes de la tonalidad.
+    /// Aldwell, Schachter y Cadwallader (4.ª ed.), la armonía tonal: las escalas mayor y menores, y los acordes de la
+    /// tonalidad.
     public static let aldwell2011 = Referencia(
         "aldwell2011", .libro, autores: ["Aldwell, Edward", "Schachter, Carl", "Cadwallader, Allen"],
         titulo: "Harmony and Voice Leading", anio: 2011, editorial: "Schirmer Cengage Learning", lugar: "Boston")
@@ -343,8 +344,8 @@ extension Referencia {
         "cohn1996", .articulo, autores: ["Cohn, Richard"],
         titulo: "Maximally Smooth Cycles, Hexatonic Systems, and the Analysis of Late-Romantic Triadic Progressions",
         anio: 1996, publicadoEn: "Music Analysis", volumen: "15 (1)", paginas: "9–40")
-    /// Slonimsky, el tesauro de escalas: las divisiones de la octava en partes iguales (tritono, ditono, sesquitono) con
-    /// notas interpoladas, de donde salen la aumentada semitono-tercera y Petrushka menor.
+    /// Slonimsky, el tesauro de escalas: las divisiones de la octava en partes iguales (tritono, ditono, sesquitono)
+    /// con notas interpoladas, de donde salen la aumentada semitono-tercera y Petrushka menor.
     public static let slonimsky1947 = Referencia(
         "slonimsky1947", .libro, autores: ["Slonimsky, Nicolas"], titulo: "Thesaurus of Scales and Melodic Patterns",
         anio: 1947, editorial: "Coleman-Ross", lugar: "Nueva York")

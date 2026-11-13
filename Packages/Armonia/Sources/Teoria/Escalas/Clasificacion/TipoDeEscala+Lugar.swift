@@ -7,8 +7,8 @@ import Elementos
 // MARK: Dónde están las regiones y las tradiciones
 
 extension RegionDeEscala {
-    /// Los países en que está: Java, en Indonesia; los Alpes, en Suiza y Austria; los mandinga, en Malí, Senegal, Gambia
-    /// y Guinea. El `switch` no tiene `default`: una región nueva no compila sin los suyos.
+    /// Los países en que está: Java, en Indonesia; los Alpes, en Suiza y Austria; los mandinga, en Malí, Senegal,
+    /// Gambia y Guinea. El `switch` no tiene `default`: una región nueva no compila sin los suyos.
     public var paises: [Pais] {
         switch self {
         case .java, .bali, .sunda: [.indonesia]
@@ -106,8 +106,8 @@ extension Estilo {
 extension TipoDeEscala {
     /// Las occidentales cuyo nombre es geográfico pero no dice de dónde vienen: la persa, la egipcia, la oriental y la
     /// argelina son etiquetas exóticas de los libros de escalas, sin nada que ver con la música de esos lugares (la
-    /// argelina, la de los libros de los años ochenta, no es la de once notas que Ibert usó en «Escales»), y las napolitanas
-    /// se llaman así por la sexta napolitana, no por Nápoles. Como las demás occidentales, son de Europa.
+    /// argelina, la de los libros de los años ochenta, no es la de once notas que Ibert usó en «Escales»), y las
+    /// napolitanas se llaman así por la sexta napolitana, no por Nápoles. Como las demás occidentales, son de Europa.
     public static let nombresGeograficosSinOrigen: [TipoDeEscala] = [
         .persa, .egipcia, .oriental, .argelina, .napolitanaMenor, .napolitanaMayor,
     ]
@@ -129,7 +129,8 @@ extension TipoDeEscala {
     /// Las familias de escalas de varias tradiciones que son la misma, con nombres que vienen unos de otros: el frigio
     /// dominante, Ḥijāz, Hicaz makamı, el dromos Hitzáz y el Freygish del klezmer. De ellas salen los lugares de uso
     /// (`lugaresDeUso`), que no se deducen de las notas: la mayor tiene las de Bilāval, pero no se usa en la India.
-    /// Todas las de una familia tienen las mismas notas, al subir o al bajar (Hicaz makamı baja como el frigio dominante).
+    /// Todas las de una familia tienen las mismas notas, al subir o al bajar (Hicaz makamı baja como el frigio
+    /// dominante).
     package static let familias: [[TipoDeEscala]] = [
         [.frigioDominante, .hiyaz, .hicazMakami, .hitzaz, .freygish],
         [.dobleArmonica, .hiyazkar, .hicazkarMakami, .hitzazkiar],
@@ -202,7 +203,7 @@ extension TipoDeEscala {
     /// Los lugares de origen de las otras escalas del catálogo con sus mismas notas que no son de uso: coincidencias,
     /// no parentescos. La mayor coincide con Bilāval (la India), con ʿAjam (el mundo árabe) y con más.
     public var lugaresQueCoinciden: [Lugar] {
-        let iguales = TipoDeEscala.catalogo.filter { $0 == self && !$0.esIdentico(a: self) }
+        let iguales = TipoDeEscala.delCatalogo(todasCon: contenido).filter { !$0.esIdentico(a: self) }
         return TipoDeEscala.sinRepetir(iguales.flatMap(\.lugaresDeOrigen), quitando: lugaresDeOrigen + lugaresDeUso)
     }
 

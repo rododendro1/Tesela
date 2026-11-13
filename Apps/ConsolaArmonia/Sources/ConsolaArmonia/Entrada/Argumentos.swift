@@ -132,12 +132,12 @@ struct Argumentos {
         return n
     }
 
-    /// Quita las opciones al estilo de las partituras, que toman todas las palabras que las siguen hasta la
-    /// siguiente opción (`--titulo Mi canción`); las marcas de `conocidas` no toman nada. Cada opción se lee con
-    /// cualquiera de sus nombres (`OpcionDeOrden.leidos`), sin distinguir mayúsculas, y se da por el primero, sin
-    /// guiones (`titulo`, también si se escribe `--title`); una opción sin palabras detrás tiene `""`. Lo que no sigue a
-    /// ninguna opción (lo de delante, o lo que va tras una marca) se queda en `restantes`. Lanza `opcionDesconocida`
-    /// con la primera que no está en `conocidas`.
+    /// Quita las opciones al estilo de las partituras, que toman todas las palabras que las siguen hasta la siguiente
+    /// opción (`--titulo Mi canción`); las marcas de `conocidas` no toman nada. Cada opción se lee con cualquiera de
+    /// sus nombres (`OpcionDeOrden.leidos`), sin distinguir mayúsculas, y se da por el primero, sin guiones (`titulo`,
+    /// también si se escribe `--title`); una opción sin palabras detrás tiene `""`. Lo que no sigue a ninguna opción
+    /// (lo de delante, o lo que va tras una marca) se queda en `restantes`. Lanza `opcionDesconocida` con la primera
+    /// que no está en `conocidas`.
     ///
     ///     var argumentos = Argumentos(["Do", "Re", "--title", "Mi", "canción", "--cifrados"])
     ///     try argumentos.quitarOpcionesConTexto([.titulo, .cifrados])

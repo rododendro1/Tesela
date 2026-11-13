@@ -108,8 +108,8 @@ public struct Partitura: Hashable, Sendable, Codable {
         public var bajoCifrado: [Duracion: [String]]
         /// El dedo de cada nota (de la grave a la aguda; 0, ninguno), encima. Solo cuenta en SVG.
         public var dedos: [Duracion: [Int]]
-        /// La cuerda y el traste de cada nota, en la tablatura del pentagrama (`Pentagrama.numeroDeCuerdas`): debajo en SVG, y
-        /// en un pentagrama de tablatura en MusicXML.
+        /// La cuerda y el traste de cada nota, en la tablatura del pentagrama (`Pentagrama.numeroDeCuerdas`): debajo en
+        /// SVG, y en un pentagrama de tablatura en MusicXML.
         public var pulsaciones: [Duracion: [Tablatura.Pulsacion]]
         /// La nota desde la que se cuentan los intervalos de las notas (`marcas.intervalosDeLasNotas`) donde no suena
         /// ningún acorde: la tónica de una escala. Si es `nil`, la de la armadura `.tonalidad`. Solo cuenta en SVG.
@@ -226,8 +226,8 @@ public struct Partitura: Hashable, Sendable, Codable {
     }
 
     /// Acordes con sus alturas escritas (las disposiciones de `Acorde.disposiciones(_:en:)` o de
-    /// `DisposicionDeAcorde.conducir(_:en:)`), uno por columna y sin ritmo (``dibujaElRitmo``), sin armadura (salvo la de
-    /// `.tonalidad` en las opciones): en dos pentagramas si las notas pasan a los dos lados del Do central y con uno
+    /// `DisposicionDeAcorde.conducir(_:en:)`), uno por columna y sin ritmo (``dibujaElRitmo``), sin armadura (salvo la
+    /// de `.tonalidad` en las opciones): en dos pentagramas si las notas pasan a los dos lados del Do central y con uno
     /// harían falta más de tres líneas adicionales. En MusicXML, MIDI y los demás formatos, cada acorde es una redonda.
     ///
     ///     let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
@@ -343,9 +343,9 @@ extension Partitura {
             tablatura: tablatura, acorde: acorde, tonica: tonica, armadura: armadura)
     }
 
-    /// Como `tocada(_:…)`, con las notas de cada evento juntas: todas las de un acorde en uno. El cifrado de
-    /// `acorde` va en la primera nota, si `porEvento` no le da otro, y las pulsaciones de `tablatura`, si `porEvento` no
-    /// trae las suyas.
+    /// Como `tocada(_:…)`, con las notas de cada evento juntas: todas las de un acorde en uno. El cifrado de `acorde`
+    /// va en la primera nota, si `porEvento` no le da otro, y las pulsaciones de `tablatura`, si `porEvento` no trae
+    /// las suyas.
     static func tocada(
         juntas notas: [[Evento.NotaDelEvento]], titulo: String? = nil, tema: Encabezado.Tema, ritmo: Ritmo = .libre,
         porEvento anotaciones: AnotacionesPorEvento = AnotacionesPorEvento(), tablatura: Tablatura? = nil,

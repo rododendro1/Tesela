@@ -279,8 +279,8 @@ import Testing
         }
     }
 
-    /// Los huecos de cada plantilla de `TextosDeApps`, por idioma: los de los trece tienen que ser los del español (como
-    /// `PlantillasDeTextoTests` en el motor).
+    /// Los huecos de cada plantilla de `TextosDeApps`, por idioma: los de los trece tienen que ser los del español
+    /// (como `PlantillasDeTextoTests` en el motor).
     @Test func cadaIdiomaTieneLosHuecosDelEspanol() {
         func plantillas(_ idioma: Idioma) -> [(String, Plantilla)] {
             Mirror(reflecting: TextosDeApps.traducidos.texto(en: idioma)).children.compactMap { hijo in

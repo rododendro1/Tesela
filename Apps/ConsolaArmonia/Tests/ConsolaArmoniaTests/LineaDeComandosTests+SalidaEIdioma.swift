@@ -75,8 +75,8 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.notasEnEspanol("H7", en: .compacta(.espanol)) == "H7")
     }
 
-    /// Los huecos de cada plantilla de `TextosDeConsola`, por idioma: los de los trece tienen que ser los del español (como
-    /// `PlantillasDeTextoTests` en el motor).
+    /// Los huecos de cada plantilla de `TextosDeConsola`, por idioma: los de los trece tienen que ser los del español
+    /// (como `PlantillasDeTextoTests` en el motor).
     @Test func cadaIdiomaTieneLosHuecosDelEspanol() {
         func plantillas(_ idioma: Idioma) -> [(String, Plantilla)] {
             Mirror(reflecting: TextosDeConsola.traducidos.texto(en: idioma)).children.compactMap { hijo in

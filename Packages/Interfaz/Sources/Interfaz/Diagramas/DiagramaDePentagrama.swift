@@ -10,7 +10,8 @@
     /// Para ofrecerlo como fichero SVG: `BotonDeExportar([pentagrama.fichero])`, con la `PentagramaPresentado`.
     public struct DiagramaDePentagrama: View {
         public let presentacion: PentagramaPresentado
-        /// Lo más alto que llega el dibujo, en puntos; el pentagrama doble y las escalas largas piden más que los demás.
+        /// Lo más alto que llega el dibujo, en puntos; el pentagrama doble y las escalas largas piden más que los
+        /// demás.
         public let alturaMaxima: CGFloat
 
         /// El pentagrama ya presentado, como mucho de esa altura.

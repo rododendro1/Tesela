@@ -19,7 +19,8 @@ extension TemperamentoConNombre {
     public static let pitagorico = TemperamentoConNombre(
         nombre: "afinación pitagórica", construccion: .regular(1200 * log2(1.5)), familia: .regular,
         alias: ["pitagórico"], referencias: [.barbour1951])
-    /// Cada quinta, ¼ de coma sintónica más estrecha, para que las terceras mayores sean puras (5/4). La quinta Sol♯–Mi♭ es la del lobo.
+    /// Cada quinta, ¼ de coma sintónica más estrecha, para que las terceras mayores sean puras (5/4). La quinta
+    /// Sol♯–Mi♭ es la del lobo.
     public static let mesotonicoCuartoDeComa = TemperamentoConNombre(
         nombre: "mesotónico de 1/4 de coma",
         construccion: .regular(TemperamentoRegular.mesotonico(fraccionDeComa: 4).quinta), familia: .regular,
@@ -68,7 +69,8 @@ extension TemperamentoConNombre {
         referencias: [.lindley2001, .barbour1951])
     // MARK: Justa
 
-    /// La justa de 5 límites de Ptolomeo sobre Do: 1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8, y las demás teclas por quintas y terceras puras.
+    /// La justa de 5 límites de Ptolomeo sobre Do: 1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8, y las demás teclas por quintas y
+    /// terceras puras.
     public static let afinacionJusta = TemperamentoConNombre(
         nombre: "afinación justa", construccion: .justa, familia: .justa, alias: ["entonación justa"],
         referencias: [.barbour1951])

@@ -30,7 +30,8 @@ extension AcordeConNombre {
         ],
         estilos: [.deCompositor], referencias: [Referencia.taruskin1987.paginas("269")],
         documentada: .stravinski1911)
-    /// El acorde de «Farben», la tercera de las Cinco piezas para orquesta, op. 16, de Schönberg (1909): Do Sol♯ Si Mi La.
+    /// El acorde de «Farben», la tercera de las Cinco piezas para orquesta, op. 16, de Schönberg (1909): Do Sol♯ Si Mi
+    /// La.
     public static let farben = AcordeConNombre(
         nombre: "acorde de Farben",
         intervalos: [.unisono, .quintaAumentada, .septimaMayor, .terceraMayor + .octava, .sextaMayor + .octava],

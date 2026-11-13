@@ -1,6 +1,7 @@
 // swift-format-ignore-file
-// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea.
-// Los nombres de los tipos de escala en inglés: el primero de cada lista es el nombre, el resto, alias de lectura. Qué es cada campo, en `NombresDeEscalas.swift`.
+// Tabla de datos, una fila por línea, como la leen los scripts de Scripts/: no se formatea. Los nombres de los tipos de
+// escala en inglés: el primero de cada lista es el nombre, el resto, alias de lectura. Qué es cada campo, en
+// `NombresDeEscalas.swift`.
 
 extension NombresDeEscalas {
     static let ingles = NombresDeEscalas([

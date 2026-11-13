@@ -194,8 +194,8 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
         self = tonalidad
     }
 
-    /// Lectura en alemán ("Fis-Dur", "a-Moll"), húngaro ("Fisz-dúr"), sueco ("Fiss-dur"), francés ("ré majeur"), italiano ("re
-    /// maggiore") y las demás lenguas de `Notacion` ("фа-диез мажор", "λα ελάσσονα").
+    /// Lectura en alemán ("Fis-Dur", "a-Moll"), húngaro ("Fisz-dúr"), sueco ("Fiss-dur"), francés ("ré majeur"),
+    /// italiano ("re maggiore") y las demás lenguas de `Notacion` ("фа-диез мажор", "λα ελάσσονα").
     package static func leerEnOtrasNotaciones(_ texto: String) -> Tonalidad? {
         let limpio = texto.trimmingEspacios()
         let notaciones = [
@@ -226,7 +226,8 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
 
 // MARK: - Idiomas
 //
-// Nombres de los modos y de las tonalidades en cada idioma. El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+// Nombres de los modos y de las tonalidades en cada idioma. El resto de nombres que dependen del idioma, en
+// `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
 
 // MARK: - Tonalidad.Modo
 
@@ -244,9 +245,9 @@ extension Tonalidad.Modo {
 // MARK: - Tonalidad
 
 extension Tonalidad {
-    /// "La menor" en español, "A minor" en inglés, "a-Moll" en alemán (con la tónica en minúscula
-    /// si es menor, y a la alemana también en `.conPalabras(.aleman)`: "Fis-Dur"), "la mineur" en francés, "la minore" en
-    /// italiano, "ля минор" en ruso, "λα ελάσσονα" en griego.
+    /// "La menor" en español, "A minor" en inglés, "a-Moll" en alemán (con la tónica en minúscula si es menor, y a la
+    /// alemana también en `.conPalabras(.aleman)`: "Fis-Dur"), "la mineur" en francés, "la minore" en italiano, "ля
+    /// минор" en ruso, "λα ελάσσονα" en griego.
     public func nombre(en notacion: Notacion) -> String {
         let reglas = notacion.reglasDeLasNotas
         // En alemán la tónica y el modo forman una palabra (Fis-Dur), así que la tónica va siempre compacta.

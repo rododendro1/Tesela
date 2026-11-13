@@ -112,8 +112,8 @@ extension Epoca: Nombrable {}
 // MARK: - La época de lo que ya hay en el catálogo
 
 extension FuenteTeorica {
-    /// El año de su obra, aproximado en las antiguas (los años antes de Cristo son negativos): Arquitas, hacia 380 a. C.;
-    /// Glareano, 1547. El `switch` no tiene `default`: una fuente nueva no compila sin el suyo.
+    /// El año de su obra, aproximado en las antiguas (los años antes de Cristo son negativos): Arquitas, hacia
+    /// 380 a. C.; Glareano, 1547. El `switch` no tiene `default`: una fuente nueva no compila sin el suyo.
     public var anio: Int {
         switch self {
         case .arquitas: -380
@@ -207,8 +207,8 @@ extension TipoDeEscala {
         if let epoca = tradicion?.epoca { return epoca }
         guard tradicion == .occidental else { return nil }
         if estilos.contains(.clasica) {
-            let equivalentes = TipoDeEscala.tradicionales.filter {
-                $0 == self && $0.tradicion.map(TipoDeEscala.tradicionesQueFechan.contains) == true
+            let equivalentes = TipoDeEscala.delCatalogo(todasCon: contenido).filter {
+                $0.tradicion.map(TipoDeEscala.tradicionesQueFechan.contains) == true
             }
             if let epoca = equivalentes.compactMap(\.epocaDeOrigen).min() { return epoca }
         }
@@ -218,8 +218,9 @@ extension TipoDeEscala {
             return epoca
         }
         if estilos.contains(.sintetica) || estilos.contains(where: \.esPopular),
-            let epoca = TipoDeEscala.occidentalesQueFechanSusModos
-                .filter({ esModo(de: $0) && ($0.documentada != nil || estilos.contains(.sintetica)) })
+            let epoca =
+                escalasDeLasQueEsModo
+                .filter({ $0.documentada != nil || estilos.contains(.sintetica) })
                 .compactMap(\.epocaDeOrigen).min()
         {
             return epoca
@@ -238,9 +239,21 @@ extension TipoDeEscala {
 
     /// Es otro modo de esa escala: tiene sus mismos intervalos empezando en otro grado.
     func esModo(de otra: TipoDeEscala) -> Bool {
-        !esIdentico(a: otra) && !esDireccional && !otra.esDireccional && intervalos.count == otra.intervalos.count
-            && (1...otra.intervalos.count).contains { otra.modo(grado: $0) == self }
+        !esIdentico(a: otra) && !esDireccional && !otra.esDireccional && contenidosDeSusModos.contains(otra.contenido)
     }
+
+    /// Las de `occidentalesQueFechanSusModos` de las que es otro modo: las que tienen sus mismos intervalos empezando
+    /// en otro grado (o en el mismo, si se llaman distinto). Se buscan por lo que suenan sus modos, sin recorrerlas.
+    var escalasDeLasQueEsModo: [TipoDeEscala] {
+        guard !esDireccional else { return [] }
+        var vistas = Set<IdentidadDeEscala>()
+        return contenidosDeSusModos.flatMap { TipoDeEscala.occidentalesQueFechanSusModosPorContenido[$0] ?? [] }
+            .filter { !$0.esIdentico(a: self) && vistas.insert($0.identidad).inserted }
+    }
+
+    /// Contenido → las de `occidentalesQueFechanSusModos` que suenan así.
+    static let occidentalesQueFechanSusModosPorContenido = Dictionary(
+        grouping: occidentalesQueFechanSusModos.filter { !$0.esDireccional }, by: \.contenido)
 
     /// Las épocas en que se usa la escala, por sus estilos o, en los que las tienen, por sus corrientes
     /// (`epocasDeUso(de:)`), en orden y sin la de origen: el dórico, las tres tonales, el siglo XX y el XXI (es
@@ -263,8 +276,9 @@ extension TipoDeEscala {
 // MARK: - La época del nombre
 
 extension TipoDeEscala {
-    /// El año del nombre de las escalas cuyo nombre no es de la época de sus notas: los cuatro modos que la «Alia musica» (hacia 900) llama con los nombres griegos, y la mayor y la
-    /// menor, que la teoría francesa de finales del siglo XVII (Jean Rousseau, Masson) deja como los dos únicos modos.
+    /// El año del nombre de las escalas cuyo nombre no es de la época de sus notas: los cuatro modos que la «Alia
+    /// musica» (hacia 900) llama con los nombres griegos, y la mayor y la menor, que la teoría francesa de finales del
+    /// siglo XVII (Jean Rousseau, Masson) deja como los dos únicos modos.
     static let aniosDeLosNombres: [(tipo: TipoDeEscala, anio: Int)] = [
         (.dorico, 900), (.frigio, 900), (.lidio, 900), (.mixolidio, 900), (.mayor, 1690), (.menorNatural, 1690),
     ]

@@ -4,10 +4,10 @@ import Elementos
 
 /// Los doce cakra («ruedas») en que se agrupan los 72 mēḷa, de seis en seis: los del 1 al 6 son el cakra Indu, los del
 /// 67 al 72, el Āditya. En cada cakra cambian Dha y Ni y se quedan Ri, Ga y Ma. Los seis primeros llevan Ma1 (la cuarta
-/// justa) y los seis últimos Ma2 (la aumentada). Cada nombre es una palabra que, en sánscrito, vale por su número: Indu,
-/// la luna, que es una; Netra, los dos ojos; Agni, los tres fuegos; Veda, los cuatro Vedas; Bāṇa, las cinco flechas de
-/// Kāma; Ṛtu, las seis estaciones; Ṛṣi, los siete sabios; Vasu, los ocho Vasus; Brahma, nueve; Diśi, las diez
-/// direcciones; Rudra, los once Rudras, y Āditya, los doce Ādityas.
+/// justa) y los seis últimos Ma2 (la aumentada). Cada nombre es una palabra que, en sánscrito, vale por su número:
+/// Indu, la luna, que es una; Netra, los dos ojos; Agni, los tres fuegos; Veda, los cuatro Vedas; Bāṇa, las cinco
+/// flechas de Kāma; Ṛtu, las seis estaciones; Ṛṣi, los siete sabios; Vasu, los ocho Vasus; Brahma, nueve; Diśi, las
+/// diez direcciones; Rudra, los once Rudras, y Āditya, los doce Ādityas.
 ///
 ///     CakraDeMela(mela: 29)                       // .bana
 ///     TipoDeEscala.mayor.cakra?.nombre            // "Bāṇa"

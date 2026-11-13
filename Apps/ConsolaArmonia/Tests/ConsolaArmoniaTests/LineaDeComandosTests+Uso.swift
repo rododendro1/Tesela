@@ -144,9 +144,9 @@ extension LineaDeComandosTests {
         #expect(con("", ["identificar"]).codigo == 2)
     }
 
-    /// `escalas` busca por el nombre: con unas notas, remite a `identificar --escalas`.
-    /// `escala` da la línea de las referencias de una escala, y `--bibtex`, solo sus obras en BibTeX; una sintética de siete
-    /// notas tiene a Busoni, y una hexatónica alterada, ninguna.
+    /// `escalas` busca por el nombre: con unas notas, remite a `identificar --escalas`. `escala` da la línea de las
+    /// referencias de una escala, y `--bibtex`, solo sus obras en BibTeX; una sintética de siete notas tiene a Busoni,
+    /// y una hexatónica alterada, ninguna.
     @Test func referenciasDeUnaEscala() {
         #expect(
             salida("escala Re bayati").contains(

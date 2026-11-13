@@ -4,6 +4,9 @@
   - Sin caracteres invisibles (guion blando, espacios de ancho cero, BOM): en un identificador de Swift
     no se ven y rompen la compilación o el nombre de una prueba.
   - Sin tabuladores ni espacios al final de línea en el código (.swift, .py, .sh, .yml, .yaml).
+  - En Swift, los comentarios no pasan de 120 caracteres, el ancho que `swift format` pide al código (y que no
+    comprueba en los comentarios). Se salvan los ejemplos de código de la documentación, sangrados cuatro espacios
+    tras el `///` o el `//`, y las filas de las tablas (`/// | … |`): ni una orden ni una fila se parten.
   - Los ficheros acaban en un único salto de línea.
   - Los scripts con shebang son ejecutables y los .py compilan.
   - En Swift, un `guard let x` no redeclara un `let x` / `var x` del mismo ámbito (el compilador lo rechaza:
@@ -28,6 +31,8 @@ INVISIBLES = {0x00AD: "guion blando", 0x200B: "espacio de ancho cero", 0x200C: "
 CODIGO = {".swift", ".py", ".sh", ".yml", ".yaml", ".xcconfig"}
 TEXTO = CODIGO | {".md", ".txt", ".json"}
 TRADUCCION_EN_LINEA = re.compile(r'\bTraduccion\(\s*"')
+ANCHO = 120
+NO_SE_PARTE = re.compile(r"^\s*//+ (?: {4}|\|)")  # un ejemplo de código o una fila de una tabla
 SALTAR = {".git", ".build", ".swiftpm", "DerivedData", "build", "node_modules"}
 
 
@@ -79,6 +84,9 @@ for ruta in ficheros():
             if linea != linea.rstrip(" "):
                 problemas.append(f"{rel}:{n}: espacios al final de la línea")
     if ruta.suffix == ".swift":
+        for n, linea in enumerate(texto.split("\n"), 1):
+            if len(linea) > ANCHO and linea.lstrip().startswith("//") and not NO_SE_PARTE.match(linea):
+                problemas.append(f"{rel}:{n}: comentario de {len(linea)} caracteres (el máximo es {ANCHO})")
         for n, nombre, declarada in guard_que_redeclara(texto.split("\n")):
             problemas.append(f"{rel}:{n}: `guard let {nombre}` redeclara la variable de la línea {declarada} (mismo ámbito)")
         if "/Tests/" not in f"/{rel}" and rel.name != "Traduccion.swift":

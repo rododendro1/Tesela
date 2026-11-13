@@ -11,8 +11,8 @@
 // texto nuevo no compila hasta que está en los trece ficheros. `TextosDeX.en(notacion, \.campo)` da el texto
 // de un campo en un idioma, y `TextosDeX.traduccion(\.campo)` su `Traduccion` (ver `TextosTraducidos`).
 //
-// Los nombres de los catálogos (tipos de acorde y de escala, instrumentos) también están en los trece idiomas, salvo los nombres tradicionales de escala
-// (rāga, maqam, pentatónicas japonesas…), que se escriben igual en todos.
+// Los nombres de los catálogos (tipos de acorde y de escala, instrumentos) también están en los trece idiomas, salvo
+// los nombres tradicionales de escala (rāga, maqam, pentatónicas japonesas…), que se escriben igual en todos.
 
 /// Un valor en cada uno de los trece idiomas en los que escribe el motor: un texto, una lista de textos…
 ///

@@ -266,7 +266,8 @@ public struct Tempo: Hashable, Sendable, CustomStringConvertible {
 
 // MARK: - Idiomas
 //
-// Nombres de las figuras y de las duraciones en los trece idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+// Nombres de las figuras y de las duraciones en los trece idiomas de los textos (`Traduccion`). El resto de nombres que
+// dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
 
 // MARK: - Figura
 

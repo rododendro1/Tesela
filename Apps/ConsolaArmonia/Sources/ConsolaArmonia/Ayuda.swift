@@ -148,7 +148,8 @@ extension LineaDeComandos {
         return lineas + [actual]
     }
 
-    /// La ayuda de una orden: sus entradas, como en la ayuda completa (`armonia ayuda acorde`, `armonia acorde --help`).
+    /// La ayuda de una orden: sus entradas, como en la ayuda completa (`armonia ayuda acorde`, `armonia acorde
+    /// --help`).
     static func ayuda(de orden: Orden, en notacion: Notacion) -> String {
         orden.ayuda.flatMap { lineas(de: $0, en: notacion.textos, grafia: notacion.grafiaDeLosTextos) }
             .joined(separator: "\n")

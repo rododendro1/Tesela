@@ -1,12 +1,12 @@
 import Elementos
 import Teoria
 
-// Lo que se anota evento a evento y el ritmo de unas notas tocadas una tras otra: la forma en que lo dan las escalas, los
-// arpegios, las disposiciones y las digitaciones del mástil, que cuentan las notas y no los puntos de la voz.
+// Lo que se anota evento a evento y el ritmo de unas notas tocadas una tras otra: la forma en que lo dan las escalas,
+// los arpegios, las disposiciones y las digitaciones del mástil, que cuentan las notas y no los puntos de la voz.
 
 extension Partitura {
-    /// Lo que se anota en una voz, evento a evento: cada cosa por el índice de su evento, contando desde 0. Es la forma en
-    /// que lo dan las escalas, los arpegios y el mástil; una ``Linea`` lo guarda por el punto en que empieza cada
+    /// Lo que se anota en una voz, evento a evento: cada cosa por el índice de su evento, contando desde 0. Es la forma
+    /// en que lo dan las escalas, los arpegios y el mástil; una ``Linea`` lo guarda por el punto en que empieza cada
     /// evento, y ``Linea/init(_:porEvento:nombre:plicaArriba:tonica:)`` y ``Linea/porEvento`` pasan de una forma a la
     /// otra.
     ///

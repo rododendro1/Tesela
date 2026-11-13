@@ -83,8 +83,9 @@ extension Estilo {
 
 extension TipoDeEscala {
     /// Los estilos occidentales en que se usa la escala, de más a menos importante: `[.jazz, .clasica]` en el dórico,
-    /// central en el jazz modal y raro en la música clásica. Vacío en las propias y en las de otras tradiciones, que tienen sus escuelas (`escuelas`). Se busca por
-    /// su `identidad`, como `tradicion`: Kāfī tiene las notas del dórico, pero no sus estilos.
+    /// central en el jazz modal y raro en la música clásica. Vacío en las propias y en las de otras tradiciones, que
+    /// tienen sus escuelas (`escuelas`). Se busca por su `identidad`, como `tradicion`: Kāfī tiene las notas del
+    /// dórico, pero no sus estilos.
     ///
     ///     TipoDeEscala.dorico.estilos   // [.jazz, .clasica]
     public var estilos: [Estilo] { datosDelCatalogo.estilos }

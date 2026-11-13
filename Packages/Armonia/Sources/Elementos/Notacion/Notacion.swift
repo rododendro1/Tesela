@@ -54,8 +54,8 @@
 /// tradiciones: `Notacion.sistema(.bizantino, grafia: .original)` escribe Γα♯.
 ///
 /// La octava de las alturas se escribe con cifras (La4) o como subíndice (La₄). Las notaciones compactas
-/// (`.compacta(.espanol)`, `.compacta(.aleman)`, `.compacta(.frances)`…) la escriben como subíndice y las demás con cifras;
-/// `conOctavas(_:)` la cambia.
+/// (`.compacta(.espanol)`, `.compacta(.aleman)`, `.compacta(.frances)`…) la escriben como subíndice y las demás con
+/// cifras; `conOctavas(_:)` la cambia.
 public struct Notacion: Hashable, Sendable, CaseIterable, Codable {
     /// Cómo se escriben los nombres de nota.
     public let escritura: EscrituraDeNotas

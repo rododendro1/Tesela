@@ -167,9 +167,9 @@ extension LineaDeComandos {
         return dedos
     }
 
-    /// `pentagrama escala`: la escala en redondas o, con `--secuencia`, en una secuencia con ritmo; con `--dedos piano`, con
-    /// los dedos del piano; con `--tab`, en la primera posición del mástil (`--caged`, en la primera forma CAGED), con
-    /// su tablatura y, con `--dedos`, los dedos.
+    /// `pentagrama escala`: la escala en redondas o, con `--secuencia`, en una secuencia con ritmo; con `--dedos
+    /// piano`, con los dedos del piano; con `--tab`, en la primera posición del mástil (`--caged`, en la primera forma
+    /// CAGED), con su tablatura y, con `--dedos`, los dedos.
     private static func pentagramaDeEscala(
         _ argumentos: inout Argumentos, _ opciones: OpcionesDePentagrama, _ octava: Int, _ notacion: Notacion
     ) throws -> ResultadoDeOrden {

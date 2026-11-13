@@ -4,11 +4,11 @@ import Elementos
 
 // MARK: - Nombres de los temperamentos del catálogo
 //
-// Un idioma por fichero, como los de los acordes, las progresiones y los ritmos: `NombresDeTemperamentos+Catalan.swift`,
-// `…+Ingles.swift`… Cada uno da el nombre de cada temperamento de `TemperamentoConNombre.catalogo`, que nombra por su
-// miembro (`.init(.vallotti, "…")`: si se renombra o se quita, no compila) y, si los tiene, sus alias y sus variantes.
-// El español sale del propio catálogo. Que cada fichero dé todos los temperamentos lo comprueban las pruebas
-// (`TemperamentoConNombreTests`).
+// Un idioma por fichero, como los de los acordes, las progresiones y los ritmos:
+// `NombresDeTemperamentos+Catalan.swift`, `…+Ingles.swift`… Cada uno da el nombre de cada temperamento de
+// `TemperamentoConNombre.catalogo`, que nombra por su miembro (`.init(.vallotti, "…")`: si se renombra o se quita, no
+// compila) y, si los tiene, sus alias y sus variantes. El español sale del propio catálogo. Que cada fichero dé todos
+// los temperamentos lo comprueban las pruebas (`TemperamentoConNombreTests`).
 
 /// Los nombres de los temperamentos del catálogo en los trece idiomas.
 package enum NombresDeTemperamentos {

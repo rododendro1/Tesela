@@ -18,7 +18,8 @@ public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
     case acordeonB = "Acordeón B"
     case gerhard = "Gerhard"
     case park = "Park"
-    /// Un teclado descrito en el formato UIL (`2,7,5;R30M`), que se puede girar de 30° en 30° y reflejar: ver ``AjusteUIL``.
+    /// Un teclado descrito en el formato UIL (`2,7,5;R30M`), que se puede girar de 30° en 30° y reflejar: ver
+    /// ``AjusteUIL``.
     case uil = "UIL"
     case cuadriculaEnCuartas = "Cuadrícula en cuartas"
     case cuadriculaEnTercerasMayores = "Cuadrícula en terceras mayores"
@@ -66,7 +67,8 @@ public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
     public var esCuadricula: Bool { self == .cuadriculaPersonalizada || tecladoCuadrado != nil }
 }
 
-/// Lo que el usuario escribe y toca para el teclado UIL: el texto, cuántos giros de 30° se le dan encima y si se refleja.
+/// Lo que el usuario escribe y toca para el teclado UIL: el texto, cuántos giros de 30° se le dan encima y si se
+/// refleja.
 ///
 ///     var ajuste = AjusteUIL(texto: "2,7,5;R30M")
 ///     ajuste.giros = -1                                  // −30°: el Wicki-Hayden plano

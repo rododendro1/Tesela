@@ -297,7 +297,8 @@ extension InstrumentoDePartitura: Nombrable {}
 
 // MARK: - Idiomas
 //
-// Nombres de las claves y de los instrumentos predefinidos en los trece idiomas de los textos (`Traduccion`). El resto de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
+// Nombres de las claves y de los instrumentos predefinidos en los trece idiomas de los textos (`Traduccion`). El resto
+// de nombres que dependen del idioma, en `Fundamentos/Nota.swift` y `Fundamentos/Intervalo.swift`.
 
 // MARK: - Clave
 

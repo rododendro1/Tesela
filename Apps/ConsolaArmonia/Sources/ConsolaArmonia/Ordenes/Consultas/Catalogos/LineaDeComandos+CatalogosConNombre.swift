@@ -72,8 +72,8 @@ extension LineaDeComandos {
     }
 
     /// Los acordes que pide `acordes [<texto>] [--sobre <nota>] [--notas 4] [--estilo jazz] [--epoca barroco]
-    /// [--por-terceras] [--no-por-terceras] [--sin-semitonos] [--con-intervalo tritono] [--sin-intervalo 1]
-    /// [--orden brillo]`. Con un nombre exacto, solo ese; si no, los que lo contienen (todos, sin texto), con los filtros.
+    /// [--por-terceras] [--no-por-terceras] [--sin-semitonos] [--con-intervalo tritono] [--sin-intervalo 1] [--orden
+    /// brillo]`. Con un nombre exacto, solo ese; si no, los que lo contienen (todos, sin texto), con los filtros.
     static func acordesPedidos(_ textos: [String], _ notacion: Notacion) throws -> PedidoDeAcordes {
         var argumentos = Argumentos(textos)
         var sobre = Nota.do

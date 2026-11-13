@@ -284,8 +284,8 @@ import Testing
         }
     }
 
-    /// `alias(en:)` y `variantes(en:)` dan los del idioma: en español, los del catálogo; en los demás, los de su fichero,
-    /// también en las de otras tradiciones.
+    /// `alias(en:)` y `variantes(en:)` dan los del idioma: en español, los del catálogo; en los demás, los de su
+    /// fichero, también en las de otras tradiciones.
     @Test func losAliasYLasVariantesEnCadaIdioma() {
         #expect(TipoDeEscala.mayor.alias(en: .compacta(.ingles)) == ["ionian"])
         #expect(TipoDeEscala.dorico.alias(en: .compacta(.espanol)) == ["menor dórica"])
