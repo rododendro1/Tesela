@@ -154,8 +154,11 @@
   ahora lleva a Nahāwand; en ruso, Ḥusaynī se llama «Хусайни» y no «Хусейни», que era Houseïní.
 - Fuera las variantes que solo cambian ♭ por b o un guion por un espacio («dórico b5», «Miyako bushi»): las da la
   búsqueda.
-- En inglés, los modos van en minúscula también en «dorian b2 #4», «ionian no 4», «lydian pentatonic»…, como el
+- En inglés, los nombres llevan ♯ y ♭ como los demás idiomas («dorian ♯4», «altered ♭♭3»; «dorian #4» se sigue
+  leyendo), y los modos van en minúscula también en «dorian ♭2 ♯4», «ionian no 4», «lydian pentatonic»…, como el
   resto; «Spanish phrygian», con mayúscula.
+- «Prometeo napolitana», concertado con «escala», se lee como el Prometeo napolitano (y lo mismo en catalán,
+  gallego, portugués, italiano y francés).
 
 ### Obsoleto
 

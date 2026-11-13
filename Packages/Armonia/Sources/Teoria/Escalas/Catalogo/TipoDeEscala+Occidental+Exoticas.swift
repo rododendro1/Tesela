@@ -96,13 +96,15 @@ extension TipoDeEscala {
         ],
         alias: ["mística", "de Prometeo", "Skriabin"], variantes: ["Scriabin"],
         estilos: [.deCompositor], documentada: .skriabin1910)
-    /// El Prometeo con la segunda menor (Do Re♭ Mi Fa♯ La Si♭), el otro modo de Skriabin.
+    /// El Prometeo con la segunda menor (Do Re♭ Mi Fa♯ La Si♭), como la napolitana: el «Prometheus Neapolitan» de
+    /// Persichetti. «Prometeo napolitana», concertado con «escala», es su variante.
     public static let prometeoNapolitano = TipoDeEscala(
         nombre: "Prometeo napolitano",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
             .sextaMayor, .septimaMenor,
         ],
+        variantes: ["Prometeo napolitana"],
         estilos: [.deCompositor])
 
     // Simétricas y otras.

@@ -29,7 +29,7 @@ extension NombresDeEscalas {
         .init(.mayorLocria, "maior locria", alias: ["árabe"]),
         .init(.lidioMenor, "lidio menor"),
         .init(.prometeo, "Prometeo", alias: ["mística", "de Prometeo", "Skriabin"], variantes: ["Scriabin"]),
-        .init(.prometeoNapolitano, "Prometeo napolitano"),
+        .init(.prometeoNapolitano, "Prometeo napolitano", variantes: ["Prometeo napolitana"]),
         .init(.disminuidaSemitonoTono, "diminuída semiton-ton", alias: ["diminuída dominante", "dominante diminuída", "modo 2 de Messiaen", "de Rimski-Kórsakov", "Rimsky-Korsakov", "de Stravinski", "Stravinski", "diminuída auxiliar blues"]),
         .init(.aumentada, "aumentada", alias: ["hexatónica aumentada", "simétrica aumentada", "Weitzmann", "de Weitzmann"]),
         .init(.aumentadaSemitonoTercera, "aumentada semitón-terceira", alias: ["aumentada inversa", "modelo 1:3", "cromática perfecta"]),
