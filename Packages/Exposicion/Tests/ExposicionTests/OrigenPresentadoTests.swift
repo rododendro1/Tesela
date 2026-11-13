@@ -41,4 +41,18 @@ import Testing
         #expect(werckmeister.datosDelCatalogo(en: notacion).last?.valor == "Barroco (1691)")
         #expect(FuncionDeNotaPresentada(.dominante, en: notacion).origen == nil)
     }
+
+    /// Los estilos con la época de origen, y las épocas de uso por su nombre, en los acordes, las progresiones y los
+    /// ritmos.
+    @Test func losEstilosYLasEpocasDeUso() {
+        let notacion = Notacion.compacta(.espanol)
+        let andaluza = ProgresionConNombrePresentada(.andaluza, en: notacion)
+        #expect(
+            !andaluza.estilos.isEmpty && andaluza.estilosYOrigen.hasPrefix(andaluza.estilos.joined(separator: " · ")))
+        #expect(andaluza.estilosYOrigen.hasSuffix(andaluza.origen?.texto ?? ""))
+        let acordes = AcordeConNombre.catalogo.map { AcordeConNombrePresentado($0, en: notacion) }
+        #expect(acordes.contains { !$0.epocasDeUso.isEmpty })
+        let ritmos = RitmoConNombre.catalogo.map { RitmoPresentado($0, en: notacion) }
+        #expect(ritmos.contains { !$0.epocasDeUso.isEmpty })
+    }
 }
