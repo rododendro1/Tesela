@@ -253,7 +253,8 @@ import Testing
         for tipo in TipoDeEscala.tradicionales {
             #expect(tipo.clase == tipo.categoria?.clase, Comment(rawValue: tipo.nombre))
         }
-        #expect(TipoDeEscala.occidentales.allSatisfy { $0.clase == nil })
+        // De las occidentales, solo el hexacordo tiene clase: es un fragmento.
+        #expect(TipoDeEscala.occidentales.filter { $0.clase != nil }.map(\.nombre) == ["hexacordo"])
     }
 
     /// `llevaLaCategoria` se deduce del nombre: la palabra puede ir dentro de otra («makamı», «muğamı»,

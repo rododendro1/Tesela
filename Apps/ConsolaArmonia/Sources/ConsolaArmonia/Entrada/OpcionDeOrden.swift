@@ -162,6 +162,10 @@ extension OpcionDeOrden {
     static let propuestas = valor("--propuestas", "--proposals")
     static let quintas = marca("--quintas", "--fifths")
     static let regulares = marca("--regulares", "--maximally-even")
+    /// `escalas --fragmentos`: solo los fragmentos de menos de una octava (tetracordos, ajnas, hexacordos);
+    /// `--sin-fragmentos`, sin ellos.
+    static let fragmentos = marca("--fragmentos", "--fragments")
+    static let sinFragmentos = marca("--sin-fragmentos", "--no-fragments")
     /// `temperamentos … --reloj`: el temperamento en un reloj de cents, en SVG.
     static let reloj = marca("--reloj", "--clock")
     /// El reloj con cada nota del color de sus cents.

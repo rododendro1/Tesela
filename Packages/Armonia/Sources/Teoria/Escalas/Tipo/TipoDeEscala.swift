@@ -61,18 +61,19 @@ public struct TipoDeEscala: Sendable, Codable {
     }
 
     /// Una escala occidental del catálogo, con sus estilos, las regiones de donde viene (las populares: la flamenca,
-    /// de Andalucía) y, si las tiene, sus versiones microtonales.
+    /// de Andalucía), si las tiene, sus versiones microtonales y, si no es un modo, su clase (el hexacordo es un
+    /// `.fragmento`).
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
         variantes: [String] = [], estilos: [Estilo], corrientes: [Corriente] = [], regiones: [RegionDeEscala] = [],
-        afinaciones: [FichaDeEscala.Afinacion] = [], documentada: Referencia? = nil
+        afinaciones: [FichaDeEscala.Afinacion] = [], documentada: Referencia? = nil, clase: ClaseDeEscala? = nil
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
             variantes: variantes,
             ficha: FichaDeEscala(
                 estilos: estilos, corrientes: corrientes, regiones: regiones, afinaciones: afinaciones,
-                documentada: documentada))
+                documentada: documentada, clase: clase))
     }
 
     /// Una escala de otra tradición, con su categoría y, si los tiene, sus estilos (si no los da la categoría), sus

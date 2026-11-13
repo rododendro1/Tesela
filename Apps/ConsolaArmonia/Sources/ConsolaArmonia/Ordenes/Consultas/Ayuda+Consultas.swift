@@ -206,7 +206,7 @@ extension LineaDeComandos {
             notas: TextosDeConsola.traduccion(\.notasEscalas),
             opciones: [
                 .tradicion, .categoria, .fuente, .uso, .lugar, .agrupar, .epoca, .escuela, .notas, .orden,
-                .sinSemitonos, .regulares,
+                .sinSemitonos, .regulares, .fragmentos, .sinFragmentos,
                 .conIntervalo,
                 .sinIntervalo,
                 .conPaso, .comparar, .vecinasDe, .parecidasA, .escaleraDe, .mapa,

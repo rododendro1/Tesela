@@ -229,6 +229,7 @@ extension TextosDeApps {
         lugaresDeUso: "Τόποι χρήσης",
         estilos: "Ύφη",
         escuelas: "Σχολές",
+        fragmento: "Απόσπασμα",
         porTerceras: "Σε τρίτες",
         consonanciaDiadica: "Δυαδική σύμφωνη ποιότητα (Huron)",
         grupoDeHindemith: "Ομάδα του Hindemith",

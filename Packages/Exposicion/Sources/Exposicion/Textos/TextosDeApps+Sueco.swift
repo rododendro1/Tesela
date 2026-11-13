@@ -229,6 +229,7 @@ extension TextosDeApps {
         lugaresDeUso: "Användningsplatser",
         estilos: "Stilar",
         escuelas: "Skolor",
+        fragmento: "Fragment",
         porTerceras: "I terser",
         consonanciaDiadica: "Dyadisk konsonans (Huron)",
         grupoDeHindemith: "Hindemiths grupp",

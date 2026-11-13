@@ -114,7 +114,8 @@ extension LineaDeComandos {
                 lineas.append("  " + mano.mano + ": " + pares.map { "\($0) \($1)" }.joined(separator: " · "))
             }
         }
-        if pedido.modos {
+        // Un fragmento no tiene modos: no se repite a la octava.
+        if pedido.modos, !escala.tipo.esFragmento {
             lineas.append(notacion.texto(\.modosParalelos) + ":")
             lineas += PresentacionDeEstudioDeEscala.modosParalelos(de: escala, en: notacion).map { modo in
                 "  " + modo.nombre + " (" + modo.brillo + ")" + (modo.cambios.isEmpty ? "" : ": " + modo.cambios)
@@ -308,6 +309,8 @@ extension LineaDeComandos {
         }
         // De qué escala es modo: Re dórico → modo 2 de Do mayor.
         if let modo = datos.modo { lineas.append("  " + modo) }
+        // Un fragmento, con lo que abarca: «Fragmento: 4ª justa».
+        if let ambito = datos.ambito { lineas.append("  " + notacion.texto(\.fragmento) + ": " + ambito) }
         // El número del mēḷa, su cakra, su mnemónico y su solfa: «mēḷa 15, cakra 3 (Agni), Agni-go: sa ra gu ma pa
         // dha nu».
         let tipo = escala.tipo

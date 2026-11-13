@@ -449,7 +449,7 @@ extension TipoDeEscala {
         nombre: "hexacordo",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         alias: ["hexacordo de Guido", "ut re mi fa sol la"],
-        estilos: [.clasica])
+        estilos: [.clasica], clase: .fragmento)
 }
 
 // MARK: - Modos de transposición limitada de Messiaen.

@@ -4,6 +4,10 @@
 
 ### Lo nuevo
 
+- `EscalaPresentada.ambito` («4ª justa») y la fila «Fragmento» en lo que se mide de una escala, en la hoja de
+  estudio y en la app, si es un fragmento de menos de una octava. En la consola, `armonia escala` lo dice, su JSON
+  lleva `ambito`, y `escalas --fragmentos` / `--sin-fragmentos` los dejan o los quitan (con `ambito` en semitonos en el
+  JSON del catálogo).
 - `OrigenDeEscalaPresentado`: de cuándo y de dónde es una escala, escrito (su año, su época, las de uso, el período
   de su tradición, sus lugares, sus estilos con sus corrientes y sus escuelas), con `datos(en:)` para dibujarlo.
   `EscalaPresentada.origen` lo lleva, y la hoja de estudio en HTML, en una sección «Origen» con las estadísticas. Sus

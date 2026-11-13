@@ -246,6 +246,8 @@ public struct TextosDeApps: TextosTraducidos {
     public let lugaresDeUso: String
     public let estilos: String
     public let escuelas: String
+    /// La fila de un fragmento de menos de una octava, con lo que abarca: «Fragmento: 4ª justa».
+    public let fragmento: String
     public let porTerceras: String
     public let consonanciaDiadica: String
     public let grupoDeHindemith: String

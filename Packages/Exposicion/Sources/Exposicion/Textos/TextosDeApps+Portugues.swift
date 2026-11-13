@@ -229,6 +229,7 @@ extension TextosDeApps {
         lugaresDeUso: "Lugares de uso",
         estilos: "Estilos",
         escuelas: "Escolas",
+        fragmento: "Fragmento",
         porTerceras: "Por terças",
         consonanciaDiadica: "Consonância diádica (Huron)",
         grupoDeHindemith: "Grupo de Hindemith",

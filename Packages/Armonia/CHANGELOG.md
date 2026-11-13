@@ -22,6 +22,10 @@
 
 ### Lo nuevo
 
+- `TipoDeEscala.esFragmento` y `ambito`: los fragmentos de menos de una octava (los tetracordos, los ajnas, los
+  çeşni, los hexacordos, también el occidental de Guido, que ahora tiene `clase == .fragmento`) y lo que abarcan
+  (`tetracordoDiatonico.ambito == .cuartaJusta`). Un fragmento no tiene modos: `modosRelativos` y `modosParalelos`
+  están vacíos.
 - Las corrientes de los estilos (`Corriente`), con el año en que empiezan: el bebop (1945) y el jazz modal (1959), el
   impresionismo (1890), el rock (1955), el heavy metal (1970) y el metal neoclásico (1984). Una escala las lleva en
   orden de importancia (`TipoDeEscala.corrientes`: el dórico, `[.modal]`; el frigio dominante, `[.heavyMetal,

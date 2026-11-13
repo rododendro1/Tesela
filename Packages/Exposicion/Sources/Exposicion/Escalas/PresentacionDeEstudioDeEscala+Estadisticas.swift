@@ -41,6 +41,8 @@ extension PresentacionDeEstudioDeEscala {
         }
         let cardinal = estadisticas.cardinal.map { " (" + $0.nombre(en: notacion) + ")" } ?? ""
         var datos = [dato(\.numeroDeNotas, "\(estadisticas.numeroDeNotas)" + cardinal)]
+        // Un fragmento, con lo que abarca: «Fragmento: 4ª justa». Lo demás lo mide como si se repitiera a la octava.
+        if let ambito = escala.tipo.ambito { datos.append(dato(\.fragmento, ambito.nombre(en: notacion))) }
         if let brillo = estadisticas.brillo { datos.append(dato(\.brillo, conSigno(Double(brillo)))) }
         datos.append(dato(\.brilloPorQuintas, conSigno(estadisticas.brilloPorQuintas)))
         datos.append(dato(\.pasosEnSemitonos, estadisticas.pasos.map(String.init).joined(separator: " ")))

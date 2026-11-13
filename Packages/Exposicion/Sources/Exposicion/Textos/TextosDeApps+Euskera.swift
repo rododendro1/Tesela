@@ -229,6 +229,7 @@ extension TextosDeApps {
         lugaresDeUso: "Erabilera-lekuak",
         estilos: "Estiloak",
         escuelas: "Eskolak",
+        fragmento: "Zatia",
         porTerceras: "Hirudunka",
         consonanciaDiadica: "Kontsonantzia diadikoa (Huron)",
         grupoDeHindemith: "Hindemithen taldea",

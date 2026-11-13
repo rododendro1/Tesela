@@ -229,6 +229,7 @@ extension TextosDeApps {
         lugaresDeUso: "Места использования",
         estilos: "Стили",
         escuelas: "Школы",
+        fragmento: "Фрагмент",
         porTerceras: "По терциям",
         consonanciaDiadica: "Диадная консонантность (Хьюрон)",
         grupoDeHindemith: "Группа по Хиндемиту",

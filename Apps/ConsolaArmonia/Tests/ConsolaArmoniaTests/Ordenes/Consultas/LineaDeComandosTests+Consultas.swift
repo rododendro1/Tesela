@@ -194,6 +194,21 @@ extension LineaDeComandosTests {
 
     /// `escalas --epoca`: las de una época, de origen o de uso, por su clave en español o en inglés o por su nombre;
     /// `tonal`, las tres de la época tonal. `--escuela`, las de una escuela, y `--agrupar epoca`, por la de origen.
+    /// `escalas --fragmentos`: los tetracordos, los ajnas, los hexacordos; `--sin-fragmentos`, las demás. `escala`
+    /// dice lo que abarca un fragmento, y no le da modos.
+    @Test func losFragmentos() {
+        let fragmentos = salida("escalas --fragmentos")
+        #expect(fragmentos.contains("  hexacordo: "), Comment(rawValue: String(fragmentos.prefix(300))))
+        #expect(fragmentos.contains("  tetracordo diatónico: "))
+        #expect(!fragmentos.contains("  mayor: ") && !fragmentos.contains("  Bayātī: "))
+        #expect(salida("scales --fragments") == salida("escalas --fragmentos"))
+        let sinFragmentos = salida("escalas --sin-fragmentos")
+        #expect(sinFragmentos.contains("  mayor: ") && !sinFragmentos.contains("  hexacordo: "))
+        let hexacordo = salida("escala Do hexacordo --modos")
+        #expect(hexacordo.contains("  Fragmento: 6ª mayor"), Comment(rawValue: hexacordo))
+        #expect(!hexacordo.contains("Modos con las mismas notas"))
+    }
+
     @Test func escalasPorEpocaYEscuela() {
         let barrocas = salida("escalas --epoca barroco")
         #expect(barrocas.contains("  dórico: "), Comment(rawValue: String(barrocas.prefix(300))))

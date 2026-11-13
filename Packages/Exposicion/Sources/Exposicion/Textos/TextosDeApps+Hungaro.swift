@@ -229,6 +229,7 @@ extension TextosDeApps {
         lugaresDeUso: "Használat helyei",
         estilos: "Stílusok",
         escuelas: "Iskolák",
+        fragmento: "Töredék",
         porTerceras: "Terces építkezésű",
         consonanciaDiadica: "Diadikus konszonancia (Huron)",
         grupoDeHindemith: "Hindemith-csoport",

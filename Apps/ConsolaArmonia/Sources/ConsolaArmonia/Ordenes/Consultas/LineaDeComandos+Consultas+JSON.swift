@@ -135,6 +135,8 @@ extension LineaDeComandos {
         let clases: [Int]
         let modo: String?
         let acordes: [EscalaPresentada.AcordeDelGrado]?
+        /// Lo que abarca, si es un fragmento: «6ª mayor».
+        let ambito: String?
         /// De cuándo y de dónde es: su año, su época, su período, sus lugares, sus estilos y sus escuelas.
         let origen: OrigenDeEscalaPresentado?
         /// `--acordes`.
@@ -188,6 +190,7 @@ extension LineaDeComandos {
             modo = datos.modo
             acordes = datos.acordes
             origen = datos.origen
+            ambito = datos.ambito
         }
     }
 
@@ -461,6 +464,8 @@ extension LineaDeComandos {
         let estilos: [String]
         let corrientes: [String]
         let escuelas: [String]
+        /// Si es un fragmento de menos de una octava, los semitonos que abarca (5 en un tetracordo); `nil` si no.
+        let ambito: Int?
     }
 
     /// Un grupo de `escalas --json`: «Japón · escala» y sus escalas, en el orden de `--orden`.
@@ -492,7 +497,8 @@ extension LineaDeComandos {
                             continentes: tipo.continentesDeOrigen.map(\.rawValue), anio: tipo.anioDeOrigen,
                             epoca: tipo.epocaDeOrigen?.rawValue, epocasDeUso: tipo.epocasDeUso.map(\.rawValue),
                             periodo: tipo.periodo?.rawValue, estilos: tipo.estilos.map(\.rawValue),
-                            corrientes: tipo.corrientes.map(\.rawValue), escuelas: tipo.escuelas.map(\.rawValue))
+                            corrientes: tipo.corrientes.map(\.rawValue), escuelas: tipo.escuelas.map(\.rawValue),
+                            ambito: tipo.ambito?.semitonos)
                     })
             }
         }

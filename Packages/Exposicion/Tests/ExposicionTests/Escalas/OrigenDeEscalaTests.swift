@@ -65,4 +65,16 @@ import Testing
             de: Escala(.la, .menorHungara), en: notacion, secciones: [.reloj])
         #expect(!sinEstadisticas.contains("seccion-origen"))
     }
+
+    /// Un fragmento lo dice, con lo que abarca, en el JSON y en lo que se mide de él.
+    @Test func unFragmentoDiceLoQueAbarca() {
+        let tetracordo = Escala(.mi, .tetracordoDiatonico)
+        #expect(EscalaPresentada(tetracordo, en: notacion).ambito == "4ª justa")
+        #expect(EscalaPresentada(Escala(.do), en: notacion).ambito == nil)
+        let datos = PresentacionDeEstudioDeEscala.estadisticas(de: tetracordo, en: notacion)
+        #expect(datos.contains(DatoPresentado(nombre: "Fragmento", valor: "4ª justa")))
+        #expect(
+            !PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do), en: notacion).map(\.nombre).contains(
+                "Fragmento"))
+    }
 }

@@ -69,6 +69,16 @@ extension LineaDeComandosTests {
         #expect(Set(dorico.keys) == ["nombre", "notas", "clases", "modo", "acordes", "referencias", "origen"])
     }
 
+    /// Un fragmento lleva lo que abarca: escrito en `escala`, en semitonos en el catálogo.
+    @Test func elAmbitoDeUnFragmentoEnJSON() throws {
+        let hexacordo = try #require(try json("escala Do hexacordo") as? [String: Any])
+        #expect(hexacordo["ambito"] as? String == "6ª mayor")
+        let grupos = try #require(try json("escalas --fragmentos") as? [[String: Any]])
+        let escalas = grupos.flatMap { ($0["escalas"] as? [[String: Any]]) ?? [] }
+        #expect(escalas.first { $0["nombre"] as? String == "hexacordo" }?["ambito"] as? Int == 9)
+        #expect(escalas.allSatisfy { ($0["ambito"] as? Int).map { $0 < 12 } ?? false })
+    }
+
     /// Una escala de otra tradición lleva sus referencias, con su clave, su cita y la referencia completa.
     @Test func referenciasEnJSON() throws {
         let bayati = try #require(try json("escala Re bayati") as? [String: Any])

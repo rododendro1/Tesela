@@ -362,6 +362,8 @@ extension LineaDeComandos {
         var sinIntervalo: Int?
         var conPaso: Int?
         var regulares = false
+        /// `true` con `--fragmentos` (solo ellos), `false` con `--sin-fragmentos`; `nil`, todas.
+        var fragmentos: Bool?
         /// El texto suelto, como clave de búsqueda; vacío si no hay.
         var buscado = ""
 
@@ -372,6 +374,7 @@ extension LineaDeComandos {
             guard numeroDeNotas == nil || tipo.numeroDeNotas == numeroDeNotas else { return false }
             guard !sinSemitonos || estadisticas(tipo).anhemitonica else { return false }
             guard !regulares || estadisticas(tipo).maximamenteRegular else { return false }
+            guard fragmentos == nil || tipo.esFragmento == fragmentos else { return false }
             if !lugares.isEmpty {
                 let suyos = Set((tipo.lugaresDeOrigen + tipo.lugaresDeUso).flatMap(\.conLosQueLoContienen))
                 guard lugares.contains(where: suyos.contains) else { return false }
@@ -538,6 +541,10 @@ extension LineaDeComandos {
             filtro.conPaso = n
         }
         filtro.regulares = entrada.quitarMarca(.regulares)
+        // `--fragmentos`: los tetracordos, los ajnas, los hexacordos…; `--sin-fragmentos`, todas menos ellos.
+        let soloFragmentos = entrada.quitarMarca(.fragmentos)
+        let sinFragmentos = entrada.quitarMarca(.sinFragmentos)
+        if soloFragmentos != sinFragmentos { filtro.fragmentos = soloFragmentos }
         try entrada.sinOpcionesDesconocidas()
         filtro.buscado = claveDeBusqueda(entrada.unidos)
         return filtro
