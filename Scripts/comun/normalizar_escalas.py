@@ -2,7 +2,7 @@
 """`TipoDeEscala.normalizar` en Python, para los scripts que comparan nombres de escalas.
 
 Es una copia de la función de Swift (`Teoria/Escalas/TipoDeEscala.swift`): minúsculas, sin diacríticos
-(salvo en devanagari), ♯/♭ como #/b, sin ♮ ni ordinales (4ª), «−» como «-», «…» como «..», la ı sin punto del
+(salvo en las escrituras índicas, la tailandesa, la birmana y la jemer), ی ى → ي y ک → ك, ♯/♭ como #/b, sin ♮ ni ordinales (4ª), «−» como «-», «…» como «..», la ı sin punto del
 turco como i y un solo espacio entre palabras. Para que las dos no se separen, las dos leen los mismos casos de `Scripts/datos/normalizar.tsv`: el test de
 Swift (`NormalizarVectoresTests`) y este script.
 
@@ -15,14 +15,20 @@ import unicodedata
 from pathlib import Path
 
 VECTORES = Path(__file__).resolve().parents[1] / "datos" / "normalizar.tsv"
-_SUSTITUCIONES = (("♯", "#"), ("♭", "b"), ("♮", ""), ("ª", ""), ("−", "-"), ("…", ".."), ("ı", "i"))
+_SUSTITUCIONES = (
+    ("♯", "#"), ("♭", "b"), ("♮", ""), ("ª", ""), ("−", "-"), ("…", ".."), ("ı", "i"),
+    ("\u06cc", "\u064a"), ("\u0649", "\u064a"), ("\u06a9", "\u0643"),  # ی ى → ي, ک → ك
+)
+# Las escrituras con las vocales en signos combinantes, que no se quitan: las de la India, la tailandesa y la lao,
+# la birmana y la jemer.
+_CON_VOCALES_EN_SIGNOS = ((0x0900, 0x0DFF), (0x0E00, 0x0EFF), (0x1000, 0x109F), (0x1780, 0x17FF))
 
 
 def normalizar(texto):
-    devanagari = any(0x0900 <= ord(c) <= 0x097F for c in texto)
+    con_vocales_en_signos = any(a <= ord(c) <= b for c in texto for a, b in _CON_VOCALES_EN_SIGNOS)
     for antes, despues in _SUSTITUCIONES:
         texto = texto.replace(antes, despues)
-    if not devanagari:
+    if not con_vocales_en_signos:
         texto = "".join(c for c in unicodedata.normalize("NFD", texto) if unicodedata.category(c) != "Mn")
     return " ".join(p for p in re.split(r"[ \-]", texto.casefold()) if p)
 

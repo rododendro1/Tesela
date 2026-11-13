@@ -131,9 +131,9 @@ extension NombresDeEscalas {
         .tradicional(.andina, "pentatonique andine", alias: ["andine"]),
         .tradicional(.tritonicaAndina, "tritonique andine", alias: ["tritonique"]),
         // Etiopía
-        .tradicional(.tezetaMayor, "Təzəta majeur", alias: ["Tezeta", "Tezeta majeur"], variantes: ["Tizita", "Tizita majeur", "Təzəta", "ትዝታ"]),
+        .tradicional(.tezetaMayor, "Təzəta majeur", alias: ["Tezeta", "Tezeta majeur"], variantes: ["Tizita", "Tizita majeur", "Təzəta"]),
         .tradicional(.tezetaMenor, "Təzəta mineur", alias: ["Tezeta mineur"], variantes: ["Tizita mineur"]),
-        .tradicional(.batiMayor, "Bati majeur", alias: ["Bati"], variantes: ["Batti", "ባቲ"]),
+        .tradicional(.batiMayor, "Bati majeur", alias: ["Bati"], variantes: ["Batti"]),
         .tradicional(.batiMenor, "Bati mineur", variantes: ["Batti mineur"]),
         // Grecia antigua
         .tradicional(.tetracordoDiatonico, "tétracorde diatonique", alias: ["tétracorde dorien", "diatonique tendu d'Aristoxène"]),

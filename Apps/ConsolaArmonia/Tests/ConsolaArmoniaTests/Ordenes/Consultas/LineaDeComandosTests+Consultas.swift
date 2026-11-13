@@ -206,6 +206,15 @@ extension LineaDeComandosTests {
         #expect(!salida("escala Do mayor").contains("Afinación"))
     }
 
+    /// `escala` da el nombre en su escritura original, entre aislantes bidireccionales, y la lee: «Re حجاز».
+    @Test func elNombreOriginal() {
+        #expect(salida("escala Re Bayātī").contains("  Nombre original: \u{2068}بياتي\u{2069} (árabe)\n"))
+        #expect(salida("scale D Bayati --idioma en").contains("  Original name: \u{2068}بياتي\u{2069} (Arabic)\n"))
+        #expect(salida("escala Re سیکاه").hasPrefix("Re Sīkāh\n"))
+        #expect(!salida("escala Do mayor").contains("Nombre original"))
+        #expect(salida("escala Re Bayātī --json").contains(#""nombresOriginales":[{"#))
+    }
+
     /// `escalas --afecto lastimero`, `--affect plaintive`: las que tienen ese afecto en alguna fuente. `escala` dice
     /// lo que dice cada fuente de su carácter, una línea por fuente.
     @Test func elCaracter() {

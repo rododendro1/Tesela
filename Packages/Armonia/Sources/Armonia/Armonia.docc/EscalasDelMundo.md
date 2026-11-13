@@ -151,8 +151,10 @@ romanización oficial y el hangul como variantes, y los acadios en su transliter
 maqam Ḥijāz, y el dromos se busca como Hitzáz o Hicaz. Al buscar no importan los
 diacríticos ni las mayúsculas, y también se aceptan las transliteraciones habituales sin ellos
 (Mayamalavagowla, Shanmukhapriya, Hitzaz, hirajoshi), los nombres en chino y en japonés (宫, 平調子), los de
-los dromoi en griego (Χιτζάζ) y los de las escalas indias en devanagari (यमन, मायामालवगौळ). En devanagari no se
-quitan las marcas, porque भैरव (Bhairav) y भैरवी (Bhairavī) son dos rāgas distintos.
+los dromoi en griego (Χιτζάζ) y los de las escalas indias en devanagari (यमन, मायामालवगौळ): son sus
+`nombresOriginales`, con su idioma. En devanagari, en tailandés y en jemer no se quitan las marcas, porque भैरव
+(Bhairav) y भैरवी (Bhairavī) son dos rāgas distintos; en árabe sí (los harakat), y la ی y la ک del persa se leen como
+la ي y la ك del árabe.
 
 ```swift
 TipoDeEscala.melakarta(15)                   // Māyāmālavagauḷa
@@ -181,7 +183,7 @@ son nombres propios: en los idiomas de alfabeto latino se escriben igual (en ing
 traducen los descriptivos (las andinas, las europeas, los tetracordos y las harmoniai griegas, y el «mayor» y el «menor» de
 las etíopes). En ruso y en griego se transcriben a su alfabeto (Бхайрав, Μπιλαβάλ), salvo los 72 mēḷa,
 que siguen en IAST; la forma latina se sigue leyendo. Una escala sin traducir conserva en cada idioma sus alias y
-sus variantes (otras transliteraciones, su escritura original), menos los que están en español.
+sus variantes (otras transliteraciones), menos los que están en español, y en todos se lee por su nombre original.
 
 ## Rāga, mēḷa, dromos: la categoría de una escala
 

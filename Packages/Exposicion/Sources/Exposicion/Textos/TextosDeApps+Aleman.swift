@@ -230,6 +230,7 @@ extension TextosDeApps {
         estilos: "Stile",
         escuelas: "Schulen",
         fragmento: "Fragment",
+        nombreOriginal: "Originalname",
         afinacion: "Stimmung",
         afinacionTemperada: "gleichstufig",
         afinacionJusta: "rein",

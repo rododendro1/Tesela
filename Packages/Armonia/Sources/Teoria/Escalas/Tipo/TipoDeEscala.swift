@@ -27,8 +27,9 @@ public struct TipoDeEscala: Sendable, Codable {
     /// «bizantina» para la doble armónica. Las grafías simplificadas («dorico», «lidio #5») no se guardan: salen
     /// de `aliasNormalizados`.
     public let alias: [String]
-    /// Otras formas de escribir el nombre o uno de los alias, que no son otro nombre: otro género («dórica»), otra
-    /// transliteración («Hicaz» por Hitzáz) u otra escritura («Χιτζάζ», «बिलावल»). Se leen igual que los alias.
+    /// Otras formas de escribir en escritura latina el nombre o uno de los alias, que no son otro nombre: otro género
+    /// («dórica») u otra transliteración («Hicaz» por Hitzáz). Se leen igual que los alias. Las de la escritura de su
+    /// tradición («Χιτζάζ», «बिलावल») no van aquí, sino en `nombresOriginales`.
     public let variantes: [String]
     /// Lo demás que el catálogo sabe de la escala (estilos, regiones, categoría, mēḷa, microtonos), escrito en su
     /// declaración. No se codifica ni cuenta para `==`, y las propiedades públicas no lo leen de aquí sino de la
@@ -39,11 +40,12 @@ public struct TipoDeEscala: Sendable, Codable {
     /// los datos dentro las del ruso y el griego llegaron a desbordar la pila de un hilo secundario (512 KB).
     private let caja: CajaDeDatos
 
-    /// Nombre, alias y variantes en forma normalizada (`normalizar`: sin diacríticos ni mayúsculas, `#`/`b`), sin
-    /// repetidos. Es lo que se compara al buscar por nombre.
+    /// Nombre, alias, variantes y nombres originales en forma normalizada (`normalizar`: sin diacríticos ni
+    /// mayúsculas, `#`/`b`), sin repetidos. Es lo que se compara al buscar por nombre.
     package var aliasNormalizados: [String] {
         var vistos = Set<String>()
-        return ([nombre] + alias + variantes).map(TipoDeEscala.normalizar).filter { vistos.insert($0).inserted }
+        return ([nombre] + alias + variantes + datos.nombresOriginales.map(\.texto)).map(TipoDeEscala.normalizar)
+            .filter { vistos.insert($0).inserted }
     }
 
     // «descenso» es el nombre que tenía `intervalosDescendentes`: se conserva al codificar.
@@ -87,7 +89,8 @@ public struct TipoDeEscala: Sendable, Codable {
     /// dan la categoría, los estilos, las regiones ni la fuente (`tradicion: .japon, categoria: .escala`).
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
-        variantes: [String] = [], tradicion: Tradicion? = nil, categoria: CategoriaTradicional,
+        variantes: [String] = [], nombresOriginales: [NombreOriginal] = [], tradicion: Tradicion? = nil,
+        categoria: CategoriaTradicional,
         escuelas: [Escuela] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
         padre: TipoDeEscala? = nil,
         afinaciones: [DatosDeEscala.Afinacion] = [], referencias: [Referencia] = [], documentada: Referencia? = nil,
@@ -97,7 +100,8 @@ public struct TipoDeEscala: Sendable, Codable {
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
             variantes: variantes, clave: clave,
             datos: DatosDeEscala(
-                tradicion: tradicion, escuelas: escuelas, regiones: regiones, categoria: categoria,
+                nombresOriginales: nombresOriginales, tradicion: tradicion, escuelas: escuelas, regiones: regiones,
+                categoria: categoria,
                 padre: padre?.identidad,
                 afinaciones: afinaciones,
                 fuente: fuente, referencias: referencias, documentada: documentada))

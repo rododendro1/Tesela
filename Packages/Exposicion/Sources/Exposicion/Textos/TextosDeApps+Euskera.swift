@@ -230,6 +230,7 @@ extension TextosDeApps {
         estilos: "Estiloak",
         escuelas: "Eskolak",
         fragmento: "Zatia",
+        nombreOriginal: "Jatorrizko izena",
         afinacion: "Afinazioa",
         afinacionTemperada: "tenperatua",
         afinacionJusta: "justua",

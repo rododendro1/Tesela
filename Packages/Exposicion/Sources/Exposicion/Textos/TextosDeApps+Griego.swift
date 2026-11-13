@@ -230,6 +230,7 @@ extension TextosDeApps {
         estilos: "Ύφη",
         escuelas: "Σχολές",
         fragmento: "Απόσπασμα",
+        nombreOriginal: "Πρωτότυπη ονομασία",
         afinacion: "Κούρδισμα",
         afinacionTemperada: "συγκερασμένο",
         afinacionJusta: "φυσικό",

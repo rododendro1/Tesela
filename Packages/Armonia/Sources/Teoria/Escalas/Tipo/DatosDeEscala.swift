@@ -81,13 +81,18 @@ package struct DatosDeEscala: Sendable {
     /// tradiciones la da su categoría.
     package let clase: ClaseDeEscala?
 
+    /// El nombre en la escritura de su tradición, el principal primero (`TipoDeEscala.nombresOriginales`).
+    package let nombresOriginales: [NombreOriginal]
+
     package init(
-        tradicion: Tradicion? = nil, estilos: [Estilo] = [], corrientes: [Corriente] = [], escuelas: [Escuela] = [],
+        nombresOriginales: [NombreOriginal] = [], tradicion: Tradicion? = nil, estilos: [Estilo] = [],
+        corrientes: [Corriente] = [], escuelas: [Escuela] = [],
         regiones: [RegionDeEscala] = [],
         categoria: CategoriaTradicional? = nil,
         padre: IdentidadDeEscala? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil,
         referencias: [Referencia] = [], documentada: Referencia? = nil, clase: ClaseDeEscala? = nil
     ) {
+        self.nombresOriginales = nombresOriginales
         self.clase = clase
         self.referencias = referencias
         self.documentada = documentada
@@ -175,6 +180,17 @@ extension TipoDeEscala {
     ///
     ///     TipoDeEscala.menorHungara.documentada?.anio   // 1859
     public var documentada: Referencia? { datosDelCatalogo.documentada }
+
+    /// El nombre en la escritura de su tradición, el principal primero: «حجاز» para Ḥijāz; «宫» (chino simplificado) y
+    /// «宮» (tradicional) para Gōng; «陽» y «陽音階» (que se lee «Yō onkai») para Yō. Vacío en las escalas cuyo nombre
+    /// ya está en su escritura (las occidentales, los makamlar turcos, los muğamlar) y en las propias. Por su
+    /// identidad, como los demás datos del catálogo: no se guarda en el JSON.
+    ///
+    ///     TipoDeEscala.bayati.nombresOriginales.map(\.texto)   // ["بياتي"]
+    public var nombresOriginales: [NombreOriginal] { datosDelCatalogo.nombresOriginales }
+
+    /// El primero de `nombresOriginales`.
+    public var nombreOriginal: NombreOriginal? { nombresOriginales.first }
 
     /// Una copia con estos estilos: para las escalas del catálogo que salen de una función (las cromáticas).
     package func con(estilos: [Estilo]) -> TipoDeEscala {

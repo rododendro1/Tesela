@@ -627,6 +627,10 @@ import Hexagonos
         comprobar(TipoDeEscala.dorico.alias, #"["menor dórica"]"#, doc, 0)
         comprobar(TipoDeEscala.dorico.variantes, #"["dórica"]"#, doc, 1)
         comprobar(try TipoDeEscala(leyendo: "dórica") == .dorico, #"true"#, doc, 2)
+        comprobar(TipoDeEscala.gong.nombresOriginales.map(\.texto), #"["宫", "宮"]"#, doc, 3)
+        comprobar(TipoDeEscala.gong.nombresOriginales.map(\.idioma.codigo), #"["zh-Hans", "zh-Hant"]"#, doc, 4)
+        comprobar(TipoDeEscala.yo.nombresOriginales[1].lectura, #""Yō onkai""#, doc, 5)
+        comprobar(TipoDeEscala.hiyaz.nombreOriginal?.idioma.deDerechaAIzquierda, #"true"#, doc, 6)
     }
 
     @Test func escalas10() throws {

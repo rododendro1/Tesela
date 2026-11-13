@@ -16,6 +16,8 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
     }
 
     public let nombre: String
+    /// El nombre en la escritura de su tradición, si la escala lo tiene: «حجاز» para Ḥijāz.
+    public let nombresOriginales: [NombreOriginalPresentado]?
     public let notas: [String]
     public let clases: [Int]
     /// De qué escala es modo («Modo 2 de Do mayor»), si lo es de alguna conocida.
@@ -32,6 +34,8 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
     /// Los datos de la escala, escritos en la notación.
     public init(_ escala: Escala, en notacion: Notacion) {
         nombre = escala.nombre(en: notacion)
+        let originales = escala.tipo.nombresOriginales.map { NombreOriginalPresentado($0, en: notacion) }
+        nombresOriginales = originales.isEmpty ? nil : originales
         notas = escala.notas.map { $0.nombre(en: notacion) }
         clases = escala.notas.map(\.claseDeAltura)
         modo = PresentacionDeEscalaYAcorde.modo(de: escala, en: notacion)
@@ -45,5 +49,39 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
         origen = OrigenDeEscalaPresentado(escala.tipo, en: notacion)
         ambito = escala.tipo.ambito?.nombre(en: notacion)
         afinacion = PresentacionDeEstudioDeEscala.afinacion(de: escala.tipo, en: notacion)
+    }
+}
+
+/// Un nombre de la escala en su escritura original, con su idioma.
+///
+/// En JSON (`armonia escala Re Ḥijāz --json`), `{"texto": "حجاز", "idioma": "ar", "nombreDelIdioma": "árabe",
+/// "derechaAIzquierda": true}`, con `lectura` si la tiene.
+public struct NombreOriginalPresentado: Hashable, Sendable, Codable {
+    /// «حجاز», «陽音階».
+    public let texto: String
+    /// La etiqueta BCP 47 del idioma, para el `lang` del HTML: «ar», «zh-Hant».
+    public let idioma: String
+    /// El nombre del idioma en la notación: «árabe», «chino tradicional».
+    public let nombreDelIdioma: String
+    /// Cómo se lee, si no es el nombre de la escala: «Yō onkai».
+    public let lectura: String?
+    /// ¿Se escribe de derecha a izquierda (el árabe, el persa)?
+    public let derechaAIzquierda: Bool
+
+    public init(_ original: NombreOriginal, en notacion: Notacion) {
+        texto = original.texto
+        idioma = original.idioma.codigo
+        nombreDelIdioma = original.idioma.nombre(en: notacion)
+        lectura = original.lectura
+        derechaAIzquierda = original.idioma.deDerechaAIzquierda
+    }
+
+    /// Para una línea de texto: el nombre entre aislantes bidireccionales (U+2068 y U+2069), para que un nombre de
+    /// derecha a izquierda no se lleve el paréntesis a su lado, y después el idioma y la lectura.
+    ///
+    ///     "⁨陽音階⁩ (japonés, Yō onkai)"
+    public var enUnaLinea: String {
+        "\u{2068}" + texto + "\u{2069} (" + ([nombreDelIdioma] + (lectura.map { [$0] } ?? [])).joined(separator: ", ")
+            + ")"
     }
 }

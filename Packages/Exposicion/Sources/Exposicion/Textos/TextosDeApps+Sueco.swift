@@ -230,6 +230,7 @@ extension TextosDeApps {
         estilos: "Stilar",
         escuelas: "Skolor",
         fragmento: "Fragment",
+        nombreOriginal: "Originalnamn",
         afinacion: "Stämning",
         afinacionTemperada: "liksvävande",
         afinacionJusta: "ren",

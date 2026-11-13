@@ -230,6 +230,7 @@ extension TextosDeApps {
         estilos: "Stílusok",
         escuelas: "Iskolák",
         fragmento: "Töredék",
+        nombreOriginal: "Eredeti név",
         afinacion: "Hangolás",
         afinacionTemperada: "temperált",
         afinacionJusta: "tiszta",

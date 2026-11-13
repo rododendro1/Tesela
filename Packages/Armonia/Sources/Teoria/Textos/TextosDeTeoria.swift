@@ -284,6 +284,21 @@ struct TextosDeTeoria: TextosTraducidos {
     let tradicionBrasil: String
     let tradicionRenacimiento: String
 
+    // MARK: NombreOriginal.swift: los idiomas de los nombres originales
+    let idiomaArabe: String
+    let idiomaPersa: String
+    let idiomaSanscrito: String
+    let idiomaHindi: String
+    let idiomaChino: String
+    let idiomaChinoSimplificado: String
+    let idiomaChinoTradicional: String
+    let idiomaJapones: String
+    let idiomaCoreano: String
+    let idiomaAmarico: String
+    let idiomaGriego: String
+    let idiomaTailandes: String
+    let idiomaJemer: String
+
     // MARK: Escuela.swift y RegionDeEscala.swift
     let escuelaCarnatica: String
     let escuelaIndostanica: String

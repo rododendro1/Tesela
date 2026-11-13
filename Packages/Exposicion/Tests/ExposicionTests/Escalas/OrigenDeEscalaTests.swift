@@ -89,4 +89,14 @@ import Testing
         let datos = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.re, .bayati), en: notacion)
         #expect(datos.contains(DatoPresentado(nombre: "Afinación", valor: "microtonal")))
     }
+
+    /// El nombre en su escritura original: en las de otras tradiciones, con su idioma; en las demás, nada.
+    @Test func elNombreOriginal() throws {
+        let gong = try #require(EscalaPresentada(Escala(.do, .gong), en: notacion).nombresOriginales)
+        #expect(gong.map(\.idioma) == ["zh-Hans", "zh-Hant"])
+        #expect(gong[1].enUnaLinea == "\u{2068}宮\u{2069} (chino tradicional)")
+        let enIngles = try #require(EscalaPresentada(Escala(.re, .hiyaz), en: .compacta(.ingles)).nombresOriginales)
+        #expect(enIngles.first?.nombreDelIdioma == "Arabic" && enIngles.first?.derechaAIzquierda == true)
+        #expect(EscalaPresentada(Escala(.re, .dorico), en: notacion).nombresOriginales == nil)
+    }
 }

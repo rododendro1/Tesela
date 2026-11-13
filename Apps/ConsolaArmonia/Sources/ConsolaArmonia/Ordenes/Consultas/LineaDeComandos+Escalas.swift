@@ -301,7 +301,13 @@ extension LineaDeComandos {
     ) -> String {
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let datos = EscalaPresentada(escala, en: notacion)
-        var lineas = [datos.nombre, "  \(traducir(.notas)): " + datos.notas.joined(separator: " ")]
+        var lineas = [datos.nombre]
+        // Su nombre en la escritura de su tradición: «Nombre original: حجاز (árabe)».
+        if let originales = datos.nombresOriginales {
+            lineas.append(
+                "  " + notacion.texto(\.nombreOriginal) + ": " + originales.map(\.enUnaLinea).joined(separator: " · "))
+        }
+        lineas.append("  \(traducir(.notas)): " + datos.notas.joined(separator: " "))
         // Con un sistema móvil (--sistema sargam), los grados con sus nombres, desde la tónica: Sā Re ga ma Pa Dha ni.
         if let movil {
             let nombres = escala.nombres(en: movil.sistema, grafia: movil.grafia)

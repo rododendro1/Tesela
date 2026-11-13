@@ -50,6 +50,23 @@ leer en abierto no da sus escalas en texto, y sin una obra que las dé no se esc
 
 Con una de esas tablas en texto, o con un escaneo de las obras, se pueden añadir.
 
+## Escalas sin nombre original
+
+Las escalas de la India, el mundo árabe, Persia, China, Japón, Corea, Etiopía, Grecia, Bizancio y el sudeste asiático
+tienen su nombre en la escritura de su tradición (`TipoDeEscala.nombresOriginales`), salvo siete. La prueba
+`NombresOriginalesTests` las lista: si se añade el nombre de una, hay que quitarla de allí y de aquí.
+
+| Escala | Qué falta |
+| --- | --- |
+| shadd ʿUshshāq, shadd Nawā, shadd Abū Salīk, shadd Rāst | El árabe de los *shudūd* de Ṣafī al-Dīn (عشاق, نوى, أبو سليك, راست), comprobado en el *Kitāb al-adwār* |
+| Saung | El birmano (စောင်း), con Williamson (2000) |
+| Təzəta menor, Bati menor | Nada: el amárico no tiene otro nombre para el menor, y ትዝታ y ባቲ están en el mayor |
+
+Hay tradiciones que no lo llevan a propósito: la turca y la azerbaiyana (su escritura es la latina; la otomana sería
+una forma histórica), la indonesia y la vietnamita (la latina es la de uso) y la mesopotámica (la transliteración del
+acadio es la norma). Faltan aún, con fuente, el griego antiguo politónico de las harmoniai y los géneros
+(ἁρμονία δωριστί, γένος διατονικόν) y el hebreo y el yidis de los *shteygers* klezmer (אהבה רבה, פֿריגיש).
+
 ## Escalas occidentales sin fuente
 
 De las 118 escalas occidentales, 28 no citan ninguna obra. Son las alteradas que no tienen siete notas y que, por

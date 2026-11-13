@@ -22,7 +22,7 @@ extension TipoDeEscala {
     public static let echosProtos = TipoDeEscala(
         nombre: "échos prótos",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        variantes: ["ichos protos", "Ήχος πρώτος"],
+        variantes: ["ichos protos"], nombresOriginales: [.init("Ήχος πρώτος", .griego)],
         categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [0, 10, 18, 30, 42, 52, 60]),
@@ -34,7 +34,7 @@ extension TipoDeEscala {
     public static let echosPlagiosProtos = TipoDeEscala(
         nombre: "échos plágios prótos",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
-        alias: ["plagal protos"], variantes: ["Ήχος πλάγιος του πρώτου"],
+        alias: ["plagal protos"], nombresOriginales: [.init("Ήχος πλάγιος του πρώτου", .griego)],
         categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [0, 10, 18, 30, 40, 48, 60]),
@@ -44,21 +44,22 @@ extension TipoDeEscala {
     public static let echosDefteros = TipoDeEscala(
         nombre: "échos défteros",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
-        variantes: ["echos deuteros", "ichos defteros", "Ήχος δεύτερος"],
+        variantes: ["echos deuteros", "ichos defteros"], nombresOriginales: [.init("Ήχος δεύτερος", .griego)],
         categoria: .echos, afinaciones: [.init(.moria72, pasos: [0, 8, 22, 30, 42, 50, 64])],
         documentada: .chrysanthos1832)
     /// El plagal del segundo (Re Mi♭ Fa♯ Sol La Si♭ Do♯, sobre Pa): cromático duro, la doble armónica.
     public static let echosPlagiosDefteros = TipoDeEscala(
         nombre: "échos plágios défteros",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor],
-        alias: ["plagal defteros"], variantes: ["echos plagios deuteros", "Ήχος πλάγιος του δευτέρου"],
+        alias: ["plagal defteros"], variantes: ["echos plagios deuteros"],
+        nombresOriginales: [.init("Ήχος πλάγιος του δευτέρου", .griego)],
         categoria: .echos, afinaciones: [.init(.moria72, pasos: [0, 6, 26, 30, 42, 48, 68])],
         documentada: .chrysanthos1832)
     /// El tercero (Fa Sol La Si♭ Do Re Mi, sobre Ga): enarmónico, que en la teoría de 1881 ya es la escala mayor.
     public static let echosTritos = TipoDeEscala(
         nombre: "échos trítos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
-        variantes: ["ichos tritos", "Ήχος τρίτος"],
+        variantes: ["ichos tritos"], nombresOriginales: [.init("Ήχος τρίτος", .griego)],
         categoria: .echos, documentada: .chrysanthos1832)
     /// El grave, el plagal del tercero (Si Do Re Mi Fa Sol La, sobre Zo): diatónico, con la tónica dos moria bajo Si.
     public static let echosVarys = TipoDeEscala(
@@ -66,7 +67,7 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
-        alias: ["grave"], variantes: ["echos barys", "Ήχος βαρύς"],
+        alias: ["grave"], variantes: ["echos barys"], nombresOriginales: [.init("Ήχος βαρύς", .griego)],
         categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [-2, 6, 18, 28, 36, 48, 60]),
@@ -76,7 +77,7 @@ extension TipoDeEscala {
     public static let echosTetartos = TipoDeEscala(
         nombre: "échos tétartos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
-        variantes: ["ichos tetartos", "Ήχος τέταρτος"],
+        variantes: ["ichos tetartos"], nombresOriginales: [.init("Ήχος τέταρτος", .griego)],
         categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [0, 12, 22, 30, 42, 52, 60]),
@@ -86,7 +87,7 @@ extension TipoDeEscala {
     public static let echosPlagiosTetartos = TipoDeEscala(
         nombre: "échos plágios tétartos",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
-        alias: ["plagal tetartos"], variantes: ["Ήχος πλάγιος του τετάρτου"],
+        alias: ["plagal tetartos"], nombresOriginales: [.init("Ήχος πλάγιος του τετάρτου", .griego)],
         categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [0, 12, 22, 30, 42, 54, 64]),
@@ -97,7 +98,8 @@ extension TipoDeEscala {
     public static let echosLegetos = TipoDeEscala(
         nombre: "échos légetos",
         intervalos: [.unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor],
-        alias: ["legetos"], variantes: ["Λέγετος"],
+        alias: ["legetos"],
+        nombresOriginales: [.init("Ήχος λέγετος", .griego), .init("Λέγετος", .griego, lectura: "légetos")],
         categoria: .echos,
         afinaciones: [
             .init(.moria72, pasos: [-2, 6, 18, 30, 40, 48, 60]),

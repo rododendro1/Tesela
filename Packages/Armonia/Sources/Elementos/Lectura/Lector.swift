@@ -207,26 +207,48 @@ extension String {
 extension String {
     /// Forma para buscar un nombre del catálogo (de escala, de acorde, de progresión): minúsculas, sin diacríticos
     /// (dórico → dorico, Kāfī → kafi), ♯/♭ como #/b, sin ♮ ni ordinales (4ª → 4), «−» como «-», «…» como «..», la ı
-    /// sin punto del turco como i (makamı → makami) y con un solo espacio entre palabras. En devanagari no se quitan
-    /// los signos: las vocales y el virama son parte de la letra (भैरव y भैरवी son dos rāgas).
+    /// sin punto del turco como i (makamı → makami) y con un solo espacio entre palabras. En las escrituras de la India
+    /// y del sudeste asiático (devanagari, tailandesa, jemer…) no se quitan los signos: las vocales y el virama son
+    /// parte de la letra (भैरव y भैरवी son dos rāgas, y sin ellos ปี่พาทย์ sería otra palabra). En árabe sí, porque son
+    /// los harakat, que casi nunca se escriben (بَيَاتِي → بياتي), y las letras que cambian del árabe al persa se
+    /// igualan (ی y ى → ي, ک → ك), para que un teclado persa encuentre los maqāmāt y uno árabe los dastgāh.
     ///
     /// Con `conEspacios: false` se quitan además los espacios, los guiones, las rayas, los apóstrofos y los puntos,
     /// para que «ii–V–I», «ii-V-I» y «II V I» sean lo mismo. Las escalas se buscan con espacios (es lo que replica
     /// `Scripts/comun/normalizar_escalas.py`), y los acordes y las progresiones, sin ellos.
     package func normalizadoParaBuscar(conEspacios: Bool = true) -> String {
-        let devanagari = unicodeScalars.contains { (0x0900...0x097F).contains($0.value) }
-        let normalizado = replacingOccurrences(of: "♯", with: "#")
+        let conVocalesEnSignos = unicodeScalars.contains { letra in
+            String.escriturasConVocalesEnSignos.contains { $0.contains(letra.value) }
+        }
+        // Los harakat se quitan a mano: el `folding` de Foundation no los quita en Linux.
+        let sinHarakat = String(String.UnicodeScalarView(unicodeScalars.filter { !String.harakat.contains($0.value) }))
+        let normalizado = sinHarakat.replacingOccurrences(of: "♯", with: "#")
             .replacingOccurrences(of: "♭", with: "b")
             .replacingOccurrences(of: "♮", with: "")
             .replacingOccurrences(of: "ª", with: "")
             .replacingOccurrences(of: "−", with: "-")
             .replacingOccurrences(of: "…", with: "..")
             .replacingOccurrences(of: "ı", with: "i")
-            .folding(options: devanagari ? [.caseInsensitive] : [.diacriticInsensitive, .caseInsensitive], locale: nil)
+            .replacingOccurrences(of: "\u{06CC}", with: "\u{064A}") // ی persa → ي
+            .replacingOccurrences(of: "\u{0649}", with: "\u{064A}") // ى (alif maqṣūra) → ي
+            .replacingOccurrences(of: "\u{06A9}", with: "\u{0643}") // ک persa → ك
+            .folding(
+                options: conVocalesEnSignos ? [.caseInsensitive] : [.diacriticInsensitive, .caseInsensitive],
+                locale: nil
+            )
             .lowercased()
             .split(whereSeparator: { $0 == " " || $0 == "-" }).joined(separator: " ")
         return conEspacios ? normalizado : normalizado.filter { !" -–—'’.".contains($0) }
     }
+
+    /// Las escrituras en las que las vocales son signos combinantes, que no se quitan al normalizar: las de la India
+    /// (de la devanagari a la cingalesa), la tailandesa y la lao, la birmana y la jemer.
+    /// Los signos del árabe que se quitan al buscar: los harakat, el tanwīn, la shadda, el sukūn y la hamza encima y
+    /// debajo.
+    private static let harakat: ClosedRange<UInt32> = 0x064B...0x065F
+    private static let escriturasConVocalesEnSignos: [ClosedRange<UInt32>] = [
+        0x0900...0x0DFF, 0x0E00...0x0EFF, 0x1000...0x109F, 0x1780...0x17FF,
+    ]
 }
 
 extension Substring {

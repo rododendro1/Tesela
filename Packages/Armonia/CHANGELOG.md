@@ -2,6 +2,29 @@
 
 ## Sin publicar
 
+### Cambios incompatibles
+
+- La escritura original de las escalas de otras tradiciones sale de `TipoDeEscala.variantes` (y, en los mēḷa, de
+  `alias`) y pasa a `TipoDeEscala.nombresOriginales`: `variantes` queda solo para las grafías latinas. Se siguen
+  leyendo igual («Re حجاز», «Do 宮»), y el JSON no cambia: un fichero antiguo con «بياتي» en `variantes` se lee como
+  antes.
+
+### Novedades
+
+- `TipoDeEscala.nombresOriginales` y `nombreOriginal`: el nombre en la escritura de su tradición, con su idioma
+  (`IdiomaOriginal`, con la etiqueta BCP 47: «ar», «zh-Hant»), su escritura (`Escritura`, con el código ISO 15924) y,
+  si no es la del nombre, su lectura («Yō onkai» para 陽音階). Los tienen 233 escalas: las de la India, el mundo
+  árabe, Persia, China, Japón, Corea, Etiopía, Grecia, Bizancio y el sudeste asiático. El chino distingue el
+  simplificado del tradicional (宫, 宮).
+- La búsqueda de escalas quita los harakat del árabe (بَيَاتِي → بياتي), lee la ی y la ک del persa como la ي y la ك
+  del árabe, y no quita las vocales del tailandés ni del jemer, como ya hacía con el devanagari.
+- El TSV de `EjemploCatalogos` tiene las columnas `nombres_originales` e `idiomas_de_los_nombres_originales`.
+
+### Correcciones
+
+- La tabla griega escribe Ουσάκ, Χιτζαζκιάρ y Καρτσιγάρ, como el nombre original del catálogo (decía Ούσακ,
+  Χιτζάζκιαρ y Καρτζιγάρ).
+
 ### Rendimiento
 
 - Las búsquedas por contenido del catálogo de escalas (`TipoDeEscala.equivalentes`, los lugares que coinciden, las
