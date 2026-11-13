@@ -7,7 +7,7 @@ import Foundation
 // Sol4; una octava abajo, Sol3 es Yakāh), las perde turcas de Arel-Ezgi-Uzdilek (Rast es Sol4 y Nevâ, Re5; Segâh,
 // una koma bajo Si4) y las cuerdas del sistema perfecto griego (de proslambanómenos, La2, a nḗtē hyperbolaíōn, La4).
 // No son un `SistemaDeNombres`: el nombre depende de la octava y del microtono, así que se pide con una `Altura` y un
-// ajuste en los pasos de su `SistemaMicrotonal`, o con una `NotaMicrotonal` y su octava.
+// ajuste en los pasos de su `SistemaDeAlturas`, o con una `NotaMicrotonal` y su octava.
 //
 // Cada sistema es una tabla de alturas con nombre (`AlturaConNombre`), de la grave a la aguda. Una altura se busca
 // por los pasos de su sistema desde Do4 (cuartos de tono, comas o semitonos), así que da igual cómo se escriba: Re♭4
@@ -34,7 +34,7 @@ public enum NombresPorOctava: String, Hashable, Sendable, CaseIterable, Codable 
 
     /// El sistema microtonal de sus ajustes: `.cuartosDeTono` en el árabe, `.comas53` en el turco y ninguno en el
     /// griego, que va en semitonos.
-    public var sistemaMicrotonal: SistemaMicrotonal? {
+    public var sistemaDeAlturas: SistemaDeAlturas? {
         switch self {
         case .arabe: return .cuartosDeTono
         case .turco: return .comas53
@@ -84,7 +84,7 @@ public enum NombresPorOctava: String, Hashable, Sendable, CaseIterable, Codable 
 
     /// Si las notas de un sistema microtonal se nombran en este: en el árabe, las de cuartos de tono y las de la
     /// notación persa; en el turco, las de 53 comas.
-    func admite(_ microtonal: SistemaMicrotonal) -> Bool {
+    func admite(_ microtonal: SistemaDeAlturas) -> Bool {
         switch self {
         case .arabe: return microtonal == .cuartosDeTono || microtonal == .persa
         case .turco: return microtonal == .comas53
@@ -133,7 +133,7 @@ public struct AlturaConNombre: Hashable, Sendable, CustomStringConvertible {
     /// La nota microtonal de la altura, sin su octava (la de `altura.octava`), con los cents desde Do (en el turco,
     /// en comas de 1200/53 cents). `nil` en el griego, que no tiene microtonos.
     public var notaMicrotonal: NotaMicrotonal? {
-        guard let microtonal = sistema.sistemaMicrotonal else { return nil }
+        guard let microtonal = sistema.sistemaDeAlturas else { return nil }
         let porOctava = microtonal.pasosPorOctava
         let cents = Double(modulo(sistema.pasos(de: altura, ajuste: ajuste), porOctava)) * 1200 / Double(porOctava)
         return NotaMicrotonal(temperada: altura.nota, sistema: microtonal, ajuste: ajuste, cents: cents)

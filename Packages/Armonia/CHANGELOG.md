@@ -4,6 +4,14 @@
 
 ### Cambios incompatibles
 
+- `SistemaMicrotonal` pasa a ser `SistemaDeAlturas`, y `TemperamentoConNombre.sistemaMicrotonal` y
+  `NombresPorOctava.sistemaMicrotonal`, `sistemaDeAlturas`: los 22 śruti y las razones de Ptolomeo son justos, no
+  microtonos. Sus casos y sus valores en el JSON y en el texto de las partituras no cambian.
+- La consola: el JSON de `acordes` y `progresiones` es el de `AcordeConNombrePresentado` y
+  `ProgresionConNombrePresentada` (Exposicion): lleva `alias`, `referencias` y `origen` (`{"anio", "epoca",
+  "documentada"}`) en lugar de `anio` y `epoca`, y las épocas de uso van por su nombre, no por su clave. En el de
+  `escala`, `temperamentos` y `notas`, `anio` pasa a ser `origen`.
+
 - Fuera `Subtradicion` y `TipoDeEscala.subtradiciones`, que juntaban el estilo, la escuela y la región, que ya tienen
   su tipo: se usan `estilos`, `escuelas` y `lugaresDeOrigen` (la región es un `Lugar`), o `regiones`.
 - `TipoDeEscalaMicrotonal` pasa a ser `AfinacionPropia`, y `TipoDeEscala.microtonal`, `afinacionPropia`: la afinación
@@ -34,6 +42,16 @@
   y el frigio dominante `[.flamenco, .jazz, .popRock]`. `TipoDeEscala.estiloPrincipal` da el primero.
 
 ### Lo nuevo
+
+- Los ritmos tienen `estilos`, `epocasDeUso` y `epocas`, como los acordes: el flamenco en la soleá, la bulería y la
+  seguiriya, el folclore en los aksak búlgaros, la clásica en los modos rítmicos, el vals, la polonesa, la siciliana
+  y la habanera, y el jazz en el charleston y la bossa nova. Los de otras tradiciones (los tala, los iqa', los usul)
+  no tienen. En la consola, `ritmos --uso flamenco` y `ritmos --epoca barroco` los filtran, y el TSV de los ritmos
+  tiene su columna de estilos.
+- Siete obras nuevas en `Referencia.catalogo`, las que documentan los temperamentos: Aron (1523), Zhu Zaiyu (1584),
+  Werckmeister (1691), Huygens (1691), Kirnberger (1771), Bosanquet (1876) y Mandelbaum (1961). Los temperamentos
+  igual, mesotónico de ¼ de coma, Werckmeister III, Kirnberger II y los de 19, 22 y 31 partes las tienen como
+  `documentada`, con el mismo año. `TemperamentoConNombre.autor`, si no se da, es el autor de esa obra.
 
 - El carácter de las escalas: `TipoDeEscala.caracter` da lo que dice cada fuente (`Caracter`), con los afectos
   (`Afecto`, un vocabulario de 21 palabras en los trece idiomas), el momento del día (`MomentoDelDia`), la estación

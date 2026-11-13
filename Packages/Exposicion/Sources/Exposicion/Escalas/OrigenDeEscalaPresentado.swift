@@ -8,15 +8,11 @@ import Armonia
 /// de `TipoDeEscala` (`epocaDeOrigen`, `periodo`, `lugaresDeOrigen`, `estilos`, `escuelas`…).
 ///
 ///     let origen = OrigenDeEscalaPresentado(.menorHungara, en: .compacta(.espanol))
-///     origen?.epoca      // "Romanticismo"
-///     origen?.anio       // 1859
+///     origen?.origen?.texto   // "Romanticismo (1859)"
 public struct OrigenDeEscalaPresentado: Hashable, Sendable, Codable {
-    /// El año en que aparece (`TipoDeEscala.anioDeOrigen`), si se sabe. Los de antes de Cristo son negativos.
-    public let anio: Int?
-    /// La época de origen y las de uso, por su nombre.
-    public let epoca: String?
-    /// La cita de la obra más antigua que la documenta (`TipoDeEscala.documentada`), si la tiene.
-    public let documentada: String?
+    /// El año, la época y la obra que la documenta, como en los demás catálogos; `nil` si no se sabe ninguno.
+    public let origen: OrigenPresentado?
+    /// Las épocas en que se usa, por su nombre.
     public let epocasDeUso: [String]
     /// El período de su tradición en que aparece y en los que se sigue usando, por su nombre.
     public let periodo: String?
@@ -31,8 +27,7 @@ public struct OrigenDeEscalaPresentado: Hashable, Sendable, Codable {
 
     /// El origen de la escala, o `nil` si no se sabe nada de él (las propias).
     public init?(_ tipo: TipoDeEscala, en notacion: Notacion) {
-        let origen = OrigenPresentado(tipo, en: notacion)
-        (anio, epoca, documentada) = (origen?.anio, origen?.epoca, origen?.documentada)
+        origen = OrigenPresentado(tipo, en: notacion)
         epocasDeUso = tipo.epocasDeUso.map { $0.nombre(en: notacion) }
         periodo = tipo.periodo?.nombre(en: notacion)
         periodosDeUso = tipo.periodosDeUso.map { $0.nombre(en: notacion) }
@@ -48,9 +43,6 @@ public struct OrigenDeEscalaPresentado: Hashable, Sendable, Codable {
         if origen == nil, periodo == nil, listas.allSatisfy(\.isEmpty) { return nil }
     }
 
-    /// El año, la época y la obra que la documenta, como en los demás catálogos.
-    public var origen: OrigenPresentado { OrigenPresentado(anio: anio, epoca: epoca, documentada: documentada) }
-
     /// Un dato por fila, solo los que tiene: la época (con el año, si se sabe), las épocas de uso, el período, los de
     /// uso, los lugares, los estilos y las escuelas.
     ///
@@ -63,7 +55,7 @@ public struct OrigenDeEscalaPresentado: Hashable, Sendable, Codable {
                 datos.append(DatoPresentado(nombre: notacion.texto(nombre), valor: valores.joined(separator: " · ")))
             }
         }
-        datos += origen.datos(en: notacion)
+        datos += origen?.datos(en: notacion) ?? []
         lista(\.epocasDeUso, epocasDeUso)
         if let periodo { datos.append(DatoPresentado(nombre: notacion.texto(\.periodo), valor: periodo)) }
         lista(\.periodosDeUso, periodosDeUso)

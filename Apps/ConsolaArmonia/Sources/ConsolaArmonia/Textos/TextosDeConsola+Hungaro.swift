@@ -61,7 +61,7 @@ extension TextosDeConsola {
         descripcionTradiciones: "a katalógus hagyományai a kategóriáikkal és skáláik számával; eggyel: annak skálái",
         sintaxisProgresiones: "progressions [<szöveg>] [--in <hangnem>] [--era <korszak>] [--affect <affektus>]",
         descripcionProgresiones: "a katalógus harmóniamenetei római számokkal és akkordjaikkal C-ről vagy a --in alaphangjáról; szöveggel: azok, amelyek nevében benne van",
-        sintaxisRitmos: "rhythms [<szöveg>] [--family <család>] [--statistics] [--compare <ritmus>]",
+        sintaxisRitmos: "rhythms [<szöveg>] [--family <család>] [--use <stílus>] [--era <korszak>] [--statistics] [--compare <ritmus>]",
         descripcionRitmos: "a katalógus ritmusai a mintájukkal (x erős, o gyenge, . szünet) és az ütemmutatójukkal; szöveggel azok, amelyek nevében szerepel",
         notasRitmos: "opciók: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) egy család ritmusait hagyja meg; --statistics hozzáadja az adatlapjukat és Toussaint mértékeit (távolságvektor, euklideszi, mély, egyenletesség, ütemen kívüliség, szinkópa); --compare <ritmus> megadja a Hamming- és a cseretávolságot egy azonos pulzusszámú másiktól",
         sintaxisTemperamentos: "temperaments [<szöveg>] [--family <család>] [--statistics | --clock [--fifths] [--colors]]",

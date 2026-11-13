@@ -320,7 +320,7 @@ TipoDeEscala.mayor.caracter.isEmpty                  // true
 ## Microtonos
 
 Algunas escalas aproximadas tienen también su versión microtonal, `afinacionPropia` (un ``AfinacionPropia``):
-dónde cae cada grado en la teoría de su tradición, en los pasos de su sistema (``SistemaMicrotonal``) contados
+dónde cae cada grado en la teoría de su tradición, en los pasos de su sistema (``SistemaDeAlturas``) contados
 desde la tónica temperada. La tienen todos los maqamat que usan cuartos de tono, en cuartos de tono
 (`.cuartosDeTono`, la teoría árabe moderna); los dastgāh y āvāz con *koron*, con el de Vaziri (`.persa`); los
 makamlar, salvo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, Mâhur y Acemaşiran), en las 53 comas de Arel-Ezgi-Uzdilek

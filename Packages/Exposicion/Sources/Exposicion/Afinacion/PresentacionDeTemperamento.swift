@@ -19,9 +19,14 @@ public struct AproximacionJustaPresentada: Hashable, Sendable, Codable {
 public struct TemperamentoPresentado: Hashable, Sendable, Codable {
     /// El nombre en la notación: «mesotónico de 1/4 de coma», «quarter-comma meantone»…
     public let nombre: String
+    /// Los otros nombres en el idioma de la notación.
+    public let alias: [String]
     public let familia: String
     public let autor: String?
-    public let anio: Int?
+    /// El año, la época y la obra que lo documenta (`OrigenPresentado`); `nil` si no se sabe ninguno.
+    public let origen: OrigenPresentado?
+    /// Las citas de las obras donde se lee.
+    public let referencias: [String]
     public let pasosPorOctava: Int
     /// Los cents de cada paso desde el primero.
     public let pasos: [Double]
@@ -42,9 +47,11 @@ public struct TemperamentoPresentado: Hashable, Sendable, Codable {
     public init(_ temperamento: TemperamentoConNombre, en notacion: Notacion) {
         let estadisticas = temperamento.estadisticas
         nombre = temperamento.nombre(en: notacion)
+        alias = temperamento.alias(en: notacion)
         familia = temperamento.familia.nombre(en: notacion)
         autor = temperamento.autor
-        anio = temperamento.anioDeOrigen
+        origen = OrigenPresentado(temperamento, en: notacion)
+        referencias = temperamento.referencias.map(\.cita)
         pasosPorOctava = estadisticas.pasosPorOctava
         pasos = temperamento.pasos
         quinta = temperamento.quinta
@@ -73,12 +80,12 @@ public struct TemperamentoPresentado: Hashable, Sendable, Codable {
         return (valor < 0 ? "−" : "+") + texto
     }
 
-    /// La ficha, un dato por fila: la familia, el autor, la época con el año (`OrigenPresentado`), los pasos por octava
+    /// La ficha, un dato por fila: la familia, el autor, los otros nombres y la época con el año (`datosDelCatalogo(en:)`), los pasos por octava
     /// y la quinta, los que tenga.
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
         var datos = [DatoPresentado(nombre: notacion.texto(\.familiaDeTemperamento), valor: familia)]
         if let autor { datos.append(DatoPresentado(nombre: notacion.texto(\.autorDelTemperamento), valor: autor)) }
-        datos += OrigenPresentado(anio: anio, en: notacion).datos(en: notacion)
+        datos += datosDelCatalogo(en: notacion)
         datos.append(DatoPresentado(nombre: notacion.texto(\.pasosPorOctava), valor: "\(pasosPorOctava)"))
         if let quinta {
             datos.append(DatoPresentado(nombre: notacion.texto(\.quintaDelTemperamento), valor: Self.cents(quinta)))

@@ -594,6 +594,36 @@ extension Referencia {
         titulo: "Ornamentation in Baroque and Post-Baroque Music, with Special Emphasis on J. S. Bach", anio: 1978,
         editorial: "Princeton University Press", lugar: "Princeton")
 
+    /// El Toscanello de Aron, el primer temperamento mesotónico descrito (¼ de coma).
+    public static let aron1523 = Referencia(
+        "aron1523", .tratado, autores: ["Aron, Pietro"], titulo: "Thoscanello de la musica", anio: 1523,
+        lugar: "Venecia")
+    /// El Lüxue xinshuo de Zhu Zaiyu: la octava en doce semitonos iguales, calculados con la raíz duodécima de 2.
+    public static let zhu1584 = Referencia(
+        "zhu1584", .tratado, autores: ["Zhu Zaiyu"], titulo: "Lüxue xinshuo (Nueva teoría de los lü)", anio: 1584)
+    /// La Musicalische Temperatur de Werckmeister, con sus temperamentos circulares.
+    public static let werckmeister1691 = Referencia(
+        "werckmeister1691", .tratado, autores: ["Werckmeister, Andreas"], titulo: "Musicalische Temperatur",
+        anio: 1691, editorial: "Theodor Philipp Calvisius", lugar: "Fráncfort y Leipzig")
+    /// La carta de Huygens sobre el ciclo armónico: la octava en 31 partes iguales.
+    public static let huygens1691 = Referencia(
+        "huygens1691", .articulo, autores: ["Huygens, Christiaan"], titulo: "Lettre touchant le cycle harmonique",
+        anio: 1691, publicadoEn: "Histoire des ouvrages des sçavans", lugar: "Róterdam")
+    /// El primer volumen de Die Kunst des reinen Satzes de Kirnberger, con su temperamento II.
+    public static let kirnberger1771 = Referencia(
+        "kirnberger1771", .tratado, autores: ["Kirnberger, Johann Philipp"],
+        titulo: "Die Kunst des reinen Satzes in der Musik", anio: 1771, lugar: "Berlín", volumen: "1")
+    /// El tratado de Bosanquet, con la octava en 22 partes y su teclado generalizado.
+    public static let bosanquet1876 = Referencia(
+        "bosanquet1876", .libro, autores: ["Bosanquet, R. H. M."],
+        titulo: "An Elementary Treatise on Musical Intervals and Temperament", anio: 1876, editorial: "Macmillan",
+        lugar: "Londres")
+    /// La tesis de Mandelbaum sobre la octava en 19 partes iguales.
+    public static let mandelbaum1961 = Referencia(
+        "mandelbaum1961", .tesis, autores: ["Mandelbaum, Joel"],
+        titulo: "Multiple Division of the Octave and the Tonal Resources of 19-Tone Temperament", anio: 1961,
+        editorial: "Indiana University", lugar: "Bloomington")
+
     /// Todas las obras, en el orden de este fichero.
     public static let catalogo: [Referencia] = [
         .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .bor1999, .rowell1992, .touma1996,
@@ -623,6 +653,7 @@ extension Referencia {
         .ortiz1553, .riepel1755, .campbell2019, .cannon2002, .scherbaum2022,
         .bonifacic2001,
         .rechberger2008, .busoni1916, .toussaint2013, .clayton2000, .viswanathan2004, .brailoiu1951, .apel1953,
-        .fernandez2004, .lindley2001, .sethares2005, .haynes2002, .neumann1978,
+        .fernandez2004, .lindley2001, .sethares2005, .haynes2002, .neumann1978, .aron1523, .zhu1584,
+        .werckmeister1691, .huygens1691, .kirnberger1771, .bosanquet1876, .mandelbaum1961,
     ]
 }

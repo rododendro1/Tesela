@@ -52,29 +52,10 @@ extension LineaDeComandos {
         return bien(lineas.joined(separator: "\n"))
     }
 
-    struct ProgresionJSON: Encodable {
-        let nombre: String
-        let cifrado: String
-        let modo: String
-        let acordes: [String]
-        let estilos: [String]
-        /// El año de la obra que la documenta, y las claves de su época de origen y de las de uso.
-        let anio: Int?
-        let epoca: String?
-        let epocasDeUso: [String]
-    }
-
     /// `progresiones [<texto>] [--en <tonalidad>] --json`: las mismas progresiones, con su modo y sus estilos.
-    static func progresionesJSON(_ textos: [String], _ notacion: Notacion) throws -> [ProgresionJSON] {
+    static func progresionesJSON(_ textos: [String], _ notacion: Notacion) throws -> [ProgresionConNombrePresentada] {
         let (halladas, tonica) = try progresionesPedidas(textos, notacion)
-        return halladas.map { progresion in
-            ProgresionJSON(
-                nombre: progresion.nombre(en: notacion), cifrado: progresion.cifrado,
-                modo: progresion.modo.nombre(en: notacion),
-                acordes: progresion.acordes(sobre: tonica).map { $0.cifrado(en: notacion) },
-                estilos: progresion.estilos.map { $0.nombre(en: notacion) }, anio: progresion.anioDeOrigen,
-                epoca: progresion.epocaDeOrigen?.rawValue, epocasDeUso: progresion.epocasDeUso.map(\.rawValue))
-        }
+        return halladas.map { ProgresionConNombrePresentada($0, sobre: tonica, en: notacion) }
     }
 
     // MARK: Acordes
@@ -203,9 +184,9 @@ extension LineaDeComandos {
             return bien(columnas([tabla.encabezados] + tabla.filas))
         }
         let lineas = pedido.acordes.map { acorde in
-            let cifrado = cifradoDelGenerico(acorde, sobre: pedido.sobre, notacion).map { " (" + $0 + ")" } ?? ""
-            let notas = acorde.notas(sobre: pedido.sobre).map { $0.nombre(en: notacion) }
-            return acorde.nombre(en: notacion) + cifrado + ": " + notas.joined(separator: " ")
+            let presentado = AcordeConNombrePresentado(acorde, sobre: pedido.sobre, en: notacion)
+            let cifrado = presentado.cifrado.map { " (" + $0 + ")" } ?? ""
+            return presentado.nombre + cifrado + ": " + presentado.notas.joined(separator: " ")
         }
         return bien(lineas.joined(separator: "\n"))
     }
@@ -237,41 +218,14 @@ extension LineaDeComandos {
         return lineas.joined(separator: "\n")
     }
 
-    struct AcordeConNombreJSON: Encodable {
-        let nombre: String
-        /// El cifrado sobre la nota pedida, en los genéricos (los que dan nombre a su tipo).
-        let cifrado: String?
-        let notas: [String]
-        let estilos: [String]
-        /// El año de la obra que lo documenta, y las claves de su época de origen y de las de uso.
-        let anio: Int?
-        let epoca: String?
-        let epocasDeUso: [String]
-        /// Con `--estadisticas`: lo que se mide del acorde.
-        let estadisticas: EstadisticasDeAcordePresentadas?
-    }
-
     /// `acordes [<texto>] [opciones] --json`: los mismos acordes, con sus estilos y, con `--estadisticas`, lo que se
     /// mide de cada uno; con `--resumen`, el resumen (`ResumenDeAcordesPresentado`).
     static func acordesConNombreJSON(_ textos: [String], _ notacion: Notacion) throws -> any Encodable {
         let pedido = try acordesPedidos(textos, notacion)
         if pedido.resumen { return PresentacionDeEstadisticasDeAcorde.resumen(pedido.acordes, en: notacion) }
-        return pedido.acordes.map { acorde in
-            AcordeConNombreJSON(
-                nombre: acorde.nombre(en: notacion), cifrado: cifradoDelGenerico(acorde, sobre: pedido.sobre, notacion),
-                notas: acorde.notas(sobre: pedido.sobre).map { $0.nombre(en: notacion) },
-                estilos: acorde.estilos.map { $0.nombre(en: notacion) }, anio: acorde.anioDeOrigen,
-                epoca: acorde.epocaDeOrigen?.rawValue, epocasDeUso: acorde.epocasDeUso.map(\.rawValue),
-                estadisticas: pedido.estadisticas
-                    ? EstadisticasDeAcordePresentadas(acorde.estadisticas, en: notacion) : nil)
+        return pedido.acordes.map {
+            AcordeConNombrePresentado($0, sobre: pedido.sobre, conEstadisticas: pedido.estadisticas, en: notacion)
         }
-    }
-
-    /// El cifrado de un acorde genérico sobre una nota: «Do7» para la séptima de dominante. Los de nombre propio no
-    /// lo llevan, aunque sus notas se lean por terceras (el de Tristán sería Fa(♯6,♯9,♯11,omit3,omit5)).
-    private static func cifradoDelGenerico(_ acorde: AcordeConNombre, sobre: Nota, _ notacion: Notacion) -> String? {
-        guard let tipo = acorde.tipo, tipo.acordeConNombre == acorde else { return nil }
-        return Acorde(sobre, tipo).cifrado(en: notacion)
     }
 
     /// Una búsqueda en un catálogo que no da nada: el mensaje y el código 1.

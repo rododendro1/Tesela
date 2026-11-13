@@ -25,16 +25,6 @@ public struct OrigenPresentado: Hashable, Sendable, Codable {
         if anio == nil, epoca == nil, documentada == nil { return nil }
     }
 
-    init(anio: Int?, epoca: String?, documentada: String?) {
-        (self.anio, self.epoca, self.documentada) = (anio, epoca, documentada)
-    }
-
-    /// El origen de lo que solo tiene año, como un temperamento o una nota: su época es la de ese año, como en su
-    /// catálogo (`epocaDeOrigen`).
-    init(anio: Int?, en notacion: Notacion) {
-        self.init(anio: anio, epoca: anio.map { Epoca(anio: $0).nombre(en: notacion) }, documentada: nil)
-    }
-
     /// La época con el año entre paréntesis, «Barroco (1691)»; solo el año, si no hay época; `nil` si no hay
     /// ninguno.
     public var texto: String? {

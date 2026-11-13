@@ -11,7 +11,16 @@ import Armonia
 public struct RitmoPresentado: Hashable, Sendable, Codable {
     /// El nombre en la notación: «clave de son», «son clave»…
     public let nombre: String
+    /// Los otros nombres en el idioma de la notación.
+    public let alias: [String]
     public let familia: String
+    /// Sus estilos, de más a menos importante, y las épocas en que se usa, por su nombre.
+    public let estilos: [String]
+    public let epocasDeUso: [String]
+    /// Las citas de las obras donde se lee.
+    public let referencias: [String]
+    /// El año, la época y la obra que lo documenta (`OrigenPresentado`); `nil` si no se sabe ninguno.
+    public let origen: OrigenPresentado?
     /// Un carácter por pulso: `x` fuerte, `o` débil, `.` en silencio.
     public let patron: String
     public let agrupacion: [Int]
@@ -32,7 +41,12 @@ public struct RitmoPresentado: Hashable, Sendable, Codable {
     public init(_ ritmo: RitmoConNombre, en notacion: Notacion) {
         let estadisticas = ritmo.estadisticas
         nombre = ritmo.nombre(en: notacion)
+        alias = ritmo.alias(en: notacion)
         familia = ritmo.familia.nombre(en: notacion)
+        estilos = ritmo.estilos.map { $0.nombre(en: notacion) }
+        epocasDeUso = ritmo.epocasDeUso.map { $0.nombre(en: notacion) }
+        referencias = ritmo.referencias.map(\.cita)
+        origen = OrigenPresentado(ritmo, en: notacion)
         patron = ritmo.patron
         agrupacion = ritmo.agrupacion
         compas = ritmo.compas.description
@@ -49,10 +63,10 @@ public struct RitmoPresentado: Hashable, Sendable, Codable {
         sincopa = estadisticas.sincopa
     }
 
-    /// La ficha, un dato por fila: la familia, el patrón, la agrupación y el compás.
+    /// La ficha, un dato por fila: la familia, los otros nombres y la época (`datosDelCatalogo(en:)`), si los tiene,
+    /// el patrón, la agrupación y el compás.
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
-        [
-            DatoPresentado(nombre: notacion.texto(\.familiaDeRitmo), valor: familia),
+        [DatoPresentado(nombre: notacion.texto(\.familiaDeRitmo), valor: familia)] + datosDelCatalogo(en: notacion) + [
             DatoPresentado(nombre: notacion.texto(\.patronDeRitmo), valor: patron),
             DatoPresentado(
                 nombre: notacion.texto(\.agrupacionDeRitmo),

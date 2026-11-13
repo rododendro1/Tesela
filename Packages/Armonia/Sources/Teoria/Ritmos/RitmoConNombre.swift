@@ -34,12 +34,13 @@ public struct RitmoConNombre: Sendable {
     package let ficha: FichaDelCatalogo
 
     /// Un ritmo con nombre, del catálogo o fuera de él. Sin agrupación, un solo grupo con todos los pulsos.
-    /// `documentada` es la obra más antigua que lo da, con su año, y va también entre sus referencias; `anio`, el año
-    /// en que aparece, si no lo da esa obra.
+    /// `estilos` son los de la música occidental en que se usa, de más a menos importante; `documentada`, la obra más
+    /// antigua que lo da, con su año, que va también entre sus referencias; `anio`, el año en que aparece, si no lo da
+    /// esa obra.
     public init(
         nombre: String, patron: String, agrupacion: [Int]? = nil, unidad: Int = 16, familia: FamiliaDeRitmo,
-        alias: [String] = [], variantes: [String] = [], referencias: [Referencia] = [], documentada: Referencia? = nil,
-        anio: Int? = nil
+        alias: [String] = [], variantes: [String] = [], estilos: [Estilo] = [], referencias: [Referencia] = [],
+        documentada: Referencia? = nil, anio: Int? = nil
     ) {
         self.nombre = nombre
         self.patron = patron
@@ -48,10 +49,14 @@ public struct RitmoConNombre: Sendable {
         self.familia = familia
         self.alias = alias
         self.variantes = variantes
-        ficha = FichaDelCatalogo(referencias: referencias, documentada: documentada, anio: anio)
+        ficha = FichaDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada, anio: anio)
     }
 
     // MARK: Propiedades
+
+    /// En qué estilos de la música occidental se usa, de más a menos importante: el flamenco en la soleá, el folclore
+    /// en los aksak búlgaros, el jazz en el charleston. Vacío en los de otras tradiciones (los tala, los iqa').
+    public var estilos: [Estilo] { ficha.estilos }
 
     /// Dónde se lee el ritmo, con las obras de su carácter.
     public var referencias: [Referencia] { Referencia.unicas(ficha.referencias + caracter.map(\.fuente)) }

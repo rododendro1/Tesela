@@ -81,7 +81,7 @@ public struct RelojDeAlturas: Hashable, Sendable {
 
     /// Las rayitas de un sistema desde su primer paso: los pasos de la octava, o ninguna en el de cents
     /// cualesquiera (`razones`), que tendría 1200.
-    public static func divisiones(de sistema: SistemaMicrotonal) -> [Double] {
+    public static func divisiones(de sistema: SistemaDeAlturas) -> [Double] {
         guard sistema != .razones else { return [] }
         return (0..<sistema.pasosPorOctava).map(sistema.cents(de:))
     }
@@ -136,8 +136,8 @@ public struct RelojDeAlturas: Hashable, Sendable {
     /// círculo de quintas se cierra antes (14 de 24, 42 de 72).
     public static func pasosDeLaQuinta(de temperamento: TemperamentoConNombre) -> Int? {
         // Los sistemas de pasos iguales (cuartos de tono, 53 comas, 72 moria) tienen la quinta más cercana a la pura.
-        let iguales: Set<SistemaMicrotonal> = [.cuartosDeTono, .persa, .comas53, .moria72]
-        let deUnSistema = temperamento.sistemaMicrotonal.map(iguales.contains) == true ? 1200 * log2(1.5) : nil
+        let iguales: Set<SistemaDeAlturas> = [.cuartosDeTono, .persa, .comas53, .moria72]
+        let deUnSistema = temperamento.sistemaDeAlturas.map(iguales.contains) == true ? 1200 * log2(1.5) : nil
         guard let quinta = temperamento.quinta ?? deUnSistema else { return nil }
         let n = temperamento.pasosPorOctava
         if n == 12 { return 7 }

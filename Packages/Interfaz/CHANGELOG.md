@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- `ModeloDelCatalogo` escribe los acordes y las progresiones con `AcordeConNombrePresentado` y
+  `ProgresionConNombrePresentada`, y la ficha de un ritmo lleva sus estilos y su época con el año («danza · jazz ·
+  Siglo XX (1923)»).
+
 - `ModeloDelCatalogo` escribe la época y el año de un acorde o una progresión con `OrigenPresentado`, como la
   consola y las hojas.
 

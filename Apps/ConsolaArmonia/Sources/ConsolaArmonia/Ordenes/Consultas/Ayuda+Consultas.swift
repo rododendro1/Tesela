@@ -139,14 +139,15 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeRitmos: [EntradaDeAyuda] = [
-        // ritmos [<texto>] [--familia <familia>] [--estadisticas] [--comparar <ritmo>]
+        // ritmos [<texto>] [--familia <familia>] [--uso <estilo>] [--epoca <época>] [--estadisticas]
+        //     [--comparar <ritmo>]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisRitmos),
             descripcion: TextosDeConsola.traduccion(\.descripcionRitmos),
             ejemplo: ejemplo(
                 "armonia ritmos clave de son --estadisticas", "armonia rhythms son clave --statistics"),
             notas: TextosDeConsola.traduccion(\.notasRitmos),
-            opciones: [.familia, .estadisticas, .comparar])
+            opciones: [.familia, .uso, .epoca, .estadisticas, .comparar])
     ]
 
     static let ayudaDeTemperamentos: [EntradaDeAyuda] = [

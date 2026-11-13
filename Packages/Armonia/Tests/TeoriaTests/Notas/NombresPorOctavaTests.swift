@@ -64,7 +64,7 @@ import Testing
 
     @Test func cuerdasGriegas() throws {
         let griego = NombresPorOctava.griegoAntiguo
-        #expect(griego.sistemaMicrotonal == nil)
+        #expect(griego.sistemaDeAlturas == nil)
         #expect(griego.nombre(de: Altura(.la, octava: 3)) == "mésē")
         #expect(griego.nombre(de: Altura(.la, octava: 2), grafia: .original) == "προσλαμβανόμενος")
         #expect(griego.nombre(de: Altura(.la, octava: 4), grafia: .ascii) == "nete hyperbolaion")
@@ -78,10 +78,10 @@ import Testing
     }
 
     @Test func sruti() throws {
-        let nombres = SistemaMicrotonal.nombresDeLosSruti()
+        let nombres = SistemaDeAlturas.nombresDeLosSruti()
         #expect(nombres.count == 22)
         #expect(nombres.first == "tīvrā")
-        #expect(SistemaMicrotonal.nombresDeLosSruti(en: .ascii)[13] == "kshiti")
+        #expect(SistemaDeAlturas.nombresDeLosSruti(en: .ascii)[13] == "kshiti")
         let bilaval = try #require(Escala(.do, .bilaval).notasMicrotonales())
         #expect(
             bilaval.compactMap { $0.nombreDelSruti() }

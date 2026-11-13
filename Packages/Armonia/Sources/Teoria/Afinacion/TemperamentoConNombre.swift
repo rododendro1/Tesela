@@ -24,7 +24,8 @@ public struct TemperamentoConNombre: Sendable {
     public let variantes: [String]
     /// La familia: regular, circular, justa, de divisiones iguales o de una tradición.
     public let familia: FamiliaDeTemperamento
-    /// Quién lo propuso o lo describió: «Andreas Werckmeister».
+    /// Quién lo propuso o lo describió: «Andreas Werckmeister». Si no se da, el primer autor de la obra que lo
+    /// documenta (`documentada`), con el nombre delante.
     public let autor: String?
     /// Cómo se afina.
     package let construccion: ConstruccionDeTemperamento
@@ -39,10 +40,16 @@ public struct TemperamentoConNombre: Sendable {
         self.nombre = nombre
         self.construccion = construccion
         self.familia = familia
-        self.autor = autor
+        self.autor = autor ?? documentada?.autores.first.map(Self.nombreNatural)
         self.alias = alias
         self.variantes = variantes
         ficha = FichaDelCatalogo(referencias: referencias, documentada: documentada, anio: anio)
+    }
+
+    /// «Werckmeister, Andreas» como «Andreas Werckmeister»; un nombre sin coma («Zhu Zaiyu»), tal cual.
+    private static func nombreNatural(_ autor: String) -> String {
+        let partes = autor.split(separator: ",", maxSplits: 1).map { $0.trimmingCharacters(in: .whitespaces) }
+        return partes.count == 2 ? partes[1] + " " + partes[0] : autor
     }
 
     // MARK: Propiedades
@@ -102,7 +109,7 @@ public struct TemperamentoConNombre: Sendable {
     }
 
     /// El sistema microtonal que es, si es uno.
-    public var sistemaMicrotonal: SistemaMicrotonal? {
+    public var sistemaDeAlturas: SistemaDeAlturas? {
         guard case .sistema(let sistema) = construccion else { return nil }
         return sistema
     }
@@ -144,7 +151,7 @@ package enum ConstruccionDeTemperamento: Hashable, Sendable {
     /// La octava en tantas partes iguales.
     case divisiones(Int)
     /// Los pasos de un sistema microtonal.
-    case sistema(SistemaMicrotonal)
+    case sistema(SistemaDeAlturas)
 }
 
 extension TemperamentoConNombre: Hashable {
@@ -169,10 +176,10 @@ extension TemperamentoConNombre {
     }
 }
 
-extension SistemaMicrotonal {
+extension SistemaDeAlturas {
     /// El sistema del catálogo de temperamentos que es; `nil` en el de cents cualesquiera (`razones`).
     public var temperamento: TemperamentoConNombre? {
-        TemperamentoConNombre.catalogo.first { $0.sistemaMicrotonal == self }
+        TemperamentoConNombre.catalogo.first { $0.sistemaDeAlturas == self }
     }
 }
 

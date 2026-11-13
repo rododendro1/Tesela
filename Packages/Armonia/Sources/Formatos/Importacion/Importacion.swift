@@ -34,7 +34,7 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     public let desvio: Double
     /// La teoría en que se escribe el microtono, si la dice su signo (``Evento/NotaDelEvento/sistema``); `nil` si no se
     /// aparta, o si su signo (un medio bemol) o la falta de él no la dicen.
-    public let sistema: SistemaMicrotonal?
+    public let sistema: SistemaDeAlturas?
     /// Los pasos de `sistema` que se aparta (``NotaMicrotonal/ajuste``); 0 si no hay sistema.
     public let ajuste: Int
     /// La dinámica que se marca al empezar la nota, si se marca alguna.
@@ -51,7 +51,7 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     /// `Evento.NotaDelEvento`, una nota que no se aparta no tiene sistema.
     public init(
         altura: Altura, inicio: Duracion, duracion: Duracion, parte: Int = 0, desvio: Double = 0,
-        sistema: SistemaMicrotonal? = nil, ajuste: Int = 0, dinamica: Dinamica? = nil,
+        sistema: SistemaDeAlturas? = nil, ajuste: Int = 0, dinamica: Dinamica? = nil,
         articulaciones: [Articulacion] = [], pentagrama: Int? = nil, voz: Int? = nil
     ) {
         let nota = Evento.NotaDelEvento(altura, desvio: desvio, sistema: sistema, ajuste: ajuste)

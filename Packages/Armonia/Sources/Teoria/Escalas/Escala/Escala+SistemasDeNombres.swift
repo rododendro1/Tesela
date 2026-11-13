@@ -68,7 +68,7 @@ extension Escala {
 
 // MARK: - Śruti
 
-extension SistemaMicrotonal {
+extension SistemaDeAlturas {
     /// Los nombres de los 22 śruti, desde Sa: tīvrā, kumudvatī, mandā, chandovatī, dayāvatī… kṣobhiṇī, en el orden
     /// de las razones de `razonesDeLosSruti`. Es la correspondencia moderna, con cada svara en el primer śruti de su
     /// grupo: Sa en tīvrā, Re (9/8) en dayāvatī, Ga (5/4) en raudrī, Ma en vajrikā, Pa en kṣiti, Dha (27/16) en
@@ -98,17 +98,17 @@ extension SistemaMicrotonal {
 }
 
 extension NotaMicrotonal {
-    /// El nombre de su śruti, si es una nota de los 22 śruti (`SistemaMicrotonal.sruti`): en Bilāval, Re es dayāvatī
+    /// El nombre de su śruti, si es una nota de los 22 śruti (`SistemaDeAlturas.sruti`): en Bilāval, Re es dayāvatī
     /// y Ga, raudrī. `nil` en los demás sistemas.
     public func nombreDelSruti(en grafia: Grafia = .transliterada) -> String? {
         guard sistema == .sruti else { return nil }
         var enLaOctava = cents.truncatingRemainder(dividingBy: 1200)
         if enLaOctava < 0 { enLaOctava += 1200 }
         if enLaOctava > 1199.5 { enLaOctava -= 1200 }
-        guard let indice = SistemaMicrotonal.centsDeLosSruti.firstIndex(where: { abs($0 - enLaOctava) < 0.5 }) else {
+        guard let indice = SistemaDeAlturas.centsDeLosSruti.firstIndex(where: { abs($0 - enLaOctava) < 0.5 }) else {
             return nil
         }
-        return SistemaMicrotonal.nombresDeLosSruti(en: grafia)[indice]
+        return SistemaDeAlturas.nombresDeLosSruti(en: grafia)[indice]
     }
 }
 

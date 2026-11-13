@@ -32,7 +32,7 @@ import Testing
             #expect(TemperamentoConNombre.catalogo.contains(temperamento.temperamento))
         }
         // Afinan las notas todos menos los sistemas de otras tradiciones.
-        #expect(TemperamentoQueAfina.todos.allSatisfy { $0.temperamento.sistemaMicrotonal == nil })
+        #expect(TemperamentoQueAfina.todos.allSatisfy { $0.temperamento.sistemaDeAlturas == nil })
         #expect(Set(TemperamentoQueAfina.paraEscuchar).isSubset(of: TemperamentoQueAfina.todos))
         #expect(TemperamentoQueAfina(.comas53) == nil)
         #expect(TemperamentoQueAfina(.vallotti) == .vallotti)
@@ -41,11 +41,11 @@ import Testing
         #expect(
             TemperamentoQueAfina.young.nombre(en: .compacta(.ingles))
                 == TemperamentoConNombre.young.nombre(en: .compacta(.ingles)))
-        for sistema in SistemaMicrotonal.allCases where sistema != .razones {
-            #expect(sistema.temperamento?.sistemaMicrotonal == sistema)
+        for sistema in SistemaDeAlturas.allCases where sistema != .razones {
+            #expect(sistema.temperamento?.sistemaDeAlturas == sistema)
             #expect(sistema.temperamento?.pasosPorOctava == sistema.pasosPorOctava)
         }
-        #expect(SistemaMicrotonal.razones.temperamento == nil)
+        #expect(SistemaDeAlturas.razones.temperamento == nil)
     }
 
     /// Los pasos y la quinta de algunos.

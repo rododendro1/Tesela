@@ -351,8 +351,6 @@ public struct TextosDeApps: TextosTraducidos {
     public let distanciaDeIntercambio: String
     public let familiaDeTemperamento: String
     public let autorDelTemperamento: String
-    @available(*, deprecated, message: "Ya no se usa: el año va con la época, en `epocaDeOrigen` (OrigenPresentado).")
-    public let anioDelTemperamento: String
     public let pasosPorOctava: String
     public let quintaDelTemperamento: String
     public let pasoMenorYMayor: String
@@ -367,8 +365,6 @@ public struct TextosDeApps: TextosTraducidos {
     public let frecuenciaDeLaNota: String
     public let laDeLaNota: String
     public let midiDeLaNota: String
-    @available(*, deprecated, message: "Ya no se usa: el año va con la época, en `epocaDeOrigen` (OrigenPresentado).")
-    public let anioDeLaNota: String
     public let nombreOriginalDeLaNota: String
     public let posicionGuidoniana: String
     public let intervaloDeLaFuncion: String

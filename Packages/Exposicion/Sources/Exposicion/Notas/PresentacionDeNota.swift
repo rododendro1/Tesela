@@ -10,6 +10,8 @@ import Armonia
 public struct NotaPresentada: Hashable, Sendable, Codable {
     /// El nombre en la notación: «Do central», «middle C»…
     public let nombre: String
+    /// Los otros nombres en el idioma de la notación.
+    public let alias: [String]
     public let familia: String
     /// La altura escrita en la notación: «La4», «Mi4».
     public let altura: String
@@ -20,7 +22,8 @@ public struct NotaPresentada: Hashable, Sendable, Codable {
     /// La frecuencia del La4 con que suena.
     public let frecuenciaDelLa4: Double
     public let midi: Int
-    public let anio: Int?
+    /// El año, la época y la obra que lo documenta (`OrigenPresentado`); `nil` si no se sabe ninguno.
+    public let origen: OrigenPresentado?
     /// El nombre en su escritura, en las notas árabes y en las cuerdas griegas: «سيكاه», «μέση».
     public let nombreOriginal: String?
     /// Las alturas de la posición, en las guidonianas: «Si♭3 Si3» en «b fa ♮ mi».
@@ -30,13 +33,14 @@ public struct NotaPresentada: Hashable, Sendable, Codable {
 
     public init(_ nota: NotaConNombre, en notacion: Notacion) {
         nombre = nota.nombre(en: notacion)
+        alias = nota.alias(en: notacion)
         familia = nota.familia.nombre(en: notacion)
         altura = nota.altura.nombre(en: notacion)
         desvio = nota.desvio
         frecuencia = nota.frecuencia
         frecuenciaDelLa4 = nota.frecuenciaDelLa4
         midi = nota.midi
-        anio = nota.anioDeOrigen
+        origen = OrigenPresentado(nota, en: notacion)
         let original = nota.alturaConNombre?.nombre(en: .original)
         nombreOriginal = original == nota.alturaConNombre?.nombre(en: .transliterada) ? nil : original
         alturasDeLaPosicion = nota.posicion.map { $0.alturas.map { $0.nombre(en: notacion) } }
@@ -47,7 +51,7 @@ public struct NotaPresentada: Hashable, Sendable, Codable {
     static func hercios(_ valor: Double) -> String { Redondeo.texto(valor) + " Hz" }
 
     /// La ficha, un dato por fila: la familia, la altura, lo que se aparta de la temperada, la frecuencia, el La4 con
-    /// que suena, el MIDI, la época con el año (`OrigenPresentado`), el nombre original y las alturas de la posición,
+    /// que suena, el MIDI, los otros nombres y la época con el año (`datosDelCatalogo(en:)`), el nombre original y las alturas de la posición,
     /// los que tenga.
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
         var datos = [
@@ -64,7 +68,7 @@ public struct NotaPresentada: Hashable, Sendable, Codable {
             datos.append(DatoPresentado(nombre: notacion.texto(\.laDeLaNota), valor: Self.hercios(frecuenciaDelLa4)))
         }
         datos.append(DatoPresentado(nombre: notacion.texto(\.midiDeLaNota), valor: "\(midi)"))
-        datos += OrigenPresentado(anio: anio, en: notacion).datos(en: notacion)
+        datos += datosDelCatalogo(en: notacion)
         if let nombreOriginal {
             datos.append(DatoPresentado(nombre: notacion.texto(\.nombreOriginalDeLaNota), valor: nombreOriginal))
         }

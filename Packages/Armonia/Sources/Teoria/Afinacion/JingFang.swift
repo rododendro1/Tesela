@@ -8,7 +8,7 @@ import Foundation
 // 南事，六十律毕矣» (Hou Hanshu, «Lüli zhi»): de zhònglǚ, la undécima quinta, sale zhíshǐ, y la cadena acaba en
 // nánshì. Observó que la quinta 53 casi vuelve al punto de partida: 53 quintas justas son 31 octavas y unos 3,6 cents,
 // la coma que siglos después se llamó de Mercator. Por eso 53 comas dividen tan bien la octava, y por eso las usa la
-// teoría turca (`SistemaMicrotonal.comas53`), con la quinta en 31.
+// teoría turca (`SistemaDeAlturas.comas53`), con la quinta en 31.
 //
 // Sesenta notas por octava no caben en una escala del catálogo, que va de doce en doce con desvíos: aquí están como
 // dato, con su relación con las 53 comas.
@@ -39,12 +39,12 @@ public enum JingFang {
     /// El paso de las 53 comas que corresponde al lü: cada quinta son 31 comas. La quinta 12 cae en la coma 1 (la
     /// pitagórica) y la 53, en la 0.
     public static func pasoEnLas53Comas(deLaQuinta quintas: Int) -> Int {
-        modulo(31 * quintas, SistemaMicrotonal.comas53.pasosPorOctava)
+        modulo(31 * quintas, SistemaDeAlturas.comas53.pasosPorOctava)
     }
 
     /// Lo que se aparta el lü de su paso de las 53 comas, en cents: muy poco, porque 53 comas son casi 53 quintas.
     public static func desvioDeLas53Comas(deLaQuinta quintas: Int) -> Double {
-        let paso = 1200 / Double(SistemaMicrotonal.comas53.pasosPorOctava)
+        let paso = 1200 / Double(SistemaDeAlturas.comas53.pasosPorOctava)
         var desvio = cents(deLaQuinta: quintas) - Double(pasoEnLas53Comas(deLaQuinta: quintas)) * paso
         if desvio > 600 { desvio -= 1200 }
         return desvio

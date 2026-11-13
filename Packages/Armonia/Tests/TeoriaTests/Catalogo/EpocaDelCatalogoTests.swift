@@ -57,4 +57,38 @@ import Testing
             if let origen = progresion.epocaDeOrigen { #expect(progresion.epocasDeUso.allSatisfy { origen < $0 }) }
         }
     }
+
+    /// Los ritmos de la música occidental tienen sus estilos, y de ellos sale su época si no tienen año; los de otras
+    /// tradiciones no tienen.
+    @Test func losEstilosDeLosRitmos() {
+        #expect(RitmoConNombre.solea.estilos == [.flamenco])
+        #expect(RitmoConNombre.ruchenitsa.estilos == [.folclore])
+        #expect(RitmoConNombre.charleston.estilos == [.jazz] && RitmoConNombre.charleston.epocaDeOrigen == .sigloXX)
+        #expect(RitmoConNombre.primerModoRitmico.epocaDeOrigen == .edadMedia)
+        #expect(RitmoConNombre.tintal.estilos.isEmpty && RitmoConNombre.tintal.epocas.isEmpty)
+        #expect(RitmoConNombre.tresillo.estilos.isEmpty)
+        // La clásica y el jazz tienen épocas; el folclore y el flamenco, no.
+        for ritmo in RitmoConNombre.catalogo where ritmo.estilos.contains(.clasica) || ritmo.estilos.contains(.jazz) {
+            #expect(ritmo.epocaDeOrigen != nil, Comment(rawValue: ritmo.nombre))
+        }
+    }
+
+    /// Los temperamentos documentados en su obra: el año es el de la obra, y el autor, el suyo, con el nombre delante.
+    @Test func losTemperamentosDocumentados() {
+        let werckmeister = TemperamentoConNombre.werckmeisterIII
+        #expect(werckmeister.documentada == .werckmeister1691 && werckmeister.anioDeOrigen == 1691)
+        #expect(werckmeister.autor == "Andreas Werckmeister")
+        #expect(TemperamentoConNombre.mesotonicoCuartoDeComa.autor == "Pietro Aron")
+        #expect(TemperamentoConNombre.temperamentoIgual.autor == "Zhu Zaiyu")
+        #expect(TemperamentoConNombre.divisiones19.autor == "Joel Mandelbaum")
+        #expect(TemperamentoConNombre.divisiones22.autor == "R. H. M. Bosanquet")
+        #expect(
+            TemperamentoConNombre.vallotti.documentada == nil && TemperamentoConNombre.vallotti.anioDeOrigen == 1750)
+        for temperamento in TemperamentoConNombre.catalogo {
+            if let obra = temperamento.documentada {
+                #expect(Referencia.catalogo.contains(obra), Comment(rawValue: temperamento.nombre))
+                #expect(temperamento.referencias.first == obra, Comment(rawValue: temperamento.nombre))
+            }
+        }
+    }
 }

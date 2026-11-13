@@ -15,6 +15,12 @@ extension LineaDeComandosTests {
         #expect(talas.hasPrefix("tīntāl: xoooxoooooooxooo"), Comment(rawValue: talas))
         #expect(!talas.contains("clave"))
         #expect(salida("ritmos --familia tāla de la India").contains("ektāl"))
+        // `--uso` y `--epoca`, como en `acordes`.
+        let flamencos = salida("ritmos --uso flamenco")
+        #expect(flamencos.hasPrefix("soleá:") && flamencos.contains("seguiriya") && !flamencos.contains("clave"))
+        #expect(salida("rhythms --use jazz --ingles").contains("Charleston"))
+        #expect(salida("ritmos --epoca edad-media").contains("primer modo rítmico"))
+        #expect(!salida("ritmos --epoca edad-media").contains("tīntāl"))
         let ninguno = resultado("ritmos", "clave", "--familia", "tala")
         #expect(ninguno.codigo == 1 && ninguno.error.contains("ningún ritmo"))
     }
