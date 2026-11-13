@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.5.1 (2026-11-13)
 
 - `ModeloDelCatalogo` escribe los acordes y las progresiones con `AcordeConNombrePresentado` y
   `ProgresionConNombrePresentada`, y la tarjeta de un ritmo lleva sus estilos y su época con el año («danza · jazz ·
