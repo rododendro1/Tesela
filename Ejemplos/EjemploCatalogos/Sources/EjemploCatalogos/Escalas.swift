@@ -39,12 +39,16 @@ let columnasDeEscalas: [String] =
         "imperfecciones", "unicidad", "simplicidad", "triadas_por_grados", "cuatriadas_por_grados", "combinatoriedad",
         "entropia_intervalica", "parsimonia", "gradus", "altura_de_tenney", "limite_impar", "entropia_armonica",
         "rugosidad_media", "perfil_mayor", "perfil_menor", "con_sensible", "tetracordos_iguales",
+        // Su carácter: los afectos, los momentos del día y lo que dice cada fuente, con su cita.
+        "afectos", "momentos", "caracter",
         // Sus parientes en el catálogo y las obras que la citan.
         "equivalentes", "derivadas", "referencias",
     ]
 
 /// La fila de una escala, en el orden de `columnasDeEscalas`.
 func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
+    // En el orden de `columnasDelCaracter`.
+    let delCaracter = caracter(de: tipo)
     let microtonal = tipo.afinacionPropia
     let sobreDo = Escala(.do, tipo)
     let medidas = sobreDo.estadisticas
@@ -134,6 +138,8 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         milesimas(medidas.tonal.perfilMenor),
         siONo(medidas.tonal.conSensible),
         siONo(medidas.tonal.tetracordosIguales),
+
+        delCaracter[0], delCaracter[1], delCaracter[2],
 
         nombres(tipo.equivalentes),
         nombres(tipo.derivadas),

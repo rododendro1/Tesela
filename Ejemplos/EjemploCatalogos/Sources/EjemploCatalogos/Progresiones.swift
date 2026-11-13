@@ -8,7 +8,7 @@ import Armonia
 let columnasDeProgresiones: [String] =
     columnasDeNombres + columnasDeAliasYVariantes() + [
         "modo", "numero_de_acordes", "cifrado", "acordes_sobre_do", "se_reconoce",
-    ] + columnasDeLaFecha + [
+    ] + columnasDeLaFecha + columnasDelCaracter + [
         "estilos", "referencias",
     ]
 
@@ -29,7 +29,7 @@ func filaDeProgresion(_ progresion: ProgresionConNombre) -> [String] {
         progresion.estilos.map(\.nombre).joined(separator: " · "),
         progresion.referencias.map(\.cita).joined(separator: " · "),
     ]
-    return comoSeLlama + otros + resto + fecha(de: progresion) + alFinal
+    return comoSeLlama + otros + resto + fecha(de: progresion) + caracter(de: progresion) + alFinal
 }
 
 let progresiones = Catalogo(

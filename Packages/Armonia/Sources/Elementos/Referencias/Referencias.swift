@@ -40,6 +40,10 @@ extension Referencia {
     public static let rowell1992 = Referencia(
         "rowell1992", .libro, autores: ["Rowell, Lewis"], titulo: "Music and Musical Thought in Early India",
         anio: 1992, editorial: "University of Chicago Press", lugar: "Chicago")
+    /// Bor y otros, The Raga Guide: la hora, la estación y el carácter de 74 rāgas indostánicos.
+    public static let bor1999 = Referencia(
+        "bor1999", .libro, autores: ["Bor, Joep", "Rao, Suvarnalata", "van der Meer, Wim", "Harvey, Jane"],
+        titulo: "The Raga Guide: A Survey of 74 Hindustani Ragas", anio: 1999, editorial: "Nimbus Records")
 
     // MARK: Mundo árabe, Persia, Turquía y Azerbaiyán
 
@@ -102,6 +106,10 @@ extension Referencia {
     public static let chrysanthos1832 = Referencia(
         "chrysanthos1832", .tratado, autores: ["Chrysanthos de Madytos"], titulo: "Θεωρητικὸν μέγα τῆς μουσικῆς",
         anio: 1832, lugar: "Trieste")
+    /// Monro, los modos griegos: el ēthos de las harmoniai en Platón, Aristóteles y Heraclides.
+    public static let monro1894 = Referencia(
+        "monro1894", .libro, autores: ["Monro, D. B."], titulo: "The Modes of Ancient Greek Music", anio: 1894,
+        editorial: "Clarendon Press", lugar: "Oxford")
 
     /// Cantemir, el «Libro de la ciencia de la música» (hacia 1700): los makamlar de la música otomana de su tiempo, con
     /// su notación por letras (manuscrito; el año es aproximado).
@@ -148,6 +156,11 @@ extension Referencia {
     public static let salinas1577 = Referencia(
         "salinas1577", .tratado, autores: ["Salinas, Francisco de"], titulo: "De musica libri septem", anio: 1577,
         editorial: "Mathias Gastius", lugar: "Salamanca")
+    /// Babb y Palisca, la traducción de Hucbaldo, Guido y Cotón: el carácter de cada tono en Cotón.
+    public static let babb1978 = Referencia(
+        "babb1978", .libro, autores: ["Babb, Warren", "Palisca, Claude V."],
+        titulo: "Hucbald, Guido, and John on Music: Three Medieval Treatises", anio: 1978,
+        editorial: "Yale University Press", lugar: "New Haven")
 
     // MARK: Asia oriental y sudeste asiático
 
@@ -200,6 +213,16 @@ extension Referencia {
         titulo:
             "Two Theories of Ujo and Pyeongjo in Pansori: Comparing Baek Daewoong's and Lee Bohyeong's Theories of Pansori Modes",
         anio: 2024, publicadoEn: "Music Theory Online", volumen: "30 (4)", doi: "10.30535/mto.30.4.10")
+    /// DeWoskin, la música en la China antigua: lo que representan las cinco notas en el Yueji y sus fases.
+    public static let dewoskin1982 = Referencia(
+        "dewoskin1982", .libro, autores: ["DeWoskin, Kenneth J."],
+        titulo: "A Song for One or Two: Music and the Concept of Art in Early China", anio: 1982,
+        editorial: "Center for Chinese Studies, University of Michigan", lugar: "Ann Arbor")
+    /// Hood, el pathet javanés: la parte de la noche del wayang en que suena cada uno.
+    public static let hood1954 = Referencia(
+        "hood1954", .libro, autores: ["Hood, Mantle"],
+        titulo: "The Nuclear Theme as a Determinant of Patet in Javanese Music", anio: 1954,
+        editorial: "J. B. Wolters", lugar: "Groningen")
 
     // MARK: Klezmer y Etiopía
 
@@ -573,14 +596,18 @@ extension Referencia {
 
     /// Todas las obras, en el orden de este fichero.
     public static let catalogo: [Referencia] = [
-        .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .rowell1992, .touma1996, .farraj2019,
+        .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .bor1999, .rowell1992, .touma1996,
+        .farraj2019,
         .maqamWorld, .wright1978, .farhat1990, .signell1977, .tdvIslamAnsiklopedisi, .hacibeyov1945, .west1992,
-        .barker1989, .chalmers1993, .mathiesen1999, .chrysanthos1832, .cantemir1700, .ezgi1933, .pennanen1999,
-        .apel1958, .glareano1547,
+        .barker1989, .monro1894, .chalmers1993, .mathiesen1999, .chrysanthos1832, .cantemir1700, .ezgi1933,
+        .pennanen1999,
+        .apel1958, .babb1978, .glareano1547,
         .ramos1482,
-        .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .garfias1975, .tranVanKhe1962, .morton1976,
+        .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .dewoskin1982, .garfias1975,
+        .tranVanKhe1962, .morton1976,
         .sam1988, .williamson2000,
-        .surjodiningrat1972, .tenzer2000, .shin2024, .rubin2020, .kebede1971, .kilmer1971, .gurney1994, .west1994,
+        .surjodiningrat1972, .hood1954, .tenzer2000, .shin2024, .rubin2020, .kebede1971, .kilmer1971, .gurney1994,
+        .west1994,
         .tracey1948, .kubik1994,
         .berliner1978, .knight1973, .harcourt1925, .siqueira1981, .rothgeb1995, .samson1977, .taruskin1987,
         .taruskin1996,

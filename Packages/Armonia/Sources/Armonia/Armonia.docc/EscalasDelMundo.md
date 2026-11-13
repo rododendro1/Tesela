@@ -291,6 +291,32 @@ FuenteTeorica.zarlino.referencia == .zarlino1558         // true
 TipoDeEscala.flamenca.referencias.map(\.cita)             // ["Manuel 1989"]
 ```
 
+## Carácter
+
+`caracter` dice lo que cada fuente dice de una escala (``Caracter``, el mismo de los acordes, las progresiones y los
+ritmos): los afectos que expresa (``Afecto``, un
+vocabulario cerrado en los trece idiomas), el momento del día en que se toca (``MomentoDelDia``, en tramos de tres
+horas como los prahar), la estación (``Estacion``), la ocasión (``Ocasion``) y, en China, lo que representa
+(``PapelDeLaNota``) y su fase (``FaseDeLaNaturaleza``). Cada uno lleva su fuente, la obra donde se lee (`fuente`) y,
+si lo dice un autor antiguo, quién (`testigo`, un ``TestigoDelCaracter``) y en qué pasaje. Van en orden cronológico,
+porque las fuentes no siempre coinciden: Platón y Aristóteles no dicen lo mismo de la harmonía frigia.
+
+El carácter no sale de los intervalos, y es del nombre, no de las notas: Bilāval lo tiene y el jónico no. Solo lo
+tienen las escalas con una fuente: las harmoniai, en Platón, Heraclides, Aristóteles y los *Problemas* (Monro 1894); los
+modos gregorianos, en Cotón (Babb 1978); los rāgas y los thāṭ, por el rāga que les da nombre, con su hora y su
+estación (Bor 1999); los pathet del sléndro, con su parte de la noche en el wayang (Hood 1954); y los cinco modos
+chinos, con su papel en el *Yueji* y su fase y su estación en el *Lüshi Chunqiu* (DeWoskin 1982). Los mēḷa, las
+sintéticas y casi todas las occidentales no tienen. Sus fuentes están también en `referencias`.
+
+```swift
+TipoDeEscala.harmoniaDoria.afectos.first == .valiente   // true
+TipoDeEscala.harmoniaFrigia.caracter[0].testigo      // .aristoteles
+TipoDeEscala.bhairav.momentos == [.manana]           // true
+TipoDeEscala.megh.caracter[0].estacion               // .lluvias
+TipoDeEscala.gong.caracter[1].papel                  // .soberano
+TipoDeEscala.mayor.caracter.isEmpty                  // true
+```
+
 ## Microtonos
 
 Algunas escalas aproximadas tienen también su versión microtonal, `afinacionPropia` (un ``AfinacionPropia``):

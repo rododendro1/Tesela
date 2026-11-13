@@ -50,6 +50,8 @@ extension OpcionDeOrden {
     static let agrupar = valor("--agrupar", "--group-by")
     /// `escalas --epoca barroco`: las de una época, de origen o de uso.
     static let epoca = valor("--epoca", "--era")
+    /// `escalas --afecto lastimero`: las que tienen ese afecto en alguna de sus fuentes (`TipoDeEscala.afectos`).
+    static let afecto = valor("--afecto", "--affect")
     /// `escalas --escuela carnatica`: las de una escuela de otra tradición.
     static let escuela = valor("--escuela", "--school")
     /// `escalas --afinacion microtonal`: por el carácter de su afinación (`CaracterDeLaAfinacion`).

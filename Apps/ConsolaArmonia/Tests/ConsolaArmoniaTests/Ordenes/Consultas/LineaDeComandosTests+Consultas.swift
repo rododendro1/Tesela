@@ -206,6 +206,27 @@ extension LineaDeComandosTests {
         #expect(!salida("escala Do mayor").contains("Afinación"))
     }
 
+    /// `escalas --afecto lastimero`, `--affect plaintive`: las que tienen ese afecto en alguna fuente. `escala` dice
+    /// lo que dice cada fuente de su carácter, una línea por fuente.
+    @Test func elCaracter() {
+        let lastimeras = salida("escalas --afecto lastimero")
+        #expect(lastimeras.contains("  tritus plagalis: "), Comment(rawValue: String(lastimeras.prefix(300))))
+        #expect(!lastimeras.contains("  mayor: "))
+        #expect(salida("scales --affect plaintive") == salida("scales --affect lastimero"))
+        let frigia = salida("escala Mi harmonía frigia")
+        #expect(
+            frigia.contains("  carácter: entusiasta (Aristóteles 1340b, 1342b (Monro 1894: 12–13))"),
+            Comment(rawValue: frigia))
+        #expect(salida("escala Do Bhairav").contains("  carácter: mañana · devoto, solemne, grave (Bor"))
+        #expect(!salida("escala Do mayor").contains("carácter"))
+        #expect(salida("acordes --afecto triste").contains("menor"))
+        #expect(!salida("acordes --afecto triste").contains("séptima de dominante"))
+        #expect(salida("progresiones --afecto lastimero").contains("bajo de lamento"))
+        #expect(!salida("progresiones --afecto lastimero").contains("ii–V–I"))
+        let feliz = resultado("escalas --afecto feliz")
+        #expect(feliz.codigo == 2 && feliz.error.contains("«feliz»: no es un afecto"))
+    }
+
     /// `escalas --fragmentos`: los tetracordos, los ajnas, los hexacordos; `--sin-fragmentos`, las demás. `escala`
     /// dice lo que abarca un fragmento, y no le da modos.
     @Test func losFragmentos() {

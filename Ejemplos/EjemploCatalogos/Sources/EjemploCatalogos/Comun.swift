@@ -59,6 +59,20 @@ func fecha(de elemento: some ElementoConNombre) -> [String] {
     [elemento.anioDeOrigen.map(String.init) ?? "", elemento.epocaDeOrigen?.nombre ?? ""]
 }
 
+/// Las columnas del carácter de un elemento: sus afectos, sus momentos y lo que dice cada fuente, con su cita.
+let columnasDelCaracter = ["afectos", "momentos", "caracter"]
+
+/// El carácter de un elemento, en el orden de `columnasDelCaracter`; vacíos si no tiene.
+func caracter(de elemento: some ElementoConNombre) -> [String] {
+    let espanol = Notacion.compacta(.espanol)
+    return [
+        elemento.afectos.map(\.nombre).joined(separator: " · "),
+        elemento.momentos.map(\.nombre).joined(separator: " · "),
+        elemento.caracter.map { $0.descripcion(en: espanol) + " (" + $0.cita(en: espanol) + ")" }
+            .joined(separator: "; "),
+    ]
+}
+
 /// Un catálogo: el fichero, las columnas, una fila por elemento y las obras que citan sus elementos.
 struct Catalogo {
     let fichero: String

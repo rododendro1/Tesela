@@ -229,6 +229,7 @@ struct TextosDeConsola: TextosTraducidos {
     let lugarDesconocido: Plantilla  // {1} lugar
     let agrupacionDesconocida: Plantilla  // {1} agrupacion
     let epocaDesconocida: Plantilla  // {1} epoca
+    let afectoDesconocido: Plantilla  // {1} afecto
     let escuelaDesconocida: Plantilla  // {1} escuela
     let afinacionDesconocida: Plantilla  // {1} afinación
     let ordenDeEscalasDesconocido: Plantilla  // {1} orden
@@ -347,6 +348,7 @@ struct TextosDeConsola: TextosTraducidos {
     /// La línea de `armonia escala` con las notas de la versión microtonal (maqamat, dastgāh, makamlar).
     let mensajeMicrotonos: String
     let mensajeReferencias: String
+    let mensajeCaracter: String
     let mensajeEscalas: String
     let mensajeHabituales: String
     let mensajeSinLugar: String
