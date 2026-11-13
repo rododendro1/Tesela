@@ -813,6 +813,17 @@ import Hexagonos
     @Test func escalasDelMundo8() throws {
         // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 8
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 8)
+        comprobar(TipoDeEscala.harmoniaDoria.afectos.first == .valiente, #"true"#, doc, 0)
+        comprobarIgual(TipoDeEscala.harmoniaFrigia.caracter[0].testigo, .aristoteles, doc, 1)
+        comprobar(TipoDeEscala.bhairav.momentos == [.manana], #"true"#, doc, 2)
+        comprobarIgual(TipoDeEscala.megh.caracter[0].estacion, .lluvias, doc, 3)
+        comprobarIgual(TipoDeEscala.gong.caracter[1].papel, .soberano, doc, 4)
+        comprobar(TipoDeEscala.mayor.caracter.isEmpty, #"true"#, doc, 5)
+    }
+
+    @Test func escalasDelMundo9() throws {
+        // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 9
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 9)
         comprobar(Escala(.re, .bayati).notas, #"Re Mi♭ Fa Sol La Si♭ Do"#, doc, 0)
         comprobar(Escala(.re, .bayati).notasMicrotonales(), #"Re Mi𝄳 Fa Sol La Si♭ Do"#, doc, 1)
         comprobar(Escala(.do, .maqamRast).notasMicrotonales(sentido: .descendente), #"Do Re Mi𝄳 Fa Sol La Si♭"#, doc, 2)
@@ -824,9 +835,9 @@ import Hexagonos
         comprobar(TipoDeEscala.echosProtos.afinaciones.count, #"2"#, doc, 8)
     }
 
-    @Test func escalasDelMundo9() throws {
-        // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 9
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 9)
+    @Test func escalasDelMundo10() throws {
+        // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 10
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 10)
         let voz = Escala(.re, .bayati).voz()
         comprobar(voz.eventos[1], #"Mi♭4(50¢,cuartosDeTono,1):4"#, doc, 1)
         comprobar(Escala(.re, .sur).voz().eventos[1], #"Mi♭4(50¢,persa,1):4"#, doc, 2)
@@ -837,25 +848,25 @@ import Hexagonos
         comprobar(Partitura(.init(bayati), encabezado: Encabezado(titulo: "Bayātī")).svg().contains("(+50¢)</title>"), #"true"#, doc, 7)
     }
 
-    @Test func escalasDelMundo10() throws {
-        // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 10
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 10)
+    @Test func escalasDelMundo11() throws {
+        // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 11
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 11)
         comprobar(ModoGregoriano(2)!.description, #""modo 2 (protus plagal, hipodórico): final Re, tenor Fa, ámbito La3–La4""#, doc, 0)
         comprobar(try ModoGregoriano(leyendo: "hipofrigio").tenor, #"La"#, doc, 2)
         comprobar(ModoGregoriano(3)!.escala, #"Mi frigio"#, doc, 3)
         comprobar(ModoGregoriano(6)!.ambito.first, #"Do4"#, doc, 4)
     }
 
-    @Test func escalasDelMundo11() throws {
-        // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 11
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 11)
+    @Test func escalasDelMundo12() throws {
+        // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 12
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 12)
         comprobar(ModoGregoriano(2)!.tipoDeEscala.nombre, #""protus plagalis""#, doc, 0)
         comprobar(try TipoDeEscala(leyendo: "hipodórico").nombre, #""protus plagalis""#, doc, 1)
     }
 
-    @Test func escalasDelMundo12() throws {
-        // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 12
-        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 12)
+    @Test func escalasDelMundo13() throws {
+        // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 13
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 13)
         comprobar(ManoGuidoniana.gamut.count, #"20"#, doc, 0)
         comprobar(ManoGuidoniana.nombre(de: Altura(.do, octava: 3)), #""C fa ut""#, doc, 1)
         comprobar(ManoGuidoniana.silabas(de: Altura(.sol, octava: 3)), #"["sol", "re", "ut"]"#, doc, 2)

@@ -342,6 +342,12 @@ extension LineaDeComandos {
         if let origen = datos.origen {
             lineas += origen.datos(en: notacion).map { "  " + $0.nombre + ": " + $0.valor }
         }
+        // Lo que dicen sus fuentes de su carácter, una línea por fuente: «carácter: banquete · blando (Platón 398e
+        // (Monro 1894: 7–8))».
+        for caracter in escala.tipo.caracter {
+            let texto = caracter.descripcion(en: notacion) + " (" + caracter.cita(en: notacion) + ")"
+            lineas.append("  \(traducir(.caracter)): " + texto)
+        }
         // Dónde se lee la escala: «West 1992; Barker 1989».
         let referencias = escala.tipo.referencias
         if !referencias.isEmpty {

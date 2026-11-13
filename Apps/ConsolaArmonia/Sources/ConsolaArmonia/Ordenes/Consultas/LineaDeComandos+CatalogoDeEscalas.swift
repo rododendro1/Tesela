@@ -102,6 +102,19 @@ extension LineaDeComandos {
         return [porNombre]
     }
 
+    /// El afecto de `--afecto lastimero`, por su clave (la de `Afecto`) o por su nombre en español, en inglés o en el
+    /// idioma de la notación («plaintive», «klagend»); lanza `afectoDesconocido` si no es ninguno.
+    static func afecto(leyendo texto: String, _ notacion: Notacion) throws -> Afecto {
+        let clave = claveDeBusqueda(texto)
+        guard
+            let afecto = Afecto.allCases.first(where: {
+                [$0.rawValue, $0.nombre, $0.nombre(en: .compacta(.ingles)), $0.nombre(en: notacion)]
+                    .map(claveDeBusqueda).contains(clave)
+            })
+        else { throw ErrorDeUso.afectoDesconocido(texto) }
+        return afecto
+    }
+
     /// Cómo se escribe cada escuela en `--escuela`, en español y en inglés: `--escuela carnatica`, `--school carnatic`.
     static let nombresDeLasEscuelas: [(escuela: Escuela, espanol: String, ingles: String)] = [
         (.carnatica, "carnatica", "carnatic"), (.indostanica, "indostanica", "hindustani"),
@@ -371,6 +384,8 @@ extension LineaDeComandos {
         var lugares: [Lugar] = []
         /// Las de `--epoca`: la escala pasa si una de sus épocas, de origen o de uso, es una de ellas.
         var epocas: [Epoca] = []
+        /// El de `--afecto`: solo las que lo tienen en alguna de sus fuentes.
+        var afecto: Afecto?
         /// La de `--escuela`: solo las de esa escuela.
         var escuela: Escuela?
         var agrupacion: AgrupacionDeEscalas?
@@ -402,6 +417,7 @@ extension LineaDeComandos {
                 guard lugares.contains(where: suyos.contains) else { return false }
             }
             if !epocas.isEmpty, !tipo.epocas.contains(where: epocas.contains) { return false }
+            if let afecto, !tipo.afectos.contains(afecto) { return false }
             if let escuela, !tipo.escuelas.contains(escuela) { return false }
             if conIntervalo != nil || sinIntervalo != nil || conPaso != nil {
                 let medidas = estadisticas(tipo)
@@ -536,6 +552,8 @@ extension LineaDeComandos {
         // escuela.
         if let texto = try entrada.valor(.epoca) { filtro.epocas = try epocas(leyendo: texto, notacion) }
         if let texto = try entrada.valor(.escuela) { filtro.escuela = try escuela(leyendo: texto, notacion) }
+        // `--afecto lastimero`, `--affect plaintive`: las que tienen ese afecto en alguna de sus fuentes.
+        if let texto = try entrada.valor(.afecto) { filtro.afecto = try afecto(leyendo: texto, notacion) }
         // `--afinacion microtonal`, `--tuning just`: por el carácter de su afinación.
         if let texto = try entrada.valor(.afinacion) { filtro.afinacion = try claveDeAfinacion(leyendo: texto) }
         if let texto = try entrada.valor(.agrupar) {

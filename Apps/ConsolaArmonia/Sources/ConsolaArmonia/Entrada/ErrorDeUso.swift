@@ -46,6 +46,7 @@ enum ErrorDeUso: ErrorDeArmonia {
     case lugarDesconocido(String)
     case agrupacionDesconocida(String)
     case epocaDesconocida(String)
+    case afectoDesconocido(String)
     case escuelaDesconocida(String)
     case afinacionDesconocida(String)
     case ordenDeEscalasDesconocido(String)
@@ -247,6 +248,9 @@ enum ErrorDeUso: ErrorDeArmonia {
         case .epocaDesconocida(let epoca):
             return LineaDeComandos.propuesta(
                 para: epoca, entre: LineaDeComandos.nombresDeLasEpocas.flatMap { [$0.espanol, $0.ingles] })
+        case .afectoDesconocido(let afecto):
+            return LineaDeComandos.propuesta(
+                para: afecto, entre: Afecto.allCases.flatMap { [$0.rawValue, $0.nombre(en: .compacta(.ingles))] })
         case .escuelaDesconocida(let escuela):
             return LineaDeComandos.propuesta(
                 para: escuela, entre: LineaDeComandos.nombresDeLasEscuelas.flatMap { [$0.espanol, $0.ingles] })
@@ -343,6 +347,8 @@ enum ErrorDeUso: ErrorDeArmonia {
             return TextosDeConsola.traduccion { $0.agrupacionDesconocida(agrupacion) }
         case .epocaDesconocida(let epoca):
             return TextosDeConsola.traduccion { $0.epocaDesconocida(epoca) }
+        case .afectoDesconocido(let afecto):
+            return TextosDeConsola.traduccion { $0.afectoDesconocido(afecto) }
         case .escuelaDesconocida(let escuela):
             return TextosDeConsola.traduccion { $0.escuelaDesconocida(escuela) }
         case .afinacionDesconocida(let afinacion):

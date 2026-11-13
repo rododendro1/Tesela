@@ -397,6 +397,61 @@ struct TextosDeTeoria: TextosTraducidos {
     let fuenteZhuZaiyu: String
     let fuenteArelEzgiUzdilek: String
 
+    // MARK: CaracterDeEscala.swift
+    let afectoAlegre: String
+    let afectoFestivo: String
+    let afectoSereno: String
+    let afectoTemplado: String
+    let afectoTierno: String
+    let afectoAmoroso: String
+    let afectoBlando: String
+    let afectoNostalgico: String
+    let afectoInquieto: String
+    let afectoTriste: String
+    let afectoLastimero: String
+    let afectoGrave: String
+    let afectoSevero: String
+    let afectoNoble: String
+    let afectoSolemne: String
+    let afectoMajestuoso: String
+    let afectoValiente: String
+    let afectoEnergico: String
+    let afectoEntusiasta: String
+    let afectoDevoto: String
+    let afectoContemplativo: String
+    let momentoMadrugada: String
+    let momentoManana: String
+    let momentoFinalDeLaManana: String
+    let momentoPrimeraHoraDeLaTarde: String
+    let momentoTarde: String
+    let momentoAnochecer: String
+    let momentoNoche: String
+    let momentoMedianoche: String
+    let estacionPrimavera: String
+    let estacionVerano: String
+    let estacionLluvias: String
+    let estacionOtono: String
+    let estacionInvierno: String
+    let ocasionLamento: String
+    let ocasionBanquete: String
+    let ocasionGuerra: String
+    let papelSoberano: String
+    let papelMinistro: String
+    let papelPueblo: String
+    let papelAsuntos: String
+    let papelCosas: String
+    let faseMadera: String
+    let faseFuego: String
+    let faseTierra: String
+    let faseMetal: String
+    let faseAgua: String
+    let testigoPlaton: String
+    let testigoHeraclides: String
+    let testigoAristoteles: String
+    let testigoProblemas: String
+    let testigoYueji: String
+    let testigoCoton: String
+
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».
     let acordeSobre: Plantilla  // {1} tipo, {2} raiz
