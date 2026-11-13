@@ -47,7 +47,8 @@ let columnasDeEscalas: [String] =
 
 /// La fila de una escala, en el orden de `columnasDeEscalas`.
 func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
-    let delCaracter = caracter(de: tipo)  // en el orden de `columnasDelCaracter`
+    // En el orden de `columnasDelCaracter`.
+    let delCaracter = caracter(de: tipo)
     let microtonal = tipo.afinacionPropia
     let sobreDo = Escala(.do, tipo)
     let medidas = sobreDo.estadisticas
