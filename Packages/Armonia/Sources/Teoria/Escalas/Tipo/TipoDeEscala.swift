@@ -253,6 +253,26 @@ extension TipoDeEscala {
         // los que se traducen (las escalas andinas, los tetracordos…): se buscan por su nombre, no por el tipo.
         return NombresDeEscalas.de(notacion).nombre(de: self) ?? nombre
     }
+
+    /// Los otros nombres del tipo en el idioma de la notación, del más usado al menos: «ionian» para la mayor en
+    /// inglés, «menor dórica» para el dórico en español. Vacío si no tiene ninguno en ese idioma o no es del catálogo.
+    public func alias(en notacion: Notacion) -> [String] {
+        if notacion.textos == .espanol { return alias }
+        return entrada(en: notacion)?.alias ?? []
+    }
+
+    /// Las otras formas de escribir el nombre o un alias en el idioma de la notación (otro género, otra
+    /// transliteración, otra escritura): «dòrica» para el dórico en catalán. Vacío si no tiene ninguna.
+    public func variantes(en notacion: Notacion) -> [String] {
+        if notacion.textos == .espanol { return variantes }
+        return entrada(en: notacion)?.variantes ?? []
+    }
+
+    /// La fila del tipo en los nombres del idioma: primero por identidad, como en `nombre(en:)`.
+    private func entrada(en notacion: Notacion) -> NombresDeEscalas.Entrada? {
+        let nombres = NombresDeEscalas.de(notacion)
+        return nombres.tradicionales[identidad] ?? nombres.porTipo[self]
+    }
 }
 
 extension TipoDeEscala {

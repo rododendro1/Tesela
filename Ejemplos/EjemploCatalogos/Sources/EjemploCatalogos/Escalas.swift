@@ -2,9 +2,9 @@ import Armonia
 import Foundation
 
 // El catálogo de escalas (`TipoDeEscala.catalogo`: las occidentales y las de otras tradiciones, en su orden), una fila
-// por escala con lo que dice de ella la API pública: nombres (y su traducción a los otros doce idiomas), intervalos,
-// tradición, estilos, regiones, lugares y épocas, categoría, fuente, afinaciones, lo que se mide de sus notas (brillo, pasos, forma
-// prima, simetría…), sus parientes en el catálogo y las obras que la citan.
+// por escala con lo que dice de ella la API pública: nombres, alias y variantes (también en los otros doce idiomas),
+// intervalos, tradición, estilos, regiones, lugares y épocas, categoría, fuente, afinaciones, lo que se mide de sus
+// notas (brillo, pasos, forma prima, simetría…), sus parientes en el catálogo y las obras que la citan.
 
 /// Los cents con un decimal como mucho y punto decimal, sea cual sea la configuración regional: «0 151 294.1».
 private func cents(_ valores: [Double]) -> String {
@@ -23,7 +23,9 @@ private func nombres(_ tipos: [TipoDeEscala]) -> String { tipos.map(\.nombre).jo
 
 let columnasDeEscalas: [String] =
     ["nombre", "nombre_completo"] + traducciones.map { "nombre_en_\($0.rawValue)" } + [
-        "alias", "variantes", "tradicion", "estilos", "regiones", "lugares_de_origen", "paises_de_origen",
+        "alias", "variantes",
+    ] + traducciones.flatMap { ["alias_en_\($0.rawValue)", "variantes_en_\($0.rawValue)"] } + [
+        "tradicion", "estilos", "regiones", "lugares_de_origen", "paises_de_origen",
         "continentes_de_origen", "lugares_de_uso", "epoca_de_origen", "epocas_de_uso", "categoria", "clase", "fuente",
         "numero_de_notas",
         "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
@@ -50,9 +52,14 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
     let medidas = sobreDo.estadisticas
     let conjunto = sobreDo.conjuntoDeClasesDeAltura
     let comoSeLlama = [tipo.nombre, tipo.nombreCompleto] + traducciones.map { tipo.nombre(en: .delIdioma($0)) }
+    let otrosNombres =
+        [tipo.alias.joined(separator: " · "), tipo.variantes.joined(separator: " · ")]
+        + traducciones.flatMap { idioma in
+            [tipo.alias(en: .delIdioma(idioma)), tipo.variantes(en: .delIdioma(idioma))].map {
+                $0.joined(separator: " · ")
+            }
+        }
     let resto: [String] = [
-        tipo.alias.joined(separator: " · "),
-        tipo.variantes.joined(separator: " · "),
         tipo.tradicion?.nombre ?? "",
         tipo.estilos.map(\.nombre).joined(separator: " · "),
         tipo.regiones.map(\.nombre).joined(separator: " · "),
@@ -140,7 +147,7 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         nombres(tipo.derivadas),
         tipo.referencias.map(\.cita).joined(separator: " · "),
     ]
-    return comoSeLlama + resto
+    return comoSeLlama + otrosNombres + resto
 }
 
 /// Las escalas del catálogo, o solo las de una tradición.
