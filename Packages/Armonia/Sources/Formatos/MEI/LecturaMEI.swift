@@ -194,16 +194,7 @@ final class LectorMEI: LectorDeElementosXML {
         switch nombre {
         case "scoreDef", "staffDef":
             definicion(atributos)
-            if nombre == "staffDef", let n = atributos["n"] {
-                var suyo = pentagramas[n] ?? Pentagrama(parte: pentagramas.count)
-                if let ppq = atributos["ppq"].flatMap(Int.init), ppq > 0, ppq <= 100_000 { suyo.ppq = ppq }
-                let pasos = atributos["trans.diat"].flatMap(Int.init) ?? 0
-                let semitonos = atributos["trans.semi"].flatMap(Int.init) ?? 0
-                if abs(pasos) <= 100, abs(semitonos) <= 200, pasos != 0 || semitonos != 0 {
-                    suyo.transposicion = (pasos, semitonos)
-                }
-                pentagramas[n] = suyo
-            }
+            if nombre == "staffDef", let n = atributos["n"] { definirElPentagrama(n, atributos) }
         case "keySig":
             definicion(["keysig": atributos["sig"] ?? "", "key.mode": atributos["mode"] ?? ""])
         case "meterSig":
@@ -211,35 +202,11 @@ final class LectorMEI: LectorDeElementosXML {
         case "tempo":
             definicion(["midi.bpm": atributos["midi.bpm"] ?? ""])
         case "measure":
-            posicion = inicioDelCompas
-            finDelCompas = inicioDelCompas
-            vigentes = [:]
-            var leido = CompasLeido(inicio: PulsosDeLectura.duracion(inicioDelCompas))
-            let izquierda = atributos["left"] ?? ""
-            let derecha = atributos["right"] ?? ""
-            leido.abreRepeticion = abreElSiguiente || izquierda == "rptstart" || izquierda == "rptboth"
-            if derecha == "rptend" || derecha == "rptboth" {
-                leido.cierraRepeticion = 2
-            }
-            if izquierda == "rptend" || izquierda == "rptboth", !compases.isEmpty {
-                compases[compases.count - 1].cierraRepeticion = 2
-            }
-            abreElSiguiente = derecha == "rptboth"
-            leido.casillas = casillas ?? []
-            compases.append(leido)
+            abreElCompas(atributos)
         case "ending":
             casillas = LectorMusicXML.numerosDeCasilla(atributos["n"] ?? atributos["label"] ?? "1")
         case "repeatMark":
-            marcar { compas in
-                switch atributos["func"] {
-                case "daCapo": compas.daCapo = true
-                case "dalSegno": compas.dalSegno = true
-                case "segno": compas.segno = true
-                case "coda": compas.coda = true
-                case "fine": compas.fine = true
-                default: break
-                }
-            }
+            marcarLaRepeticion(atributos["func"])
         case "staff":
             nombreDelPentagrama = atributos["n"] ?? "1"
             if pentagramas[nombreDelPentagrama] == nil {
@@ -250,29 +217,12 @@ final class LectorMEI: LectorDeElementosXML {
             posicion = inicioDelCompas
             capa = atributos["n"].flatMap { Int($0) }.flatMap { (1...64).contains($0) ? $0 : nil }
         case "tuplet":
-            let reales = atributos["num"].flatMap(Int.init) ?? 3
-            let normales = atributos["numbase"].flatMap(Int.init) ?? 2
-            // Como mucho cuatro grupos uno dentro de otro, de hasta 64 figuras.
-            irregulares.append(
-                (1...64).contains(reales) && (1...64).contains(normales) && irregulares.count < 4
-                    ? (normales, reales) : (1, 1))
+            abreElIrregular(atributos)
         case "chord":
             acorde = leerEvento(atributos)
             inicioDelAcorde = posicion
         case "note":
-            if acorde == nil { evento = leerEvento(atributos) }
-            nota = NotaLeida()
-            nota.paso = atributos["pname"].flatMap { NotaNatural(letra: $0.uppercased()) }
-            nota.octava = atributos["oct"].flatMap(Int.init).flatMap { abs($0) <= 20 ? $0 : nil }
-            alteraciones(atributos)
-            let ligadura = atributos["tie"] ?? ""
-            nota.ligaduraQueEmpieza = ligadura == "i" || ligadura == "m"
-            nota.ligaduraQueAcaba = ligadura == "t" || ligadura == "m"
-            // Una nota suelta tiene ya sus articulaciones en `evento`; la de un acorde, además las del acorde.
-            if acorde != nil {
-                nota.id = atributos["xml:id"]
-                nota.articulaciones = LectorMEI.articulaciones(atributos)
-            }
+            abreLaNota(atributos)
         case "accid" where padre == "note":
             alteraciones(atributos)
         case "artic":
@@ -294,6 +244,81 @@ final class LectorMEI: LectorDeElementosXML {
             }
         default:
             break
+        }
+    }
+
+    /// `<staffDef n="1" ppq="…" trans.diat="…" trans.semi="…">`: los pulsos por negra y la transposición del
+    /// pentagrama `n`, que se crea si no estaba.
+    private func definirElPentagrama(_ n: String, _ atributos: [String: String]) {
+        var suyo = pentagramas[n] ?? Pentagrama(parte: pentagramas.count)
+        if let ppq = atributos["ppq"].flatMap(Int.init), ppq > 0, ppq <= 100_000 { suyo.ppq = ppq }
+        let pasos = atributos["trans.diat"].flatMap(Int.init) ?? 0
+        let semitonos = atributos["trans.semi"].flatMap(Int.init) ?? 0
+        if abs(pasos) <= 100, abs(semitonos) <= 200, pasos != 0 || semitonos != 0 {
+            suyo.transposicion = (pasos, semitonos)
+        }
+        pentagramas[n] = suyo
+    }
+
+    /// `<measure left="…" right="…">`: un compás nuevo, con las repeticiones que abre o cierra y la casilla en que
+    /// está. Un `rptend` a la izquierda cierra la repetición del compás anterior.
+    private func abreElCompas(_ atributos: [String: String]) {
+        posicion = inicioDelCompas
+        finDelCompas = inicioDelCompas
+        vigentes = [:]
+        var leido = CompasLeido(inicio: PulsosDeLectura.duracion(inicioDelCompas))
+        let izquierda = atributos["left"] ?? ""
+        let derecha = atributos["right"] ?? ""
+        leido.abreRepeticion = abreElSiguiente || izquierda == "rptstart" || izquierda == "rptboth"
+        if derecha == "rptend" || derecha == "rptboth" {
+            leido.cierraRepeticion = 2
+        }
+        if izquierda == "rptend" || izquierda == "rptboth", !compases.isEmpty {
+            compases[compases.count - 1].cierraRepeticion = 2
+        }
+        abreElSiguiente = derecha == "rptboth"
+        leido.casillas = casillas ?? []
+        compases.append(leido)
+    }
+
+    /// `<repeatMark func="…">`: da capo, dal segno, segno, coda o fine, en el compás en que está.
+    private func marcarLaRepeticion(_ funcion: String?) {
+        marcar { compas in
+            switch funcion {
+            case "daCapo": compas.daCapo = true
+            case "dalSegno": compas.dalSegno = true
+            case "segno": compas.segno = true
+            case "coda": compas.coda = true
+            case "fine": compas.fine = true
+            default: break
+            }
+        }
+    }
+
+    /// `<tuplet num="3" numbase="2">`: un grupo irregular, como mucho cuatro uno dentro de otro y de hasta 64
+    /// figuras. Uno que no cabe en eso cuenta como si no fuera irregular.
+    private func abreElIrregular(_ atributos: [String: String]) {
+        let reales = atributos["num"].flatMap(Int.init) ?? 3
+        let normales = atributos["numbase"].flatMap(Int.init) ?? 2
+        irregulares.append(
+            (1...64).contains(reales) && (1...64).contains(normales) && irregulares.count < 4
+                ? (normales, reales) : (1, 1))
+    }
+
+    /// `<note pname="c" oct="4" accid="s" tie="i">`: su paso, su octava, su alteración y sus ligaduras. Una nota
+    /// suelta tiene ya sus articulaciones en `evento`; la de un acorde, además las del acorde.
+    private func abreLaNota(_ atributos: [String: String]) {
+        if acorde == nil { evento = leerEvento(atributos) }
+        nota = NotaLeida()
+        nota.paso = atributos["pname"].flatMap { NotaNatural(letra: $0.uppercased()) }
+        nota.octava = atributos["oct"].flatMap(Int.init).flatMap { abs($0) <= 20 ? $0 : nil }
+        alteraciones(atributos)
+        let ligadura = atributos["tie"] ?? ""
+        nota.ligaduraQueEmpieza = ligadura == "i" || ligadura == "m"
+        nota.ligaduraQueAcaba = ligadura == "t" || ligadura == "m"
+        if acorde != nil {
+            nota.id = atributos["xml:id"]
+            nota.articulaciones = LectorMEI.articulaciones(atributos)
         }
     }
 

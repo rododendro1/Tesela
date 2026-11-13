@@ -121,7 +121,7 @@ struct LectorABC {
             let linea = String(linea)
             let limpia = linea.trimmingCharacters(in: .whitespaces)
             if limpia.hasPrefix("X:") {
-                if empezada { break } // la melodía siguiente
+                if empezada { break }  // la melodía siguiente
                 empezada = true
                 continue
             }
@@ -180,7 +180,7 @@ struct LectorABC {
             let nombre = String(valor.prefix { !$0.isWhitespace })
             cambiarDeVoz(nombre.isEmpty ? "1" : nombre)
         default:
-            break // w:, W:, P:, R:, C:, N:… no cambian las notas
+            break  // w:, W:, P:, R:, C:, N:… no cambian las notas
         }
     }
 
@@ -291,64 +291,29 @@ struct LectorABC {
 
     // MARK: Música
 
+    /// Una línea de música: cada signo, por el carácter con que empieza.
     private mutating func musica(_ c: [Unicode.Scalar]) {
         if voces[actual] == nil { cambiarDeVoz(actual) }
         var i = 0
-        func hasta(_ fin: Unicode.Scalar) {
-            i += 1
-            while i < c.count, c[i] != fin { i += 1 }
-            i += 1
-        }
-        /// Si el carácter `k` es parte de una barra: `|`, `:`, `]` o el corchete de una casilla (`|[1`).
-        func esDeLaBarra(_ k: Int) -> Bool {
-            if c[k] == "|" || c[k] == ":" || c[k] == "]" { return true }
-            return c[k] == "[" && k > 0 && c[k - 1] == "|" && k + 1 < c.count && LectorABC.cifra(c[k + 1]) != nil
-        }
-        /// Lo que hay entre `fin` y el siguiente `fin`, desde `i`, que queda detrás.
-        func entre(_ fin: Unicode.Scalar) -> String {
-            let inicio = i + 1
-            hasta(fin)
-            return String(String.UnicodeScalarView(c[inicio..<max(inicio, min(i - 1, c.count))]))
-        }
         while i < c.count {
             let ch = c[i]
             switch ch {
             case "%":
                 return
             case "\"":
-                hasta("\"")
+                LectorABC.saltar(hasta: "\"", c, &i)
             case "!", "+":
-                decoracion(entre(ch))
+                decoracion(LectorABC.entre(ch, c, &i))
             case ".":
                 pendientes.articulaciones.append(.staccato)
                 i += 1
             case "{":
-                // Las notas de adorno: empiezan donde empezará la nota a la que adornan.
-                i += 1
-                while i < c.count, c[i] != "}" {
-                    if let nota = leerNota(c, &i) { adorno(nota.0, desvio: nota.1) } else { i += 1 }
-                }
-                i += 1
+                leerAdornos(c, &i)
             case "-":
                 ligar()
                 i += 1
             case "(":
-                i += 1
-                if i < c.count, let p = LectorABC.cifra(c[i]) {
-                    i += 1
-                    var numeros = [p]
-                    while numeros.count < 3, i < c.count, c[i] == ":" {
-                        i += 1
-                        var n: Int?
-                        while i < c.count, let d = LectorABC.cifra(c[i]) {
-                            n = (n ?? 0) * 10 + d
-                            i += 1
-                            if n! > 100 { break }
-                        }
-                        numeros.append(n ?? 0)
-                    }
-                    empezarIrregular(numeros)
-                }
+                leerIrregular(c, &i)
             case ">", "<":
                 var n = 0
                 while i < c.count, c[i] == ch, n < 3 {
@@ -357,75 +322,15 @@ struct LectorABC {
                 }
                 puntillo(largo: ch == ">", veces: n)
             case "|", ":":
-                let inicio = i
-                while i < c.count, esDeLaBarra(i) { i += 1 }
-                let signo = String(String.UnicodeScalarView(c[inicio..<i]))
-                // La casilla que empieza: `|1`, `:|2`, `|1,3`, `|1-2`.
-                let desde = i
-                while i < c.count, LectorABC.cifra(c[i]) != nil || (i > desde && (c[i] == "," || c[i] == "-")) {
-                    i += 1
-                }
-                let numeros = String(String.UnicodeScalarView(c[desde..<i]))
-                barra(signo, casillas: numeros.isEmpty ? nil : LectorMusicXML.numerosDeCasilla(numeros))
+                leerBarra(c, &i)
             case "[":
-                if i + 2 < c.count, c[i + 2] == ":", c[i + 1].properties.isAlphabetic {
-                    // Un campo en medio: [K:D], [M:3/4], [V:2].
-                    let letra = Character(c[i + 1])
-                    var fin = i + 3
-                    while fin < c.count, c[fin] != "]" { fin += 1 }
-                    let valor = String(String.UnicodeScalarView(c[(i + 3)..<fin])).trimmingCharacters(in: .whitespaces)
-                    i = fin + 1
-                    cabecera(letra, valor)
-                } else if i + 1 < c.count, LectorABC.cifra(c[i + 1]) != nil || c[i + 1] == "|" {
-                    // `[1`, `[2`: una casilla; `[|`: una barra gruesa.
-                    let inicio = i
-                    i += 1
-                    while i < c.count, LectorABC.cifra(c[i]) != nil || c[i] == "," || c[i] == "-" || c[i] == "|" {
-                        i += 1
-                    }
-                    let leido = String(String.UnicodeScalarView(c[inicio..<i]))
-                    let numeros = leido.filter { $0.isNumber || $0 == "," || $0 == "-" }
-                    barra(
-                        leido.filter { $0 == "[" || $0 == "|" },
-                        casillas: numeros.isEmpty ? nil : LectorMusicXML.numerosDeCasilla(numeros))
-                } else {
-                    i += 1
-                    var alturas: [(Altura, Double, Int?)] = []
-                    var ligadasDentro = false
-                    while i < c.count, c[i] != "]" {
-                        if let nota = leerNota(c, &i) {
-                            alturas.append(nota)
-                        } else if c[i] == "-" {
-                            ligadasDentro = true
-                            i += 1
-                        } else if c[i] == "\"" {
-                            hasta("\"")
-                        } else if c[i] == "!" {
-                            decoracion(entre("!"))
-                        } else {
-                            i += 1
-                        }
-                    }
-                    i += 1
-                    let factor = LectorABC.leerLongitud(c, &i)
-                    if let primera = alturas.first {
-                        colocar(alturas.map { ($0.0, $0.1) }, pulsos: (primera.2 ?? 0) * factor.0 / factor.1)
-                        if ligadasDentro { ligar() }
-                    }
-                }
+                leerCorchete(c, &i)
             case "z", "x":
                 i += 1
                 let factor = LectorABC.leerLongitud(c, &i)
                 silencio((unidad ?? 0) * factor.0 / factor.1)
             case "Z", "X":
-                i += 1
-                var compases = 0
-                while i < c.count, let d = LectorABC.cifra(c[i]), compases < 10_000 {
-                    compases = compases * 10 + d
-                    i += 1
-                }
-                silencio(duracionDelCompas * max(1, compases))
-                barra("|")
+                leerCompasesDeSilencio(c, &i)
             default:
                 if let nota = leerNota(c, &i) {
                     colocar([(nota.0, nota.1)], pulsos: nota.2 ?? 0)
@@ -434,6 +339,134 @@ struct LectorABC {
                 }
             }
         }
+    }
+
+    /// Deja `i` detrás del siguiente `fin`, sin contar el carácter en que está.
+    private static func saltar(hasta fin: Unicode.Scalar, _ c: [Unicode.Scalar], _ i: inout Int) {
+        i += 1
+        while i < c.count, c[i] != fin { i += 1 }
+        i += 1
+    }
+
+    /// Lo que hay entre el `fin` en que está `i` y el siguiente `fin`, que queda detrás: `!trill!` → «trill».
+    private static func entre(_ fin: Unicode.Scalar, _ c: [Unicode.Scalar], _ i: inout Int) -> String {
+        let inicio = i + 1
+        saltar(hasta: fin, c, &i)
+        return String(String.UnicodeScalarView(c[inicio..<max(inicio, min(i - 1, c.count))]))
+    }
+
+    /// Si el carácter `k` es parte de una barra: `|`, `:`, `]` o el corchete de una casilla (`|[1`).
+    private static func esDeLaBarra(_ c: [Unicode.Scalar], _ k: Int) -> Bool {
+        if c[k] == "|" || c[k] == ":" || c[k] == "]" { return true }
+        return c[k] == "[" && k > 0 && c[k - 1] == "|" && k + 1 < c.count && cifra(c[k + 1]) != nil
+    }
+
+    /// `{gAB}`: las notas de adorno, que empiezan donde empezará la nota a la que adornan.
+    private mutating func leerAdornos(_ c: [Unicode.Scalar], _ i: inout Int) {
+        i += 1
+        while i < c.count, c[i] != "}" {
+            if let nota = leerNota(c, &i) { adorno(nota.0, desvio: nota.1) } else { i += 1 }
+        }
+        i += 1
+    }
+
+    /// `(3`, `(3:2`, `(3:2:3`: un grupo irregular. Sin cifra detrás, el paréntesis es el de una ligadura de
+    /// expresión, que no se lee.
+    private mutating func leerIrregular(_ c: [Unicode.Scalar], _ i: inout Int) {
+        i += 1
+        guard i < c.count, let p = LectorABC.cifra(c[i]) else { return }
+        i += 1
+        var numeros = [p]
+        while numeros.count < 3, i < c.count, c[i] == ":" {
+            i += 1
+            var n: Int?
+            while i < c.count, let d = LectorABC.cifra(c[i]) {
+                n = (n ?? 0) * 10 + d
+                i += 1
+                if n! > 100 { break }
+            }
+            numeros.append(n ?? 0)
+        }
+        empezarIrregular(numeros)
+    }
+
+    /// `|`, `||`, `|]`, `:|`, `|:`, `::` y la casilla que empieza detrás: `|1`, `:|2`, `|1,3`, `|1-2`.
+    private mutating func leerBarra(_ c: [Unicode.Scalar], _ i: inout Int) {
+        let inicio = i
+        while i < c.count, LectorABC.esDeLaBarra(c, i) { i += 1 }
+        let signo = String(String.UnicodeScalarView(c[inicio..<i]))
+        let desde = i
+        while i < c.count, LectorABC.cifra(c[i]) != nil || (i > desde && (c[i] == "," || c[i] == "-")) {
+            i += 1
+        }
+        let numeros = String(String.UnicodeScalarView(c[desde..<i]))
+        barra(signo, casillas: numeros.isEmpty ? nil : LectorMusicXML.numerosDeCasilla(numeros))
+    }
+
+    /// Lo que empieza con `[`: un campo en medio (`[K:D]`, `[M:3/4]`, `[V:2]`), una casilla (`[1`, `[2`), una barra
+    /// gruesa (`[|`) o un acorde (`[CEG]2`).
+    private mutating func leerCorchete(_ c: [Unicode.Scalar], _ i: inout Int) {
+        if i + 2 < c.count, c[i + 2] == ":", c[i + 1].properties.isAlphabetic {
+            let letra = Character(c[i + 1])
+            var fin = i + 3
+            while fin < c.count, c[fin] != "]" { fin += 1 }
+            let valor = String(String.UnicodeScalarView(c[(i + 3)..<fin])).trimmingCharacters(in: .whitespaces)
+            i = fin + 1
+            cabecera(letra, valor)
+        } else if i + 1 < c.count, LectorABC.cifra(c[i + 1]) != nil || c[i + 1] == "|" {
+            let inicio = i
+            i += 1
+            while i < c.count, LectorABC.cifra(c[i]) != nil || c[i] == "," || c[i] == "-" || c[i] == "|" {
+                i += 1
+            }
+            let leido = String(String.UnicodeScalarView(c[inicio..<i]))
+            let numeros = leido.filter { $0.isNumber || $0 == "," || $0 == "-" }
+            barra(
+                leido.filter { $0 == "[" || $0 == "|" },
+                casillas: numeros.isEmpty ? nil : LectorMusicXML.numerosDeCasilla(numeros))
+        } else {
+            leerAcorde(c, &i)
+        }
+    }
+
+    /// `[CEG]2`, `[C-E-G]`: las notas que suenan juntas, con la longitud de la primera por la de detrás del
+    /// corchete. Una ligadura dentro liga el acorde entero.
+    private mutating func leerAcorde(_ c: [Unicode.Scalar], _ i: inout Int) {
+        i += 1
+        var alturas: [(Altura, Double, Int?)] = []
+        var ligadasDentro = false
+        while i < c.count, c[i] != "]" {
+            if let nota = leerNota(c, &i) {
+                alturas.append(nota)
+            } else if c[i] == "-" {
+                ligadasDentro = true
+                i += 1
+            } else if c[i] == "\"" {
+                LectorABC.saltar(hasta: "\"", c, &i)
+            } else if c[i] == "!" {
+                decoracion(LectorABC.entre("!", c, &i))
+            } else {
+                i += 1
+            }
+        }
+        i += 1
+        let factor = LectorABC.leerLongitud(c, &i)
+        if let primera = alturas.first {
+            colocar(alturas.map { ($0.0, $0.1) }, pulsos: (primera.2 ?? 0) * factor.0 / factor.1)
+            if ligadasDentro { ligar() }
+        }
+    }
+
+    /// `Z4`, `X`: compases enteros de silencio (uno, sin cifra), en un solo silencio con una barra detrás.
+    private mutating func leerCompasesDeSilencio(_ c: [Unicode.Scalar], _ i: inout Int) {
+        i += 1
+        var compases = 0
+        while i < c.count, let d = LectorABC.cifra(c[i]), compases < 10_000 {
+            compases = compases * 10 + d
+            i += 1
+        }
+        silencio(duracionDelCompas * max(1, compases))
+        barra("|")
     }
 
     private static func cifra(_ c: Unicode.Scalar) -> Int? {

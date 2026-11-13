@@ -48,139 +48,27 @@ extension PentagramaSVG {
         var enVigor: [Int: String] = [:]
         var ultimaEtiqueta: (centro: Double, mitad: Double)?
         let resaltadas = ritmo?.resaltadas ?? Set(opciones.marcas.resaltada.map { [$0] } ?? [])
-        for (columna, alturas) in columnas.enumerated() {
-            // Un cambio de clave: la nueva, más pequeña, delante de la columna.
+        for columna in columnas.indices {
             if sistema.conCambios, columna > 0, sistema.clave(columna, 0) != sistema.clave(columna - 1, 0) {
-                let (glifoDeClave, lugarDeClave) = PentagramaSVG.glifoYLugar(de: sistema.clave(columna, 0))
-                let escala = PentagramaSVG.escalaDelCambioDeClave
-                let y = PentagramaSVG.y(deLugar: lugarDeClave)
-                lienzo.minimoY = min(lienzo.minimoY, y + glifoDeClave.arriba * escala)
-                lienzo.maximoY = max(lienzo.maximoY, y + glifoDeClave.abajo * escala)
-                lienzo.notas.append(
-                    elemento("path")
-                        .con(
-                            "transform",
-                            "translate(\(PentagramaSVG.n(lienzo.x)) \(PentagramaSVG.n(y))) scale(\(escala))"
-                        )
-                        .con("d", glifoDeClave.trazado).vacio)
-                lienzo.x += glifoDeClave.ancho * escala + 0.6
+                dibujarElCambioDeClave(sistema.clave(columna, 0), en: &lienzo)
             }
-            let cabeza = ritmo?.cabeza(columna) ?? GlifosSMuFL.redonda
             let (grupos, anchosDeLasColumnas) = notasDeLaColumna(
                 columna, sistema, vigentes: vigentes, enVigor: &enVigor)
-            let izquierda =
-                anchosDeLasColumnas.reduce(0, +) + PentagramaSVG.huecoEntreColumnasDeAlteraciones
-                * Double(max(0, anchosDeLasColumnas.count - 1))
-            var xDeLaNota = lienzo.x + izquierda + (anchosDeLasColumnas.isEmpty ? 0 : 0.1)
-            let hayDesplazadas = grupos.contains { $0.contains(where: \.desplazada) }
-            let puntillos = ritmo?.figuras[columna].puntillos ?? 0
-            let silencio = ritmo != nil && alturas.isEmpty ? ritmo?.silencio(columna) : nil
-            let ancho =
-                (silencio?.glifo.ancho ?? cabeza.ancho * (hayDesplazadas ? 2 : 1))
-                + (puntillos > 0 ? 0.2 + 0.5 * Double(puntillos) : 0)
+            var enCurso = ColumnaEnCurso(
+                columna: columna, de: self, grupos: grupos, anchosDeLasColumnas: anchosDeLasColumnas, x: lienzo.x)
             let textos = textosDeLaColumna(columna)
-            // Las etiquetas de las notas no se pisan: si la de esta columna cae demasiado cerca de la anterior, la
-            // columna se corre a la derecha.
-            if columnas.count > 1, textos.hay, let anterior = ultimaEtiqueta {
-                let centroMinimo =
-                    anterior.centro + anterior.mitad + textos.mitad + PentagramaSVG.separacionEntreEtiquetas
-                xDeLaNota += max(0, centroMinimo - (xDeLaNota + ancho / 2))
+            let cifrado = cifradoDeLaColumna(columna)
+            enCurso.x = xSinPisar(
+                enCurso, textos: textos, ultimaEtiqueta: ultimaEtiqueta, cifrado: cifrado,
+                cifradoAnterior: maquetacion.cifrados.last)
+            dibujarLasNotas(enCurso, resaltadas: resaltadas, en: &lienzo, maquetacion: &maquetacion)
+            if let silencio = enCurso.silencio {
+                dibujarElSilencio(silencio, x: enCurso.x, puntillos: enCurso.puntillos, en: &lienzo)
             }
-            // Lo mismo con los cifrados de una progresión, encima.
-            let cifradoDeLaColumna = cifrados[columna]
-            let mitadDelCifrado =
-                (cifradoDeLaColumna.map {
-                    PentagramaSVG.anchoEstimado(
-                        $0, cuerpoDeLetra: PentagramaSVG.letraDelCifrado,
-                        proporcion: opciones.maquetacion.anchoDeLosCaracteres)
-                } ?? 0) / 2
-            if cifradoDeLaColumna != nil, let anterior = maquetacion.cifrados.last {
-                let centroMinimo = anterior.x + anterior.mitad + mitadDelCifrado + 0.8
-                xDeLaNota += max(0, centroMinimo - (xDeLaNota + ancho / 2))
-            }
-            if xMinimas.indices.contains(columna) { xDeLaNota = max(xDeLaNota, xMinimas[columna]) }
-
-            for (k, notas) in grupos.enumerated() {
-                if !notas.isEmpty {
-                    if maquetacion.primeraX[k] == nil { maquetacion.primeraX[k] = xDeLaNota }
-                    maquetacion.ultimaX[k] = xDeLaNota + ancho
-                }
-                for nota in notas {
-                    let xn = xDeLaNota + (nota.desplazada ? cabeza.ancho : 0)
-                    var partes: [String] = []
-                    if let alteracion = nota.alteracion {
-                        // Cada columna, pegada a la anterior por su borde derecho; la primera, junto a la nota.
-                        let anchoDeLasMasCercanas =
-                            anchosDeLasColumnas.prefix(nota.columnaDeAlteracion).reduce(0, +)
-                            + PentagramaSVG.huecoEntreColumnasDeAlteraciones * Double(nota.columnaDeAlteracion)
-                        let xa = xDeLaNota - 0.1 - anchoDeLasMasCercanas - alteracion.ancho
-                        lienzo.incluir(alteracion, lugar: nota.lugar, pentagrama: k)
-                        partes.append(PentagramaSVG.glifo(alteracion, x: xa, lugar: nota.lugar, pentagrama: k))
-                    }
-                    lienzo.incluir(cabeza, lugar: nota.lugar, pentagrama: k)
-                    let y = PentagramaSVG.y(deLugar: nota.lugar, pentagrama: k)
-                    maquetacion.arribaDeLasNotas[k] = min(maquetacion.arribaDeLasNotas[k], y)
-                    maquetacion.abajoDeLasNotas[k] = max(maquetacion.abajoDeLasNotas[k], y)
-                    partes.append(PentagramaSVG.glifo(cabeza, x: xn, lugar: nota.lugar, pentagrama: k))
-                    // Los puntillos, detrás de la cabeza y en un espacio: el de encima, si la nota está en una línea.
-                    let lugarDelPuntillo = nota.lugar % 2 == 0 ? nota.lugar + 1 : nota.lugar
-                    for p in 0..<puntillos {
-                        let xp = xDeLaNota + cabeza.ancho * (hayDesplazadas ? 2 : 1) + 0.25 + 0.5 * Double(p)
-                        partes.append(
-                            PentagramaSVG.glifo(GlifosSMuFL.puntillo, x: xp, lugar: lugarDelPuntillo, pentagrama: k))
-                    }
-                    let nombre = nota.microtono?.nombre ?? nota.altura.nombre(en: opciones.notacion)
-                    let esTonica =
-                        opciones.marcas.tonica
-                        && referencia(columna).map { $0.nota.claseDeAltura == nota.altura.nota.claseDeAltura } == true
-                    let relleno: String? =
-                        resaltadas.contains(columna)
-                        ? opciones.colores.resaltado
-                        : colorDeNotaAjena(nota.altura.nota, columna) ?? (esTonica ? opciones.colores.tonica : nil)
-                    lienzo.notas.append(
-                        elemento("g").con("fill", relleno ?? "", si: relleno != nil)
-                            .conHijos(elemento("title").conTexto(nombre) + partes.joined()))
-                    for lugar in PentagramaSVG.lugaresDeLasLineasAdicionales(de: nota.lugar) {
-                        maquetacion.lineasAdicionales.append((k, lugar, xn - 0.4, xn + cabeza.ancho + 0.4))
-                    }
-                }
-            }
-            if let silencio {
-                // Con dos voces, el silencio de la de arriba sube y el de la de abajo baja.
-                let corrido = silencio.lugar + desplazamientoDelSilencio(silencio.glifo)
-                lienzo.incluir(silencio.glifo, lugar: corrido, pentagrama: 0)
-                var partes = [PentagramaSVG.glifo(silencio.glifo, x: xDeLaNota, lugar: corrido, pentagrama: 0)]
-                for p in 0..<puntillos {
-                    let xp = xDeLaNota + silencio.glifo.ancho + 0.25 + 0.5 * Double(p)
-                    let lugar = 5 + desplazamientoDelSilencio(silencio.glifo)
-                    partes.append(PentagramaSVG.glifo(GlifosSMuFL.puntillo, x: xp, lugar: lugar, pentagrama: 0))
-                }
-                lienzo.notas.append(partes.joined())
-            }
-            if ritmo != nil {
-                maquetacion.colocadas.append(
-                    ColumnaColocada(
-                        x: xDeLaNota, anchoDeLaCabeza: cabeza.ancho, lugares: grupos.map { $0.map(\.lugar) },
-                        midis: grupos.map { $0.map(\.altura.midi) }))
-            }
-            let centro = xDeLaNota + ancho / 2
-            if maquetacion.cifradoX == nil { maquetacion.cifradoX = centro }
-            if let etiqueta = textos.etiqueta { maquetacion.etiquetas.append((centro, etiqueta)) }
-            if let intervalo = textos.intervalo { maquetacion.intervalos.append((centro, intervalo)) }
-            if let grado = textos.grado { maquetacion.grados.append((centro, grado)) }
-            if !textos.cifrasDelBajo.isEmpty { maquetacion.bajoCifrado.append((centro, textos.cifrasDelBajo)) }
-            maquetacion.centros.append(centro)
-            if textos.hay { ultimaEtiqueta = (centro, textos.mitad) }
-            if let cifradoDeLaColumna { maquetacion.cifrados.append((centro, cifradoDeLaColumna, mitadDelCifrado)) }
-            let suelta = grupos.enumerated().filter { !$0.element.isEmpty }
-            if alturas.count == 1, let (k, notas) = suelta.first, let nota = notas.first {
-                let y = PentagramaSVG.y(deLugar: nota.lugar, pentagrama: k)
-                maquetacion.notasSueltas.append((xDeLaNota + cabeza.ancho / 2, y, nota.altura.midi))
-            } else {
-                maquetacion.notasSueltas.append(nil)
-            }
+            anotar(enCurso, textos: textos, cifrado: cifrado, en: &maquetacion)
+            if textos.hay { ultimaEtiqueta = (enCurso.centro, textos.mitad) }
             maquetacion.ultimaSeparacion = ritmo?.separacion(columna) ?? PentagramaSVG.separacionEntreColumnas
-            lienzo.x = xDeLaNota + ancho + maquetacion.ultimaSeparacion
+            lienzo.x = enCurso.x + enCurso.ancho + maquetacion.ultimaSeparacion
             // La barra de compás, en medio del hueco hasta la nota siguiente; las alteraciones dejan de valer.
             if ritmo?.finesDeCompas.contains(columna) == true {
                 lienzo.x -= maquetacion.ultimaSeparacion / 2
@@ -192,6 +80,191 @@ extension PentagramaSVG {
             }
         }
         return maquetacion
+    }
+
+    /// Lo que se sabe de la columna que se está colocando antes de dibujarla: sus notas, su cabeza, su silencio y
+    /// lo que mide. `x` es dónde va la nota, que se corre a la derecha si sus textos pisan los de la anterior.
+    struct ColumnaEnCurso {
+        let columna: Int
+        let alturas: [Altura]
+        let cabeza: Glifo
+        let grupos: [[NotaColocada]]
+        let anchosDeLasColumnas: [Double]
+        let hayDesplazadas: Bool
+        let puntillos: Int
+        let silencio: (glifo: Glifo, lugar: Int)?
+        /// Lo que ocupa la nota (o el silencio) con sus puntillos, sin las alteraciones.
+        let ancho: Double
+        var x: Double
+
+        var centro: Double { x + ancho / 2 }
+
+        /// La columna, con la nota justo a la derecha de sus alteraciones, que empiezan en `x`.
+        init(
+            columna: Int, de pentagrama: PentagramaSVG, grupos: [[NotaColocada]], anchosDeLasColumnas: [Double],
+            x: Double
+        ) {
+            let ritmo = pentagrama.ritmo
+            self.columna = columna
+            alturas = pentagrama.columnas[columna]
+            cabeza = ritmo?.cabeza(columna) ?? GlifosSMuFL.redonda
+            self.grupos = grupos
+            self.anchosDeLasColumnas = anchosDeLasColumnas
+            let izquierda =
+                anchosDeLasColumnas.reduce(0, +) + PentagramaSVG.huecoEntreColumnasDeAlteraciones
+                * Double(max(0, anchosDeLasColumnas.count - 1))
+            self.x = x + izquierda + (anchosDeLasColumnas.isEmpty ? 0 : 0.1)
+            hayDesplazadas = grupos.contains { $0.contains(where: \.desplazada) }
+            puntillos = ritmo?.figuras[columna].puntillos ?? 0
+            silencio = ritmo != nil && alturas.isEmpty ? ritmo?.silencio(columna) : nil
+            ancho =
+                (silencio?.glifo.ancho ?? cabeza.ancho * (hayDesplazadas ? 2 : 1))
+                + (puntillos > 0 ? 0.2 + 0.5 * Double(puntillos) : 0)
+        }
+    }
+
+    /// Un cambio de clave: la nueva, más pequeña, delante de la columna.
+    func dibujarElCambioDeClave(_ clave: Clave, en lienzo: inout Lienzo) {
+        let (glifoDeClave, lugarDeClave) = PentagramaSVG.glifoYLugar(de: clave)
+        let escala = PentagramaSVG.escalaDelCambioDeClave
+        let y = PentagramaSVG.y(deLugar: lugarDeClave)
+        lienzo.minimoY = min(lienzo.minimoY, y + glifoDeClave.arriba * escala)
+        lienzo.maximoY = max(lienzo.maximoY, y + glifoDeClave.abajo * escala)
+        lienzo.notas.append(
+            elemento("path")
+                .con(
+                    "transform",
+                    "translate(\(PentagramaSVG.n(lienzo.x)) \(PentagramaSVG.n(y))) scale(\(escala))"
+                )
+                .con("d", glifoDeClave.trazado).vacio)
+        lienzo.x += glifoDeClave.ancho * escala + 0.6
+    }
+
+    /// El cifrado de una progresión encima de la columna, con la mitad de lo que mide.
+    func cifradoDeLaColumna(_ columna: Int) -> (texto: String, mitad: Double)? {
+        cifrados[columna].map {
+            let ancho = PentagramaSVG.anchoEstimado(
+                $0, cuerpoDeLetra: PentagramaSVG.letraDelCifrado,
+                proporcion: opciones.maquetacion.anchoDeLosCaracteres)
+            return ($0, ancho / 2)
+        }
+    }
+
+    /// Dónde va la nota para que nada se pise: si la etiqueta de la columna cae demasiado cerca de la de la anterior,
+    /// o el cifrado del de la anterior, la columna se corre a la derecha. Tampoco va antes de su `xMinimas`.
+    func xSinPisar(
+        _ enCurso: ColumnaEnCurso, textos: TextosDeLaColumna, ultimaEtiqueta: (centro: Double, mitad: Double)?,
+        cifrado: (texto: String, mitad: Double)?, cifradoAnterior: (x: Double, texto: String, mitad: Double)?
+    ) -> Double {
+        var x = enCurso.x
+        if columnas.count > 1, textos.hay, let anterior = ultimaEtiqueta {
+            let centroMinimo =
+                anterior.centro + anterior.mitad + textos.mitad + PentagramaSVG.separacionEntreEtiquetas
+            x += max(0, centroMinimo - (x + enCurso.ancho / 2))
+        }
+        if let cifrado, let anterior = cifradoAnterior {
+            let centroMinimo = anterior.x + anterior.mitad + cifrado.mitad + 0.8
+            x += max(0, centroMinimo - (x + enCurso.ancho / 2))
+        }
+        if xMinimas.indices.contains(enCurso.columna) { x = max(x, xMinimas[enCurso.columna]) }
+        return x
+    }
+
+    /// Las notas de la columna en cada pentagrama: la cabeza, la alteración, los puntillos y las líneas adicionales,
+    /// con su nombre de título y su color.
+    func dibujarLasNotas(
+        _ enCurso: ColumnaEnCurso, resaltadas: Set<Int>, en lienzo: inout Lienzo, maquetacion: inout Maquetacion
+    ) {
+        let (columna, cabeza, xDeLaNota) = (enCurso.columna, enCurso.cabeza, enCurso.x)
+        for (k, notas) in enCurso.grupos.enumerated() {
+            if !notas.isEmpty {
+                if maquetacion.primeraX[k] == nil { maquetacion.primeraX[k] = xDeLaNota }
+                maquetacion.ultimaX[k] = xDeLaNota + enCurso.ancho
+            }
+            for nota in notas {
+                let xn = xDeLaNota + (nota.desplazada ? cabeza.ancho : 0)
+                var partes: [String] = []
+                if let alteracion = nota.alteracion {
+                    // Cada columna, pegada a la anterior por su borde derecho; la primera, junto a la nota.
+                    let anchoDeLasMasCercanas =
+                        enCurso.anchosDeLasColumnas.prefix(nota.columnaDeAlteracion).reduce(0, +)
+                        + PentagramaSVG.huecoEntreColumnasDeAlteraciones * Double(nota.columnaDeAlteracion)
+                    let xa = xDeLaNota - 0.1 - anchoDeLasMasCercanas - alteracion.ancho
+                    lienzo.incluir(alteracion, lugar: nota.lugar, pentagrama: k)
+                    partes.append(PentagramaSVG.glifo(alteracion, x: xa, lugar: nota.lugar, pentagrama: k))
+                }
+                lienzo.incluir(cabeza, lugar: nota.lugar, pentagrama: k)
+                let y = PentagramaSVG.y(deLugar: nota.lugar, pentagrama: k)
+                maquetacion.arribaDeLasNotas[k] = min(maquetacion.arribaDeLasNotas[k], y)
+                maquetacion.abajoDeLasNotas[k] = max(maquetacion.abajoDeLasNotas[k], y)
+                partes.append(PentagramaSVG.glifo(cabeza, x: xn, lugar: nota.lugar, pentagrama: k))
+                // Los puntillos, detrás de la cabeza y en un espacio: el de encima, si la nota está en una línea.
+                let lugarDelPuntillo = nota.lugar % 2 == 0 ? nota.lugar + 1 : nota.lugar
+                for p in 0..<enCurso.puntillos {
+                    let xp = xDeLaNota + cabeza.ancho * (enCurso.hayDesplazadas ? 2 : 1) + 0.25 + 0.5 * Double(p)
+                    partes.append(
+                        PentagramaSVG.glifo(GlifosSMuFL.puntillo, x: xp, lugar: lugarDelPuntillo, pentagrama: k))
+                }
+                let nombre = nota.microtono?.nombre ?? nota.altura.nombre(en: opciones.notacion)
+                let esTonica =
+                    opciones.marcas.tonica
+                    && referencia(columna).map { $0.nota.claseDeAltura == nota.altura.nota.claseDeAltura } == true
+                let relleno: String? =
+                    resaltadas.contains(columna)
+                    ? opciones.colores.resaltado
+                    : colorDeNotaAjena(nota.altura.nota, columna) ?? (esTonica ? opciones.colores.tonica : nil)
+                lienzo.notas.append(
+                    elemento("g").con("fill", relleno ?? "", si: relleno != nil)
+                        .conHijos(elemento("title").conTexto(nombre) + partes.joined()))
+                for lugar in PentagramaSVG.lugaresDeLasLineasAdicionales(de: nota.lugar) {
+                    maquetacion.lineasAdicionales.append((k, lugar, xn - 0.4, xn + cabeza.ancho + 0.4))
+                }
+            }
+        }
+    }
+
+    /// El silencio de una columna sin notas, con sus puntillos. Con dos voces, el de la de arriba sube y el de la de
+    /// abajo baja.
+    func dibujarElSilencio(_ silencio: (glifo: Glifo, lugar: Int), x: Double, puntillos: Int, en lienzo: inout Lienzo) {
+        let corrido = silencio.lugar + desplazamientoDelSilencio(silencio.glifo)
+        lienzo.incluir(silencio.glifo, lugar: corrido, pentagrama: 0)
+        var partes = [PentagramaSVG.glifo(silencio.glifo, x: x, lugar: corrido, pentagrama: 0)]
+        for p in 0..<puntillos {
+            let xp = x + silencio.glifo.ancho + 0.25 + 0.5 * Double(p)
+            let lugar = 5 + desplazamientoDelSilencio(silencio.glifo)
+            partes.append(PentagramaSVG.glifo(GlifosSMuFL.puntillo, x: xp, lugar: lugar, pentagrama: 0))
+        }
+        lienzo.notas.append(partes.joined())
+    }
+
+    /// Lo que las pasadas siguientes necesitan de la columna: dónde quedó, sus textos, su cifrado, la nota suelta
+    /// para el arco de los semitonos y, con ritmo, lo que piden las plicas y las barras.
+    func anotar(
+        _ enCurso: ColumnaEnCurso, textos: TextosDeLaColumna, cifrado: (texto: String, mitad: Double)?,
+        en maquetacion: inout Maquetacion
+    ) {
+        let (x, cabeza, grupos) = (enCurso.x, enCurso.cabeza, enCurso.grupos)
+        if ritmo != nil {
+            maquetacion.colocadas.append(
+                ColumnaColocada(
+                    x: x, anchoDeLaCabeza: cabeza.ancho, lugares: grupos.map { $0.map(\.lugar) },
+                    midis: grupos.map { $0.map(\.altura.midi) }))
+        }
+        let centro = enCurso.centro
+        if maquetacion.cifradoX == nil { maquetacion.cifradoX = centro }
+        if let etiqueta = textos.etiqueta { maquetacion.etiquetas.append((centro, etiqueta)) }
+        if let intervalo = textos.intervalo { maquetacion.intervalos.append((centro, intervalo)) }
+        if let grado = textos.grado { maquetacion.grados.append((centro, grado)) }
+        if !textos.cifrasDelBajo.isEmpty { maquetacion.bajoCifrado.append((centro, textos.cifrasDelBajo)) }
+        maquetacion.centros.append(centro)
+        if let cifrado { maquetacion.cifrados.append((centro, cifrado.texto, cifrado.mitad)) }
+        let suelta = grupos.enumerated().filter { !$0.element.isEmpty }
+        if enCurso.alturas.count == 1, let (k, notas) = suelta.first, let nota = notas.first {
+            let y = PentagramaSVG.y(deLugar: nota.lugar, pentagrama: k)
+            maquetacion.notasSueltas.append((x + cabeza.ancho / 2, y, nota.altura.midi))
+        } else {
+            maquetacion.notasSueltas.append(nil)
+        }
     }
 
     /// Lo que sube (o baja, si es negativo) un silencio de una de dos voces, en lugares: un espacio el de redonda
@@ -236,7 +309,7 @@ extension PentagramaSVG {
                 grupos[k][i].desplazada = true
             }
             // Alteraciones: las que no da la armadura, en columnas a la izquierda sin pisarse.
-            var fondoDeLaColumna: [Double] = [] // hasta dónde baja el último glifo de cada columna
+            var fondoDeLaColumna: [Double] = []  // hasta dónde baja el último glifo de cada columna
             for i in grupos[k].indices.reversed() {
                 let semitonos = grupos[k][i].altura.nota.alteracion.semitonos
                 // Lo que vale en esa línea o espacio: lo último que se escribió o, si nada, la armadura. Así la

@@ -42,99 +42,13 @@ public enum LineaDeComandos {
         salidaEsTerminal: Bool = false, entorno: [String: String] = [:]
     ) -> ResultadoDeOrden {
         var opciones = Argumentos(argumentos)
-        var notacion: Notacion
-        switch notacionDelEntorno(entorno) {
-        case .success(let delEntorno):
-            notacion = delEntorno
-        case .failure(let error):
-            return uso(error, .compacta(.espanol))
+        let generales: OpcionesGenerales
+        do throws(ErrorEnUnaOpcionGeneral) {
+            generales = try opcionesGenerales(&opciones, entorno: entorno)
+        } catch {
+            return uso(error.error, error.notacion)
         }
-        if opciones.quitarMarca(.ingles) { notacion = .ascii(.ingles) }
-        switch opciones.quitarOpcion(.idioma) {
-        case .ausente:
-            break
-        case .sinValor(let nombre):
-            return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
-            guard let elegida = notacionDelIdioma(texto) else { return uso(.idiomaDesconocido(texto), notacion) }
-            notacion = elegida
-        }
-        switch opciones.quitarOpcion(.textos) {
-        case .ausente:
-            break
-        case .sinValor(let nombre):
-            return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
-            guard let elegida = notacionDelIdioma(texto) else { return uso(.idiomaDesconocido(texto), notacion) }
-            notacion = notacion.conTextos(en: elegida.idiomaDeLasNotas)
-            if elegida.grafia != .original { notacion = notacion.conGrafia(elegida.grafia) }
-        }
-        switch opciones.quitarOpcion(.escritura) {
-        case .ausente:
-            break
-        case .sinValor(let nombre):
-            return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
-            guard let escritura = escritura(texto, en: notacion.escritura.idioma) else {
-                return uso(.escrituraNoValida(texto), notacion)
-            }
-            notacion = Notacion(escritura: escritura, textos: notacion.textos, grafia: notacion.grafia)
-        }
-        // Con --sistema, los nombres de otra tradición: los fijos (bizantino, japonés, lü) en toda la orden, como
-        // una escritura más; los móviles (sargam, jianpu), solo en `escala`, que tiene tónica (SistemaMovil).
-        // Con --grafia, la de los sistemas y, en ruso y en griego, la de las notas y los textos (--idioma ru
-        // --grafia transliterada es --idioma ru-latn).
-        var grafiaElegida: Grafia?
-        switch opciones.quitarOpcion(.grafia) {
-        case .ausente:
-            break
-        case .sinValor(let nombre):
-            return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
-            guard let elegida = grafia(texto) else { return uso(.grafiaNoValida(texto), notacion) }
-            grafiaElegida = elegida
-        }
-        var movil: SistemaMovil?
-        switch opciones.quitarOpcion(.sistema) {
-        case .ausente:
-            break
-        case .sinValor(let nombre):
-            return uso(.faltaValor(nombre), notacion)
-        case .valor(let texto):
-            guard let sistema = SistemaDeNombres(nombre: texto) else {
-                return uso(.sistemaDesconocido(texto), notacion)
-            }
-            if let conSistema = Notacion.sistema(
-                sistema, grafia: grafiaElegida ?? .transliterada, textos: notacion.textos)
-            {
-                notacion = conSistema
-            } else {
-                movil = SistemaMovil(sistema: sistema, grafia: grafiaElegida ?? .transliterada, nombre: texto)
-            }
-        }
-        // La octava va como la escriba la notación (en subíndice en las compactas, con cifras en las demás), salvo
-        // con --subindices o --cifras.
-        let subindices = opciones.quitarMarca(.subindices)
-        let cifras = opciones.quitarMarca(.cifras)
-        if subindices {
-            notacion = notacion.conOctavas(.subindices)
-        } else if cifras {
-            notacion = notacion.conOctavas(.cifras)
-        }
-        if let grafiaElegida, notacion.sistemaDeNombres == nil { notacion = notacion.conGrafia(grafiaElegida) }
-        // Con --json, las órdenes que lo admiten dan sus datos en JSON (LineaDeComandos+JSON.swift y Ordenes/*/+JSON).
-        let json = opciones.quitarMarca(.json)
-        // Con -o, lo que da la orden va a ese fichero (`-o -`, a la salida estándar, aunque sea un fichero binario).
-        var destino: String?
-        switch opciones.quitarOpcion(.salida) {
-        case .ausente:
-            break
-        case .sinValor(let nombre):
-            // «-o» a secas, con su nombre largo.
-            return uso(.faltaValor(nombre.isEmpty ? "salida" : nombre), notacion)
-        case .valor(let ruta):
-            destino = ruta
-        }
+        let (notacion, movil, json, destino) = (generales.notacion, generales.movil, generales.json, generales.destino)
         let argumentos = opciones.restantes
 
         guard let nombre = argumentos.first?.lowercased() else {

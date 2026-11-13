@@ -38,8 +38,29 @@ extension PentagramaSVG {
             let irregular = voz.eventos.contains { $0.duracion.figuraYPuntillos == nil }
             let compases = irregular ? voz.compases : voz.grafia
             let eventos = compases.flatMap { $0 }
+            let (figuras, deGrupo) = figuras(de: eventos)
+            let (vigas, finesDeCompas) = vigasYFinesDeCompas(compases, figuras: figuras, voz: voz)
+            let (tresillos, cifras) = gruposIrregulares(eventos, deGrupo: deGrupo, finesDeCompas: finesDeCompas)
+            var ritmo = Ritmo(
+                figuras: figuras, ligadas: eventos.map(\.ligada), compas: voz.compas, finesDeCompas: finesDeCompas,
+                vigas: vigas, tresillos: tresillos,
+                resaltadas: resaltada.map { columnas(deLaNota: $0, eventos) } ?? [])
+            ritmo.cifrasDeLosGrupos = cifras
+            var momento = Duracion.cero
+            for evento in eventos {
+                ritmo.inicios.append(momento)
+                momento = momento + evento.duracion
+            }
+            return (ritmo, eventos.map(\.alturas), primerasColumnas(de: voz, en: eventos))
+        }
+
+        /// La figura con que se escribe cada evento y, si es de un grupo irregular, su proporción (3:2 en un
+        /// tresillo, 5:4 en un cinquillo). Una duración que no es ni una cosa ni otra se escribe con la figura más
+        /// larga que no la pasa, sin cifra.
+        static func figuras(
+            de eventos: [Evento]
+        ) -> (figuras: [FiguraConPuntillos], deGrupo: [(numero: Int, en: Int)?]) {
             var figuras: [FiguraConPuntillos] = []
-            // La proporción del grupo irregular de cada columna (3:2 en un tresillo, 5:4 en un cinquillo), o `nil`.
             var deGrupo: [(numero: Int, en: Int)?] = []
             for evento in eventos {
                 if let escrita = evento.duracion.figuraYPuntillos {
@@ -49,15 +70,20 @@ extension PentagramaSVG {
                     figuras.append(grupo.figura)
                     deGrupo.append(grupo.proporcion)
                 } else {
-                    // Los demás: la figura más larga que no la pasa, sin cifra.
                     let figura = Figura.allCases.first { $0.duracion <= evento.duracion } ?? .garrapatea
                     figuras.append(FiguraConPuntillos(figura: figura, puntillos: 0))
                     deGrupo.append(nil)
                 }
             }
+            return (figuras, deGrupo)
+        }
 
-            // Las barras de unión, como en `Voz.barrasDeAgrupacion`: las notas seguidas que se escriben con corchea o
-            // algo más breve, dentro de un mismo pulso.
+        /// Las barras de unión, como en `Voz.barrasDeAgrupacion`: las notas seguidas que se escriben con corchea o
+        /// algo más breve, dentro de un mismo pulso. Y las columnas detrás de las que acaba un compás, salvo el último.
+        static func vigasYFinesDeCompas(
+            _ compases: [[Evento]], figuras: [FiguraConPuntillos], voz: Voz
+        ) -> (vigas: [[Int]], finesDeCompas: Set<Int>) {
+            let total = compases.reduce(0) { $0 + $1.count }
             var finesDeCompas: Set<Int> = []
             var vigas: [[Int]] = []
             var primera = 0
@@ -81,25 +107,30 @@ extension PentagramaSVG {
                 }
                 if actual.count >= 2 { vigas.append(actual) }
                 primera += delCompas.count
-                if primera < eventos.count { finesDeCompas.insert(primera - 1) }
+                if primera < total { finesDeCompas.insert(primera - 1) }
             }
+            return (vigas, finesDeCompas)
+        }
 
-            // Los tresillos y los demás grupos: notas seguidas con la misma proporción, hasta que suman una figura
-            // sin puntillo (tres corcheas de tresillo, una negra; cinco semicorcheas de cinquillo, otra) o acaba el
-            // compás.
-            var tresillos: [[Int]] = []
+        /// Los tresillos y los demás grupos, con su cifra: notas seguidas con la misma proporción, hasta que suman
+        /// una figura sin puntillo (tres corcheas de tresillo, una negra; cinco semicorcheas de cinquillo, otra) o
+        /// acaba el compás. Un grupo que se corta antes de completarse (por otra figura u otra proporción) no lleva
+        /// cifra.
+        static func gruposIrregulares(
+            _ eventos: [Evento], deGrupo: [(numero: Int, en: Int)?], finesDeCompas: Set<Int>
+        ) -> (grupos: [[Int]], cifras: [Int]) {
+            var grupos: [[Int]] = []
             var cifras: [Int] = []
             var actual: [Int] = []
             var suma = Duracion.cero
             func cerrar(_ numero: Int) {
                 if !actual.isEmpty {
-                    tresillos.append(actual)
+                    grupos.append(actual)
                     cifras.append(numero)
                 }
                 actual = []
                 suma = .cero
             }
-            // Un grupo que se corta antes de completarse (por otra figura u otra proporción) no lleva cifra.
             for i in eventos.indices {
                 guard let proporcion = deGrupo[i] else {
                     actual = []
@@ -115,28 +146,25 @@ extension PentagramaSVG {
                 if suma.figuraYPuntillos?.puntillos == 0 || finesDeCompas.contains(i) { cerrar(proporcion.numero) }
             }
             if let ultimo = actual.last.flatMap({ deGrupo[$0] }) { cerrar(ultimo.numero) }
+            return (grupos, cifras)
+        }
 
-            var resaltadas: Set<Int> = []
-            if let resaltada {
-                var nota = -1
-                var ligadaALaAnterior = false
-                for (i, evento) in eventos.enumerated() {
-                    if !evento.esSilencio && !ligadaALaAnterior { nota += 1 }
-                    if !evento.esSilencio && nota == resaltada { resaltadas.insert(i) }
-                    ligadaALaAnterior = evento.ligada
-                }
+        /// Las columnas de la nota `nota` (contando las que se oyen: sin los silencios ni las notas a las que se liga
+        /// otra), más de una si se divide en notas ligadas.
+        static func columnas(deLaNota nota: Int, _ eventos: [Evento]) -> Set<Int> {
+            var columnas: Set<Int> = []
+            var contada = -1
+            var ligadaALaAnterior = false
+            for (i, evento) in eventos.enumerated() {
+                if !evento.esSilencio && !ligadaALaAnterior { contada += 1 }
+                if !evento.esSilencio && contada == nota { columnas.insert(i) }
+                ligadaALaAnterior = evento.ligada
             }
+            return columnas
+        }
 
-            var ritmo = Ritmo(
-                figuras: figuras, ligadas: eventos.map(\.ligada), compas: voz.compas, finesDeCompas: finesDeCompas,
-                vigas: vigas, tresillos: tresillos, resaltadas: resaltadas)
-            ritmo.cifrasDeLosGrupos = cifras
-            var momento = Duracion.cero
-            for evento in eventos {
-                ritmo.inicios.append(momento)
-                momento = momento + evento.duracion
-            }
-            // La primera columna de cada evento de la voz: la que empieza cuando él.
+        /// La primera columna de cada evento de la voz: la que empieza cuando él.
+        static func primerasColumnas(de voz: Voz, en eventos: [Evento]) -> [Int] {
             var primeras: [Int] = []
             var inicioDelEvento = Duracion.cero
             var inicioDeLaColumna = Duracion.cero
@@ -149,7 +177,7 @@ extension PentagramaSVG {
                 primeras.append(min(columna, max(0, eventos.count - 1)))
                 inicioDelEvento = inicioDelEvento + evento.duracion
             }
-            return (ritmo, eventos.map(\.alturas), primeras)
+            return primeras
         }
 
         /// Las proporciones de los grupos irregulares que se reconocen, con la cifra que se escribe: el tresillo (3
