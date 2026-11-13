@@ -373,6 +373,21 @@ TipoDeEscala.kafi.equivalentes.first?.nombre               // "dórico"
 try TipoDeEscala(leyendo: "Hijaz").nombre                 // "Ḥijāz" (el maqam; el dromos griego es «Hitzáz»)
 ```
 
+### La clave de cada escala
+
+Cada escala del catálogo tiene una `clave` fija, que sale de su nombre en español sin tildes ni mayúsculas. Es lo
+que la identifica: con ella se buscan su tradición, su categoría y sus nombres en otros idiomas, y es lo que guarda
+el JSON. Si un nombre se corrige, la clave no cambia, y lo guardado con el nombre antiguo sigue siendo esa escala.
+Las escalas que no son del catálogo (las propias, sus modos) no tienen clave. Una escrita a mano o guardada antes de
+que hubiera claves se reconoce, como antes, por su nombre y sus notas:
+
+```swift
+TipoDeEscala.kafi.clave                                                       // "kafi"
+TipoDeEscala.rastMakami.clave                                                 // "rast-makami"
+TipoDeEscala.propio(TipoDeEscala.kafi.intervalos).clave                       // "dorico"
+TipoDeEscala(nombre: "mía", intervalos: [.unisono, .terceraMayor]).clave == nil // true
+```
+
 ## Arpegios
 
 Un arpegio no es un tipo de escala sino un acorde tocado nota a nota, así que ``Arpegio`` no entra en el catálogo de escalas:

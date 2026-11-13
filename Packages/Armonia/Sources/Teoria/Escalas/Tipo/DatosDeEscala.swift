@@ -180,6 +180,6 @@ extension TipoDeEscala {
     package func con(estilos: [Estilo]) -> TipoDeEscala {
         TipoDeEscala(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
-            variantes: variantes, datos: DatosDeEscala(estilos: estilos))
+            variantes: variantes, clave: clave, datos: DatosDeEscala(estilos: estilos))
     }
 }

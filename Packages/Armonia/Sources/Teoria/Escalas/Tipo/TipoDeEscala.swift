@@ -14,6 +14,10 @@ import Foundation
 /// rāgas): `intervalos` es la forma ascendente e `intervalosDescendentes`, la descendente.
 public struct TipoDeEscala: Sendable, Codable {
     public let nombre: String
+    /// La clave fija de una escala del catálogo: «dorico», «kafi», «pelog-lima». Sale de su nombre en español, pero
+    /// no cambia si el nombre cambia, así que es lo que guarda el JSON y lo que la identifica (`identidad`). `nil` en
+    /// las que no son del catálogo: las propias, sus modos y sus formas ascendente y descendente.
+    public var clave: String? { caja.clave }
     /// Intervalos ascendentes simples desde la tónica, ordenados (empieza por el unísono).
     public let intervalos: [Intervalo]
     /// Intervalos de la forma descendente, si es distinta de la ascendente (también ordenados
@@ -44,7 +48,7 @@ public struct TipoDeEscala: Sendable, Codable {
 
     // «descenso» es el nombre que tenía `intervalosDescendentes`: se conserva al codificar.
     private enum CodingKeys: String, CodingKey {
-        case nombre, intervalos, alias, variantes
+        case nombre, clave, intervalos, alias, variantes
         case intervalosDescendentes = "descenso"
     }
 
@@ -57,7 +61,7 @@ public struct TipoDeEscala: Sendable, Codable {
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
-            variantes: variantes, datos: nil)
+            variantes: variantes, clave: nil, datos: nil)
     }
 
     /// Una escala occidental del catálogo, con sus estilos, las regiones de donde viene (las populares: la flamenca,
@@ -66,11 +70,12 @@ public struct TipoDeEscala: Sendable, Codable {
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
         variantes: [String] = [], estilos: [Estilo], corrientes: [Corriente] = [], regiones: [RegionDeEscala] = [],
-        afinaciones: [DatosDeEscala.Afinacion] = [], documentada: Referencia? = nil, clase: ClaseDeEscala? = nil
+        afinaciones: [DatosDeEscala.Afinacion] = [], documentada: Referencia? = nil, clase: ClaseDeEscala? = nil,
+        clave: String? = nil
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
-            variantes: variantes,
+            variantes: variantes, clave: clave,
             datos: DatosDeEscala(
                 estilos: estilos, corrientes: corrientes, regiones: regiones, afinaciones: afinaciones,
                 documentada: documentada, clase: clase))
@@ -85,11 +90,12 @@ public struct TipoDeEscala: Sendable, Codable {
         variantes: [String] = [], tradicion: Tradicion? = nil, categoria: CategoriaTradicional,
         escuelas: [Escuela] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
         padre: TipoDeEscala? = nil,
-        afinaciones: [DatosDeEscala.Afinacion] = [], referencias: [Referencia] = [], documentada: Referencia? = nil
+        afinaciones: [DatosDeEscala.Afinacion] = [], referencias: [Referencia] = [], documentada: Referencia? = nil,
+        clave: String? = nil
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
-            variantes: variantes,
+            variantes: variantes, clave: clave,
             datos: DatosDeEscala(
                 tradicion: tradicion, escuelas: escuelas, regiones: regiones, categoria: categoria,
                 padre: padre?.identidad,
@@ -97,9 +103,11 @@ public struct TipoDeEscala: Sendable, Codable {
                 fuente: fuente, referencias: referencias, documentada: documentada))
     }
 
+    /// Las del catálogo (las que traen `datos`) tienen clave: la que se les da o, si no, la de su nombre
+    /// (`claveDeNombre(_:)`). Si se cambia el nombre de una, se le da la clave que tenía, que las pruebas guardan.
     init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]?, alias: [String],
-        variantes: [String], datos: DatosDeEscala?
+        variantes: [String], clave: String? = nil, datos: DatosDeEscala?
     ) {
         self.nombre = nombre
         let subida = TipoDeEscala.ordenar(intervalos)
@@ -108,10 +116,11 @@ public struct TipoDeEscala: Sendable, Codable {
         self.intervalosDescendentes = bajada == subida ? nil : bajada
         self.alias = alias
         self.variantes = variantes
-        caja = datos.map(CajaDeDatos.init) ?? .vacia
+        caja = datos.map { CajaDeDatos($0, clave: clave ?? TipoDeEscala.claveDeNombre(nombre)) } ?? .vacia
     }
 
-    /// Las escalas guardadas antes de que hubiera `variantes` se leen sin ellas.
+    /// Las escalas guardadas antes de que hubiera `variantes` se leen sin ellas, y las guardadas antes de que hubiera
+    /// `clave`, sin ella: se reconocen, como antes, por su nombre y sus intervalos (`identidad`).
     public init(from decoder: any Decoder) throws {
         let datos = try decoder.container(keyedBy: CodingKeys.self)
         nombre = try datos.decode(String.self, forKey: .nombre)
@@ -119,7 +128,17 @@ public struct TipoDeEscala: Sendable, Codable {
         intervalosDescendentes = try datos.decodeIfPresent([Intervalo].self, forKey: .intervalosDescendentes)
         alias = try datos.decode([String].self, forKey: .alias)
         variantes = try datos.decodeIfPresent([String].self, forKey: .variantes) ?? []
-        caja = .vacia
+        caja = try datos.decodeIfPresent(String.self, forKey: .clave).map { CajaDeDatos(.vacia, clave: $0) } ?? .vacia
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var datos = encoder.container(keyedBy: CodingKeys.self)
+        try datos.encode(nombre, forKey: .nombre)
+        try datos.encodeIfPresent(clave, forKey: .clave)
+        try datos.encode(intervalos, forKey: .intervalos)
+        try datos.encodeIfPresent(intervalosDescendentes, forKey: .intervalosDescendentes)
+        try datos.encode(alias, forKey: .alias)
+        try datos.encode(variantes, forKey: .variantes)
     }
 
     package static func ordenar(_ intervalos: [Intervalo]) -> [Intervalo] {
@@ -163,8 +182,33 @@ public struct TipoDeEscala: Sendable, Codable {
 
     /// Qué escala es, y no solo qué notas tiene: con ella se buscan su tradición, su categoría, sus estilos, sus
     /// afinaciones y sus nombres en otros idiomas. Kāfī y el dórico tienen el mismo contenido y distinta identidad.
+    /// La de una escala del catálogo es su `clave`. Una sin clave que se llama y suena como una del catálogo (una
+    /// escrita a mano, o guardada antes de que hubiera claves) es esa; si no, es una escala propia.
     package var identidad: IdentidadDeEscala {
-        IdentidadDeEscala(nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes)
+        if let clave { return .delCatalogo(clave) }
+        let propia = IdentidadDeEscala.Propia(
+            nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes)
+        return TipoDeEscala.clavesPorNombreYContenido[propia].map(IdentidadDeEscala.delCatalogo) ?? .propia(propia)
+    }
+
+    /// El nombre y el contenido de cada escala del catálogo → su clave. Si dos se llamaran y sonaran igual, vale la
+    /// primera de `catalogo`.
+    private static let clavesPorNombreYContenido: [IdentidadDeEscala.Propia: String] = {
+        var tabla: [IdentidadDeEscala.Propia: String] = [:]
+        for tipo in catalogo {
+            guard let clave = tipo.clave else { continue }
+            let propia = IdentidadDeEscala.Propia(
+                nombre: tipo.nombre, intervalos: tipo.intervalos, intervalosDescendentes: tipo.intervalosDescendentes)
+            if tabla[propia] == nil { tabla[propia] = clave }
+        }
+        return tabla
+    }()
+
+    /// La clave que sale de un nombre: sin tildes ni mayúsculas, con guiones entre las palabras y sin apóstrofos ni
+    /// puntos, como `normalizar`: «Rast makamı» → «rast-makami», «lidio ♯5» → «lidio-#5», «ʿAjam» → «ajam».
+    package static func claveDeNombre(_ nombre: String) -> String {
+        normalizar(nombre).replacingOccurrences(of: "ə", with: "e").filter { !"'’ʿʾ.".contains($0) }
+            .split(separator: " ").joined(separator: "-")
     }
 
     /// Otras escalas del catálogo (`catalogo`, en su orden) con el mismo contenido y otro
@@ -189,23 +233,33 @@ public struct TipoDeEscala: Sendable, Codable {
     }
 }
 
-/// Los datos de un `TipoDeEscala`, en el montón. Son inmutables, así que compartirlos entre copias y entre hilos es
-/// seguro.
+/// Los datos y la clave de un `TipoDeEscala`, en el montón. Son inmutables, así que compartirlos entre copias y entre
+/// hilos es seguro.
 private final class CajaDeDatos: Sendable {
     let datos: DatosDeEscala
-    init(_ datos: DatosDeEscala) { self.datos = datos }
-    /// La de las escalas sin datos (las propias, las leídas de JSON): una sola para todas.
-    static let vacia = CajaDeDatos(.vacia)
+    let clave: String?
+    init(_ datos: DatosDeEscala, clave: String?) {
+        self.datos = datos
+        self.clave = clave
+    }
+    /// La de las escalas sin datos ni clave (las propias, las leídas de JSON sin clave): una sola para todas.
+    static let vacia = CajaDeDatos(.vacia, clave: nil)
 }
 
-/// La identidad de un `TipoDeEscala` (`TipoDeEscala.identidad`): su nombre y su contenido. Dos tipos con los mismos
-/// intervalos son iguales (`==`); solo son la misma escala si además se llaman igual. Es la clave de las tablas que
-/// dicen algo de una escala concreta: una escala propia que se llame «Kafi» pero suene distinto no es el thāṭ, y
-/// Āsāvarī no es la escala menor natural.
-package struct IdentidadDeEscala: Hashable, Sendable {
-    let nombre: String
-    let intervalos: [Intervalo]
-    let intervalosDescendentes: [Intervalo]?
+/// La identidad de un `TipoDeEscala` (`TipoDeEscala.identidad`): la clave de una escala del catálogo, o el nombre y
+/// el contenido de una propia. Dos tipos con los mismos intervalos son iguales (`==`); solo son la misma escala si
+/// además tienen la misma identidad. Es la clave de las tablas que dicen algo de una escala concreta: una escala
+/// propia que se llame «Kafi» pero suene distinto no es el thāṭ, y Āsāvarī no es la escala menor natural.
+package enum IdentidadDeEscala: Hashable, Sendable {
+    case delCatalogo(String)
+    case propia(Propia)
+
+    /// Lo que identifica a una escala que no es del catálogo: su nombre y su contenido.
+    package struct Propia: Hashable, Sendable {
+        let nombre: String
+        let intervalos: [Intervalo]
+        let intervalosDescendentes: [Intervalo]?
+    }
 }
 
 extension TipoDeEscala: Hashable {
