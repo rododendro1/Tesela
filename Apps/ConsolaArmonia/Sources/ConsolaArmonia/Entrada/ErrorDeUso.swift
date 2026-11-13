@@ -47,6 +47,7 @@ enum ErrorDeUso: ErrorDeArmonia {
     case agrupacionDesconocida(String)
     case epocaDesconocida(String)
     case escuelaDesconocida(String)
+    case afinacionDesconocida(String)
     case ordenDeEscalasDesconocido(String)
     case ordenDeAcordesDesconocido(String)
     case intervaloDeEscalasDesconocido(String)
@@ -249,6 +250,9 @@ enum ErrorDeUso: ErrorDeArmonia {
         case .escuelaDesconocida(let escuela):
             return LineaDeComandos.propuesta(
                 para: escuela, entre: LineaDeComandos.nombresDeLasEscuelas.flatMap { [$0.espanol, $0.ingles] })
+        case .afinacionDesconocida(let afinacion):
+            return LineaDeComandos.propuesta(
+                para: afinacion, entre: LineaDeComandos.nombresDeLasAfinaciones.flatMap { [$0.espanol, $0.ingles] })
         case .agrupacionDesconocida(let agrupacion):
             let claves = LineaDeComandos.nombresDeLasAgrupaciones.flatMap { [$0.espanol, $0.ingles] }
             return LineaDeComandos.propuesta(para: agrupacion, entre: claves)
@@ -341,6 +345,8 @@ enum ErrorDeUso: ErrorDeArmonia {
             return TextosDeConsola.traduccion { $0.epocaDesconocida(epoca) }
         case .escuelaDesconocida(let escuela):
             return TextosDeConsola.traduccion { $0.escuelaDesconocida(escuela) }
+        case .afinacionDesconocida(let afinacion):
+            return TextosDeConsola.traduccion { $0.afinacionDesconocida(afinacion) }
         case .ordenDeEscalasDesconocido(let orden):
             return TextosDeConsola.traduccion { $0.ordenDeEscalasDesconocido(orden) }
         case .ordenDeAcordesDesconocido(let orden):

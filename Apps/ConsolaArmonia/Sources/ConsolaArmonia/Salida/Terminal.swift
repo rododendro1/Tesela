@@ -85,6 +85,7 @@ extension LineaDeComandos {
         (nombres(.agrupar), LineaDeComandos.nombresDeLasAgrupaciones.flatMap { [$0.espanol, $0.ingles] }),
         (nombres(.epoca), LineaDeComandos.nombresDeLasEpocas.flatMap { [$0.espanol, $0.ingles] }),
         (nombres(.escuela), LineaDeComandos.nombresDeLasEscuelas.flatMap { [$0.espanol, $0.ingles] }),
+        (nombres(.afinacion), LineaDeComandos.nombresDeLasAfinaciones.flatMap { [$0.espanol, $0.ingles] }),
         (nombres(.orden), ["brillo", "notas", "brightness", "notes"]),
         (
             nombres(.conIntervalo, .sinIntervalo),

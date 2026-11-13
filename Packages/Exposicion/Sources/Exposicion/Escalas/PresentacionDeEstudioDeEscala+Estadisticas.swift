@@ -43,6 +43,8 @@ extension PresentacionDeEstudioDeEscala {
         var datos = [dato(\.numeroDeNotas, "\(estadisticas.numeroDeNotas)" + cardinal)]
         // Un fragmento, con lo que abarca: «Fragmento: 4ª justa». Lo demás lo mide como si se repitiera a la octava.
         if let ambito = escala.tipo.ambito { datos.append(dato(\.fragmento, ambito.nombre(en: notacion))) }
+        // Su afinación, si tiene una propia: «Afinación: microtonal», «octava en 5 partes iguales».
+        if let afinacion = afinacion(de: escala.tipo, en: notacion) { datos.append(dato(\.afinacion, afinacion)) }
         if let brillo = estadisticas.brillo { datos.append(dato(\.brillo, conSigno(Double(brillo)))) }
         datos.append(dato(\.brilloPorQuintas, conSigno(estadisticas.brilloPorQuintas)))
         datos.append(dato(\.pasosEnSemitonos, estadisticas.pasos.map(String.init).joined(separator: " ")))
@@ -58,6 +60,20 @@ extension PresentacionDeEstudioDeEscala {
         ].compactMap { $0 }
         if !rasgos.isEmpty { datos.append(dato(\.rasgos, rasgos.joined(separator: " · "))) }
         return datos + teorias(estadisticas, en: notacion)
+    }
+
+    /// El carácter de la afinación de un tipo (`TipoDeEscala.caracterDeLaAfinacion`), escrito: «microtonal»,
+    /// «justa», «octava en 5 partes iguales»; `nil` si no tiene una propia.
+    ///
+    ///     PresentacionDeEstudioDeEscala.afinacion(de: .bayati, en: .compacta(.espanol))   // "microtonal"
+    public static func afinacion(de tipo: TipoDeEscala, en notacion: Notacion) -> String? {
+        switch tipo.caracterDeLaAfinacion {
+        case nil: nil
+        case .temperada: notacion.texto(\.afinacionTemperada)
+        case .justa: notacion.texto(\.afinacionJusta)
+        case .microtonal: notacion.texto(\.afinacionMicrotonal)
+        case .partesIguales(let partes): notacion.texto { $0.afinacionEnPartesIguales(partes) }
+        }
     }
 
     /// Lo que dicen de la escala las teorías, un dato por fila: Myhill, Rothenberg, Carey, Hanson, Messiaen, Forte,

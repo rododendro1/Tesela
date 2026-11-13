@@ -194,6 +194,18 @@ extension LineaDeComandosTests {
 
     /// `escalas --epoca`: las de una época, de origen o de uso, por su clave en español o en inglés o por su nombre;
     /// `tonal`, las tres de la época tonal. `--escuela`, las de una escuela, y `--agrupar epoca`, por la de origen.
+    /// `escalas --afinacion microtonal`, `--tuning just`: por el carácter de su afinación. `escala` lo dice.
+    @Test func lasAfinaciones() {
+        let microtonales = salida("escalas --afinacion microtonal")
+        #expect(microtonales.contains("  Bayātī: "), Comment(rawValue: String(microtonales.prefix(300))))
+        #expect(!microtonales.contains("  Kalyāṇ: ") && !microtonales.contains("  mayor: "))
+        #expect(salida("scales --tuning just").contains("  Kalyāṇ: "))
+        #expect(salida("escalas --afinacion partes-iguales").contains("  Sléndro: "))
+        #expect(salida("escala Re Bayātī").contains("  Afinación: microtonal"))
+        #expect(salida("escala Do Sléndro").contains("  Afinación: octava en 5 partes iguales"))
+        #expect(!salida("escala Do mayor").contains("Afinación"))
+    }
+
     /// `escalas --fragmentos`: los tetracordos, los ajnas, los hexacordos; `--sin-fragmentos`, las demás. `escala`
     /// dice lo que abarca un fragmento, y no le da modos.
     @Test func losFragmentos() {

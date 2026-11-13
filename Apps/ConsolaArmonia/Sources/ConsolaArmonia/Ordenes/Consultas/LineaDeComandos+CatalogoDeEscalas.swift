@@ -108,6 +108,25 @@ extension LineaDeComandos {
         (.indiaAntigua, "india-antigua", "ancient-india"), (.gagaku, "gagaku", "gagaku"),
     ]
 
+    /// Cómo se escribe cada carácter de afinación en `--afinacion`, en español y en inglés: `--afinacion justa`,
+    /// `--tuning just`. `partes-iguales` vale para cualquier número de partes.
+    static let nombresDeLasAfinaciones: [(clave: String, espanol: String, ingles: String)] = [
+        ("temperada", "temperada", "tempered"), ("justa", "justa", "just"), ("microtonal", "microtonal", "microtonal"),
+        ("partes-iguales", "partes-iguales", "equal-divisions"),
+    ]
+
+    /// La clave (`CaracterDeLaAfinacion.clave`) de `--afinacion justa`, en español o en inglés; lanza
+    /// `afinacionDesconocida` si no es ninguna.
+    static func claveDeAfinacion(leyendo texto: String) throws -> String {
+        let clave = claveDeBusqueda(texto)
+        guard
+            let encontrada = nombresDeLasAfinaciones.first(where: {
+                claveDeBusqueda($0.espanol) == clave || claveDeBusqueda($0.ingles) == clave
+            })
+        else { throw ErrorDeUso.afinacionDesconocida(texto) }
+        return encontrada.clave
+    }
+
     /// La escuela de `--escuela carnatica`, por su clave, en español o en inglés, o por su nombre en español o en el
     /// idioma de la notación; lanza `escuelaDesconocida` si no es ninguna.
     static func escuela(leyendo texto: String, _ notacion: Notacion) throws -> Escuela {
@@ -362,6 +381,8 @@ extension LineaDeComandos {
         var sinIntervalo: Int?
         var conPaso: Int?
         var regulares = false
+        /// La clave de `--afinacion`: solo las de una afinación de ese carácter.
+        var afinacion: String?
         /// `true` con `--fragmentos` (solo ellos), `false` con `--sin-fragmentos`; `nil`, todas.
         var fragmentos: Bool?
         /// El texto suelto, como clave de búsqueda; vacío si no hay.
@@ -375,6 +396,7 @@ extension LineaDeComandos {
             guard !sinSemitonos || estadisticas(tipo).anhemitonica else { return false }
             guard !regulares || estadisticas(tipo).maximamenteRegular else { return false }
             guard fragmentos == nil || tipo.esFragmento == fragmentos else { return false }
+            guard afinacion == nil || tipo.caracterDeLaAfinacion?.clave == afinacion else { return false }
             if !lugares.isEmpty {
                 let suyos = Set((tipo.lugaresDeOrigen + tipo.lugaresDeUso).flatMap(\.conLosQueLoContienen))
                 guard lugares.contains(where: suyos.contains) else { return false }
@@ -514,6 +536,8 @@ extension LineaDeComandos {
         // escuela.
         if let texto = try entrada.valor(.epoca) { filtro.epocas = try epocas(leyendo: texto, notacion) }
         if let texto = try entrada.valor(.escuela) { filtro.escuela = try escuela(leyendo: texto, notacion) }
+        // `--afinacion microtonal`, `--tuning just`: por el carácter de su afinación.
+        if let texto = try entrada.valor(.afinacion) { filtro.afinacion = try claveDeAfinacion(leyendo: texto) }
         if let texto = try entrada.valor(.agrupar) {
             let clave = claveDeBusqueda(texto)
             guard

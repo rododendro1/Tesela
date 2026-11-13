@@ -4,6 +4,10 @@
 
 ### Lo nuevo
 
+- `PresentacionDeEstudioDeEscala.afinacion(de:en:)` y `EscalaPresentada.afinacion`: el carácter de la afinación
+  escrito («microtonal», «octava en 5 partes iguales»), con su fila «Afinación» en lo que se mide. En la consola,
+  `armonia escala` lo dice, y `escalas --afinacion microtonal` (o `temperada`, `justa`, `partes-iguales`; `--tuning`
+  en inglés) filtra, con `afinacion` y `partesIguales` en el JSON del catálogo.
 - `EscalaPresentada.ambito` («4ª justa») y la fila «Fragmento» en lo que se mide de una escala, en la hoja de
   estudio y en la app, si es un fragmento de menos de una octava. En la consola, `armonia escala` lo dice, su JSON
   lleva `ambito`, y `escalas --fragmentos` / `--sin-fragmentos` los dejan o los quitan (con `ambito` en semitonos en el

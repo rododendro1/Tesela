@@ -79,6 +79,16 @@ extension LineaDeComandosTests {
         #expect(escalas.allSatisfy { ($0["ambito"] as? Int).map { $0 < 12 } ?? false })
     }
 
+    /// El carácter de la afinación: escrito en `escala`, por su clave (y sus partes iguales) en el catálogo.
+    @Test func laAfinacionEnJSON() throws {
+        let bayati = try #require(try json("escala Re Bayātī") as? [String: Any])
+        #expect(bayati["afinacion"] as? String == "microtonal")
+        let grupos = try #require(try json("escalas --afinacion partes-iguales") as? [[String: Any]])
+        let escalas = grupos.flatMap { ($0["escalas"] as? [[String: Any]]) ?? [] }
+        let slendro = escalas.first { $0["nombre"] as? String == "Sléndro" }
+        #expect(slendro?["afinacion"] as? String == "partes-iguales" && slendro?["partesIguales"] as? Int == 5)
+    }
+
     /// Una escala de otra tradición lleva sus referencias, con su clave, su cita y la referencia completa.
     @Test func referenciasEnJSON() throws {
         let bayati = try #require(try json("escala Re bayati") as? [String: Any])

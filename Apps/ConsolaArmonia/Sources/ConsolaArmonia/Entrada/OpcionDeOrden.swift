@@ -52,6 +52,8 @@ extension OpcionDeOrden {
     static let epoca = valor("--epoca", "--era")
     /// `escalas --escuela carnatica`: las de una escuela de otra tradición.
     static let escuela = valor("--escuela", "--school")
+    /// `escalas --afinacion microtonal`: por el carácter de su afinación (`CaracterDeLaAfinacion`).
+    static let afinacion = valor("--afinacion", "--tuning")
     static let subindices = marca("--subindices", "--subscripts")
     static let cifras = marca("--cifras", "--digits")
     static let json = marca("--json")

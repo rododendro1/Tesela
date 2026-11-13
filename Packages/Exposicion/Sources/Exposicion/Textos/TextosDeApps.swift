@@ -248,6 +248,12 @@ public struct TextosDeApps: TextosTraducidos {
     public let escuelas: String
     /// La fila de un fragmento de menos de una octava, con lo que abarca: «Fragmento: 4ª justa».
     public let fragmento: String
+    /// La fila de la afinación de una escala (`CaracterDeLaAfinacion`): «Afinación: microtonal».
+    public let afinacion: String
+    public let afinacionTemperada: String
+    public let afinacionJusta: String
+    public let afinacionMicrotonal: String
+    public let afinacionEnPartesIguales: @Sendable (Int) -> String
     public let porTerceras: String
     public let consonanciaDiadica: String
     public let grupoDeHindemith: String

@@ -230,6 +230,7 @@ struct TextosDeConsola: TextosTraducidos {
     let agrupacionDesconocida: Plantilla  // {1} agrupacion
     let epocaDesconocida: Plantilla  // {1} epoca
     let escuelaDesconocida: Plantilla  // {1} escuela
+    let afinacionDesconocida: Plantilla  // {1} afinación
     let ordenDeEscalasDesconocido: Plantilla  // {1} orden
     let ordenDeAcordesDesconocido: Plantilla  // {1} orden
     let intervaloDeEscalasDesconocido: Plantilla  // {1} intervalo

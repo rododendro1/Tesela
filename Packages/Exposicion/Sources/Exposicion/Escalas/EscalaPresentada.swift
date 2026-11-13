@@ -26,6 +26,8 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
     public let origen: OrigenDeEscalaPresentado?
     /// Si es un fragmento de menos de una octava (`TipoDeEscala.esFragmento`), lo que abarca: «4ª justa».
     public let ambito: String?
+    /// El carácter de su afinación, si tiene una propia: «microtonal», «justa», «octava en 5 partes iguales».
+    public let afinacion: String?
 
     /// Los datos de la escala, escritos en la notación.
     public init(_ escala: Escala, en notacion: Notacion) {
@@ -42,5 +44,6 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
         }
         origen = OrigenDeEscalaPresentado(escala.tipo, en: notacion)
         ambito = escala.tipo.ambito?.nombre(en: notacion)
+        afinacion = PresentacionDeEstudioDeEscala.afinacion(de: escala.tipo, en: notacion)
     }
 }

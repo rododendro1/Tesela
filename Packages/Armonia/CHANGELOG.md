@@ -22,6 +22,11 @@
 
 ### Lo nuevo
 
+- `CaracterDeLaAfinacion` y `TipoDeEscala.caracterDeLaAfinacion` / `esMicrotonal`: si la afinación propia de una
+  escala es temperada, justa (los śruti, Zarlino, las chinas), microtonal (los cuartos de tono, el koron, los moria,
+  las 53 comas turcas, el blues, el enarmónico griego) o una octava en otras partes iguales (el sléndro en 5, el
+  timbila en 7, el pélog en 9). Sale de su sistema y de cuánto se aparta cada grado (`umbralMicrotonal`, 30 cents);
+  antes, «microtonal» era solo tener afinación.
 - `TipoDeEscala.esFragmento` y `ambito`: los fragmentos de menos de una octava (los tetracordos, los ajnas, los
   çeşni, los hexacordos, también el occidental de Guido, que ahora tiene `clase == .fragmento`) y lo que abarcan
   (`tetracordoDiatonico.ambito == .cuartaJusta`). Un fragmento no tiene modos: `modosRelativos` y `modosParalelos`

@@ -77,4 +77,16 @@ import Testing
             !PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do), en: notacion).map(\.nombre).contains(
                 "Fragmento"))
     }
+
+    /// La afinación, escrita: microtonal, justa, en partes iguales; nada en las que no tienen una propia.
+    @Test func laAfinacionEscrita() {
+        #expect(PresentacionDeEstudioDeEscala.afinacion(de: .bayati, en: notacion) == "microtonal")
+        #expect(PresentacionDeEstudioDeEscala.afinacion(de: .kalyan, en: notacion) == "justa")
+        #expect(PresentacionDeEstudioDeEscala.afinacion(de: .slendro, en: notacion) == "octava en 5 partes iguales")
+        #expect(PresentacionDeEstudioDeEscala.afinacion(de: .mayor, en: notacion) == nil)
+        #expect(
+            PresentacionDeEstudioDeEscala.afinacion(de: .slendro, en: .compacta(.ingles)) == "octave in 5 equal parts")
+        let datos = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.re, .bayati), en: notacion)
+        #expect(datos.contains(DatoPresentado(nombre: "Afinación", valor: "microtonal")))
+    }
 }

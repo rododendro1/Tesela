@@ -311,6 +311,8 @@ extension LineaDeComandos {
         if let modo = datos.modo { lineas.append("  " + modo) }
         // Un fragmento, con lo que abarca: «Fragmento: 4ª justa».
         if let ambito = datos.ambito { lineas.append("  " + notacion.texto(\.fragmento) + ": " + ambito) }
+        // Su afinación, si tiene una propia: «Afinación: microtonal».
+        if let afinacion = datos.afinacion { lineas.append("  " + notacion.texto(\.afinacion) + ": " + afinacion) }
         // El número del mēḷa, su cakra, su mnemónico y su solfa: «mēḷa 15, cakra 3 (Agni), Agni-go: sa ra gu ma pa
         // dha nu».
         let tipo = escala.tipo
