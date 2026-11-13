@@ -282,7 +282,7 @@ extension Escala {
             let alturas = self.alturas(octava: octava, sentido: sentido)
             // Los desvíos y las notas van grado a grado desde la tónica; la de arriba se aparta como la de abajo
             // (en Sīkāh, las dos son Mi𝄳).
-            var desvios = tipo.microtonal?.desvios(sentido: sentido) ?? []
+            var desvios = tipo.afinacionPropia?.desvios(sentido: sentido) ?? []
             desvios += [desvios.first ?? 0]
             var notas = (notasMicrotonales(sentido: sentido) ?? []).map { Optional($0) }
             notas += [notas.first ?? nil]

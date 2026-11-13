@@ -34,10 +34,10 @@ import Testing
     /// Otra de sus afinaciones: los echoi de Chrysanthos, con la tónica 12 cents sobre la temperada.
     @Test func otraAfinacionDeLaMismaEscala() throws {
         let chrysanthos = TipoDeEscala.echosProtos.afinaciones[1]
-        let protos = try #require(Escala(.re, .echosProtos).afinacion(microtonal: chrysanthos))
-        #expect(protos.microtonal.fuente == .chrysanthos)
+        let protos = try #require(Escala(.re, .echosProtos).afinacion(propia: chrysanthos))
+        #expect(protos.afinacionPropia.fuente == .chrysanthos)
         #expect(redondear(["Re4", "Mi4", "Fa4", "Do5"].map { protos.desviacion(de: $0) }) == [12, -29, -6, 0])
-        #expect(Escala(.re, .echosProtos).afinacion(microtonal: TipoDeEscala.bayati.microtonal) == nil)
+        #expect(Escala(.re, .echosProtos).afinacion(propia: TipoDeEscala.bayati.afinacionPropia) == nil)
     }
 
     /// Los cents de cada grado en un temperamento histórico dependen de la tónica.

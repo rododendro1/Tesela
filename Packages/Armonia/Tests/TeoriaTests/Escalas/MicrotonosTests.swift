@@ -6,7 +6,7 @@ import Testing
 @Suite struct MicrotonosTests {
     private func nombres(
         _ escala: Escala, _ sentido: SentidoDelIntervalo = .ascendente, en notacion: Notacion = .compacta(.espanol),
-        afinacion: TipoDeEscalaMicrotonal? = nil
+        afinacion: AfinacionPropia? = nil
     ) -> String? {
         escala.notasMicrotonales(sentido: sentido, afinacion: afinacion)?.map { $0.nombre(en: notacion) }
             .joined(separator: " ")
@@ -14,26 +14,26 @@ import Testing
 
     /// Cada versión microtonal tiene un paso por grado y ningún grado se aparta más de medio semitono.
     @Test func elCatalogoEsCoherente() {
-        for microtonal in TipoDeEscalaMicrotonal.catalogo {
+        for microtonal in AfinacionPropia.catalogo {
             #expect(microtonal.esCoherente, Comment(rawValue: microtonal.temperada.nombre))
             #expect(
                 microtonal.temperada.afinaciones.contains(microtonal), Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(TipoDeEscalaMicrotonal.catalogo.count == 210)
+        #expect(AfinacionPropia.catalogo.count == 210)
         // La primera de cada escala es la de su teoría de hoy, sin fuente.
-        #expect(TipoDeEscala.catalogo.allSatisfy { $0.microtonal?.fuente == nil })
+        #expect(TipoDeEscala.catalogo.allSatisfy { $0.afinacionPropia?.fuente == nil })
     }
 
     /// Se busca por el nombre: el frigio tiene los intervalos de Bayātī, pero no sus microtonos.
     @Test func soloLasTradicionalesTienenMicrotonos() {
         #expect(TipoDeEscala.bayati == .frigio)
-        #expect(TipoDeEscala.bayati.microtonal != nil)
-        #expect(TipoDeEscala.frigio.microtonal == nil)
-        #expect(TipoDeEscala.ajam.microtonal == nil)
+        #expect(TipoDeEscala.bayati.afinacionPropia != nil)
+        #expect(TipoDeEscala.frigio.afinacionPropia == nil)
+        #expect(TipoDeEscala.ajam.afinacionPropia == nil)
         #expect(Escala(.do, .mayor).notasMicrotonales() == nil)
         let propia = TipoDeEscala(nombre: "Bayātī", intervalos: [.unisono, .quintaJusta])
-        #expect(propia.microtonal == nil)
+        #expect(propia.afinacionPropia == nil)
     }
 
     /// Los echoi diatónicos tienen dos afinaciones: la de la Comisión Patriarcal y la de Chrysanthos.
@@ -41,28 +41,28 @@ import Testing
         let afinaciones = TipoDeEscala.echosProtos.afinaciones
         #expect(afinaciones.map(\.sistema) == [.moria72, .razones])
         #expect(afinaciones.map(\.fuente) == [nil, .chrysanthos])
-        #expect(TipoDeEscala.echosProtos.microtonal == afinaciones.first)
+        #expect(TipoDeEscala.echosProtos.afinacionPropia == afinaciones.first)
         #expect(afinaciones[1].desvios == [12, -29, -6, 6, 18, -24, 0])
         #expect(TipoDeEscala.echosDefteros.afinaciones.count == 1)
         #expect(TipoDeEscala.mayor.afinaciones.isEmpty)
         let chrysanthos = try #require(nombres(Escala(.re, .echosProtos), afinacion: afinaciones[1]))
         #expect(chrysanthos == "Re(+12¢) Mi(−29¢) Fa(−6¢) Sol(+6¢) La(+18¢) Si(−24¢) Do")
         // Una afinación de otra escala no vale.
-        #expect(Escala(.re, .echosProtos).notasMicrotonales(afinacion: TipoDeEscala.bayati.microtonal) == nil)
+        #expect(Escala(.re, .echosProtos).notasMicrotonales(afinacion: TipoDeEscala.bayati.afinacionPropia) == nil)
     }
 
     /// La escala de blues, la única occidental: la tercera neutra y la séptima armónica.
     @Test func lasBlueNotes() throws {
-        let blues = try #require(TipoDeEscala.blues.microtonal)
-        #expect(TipoDeEscalaMicrotonal.occidentales == [blues])
+        let blues = try #require(TipoDeEscala.blues.afinacionPropia)
+        #expect(AfinacionPropia.occidentales == [blues])
         #expect(blues.desvios == [0, 50, -2, 0, 2, -31])
         let texto = try #require(nombres(Escala(.do, .blues)))
         #expect(texto == "Do Mi♭(+50¢) Fa(−2¢) Fa♯ Sol(+2¢) Si♭(−31¢)")
-        #expect(TipoDeEscala.bluesMayor.microtonal == nil)
+        #expect(TipoDeEscala.bluesMayor.afinacionPropia == nil)
     }
 
     @Test func maqamatEnCuartosDeTono() {
-        let bayati = TipoDeEscala.bayati.microtonal
+        let bayati = TipoDeEscala.bayati.afinacionPropia
         #expect(bayati?.cents == [0, 150, 300, 500, 700, 800, 1000])
         #expect(bayati?.desvios == [0, 50, 0, 0, 0, 0, 0])
         #expect(nombres(Escala(.re, .bayati)) == "Re Mi𝄳 Fa Sol La Si♭ Do")
@@ -71,7 +71,7 @@ import Testing
         // Rāst sube con Si𝄳 y baja con Si♭.
         #expect(nombres(Escala(.do, .maqamRast)) == "Do Re Mi𝄳 Fa Sol La Si𝄳")
         #expect(nombres(Escala(.do, .maqamRast), .descendente) == "Do Re Mi𝄳 Fa Sol La Si♭")
-        #expect(TipoDeEscala.maqamRast.microtonal?.desvios(sentido: .descendente).last == 0)
+        #expect(TipoDeEscala.maqamRast.afinacionPropia?.desvios(sentido: .descendente).last == 0)
         // En otra tónica, el medio signo se suma a la alteración: Sol Rāst tiene Si𝄳 y Fa𝄲 (medio sostenido).
         #expect(nombres(Escala(.sol, .maqamRast)) == "Sol La Si𝄳 Do Re Mi Fa𝄲")
         #expect(nombres(Escala(.fa, .bayati)) == "Fa Sol𝄳 La♭ Si♭ Do Re♭ Mi♭")
@@ -85,13 +85,13 @@ import Testing
         #expect(nombres(Escala(.si, .rahatAlArwah)) == "Si𝄳 Do Re Mi♭ Fa♯ Sol La")
         #expect(nombres(Escala(.re, .bayatiShuri)) == "Re Mi𝄳 Fa Sol La♭ Si Do")
         #expect(nombres(Escala(.fa, .jiharkah)) == "Fa Sol La Si♭ Do Re Mi𝄳")
-        #expect(TipoDeEscala.sikah.microtonal?.desvios().first == -50)
+        #expect(TipoDeEscala.sikah.afinacionPropia?.desvios().first == -50)
         #expect(Escala(.mi, .sikah).notasMicrotonales()?.first?.cents == -50)
         #expect(nombres(Escala(.si, .bayati)) == "Si Do𝄲 Re Mi Fa♯ Sol La")
     }
 
     @Test func dastgahConKoron() {
-        #expect(TipoDeEscala.sur.microtonal?.sistema == .persa)
+        #expect(TipoDeEscala.sur.afinacionPropia?.sistema == .persa)
         #expect(nombres(Escala(.re, .sur)) == "Re Mi𝄳 Fa Sol La Si♭ Do")
         #expect(nombres(Escala(.do, .cahargah)) == "Do Re𝄳 Mi Fa Sol La𝄳 Si")
         #expect(nombres(Escala(.sol, .homayun)) == "Sol La𝄳 Si Do Re Mi♭ Fa")
@@ -103,11 +103,11 @@ import Testing
         #expect(nombres(Escala(.re, .dashti)) == nombres(Escala(.re, .sur)))
         #expect(nombres(Escala(.re, .abuAta)) == "Re Mi𝄳 Fa Sol La𝄳 Si♭ Do")
         #expect(nombres(Escala(.sol, .bayateEsfahan)) == "Sol La Si♭ Do Re Mi𝄳 Fa♯")
-        #expect(TipoDeEscala.segah.microtonal?.sistema == .persa)
+        #expect(TipoDeEscala.segah.afinacionPropia?.sistema == .persa)
     }
 
     @Test func makamlarEnComas() {
-        let rast = TipoDeEscala.rastMakami.microtonal
+        let rast = TipoDeEscala.rastMakami.afinacionPropia
         #expect(rast?.sistema == .comas53)
         #expect(rast?.pasos == [0, 9, 17, 22, 31, 40, 48])
         #expect(nombres(Escala(.sol, .rastMakami)) == "Sol La Si⁻¹ Do Re Mi Fa♯⁻¹")
@@ -129,8 +129,8 @@ import Testing
         #expect(nombres(Escala(.sol, .neveserMakami)) == "Sol La Si♭ Do♯⁻¹ Re Mi♭⁺¹ Fa♯⁻¹")
         // Solo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, Mâhur y Acemaşiran) no tienen versión
         // microtonal.
-        #expect(TipoDeEscala.makamlar.filter { $0.microtonal == nil }.count == 6)
-        #expect(TipoDeEscala.ussakMakami.microtonal?.cents[1] == 8.0 * 1200 / 53)
+        #expect(TipoDeEscala.makamlar.filter { $0.afinacionPropia == nil }.count == 6)
+        #expect(TipoDeEscala.ussakMakami.afinacionPropia?.cents[1] == 8.0 * 1200 / 53)
         #expect(nombres(Escala(.sol, .kurdilihicazkarMakami)) == "Sol La♭ Si♭ Do Re Mi♭ Fa")
         #expect(nombres(Escala(.re, .ferahfezaMakami)) == "Re Mi Fa Sol La Si♭ Do")
         // Los çeşni de Rast, Uşşak y Hicaz, en comas; los ajnas con cuartos de tono, en cuartos de tono.
@@ -138,7 +138,7 @@ import Testing
         #expect(nombres(Escala(.la, .ussakBeslisi)) == "La Si⁻¹ Do Re Mi")
         #expect(nombres(Escala(.re, .jinsBayati)) == "Re Mi𝄳 Fa Sol")
         #expect(nombres(Escala(.mi, .jinsSikah)) == "Mi𝄳 Fa Sol")
-        #expect(TipoDeEscala.jinsHijaz.microtonal == nil && TipoDeEscala.kurdiDortlusu.microtonal == nil)
+        #expect(TipoDeEscala.jinsHijaz.afinacionPropia == nil && TipoDeEscala.kurdiDortlusu.afinacionPropia == nil)
         // Dromoi, con la afinación de su maqam o su makam.
         #expect(nombres(Escala(.re, .ousak)) == "Re Mi𝄳 Fa Sol La Si♭ Do")
         #expect(nombres(Escala(.re, .sabah)) == "Re Mi𝄳 Fa Sol♭ La Si♭ Do")
@@ -150,8 +150,8 @@ import Testing
         #expect(nombres(Escala(.re, .houzam)) == "Re Mi♯⁻¹ Fa♯⁻¹ Sol La Si Do♯")
         #expect(nombres(Escala(.re, .kiourdi), .descendente) == "Re Mi⁻¹ Fa Sol La Si♭ Do")
         // Todos los dromoi tienen versión microtonal; los maqamat sin cuartos de tono, no.
-        #expect(TipoDeEscala.dromoi.allSatisfy { $0.microtonal != nil })
-        #expect(TipoDeEscala.hiyaz.microtonal == nil)
+        #expect(TipoDeEscala.dromoi.allSatisfy { $0.afinacionPropia != nil })
+        #expect(TipoDeEscala.hiyaz.afinacionPropia == nil)
         // Una coma son 1200/53 cents.
         let si = Escala(.sol, .rastMakami).notasMicrotonales()?[2]
         #expect(abs((si?.cents ?? 0) - 17.0 * 1200 / 53) < 1e-9)
@@ -160,16 +160,16 @@ import Testing
     /// El gamelan, en nueve y cinco partes iguales; los xilófonos africanos y los conjuntos de Tailandia y Camboya, en
     /// cinco o siete.
     @Test func afinacionesEquidistantes() {
-        #expect(TipoDeEscala.pelog.microtonal?.sistema == .razones)
-        #expect(TipoDeEscala.pelogNem.microtonal?.pasos == [0, 133, 533, 667, 800])
-        #expect(TipoDeEscala.indonesias.filter { $0.microtonal == nil } == [.degung])
-        #expect(TipoDeEscala.pathets.allSatisfy { $0.microtonal != nil })
-        #expect(TipoDeEscala.slendro.microtonal?.pasos == [0, 240, 480, 720, 960])
-        #expect(TipoDeEscala.amadinda.microtonal?.pasos == TipoDeEscala.slendro.microtonal?.pasos)
-        #expect(TipoDeEscala.timbila.microtonal?.pasos == [0, 171, 343, 514, 686, 857, 1029])
-        #expect(TipoDeEscala.piphat.microtonal?.pasos == TipoDeEscala.timbila.microtonal?.pasos)
-        #expect(TipoDeEscala.pinpeat.microtonal != nil)
-        #expect(TipoDeEscala.protusAuthenticus.microtonal == nil)
+        #expect(TipoDeEscala.pelog.afinacionPropia?.sistema == .razones)
+        #expect(TipoDeEscala.pelogNem.afinacionPropia?.pasos == [0, 133, 533, 667, 800])
+        #expect(TipoDeEscala.indonesias.filter { $0.afinacionPropia == nil } == [.degung])
+        #expect(TipoDeEscala.pathets.allSatisfy { $0.afinacionPropia != nil })
+        #expect(TipoDeEscala.slendro.afinacionPropia?.pasos == [0, 240, 480, 720, 960])
+        #expect(TipoDeEscala.amadinda.afinacionPropia?.pasos == TipoDeEscala.slendro.afinacionPropia?.pasos)
+        #expect(TipoDeEscala.timbila.afinacionPropia?.pasos == [0, 171, 343, 514, 686, 857, 1029])
+        #expect(TipoDeEscala.piphat.afinacionPropia?.pasos == TipoDeEscala.timbila.afinacionPropia?.pasos)
+        #expect(TipoDeEscala.pinpeat.afinacionPropia != nil)
+        #expect(TipoDeEscala.protusAuthenticus.afinacionPropia == nil)
     }
 
     /// Las harmoniai enarmónicas y las de Arístides, en cuartos de tono; los géneros de Dídimo y Eratóstenes, en cents.
@@ -177,14 +177,14 @@ import Testing
         #expect(nombres(Escala(.mi, .harmoniaDoriaEnarmonica)) == "Mi Fa𝄳 Fa La Si Do𝄳 Do")
         #expect(nombres(Escala(.do, .harmoniaFrigiaEnarmonica)) == "Do𝄳 Mi𝄳 Mi Fa𝄳 La𝄳 Si𝄳 Si")
         #expect(nombres(Escala(.mi, .harmoniaLidiaDeAristides)) == "Mi Fa𝄳 La𝄳 Si𝄳 Do♭ Do𝄳 Re♯𝄲")
-        #expect(TipoDeEscala.harmoniaiDeAristides.allSatisfy { $0.microtonal?.sistema == .cuartosDeTono })
-        #expect(TipoDeEscala.harmoniaiCromaticas.allSatisfy { $0.microtonal == nil })
-        #expect(TipoDeEscala.tetracordoEnarmonicoDeArquitas.microtonal?.pasos == [0, 63, 112, 498])
+        #expect(TipoDeEscala.harmoniaiDeAristides.allSatisfy { $0.afinacionPropia?.sistema == .cuartosDeTono })
+        #expect(TipoDeEscala.harmoniaiCromaticas.allSatisfy { $0.afinacionPropia == nil })
+        #expect(TipoDeEscala.tetracordoEnarmonicoDeArquitas.afinacionPropia?.pasos == [0, 63, 112, 498])
         #expect(Escala(.mi, .tetracordoEnarmonicoDeArquitas).notas.map(\.description) == ["Mi", "Mi♯", "Fa", "La"])
     }
 
     @Test func echoiEnMoria() {
-        let protos = TipoDeEscala.echosProtos.microtonal
+        let protos = TipoDeEscala.echosProtos.afinacionPropia
         #expect(protos?.sistema == .moria72)
         #expect(protos?.desvios.map { ($0 * 100).rounded() / 100 } == [0, -33.33, 0, 0, 0, -33.33, 0])
         #expect(nombres(Escala(.re, .echosProtos)) == "Re Mi⁻² Fa Sol La Si⁻² Do")
@@ -199,8 +199,8 @@ import Testing
         #expect(nombres(Escala(.do, .echosPlagiosTetartos)) == "Do Re Mi⁻² Fa Sol La Si⁻²")
         #expect(nombres(Escala(.re, .echosProtos), en: .ascii(.ingles)) == "D E(-2) F G A B(-2) C")
         // El tercero, enarmónico, ya es la escala mayor.
-        #expect(TipoDeEscala.echosTritos == .mayor && TipoDeEscala.echosTritos.microtonal == nil)
-        #expect(TipoDeEscala.echoi.filter { $0.microtonal == nil } == [.echosTritos])
+        #expect(TipoDeEscala.echosTritos == .mayor && TipoDeEscala.echosTritos.afinacionPropia == nil)
+        #expect(TipoDeEscala.echoi.filter { $0.afinacionPropia == nil } == [.echosTritos])
         #expect(TipoDeEscala.echosProtos.tradicion == .bizancio && TipoDeEscala.echosProtos.categoria == .echos)
         #expect(SistemaMicrotonal.moria72.cents(de: 12) == 200)
     }
@@ -213,7 +213,7 @@ import Testing
         #expect(abs(SistemaMicrotonal.sruti.cents(de: 7) - 386.31) < 0.01)
         #expect(abs(SistemaMicrotonal.sruti.cents(de: 22 + 13) - 1901.96) < 0.01)
         #expect(abs(SistemaMicrotonal.sruti.cents(de: -9) - (-498.04)) < 0.01)
-        let bilaval = TipoDeEscala.bilaval.microtonal
+        let bilaval = TipoDeEscala.bilaval.afinacionPropia
         #expect(bilaval?.sistema == .sruti)
         #expect(nombres(Escala(.do, .bilaval)) == "Do Re↓ Mi↓ Fa Sol La↓ Si↓")
         #expect(nombres(Escala(.do, .kafi)) == "Do Re↓ Mi♭ Fa Sol La↓ Si♭")
@@ -228,8 +228,8 @@ import Testing
         #expect(abs((mi?.cents ?? 0) - 386.31) < 0.01)
         #expect(abs((bilaval?.desvios[2] ?? 0) - (-13.69)) < 0.01)
         // Todos los thāṭ tienen versión microtonal; los mēḷa carnáticos, no.
-        #expect(TipoDeEscala.thaats.allSatisfy { $0.microtonal?.sistema == .sruti })
-        #expect(TipoDeEscala.melakarta(29)?.microtonal == nil)
+        #expect(TipoDeEscala.thaats.allSatisfy { $0.afinacionPropia?.sistema == .sruti })
+        #expect(TipoDeEscala.melakarta(29)?.afinacionPropia == nil)
     }
 
     @Test func lasDoblesConDobles() {
@@ -250,13 +250,13 @@ import Testing
         #expect(nombres(Escala(.la, .uzzalMakami)) == "La Si♭⁺¹ Do♯⁻¹ Re Mi Fa♯⁻¹ Sol")
         #expect(nombres(Escala(.la, .zirguleliHicazMakami)) == "La Si♭⁺¹ Do♯⁻¹ Re Mi Fa⁺¹ Sol♯⁻¹")
         // Uzzâl sube con las perdes de Hicaz.
-        #expect(TipoDeEscala.uzzalMakami.microtonal?.pasos == TipoDeEscala.hicazMakami.microtonal?.pasos)
-        #expect(TipoDeEscala.mahurMakami.microtonal == nil && TipoDeEscala.acemasiranMakami.microtonal == nil)
+        #expect(TipoDeEscala.uzzalMakami.afinacionPropia?.pasos == TipoDeEscala.hicazMakami.afinacionPropia?.pasos)
+        #expect(TipoDeEscala.mahurMakami.afinacionPropia == nil && TipoDeEscala.acemasiranMakami.afinacionPropia == nil)
     }
 
     /// El tetracordo enarmónico griego: dos cuartos de tono y un dítono.
     @Test func tetracordoEnarmonicoEnCuartosDeTono() {
-        let enarmonico = TipoDeEscala.tetracordoEnarmonico.microtonal
+        let enarmonico = TipoDeEscala.tetracordoEnarmonico.afinacionPropia
         #expect(enarmonico?.sistema == .cuartosDeTono)
         #expect(enarmonico?.cents == [0, 50, 100, 500])
         #expect(Escala(.mi, .tetracordoEnarmonico).notas.map(\.description).joined(separator: " ") == "Mi Fa♭ Fa La")
@@ -267,21 +267,21 @@ import Testing
     @Test func gramaYMurchanaDelNatyasastra() {
         // El ṣaḍja-grāma tiene las razones de Kāfī; Uttaramandrā, su primera mūrchanā, empieza en Sa.
         #expect(TipoDeEscala.sadjaGrama == .dorico)
-        #expect(TipoDeEscala.sadjaGrama.microtonal?.pasos == TipoDeEscala.kafi.microtonal?.pasos)
+        #expect(TipoDeEscala.sadjaGrama.afinacionPropia?.pasos == TipoDeEscala.kafi.afinacionPropia?.pasos)
         #expect(nombres(Escala(.re, .uttaramandra)) == "Re Mi↓ Fa Sol La Si↓ Do")
         // Rajanī, desde Ni, es la mayor justa: Sa Re(9/8) Ga(5/4) ma Pa Dha(27/16) Ni(15/8).
         #expect(TipoDeEscala.rajani == .mayor)
-        #expect(TipoDeEscala.rajani.microtonal?.pasos == [0, 4, 7, 9, 13, 17, 20])
+        #expect(TipoDeEscala.rajani.afinacionPropia?.pasos == [0, 4, 7, 9, 13, 17, 20])
         // Sauvīrī, la primera del madhyama-grāma, desde Ma: su Pa (40/27) queda a 10/9 de la tónica.
         #expect(TipoDeEscala.sauviri == .mixolidio)
-        #expect(TipoDeEscala.sauviri.microtonal?.pasos == [0, 3, 7, 9, 13, 16, 18])
-        #expect(TipoDeEscala.matsarikrta.microtonal?.pasos == [0, 4, 7, 9, 13, 16, 18])
+        #expect(TipoDeEscala.sauviri.afinacionPropia?.pasos == [0, 3, 7, 9, 13, 16, 18])
+        #expect(TipoDeEscala.matsarikrta.afinacionPropia?.pasos == [0, 4, 7, 9, 13, 16, 18])
         // El madhyama-grāma desde Sa tiene el Pa una coma baja (40/27), que no es uno de los 22 śruti: va en cents.
-        let madhyama = TipoDeEscala.madhyamaGrama.microtonal
+        let madhyama = TipoDeEscala.madhyamaGrama.afinacionPropia
         #expect(madhyama?.sistema == .razones)
         #expect(madhyama?.pasos == [0, 182, 294, 498, 680, 884, 996])
         #expect(nombres(Escala(.do, .madhyamaGrama)) == "Do Re(−18¢) Mi♭(−6¢) Fa(−2¢) Sol(−20¢) La(−16¢) Si♭(−4¢)")
-        #expect(TipoDeEscala.murchanas.allSatisfy { $0.microtonal != nil })
+        #expect(TipoDeEscala.murchanas.allSatisfy { $0.afinacionPropia != nil })
     }
 
     @Test func generosDeArquitasYPtolomeo() {
@@ -297,7 +297,7 @@ import Testing
         #expect(TipoDeEscala.tetracordoDiatonicoDitonico == .tetracordoDiatonico)
         #expect(TipoDeEscala.tetracordoCromaticoTenso.tradicion == .greciaAntigua)
         #expect(TipoDeEscala.tetracordoCromaticoTenso.categoria == .tetracordo)
-        #expect(TipoDeEscala.generosDeArquitasYPtolomeo.allSatisfy { $0.microtonal?.sistema == .razones })
+        #expect(TipoDeEscala.generosDeArquitasYPtolomeo.allSatisfy { $0.afinacionPropia?.sistema == .razones })
     }
 
     @Test func nombresEnOtrasNotaciones() {

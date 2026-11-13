@@ -1,29 +1,29 @@
 import Armonia
 
-// Los demás catálogos del motor (con los alias, y las variantes si las tienen, en los trece idiomas): los ritmos, los temperamentos, las notas con nombre y sus funciones, las escalas
-// microtonales, las referencias, los encordados, los teclados isomórficos y cuadrados, los modos gregorianos y los
-// instrumentos de la partitura.
+// Los demás catálogos del motor (con los alias, y las variantes si las tienen, en los trece idiomas): los ritmos, los
+// temperamentos, las notas con nombre y sus funciones, las escalas microtonales, las referencias, los encordados, los
+// teclados isomórficos y cuadrados, los modos gregorianos y los instrumentos de la partitura.
 
 let columnasDeRitmos: [String] =
     columnasDeNombres + columnasDeAliasYVariantes(conVariantes: false) + [
         "familia", "patron", "agrupacion", "unidad", "compas", "pulsos", "ataques", "fuertes", "intervalos",
         "vector_de_distancias", "euclideo", "profundo", "simetrias_por_rotacion", "uniformidad", "contratiempo",
-        "sincopa", "referencias",
-    ]
+        "sincopa",
+    ] + columnasDeLaFecha + ["referencias"]
 
 func filaDeRitmo(_ ritmo: RitmoConNombre) -> [String] {
     let medidas = ritmo.estadisticas
-    let nombres: [String] = [ritmo.nombre] + traducciones.map { ritmo.nombre(en: .delIdioma($0)) }
-    let otros: [String] = aliasYVariantes(ritmo.alias(en:))
+    let otros: [String] = aliasYVariantes(de: ritmo, conVariantes: false)
     let resto: [String] = [
         ritmo.familia.nombre, ritmo.patron,
         ritmo.agrupacion.map(String.init).joined(separator: "+"), String(ritmo.unidad), ritmo.compas.description,
         String(medidas.pulsos), String(medidas.ataques), String(medidas.fuertes), lista(medidas.intervalos),
         lista(medidas.vectorDeDistancias), siONo(medidas.euclideo), siONo(medidas.profundo),
         String(medidas.simetriasPorRotacion), numero(medidas.uniformidad), String(medidas.contratiempo),
-        numero(medidas.sincopa), citas(ritmo.referencias),
+        numero(medidas.sincopa),
     ]
-    return nombres + otros + resto
+    let alFinal: [String] = fecha(de: ritmo) + [citas(ritmo.referencias)]
+    return nombres(de: ritmo) + otros + resto + alFinal
 }
 
 let ritmos = Catalogo(
@@ -34,23 +34,23 @@ let razonesJustas = ["3_2", "5_4", "6_5", "7_4", "11_8"]
 
 let columnasAntesDeLosErrores: [String] =
     ["alias"] + columnasDeOtrosNombres(conVariantes: false) + [
-        "familia", "autor", "anio", "pasos_por_octava", "quinta", "uniforme", "paso_menor", "paso_mayor",
+        "familia", "autor", "pasos_por_octava", "quinta", "uniforme", "paso_menor", "paso_mayor",
     ]
 let columnasDeLosErrores: [String] = razonesJustas.map { "error_\($0)" }
-let columnasTrasLosErrores: [String] = [
-    "quinta_del_lobo", "tercera_mas_pura", "tercera_mas_lejana", "desviaciones_del_igual", "pasos",
-    "para_escuchar", "sistema_microtonal", "referencias",
-]
+let columnasTrasLosErrores: [String] =
+    [
+        "quinta_del_lobo", "tercera_mas_pura", "tercera_mas_lejana", "desviaciones_del_igual", "pasos",
+        "para_escuchar", "sistema_microtonal",
+    ] + columnasDeLaFecha + ["referencias"]
 let columnasDeTemperamentos: [String] =
     columnasDeNombres + columnasAntesDeLosErrores + columnasDeLosErrores + columnasTrasLosErrores
 
 func filaDeTemperamento(_ temperamento: TemperamentoConNombre) -> [String] {
     let medidas = temperamento.estadisticas
-    let nombres: [String] = [temperamento.nombre] + traducciones.map { temperamento.nombre(en: .delIdioma($0)) }
-    let otros: [String] = aliasYVariantes(temperamento.alias(en:))
+    let otros: [String] = aliasYVariantes(de: temperamento, conVariantes: false)
     let ficha: [String] = [
-        temperamento.familia.nombre, temperamento.autor ?? "",
-        temperamento.anio.map(String.init) ?? "", String(medidas.pasosPorOctava), numero(temperamento.quinta),
+        temperamento.familia.nombre, temperamento.autor ?? "", String(medidas.pasosPorOctava),
+        numero(temperamento.quinta),
         siONo(medidas.uniforme), numero(medidas.pasoMenor), numero(medidas.pasoMayor),
     ]
     let errores: [String] = medidas.aproximaciones.map { numero($0.error) }
@@ -59,9 +59,9 @@ func filaDeTemperamento(_ temperamento: TemperamentoConNombre) -> [String] {
         medidas.desviacionesDelIgual.map(lista) ?? "", lista(temperamento.pasos),
         siONo(TemperamentoQueAfina.paraEscuchar.contains { $0.temperamento == temperamento }),
         temperamento.sistemaMicrotonal?.rawValue ?? "",
-        citas(temperamento.referencias),
     ]
-    return nombres + otros + ficha + errores + resto
+    let alFinal: [String] = fecha(de: temperamento) + [citas(temperamento.referencias)]
+    return nombres(de: temperamento) + otros + ficha + errores + resto + alFinal
 }
 
 let temperamentos = Catalogo(
@@ -71,21 +71,19 @@ let temperamentos = Catalogo(
 
 let columnasDeNotas: [String] =
     columnasDeNombres + columnasDeAliasYVariantes() + [
-        "familia", "altura", "desvio", "frecuencia", "frecuencia_del_la4", "midi", "anio",
-        "referencias",
-    ]
+        "familia", "altura", "desvio", "frecuencia", "frecuencia_del_la4", "midi",
+    ] + columnasDeLaFecha + ["referencias"]
 
 /// Una nota con nombre: su altura, lo que se aparta de la temperada y su frecuencia.
 func filaDeNota(_ nota: NotaConNombre) -> [String] {
-    let nombres: [String] = [nota.nombre] + traducciones.map { nota.nombre(en: .delIdioma($0)) }
-    let anio: String = nota.anio.map { String($0) } ?? ""
-    let otros: [String] = aliasYVariantes(nota.alias(en:), nota.variantes(en:))
+    let otros: [String] = aliasYVariantes(de: nota)
     let resto: [String] = [
         nota.familia.nombre,
         nota.altura.description, numero(nota.desvio), numero(nota.frecuencia), numero(nota.frecuenciaDelLa4),
-        String(nota.midi), anio, citas(nota.referencias),
+        String(nota.midi),
     ]
-    return nombres + otros + resto
+    let alFinal: [String] = fecha(de: nota) + [citas(nota.referencias)]
+    return nombres(de: nota) + otros + resto + alFinal
 }
 
 let notas = Catalogo(
@@ -93,18 +91,19 @@ let notas = Catalogo(
     obras: NotaConNombre.catalogo.flatMap(\.referencias))
 
 let columnasDeFunciones: [String] =
-    columnasDeNombres + columnasDeAliasYVariantes() + ["familia", "intervalo", "cents", "desvio", "referencias"]
+    columnasDeNombres + columnasDeAliasYVariantes() + ["familia", "intervalo", "cents", "desvio"] + columnasDeLaFecha
+    + ["referencias"]
 
 /// Una función de nota: su familia y, si lo tiene, su intervalo desde la tónica.
 func filaDeFuncion(_ funcion: FuncionDeNota) -> [String] {
-    let nombres: [String] = [funcion.nombre] + traducciones.map { funcion.nombre(en: .delIdioma($0)) }
     let intervalo: String = funcion.intervalo?.description ?? ""
-    let otros: [String] = aliasYVariantes(funcion.alias(en:), funcion.variantes(en:))
+    let otros: [String] = aliasYVariantes(de: funcion)
     let resto: [String] = [
         funcion.familia.nombre, intervalo, numero(funcion.cents),
-        numero(funcion.desvio), citas(funcion.referencias),
+        numero(funcion.desvio),
     ]
-    return nombres + otros + resto
+    let alFinal: [String] = fecha(de: funcion) + [citas(funcion.referencias)]
+    return nombres(de: funcion) + otros + resto + alFinal
 }
 
 let funciones = Catalogo(
@@ -112,7 +111,7 @@ let funciones = Catalogo(
     obras: FuncionDeNota.catalogo.flatMap(\.referencias))
 
 /// Una escala microtonal: sus pasos, sus cents y lo que se apartan de la temperada.
-func filaDeEscala(_ escala: TipoDeEscalaMicrotonal) -> [String] {
+func filaDeEscala(_ escala: AfinacionPropia) -> [String] {
     let descendentes: String = escala.pasosDescendentes.map(lista) ?? ""
     let fuente: String = escala.fuente?.rawValue ?? ""
     return [
@@ -143,8 +142,8 @@ let escalasMicrotonales = Catalogo(
     columnas: [
         "escala", "sistema", "pasos", "pasos_descendentes", "cents", "desvios", "coherente", "fuente", "referencias",
     ],
-    filas: TipoDeEscalaMicrotonal.catalogo.map(filaDeEscala),
-    obras: TipoDeEscalaMicrotonal.catalogo.flatMap(\.referencias))
+    filas: AfinacionPropia.catalogo.map(filaDeEscala),
+    obras: AfinacionPropia.catalogo.flatMap(\.referencias))
 
 let referencias = Catalogo(
     fichero: "referencias.tsv",

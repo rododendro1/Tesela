@@ -284,29 +284,29 @@ struct TextosDeTeoria: TextosTraducidos {
     let tradicionBrasil: String
     let tradicionRenacimiento: String
 
-    // MARK: Estilo.swift y RegionDeEscala.swift
-    let subtradicionCarnatica: String
-    let subtradicionIndostanica: String
-    let subtradicionIndiaAntigua: String
-    let subtradicionJava: String
-    let subtradicionBali: String
-    let subtradicionSunda: String
-    let subtradicionTailandia: String
-    let subtradicionCamboya: String
-    let subtradicionBirmania: String
-    let subtradicionBuganda: String
-    let subtradicionChopi: String
-    let subtradicionMandinga: String
-    let subtradicionShona: String
-    let subtradicionUcrania: String
-    let subtradicionPolonia: String
-    let subtradicionHungria: String
-    let subtradicionAlpes: String
-    let subtradicionEscocia: String
-    let subtradicionGeorgia: String
-    let subtradicionIstria: String
-    let subtradicionAndalucia: String
-    let subtradicionRumania: String
+    // MARK: Escuela.swift y RegionDeEscala.swift
+    let escuelaCarnatica: String
+    let escuelaIndostanica: String
+    let escuelaIndiaAntigua: String
+    let regionJava: String
+    let regionBali: String
+    let regionSunda: String
+    let regionTailandia: String
+    let regionCamboya: String
+    let regionBirmania: String
+    let regionBuganda: String
+    let regionChopi: String
+    let regionMandinga: String
+    let regionShona: String
+    let regionUcrania: String
+    let regionPolonia: String
+    let regionHungria: String
+    let regionAlpes: String
+    let regionEscocia: String
+    let regionGeorgia: String
+    let regionIstria: String
+    let regionAndalucia: String
+    let regionRumania: String
 
     // MARK: Geografia.swift
     let continenteEuropa: String
@@ -374,8 +374,8 @@ struct TextosDeTeoria: TextosTraducidos {
     let zonaMagreb: String
     let puebloRomani: String
     let puebloAsquenazi: String
-    let subtradicionGagaku: String
-    let subtradicionRyukyu: String
+    let escuelaGagaku: String
+    let regionRyukyu: String
 
     // MARK: FuenteTeorica.swift
     let fuenteArquitas: String

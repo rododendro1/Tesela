@@ -264,7 +264,10 @@ extension LineaDeComandosTests {
         #expect(monte.first?["anio"] as? Int == 1755 && monte.first?["epoca"] as? String == "clasicismo")
         let ptolomeo = try #require(try json("escalas --fuente ptolomeo") as? [[String: Any]])
         let generos = try #require(ptolomeo.first?["escalas"] as? [[String: Any]])
-        #expect(generos.allSatisfy { $0["fuente"] as? String == "ptolomeo" && $0["microtonal"] as? Bool == true })
+        #expect(generos.allSatisfy { $0["fuente"] as? String == "ptolomeo" })
+        // «microtonal» es `esMicrotonal`: el enarmónico lo es; el diatónico tenso, en razones justas, no.
+        #expect(generos.contains { $0["microtonal"] as? Bool == true })
+        #expect(generos.contains { $0["microtonal"] as? Bool == false })
         // Las habituales son de la tradición occidental; con --orden brillo, de la más brillante a la más oscura.
         let habituales = try #require(try json("escalas --uso jazz --orden brillo") as? [[String: Any]])
         let deJazz = try #require(habituales.first?["escalas"] as? [[String: Any]])

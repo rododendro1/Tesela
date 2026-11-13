@@ -17,7 +17,7 @@ import Elementos
 //
 // `categoria` y `tradicion` (en `CategoriaTradicional.swift`) dicen de cada una si es un rāga, un mēḷa, un dromos,
 // un maqam, un makam, un mugam…: las dice la declaración de cada escala (`categoria: .raga`), y la tradición, si no
-// la da la categoría, una subtradición o la fuente, se escribe (`tradicion: .japon`). Cada lista de
+// la da la categoría, un estilo, una escuela, una región o la fuente, se escribe (`tradicion: .japon`). Cada lista de
 // `listasTradicionales` tiene solo escalas de su tradición. Sus nombres en cada idioma están en `Escalas/Nombres/`.
 //
 // Cada tradición tiene su fichero, `TipoDeEscala+Nombre.swift` (el nombre del caso de `Tradicion`, con mayúscula):

@@ -72,7 +72,7 @@ extension PresentacionDeEstudioDeEscala {
     /// temperadas en gris. Con `afinacion`, en otra de las de `escala.tipo.afinaciones`; con `colores`, cada grado
     /// con el color de sus cents. `nil` si la escala no tiene microtonos.
     public static func relojMicrotonal(
-        de escala: Escala, afinacion: TipoDeEscalaMicrotonal? = nil, colores: Bool = false, en notacion: Notacion
+        de escala: Escala, afinacion: AfinacionPropia? = nil, colores: Bool = false, en notacion: Notacion
     ) -> String? {
         guard let reloj = RelojDeAlturas(escala: escala, afinacion: afinacion, notacion: notacion) else { return nil }
         let titulo = escala.nombre(en: notacion) + " · " + notacion.texto(\.circuloMicrotonal)

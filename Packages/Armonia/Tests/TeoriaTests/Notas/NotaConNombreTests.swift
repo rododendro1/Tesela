@@ -25,7 +25,7 @@ import Testing
 
     /// Las frecuencias de los diapasones y de las notas de referencia.
     @Test func frecuencias() {
-        #expect(NotaConNombre.la440.frecuencia == 440 && NotaConNombre.la440.anio == 1939)
+        #expect(NotaConNombre.la440.frecuencia == 440 && NotaConNombre.la440.anioDeOrigen == 1939)
         #expect(NotaConNombre.la415.frecuencia == 415)
         #expect(abs(NotaConNombre.la4225.frecuencia - 422.5) < 1e-9)
         #expect(abs(NotaConNombre.do256.frecuencia - 256) < 1e-9)

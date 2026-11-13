@@ -37,7 +37,7 @@ public struct TipoDeEscala: Sendable, Codable {
 
     /// Nombre, alias y variantes en forma normalizada (`normalizar`: sin diacríticos ni mayúsculas, `#`/`b`), sin
     /// repetidos. Es lo que se compara al buscar por nombre.
-    public var aliasNormalizados: [String] {
+    package var aliasNormalizados: [String] {
         var vistos = Set<String>()
         return ([nombre] + alias + variantes).map(TipoDeEscala.normalizar).filter { vistos.insert($0).inserted }
     }
@@ -79,7 +79,7 @@ public struct TipoDeEscala: Sendable, Codable {
     /// Una escala de otra tradición, con su categoría y, si los tiene, sus estilos (si no los da la categoría), sus
     /// regiones, el teórico que la definió (`fuente`), la escala madre de la que sale (`padre`: el mēḷa de un
     /// janya, el thāṭ de un rāga indostánico…) y sus versiones microtonales. La tradición se escribe solo si no la
-    /// dan la categoría, las subtradiciones ni la fuente (`tradicion: .japon, categoria: .escala`).
+    /// dan la categoría, los estilos, las regiones ni la fuente (`tradicion: .japon, categoria: .escala`).
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
         variantes: [String] = [], tradicion: Tradicion? = nil, categoria: CategoriaTradicional,
@@ -464,6 +464,33 @@ extension TipoDeEscala {
             throw ErrorDeLecturaDeTeoria(texto: nombre, posicion: nil, motivo: .tipoDeEscalaNoReconocido(nombre))
         }
         self = tipo
+    }
+
+    /// La del catálogo con ese nombre, alias o variante en cualquier idioma, sin mirar mayúsculas, tildes ni guiones:
+    /// «dórico», «Dorian», «dorisch», «дорийский», «Kafi». Primero el español y el inglés, como `init(leyendo:)`, y
+    /// después los otros idiomas, en el orden de `Idioma.allCases`. `nil` si no es ninguna.
+    ///
+    ///     TipoDeEscala.buscar(nombre: "dorisch")   // .dorico
+    public static func buscar(nombre: String) -> TipoDeEscala? {
+        if let tipo = buscar(nombre: nombre, aceptarIngles: true) { return tipo }
+        let normalizado = normalizar(nombre)
+        for idioma in Idioma.allCases {
+            if let tipo = NombresDeEscalas.de(idioma).indice[normalizado] { return tipo }
+        }
+        return nil
+    }
+
+    /// Las del catálogo cuyo nombre, alias o variante contiene el texto en algún idioma (sin mirar mayúsculas ni
+    /// tildes), en el orden del catálogo; todas, si el texto está vacío.
+    ///
+    ///     TipoDeEscala.buscar(conteniendo: "bebop")   // las escalas bebop
+    public static func buscar(conteniendo texto: String) -> [TipoDeEscala] {
+        let buscado = normalizar(texto)
+        guard !buscado.isEmpty else { return catalogo }
+        let notaciones = Idioma.allCases.map { Notacion.compacta(.espanol).conTextos(en: $0) }
+        return catalogo.filter { tipo in
+            notaciones.contains { notacion in tipo.nombres(en: notacion).contains { normalizar($0).contains(buscado) } }
+        }
     }
 
     /// Como `init(leyendo:)`, devolviendo `nil`; con `aceptarIngles: false` solo acepta los nombres en español

@@ -4,6 +4,19 @@
 
 ### Cambios incompatibles
 
+- Fuera `Subtradicion` y `TipoDeEscala.subtradiciones`, que juntaban el estilo, la escuela y la región, que ya tienen
+  su tipo: se usan `estilos`, `escuelas` y `lugaresDeOrigen` (la región es un `Lugar`), o `regiones`.
+- `TipoDeEscalaMicrotonal` pasa a ser `AfinacionPropia`, y `TipoDeEscala.microtonal`, `afinacionPropia`: la afinación
+  de su tradición no siempre es microtonal (los śruti de Kalyāṇ y las afinaciones chinas son justas, y
+  `esMicrotonal` es `false`). `AfinacionDeEscala.microtonal` es `afinacionPropia`, y `Escala.afinacion(la4:…)` y
+  `AfinacionDeEscala.init` toman `propia:` en lugar de `microtonal:`.
+- `TemperamentoConNombre.anio` y `NotaConNombre.anio` pasan a ser `anioDeOrigen`, como en las escalas, los acordes
+  y las progresiones.
+- `ProgresionConNombre.init(nombre:cifrado:…)`, que no comprobaba el cifrado, ya no es público: una progresión propia
+  se crea con `init(nombre:leyendo:…)`, que lo lee y lanza el error si no se puede. Así, `acordes(en:)` nunca da una
+  lista vacía.
+- `TipoDeEscala.aliasNormalizados` ya no es público: `buscar(nombre:)` hace lo mismo.
+
 - `Estilo` es solo occidental. La música carnática, la indostánica, la del Nāṭyaśāstra y el gagaku pasan a ser una
   `Escuela`, con su tradición, su categoría (`Escuela.de(_:)`), sus escalas y su nombre en los trece idiomas:
   `TipoDeEscala.escuelas` las da (`.kafi.escuelas == [.indostanica]`), y `Subtradicion.escuela`, como subtradición.
@@ -21,6 +34,19 @@
   y el frigio dominante `[.flamenco, .jazz, .popRock]`. `TipoDeEscala.estiloPrincipal` da el primero.
 
 ### Lo nuevo
+
+- `ElementoConNombre`, lo que tienen en común los siete catálogos con nombre (`TipoDeEscala`, `AcordeConNombre`,
+  `ProgresionConNombre`, `RitmoConNombre`, `TemperamentoConNombre`, `NotaConNombre` y `FuncionDeNota`): el nombre, los
+  alias y las variantes en los trece idiomas, `nombres(en:)`, `buscar(nombre:)` y `buscar(conteniendo:)`, las
+  referencias, `documentada`, `anioDeOrigen` y `epocaDeOrigen`. Con él se escribe una sola función para todos.
+- `TipoDeEscala.buscar(nombre:)`, en los trece idiomas («dorisch», «дорийский»), y `buscar(conteniendo:)`, como en
+  los demás catálogos.
+- La fecha y la época de los ritmos, los temperamentos, las notas y las funciones con nombre: `documentada`,
+  `anioDeOrigen` y `epocaDeOrigen`. Werckmeister III es del Barroco (1691), el mesotónico de Aron, del Renacimiento
+  (1523), el La 440, del siglo XX (1939), y los modos rítmicos, de la Edad Media (Garlandia, hacia 1250). El charleston
+  es de 1923 y la bossa nova, de 1958. `RitmoConNombre.init` acepta `documentada` y `anio`.
+- Los TSV de `EjemploCatalogos` llevan `anio_de_origen` y `epoca_de_origen` en los acordes, las progresiones, los
+  ritmos, los temperamentos, las notas y las funciones (en los temperamentos y las notas, en lugar de `anio`).
 
 - `alias(en:)` y `variantes(en:)` en `TipoDeEscala`, `AcordeConNombre`, `ProgresionConNombre`, `RitmoConNombre`,
   `TemperamentoConNombre`, `NotaConNombre` y `FuncionDeNota`: los otros nombres y las otras grafías en el idioma de
@@ -171,11 +197,6 @@
   resto; «Spanish phrygian», con mayúscula.
 - «Prometeo napolitana», concertado con «escala», se lee como el Prometeo napolitano (y lo mismo en catalán,
   gallego, portugués, italiano y francés).
-
-### Obsoleto
-
-- `Subtradicion` y `TipoDeEscala.subtradiciones`: juntaban el estilo, la escuela y la región, que ya tienen su tipo.
-  Se usan `estilos`, `escuelas` y `lugaresDeOrigen` (la región es un `Lugar`). Se van en la 0.6.0.
 
 ### Rendimiento
 

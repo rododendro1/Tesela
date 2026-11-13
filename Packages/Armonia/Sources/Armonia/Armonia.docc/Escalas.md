@@ -300,12 +300,14 @@ try TipoDeEscala(leyendo: "dórica") == .dorico   // true
 ```
 
 `TipoDeEscala.alias` y `variantes` guardan solo las grafías correctas («dórico ♭2», «húngara»). Las simplificadas («dorico b2»,
-«hungara») no se repiten: salen de `aliasNormalizados` y de `normalizar` (minúsculas, sin diacríticos, ♯/♭ como
-#/b, sin ♮ ni ordinales), con lo que se encuentran igual.
+«hungara») no se repiten: la búsqueda las normaliza (minúsculas, sin diacríticos, ♯/♭ como #/b, sin ♮ ni
+ordinales), con lo que se encuentran igual. `buscar(nombre:)` lee además los nombres de los trece idiomas, y
+`buscar(conteniendo:)` da las que contienen un texto, como en los demás catálogos (``ElementoConNombre``).
 
 ```swift
 try TipoDeEscala(leyendo: "dorico b2") == TipoDeEscala(leyendo: "dórico ♭2")        // true
-TipoDeEscala.dobleArmonica.aliasNormalizados.contains("doble armonica")                 // true
+TipoDeEscala.buscar(nombre: "doble armonica") == .dobleArmonica                       // true
+TipoDeEscala.buscar(nombre: "dorisch") == .dorico                                      // true
 try TipoDeEscala(leyendo: "jonico sin 4") == TipoDeEscala.jonicoSinCuarta              // true
 ```
 

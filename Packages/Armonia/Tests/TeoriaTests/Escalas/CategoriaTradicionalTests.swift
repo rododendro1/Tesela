@@ -71,7 +71,7 @@ import Testing
         #expect(TipoDeEscala.tradicionales(categoria: .afinacion) == afinaciones)
         #expect(TipoDeEscala.tradicionales(tradicion: .africa).map(\.nombre) == TipoDeEscala.africanas.map(\.nombre))
         #expect(TipoDeEscala.africanas.count == 7 && TipoDeEscala.sauta == .lidio)
-        #expect(TipoDeEscala.tomoraMesengo.microtonal?.desvios == [0, 30, 25, 0, 0, 30, 25])
+        #expect(TipoDeEscala.tomoraMesengo.afinacionPropia?.desvios == [0, 30, 25, 0, 0, 30, 25])
         #expect(TipoDeEscala.piphat.tradicion == .sudesteAsiatico && TipoDeEscala.piphat.clase == .afinacion)
         // Los ocho modos gregorianos (y los tres hexacordos), desde su final, enlazados con `ModoGregoriano`.
         #expect(TipoDeEscala.tradicionales(categoria: .modoGregoriano) == TipoDeEscala.modosGregorianos)

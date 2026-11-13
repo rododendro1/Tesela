@@ -106,8 +106,8 @@ FuncionDeNota.tenor.intervalo                            // nil: cambia de un mo
 
 ### Escalas y afinaciones
 
-Una escala con microtonos (``TipoDeEscalaMicrotonal``, en <doc:EscalasDelMundo>) se puede oír como es:
-`Escala.afinacion(la4:microtonal:sentido:)` da una ``AfinacionDeEscala``, que afina cada nota de la escala con lo
+Una escala con microtonos (``AfinacionPropia``, en <doc:EscalasDelMundo>) se puede oír como es:
+`Escala.afinacion(la4:propia:sentido:)` da una ``AfinacionDeEscala``, que afina cada nota de la escala con lo
 que se aparta de su nota temperada y deja las demás en temperamento igual. La nota se busca por su nombre y, si no
 está, por su altura (Re♯ suena como el Mi♭ de la escala). Una escala puede tener varias afinaciones, cada una de un
 autor (`TipoDeEscala.afinaciones`, con su `fuente`, una ``FuenteTeorica``): los echoi diatónicos, en los 72 moria de la Comisión
@@ -121,7 +121,7 @@ Escala(.re, .bayati).afinacion(la4: 442)?.frecuencia(de: "La4")   // 442
 TipoDeEscala.echosProtos.afinaciones.count                 // 2
 TipoDeEscala.echosProtos.afinaciones[1].fuente             // .chrysanthos
 let chrysanthos = TipoDeEscala.echosProtos.afinaciones[1]
-Escala(.re, .echosProtos).afinacion(microtonal: chrysanthos)?.desviacion(de: "Mi4")   // −29
+Escala(.re, .echosProtos).afinacion(propia: chrysanthos)?.desviacion(de: "Mi4")   // −29
 Escala(.do, .mayor).afinacion()                            // nil: no tiene microtonos
 ```
 
@@ -134,7 +134,7 @@ Las escalas occidentales la toman de su estilo (`Estilo.temperamentoSugerido`): 
 clásica, donde cada tonalidad tiene su color, y el temperamento igual en el jazz, el blues, el siglo XX (las escalas
 simétricas lo necesitan), la música popular y las sintéticas. Los modos y el hexacordo, los de la polifonía del
 Renacimiento, van en mesotónico. La escala de blues tiene además sus blue notes
-(`TipoDeEscalaMicrotonal.occidentales`): la tercera neutra, de 350 cents, y la séptima armónica, de 969.
+(`AfinacionPropia.occidentales`): la tercera neutra, de 350 cents, y la séptima armónica, de 969.
 
 ```swift
 Escala(.do, .mayor).cents(con: .afinacionJusta)[2]             // 386,31: la tercera pura

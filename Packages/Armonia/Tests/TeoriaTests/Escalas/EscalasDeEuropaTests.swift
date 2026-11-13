@@ -96,7 +96,7 @@ import Testing
         #expect(notas == [["Mi", "Fa", "Sol", "La"], ["Mi", "Fa", "Fa♯", "La"], ["Mi", "Fa♭", "Fa", "La"]])
         let diesis = 1200.0 / 31
         for (tipo, partes) in zip(TipoDeEscala.generosDeVicentino, [[0, 3, 8, 13], [0, 3, 5, 13], [0, 1, 3, 13]]) {
-            let cents = try #require(tipo.microtonal).cents
+            let cents = try #require(tipo.afinacionPropia).cents
             for (c, p) in zip(cents, partes) {
                 #expect(abs(c - Double(p) * diesis) <= 0.5, Comment(rawValue: tipo.nombre))
             }
@@ -124,12 +124,12 @@ import Testing
         let alpino = Escala("Do cuerno alpino").notas.map(\.nombre)
         #expect(alpino == ["Do", "Re", "Mi", "Fa♯", "Sol", "La♭", "Si♭", "Si"])
         // El 11.º armónico, 49 cents bajo Fa♯; la 7ª natural de la gaita, 31 bajo Si♭.
-        #expect(TipoDeEscala.cuernoAlpino.microtonal?.desvios[3] == -49)
-        #expect(TipoDeEscala.gaitaEscocesa.microtonal?.desvios[6] == -31)
-        #expect(TipoDeEscala.mixolidio.microtonal == nil)
+        #expect(TipoDeEscala.cuernoAlpino.afinacionPropia?.desvios[3] == -49)
+        #expect(TipoDeEscala.gaitaEscocesa.afinacionPropia?.desvios[6] == -31)
+        #expect(TipoDeEscala.mixolidio.afinacionPropia == nil)
         // El canto georgiano: la segunda, 37 cents baja; la tercera, neutra, 32 sobre Mi♭.
         #expect(TipoDeEscala.georgiana == .dorico)
-        #expect(TipoDeEscala.georgiana.microtonal?.desvios == [0, -37, 32, 9, -7, -32, 18])
+        #expect(TipoDeEscala.georgiana.afinacionPropia?.desvios == [0, -37, 32, 9, -7, -32, 18])
         #expect((try? TipoDeEscala(leyendo: "Svaneti"))?.nombre == "georgiana")
         #expect(TipoDeEscala.georgiana.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Georgian")
         #expect(Tradicion.europa.nombre == "Folklore europeo")

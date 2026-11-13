@@ -34,9 +34,12 @@ public struct RitmoConNombre: Sendable {
     package let ficha: FichaDelCatalogo
 
     /// Un ritmo con nombre, del catálogo o fuera de él. Sin agrupación, un solo grupo con todos los pulsos.
+    /// `documentada` es la obra más antigua que lo da, con su año, y va también entre sus referencias; `anio`, el año
+    /// en que aparece, si no lo da esa obra.
     public init(
         nombre: String, patron: String, agrupacion: [Int]? = nil, unidad: Int = 16, familia: FamiliaDeRitmo,
-        alias: [String] = [], variantes: [String] = [], referencias: [Referencia] = []
+        alias: [String] = [], variantes: [String] = [], referencias: [Referencia] = [], documentada: Referencia? = nil,
+        anio: Int? = nil
     ) {
         self.nombre = nombre
         self.patron = patron
@@ -45,7 +48,7 @@ public struct RitmoConNombre: Sendable {
         self.familia = familia
         self.alias = alias
         self.variantes = variantes
-        ficha = FichaDelCatalogo(referencias: referencias)
+        ficha = FichaDelCatalogo(referencias: referencias, documentada: documentada, anio: anio)
     }
 
     // MARK: Propiedades

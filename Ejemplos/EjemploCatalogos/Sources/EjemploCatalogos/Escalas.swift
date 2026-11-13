@@ -45,12 +45,12 @@ let columnasDeEscalas: [String] =
 
 /// La fila de una escala, en el orden de `columnasDeEscalas`.
 func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
-    let microtonal = tipo.microtonal
+    let microtonal = tipo.afinacionPropia
     let sobreDo = Escala(.do, tipo)
     let medidas = sobreDo.estadisticas
     let conjunto = sobreDo.conjuntoDeClasesDeAltura
     let comoSeLlama = [tipo.nombre, tipo.nombreCompleto] + traducciones.map { tipo.nombre(en: .delIdioma($0)) }
-    let otros: [String] = aliasYVariantes(tipo.alias(en:), tipo.variantes(en:))
+    let otros: [String] = aliasYVariantes(de: tipo)
     let resto: [String] = [
         tipo.tradicion?.nombre ?? "",
         tipo.estilos.map(\.nombre).joined(separator: " · "),

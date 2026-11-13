@@ -36,15 +36,27 @@ func columnasDeAliasYVariantes(conVariantes: Bool = true) -> [String] {
     (conVariantes ? ["alias", "variantes"] : ["alias"]) + columnasDeOtrosNombres(conVariantes: conVariantes)
 }
 
+/// El nombre de un elemento en español y en los demás idiomas, en el orden de `columnasDeNombres`.
+func nombres(de elemento: some ElementoConNombre) -> [String] {
+    [elemento.nombre] + traducciones.map { elemento.nombre(en: .delIdioma($0)) }
+}
+
 /// Los alias y las variantes de un elemento en español y en los demás idiomas, en el orden de
-/// `columnasDeAliasYVariantes`; sin `variantes`, solo los alias.
-func aliasYVariantes(_ alias: (Notacion) -> [String], _ variantes: ((Notacion) -> [String])? = nil) -> [String] {
+/// `columnasDeAliasYVariantes`; sin `conVariantes`, solo los alias.
+func aliasYVariantes(de elemento: some ElementoConNombre, conVariantes: Bool = true) -> [String] {
     ([Idioma.espanol] + traducciones).flatMap { idioma -> [String] in
         let notacion = Notacion.delIdioma(idioma)
-        var listas: [[String]] = [alias(notacion)]
-        if let variantes { listas.append(variantes(notacion)) }
+        let listas = [elemento.alias(en: notacion)] + (conVariantes ? [elemento.variantes(en: notacion)] : [])
         return listas.map { $0.joined(separator: " · ") }
     }
+}
+
+/// Las columnas de la fecha de un elemento: el año y la época en que aparece.
+let columnasDeLaFecha = ["anio_de_origen", "epoca_de_origen"]
+
+/// El año y la época en que aparece un elemento, en el orden de `columnasDeLaFecha`; vacíos si no se saben.
+func fecha(de elemento: some ElementoConNombre) -> [String] {
+    [elemento.anioDeOrigen.map(String.init) ?? "", elemento.epocaDeOrigen?.nombre ?? ""]
 }
 
 /// Un catálogo: el fichero, las columnas, una fila por elemento y las obras que citan sus elementos.

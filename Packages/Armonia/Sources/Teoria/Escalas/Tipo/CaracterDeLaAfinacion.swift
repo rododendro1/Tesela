@@ -3,7 +3,7 @@ import Foundation
 
 // MARK: - El carácter de una afinación
 
-/// Qué es una afinación (`TipoDeEscalaMicrotonal`) frente a los doce semitonos iguales: temperada, justa, microtonal
+/// Qué es una afinación (`AfinacionPropia`) frente a los doce semitonos iguales: temperada, justa, microtonal
 /// o una octava partida en otro número de partes iguales. No se escribe: sale de su sistema y de cuánto se aparta
 /// cada grado de su nota temperada.
 ///
@@ -48,7 +48,7 @@ public enum CaracterDeLaAfinacion: Hashable, Sendable {
     }
 }
 
-extension TipoDeEscalaMicrotonal {
+extension AfinacionPropia {
     /// El carácter de esta afinación: en las 53 comas, microtonal; en los śruti, justa; si sus cents caen todos en
     /// una octava partida en 5 a 11 partes iguales, esas partes; y si no, por lo que más se aparta un grado de su nota
     /// temperada, al subir o al bajar: hasta un cent, temperada; desde `umbralMicrotonal`, microtonal; entre medias,
@@ -75,9 +75,9 @@ extension TipoDeEscalaMicrotonal {
 }
 
 extension TipoDeEscala {
-    /// El carácter de la afinación de la escala (la de su teoría de hoy, `microtonal`); `nil` si no tiene una propia,
-    /// como las occidentales, que se tocan en los doce semitonos iguales.
-    public var caracterDeLaAfinacion: CaracterDeLaAfinacion? { microtonal?.caracter }
+    /// El carácter de su afinación propia (`afinacionPropia`, la de su teoría de hoy); `nil` si no tiene una, como las
+    /// occidentales, que se tocan en los doce semitonos iguales.
+    public var caracterDeLaAfinacion: CaracterDeLaAfinacion? { afinacionPropia?.caracter }
 
     /// ¿Tiene notas que los doce semitonos no tienen: es microtonal o parte la octava en otras partes iguales?
     public var esMicrotonal: Bool { caracterDeLaAfinacion?.tieneMicrotonos ?? false }

@@ -34,10 +34,11 @@ extension RitmoConNombre {
     public static let claveDeRumba = RitmoConNombre(
         nombre: "clave de rumba", patron: "x..x...x..x.x...", agrupacion: [4, 4, 4, 4], unidad: 16,
         familia: .lineaDeTiempo, referencias: [.toussaint2013])
-    /// La clave de la bossa nova: la de son con el último golpe un pulso más tarde.
+    /// La clave de la bossa nova: la de son con el último golpe un pulso más tarde. De 1958, el año de «Chega de
+    /// saudade» de João Gilberto.
     public static let bossaNova = RitmoConNombre(
         nombre: "bossa nova", patron: "x..x..x...x..x..", agrupacion: [4, 4, 4, 4], unidad: 16, familia: .lineaDeTiempo,
-        referencias: [.toussaint2013])
+        referencias: [.toussaint2013], anio: 1958)
     /// La línea de tiempo del soukous congoleño, una de las seis claves de Toussaint.
     public static let soukous = RitmoConNombre(
         nombre: "soukous", patron: "x..x..x...xx....", agrupacion: [4, 4, 4, 4], unidad: 16, familia: .lineaDeTiempo,
@@ -147,31 +148,33 @@ extension RitmoConNombre {
         nombre: "düyek", patron: "xo.ox.o.", agrupacion: [2, 2, 2, 2], unidad: 8, familia: .aksak,
         alias: ["duyek", "düyek usulü"], referencias: [.toussaint2013])
     // MARK: Modos rítmicos
+    //
+    // Del año de «De mensurabili musica» de Johannes de Garlandia (hacia 1250), que los describe.
 
     /// Dos pies del modo de la escuela de Notre Dame. Longa y breve: el troqueo.
     public static let primerModoRitmico = RitmoConNombre(
         nombre: "primer modo rítmico (troqueo)", patron: "x.xx.x", agrupacion: [3, 3], unidad: 8, familia: .modoRitmico,
-        referencias: [.apel1953])
+        referencias: [.apel1953], anio: 1250)
     /// Dos pies del modo de la escuela de Notre Dame. Breve y longa: el yambo.
     public static let segundoModoRitmico = RitmoConNombre(
         nombre: "segundo modo rítmico (yambo)", patron: "xx.xx.", agrupacion: [3, 3], unidad: 8, familia: .modoRitmico,
-        referencias: [.apel1953])
+        referencias: [.apel1953], anio: 1250)
     /// Dos pies del modo de la escuela de Notre Dame. Longa con puntillo, breve y longa: el dáctilo.
     public static let tercerModoRitmico = RitmoConNombre(
         nombre: "tercer modo rítmico (dáctilo)", patron: "x..xx.", agrupacion: [3, 3], unidad: 8, familia: .modoRitmico,
-        referencias: [.apel1953])
+        referencias: [.apel1953], anio: 1250)
     /// Dos pies del modo de la escuela de Notre Dame. Breve, longa y longa con puntillo: el anapesto.
     public static let cuartoModoRitmico = RitmoConNombre(
         nombre: "cuarto modo rítmico (anapesto)", patron: "xx.x..", agrupacion: [3, 3], unidad: 8,
-        familia: .modoRitmico, referencias: [.apel1953])
+        familia: .modoRitmico, referencias: [.apel1953], anio: 1250)
     /// Dos pies del modo de la escuela de Notre Dame. Dos longas con puntillo: el espondeo.
     public static let quintoModoRitmico = RitmoConNombre(
         nombre: "quinto modo rítmico (espondeo)", patron: "x..x..", agrupacion: [3, 3], unidad: 8,
-        familia: .modoRitmico, referencias: [.apel1953])
+        familia: .modoRitmico, referencias: [.apel1953], anio: 1250)
     /// Dos pies del modo de la escuela de Notre Dame. Breves seguidas: el tríbraco.
     public static let sextoModoRitmico = RitmoConNombre(
         nombre: "sexto modo rítmico (tríbraco)", patron: "xxxxxx", agrupacion: [3, 3], unidad: 8, familia: .modoRitmico,
-        referencias: [.apel1953])
+        referencias: [.apel1953], anio: 1250)
     // MARK: Danzas
 
     /// Tres tiempos con el acento en el primero.
@@ -185,10 +188,10 @@ extension RitmoConNombre {
     public static let siciliana = RitmoConNombre(
         nombre: "siciliana", patron: "x..xx.x..xx.", agrupacion: [6, 6], unidad: 16, familia: .danza,
         referencias: [.toussaint2013])
-    /// La negra con puntillo y la corchea ligada del charleston de los años veinte.
+    /// La negra con puntillo y la corchea ligada del charleston de los años veinte: el de James P. Johnson es de 1923.
     public static let charleston = RitmoConNombre(
         nombre: "charleston", patron: "x..x....", agrupacion: [2, 2, 2, 2], unidad: 8, familia: .danza,
-        referencias: [.toussaint2013])
+        referencias: [.toussaint2013], anio: 1923)
 
     /// Todo el catálogo, en el orden de este fichero.
     public static let catalogo: [RitmoConNombre] = [

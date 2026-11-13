@@ -247,8 +247,8 @@ Sources/
 │   │   │                  (CalculosDeEscala: Myhill, Rothenberg, Carey, Krumhansl y Kessler…) y RelacionEntreEscalas
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
 │   │   │                  `nombre(en:)`), FichaDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
-│   │   │                  y Microtonos (SistemaMicrotonal, TipoDeEscalaMicrotonal)
-│   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala, Subtradicion,
+│   │   │                  y Microtonos (SistemaMicrotonal, AfinacionPropia)
+│   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala,
 │   │   │                  FuenteTeorica, y los tipos de algunas tradiciones: CakraDeMela, ModoGregoriano y
 │   │   │                  Escala+Diao
 │   │   ├── Catalogo/      Un fichero por tradición (TipoDeEscala+Occidental y +Occidental+Exoticas, +India,

@@ -140,10 +140,10 @@ import Testing
         // En la reconstrucción de Kilmer con escalas descendentes, cada afinación es uno de los siete modos diatónicos.
         #expect(TipoDeEscala.isartu == .mayor)
         // Su versión microtonal, pitagórica: el tritono del lidio es de 612 cents y el del locrio, de 588.
-        #expect(TipoDeEscala.isartu.microtonal?.cents == [0, 204, 408, 498, 702, 906, 1110])
-        #expect(TipoDeEscala.qablitu.microtonal?.cents == [0, 204, 408, 612, 702, 906, 1110])
-        #expect(TipoDeEscala.nisTuhri.microtonal?.cents == [0, 90, 294, 498, 588, 792, 996])
-        #expect(TipoDeEscala.mesopotamicas.allSatisfy { $0.microtonal?.sistema == .razones })
+        #expect(TipoDeEscala.isartu.afinacionPropia?.cents == [0, 204, 408, 498, 702, 906, 1110])
+        #expect(TipoDeEscala.qablitu.afinacionPropia?.cents == [0, 204, 408, 612, 702, 906, 1110])
+        #expect(TipoDeEscala.nisTuhri.afinacionPropia?.cents == [0, 90, 294, 498, 588, 792, 996])
+        #expect(TipoDeEscala.mesopotamicas.allSatisfy { $0.afinacionPropia?.sistema == .razones })
         #expect(TipoDeEscala.kitmu == .mixolidio)
         #expect(TipoDeEscala.embubu == .dorico)
         #expect(TipoDeEscala.pitu == .menorNatural)
@@ -176,12 +176,12 @@ import Testing
     @Test func aristoxenoYSafiAlDin() throws {
         #expect(TipoDeEscala.coloresDeAristoxeno.allSatisfy { $0.tradicion == .greciaAntigua })
         #expect(TipoDeEscala.coloresDeAristoxeno.allSatisfy { $0.categoria == .tetracordo })
-        #expect(TipoDeEscala.tetracordoCromaticoBlandoDeAristoxeno.microtonal?.desvios == [0, -33, 33, 0])
-        #expect(TipoDeEscala.tetracordoCromaticoHemiolico.microtonal?.desvios == [0, -25, -50, 0])
+        #expect(TipoDeEscala.tetracordoCromaticoBlandoDeAristoxeno.afinacionPropia?.desvios == [0, -33, 33, 0])
+        #expect(TipoDeEscala.tetracordoCromaticoHemiolico.afinacionPropia?.desvios == [0, -25, -50, 0])
         #expect(try TipoDeEscala(leyendo: "cromático tónico") == .tetracordoCromatico)
         #expect(TipoDeEscala.adwar.allSatisfy { $0.tradicion == .mundoArabe && $0.categoria == .maqam })
         #expect(TipoDeEscala.shaddNawa == .menorNatural)
-        #expect(TipoDeEscala.shaddRast.microtonal?.desvios == [0, 4, -16, -2, 2, -18, -4])
+        #expect(TipoDeEscala.shaddRast.afinacionPropia?.desvios == [0, 4, -16, -2, 2, -18, -4])
         #expect((try? TipoDeEscala(leyendo: "Rast de Safi al-Din"))?.nombre == "shadd Rāst")
     }
 }

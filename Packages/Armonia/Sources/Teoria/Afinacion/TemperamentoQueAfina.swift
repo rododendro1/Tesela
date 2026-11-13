@@ -1,7 +1,7 @@
 import Elementos
 
 /// Un temperamento del catálogo que afina las doce notas: todos menos los sistemas de otras tradiciones, que afinan
-/// los grados de sus escalas (`TipoDeEscalaMicrotonal`). Su ``afinacion(tonica:frecuenciaDelLa4:)`` no es opcional.
+/// los grados de sus escalas (`AfinacionPropia`). Su ``afinacion(tonica:frecuenciaDelLa4:)`` no es opcional.
 ///
 ///     TemperamentoQueAfina.paraEscuchar.count                                    // 8
 ///     TemperamentoQueAfina.afinacionJusta.afinacion(tonica: .re).desviacion(de: "Fa#4")   // −13,69

@@ -145,8 +145,8 @@ extension LineaDeComandos {
     }
 
     /// Los lugares de `--lugar espana`: los del catálogo (`Lugar.todos`) cuya clave o cuyo nombre, en español, en
-    /// inglés o en el idioma de la notación, o el código ISO de un país (`US`), es el texto. Pueden ser varios: «egipto» es la zona y el país, y
-    /// «hungria», el país y la región. Lanza `lugarDesconocido` si no es ninguno.
+    /// inglés o en el idioma de la notación, o el código ISO de un país (`US`), es el texto. Pueden ser varios:
+    /// «egipto» es la zona y el país, y «hungria», el país y la región. Lanza `lugarDesconocido` si no es ninguno.
     static func lugares(leyendo texto: String, _ notacion: Notacion) throws -> [Lugar] {
         let clave = claveDeBusqueda(texto)
         let encontrados = Lugar.todos.filter { lugar in
@@ -246,12 +246,12 @@ extension LineaDeComandos {
     }
 
     /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--fuente <fuente>] [--uso <uso>]
-    /// [--lugar <lugar>] [--epoca <época>] [--escuela <escuela>] [--orden brillo] [--con-intervalo tritono]
-    /// [--comparar Do mayor, Do lidio]`: el catálogo de escalas, las habituales y las de otras tradiciones agrupadas por tradición y categoría, cada una
-    /// con sus notas desde Do (y la marca de los microtonos, si los tiene). Un texto suelto busca en los nombres.
-    /// `--uso jazz` deja solo las habituales de ese uso (las de otras tradiciones no tienen), y `--notas 5`, las de
-    /// cinco notas. `--comparar` deja el catálogo y pone las escalas que se le dan en una tabla, una por fila, y
-    /// `--mapa` lo dibuja en un mapa de brillo (SVG).
+    /// [--lugar <lugar>] [--epoca <época>] [--escuela <escuela>] [--orden brillo] [--con-intervalo tritono] [--comparar
+    /// Do mayor, Do lidio]`: el catálogo de escalas, las habituales y las de otras tradiciones agrupadas por tradición
+    /// y categoría, cada una con sus notas desde Do (y la marca de los microtonos, si los tiene). Un texto suelto busca
+    /// en los nombres. `--uso jazz` deja solo las habituales de ese uso (las de otras tradiciones no tienen), y
+    /// `--notas 5`, las de cinco notas. `--comparar` deja el catálogo y pone las escalas que se le dan en una tabla,
+    /// una por fila, y `--mapa` lo dibuja en un mapa de brillo (SVG).
     static func escalas(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let grupos: [GrupoDeEscalas]
@@ -266,7 +266,7 @@ extension LineaDeComandos {
             lineas.append("\(grupo.titulo) (\(grupo.tipos.count))")
             for tipo in grupo.tipos {
                 let notas = Escala(.do, tipo).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
-                let microtonos = tipo.microtonal == nil ? "" : " · " + traducir(.microtonos)
+                let microtonos = tipo.esMicrotonal ? " · " + traducir(.microtonos) : ""
                 // Ordenadas por brillo, con su brillo por quintas: «lidio: Do Re Mi Fa♯ Sol La Si · +3».
                 let brillo =
                     orden == .brillo

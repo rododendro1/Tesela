@@ -461,7 +461,8 @@ extension LineaDeComandosTests {
         #expect(salida("escalas --tradition byzantium") == bizantinas)
         let babilonicas = salida("escalas --tradicion mesopotamia")
         #expect(babilonicas.hasPrefix("Mesopotamia · afinación (7)\n"), Comment(rawValue: babilonicas))
-        #expect(babilonicas.contains("  išartu: Do Re Mi Fa Sol La Si · microtonos\n"), Comment(rawValue: babilonicas))
+        // Las babilónicas tienen afinación propia, pitagórica: justa, sin microtonos.
+        #expect(babilonicas.contains("  išartu: Do Re Mi Fa Sol La Si\n"), Comment(rawValue: babilonicas))
         #expect(babilonicas.contains("  nīd qabli: Do Re♭ Mi♭ Fa Sol La♭ Si♭"), Comment(rawValue: babilonicas))
         #expect(salida("escalas --categoria afinacion").hasPrefix(babilonicas))
         #expect(salida("escalas --categoria afinacion").contains("África · afinación (7)\n"))
@@ -473,7 +474,7 @@ extension LineaDeComandosTests {
         let murchanas = salida("escalas --categoria murchana")
         #expect(murchanas.hasPrefix("India · mūrchanā (14)\n"), Comment(rawValue: murchanas))
         #expect(
-            murchanas.contains("  Uttaramandrā: Do Re Mi♭ Fa Sol La Si♭ · microtonos"), Comment(rawValue: murchanas))
+            murchanas.contains("  Uttaramandrā: Do Re Mi♭ Fa Sol La Si♭\n"), Comment(rawValue: murchanas))
         #expect(salida("escalas --categoria grama").hasPrefix("India · grāma (2)\n"))
         let griegas = salida("escalas --tradicion grecia-antigua --categoria tetracordo")
         #expect(griegas.hasPrefix("Grecia antigua · tetracordo (21)\n"), Comment(rawValue: griegas))

@@ -33,8 +33,6 @@ public struct NotaConNombre: Sendable {
     public let desvio: Double
     /// La frecuencia del La4 con que suena: la del diapasón en los diapasones; 440 en las demás.
     public let frecuenciaDelLa4: Double
-    /// El año en que se fijó, en los diapasones que tienen uno.
-    public let anio: Int?
     /// La altura con nombre de su tradición (`NombresPorOctava`), en las árabes, las turcas y las griegas.
     public let alturaConNombre: AlturaConNombre?
     /// La posición de la mano guidoniana, en las guidonianas.
@@ -52,12 +50,11 @@ public struct NotaConNombre: Sendable {
         self.familia = familia
         self.desvio = desvio
         self.frecuenciaDelLa4 = frecuenciaDelLa4
-        self.anio = anio
         self.alias = alias
         self.variantes = variantes
         self.alturaConNombre = alturaConNombre
         self.posicion = posicion
-        ficha = FichaDelCatalogo(referencias: referencias)
+        ficha = FichaDelCatalogo(referencias: referencias, anio: anio)
     }
 
     /// Un diapasón: la altura y la frecuencia con que suena (La4 a 415 Hz, Do4 a 256 Hz).

@@ -29,11 +29,9 @@ public struct ProgresionConNombre: Sendable {
     /// Lo demás que sabe el catálogo de la progresión: sus estilos y sus referencias.
     package let ficha: FichaDelCatalogo
 
-    /// Una progresión con nombre, del catálogo o fuera de él. No comprueba el cifrado: una que no se lee da sus
-    /// acordes vacíos. Para comprobarlo al crearla,
-    /// `init(nombre:leyendo:modo:alias:variantes:estilos:referencias:documentada:)`. `documentada` es la obra más
-    /// antigua que la da, con su año, y va también entre sus referencias.
-    public init(
+    /// Una progresión del catálogo, sin comprobar el cifrado: lo comprueban sus pruebas. Fuera del catálogo se crea con
+    /// `init(nombre:leyendo:modo:alias:variantes:estilos:referencias:documentada:)`, que lo lee.
+    package init(
         nombre: String, cifrado: String, modo: Tonalidad.Modo = .mayor, alias: [String] = [], variantes: [String] = [],
         estilos: [Estilo] = [], referencias: [Referencia] = [], documentada: Referencia? = nil
     ) {
@@ -45,8 +43,9 @@ public struct ProgresionConNombre: Sendable {
         self.ficha = FichaDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada)
     }
 
-    /// Una progresión con nombre, comprobando que su cifrado se lee en su modo: lanza el error de
-    /// `Tonalidad.acordes(romanos:)` si no.
+    /// Una progresión con nombre, del catálogo o fuera de él, comprobando que su cifrado se lee en su modo: lanza el
+    /// error de `Tonalidad.acordes(romanos:)` si no. Así, una progresión siempre tiene acordes. `documentada` es la
+    /// obra más antigua que la da, con su año, y va también entre sus referencias.
     ///
     ///     try ProgresionConNombre(nombre: "mía", leyendo: "I ♭VII IV I")   // bien
     ///     try ProgresionConNombre(nombre: "mía", leyendo: "I X I")          // lanza un error
@@ -79,8 +78,8 @@ public struct ProgresionConNombre: Sendable {
     /// La tonalidad de la progresión con esa tónica, en su modo.
     public func tonalidad(sobre tonica: Nota) -> Tonalidad { Tonalidad(tonica, modo) }
 
-    /// Los acordes en una tonalidad, uno por grado. Vacío si su cifrado no se lee (los del catálogo se leen
-    /// todos: lo comprueban las pruebas; una propia se comprueba al crearla con `init(nombre:leyendo:…)`).
+    /// Los acordes en una tonalidad, uno por grado. El cifrado siempre se lee: el de las del catálogo lo comprueban sus
+    /// pruebas, y el de una propia, `init(nombre:leyendo:…)` al crearla.
     ///
     ///     ProgresionConNombre.monte.acordes(en: Tonalidad(.do))   // [Do7, Fa, Re7, Sol]
     public func acordes(en tonalidad: Tonalidad) -> [Acorde] { (try? tonalidad.acordes(romanos: cifrado)) ?? [] }

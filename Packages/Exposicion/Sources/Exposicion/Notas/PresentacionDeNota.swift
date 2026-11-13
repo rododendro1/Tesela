@@ -36,7 +36,7 @@ public struct NotaPresentada: Hashable, Sendable, Codable {
         frecuencia = nota.frecuencia
         frecuenciaDelLa4 = nota.frecuenciaDelLa4
         midi = nota.midi
-        anio = nota.anio
+        anio = nota.anioDeOrigen
         let original = nota.alturaConNombre?.nombre(en: .original)
         nombreOriginal = original == nota.alturaConNombre?.nombre(en: .transliterada) ? nil : original
         alturasDeLaPosicion = nota.posicion.map { $0.alturas.map { $0.nombre(en: notacion) } }

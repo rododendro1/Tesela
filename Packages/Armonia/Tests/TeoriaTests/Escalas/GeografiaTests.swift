@@ -22,17 +22,6 @@ import Testing
         #expect(RegionDeEscala.hungria.tipos.contains(.pentatonicaHungara))
     }
 
-    /// Como subtradición, una región solo da las escalas de su tradición: la de Hungría, que es europea, no da las
-    /// húngaras occidentales; la de Andalucía, que es occidental, da la flamenca.
-    @available(*, deprecated, message: "prueba Subtradicion, que es obsoleta")
-    @Test func lasSubtradicionesSonDeSuTradicion() {
-        #expect(Subtradicion.region(.hungria).tipos.contains(.pentatonicaHungara))
-        #expect(!Subtradicion.region(.hungria).tipos.contains(.menorHungara))
-        #expect(Subtradicion.region(.andalucia).tipos == [.flamenca])
-        #expect(TipoDeEscala.menorHungara.subtradiciones == [.estilo(.folclore)])
-        #expect(TipoDeEscala.flamenca.subtradiciones == [.estilo(.flamenco), .region(.andalucia)])
-    }
-
     /// Los lugares de origen son los más concretos que se saben: la región, el país o el continente.
     @Test func lugaresDeOrigen() {
         #expect(TipoDeEscala.flamenca.lugaresDeOrigen == [.region(.andalucia)])

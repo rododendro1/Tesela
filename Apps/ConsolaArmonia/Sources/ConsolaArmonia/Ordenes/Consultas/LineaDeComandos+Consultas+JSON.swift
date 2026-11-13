@@ -500,7 +500,7 @@ extension LineaDeComandos {
                         let escala = Escala(.do, tipo)
                         return EscalaDelCatalogoJSON(
                             nombre: tipo.nombre(en: notacion), notas: escala.notas.map { $0.nombre(en: notacion) },
-                            clases: escala.notas.map(\.claseDeAltura), microtonal: tipo.microtonal != nil,
+                            clases: escala.notas.map(\.claseDeAltura), microtonal: tipo.esMicrotonal,
                             brilloPorQuintas: escala.estadisticas.brilloPorQuintas, tradicion: tipo.tradicion?.rawValue,
                             categoria: tipo.categoria?.rawValue, fuente: tipo.fuente?.rawValue,
                             lugaresDeOrigen: tipo.lugaresDeOrigen.map { $0.nombre(en: notacion) },

@@ -61,7 +61,7 @@ public struct RelojDeAlturas: Hashable, Sendable {
     ///
     ///     RelojDeAlturas(escala: Escala("Do mayor"))   // nil
     public init?(
-        escala: Escala, afinacion: TipoDeEscalaMicrotonal? = nil, sentido: SentidoDelIntervalo = .ascendente,
+        escala: Escala, afinacion: AfinacionPropia? = nil, sentido: SentidoDelIntervalo = .ascendente,
         notacion: Notacion = .compacta(.espanol)
     ) {
         guard let notas = escala.notasMicrotonales(sentido: sentido, afinacion: afinacion), let primera = notas.first
@@ -132,8 +132,8 @@ public struct RelojDeAlturas: Hashable, Sendable {
     }
 
     /// Cuántos pasos de su octava tiene la quinta de un temperamento, si va de quinta en quinta por todos ellos: 7 en
-    /// los regulares de doce notas, 11 en el de 19, 31 en las 53 comas; `nil` si no tiene una sola quinta o si su círculo
-    /// de quintas se cierra antes (14 de 24, 42 de 72).
+    /// los regulares de doce notas, 11 en el de 19, 31 en las 53 comas; `nil` si no tiene una sola quinta o si su
+    /// círculo de quintas se cierra antes (14 de 24, 42 de 72).
     public static func pasosDeLaQuinta(de temperamento: TemperamentoConNombre) -> Int? {
         // Los sistemas de pasos iguales (cuartos de tono, 53 comas, 72 moria) tienen la quinta más cercana a la pura.
         let iguales: Set<SistemaMicrotonal> = [.cuartosDeTono, .persa, .comas53, .moria72]

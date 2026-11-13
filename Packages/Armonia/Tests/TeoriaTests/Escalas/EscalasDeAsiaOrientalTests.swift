@@ -56,7 +56,7 @@ import Testing
         for tipo in [TipoDeEscala.yanglu, .yinlu] {
             let semitonos = Set(TipoDeEscala.tonosEnteros.intervalos.map(\.semitonos))
             #expect(Set(tipo.intervalos.map(\.semitonos)) == semitonos, Comment(rawValue: tipo.nombre))
-            let pasos = try #require(tipo.microtonal).pasos + [1200]
+            let pasos = try #require(tipo.afinacionPropia).pasos + [1200]
             let saltos = zip(pasos.dropFirst(), pasos).map { $0 - $1 }
             #expect(saltos.sorted() == [180, 204, 204, 204, 204, 204], Comment(rawValue: tipo.nombre))
         }
@@ -74,9 +74,9 @@ import Testing
 
     /// Las chinas suenan por sanfen sunyi: cada nota, a un número de quintas pitagóricas de gōng.
     @Test func lasChinasPorSanfenSunyi() throws {
-        #expect(TipoDeEscala.chinas.allSatisfy { $0.microtonal != nil })
-        #expect(try #require(TipoDeEscala.gong.microtonal).pasos == [0, 204, 408, 702, 906])
-        #expect(try #require(TipoDeEscala.qingyue.microtonal).desvios[3] == 22)
+        #expect(TipoDeEscala.chinas.allSatisfy { $0.afinacionPropia != nil })
+        #expect(try #require(TipoDeEscala.gong.afinacionPropia).pasos == [0, 204, 408, 702, 906])
+        #expect(try #require(TipoDeEscala.qingyue.afinacionPropia).desvios[3] == 22)
         #expect(TipoDeEscala.tradicionales(fuente: .guanzi) == [.gong, .shang, .jue, .zhi, .yu])
     }
 
@@ -126,15 +126,15 @@ import Testing
                 "Bắc", "Vọng cổ", "Hò mái nhì", "Sa mạc", "Dân ca",
             ])
         #expect(TipoDeEscala.hoMaiNhi == .bac && !TipoDeEscala.hoMaiNhi.esIdentico(a: .bac))
-        #expect(TipoDeEscala.saMac.microtonal?.cents == [0, 338, 504, 699, 1026])
+        #expect(TipoDeEscala.saMac.afinacionPropia?.cents == [0, 338, 504, 699, 1026])
         #expect(TipoDeEscala.danCa == .pentatonicaMayorTerceraMenor)
-        #expect(TipoDeEscala.bac.microtonal?.cents == [0, 189, 501, 698, 891])
+        #expect(TipoDeEscala.bac.afinacionPropia?.cents == [0, 189, 501, 698, 891])
         #expect((try? TipoDeEscala(leyendo: "hoi oan"))?.nombre == "Vọng cổ")
         #expect(TipoDeEscala.tradicionales(tradicion: .brasil).count == 3)
         #expect(TipoDeEscala.lidioNordestino == .lidioDominante)
         #expect((try? TipoDeEscala(leyendo: "nordestina"))?.nombre == "lidio dominante")
         #expect(TipoDeEscala.saung.tradicion == .sudesteAsiatico && TipoDeEscala.saung.clase == .afinacion)
-        #expect(TipoDeEscala.saung.microtonal?.desvios == [0, -18, -36, -9, -27])
+        #expect(TipoDeEscala.saung.afinacionPropia?.desvios == [0, -18, -36, -9, -27])
         #expect(Tradicion.vietnam.nombre(en: Notacion.compacta(.espanol).conTextos(en: .portugues)) == "Vietname")
         #expect(Tradicion.brasil.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Brazil")
     }

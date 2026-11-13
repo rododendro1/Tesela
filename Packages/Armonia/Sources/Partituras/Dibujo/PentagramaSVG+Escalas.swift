@@ -5,7 +5,7 @@ import Teoria
 
 extension Escala {
     /// La escala en un pentagrama, como SVG: `Escala("Re dórico").svgPentagrama()`, que es
-    /// `partitura(octava:…).svg(opciones:)`. Si la escala tiene microtonos (`TipoDeEscala.microtonal`), sus notas
+    /// `partitura(octava:…).svg(opciones:)`. Si la escala tiene microtonos (`TipoDeEscala.afinacionPropia`), sus notas
     /// llevan los signos de Bravura: el medio bemol de un maqam, el koron de un dastgāh, las comas de
     /// Arel-Ezgi-Uzdilek de un makam, los moria de un echos bizantino (con los signos de Wyschnegradsky) o la flecha
     /// de Helmholtz-Ellis de un śruti.
@@ -82,15 +82,15 @@ extension Escala {
             porEvento: Partitura.AnotacionesPorEvento(), tablatura: nil, sentido: sentido)
     }
 
-    /// La partitura de la escala tocada en unas alturas cualesquiera (las de una posición del mástil, una
-    /// secuencia…): escritas con sus notas (el La♯ que da el mástil, como Si♭ si la escala lo tiene), con su
-    /// armadura (``Partitura/Pentagrama/armadura``) y los intervalos contados desde su tónica
-    /// (``Partitura/Linea/tonica``). Con `ritmo: .uniforme(…)`, con ritmo (``Partitura/Ritmo``);
-    /// sin él, en redondas y sin ritmo (``Partitura/dibujaElRitmo``). Lo que se anota en cada nota va en `porEvento`, por su
-    /// índice desde 0 (los dedos, los grados, los cifrados…), y las pulsaciones son las de `tablatura` si `porEvento`
-    /// no trae las suyas. Si no se da `titulo`, el de la partitura es el nombre de la escala (``Encabezado/tema``),
-    /// en la notación con que se dibuja o se exporta. Las notas de una escala microtonal llevan su microtono, con
-    /// su sistema (``Evento/NotaDelEvento/sistema``): el de la subida y, las que solo están al bajar, el de la bajada.
+    /// La partitura de la escala tocada en unas alturas cualesquiera (las de una posición del mástil, una secuencia…):
+    /// escritas con sus notas (el La♯ que da el mástil, como Si♭ si la escala lo tiene), con su armadura
+    /// (``Partitura/Pentagrama/armadura``) y los intervalos contados desde su tónica (``Partitura/Linea/tonica``). Con
+    /// `ritmo: .uniforme(…)`, con ritmo (``Partitura/Ritmo``); sin él, en redondas y sin ritmo
+    /// (``Partitura/dibujaElRitmo``). Lo que se anota en cada nota va en `porEvento`, por su índice desde 0 (los dedos,
+    /// los grados, los cifrados…), y las pulsaciones son las de `tablatura` si `porEvento` no trae las suyas. Si no se
+    /// da `titulo`, el de la partitura es el nombre de la escala (``Encabezado/tema``), en la notación con que se
+    /// dibuja o se exporta. Las notas de una escala microtonal llevan su microtono, con su sistema
+    /// (``Evento/NotaDelEvento/sistema``): el de la subida y, las que solo están al bajar, el de la bajada.
     ///
     ///     let posicion = [Altura("La2"), Altura("Do3"), Altura("Re3"), Altura("Mi3")]
     ///     Escala(.la, .pentatonicaMenor).partitura(tocadaEn: posicion, ritmo: .uniforme(.corchea)).musicXML()
@@ -133,7 +133,7 @@ extension Escala {
     /// tiene (el de la subida o el de la bajada, según `sentido`; si es `nil`, el de la subida y, las que solo están
     /// al bajar, el de la bajada), y si no, temperada.
     private func notasTocadas(en alturas: [Altura], sentido: SentidoDelIntervalo?) -> [Evento.NotaDelEvento] {
-        guard tipo.microtonal != nil else { return alturas.map { Evento.NotaDelEvento($0) } }
+        guard tipo.afinacionPropia != nil else { return alturas.map { Evento.NotaDelEvento($0) } }
         var porEvento: [Nota: Evento.NotaDelEvento] = [:]
         for tramo in sentido.map({ [$0] }) ?? [.ascendente, .descendente] {
             for altura in alturasMicrotonales(octava: 4, sentido: tramo) where porEvento[altura.altura.nota] == nil {
@@ -166,12 +166,11 @@ extension Acorde {
         return partitura(octava: octava, posicion: opciones.maquetacion.posicionDelAcorde).svg(opciones: suyas)
     }
 
-    /// La partitura del acorde, en una redonda y sin ritmo (``Partitura/dibujaElRitmo``): las notas apiladas desde el bajo,
-    /// en posición cerrada y a partir de `octava` (el bajo, en la primera octava en que su nota alcanza el Do de esa
-    /// octava), con el cifrado encima. Los acordes muy extensos y la posición `.abierta` ponen el bajo una octava
-    /// más grave y el resto encima, y con eso suelen pasar al pentagrama doble. Sin armadura, salvo la de
-    /// `.tonalidad` en las opciones. Su título es el cifrado (``Encabezado/tema``), en la notación con que se dibuja
-    /// o se exporta.
+    /// La partitura del acorde, en una redonda y sin ritmo (``Partitura/dibujaElRitmo``): las notas apiladas desde el
+    /// bajo, en posición cerrada y a partir de `octava` (el bajo, en la primera octava en que su nota alcanza el Do de
+    /// esa octava), con el cifrado encima. Los acordes muy extensos y la posición `.abierta` ponen el bajo una octava
+    /// más grave y el resto encima, y con eso suelen pasar al pentagrama doble. Sin armadura, salvo la de `.tonalidad`
+    /// en las opciones. Su título es el cifrado (``Encabezado/tema``), en la notación con que se dibuja o se exporta.
     ///
     ///     Acorde("Sol7").partitura().musicXML()   // en Formatos
     public func partitura(octava: Int = 4, posicion: OpcionesDePentagrama.Posicion = .automatica) -> Partitura {
@@ -209,11 +208,11 @@ extension Arpegio {
         return partitura(octava: octava).svg(opciones: suyas)
     }
 
-    /// La partitura del arpegio, en redondas y sin ritmo (``Partitura/dibujaElRitmo``) o, con `ritmo: .uniforme(…)`, con ritmo
-    /// (``Partitura/Ritmo``): cada nota, en el orden del patrón y a partir de `octava`
-    /// (la del bajo), con las alteraciones que le hagan falta (sin armadura, salvo la de una tonalidad:
-    /// `OpcionesDePentagrama(armadura: .tonalidad(…))`) y el cifrado del acorde encima de la primera. Su título es
-    /// el nombre del arpegio (``Encabezado/tema``), en la notación con que se dibuja o se exporta.
+    /// La partitura del arpegio, en redondas y sin ritmo (``Partitura/dibujaElRitmo``) o, con `ritmo: .uniforme(…)`,
+    /// con ritmo (``Partitura/Ritmo``): cada nota, en el orden del patrón y a partir de `octava` (la del bajo), con las
+    /// alteraciones que le hagan falta (sin armadura, salvo la de una tonalidad: `OpcionesDePentagrama(armadura:
+    /// .tonalidad(…))`) y el cifrado del acorde encima de la primera. Su título es el nombre del arpegio
+    /// (``Encabezado/tema``), en la notación con que se dibuja o se exporta.
     ///
     ///     Arpegio(Acorde("Do7")).partitura().musicXML()                         // en Formatos
     ///     Arpegio(Acorde("Do7")).partitura(ritmo: .uniforme(.corchea)).svg()   // en corcheas
@@ -226,8 +225,8 @@ extension Arpegio {
 
 extension Acorde {
     /// La partitura del acorde arpegiado en unas alturas cualesquiera (las de una posición del mástil), escritas con
-    /// sus notas (Si♭, no La♯, en Do7) y con el cifrado encima de la primera, si `porEvento` no le da otro. Con
-    /// `ritmo: .uniforme(…)`, con ritmo (``Partitura/Ritmo``); sin él, en redondas y sin ritmo (``Partitura/dibujaElRitmo``).
+    /// sus notas (Si♭, no La♯, en Do7) y con el cifrado encima de la primera, si `porEvento` no le da otro. Con `ritmo:
+    /// .uniforme(…)`, con ritmo (``Partitura/Ritmo``); sin él, en redondas y sin ritmo (``Partitura/dibujaElRitmo``).
     /// Lo que se anota en cada nota va en `porEvento`, por su índice desde 0, y las pulsaciones son las de `tablatura`
     /// si `porEvento` no trae las suyas. Si no se da `titulo`, el de la partitura es el cifrado (``Encabezado/tema``),
     /// en la notación con que se dibuja o se exporta.

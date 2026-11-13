@@ -4,7 +4,8 @@ import Testing
 @testable import Elementos
 @testable import Teoria
 
-/// La tradición y la subtradición de cada escala, las listas de `listasTradicionales` y sus nombres.
+/// La tradición, los estilos, las escuelas y las regiones de cada escala, las listas de `listasTradicionales` y sus
+/// nombres.
 @Suite struct TradicionTests {
     /// Las listas de `listasTradicionales` reparten todas las escalas de otras tradiciones, cada una en la suya, y
     /// cada una dice en su declaración su categoría, su versión microtonal y, si la tiene, su escala madre.
@@ -40,7 +41,7 @@ import Testing
         #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).tradicion == nil)
     }
 
-    /// La tradición de la ficha casa con todo lo que la dice: su categoría, sus subtradiciones, su fuente y las de
+    /// La tradición de la ficha casa con todo lo que la dice: su categoría, sus estilos y regiones, su fuente y las de
     /// sus afinaciones. Y cada escala del catálogo tiene una.
     @Test func laTradicionDeLaFichaCasaConSusDatos() {
         for tipo in TipoDeEscala.catalogo {
@@ -86,55 +87,50 @@ import Testing
     }
 
     /// Las escuelas y las regiones: las de la declaración, o la escuela que da la categoría (en la India).
-    @available(*, deprecated, message: "prueba Subtradicion, que es obsoleta")
-    @Test func lasSubtradiciones() {
+    @Test func lasEscuelasYLasRegiones() {
         #expect(TipoDeEscala.mohanam.escuelas == [.carnatica])
         #expect(TipoDeEscala.melakarta(15)?.escuelas == [.carnatica])
         #expect(TipoDeEscala.kafi.escuelas == [.indostanica])
-        #expect(TipoDeEscala.kafi.subtradiciones == [.escuela(.indostanica)])
         #expect(TipoDeEscala.pelogTembung.regiones == [.bali])
         #expect(TipoDeEscala.pelogLima.regiones == [.java])
         #expect(TipoDeEscala.gaitaEscocesa.regiones == [.escocia])
         // El sléndro se toca en Java y en Bali.
         #expect(TipoDeEscala.slendro.regiones == [.java, .bali])
-        #expect(TipoDeEscala.slendro.subtradiciones == [.region(.java), .region(.bali)])
-        #expect(TipoDeEscala.dorico.subtradiciones == [.estilo(.jazz), .estilo(.clasica)])
-        #expect(TipoDeEscala.hitzaz.subtradiciones.isEmpty)
         #expect(TipoDeEscala.mayor.regiones.isEmpty)
-        #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).subtradiciones.isEmpty)
+        #expect(TipoDeEscala.dorico.estilos == [.jazz, .clasica])
+        #expect(TipoDeEscala.hitzaz.escuelas.isEmpty && TipoDeEscala.hitzaz.regiones.isEmpty)
+        #expect(Escuela.gagaku.tradicion == .japon)
+        let mia = TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta])
+        #expect(mia.estilos.isEmpty && mia.escuelas.isEmpty && mia.regiones.isEmpty)
         #expect(RegionDeEscala.java.tipos.count == 7)
         #expect(TipoDeEscala.degung.regiones == [.sunda] && RegionDeEscala.sunda.tradicion == .indonesia)
         #expect(RegionDeEscala.bali.tipos.count == 4)
-        #expect(Subtradicion.region(.bali).tipos == RegionDeEscala.bali.tipos)
-        #expect(Subtradicion.escuela(.gagaku).tradicion == .japon)
-        #expect(Subtradicion.estilo(.jazz).tradicion == .occidental)
         // Toda escala de la India tiene escuela, y cada estilo, cada escuela y cada región tiene alguna escala.
         for tipo in TipoDeEscala.tradicionales(tradicion: .india) {
             #expect(!tipo.escuelas.isEmpty, Comment(rawValue: tipo.nombre))
         }
-        for subtradicion in Subtradicion.todas {
-            #expect(!subtradicion.tipos.isEmpty, "\(subtradicion)")
-            #expect(subtradicion.tipos.allSatisfy { $0.tradicion == subtradicion.tradicion }, "\(subtradicion)")
+        for estilo in Estilo.allCases { #expect(!estilo.tipos.isEmpty, "\(estilo)") }
+        for escuela in Escuela.allCases {
+            #expect(!escuela.tipos.isEmpty, "\(escuela)")
+            #expect(escuela.tipos.allSatisfy { $0.tradicion == escuela.tradicion }, "\(escuela)")
         }
+        for region in RegionDeEscala.allCases { #expect(!region.tipos.isEmpty, "\(region)") }
         #expect(Escuela.carnatica.nombre == "Carnática")
         #expect(Escuela.carnatica.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Carnatic")
         #expect(RegionDeEscala.java.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ruso)) == "Ява")
-        #expect(Subtradicion.region(.java).nombre == "Java")
     }
 
-    /// Cada subtradición tiene nombre en los trece idiomas y se codifica por su nombre de caso.
-    @available(*, deprecated, message: "prueba Subtradicion, que es obsoleta")
-    @Test func lasSubtradicionesSeTraducenYSeCodifican() throws {
-        for subtradicion in Subtradicion.todas {
-            #expect(subtradicion.nombre(en: .compacta(.espanol)) == subtradicion.nombre)
+    /// Cada estilo, escuela y región tiene nombre en los trece idiomas y se codifica por su nombre de caso.
+    @Test func losEstilosLasEscuelasYLasRegionesSeTraducenYSeCodifican() throws {
+        let nombrables: [any Nombrable] = Estilo.allCases + Escuela.allCases + RegionDeEscala.allCases
+        for nombrable in nombrables {
+            #expect(nombrable.nombre(en: .compacta(.espanol)) == nombrable.nombre)
             for idioma in Idioma.allCases {
                 #expect(
-                    !subtradicion.nombre(en: Notacion.compacta(.espanol).conTextos(en: idioma)).isEmpty,
-                    Comment(rawValue: "\(subtradicion) en \(idioma)"))
+                    !nombrable.nombre(en: Notacion.compacta(.espanol).conTextos(en: idioma)).isEmpty,
+                    Comment(rawValue: "\(nombrable) en \(idioma)"))
             }
         }
-        #expect(
-            Subtradicion.todas.count == Estilo.allCases.count + Escuela.allCases.count + RegionDeEscala.allCases.count)
         for estilo in Estilo.allCases { #expect(Estilo(rawValue: estilo.rawValue) == estilo) }
         for region in RegionDeEscala.allCases { #expect(RegionDeEscala(rawValue: region.rawValue) == region) }
         let estilos = try JSONEncoder().encode(Estilo.allCases)
@@ -142,7 +138,5 @@ import Testing
         let escuelas = try JSONEncoder().encode(Escuela.allCases)
         #expect(String(decoding: escuelas, as: UTF8.self).contains("\"indostanica\""))
         #expect(try JSONDecoder().decode([Estilo].self, from: estilos) == Estilo.allCases)
-        let todas = try JSONEncoder().encode(Subtradicion.todas)
-        #expect(try JSONDecoder().decode([Subtradicion].self, from: todas) == Subtradicion.todas)
     }
 }

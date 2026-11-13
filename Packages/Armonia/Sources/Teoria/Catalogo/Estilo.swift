@@ -97,11 +97,16 @@ package struct FichaDelCatalogo: Sendable {
     /// La obra más antigua que lo da, con su año: la partitura de «Tristan und Isolde» (1859) en el acorde de
     /// Tristán. De ahí sale su época de origen.
     package let documentada: Referencia?
+    /// El año en que aparece, si no lo da `documentada`: el de Werckmeister III (1691), el del La 440 (1939).
+    package let anio: Int?
 
-    package init(estilos: [Estilo] = [], referencias: [Referencia] = [], documentada: Referencia? = nil) {
+    package init(
+        estilos: [Estilo] = [], referencias: [Referencia] = [], documentada: Referencia? = nil, anio: Int? = nil
+    ) {
         self.estilos = Estilo.sinRepetir(estilos)
         self.referencias = Referencia.unicas([documentada].compactMap { $0 } + referencias)
         self.documentada = documentada
+        self.anio = anio
     }
 }
 
