@@ -57,6 +57,8 @@ struct TextosDeConsola: TextosTraducidos {
     let sintaxisEscala: String
     let descripcionEscala: String
     let notasEscala: String
+
+    // MARK: Catalogos/Ayuda+Catalogos.swift
     let sintaxisEscalas: String
     let descripcionEscalas: String
     let notasEscalas: String
@@ -79,6 +81,8 @@ struct TextosDeConsola: TextosTraducidos {
     let sintaxisAcordesConNombre: String
     let descripcionAcordesConNombre: String
     let notasAcordesConNombre: String
+
+    // MARK: Ayuda+Consultas.swift (tonalidad, conjunto y serie)
     let sintaxisTonalidad: String
     let descripcionTonalidad: String
     let sintaxisConjunto: String
@@ -204,7 +208,7 @@ struct TextosDeConsola: TextosTraducidos {
     let manualRutaDelPrograma: Plantilla  // {1} programa
     let manualCodigosDeSalida: [String]
 
-    // MARK: ErrorDeUso.swift (armonización)
+    // MARK: ErrorDeUso+Textos.swift (armonización)
     let faltanAcordes: Plantilla  // {1} ejemplo
     let dosAcordes: Plantilla  // {1} ejemplo
     let faltanNotasDeLaArmonizacion: Plantilla  // {1} ejemplo
@@ -212,7 +216,7 @@ struct TextosDeConsola: TextosTraducidos {
     let faltanVocesDelContrapunto: Plantilla  // {1} ejemplo
     let especieFueraDeRango: String
 
-    // MARK: ErrorDeUso.swift (consultas)
+    // MARK: ErrorDeUso+Textos.swift (consultas)
     let faltaCifrado: Plantilla  // {1} ejemplo
     let patronDesconocido: Plantilla  // {1} patron
     let tradicionDesconocida: Plantilla  // {1} tradicion
@@ -251,7 +255,7 @@ struct TextosDeConsola: TextosTraducidos {
     let sinContrapuntoPosible: String
     let faltaTransporte: Plantilla  // {1} ejemplo
 
-    // MARK: ErrorDeUso.swift (dibujos)
+    // MARK: ErrorDeUso+Textos.swift (dibujos)
     let margenFueraDeRango: String
     let faltaAcorde: Plantilla  // {1} ejemplo
     let faltanClasesDelDibujo: Plantilla  // {1} ejemplo
@@ -262,7 +266,7 @@ struct TextosDeConsola: TextosTraducidos {
     let cicloSoloTriadas: Plantilla  // {1} ejemplo
     let opcionesDeCuadricula: String
 
-    // MARK: ErrorDeUso.swift (neorriemanniana)
+    // MARK: ErrorDeUso+Textos.swift (neorriemanniana)
     let vocesFueraDeRango: String
     let unAcordeDeVecinos: Plantilla  // {1} ejemplo
     let vecinosSinFamilia: String
@@ -270,7 +274,7 @@ struct TextosDeConsola: TextosTraducidos {
     let faltanPasosDePLR: Plantilla  // {1} ejemplo
     let plrSoloTriadas: Plantilla  // {1} ejemplo
 
-    // MARK: ErrorDeUso.swift (partituras)
+    // MARK: ErrorDeUso+Textos.swift (partituras)
     let faltaTipoDePartitura: Plantilla  // {1} ejemplo
     let instrumentoMIDI: String
     let marcasSoloMusicXML: String
@@ -286,7 +290,7 @@ struct TextosDeConsola: TextosTraducidos {
     let acordesConCifradosYAnalisis: String
     let tipoDePartituraDesconocido: Plantilla  // {1} tipo
 
-    // MARK: ErrorDeUso.swift (grabado)
+    // MARK: ErrorDeUso+Textos.swift (grabado)
     let faltaLoQueSeGraba: Plantilla  // {1} ejemplo
     let motorDesconocido: Plantilla  // {1} motor
     let formatoDeGrabadoDesconocido: Plantilla  // {1} formato
@@ -304,7 +308,7 @@ struct TextosDeConsola: TextosTraducidos {
     /// El nombre de `--motor propio` en el idioma de las órdenes.
     let motorPropio: String
 
-    // MARK: ErrorDeUso.swift (digitaciones)
+    // MARK: ErrorDeUso+Textos.swift (digitaciones)
     let faltaInstrumento: Plantilla  // {1} ejemplo
     let instrumentoDesconocido: @Sendable (String, (Notacion) -> String) -> String
     let faltaLimite: String
@@ -327,7 +331,7 @@ struct TextosDeConsola: TextosTraducidos {
     let aproximacionDesconocida: Plantilla  // {1} aproximacion
     let secuenciaDesconocida: Plantilla  // {1} secuencia
 
-    // MARK: ErrorDeUso.swift (comunes)
+    // MARK: ErrorDeUso+Textos.swift (comunes)
     let pruebaLaAyuda: String
     let ordenDesconocida: Plantilla  // {1} orden
     let opcionDesconocida: Plantilla  // {1} opcion

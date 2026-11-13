@@ -54,6 +54,8 @@ extension TextosDeConsola {
         sintaxisEscala: "escala <eskala> [--acordes]",
         descripcionEscala: "eskala baten notak eta akordeak\n--acordes: gradu bakoitzean sartzen diren guztiak, ez hirurenak bakarrik",
         notasEscala: "aukerak: --secuencia terceras (edo cuartas, grupos-de-3, grupos-de-4, triadas, cuatriadas), --bajando, --octavas 2 (1etik 4ra), --dedos (hatzkera), --modos (paraleloak eta erlatiboak) eta --comparar Do lidio (amaieran); --simetria (zenbatero errepikatzen den eta bere akordeak); --vecinas (nota bat mugituta ateratzen direnak) eta --doce (hamabi tonalitateetan); --doce --acordes (gradu bakoitzeko akordeak; --triadas, zazpigarrenik gabe); --estadisticas (nota kopurua, distira, tarte-bektorea…); --escalera (ilunenetik distiratsuenera, aldi bakoitzean nota bat igoz); --parecidas (harekin nota gehien partekatzen dituztenak, gutxien aldatzen denetik gehien aldatzen denera); --progresiones (bere hirukoteekin egindako progresioak, graduekin eta maiorrean edo minorrean ez dauden notekin); --bibtex (bere erreferentzia bibliografikoak, BibTeX-en); --tetracordos (bi tetrakordetan dituen banaketak, bakoitzaren izenekin)",
+
+        // Catalogos/Ayuda+Catalogos.swift
         sintaxisEscalas: "escalas [<testua>] [aukerak]",
         descripcionEscalas: "eskalen katalogoa: ohikoak eta beste tradizio batzuetakoak, kategoriaka, Do-tik hasitako notekin",
         notasEscalas: "aukerak: --tradicion turquia (edo india, grecia, grecia-antigua, mundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia, africa, sudeste-asiatico, gregoriano, europa, vietnam, brasil, renacimiento) eta --categoria maqam (edo rāga, makam, dastgah, dromos…); --fuente ptolomeo (edo arquitas, aristoxeno, didimo, guido, glareano…) teoriko baten eskalak uzten ditu; --estilo jazz (edo clasica, blues, de-compositor, folclore, flamenco, pop-rock, popular, sintetica, bebop, modal, impresionismo, rock, heavy-metal, metal-neoclasico) ohikoak iragazten ditu; --lugar espana (edo europa, levante, bizancio, romani, andalucia…) leku bateko eskalak uzten ditu, jatorrizkoak edo erabilerakoak, eta --agrupar continente (edo pais, epoca) jatorriko lekuaren edo garaiaren arabera taldekatzen ditu; --epoca barroco (edo antiguedad, edad-media, renacimiento, clasicismo, romanticismo, siglo-xx, siglo-xxi, tonal) garai bateko eskalak uzten ditu, jatorrizkoak edo erabilerakoak, eta --escuela carnatica (edo indostanica, india-antigua, gagaku) eskola batekoak; --afecto lastimero (edo triste, devoto, majestuoso…) afektu hori iturriren batean dutenak uzten ditu; --notas 5 bost notakoak bakarrik uzten ditu; --orden brillo (edo notas) ordenatzen ditu, eta --sin-semitonos eta --regulares anhemitonikoak eta ahalik eta erregularrenak uzten dituzte; --fragmentos zortzidun bat baino laburragoak diren zatiak bakarrik uzten ditu (tetrakordoak, ajnas, hexakordoak) eta --sin-fragmentos kendu egiten ditu; --afinacion microtonal (edo temperada, justa, partes-iguales) afinazio horretakoak uzten ditu; --con-intervalo tritono eta --sin-intervalo semitono (edo 1etik 6rako zenbaki bat) eta --con-paso 3 tarteen arabera bilatzen dute; --comparar Do mayor, Do lidio taula batean jartzen ditu; --mapa distira-mapa batean marrazten ditu (SVG); testu batek izenetan bilatzen du; --vecinas Re dórico, --parecidas Re dórico eta --escalera Re dórico eskala batetik ateratzen direnak ematen dituzte, escala-n bezala",
@@ -76,6 +78,8 @@ extension TextosDeConsola {
         sintaxisAcordesConNombre: "acordes [<testua>] [aukerak]",
         descripcionAcordesConNombre: "katalogoko akordeak, beren notekin Do-ren gainean, edo --sobre-ren notaren gainean; testu batekin, izenean daramatenak",
         notasAcordesConNombre: "aukerak: --notas 4 (edo tétrada) lau notakoak uzten ditu; --estilo jazz (edo clasica, blues, de-compositor, pop-rock, popular) estilo batekoak; --epoca romanticismo (edo barroco, siglo-xx…) garai batekoak, jatorrizkoak edo erabilerakoak; --afecto alegre (edo triste, lastimero…), afektu hori iturriren batean dutenak; --por-terceras eta --no-por-terceras, hirudunka irakurtzen direnak eta ez direnak; --sin-semitonos, anhemitonikoak; --con-intervalo tritono eta --sin-intervalo semitono (edo 1etik 6rako zenbaki bat) tarteen arabera bilatzen dute; --orden brillo (edo notas, consonancia) ordenatzen ditu; --estadisticas taula batean jartzen ditu bakoitzari neurtzen zaionarekin, eta --resumen zenbatzen du zenbat dauden nota kopuru bakoitzeko, estilo bakoitzeko eta hirudunka",
+
+        // Ayuda+Consultas.swift (tonalidad, conjunto y serie)
         sintaxisTonalidad: "tonalidad <tonalitatea>",
         descripcionTonalidad: "armadura, erlatiboak eta graduak; --modulaciones: tonu auzo bakoitzera nola iritsi (edo --modulaciones Sol mayor, horretara), akorde pibotearekin",
         sintaxisConjunto: "conjunto <klaseak>",
@@ -228,7 +232,7 @@ extension TextosDeConsola {
         manualRutaDelPrograma: "{1} programaren bidea, PATHean ez badago.",
         manualCodigosDeSalida: ["Dena ondo joan da.", "Irakurri ezin den testu edo fitxategi bat, edo emateko ezer ez.", "Agindua gaizki idatzita dago.", "revisar edo contrapunto aginduek akatsak aurkitu dituzte."],
 
-        // ErrorDeUso.swift (armonización)
+        // ErrorDeUso+Textos.swift (armonización)
         faltanAcordes: "akordeak falta dira: {1}",
         dosAcordes: "bi akorde behar dira: {1}",
         faltanNotasDeLaArmonizacion: "melodiaren notak falta dira: {1}",
@@ -236,7 +240,7 @@ extension TextosDeConsola {
         faltanVocesDelContrapunto: "cantus firmusa eta kontrapuntua falta dira, / batez bereizita: {1}",
         especieFueraDeRango: "--especie 1etik 5era doa",
 
-        // ErrorDeUso.swift (consultas)
+        // ErrorDeUso+Textos.swift (consultas)
         faltaCifrado: "zifratua falta da: {1}",
         patronDesconocido: "eredu ezezaguna: «{1}» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado edo alberti)",
         tradicionDesconocida: "«{1}» ez da tradizio bat (india, grecia, mundo-arabe, persia, turquia…)",
@@ -274,7 +278,7 @@ extension TextosDeConsola {
         sinContrapuntoPosible: "ez dago lehen espeziko kontrapuntu akatsik gaberik cantus firmus horren gainean",
         faltaTransporte: "tartea (edo tonika berria) eta transposatzen dena falta dira: {1}",
 
-        // ErrorDeUso.swift (dibujos)
+        // ErrorDeUso+Textos.swift (dibujos)
         margenFueraDeRango: "marjina 0tik 6ra bitarteko zenbaki bat da: --margen 2",
         faltaAcorde: "akordea falta da: {1}",
         faltanClasesDelDibujo: "altuera-klaseak falta dira: {1}",
@@ -285,7 +289,7 @@ extension TextosDeConsola {
         cicloSoloTriadas: "zikloa triade handi edo txiki batean hasten da: {1}",
         opcionesDeCuadricula: "laukisarearen aukerak: --ejes H,V (1,5), --rejilla CxF (8x8), --origen <altuera> (Do2), --giro 0-3",
 
-        // ErrorDeUso.swift (neorriemanniana)
+        // ErrorDeUso+Textos.swift (neorriemanniana)
         vocesFueraDeRango: "mugitzen diren ahotsak 1 edo 2 dira: --voces 2",
         unAcordeDeVecinos: "akorde bat behar da: {1}",
         vecinosSinFamilia: "auzokideak dominanteko zazpigarrenen, txikien, erdi-gutxituen, gutxituen eta maj7en artean bilatzen dira, edo triade handi, txiki eta gehituen artean",
@@ -293,7 +297,7 @@ extension TextosDeConsola {
         faltanPasosDePLR: "triade bat eta urrats batzuk edo beste triade bat behar dira: {1}",
         plrSoloTriadas: "P, L eta R triade handi eta txikiei aplikatzen zaizkie: {1}",
 
-        // ErrorDeUso.swift (partituras)
+        // ErrorDeUso+Textos.swift (partituras)
         faltaTipoDePartitura: "«melodia», «coral» edo «acordes» falta da: {1}",
         instrumentoMIDI: "programa 0tik 127ra bitarteko General MIDI zenbaki bat da: --programa 52",
         marcasSoloMusicXML: "--cifrados eta --analisis MusicXML, MEI, LilyPond, GUIDO eta ABCrako dira",
@@ -319,7 +323,7 @@ extension TextosDeConsola {
         motorNoInstalado: "ez dago instalatuta (edo jarri bidea {1} aldagaian)",
         motorPropio: "propio",
 
-        // ErrorDeUso.swift (digitaciones)
+        // ErrorDeUso+Textos.swift (digitaciones)
         faltaInstrumento: "instrumentua falta da: {1}",
         instrumentoDesconocido: { nombre, lista in "instrumentu ezezaguna: «\(nombre)» (\(lista(.conPalabras(.euskera))))" },
         faltaLimite: "hatz-jarrera kopurua falta da: --limite 5",
@@ -342,7 +346,7 @@ extension TextosDeConsola {
         aproximacionDesconocida: "hurbilketa ezezaguna: «{1}» (abajo, arriba edo encierro)",
         secuenciaDesconocida: "sekuentzia ezezaguna: «{1}» (terceras, cuartas, grupos-de-3, grupos-de-4, triadas edo cuatriadas)",
 
-        // ErrorDeUso.swift (comunes)
+        // ErrorDeUso+Textos.swift (comunes)
         pruebaLaAyuda: "Probatu «armonia ayuda».",
         ordenDesconocida: "agindu ezezaguna: «{1}»",
         opcionDesconocida: "aukera ezezaguna: «{1}»",

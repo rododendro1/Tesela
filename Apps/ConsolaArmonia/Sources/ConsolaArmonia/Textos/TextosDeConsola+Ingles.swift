@@ -54,6 +54,8 @@ extension TextosDeConsola {
         sintaxisEscala: "scale <scale> [--chords]",
         descripcionEscala: "notes and chords of a scale\n--chords: every chord that fits on each degree, not only stacked thirds",
         notasEscala: "options: --sequence thirds (or fourths, groups-of-3, groups-of-4, triads, sevenths), --descending, --octaves 2 (from 1 to 4), --fingers (fingering), --modes (parallel and relative) and --compare C lydian (at the end); --symmetry (how often it repeats and its chords); --neighbors (moving one note) and --all-keys (in all twelve keys); --all-keys --chords (the chords of each degree; --triads, without sevenths); --statistics (number of notes, brightness, interval vector…); --brightness-ladder (from darkest to brightest, raising one note each time); --closest (those sharing the most notes with it, from the one that changes least); --progressions (progressions with its triads, with the degrees and the notes outside the major or minor); --bibtex (its bibliographic references, in BibTeX); --tetrachords (its divisions into two tetrachords, with the names of each)",
+
+        // Catalogos/Ayuda+Catalogos.swift
         sintaxisEscalas: "scales [<text>] [options]",
         descripcionEscalas: "the catalog of scales: the common ones and those of other traditions, by category, with their notes from C",
         notasEscalas: "options: --tradition turkey (or india, greece, ancient-greece, arab-world, persia, azerbaijan, china, japan, korea, ethiopia, indonesia, klezmer, andes, byzantium, mesopotamia, africa, southeast-asia, gregorian, europe, vietnam, brazil, renaissance) and --category maqam (or rāga, makam, dastgah, dromos…); --source ptolemy (or archytas, aristoxenus, didymus, glarean…) keeps those of one theorist; --style jazz (or classical, blues, composer, folk, flamenco, pop-rock, popular, synthetic, bebop, modal, impressionism, rock, heavy-metal, neoclassical-metal) filters the common ones; --place spain (or europe, levant, byzantium, romani, andalusia…) keeps those of a place, of origin or of use, and --group-by continent (or country, era) groups them by their place or era of origin; --era baroque (or antiquity, middle-ages, renaissance, classicism, romanticism, 20th-century, 21st-century, tonal) keeps those of an era, of origin or of use, and --school carnatic (or hindustani, ancient-india, gagaku) those of a school; --affect plaintive (or sad, devotional, majestic…) keeps those with that affect in one of their sources; --notes 5 keeps only the five-note ones; --sort brightness (or notes) sorts them, and --anhemitonic and --maximally-even keep the anhemitonic and the maximally even ones; --fragments keeps only the fragments shorter than an octave (tetrachords, ajnas, hexachords) and --no-fragments leaves them out; --tuning microtonal (or tempered, just, equal-divisions) keeps the ones with that tuning; --with-interval tritone and --without-interval semitone (or a number from 1 to 6) and --with-step 3 search by intervals; --compare C major, C lydian puts them in a table; --map draws them on a brightness map (SVG); a text searches the names; --neighbors D dorian, --closest D dorian and --brightness-ladder D dorian give the scales that come from one, as in scale",
@@ -76,6 +78,8 @@ extension TextosDeConsola {
         sintaxisAcordesConNombre: "chords [<text>] [options]",
         descripcionAcordesConNombre: "the catalog's chords with their notes on C, or on the note of --over; with a text, those whose name contains it",
         notasAcordesConNombre: "options: --notes 4 (or tetrad) keeps the four-note ones; --style jazz (or classical, blues, composer, pop-rock, popular) those of a style; --era romanticism (or baroque, 20th-century…) those of an era, of origin or of use; --affect joyful (or sad, plaintive…) those with that affect in one of their sources; --tertian and --non-tertian, those built in thirds and those that are not; --anhemitonic, those without semitones; --with-interval tritone and --without-interval semitone (or a number from 1 to 6) search by their intervals; --sort brightness (or notes, consonance) sorts them; --statistics puts them in a table with what is measured of each, and --summary counts how many there are of each number of notes, of each style and in thirds",
+
+        // Ayuda+Consultas.swift (tonalidad, conjunto y serie)
         sintaxisTonalidad: "key <key>",
         descripcionTonalidad: "key signature, relatives and degrees; --modulations: how to reach each closely related key (or --modulations G major, that one), with the pivot chord",
         sintaxisConjunto: "set <pcs>",
@@ -229,7 +233,7 @@ extension TextosDeConsola {
         manualRutaDelPrograma: "The path to {1}, if it is not in the PATH.",
         manualCodigosDeSalida: ["Everything went well.", "A text or file that cannot be read, or nothing to give.", "The command is badly written.", "check or counterpoint found mistakes."],
 
-        // ErrorDeUso.swift (armonización)
+        // ErrorDeUso+Textos.swift (armonización)
         faltanAcordes: "missing the chords: {1}",
         dosAcordes: "two chords are needed: {1}",
         faltanNotasDeLaArmonizacion: "missing the notes of the melody: {1}",
@@ -237,7 +241,7 @@ extension TextosDeConsola {
         faltanVocesDelContrapunto: "missing the cantus firmus and the counterpoint, separated by /: {1}",
         especieFueraDeRango: "--species goes from 1 to 5",
 
-        // ErrorDeUso.swift (consultas)
+        // ErrorDeUso+Textos.swift (consultas)
         faltaCifrado: "missing the chord symbol: {1}",
         patronDesconocido: "unknown pattern: \"{1}\" (ascending, descending, up-down, down-up, broken or alberti)",
         tradicionDesconocida: "\"{1}\" is not a tradition (india, greece, arab-world, persia, turkey…)",
@@ -275,7 +279,7 @@ extension TextosDeConsola {
         sinContrapuntoPosible: "there is no first-species counterpoint without faults on that cantus firmus",
         faltaTransporte: "missing the interval (or the new tonic) and what to transpose: {1}",
 
-        // ErrorDeUso.swift (dibujos)
+        // ErrorDeUso+Textos.swift (dibujos)
         margenFueraDeRango: "the margin is a number from 0 to 6: --margin 2",
         faltaAcorde: "missing the chord: {1}",
         faltanClasesDelDibujo: "missing the pitch classes: {1}",
@@ -286,7 +290,7 @@ extension TextosDeConsola {
         cicloSoloTriadas: "the cycle starts on a major or minor triad: {1}",
         opcionesDeCuadricula: "grid options: --axes H,V (1,5), --grid CxR (8x8), --origin <pitch> (C2), --rotate 0-3",
 
-        // ErrorDeUso.swift (neorriemanniana)
+        // ErrorDeUso+Textos.swift (neorriemanniana)
         vocesFueraDeRango: "the moving voices are 1 or 2: --voices 2",
         unAcordeDeVecinos: "one chord is needed: {1}",
         vecinosSinFamilia: "neighbors are searched among dominant, minor, half-diminished, diminished and maj7 sevenths, or among major, minor and augmented triads",
@@ -294,7 +298,7 @@ extension TextosDeConsola {
         faltanPasosDePLR: "a triad and some steps or another triad are needed: {1}",
         plrSoloTriadas: "P, L and R apply to major and minor triads: {1}",
 
-        // ErrorDeUso.swift (partituras)
+        // ErrorDeUso+Textos.swift (partituras)
         faltaTipoDePartitura: "missing \"melody\", \"chorale\" or \"chords\": {1}",
         instrumentoMIDI: "the program is a General MIDI number from 0 to 127: --program 52",
         marcasSoloMusicXML: "--chord-symbols and --analysis are for MusicXML, MEI, LilyPond, GUIDO and ABC",
@@ -320,7 +324,7 @@ extension TextosDeConsola {
         motorNoInstalado: "not installed (or set {1} to its path)",
         motorPropio: "own",
 
-        // ErrorDeUso.swift (digitaciones)
+        // ErrorDeUso+Textos.swift (digitaciones)
         faltaInstrumento: "missing the instrument: {1}",
         instrumentoDesconocido: { nombre, lista in "unknown instrument: \"\(nombre)\" (\(lista(.ascii(.ingles))))" },
         faltaLimite: "missing the number of fingerings: --limit 5",
@@ -343,7 +347,7 @@ extension TextosDeConsola {
         aproximacionDesconocida: "unknown approach: \"{1}\" (below, above or enclosure)",
         secuenciaDesconocida: "unknown sequence: \"{1}\" (thirds, fourths, groups-of-3, groups-of-4, triads or sevenths)",
 
-        // ErrorDeUso.swift (comunes)
+        // ErrorDeUso+Textos.swift (comunes)
         pruebaLaAyuda: "Try \"armonia help\".",
         ordenDesconocida: "unknown command: \"{1}\"",
         opcionDesconocida: "unknown option: \"{1}\"",

@@ -54,6 +54,8 @@ extension TextosDeConsola {
         sintaxisEscala: "escala <escala> [--acordes]",
         descripcionEscala: "notas y acordes de una escala\n--acordes: todos los que caben en cada grado, no solo los de terceras",
         notasEscala: "opciones: --secuencia terceras (o cuartas, grupos-de-3, grupos-de-4, triadas, cuatriadas), --bajando, --octavas 2 (de 1 a 4), --dedos (digitación), --modos (paralelos y relativos) y --comparar Do lidio (al final); --simetria (cada cuánto se repite y sus acordes); --vecinas (las que salen de mover una nota) y --doce (en las doce tonalidades); --doce --acordes (los acordes de cada grado; --triadas, sin séptima); --estadisticas (número de notas, brillo, vector interválico…); --escalera (de la más oscura a la más brillante, subiendo una nota cada vez); --parecidas (las que comparten más notas con ella, de la que menos cambia a la que más); --progresiones (progresiones con sus tríadas, con los grados y las notas que no son de la mayor o la menor); --bibtex (sus referencias bibliográficas, en BibTeX); --tetracordos (sus divisiones en dos tetracordos, con los nombres de cada uno)",
+
+        // Catalogos/Ayuda+Catalogos.swift
         sintaxisEscalas: "escalas [<texto>] [opciones]",
         descripcionEscalas: "el catálogo de escalas: las habituales y las de otras tradiciones, por categorías, con sus notas desde Do",
         notasEscalas: "opciones: --tradicion turquia (o india, grecia, grecia-antigua, mundo-arabe, persia, azerbaiyan, china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia, africa, sudeste-asiatico, gregoriano, europa, vietnam, brasil, renacimiento) y --categoria maqam (o rāga, makam, dastgah, dromos…); --fuente ptolomeo (o arquitas, aristoxeno, didimo, guido, glareano…) deja las de un teórico; --estilo jazz (o clasica, blues, de-compositor, folclore, flamenco, pop-rock, popular, sintetica, bebop, modal, impresionismo, rock, heavy-metal, metal-neoclasico) filtra las habituales; --lugar espana (o europa, levante, bizancio, romani, andalucia…) deja las de un lugar, de origen o de uso, y --agrupar continente (o pais, epoca) las agrupa por su lugar o su época de origen; --epoca barroco (o antiguedad, edad-media, renacimiento, clasicismo, romanticismo, siglo-xx, siglo-xxi, tonal) deja las de una época, de origen o de uso, y --escuela carnatica (o indostanica, india-antigua, gagaku), las de una escuela; --afecto lastimero (o triste, devoto, majestuoso…) deja las que tienen ese afecto en alguna de sus fuentes; --notas 5 deja solo las de cinco notas; --orden brillo (o notas) las ordena, y --sin-semitonos y --regulares dejan las anhemitónicas y las máximamente regulares; --fragmentos deja solo los fragmentos de menos de una octava (tetracordos, ajnas, hexacordos) y --sin-fragmentos los quita; --afinacion microtonal (o temperada, justa, partes-iguales) deja las de esa afinación; --con-intervalo tritono y --sin-intervalo semitono (o un número del 1 al 6) y --con-paso 3 buscan por los intervalos; --comparar Do mayor, Do lidio las pone en una tabla; --mapa las dibuja en un mapa de brillo (SVG); un texto busca en los nombres; --vecinas Re dórico, --parecidas Re dórico y --escalera Re dórico dan las que salen de una escala, como en escala",
@@ -76,6 +78,8 @@ extension TextosDeConsola {
         sintaxisAcordesConNombre: "acordes [<texto>] [opciones]",
         descripcionAcordesConNombre: "los acordes del catálogo con sus notas sobre Do, o sobre la nota de --sobre; con un texto, los que lo tienen en el nombre",
         notasAcordesConNombre: "opciones: --notas 4 (o tétrada) deja los de cuatro notas; --estilo jazz (o clasica, blues, de-compositor, pop-rock, popular) los de un estilo; --epoca romanticismo (o barroco, siglo-xx…), los de una época, de origen o de uso; --afecto alegre (o triste, lastimero…), los que tienen ese afecto en alguna de sus fuentes; --por-terceras y --no-por-terceras, los que se leen por terceras y los que no; --sin-semitonos, los anhemitónicos; --con-intervalo tritono y --sin-intervalo semitono (o un número del 1 al 6) buscan por los intervalos; --orden brillo (o notas, consonancia) los ordena; --estadisticas los pone en una tabla con lo que se mide de cada uno, y --resumen cuenta cuántos hay de cada número de notas, de cada estilo y por terceras",
+
+        // Ayuda+Consultas.swift (tonalidad, conjunto y serie)
         sintaxisTonalidad: "tonalidad <tonalidad>",
         descripcionTonalidad: "armadura, relativas y grados; --modulaciones: cómo llegar a cada tono vecino (o --modulaciones Sol mayor, a esa), con el acorde pivote",
         sintaxisConjunto: "conjunto <clases>",
@@ -228,7 +232,7 @@ extension TextosDeConsola {
         manualRutaDelPrograma: "La ruta de {1}, si no está en el PATH.",
         manualCodigosDeSalida: ["Todo ha ido bien.", "Un texto o un fichero que no se puede leer, o nada que dar.", "La orden está mal escrita.", "revisar o contrapunto han encontrado faltas."],
 
-        // ErrorDeUso.swift (armonización)
+        // ErrorDeUso+Textos.swift (armonización)
         faltanAcordes: "faltan los acordes: {1}",
         dosAcordes: "hacen falta dos acordes: {1}",
         faltanNotasDeLaArmonizacion: "faltan las notas de la melodía: {1}",
@@ -236,7 +240,7 @@ extension TextosDeConsola {
         faltanVocesDelContrapunto: "faltan el cantus firmus y el contrapunto, separados por /: {1}",
         especieFueraDeRango: "--especie va de 1 a 5",
 
-        // ErrorDeUso.swift (consultas)
+        // ErrorDeUso+Textos.swift (consultas)
         faltaCifrado: "falta el cifrado: {1}",
         patronDesconocido: "patrón desconocido: «{1}» (ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado o alberti)",
         tradicionDesconocida: "«{1}»: no es una tradición (india, grecia, mundo-arabe, persia, turquia…)",
@@ -274,7 +278,7 @@ extension TextosDeConsola {
         sinContrapuntoPosible: "no hay ningún contrapunto de primera especie sin faltas sobre ese cantus firmus",
         faltaTransporte: "faltan el intervalo (o la nueva tónica) y lo que se transporta: {1}",
 
-        // ErrorDeUso.swift (dibujos)
+        // ErrorDeUso+Textos.swift (dibujos)
         margenFueraDeRango: "el margen es un número de 0 a 6: --margen 2",
         faltaAcorde: "falta el acorde: {1}",
         faltanClasesDelDibujo: "faltan las clases de altura: {1}",
@@ -285,7 +289,7 @@ extension TextosDeConsola {
         cicloSoloTriadas: "el ciclo empieza en una tríada mayor o menor: {1}",
         opcionesDeCuadricula: "opciones de la cuadrícula: --ejes H,V (1,5), --rejilla CxF (8x8), --origen <altura> (Do2), --giro 0-3",
 
-        // ErrorDeUso.swift (neorriemanniana)
+        // ErrorDeUso+Textos.swift (neorriemanniana)
         vocesFueraDeRango: "las voces que se mueven son 1 o 2: --voces 2",
         unAcordeDeVecinos: "hace falta un acorde: {1}",
         vecinosSinFamilia: "los vecinos se buscan entre séptimas de dominante, menores, semidisminuidas, disminuidas y maj7, o entre tríadas mayores, menores y aumentadas",
@@ -293,7 +297,7 @@ extension TextosDeConsola {
         faltanPasosDePLR: "hacen falta una tríada y unos pasos u otra tríada: {1}",
         plrSoloTriadas: "P, L y R se aplican a tríadas mayores y menores: {1}",
 
-        // ErrorDeUso.swift (partituras)
+        // ErrorDeUso+Textos.swift (partituras)
         faltaTipoDePartitura: "falta «melodia», «coral» o «acordes»: {1}",
         instrumentoMIDI: "el programa es un número General MIDI de 0 a 127: --programa 52",
         marcasSoloMusicXML: "--cifrados y --analisis son para MusicXML, MEI, LilyPond, GUIDO y ABC",
@@ -319,7 +323,7 @@ extension TextosDeConsola {
         motorNoInstalado: "no instalado (o pon su ruta en {1})",
         motorPropio: "propio",
 
-        // ErrorDeUso.swift (digitaciones)
+        // ErrorDeUso+Textos.swift (digitaciones)
         faltaInstrumento: "falta el instrumento: {1}",
         instrumentoDesconocido: { nombre, lista in "instrumento desconocido: «\(nombre)» (\(lista(.compacta(.espanol))))" },
         faltaLimite: "falta el número de digitaciones: --limite 5",
@@ -342,7 +346,7 @@ extension TextosDeConsola {
         aproximacionDesconocida: "aproximación desconocida: «{1}» (abajo, arriba o encierro)",
         secuenciaDesconocida: "secuencia desconocida: «{1}» (terceras, cuartas, grupos-de-3, grupos-de-4, triadas o cuatriadas)",
 
-        // ErrorDeUso.swift (comunes)
+        // ErrorDeUso+Textos.swift (comunes)
         pruebaLaAyuda: "Prueba «armonia ayuda».",
         ordenDesconocida: "orden desconocida: «{1}»",
         opcionDesconocida: "opción desconocida: «{1}»",

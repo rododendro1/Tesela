@@ -54,6 +54,8 @@ extension TextosDeConsola {
         sintaxisEscala: "scale <κλίμακα> [--chords]",
         descripcionEscala: "νότες και συγχορδίες μιας κλίμακας\n--chords: όλες όσες χωρούν σε κάθε βαθμίδα, όχι μόνο κατά τρίτες",
         notasEscala: "επιλογές: --sequence thirds (ή fourths, groups-of-3, groups-of-4, triads, sevenths), --descending, --octaves 2 (από 1 έως 4), --fingers (δακτυλοθεσία), --modes (παράλληλοι και σχετικοί) και --compare C lydian (στο τέλος); --symmetry (κάθε πόσο επαναλαμβάνεται και οι συγχορδίες της); --neighbors (μετακινώντας μία νότα) και --all-keys (και στις δώδεκα τονικότητες); --all-keys --chords (οι συγχορδίες κάθε βαθμίδας· --triads, χωρίς έβδομη); --statistics (αριθμός φθόγγων, φωτεινότητα, διάνυσμα διαστημάτων…); --brightness-ladder (από τη σκοτεινότερη στη φωτεινότερη, ανεβάζοντας μία νότα κάθε φορά); --closest (όσες μοιράζονται τις περισσότερες νότες μαζί της, από αυτή που αλλάζει λιγότερο)· --progressions (αλληλουχίες με τις τρίφωνές της, με τις βαθμίδες και τις νότες εκτός της ματζόρε ή της μινόρε); --bibtex (η βιβλιογραφία της, σε BibTeX); --tetrachords (οι διαιρέσεις της σε δύο τετράχορδα, με τα ονόματα του καθενός)",
+
+        // Catalogos/Ayuda+Catalogos.swift
         sintaxisEscalas: "scales [<κείμενο>] [επιλογές]",
         descripcionEscalas: "ο κατάλογος των κλιμάκων: οι συνήθεις και όσες άλλων παραδόσεων, ανά κατηγορία, με τις νότες τους από το Ντο",
         notasEscalas: "επιλογές: --tradition turkey (ή india, greece, ancient-greece, arab-world, persia, azerbaijan, china, japan, korea, ethiopia, indonesia, klezmer, andes, byzantium, mesopotamia, africa, southeast-asia, gregorian, europe, vietnam, brazil, renaissance) και --category maqam (ή rāga, makam, dastgah, dromos…); --source ptolemy (ή archytas, aristoxenus, didymus, glarean…) αφήνει μόνο του ενός θεωρητικού· --style jazz (ή classical, blues, composer, folk, flamenco, pop-rock, popular, synthetic, bebop, modal, impressionism, rock, heavy-metal, neoclassical-metal) φιλτράρει τις συνήθεις· --place spain (ή europe, levant, byzantium, romani, andalusia…) κρατά τις κλίμακες ενός τόπου, προέλευσης ή χρήσης, και --group-by continent (ή country, era) τις ομαδοποιεί κατά τόπο ή εποχή προέλευσης· --era baroque (ή antiquity, middle-ages, renaissance, classicism, romanticism, 20th-century, 21st-century, tonal) κρατά τις κλίμακες μιας εποχής, προέλευσης ή χρήσης, και --school carnatic (ή hindustani, ancient-india, gagaku) τις κλίμακες μιας σχολής· --affect plaintive (ή sad, devotional, majestic…) κρατά όσες έχουν αυτό το συναίσθημα σε μία από τις πηγές τους· --notes 5 κρατά μόνο όσες έχουν πέντε νότες· --sort brightness (ή notes) τις ταξινομεί, και --anhemitonic και --maximally-even κρατούν τις ανημιτονικές και τις μέγιστα ομοιόμορφες· το --fragments κρατά μόνο τα αποσπάσματα μικρότερα από μια οκτάβα (τετράχορδα, ajnas, εξάχορδα) και το --no-fragments τα αφαιρεί· το --tuning microtonal (ή tempered, just, equal-divisions) κρατά μόνο όσες έχουν αυτό το κούρδισμα· --with-interval tritone και --without-interval semitone (ή αριθμός από 1 έως 6) και --with-step 3 ψάχνουν κατά διαστήματα· --compare C major, C lydian τις βάζει σε πίνακα· --map τις σχεδιάζει σε χάρτη φωτεινότητας (SVG)· ένα κείμενο ψάχνει στα ονόματα· τα --neighbors D dorian, --closest D dorian και --brightness-ladder D dorian δίνουν τις κλίμακες που βγαίνουν από μία, όπως στο scale",
@@ -76,6 +78,8 @@ extension TextosDeConsola {
         sintaxisAcordesConNombre: "chords [<κείμενο>] [επιλογές]",
         descripcionAcordesConNombre: "οι συγχορδίες του καταλόγου με τις νότες τους πάνω στο Ντο ή στη νότα του --over· με ένα κείμενο, όσες το έχουν στο όνομα",
         notasAcordesConNombre: "επιλογές: --notes 4 (ή tetrad) κρατά τις τετράφωνες· --style jazz (ή classical, blues, composer, pop-rock, popular) όσες ανήκουν σε ένα ύφος· --era romanticism (ή baroque, 20th-century…) όσες ανήκουν σε μια εποχή, προέλευσης ή χρήσης· --affect joyful (ή sad, plaintive…) όσες έχουν αυτό το συναίσθημα σε μία από τις πηγές τους· --tertian και --non-tertian, όσες χτίζονται σε τρίτες και όσες όχι· --anhemitonic, όσες δεν έχουν ημιτόνια· --with-interval tritone και --without-interval semitone (ή ένας αριθμός από 1 έως 6) ψάχνουν με βάση τα διαστήματα· --sort brightness (ή notes, consonance) τις ταξινομεί· --statistics τις βάζει σε πίνακα με ό,τι μετριέται στην καθεμία, και --summary μετρά πόσες υπάρχουν ανά αριθμό φθόγγων, ανά ύφος και σε τρίτες",
+
+        // Ayuda+Consultas.swift (tonalidad, conjunto y serie)
         sintaxisTonalidad: "key <τονικότητα>",
         descripcionTonalidad: "οπλισμός, σχετικές τονικότητες και βαθμίδες; --modulations: πώς φτάνεις σε κάθε συγγενική τονικότητα (ή --modulations G major, σε αυτή), με τη συγχορδία-άξονα",
         sintaxisConjunto: "set <κλάσεις>",
@@ -227,7 +231,7 @@ extension TextosDeConsola {
         manualRutaDelPrograma: "Η διαδρομή του {1}, αν δεν είναι στο PATH.",
         manualCodigosDeSalida: ["Όλα πήγαν καλά.", "Κείμενο ή αρχείο που δεν διαβάζεται, ή τίποτα για έξοδο.", "Η εντολή είναι γραμμένη λάθος.", "Οι check ή counterpoint βρήκαν σφάλματα."],
 
-        // ErrorDeUso.swift (armonización)
+        // ErrorDeUso+Textos.swift (armonización)
         faltanAcordes: "λείπουν οι συγχορδίες: {1}",
         dosAcordes: "χρειάζονται δύο συγχορδίες: {1}",
         faltanNotasDeLaArmonizacion: "λείπουν οι νότες της μελωδίας: {1}",
@@ -235,7 +239,7 @@ extension TextosDeConsola {
         faltanVocesDelContrapunto: "λείπουν το cantus firmus και η αντίστιξη, χωρισμένα με /: {1}",
         especieFueraDeRango: "το --species πάει από 1 έως 5",
 
-        // ErrorDeUso.swift (consultas)
+        // ErrorDeUso+Textos.swift (consultas)
         faltaCifrado: "λείπει το σύμβολο της συγχορδίας: {1}",
         patronDesconocido: "άγνωστο μοτίβο: «{1}» (ascending, descending, up-down, down-up, broken ή alberti)",
         tradicionDesconocida: "«{1}»: δεν είναι παράδοση (india, greece, arab-world, persia, turkey…)",
@@ -273,7 +277,7 @@ extension TextosDeConsola {
         sinContrapuntoPosible: "δεν υπάρχει αντίστιξη πρώτου είδους χωρίς λάθη πάνω σε αυτό το cantus firmus",
         faltaTransporte: "λείπουν το διάστημα (ή η νέα τονική) και ό,τι μεταφέρεται: {1}",
 
-        // ErrorDeUso.swift (dibujos)
+        // ErrorDeUso+Textos.swift (dibujos)
         margenFueraDeRango: "το περιθώριο είναι αριθμός από 0 έως 6: --margen 2",
         faltaAcorde: "λείπει η συγχορδία: {1}",
         faltanClasesDelDibujo: "λείπουν οι τονικές κλάσεις: {1}",
@@ -284,7 +288,7 @@ extension TextosDeConsola {
         cicloSoloTriadas: "ο κύκλος ξεκινά από ένα μείζον ή ελάσσον τρίφωνο: {1}",
         opcionesDeCuadricula: "επιλογές του πλέγματος: --axes H,V (1,5), --grid CxR (8x8), --origin <τονικό ύψος> (C2), --rotate 0-3",
 
-        // ErrorDeUso.swift (neorriemanniana)
+        // ErrorDeUso+Textos.swift (neorriemanniana)
         vocesFueraDeRango: "κινούνται 1 ή 2 φωνές: --voices 2",
         unAcordeDeVecinos: "χρειάζεται μία συγχορδία: {1}",
         vecinosSinFamilia: "οι γειτονικές αναζητούνται ανάμεσα σε συγχορδίες έβδομης δεσπόζουσας, ελάσσονες, ημιελαττωμένες, ελαττωμένες και maj7, ή ανάμεσα σε μείζονα, ελάσσονα και αυξημένα τρίφωνα",
@@ -292,7 +296,7 @@ extension TextosDeConsola {
         faltanPasosDePLR: "χρειάζονται ένα τρίφωνο και κάποια βήματα ή άλλο τρίφωνο: {1}",
         plrSoloTriadas: "τα P, L και R εφαρμόζονται σε μείζονα και ελάσσονα τρίφωνα: {1}",
 
-        // ErrorDeUso.swift (partituras)
+        // ErrorDeUso+Textos.swift (partituras)
         faltaTipoDePartitura: "λείπει το «melody», «chorale» ή «chords»: {1}",
         instrumentoMIDI: "το πρόγραμμα είναι αριθμός General MIDI από 0 έως 127: --program 52",
         marcasSoloMusicXML: "τα --chord-symbols και --analysis είναι για MusicXML, MEI, LilyPond, GUIDO και ABC",
@@ -318,7 +322,7 @@ extension TextosDeConsola {
         motorNoInstalado: "δεν είναι εγκατεστημένο (ή βάλε τη διαδρομή στη {1})",
         motorPropio: "own",
 
-        // ErrorDeUso.swift (digitaciones)
+        // ErrorDeUso+Textos.swift (digitaciones)
         faltaInstrumento: "λείπει το όργανο: {1}",
         instrumentoDesconocido: { nombre, lista in "άγνωστο όργανο: «\(nombre)» (\(lista(.conPalabras(.griego))))" },
         faltaLimite: "λείπει ο αριθμός δακτυλοθεσιών: --limit 5",
@@ -341,7 +345,7 @@ extension TextosDeConsola {
         aproximacionDesconocida: "άγνωστη προσέγγιση: «{1}» (below, above ή enclosure)",
         secuenciaDesconocida: "άγνωστη αλληλουχία: «{1}» (thirds, fourths, groups-of-3, groups-of-4, triads ή sevenths)",
 
-        // ErrorDeUso.swift (comunes)
+        // ErrorDeUso+Textos.swift (comunes)
         pruebaLaAyuda: "Δοκίμασε «armonia help».",
         ordenDesconocida: "άγνωστη εντολή: «{1}»",
         opcionDesconocida: "άγνωστη επιλογή: «{1}»",

@@ -3,7 +3,7 @@ import Testing
 @testable import Elementos
 @testable import Teoria
 
-@Suite struct GeografiaTests {
+@Suite struct LugarTests {
     /// Las populares occidentales que vienen de un lugar declaran su región, y siguen siendo occidentales.
     @Test func lasPopularesTienenSuRegion() {
         #expect(TipoDeEscala.flamenca.regiones == [.andalucia])

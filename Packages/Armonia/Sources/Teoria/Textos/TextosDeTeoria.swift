@@ -308,7 +308,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let regionAndalucia: String
     let regionRumania: String
 
-    // MARK: Geografia.swift
+    // MARK: Lugar.swift y TipoDeEscala+Lugar.swift
     let continenteEuropa: String
     let continenteAsia: String
     let continenteAfrica: String

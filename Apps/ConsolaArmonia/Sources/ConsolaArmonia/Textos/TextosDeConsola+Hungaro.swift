@@ -54,6 +54,8 @@ extension TextosDeConsola {
         sintaxisEscala: "scale <skála> [--chords]",
         descripcionEscala: "egy skála hangjai és akkordjai\n--chords: minden fokon minden beleillő akkord, nem csak a terces",
         notasEscala: "opciók: --sequence thirds (vagy fourths, groups-of-3, groups-of-4, triads, sevenths), --descending, --octaves 2 (1-től 4-ig), --fingers (ujjrend), --modes (párhuzamos és rokon) és --compare C lydian (a végén); --symmetry (milyen gyakran ismétlődik, és az akkordjai); --neighbors (egy hang elmozdításával) és --all-keys (mind a tizenkét hangnemben); --all-keys --chords (minden fok akkordjai; --triads, szeptim nélkül); --statistics (hangok száma, fényesség, hangközvektor…); --brightness-ladder (a legsötétebbtől a legfényesebbig, mindig egy hangot emelve); --closest (amelyeknek a legtöbb közös hangjuk van vele, a legkevésbé eltérőtől); --progressions (akkordmenetek a hármashangzataival, a fokokkal és a dúron vagy mollon kívüli hangokkal); --bibtex (a bibliográfiai hivatkozásai, BibTeX-ben); --tetrachords (két tetrachordra bontásai, mindegyik nevével)",
+
+        // Catalogos/Ayuda+Catalogos.swift
         sintaxisEscalas: "scales [<szöveg>] [opciók]",
         descripcionEscalas: "a skálák katalógusa: a szokásosak és más hagyományokéi, kategóriánként, C-től induló hangjaikkal",
         notasEscalas: "opciók: --tradition turkey (vagy india, greece, ancient-greece, arab-world, persia, azerbaijan, china, japan, korea, ethiopia, indonesia, klezmer, andes, byzantium, mesopotamia, africa, southeast-asia, gregorian, europe, vietnam, brazil, renaissance) és --category maqam (vagy rāga, makam, dastgah, dromos…); --source ptolemy (vagy archytas, aristoxenus, didymus, glarean…) csak egy teoretikus skáláit hagyja meg; --style jazz (vagy classical, blues, composer, folk, flamenco, pop-rock, popular, synthetic, bebop, modal, impressionism, rock, heavy-metal, neoclassical-metal) szűri a szokásosakat; a --place spain (vagy europe, levant, byzantium, romani, andalusia…) egy hely skáláit hagyja meg, eredet vagy használat szerint, a --group-by continent (vagy country, era) pedig származási helyük vagy korszakuk szerint csoportosítja őket; --era baroque (vagy antiquity, middle-ages, renaissance, classicism, romanticism, 20th-century, 21st-century, tonal) egy korszak skáláit hagyja meg, eredet vagy használat szerint, a --school carnatic (vagy hindustani, ancient-india, gagaku) pedig egy iskoláéit; --affect plaintive (vagy sad, devotional, majestic…) azokat hagyja meg, amelyeknek valamelyik forrásuk szerint ez az affektusuk; --notes 5 csak az öthangúakat hagyja meg; --sort brightness (vagy notes) rendezi őket, a --anhemitonic és a --maximally-even pedig az anhemiton és a maximálisan egyenletes skálákat hagyja meg; a --fragments csak az oktávnál rövidebb töredékeket hagyja meg (tetrachordok, ajnas, hexachordok), a --no-fragments pedig kihagyja őket; a --tuning microtonal (vagy tempered, just, equal-divisions) csak az ilyen hangolású skálákat hagyja meg; --with-interval tritone és --without-interval semitone (vagy egy szám 1 és 6 között) és --with-step 3 hangközök szerint keres; --compare C major, C lydian táblázatba rendezi őket; --map fényességtérképre rajzolja őket (SVG); a szöveg a nevekben keres; a --neighbors D dorian, a --closest D dorian és a --brightness-ladder D dorian az egy skálából adódó skálákat adja, mint a scale",
@@ -76,6 +78,8 @@ extension TextosDeConsola {
         sintaxisAcordesConNombre: "chords [<szöveg>] [opciók]",
         descripcionAcordesConNombre: "a katalógus akkordjai hangjaikkal C-ről vagy a --over hangjáról; szöveggel: azok, amelyek nevében benne van",
         notasAcordesConNombre: "opciók: --notes 4 (vagy tetrad) a négyhangúakat hagyja meg; --style jazz (vagy classical, blues, composer, pop-rock, popular) egy stílus akkordjait; --era romanticism (vagy baroque, 20th-century…) egy korszak akkordjait, eredet vagy használat szerint; --affect joyful (vagy sad, plaintive…) azok, amelyeknek valamelyik forrásuk szerint ez az affektusuk; --tertian és --non-tertian a terces építkezésűeket és a többit; --anhemitonic a félhang nélkülieket; --with-interval tritone és --without-interval semitone (vagy egy szám 1-től 6-ig) az intervallumaik szerint keres; --sort brightness (vagy notes, consonance) sorba rendezi őket; --statistics táblázatba teszi őket azzal, amit mindegyikről mérni lehet, a --summary pedig megszámolja, hány van hangszám, stílus és terces építkezés szerint",
+
+        // Ayuda+Consultas.swift (tonalidad, conjunto y serie)
         sintaxisTonalidad: "key <hangnem>",
         descripcionTonalidad: "előjegyzés, rokon hangnemek és fokok; --modulations: hogyan jutunk el minden rokon hangnembe (vagy --modulations G major, abba), a közös akkorddal",
         sintaxisConjunto: "set <osztályok>",
@@ -227,7 +231,7 @@ extension TextosDeConsola {
         manualRutaDelPrograma: "A(z) {1} elérési útja, ha nincs a PATH-ban.",
         manualCodigosDeSalida: ["Minden rendben ment.", "Olvashatatlan szöveg vagy fájl, vagy nincs mit kiadni.", "A parancs hibásan van megírva.", "A check vagy a counterpoint hibát talált."],
 
-        // ErrorDeUso.swift (armonización)
+        // ErrorDeUso+Textos.swift (armonización)
         faltanAcordes: "hiányoznak az akkordok: {1}",
         dosAcordes: "két akkord kell: {1}",
         faltanNotasDeLaArmonizacion: "hiányoznak a dallam hangjai: {1}",
@@ -235,7 +239,7 @@ extension TextosDeConsola {
         faltanVocesDelContrapunto: "hiányzik a cantus firmus és az ellenpont, /-rel elválasztva: {1}",
         especieFueraDeRango: "a --species értéke 1 és 5 között lehet",
 
-        // ErrorDeUso.swift (consultas)
+        // ErrorDeUso+Textos.swift (consultas)
         faltaCifrado: "hiányzik az akkordjelzés: {1}",
         patronDesconocido: "ismeretlen minta: „{1}” (ascending, descending, up-down, down-up, broken vagy alberti)",
         tradicionDesconocida: "„{1}”: ez nem hagyomány (india, greece, arab-world, persia, turkey…)",
@@ -273,7 +277,7 @@ extension TextosDeConsola {
         sinContrapuntoPosible: "ehhez a cantus firmushoz nincs hibátlan első fajú ellenpont",
         faltaTransporte: "hiányzik a hangköz (vagy az új alaphang) és az, amit transzponálni kell: {1}",
 
-        // ErrorDeUso.swift (dibujos)
+        // ErrorDeUso+Textos.swift (dibujos)
         margenFueraDeRango: "a margó 0 és 6 közötti szám: --margen 2",
         faltaAcorde: "hiányzik az akkord: {1}",
         faltanClasesDelDibujo: "hiányoznak a hangosztályok: {1}",
@@ -284,7 +288,7 @@ extension TextosDeConsola {
         cicloSoloTriadas: "a ciklus dúr vagy moll hármashangzaton kezdődik: {1}",
         opcionesDeCuadricula: "a rács beállításai: --axes H,V (1,5), --grid CxR (8x8), --origin <hangmagasság> (C2), --rotate 0-3",
 
-        // ErrorDeUso.swift (neorriemanniana)
+        // ErrorDeUso+Textos.swift (neorriemanniana)
         vocesFueraDeRango: "1 vagy 2 szólam mozog: --voices 2",
         unAcordeDeVecinos: "egy akkord kell: {1}",
         vecinosSinFamilia: "a szomszédokat domináns, moll, félszűkített, szűkített és maj7 szeptimakkordok, vagy dúr, moll és bővített hármashangzatok között keresi",
@@ -292,7 +296,7 @@ extension TextosDeConsola {
         faltanPasosDePLR: "egy hármashangzat és lépések vagy egy másik hármashangzat kell: {1}",
         plrSoloTriadas: "a P, L és R dúr és moll hármashangzatokra vonatkozik: {1}",
 
-        // ErrorDeUso.swift (partituras)
+        // ErrorDeUso+Textos.swift (partituras)
         faltaTipoDePartitura: "hiányzik a „melody”, „chorale” vagy „chords”: {1}",
         instrumentoMIDI: "a program 0 és 127 közötti General MIDI-szám: --program 52",
         marcasSoloMusicXML: "a --chord-symbols és a --analysis a MusicXML, a MEI, a LilyPond, a GUIDO és az ABC számára van",
@@ -318,7 +322,7 @@ extension TextosDeConsola {
         motorNoInstalado: "nincs telepítve (vagy add meg az útvonalát: {1})",
         motorPropio: "own",
 
-        // ErrorDeUso.swift (digitaciones)
+        // ErrorDeUso+Textos.swift (digitaciones)
         faltaInstrumento: "hiányzik a hangszer: {1}",
         instrumentoDesconocido: { nombre, lista in "ismeretlen hangszer: „\(nombre)” (\(lista(.conPalabras(.hungaro))))" },
         faltaLimite: "hiányzik a fogások száma: --limit 5",
@@ -341,7 +345,7 @@ extension TextosDeConsola {
         aproximacionDesconocida: "ismeretlen közelítés: „{1}” (below, above vagy enclosure)",
         secuenciaDesconocida: "ismeretlen szekvencia: „{1}” (thirds, fourths, groups-of-3, groups-of-4, triads vagy sevenths)",
 
-        // ErrorDeUso.swift (comunes)
+        // ErrorDeUso+Textos.swift (comunes)
         pruebaLaAyuda: "Próbáld ki: „armonia help”.",
         ordenDesconocida: "ismeretlen parancs: „{1}”",
         opcionDesconocida: "ismeretlen opció: „{1}”",

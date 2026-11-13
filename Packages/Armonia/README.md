@@ -230,7 +230,9 @@ Sources/
 │   │                      progresiones y ritmos) con su Corriente, Escuela, Epoca, Caracter (lo que dicen sus
 │   │                      fuentes), DatosDelCatalogo y NombresDelCatalogo (los nombres de cada catálogo por
 │   │                      idioma). Cada catálogo con nombre tiene la misma forma: su tipo y su catálogo en la
-│   │                      carpeta, y sus nombres en `Nombres/`, un fichero por idioma
+│   │                      carpeta, y sus nombres en `Nombres/`, un fichero por idioma. El catálogo va junto al
+│   │                      tipo (`RitmoConNombre+Catalogo.swift`) mientras es un fichero, y pasa a su propia carpeta
+│   │                      `Catalogo/` cuando se parte en varios, como los de acordes y escalas
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
 │   │   │                  (con LecturaDeCifrado, el lector de cifrados),
@@ -249,9 +251,10 @@ Sources/
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
 │   │   │                  `nombre(en:)`), DatosDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala,
 │   │   │                  Microtonos (SistemaDeAlturas, AfinacionPropia) y CaracterDeLaAfinacion
-│   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala, Geografia,
-│   │   │                  PeriodoMusical, FuenteTeorica, y los tipos de algunas tradiciones: CakraDeMela,
-│   │   │                  ModoGregoriano y Escala+Diao
+│   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala, Lugar (Continente,
+│   │   │                  Pais, Pueblo…) y TipoDeEscala+Lugar (dónde está cada escala), PeriodoMusical,
+│   │   │                  FuenteTeorica, y los tipos de algunas tradiciones: CakraDeMela, ModoGregoriano y
+│   │   │                  Escala+Diao
 │   │   ├── Catalogo/      Un fichero por tradición (TipoDeEscala+Occidental y +Occidental+Exoticas, +India,
 │   │   │                  +MundoArabe, +Turquia, +GreciaAntigua…), cada uno con sus escalas (con su categoría, sus
 │   │   │                  microtonos, su padre y sus referencias) y sus listas; TipoDeEscala+Tradiciones
