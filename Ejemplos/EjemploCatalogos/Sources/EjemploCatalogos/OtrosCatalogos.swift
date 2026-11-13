@@ -9,7 +9,7 @@ let columnasDeRitmos: [String] =
         "familia", "patron", "agrupacion", "unidad", "compas", "pulsos", "ataques", "fuertes", "intervalos",
         "vector_de_distancias", "euclideo", "profundo", "simetrias_por_rotacion", "uniformidad", "contratiempo",
         "sincopa",
-    ] + columnasDeLaFecha + ["referencias"]
+    ] + columnasDeLaFecha + columnasDelCaracter + ["referencias"]
 
 func filaDeRitmo(_ ritmo: RitmoConNombre) -> [String] {
     let medidas = ritmo.estadisticas
@@ -22,7 +22,7 @@ func filaDeRitmo(_ ritmo: RitmoConNombre) -> [String] {
         String(medidas.simetriasPorRotacion), numero(medidas.uniformidad), String(medidas.contratiempo),
         numero(medidas.sincopa),
     ]
-    let alFinal: [String] = fecha(de: ritmo) + [citas(ritmo.referencias)]
+    let alFinal: [String] = fecha(de: ritmo) + caracter(de: ritmo) + [citas(ritmo.referencias)]
     return nombres(de: ritmo) + otros + resto + alFinal
 }
 

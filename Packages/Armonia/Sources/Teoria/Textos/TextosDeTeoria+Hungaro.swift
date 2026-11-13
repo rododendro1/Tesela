@@ -371,7 +371,7 @@ extension TextosDeTeoria {
         fuenteSalinas: "Salinas",
         fuenteZhuZaiyu: "Csu Caj-jü",
         fuenteArelEzgiUzdilek: "Arel–Ezgi–Uzdilek",
-        // CaracterDeEscala.swift
+        // Caracter.swift
         afectoAlegre: "vidám",
         afectoFestivo: "ünnepi",
         afectoSereno: "derűs",
@@ -409,6 +409,7 @@ extension TextosDeTeoria {
         ocasionLamento: "siratás",
         ocasionBanquete: "lakoma",
         ocasionGuerra: "háború",
+        ocasionDanza: "tánc",
         papelSoberano: "uralkodó",
         papelMinistro: "miniszter",
         papelPueblo: "nép",

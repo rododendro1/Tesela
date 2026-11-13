@@ -1,19 +1,20 @@
 import Elementos
 
-// MARK: - El carácter de una escala
+// MARK: - El carácter de un elemento del catálogo
 //
-// El carácter no sale de los intervalos: es lo que una tradición dice de una escala. Por eso cada carácter lleva su
-// fuente, es del nombre y no de las notas (el jónico y Bilāval tienen las mismas, pero no el mismo carácter), y una
-// escala sin fuente no tiene. Los datos están en `TipoDeEscala+Caracter.swift`.
+// El carácter no sale de las notas: es lo que una tradición dice de una escala, un acorde, una progresión o un ritmo.
+// Por eso cada carácter lleva su fuente, es del nombre y no de las notas (el jónico y Bilāval tienen las mismas, pero
+// no el mismo carácter), y lo que no tiene fuente no tiene carácter. Los datos están en `TipoDeEscala+Caracter.swift`
+// y en `Caracter+Catalogos.swift`.
 
-/// Lo que una fuente dice del carácter de una escala: los afectos que expresa y, si los da, el momento del día, la
-/// estación y la ocasión en que se toca, y lo que representa.
+/// Lo que una fuente dice del carácter de una escala, un acorde, una progresión o un ritmo: los afectos que expresa y,
+/// si los da, el momento del día, la estación y la ocasión en que se toca, y lo que representa.
 ///
 ///     let frigia = TipoDeEscala.harmoniaFrigia.caracter[0]
 ///     frigia.afectos       // [.entusiasta]
 ///     frigia.testigo       // .aristoteles
 ///     frigia.fuente.cita   // "Monro 1894: 12–13"
-public struct CaracterDeEscala: Hashable, Sendable {
+public struct Caracter: Hashable, Sendable {
     /// Lo que expresa o provoca, de lo más a lo menos importante; vacío si la fuente solo da el uso.
     public let afectos: [Afecto]
     /// Cuándo se toca: la hora de un rāga, la parte de la noche de un pathet.
@@ -177,9 +178,9 @@ public enum Estacion: String, Sendable, Codable, CaseIterable, Nombrable {
     }
 }
 
-/// Para qué se toca una escala: en Platón, la mixolidia es para el lamento y la lidia para el banquete.
+/// Para qué se toca: en Platón, la mixolidia es para el lamento y la lidia para el banquete; la chacona es una danza.
 public enum Ocasion: String, Sendable, Codable, CaseIterable, Nombrable {
-    case lamento, banquete, guerra
+    case lamento, banquete, guerra, danza
 
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
 
@@ -188,6 +189,7 @@ public enum Ocasion: String, Sendable, Codable, CaseIterable, Nombrable {
         case .lamento: TextosDeTeoria.traduccion(\.ocasionLamento)
         case .banquete: TextosDeTeoria.traduccion(\.ocasionBanquete)
         case .guerra: TextosDeTeoria.traduccion(\.ocasionGuerra)
+        case .danza: TextosDeTeoria.traduccion(\.ocasionDanza)
         }
     }
 }

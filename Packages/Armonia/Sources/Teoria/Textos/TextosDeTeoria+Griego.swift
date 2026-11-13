@@ -371,7 +371,7 @@ extension TextosDeTeoria {
         fuenteSalinas: "Σαλίνας",
         fuenteZhuZaiyu: "Τζου Τσάιγιου",
         fuenteArelEzgiUzdilek: "Αρέλ-Εζγκί-Ουζντιλέκ",
-        // CaracterDeEscala.swift
+        // Caracter.swift
         afectoAlegre: "χαρούμενος",
         afectoFestivo: "εορταστικός",
         afectoSereno: "γαλήνιος",
@@ -409,6 +409,7 @@ extension TextosDeTeoria {
         ocasionLamento: "θρήνος",
         ocasionBanquete: "συμπόσιο",
         ocasionGuerra: "πόλεμος",
+        ocasionDanza: "χορός",
         papelSoberano: "ηγεμόνας",
         papelMinistro: "υπουργός",
         papelPueblo: "λαός",

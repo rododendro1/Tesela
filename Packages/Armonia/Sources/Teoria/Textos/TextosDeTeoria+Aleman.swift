@@ -371,7 +371,7 @@ extension TextosDeTeoria {
         fuenteSalinas: "Salinas",
         fuenteZhuZaiyu: "Zhu Zaiyu",
         fuenteArelEzgiUzdilek: "Arel-Ezgi-Uzdilek",
-        // CaracterDeEscala.swift
+        // Caracter.swift
         afectoAlegre: "fröhlich",
         afectoFestivo: "festlich",
         afectoSereno: "heiter",
@@ -409,6 +409,7 @@ extension TextosDeTeoria {
         ocasionLamento: "Klage",
         ocasionBanquete: "Gelage",
         ocasionGuerra: "Krieg",
+        ocasionDanza: "Tanz",
         papelSoberano: "Herrscher",
         papelMinistro: "Minister",
         papelPueblo: "Volk",

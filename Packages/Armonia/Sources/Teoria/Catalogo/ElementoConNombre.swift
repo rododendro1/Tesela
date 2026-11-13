@@ -36,6 +36,8 @@ public protocol ElementoConNombre: Nombrable, Hashable, Sendable, CustomStringCo
     var anioDeOrigen: Int? { get }
     /// La época en que aparece: la de `anioDeOrigen` o, si no se sabe, la que dan sus estilos; `nil` si no se sabe.
     var epocaDeOrigen: Epoca? { get }
+    /// Lo que dicen las fuentes de su carácter, en orden cronológico; vacío si ninguna dice nada.
+    var caracter: [Caracter] { get }
 
     /// Todo el catálogo, en su orden.
     static var catalogo: [Self] { get }
@@ -53,6 +55,29 @@ extension ElementoConNombre {
     ///     AcordeConNombre.tristan.nombres(en: .compacta(.espanol))   // ["acorde de Tristán"]
     public func nombres(en notacion: Notacion) -> [String] {
         [nombre(en: notacion)] + alias(en: notacion) + variantes(en: notacion)
+    }
+}
+
+extension ElementoConNombre {
+    /// Los afectos de todas sus fuentes, sin repetir, en el orden en que salen.
+    ///
+    ///     TipoDeEscala.harmoniaDoria.afectos   // [.valiente, .majestuoso, .severo, .grave, .sereno]
+    ///     AcordeConNombre.menor.afectos        // [.triste, .tierno, .lastimero]
+    public var afectos: [Afecto] {
+        var vistos = Set<Afecto>()
+        return caracter.flatMap(\.afectos).filter { vistos.insert($0).inserted }
+    }
+
+    /// Los momentos del día en que se toca, sin repetir.
+    public var momentos: [MomentoDelDia] {
+        var vistos = Set<MomentoDelDia>()
+        return caracter.compactMap(\.momento).filter { vistos.insert($0).inserted }
+    }
+
+    /// Las ocasiones en que se toca, sin repetir: el lamento, la danza.
+    public var ocasiones: [Ocasion] {
+        var vistos = Set<Ocasion>()
+        return caracter.compactMap(\.ocasion).filter { vistos.insert($0).inserted }
     }
 }
 

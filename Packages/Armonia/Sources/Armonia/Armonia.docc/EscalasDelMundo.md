@@ -293,7 +293,8 @@ TipoDeEscala.flamenca.referencias.map(\.cita)             // ["Manuel 1989"]
 
 ## Carácter
 
-`caracter` dice lo que cada fuente dice de una escala (``CaracterDeEscala``): los afectos que expresa (``Afecto``, un
+`caracter` dice lo que cada fuente dice de una escala (``Caracter``, el mismo de los acordes, las progresiones y los
+ritmos): los afectos que expresa (``Afecto``, un
 vocabulario cerrado en los trece idiomas), el momento del día en que se toca (``MomentoDelDia``, en tramos de tres
 horas como los prahar), la estación (``Estacion``), la ocasión (``Ocasion``) y, en China, lo que representa
 (``PapelDeLaNota``) y su fase (``FaseDeLaNaturaleza``). Cada uno lleva su fuente, la obra donde se lee (`fuente`) y,

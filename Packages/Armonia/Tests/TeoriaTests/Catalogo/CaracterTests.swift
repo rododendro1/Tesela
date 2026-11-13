@@ -3,8 +3,8 @@ import Testing
 @testable import Elementos
 @testable import Teoria
 
-/// El carácter de las escalas (`CaracterDeEscala`, `TipoDeEscala.caracter`).
-@Suite struct CaracterDeEscalaTests {
+/// El carácter de las escalas (`Caracter`, `TipoDeEscala.caracter`).
+@Suite struct CaracterTests {
     private let espanol = Notacion.compacta(.espanol)
 
     /// Cada escala con carácter es del catálogo, está una vez en la tabla y cada carácter dice algo.
@@ -110,5 +110,51 @@ import Testing
     /// Los momentos cubren el día en tramos de tres horas, sin huecos.
     @Test func losMomentosCubrenElDia() {
         #expect(Set(MomentoDelDia.allCases.map(\.horaDeInicio)) == Set(stride(from: 0, to: 24, by: 3)))
+    }
+}
+
+/// El carácter de los acordes, las progresiones y los ritmos.
+@Suite struct CaracterDeLosCatalogosTests {
+    /// Comprueba lo que comparten todos: cada uno del catálogo, una vez, con algo que decir, en orden cronológico y con
+    /// su fuente entre sus referencias.
+    private func comprobar<E: ElementoConNombre>(_ filas: [(E, [Caracter])]) {
+        let nombres = filas.map(\.0.nombre)
+        #expect(Set(nombres).count == nombres.count)
+        for (elemento, caracteres) in filas {
+            #expect(E.catalogo.contains(elemento), "\(elemento.nombre)")
+            #expect(elemento.caracter == Caracter.enOrdenCronologico(caracteres), "\(elemento.nombre)")
+            let claves = Set(elemento.referencias.map(\.clave))
+            for caracter in caracteres {
+                #expect(!caracter.afectos.isEmpty || caracter.ocasion != nil, "\(elemento.nombre)")
+                #expect(claves.contains(caracter.fuente.clave), "\(elemento.nombre)")
+            }
+        }
+    }
+
+    @Test func losAcordes() {
+        comprobar(AcordeConNombre.caracteres.map { ($0.acorde, $0.caracter) })
+        #expect(AcordeConNombre.mayor.caracter.map(\.fuente) == [.zarlino1558, .rameau1722])
+        #expect(AcordeConNombre.menor.afectos == [.triste, .tierno, .lastimero])
+        #expect(AcordeConNombre.tristan.caracter.isEmpty)
+    }
+
+    @Test func lasProgresiones() {
+        comprobar(ProgresionConNombre.caracteres.map { ($0.progresion, $0.caracter) })
+        #expect(ProgresionConNombre.bajoDeLamento.ocasiones == [.lamento])
+        #expect(ProgresionConNombre.chacona.ocasiones == [.danza])
+        #expect(ProgresionConNombre.iiVI.caracter.isEmpty)
+    }
+
+    @Test func losRitmos() {
+        comprobar(RitmoConNombre.caracteres.map { ($0.ritmo, $0.caracter) })
+        #expect(RitmoConNombre.seguiriya.afectos == [.lastimero, .grave])
+        #expect(RitmoConNombre.tresillo.caracter.isEmpty)
+    }
+
+    /// Los catálogos sin carácter no tienen ninguno.
+    @Test func losDemasNoTienen() {
+        #expect(TemperamentoConNombre.catalogo.allSatisfy { $0.caracter.isEmpty })
+        #expect(NotaConNombre.catalogo.allSatisfy { $0.caracter.isEmpty })
+        #expect(FuncionDeNota.catalogo.allSatisfy { $0.caracter.isEmpty })
     }
 }
