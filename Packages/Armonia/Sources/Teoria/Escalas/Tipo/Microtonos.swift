@@ -5,7 +5,7 @@ import Foundation
 //
 // La capa microtonal de las escalas de otras tradiciones. Cada escala sigue siendo un `TipoDeEscala` de doce
 // notas, con el que funciona todo lo demás (armonizar, el mástil, el Tonnetz…). Algunas tienen además una
-// versión microtonal, `TipoDeEscala.microtonal`: dónde cae cada grado en la teoría de su tradición, medido en
+// versión microtonal, `TipoDeEscala.afinacionPropia`: dónde cae cada grado en la teoría de su tradición, medido en
 // los pasos de su sistema (cuartos de tono o comas) desde la tónica temperada. Cada grado se aparta de su nota
 // temperada medio semitono como mucho, y conserva su letra: Mi𝄳 se aproxima a Mi o a Mi♭, nunca a Re♯. También la
 // tónica puede apartarse: Sīkāh empieza en Mi𝄳, y se escribe sobre Mi.
@@ -68,13 +68,14 @@ public enum SistemaMicrotonal: String, Sendable, Codable, CaseIterable {
     static let centsDeLosSruti: [Double] = razonesDeLosSruti.map(\.cents)
 }
 
-/// Una escala con microtonos: su aproximación de doce notas (`temperada`) y la posición de cada grado en los
-/// pasos de su `sistema`, contados desde la tónica temperada. La tónica misma puede caer fuera de su nota
+/// La afinación propia de una escala, la de su tradición: su aproximación de doce notas (`temperada`) y la posición
+/// de cada grado en los pasos de su `sistema`, contados desde la tónica temperada. No siempre es microtonal: los śruti
+/// indios y las afinaciones chinas son justas (`caracter`). La tónica misma puede caer fuera de su nota
 /// temperada: en Sīkāh, sobre Mi, el primer paso es −1 (Mi𝄳, un cuarto de tono bajo).
 ///
-///     TipoDeEscala.bayati.microtonal?.cents        // [0, 150, 300, 500, 700, 800, 1000]
-///     TipoDeEscala.bayati.microtonal?.desvios      // [0, 50, 0, 0, 0, 0, 0]: Mi𝄳 es Mi♭ + 50 cents
-public struct TipoDeEscalaMicrotonal: Hashable, Sendable {
+///     TipoDeEscala.bayati.afinacionPropia?.cents        // [0, 150, 300, 500, 700, 800, 1000]
+///     TipoDeEscala.bayati.afinacionPropia?.desvios      // [0, 50, 0, 0, 0, 0, 0]: Mi𝄳 es Mi♭ + 50 cents
+public struct AfinacionPropia: Hashable, Sendable {
     /// La escala de doce notas a la que se aproxima.
     public let temperada: TipoDeEscala
     public let sistema: SistemaMicrotonal
@@ -244,9 +245,9 @@ extension Escala {
     /// La versión microtonal de la escala, si su tipo la tiene: Re Bayātī → Re Mi𝄳 Fa Sol La Si♭ Do. Con
     /// `afinacion`, en otra de las de `tipo.afinaciones` (o en una cualquiera de su misma escala temperada).
     public func notasMicrotonales(
-        sentido: SentidoDelIntervalo = .ascendente, afinacion: TipoDeEscalaMicrotonal? = nil
+        sentido: SentidoDelIntervalo = .ascendente, afinacion: AfinacionPropia? = nil
     ) -> [NotaMicrotonal]? {
-        guard let microtonal = afinacion ?? tipo.microtonal, microtonal.temperada == tipo else { return nil }
+        guard let microtonal = afinacion ?? tipo.afinacionPropia, microtonal.temperada == tipo else { return nil }
         let intervalos = microtonal.intervalos(sentido: sentido)
         let ajustes = microtonal.ajustes(sentido: sentido)
         let cents = microtonal.cents(sentido: sentido)
@@ -260,20 +261,21 @@ extension Escala {
 // MARK: - Catálogo
 
 extension TipoDeEscala {
-    /// La versión microtonal de una escala de otra tradición (`nil` si no tiene). Como `categoria`, se busca por su
-    /// `identidad`: Bayātī la tiene; el frigio, con los mismos intervalos, no.
-    public var microtonal: TipoDeEscalaMicrotonal? { afinaciones.first }
+    /// La afinación propia de la escala, la de la teoría de hoy de su tradición (`nil` si no tiene): los cuartos de
+    /// tono de Bayātī, los śruti de Kalyāṇ. Si es microtonal o justa lo dice `caracterDeLaAfinacion`. Como `categoria`,
+    /// se busca por su `identidad`: Bayātī la tiene; el frigio, con los mismos intervalos, no.
+    public var afinacionPropia: AfinacionPropia? { afinaciones.first }
 
-    /// Todas las versiones microtonales de la escala: la de su teoría de hoy (`microtonal`) y las de otros autores,
+    /// Todas las afinaciones propias de la escala: la de su teoría de hoy (`afinacionPropia`) y las de otros autores,
     /// cada una con su `fuente`. Los echoi diatónicos tienen dos: en los 72 moria de la Comisión Patriarcal (1881) y
     /// en los 68 de Chrysanthos (1832). Vacío si no tiene ninguna.
-    public var afinaciones: [TipoDeEscalaMicrotonal] {
+    public var afinaciones: [AfinacionPropia] {
         TipoDeEscala.delCatalogo[identidad]?.afinaciones ?? []
     }
 }
 
-extension TipoDeEscalaMicrotonal {
-    /// Las escalas con versión microtonal: los maqamat, los dastgāh y los makamlar que se aproximan, los dromoi, los
+extension AfinacionPropia {
+    /// Las escalas con afinación propia: los maqamat, los dastgāh y los makamlar que se aproximan, los dromoi, los
     /// echoi bizantinos, los thāṭ indios (con Yaman), los grāma y las mūrchanā, y los tetracordos griegos.
     ///
     /// Los maqamat van en cuartos de tono, como en la teoría árabe moderna; los dastgāh, en la notación de
@@ -284,14 +286,14 @@ extension TipoDeEscalaMicrotonal {
     ///
     /// Cada una se declara con su escala (`afinaciones:` en su declaración); aquí van por tradiciones, en el orden de
     /// `Tradicion.allCases` (y en cada una, en el de sus listas), y después las occidentales (`occidentales`).
-    public static let catalogo: [TipoDeEscalaMicrotonal] =
+    public static let catalogo: [AfinacionPropia] =
         Tradicion.allCases.flatMap { tradicion in
             TipoDeEscala.listasTradicionales.filter { $0.tradicion == tradicion }.flatMap(\.tipos)
         }.flatMap(\.afinaciones) + occidentales
 
-    /// Las versiones microtonales de escalas occidentales, que no son de ninguna tradición: la de blues, con sus
+    /// Las afinaciones propias de escalas occidentales, que no son de ninguna tradición: la de blues, con sus
     /// blue notes, como se suelen describir: la tercera neutra, entre la menor y la mayor (350 cents, el Mi𝄳 sobre
     /// Do), y la séptima armónica (7/4, 969 cents, 31 bajo Si♭), con la cuarta y la quinta puras. La ♭5 queda
     /// temperada. Son una aproximación: cada intérprete las entona a su manera, y las desliza.
-    public static let occidentales: [TipoDeEscalaMicrotonal] = TipoDeEscala.occidentales.flatMap(\.afinaciones)
+    public static let occidentales: [AfinacionPropia] = TipoDeEscala.occidentales.flatMap(\.afinaciones)
 }

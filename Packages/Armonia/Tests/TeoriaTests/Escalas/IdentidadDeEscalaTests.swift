@@ -19,7 +19,7 @@ import Testing
         let leido = try JSONDecoder().decode(TipoDeEscala.self, from: datos)
         #expect(leido.identidad == TipoDeEscala.bayati.identidad)
         #expect(leido.tradicion == .mundoArabe)
-        #expect(leido.microtonal == TipoDeEscala.bayati.microtonal)
+        #expect(leido.afinacionPropia == TipoDeEscala.bayati.afinacionPropia)
         #expect(leido.variantes == TipoDeEscala.bayati.variantes)
     }
 
@@ -41,9 +41,9 @@ import Testing
         #expect(TipoDeEscala.hardino.estilos.isEmpty)
         #expect(!TipoDeEscala.mayor.estilos.isEmpty)
         // La afinación de Knight es la de Hardino, no la de la mayor ni la de Tomora ba (también mayor).
-        #expect(TipoDeEscala.hardino.microtonal != nil)
+        #expect(TipoDeEscala.hardino.afinacionPropia != nil)
         #expect(TipoDeEscala.mayor.afinaciones.isEmpty)
-        #expect(TipoDeEscala.tomoraBa.microtonal != TipoDeEscala.hardino.microtonal)
+        #expect(TipoDeEscala.tomoraBa.afinacionPropia != TipoDeEscala.hardino.afinacionPropia)
     }
 
     @Test func unaEscalaPropiaConElNombreDeOtraNoEsElla() {
@@ -55,6 +55,6 @@ import Testing
         // Con el nombre y el contenido de Bayātī, es Bayātī.
         let copia = TipoDeEscala(nombre: TipoDeEscala.bayati.nombre, intervalos: TipoDeEscala.bayati.intervalos)
         #expect(copia.tradicion == .mundoArabe)
-        #expect(copia.microtonal == TipoDeEscala.bayati.microtonal)
+        #expect(copia.afinacionPropia == TipoDeEscala.bayati.afinacionPropia)
     }
 }

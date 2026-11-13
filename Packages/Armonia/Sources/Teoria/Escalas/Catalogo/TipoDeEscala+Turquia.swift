@@ -11,7 +11,7 @@ extension TipoDeEscala {
     // (koma), 4 (bakiye), 5 (küçük mücennep) y 8 (büyük mücennep). Aquí cada nota se redondea a su
     // semitono más cercano: la koma desaparece y las demás se escriben como ♯ o ♭. Uşşak y Hüseynî, cuya
     // segâh (Si una koma bajo, que en la práctica suena casi un cuarto de tono bajo) se pierde al redondear,
-    // tienen además su versión microtonal (`TipoDeEscala.microtonal`), como Segâh, con la tónica en la segâh,
+    // tienen además su versión microtonal (`TipoDeEscala.afinacionPropia`), como Segâh, con la tónica en la segâh,
     // que se escribe sobre Si. Saba, cuyas fuentes no coinciden en el tetracordo, sigue fuera.
     // Los nombres van en turco con «makamı» detrás, como se dicen: «Rast» sola es el dromos griego.
     //

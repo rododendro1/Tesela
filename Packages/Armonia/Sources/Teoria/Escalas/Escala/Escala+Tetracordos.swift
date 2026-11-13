@@ -72,7 +72,7 @@ extension TipoDeEscala {
         let categorias: Set<CategoriaTradicional> = [.tetracordo, .jins, .cesni]
         let candidatos = tradicionales.filter { tipo in
             guard let categoria = tipo.categoria, categorias.contains(categoria) else { return false }
-            return tipo.microtonal == nil && tipo.intervalos.count >= 4 && tipo.intervalos[3] == .cuartaJusta
+            return tipo.afinacionPropia == nil && tipo.intervalos.count >= 4 && tipo.intervalos[3] == .cuartaJusta
         }
         return candidatos.compactMap { tipo in
             let cuatro = Array(tipo.intervalos.prefix(4))

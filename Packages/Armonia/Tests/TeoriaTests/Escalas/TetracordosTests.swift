@@ -42,7 +42,7 @@ import Testing
             frigio.tetracordos[0].fragmentos.map(\.nombre) == [
                 "tetracordo diatónico", "jins Kurd", "Kürdî dörtlüsü",
             ])
-        #expect(frigio.tetracordos[0].fragmentos.allSatisfy { $0.microtonal == nil && $0.intervalos.count == 4 })
+        #expect(frigio.tetracordos[0].fragmentos.allSatisfy { $0.afinacionPropia == nil && $0.intervalos.count == 4 })
     }
 
     @Test func losTetracordosDelSistemaPerfecto() throws {

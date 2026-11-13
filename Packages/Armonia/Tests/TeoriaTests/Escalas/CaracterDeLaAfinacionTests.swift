@@ -17,7 +17,7 @@ import Testing
     /// Cada sistema da lo que se espera: los cuartos de tono y el koron, microtonales; los śruti, justos; las comas,
     /// microtonales; el pélog en nueve partes, el sléndro en cinco, el timbila en siete.
     @Test func cadaSistema() {
-        let afinaciones = TipoDeEscala.catalogo.compactMap(\.microtonal)
+        let afinaciones = TipoDeEscala.catalogo.compactMap(\.afinacionPropia)
         for afinacion in afinaciones where [.cuartosDeTono, .persa, .comas53].contains(afinacion.sistema) {
             #expect(afinacion.caracter == .microtonal, Comment(rawValue: afinacion.temperada.nombre))
         }
@@ -32,7 +32,7 @@ import Testing
 
     /// Una justa no se aparta tanto como una microtonal, y una temperada casi nada.
     @Test func losUmbrales() {
-        for afinacion in TipoDeEscala.catalogo.compactMap(\.microtonal) where afinacion.sistema != .comas53 {
+        for afinacion in TipoDeEscala.catalogo.compactMap(\.afinacionPropia) where afinacion.sistema != .comas53 {
             let desvio =
                 (afinacion.desvios(sentido: .ascendente) + afinacion.desvios(sentido: .descendente))
                 .map(abs).max() ?? 0

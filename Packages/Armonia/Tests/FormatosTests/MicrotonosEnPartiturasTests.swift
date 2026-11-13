@@ -318,7 +318,7 @@ import Testing
     /// en los dos (en MIDI, con la precisión de la inflexión de tono: 200/8192 cents).
     @Test(arguments: [true, false])
     func idaYVueltaDeLasEscalasMicrotonales(musicXML: Bool) throws {
-        let tipos = TipoDeEscala.tradicionales.filter { $0.microtonal != nil }
+        let tipos = TipoDeEscala.tradicionales.filter { $0.afinacionPropia != nil }
         #expect(tipos.count > 20)
         for tipo in tipos {
             let voz = Escala(.re, tipo).voz()
@@ -439,7 +439,7 @@ import Testing
         }
         // Los moria de un echos y las flechas de un śruti, con el signo con que se escribieron.
         let tipos = TipoDeEscala.tradicionales.filter {
-            [.persa, .moria72, .sruti].contains($0.microtonal?.sistema)
+            [.persa, .moria72, .sruti].contains($0.afinacionPropia?.sistema)
         }
         #expect(!tipos.isEmpty)
         for tipo in tipos {

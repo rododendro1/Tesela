@@ -40,10 +40,10 @@ public enum Escuela: String, Sendable, Codable, CaseIterable {
     /// El nombre en los trece idiomas, de los `TextosDeTeoria`.
     private var traduccion: Traduccion {
         switch self {
-        case .carnatica: TextosDeTeoria.traduccion(\.subtradicionCarnatica)
-        case .indostanica: TextosDeTeoria.traduccion(\.subtradicionIndostanica)
-        case .indiaAntigua: TextosDeTeoria.traduccion(\.subtradicionIndiaAntigua)
-        case .gagaku: TextosDeTeoria.traduccion(\.subtradicionGagaku)
+        case .carnatica: TextosDeTeoria.traduccion(\.escuelaCarnatica)
+        case .indostanica: TextosDeTeoria.traduccion(\.escuelaIndostanica)
+        case .indiaAntigua: TextosDeTeoria.traduccion(\.escuelaIndiaAntigua)
+        case .gagaku: TextosDeTeoria.traduccion(\.escuelaGagaku)
         }
     }
 }

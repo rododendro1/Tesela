@@ -96,7 +96,7 @@ private func f(_ duracion: Duracion) -> String {
 
     @Test func lasEscalasMicrotonales() throws {
         // MEI escribe los cuartos de tono y las comas; ABC, solo los cuartos (el resto, temperado).
-        let tipos = TipoDeEscala.tradicionales.filter { $0.microtonal != nil }
+        let tipos = TipoDeEscala.tradicionales.filter { $0.afinacionPropia != nil }
         for tipo in tipos {
             let voz = Escala(.re, tipo).voz()
             let esperados = voz.eventos.flatMap { evento in

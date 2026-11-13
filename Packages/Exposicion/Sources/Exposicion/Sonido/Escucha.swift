@@ -173,7 +173,7 @@ public struct Escucha: Hashable, Sendable {
     ///     Escucha.escala(Escala(.re, .bayati)).notas.map(\.microtono)   // [0, 50, 0, 0, 0, 0, 0, 0]
     ///
     /// Con `afinacion`, los microtonos de otra de las de `escala.tipo.afinaciones` (la de Chrysanthos en los echoi).
-    public static func escala(_ escala: Escala, afinacion: TipoDeEscalaMicrotonal? = nil) -> Escucha {
+    public static func escala(_ escala: Escala, afinacion: AfinacionPropia? = nil) -> Escucha {
         let subida = cerrada(escala.notas, desde: 60)
         guard let tonica = subida.first else { return .silencio }
         let alturas = subida + [tonica + .octava]
@@ -193,7 +193,7 @@ public struct Escucha: Hashable, Sendable {
     /// tocar un grado del círculo microtonal. Con `afinacion`, como en `escala(_:afinacion:)`.
     ///
     ///     Escucha.grados(de: Escala(.re, .bayati))[1].notas.first?.microtono   // 50: el Mi𝄳
-    public static func grados(de escala: Escala, afinacion: TipoDeEscalaMicrotonal? = nil) -> [Escucha] {
+    public static func grados(de escala: Escala, afinacion: AfinacionPropia? = nil) -> [Escucha] {
         let desvios = Self.desvios(de: escala, afinacion: afinacion)
         return cerrada(escala.notas, desde: 60).enumerated().map { i, altura in
             Escucha(
@@ -207,8 +207,8 @@ public struct Escucha: Hashable, Sendable {
 
     /// Los cents que se aparta cada grado de su nota al subir, en `afinacion` o en la de la escala; vacío si no tiene
     /// microtonos (o si `afinacion` es de otra escala).
-    private static func desvios(de escala: Escala, afinacion: TipoDeEscalaMicrotonal?) -> [Double] {
-        guard let microtonal = afinacion ?? escala.tipo.microtonal, microtonal.temperada == escala.tipo else {
+    private static func desvios(de escala: Escala, afinacion: AfinacionPropia?) -> [Double] {
+        guard let microtonal = afinacion ?? escala.tipo.afinacionPropia, microtonal.temperada == escala.tipo else {
             return []
         }
         return microtonal.desvios(sentido: .ascendente)

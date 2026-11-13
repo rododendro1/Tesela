@@ -43,6 +43,13 @@
   comandos, `--html` vale en todas las variantes de `armonia hoja`; en Ars Harmonica, las pestañas de acordes, de
   análisis y de escalas las exportan también en HTML.
 
+### Cambios incompatibles
+
+- `Escucha.escala(_:afinacion:)`, `Escucha.grados(de:afinacion:)` y `relojMicrotonal(de:afinacion:…)` toman una
+  `AfinacionPropia`, el nuevo nombre de `TipoDeEscalaMicrotonal`.
+- En la consola, `escalas` marca «microtonos» solo en las escalas microtonales (`TipoDeEscala.esMicrotonal`), y
+  `microtonal` en su JSON dice lo mismo: Kalyāṇ y las chinas, que tienen afinación propia pero justa, ya no lo son.
+
 ## 0.5.0 (2026-11-10)
 
 ### Cambios incompatibles

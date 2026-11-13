@@ -118,7 +118,7 @@ extension NotaConNombre {
             usados.formUnion(([nombre] + alias + variantes).map(clave))
             return NotaConNombre(
                 nombre: nombre, altura: nota.altura, familia: nota.familia, desvio: nota.desvio,
-                frecuenciaDelLa4: nota.frecuenciaDelLa4, anio: nota.anio, alias: alias, variantes: variantes,
+                frecuenciaDelLa4: nota.frecuenciaDelLa4, anio: nota.anioDeOrigen, alias: alias, variantes: variantes,
                 alturaConNombre: nota.alturaConNombre, posicion: nota.posicion, referencias: nota.referencias)
         }
     }

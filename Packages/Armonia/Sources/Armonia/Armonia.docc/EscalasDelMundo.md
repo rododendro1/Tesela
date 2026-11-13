@@ -174,7 +174,7 @@ Escala("Do podhalańska").notas               // Do Re Mi Fa♯ Sol La Si♭
 ```
 
 No forman parte de `TipoDeEscala.occidentales`, para no cambiar las búsquedas de escalas habituales;
-están en `TipoDeEscala.tradicionales`, que se filtra por tradición, categoría, subtradición, clase o fuente
+están en `TipoDeEscala.tradicionales`, que se filtra por tradición, categoría, clase o fuente
 (`tradicionales(tradicion: .india)`, `tradicionales(categoria: .melakarta)`, `tradicionales(fuente: .ptolomeo)`;
 los tetracordos y las harmoniai griegas están además en `tetracordosGriegos` y `harmoniai`). Sus nombres
 son nombres propios: en los idiomas de alfabeto latino se escriben igual (en inglés también), y solo se
@@ -293,7 +293,7 @@ TipoDeEscala.flamenca.referencias.map(\.cita)             // ["Manuel 1989"]
 
 ## Microtonos
 
-Algunas escalas aproximadas tienen también su versión microtonal, `microtonal` (un ``TipoDeEscalaMicrotonal``):
+Algunas escalas aproximadas tienen también su versión microtonal, `afinacionPropia` (un ``AfinacionPropia``):
 dónde cae cada grado en la teoría de su tradición, en los pasos de su sistema (``SistemaMicrotonal``) contados
 desde la tónica temperada. La tienen todos los maqamat que usan cuartos de tono, en cuartos de tono
 (`.cuartosDeTono`, la teoría árabe moderna); los dastgāh y āvāz con *koron*, con el de Vaziri (`.persa`); los
@@ -328,10 +328,10 @@ Escala(.re, .bayati).notas                                       // Re Mi♭ Fa 
 Escala(.re, .bayati).notasMicrotonales()                         // Re Mi𝄳 Fa Sol La Si♭ Do
 Escala(.do, .maqamRast).notasMicrotonales(sentido: .descendente) // Do Re Mi𝄳 Fa Sol La Si♭
 Escala(.sol, .rastMakami).notasMicrotonales()                    // Sol La Si⁻¹ Do Re Mi Fa♯⁻¹
-TipoDeEscala.rastMakami.microtonal?.sistema                      // .comas53
+TipoDeEscala.rastMakami.afinacionPropia?.sistema                      // .comas53
 Escala(.re, .echosProtos).notasMicrotonales()                    // Re Mi⁻² Fa Sol La Si⁻² Do
 Escala(.do, .bilaval).notasMicrotonales()                        // Do Re↓ Mi↓ Fa Sol La↓ Si↓
-TipoDeEscala.frigio.microtonal                                   // nil
+TipoDeEscala.frigio.afinacionPropia                                   // nil
 TipoDeEscala.echosProtos.afinaciones.count                       // 2
 ```
 

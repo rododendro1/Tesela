@@ -5,8 +5,9 @@ import Foundation
 //
 // Una escala de otra tradición suena con sus microtonos (`AfinacionDeEscala`, de `TipoDeEscala.afinaciones`); una
 // escala de doce notas se puede medir en cualquier temperamento que afine notas (`Escala.cents(con:)`, con un
-// `TemperamentoQueAfina`), y eso depende de la tónica cuando el temperamento es circular o justo. Cada tradición sugiere el suyo (`Tradicion.temperamentoSugerido`), y
-// cada estilo de una escala occidental, también (`Estilo.temperamentoSugerido`).
+// `TemperamentoQueAfina`), y eso depende de la tónica cuando el temperamento es circular o justo. Cada tradición
+// sugiere el suyo (`Tradicion.temperamentoSugerido`), y cada estilo de una escala occidental, también
+// (`Estilo.temperamentoSugerido`).
 
 // MARK: - Una escala microtonal como afinación
 
@@ -20,23 +21,23 @@ import Foundation
 /// Una nota se busca primero por su nombre (Mi♭) y después por su altura (Re♯, la misma tecla), en cualquier octava.
 public struct AfinacionDeEscala: SistemaDeAfinacion, Hashable {
     public let escala: Escala
-    /// La versión microtonal con que suena: `escala.tipo.microtonal` u otra de `escala.tipo.afinaciones`.
-    public let microtonal: TipoDeEscalaMicrotonal
+    /// La versión microtonal con que suena: `escala.tipo.afinacionPropia` u otra de `escala.tipo.afinaciones`.
+    public let afinacionPropia: AfinacionPropia
     public let sentido: SentidoDelIntervalo
     public let frecuenciaDelLa4: Double
     private let desvioPorNota: [Nota: Double]
     private let desvioPorClase: [Int: Double]
 
-    /// `nil` si la escala no tiene versión microtonal, o si `microtonal` es de otra escala temperada.
+    /// `nil` si la escala no tiene afinación propia, o si `propia` es de otra escala temperada.
     public init?(
-        _ escala: Escala, microtonal: TipoDeEscalaMicrotonal? = nil, sentido: SentidoDelIntervalo = .ascendente,
+        _ escala: Escala, propia: AfinacionPropia? = nil, sentido: SentidoDelIntervalo = .ascendente,
         frecuenciaDelLa4: Double = 440
     ) {
-        guard let microtonal = microtonal ?? escala.tipo.microtonal, microtonal.temperada == escala.tipo else {
+        guard let microtonal = propia ?? escala.tipo.afinacionPropia, microtonal.temperada == escala.tipo else {
             return nil
         }
         self.escala = escala
-        self.microtonal = microtonal
+        self.afinacionPropia = microtonal
         self.sentido = sentido
         self.frecuenciaDelLa4 = frecuenciaDelLa4
         let notas = microtonal.intervalos(sentido: sentido).map { escala.tonica + $0 }
@@ -58,17 +59,17 @@ public struct AfinacionDeEscala: SistemaDeAfinacion, Hashable {
 
 extension Escala {
     /// La afinación con que suena la escala con sus microtonos (`nil` si su tipo no tiene versión microtonal): la de
-    /// `tipo.microtonal`, u otra de `tipo.afinaciones` si se da `microtonal`.
+    /// `tipo.afinacionPropia`, u otra de `tipo.afinaciones` si se da `propia`.
     ///
     ///     Escala(.re, .bayati).afinacion(la4: 442)
-    ///     Escala(.re, .echosProtos).afinacion(microtonal: TipoDeEscala.echosProtos.afinaciones[1])   // Chrysanthos
+    ///     Escala(.re, .echosProtos).afinacion(propia: TipoDeEscala.echosProtos.afinaciones[1])   // Chrysanthos
     public func afinacion(
-        la4: Double = 440, microtonal: TipoDeEscalaMicrotonal? = nil, sentido: SentidoDelIntervalo = .ascendente
+        la4: Double = 440, propia: AfinacionPropia? = nil, sentido: SentidoDelIntervalo = .ascendente
     ) -> AfinacionDeEscala? {
-        AfinacionDeEscala(self, microtonal: microtonal, sentido: sentido, frecuenciaDelLa4: la4)
+        AfinacionDeEscala(self, propia: propia, sentido: sentido, frecuenciaDelLa4: la4)
     }
 
-    /// Cents de cada grado desde la tónica en un temperamento que afina notas, como `TipoDeEscalaMicrotonal.cents`.
+    /// Cents de cada grado desde la tónica en un temperamento que afina notas, como `AfinacionPropia.cents`.
     /// Depende de la tónica: en Werckmeister III, Do mayor y Re♭ mayor no miden lo mismo; en la justa, la tónica es
     /// la de la escala.
     ///

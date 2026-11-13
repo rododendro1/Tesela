@@ -251,7 +251,7 @@ import Hexagonos
         comprobar(TipoDeEscala.echosProtos.afinaciones.count, #"2"#, doc, 4)
         comprobarIgual(TipoDeEscala.echosProtos.afinaciones[1].fuente, .chrysanthos, doc, 5)
         let chrysanthos = TipoDeEscala.echosProtos.afinaciones[1]
-        comprobar(Escala(.re, .echosProtos).afinacion(microtonal: chrysanthos)?.desviacion(de: "Mi4"), #"−29"#, doc, 7)
+        comprobar(Escala(.re, .echosProtos).afinacion(propia: chrysanthos)?.desviacion(de: "Mi4"), #"−29"#, doc, 7)
         comprobar(Escala(.do, .mayor).afinacion(), #"nil"#, doc, 8)
     }
 
@@ -625,8 +625,9 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Escalas.md, bloque 10
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 10)
         comprobar(try TipoDeEscala(leyendo: "dorico b2") == TipoDeEscala(leyendo: "dórico ♭2"), #"true"#, doc, 0)
-        comprobar(TipoDeEscala.dobleArmonica.aliasNormalizados.contains("doble armonica"), #"true"#, doc, 1)
-        comprobar(try TipoDeEscala(leyendo: "jonico sin 4") == TipoDeEscala.jonicoSinCuarta, #"true"#, doc, 2)
+        comprobar(TipoDeEscala.buscar(nombre: "doble armonica") == .dobleArmonica, #"true"#, doc, 1)
+        comprobar(TipoDeEscala.buscar(nombre: "dorisch") == .dorico, #"true"#, doc, 2)
+        comprobar(try TipoDeEscala(leyendo: "jonico sin 4") == TipoDeEscala.jonicoSinCuarta, #"true"#, doc, 3)
     }
 
     @Test func escalas11() throws {
@@ -816,10 +817,10 @@ import Hexagonos
         comprobar(Escala(.re, .bayati).notasMicrotonales(), #"Re Mi𝄳 Fa Sol La Si♭ Do"#, doc, 1)
         comprobar(Escala(.do, .maqamRast).notasMicrotonales(sentido: .descendente), #"Do Re Mi𝄳 Fa Sol La Si♭"#, doc, 2)
         comprobar(Escala(.sol, .rastMakami).notasMicrotonales(), #"Sol La Si⁻¹ Do Re Mi Fa♯⁻¹"#, doc, 3)
-        comprobarIgual(TipoDeEscala.rastMakami.microtonal?.sistema, .comas53, doc, 4)
+        comprobarIgual(TipoDeEscala.rastMakami.afinacionPropia?.sistema, .comas53, doc, 4)
         comprobar(Escala(.re, .echosProtos).notasMicrotonales(), #"Re Mi⁻² Fa Sol La Si⁻² Do"#, doc, 5)
         comprobar(Escala(.do, .bilaval).notasMicrotonales(), #"Do Re↓ Mi↓ Fa Sol La↓ Si↓"#, doc, 6)
-        comprobar(TipoDeEscala.frigio.microtonal, #"nil"#, doc, 7)
+        comprobar(TipoDeEscala.frigio.afinacionPropia, #"nil"#, doc, 7)
         comprobar(TipoDeEscala.echosProtos.afinaciones.count, #"2"#, doc, 8)
     }
 

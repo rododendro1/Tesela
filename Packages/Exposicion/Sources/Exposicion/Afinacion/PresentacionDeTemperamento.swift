@@ -44,7 +44,7 @@ public struct TemperamentoPresentado: Hashable, Sendable, Codable {
         nombre = temperamento.nombre(en: notacion)
         familia = temperamento.familia.nombre(en: notacion)
         autor = temperamento.autor
-        anio = temperamento.anio
+        anio = temperamento.anioDeOrigen
         pasosPorOctava = estadisticas.pasosPorOctava
         pasos = temperamento.pasos
         quinta = temperamento.quinta

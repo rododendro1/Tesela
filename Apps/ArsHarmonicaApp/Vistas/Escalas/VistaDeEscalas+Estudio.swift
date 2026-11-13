@@ -191,12 +191,12 @@ struct SeccionDelReloj: View {
     }
 
     /// La afinación elegida en el selector, si la escala tiene más de una; `nil`, la de su teoría de hoy.
-    private func afinacionElegida(_ afinaciones: [TipoDeEscalaMicrotonal]) -> TipoDeEscalaMicrotonal? {
+    private func afinacionElegida(_ afinaciones: [AfinacionPropia]) -> AfinacionPropia? {
         afinaciones.indices.contains(afinacion) ? afinaciones[afinacion] : nil
     }
 
     /// El reloj elegido, en SVG.
-    private func svg(_ circulo: Circulo, afinaciones: [TipoDeEscalaMicrotonal]) -> String {
+    private func svg(_ circulo: Circulo, afinaciones: [AfinacionPropia]) -> String {
         switch circulo {
         case .cromatico: return PresentacionDeEstudioDeEscala.reloj(de: escala, orden: .cromatico, en: notacion)
         case .quintas: return PresentacionDeEstudioDeEscala.reloj(de: escala, orden: .quintas, en: notacion)
@@ -209,7 +209,7 @@ struct SeccionDelReloj: View {
 
     /// Cómo se llama una afinación en el selector: por su autor (Chrysanthos) o, la de su teoría de hoy, por su
     /// sistema (72 moria).
-    private func nombre(de afinacion: TipoDeEscalaMicrotonal) -> String {
+    private func nombre(de afinacion: AfinacionPropia) -> String {
         afinacion.fuente?.nombre(en: notacion) ?? afinacion.sistema.temperamento?.nombre(en: notacion)
             ?? afinacion.sistema.rawValue
     }

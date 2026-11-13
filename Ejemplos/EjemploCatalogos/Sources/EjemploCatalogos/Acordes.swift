@@ -19,15 +19,15 @@ private let columnasDeLaFichaDeAcordes: [String] = [
 ]
 let columnasDeAcordes: [String] =
     columnasDeLosNombresDeAcordes + columnasDeLaFichaDeAcordes + medidasDeAcordes.map(\.clave)
-    + ["estilos", "referencias"]
+    + columnasDeLaFecha + ["estilos", "referencias"]
 
 private let genericos = Set(AcordeConNombre.genericos)
 
 /// La fila de un acorde, en el orden de `columnasDeAcordes`.
 func filaDeAcorde(_ acorde: AcordeConNombre) -> [String] {
-    let comoSeLlama = [acorde.nombre] + traducciones.map { acorde.nombre(en: .delIdioma($0)) }
+    let comoSeLlama = nombres(de: acorde)
     let estadisticas = acorde.estadisticas
-    let otros: [String] = aliasYVariantes(acorde.alias(en:), acorde.variantes(en:))
+    let otros: [String] = aliasYVariantes(de: acorde)
     let ficha: [String] = [
         genericos.contains(acorde) ? "genérico" : "nombre propio",
         acorde.intervalos.map(\.abreviatura).joined(separator: " "),
@@ -43,7 +43,7 @@ func filaDeAcorde(_ acorde: AcordeConNombre) -> [String] {
         acorde.estilos.map(\.nombre).joined(separator: " · "),
         acorde.referencias.map(\.cita).joined(separator: " · "),
     ]
-    return comoSeLlama + antes + valores + despues
+    return comoSeLlama + antes + valores + fecha(de: acorde) + despues
 }
 
 let acordes = Catalogo(

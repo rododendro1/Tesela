@@ -72,11 +72,11 @@ import Testing
         #expect(ProgresionConNombre.buscar(conteniendo: "") == ProgresionConNombre.catalogo)
     }
 
-    /// Una progresión propia se puede comprobar al crearla.
+    /// Una progresión propia se comprueba al crearla, y por eso siempre tiene acordes.
     @Test func leyendoElCifrado() throws {
         let propia = try ProgresionConNombre(nombre: "mía", leyendo: "I ♭VII IV I")
         #expect(propia.acordes(sobre: .do) == ["Do", "Sib", "Fa", "Do"])
         #expect(throws: (any Error).self) { try ProgresionConNombre(nombre: "mía", leyendo: "I X I") }
-        #expect(ProgresionConNombre(nombre: "mía", cifrado: "I X I").acordes(sobre: .do).isEmpty)
+        #expect(throws: (any Error).self) { try ProgresionConNombre(nombre: "mía", leyendo: "") }
     }
 }

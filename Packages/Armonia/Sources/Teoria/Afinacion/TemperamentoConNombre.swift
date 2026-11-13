@@ -26,8 +26,6 @@ public struct TemperamentoConNombre: Sendable {
     public let familia: FamiliaDeTemperamento
     /// Quién lo propuso o lo describió: «Andreas Werckmeister».
     public let autor: String?
-    /// El año en que se publicó, o hacia el que se usaba.
-    public let anio: Int?
     /// Cómo se afina.
     package let construccion: ConstruccionDeTemperamento
     /// Dónde se lee.
@@ -42,10 +40,9 @@ public struct TemperamentoConNombre: Sendable {
         self.construccion = construccion
         self.familia = familia
         self.autor = autor
-        self.anio = anio
         self.alias = alias
         self.variantes = variantes
-        ficha = FichaDelCatalogo(referencias: referencias)
+        ficha = FichaDelCatalogo(referencias: referencias, anio: anio)
     }
 
     // MARK: Propiedades
@@ -83,7 +80,7 @@ public struct TemperamentoConNombre: Sendable {
     }
 
     /// La afinación de las notas, con el La4 dado y, en la justa, sobre la tónica; `nil` en los sistemas de otras
-    /// tradiciones, que no afinan notas sino los grados de sus escalas (`TipoDeEscalaMicrotonal`). Con un
+    /// tradiciones, que no afinan notas sino los grados de sus escalas (`AfinacionPropia`). Con un
     /// ``TemperamentoQueAfina`` no hace falta mirar si es `nil`.
     public func afinacion(tonica: Nota = .do, frecuenciaDelLa4: Double = 440) -> (any SistemaDeAfinacion)? {
         switch construccion {

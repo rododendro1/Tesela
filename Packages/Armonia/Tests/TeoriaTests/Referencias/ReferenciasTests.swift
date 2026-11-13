@@ -6,7 +6,8 @@ import Testing
 
 /// Las referencias bibliográficas del catálogo (`Referencia`, `TipoDeEscala.referencias`).
 @Suite struct ReferenciasTests {
-    /// Todas las obras citadas, por las escalas, sus listas, sus fuentes y sus afinaciones, por los acordes, por las progresiones, por los ritmos, por los temperamentos, por las notas y por sus funciones.
+    /// Todas las obras citadas, por las escalas, sus listas, sus fuentes y sus afinaciones, por los acordes, por las
+    /// progresiones, por los ritmos, por los temperamentos, por las notas y por sus funciones.
     private var citadas: [Referencia] {
         TipoDeEscala.catalogo.flatMap(\.referencias)
             + TipoDeEscala.listasTradicionales.flatMap(\.referencias)
@@ -79,7 +80,7 @@ import Testing
         #expect(TipoDeEscala.echosProtos.referencias.contains(.rechberger2008))
         #expect(TipoDeEscala.menorHungara.referencias.contains(.rechberger2008))
         #expect(TipoDeEscala.echosProtos.afinaciones[1].referencias == [.chrysanthos1832])
-        #expect(TipoDeEscala.echosProtos.microtonal?.referencias == [])
+        #expect(TipoDeEscala.echosProtos.afinacionPropia?.referencias == [])
         // El dórico con ficta: Barbour, por su lista, y los tratados de Zarlino, Salinas y Ramos.
         #expect(
             TipoDeEscala.escalasRenacentistas[0].referencias

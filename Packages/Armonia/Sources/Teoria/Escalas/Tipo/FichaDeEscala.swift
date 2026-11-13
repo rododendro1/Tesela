@@ -2,8 +2,8 @@ import Elementos
 
 // MARK: - Ficha de una escala del catálogo
 
-/// Lo que el catálogo sabe de una escala además de su nombre y sus intervalos: sus subtradiciones (los estilos en que
-/// se usa y las regiones de donde viene), su categoría (las de otras tradiciones), su escala madre (`padre`) y sus
+/// Lo que el catálogo sabe de una escala además de su nombre y sus intervalos: sus estilos, sus escuelas y las
+/// regiones de donde viene, su categoría (las de otras tradiciones), su escala madre (`padre`) y sus
 /// versiones microtonales.
 ///
 /// Se escribe en la declaración de la escala, con el resto de sus datos:
@@ -20,19 +20,19 @@ import Elementos
 /// Que el nombre ya lleve la palabra de su categoría («Rast makamı») no se escribe: se deduce del nombre
 /// (`TipoDeEscala.llevaLaCategoria`), para que `nombreCompleto` no la repita.
 ///
-/// De ahí salen `TipoDeEscala.estilos`, `regiones`, `categoria`, `padre`, `microtonal` y `afinaciones`, y
-/// `Estilo.tipos`, `RegionDeEscala.tipos` y `TipoDeEscalaMicrotonal.catalogo`. La tradición (`tradicion`) se
-/// deduce de la categoría, de las subtradiciones o de la fuente, y solo se escribe en las que no la dan
-/// (`tradicion: .japon, categoria: .escala`); cada lista de `TipoDeEscala.listasTradicionales` tiene solo escalas de
-/// la suya. Los nombres en otros idiomas no van en la ficha: están en `Nombres/`. El estilo de las escalas de la India
-/// no se escribe: lo da su categoría.
+/// De ahí salen `TipoDeEscala.estilos`, `regiones`, `categoria`, `padre`, `afinacionPropia` y `afinaciones`, y
+/// `Estilo.tipos`, `RegionDeEscala.tipos` y `AfinacionPropia.catalogo`. La tradición (`tradicion`) se deduce de
+/// la categoría, de los estilos, las escuelas y las regiones, o de la fuente, y solo se escribe en las que no la dan
+/// (`tradicion: .japon, categoria: .escala`); cada lista de `TipoDeEscala.listasTradicionales` tiene solo escalas de la
+/// suya. Los nombres en otros idiomas no van en la ficha: están en `Nombres/`. El estilo de las escalas de la India no
+/// se escribe: lo da su categoría.
 ///
 /// Las propiedades públicas no leen la ficha del valor, sino la de la escala del catálogo con su misma `identidad`:
 /// un tipo leído de un fichero o escrito a mano con el nombre y las notas de Bayātī tiene sus microtonos, y una escala
 /// propia que se llame «Kafi» pero suene distinto no es el thāṭ.
 package struct FichaDeEscala: Sendable {
     /// Una versión microtonal, sin la escala temperada (que es la de la ficha): los argumentos de
-    /// `TipoDeEscalaMicrotonal` salvo el primero.
+    /// `AfinacionPropia` salvo el primero.
     package struct Afinacion: Sendable {
         let sistema: SistemaMicrotonal
         let pasos: [Int]
@@ -62,7 +62,7 @@ package struct FichaDeEscala: Sendable {
     /// De qué regiones viene, en el orden de `RegionDeEscala.allCases`.
     package let regiones: [RegionDeEscala]
     /// La tradición: la que se escribe en la declaración o, si no, la de su categoría (un rāga es de la India), la de
-    /// sus subtradiciones (un estilo occidental, una región) o la de su fuente. `nil` solo en `vacia`.
+    /// sus estilos, escuelas o regiones (un estilo occidental, una región) o la de su fuente. `nil` solo en `vacia`.
     package let tradicion: Tradicion?
     /// La categoría en su tradición; `nil` en las occidentales.
     package let categoria: CategoriaTradicional?
@@ -131,7 +131,7 @@ extension TipoDeEscala {
     /// La escala del catálogo con la misma identidad, sus versiones microtonales y sus referencias.
     package struct EntradaDelCatalogo: Sendable {
         package let tipo: TipoDeEscala
-        package let afinaciones: [TipoDeEscalaMicrotonal]
+        package let afinaciones: [AfinacionPropia]
         package let referencias: [Referencia]
     }
 
@@ -147,7 +147,7 @@ extension TipoDeEscala {
         var tabla: [IdentidadDeEscala: EntradaDelCatalogo] = [:]
         for tipo in catalogo where tabla[tipo.identidad] == nil {
             let afinaciones = tipo.ficha.afinaciones.map {
-                TipoDeEscalaMicrotonal(
+                AfinacionPropia(
                     tipo, $0.sistema, pasos: $0.pasos, pasosDescendentes: $0.pasosDescendentes, fuente: $0.fuente,
                     referencias: $0.referencias)
             }
@@ -159,9 +159,9 @@ extension TipoDeEscala {
         return tabla
     }()
 
-    /// Dónde se lee la escala: las obras que cita su declaración, la que la documenta, la de su fuente, las de su lista y las de sus
-    /// afinaciones, sin repetir; en las occidentales, las de `referenciasOccidentales`. Vacío en las propias y en las
-    /// occidentales sintéticas.
+    /// Dónde se lee la escala: las obras que cita su declaración, la que la documenta, la de su fuente, las de su lista
+    /// y las de sus afinaciones, sin repetir; en las occidentales, las de `referenciasOccidentales`. Vacío en las
+    /// propias y en las occidentales sintéticas.
     ///
     ///     TipoDeEscala.bayati.referencias.map(\.cita)   // ["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019"]
     ///     TipoDeEscala.lidioDominante.referencias.map(\.cita)   // ["Levine 1995", "Persichetti 1961", "Lendvai 1971", "Tymoczko 2011"]
