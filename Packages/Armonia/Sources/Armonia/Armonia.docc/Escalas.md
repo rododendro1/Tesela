@@ -334,7 +334,7 @@ cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 
 ### Qué forma usa cada operación
 
-- **Las dos direcciones:** `contiene(_:)`, `contieneEnarmonico(_:)`, `Escala.candidatos` y la
+- **Las dos direcciones:** `contiene(_:)`, `contieneEnarmonico(_:)`, `Escala.candidatos(notas:tipos:)` y la
   ortografía de alturas MIDI. La menor melódica contiene Sol (al bajar) y Sol♯ (al subir), y
   en ella el Sol no se escribe como nota cromática. Con `sentido:` se mira solo una:
   `contiene(.sol, sentido: .ascendente)` → `false`.

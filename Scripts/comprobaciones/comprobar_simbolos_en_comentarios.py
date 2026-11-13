@@ -2,9 +2,10 @@
 """Comprueba, sin compilar, que los símbolos que nombran los comentarios del código existen.
 
 Un comentario que dice `TipoDeEscala.todos` cuando ya no hay ningún `todos` sigue compilando, y nadie lo ve.
-Este script lee los comentarios de los ficheros Swift de `Packages/*/Sources`, `Apps/*` y `Ejemplos/*` y, en cada
-`Tipo.miembro` entre comillas invertidas cuyo tipo esté declarado en el repositorio, mira que el miembro esté
-declarado en ese tipo o en una de sus extensiones:
+Este script lee los comentarios de los ficheros Swift de `Packages/*/Sources`, `Apps/*` y `Ejemplos/*`, los artículos
+de DocC y los README (no los CHANGELOG, que cuentan lo que hubo) y, en cada `Tipo.miembro` entre comillas invertidas
+cuyo tipo esté declarado en el repositorio, mira que el miembro esté declarado en ese tipo, en sus extensiones o en
+los protocolos que sigue:
 
   - Sin paréntesis (`TipoDeEscala.occidentales`), tiene que ser una propiedad o un caso: un `var`, un `let` o un
     `case`. Si solo hay una función con ese nombre, se escribe con su firma (`TipoDeEscala.todos(numeroDeNotas:)`).
@@ -42,6 +43,14 @@ def ficheros():
             if ".build" in partes or "Tests" in partes or any(p.endswith("Tests") for p in partes):
                 continue
             yield ruta
+
+
+def documentos():
+    """Los artículos de DocC y los README, que nombran los símbolos igual. Los CHANGELOG no: cuentan lo que hubo."""
+    rutas = sorted(RAIZ.glob("*.md")) + sorted((RAIZ / "Scripts").rglob("*.md"))
+    for carpeta in ["Packages", "Apps", "Ejemplos"]:
+        rutas += sorted(ruta for ruta in (RAIZ / carpeta).rglob("*.md") if ".build" not in ruta.parts)
+    return [ruta for ruta in rutas if ruta.name != "CHANGELOG.md"]
 
 
 def sin_cadenas_ni_comentarios(linea: str) -> str:
@@ -125,9 +134,9 @@ def main():
     rutas = list(ficheros())
     tipos, propiedades, funciones, anidados = miembros_por_tipo(rutas)
     revisados = errores = 0
-    for ruta in rutas:
+    for ruta in rutas + documentos():
         for numero, linea in enumerate(ruta.read_text(encoding="utf-8").splitlines(), 1):
-            comentario = linea.find("//")
+            comentario = linea.find("//") if ruta.suffix == ".swift" else 0
             if comentario < 0:
                 continue
             for cadena, parentesis in REFERENCIA.findall(linea[comentario:]):
@@ -154,7 +163,7 @@ def main():
                     else:
                         print(f"{lugar}: `{cadena}`: «{tipo}» no tiene ningún «{miembro}»")
                     errores += 1
-    print(f"{revisados} símbolos revisados en los comentarios de {len(rutas)} ficheros.")
+    print(f"{revisados} símbolos revisados en los comentarios de {len(rutas)} ficheros y en la documentación.")
     if errores:
         print(f"{errores} símbolo(s) que no existen.")
         sys.exit(1)

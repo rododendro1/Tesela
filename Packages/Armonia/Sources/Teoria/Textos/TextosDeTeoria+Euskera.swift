@@ -170,7 +170,7 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: "«{1}» ezin da barraren ondoren joan: oinarrizko egoeran dagoen hirukote maior edo minor bat izan behar du (V/V, vii°7/ii)",
         cifrasNoValidas: "«{1}» ez dira baxu jarraituko zifrak: 1etik 9rako zenbakiak, gehienez alterazio batekin (6, 64, 7, ♯6, 4+)",
         cifrasSinAcorde: "«{1}» zifrek ez dute akorderik osatzen baxu horren gainean",
-        // UsoDeEscala.swift
+        // Estilo.swift
         estiloClasica: "klasikoa",
         estiloJazz: "jazza",
         estiloBlues: "bluesa",
@@ -266,7 +266,7 @@ extension TextosDeTeoria {
         tradicionVietnam: "Vietnam",
         tradicionBrasil: "Brasil",
         tradicionRenacimiento: "Errenazimendua",
-        // Estilo.swift y RegionDeEscala.swift
+        // Escuela.swift y RegionDeEscala.swift
         escuelaCarnatica: "Karnatikoa",
         escuelaIndostanica: "Hindustaniarra",
         escuelaIndiaAntigua: "Antzinako India",

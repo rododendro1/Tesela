@@ -170,7 +170,7 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: "”{1}” kan inte stå efter snedstrecket: det måste vara en dur- eller molltreklang i grundläge (V/V, vii°7/ii)",
         cifrasNoValidas: "”{1}” är ingen generalbas: siffror från 1 till 9 med högst ett förtecken (6, 64, 7, ♯6, 4+)",
         cifrasSinAcorde: "siffrorna ”{1}” ger inget ackord över den här basen",
-        // UsoDeEscala.swift
+        // Estilo.swift
         estiloClasica: "klassisk",
         estiloJazz: "jazz",
         estiloBlues: "blues",
@@ -266,7 +266,7 @@ extension TextosDeTeoria {
         tradicionVietnam: "Vietnam",
         tradicionBrasil: "Brasilien",
         tradicionRenacimiento: "Renässansen",
-        // Estilo.swift y RegionDeEscala.swift
+        // Escuela.swift y RegionDeEscala.swift
         escuelaCarnatica: "Karnatisk",
         escuelaIndostanica: "Hindustansk",
         escuelaIndiaAntigua: "Det forna Indien",

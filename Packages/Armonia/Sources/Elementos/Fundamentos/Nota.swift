@@ -309,8 +309,6 @@ public struct Nota: Hashable, Sendable {
                 }
             }
         }
-        // «H Be», como se escribía el Si♭ en `.conPalabras(.aleman)` (antes `.aleman`) en la 0.3.0, se sigue leyendo.
-        if notacion == .conPalabras(.aleman) { tabla["H Be".claveDeBusqueda] = Nota(.si, .bemol) }
         return tabla
     }
 
@@ -381,7 +379,7 @@ extension Notacion {
 
 // MARK: - Idiomas
 //
-// Las letras, las alteraciones y los nombres de nota en las doce lenguas de `Notacion`. Siguen el idioma
+// Las letras, las alteraciones y los nombres de nota en las trece lenguas de `Notacion`. Siguen el idioma
 // de las notas (`Notacion.idiomaDeLasNotas`), no el de los textos. Los intervalos, en `Intervalo.swift`.
 
 // MARK: - NotaNatural

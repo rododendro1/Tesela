@@ -126,6 +126,8 @@ occidental (el tresillo, las claves, el bembé), los compases del flamenco, los 
 los iqa'at árabes, los aksak y los usul, los modos rítmicos de Notre Dame y unas danzas. Cada uno
 se escribe como Toussaint, en notación de caja (`x` fuerte, `o` débil, `.` silencio), con su
 agrupación y la figura de su pulso, y se busca por su nombre en cualquiera de los trece idiomas.
+Los del flamenco, el folclore búlgaro, la música clásica y el jazz llevan su estilo (`estilos`), como
+los acordes y las progresiones; los de otras tradiciones, ninguno.
 ``EstadisticasDeRitmo`` da sus medidas: el vector de distancias, si es euclídeo o profundo, la
 uniformidad, el contratiempo y la síncopa. `voz(en:ciclos:)` lo toca, con acento en los fuertes:
 
@@ -139,6 +141,7 @@ RitmoConNombre.tresillo.estadisticas.euclideo          // true
 RitmoConNombre.euclideo(ataques: 3, pulsos: 8)         // "x..x..x."
 clave.distanciaDeHamming(a: .claveDeRumba)             // 2
 RitmoConNombre.buscar(nombre: "son clave") == clave    // true
+RitmoConNombre.solea.estilos == [.flamenco]            // true
 clave.voz(ciclos: 2).eventos.count                     // 10
 ```
 

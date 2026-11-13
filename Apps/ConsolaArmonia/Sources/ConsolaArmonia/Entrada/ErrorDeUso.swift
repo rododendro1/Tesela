@@ -97,7 +97,7 @@ enum ErrorDeUso: ErrorDeArmonia {
     case octavasFueraDeRango
     /// `escalas --notas` sin valor o fuera de 1…24.
     case notasFueraDeRango
-    /// `--octava` fuera de 0…7.
+    /// `--registro` fuera de 0…7.
     case octavaFueraDeRango
     /// `arpegio --desde` con algo que no es una nota ni un grado del acorde.
     case desdeNoValido(String)

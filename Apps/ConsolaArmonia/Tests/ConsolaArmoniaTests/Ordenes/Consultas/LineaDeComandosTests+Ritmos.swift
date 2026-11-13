@@ -15,11 +15,11 @@ extension LineaDeComandosTests {
         #expect(talas.hasPrefix("tīntāl: xoooxoooooooxooo"), Comment(rawValue: talas))
         #expect(!talas.contains("clave"))
         #expect(salida("ritmos --familia tāla de la India").contains("ektāl"))
-        // `--estilo` y `--epoca`, como en `acordes`; `--uso` y `--use` se leen como `--estilo`.
+        // `--estilo` y `--epoca`, como en `acordes`; `--uso`, el nombre de antes, ya no existe.
         let flamencos = salida("ritmos --estilo flamenco")
         #expect(flamencos.hasPrefix("soleá:") && flamencos.contains("seguiriya") && !flamencos.contains("clave"))
-        #expect(salida("rhythms --use jazz --ingles").contains("Charleston"))
-        #expect(salida("rhythms --style jazz --ingles") == salida("ritmos --uso jazz --ingles"))
+        #expect(salida("rhythms --style jazz --ingles").contains("Charleston"))
+        #expect(resultado("ritmos", "--uso", "jazz").codigo == 2)
         #expect(salida("ritmos --epoca edad-media").contains("primer modo rítmico"))
         #expect(!salida("ritmos --epoca edad-media").contains("tīntāl"))
         let ninguno = resultado("ritmos", "clave", "--familia", "tala")

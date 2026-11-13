@@ -205,7 +205,7 @@ try RecorridoTonal(leyendo: "Do Lam Re7 Sol7 Do").modulaciones.isEmpty   // true
 Entre las particiones posibles se elige la de menor coste, con el mismo coste por acorde que usa
 `AnalisisArmonico` para elegir la tonalidad, una rebaja por cada cadencia auténtica en la
 tonalidad del tramo y un coste fijo por cada modulación. Si la progresión no modula, el único
-tramo es el mismo análisis que da `AnalisisArmonico.analizar`.
+tramo es el mismo análisis que da `AnalisisArmonico.analizar(_:)`.
 
 ### Planificar una modulación
 

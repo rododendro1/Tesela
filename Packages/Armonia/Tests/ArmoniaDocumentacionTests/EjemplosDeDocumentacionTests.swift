@@ -968,7 +968,8 @@ import Hexagonos
         comprobar(RitmoConNombre.euclideo(ataques: 3, pulsos: 8), #""x..x..x.""#, doc, 6)
         comprobar(clave.distanciaDeHamming(a: .claveDeRumba), #"2"#, doc, 7)
         comprobar(RitmoConNombre.buscar(nombre: "son clave") == clave, #"true"#, doc, 8)
-        comprobar(clave.voz(ciclos: 2).eventos.count, #"10"#, doc, 9)
+        comprobar(RitmoConNombre.solea.estilos == [.flamenco], #"true"#, doc, 9)
+        comprobar(clave.voz(ciclos: 2).eventos.count, #"10"#, doc, 10)
     }
 
     @Test func melodiaYRitmo8() throws {

@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: "το «{1}» δεν μπορεί να ακολουθεί την κάθετο: πρέπει να είναι μείζονα ή ελάσσονα τριφωνία σε θεμελιώδη κατάσταση (V/V, vii°7/ii)",
         cifrasNoValidas: "το «{1}» δεν είναι αριθμημένο μπάσο: αριθμοί από το 1 έως το 9, ο καθένας με το πολύ μία αλλοίωση (6, 64, 7, ♯6, 4+)",
         cifrasSinAcorde: "τα ψηφία «{1}» δεν σχηματίζουν καμία συγχορδία πάνω σε αυτό το μπάσο",
-        // UsoDeEscala.swift
+        // Estilo.swift
         estiloClasica: "κλασική",
         estiloJazz: "τζαζ",
         estiloBlues: "μπλουζ",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         tradicionVietnam: "Βιετνάμ",
         tradicionBrasil: "Βραζιλία",
         tradicionRenacimiento: "Αναγέννηση",
-        // Estilo.swift y RegionDeEscala.swift
+        // Escuela.swift y RegionDeEscala.swift
         escuelaCarnatica: "Καρνατική",
         escuelaIndostanica: "Ινδουστανική",
         escuelaIndiaAntigua: "Αρχαία Ινδία",

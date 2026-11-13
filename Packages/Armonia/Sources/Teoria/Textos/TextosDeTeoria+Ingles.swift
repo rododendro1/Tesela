@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: "\"{1}\" cannot follow the slash: it must be a major or minor triad in root position (V/V, vii°7/ii)",
         cifrasNoValidas: "\"{1}\" is not figured bass: numbers from 1 to 9, each with at most one accidental (6, 64, 7, #6, 4+)",
         cifrasSinAcorde: "the figures \"{1}\" do not make any chord over that bass",
-        // UsoDeEscala.swift
+        // Estilo.swift
         estiloClasica: "classical",
         estiloJazz: "jazz",
         estiloBlues: "blues",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         tradicionVietnam: "Vietnam",
         tradicionBrasil: "Brazil",
         tradicionRenacimiento: "Renaissance",
-        // Estilo.swift y RegionDeEscala.swift
+        // Escuela.swift y RegionDeEscala.swift
         escuelaCarnatica: "Carnatic",
         escuelaIndostanica: "Hindustani",
         escuelaIndiaAntigua: "Ancient India",

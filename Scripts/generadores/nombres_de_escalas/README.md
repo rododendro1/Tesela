@@ -17,6 +17,6 @@ regenerar una familia de alias. Todos reciben la raíz del repositorio y reescri
 Después de cualquiera: `python3 Scripts/comprobaciones/comprobar_catalogo.py` (cobertura y choques de alias) y los tests de
 `NombresDeEscalasPorIdiomaTests`. Las traducciones no las ha revisado ningún hablante nativo.
 
-Todos comparan nombres con `Scripts/comun/normalizar_escalas.py`, la copia en Python de `TipoDeEscala.normalizar`. Los casos
+Todos comparan nombres con `Scripts/comun/normalizar_escalas.py`, la copia en Python de `TipoDeEscala.normalizar(_:)`. Los casos
 de `Scripts/datos/normalizar.tsv` los lee también `NormalizarVectoresTests` (Swift): para cambiar la normalización,
 cambia las dos funciones y añade el caso al fichero. `python3 Scripts/comun/normalizar_escalas.py --comprobar` los pasa.

@@ -6,7 +6,7 @@ Estado a 12 de noviembre de 2026, tras las escalas sintéticas, los lugares, las
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 28 escalas occidentales sin ninguna referencia y
 cuatro acordes sin fuente. El catálogo tiene 443 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
-los doce idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
+los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
 

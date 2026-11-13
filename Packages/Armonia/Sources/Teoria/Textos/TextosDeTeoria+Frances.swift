@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: "« {1} » ne peut pas suivre la barre : il faut un accord parfait majeur ou mineur à l'état fondamental (V/V, vii°7/ii)",
         cifrasNoValidas: "« {1} » n'est pas une basse chiffrée : des chiffres de 1 à 9, chacun avec au plus une altération (6, 64, 7, ♯6, 4+)",
         cifrasSinAcorde: "les chiffres « {1} » ne forment aucun accord sur cette basse",
-        // UsoDeEscala.swift
+        // Estilo.swift
         estiloClasica: "classique",
         estiloJazz: "jazz",
         estiloBlues: "blues",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         tradicionVietnam: "Viêt Nam",
         tradicionBrasil: "Brésil",
         tradicionRenacimiento: "Renaissance",
-        // Estilo.swift y RegionDeEscala.swift
+        // Escuela.swift y RegionDeEscala.swift
         escuelaCarnatica: "Carnatique",
         escuelaIndostanica: "Hindoustanie",
         escuelaIndiaAntigua: "Inde ancienne",

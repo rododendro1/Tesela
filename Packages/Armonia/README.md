@@ -226,10 +226,11 @@ Sources/
 │                          RelacionEntreConjuntos (Fourier, Isaacson, Morris y Forte: lo que se parecen dos)
 ├── Teoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
-│   ├── Catalogo/          Lo que comparten los catálogos: Estilo (de escalas, acordes y progresiones),
-│   │                      DatosDelCatalogo y NombresDelCatalogo (los nombres de cada catálogo por idioma). Cada
-│   │                      catálogo con nombre tiene la misma forma: su tipo y su catálogo en la carpeta, y sus
-│   │                      nombres en `Nombres/`, un fichero por idioma
+│   ├── Catalogo/          Lo que comparten los catálogos: ElementoConNombre, Estilo (de escalas, acordes,
+│   │                      progresiones y ritmos) con su Corriente, Escuela, Epoca, Caracter (lo que dicen sus
+│   │                      fuentes), DatosDelCatalogo y NombresDelCatalogo (los nombres de cada catálogo por
+│   │                      idioma). Cada catálogo con nombre tiene la misma forma: su tipo y su catálogo en la
+│   │                      carpeta, y sus nombres en `Nombres/`, un fichero por idioma
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
 │   │   │                  PapelEnAcorde, TipoDeAcorde.Componente, CalidadDeTriada), ClasificacionDeAcorde
 │   │   │                  (con LecturaDeCifrado, el lector de cifrados),
@@ -246,11 +247,11 @@ Sources/
 │   │   │                  ella: acordes, estudio, simetría, estadísticas, armonía modal, escalas propias y vecinas
 │   │   │                  (CalculosDeEscala: Myhill, Rothenberg, Carey, Krumhansl y Kessler…) y RelacionEntreEscalas
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
-│   │   │                  `nombre(en:)`), DatosDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
-│   │   │                  y Microtonos (SistemaDeAlturas, AfinacionPropia)
-│   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala,
-│   │   │                  FuenteTeorica, y los tipos de algunas tradiciones: CakraDeMela, ModoGregoriano y
-│   │   │                  Escala+Diao
+│   │   │                  `nombre(en:)`), DatosDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala,
+│   │   │                  Microtonos (SistemaDeAlturas, AfinacionPropia) y CaracterDeLaAfinacion
+│   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala, Geografia,
+│   │   │                  PeriodoMusical, FuenteTeorica, y los tipos de algunas tradiciones: CakraDeMela,
+│   │   │                  ModoGregoriano y Escala+Diao
 │   │   ├── Catalogo/      Un fichero por tradición (TipoDeEscala+Occidental y +Occidental+Exoticas, +India,
 │   │   │                  +MundoArabe, +Turquia, +GreciaAntigua…), cada uno con sus escalas (con su categoría, sus
 │   │   │                  microtonos, su padre y sus referencias) y sus listas; TipoDeEscala+Tradiciones
@@ -264,8 +265,9 @@ Sources/
 │   │   │                  su catálogo (cadencias, esquemas del barroco y del galante, jazz y blues, y pop) y
 │   │   │                  EstadisticasDeProgresion (Lerdahl, movimiento de las voces, cromatismo)
 │   │   └── Nombres/       NombresDeProgresiones y un fichero por idioma (`NombresDeProgresiones+Catalan.swift`…)
-│   ├── Ritmos/            RitmoConNombre (un ritmo en notación de caja, con su familia y su búsqueda), su catálogo
-│   │   │                  (líneas de tiempo, flamenco, tāla, iqa'at, aksak y usul, modos rítmicos y danzas) y
+│   ├── Ritmos/            RitmoConNombre (un ritmo en notación de caja, con su familia, sus estilos y su
+│   │   │                  búsqueda), su catálogo (líneas de tiempo, flamenco, tāla, iqa'at, aksak y usul, modos
+│   │   │                  rítmicos y danzas) y
 │   │   │                  EstadisticasDeRitmo (Toussaint: distancias, euclídeo, profundo, síncopa)
 │   │   └── Nombres/       NombresDeRitmos y un fichero por idioma (`NombresDeRitmos+Catalan.swift`…)
 │   ├── Notas/             NotaConNombre (el catálogo de notas con nombre propio: diapasones, notas de referencia, la
@@ -318,7 +320,7 @@ Sources/
 
 Los nombres que dependen del idioma están en el fichero de cada tipo, al final, tras `// MARK: - Idiomas`
 (`grep -rl 'MARK: - Idiomas' Sources` los lista): en el núcleo, `Nota.swift` (letras, alteraciones
-y nombres de nota en las doce lenguas de las notaciones), `Intervalo.swift` (calidades de
+y nombres de nota en las trece lenguas de las notaciones), `Intervalo.swift` (calidades de
 intervalo, intervalos y consonancias) y `ErrorDeLectura.swift` (los mensajes de error generales y los de las
 notas); en las demás capas, los errores de lectura de cada una (`ErrorDeLecturaDeTeoria.swift`,
 `ErrorDeLecturaDePartitura.swift`), los modos y las tonalidades, los papeles en el acorde, las calidades de tríada, los grados, las claves,

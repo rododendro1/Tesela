@@ -87,7 +87,7 @@ extension LineaDeComandos {
                 "armonia pentagrama escala Sol mayor --dedos guitarra > sol.svg",
                 "armonia staff scale G major --fingers guitar > g.svg"),
             opciones: [.romanos, .dedos, .secuencia, .tab, .instrumento]),
-        // pentagrama <qué> --octava|--clave|--doble|--cambiar-clave|--bajo-cifrado
+        // pentagrama <qué> --registro|--clave|--doble|--cambiar-clave|--bajo-cifrado
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisPentagramaRegistro),
             descripcion: TextosDeConsola.traduccion(\.descripcionPentagramaRegistro),
