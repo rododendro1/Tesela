@@ -35,7 +35,6 @@
 
 ### Lo nuevo
 
-<<<<<<< HEAD
 - El carácter de las escalas: `TipoDeEscala.caracter` da lo que dice cada fuente (`CaracterDeEscala`), con los afectos
   (`Afecto`, un vocabulario de 21 palabras en los trece idiomas), el momento del día (`MomentoDelDia`), la estación
   (`Estacion`), la ocasión (`Ocasion`) y, en China, el papel (`PapelDeLaNota`) y la fase (`FaseDeLaNaturaleza`); y
@@ -44,8 +43,6 @@
   Babb 1978), los rāgas y los thāṭ (Bor 1999), los pathet del sléndro (Hood 1954) y los cinco modos chinos
   (DeWoskin 1982). Es del nombre, no de las notas: Bilāval lo tiene y el jónico no. Sus obras entran en
   `referencias` y en `Referencia.catalogo`.
-=======
->>>>>>> origin/main
 - `ElementoConNombre`, lo que tienen en común los siete catálogos con nombre (`TipoDeEscala`, `AcordeConNombre`,
   `ProgresionConNombre`, `RitmoConNombre`, `TemperamentoConNombre`, `NotaConNombre` y `FuncionDeNota`): el nombre, los
   alias y las variantes en los trece idiomas, `nombres(en:)`, `buscar(nombre:)` y `buscar(conteniendo:)`, las

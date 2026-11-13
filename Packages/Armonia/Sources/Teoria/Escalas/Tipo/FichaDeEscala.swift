@@ -161,14 +161,9 @@ extension TipoDeEscala {
         return tabla
     }()
 
-<<<<<<< HEAD
     /// Dónde se lee la escala: las obras que cita su declaración, la que la documenta, la de su fuente, las de su lista,
-    /// las de sus afinaciones y las de su carácter, sin repetir; en las occidentales, las de `referenciasOccidentales`. Vacío en las
-=======
-    /// Dónde se lee la escala: las obras que cita su declaración, la que la documenta, la de su fuente, las de su lista
-    /// y las de sus afinaciones, sin repetir; en las occidentales, las de `referenciasOccidentales`. Vacío en las
->>>>>>> origin/main
-    /// propias y en las occidentales sintéticas.
+    /// las de sus afinaciones y las de su carácter, sin repetir; en las occidentales, las de `referenciasOccidentales`.
+    /// Vacío en las propias y en las occidentales sintéticas.
     ///
     ///     TipoDeEscala.bayati.referencias.map(\.cita)   // ["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019"]
     ///     TipoDeEscala.lidioDominante.referencias.map(\.cita)   // ["Levine 1995", "Persichetti 1961", "Lendvai 1971", "Tymoczko 2011"]
