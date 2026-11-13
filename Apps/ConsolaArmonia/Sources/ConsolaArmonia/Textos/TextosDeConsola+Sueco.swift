@@ -54,6 +54,8 @@ extension TextosDeConsola {
         sintaxisEscala: "scale <skala> [--chords]",
         descripcionEscala: "en skalas toner och ackord\n--chords: alla ackord som passar på varje steg, inte bara tersstaplingar",
         notasEscala: "Alternativ: --sequence thirds (eller fourths, groups-of-3, groups-of-4, triads, sevenths), --descending, --octaves 2 (1 till 4), --fingers (fingersättning), --modes (parallella och relativa) och --compare C lydian (sist); --symmetry (hur ofta den upprepas, och dess ackord); --neighbors (en ton flyttad) och --all-keys (i alla tolv tonarter); --all-keys --chords (ackorden på varje steg; --triads, utan septima); --statistics (antal toner, ljushet, intervallvektor…); --brightness-ladder (från den mörkaste till den ljusaste, en ton högre varje gång); --closest (de med flest gemensamma toner, från den som ändras minst); --progressions (ackordföljder med sina treklanger, med stegen och tonerna utanför dur eller moll); --bibtex (dess litteraturreferenser, i BibTeX); --tetrachords (dess delningar i två tetrakord, med namnen på vart och ett)",
+
+        // Catalogos/Ayuda+Catalogos.swift
         sintaxisEscalas: "scales [<text>] [alternativ]",
         descripcionEscalas: "skalkatalogen: de vanliga och de från andra traditioner, efter kategori, med sina toner från C",
         notasEscalas: "Alternativ: --tradition turkey (eller india, greece, ancient-greece, arab-world, persia, azerbaijan, china, japan, korea, ethiopia, indonesia, klezmer, andes, byzantium, mesopotamia, africa, southeast-asia, gregorian, europe, vietnam, brazil, renaissance) och --category maqam (eller rāga, makam, dastgah, dromos…); --source ptolemy (eller archytas, aristoxenus, didymus, glarean…) behåller bara en teoretikers; --style jazz (eller classical, blues, composer, folk, flamenco, pop-rock, popular, synthetic, bebop, modal, impressionism, rock, heavy-metal, neoclassical-metal) filtrerar de vanliga; --place spain (eller europe, levant, byzantium, romani, andalusia…) behåller skalorna från en plats, efter ursprung eller användning, och --group-by continent (eller country, era) grupperar dem efter ursprungsplats eller -epok; --era baroque (eller antiquity, middle-ages, renaissance, classicism, romanticism, 20th-century, 21st-century, tonal) behåller skalorna från en epok, efter ursprung eller användning, och --school carnatic (eller hindustani, ancient-india, gagaku) skalorna från en skola; --affect plaintive (eller sad, devotional, majestic…) behåller dem som har det affektet i någon av sina källor; --notes 5 behåller bara de med fem toner; --sort brightness (eller notes) sorterar dem, och --anhemitonic och --maximally-even behåller bara de anhemitoniska och de maximalt jämna; --fragments behåller bara fragmenten kortare än en oktav (tetrakord, ajnas, hexakord) och --no-fragments tar bort dem; --tuning microtonal (eller tempered, just, equal-divisions) behåller bara de med den stämningen; --with-interval tritone och --without-interval semitone (eller ett tal från 1 till 6) och --with-step 3 söker efter intervall; --compare C major, C lydian ställer dem mot varandra i en tabell; --map ritar ljushetskartan (SVG); en text söker i namnen; --neighbors D dorian, --closest D dorian och --brightness-ladder D dorian ger skalorna som följer av en, som med scale",
@@ -76,6 +78,8 @@ extension TextosDeConsola {
         sintaxisAcordesConNombre: "chords [<text>] [alternativ]",
         descripcionAcordesConNombre: "katalogens ackord med sina toner på C eller på tonen i --over; med en text, de vars namn innehåller den",
         notasAcordesConNombre: "alternativ: --notes 4 (eller tetrad) behåller de med fyra toner; --style jazz (eller classical, blues, composer, pop-rock, popular) de i en stil; --era romanticism (eller baroque, 20th-century…) de från en epok, efter ursprung eller användning; --affect joyful (eller sad, plaintive…) de som har det affektet i någon av sina källor; --tertian och --non-tertian, de som är uppbyggda i terser och de som inte är det; --anhemitonic, de utan halvtoner; --with-interval tritone och --without-interval semitone (eller ett tal från 1 till 6) söker efter deras intervall; --sort brightness (eller notes, consonance) sorterar dem; --statistics ställer dem i en tabell med det som mäts av vart och ett, och --summary räknar hur många det finns av varje antal toner, av varje stil och i terser",
+
+        // Ayuda+Consultas.swift (tonalidad, conjunto y serie)
         sintaxisTonalidad: "key <tonart>",
         descripcionTonalidad: "förtecken, närbesläktade tonarter och steg; --modulations: hur man når varje närbesläktad tonart (eller --modulations G major, den), med pivåackordet",
         sintaxisConjunto: "set <klasser>",
@@ -227,7 +231,7 @@ extension TextosDeConsola {
         manualRutaDelPrograma: "Sökvägen till {1}, om det inte finns i PATH.",
         manualCodigosDeSalida: ["Allt gick bra.", "En text eller fil som inte går att läsa, eller inget att skriva ut.", "Kommandot är felskrivet.", "check eller counterpoint hittade fel."],
 
-        // ErrorDeUso.swift (armonización)
+        // ErrorDeUso+Textos.swift (armonización)
         faltanAcordes: "ackorden saknas: {1}",
         dosAcordes: "två ackord behövs: {1}",
         faltanNotasDeLaArmonizacion: "melodins toner saknas: {1}",
@@ -235,7 +239,7 @@ extension TextosDeConsola {
         faltanVocesDelContrapunto: "cantus firmus och kontrapunkt saknas, åtskilda med /: {1}",
         especieFueraDeRango: "--species går från 1 till 5",
 
-        // ErrorDeUso.swift (consultas)
+        // ErrorDeUso+Textos.swift (consultas)
         faltaCifrado: "ackordsymbolen saknas: {1}",
         patronDesconocido: "okänt mönster: ”{1}” (ascending, descending, up-down, down-up, broken eller alberti)",
         tradicionDesconocida: "”{1}” är ingen tradition (india, greece, arab-world, persia, turkey…)",
@@ -273,7 +277,7 @@ extension TextosDeConsola {
         sinContrapuntoPosible: "det finns ingen felfri kontrapunkt av första arten till den här cantus firmus",
         faltaTransporte: "intervallet (eller den nya grundtonen) och det som ska flyttas saknas: {1}",
 
-        // ErrorDeUso.swift (dibujos)
+        // ErrorDeUso+Textos.swift (dibujos)
         margenFueraDeRango: "marginalen är ett tal från 0 till 6: --margen 2",
         faltaAcorde: "ackordet saknas: {1}",
         faltanClasesDelDibujo: "tonklasserna saknas: {1}",
@@ -284,7 +288,7 @@ extension TextosDeConsola {
         cicloSoloTriadas: "cykeln börjar med en dur- eller molltreklang: {1}",
         opcionesDeCuadricula: "rutnätsalternativ: --axes H,V (1,5), --grid CxR (8x8), --origin <tonhöjd> (C2), --rotate 0-3",
 
-        // ErrorDeUso.swift (neorriemanniana)
+        // ErrorDeUso+Textos.swift (neorriemanniana)
         vocesFueraDeRango: "1 eller 2 stämmor rör sig: --voices 2",
         unAcordeDeVecinos: "ett ackord behövs: {1}",
         vecinosSinFamilia: "grannar söks bland dominant-, moll-, halvförminskade, förminskade och maj7-septimackord eller bland dur-, moll- och överstigande treklanger",
@@ -292,7 +296,7 @@ extension TextosDeConsola {
         faltanPasosDePLR: "en treklang och steg eller en till treklang behövs: {1}",
         plrSoloTriadas: "P, L och R gäller dur- och molltreklanger: {1}",
 
-        // ErrorDeUso.swift (partituras)
+        // ErrorDeUso+Textos.swift (partituras)
         faltaTipoDePartitura: "”melody”, ”chorale” eller ”chords” saknas: {1}",
         instrumentoMIDI: "programmet är ett General MIDI-nummer från 0 till 127: --program 52",
         marcasSoloMusicXML: "--chord-symbols och --analysis är för MusicXML, MEI, LilyPond, GUIDO och ABC",
@@ -318,7 +322,7 @@ extension TextosDeConsola {
         motorNoInstalado: "inte installerat (eller ange sökvägen i {1})",
         motorPropio: "own",
 
-        // ErrorDeUso.swift (digitaciones)
+        // ErrorDeUso+Textos.swift (digitaciones)
         faltaInstrumento: "instrumentet saknas: {1}",
         instrumentoDesconocido: { nombre, lista in "okänt instrument: ”\(nombre)” (\(lista(.conPalabras(.sueco))))" },
         faltaLimite: "antalet grepp saknas: --limit 5",
@@ -341,7 +345,7 @@ extension TextosDeConsola {
         aproximacionDesconocida: "okänt närmande: ”{1}” (below, above eller enclosure)",
         secuenciaDesconocida: "okänd sekvens: ”{1}” (thirds, fourths, groups-of-3, groups-of-4, triads eller sevenths)",
 
-        // ErrorDeUso.swift (comunes)
+        // ErrorDeUso+Textos.swift (comunes)
         pruebaLaAyuda: "Prova ”armonia help”.",
         ordenDesconocida: "okänt kommando: ”{1}”",
         opcionDesconocida: "okänt alternativ: ”{1}”",

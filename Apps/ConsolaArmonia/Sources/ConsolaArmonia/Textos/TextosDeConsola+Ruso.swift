@@ -54,6 +54,8 @@ extension TextosDeConsola {
         sintaxisEscala: "scale <гамма> [--chords]",
         descripcionEscala: "ноты и аккорды гаммы\n--chords: все аккорды на каждой ступени, не только терцовые",
         notasEscala: "параметры: --sequence thirds (или fourths, groups-of-3, groups-of-4, triads, sevenths), --descending, --octaves 2 (от 1 до 4), --fingers (аппликатура), --modes (параллельные и относительные) и --compare C lydian (в конце); --symmetry (через сколько повторяется и её аккорды); --neighbors (сдвинув одну ноту) и --all-keys (во всех двенадцати тональностях); --all-keys --chords (аккорды каждой ступени; --triads — без септимы); --statistics (число звуков, яркость, интервальный вектор…); --brightness-ladder (от самой тёмной к самой яркой, повышая по одной ноте); --closest (те, у которых больше всего общих нот с ней, от наименее отличающейся); --progressions (последовательности из её трезвучий, со ступенями и нотами вне мажора или минора); --bibtex (её библиография, в BibTeX); --tetrachords (её деления на два тетрахорда, с названиями каждого)",
+
+        // Catalogos/Ayuda+Catalogos.swift
         sintaxisEscalas: "scales [<текст>] [параметры]",
         descripcionEscalas: "каталог гамм: обычные и гаммы других традиций, по категориям, с нотами от до",
         notasEscalas: "параметры: --tradition turkey (или india, greece, ancient-greece, arab-world, persia, azerbaijan, china, japan, korea, ethiopia, indonesia, klezmer, andes, byzantium, mesopotamia, africa, southeast-asia, gregorian, europe, vietnam, brazil, renaissance) и --category maqam (или rāga, makam, dastgah, dromos…); --source ptolemy (или archytas, aristoxenus, didymus, glarean…) оставляет гаммы одного теоретика; --style jazz (или classical, blues, composer, folk, flamenco, pop-rock, popular, synthetic, bebop, modal, impressionism, rock, heavy-metal, neoclassical-metal) отбирает обычные; --place spain (или europe, levant, byzantium, romani, andalusia…) оставляет гаммы одного места, происхождения или употребления, а --group-by continent (или country, era) группирует их по месту или эпохе происхождения; --era baroque (или antiquity, middle-ages, renaissance, classicism, romanticism, 20th-century, 21st-century, tonal) оставляет гаммы одной эпохи, происхождения или употребления, а --school carnatic (или hindustani, ancient-india, gagaku) — гаммы одной школы; --affect plaintive (или sad, devotional, majestic…) оставляет те, у которых этот аффект есть в одном из источников; --notes 5 оставляет только звукоряды из пяти нот; --sort brightness (или notes) сортирует их, а --anhemitonic и --maximally-even оставляют ангемитонные и максимально равномерные; --fragments оставляет только фрагменты короче октавы (тетрахорды, аджнас, гексахорды), а --no-fragments убирает их; --tuning microtonal (или tempered, just, equal-divisions) оставляет только гаммы с таким строем; --with-interval tritone и --without-interval semitone (или число от 1 до 6) и --with-step 3 ищут по интервалам; --compare C major, C lydian сводит их в таблицу; --map рисует их на карте яркости (SVG); текст ищет в названиях; --neighbors D dorian, --closest D dorian и --brightness-ladder D dorian дают гаммы, которые выходят из одной, как в scale",
@@ -76,6 +78,8 @@ extension TextosDeConsola {
         sintaxisAcordesConNombre: "chords [<текст>] [параметры]",
         descripcionAcordesConNombre: "аккорды каталога с их нотами от до или от ноты --over; с текстом — те, в названии которых он есть",
         notasAcordesConNombre: "параметры: --notes 4 (или tetrad) оставляет четырёхзвучные; --style jazz (или classical, blues, composer, pop-rock, popular) — аккорды одного стиля; --era romanticism (или baroque, 20th-century…) — аккорды одной эпохи, происхождения или употребления; --affect joyful (или sad, plaintive…) те, у которых этот аффект есть в одном из источников; --tertian и --non-tertian — построенные по терциям и остальные; --anhemitonic — без полутонов; --with-interval tritone и --without-interval semitone (или число от 1 до 6) ищут по интервалам; --sort brightness (или notes, consonance) сортирует их; --statistics выводит таблицу с тем, что измеряется у каждого, а --summary считает, сколько их по числу звуков, по стилям и по терциям",
+
+        // Ayuda+Consultas.swift (tonalidad, conjunto y serie)
         sintaxisTonalidad: "key <тональность>",
         descripcionTonalidad: "ключевые знаки, родственные тональности и ступени; --modulations: как прийти в каждую родственную тональность (или --modulations G major, в эту), с общим аккордом",
         sintaxisConjunto: "set <классы>",
@@ -227,7 +231,7 @@ extension TextosDeConsola {
         manualRutaDelPrograma: "Путь к {1}, если его нет в PATH.",
         manualCodigosDeSalida: ["Всё прошло успешно.", "Текст или файл не читается, или нечего выводить.", "Команда написана неверно.", "check или counterpoint нашли ошибки."],
 
-        // ErrorDeUso.swift (armonización)
+        // ErrorDeUso+Textos.swift (armonización)
         faltanAcordes: "не указаны аккорды: {1}",
         dosAcordes: "нужны два аккорда: {1}",
         faltanNotasDeLaArmonizacion: "не указаны ноты мелодии: {1}",
@@ -235,7 +239,7 @@ extension TextosDeConsola {
         faltanVocesDelContrapunto: "не указаны cantus firmus и контрапункт, через /: {1}",
         especieFueraDeRango: "--species — от 1 до 5",
 
-        // ErrorDeUso.swift (consultas)
+        // ErrorDeUso+Textos.swift (consultas)
         faltaCifrado: "не указано обозначение аккорда: {1}",
         patronDesconocido: "неизвестный рисунок: «{1}» (ascending, descending, up-down, down-up, broken или alberti)",
         tradicionDesconocida: "«{1}»: это не традиция (india, greece, arab-world, persia, turkey…)",
@@ -273,7 +277,7 @@ extension TextosDeConsola {
         sinContrapuntoPosible: "к этому cantus firmus нет контрапункта первого вида без ошибок",
         faltaTransporte: "не указаны интервал (или новая тоника) и что транспонировать: {1}",
 
-        // ErrorDeUso.swift (dibujos)
+        // ErrorDeUso+Textos.swift (dibujos)
         margenFueraDeRango: "поле — число от 0 до 6: --margen 2",
         faltaAcorde: "не указан аккорд: {1}",
         faltanClasesDelDibujo: "не указаны звуковысотные классы: {1}",
@@ -284,7 +288,7 @@ extension TextosDeConsola {
         cicloSoloTriadas: "цикл начинается с мажорного или минорного трезвучия: {1}",
         opcionesDeCuadricula: "параметры сетки: --axes H,V (1,5), --grid CxR (8x8), --origin <высота> (C2), --rotate 0-3",
 
-        // ErrorDeUso.swift (neorriemanniana)
+        // ErrorDeUso+Textos.swift (neorriemanniana)
         vocesFueraDeRango: "движутся 1 или 2 голоса: --voices 2",
         unAcordeDeVecinos: "нужен один аккорд: {1}",
         vecinosSinFamilia: "соседи ищутся среди доминантсептаккордов, малых минорных, малых и уменьшённых септаккордов и maj7 или среди мажорных, минорных и увеличенных трезвучий",
@@ -292,7 +296,7 @@ extension TextosDeConsola {
         faltanPasosDePLR: "нужны трезвучие и шаги или другое трезвучие: {1}",
         plrSoloTriadas: "P, L и R применяются к мажорным и минорным трезвучиям: {1}",
 
-        // ErrorDeUso.swift (partituras)
+        // ErrorDeUso+Textos.swift (partituras)
         faltaTipoDePartitura: "не указано «melody», «chorale» или «chords»: {1}",
         instrumentoMIDI: "программа — номер General MIDI от 0 до 127: --program 52",
         marcasSoloMusicXML: "--chord-symbols и --analysis — только для MusicXML, MEI, LilyPond, GUIDO и ABC",
@@ -318,7 +322,7 @@ extension TextosDeConsola {
         motorNoInstalado: "не установлен (или укажите путь в {1})",
         motorPropio: "own",
 
-        // ErrorDeUso.swift (digitaciones)
+        // ErrorDeUso+Textos.swift (digitaciones)
         faltaInstrumento: "не указан инструмент: {1}",
         instrumentoDesconocido: { nombre, lista in "неизвестный инструмент: «\(nombre)» (\(lista(.conPalabras(.ruso))))" },
         faltaLimite: "не указано число аппликатур: --limit 5",
@@ -341,7 +345,7 @@ extension TextosDeConsola {
         aproximacionDesconocida: "неизвестный подход: «{1}» (below, above или enclosure)",
         secuenciaDesconocida: "неизвестная секвенция: «{1}» (thirds, fourths, groups-of-3, groups-of-4, triads или sevenths)",
 
-        // ErrorDeUso.swift (comunes)
+        // ErrorDeUso+Textos.swift (comunes)
         pruebaLaAyuda: "Попробуй «armonia help».",
         ordenDesconocida: "неизвестная команда: «{1}»",
         opcionDesconocida: "неизвестный параметр: «{1}»",

@@ -223,6 +223,9 @@
 
 ### Cambios
 
+- Por dentro, sin cambios de API: `Geografia.swift` se parte en `Lugar.swift` (`Continente`, `Pais`, `Lugar`…) y
+  `TipoDeEscala+Lugar.swift` (dónde está cada escala). En la consola, los catálogos pasan a
+  `Ordenes/Consultas/Catalogos/`, y `ErrorDeUso` y el catálogo de escalas se parten en tres ficheros cada uno.
 - `ElementoConNombre` da `id` y `description` (el nombre en español) a los siete catálogos, que ya no los escriben cada
   uno. `FichaDelCatalogo` (ahora `DatosDelCatalogo`, como `DatosDeEscala`) pasa a su propio fichero, con sus fechas.
 - El temperamento de Salinas y el de Zarlino están documentados (`documentada`) en su obra, de 1577 y 1558, como los
