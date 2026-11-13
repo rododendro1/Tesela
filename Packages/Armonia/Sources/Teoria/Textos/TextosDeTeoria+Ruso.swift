@@ -371,7 +371,7 @@ extension TextosDeTeoria {
         fuenteSalinas: "Салинас",
         fuenteZhuZaiyu: "Чжу Цзайюй",
         fuenteArelEzgiUzdilek: "Арел-Эзги-Уздилек",
-        // CaracterDeEscala.swift
+        // Caracter.swift
         afectoAlegre: "радостный",
         afectoFestivo: "праздничный",
         afectoSereno: "безмятежный",
@@ -409,6 +409,7 @@ extension TextosDeTeoria {
         ocasionLamento: "плач",
         ocasionBanquete: "пир",
         ocasionGuerra: "война",
+        ocasionDanza: "танец",
         papelSoberano: "государь",
         papelMinistro: "министр",
         papelPueblo: "народ",

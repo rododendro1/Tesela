@@ -104,6 +104,18 @@ AcordeConNombre.buscar(nombre: "Tristan chord") == .tristan          // true
 AcordeConNombre.buscar(conteniendo: "sexta aumentada").count         // 4
 ```
 
+### Carácter
+
+Como las escalas (<doc:EscalasDelMundo>), los acordes del catálogo tienen `caracter`, lo que dicen de ellos sus fuentes
+(un ``Caracter`` por fuente), con `afectos` para juntarlos. Solo lo tienen los que tienen una fuente: Zarlino (1558) y
+Rameau (1722) describen las tríadas por su tercera, la mayor alegre y la menor triste.
+
+```swift
+AcordeConNombre.mayor.caracter.map(\.fuente) == [.zarlino1558, .rameau1722]   // true
+AcordeConNombre.menor.afectos.first == .triste                                // true
+AcordeConNombre.tristan.caracter.isEmpty                                      // true
+```
+
 ## Cardinal y estadísticas
 
 ``CardinalDeAcorde`` nombra un acorde por sus notas distintas, como ``CardinalDeEscala`` a las escalas: díada,

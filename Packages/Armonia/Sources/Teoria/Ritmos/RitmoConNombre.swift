@@ -30,7 +30,7 @@ public struct RitmoConNombre: Sendable {
     public let unidad: Int
     /// La familia del ritmo: clave, tala, iqa', usul, aksak…
     public let familia: FamiliaDeRitmo
-    /// Dónde se lee el ritmo.
+    /// Dónde se lee el ritmo, con las obras de su carácter.
     package let ficha: FichaDelCatalogo
 
     /// Un ritmo con nombre, del catálogo o fuera de él. Sin agrupación, un solo grupo con todos los pulsos.
@@ -53,8 +53,8 @@ public struct RitmoConNombre: Sendable {
 
     // MARK: Propiedades
 
-    /// Dónde se lee el ritmo.
-    public var referencias: [Referencia] { ficha.referencias }
+    /// Dónde se lee el ritmo, con las obras de su carácter.
+    public var referencias: [Referencia] { Referencia.unicas(ficha.referencias + caracter.map(\.fuente)) }
 
     /// Los pulsos del ciclo.
     public var pulsos: Int { patron.count }

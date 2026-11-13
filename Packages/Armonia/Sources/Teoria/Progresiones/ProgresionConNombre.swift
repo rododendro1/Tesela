@@ -65,8 +65,8 @@ public struct ProgresionConNombre: Sendable {
     /// En qué estilos se usa, de más a menos importante: el primero es su uso principal.
     public var estilos: [Estilo] { ficha.estilos }
 
-    /// Dónde se lee la progresión.
-    public var referencias: [Referencia] { ficha.referencias }
+    /// Dónde se lee la progresión, con las obras de su carácter.
+    public var referencias: [Referencia] { Referencia.unicas(ficha.referencias + caracter.map(\.fuente)) }
 
     /// La obra más antigua que da la progresión, con su año: Riepel (1755) en el monte, la fonte y el ponte; Ortiz
     /// (1553) en el passamezzo y la folía. `nil` si no se sabe.

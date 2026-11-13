@@ -35,7 +35,7 @@
 
 ### Lo nuevo
 
-- El carácter de las escalas: `TipoDeEscala.caracter` da lo que dice cada fuente (`CaracterDeEscala`), con los afectos
+- El carácter de las escalas: `TipoDeEscala.caracter` da lo que dice cada fuente (`Caracter`), con los afectos
   (`Afecto`, un vocabulario de 21 palabras en los trece idiomas), el momento del día (`MomentoDelDia`), la estación
   (`Estacion`), la ocasión (`Ocasion`) y, en China, el papel (`PapelDeLaNota`) y la fase (`FaseDeLaNaturaleza`); y
   quién lo dice (`TestigoDelCaracter`), en qué pasaje y dónde se lee. `afectos` y `momentos` los juntan. Lo tienen
@@ -43,6 +43,11 @@
   Babb 1978), los rāgas y los thāṭ (Bor 1999), los pathet del sléndro (Hood 1954) y los cinco modos chinos
   (DeWoskin 1982). Es del nombre, no de las notas: Bilāval lo tiene y el jónico no. Sus obras entran en
   `referencias` y en `Referencia.catalogo`.
+- El carácter de los acordes, las progresiones y los ritmos, con el mismo `Caracter`, que es parte de
+  `ElementoConNombre` (con `afectos`, `momentos` y `ocasiones`): las tríadas mayor y menor (Zarlino 1558, Rameau 1722), el
+  bajo de lamento y el lamento cromático (Rosand 1979), la folía, la chacona y el pasacalle como danzas (Hudson), y la
+  soleá, la seguiriya y la bulería (Fernández 2004). `Ocasion.danza` es nueva. Las obras del carácter entran en
+  `referencias`.
 - `ElementoConNombre`, lo que tienen en común los siete catálogos con nombre (`TipoDeEscala`, `AcordeConNombre`,
   `ProgresionConNombre`, `RitmoConNombre`, `TemperamentoConNombre`, `NotaConNombre` y `FuncionDeNota`): el nombre, los
   alias y las variantes en los trece idiomas, `nombres(en:)`, `buscar(nombre:)` y `buscar(conteniendo:)`, las

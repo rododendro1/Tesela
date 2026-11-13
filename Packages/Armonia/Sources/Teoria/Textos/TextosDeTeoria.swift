@@ -397,7 +397,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let fuenteZhuZaiyu: String
     let fuenteArelEzgiUzdilek: String
 
-    // MARK: CaracterDeEscala.swift
+    // MARK: Caracter.swift
     let afectoAlegre: String
     let afectoFestivo: String
     let afectoSereno: String
@@ -435,6 +435,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let ocasionLamento: String
     let ocasionBanquete: String
     let ocasionGuerra: String
+    let ocasionDanza: String
     let papelSoberano: String
     let papelMinistro: String
     let papelPueblo: String

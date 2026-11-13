@@ -47,6 +47,8 @@ let columnasDeEscalas: [String] =
 
 /// La fila de una escala, en el orden de `columnasDeEscalas`.
 func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
+    // En el orden de `columnasDelCaracter`.
+    let delCaracter = caracter(de: tipo)
     let microtonal = tipo.afinacionPropia
     let sobreDo = Escala(.do, tipo)
     let medidas = sobreDo.estadisticas
@@ -137,10 +139,7 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         siONo(medidas.tonal.conSensible),
         siONo(medidas.tonal.tetracordosIguales),
 
-        tipo.afectos.map(\.nombre).joined(separator: " · "),
-        tipo.momentos.map(\.nombre).joined(separator: " · "),
-        tipo.caracter.map { $0.descripcion(en: .compacta(.espanol)) + " (" + $0.cita(en: .compacta(.espanol)) + ")" }
-            .joined(separator: "; "),
+        delCaracter[0], delCaracter[1], delCaracter[2],
 
         nombres(tipo.equivalentes),
         nombres(tipo.derivadas),

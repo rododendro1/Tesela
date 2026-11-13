@@ -135,7 +135,7 @@ extension LineaDeComandos {
             sintaxis: TextosDeConsola.traduccion(\.sintaxisProgresiones),
             descripcion: TextosDeConsola.traduccion(\.descripcionProgresiones),
             ejemplo: ejemplo("armonia progresiones andaluza --en La", "armonia progressions andalusian --in A"),
-            opciones: [.en, .epoca])
+            opciones: [.en, .epoca, .afecto])
     ]
 
     static let ayudaDeRitmos: [EntradaDeAyuda] = [
@@ -190,7 +190,8 @@ extension LineaDeComandos {
             ejemplo: ejemplo("armonia acordes tristan --sobre Fa", "armonia chords tristan --over F"),
             notas: TextosDeConsola.traduccion(\.notasAcordesConNombre),
             opciones: [
-                .sobre, .notas, .uso, .epoca, .porTerceras, .noPorTerceras, .sinSemitonos, .conIntervalo, .sinIntervalo,
+                .sobre, .notas, .uso, .epoca, .afecto, .porTerceras, .noPorTerceras, .sinSemitonos, .conIntervalo,
+                .sinIntervalo,
                 .orden, .estadisticas, .resumen,
             ])
     ]

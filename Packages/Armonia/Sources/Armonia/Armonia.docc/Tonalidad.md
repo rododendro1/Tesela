@@ -414,6 +414,19 @@ ProgresionConNombre.buscar(nombre: "ii-V-I") == .iiVI                           
 ProgresionConNombre.buscar(conteniendo: "blues").count                                  // 3
 ```
 
+### Carácter
+
+Las progresiones del catálogo también tienen `caracter` (``Caracter``): el bajo de lamento y su versión cromática son
+el emblema del lamento (Rosand 1979), y la folía, la chacona y el pasacalle fueron danzas antes que bajos (Hudson).
+`ocasiones` y `afectos` juntan lo de todas sus fuentes. Los ritmos (``RitmoConNombre``) también: la soleá, la
+seguiriya y la bulería, en Fernández (2004).
+
+```swift
+ProgresionConNombre.bajoDeLamento.ocasiones == [.lamento]   // true
+ProgresionConNombre.chacona.ocasiones == [.danza]           // true
+RitmoConNombre.seguiriya.afectos.first == .lastimero        // true
+```
+
 ## Bajo cifrado
 
 `acorde(sobre:cifras:)` lee las cifras del bajo continuo sobre una nota del bajo, contando los

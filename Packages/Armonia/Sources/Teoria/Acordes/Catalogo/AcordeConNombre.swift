@@ -68,8 +68,8 @@ public struct AcordeConNombre: Sendable {
     /// En qué estilos se usa (la clásica, el jazz, la popular…); vacío si no es propio de ninguno.
     public var estilos: [Estilo] { ficha.estilos }
 
-    /// Dónde se lee el acorde.
-    public var referencias: [Referencia] { ficha.referencias }
+    /// Dónde se lee el acorde, con las obras de su carácter.
+    public var referencias: [Referencia] { Referencia.unicas(ficha.referencias + caracter.map(\.fuente)) }
 
     /// La obra más antigua que da el acorde, con su año: la partitura de «Tristan und Isolde» (1859) en el de Tristán.
     /// `nil` si no se sabe.

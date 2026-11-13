@@ -219,6 +219,10 @@ extension LineaDeComandosTests {
             Comment(rawValue: frigia))
         #expect(salida("escala Do Bhairav").contains("  carácter: mañana · devoto, solemne, grave (Bor"))
         #expect(!salida("escala Do mayor").contains("carácter"))
+        #expect(salida("acordes --afecto triste").contains("menor"))
+        #expect(!salida("acordes --afecto triste").contains("séptima de dominante"))
+        #expect(salida("progresiones --afecto lastimero").contains("bajo de lamento"))
+        #expect(!salida("progresiones --afecto lastimero").contains("ii–V–I"))
         let feliz = resultado("escalas --afecto feliz")
         #expect(feliz.codigo == 2 && feliz.error.contains("«feliz»: no es un afecto"))
     }

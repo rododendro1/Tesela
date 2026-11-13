@@ -23,11 +23,18 @@ extension LineaDeComandos {
         // `--epoca barroco`: las de una época, de origen o de uso, como en `escalas`.
         var epocas: [Epoca] = []
         if let texto = try argumentos.valor(.epoca) { epocas = try self.epocas(leyendo: texto, notacion) }
+        // `--afecto lastimero`: las que tienen ese afecto en alguna de sus fuentes.
+        var afecto: Afecto?
+        if let texto = try argumentos.valor(.afecto) { afecto = try self.afecto(leyendo: texto, notacion) }
         try argumentos.sinOpcionesDesconocidas()
         let texto = argumentos.unidos
         let halladas =
             ProgresionConNombre.buscar(nombre: texto).map { [$0] } ?? ProgresionConNombre.buscar(conteniendo: texto)
-        return (halladas.filter { epocas.isEmpty || $0.epocas.contains(where: epocas.contains) }, tonica)
+        let elegidas = halladas.filter { progresion in
+            (epocas.isEmpty || progresion.epocas.contains(where: epocas.contains))
+                && (afecto.map(progresion.afectos.contains) ?? true)
+        }
+        return (elegidas, tonica)
     }
 
     /// `progresiones [<texto>] [--en <tonalidad>]`: cada progresión del catálogo, o las que tienen el texto en el
@@ -95,6 +102,9 @@ extension LineaDeComandos {
         // `--epoca romanticismo`: los de una época, de origen o de uso.
         var epocas: [Epoca] = []
         if let texto = try argumentos.valor(.epoca) { epocas = try self.epocas(leyendo: texto, notacion) }
+        // `--afecto alegre`: los que tienen ese afecto en alguna de sus fuentes.
+        var afecto: Afecto?
+        if let texto = try argumentos.valor(.afecto) { afecto = try self.afecto(leyendo: texto, notacion) }
         // `--notas 4` o `--notas tétrada`: solo los de cuatro notas.
         var numeroDeNotas: Int?
         if let texto = try argumentos.valor(.notas, siFalta: .notasFueraDeRango) {
@@ -124,6 +134,7 @@ extension LineaDeComandos {
             let medidas = acorde.estadisticas
             if !usos.isEmpty, !acorde.estilos.contains(where: usos.contains) { return false }
             if !epocas.isEmpty, !acorde.epocas.contains(where: epocas.contains) { return false }
+            if let afecto, !acorde.afectos.contains(afecto) { return false }
             if let numeroDeNotas, medidas.numeroDeNotas != numeroDeNotas { return false }
             if porTerceras && !medidas.porTerceras { return false }
             if noPorTerceras && medidas.porTerceras { return false }

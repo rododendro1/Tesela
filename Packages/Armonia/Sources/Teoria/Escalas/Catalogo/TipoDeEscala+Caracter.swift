@@ -2,13 +2,13 @@ import Elementos
 
 // MARK: - El carácter de las escalas del catálogo
 //
-// Lo que cada fuente dice de cada escala (`CaracterDeEscala`), por tradición. Solo entran las escalas con una fuente;
+// Lo que cada fuente dice de cada escala (`Caracter`), por tradición. Solo entran las escalas con una fuente;
 // las demás no tienen carácter. Va por el nombre: el jónico no toma el de Bilāval aunque tengan las mismas notas. Los
 // thāṭ llevan el del rāga que les da nombre (Bhairav, Toḍī), que es el que describen las fuentes.
 
 extension TipoDeEscala {
     /// Cada escala con lo que dicen de ella sus fuentes.
-    package static let caracteres: [(tipo: TipoDeEscala, caracter: [CaracterDeEscala])] =
+    package static let caracteres: [(tipo: TipoDeEscala, caracter: [Caracter])] =
         caracteresGriegos + caracteresGregorianos + caracteresIndios + caracteresJavaneses + caracteresChinos
 
     // MARK: Grecia antigua
@@ -21,7 +21,7 @@ extension TipoDeEscala {
     private static let aristoteles = Referencia.monro1894.paginas("12–13")
     private static let problemas = Referencia.monro1894.paginas("14–15")
 
-    private static let caracteresGriegos: [(tipo: TipoDeEscala, caracter: [CaracterDeEscala])] = [
+    private static let caracteresGriegos: [(tipo: TipoDeEscala, caracter: [Caracter])] = [
         (
             .harmoniaMixolidiaDeAristides,
             [.init([.lastimero], ocasion: .lamento, testigo: .platon, pasaje: "398e", fuente: platon)]
@@ -76,11 +76,11 @@ extension TipoDeEscala {
     //
     // Cotón (Johannes Afflighemensis) da a cada tono su carácter en el De musica, hacia 1100.
 
-    private static func coton(_ afectos: [Afecto]) -> [CaracterDeEscala] {
+    private static func coton(_ afectos: [Afecto]) -> [Caracter] {
         [.init(afectos, testigo: .coton, fuente: .babb1978)]
     }
 
-    private static let caracteresGregorianos: [(tipo: TipoDeEscala, caracter: [CaracterDeEscala])] = [
+    private static let caracteresGregorianos: [(tipo: TipoDeEscala, caracter: [Caracter])] = [
         (.protusAuthenticus, coton([.grave, .noble])),
         (.protusPlagalis, coton([.grave])),
         (.deuterusAuthenticus, coton([.severo])),
@@ -97,11 +97,11 @@ extension TipoDeEscala {
 
     private static func bor(
         _ momento: MomentoDelDia?, _ afectos: [Afecto], estacion: Estacion? = nil
-    ) -> [CaracterDeEscala] {
+    ) -> [Caracter] {
         [.init(afectos, momento: momento, estacion: estacion, fuente: .bor1999)]
     }
 
-    private static let caracteresIndios: [(tipo: TipoDeEscala, caracter: [CaracterDeEscala])] = [
+    private static let caracteresIndios: [(tipo: TipoDeEscala, caracter: [Caracter])] = [
         (.lalit, bor(.madrugada, [.inquieto, .contemplativo])),
         (.bhairav, bor(.manana, [.devoto, .solemne, .grave])),
         (.bhairavi, bor(.manana, [.devoto, .tierno])),
@@ -128,7 +128,7 @@ extension TipoDeEscala {
     //
     // En el wayang kulit, cada pathet del sléndro tiene su parte de la noche.
 
-    private static let caracteresJavaneses: [(tipo: TipoDeEscala, caracter: [CaracterDeEscala])] = [
+    private static let caracteresJavaneses: [(tipo: TipoDeEscala, caracter: [Caracter])] = [
         (.slendroNem, [.init([.sereno, .grave], momento: .noche, fuente: .hood1954)]),
         (.slendroSanga, [.init([.energico], momento: .medianoche, fuente: .hood1954)]),
         (.slendroManyura, [.init([.alegre], momento: .madrugada, fuente: .hood1954)]),
@@ -140,14 +140,14 @@ extension TipoDeEscala {
 
     private static func chino(
         _ papel: PapelDeLaNota, _ fase: FaseDeLaNaturaleza, _ estacion: Estacion?
-    ) -> [CaracterDeEscala] {
+    ) -> [Caracter] {
         [
             .init(estacion: estacion, fase: fase, testigo: .lushiChunqiu, fuente: .dewoskin1982),
             .init(papel: papel, testigo: .yueji, fuente: .dewoskin1982),
         ]
     }
 
-    private static let caracteresChinos: [(tipo: TipoDeEscala, caracter: [CaracterDeEscala])] = [
+    private static let caracteresChinos: [(tipo: TipoDeEscala, caracter: [Caracter])] = [
         (.gong, chino(.soberano, .tierra, nil)),
         (.shang, chino(.ministro, .metal, .otono)),
         (.jue, chino(.pueblo, .madera, .primavera)),
@@ -156,13 +156,10 @@ extension TipoDeEscala {
     ]
 
     /// Identidad → lo que dicen sus fuentes, en orden cronológico.
-    package static let caracterPorIdentidad: [IdentidadDeEscala: [CaracterDeEscala]] = {
-        var tabla: [IdentidadDeEscala: [CaracterDeEscala]] = [:]
+    package static let caracterPorIdentidad: [IdentidadDeEscala: [Caracter]] = {
+        var tabla: [IdentidadDeEscala: [Caracter]] = [:]
         for (tipo, caracter) in caracteres { tabla[tipo.identidad, default: []] += caracter }
-        return tabla.mapValues { lista in
-            lista.enumerated().sorted { ($0.element.anio ?? .max, $0.offset) < ($1.element.anio ?? .max, $1.offset) }
-                .map(\.element)
-        }
+        return tabla.mapValues(Caracter.enOrdenCronologico)
     }()
 
     /// Lo que dicen las fuentes del carácter de la escala, en orden cronológico; vacío si ninguna dice nada (los
@@ -172,19 +169,5 @@ extension TipoDeEscala {
     ///     TipoDeEscala.harmoniaDoria.caracter.map(\.testigo)   // [.heraclides, .aristoteles]
     ///     TipoDeEscala.bhairav.caracter[0].momento             // .manana
     ///     TipoDeEscala.mayor.caracter                          // []
-    public var caracter: [CaracterDeEscala] { TipoDeEscala.caracterPorIdentidad[identidad] ?? [] }
-
-    /// Los afectos de todas sus fuentes, sin repetir, en el orden en que salen.
-    ///
-    ///     TipoDeEscala.harmoniaDoria.afectos   // [.valiente, .majestuoso, .severo, .grave, .sereno]
-    public var afectos: [Afecto] {
-        var vistos = Set<Afecto>()
-        return caracter.flatMap(\.afectos).filter { vistos.insert($0).inserted }
-    }
-
-    /// Los momentos del día en que se toca, sin repetir.
-    public var momentos: [MomentoDelDia] {
-        var vistos = Set<MomentoDelDia>()
-        return caracter.compactMap(\.momento).filter { vistos.insert($0).inserted }
-    }
+    public var caracter: [Caracter] { TipoDeEscala.caracterPorIdentidad[identidad] ?? [] }
 }
