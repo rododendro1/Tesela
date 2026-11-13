@@ -4,6 +4,12 @@
 
 ### Lo nuevo
 
+- `OrigenPresentado(_:en:)`: de cuándo es un elemento de cualquiera de los siete catálogos con nombre
+  (`ElementoConNombre`), escrito: su año, su época y la obra que lo documenta, con `texto` («Barroco (1691)») y
+  `datos(en:)`. `OrigenDeEscalaPresentado.origen` lo da para una escala, que ahora tiene también `documentada`. La
+  ficha de un temperamento y la de una nota con nombre escriben su época con el año («Época: Barroco (1691)») en
+  lugar de solo el año, y por eso `TextosDeApps.anioDelTemperamento` y `anioDeLaNota` quedan obsoletos.
+
 - `PresentacionDeEstudioDeEscala.afinacion(de:en:)` y `EscalaPresentada.afinacion`: el carácter de la afinación
   escrito («microtonal», «octava en 5 partes iguales»), con su fila «Afinación» en lo que se mide. En la consola,
   `armonia escala` lo dice, y `escalas --afinacion microtonal` (o `temperada`, `justa`, `partes-iguales`; `--tuning`

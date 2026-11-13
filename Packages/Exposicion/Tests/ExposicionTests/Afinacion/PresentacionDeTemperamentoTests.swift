@@ -12,7 +12,7 @@ import Testing
         #expect(meso.nombre == "mesotónico de 1/4 de coma")
         #expect(
             meso.ficha(en: notacion).map(\.valor) == [
-                "temperamentos regulares", "Pietro Aron", "1523", "12", "696.578",
+                "temperamentos regulares", "Pietro Aron", "Renacimiento (1523)", "12", "696.578",
             ])
         let datos = meso.datos(en: notacion)
         #expect(datos.contains(DatoPresentado(nombre: "Quinta del lobo", valor: "737.637")))

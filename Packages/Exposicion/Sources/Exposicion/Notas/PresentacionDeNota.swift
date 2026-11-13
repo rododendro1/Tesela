@@ -47,7 +47,8 @@ public struct NotaPresentada: Hashable, Sendable, Codable {
     static func hercios(_ valor: Double) -> String { Redondeo.texto(valor) + " Hz" }
 
     /// La ficha, un dato por fila: la familia, la altura, lo que se aparta de la temperada, la frecuencia, el La4 con
-    /// que suena, el MIDI, el año, el nombre original y las alturas de la posición, los que tenga.
+    /// que suena, el MIDI, la época con el año (`OrigenPresentado`), el nombre original y las alturas de la posición,
+    /// los que tenga.
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
         var datos = [
             DatoPresentado(nombre: notacion.texto(\.familiaDeLaNota), valor: familia),
@@ -63,7 +64,7 @@ public struct NotaPresentada: Hashable, Sendable, Codable {
             datos.append(DatoPresentado(nombre: notacion.texto(\.laDeLaNota), valor: Self.hercios(frecuenciaDelLa4)))
         }
         datos.append(DatoPresentado(nombre: notacion.texto(\.midiDeLaNota), valor: "\(midi)"))
-        if let anio { datos.append(DatoPresentado(nombre: notacion.texto(\.anioDeLaNota), valor: "\(anio)")) }
+        datos += OrigenPresentado(anio: anio, en: notacion).datos(en: notacion)
         if let nombreOriginal {
             datos.append(DatoPresentado(nombre: notacion.texto(\.nombreOriginalDeLaNota), valor: nombreOriginal))
         }

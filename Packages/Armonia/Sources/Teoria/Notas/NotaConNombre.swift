@@ -95,15 +95,6 @@ extension NotaConNombre: Hashable {
     public func hash(into hasher: inout Hasher) { hasher.combine(nombre) }
 }
 
-extension NotaConNombre: Identifiable {
-    /// El nombre en español, que no se repite en el catálogo.
-    public var id: String { nombre }
-}
-
-extension NotaConNombre: Nombrable, CustomStringConvertible {
-    public var description: String { nombre }
-}
-
 // MARK: - Búsqueda por nombre
 
 extension NotaConNombre {

@@ -98,15 +98,6 @@ extension AcordeConNombre: Hashable {
     }
 }
 
-extension AcordeConNombre: Identifiable {
-    /// El nombre en español, que no se repite en el catálogo.
-    public var id: String { nombre }
-}
-
-extension AcordeConNombre: Nombrable, CustomStringConvertible {
-    public var description: String { nombre }
-}
-
 // MARK: - Búsqueda por nombre
 
 extension AcordeConNombre {

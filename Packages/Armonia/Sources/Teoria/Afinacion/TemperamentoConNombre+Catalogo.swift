@@ -28,12 +28,12 @@ extension TemperamentoConNombre {
     public static let mesotonicoTercioDeComa = TemperamentoConNombre(
         nombre: "mesotónico de 1/3 de coma",
         construccion: .regular(TemperamentoRegular.mesotonico(fraccionDeComa: 3).quinta), familia: .regular,
-        autor: "Francisco de Salinas", anio: 1577, referencias: [.salinas1577, .barbour1951])
+        autor: "Francisco de Salinas", referencias: [.barbour1951], documentada: .salinas1577)
     /// Cada quinta, 2/7 de coma sintónica más estrecha: el de Zarlino, entre el de ¼ y el de ⅓.
     public static let mesotonicoDosSeptimosDeComa = TemperamentoConNombre(
         nombre: "mesotónico de 2/7 de coma",
         construccion: .regular(TemperamentoRegular.mesotonico(fraccionDeComa: 3.5).quinta), familia: .regular,
-        autor: "Gioseffo Zarlino", anio: 1558, referencias: [.zarlino1558, .barbour1951])
+        autor: "Gioseffo Zarlino", referencias: [.barbour1951], documentada: .zarlino1558)
     /// Cada quinta, ⅕ de coma sintónica más estrecha: las terceras mayores y las quintas, igual de impuras.
     public static let mesotonicoQuintoDeComa = TemperamentoConNombre(
         nombre: "mesotónico de 1/5 de coma",

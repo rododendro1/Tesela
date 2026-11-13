@@ -218,12 +218,6 @@ extension TipoDeEscala: Hashable {
     }
 }
 
-extension TipoDeEscala: Nombrable {}
-
-extension TipoDeEscala: CustomStringConvertible {
-    public var description: String { nombre }
-}
-
 // Más escalas, búsqueda de escalas, armaduras, círculo de quintas y funciones de grado.
 
 // Las escalas adicionales (modos derivados, exóticas, hexatónicas, Messiaen, jazz…) están en
