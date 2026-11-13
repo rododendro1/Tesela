@@ -75,15 +75,6 @@ extension FuncionDeNota: Hashable {
     public func hash(into hasher: inout Hasher) { hasher.combine(nombre) }
 }
 
-extension FuncionDeNota: Identifiable {
-    /// El nombre en español, que no se repite en el catálogo.
-    public var id: String { nombre }
-}
-
-extension FuncionDeNota: Nombrable, CustomStringConvertible {
-    public var description: String { nombre }
-}
-
 // MARK: - Búsqueda por nombre
 
 extension FuncionDeNota {

@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- `ModeloDelCatalogo` escribe la época y el año de un acorde o una progresión con `OrigenPresentado`, como la
+  consola y las hojas.
+
 - `ModeloDelCatalogo`: la ficha de una progresión o un acorde con nombre lleva también su época de origen, con el año
   de su obra si lo tiene («clásica · Romanticismo (1859)»). La pestaña de escalas de Ars Harmonica tiene una sección
   «Origen» con la época, los lugares, los estilos y las escuelas de la escala.

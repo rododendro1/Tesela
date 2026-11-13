@@ -181,6 +181,13 @@
 
 ### Cambios
 
+- `ElementoConNombre` da `id` y `description` (el nombre en español) a los siete catálogos, que ya no los escriben
+  cada uno. `FichaDelCatalogo` pasa a su propio fichero, con sus fechas.
+- El temperamento de Salinas y el de Zarlino están documentados (`documentada`) en su obra, de 1577 y 1558, como los
+  acordes y las escalas: su `anioDeOrigen` no cambia.
+- Por dentro, sin cambiar lo que dibujan: `PentagramaSVG` dibuja las plicas, las barras de unión, los corchetes, las
+  ligaduras y los grupos de valoración especial del ritmo con `TrazosDelRitmo`, una parte por método, y
+  `TablaArmonica.svg` es el índice de las partes de su dibujo (`TablaArmonica+Dibujo.swift`).
 - «Tcherepnin» y «de Tcherepnin» son ahora la escala `tcherepnin`, no un alias del modo 3 de Messiaen, que tiene sus
   mismas notas desde otro grado.
 - `TipoDeEscala.enigmatica` ya no es `==` a un tipo con solo sus intervalos ascendentes, porque ahora baja distinto.

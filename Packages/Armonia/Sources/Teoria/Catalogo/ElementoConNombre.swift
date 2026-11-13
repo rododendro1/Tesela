@@ -48,6 +48,13 @@ public protocol ElementoConNombre: Nombrable, Hashable, Sendable, CustomStringCo
 }
 
 extension ElementoConNombre {
+    /// El nombre en español.
+    public var description: String { nombre }
+
+    /// El nombre en español, que no se repite en su catálogo: el `id` de los que son `Identifiable` (todos menos
+    /// `TipoDeEscala`, que se distingue por sus notas y su tradición).
+    public var id: String { nombre }
+
     /// El nombre, los alias y las variantes en el idioma de la notación, en ese orden.
     ///
     ///     AcordeConNombre.tristan.nombres(en: .compacta(.espanol))   // ["acorde de Tristán"]
@@ -57,9 +64,9 @@ extension ElementoConNombre {
 }
 
 extension TipoDeEscala: ElementoConNombre {}
-extension AcordeConNombre: ElementoConNombre {}
-extension ProgresionConNombre: ElementoConNombre {}
-extension RitmoConNombre: ElementoConNombre {}
-extension TemperamentoConNombre: ElementoConNombre {}
-extension NotaConNombre: ElementoConNombre {}
-extension FuncionDeNota: ElementoConNombre {}
+extension AcordeConNombre: ElementoConNombre, Identifiable { public typealias ID = String }
+extension ProgresionConNombre: ElementoConNombre, Identifiable { public typealias ID = String }
+extension RitmoConNombre: ElementoConNombre, Identifiable { public typealias ID = String }
+extension TemperamentoConNombre: ElementoConNombre, Identifiable { public typealias ID = String }
+extension NotaConNombre: ElementoConNombre, Identifiable { public typealias ID = String }
+extension FuncionDeNota: ElementoConNombre, Identifiable { public typealias ID = String }

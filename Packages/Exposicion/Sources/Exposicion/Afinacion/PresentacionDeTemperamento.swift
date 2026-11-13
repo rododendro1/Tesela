@@ -73,11 +73,12 @@ public struct TemperamentoPresentado: Hashable, Sendable, Codable {
         return (valor < 0 ? "−" : "+") + texto
     }
 
-    /// La ficha, un dato por fila: la familia, el autor, el año, los pasos por octava y la quinta, los que tenga.
+    /// La ficha, un dato por fila: la familia, el autor, la época con el año (`OrigenPresentado`), los pasos por octava
+    /// y la quinta, los que tenga.
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
         var datos = [DatoPresentado(nombre: notacion.texto(\.familiaDeTemperamento), valor: familia)]
         if let autor { datos.append(DatoPresentado(nombre: notacion.texto(\.autorDelTemperamento), valor: autor)) }
-        if let anio { datos.append(DatoPresentado(nombre: notacion.texto(\.anioDelTemperamento), valor: "\(anio)")) }
+        datos += OrigenPresentado(anio: anio, en: notacion).datos(en: notacion)
         datos.append(DatoPresentado(nombre: notacion.texto(\.pasosPorOctava), valor: "\(pasosPorOctava)"))
         if let quinta {
             datos.append(DatoPresentado(nombre: notacion.texto(\.quintaDelTemperamento), valor: Self.cents(quinta)))

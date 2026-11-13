@@ -77,7 +77,7 @@ public struct ModeloDelCatalogo: Sendable {
         return Ficha(
             id: progresion.nombre, nombre: progresion.nombre(en: notacion),
             detalle: acordes.isEmpty ? progresion.cifrado : progresion.cifrado + " · " + cifrados,
-            estilos: Self.estilos(progresion.estilos, progresion.epocaDeOrigen, progresion.anioDeOrigen, en: notacion),
+            estilos: Self.estilos(progresion.estilos, de: progresion, en: notacion),
             fuentes: progresion.referencias.map(\.cita),
             sonido: .acordes(acordes), destino: acordes.isEmpty ? nil : .analisis(cifrados))
     }
@@ -96,7 +96,7 @@ public struct ModeloDelCatalogo: Sendable {
         }
         return Ficha(
             id: acorde.nombre, nombre: acorde.nombre(en: notacion), detalle: detalle,
-            estilos: Self.estilos(acorde.estilos, acorde.epocaDeOrigen, acorde.anioDeOrigen, en: notacion),
+            estilos: Self.estilos(acorde.estilos, de: acorde, en: notacion),
             fuentes: acorde.referencias.map(\.cita),
             sonido: sonido, destino: delTipo.map { .acordes($0) })
     }
@@ -110,8 +110,11 @@ public struct ModeloDelCatalogo: Sendable {
             sonido: .ritmo(ritmo), destino: nil)
     }
 
-    private static func estilos(_ estilos: [Estilo], _ epoca: Epoca?, _ anio: Int?, en notacion: Notacion) -> String {
-        let epoca = epoca.map { $0.nombre(en: notacion) + (anio.map { " (\($0))" } ?? "") }
-        return (estilos.map { $0.nombre(en: notacion) } + [epoca].compactMap { $0 }).joined(separator: " · ")
+    /// Los estilos y la época con el año (`OrigenPresentado`): «jazz · Romanticismo (1865)».
+    private static func estilos(
+        _ estilos: [Estilo], de elemento: some ElementoConNombre, en notacion: Notacion
+    ) -> String {
+        let origen = OrigenPresentado(elemento, en: notacion)?.texto
+        return (estilos.map { $0.nombre(en: notacion) } + [origen].compactMap { $0 }).joined(separator: " · ")
     }
 }

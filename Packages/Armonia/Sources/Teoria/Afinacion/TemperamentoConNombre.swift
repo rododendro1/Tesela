@@ -34,7 +34,7 @@ public struct TemperamentoConNombre: Sendable {
     package init(
         nombre: String, construccion: ConstruccionDeTemperamento, familia: FamiliaDeTemperamento,
         autor: String? = nil, anio: Int? = nil, alias: [String] = [], variantes: [String] = [],
-        referencias: [Referencia] = []
+        referencias: [Referencia] = [], documentada: Referencia? = nil
     ) {
         self.nombre = nombre
         self.construccion = construccion
@@ -42,7 +42,7 @@ public struct TemperamentoConNombre: Sendable {
         self.autor = autor
         self.alias = alias
         self.variantes = variantes
-        ficha = FichaDelCatalogo(referencias: referencias, anio: anio)
+        ficha = FichaDelCatalogo(referencias: referencias, documentada: documentada, anio: anio)
     }
 
     // MARK: Propiedades
@@ -150,15 +150,6 @@ package enum ConstruccionDeTemperamento: Hashable, Sendable {
 extension TemperamentoConNombre: Hashable {
     public static func == (a: TemperamentoConNombre, b: TemperamentoConNombre) -> Bool { a.nombre == b.nombre }
     public func hash(into hasher: inout Hasher) { hasher.combine(nombre) }
-}
-
-extension TemperamentoConNombre: Identifiable {
-    /// El nombre en español, que no se repite en el catálogo.
-    public var id: String { nombre }
-}
-
-extension TemperamentoConNombre: Nombrable, CustomStringConvertible {
-    public var description: String { nombre }
 }
 
 // MARK: - Búsqueda por nombre
