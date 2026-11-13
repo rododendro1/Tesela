@@ -24,14 +24,14 @@ import Elementos
 /// `Estilo.tipos`, `RegionDeEscala.tipos` y `AfinacionPropia.catalogo`. La tradición (`tradicion`) se deduce de
 /// la categoría, de los estilos, las escuelas y las regiones, o de la fuente, y solo se escribe en las que no la dan
 /// (`tradicion: .japon, categoria: .escala`); cada lista de `TipoDeEscala.listasTradicionales` tiene solo escalas de la
-/// suya. Los nombres en otros idiomas no van en la ficha: están en `Nombres/`. El estilo de las escalas de la India no
+/// suya. Los nombres en otros idiomas no van en los datos: están en `Nombres/`. El estilo de las escalas de la India no
 /// se escribe: lo da su categoría.
 ///
-/// Las propiedades públicas no leen la ficha del valor, sino la de la escala del catálogo con su misma `identidad`:
+/// Las propiedades públicas no leen los datos del valor, sino los de la escala del catálogo con su misma `identidad`:
 /// un tipo leído de un fichero o escrito a mano con el nombre y las notas de Bayātī tiene sus microtonos, y una escala
 /// propia que se llame «Kafi» pero suene distinto no es el thāṭ.
-package struct FichaDeEscala: Sendable {
-    /// Una versión microtonal, sin la escala temperada (que es la de la ficha): los argumentos de
+package struct DatosDeEscala: Sendable {
+    /// Una versión microtonal, sin la escala temperada (que es la de los datos): los argumentos de
     /// `AfinacionPropia` salvo el primero.
     package struct Afinacion: Sendable {
         let sistema: SistemaDeAlturas
@@ -108,12 +108,12 @@ package struct FichaDeEscala: Sendable {
     }
 
     /// La de un tipo que no es del catálogo (o que no tiene más datos).
-    package static let vacia = FichaDeEscala()
+    package static let vacia = DatosDeEscala()
 }
 
 // MARK: - Afinaciones que comparten varias escalas
 
-extension FichaDeEscala.Afinacion {
+extension DatosDeEscala.Afinacion {
     /// Cinco partes iguales de 240 cents: el sléndro y sus pathet, y el amadinda de Buganda.
     static let equipentatonica = Self(.razones, pasos: [0, 240, 480, 720, 960])
     /// Siete partes iguales de unos 171 cents: el timbila chopi, el piphat tailandés y el pinpeat camboyano.
@@ -125,8 +125,8 @@ extension FichaDeEscala.Afinacion {
 // MARK: - Búsqueda por identidad
 
 extension TipoDeEscala {
-    /// La ficha de la escala del catálogo con la misma `identidad` (`FichaDeEscala.vacia` si no es del catálogo).
-    package var fichaDelCatalogo: FichaDeEscala { TipoDeEscala.delCatalogo[identidad]?.tipo.ficha ?? .vacia }
+    /// Los datos de la escala del catálogo con la misma `identidad` (`DatosDeEscala.vacia` si no es del catálogo).
+    package var datosDelCatalogo: DatosDeEscala { TipoDeEscala.delCatalogo[identidad]?.tipo.datos ?? .vacia }
 
     /// La escala del catálogo con la misma identidad, sus versiones microtonales y sus referencias.
     package struct EntradaDelCatalogo: Sendable {
@@ -146,15 +146,15 @@ extension TipoDeEscala {
         }
         var tabla: [IdentidadDeEscala: EntradaDelCatalogo] = [:]
         for tipo in catalogo where tabla[tipo.identidad] == nil {
-            let afinaciones = tipo.ficha.afinaciones.map {
+            let afinaciones = tipo.datos.afinaciones.map {
                 AfinacionPropia(
                     tipo, $0.sistema, pasos: $0.pasos, pasosDescendentes: $0.pasosDescendentes, fuente: $0.fuente,
                     referencias: $0.referencias)
             }
-            let propias: [Referencia] = [tipo.ficha.documentada, tipo.ficha.fuente?.referencia].compactMap { $0 }
-            let deSuCaracter: [Referencia] = (caracterPorIdentidad[tipo.identidad] ?? []).map(\.fuente)
+            let propias: [Referencia] = [tipo.datos.documentada, tipo.datos.fuente?.referencia].compactMap { $0 }
+            let deSuCaracter: [Referencia] = (caracterPorIdentidad[tipo.identidad] ?? []).map(\.referencia)
             let referencias = Referencia.unicas(
-                tipo.ficha.referencias + propias + (deSuLista[tipo.identidad] ?? [])
+                tipo.datos.referencias + propias + (deSuLista[tipo.identidad] ?? [])
                     + afinaciones.flatMap(\.referencias) + deSuCaracter)
             tabla[tipo.identidad] = EntradaDelCatalogo(tipo: tipo, afinaciones: afinaciones, referencias: referencias)
         }
@@ -174,12 +174,12 @@ extension TipoDeEscala {
     /// su época de origen, por delante de las demás reglas (`epocaDeOrigen`). `nil` en las demás. Por su identidad.
     ///
     ///     TipoDeEscala.menorHungara.documentada?.anio   // 1859
-    public var documentada: Referencia? { fichaDelCatalogo.documentada }
+    public var documentada: Referencia? { datosDelCatalogo.documentada }
 
     /// Una copia con estos estilos: para las escalas del catálogo que salen de una función (las cromáticas).
     package func con(estilos: [Estilo]) -> TipoDeEscala {
         TipoDeEscala(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
-            variantes: variantes, ficha: FichaDeEscala(estilos: estilos))
+            variantes: variantes, datos: DatosDeEscala(estilos: estilos))
     }
 }

@@ -30,7 +30,7 @@ public struct TemperamentoConNombre: Sendable {
     /// Cómo se afina.
     package let construccion: ConstruccionDeTemperamento
     /// Dónde se lee.
-    package let ficha: FichaDelCatalogo
+    package let datos: DatosDelCatalogo
 
     package init(
         nombre: String, construccion: ConstruccionDeTemperamento, familia: FamiliaDeTemperamento,
@@ -43,7 +43,7 @@ public struct TemperamentoConNombre: Sendable {
         self.autor = autor ?? documentada?.autores.first.map(Self.nombreNatural)
         self.alias = alias
         self.variantes = variantes
-        ficha = FichaDelCatalogo(referencias: referencias, documentada: documentada, anio: anio)
+        datos = DatosDelCatalogo(referencias: referencias, documentada: documentada, anio: anio)
     }
 
     /// «Werckmeister, Andreas» como «Andreas Werckmeister»; un nombre sin coma («Zhu Zaiyu»), tal cual.
@@ -55,7 +55,7 @@ public struct TemperamentoConNombre: Sendable {
     // MARK: Propiedades
 
     /// Dónde se lee.
-    public var referencias: [Referencia] { ficha.referencias }
+    public var referencias: [Referencia] { datos.referencias }
 
     /// Los cents de cada paso de la octava desde el primero, de menor a mayor: los doce de las teclas del piano desde
     /// Do (Do, Do♯, Re, Mi♭, Mi, Fa, Fa♯, Sol, Sol♯, La, Si♭, Si) en los de doce notas, y los del sistema en los

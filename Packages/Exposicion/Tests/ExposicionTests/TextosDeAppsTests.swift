@@ -171,7 +171,7 @@ import Testing
         { $0.texto(\.relojDeLaEscala) },
         { $0.texto(\.circuloCromatico) },
         { $0.texto(\.circuloDeQuintas) },
-        { $0.texto(\.circuloMicrotonal) },
+        { $0.texto(\.circuloDeLaAfinacionPropia) },
         { $0.texto(\.enLasDoceTonalidades) },
         { $0.texto(\.acordesEnLasDoceTonalidades) },
         { $0.texto(\.conSeptima) },

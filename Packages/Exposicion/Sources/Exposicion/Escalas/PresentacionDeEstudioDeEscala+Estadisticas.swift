@@ -233,7 +233,7 @@ extension PresentacionDeEstudioDeEscala {
     // MARK: La escalera de brillo
 
     /// Las escalas con la misma tónica de la más oscura a la más brillante, a una nota cada una de la siguiente
-    /// (`Escala.escaleraDeBrillo`), con su brillo por quintas y la nota que sube.
+    /// (`Escala.escaleraDeBrillo(tipos:maximo:)`), con su brillo por quintas y la nota que sube.
     ///
     ///     PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: Escala(.do), en: .compacta(.espanol))
     ///         .first { $0.nombre == "Do lidio" }?.cambio   // "Fa → Fa♯"

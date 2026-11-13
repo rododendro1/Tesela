@@ -9,15 +9,15 @@ extension AcordeConNombre {
     /// Cada acorde con lo que dicen de él sus fuentes. Zarlino y Rameau describen las tríadas por su tercera: la mayor
     /// alegra y la menor entristece.
     package static let caracteres: [(acorde: AcordeConNombre, caracter: [Caracter])] = [
-        (.mayor, [.init([.alegre], fuente: .zarlino1558), .init([.alegre, .festivo], fuente: .rameau1722)]),
-        (.menor, [.init([.triste], fuente: .zarlino1558), .init([.tierno, .lastimero], fuente: .rameau1722)]),
+        (.mayor, [.init([.alegre], referencia: .zarlino1558), .init([.alegre, .festivo], referencia: .rameau1722)]),
+        (.menor, [.init([.triste], referencia: .zarlino1558), .init([.tierno, .lastimero], referencia: .rameau1722)]),
     ]
 
     private static let caracterPorNombre = Caracter.tabla(caracteres.map { ($0.acorde.nombre, $0.caracter) })
 
     /// Lo que dicen las fuentes de su carácter, en orden cronológico; vacío si ninguna dice nada.
     ///
-    ///     AcordeConNombre.mayor.caracter.map(\.fuente)   // [.zarlino1558, .rameau1722]
+    ///     AcordeConNombre.mayor.caracter.map(\.referencia)   // [.zarlino1558, .rameau1722]
     public var caracter: [Caracter] { AcordeConNombre.caracterPorNombre[nombre] ?? [] }
 }
 
@@ -25,11 +25,11 @@ extension ProgresionConNombre {
     /// Cada progresión con lo que dicen de ella sus fuentes: el tetracordo descendente es el emblema del lamento
     /// (Rosand), y la folía, la chacona y el pasacalle son danzas antes que bajos (Hudson).
     package static let caracteres: [(progresion: ProgresionConNombre, caracter: [Caracter])] = [
-        (.bajoDeLamento, [.init([.lastimero], ocasion: .lamento, fuente: .rosand1979)]),
-        (.lamentoCromatico, [.init([.lastimero], ocasion: .lamento, fuente: .rosand1979)]),
-        (.folia, [.init(ocasion: .danza, fuente: .hudson1982)]),
-        (.chacona, [.init(ocasion: .danza, fuente: .hudsonChaconne1982)]),
-        (.passacaglia, [.init(ocasion: .danza, fuente: .hudsonPassacaglia1982)]),
+        (.bajoDeLamento, [.init([.lastimero], ocasion: .lamento, referencia: .rosand1979)]),
+        (.lamentoCromatico, [.init([.lastimero], ocasion: .lamento, referencia: .rosand1979)]),
+        (.folia, [.init(ocasion: .danza, referencia: .hudson1982)]),
+        (.chacona, [.init(ocasion: .danza, referencia: .hudsonChaconne1982)]),
+        (.passacaglia, [.init(ocasion: .danza, referencia: .hudsonPassacaglia1982)]),
     ]
 
     private static let caracterPorNombre = Caracter.tabla(caracteres.map { ($0.progresion.nombre, $0.caracter) })
@@ -43,9 +43,9 @@ extension ProgresionConNombre {
 extension RitmoConNombre {
     /// Cada ritmo con lo que dicen de él sus fuentes: los tres compases de doce tiempos del flamenco, en Fernández.
     package static let caracteres: [(ritmo: RitmoConNombre, caracter: [Caracter])] = [
-        (.solea, [.init([.grave, .solemne], fuente: .fernandez2004)]),
-        (.seguiriya, [.init([.lastimero, .grave], fuente: .fernandez2004)]),
-        (.buleria, [.init([.festivo, .alegre], ocasion: .danza, fuente: .fernandez2004)]),
+        (.solea, [.init([.grave, .solemne], referencia: .fernandez2004)]),
+        (.seguiriya, [.init([.lastimero, .grave], referencia: .fernandez2004)]),
+        (.buleria, [.init([.festivo, .alegre], ocasion: .danza, referencia: .fernandez2004)]),
     ]
 
     private static let caracterPorNombre = Caracter.tabla(caracteres.map { ($0.ritmo.nombre, $0.caracter) })

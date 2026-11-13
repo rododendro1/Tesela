@@ -242,7 +242,7 @@ extension LineaDeComandosTests {
         let andaluzas = try #require(flamenca.first?["escalas"] as? [[String: Any]])
         #expect(andaluzas.first?["lugaresDeOrigen"] as? [String] == ["Andalucía"])
         #expect(andaluzas.first?["paises"] as? [String] == ["ES"])
-        let dorico = try #require(try json("escalas dórico --uso clasica") as? [[String: Any]])
+        let dorico = try #require(try json("escalas dórico --estilo clasica") as? [[String: Any]])
         let doricos = try #require(dorico.first?["escalas"] as? [[String: Any]])
         #expect(doricos.first?["lugaresDeUso"] as? [String] == ["Estados Unidos"])
         // Las claves de la época, el período, los estilos, las corrientes y las escuelas.
@@ -273,7 +273,7 @@ extension LineaDeComandosTests {
         #expect(generos.contains { $0["microtonal"] as? Bool == true })
         #expect(generos.contains { $0["microtonal"] as? Bool == false })
         // Las habituales son de la tradición occidental; con --orden brillo, de la más brillante a la más oscura.
-        let habituales = try #require(try json("escalas --uso jazz --orden brillo") as? [[String: Any]])
+        let habituales = try #require(try json("escalas --estilo jazz --orden brillo") as? [[String: Any]])
         let deJazz = try #require(habituales.first?["escalas"] as? [[String: Any]])
         #expect(deJazz.allSatisfy { $0["tradicion"] as? String == "occidental" })
         let brillos = deJazz.compactMap { $0["brilloPorQuintas"] as? Double }

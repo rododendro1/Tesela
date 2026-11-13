@@ -33,7 +33,7 @@ public struct FuncionDeNota: Sendable {
     /// El grado de la escala que es, en las de la familia `grado`.
     public let nombreDeGrado: NombreDeGrado?
     /// Dónde se lee.
-    package let ficha: FichaDelCatalogo
+    package let datos: DatosDelCatalogo
 
     package init(
         nombre: String, familia: FamiliaDeFuncionDeNota, intervalo: Intervalo? = nil, desvio: Double = 0,
@@ -47,11 +47,11 @@ public struct FuncionDeNota: Sendable {
         self.nombreDeGrado = nombreDeGrado
         self.alias = alias
         self.variantes = variantes
-        ficha = FichaDelCatalogo(referencias: referencias)
+        datos = DatosDelCatalogo(referencias: referencias)
     }
 
     /// Dónde se lee.
-    public var referencias: [Referencia] { ficha.referencias }
+    public var referencias: [Referencia] { datos.referencias }
 
     /// Los cents desde la tónica: los de `intervalo` temperado más `desvio`; `nil` si no tiene intervalo.
     public var cents: Double? { intervalo.map { Double($0.semitonos) * 100 + desvio } }

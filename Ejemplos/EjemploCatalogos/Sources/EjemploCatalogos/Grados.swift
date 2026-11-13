@@ -2,10 +2,10 @@ import Armonia
 
 // Los acordes de cada grado, en mayor y en menor: las tríadas y las cuatríadas diatónicas, los préstamos del modo
 // homónimo, las dominantes y las sensibles secundarias, el sustituto tritonal, la napolitana y las sextas aumentadas.
-// Cada fila es un cifrado romano que lee `Tonalidad.acorde(romano:)`, con lo que dice de él `Tonalidad.analizar` (el
-// grado, la función y de dónde sale), el acorde sobre Do y sus notas con los nombres de los sistemas móviles: el do
-// móvil (`SolfeoRelativo`), el tonic sol-fa, el sargam, el carnático, el jianpu… (`SistemaDeNombres` de la familia
-// `.movil`), todos con Do como tónica.
+// Cada fila es un cifrado romano que lee `Tonalidad.acorde(romano:)`, con lo que dice de él
+// `Tonalidad.analizar(_:siguiente:)` (el grado, la función y de dónde sale), el acorde sobre Do y sus notas con los
+// nombres de los sistemas móviles: el do móvil (`SolfeoRelativo`), el tonic sol-fa, el sargam, el carnático, el jianpu…
+// (`SistemaDeNombres` de la familia `.movil`), todos con Do como tónica.
 
 /// Un cifrado y el acorde al que resuelve, para que el análisis reconozca las dominantes secundarias, el sustituto
 /// tritonal, la napolitana y las sextas aumentadas.

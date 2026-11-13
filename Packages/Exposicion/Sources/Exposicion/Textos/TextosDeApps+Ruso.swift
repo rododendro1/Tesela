@@ -196,7 +196,7 @@ extension TextosDeApps {
         relojDeLaEscala: "Часы гаммы",
         circuloCromatico: "Хроматический круг",
         circuloDeQuintas: "Квинтовый круг",
-        circuloMicrotonal: "Микротоновый круг",
+        circuloDeLaAfinacionPropia: "Круг её строя",
         enLasDoceTonalidades: "Во всех двенадцати тональностях",
         acordesEnLasDoceTonalidades: "Аккорды во всех двенадцати тональностях",
         conSeptima: "С септимой",

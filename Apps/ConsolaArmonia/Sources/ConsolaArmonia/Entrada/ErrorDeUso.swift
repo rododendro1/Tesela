@@ -42,7 +42,7 @@ enum ErrorDeUso: ErrorDeArmonia {
     case familiaDeNotaDesconocida(String)
     case familiaDeFuncionDesconocida(String)
     case fuenteDesconocida(String)
-    case usoDesconocido(String)
+    case estiloDesconocido(String)
     case lugarDesconocido(String)
     case agrupacionDesconocida(String)
     case epocaDesconocida(String)
@@ -118,8 +118,8 @@ enum ErrorDeUso: ErrorDeArmonia {
     case noEsPentatonica
     /// `reloj` sin escala.
     case faltaEscalaDelReloj
-    /// `reloj … --microtonal` con una escala sin versión microtonal (o sin la de `--fuente`).
-    case escalaSinMicrotonos(String)
+    /// `reloj … --microtonal` con una escala sin afinación propia (o sin la de `--fuente`).
+    case escalaSinAfinacionPropia(String)
     /// `temperamentos … --reloj --quintas` con un temperamento cuya quinta no recorre todos sus pasos.
     case sinCirculoDeQuintas(String)
     case faltaEscalaDeLaHoja
@@ -238,11 +238,11 @@ enum ErrorDeUso: ErrorDeArmonia {
             return LineaDeComandos.propuesta(para: categoria, entre: CategoriaTradicional.allCases.map(\.rawValue))
         case .fuenteDesconocida(let fuente):
             return LineaDeComandos.propuesta(para: fuente, entre: FuenteTeorica.allCases.map(\.rawValue))
-        case .usoDesconocido(let uso):
+        case .estiloDesconocido(let estilo):
             let claves =
-                LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }
+                LineaDeComandos.nombresDeLosEstilos.flatMap { [$0.espanol, $0.ingles] }
                 + LineaDeComandos.nombresDeLasCorrientes.flatMap { [$0.espanol, $0.ingles] }
-            return LineaDeComandos.propuesta(para: uso, entre: claves)
+            return LineaDeComandos.propuesta(para: estilo, entre: claves)
         case .lugarDesconocido(let lugar):
             return LineaDeComandos.propuesta(para: lugar, entre: Lugar.todos.map(\.clave))
         case .epocaDesconocida(let epoca):
@@ -286,7 +286,7 @@ enum ErrorDeUso: ErrorDeArmonia {
 
     /// El texto de un error que acaba en una orden de ejemplo (el hueco `{1}` del campo): con los nombres españoles de
     /// las órdenes y las notas en unos idiomas y con los ingleses en otros, como los ejemplos de la ayuda
-    /// (`LineaDeComandos.ejemplo`). Así los textos de cada idioma solo dicen lo que falta.
+    /// (`LineaDeComandos.ejemplo(_:_:)`). Así los textos de cada idioma solo dicen lo que falta.
     private static func conEjemplo(
         _ campo: KeyPath<TextosDeConsola, Plantilla>, _ espanol: String, _ ingles: String
     ) -> Traduccion {
@@ -339,8 +339,8 @@ enum ErrorDeUso: ErrorDeArmonia {
             return TextosDeConsola.traduccion { $0.familiaDeRitmoDesconocida(familia) }
         case .fuenteDesconocida(let fuente):
             return TextosDeConsola.traduccion { $0.fuenteDesconocida(fuente) }
-        case .usoDesconocido(let uso):
-            return TextosDeConsola.traduccion { $0.usoDesconocido(uso) }
+        case .estiloDesconocido(let estilo):
+            return TextosDeConsola.traduccion { $0.estiloDesconocido(estilo) }
         case .lugarDesconocido(let lugar):
             return TextosDeConsola.traduccion { $0.lugarDesconocido(lugar) }
         case .agrupacionDesconocida(let agrupacion):
@@ -439,8 +439,8 @@ enum ErrorDeUso: ErrorDeArmonia {
                 "armonia positions A minor pentatonic --shapes")
         case .faltaEscalaDelReloj:
             return Self.conEjemplo(\.faltaEscala, "armonia reloj Re mayor", "armonia clock D major")
-        case .escalaSinMicrotonos(let escala):
-            return TextosDeConsola.traduccion { $0.escalaSinMicrotonos(escala) }
+        case .escalaSinAfinacionPropia(let escala):
+            return TextosDeConsola.traduccion { $0.escalaSinAfinacionPropia(escala) }
         case .sinCirculoDeQuintas(let temperamento):
             return TextosDeConsola.traduccion { $0.sinCirculoDeQuintas(temperamento) }
         case .faltaEscalaDeLaHoja:

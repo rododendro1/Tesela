@@ -128,7 +128,7 @@ el lidio dominante es la acústica de Bartók. Lo dice el estilo, y `TipoDeEscal
 Los tres últimos son los populares (`Estilo.populares`, `esPopular`). Las escalas de `todos` son de la tradición
 occidental (`Tradicion.occidental`), y estos son sus estilos; las de otras tradiciones tienen escuelas (``Escuela``):
 la música carnática o el gagaku, de la India o de Japón. `Estilo.tipos` da las de un estilo, en el orden del
-catálogo, y en la línea de comandos `armonia escalas --uso jazz` las lista.
+catálogo, y en la línea de comandos `armonia escalas --estilo jazz` las lista.
 
 ```swift
 TipoDeEscala.dorico.estilos == [.jazz, .clasica]    // true
@@ -146,7 +146,7 @@ primero. Dentro de un estilo, una escala puede ser de una o varias corrientes (`
 que empieza: el bebop (1945) y el jazz modal (1959) en el jazz, el impresionismo (1890) en las de compositor, y el
 rock (1955), el heavy metal (1970) y el metal neoclásico (1984) en el pop y el rock. Las corrientes precisan las
 épocas de uso de su estilo: la escala de tonos enteros, por el impresionismo, ya se usa en el Romanticismo. En la
-línea de comandos, `armonia escalas --uso modal` o `--uso metal-neoclasico` las lista.
+línea de comandos, `armonia escalas --estilo modal` o `--estilo metal-neoclasico` las lista.
 
 ```swift
 TipoDeEscala.frigioDominante.estiloPrincipal                    // .flamenco

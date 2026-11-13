@@ -3,7 +3,7 @@ import Interfaz
 import SwiftUI
 
 /// Los catálogos con nombre: las progresiones, los acordes con nombre y los ritmos. Se buscan por su nombre en
-/// cualquier idioma; cada ficha dice lo que es, sus estilos y sus fuentes, se escucha y, si es una progresión o un
+/// cualquier idioma; cada tarjeta dice lo que es, sus estilos y sus fuentes, se escucha y, si es una progresión o un
 /// acorde, se abre en Análisis o en Acordes.
 struct VistaDelCatalogo: View {
     @Environment(\.notacion) private var notacion
@@ -26,33 +26,33 @@ struct VistaDelCatalogo: View {
                     }
                 }
             }
-            let fichas = modelo.fichas(en: notacion)
+            let tarjetas = modelo.tarjetas(en: notacion)
             Section(modelo.lista.titulo(en: notacion)) {
-                if fichas.isEmpty {
+                if tarjetas.isEmpty {
                     Text(notacion.texto(\.sinResultados)).foregroundColor(.secondary)
                 }
-                ForEach(fichas) { fila($0) }
+                ForEach(tarjetas) { fila($0) }
             }
         }
         .navigationTitle(notacion.texto(\.catalogo))
         .selectorDeNotacionEnLaBarra()
     }
 
-    private func fila(_ ficha: ModeloDelCatalogo.Ficha) -> some View {
+    private func fila(_ tarjeta: ModeloDelCatalogo.Tarjeta) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(ficha.nombre).font(.headline)
-            Text(ficha.detalle).font(.system(.callout, design: .monospaced))
-            if !ficha.estilos.isEmpty {
-                Text(ficha.estilos).font(.caption).foregroundColor(.secondary)
+            Text(tarjeta.nombre).font(.headline)
+            Text(tarjeta.detalle).font(.system(.callout, design: .monospaced))
+            if !tarjeta.estilos.isEmpty {
+                Text(tarjeta.estilos).font(.caption).foregroundColor(.secondary)
             }
-            if !ficha.fuentes.isEmpty {
-                Text(notacion.texto(\.fuentes) + ": " + ficha.fuentes.joined(separator: "; "))
+            if !tarjeta.referencias.isEmpty {
+                Text(notacion.texto(\.fuentes) + ": " + tarjeta.referencias.joined(separator: "; "))
                     .font(.caption).foregroundColor(.secondary)
             }
             HStack {
-                BotonDeEscuchar(ficha.sonido)
+                BotonDeEscuchar(tarjeta.sonido)
                 Spacer()
-                switch ficha.destino {
+                switch tarjeta.destino {
                 case .analisis(let progresion):
                     Button(notacion.texto(\.verEnAnalisis)) { navegacion.ver(progresion: progresion) }
                 case .acordes(let acorde):

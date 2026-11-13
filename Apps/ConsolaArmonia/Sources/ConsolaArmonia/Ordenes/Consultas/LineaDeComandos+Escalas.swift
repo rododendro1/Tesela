@@ -325,10 +325,10 @@ extension LineaDeComandos {
         // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.
         if let subida = escala.notasMicrotonales() {
             let bajada = escala.notasMicrotonales(sentido: .descendente) ?? subida
-            func nombres(_ notas: [NotaMicrotonal]) -> String {
+            func nombres(_ notas: [NotaDeLaAfinacion]) -> String {
                 notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
             }
-            func cents(_ notas: [NotaMicrotonal]) -> String {
+            func cents(_ notas: [NotaDeLaAfinacion]) -> String {
                 notas.map { "\(Int($0.cents.rounded()))" }.joined(separator: " ")
             }
             lineas.append("  \(traducir(.microtonos)): " + nombres(subida))

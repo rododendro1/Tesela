@@ -4,7 +4,7 @@ import Testing
 
 @testable import Exposicion
 
-@Suite struct PresentacionDeRitmoTests {
+@Suite struct RitmoPresentadoTests {
     /// La ficha y las medidas de la clave de son, escritas.
     @Test func claveDeSon() throws {
         let notacion = Notacion.compacta(.espanol)

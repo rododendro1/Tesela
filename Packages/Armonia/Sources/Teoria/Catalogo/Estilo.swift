@@ -8,7 +8,7 @@ import Elementos
 /// lidio dominante es la acústica de Bartók. Lo dice el repertorio. Las escuelas de otras tradiciones (la música
 /// carnática, el gagaku) son una ``Escuela``.
 ///
-/// Todas las escalas de `TipoDeEscala.todos` tienen al menos un estilo; las de otras tradiciones, ninguno.
+/// Todas las escalas de `TipoDeEscala.occidentales` tienen al menos un estilo; las de otras tradiciones, ninguno.
 ///
 ///     TipoDeEscala.alterada.estilos         // [.jazz]
 ///     Estilo.blues.tipos                    // pentatónica mayor, pentatónica menor, blues, blues mayor…
@@ -53,20 +53,20 @@ public enum Estilo: String, Sendable, Codable, CaseIterable {
 
     /// El nombre de los populares juntos: «popular».
     public static func nombreDeLosPopulares(en notacion: Notacion) -> String {
-        TextosDeTeoria.traduccion(\.usoPopular).en(notacion)
+        TextosDeTeoria.traduccion(\.estiloPopular).en(notacion)
     }
 
     /// El nombre en los trece idiomas, de los `TextosDeTeoria`.
     private var traduccion: Traduccion {
         switch self {
-        case .clasica: TextosDeTeoria.traduccion(\.usoClasica)
-        case .jazz: TextosDeTeoria.traduccion(\.usoJazz)
-        case .blues: TextosDeTeoria.traduccion(\.usoBlues)
-        case .deCompositor: TextosDeTeoria.traduccion(\.usoDeCompositor)
-        case .folclore: TextosDeTeoria.traduccion(\.usoFolclore)
-        case .flamenco: TextosDeTeoria.traduccion(\.usoFlamenco)
-        case .popRock: TextosDeTeoria.traduccion(\.usoPopRock)
-        case .sintetica: TextosDeTeoria.traduccion(\.usoSintetica)
+        case .clasica: TextosDeTeoria.traduccion(\.estiloClasica)
+        case .jazz: TextosDeTeoria.traduccion(\.estiloJazz)
+        case .blues: TextosDeTeoria.traduccion(\.estiloBlues)
+        case .deCompositor: TextosDeTeoria.traduccion(\.estiloDeCompositor)
+        case .folclore: TextosDeTeoria.traduccion(\.estiloFolclore)
+        case .flamenco: TextosDeTeoria.traduccion(\.estiloFlamenco)
+        case .popRock: TextosDeTeoria.traduccion(\.estiloPopRock)
+        case .sintetica: TextosDeTeoria.traduccion(\.estiloSintetica)
         }
     }
 }
@@ -87,7 +87,7 @@ extension TipoDeEscala {
     /// su `identidad`, como `tradicion`: Kāfī tiene las notas del dórico, pero no sus estilos.
     ///
     ///     TipoDeEscala.dorico.estilos   // [.jazz, .clasica]
-    public var estilos: [Estilo] { fichaDelCatalogo.estilos }
+    public var estilos: [Estilo] { datosDelCatalogo.estilos }
 
     /// El estilo en que más se usa la escala, el primero de `estilos`: el flamenco en el frigio dominante, aunque
     /// también se use en el jazz y en el rock. `nil` si no tiene estilos.
@@ -99,5 +99,5 @@ extension TipoDeEscala {
     /// gagaku en las escalas japonesas de la corte. Vacío en las occidentales y en las de tradiciones sin escuelas.
     ///
     ///     TipoDeEscala.mohanam.escuelas   // [.carnatica]
-    public var escuelas: [Escuela] { fichaDelCatalogo.escuelas }
+    public var escuelas: [Escuela] { datosDelCatalogo.escuelas }
 }

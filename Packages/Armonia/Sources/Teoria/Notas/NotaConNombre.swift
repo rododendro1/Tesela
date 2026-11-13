@@ -38,7 +38,7 @@ public struct NotaConNombre: Sendable {
     /// La posición de la mano guidoniana, en las guidonianas.
     public let posicion: ManoGuidoniana.Posicion?
     /// Dónde se lee.
-    package let ficha: FichaDelCatalogo
+    package let datos: DatosDelCatalogo
 
     package init(
         nombre: String, altura: Altura, familia: FamiliaDeNota, desvio: Double = 0, frecuenciaDelLa4: Double = 440,
@@ -54,7 +54,7 @@ public struct NotaConNombre: Sendable {
         self.variantes = variantes
         self.alturaConNombre = alturaConNombre
         self.posicion = posicion
-        ficha = FichaDelCatalogo(referencias: referencias, anio: anio)
+        datos = DatosDelCatalogo(referencias: referencias, anio: anio)
     }
 
     /// Un diapasón: la altura y la frecuencia con que suena (La4 a 415 Hz, Do4 a 256 Hz).
@@ -71,7 +71,7 @@ public struct NotaConNombre: Sendable {
     // MARK: Propiedades
 
     /// Dónde se lee.
-    public var referencias: [Referencia] { ficha.referencias }
+    public var referencias: [Referencia] { datos.referencias }
 
     /// La frecuencia en hercios: la de `altura` con el La4 de `frecuenciaDelLa4`, apartada `desvio` cents.
     public var frecuencia: Double { altura.frecuencia(frecuenciaDelLa4: frecuenciaDelLa4) * pow(2, desvio / 1200) }

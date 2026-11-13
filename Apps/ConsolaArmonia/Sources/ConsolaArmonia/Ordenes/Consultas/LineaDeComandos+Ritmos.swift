@@ -18,10 +18,10 @@ extension LineaDeComandos {
         let comparado: RitmoConNombre?
     }
 
-    /// Los ritmos que pide `ritmos [<texto>] [--familia <familia>] [--uso <estilo>] [--epoca <época>] [--estadisticas]
-    /// [--comparar <ritmo>]`. Con un nombre exacto, solo ese; si no, los que lo contienen (todos, sin texto), de la
-    /// familia de `--familia`, de un estilo de `--uso` y de una época de `--epoca` (de origen o de uso), como en
-    /// `acordes`.
+    /// Los ritmos que pide `ritmos [<texto>] [--familia <familia>] [--estilo <estilo>] [--epoca <época>]
+    /// [--estadisticas] [--comparar <ritmo>]`. Con un nombre exacto, solo ese; si no, los que lo contienen (todos, sin
+    /// texto), de la familia de `--familia`, de un estilo de `--estilo` y de una época de `--epoca` (de origen o de
+    /// uso), como en `acordes`.
     static func ritmosPedidos(_ textos: [String], _ notacion: Notacion) throws -> PedidoDeRitmos {
         var argumentos = Argumentos(textos)
         var familia: FamiliaDeRitmo?
@@ -29,7 +29,7 @@ extension LineaDeComandos {
             familia = try familiaDeRitmo(leyendo: texto, notacion)
         }
         var usos: [Estilo] = []
-        if let texto = try argumentos.valor(.uso) { usos = try estilosDeUso(leyendo: texto, notacion) }
+        if let texto = try argumentos.valor(.estilo) { usos = try estilos(leyendo: texto, notacion) }
         var epocas: [Epoca] = []
         if let texto = try argumentos.valor(.epoca) { epocas = try self.epocas(leyendo: texto, notacion) }
         var comparado: RitmoConNombre?

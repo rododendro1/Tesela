@@ -67,7 +67,7 @@ public enum SignoMicrotonal: Hashable, Sendable {
         self = .comas(comas)
     }
 
-    /// El signo de una nota escrita en un sistema microtonal, `ajuste` pasos apartada (``NotaMicrotonal/ajuste``):
+    /// El signo de una nota escrita en un sistema microtonal, `ajuste` pasos apartada (``NotaDeLaAfinacion/ajuste``):
     /// el koron de un dastgāh, los moria de un echos bizantino, la flecha de un śruti; en los demás, por los cents,
     /// como `init(semitonos:desvio:)`.
     public init?(sistema: SistemaDeAlturas, ajuste: Int, semitonos: Int, desvio: Double) {
@@ -229,7 +229,7 @@ extension SignoMicrotonal {
     }
 
     /// El sistema que dice el signo y cuántos pasos de él se aparta una nota escrita en `altura` que suena `desvio`
-    /// cents más alta (``NotaMicrotonal/ajuste``): el koron y el sori son persas; las comas, de Arel-Ezgi-Uzdilek
+    /// cents más alta (``NotaDeLaAfinacion/ajuste``): el koron y el sori son persas; las comas, de Arel-Ezgi-Uzdilek
     /// (contadas desde la nota pitagórica); los moria, de un echos, y las flechas, de un śruti. `nil` para los
     /// cuartos de tono, cuyo signo ya dan los cents.
     public func sistemaYAjuste(altura: Altura, desvio: Double) -> (sistema: SistemaDeAlturas, ajuste: Int)? {
@@ -253,7 +253,7 @@ extension SignoMicrotonal {
 }
 
 /// Una altura de una escala, con lo que se aparta de su nota temperada (en cents) y su nota microtonal.
-package typealias AlturaMicrotonal = (altura: Altura, desvio: Double, nota: NotaMicrotonal?)
+package typealias AlturaMicrotonal = (altura: Altura, desvio: Double, nota: NotaDeLaAfinacion?)
 
 extension Escala {
     /// Las alturas de la escala con lo que se aparta cada una de su nota temperada, en cents, y su nota microtonal

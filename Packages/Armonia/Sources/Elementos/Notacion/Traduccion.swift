@@ -44,7 +44,7 @@ public struct Traducido<Valor> {
         self.valores = valores
     }
 
-    /// El valor de cada idioma, calculado con su notación habitual (`Notacion.delIdioma`): para los textos que ya
+    /// El valor de cada idioma, calculado con su notación habitual (`Notacion.delIdioma(_:)`): para los textos que ya
     /// sabe escribir el motor en cada idioma.
     ///
     ///     let inversion = Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(1, en: $0) })

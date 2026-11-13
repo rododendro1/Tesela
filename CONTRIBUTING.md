@@ -77,6 +77,7 @@ python3 Scripts/comprobaciones/comprobar_dependencias.py
 python3 Scripts/comprobaciones/comprobar_modulos.py
 python3 Scripts/comprobaciones/comprobar_catalogo.py
 python3 Scripts/comprobaciones/comprobar_enlaces_docc.py
+python3 Scripts/comprobaciones/comprobar_simbolos_en_comentarios.py
 python3 Scripts/comprobaciones/comprobar_traducciones.py
 python3 Scripts/generadores/generar_paquete_raiz.py --comprobar
 python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar

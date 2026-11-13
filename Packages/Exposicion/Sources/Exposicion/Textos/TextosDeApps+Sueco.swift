@@ -196,7 +196,7 @@ extension TextosDeApps {
         relojDeLaEscala: "Skalklocka",
         circuloCromatico: "Kromatisk cirkel",
         circuloDeQuintas: "Kvintcirkeln",
-        circuloMicrotonal: "Mikrotonal cirkel",
+        circuloDeLaAfinacionPropia: "Cirkel för dess stämning",
         enLasDoceTonalidades: "I alla tolv tonarter",
         acordesEnLasDoceTonalidades: "Ackord i alla tolv tonarter",
         conSeptima: "Med septima",

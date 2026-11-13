@@ -137,19 +137,20 @@ extension LineaDeComandosTests {
         #expect(salida("ayuda --todo").contains("reloj <escala> [--quintas | --microtonal [--fuente <teórico>]]"))
     }
 
-    @Test func relojMicrotonal() {
+    @Test func relojDeLaAfinacionPropia() {
         let bayati = salida("reloj Re bayati --microtonal")
-        #expect(bayati.hasPrefix("<svg") && bayati.contains("· Círculo microtonal</title>"), Comment(rawValue: bayati))
+        #expect(
+            bayati.hasPrefix("<svg") && bayati.contains("· Círculo de su afinación</title>"), Comment(rawValue: bayati))
         #expect(bayati.contains(">Mi𝄳</text>") && bayati.components(separatedBy: "<line").count == 25)
         // Con --fuente, otra de sus afinaciones; --fuente sola ya pide el microtonal.
         let chrysanthos = salida("reloj Re echos protos --microtonal --fuente chrysanthos")
         #expect(chrysanthos.contains(">Mi(−29¢)</text>"), Comment(rawValue: chrysanthos))
         #expect(salida("reloj Re echos protos --fuente chrysanthos") == chrysanthos)
-        #expect(salida("clock D bayati --microtonal --ingles").contains("Microtonal circle</title>"))
+        #expect(salida("clock D bayati --microtonal --ingles").contains("Circle of its tuning</title>"))
         // Sin microtonos, o sin la afinación de ese teórico, es un error de uso.
         let mayor = LineaDeComandos.ejecutar(["reloj", "Re", "mayor", "--microtonal"])
         #expect(
-            mayor.codigo == 2 && mayor.error.contains("no tiene versión microtonal"), Comment(rawValue: mayor.error))
+            mayor.codigo == 2 && mayor.error.contains("no tiene afinación propia"), Comment(rawValue: mayor.error))
         let ptolomeo = LineaDeComandos.ejecutar(["reloj", "Re", "bayati", "--fuente", "ptolomeo"])
         #expect(ptolomeo.codigo == 2 && ptolomeo.error.contains("(Ptolomeo)"), Comment(rawValue: ptolomeo.error))
         #expect(LineaDeComandos.ejecutar(["reloj", "Re", "bayati", "--fuente", "nadie"]).codigo == 2)

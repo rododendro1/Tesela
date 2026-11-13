@@ -31,7 +31,7 @@ public struct RitmoConNombre: Sendable {
     /// La familia del ritmo: clave, tala, iqa', usul, aksak…
     public let familia: FamiliaDeRitmo
     /// Dónde se lee el ritmo, con las obras de su carácter.
-    package let ficha: FichaDelCatalogo
+    package let datos: DatosDelCatalogo
 
     /// Un ritmo con nombre, del catálogo o fuera de él. Sin agrupación, un solo grupo con todos los pulsos.
     /// `estilos` son los de la música occidental en que se usa, de más a menos importante; `documentada`, la obra más
@@ -49,17 +49,17 @@ public struct RitmoConNombre: Sendable {
         self.familia = familia
         self.alias = alias
         self.variantes = variantes
-        ficha = FichaDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada, anio: anio)
+        datos = DatosDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada, anio: anio)
     }
 
     // MARK: Propiedades
 
     /// En qué estilos de la música occidental se usa, de más a menos importante: el flamenco en la soleá, el folclore
     /// en los aksak búlgaros, el jazz en el charleston. Vacío en los de otras tradiciones (los tala, los iqa').
-    public var estilos: [Estilo] { ficha.estilos }
+    public var estilos: [Estilo] { datos.estilos }
 
     /// Dónde se lee el ritmo, con las obras de su carácter.
-    public var referencias: [Referencia] { Referencia.unicas(ficha.referencias + caracter.map(\.fuente)) }
+    public var referencias: [Referencia] { Referencia.unicas(datos.referencias + caracter.map(\.referencia)) }
 
     /// Los pulsos del ciclo.
     public var pulsos: Int { patron.count }

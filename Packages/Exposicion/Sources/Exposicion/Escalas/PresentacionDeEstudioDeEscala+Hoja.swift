@@ -27,9 +27,8 @@ extension PresentacionDeEstudioDeEscala {
 
     /// Una hoja de estudio de la escala, para imprimir: un SVG del ancho de un A4 con el nombre y las notas, el
     /// pentagrama, el teclado de piano con los dedos de cada mano, el reloj (y, si la escala tiene microtonos, su
-    /// círculo microtonal), las estadísticas, los acordes de sus grados y la escalera de brillo, o solo las `secciones`
-    /// que se pidan. El alto es el que ocupa.
-    /// `armonia grabar hoja Do mayor` la pasa a PDF.
+    /// círculo de su afinación), las estadísticas, los acordes de sus grados y la escalera de brillo, o solo las
+    /// `secciones` que se pidan. El alto es el que ocupa. `armonia grabar hoja Do mayor` la pasa a PDF.
     ///
     ///     let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudio(
     ///         de: Escala(.re, .dorico), en: .compacta(.espanol))
@@ -79,8 +78,8 @@ extension PresentacionDeEstudioDeEscala {
             y = max(lineas, y + altoDelReloj) + 12
         }
 
-        // Si la escala tiene microtonos, con el reloj va también su círculo microtonal, centrado debajo.
-        if secciones.contains(.reloj), let microtonal = relojMicrotonal(de: escala, en: notacion) {
+        // Si la escala tiene microtonos, con el reloj va también el círculo de su afinación, centrado debajo.
+        if secciones.contains(.reloj), let microtonal = relojDeLaAfinacionPropia(de: escala, en: notacion) {
             let lado = 220.0
             y += incrustar(microtonal, x: (ancho - lado) / 2, y: y, ancho: lado, en: &cuerpo) + 12
         }

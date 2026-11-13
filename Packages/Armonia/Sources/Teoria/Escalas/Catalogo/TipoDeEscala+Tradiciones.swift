@@ -12,7 +12,7 @@ import Elementos
 // los griegos llevan el acento de la palabra griega. La búsqueda no distingue diacríticos, y la
 // transliteración habitual sin ellos (Mayamalavagowla, Hijaz…) se acepta como alias.
 //
-// No forman parte de `TipoDeEscala.todos`, para no cambiar las búsquedas de escalas habituales,
+// No forman parte de `TipoDeEscala.occidentales`, para no cambiar las búsquedas de escalas habituales,
 // pero `TipoDeEscala(leyendo:)` y `Escala("Re hitzaz")` las encuentran.
 //
 // `categoria` y `tradicion` (en `CategoriaTradicional.swift`) dicen de cada una si es un rāga, un mēḷa, un dromos,
@@ -26,7 +26,7 @@ import Elementos
 // (tetracordos, géneros y harmoniai), India, Indonesia, Japon, Klezmer, Mesopotamia (afinaciones babilónicas),
 // MundoArabe (maqamat y ajnas), Persia (dastgāh), Renacimiento (musica ficta), SudesteAsiatico, Turquia (makamlar
 // y çeşni) y Vietnam. Cada uno declara sus escalas y sus listas. Una escala nueva se declara en el fichero de su
-// tradición con todos sus datos (`FichaDeEscala`): su categoría, su versión microtonal si la tiene (`afinaciones:
+// tradición con todos sus datos (`DatosDeEscala`): su categoría, su versión microtonal si la tiene (`afinaciones:
 // [.init(.cuartosDeTono, pasos: […])]`) y su escala madre, si la tiene (`padre: .melakarta(28)`, `padre: .kalyan`);
 // y se apunta en una de sus listas. Una lista nueva se apunta, con su tradición, en `listasTradicionales`.
 
@@ -42,7 +42,7 @@ extension TipoDeEscala {
     public static let tradicionales: [TipoDeEscala] = listasTradicionales.flatMap(\.tipos)
 
     /// Las listas de `tradicionales`, cada una con su tradición, en el orden en que tienen prioridad: de aquí sale
-    /// `tradicionales`. La tradición de cada escala está en su ficha, y una prueba comprueba que es la de su lista.
+    /// `tradicionales`. La tradición de cada escala está en sus datos, y una prueba comprueba que es la de su lista.
     /// Una lista nueva se apunta aquí, al final, y una tradición nueva necesita al menos una.
     static let listasTradicionales: [ListaTradicional] = [
         .init(.india, thaats, referencias: [.jairazbhoy1971, .kaufmann1968, .rechberger2008]),

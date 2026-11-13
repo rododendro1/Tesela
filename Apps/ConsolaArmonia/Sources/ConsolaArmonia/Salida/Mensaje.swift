@@ -99,7 +99,7 @@ enum Mensaje {
         case .mela(let numero, let cakra, let mnemonico, let solfa):
             return TextosDeConsola.traduccion { $0.mensajeMela(numero, cakra.numero, cakra.nombre, mnemonico, solfa) }
         case .inversion(let n):
-            // Los nombres de las inversiones son los de la biblioteca (`Acorde.nombreDeLaInversion`).
+            // Los nombres de las inversiones son los de la biblioteca (`Acorde.nombreDeLaInversion(_:en:)`).
             return Traduccion(cadaIdioma: { Acorde.nombreDeLaInversion(n, en: $0) })
         case .bajoAjeno:
             return TextosDeConsola.traduccion(\.mensajeBajoAjeno)

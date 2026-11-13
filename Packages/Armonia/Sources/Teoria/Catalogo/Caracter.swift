@@ -13,7 +13,7 @@ import Elementos
 ///     let frigia = TipoDeEscala.harmoniaFrigia.caracter[0]
 ///     frigia.afectos       // [.entusiasta]
 ///     frigia.testigo       // .aristoteles
-///     frigia.fuente.cita   // "Monro 1894: 12–13"
+///     frigia.referencia.cita// "Monro 1894: 12–13"
 public struct Caracter: Hashable, Sendable {
     /// Lo que expresa o provoca, de lo más a lo menos importante; vacío si la fuente solo da el uso.
     public let afectos: [Afecto]
@@ -28,17 +28,17 @@ public struct Caracter: Hashable, Sendable {
     /// Su fase (wǔxíng), en China: la de jué, la madera.
     public let fase: FaseDeLaNaturaleza?
     /// Quién lo dice, si es un autor antiguo que se lee en otra obra: Platón, Aristóteles, Cotón. `nil` si lo dice la
-    /// propia `fuente`.
+    /// propia `referencia`.
     public let testigo: TestigoDelCaracter?
     /// Dónde lo dice el `testigo`, en su numeración de siempre: «398e–399a» en la República, «1340a–b» en la Política.
     public let pasaje: String?
     /// La obra donde se lee, con las páginas si se saben.
-    public let fuente: Referencia
+    public let referencia: Referencia
 
     package init(
         _ afectos: [Afecto] = [], momento: MomentoDelDia? = nil, estacion: Estacion? = nil, ocasion: Ocasion? = nil,
         papel: PapelDeLaNota? = nil, fase: FaseDeLaNaturaleza? = nil, testigo: TestigoDelCaracter? = nil,
-        pasaje: String? = nil, fuente: Referencia
+        pasaje: String? = nil, referencia: Referencia
     ) {
         self.afectos = afectos
         self.momento = momento
@@ -48,16 +48,16 @@ public struct Caracter: Hashable, Sendable {
         self.fase = fase
         self.testigo = testigo
         self.pasaje = pasaje
-        self.fuente = fuente
+        self.referencia = referencia
     }
 
-    /// El año de lo que dice: el del testigo o, si no hay, el de la fuente. Ordena los caracteres de una escala.
-    public var anio: Int? { testigo?.anio ?? fuente.anio }
+    /// El año de lo que dice: el del testigo o, si no hay, el de la referencia. Ordena los caracteres de una escala.
+    public var anio: Int? { testigo?.anio ?? referencia.anio }
 
     /// Quién lo dice y dónde se lee: «Platón 398e–399a (Monro 1894: 7–8)», «Bor 1999».
     public func cita(en notacion: Notacion) -> String {
-        guard let testigo else { return fuente.cita }
-        return testigo.nombre(en: notacion) + (pasaje.map { " " + $0 } ?? "") + " (" + fuente.cita + ")"
+        guard let testigo else { return referencia.cita }
+        return testigo.nombre(en: notacion) + (pasaje.map { " " + $0 } ?? "") + " (" + referencia.cita + ")"
     }
 
     /// Todo lo que dice, en una línea y en el idioma de la notación: «blando · banquete», «amanecer · devoto, solemne».

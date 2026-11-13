@@ -148,7 +148,7 @@ import Testing
         let soloElNombre = PresentacionDeEstudioDeEscala.hojaDeEstudio(
             de: Escala(.do), en: notacion, secciones: [])
         #expect(!soloElNombre.contains("<svg x="))
-        // Con microtonos, el reloj lleva debajo el círculo microtonal; sin el reloj, tampoco va.
+        // Con microtonos, el reloj lleva debajo el círculo de su afinación; sin el reloj, tampoco va.
         let bayati = PresentacionDeEstudioDeEscala.hojaDeEstudio(
             de: Escala(.re, .bayati), en: notacion, secciones: [.reloj])
         #expect(bayati.components(separatedBy: "<svg x=").count - 1 == 2 && bayati.contains(">Mi𝄳</text>"))
@@ -175,7 +175,7 @@ import Testing
         #expect(hoja.components(separatedBy: "<figure").count - 1 == 4)
         #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
         #expect(!hoja.contains("<?xml"))
-        // Con secciones: solo las pedidas; con microtonos, el reloj lleva también el círculo microtonal.
+        // Con secciones: solo las pedidas; con microtonos, el reloj lleva también el círculo de su afinación.
         let bayati = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
             de: Escala(.re, .bayati), en: notacion, secciones: [.reloj])
         #expect(bayati.components(separatedBy: "<figure").count - 1 == 2 && bayati.contains(">Mi𝄳</text>"))
@@ -396,17 +396,18 @@ import Testing
         #expect(quintas.contains("Circle of fifths"))
     }
 
-    @Test func relojMicrotonal() throws {
-        let bayati = try #require(PresentacionDeEstudioDeEscala.relojMicrotonal(de: Escala(.re, .bayati), en: notacion))
-        #expect(bayati.contains("· Círculo microtonal</title>") && bayati.contains(">Mi𝄳</text>"))
+    @Test func relojDeLaAfinacionPropia() throws {
+        let bayati = try #require(
+            PresentacionDeEstudioDeEscala.relojDeLaAfinacionPropia(de: Escala(.re, .bayati), en: notacion))
+        #expect(bayati.contains("· Círculo de su afinación</title>") && bayati.contains(">Mi𝄳</text>"))
         #expect(bayati.components(separatedBy: "<line").count == 25)
         // Con la afinación de Chrysanthos, los cents que se aparta cada grado, y en inglés.
         let protos = Escala(.re, .echosProtos)
         let chrysanthos = try #require(
-            PresentacionDeEstudioDeEscala.relojMicrotonal(
+            PresentacionDeEstudioDeEscala.relojDeLaAfinacionPropia(
                 de: protos, afinacion: TipoDeEscala.echosProtos.afinaciones[1], en: .ascii(.ingles)))
-        #expect(chrysanthos.contains("Microtonal circle") && chrysanthos.contains(">E(-29c)</text>"))
-        #expect(PresentacionDeEstudioDeEscala.relojMicrotonal(de: Escala(.do), en: notacion) == nil)
+        #expect(chrysanthos.contains("Circle of its tuning") && chrysanthos.contains(">E(-29c)</text>"))
+        #expect(PresentacionDeEstudioDeEscala.relojDeLaAfinacionPropia(de: Escala(.do), en: notacion) == nil)
     }
 
     @Test func enLasDoceTonalidades() {

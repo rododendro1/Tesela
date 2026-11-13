@@ -71,7 +71,7 @@ extension LineaDeComandos {
         let resumen: Bool
     }
 
-    /// Los acordes que pide `acordes [<texto>] [--sobre <nota>] [--notas 4] [--uso jazz] [--epoca barroco]
+    /// Los acordes que pide `acordes [<texto>] [--sobre <nota>] [--notas 4] [--estilo jazz] [--epoca barroco]
     /// [--por-terceras] [--no-por-terceras] [--sin-semitonos] [--con-intervalo tritono] [--sin-intervalo 1]
     /// [--orden brillo]`. Con un nombre exacto, solo ese; si no, los que lo contienen (todos, sin texto), con los filtros.
     static func acordesPedidos(_ textos: [String], _ notacion: Notacion) throws -> PedidoDeAcordes {
@@ -79,7 +79,7 @@ extension LineaDeComandos {
         var sobre = Nota.do
         if let texto = try argumentos.valorConPalabras(.sobre) { sobre = try Nota(leyendo: texto, enLaOrden: notacion) }
         var usos: [Estilo] = []
-        if let texto = try argumentos.valor(.uso) { usos = try estilosDeUso(leyendo: texto, notacion) }
+        if let texto = try argumentos.valor(.estilo) { usos = try estilos(leyendo: texto, notacion) }
         // `--epoca romanticismo`: los de una época, de origen o de uso.
         var epocas: [Epoca] = []
         if let texto = try argumentos.valor(.epoca) { epocas = try self.epocas(leyendo: texto, notacion) }

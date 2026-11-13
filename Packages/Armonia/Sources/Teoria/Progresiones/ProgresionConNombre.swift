@@ -27,7 +27,7 @@ public struct ProgresionConNombre: Sendable {
     /// El modo en que se leen los grados: «i VII VI V» es la andaluza en menor.
     public let modo: Tonalidad.Modo
     /// Lo demás que sabe el catálogo de la progresión: sus estilos y sus referencias.
-    package let ficha: FichaDelCatalogo
+    package let datos: DatosDelCatalogo
 
     /// Una progresión del catálogo, sin comprobar el cifrado: lo comprueban sus pruebas. Fuera del catálogo se crea con
     /// `init(nombre:leyendo:modo:alias:variantes:estilos:referencias:documentada:)`, que lo lee.
@@ -40,7 +40,7 @@ public struct ProgresionConNombre: Sendable {
         self.modo = modo
         self.alias = alias
         self.variantes = variantes
-        self.ficha = FichaDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada)
+        self.datos = DatosDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada)
     }
 
     /// Una progresión con nombre, del catálogo o fuera de él, comprobando que su cifrado se lee en su modo: lanza el
@@ -63,14 +63,14 @@ public struct ProgresionConNombre: Sendable {
     // MARK: Propiedades
 
     /// En qué estilos se usa, de más a menos importante: el primero es su uso principal.
-    public var estilos: [Estilo] { ficha.estilos }
+    public var estilos: [Estilo] { datos.estilos }
 
     /// Dónde se lee la progresión, con las obras de su carácter.
-    public var referencias: [Referencia] { Referencia.unicas(ficha.referencias + caracter.map(\.fuente)) }
+    public var referencias: [Referencia] { Referencia.unicas(datos.referencias + caracter.map(\.referencia)) }
 
     /// La obra más antigua que da la progresión, con su año: Riepel (1755) en el monte, la fonte y el ponte; Ortiz
     /// (1553) en el passamezzo y la folía. `nil` si no se sabe.
-    public var documentada: Referencia? { ficha.documentada }
+    public var documentada: Referencia? { datos.documentada }
 
     /// Los grados, uno por acorde: ["ii7", "V7", "Imaj7"].
     public var grados: [String] { cifrado.split(separator: " ").map(String.init) }

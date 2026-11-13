@@ -84,7 +84,7 @@ extension TipoDeEscala {
     /// Las corrientes en que se usa la escala, de más a menos importante: `[.modal]` en el dórico, `[.heavyMetal,
     /// .metalNeoclasico]` en el frigio dominante. Cada una es de uno de sus estilos. Vacío si no tiene; se busca por
     /// su `identidad`, como los estilos.
-    public var corrientes: [Corriente] { fichaDelCatalogo.corrientes }
+    public var corrientes: [Corriente] { datosDelCatalogo.corrientes }
 
     /// Las épocas de uso de uno de sus estilos: las de sus corrientes de ese estilo, si las tiene, y si no, las del
     /// estilo (`Estilo.epocasDeUso`). La escala de tonos enteros, por el impresionismo, se usa ya en el Romanticismo.

@@ -84,7 +84,7 @@ import Hexagonos
     @Test func acordes7() throws {
         // Sources/Armonia/Armonia.docc/Acordes.md, bloque 7
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Acordes.md"#, 7)
-        comprobar(AcordeConNombre.mayor.caracter.map(\.fuente) == [.zarlino1558, .rameau1722], #"true"#, doc, 0)
+        comprobar(AcordeConNombre.mayor.caracter.map(\.referencia) == [.zarlino1558, .rameau1722], #"true"#, doc, 0)
         comprobar(AcordeConNombre.menor.afectos.first == .triste, #"true"#, doc, 1)
         comprobar(AcordeConNombre.tristan.caracter.isEmpty, #"true"#, doc, 2)
     }

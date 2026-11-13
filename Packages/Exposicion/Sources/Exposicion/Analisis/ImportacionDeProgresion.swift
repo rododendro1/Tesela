@@ -10,7 +10,7 @@ public enum ImportacionDeProgresion {
     /// Las extensiones que se ofrecen al abrir.
     public static let extensiones = FormatoDePartitura.queSeLeen.flatMap(\.extensiones)
 
-    /// La progresión de un fichero, con un acorde por pulso (`ventana`, como en `PiezaImportada.acordes`).
+    /// La progresión de un fichero, con un acorde por pulso (`ventana`, como en `PiezaImportada.acordes(ventana:)`).
     /// Lanza `ErrorDeLecturaDeFichero` si no se puede leer o no suena ningún acorde.
     public static func progresion(de datos: Data, ventana: Duracion? = nil) throws -> String {
         try leer(datos, ventana: ventana).texto

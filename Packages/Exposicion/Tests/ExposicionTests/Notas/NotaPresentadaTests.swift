@@ -4,7 +4,7 @@ import Testing
 
 @testable import Exposicion
 
-@Suite struct PresentacionDeNotaTests {
+@Suite struct NotaPresentadaTests {
     /// La ficha de un diapasón, con el año y la frecuencia.
     @Test func diapason() throws {
         let notacion = Notacion.compacta(.espanol)

@@ -4,7 +4,7 @@ import Elementos
 //
 // Lo que comparten los acordes, las progresiones, los ritmos, los temperamentos, las notas y las funciones con nombre
 // además de su nombre: sus estilos, sus referencias, la obra que los documenta y su año, y de ahí sus épocas. Las
-// escalas tienen la suya, más grande (`FichaDeEscala`).
+// escalas tienen la suya, más grande (`DatosDeEscala`).
 
 /// Lo que el catálogo sabe de un elemento además de su nombre: un acorde, una progresión, un ritmo, un temperamento,
 /// una nota o una función. Se escribe en su declaración:
@@ -12,7 +12,7 @@ import Elementos
 ///     public static let sextaAumentadaAlemana = AcordeConNombre(
 ///         nombre: "sexta aumentada alemana", intervalos: [.unisono, .terceraMayor, .quintaJusta, .sextaAumentada],
 ///         estilos: [.clasica])
-package struct FichaDelCatalogo: Sendable {
+package struct DatosDelCatalogo: Sendable {
     /// En qué estilos se usa, de más a menos importante: el primero es su uso principal.
     package let estilos: [Estilo]
     /// Dónde se lee, con la obra que lo documenta (`documentada`) la primera.
@@ -33,7 +33,7 @@ package struct FichaDelCatalogo: Sendable {
     }
 }
 
-extension FichaDelCatalogo {
+extension DatosDelCatalogo {
     /// El año de la obra que lo documenta, si la tiene, o el que se da.
     var anioDeOrigen: Int? { documentada?.anio ?? anio }
 

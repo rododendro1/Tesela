@@ -7,7 +7,7 @@ import Foundation
 // Sol4; una octava abajo, Sol3 es Yakāh), las perde turcas de Arel-Ezgi-Uzdilek (Rast es Sol4 y Nevâ, Re5; Segâh,
 // una koma bajo Si4) y las cuerdas del sistema perfecto griego (de proslambanómenos, La2, a nḗtē hyperbolaíōn, La4).
 // No son un `SistemaDeNombres`: el nombre depende de la octava y del microtono, así que se pide con una `Altura` y un
-// ajuste en los pasos de su `SistemaDeAlturas`, o con una `NotaMicrotonal` y su octava.
+// ajuste en los pasos de su `SistemaDeAlturas`, o con una `NotaDeLaAfinacion` y su octava.
 //
 // Cada sistema es una tabla de alturas con nombre (`AlturaConNombre`), de la grave a la aguda. Una altura se busca
 // por los pasos de su sistema desde Do4 (cuartos de tono, comas o semitonos), así que da igual cómo se escriba: Re♭4
@@ -63,7 +63,7 @@ public enum NombresPorOctava: String, Hashable, Sendable, CaseIterable, Codable 
     /// El nombre de una nota microtonal en una octava (la de su nota temperada); `nil` si es de otro sistema
     /// microtonal o el sistema no la nombra. En el árabe valen también las notas en la notación persa, que tiene los
     /// mismos cuartos de tono.
-    public func nombre(de nota: NotaMicrotonal, octava: Int, grafia: Grafia = .transliterada) -> String? {
+    public func nombre(de nota: NotaDeLaAfinacion, octava: Int, grafia: Grafia = .transliterada) -> String? {
         guard admite(nota.sistema) else { return nil }
         return nombre(de: Altura(nota.temperada, octava: octava), ajuste: nota.ajuste, grafia: grafia)
     }
@@ -132,11 +132,11 @@ public struct AlturaConNombre: Hashable, Sendable, CustomStringConvertible {
 
     /// La nota microtonal de la altura, sin su octava (la de `altura.octava`), con los cents desde Do (en el turco,
     /// en comas de 1200/53 cents). `nil` en el griego, que no tiene microtonos.
-    public var notaMicrotonal: NotaMicrotonal? {
+    public var notaMicrotonal: NotaDeLaAfinacion? {
         guard let microtonal = sistema.sistemaDeAlturas else { return nil }
         let porOctava = microtonal.pasosPorOctava
         let cents = Double(modulo(sistema.pasos(de: altura, ajuste: ajuste), porOctava)) * 1200 / Double(porOctava)
-        return NotaMicrotonal(temperada: altura.nota, sistema: microtonal, ajuste: ajuste, cents: cents)
+        return NotaDeLaAfinacion(temperada: altura.nota, sistema: microtonal, ajuste: ajuste, cents: cents)
     }
 
     /// El nombre transliterado y la altura: «Sīkāh (Mi𝄳4)».

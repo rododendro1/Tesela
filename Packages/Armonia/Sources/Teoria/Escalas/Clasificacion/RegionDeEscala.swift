@@ -86,5 +86,5 @@ extension TipoDeEscala {
     ///
     ///     TipoDeEscala.pelogTembung.regiones   // [.bali]
     ///     TipoDeEscala.slendro.regiones        // [.java, .bali]
-    public var regiones: [RegionDeEscala] { fichaDelCatalogo.regiones }
+    public var regiones: [RegionDeEscala] { datosDelCatalogo.regiones }
 }

@@ -251,7 +251,7 @@ extension LineaDeComandosTests {
         #expect(salida("acordes --notas 2") == "quinta (acorde de potencia) (Do5): Do Sol\n")
         #expect(salida("acordes --no-por-terceras").contains("acorde de Petrushka"))
         #expect(!salida("acordes --por-terceras").contains("acorde de Petrushka"))
-        #expect(salida("acordes --uso jazz --notas 4") == "acorde por cuartas: Do Fa Si♭ Mi♭\n")
+        #expect(salida("acordes --estilo jazz --notas 4") == "acorde por cuartas: Do Fa Si♭ Mi♭\n")
         #expect(!salida("acordes --sin-semitonos").contains("séptima mayor (Domaj7)"))
         #expect(salida("acordes --sin-intervalo tritono --notas 3").contains("mayor (Do): Do Mi Sol"))
         #expect(!salida("acordes --con-intervalo tritono --notas 3").contains("mayor (Do): Do Mi Sol"))
@@ -315,7 +315,7 @@ extension LineaDeComandosTests {
     }
 
     /// `tradiciones` da cada tradición con sus categorías (salvo la occidental, que no tiene: sus escalas son las
-    /// habituales, por estilos con `escalas --uso`); con una, sus escalas.
+    /// habituales, por estilos con `escalas --estilo`); con una, sus escalas.
     @Test func tradiciones() throws {
         let todas = salida("tradiciones")
         let lineas = todas.split(separator: "\n")

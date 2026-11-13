@@ -25,7 +25,7 @@ extension LineaDeComandos {
     }
 
     /// `reloj Do disminuida [--quintas]`: la escala en un reloj de doce horas, en SVG. Con `--microtonal`, el
-    /// círculo microtonal, cada grado en el ángulo de sus cents: `reloj Re bayati --microtonal`; `--fuente` elige
+    /// círculo de su afinación, cada grado en el ángulo de sus cents: `reloj Re bayati --microtonal`; `--fuente` elige
     /// otra de sus afinaciones (`reloj Re echos protos --microtonal --fuente chrysanthos`).
     static func reloj(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(argumentos)
@@ -39,11 +39,11 @@ extension LineaDeComandos {
         if microtonal || fuente != nil || colores {
             let afinacion = fuente.flatMap { fuente in escala.tipo.afinaciones.first { $0.fuente == fuente } }
             guard fuente == nil || afinacion != nil,
-                let svg = PresentacionDeEstudioDeEscala.relojMicrotonal(
+                let svg = PresentacionDeEstudioDeEscala.relojDeLaAfinacionPropia(
                     de: escala, afinacion: afinacion, colores: colores, en: notacion)
             else {
                 let nombre = escala.nombre(en: notacion) + (fuente.map { " (" + $0.nombre(en: notacion) + ")" } ?? "")
-                throw ErrorDeUso.escalaSinMicrotonos(nombre)
+                throw ErrorDeUso.escalaSinAfinacionPropia(nombre)
             }
             return bien(svg.trimmingCharacters(in: "\n"))
         }

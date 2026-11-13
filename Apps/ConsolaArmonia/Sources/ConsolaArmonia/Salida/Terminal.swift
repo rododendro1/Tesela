@@ -10,7 +10,7 @@ import Foundation
 extension LineaDeComandos {
     // MARK: Lo que se completa
 
-    /// Las opciones que valen en cualquier orden (`LineaDeComandos.ejecutar`).
+    /// Las opciones que valen en cualquier orden (`LineaDeComandos.ejecutar(_:entrada:)`).
     static let generales: [OpcionDeOrden] = [
         .ingles, .idioma, .textos, .escritura, .sistema, .grafia, .subindices, .cifras, .json, .salida,
     ]
@@ -76,8 +76,8 @@ extension LineaDeComandos {
         ),
         (nombres(.fuente), FuenteTeorica.allCases.map(\.rawValue)),
         (
-            nombres(.uso),
-            (LineaDeComandos.nombresDeLosUsos.flatMap { [$0.espanol, $0.ingles] }
+            nombres(.estilo),
+            (LineaDeComandos.nombresDeLosEstilos.flatMap { [$0.espanol, $0.ingles] }
                 + LineaDeComandos.nombresDeLasCorrientes.flatMap { [$0.espanol, $0.ingles] })
                 .reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }
         ),

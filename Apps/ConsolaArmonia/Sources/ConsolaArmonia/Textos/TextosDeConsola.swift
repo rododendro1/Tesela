@@ -223,9 +223,9 @@ struct TextosDeConsola: TextosTraducidos {
     let familiaDeFuncionDesconocida: Plantilla  // {1} familia
     let categoriaDesconocida: Plantilla  // {1} categoria
     let fuenteDesconocida: Plantilla  // {1} fuente
-    let escalaSinMicrotonos: Plantilla  // {1} escala
+    let escalaSinAfinacionPropia: Plantilla  // {1} escala
     let sinCirculoDeQuintas: Plantilla  // {1} temperamento
-    let usoDesconocido: Plantilla  // {1} uso
+    let estiloDesconocido: Plantilla  // {1} estilo
     let lugarDesconocido: Plantilla  // {1} lugar
     let agrupacionDesconocida: Plantilla  // {1} agrupacion
     let epocaDesconocida: Plantilla  // {1} epoca

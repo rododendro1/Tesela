@@ -2,13 +2,13 @@ import Armonia
 import Exposicion
 
 /// Lo que se elige en la pestaña «Catálogo» de Ars Harmonica y lo que sale de ello: la lista (progresiones, acordes
-/// con nombre o ritmos), lo buscado y la tónica, y una ficha por elemento con su nombre en la notación, lo que es,
-/// sus fuentes, cómo suena y a qué pestaña lleva. No usa SwiftUI, así que se prueba también en Linux; la vista lo
+/// con nombre o ritmos), lo buscado y la tónica, y una tarjeta por elemento con su nombre en la notación, lo que es,
+/// sus referencias, cómo suena y a qué pestaña lleva. No usa SwiftUI, así que se prueba también en Linux; la vista lo
 /// guarda en un `@State` y solo lo dibuja.
 ///
 ///     var modelo = ModeloDelCatalogo()
 ///     modelo.texto = "andaluza"
-///     modelo.fichas(en: .compacta(.espanol)).first?.nombre   // "cadencia andaluza"
+///     modelo.tarjetas(en: .compacta(.espanol)).first?.nombre   // "cadencia andaluza"
 public struct ModeloDelCatalogo: Sendable {
     /// Las tres listas del catálogo.
     public enum Lista: CaseIterable, Identifiable, Hashable, Sendable {
@@ -27,14 +27,14 @@ public struct ModeloDelCatalogo: Sendable {
         }
     }
 
-    /// La pestaña a la que lleva una ficha: la progresión escrita, a Análisis; el acorde, a Acordes.
+    /// La pestaña a la que lleva una tarjeta: la progresión escrita, a Análisis; el acorde, a Acordes.
     public enum Destino: Hashable, Sendable {
         case analisis(String)
         case acordes(Acorde)
     }
 
     /// Un elemento del catálogo, listo para dibujarlo.
-    public struct Ficha: Identifiable, Hashable, Sendable {
+    public struct Tarjeta: Identifiable, Hashable, Sendable {
         /// El nombre del catálogo, que no cambia con el idioma.
         public let id: String
         /// El nombre en la notación.
@@ -46,7 +46,7 @@ public struct ModeloDelCatalogo: Sendable {
         /// lo tiene), separados por « · », o vacío: «clásica · Romanticismo (1859)».
         public let estilos: String
         /// Las obras de donde sale, ya citadas.
-        public let fuentes: [String]
+        public let referencias: [String]
         public let sonido: Escucha
         /// A dónde lleva, o `nil` si a ningún sitio.
         public let destino: Destino?
@@ -61,31 +61,31 @@ public struct ModeloDelCatalogo: Sendable {
     /// Un catálogo como al abrir la app: las progresiones sobre Do, sin buscar nada.
     public init() {}
 
-    /// Las fichas de la lista elegida que se llaman como lo buscado, en el orden del catálogo.
-    public func fichas(en notacion: Notacion) -> [Ficha] {
+    /// Las tarjetas de la lista elegida que se llaman como lo buscado, en el orden del catálogo.
+    public func tarjetas(en notacion: Notacion) -> [Tarjeta] {
         switch lista {
-        case .progresiones: return ProgresionConNombre.buscar(conteniendo: texto).map { ficha(de: $0, en: notacion) }
-        case .acordes: return AcordeConNombre.buscar(conteniendo: texto).map { ficha(de: $0, en: notacion) }
-        case .ritmos: return RitmoConNombre.buscar(conteniendo: texto).map { ficha(de: $0, en: notacion) }
+        case .progresiones: return ProgresionConNombre.buscar(conteniendo: texto).map { tarjeta(de: $0, en: notacion) }
+        case .acordes: return AcordeConNombre.buscar(conteniendo: texto).map { tarjeta(de: $0, en: notacion) }
+        case .ritmos: return RitmoConNombre.buscar(conteniendo: texto).map { tarjeta(de: $0, en: notacion) }
         }
     }
 
     /// Una progresión: su cifrado romano y sus acordes sobre la tónica, que suenan y se abren en Análisis.
-    public func ficha(de progresion: ProgresionConNombre, en notacion: Notacion) -> Ficha {
+    public func tarjeta(de progresion: ProgresionConNombre, en notacion: Notacion) -> Tarjeta {
         let acordes = progresion.acordes(sobre: tonica)
         let cifrados = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " ")
-        return Ficha(
+        return Tarjeta(
             id: progresion.nombre, nombre: progresion.nombre(en: notacion),
             detalle: acordes.isEmpty ? progresion.cifrado : progresion.cifrado + " · " + cifrados,
             estilos: ProgresionConNombrePresentada(progresion, sobre: tonica, en: notacion).estilosYOrigen,
-            fuentes: progresion.referencias.map(\.cita),
+            referencias: progresion.referencias.map(\.cita),
             sonido: .acordes(acordes), destino: acordes.isEmpty ? nil : .analisis(cifrados))
     }
 
     /// Un acorde con nombre: sus notas sobre la tónica y, si es el que nombra a un tipo, su cifrado. Suena como se
     /// escribe en el catálogo, desde la tónica de la octava central (el místico, por cuartas, en tres octavas), y
     /// se abre en Acordes si se puede cifrar.
-    public func ficha(de acorde: AcordeConNombre, en notacion: Notacion) -> Ficha {
+    public func tarjeta(de acorde: AcordeConNombre, en notacion: Notacion) -> Tarjeta {
         let notas = acorde.notas(sobre: tonica).map { $0.nombre(en: notacion) }.joined(separator: " ")
         let delTipo = acorde.tipo.map { Acorde(tonica, $0) }
         let base = 60 + tonica.claseDeAltura
@@ -94,19 +94,19 @@ public struct ModeloDelCatalogo: Sendable {
         if let delTipo, acorde.tipo?.acordeConNombre == acorde {
             detalle = delTipo.cifrado(en: notacion) + " · " + notas
         }
-        return Ficha(
+        return Tarjeta(
             id: acorde.nombre, nombre: acorde.nombre(en: notacion), detalle: detalle,
             estilos: AcordeConNombrePresentado(acorde, sobre: tonica, en: notacion).estilosYOrigen,
-            fuentes: acorde.referencias.map(\.cita),
+            referencias: acorde.referencias.map(\.cita),
             sonido: sonido, destino: delTipo.map { .acordes($0) })
     }
 
     /// Un ritmo: su patrón y su agrupación, con su familia; suena dos vueltas y no lleva a ninguna pestaña.
-    public func ficha(de ritmo: RitmoConNombre, en notacion: Notacion) -> Ficha {
+    public func tarjeta(de ritmo: RitmoConNombre, en notacion: Notacion) -> Tarjeta {
         let agrupacion = ritmo.agrupacion.map(String.init).joined(separator: "+")
-        return Ficha(
+        return Tarjeta(
             id: ritmo.nombre, nombre: ritmo.nombre(en: notacion), detalle: ritmo.patron + " · " + agrupacion,
-            estilos: Self.familiaYOrigen(ritmo, en: notacion), fuentes: ritmo.referencias.map(\.cita),
+            estilos: Self.familiaYOrigen(ritmo, en: notacion), referencias: ritmo.referencias.map(\.cita),
             sonido: .ritmo(ritmo), destino: nil)
     }
 
