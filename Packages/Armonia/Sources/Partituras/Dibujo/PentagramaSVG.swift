@@ -114,7 +114,7 @@ struct PentagramaSVG {
             if let sistema = nota.sistema {
                 return Microtono(
                     signo: nota.signo(),
-                    nombre: NotaMicrotonal.nombre(
+                    nombre: NotaDeLaAfinacion.nombre(
                         nota.altura.nota, sistema: sistema, ajuste: nota.ajuste, en: notacion))
             }
             let cifra = Int(exactly: nota.desvio).map(String.init) ?? String(nota.desvio)

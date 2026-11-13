@@ -3,7 +3,7 @@ import Foundation
 
 // MARK: - Las opciones de una partitura
 //
-// `LineaDeComandos.partitura` lee aquí sus opciones, y escribe con ellas la música de cada tipo: una melodía, un
+// `LineaDeComandos.partitura(_:_:formato:)` lee aquí sus opciones, y escribe con ellas la música de cada tipo: una melodía, un
 // coral, unos acordes, sus arpegios o una escala. Cada tipo comprueba las opciones que no son suyas.
 
 /// Lo que se ha leído de una orden de partitura: la música, las opciones comunes a todos los tipos y, con

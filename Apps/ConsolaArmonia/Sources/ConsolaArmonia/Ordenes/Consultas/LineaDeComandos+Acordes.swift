@@ -162,7 +162,7 @@ extension LineaDeComandos {
                 .joined(separator: "\n"))
     }
 
-    /// Los acordes que pueden formar las notas, como en `--json` (`CandidatoPresentado.identificar`).
+    /// Los acordes que pueden formar las notas, como en `--json` (`CandidatoPresentado.identificar(_:limite:en:)`).
     static func identificar(_ textos: [String], _ notacion: Notacion) throws -> String {
         let candidatos = try CandidatoPresentado.identificar(textos, en: notacion)
         guard !candidatos.isEmpty else { return Mensaje.sinAcordes.texto(en: notacion) }

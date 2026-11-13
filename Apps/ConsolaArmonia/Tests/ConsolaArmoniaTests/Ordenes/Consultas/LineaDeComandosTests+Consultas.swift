@@ -127,42 +127,42 @@ extension LineaDeComandosTests {
     }
 
     /// `escalas`: el catálogo, por tradición y categoría, con filtros y búsqueda.
-    /// `escalas --uso`: solo las habituales de ese uso, en español o en inglés.
+    /// `escalas --estilo`: solo las habituales de ese uso, en español o en inglés.
     @Test func escalasPorUso() {
-        let blues = salida("escalas --uso blues")
+        let blues = salida("escalas --estilo blues")
         #expect(blues.hasPrefix("habituales · blues (6)\n"), Comment(rawValue: blues))
         #expect(blues.contains("  blues: Do Mi♭ Fa Fa♯ Sol Si♭ · microtonos\n"), Comment(rawValue: blues))
         #expect(!blues.contains("Turquía"))
-        #expect(salida("escalas --use blues") == blues)
-        let jazz = salida("escalas --uso jazz")
+        #expect(salida("escalas --style blues") == blues)
+        let jazz = salida("escalas --estilo jazz")
         #expect(jazz.contains("  alterada: "), Comment(rawValue: jazz))
         #expect(!jazz.contains("  menor melódica: "), Comment(rawValue: jazz))
-        #expect(salida("escalas --use composer") == salida("escalas --uso de-compositor"))
-        #expect(salida("escalas --uso siglo-xx") == salida("escalas --uso de-compositor"))
-        #expect(salida("escalas --uso de-compositor").hasPrefix("habituales · de compositor ("))
-        #expect(salida("escalas --uso de-compositor").contains("  modo 3 de Messiaen: "))
+        #expect(salida("escalas --style composer") == salida("escalas --estilo de-compositor"))
+        #expect(salida("escalas --estilo siglo-xx") == salida("escalas --estilo de-compositor"))
+        #expect(salida("escalas --estilo de-compositor").hasPrefix("habituales · de compositor ("))
+        #expect(salida("escalas --estilo de-compositor").contains("  modo 3 de Messiaen: "))
         // Los populares: el folclore, el flamenco y el pop y el rock, cada uno o los tres con `popular`.
-        #expect(salida("escalas --uso flamenco").hasPrefix("habituales · flamenco (2)\n"))
-        #expect(salida("escalas --use folk").contains("  mayor rumana: "))
-        let populares = salida("escalas --uso popular")
+        #expect(salida("escalas --estilo flamenco").hasPrefix("habituales · flamenco (2)\n"))
+        #expect(salida("escalas --style folk").contains("  mayor rumana: "))
+        let populares = salida("escalas --estilo popular")
         #expect(populares.hasPrefix("habituales · popular ("), Comment(rawValue: populares))
         #expect(populares.contains("  flamenca: ") && populares.contains("  mayor rumana: "))
-        #expect(salida("scales --use jazz --ingles").hasPrefix("common · jazz ("))
+        #expect(salida("scales --style jazz --ingles").hasPrefix("common · jazz ("))
         // Con un texto, busca dentro del uso; con una tradición, no hay ninguna.
-        #expect(salida("escalas bebop --uso jazz").hasPrefix("habituales · jazz (7)\n"))
-        #expect(resultado("escalas", "--uso", "jazz", "--tradicion", "japon").codigo == 1)
-        #expect(resultado("escalas", "--uso", "jaz").error.contains("«jazz»"))
-        #expect(resultado("escalas", "--uso").codigo == 2)
+        #expect(salida("escalas bebop --estilo jazz").hasPrefix("habituales · jazz (7)\n"))
+        #expect(resultado("escalas", "--estilo", "jazz", "--tradicion", "japon").codigo == 1)
+        #expect(resultado("escalas", "--estilo", "jaz").error.contains("«jazz»"))
+        #expect(resultado("escalas", "--estilo").codigo == 2)
         // Una corriente de un estilo: el bebop o el jazz modal, el heavy metal o el metal neoclásico.
-        let modal = salida("escalas --uso modal")
+        let modal = salida("escalas --estilo modal")
         #expect(modal.hasPrefix("habituales · jazz modal ("), Comment(rawValue: modal))
         #expect(modal.contains("  dórico: ") && !modal.contains("  alterada: "), Comment(rawValue: modal))
-        #expect(salida("escalas --uso bebop").contains("  alterada: "))
-        #expect(resultado("escalas", "--uso", "jazz modal").salida == modal)
-        let neoclasico = salida("escalas --use neoclassical-metal")
+        #expect(salida("escalas --estilo bebop").contains("  alterada: "))
+        #expect(resultado("escalas", "--estilo", "jazz modal").salida == modal)
+        let neoclasico = salida("escalas --style neoclassical-metal")
         #expect(neoclasico.hasPrefix("habituales · metal neoclásico (2)\n"), Comment(rawValue: neoclasico))
-        #expect(salida("scales --use modal --ingles").hasPrefix("common · modal jazz ("))
-        #expect(resultado("escalas", "--uso", "bebob").error.contains("«bebop»"))
+        #expect(salida("scales --style modal --ingles").hasPrefix("common · modal jazz ("))
+        #expect(resultado("escalas", "--estilo", "bebob").error.contains("«bebop»"))
     }
 
     /// `escalas --lugar`: las de un lugar, de origen o de uso, por su clave, su nombre o su código ISO; `--agrupar`,
@@ -250,7 +250,7 @@ extension LineaDeComandosTests {
         #expect(salida("escalas --era baroque") == barrocas)
         #expect(salida("escalas --epoca Barroco") == barrocas)
         #expect(salida("escalas --epoca tonal").contains("  menor húngara: "))
-        #expect(salida("escalas --epoca siglo-xx --uso jazz").contains("  alterada: "))
+        #expect(salida("escalas --epoca siglo-xx --estilo jazz").contains("  alterada: "))
         #expect(resultado("escalas", "--epoca", "barocco").error.contains("«barroco»"))
         #expect(resultado("escalas", "--epoca").codigo == 2)
         let carnaticas = salida("escalas --escuela carnatica")
@@ -259,11 +259,11 @@ extension LineaDeComandosTests {
         #expect(salida("escalas --school carnatic") == carnaticas)
         #expect(salida("escalas --escuela gagaku").hasPrefix("Japón · "))
         #expect(resultado("escalas", "--escuela", "carnatik").error.contains("«carnatic»"))
-        let porEpoca = salida("escalas --agrupar epoca --uso jazz")
+        let porEpoca = salida("escalas --agrupar epoca --estilo jazz")
         #expect(porEpoca.hasPrefix("Edad Media · 500–1400 ("), Comment(rawValue: String(porEpoca.prefix(200))))
         #expect(porEpoca.contains("\n\nsiglo XX · 1900–2000 ("))
         #expect(salida("escalas --agrupar epoca").contains("\n\nsin época ("))
-        #expect(salida("scales --group-by era --ingles --use jazz").hasPrefix("Middle Ages · 500–1400 ("))
+        #expect(salida("scales --group-by era --ingles --style jazz").hasPrefix("Middle Ages · 500–1400 ("))
     }
 
     /// `acordes --epoca` y `progresiones --epoca`: los de una época, de origen o de uso; en JSON, su año y sus épocas.
@@ -297,7 +297,7 @@ extension LineaDeComandosTests {
         #expect(pentatonicas.contains("  pentatónica mayor: Do Re Mi Sol La"), Comment(rawValue: pentatonicas))
         #expect(!pentatonicas.contains("  mayor: "), Comment(rawValue: pentatonicas))
         #expect(salida("escalas --notes 5") == pentatonicas)
-        #expect(salida("escalas --notas 8 --uso jazz").contains("  bebop dominante: "))
+        #expect(salida("escalas --notas 8 --estilo jazz").contains("  bebop dominante: "))
         #expect(resultado("escalas", "--notas", "0").codigo == 2)
         #expect(resultado("escalas", "--notas", "cinco").codigo == 2)
         #expect(resultado("escalas", "--notas").codigo == 2)

@@ -37,7 +37,7 @@ public struct AcordeConNombre: Sendable {
     /// Pueden ser intervalos compuestos (la novena, la undécima…).
     public let intervalos: [Intervalo]
     /// Lo demás que sabe el catálogo del acorde: sus estilos y sus referencias.
-    package let ficha: FichaDelCatalogo
+    package let datos: DatosDelCatalogo
 
     /// Un acorde con nombre, del catálogo o fuera de él. Si los intervalos no empiezan por el unísono, se le añade.
     /// `documentada` es la obra más antigua que lo da, con su año, y va también entre sus referencias.
@@ -49,7 +49,7 @@ public struct AcordeConNombre: Sendable {
         self.alias = alias
         self.variantes = variantes
         self.intervalos = intervalos.first == .unisono ? intervalos : [.unisono] + intervalos
-        self.ficha = FichaDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada)
+        self.datos = DatosDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada)
     }
 
     // MARK: Propiedades
@@ -66,14 +66,14 @@ public struct AcordeConNombre: Sendable {
     public func notas(sobre fundamental: Nota) -> [Nota] { intervalos.map { fundamental + $0 } }
 
     /// En qué estilos se usa (la clásica, el jazz, la popular…); vacío si no es propio de ninguno.
-    public var estilos: [Estilo] { ficha.estilos }
+    public var estilos: [Estilo] { datos.estilos }
 
     /// Dónde se lee el acorde, con las obras de su carácter.
-    public var referencias: [Referencia] { Referencia.unicas(ficha.referencias + caracter.map(\.fuente)) }
+    public var referencias: [Referencia] { Referencia.unicas(datos.referencias + caracter.map(\.referencia)) }
 
     /// La obra más antigua que da el acorde, con su año: la partitura de «Tristan und Isolde» (1859) en el de Tristán.
     /// `nil` si no se sabe.
-    public var documentada: Referencia? { ficha.documentada }
+    public var documentada: Referencia? { datos.documentada }
 
     /// El nombre en el idioma de la notación, y en su grafía: «séptima de dominante», «dominant seventh»,
     /// «Dominantseptakkord», «dominantseptakkord» (en ruso transliterado)… Un acorde fuera del catálogo se llama en

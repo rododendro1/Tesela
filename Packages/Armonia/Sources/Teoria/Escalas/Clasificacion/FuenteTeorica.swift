@@ -106,7 +106,7 @@ extension TipoDeEscala {
     ///
     ///     TipoDeEscala.tetracordoCromaticoDeArquitas.fuente   // .arquitas
     ///     TipoDeEscala.ionicus.fuente                          // .glareano
-    public var fuente: FuenteTeorica? { fichaDelCatalogo.fuente }
+    public var fuente: FuenteTeorica? { datosDelCatalogo.fuente }
 
     /// Las escalas de otras tradiciones de una fuente, en el orden del catálogo: las que definió y las que afinó.
     /// `tradicionales(fuente: .ptolomeo)` da los siete géneros de las Harmónicas; `tradicionales(fuente: .zarlino)`,

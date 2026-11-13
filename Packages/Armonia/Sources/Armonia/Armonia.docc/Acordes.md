@@ -111,7 +111,7 @@ Como las escalas (<doc:EscalasDelMundo>), los acordes del catálogo tienen `cara
 Rameau (1722) describen las tríadas por su tercera, la mayor alegre y la menor triste.
 
 ```swift
-AcordeConNombre.mayor.caracter.map(\.fuente) == [.zarlino1558, .rameau1722]   // true
+AcordeConNombre.mayor.caracter.map(\.referencia) == [.zarlino1558, .rameau1722]   // true
 AcordeConNombre.menor.afectos.first == .triste                                // true
 AcordeConNombre.tristan.caracter.isEmpty                                      // true
 ```

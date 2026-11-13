@@ -227,7 +227,7 @@ Sources/
 ├── Teoria/
 │   ├── Lectura/           ErrorDeLecturaDeTeoria (cifrados, escalas, tonalidades y corales)
 │   ├── Catalogo/          Lo que comparten los catálogos: Estilo (de escalas, acordes y progresiones),
-│   │                      FichaDelCatalogo y NombresDelCatalogo (los nombres de cada catálogo por idioma). Cada
+│   │                      DatosDelCatalogo y NombresDelCatalogo (los nombres de cada catálogo por idioma). Cada
 │   │                      catálogo con nombre tiene la misma forma: su tipo y su catálogo en la carpeta, y sus
 │   │                      nombres en `Nombres/`, un fichero por idioma
 │   ├── Acordes/           TipoDeAcorde, Acorde, Acorde+Identificacion, EstructuraDeAcorde (con
@@ -236,7 +236,7 @@ Sources/
 │   │   │                  CardinalDeAcorde y EstadisticasDeAcorde (lo que se mide de un acorde, con sus
 │   │   │                  bloques PsicoacusticaDeAcorde y DisposicionDeVoces), GrupoDeHindemith,
 │   │   │                  RelacionEntreAcordes (Tymoczko, Tonnetz, Lerdahl, Fourier, Forte)
-│   │   ├── Catalogo/      AcordeConNombre (el acorde del catálogo, con su ficha) y el catálogo
+│   │   ├── Catalogo/      AcordeConNombre (el acorde del catálogo, con sus datos) y el catálogo
 │   │   ├── Nombres/       NombresDeAcordes y un fichero por idioma (`NombresDeAcordes+Catalan.swift`…)
 │   │   └── Neorriemanniana/   TransformacionNeorriemanniana (P, L, R y caminos), CicloNeorriemanniano
 │   │                      (hexatónico, octatónico, LR), ConduccionParsimoniosa (vecinos a un semitono,
@@ -246,7 +246,7 @@ Sources/
 │   │   │                  ella: acordes, estudio, simetría, estadísticas, armonía modal, escalas propias y vecinas
 │   │   │                  (CalculosDeEscala: Myhill, Rothenberg, Carey, Krumhansl y Kessler…) y RelacionEntreEscalas
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
-│   │   │                  `nombre(en:)`), FichaDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
+│   │   │                  `nombre(en:)`), DatosDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala
 │   │   │                  y Microtonos (SistemaDeAlturas, AfinacionPropia)
 │   │   ├── Clasificacion/ Tradicion, CategoriaTradicional, ClaseDeEscala, RegionDeEscala,
 │   │   │                  FuenteTeorica, y los tipos de algunas tradiciones: CakraDeMela, ModoGregoriano y

@@ -233,11 +233,11 @@ import Testing
     }
 
     @Test func lasDoblesConDobles() {
-        let nota = NotaMicrotonal(temperada: Nota(.si, -2), sistema: .cuartosDeTono, ajuste: -1, cents: 0)
+        let nota = NotaDeLaAfinacion(temperada: Nota(.si, -2), sistema: .cuartosDeTono, ajuste: -1, cents: 0)
         #expect(nota.nombre == "Si𝄫𝄳")
         #expect(nota.nombre(en: .compacta(.ingles)) == "B𝄫𝄳")
         #expect(nota.nombre(en: .ascii(.ingles)) == "Bbbqb")
-        let mi = NotaMicrotonal(temperada: .mi, sistema: .cuartosDeTono, ajuste: -1, cents: 0)
+        let mi = NotaDeLaAfinacion(temperada: .mi, sistema: .cuartosDeTono, ajuste: -1, cents: 0)
         #expect(mi.nombre == "Mi𝄳")
     }
 

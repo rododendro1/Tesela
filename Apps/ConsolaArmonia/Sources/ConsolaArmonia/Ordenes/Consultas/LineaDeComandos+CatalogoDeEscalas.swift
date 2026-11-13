@@ -21,10 +21,10 @@ extension LineaDeComandos {
         (.renacimiento, "renacimiento", "renaissance"),
     ]
 
-    /// Cómo se escribe cada estilo occidental en `--uso`, en español y en inglés (se aceptan los dos en cualquier
-    /// idioma): `--uso de-compositor`, `--use composer`. `popular` da los tres populares, y `siglo-xx`, el nombre de
+    /// Cómo se escribe cada estilo occidental en `--estilo`, en español y en inglés (se aceptan los dos en cualquier
+    /// idioma): `--estilo de-compositor`, `--style composer`. `popular` da los tres populares, y `siglo-xx`, el nombre de
     /// antes, las de compositor.
-    static let nombresDeLosUsos: [(usos: [Estilo], espanol: String, ingles: String)] = [
+    static let nombresDeLosEstilos: [(usos: [Estilo], espanol: String, ingles: String)] = [
         ([.clasica], "clasica", "classical"), ([.jazz], "jazz", "jazz"), ([.blues], "blues", "blues"),
         ([.deCompositor], "de-compositor", "composer"), ([.folclore], "folclore", "folk"),
         ([.flamenco], "flamenco", "flamenco"), ([.popRock], "pop-rock", "pop-rock"),
@@ -32,7 +32,7 @@ extension LineaDeComandos {
         ([.deCompositor], "siglo-xx", "20th-century"),
     ]
 
-    /// Cómo se escribe cada corriente en `escalas --uso`, en español y en inglés: `--uso bebop`, `--use
+    /// Cómo se escribe cada corriente en `escalas --estilo`, en español y en inglés: `--estilo bebop`, `--style
     /// neoclassical-metal`.
     static let nombresDeLasCorrientes: [(corriente: Corriente, espanol: String, ingles: String)] = [
         (.bebop, "bebop", "bebop"), (.modal, "modal", "modal"), (.impresionismo, "impresionismo", "impressionism"),
@@ -40,7 +40,7 @@ extension LineaDeComandos {
         (.metalNeoclasico, "metal-neoclasico", "neoclassical-metal"),
     ]
 
-    /// La corriente de `escalas --uso modal`, por su clave, en español o en inglés, o por su nombre en español o en el
+    /// La corriente de `escalas --estilo modal`, por su clave, en español o en inglés, o por su nombre en español o en el
     /// idioma de la notación («jazz modal»); `nil` si no es ninguna.
     static func corriente(leyendo texto: String, _ notacion: Notacion) -> Corriente? {
         let clave = claveDeBusqueda(texto)
@@ -52,11 +52,11 @@ extension LineaDeComandos {
         return Corriente.allCases.first { [$0.nombre, $0.nombre(en: notacion)].map(claveDeBusqueda).contains(clave) }
     }
 
-    /// Los estilos de `--uso jazz`, por su clave (`de-compositor`), en español o en inglés, o por el nombre de un
-    /// estilo en español o en el idioma de la notación; lanza `usoDesconocido` si no es ninguno.
-    static func estilosDeUso(leyendo texto: String, _ notacion: Notacion) throws -> [Estilo] {
+    /// Los estilos de `--estilo jazz`, por su clave (`de-compositor`), en español o en inglés, o por el nombre de un
+    /// estilo en español o en el idioma de la notación; lanza `estiloDesconocido` si no es ninguno.
+    static func estilos(leyendo texto: String, _ notacion: Notacion) throws -> [Estilo] {
         let clave = claveDeBusqueda(texto)
-        if let porClave = nombresDeLosUsos.first(where: {
+        if let porClave = nombresDeLosEstilos.first(where: {
             claveDeBusqueda($0.espanol) == clave || claveDeBusqueda($0.ingles) == clave
         }) {
             return porClave.usos
@@ -65,7 +65,7 @@ extension LineaDeComandos {
             let porNombre = Estilo.allCases.first(where: {
                 [$0.nombre, $0.nombre(en: notacion)].map(claveDeBusqueda).contains(clave)
             })
-        else { throw ErrorDeUso.usoDesconocido(texto) }
+        else { throw ErrorDeUso.estiloDesconocido(texto) }
         return [porNombre]
     }
 
@@ -202,7 +202,7 @@ extension LineaDeComandos {
     }
 
     /// Las tradiciones, en el orden de `Tradicion.allCases`, con sus categorías en el de `TipoDeEscala.tradicionales`;
-    /// sin la occidental, que no tiene `--tradicion` (sus escalas son las habituales, por estilos con `--uso`).
+    /// sin la occidental, que no tiene `--tradicion` (sus escalas son las habituales, por estilos con `--estilo`).
     static func catalogoDeTradiciones() -> [TradicionDelCatalogo] {
         Tradicion.allCases.compactMap { tradicion in
             guard let claves = nombresDeLasTradiciones.first(where: { $0.tradicion == tradicion }) else { return nil }
@@ -258,11 +258,11 @@ extension LineaDeComandos {
         return clase
     }
 
-    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--fuente <fuente>] [--uso <uso>]
+    /// `escalas [<texto>] [--tradicion <tradición>] [--categoria <categoría>] [--fuente <fuente>] [--estilo <estilo>]
     /// [--lugar <lugar>] [--epoca <época>] [--escuela <escuela>] [--orden brillo] [--con-intervalo tritono] [--comparar
     /// Do mayor, Do lidio]`: el catálogo de escalas, las habituales y las de otras tradiciones agrupadas por tradición
     /// y categoría, cada una con sus notas desde Do (y la marca de los microtonos, si los tiene). Un texto suelto busca
-    /// en los nombres. `--uso jazz` deja solo las habituales de ese uso (las de otras tradiciones no tienen), y
+    /// en los nombres. `--estilo jazz` deja solo las habituales de ese uso (las de otras tradiciones no tienen), y
     /// `--notas 5`, las de cinco notas. `--comparar` deja el catálogo y pone las escalas que se le dan en una tabla,
     /// una por fila, y `--mapa` lo dibuja en un mapa de brillo (SVG).
     static func escalas(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
@@ -376,9 +376,9 @@ extension LineaDeComandos {
         var tradicion: Tradicion?
         var categoria: CategoriaTradicional?
         var fuente: FuenteTeorica?
-        /// Los de `--uso`: uno, o los tres populares con `--uso popular`.
+        /// Los de `--estilo`: uno, o los tres populares con `--estilo popular`.
         var usos: [Estilo] = []
-        /// La de `--uso bebop`: solo las escalas de esa corriente (y `usos`, su estilo).
+        /// La de `--estilo bebop`: solo las escalas de esa corriente (y `usos`, su estilo).
         var corriente: Corriente?
         /// Los de `--lugar`: la escala pasa si uno de sus lugares de origen o de uso es uno de ellos o está en él.
         var lugares: [Lugar] = []
@@ -537,13 +537,13 @@ extension LineaDeComandos {
         // `--fuente ptolomeo`, `--source ptolemy`: las escalas que definió o afinó un teórico, por su clave o por su
         // nombre en español, en inglés o en el idioma de la notación.
         if let texto = try entrada.valor(.fuente) { filtro.fuente = try fuenteTeorica(leyendo: texto, notacion) }
-        // `--uso jazz`, o una corriente de un estilo: `--uso bebop`, `--use neoclassical-metal`.
-        if let texto = try entrada.valor(.uso) {
+        // `--estilo jazz`, o una corriente de un estilo: `--estilo bebop`, `--style neoclassical-metal`.
+        if let texto = try entrada.valor(.estilo) {
             if let corriente = corriente(leyendo: texto, notacion) {
                 filtro.corriente = corriente
                 filtro.usos = [corriente.estilo]
             } else {
-                filtro.usos = try estilosDeUso(leyendo: texto, notacion)
+                filtro.usos = try estilos(leyendo: texto, notacion)
             }
         }
         // `--lugar espana`, `--place spain`: las de un lugar, de origen o de uso; `--agrupar continente`, por el suyo.

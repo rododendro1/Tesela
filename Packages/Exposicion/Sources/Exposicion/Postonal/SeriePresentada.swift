@@ -11,7 +11,7 @@ import Armonia
 public struct SeriePresentada: Hashable, Sendable, Codable {
     public let clases: [Int]
     /// Una nota por clase, escritas todas a la vez para que ninguna se repita
-    /// (`ConjuntoDeClasesDeAltura.nombresDeLasClases`).
+    /// (`ConjuntoDeClasesDeAltura.nombresDeLasClases(en:)`).
     public let notas: [String]
     public let intervalos: [Int]
     public let deTodosLosIntervalos: Bool

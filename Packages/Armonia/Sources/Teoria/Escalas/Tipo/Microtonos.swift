@@ -179,7 +179,7 @@ public struct AfinacionPropia: Hashable, Sendable {
 
 /// Una nota de una escala microtonal: su nota temperada, el sistema en que se escribe y cuánto se aparta (en
 /// cuartos de tono de la temperada, o en comas de la pitagórica en el sistema de 53 comas).
-public struct NotaMicrotonal: Hashable, Sendable {
+public struct NotaDeLaAfinacion: Hashable, Sendable {
     /// La nota de la aproximación de doce notas.
     public let temperada: Nota
     public let sistema: SistemaDeAlturas
@@ -197,7 +197,7 @@ public struct NotaMicrotonal: Hashable, Sendable {
     public var nombre: String { nombre(en: .compacta(.espanol)) }
 
     public func nombre(en notacion: Notacion) -> String {
-        NotaMicrotonal.nombre(temperada, sistema: sistema, ajuste: ajuste, en: notacion)
+        NotaDeLaAfinacion.nombre(temperada, sistema: sistema, ajuste: ajuste, en: notacion)
     }
 
     /// El nombre de la nota temperada que se aparta `ajuste` pasos de `sistema`, como `nombre(en:)`.
@@ -238,7 +238,7 @@ public struct NotaMicrotonal: Hashable, Sendable {
     }
 }
 
-extension NotaMicrotonal: CustomStringConvertible {
+extension NotaDeLaAfinacion: CustomStringConvertible {
     public var description: String { nombre }
 }
 
@@ -247,13 +247,13 @@ extension Escala {
     /// `afinacion`, en otra de las de `tipo.afinaciones` (o en una cualquiera de su misma escala temperada).
     public func notasMicrotonales(
         sentido: SentidoDelIntervalo = .ascendente, afinacion: AfinacionPropia? = nil
-    ) -> [NotaMicrotonal]? {
+    ) -> [NotaDeLaAfinacion]? {
         guard let microtonal = afinacion ?? tipo.afinacionPropia, microtonal.temperada == tipo else { return nil }
         let intervalos = microtonal.intervalos(sentido: sentido)
         let ajustes = microtonal.ajustes(sentido: sentido)
         let cents = microtonal.cents(sentido: sentido)
         return intervalos.indices.map { i in
-            NotaMicrotonal(
+            NotaDeLaAfinacion(
                 temperada: tonica + intervalos[i], sistema: microtonal.sistema, ajuste: ajustes[i], cents: cents[i])
         }
     }

@@ -196,7 +196,7 @@ extension TextosDeApps {
         relojDeLaEscala: "A skála órája",
         circuloCromatico: "Kromatikus kör",
         circuloDeQuintas: "Kvintkör",
-        circuloMicrotonal: "Mikrotonális kör",
+        circuloDeLaAfinacionPropia: "Hangolásának köre",
         enLasDoceTonalidades: "Mind a tizenkét hangnemben",
         acordesEnLasDoceTonalidades: "Akkordok mind a tizenkét hangnemben",
         conSeptima: "Szeptimmel",

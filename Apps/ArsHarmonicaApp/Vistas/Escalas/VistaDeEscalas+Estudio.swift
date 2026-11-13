@@ -138,7 +138,7 @@ struct SeccionDelMapaDeBrillo: View {
 }
 
 /// La escala en un reloj de doce horas, en el círculo cromático o en el de quintas, para ver su forma; si tiene
-/// microtonos, también en el círculo microtonal, cada grado en el ángulo de sus cents.
+/// microtonos, también en el círculo de su afinación, cada grado en el ángulo de sus cents.
 struct SeccionDelReloj: View {
     let escala: Escala
     @Environment(\.notacion) private var notacion
@@ -161,12 +161,12 @@ struct SeccionDelReloj: View {
                 Text(notacion.texto(\.circuloCromatico)).tag(Circulo.cromatico)
                 Text(notacion.texto(\.circuloDeQuintas)).tag(Circulo.quintas)
                 if !afinaciones.isEmpty {
-                    Text(notacion.texto(\.circuloMicrotonal)).tag(Circulo.microtonal)
+                    Text(notacion.texto(\.circuloDeLaAfinacionPropia)).tag(Circulo.microtonal)
                 }
             }
             .pickerStyle(.segmented)
             if elegido == .microtonal, afinaciones.count > 1 {
-                Picker(notacion.texto(\.circuloMicrotonal), selection: $afinacion) {
+                Picker(notacion.texto(\.circuloDeLaAfinacionPropia), selection: $afinacion) {
                     ForEach(afinaciones.indices, id: \.self) { i in
                         Text(nombre(de: afinaciones[i])).tag(i)
                     }
@@ -201,7 +201,7 @@ struct SeccionDelReloj: View {
         case .cromatico: return PresentacionDeEstudioDeEscala.reloj(de: escala, orden: .cromatico, en: notacion)
         case .quintas: return PresentacionDeEstudioDeEscala.reloj(de: escala, orden: .quintas, en: notacion)
         case .microtonal:
-            return PresentacionDeEstudioDeEscala.relojMicrotonal(
+            return PresentacionDeEstudioDeEscala.relojDeLaAfinacionPropia(
                 de: escala, afinacion: afinacionElegida(afinaciones), en: notacion)
                 ?? PresentacionDeEstudioDeEscala.reloj(de: escala, en: notacion)
         }

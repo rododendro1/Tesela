@@ -24,52 +24,52 @@ extension TipoDeEscala {
     private static let caracteresGriegos: [(tipo: TipoDeEscala, caracter: [Caracter])] = [
         (
             .harmoniaMixolidiaDeAristides,
-            [.init([.lastimero], ocasion: .lamento, testigo: .platon, pasaje: "398e", fuente: platon)]
+            [.init([.lastimero], ocasion: .lamento, testigo: .platon, pasaje: "398e", referencia: platon)]
         ),
         (
             .harmoniaSintonolidiaDeAristides,
-            [.init([.lastimero], ocasion: .lamento, testigo: .platon, pasaje: "398e", fuente: platon)]
+            [.init([.lastimero], ocasion: .lamento, testigo: .platon, pasaje: "398e", referencia: platon)]
         ),
         (
             .harmoniaLidiaDeAristides,
-            [.init([.blando], ocasion: .banquete, testigo: .platon, pasaje: "398e", fuente: platon)]
+            [.init([.blando], ocasion: .banquete, testigo: .platon, pasaje: "398e", referencia: platon)]
         ),
         (
             .harmoniaIastiaDeAristides,
             [
-                .init([.blando], ocasion: .banquete, testigo: .platon, pasaje: "398e", fuente: platon),
-                .init([.severo], testigo: .heraclides, pasaje: "XIV 624–625", fuente: heraclides),
+                .init([.blando], ocasion: .banquete, testigo: .platon, pasaje: "398e", referencia: platon),
+                .init([.severo], testigo: .heraclides, pasaje: "XIV 624–625", referencia: heraclides),
             ]
         ),
         (
             .harmoniaDoriaDeAristides,
-            [.init([.valiente], ocasion: .guerra, testigo: .platon, pasaje: "399a", fuente: platon)]
+            [.init([.valiente], ocasion: .guerra, testigo: .platon, pasaje: "399a", referencia: platon)]
         ),
-        (.harmoniaFrigiaDeAristides, [.init([.templado], testigo: .platon, pasaje: "399a–c", fuente: platon)]),
+        (.harmoniaFrigiaDeAristides, [.init([.templado], testigo: .platon, pasaje: "399a–c", referencia: platon)]),
         (
             .harmoniaMixolidia,
-            [.init([.lastimero, .triste], testigo: .aristoteles, pasaje: "1340a–b", fuente: aristoteles)]
+            [.init([.lastimero, .triste], testigo: .aristoteles, pasaje: "1340a–b", referencia: aristoteles)]
         ),
         (
             .harmoniaDoria,
             [
                 .init(
-                    [.valiente, .majestuoso, .severo], testigo: .heraclides, pasaje: "XIV 624–625", fuente: heraclides),
-                .init([.grave, .sereno], testigo: .aristoteles, pasaje: "1340b, 1342b", fuente: aristoteles),
+                    [.valiente, .majestuoso, .severo], testigo: .heraclides, pasaje: "XIV 624–625", referencia: heraclides),
+                .init([.grave, .sereno], testigo: .aristoteles, pasaje: "1340b, 1342b", referencia: aristoteles),
             ]
         ),
         (
             .harmoniaFrigia,
-            [.init([.entusiasta], testigo: .aristoteles, pasaje: "1340b, 1342b", fuente: aristoteles)]
+            [.init([.entusiasta], testigo: .aristoteles, pasaje: "1340b, 1342b", referencia: aristoteles)]
         ),
         (
             .harmoniaHipodoria,
             [
-                .init([.alegre, .majestuoso], testigo: .heraclides, pasaje: "XIV 624–625", fuente: heraclides),
-                .init([.majestuoso, .sereno], testigo: .problemas, pasaje: "XIX.48", fuente: problemas),
+                .init([.alegre, .majestuoso], testigo: .heraclides, pasaje: "XIV 624–625", referencia: heraclides),
+                .init([.majestuoso, .sereno], testigo: .problemas, pasaje: "XIX.48", referencia: problemas),
             ]
         ),
-        (.harmoniaHipofrigia, [.init([.energico], testigo: .problemas, pasaje: "XIX.48", fuente: problemas)]),
+        (.harmoniaHipofrigia, [.init([.energico], testigo: .problemas, pasaje: "XIX.48", referencia: problemas)]),
     ]
 
     // MARK: Canto gregoriano
@@ -77,7 +77,7 @@ extension TipoDeEscala {
     // Cotón (Johannes Afflighemensis) da a cada tono su carácter en el De musica, hacia 1100.
 
     private static func coton(_ afectos: [Afecto]) -> [Caracter] {
-        [.init(afectos, testigo: .coton, fuente: .babb1978)]
+        [.init(afectos, testigo: .coton, referencia: .babb1978)]
     }
 
     private static let caracteresGregorianos: [(tipo: TipoDeEscala, caracter: [Caracter])] = [
@@ -98,7 +98,7 @@ extension TipoDeEscala {
     private static func bor(
         _ momento: MomentoDelDia?, _ afectos: [Afecto], estacion: Estacion? = nil
     ) -> [Caracter] {
-        [.init(afectos, momento: momento, estacion: estacion, fuente: .bor1999)]
+        [.init(afectos, momento: momento, estacion: estacion, referencia: .bor1999)]
     }
 
     private static let caracteresIndios: [(tipo: TipoDeEscala, caracter: [Caracter])] = [
@@ -129,9 +129,9 @@ extension TipoDeEscala {
     // En el wayang kulit, cada pathet del sléndro tiene su parte de la noche.
 
     private static let caracteresJavaneses: [(tipo: TipoDeEscala, caracter: [Caracter])] = [
-        (.slendroNem, [.init([.sereno, .grave], momento: .noche, fuente: .hood1954)]),
-        (.slendroSanga, [.init([.energico], momento: .medianoche, fuente: .hood1954)]),
-        (.slendroManyura, [.init([.alegre], momento: .madrugada, fuente: .hood1954)]),
+        (.slendroNem, [.init([.sereno, .grave], momento: .noche, referencia: .hood1954)]),
+        (.slendroSanga, [.init([.energico], momento: .medianoche, referencia: .hood1954)]),
+        (.slendroManyura, [.init([.alegre], momento: .madrugada, referencia: .hood1954)]),
     ]
 
     // MARK: China
@@ -142,8 +142,8 @@ extension TipoDeEscala {
         _ papel: PapelDeLaNota, _ fase: FaseDeLaNaturaleza, _ estacion: Estacion?
     ) -> [Caracter] {
         [
-            .init(estacion: estacion, fase: fase, testigo: .lushiChunqiu, fuente: .dewoskin1982),
-            .init(papel: papel, testigo: .yueji, fuente: .dewoskin1982),
+            .init(estacion: estacion, fase: fase, testigo: .lushiChunqiu, referencia: .dewoskin1982),
+            .init(papel: papel, testigo: .yueji, referencia: .dewoskin1982),
         ]
     }
 

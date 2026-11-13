@@ -3,13 +3,13 @@
 ## Sin publicar
 
 - `ModeloDelCatalogo` escribe los acordes y las progresiones con `AcordeConNombrePresentado` y
-  `ProgresionConNombrePresentada`, y la ficha de un ritmo lleva sus estilos y su época con el año («danza · jazz ·
+  `ProgresionConNombrePresentada`, y la tarjeta de un ritmo lleva sus estilos y su época con el año («danza · jazz ·
   Siglo XX (1923)»).
 
 - `ModeloDelCatalogo` escribe la época y el año de un acorde o una progresión con `OrigenPresentado`, como la
   consola y las hojas.
 
-- `ModeloDelCatalogo`: la ficha de una progresión o un acorde con nombre lleva también su época de origen, con el año
+- `ModeloDelCatalogo`: la tarjeta de una progresión o un acorde con nombre lleva también su época de origen, con el año
   de su obra si lo tiene («clásica · Romanticismo (1859)»). La pestaña de escalas de Ars Harmonica tiene una sección
   «Origen» con la época, los lugares, los estilos y las escuelas de la escala.
 
@@ -17,9 +17,9 @@
   de Ars Harmonica y en la de Tonnetz, y lo que sale de ello (el acorde o la progresión leídos, el arpegio, la
   partitura abierta, lo que se dibuja, lo que suena y lo que se exporta). No usan SwiftUI, así que se prueban en
   Linux; las vistas los guardan en un `@State` y solo los dibujan.
-- `ModeloDelCatalogo`: la pestaña «Catálogo» de Ars Harmonica. Busca en las progresiones, los acordes con nombre y
-  los ritmos por su nombre en cualquier idioma y da una ficha por elemento, con lo que es, sus estilos, sus fuentes,
-  cómo suena y si se abre en Análisis o en Acordes.
+- `ModeloDelCatalogo`: la pestaña «Catálogo» de Ars Harmonica. Busca en las progresiones, los acordes con nombre y los
+  ritmos por su nombre en cualquier idioma y da una tarjeta por elemento (`ModeloDelCatalogo.Tarjeta`, con
+  `tarjetas(en:)`), con lo que es, sus estilos, sus referencias, cómo suena y si se abre en Análisis o en Acordes.
 - `ModeloDeAcordes.nombresDelCatalogo(en:)`: los nombres del acorde leído en el catálogo («novena añadida, acorde
   mu»).
 - `ModeloDeAcordes.ficheros(digitaciones:en:)` y `ModeloDeAnalisis.ficheros(de:en:)` dan también las hojas de estudio

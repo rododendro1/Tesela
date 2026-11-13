@@ -235,7 +235,7 @@ package enum Exportacion {
 
 /// Lo que comparten los escritores de MusicXML, MEI, LilyPond, GUIDO y ABC: se crean con la cabecera de la
 /// partitura, se les añaden voces con lo que se anota en ellas y escriben el documento. Con él, una voz, un coral y
-/// una progresión se preparan una sola vez para todos los formatos (`Exportacion.documento`).
+/// una progresión se preparan una sola vez para todos los formatos (`Exportacion.documento(_:de:)`).
 /// Lo que un escritor sabe de la partitura antes de sus voces: el compás y la anacrusa, la tonalidad y el tempo del
 /// encabezado, el título, el nombre de la parte y la clave de cada pentagrama.
 package struct CabeceraDePartitura {

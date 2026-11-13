@@ -4,7 +4,7 @@ import Elementos
 //
 // De dónde viene una escala, separado de qué música es (su `Tradicion`): un `Lugar` en tres niveles, el continente, el
 // país y la región o el pueblo (`RegionDeEscala`), cada uno dentro del anterior. Las escalas no los escriben: los
-// toman de sus regiones (las de su ficha) o, si no tienen, de su tradición. Y hay dos clases de lugares: los de origen
+// toman de sus regiones (las de sus datos) o, si no tienen, de su tradición. Y hay dos clases de lugares: los de origen
 // (de donde viene) y los de uso (donde también se tocan sus notas, con otro nombre). Algunos nombres parecen decir de
 // dónde viene la escala y no lo dicen: la persa no es persa.
 

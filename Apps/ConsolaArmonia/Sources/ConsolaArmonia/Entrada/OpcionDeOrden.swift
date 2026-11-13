@@ -74,7 +74,7 @@ extension OpcionDeOrden {
     static let ciclo = valor("--ciclo", "--cycle")
     static let en = valor("--en", "--in")
 
-    // MARK: Las de las partituras (las lee `Argumentos.quitarOpcionesConTexto`)
+    // MARK: Las de las partituras (las lee `Argumentos.quitarOpcionesConTexto(_:)`)
     static let compas = valor("--compas", "--time")
     static let anacrusa = valor("--anacrusa", "--pickup")
     static let claveDePartitura = valor("--clave", "--clef")
@@ -196,7 +196,8 @@ extension OpcionDeOrden {
     static let traste = valor("--traste", "--fret")
     static let tresillos = marca("--tresillos", "--triplets")
     static let triadas = marca("--triadas", "--triads")
-    static let uso = valor("--uso", "--use")
+    /// `escalas --estilo jazz`: las de un estilo (`Estilo`) o una corriente. `--uso` y `--use` se leen igual, como antes.
+    static let estilo = valor("--estilo", "--style", ocultos: ["--uso", "--use"])
     static let vecinas = marca("--vecinas", "--neighbors", ocultos: ["--neighbours"])
     /// `escalas --vecinas Re dórico`, `--parecidas`, `--escalera`: como las marcas de `escala`, pero con la escala detrás.
     static let vecinasDe = valor("--vecinas", "--neighbors", ocultos: ["--neighbours"])

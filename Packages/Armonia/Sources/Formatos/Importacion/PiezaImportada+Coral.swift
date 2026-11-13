@@ -19,8 +19,8 @@ extension PiezaImportada {
     ///     let coral = try pieza.coral()
     ///     coral.faltas.map(\.description)   // ["Quintas paralelas entre el bajo y el tenor (acordes 3 → 4)"]
     ///
-    /// Lanza `ErrorDeLecturaDeFichero.sinNotas` si no suena nada, y `ErrorDeLecturaDeTeoria.vocesDistintas` si no
-    /// suenan siempre las mismas voces.
+    /// Lanza `ErrorDeLecturaDeFichero.sinNotas` si no suena nada, y `ErrorDeLecturaDeTeoria.Motivo.vocesDistintas` si
+    /// no suenan siempre las mismas voces.
     public func coral() throws -> Coral {
         let comienzos = Array(Set(notas.map(\.inicio))).sorted()
         var acordes: [[Altura]] = []

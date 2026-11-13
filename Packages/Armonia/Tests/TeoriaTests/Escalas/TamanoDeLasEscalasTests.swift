@@ -16,7 +16,7 @@ struct TamanoDeLasEscalasTests {
     /// La ficha se comparte entre las copias y no se pierde: el dórico copiado sigue teniendo sus estilos.
     @Test func laFichaSeComparte() {
         let copia = TipoDeEscala.dorico
-        #expect(copia.ficha.estilos == TipoDeEscala.dorico.ficha.estilos)
-        #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).ficha.estilos.isEmpty)
+        #expect(copia.datos.estilos == TipoDeEscala.dorico.datos.estilos)
+        #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).datos.estilos.isEmpty)
     }
 }

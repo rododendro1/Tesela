@@ -4,7 +4,7 @@ import Armonia
 
 /// Una medida de un acorde (`EstadisticasDeAcorde`), descrita una sola vez: su clave en el JSON y en el TSV, su título
 /// en `TextosDeApps` y cómo se escribe su valor, en texto y en JSON. La lista de la consola y de la app
-/// (`PresentacionDeEstadisticasDeAcorde.estadisticas`), la tabla, el JSON (`EstadisticasDeAcordePresentadas`) y el
+/// (`PresentacionDeEstadisticasDeAcorde.estadisticas(_:sobre:en:)`), la tabla, el JSON (`EstadisticasDeAcordePresentadas`) y el
 /// TSV de acordes de `EjemploCatalogos` recorren `MedidaDeAcorde.todas`, así que una medida nueva se añade aquí y sale
 /// en todas partes.
 ///

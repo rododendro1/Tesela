@@ -33,7 +33,7 @@ public enum ValorDeMedida: Hashable, Sendable, Encodable {
     /// Una lista de decimales.
     public static func decimales(_ numeros: [Double]) -> ValorDeMedida { .lista(numeros.map(ValorDeMedida.decimal)) }
 
-    /// El valor en una celda de TSV: los números como en `Redondeo.texto`, los sí o no como «sí» y «no», las listas
+    /// El valor en una celda de TSV: los números como en `Redondeo.texto(_:decimales:)`, los sí o no como «sí» y «no», las listas
     /// separadas por espacios (o por « · » si son de objetos) y los objetos con sus valores separados por espacios.
     public var textoPlano: String {
         switch self {

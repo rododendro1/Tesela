@@ -139,7 +139,7 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeRitmos: [EntradaDeAyuda] = [
-        // ritmos [<texto>] [--familia <familia>] [--uso <estilo>] [--epoca <época>] [--estadisticas]
+        // ritmos [<texto>] [--familia <familia>] [--estilo <estilo>] [--epoca <época>] [--estadisticas]
         //     [--comparar <ritmo>]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisRitmos),
@@ -147,7 +147,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia ritmos clave de son --estadisticas", "armonia rhythms son clave --statistics"),
             notas: TextosDeConsola.traduccion(\.notasRitmos),
-            opciones: [.familia, .uso, .epoca, .estadisticas, .comparar])
+            opciones: [.familia, .estilo, .epoca, .estadisticas, .comparar])
     ]
 
     static let ayudaDeTemperamentos: [EntradaDeAyuda] = [
@@ -191,7 +191,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo("armonia acordes tristan --sobre Fa", "armonia chords tristan --over F"),
             notas: TextosDeConsola.traduccion(\.notasAcordesConNombre),
             opciones: [
-                .sobre, .notas, .uso, .epoca, .afecto, .porTerceras, .noPorTerceras, .sinSemitonos, .conIntervalo,
+                .sobre, .notas, .estilo, .epoca, .afecto, .porTerceras, .noPorTerceras, .sinSemitonos, .conIntervalo,
                 .sinIntervalo,
                 .orden, .estadisticas, .resumen,
             ])
@@ -207,7 +207,7 @@ extension LineaDeComandos {
                 "armonia scales --tradition turkey"),
             notas: TextosDeConsola.traduccion(\.notasEscalas),
             opciones: [
-                .tradicion, .categoria, .fuente, .uso, .lugar, .agrupar, .epoca, .afecto, .escuela, .notas, .orden,
+                .tradicion, .categoria, .fuente, .estilo, .lugar, .agrupar, .epoca, .afecto, .escuela, .notas, .orden,
                 .sinSemitonos, .regulares, .fragmentos, .sinFragmentos, .afinacion,
                 .conIntervalo,
                 .sinIntervalo,

@@ -67,15 +67,15 @@ extension PresentacionDeEstudioDeEscala {
         return reloj.svg(rotulos: rotulos, opciones: .init(titulo: escala.nombre(en: notacion) + " · " + circulo))
     }
 
-    /// La versión microtonal de la escala en un reloj de cents (SVG): cada grado en el ángulo de sus cents, con su
-    /// nombre microtonal (el Mi𝄳 de Re Bayātī, entre Mi♭ y Mi), las rayitas de su sistema y las doce horas
-    /// temperadas en gris. Con `afinacion`, en otra de las de `escala.tipo.afinaciones`; con `colores`, cada grado
-    /// con el color de sus cents. `nil` si la escala no tiene microtonos.
-    public static func relojMicrotonal(
+    /// La afinación propia de la escala (`AfinacionPropia`) en un reloj de cents (SVG): cada grado en el ángulo de sus
+    /// cents, con su nombre microtonal (el Mi𝄳 de Re Bayātī, entre Mi♭ y Mi), las rayitas de su sistema y las doce
+    /// horas temperadas en gris. Con `afinacion`, en otra de las de `escala.tipo.afinaciones`; con `colores`, cada
+    /// grado con el color de sus cents. `nil` si la escala no tiene afinación propia.
+    public static func relojDeLaAfinacionPropia(
         de escala: Escala, afinacion: AfinacionPropia? = nil, colores: Bool = false, en notacion: Notacion
     ) -> String? {
         guard let reloj = RelojDeAlturas(escala: escala, afinacion: afinacion, notacion: notacion) else { return nil }
-        let titulo = escala.nombre(en: notacion) + " · " + notacion.texto(\.circuloMicrotonal)
+        let titulo = escala.nombre(en: notacion) + " · " + notacion.texto(\.circuloDeLaAfinacionPropia)
         return reloj.svg(opciones: .init(notacion: notacion, titulo: titulo), colores: colores)
     }
 

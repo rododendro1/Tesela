@@ -196,7 +196,7 @@ extension TextosDeApps {
         relojDeLaEscala: "Eskalaren erlojua",
         circuloCromatico: "Zirkulu kromatikoa",
         circuloDeQuintas: "Bosgarrenen zirkulua",
-        circuloMicrotonal: "Zirkulu mikrotonala",
+        circuloDeLaAfinacionPropia: "Bere afinazioaren zirkulua",
         enLasDoceTonalidades: "Hamabi tonalitateetan",
         acordesEnLasDoceTonalidades: "Akordeak hamabi tonalitateetan",
         conSeptima: "Zazpigarrenarekin",

@@ -181,15 +181,15 @@ struct TextosDeTeoria: TextosTraducidos {
     let cifrasNoValidas: Plantilla  // {1} cifras
     let cifrasSinAcorde: Plantilla  // {1} cifras
 
-    // MARK: UsoDeEscala.swift
-    let usoClasica: String
-    let usoJazz: String
-    let usoBlues: String
-    let usoDeCompositor: String
-    let usoPopular: String
-    let usoFolclore: String
-    let usoFlamenco: String
-    let usoPopRock: String
+    // MARK: Estilo.swift
+    let estiloClasica: String
+    let estiloJazz: String
+    let estiloBlues: String
+    let estiloDeCompositor: String
+    let estiloPopular: String
+    let estiloFolclore: String
+    let estiloFlamenco: String
+    let estiloPopRock: String
     /// Las corrientes de los estilos (`Corriente`).
     let corrienteBebop: String
     let corrienteModal: String
@@ -197,7 +197,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let corrienteRock: String
     let corrienteHeavyMetal: String
     let corrienteMetalNeoclasico: String
-    let usoSintetica: String
+    let estiloSintetica: String
 
     // MARK: CardinalDeEscala.swift
     let cardinalMonotonica: String

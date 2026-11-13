@@ -4,7 +4,7 @@ import Testing
 
 @testable import Exposicion
 
-@Suite struct PresentacionDeTemperamentoTests {
+@Suite struct TemperamentoPresentadoTests {
     /// La ficha y las medidas del mesotónico de ¼ de coma, escritas.
     @Test func mesotonico() throws {
         let notacion = Notacion.compacta(.espanol)

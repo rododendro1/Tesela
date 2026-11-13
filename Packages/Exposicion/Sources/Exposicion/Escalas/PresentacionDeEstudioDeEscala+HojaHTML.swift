@@ -4,11 +4,11 @@ import Armonia
 
 extension PresentacionDeEstudioDeEscala {
     /// La hoja de estudio de la escala como página HTML: lo mismo que `hojaDeEstudio(de:en:secciones:)`, pero con los
-    /// textos en HTML (el nombre, las notas, el origen y las estadísticas en listas de definiciones, los acordes de
-    /// los grados y la escalera de brillo en listas) y los dibujos (el pentagrama, el reloj, el círculo microtonal y
-    /// los teclados) como SVG dentro. Se adapta al ancho de la pantalla (en una estrecha, las columnas se apilan), sigue
-    /// el modo oscuro del sistema y se imprime en A4. Una sola página, sin nada de fuera.
-    /// `armonia hoja Do mayor --html` la escribe.
+    /// textos en HTML (el nombre, las notas, el origen y las estadísticas en listas de definiciones, los acordes de los
+    /// grados y la escalera de brillo en listas) y los dibujos (el pentagrama, el reloj, el círculo de su afinación y
+    /// los teclados) como SVG dentro. Se adapta al ancho de la pantalla (en una estrecha, las columnas se apilan),
+    /// sigue el modo oscuro del sistema y se imprime en A4. Una sola página, sin nada de fuera. `armonia hoja Do mayor
+    /// --html` la escribe.
     ///
     ///     let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
     ///         de: Escala(.re, .dorico), en: .compacta(.espanol))
@@ -43,7 +43,7 @@ extension PresentacionDeEstudioDeEscala {
                 seccionHTML(notacion.texto(\.origen), "<dl>" + datos.joined() + "</dl>", clase: "seccion-origen"))
         }
 
-        // Las estadísticas y el reloj (con el círculo microtonal, si tiene microtonos), en dos columnas.
+        // Las estadísticas y el reloj (con el círculo de su afinación, si tiene microtonos), en dos columnas.
         var columnas: [String] = []
         if secciones.contains(.estadisticas) {
             let datos = estadisticas(de: escala, en: notacion).map {
@@ -53,7 +53,7 @@ extension PresentacionDeEstudioDeEscala {
         }
         if secciones.contains(.reloj) {
             var relojes = [figura(reloj(de: escala, en: notacion), clase: "reloj")]
-            if let microtonal = relojMicrotonal(de: escala, en: notacion) {
+            if let microtonal = relojDeLaAfinacionPropia(de: escala, en: notacion) {
                 relojes.append(figura(microtonal, clase: "reloj"))
             }
             columnas.append(seccion(.reloj, en: notacion, relojes.joined()))

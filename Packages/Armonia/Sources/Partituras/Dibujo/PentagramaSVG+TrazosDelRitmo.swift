@@ -2,11 +2,11 @@ import Elementos
 import Teoria
 
 // Los trazos del ritmo sobre las cabezas ya colocadas: las plicas, las barras de unión, los corchetes, las ligaduras
-// y los tresillos, cada parte en su método. `PentagramaSVG.trazosDelRitmo` los llama en orden.
+// y los tresillos, cada parte en su método. `PentagramaSVG.trazosDelRitmo(_:colocadas:pentagramas:)` los llama en orden.
 
 extension PentagramaSVG {
     /// Los trazos del ritmo de un pentagrama, y lo que suben y bajan sobre las líneas. Se dibujan por partes, en el
-    /// orden de `PentagramaSVG.trazosDelRitmo`: primero las barras de unión, que fijan las plicas de sus notas; después
+    /// orden de `PentagramaSVG.trazosDelRitmo(_:colocadas:pentagramas:)`: primero las barras de unión, que fijan las plicas de sus notas; después
     /// las demás plicas, con su corchete; y por último las ligaduras y los tresillos, del lado que dicen las plicas.
     struct TrazosDelRitmo {
         /// La plica de una columna en un pentagrama: hacia arriba si la nota más alejada de la 3.ª línea está debajo.

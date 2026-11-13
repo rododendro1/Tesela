@@ -176,7 +176,7 @@ public struct Evento: Hashable, Sendable {
 extension Evento {
     /// Una nota que suena: su altura y cuántos cents se aparta de su nota temperada (los microtonos de un maqam o un
     /// makam), redondeados a la centésima de cent. Si se da, `sistema` es la teoría en que se escribe ese microtono
-    /// y `ajuste`, cuántos pasos de ella se aparta (como ``NotaMicrotonal/ajuste``): con ellos, el Mi koron de un
+    /// y `ajuste`, cuántos pasos de ella se aparta (como ``NotaDeLaAfinacion/ajuste``): con ellos, el Mi koron de un
     /// dastgāh se escribe con el koron, y no con el medio bemol de un maqam, en el pentagrama y en los formatos.
     ///
     ///     Evento.NotaDelEvento("Mi♭4", desvio: 50).description   // "Mi♭4(50¢)": el Mi𝄳 de un maqam
@@ -188,7 +188,7 @@ extension Evento {
         /// La teoría en que se escribe el microtono; `nil` si no se aparta de la temperada o si no se sabe (su signo
         /// se deduce entonces de los cents).
         public let sistema: SistemaDeAlturas?
-        /// Los pasos de `sistema` que se aparta (``NotaMicrotonal/ajuste``); 0 si no hay sistema.
+        /// Los pasos de `sistema` que se aparta (``NotaDeLaAfinacion/ajuste``); 0 si no hay sistema.
         public let ajuste: Int
 
         /// La altura apartada `desvio` cents de la temperada, redondeado a la centésima, y escrita en `sistema`,

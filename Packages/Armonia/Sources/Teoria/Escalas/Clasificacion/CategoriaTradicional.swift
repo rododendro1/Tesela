@@ -2,7 +2,7 @@ import Elementos
 
 // MARK: - Tradición y categoría de una escala
 
-/// La tradición musical de que viene una escala: la occidental, la de las escalas de `TipoDeEscala.todos` (la tonal
+/// La tradición musical de que viene una escala: la occidental, la de las escalas de `TipoDeEscala.occidentales` (la tonal
 /// y modal, el jazz, el blues…), o una de las de `TipoDeEscala.tradicionales`. El canto gregoriano, el Renacimiento,
 /// la Grecia antigua y el folklore europeo, que también son de Occidente, son tradiciones aparte, con sus propias
 /// escalas.
@@ -169,19 +169,19 @@ extension TipoDeEscala {
     /// La categoría de la escala en su tradición (rāga, mēḷa, dromos, maqam…); `nil` en las occidentales y en
     /// las propias. Se busca por el nombre, no por los intervalos: Āsāvarī (un thāṭ) tiene los de la escala menor
     /// natural.
-    public var categoria: CategoriaTradicional? { fichaDelCatalogo.categoria }
+    public var categoria: CategoriaTradicional? { datosDelCatalogo.categoria }
 
-    /// La tradición de la escala, la de su ficha: `.occidental` en las habituales, `.india` en un rāga; `nil` en las
+    /// La tradición de la escala, la de sus datos: `.occidental` en las habituales, `.india` en un rāga; `nil` en las
     /// propias. Como `categoria`, por su identidad: una escala propia que se llame «Kafi» pero suene distinto no es el
     /// thāṭ.
-    public var tradicion: Tradicion? { fichaDelCatalogo.tradicion }
+    public var tradicion: Tradicion? { datosDelCatalogo.tradicion }
 
     /// La escala madre de la que sale, por la tradición: el mēḷa de un rāga janya («Mohanam» → Harikāmbhojī,
     /// siempre uno de los `melakartasCompatibles`), el thāṭ de un rāga indostánico en la clasificación de Bhatkhande
     /// (Yaman → Kalyāṇ), el grāma de una mūrchanā (Uttaramandrā → ṣaḍja-grāma) y el laras de un pathet (Sléndro
     /// pathet nem → Sléndro). `nil` en las demás escalas y en las que no tienen un padre claro (Revati, Lalit).
     public var padre: TipoDeEscala? {
-        fichaDelCatalogo.padre.flatMap { TipoDeEscala.delCatalogo[$0]?.tipo }
+        datosDelCatalogo.padre.flatMap { TipoDeEscala.delCatalogo[$0]?.tipo }
     }
 
     /// Las escalas del catálogo que salen de esta (las que la tienen de `padre`), en el orden del catálogo: los janya
@@ -190,7 +190,7 @@ extension TipoDeEscala {
 
     /// Padre → sus derivadas, en el orden del catálogo.
     private static let derivadasPorPadre: [IdentidadDeEscala: [TipoDeEscala]] = Dictionary(
-        grouping: catalogo.filter { $0.ficha.padre != nil }, by: { $0.ficha.padre! })
+        grouping: catalogo.filter { $0.datos.padre != nil }, by: { $0.datos.padre! })
 
     /// El nombre con la palabra de su categoría delante: «thāṭ Kāfī», «mēḷa Māyāmālavagauḷa», «rāga Mohanam» (un
     /// janya es un rāga), «maqām Bayātī», «drómos Hitzáz». Es el nombre a secas si ya la lleva («jins Ḥijāz»,
@@ -203,7 +203,7 @@ extension TipoDeEscala {
     /// ruso y en griego, transcrita: «рага», «ράγκα»).
     public func nombreCompleto(en notacion: Notacion) -> String {
         let suyo = nombre(en: notacion)
-        guard let palabra = fichaDelCatalogo.categoria?.palabraDelNombre, !llevaLaCategoria else { return suyo }
+        guard let palabra = datosDelCatalogo.categoria?.palabraDelNombre, !llevaLaCategoria else { return suyo }
         return "\(palabra.nombre(en: notacion)) \(suyo)"
     }
 
@@ -216,7 +216,7 @@ extension TipoDeEscala {
     /// Las escalas de `tradicionales` cuyo nombre lleva la palabra de su categoría (`llevaLaCategoria`).
     private static let conLaCategoriaEnElNombre: Set<IdentidadDeEscala> = Set(
         tradicionales.filter { tipo in
-            guard let palabra = tipo.ficha.categoria?.palabraDelNombre else { return false }
+            guard let palabra = tipo.datos.categoria?.palabraDelNombre else { return false }
             let clave = normalizar(palabra.nombre)
             let palabras = normalizar(tipo.nombre).split(separator: " ")
             return palabras.first == "shadd"
@@ -228,7 +228,7 @@ extension TipoDeEscala {
 
     /// La clase de la escala (modo, escala madre, fragmento o afinación): la de su categoría o, en una occidental, la
     /// de su declaración (el hexacordo es un fragmento); `nil` en las demás occidentales y en las propias.
-    public var clase: ClaseDeEscala? { categoria?.clase ?? fichaDelCatalogo.clase }
+    public var clase: ClaseDeEscala? { categoria?.clase ?? datosDelCatalogo.clase }
 
     /// ¿Es un fragmento de menos de una octava, que no se repite a la octava (un tetracordo, un jins, un hexacordo)?
     /// Un fragmento no tiene modos, y lo que se mide de él como conjunto de clases de altura (`estadisticas`) lo

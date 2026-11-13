@@ -29,7 +29,7 @@ import Testing
     @Test func laFuenteEstaEnLasReferencias() {
         for (tipo, caracteres) in TipoDeEscala.caracteres {
             let claves = Set(tipo.referencias.map(\.clave))
-            for caracter in caracteres { #expect(claves.contains(caracter.fuente.clave), "\(tipo.nombre)") }
+            for caracter in caracteres { #expect(claves.contains(caracter.referencia.clave), "\(tipo.nombre)") }
         }
     }
 
@@ -55,7 +55,7 @@ import Testing
         #expect(TipoDeEscala.harmoniaDoria.afectos == [.valiente, .majestuoso, .severo, .grave, .sereno])
         #expect(TipoDeEscala.harmoniaMixolidiaDeAristides.caracter.first?.ocasion == .lamento)
         #expect(TipoDeEscala.harmoniaFrigia.caracter.first?.afectos == [.entusiasta])
-        #expect(TipoDeEscala.harmoniaFrigia.caracter.first?.fuente.cita == "Monro 1894: 12–13")
+        #expect(TipoDeEscala.harmoniaFrigia.caracter.first?.referencia.cita == "Monro 1894: 12–13")
         #expect(TipoDeEscala.tritusPlagalis.afectos == [.lastimero])
         #expect(TipoDeEscala.bhairav.momentos == [.manana])
         #expect(TipoDeEscala.darbariKanada.momentos == [.medianoche])
@@ -126,14 +126,14 @@ import Testing
             let claves = Set(elemento.referencias.map(\.clave))
             for caracter in caracteres {
                 #expect(!caracter.afectos.isEmpty || caracter.ocasion != nil, "\(elemento.nombre)")
-                #expect(claves.contains(caracter.fuente.clave), "\(elemento.nombre)")
+                #expect(claves.contains(caracter.referencia.clave), "\(elemento.nombre)")
             }
         }
     }
 
     @Test func losAcordes() {
         comprobar(AcordeConNombre.caracteres.map { ($0.acorde, $0.caracter) })
-        #expect(AcordeConNombre.mayor.caracter.map(\.fuente) == [.zarlino1558, .rameau1722])
+        #expect(AcordeConNombre.mayor.caracter.map(\.referencia) == [.zarlino1558, .rameau1722])
         #expect(AcordeConNombre.menor.afectos == [.triste, .tierno, .lastimero])
         #expect(AcordeConNombre.tristan.caracter.isEmpty)
     }

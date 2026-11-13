@@ -4,7 +4,7 @@ import Testing
 @testable import Exposicion
 
 /// Lo que separa a dos acordes, a dos escalas o a los acordes de una progresión, escrito y en JSON.
-@Suite struct PresentacionDeRelacionesTests {
+@Suite struct RelacionesPresentadasTests {
     let espanol = Notacion.compacta(.espanol)
 
     @Test func entreAcordes() throws {

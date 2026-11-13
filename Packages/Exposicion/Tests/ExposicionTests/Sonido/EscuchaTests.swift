@@ -54,7 +54,7 @@ import Testing
         #expect(bayati.notas.map(\.microtono) == [0, 50, 0, 0, 0, 0, 0, 0])
         #expect(bayati.notas.map(\.desviacion) == [0, 50, 0, 0, 0, 0, 0, 0])
         #expect(bayati.afinado(con: .temperamentoIgual).notas[1].desviacion == 50)
-        // Cada grado solo, para tocarlo en el círculo microtonal; y la afinación de Chrysanthos, si se pide.
+        // Cada grado solo, para tocarlo en el círculo de su afinación; y la afinación de Chrysanthos, si se pide.
         let grados = Escucha.grados(de: Escala(.re, .bayati))
         #expect(grados.count == 7 && grados.map { $0.notas.count } == Array(repeating: 1, count: 7))
         #expect(grados[1].notas[0].midi == 63 && grados[1].notas[0].microtono == 50 && grados[1].tonica == .re)

@@ -336,7 +336,7 @@ Māhur…) no la necesitan, y los mugam azerbaiyanos tampoco: son los de Hacıb�
 Segāh, Segâh, Hüzzam, el varýs o el légetos la tónica misma es un microtono: Sīkāh se escribe sobre Mi, y su
 primer grado es Mi𝄳. Cada grado conserva la letra de su nota temperada y se aparta de ella medio semitono como mucho, así que la escala de doce notas sigue valiendo para todo lo demás.
 
-`Escala.notasMicrotonales(sentido:)` da sus notas (``NotaMicrotonal``), con los cents desde la tónica. Se
+`Escala.notasMicrotonales(sentido:)` da sus notas (``NotaDeLaAfinacion``), con los cents desde la tónica. Se
 escriben con el medio bemol y el medio sostenido (Mi𝄳, Fa𝄲; en ASCII, Miqb y Faq#), también el *koron* y el
 *sori*, que no están en Unicode; en el sistema turco, con la nota pitagórica y las comas que se aparta (Si⁻¹,
 una koma bajo Si; en ASCII, Si(-1)); en el bizantino, con los moria que se aparta de la nota temperada (Mi⁻², dos

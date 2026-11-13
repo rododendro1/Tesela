@@ -21,7 +21,7 @@ public struct Melodia: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// Melodía a partir de notas MIDI, escritas según la tonalidad dada o, si no se da,
-    /// según la que estima `Tonalidad.candidatos`.
+    /// según la que estima `Tonalidad.candidatos(alturas:duraciones:)`.
     public init(midi: [Int], tonalidad: Tonalidad? = nil) {
         guard let elegida = tonalidad ?? Tonalidad.identificar(midi: midi).first else {
             self.init(midi.map { Altura(midi: $0) })

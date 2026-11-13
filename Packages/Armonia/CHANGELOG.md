@@ -4,6 +4,15 @@
 
 ### Cambios incompatibles
 
+- Los nombres que decían «microtonal» donde no siempre hay microtonos: `NotaMicrotonal` pasa a ser
+  `NotaDeLaAfinacion` (también es una de los śruti, que son justos). `SignoMicrotonal` y `esMicrotonal` no cambian.
+- `Caracter.fuente` pasa a ser `referencia`, como en el resto del código: «fuente» queda solo para `FuenteTeorica`, la
+  teoría con que se mide una escala.
+- La consola: `--estilo` (`--style` en inglés) elige un estilo en `escalas`, `acordes` y `ritmos`, en lugar de `--uso`
+  (`--use`), que se sigue leyendo igual pero ya no sale en la ayuda: en el resto del código, «de uso» es dónde y
+  cuándo se usa algo (`epocasDeUso`, `lugaresDeUso`), no su estilo. Los textos de los estilos (`usoJazz`…) pasan a
+  ser `estiloJazz`…, y `reloj --microtonal` con una escala sin afinación propia dice que «no tiene afinación propia».
+
 - `SistemaMicrotonal` pasa a ser `SistemaDeAlturas`, y `TemperamentoConNombre.sistemaMicrotonal` y
   `NombresPorOctava.sistemaMicrotonal`, `sistemaDeAlturas`: los 22 śruti y las razones de Ptolomeo son justos, no
   microtonos. Sus casos y sus valores en el JSON y en el texto de las partituras no cambian.
@@ -46,7 +55,7 @@
 - Los ritmos tienen `estilos`, `epocasDeUso` y `epocas`, como los acordes: el flamenco en la soleá, la bulería y la
   seguiriya, el folclore en los aksak búlgaros, la clásica en los modos rítmicos, el vals, la polonesa, la siciliana
   y la habanera, y el jazz en el charleston y la bossa nova. Los de otras tradiciones (los tala, los iqa', los usul)
-  no tienen. En la consola, `ritmos --uso flamenco` y `ritmos --epoca barroco` los filtran, y el TSV de los ritmos
+  no tienen. En la consola, `ritmos --estilo flamenco` y `ritmos --epoca barroco` los filtran, y el TSV de los ritmos
   tiene su columna de estilos.
 - Siete obras nuevas en `Referencia.catalogo`, las que documentan los temperamentos: Aron (1523), Zhu Zaiyu (1584),
   Werckmeister (1691), Huygens (1691), Kirnberger (1771), Bosanquet (1876) y Mandelbaum (1961). Los temperamentos
@@ -212,8 +221,8 @@
 
 ### Cambios
 
-- `ElementoConNombre` da `id` y `description` (el nombre en español) a los siete catálogos, que ya no los escriben
-  cada uno. `FichaDelCatalogo` pasa a su propio fichero, con sus fechas.
+- `ElementoConNombre` da `id` y `description` (el nombre en español) a los siete catálogos, que ya no los escriben cada
+  uno. `FichaDelCatalogo` (ahora `DatosDelCatalogo`, como `DatosDeEscala`) pasa a su propio fichero, con sus fechas.
 - El temperamento de Salinas y el de Zarlino están documentados (`documentada`) en su obra, de 1577 y 1558, como los
   acordes y las escalas: su `anioDeOrigen` no cambia.
 - Por dentro, sin cambiar lo que dibujan: `PentagramaSVG` dibuja las plicas, las barras de unión, los corchetes, las

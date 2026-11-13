@@ -4,7 +4,7 @@ import Testing
 
 @testable import Exposicion
 
-@Suite struct PresentacionDeFuncionDeNotaTests {
+@Suite struct FuncionDeNotaPresentadaTests {
     /// La ficha de una blue note, con el intervalo, los cents y el desvío; la de un adorno, solo la familia.
     @Test func ficha() throws {
         let notacion = Notacion.compacta(.espanol)

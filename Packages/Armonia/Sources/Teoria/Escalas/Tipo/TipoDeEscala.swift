@@ -28,12 +28,12 @@ public struct TipoDeEscala: Sendable, Codable {
     public let variantes: [String]
     /// Lo demás que el catálogo sabe de la escala (estilos, regiones, categoría, mēḷa, microtonos), escrito en su
     /// declaración. No se codifica ni cuenta para `==`, y las propiedades públicas no lo leen de aquí sino de la
-    /// escala del catálogo con la misma identidad (`fichaDelCatalogo`).
-    package var ficha: FichaDeEscala { caja.ficha }
-    /// La ficha, guardada aparte y compartida entre las copias: así un `TipoDeEscala` ocupa unos 50 bytes y no
+    /// escala del catálogo con la misma identidad (`datosDelCatalogo`).
+    package var datos: DatosDeEscala { caja.datos }
+    /// Los datos, guardados aparte y compartidos entre las copias: así un `TipoDeEscala` ocupa unos 50 bytes y no
     /// unos 330. Sin optimizar, cada fila de las listas de nombres (`Nombres/`) construye en la pila su tipo, y con
-    /// la ficha dentro las del ruso y el griego llegaron a desbordar la pila de un hilo secundario (512 KB).
-    private let caja: CajaDeFicha
+    /// los datos dentro las del ruso y el griego llegaron a desbordar la pila de un hilo secundario (512 KB).
+    private let caja: CajaDeDatos
 
     /// Nombre, alias y variantes en forma normalizada (`normalizar`: sin diacríticos ni mayúsculas, `#`/`b`), sin
     /// repetidos. Es lo que se compara al buscar por nombre.
@@ -57,7 +57,7 @@ public struct TipoDeEscala: Sendable, Codable {
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
-            variantes: variantes, ficha: nil)
+            variantes: variantes, datos: nil)
     }
 
     /// Una escala occidental del catálogo, con sus estilos, las regiones de donde viene (las populares: la flamenca,
@@ -66,12 +66,12 @@ public struct TipoDeEscala: Sendable, Codable {
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
         variantes: [String] = [], estilos: [Estilo], corrientes: [Corriente] = [], regiones: [RegionDeEscala] = [],
-        afinaciones: [FichaDeEscala.Afinacion] = [], documentada: Referencia? = nil, clase: ClaseDeEscala? = nil
+        afinaciones: [DatosDeEscala.Afinacion] = [], documentada: Referencia? = nil, clase: ClaseDeEscala? = nil
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
             variantes: variantes,
-            ficha: FichaDeEscala(
+            datos: DatosDeEscala(
                 estilos: estilos, corrientes: corrientes, regiones: regiones, afinaciones: afinaciones,
                 documentada: documentada, clase: clase))
     }
@@ -85,12 +85,12 @@ public struct TipoDeEscala: Sendable, Codable {
         variantes: [String] = [], tradicion: Tradicion? = nil, categoria: CategoriaTradicional,
         escuelas: [Escuela] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
         padre: TipoDeEscala? = nil,
-        afinaciones: [FichaDeEscala.Afinacion] = [], referencias: [Referencia] = [], documentada: Referencia? = nil
+        afinaciones: [DatosDeEscala.Afinacion] = [], referencias: [Referencia] = [], documentada: Referencia? = nil
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
             variantes: variantes,
-            ficha: FichaDeEscala(
+            datos: DatosDeEscala(
                 tradicion: tradicion, escuelas: escuelas, regiones: regiones, categoria: categoria,
                 padre: padre?.identidad,
                 afinaciones: afinaciones,
@@ -99,7 +99,7 @@ public struct TipoDeEscala: Sendable, Codable {
 
     init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]?, alias: [String],
-        variantes: [String], ficha: FichaDeEscala?
+        variantes: [String], datos: DatosDeEscala?
     ) {
         self.nombre = nombre
         let subida = TipoDeEscala.ordenar(intervalos)
@@ -108,7 +108,7 @@ public struct TipoDeEscala: Sendable, Codable {
         self.intervalosDescendentes = bajada == subida ? nil : bajada
         self.alias = alias
         self.variantes = variantes
-        caja = ficha.map(CajaDeFicha.init) ?? .vacia
+        caja = datos.map(CajaDeDatos.init) ?? .vacia
     }
 
     /// Las escalas guardadas antes de que hubiera `variantes` se leen sin ellas.
@@ -189,13 +189,13 @@ public struct TipoDeEscala: Sendable, Codable {
     }
 }
 
-/// La ficha de un `TipoDeEscala`, en el montón. Es inmutable, así que compartirla entre copias y entre hilos es
+/// Los datos de un `TipoDeEscala`, en el montón. Son inmutables, así que compartirlos entre copias y entre hilos es
 /// seguro.
-private final class CajaDeFicha: Sendable {
-    let ficha: FichaDeEscala
-    init(_ ficha: FichaDeEscala) { self.ficha = ficha }
-    /// La de las escalas sin ficha (las propias, las leídas de JSON): una sola para todas.
-    static let vacia = CajaDeFicha(.vacia)
+private final class CajaDeDatos: Sendable {
+    let datos: DatosDeEscala
+    init(_ datos: DatosDeEscala) { self.datos = datos }
+    /// La de las escalas sin datos (las propias, las leídas de JSON): una sola para todas.
+    static let vacia = CajaDeDatos(.vacia)
 }
 
 /// La identidad de un `TipoDeEscala` (`TipoDeEscala.identidad`): su nombre y su contenido. Dos tipos con los mismos
@@ -445,7 +445,7 @@ extension TipoDeEscala {
     /// alias o a una variante: «Hijaz» es el maqam Ḥijāz y no el dromos Hitzáz, que lo tiene de variante), al
     /// nombrar una escala por sus notas (`propio`: Do Re Mi Fa Sol La Si es la mayor y no Bilāval) y en el orden de
     /// `equivalentes`.
-    /// `Escala.identificar` busca solo en `occidentales`, salvo que se le pasen otros tipos.
+    /// `Escala.identificar(notas:tipos:)` busca solo en `occidentales`, salvo que se le pasen otros tipos.
     public static let catalogo: [TipoDeEscala] = occidentales + tradicionales
 
     /// El tipo de un nombre en español o en inglés, sin distinguir mayúsculas ni guiones: "dórico", "dorico",

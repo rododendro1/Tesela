@@ -4,7 +4,7 @@ import Foundation
 extension PresentacionDeEstudioDeEscala {
     // MARK: El mapa de brillo
 
-    /// El mapa de brillo del catálogo (`Escala.mapaDeBrillo`) en SVG: una columna por cada brillo por quintas, de la
+    /// El mapa de brillo del catálogo (`Escala.mapaDeBrillo(tonica:numeroDeNotas:tipos:)`) en SVG: una columna por cada brillo por quintas, de la
     /// más oscura (a la izquierda) a la más brillante, con una caja por escala y una línea entre las que están a una
     /// nota de distancia. La escala `resaltada`, si es del mapa, va en otro color, y el mapa es el de su tónica.
     ///

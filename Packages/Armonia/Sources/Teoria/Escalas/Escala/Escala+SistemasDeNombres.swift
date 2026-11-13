@@ -16,7 +16,7 @@ extension Escala {
     }
 }
 
-extension NotaMicrotonal {
+extension NotaDeLaAfinacion {
     /// El nombre en un sistema de otra tradición, con el signo de su sistema microtonal detrás: «Vou⁻²» (dos moria
     /// bajo Vou), «Ga↓» (una coma bajo el Ga pitagórico). En los móviles, el grado se cuenta desde `tonica`.
     public func nombre(
@@ -26,7 +26,7 @@ extension NotaMicrotonal {
         guard ajuste != 0 else { return base }
         // El signo del ajuste, como lo escribe `nombre(en:)` tras la nota temperada: ⁻², ↓, (−37¢).
         let notacion: Notacion = grafia == .ascii ? .ascii(.espanol) : .compacta(.espanol)
-        let completo = NotaMicrotonal.nombre(temperada, sistema: sistema, ajuste: ajuste, en: notacion)
+        let completo = NotaDeLaAfinacion.nombre(temperada, sistema: sistema, ajuste: ajuste, en: notacion)
         let temperado = temperada.nombre(en: notacion)
         guard completo.hasPrefix(temperado) else { return base + "(\(ajuste > 0 ? "+" : "")\(ajuste))" }
         return base + String(completo.dropFirst(temperado.count))
@@ -97,7 +97,7 @@ extension SistemaDeAlturas {
     }
 }
 
-extension NotaMicrotonal {
+extension NotaDeLaAfinacion {
     /// El nombre de su śruti, si es una nota de los 22 śruti (`SistemaDeAlturas.sruti`): en Bilāval, Re es dayāvatī
     /// y Ga, raudrī. `nil` en los demás sistemas.
     public func nombreDelSruti(en grafia: Grafia = .transliterada) -> String? {

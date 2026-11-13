@@ -19,10 +19,10 @@ import Testing
                 for escuela in tipo.escuelas {
                     #expect(escuela.tradicion == lista.tradicion, Comment(rawValue: tipo.nombre))
                 }
-                #expect(tipo.ficha.categoria != nil, Comment(rawValue: tipo.nombre))
-                #expect(tipo.categoria == tipo.ficha.categoria, Comment(rawValue: tipo.nombre))
+                #expect(tipo.datos.categoria != nil, Comment(rawValue: tipo.nombre))
+                #expect(tipo.categoria == tipo.datos.categoria, Comment(rawValue: tipo.nombre))
                 #expect(lista.tradicion != .occidental, Comment(rawValue: tipo.nombre))
-                if let padre = tipo.ficha.padre {
+                if let padre = tipo.datos.padre {
                     // El padre es una escala del catálogo.
                     #expect(tipo.padre?.identidad == padre, Comment(rawValue: tipo.nombre))
                 }
@@ -35,7 +35,7 @@ import Testing
         )
         // Las occidentales no tienen categoría, y su tradición es la occidental.
         for tipo in TipoDeEscala.occidentales {
-            #expect(tipo.ficha.categoria == nil && tipo.ficha.padre == nil, Comment(rawValue: tipo.nombre))
+            #expect(tipo.datos.categoria == nil && tipo.datos.padre == nil, Comment(rawValue: tipo.nombre))
             #expect(tipo.tradicion == .occidental, Comment(rawValue: tipo.nombre))
         }
         #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).tradicion == nil)
@@ -46,13 +46,13 @@ import Testing
     @Test func laTradicionDeLaFichaCasaConSusDatos() {
         for tipo in TipoDeEscala.catalogo {
             let nombre = Comment(rawValue: tipo.nombre)
-            let tradicion = tipo.ficha.tradicion
+            let tradicion = tipo.datos.tradicion
             #expect(tradicion != nil, nombre)
-            if let deLaCategoria = tipo.ficha.categoria?.tradicion { #expect(deLaCategoria == tradicion, nombre) }
+            if let deLaCategoria = tipo.datos.categoria?.tradicion { #expect(deLaCategoria == tradicion, nombre) }
             if !tipo.estilos.isEmpty { #expect(tradicion == .occidental, nombre) }
             for escuela in tipo.escuelas { #expect(escuela.tradicion == tradicion, nombre) }
-            if let fuente = tipo.ficha.fuente { #expect(fuente.tradicion == tradicion, nombre) }
-            for afinacion in tipo.ficha.afinaciones {
+            if let fuente = tipo.datos.fuente { #expect(fuente.tradicion == tradicion, nombre) }
+            for afinacion in tipo.datos.afinaciones {
                 if let fuente = afinacion.fuente { #expect(fuente.tradicion == tradicion, nombre) }
             }
         }

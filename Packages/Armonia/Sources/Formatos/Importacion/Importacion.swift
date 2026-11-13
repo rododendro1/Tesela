@@ -35,7 +35,7 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     /// La teoría en que se escribe el microtono, si la dice su signo (``Evento/NotaDelEvento/sistema``); `nil` si no se
     /// aparta, o si su signo (un medio bemol) o la falta de él no la dicen.
     public let sistema: SistemaDeAlturas?
-    /// Los pasos de `sistema` que se aparta (``NotaMicrotonal/ajuste``); 0 si no hay sistema.
+    /// Los pasos de `sistema` que se aparta (``NotaDeLaAfinacion/ajuste``); 0 si no hay sistema.
     public let ajuste: Int
     /// La dinámica que se marca al empezar la nota, si se marca alguna.
     public let dinamica: Dinamica?

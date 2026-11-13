@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Escritura de SVG
 //
 // Lo que comparten los dibujos SVG del motor (el Tonnetz, la tabla armónica y el pentagrama): cada elemento se
-// escribe con sus atributos en orden, el texto y los valores escapados con `EscrituraXML.escapar` y los números con el
+// escribe con sus atributos en orden, el texto y los valores escapados con `EscrituraXML.escapar(_:)` y los números con el
 // formato del dibujo. Así el escapado y el redondeo son los mismos en todos, y un dibujo nuevo no los repite.
 
 /// Cómo se escriben los números de un dibujo.

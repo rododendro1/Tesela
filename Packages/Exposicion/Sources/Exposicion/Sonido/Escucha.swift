@@ -190,7 +190,7 @@ public struct Escucha: Hashable, Sendable {
     }
 
     /// Cada grado de la escala solo, desde la tónica en la octava 4 y con su microtono si lo tiene: lo que suena al
-    /// tocar un grado del círculo microtonal. Con `afinacion`, como en `escala(_:afinacion:)`.
+    /// tocar un grado del círculo de su afinación. Con `afinacion`, como en `escala(_:afinacion:)`.
     ///
     ///     Escucha.grados(de: Escala(.re, .bayati))[1].notas.first?.microtono   // 50: el Mi𝄳
     public static func grados(de escala: Escala, afinacion: AfinacionPropia? = nil) -> [Escucha] {

@@ -21,7 +21,7 @@ package protocol ElementoDelCatalogo: Hashable, Sendable {
     static var catalogo: [Self] { get }
     /// Los nombres en cada idioma.
     static var nombresTraducidos: Traducido<NombresDelCatalogo<Self>> { get }
-    /// Nombre, alias o variante normalizados (`NombresDelCatalogo.normalizar`) → el elemento, en cualquier idioma:
+    /// Nombre, alias o variante normalizados (`NombresDelCatalogo.normalizar(_:)`) → el elemento, en cualquier idioma:
     /// `NombresDelCatalogo.indice(de:)`, guardado en un `static let` de cada tipo.
     static var indiceDeNombres: [String: Self] { get }
 }

@@ -33,9 +33,10 @@
 - `Escucha.ritmo(_:vueltas:tempo:)`: un ritmo del catálogo, con los golpes fuertes graves y los débiles agudos, en su
   pulso. `TextosDeApps` tiene los textos de la pestaña «Catálogo» de Ars Harmonica (`catalogo`, `fuentes`,
   `verEnAnalisis`, `nombrePropio`…) en los trece idiomas.
-- `PresentacionDeEstudioDeEscala.relojMicrotonal(de:afinacion:colores:en:)`: la versión microtonal de una escala en el
-  reloj de cents (`RelojDeAlturas`), con el título «… · Círculo microtonal» (`TextosDeApps.circuloMicrotonal`, en los
-  trece idiomas), con `colores` para pintar cada grado del color de sus cents.
+- `PresentacionDeEstudioDeEscala.relojDeLaAfinacionPropia(de:afinacion:colores:en:)`: la afinación propia de una escala
+  (`AfinacionPropia`) en el reloj de cents (`RelojDeAlturas`), con el título «… · Círculo de su afinación»
+  (`TextosDeApps.circuloDeLaAfinacionPropia`, en los trece idiomas), con `colores` para pintar cada grado del color de
+  sus cents.
 - `TemperamentoPresentado.reloj(de:quintas:colores:en:)`: un temperamento del catálogo en el reloj de cents, o en su
   círculo de quintas si lo tiene.
 - `Escucha.grados(de:afinacion:)`: cada grado de la escala solo, con su microtono, para tocarlo en el círculo
@@ -61,7 +62,7 @@
   (`OrigenPresentado`), en lugar de `anio` y `epoca` sueltos, y en su JSON `"anio": 1691` pasa a ser
   `"origen": {"anio": 1691, "epoca": "Barroco"}`. Fuera `TextosDeApps.anioDelTemperamento` y `anioDeLaNota`.
 
-- `Escucha.escala(_:afinacion:)`, `Escucha.grados(de:afinacion:)` y `relojMicrotonal(de:afinacion:…)` toman una
+- `Escucha.escala(_:afinacion:)`, `Escucha.grados(de:afinacion:)` y `relojDeLaAfinacionPropia(de:afinacion:…)` toman una
   `AfinacionPropia`, el nuevo nombre de `TipoDeEscalaMicrotonal`.
 - En la consola, `escalas` marca «microtonos» solo en las escalas microtonales (`TipoDeEscala.esMicrotonal`), y
   `microtonal` en su JSON dice lo mismo: Kalyāṇ y las chinas, que tienen afinación propia pero justa, ya no lo son.
