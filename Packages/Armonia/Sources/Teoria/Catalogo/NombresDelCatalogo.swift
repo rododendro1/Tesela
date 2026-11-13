@@ -114,6 +114,16 @@ extension ElementoDelCatalogo {
         notacion.enSuGrafia(Self.nombres(en: notacion.textos).nombre(de: self) ?? nombre)
     }
 
+    /// Los alias en el idioma de la notación, y en su grafía: los del catálogo en español; vacío fuera del catálogo.
+    package func aliasTraducidos(en notacion: Notacion) -> [String] {
+        Self.nombres(en: notacion.textos).alias(de: self).map(notacion.enSuGrafia)
+    }
+
+    /// Las variantes en el idioma de la notación, y en su grafía.
+    package func variantesTraducidas(en notacion: Notacion) -> [String] {
+        Self.nombres(en: notacion.textos).variantes(de: self).map(notacion.enSuGrafia)
+    }
+
     /// El del catálogo con ese nombre, alias o variante en cualquier idioma, sin mirar mayúsculas, tildes, espacios,
     /// guiones ni rayas.
     package static func buscarNombre(_ nombre: String) -> Self? {
