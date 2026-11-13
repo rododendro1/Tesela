@@ -1,13 +1,13 @@
 # Huecos del catálogo de escalas y acordes
 
-Estado a 11 de noviembre de 2026, tras la 0.5.0 y las fuentes del pinpeat, el saung, la amadinda y el acorde de los
-augures.
+Estado a 12 de noviembre de 2026, tras las escalas sintéticas, los lugares, las épocas, los estilos y las corrientes.
 
 ## Resumen
 
-Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 29 escalas occidentales sin ninguna referencia y
-siete acordes sin fuente. El catálogo tiene 437 escalas en 49 listas de tradición y 55 acordes, todos con nombre en
-los doce idiomas. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
+Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 28 escalas occidentales sin ninguna referencia y
+cuatro acordes sin fuente. El catálogo tiene 443 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
+los doce idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
+cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
 
 ## Escalas de otras tradiciones sin referencia
@@ -38,7 +38,7 @@ Son más largas India (62), Turquía (39) y el mundo árabe (35).
 
 ## Escalas occidentales sin fuente
 
-De las 112 escalas occidentales, 29 no citan ninguna obra. Son las alteradas que no tienen siete notas y que, por
+De las 118 escalas occidentales, 28 no citan ninguna obra. Son las alteradas que no tienen siete notas y que, por
 tanto, Busoni no cubre.
 
 | Grupo | Escalas | Cuántas |
@@ -46,7 +46,7 @@ tanto, Busoni no cubre.
 | Pentatónicas alteradas | dominante, menor 6, mayor ♭6, menor ♭5, mayor ♭3, menor ♭6, mixolidia, lidia, escocesa, egipcia | 10 |
 | Hexatónicas | jónico sin 4ª, mixolidio sin 3ª, dórico sin 6ª, eólico sin 2ª, de dos tríadas (mayor y menor), de armónicos, trítono de dos semitonos | 8 |
 | Cromáticas con alteraciones | con uno, dos, tres y cinco bemoles, con cinco sostenidos | 5 |
-| De ocho o nueve notas | bebop locrio, bebop lidio, bebop menor armónica, argelina, blues de nueve notas, blues menor con 2ª | 6 |
+| De ocho o nueve notas | bebop locrio, bebop lidio, bebop menor armónica, blues de nueve notas, blues menor con 2ª | 5 |
 
 Las bebop locria, lidia y menor armónica no están, que sepamos, en Levine (1995): sus bebop son la de dominante, la
 mayor, la dórica y la menor melódica, que ya lo citan. Hace falta otra obra que las traiga.
@@ -54,6 +54,18 @@ mayor, la dórica y la menor melódica, que ya lo citan. Hace falta otra obra qu
 Las hexatónicas de dos tríadas no encajan en Cohn (1996), como se pensaba: sus sistemas hexatónicos juntan dos
 tríadas a una tercera mayor, que es la escala aumentada (y esa ya lo cita). Las del catálogo juntan dos tríadas a un
 tono, la técnica de los «triad pairs» del jazz, y necesitan una obra de improvisación que la explique.
+
+## Escalas sin época
+
+La época de una escala no se escribe: sale de lo que el catálogo ya sabe de ella (`TipoDeEscala.epocaDeOrigen`). Toda
+occidental de un estilo con épocas (la música clásica, el jazz, el blues, las de compositor y el pop y el rock) tiene
+la suya, y lo comprueban las pruebas (`EpocaTests`). Quedan sin época 14 occidentales y 148 de otras tradiciones.
+
+| Grupo | Escalas | Qué falta |
+| --- | --- | --- |
+| Populares | dórico ♯4, egipcia, flamenca, argelina, mayor rumana, pentatónica escocesa, y los cuatro hexatónicos sin una nota (jónico sin 4ª, mixolidio sin 3ª, dórico sin 6ª, eólico sin 2ª) | Una obra que las documente con su año (`documentada:`), como Liszt (1859) en la menor húngara |
+| Sintéticas | persa, jónico ♭2, jónico ♭5, jónico ♯6 | Una escala madre fechada de la que sean modo, o una obra que las traiga |
+| De otras tradiciones | 35 de la India (rāgas y janya), 31 del mundo árabe, 13 de Turquía, 13 de Japón, 11 de Indonesia y las de África, los Andes, Brasil, China, Corea, Etiopía, Europa, el klezmer, el sudeste asiático y Vietnam | El año de su obra o de su categoría; muchas son de tradiciones vivas sin una fecha de origen clara, y es mejor dejarlas sin época que inventarla |
 
 ## Acordes que faltaban
 
@@ -63,9 +75,9 @@ Hay 43 acordes genéricos y 12 de nombre propio. Los que faltaban ya están, per
 | --- | --- | --- | --- |
 | Sexta aumentada suiza | La♭ Do Re♯ Fa♯ (sobre La♭) | Aldwell, Schachter y Cadwallader (2011) | Nada: el lector ya admite la cuarta doble aumentada (`𝄪11`) |
 | m(add9) | Do Mi♭ Sol Re (sobre Do) | Ninguna | Buscar una obra que la traiga |
-| Acorde de Elektra | Do♯ Mi♯ Sol♯ + Mi Si | Ninguna | Confirmar la ortografía en la partitura, Kramer (1993) o Abbate (1989) |
+| Acorde de Elektra | Do♯ Mi♯ Sol♯ + Mi Si | La partitura (Strauss, 1909) | Confirmar la ortografía en la partitura, Kramer (1993) o Abbate (1989) |
 | Acorde de los augures | Fa♭ La♭ Do♭ + Mi♭ Sol Si♭ Re♭ | Taruskin (1996) | Nada |
-| Acorde de la Sinfonía de los salmos | Mi Sol Si Sol | Ninguna | Citar a White (1979) |
+| Acorde de la Sinfonía de los salmos | Mi Sol Si Sol | La partitura (Stravinski, 1930) | Citar a White (1979) |
 | Acorde alfa de Lendvai | Do Mi♭ Fa♯ La + Do♯ Mi Sol Si♭ | Ninguna | Confirmar en Lendvai (1971) qué notas da |
 
 Los acordes de Hendrix y mu tampoco citan ninguna obra.

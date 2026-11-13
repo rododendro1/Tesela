@@ -40,15 +40,16 @@ public struct AcordeConNombre: Sendable {
     package let ficha: FichaDelCatalogo
 
     /// Un acorde con nombre, del catálogo o fuera de él. Si los intervalos no empiezan por el unísono, se le añade.
+    /// `documentada` es la obra más antigua que lo da, con su año, y va también entre sus referencias.
     public init(
         nombre: String, intervalos: [Intervalo], alias: [String] = [], variantes: [String] = [],
-        estilos: [Estilo] = [], referencias: [Referencia] = []
+        estilos: [Estilo] = [], referencias: [Referencia] = [], documentada: Referencia? = nil
     ) {
         self.nombre = nombre
         self.alias = alias
         self.variantes = variantes
         self.intervalos = intervalos.first == .unisono ? intervalos : [.unisono] + intervalos
-        self.ficha = FichaDelCatalogo(estilos: estilos, referencias: referencias)
+        self.ficha = FichaDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada)
     }
 
     // MARK: Propiedades
@@ -69,6 +70,10 @@ public struct AcordeConNombre: Sendable {
 
     /// Dónde se lee el acorde.
     public var referencias: [Referencia] { ficha.referencias }
+
+    /// La obra más antigua que da el acorde, con su año: la partitura de «Tristan und Isolde» (1859) en el de Tristán.
+    /// `nil` si no se sabe.
+    public var documentada: Referencia? { ficha.documentada }
 
     /// El nombre en el idioma de la notación, y en su grafía: «séptima de dominante», «dominant seventh»,
     /// «Dominantseptakkord», «dominantseptakkord» (en ruso transliterado)… Un acorde fuera del catálogo se llama en

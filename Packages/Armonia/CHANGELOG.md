@@ -22,6 +22,15 @@
 
 ### Lo nuevo
 
+- `CaracterDeLaAfinacion` y `TipoDeEscala.caracterDeLaAfinacion` / `esMicrotonal`: si la afinación propia de una
+  escala es temperada, justa (los śruti, Zarlino, las chinas), microtonal (los cuartos de tono, el koron, los moria,
+  las 53 comas turcas, el blues, el enarmónico griego) o una octava en otras partes iguales (el sléndro en 5, el
+  timbila en 7, el pélog en 9). Sale de su sistema y de cuánto se aparta cada grado (`umbralMicrotonal`, 30 cents);
+  antes, «microtonal» era solo tener afinación.
+- `TipoDeEscala.esFragmento` y `ambito`: los fragmentos de menos de una octava (los tetracordos, los ajnas, los
+  çeşni, los hexacordos, también el occidental de Guido, que ahora tiene `clase == .fragmento`) y lo que abarcan
+  (`tetracordoDiatonico.ambito == .cuartaJusta`). Un fragmento no tiene modos: `modosRelativos` y `modosParalelos`
+  están vacíos.
 - Las corrientes de los estilos (`Corriente`), con el año en que empiezan: el bebop (1945) y el jazz modal (1959), el
   impresionismo (1890), el rock (1955), el heavy metal (1970) y el metal neoclásico (1984). Una escala las lleva en
   orden de importancia (`TipoDeEscala.corrientes`: el dórico, `[.modal]`; el frigio dominante, `[.heavyMetal,
@@ -120,12 +129,50 @@
   Verdi.
 - Tres obras más en las referencias: Slonimsky (1947), Slonimsky (1968) y Burke (2015). Lendvai (1971) cita también
   la disminuida semitono-tono y la aumentada semitono-tercera (sus modelos 1:2 y 1:3).
+- Los años de las épocas en una sola tabla: `Epoca.anios` (`Epoca.barroco.anios == 1600..<1750`), con `inicio`,
+  `fin`, `textoDeLosAnios` («1600–1750») y `nombreConAnios(en:)` («Barroco (1600–1750)»). `Epoca(anio:)` sale de
+  ella. Los de los períodos de cada tradición, igual: `PeriodoMusical.tabla(de:)`, `anios(en:)` y
+  `nombreConAnios(en:notacion:)`; `de(_:anio:)` y `periodos(de:)` salen de la tabla.
+- La época de los acordes y las progresiones del catálogo, con la regla de las escalas: `anioDeOrigen`,
+  `epocaDeOrigen`, `epocasDeUso` y `epocas` en `AcordeConNombre` y `ProgresionConNombre`. La de origen es la de la
+  obra que los documenta (`documentada:`, un parámetro nuevo de sus `init`, que va también entre sus referencias) o,
+  si no la tienen, la más antigua de sus estilos: el acorde de Tristán es del Romanticismo por Wagner (1859); el
+  monte, la fonte y el ponte, del Clasicismo por Riepel (1755); la folía, la romanesca y los passamezzi, del
+  Renacimiento por Ortiz (1553). Siete obras más en las referencias: las partituras de Wagner (1859), Schönberg
+  (1909), Strauss (1909) y Stravinski (1913 y 1930), que documentan los acordes de Tristán, de «Farben», de Elektra,
+  de los augures y de la Sinfonía de los salmos, y los tratados de Ortiz (1553) y Riepel (1755). El místico y el de
+  Petrushka citan ya sus partituras (Skriabin, 1910; Stravinski, 1911). `Epoca` pasa a `Teoria/Catalogo/`.
+- En la consola, el origen de una escala: `escala` y su `--json` dan la época (con el año, si se sabe), las épocas de
+  uso, el período de su tradición, los lugares, los estilos (con sus corrientes) y las escuelas. `escalas --epoca
+  barroco` (`--era baroque`; `tonal`, las tres de la época tonal) deja las de una época, de origen o de uso;
+  `--escuela carnatica` (`--school carnatic`), las de una escuela, y `--agrupar epoca`, las agrupa por la de origen
+  («Barroco · 1600–1750»). El JSON del catálogo lleva el año, la época, las de uso, el período, los estilos, las
+  corrientes y las escuelas. `acordes --epoca` y `progresiones --epoca` filtran igual, y su JSON lleva el año y las
+  épocas.
 
 ### Cambios
 
 - «Tcherepnin» y «de Tcherepnin» son ahora la escala `tcherepnin`, no un alias del modo 3 de Messiaen, que tiene sus
   mismas notas desde otro grado.
 - `TipoDeEscala.enigmatica` ya no es `==` a un tipo con solo sus intervalos ascendentes, porque ahora baja distinto.
+- `Docs/HUECOS_DEL_CATALOGO.md`, al día, con las escalas que no tienen época; `comprobar_catalogo.py` comprueba sus
+  cifras con las del catálogo. Toda occidental de un estilo con épocas tiene la suya (`EpocaTests`).
+- Ningún alias ni variante de una escala es el nombre de otra, en ningún idioma, también en las de otras tradiciones
+  (`cadaAliasDeLasTradicionalesSeLeeComoSuEscala`). Por eso Kalyāṇ ya no tiene el alias «Yaman» (es su rāga, con
+  ficha propia), el dromos Hitzáz pierde la variante «Hijaz» (se leía Ḥijāz) y Niavént la variante «Nihavent», que
+  ahora lleva a Nahāwand; en ruso, Ḥusaynī se llama «Хусайни» y no «Хусейни», que era Houseïní.
+- Fuera las variantes que solo cambian ♭ por b o un guion por un espacio («dórico b5», «Miyako bushi»): las da la
+  búsqueda.
+- En inglés, los nombres llevan ♯ y ♭ como los demás idiomas («dorian ♯4», «altered ♭♭3»; «dorian #4» se sigue
+  leyendo), y los modos van en minúscula también en «dorian ♭2 ♯4», «ionian no 4», «lydian pentatonic»…, como el
+  resto; «Spanish phrygian», con mayúscula.
+- «Prometeo napolitana», concertado con «escala», se lee como el Prometeo napolitano (y lo mismo en catalán,
+  gallego, portugués, italiano y francés).
+
+### Obsoleto
+
+- `Subtradicion` y `TipoDeEscala.subtradiciones`: juntaban el estilo, la escuela y la región, que ya tienen su tipo.
+  Se usan `estilos`, `escuelas` y `lugaresDeOrigen` (la región es un `Lugar`). Se van en la 0.6.0.
 
 ### Rendimiento
 

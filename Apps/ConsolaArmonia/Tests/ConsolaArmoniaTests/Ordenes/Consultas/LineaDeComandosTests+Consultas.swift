@@ -192,6 +192,84 @@ extension LineaDeComandosTests {
         #expect(resultado("escalas", "--agrupar", "x").error.contains("continente"))
     }
 
+    /// `escalas --epoca`: las de una época, de origen o de uso, por su clave en español o en inglés o por su nombre;
+    /// `tonal`, las tres de la época tonal. `--escuela`, las de una escuela, y `--agrupar epoca`, por la de origen.
+    /// `escalas --afinacion microtonal`, `--tuning just`: por el carácter de su afinación. `escala` lo dice.
+    @Test func lasAfinaciones() {
+        let microtonales = salida("escalas --afinacion microtonal")
+        #expect(microtonales.contains("  Bayātī: "), Comment(rawValue: String(microtonales.prefix(300))))
+        #expect(!microtonales.contains("  Kalyāṇ: ") && !microtonales.contains("  mayor: "))
+        #expect(salida("scales --tuning just").contains("  Kalyāṇ: "))
+        #expect(salida("escalas --afinacion partes-iguales").contains("  Sléndro: "))
+        #expect(salida("escala Re Bayātī").contains("  Afinación: microtonal"))
+        #expect(salida("escala Do Sléndro").contains("  Afinación: octava en 5 partes iguales"))
+        #expect(!salida("escala Do mayor").contains("Afinación"))
+    }
+
+    /// `escalas --fragmentos`: los tetracordos, los ajnas, los hexacordos; `--sin-fragmentos`, las demás. `escala`
+    /// dice lo que abarca un fragmento, y no le da modos.
+    @Test func losFragmentos() {
+        let fragmentos = salida("escalas --fragmentos")
+        #expect(fragmentos.contains("  hexacordo: "), Comment(rawValue: String(fragmentos.prefix(300))))
+        #expect(fragmentos.contains("  tetracordo diatónico: "))
+        #expect(!fragmentos.contains("  mayor: ") && !fragmentos.contains("  Bayātī: "))
+        #expect(salida("scales --fragments") == salida("escalas --fragmentos"))
+        let sinFragmentos = salida("escalas --sin-fragmentos")
+        #expect(sinFragmentos.contains("  mayor: ") && !sinFragmentos.contains("  hexacordo: "))
+        let hexacordo = salida("escala Do hexacordo --modos")
+        #expect(hexacordo.contains("  Fragmento: 6ª mayor"), Comment(rawValue: hexacordo))
+        #expect(!hexacordo.contains("Modos con las mismas notas"))
+    }
+
+    @Test func escalasPorEpocaYEscuela() {
+        let barrocas = salida("escalas --epoca barroco")
+        #expect(barrocas.contains("  dórico: "), Comment(rawValue: String(barrocas.prefix(300))))
+        #expect(barrocas.contains("  Kanakāṅgī: "))
+        #expect(!barrocas.contains("  alterada: "))
+        #expect(salida("escalas --era baroque") == barrocas)
+        #expect(salida("escalas --epoca Barroco") == barrocas)
+        #expect(salida("escalas --epoca tonal").contains("  menor húngara: "))
+        #expect(salida("escalas --epoca siglo-xx --uso jazz").contains("  alterada: "))
+        #expect(resultado("escalas", "--epoca", "barocco").error.contains("«barroco»"))
+        #expect(resultado("escalas", "--epoca").codigo == 2)
+        let carnaticas = salida("escalas --escuela carnatica")
+        #expect(carnaticas.hasPrefix("India · mēḷa (72)\n"), Comment(rawValue: String(carnaticas.prefix(200))))
+        #expect(!carnaticas.contains("habituales"))
+        #expect(salida("escalas --school carnatic") == carnaticas)
+        #expect(salida("escalas --escuela gagaku").hasPrefix("Japón · "))
+        #expect(resultado("escalas", "--escuela", "carnatik").error.contains("«carnatic»"))
+        let porEpoca = salida("escalas --agrupar epoca --uso jazz")
+        #expect(porEpoca.hasPrefix("Edad Media · 500–1400 ("), Comment(rawValue: String(porEpoca.prefix(200))))
+        #expect(porEpoca.contains("\n\nsiglo XX · 1900–2000 ("))
+        #expect(salida("escalas --agrupar epoca").contains("\n\nsin época ("))
+        #expect(salida("scales --group-by era --ingles --use jazz").hasPrefix("Middle Ages · 500–1400 ("))
+    }
+
+    /// `acordes --epoca` y `progresiones --epoca`: los de una época, de origen o de uso; en JSON, su año y sus épocas.
+    @Test func acordesYProgresionesPorEpoca() throws {
+        let romanticos = salida("acordes --epoca romanticismo")
+        #expect(romanticos.contains("acorde de Tristán: "), Comment(rawValue: romanticos))
+        #expect(!romanticos.contains("acorde de Petrushka"))
+        #expect(salida("chords --era romanticism") == romanticos)
+        let renacentistas = salida("progresiones --epoca renacimiento")
+        #expect(renacentistas.hasPrefix("romanesca: "), Comment(rawValue: renacentistas))
+        #expect(renacentistas.contains("passamezzo antico: ") && !renacentistas.contains("ii–V–I"))
+        #expect(salida("progresiones --epoca siglo-xx").contains("ii–V–I: "))
+        #expect(resultado("progresiones", "--epoca", "x").codigo != 0)
+    }
+
+    /// `escala`: la época, los lugares, los estilos y, en las de otras tradiciones, el período y la escuela.
+    @Test func elOrigenDeUnaEscala() {
+        let hungara = salida("escala La menor húngara")
+        #expect(hungara.contains("\n  Época: Romanticismo (1859)\n"), Comment(rawValue: hungara))
+        #expect(hungara.contains("\n  Estilos: folclore\n"))
+        let dorico = salida("escala Re dórico")
+        #expect(dorico.contains("\n  Épocas de uso: Barroco · Clasicismo"), Comment(rawValue: dorico))
+        let rast = salida("escala Do Rast makamı")
+        #expect(rast.contains("\n  Período: período de Cantemir\n"), Comment(rawValue: rast))
+        #expect(salida("scale A hungarian minor --ingles").contains("\n  Era: Romantic period (1859)\n"))
+    }
+
     /// `escalas --notas 5`: solo las de cinco notas, de las habituales y de las otras tradiciones.
     @Test func escalasPorNumeroDeNotas() {
         let pentatonicas = salida("escalas --notas 5")

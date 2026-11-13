@@ -92,12 +92,16 @@ extension Estilo {
 package struct FichaDelCatalogo: Sendable {
     /// En qué estilos se usa, de más a menos importante: el primero es su uso principal.
     package let estilos: [Estilo]
-    /// Dónde se lee.
+    /// Dónde se lee, con la obra que lo documenta (`documentada`) la primera.
     package let referencias: [Referencia]
+    /// La obra más antigua que lo da, con su año: la partitura de «Tristan und Isolde» (1859) en el acorde de
+    /// Tristán. De ahí sale su época de origen.
+    package let documentada: Referencia?
 
-    package init(estilos: [Estilo] = [], referencias: [Referencia] = []) {
+    package init(estilos: [Estilo] = [], referencias: [Referencia] = [], documentada: Referencia? = nil) {
         self.estilos = Estilo.sinRepetir(estilos)
-        self.referencias = referencias
+        self.referencias = Referencia.unicas([documentada].compactMap { $0 } + referencias)
+        self.documentada = documentada
     }
 }
 

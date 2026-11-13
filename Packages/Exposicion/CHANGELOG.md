@@ -4,6 +4,20 @@
 
 ### Lo nuevo
 
+- `PresentacionDeEstudioDeEscala.afinacion(de:en:)` y `EscalaPresentada.afinacion`: el carácter de la afinación
+  escrito («microtonal», «octava en 5 partes iguales»), con su fila «Afinación» en lo que se mide. En la consola,
+  `armonia escala` lo dice, y `escalas --afinacion microtonal` (o `temperada`, `justa`, `partes-iguales`; `--tuning`
+  en inglés) filtra, con `afinacion` y `partesIguales` en el JSON del catálogo.
+- `EscalaPresentada.ambito` («4ª justa») y la fila «Fragmento» en lo que se mide de una escala, en la hoja de
+  estudio y en la app, si es un fragmento de menos de una octava. En la consola, `armonia escala` lo dice, su JSON
+  lleva `ambito`, y `escalas --fragmentos` / `--sin-fragmentos` los dejan o los quitan (con `ambito` en semitonos en el
+  JSON del catálogo).
+- `OrigenDeEscalaPresentado`: de cuándo y de dónde es una escala, escrito (su año, su época, las de uso, el período
+  de su tradición, sus lugares, sus estilos con sus corrientes y sus escuelas), con `datos(en:)` para dibujarlo.
+  `EscalaPresentada.origen` lo lleva, y la hoja de estudio en HTML, en una sección «Origen» con las estadísticas. Sus
+  rótulos, en `TextosDeApps` (`origen`, `epocaDeOrigen`, `epocasDeUso`, `periodo`, `periodosDeUso`,
+  `lugaresDeOrigen`, `lugaresDeUso`, `estilos`, `escuelas`), en los trece idiomas.
+
 - `Escucha.ritmo(_:vueltas:tempo:)`: un ritmo del catálogo, con los golpes fuertes graves y los débiles agudos, en su
   pulso. `TextosDeApps` tiene los textos de la pestaña «Catálogo» de Ars Harmonica (`catalogo`, `fuentes`,
   `verEnAnalisis`, `nombrePropio`…) en los trece idiomas.

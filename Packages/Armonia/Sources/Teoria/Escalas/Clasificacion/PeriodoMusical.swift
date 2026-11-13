@@ -13,150 +13,133 @@ import Elementos
 ///     TipoDeEscala.melakarta(29)?.periodo    // .mela (Veṅkaṭamakhin, 1660)
 ///     TipoDeEscala.rastMakami.periodo        // .cantemir (hacia 1700)
 public enum PeriodoMusical: String, Sendable, Codable, CaseIterable {
-    // India
-    /// Antes de 500 a. C.: los Vedas y el canto del Sāmaveda.
+    // India. Los años de cada período, en todos, están en `tabla(de:)`.
+    /// Los Vedas y el canto del Sāmaveda.
     case vedico
-    /// De 500 a. C. a 1200: el Nāṭyaśāstra, sus grāma y sus mūrchanā.
+    /// El Nāṭyaśāstra, sus grāma y sus mūrchanā.
     case natyasastra
-    /// De 1200 a 1660: el Saṅgītaratnākara de Śārṅgadeva y los tratados que lo siguen.
+    /// El Saṅgītaratnākara de Śārṅgadeva y los tratados que lo siguen.
     case sangitaratnakara
-    /// De 1660 a 1900: los 72 mēḷa de Veṅkaṭamakhin y la música carnática de la Trinidad.
+    /// Los 72 mēḷa de Veṅkaṭamakhin y la música carnática de la Trinidad.
     case mela
-    /// Desde 1900: los thāṭ de Bhātkhaṇḍe y la teoría india de hoy.
+    /// Los thāṭ de Bhātkhaṇḍe y la teoría india de hoy.
     case bhatkhande
 
     // Mundo árabe, Persia, Turquía y Azerbaiyán
-    /// De 750 a 1250: al-Kindī, al-Fārābī y la teoría de la corte de Bagdad.
+    /// Al-Kindī, al-Fārābī y la teoría de la corte de Bagdad.
     case abasi
-    /// De 1250 a 1500: Ṣafī al-Dīn y la escuela sistematista, con sus diecisiete notas.
+    /// Ṣafī al-Dīn y la escuela sistematista, con sus diecisiete notas.
     case sistematista
-    /// De 1500 a 1932 en el mundo árabe (y hasta 1736 en Persia, 1900 en Azerbaiyán y 1650 en Turquía): los imperios
-    /// otomano y safávida.
+    /// Los imperios otomano y safávida; acaba en otro año en cada tradición.
     case otomanoSafavi
-    /// De 1736 a 1925 en Persia: la corte qayar, donde Mirzā ʿAbdollāh fijó el radif y sus dastgāh.
+    /// En Persia, la corte qayar, donde Mirzā ʿAbdollāh fijó el radif y sus dastgāh.
     case qayar
-    /// Desde 1932: el Congreso de Música Árabe de El Cairo y la teoría árabe de hoy.
+    /// En el mundo árabe, el Congreso de Música Árabe de El Cairo y la teoría árabe de hoy.
     case congresoDelCairo
-    /// De 1650 a 1789 en Turquía: Cantemir y su notación por letras.
+    /// En Turquía, Cantemir y su notación por letras.
     case cantemir
-    /// De 1789 a 1910 en Turquía: Selim III y los makamlar nuevos de su corte (Hicazkâr, Suzinâk, Ferahfezâ).
+    /// En Turquía, Selim III y los makamlar nuevos de su corte (Hicazkâr, Suzinâk, Ferahfezâ).
     case selimIII
-    /// Desde 1910 en Turquía: la teoría de Arel, Ezgi y Uzdilek, en 53 comas.
+    /// En Turquía, la teoría de Arel, Ezgi y Uzdilek, en 53 comas.
     case arelEzgiUzdilek
 
     // China
-    /// Hasta 221 a. C.: el Guanzi y el Lüshi chunqiu.
+    /// El Guanzi y el Lüshi chunqiu.
     case zhou
-    /// De 221 a. C. a 220.
+    /// Las dinastías Qin y Han.
     case qinHan
-    /// De 220 a 618.
+    /// Las Seis Dinastías.
     case seisDinastias
-    /// De 618 a 960.
+    /// La dinastía Tang.
     case tang
-    /// De 960 a 1271.
+    /// La dinastía Song.
     case song
-    /// De 1271 a 1368.
+    /// La dinastía Yuan.
     case yuan
-    /// De 1368 a 1644: el temperamento igual de Zhu Zaiyu.
+    /// La dinastía Ming: el temperamento igual de Zhu Zaiyu.
     case ming
-    /// De 1644 a 1912.
+    /// La dinastía Qing.
     case qing
 
     // Japón
-    /// De 710 a 1185: el gagaku de la corte.
+    /// Los períodos Nara y Heian: el gagaku de la corte.
     case naraHeian
-    /// De 1185 a 1603.
+    /// Los períodos Kamakura y Muromachi.
     case kamakuraMuromachi
-    /// De 1603 a 1868: el koto, el shamisen y la escala in.
+    /// El período Edo: el koto, el shamisen y la escala in.
     case edo
 
-    /// Desde 1925 en Persia, desde 1900 en Azerbaiyán, desde 1912 en China y desde 1868 en Japón.
+    /// La música de hoy en Persia, Azerbaiyán, China y Japón.
     case moderno
 
+    /// Los períodos de una tradición, en orden, con sus años: desde el primero y hasta el anterior al del siguiente.
+    /// Vacío si la tradición no los tiene. Es la única tabla de los límites: de ella salen `de(_:anio:)`,
+    /// `periodos(de:)` y `anios(en:)`. El primero empieza donde empieza la tradición (antes, `nil`) y el último acaba
+    /// en `Int.max`. Un mismo período puede tener otros años en otra tradición: el otomano y safávida acaba en 1650 en
+    /// Turquía, en 1736 en Persia, en 1900 en Azerbaiyán y en 1932 en el mundo árabe. El `switch` no tiene `default`:
+    /// una tradición nueva no compila sin decir los suyos.
+    ///
+    ///     PeriodoMusical.tabla(de: .japon).first   // (.naraHeian, 710..<1185)
+    public static func tabla(de tradicion: Tradicion) -> [(periodo: PeriodoMusical, anios: Range<Int>)] {
+        let tabla: [(PeriodoMusical, Int)]
+        switch tradicion {
+        case .india:
+            tabla = [
+                (.vedico, Int.min), (.natyasastra, -500), (.sangitaratnakara, 1200), (.mela, 1660), (.bhatkhande, 1900),
+            ]
+        case .mundoArabe:
+            tabla = [(.abasi, 750), (.sistematista, 1250), (.otomanoSafavi, 1500), (.congresoDelCairo, 1932)]
+        case .azerbaiyan:
+            tabla = [(.abasi, 750), (.sistematista, 1250), (.otomanoSafavi, 1500), (.moderno, 1900)]
+        case .persia:
+            tabla = [(.abasi, 750), (.sistematista, 1250), (.otomanoSafavi, 1500), (.qayar, 1736), (.moderno, 1925)]
+        case .turquia:
+            tabla = [
+                (.abasi, 750), (.sistematista, 1250), (.otomanoSafavi, 1500), (.cantemir, 1650), (.selimIII, 1789),
+                (.arelEzgiUzdilek, 1910),
+            ]
+        case .china:
+            tabla = [
+                (.zhou, -1046), (.qinHan, -221), (.seisDinastias, 220), (.tang, 618), (.song, 960), (.yuan, 1271),
+                (.ming, 1368), (.qing, 1644), (.moderno, 1912),
+            ]
+        case .japon:
+            tabla = [(.naraHeian, 710), (.kamakuraMuromachi, 1185), (.edo, 1603), (.moderno, 1868)]
+        case .occidental, .grecia, .greciaAntigua, .mesopotamia, .gregoriano, .renacimiento, .corea, .etiopia,
+            .indonesia, .klezmer, .andes, .bizancio, .africa, .sudesteAsiatico, .europa, .vietnam, .brasil:
+            tabla = []
+        }
+        return tabla.indices.map { i in
+            (tabla[i].0, tabla[i].1..<(i + 1 < tabla.count ? tabla[i + 1].1 : Int.max))
+        }
+    }
+
     /// El período de un año en una tradición, o `nil` si la tradición no tiene períodos propios o el año cae antes del
-    /// primero. Los de una tradición se suceden sin huecos.
+    /// primero. Los de una tradición se suceden sin huecos (`tabla(de:)`).
     ///
     ///     PeriodoMusical.de(.india, anio: 1660)     // .mela
     ///     PeriodoMusical.de(.china, anio: -239)     // .zhou
     public static func de(_ tradicion: Tradicion, anio: Int) -> PeriodoMusical? {
-        switch tradicion {
-        case .india:
-            switch anio {
-            case ..<(-500): .vedico
-            case ..<1200: .natyasastra
-            case ..<1660: .sangitaratnakara
-            case ..<1900: .mela
-            default: .bhatkhande
-            }
-        case .mundoArabe, .azerbaiyan:
-            switch anio {
-            case ..<750: nil
-            case ..<1250: .abasi
-            case ..<1500: .sistematista
-            case ..<1900: .otomanoSafavi
-            case ..<1932 where tradicion == .mundoArabe: .otomanoSafavi
-            default: tradicion == .mundoArabe ? .congresoDelCairo : .moderno
-            }
-        case .persia:
-            switch anio {
-            case ..<750: nil
-            case ..<1250: .abasi
-            case ..<1500: .sistematista
-            case ..<1736: .otomanoSafavi
-            case ..<1925: .qayar
-            default: .moderno
-            }
-        case .turquia:
-            switch anio {
-            case ..<750: nil
-            case ..<1250: .abasi
-            case ..<1500: .sistematista
-            case ..<1650: .otomanoSafavi
-            case ..<1789: .cantemir
-            case ..<1910: .selimIII
-            default: .arelEzgiUzdilek
-            }
-        case .china:
-            switch anio {
-            case ..<(-1046): nil
-            case ..<(-221): .zhou
-            case ..<220: .qinHan
-            case ..<618: .seisDinastias
-            case ..<960: .tang
-            case ..<1271: .song
-            case ..<1368: .yuan
-            case ..<1644: .ming
-            case ..<1912: .qing
-            default: .moderno
-            }
-        case .japon:
-            switch anio {
-            case ..<710: nil
-            case ..<1185: .naraHeian
-            case ..<1603: .kamakuraMuromachi
-            case ..<1868: .edo
-            default: .moderno
-            }
-        case .occidental, .grecia, .greciaAntigua, .mesopotamia, .gregoriano, .renacimiento, .corea, .etiopia,
-            .indonesia, .klezmer, .andes, .bizancio, .africa, .sudesteAsiatico, .europa, .vietnam, .brasil:
-            nil
-        }
+        tabla(de: tradicion).first { $0.anios.contains(anio) }?.periodo
     }
 
-    /// Los períodos de una tradición, en orden; vacío si no los tiene. Son los que da `de(_:anio:)` de un año a otro.
-    public static func periodos(de tradicion: Tradicion) -> [PeriodoMusical] {
-        switch tradicion {
-        case .india: [.vedico, .natyasastra, .sangitaratnakara, .mela, .bhatkhande]
-        case .mundoArabe: [.abasi, .sistematista, .otomanoSafavi, .congresoDelCairo]
-        case .azerbaiyan: [.abasi, .sistematista, .otomanoSafavi, .moderno]
-        case .persia: [.abasi, .sistematista, .otomanoSafavi, .qayar, .moderno]
-        case .turquia: [.abasi, .sistematista, .otomanoSafavi, .cantemir, .selimIII, .arelEzgiUzdilek]
-        case .china: [.zhou, .qinHan, .seisDinastias, .tang, .song, .yuan, .ming, .qing, .moderno]
-        case .japon: [.naraHeian, .kamakuraMuromachi, .edo, .moderno]
-        case .occidental, .grecia, .greciaAntigua, .mesopotamia, .gregoriano, .renacimiento, .corea, .etiopia,
-            .indonesia, .klezmer, .andes, .bizancio, .africa, .sudesteAsiatico, .europa, .vietnam, .brasil:
-            []
-        }
+    /// Los períodos de una tradición, en orden; vacío si no los tiene. Son los de `tabla(de:)`.
+    public static func periodos(de tradicion: Tradicion) -> [PeriodoMusical] { tabla(de: tradicion).map(\.periodo) }
+
+    /// Sus años en una tradición, o `nil` si no es de ella (`tabla(de:)`).
+    ///
+    ///     PeriodoMusical.cantemir.anios(en: .turquia)   // 1650..<1789
+    public func anios(en tradicion: Tradicion) -> Range<Int>? {
+        PeriodoMusical.tabla(de: tradicion).first { $0.periodo == self }?.anios
+    }
+
+    /// El nombre con sus años en una tradición, con «…» donde no tiene: «período de Cantemir (1650–1789)». Los años
+    /// antes de Cristo van con signo menos. Solo el nombre si no es de esa tradición.
+    public func nombreConAnios(en tradicion: Tradicion, notacion: Notacion) -> String {
+        guard let anios = anios(en: tradicion) else { return nombre(en: notacion) }
+        let inicio = anios.lowerBound == Int.min ? "…" : String(anios.lowerBound)
+        let fin = anios.upperBound == Int.max ? "…" : String(anios.upperBound)
+        return nombre(en: notacion) + " (" + inicio + "–" + fin + ")"
     }
 
     /// El nombre en el idioma de los textos de la notación: «período de los mēḷa», «mēḷa period». En español, también

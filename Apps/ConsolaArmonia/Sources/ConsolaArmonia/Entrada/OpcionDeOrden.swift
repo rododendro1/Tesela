@@ -46,8 +46,14 @@ extension OpcionDeOrden {
     static let fuente = valor("--fuente", "--source")
     /// `escalas --lugar espana`: las de un lugar, de origen o de uso.
     static let lugar = valor("--lugar", "--place")
-    /// `escalas --agrupar continente`: por el continente o el país de origen.
+    /// `escalas --agrupar continente`: por el continente, el país o la época de origen.
     static let agrupar = valor("--agrupar", "--group-by")
+    /// `escalas --epoca barroco`: las de una época, de origen o de uso.
+    static let epoca = valor("--epoca", "--era")
+    /// `escalas --escuela carnatica`: las de una escuela de otra tradición.
+    static let escuela = valor("--escuela", "--school")
+    /// `escalas --afinacion microtonal`: por el carácter de su afinación (`CaracterDeLaAfinacion`).
+    static let afinacion = valor("--afinacion", "--tuning")
     static let subindices = marca("--subindices", "--subscripts")
     static let cifras = marca("--cifras", "--digits")
     static let json = marca("--json")
@@ -158,6 +164,10 @@ extension OpcionDeOrden {
     static let propuestas = valor("--propuestas", "--proposals")
     static let quintas = marca("--quintas", "--fifths")
     static let regulares = marca("--regulares", "--maximally-even")
+    /// `escalas --fragmentos`: solo los fragmentos de menos de una octava (tetracordos, ajnas, hexacordos);
+    /// `--sin-fragmentos`, sin ellos.
+    static let fragmentos = marca("--fragmentos", "--fragments")
+    static let sinFragmentos = marca("--sin-fragmentos", "--no-fragments")
     /// `temperamentos … --reloj`: el temperamento en un reloj de cents, en SVG.
     static let reloj = marca("--reloj", "--clock")
     /// El reloj con cada nota del color de sus cents.

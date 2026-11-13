@@ -135,7 +135,7 @@ extension LineaDeComandos {
             sintaxis: TextosDeConsola.traduccion(\.sintaxisProgresiones),
             descripcion: TextosDeConsola.traduccion(\.descripcionProgresiones),
             ejemplo: ejemplo("armonia progresiones andaluza --en La", "armonia progressions andalusian --in A"),
-            opciones: [.en])
+            opciones: [.en, .epoca])
     ]
 
     static let ayudaDeRitmos: [EntradaDeAyuda] = [
@@ -190,8 +190,8 @@ extension LineaDeComandos {
             ejemplo: ejemplo("armonia acordes tristan --sobre Fa", "armonia chords tristan --over F"),
             notas: TextosDeConsola.traduccion(\.notasAcordesConNombre),
             opciones: [
-                .sobre, .notas, .uso, .porTerceras, .noPorTerceras, .sinSemitonos, .conIntervalo, .sinIntervalo, .orden,
-                .estadisticas, .resumen,
+                .sobre, .notas, .uso, .epoca, .porTerceras, .noPorTerceras, .sinSemitonos, .conIntervalo, .sinIntervalo,
+                .orden, .estadisticas, .resumen,
             ])
     ]
 
@@ -205,7 +205,8 @@ extension LineaDeComandos {
                 "armonia scales --tradition turkey"),
             notas: TextosDeConsola.traduccion(\.notasEscalas),
             opciones: [
-                .tradicion, .categoria, .fuente, .uso, .lugar, .agrupar, .notas, .orden, .sinSemitonos, .regulares,
+                .tradicion, .categoria, .fuente, .uso, .lugar, .agrupar, .epoca, .escuela, .notas, .orden,
+                .sinSemitonos, .regulares, .fragmentos, .sinFragmentos, .afinacion,
                 .conIntervalo,
                 .sinIntervalo,
                 .conPaso, .comparar, .vecinasDe, .parecidasA, .escaleraDe, .mapa,

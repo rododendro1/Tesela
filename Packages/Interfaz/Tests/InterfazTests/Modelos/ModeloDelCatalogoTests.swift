@@ -14,7 +14,7 @@ import Testing
         let perfecta = try #require(fichas.first)
         #expect(perfecta.nombre == "cadencia perfecta")
         #expect(perfecta.detalle == "V7 I · Sol7 Do")
-        #expect(perfecta.estilos == "clásica")
+        #expect(perfecta.estilos == "clásica · Barroco")
         #expect(perfecta.fuentes == ["Aldwell et al. 2011"])
         #expect(perfecta.destino == .analisis("Sol7 Do"))
         #expect(perfecta.sonido == .acordes(ProgresionConNombre.catalogo[0].acordes(sobre: .do)))
@@ -62,7 +62,7 @@ import Testing
         #expect(mistico.nombre == "acorde místico")
         // No nombra a su tipo: no lleva cifrado delante de las notas.
         #expect(mistico.detalle == "Do Fa♯ Si♭ Mi La Re")
-        #expect(mistico.estilos == "de compositor")
+        #expect(mistico.estilos == "de compositor · siglo XX (1910)")
         #expect(mistico.sonido.notas.map(\.midi) == [60, 66, 70, 76, 81, 86])
         let tipo = try #require(AcordeConNombre.mistico.tipo)
         #expect(mistico.destino == .acordes(Acorde(.do, tipo)))

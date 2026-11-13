@@ -99,12 +99,17 @@ extension Escala {
         return tipo.intervalos.map(\.semitonos).reduce(0, +) - 38
     }
 
-    /// Los siete modos de la mayor sobre la misma tónica, del más brillante al más oscuro: los modos paralelos.
-    public var modosParalelos: [Escala] { TipoDeEscala.modosPorBrillo.map { Escala(tonica, $0) } }
+    /// Los siete modos de la mayor sobre la misma tónica, del más brillante al más oscuro: los modos paralelos. Vacío
+    /// en un fragmento.
+    public var modosParalelos: [Escala] {
+        tipo.esFragmento ? [] : TipoDeEscala.modosPorBrillo.map { Escala(tonica, $0) }
+    }
 
     /// Las escalas con las mismas notas que empiezan en cada grado: los modos relativos (en Do mayor, Do jónico,
-    /// Re dórico, Mi frigio…).
-    public var modosRelativos: [Escala] { (1...tipo.intervalos.count).map { modo(grado: $0) } }
+    /// Re dórico, Mi frigio…). Un fragmento (`TipoDeEscala.esFragmento`) no tiene: no se repite a la octava.
+    public var modosRelativos: [Escala] {
+        tipo.esFragmento ? [] : (1...tipo.intervalos.count).map { modo(grado: $0) }
+    }
 }
 
 // MARK: - Comparar dos escalas

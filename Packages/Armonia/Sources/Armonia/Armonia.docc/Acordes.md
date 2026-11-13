@@ -87,7 +87,7 @@ pero ``TipoDeAcorde/acordesConNombre`` los encuentra:
 
 ```swift
 AcordeConNombre.tristan.notas(sobre: .fa)                      // [Fa, Si, Re♯, Sol♯]
-AcordeConNombre.tristan.referencias.map(\.cita)              // ["Rothgeb 1995"]
+AcordeConNombre.tristan.referencias.map(\.cita)              // ["Wagner 1859", "Rothgeb 1995"]
 AcordeConNombre.dominanteSeptima.referencias.map(\.cita)     // ["Aldwell et al. 2011", "Levine 1995"]
 AcordeConNombre.petrushka.tipo                                 // nil
 TipoDeAcorde.mayorNovenaAnadida.acordesConNombre               // [novena añadida, acorde mu]

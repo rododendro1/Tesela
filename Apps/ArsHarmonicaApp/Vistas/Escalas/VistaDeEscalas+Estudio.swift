@@ -2,8 +2,8 @@ import Armonia
 import Interfaz
 import SwiftUI
 
-// Las secciones de la pestaña de escalas para estudiarla: la secuencia, la digitación de piano, la simetría, las
-// estadísticas, el mapa de brillo, el reloj y la hoja de estudio.
+// Las secciones de la pestaña de escalas para estudiarla: la secuencia, la digitación de piano, la simetría, el
+// origen, las estadísticas, el mapa de brillo, el reloj y la hoja de estudio.
 
 /// La escala en una secuencia de estudio (por terceras, en grupos, en tríadas…), subiendo o bajando, con su
 /// pentagrama y «Escuchar»; se exporta con la barra.
@@ -81,6 +81,23 @@ struct SeccionDeLaSimetria: View {
                         BotonDeEscuchar(ciclo.sonido).labelStyle(.iconOnly)
                     }
                     .buttonStyle(.borderless)
+                }
+            }
+        }
+    }
+}
+
+/// De cuándo y de dónde es la escala: su época (con el año, si se sabe), las épocas de uso, el período de su
+/// tradición, sus lugares, sus estilos y sus escuelas. No sale si no se sabe nada (las propias).
+struct SeccionDelOrigen: View {
+    let escala: Escala
+    @Environment(\.notacion) private var notacion
+
+    var body: some View {
+        if let origen = OrigenDeEscalaPresentado(escala.tipo, en: notacion) {
+            Section(notacion.texto(\.origen)) {
+                ForEach(origen.datos(en: notacion), id: \.self) { dato in
+                    LabeledContent(dato.nombre, value: dato.valor)
                 }
             }
         }

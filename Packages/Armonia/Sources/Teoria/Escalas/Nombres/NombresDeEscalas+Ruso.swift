@@ -266,7 +266,7 @@ extension NombresDeEscalas {
         .tradicional(.bayati, "Баяти"),
         .tradicional(.saba, "Саба"),
         .tradicional(.suznak, "Сузнак"),
-        .tradicional(.husayni, "Хусейни"),
+        .tradicional(.husayni, "Хусайни"),
         .tradicional(.nayruz, "Найруз"),
         .tradicional(.sikah, "Сикях"),
         .tradicional(.huzam, "макам Хузам"),

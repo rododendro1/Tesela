@@ -24,9 +24,9 @@ public enum RegionDeEscala: String, Sendable, Codable, CaseIterable {
     /// Japón: la música de Okinawa (Ryūkyū).
     case ryukyu
 
-    /// La tradición en que se agrupa como subtradición (`Subtradicion.region`): Java en Indonesia, Hungría en la
+    /// La tradición de cuya música es la región: Java en Indonesia, Hungría en la
     /// europea. Es música, no geografía: dónde está la da `paises`. Una escala de otra tradición puede venir de ella
-    /// (la menor húngara, occidental, es de Hungría), pero no es una de sus subtradiciones. El `switch` no tiene
+    /// (la menor húngara, occidental, es de Hungría), pero no es de su tradición. El `switch` no tiene
     /// `default`: una región nueva no compila sin la suya.
     public var tradicion: Tradicion {
         switch self {

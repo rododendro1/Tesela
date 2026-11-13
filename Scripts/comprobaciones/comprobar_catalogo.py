@@ -18,6 +18,8 @@ Comprueba:
   5. en un idioma, ningún alias ni variante se escribe igual que el nombre, el alias o la variante de otra escala
      (el primero taparía al segundo al leer).
   6. toda lista de otra tradición en `Catalogo/` está en `listasTradicionales` (si no, sus escalas no se buscan ni tienen tradición).
+  7. las cifras del resumen de `Docs/HUECOS_DEL_CATALOGO.md` («443 escalas en 50 listas de tradición», «De las 118
+     escalas occidentales») son las del catálogo, para que el documento no se quede atrás.
 
 Y avisa, sin fallar, de las escalas de otras tradiciones que no tienen ninguna referencia bibliográfica: ni la suya
 (`referencias: […]`), ni la de su lista en `listasTradicionales`, ni la de su fuente o la de sus afinaciones
@@ -228,6 +230,22 @@ for lista in sorted(apuntadas - con_referencias):
            if not re.search(r"referencias:|fuente: \.(?!guido\b)\w+", declaracion(n))]
     if sin:
         avisos.append(f"`{lista}`: {len(sin)} sin referencias ({', '.join(sin[:6])}{'…' if len(sin) > 6 else ''})")
+
+# 7. Las cifras de Docs/HUECOS_DEL_CATALOGO.md.
+HUECOS = Path(__file__).resolve().parents[2] / "Docs" / "HUECOS_DEL_CATALOGO.md"
+if HUECOS.exists():
+    texto_huecos = HUECOS.read_text(encoding="utf-8")
+    cifras = re.search(r"(\d+) escalas en (\d+) listas de tradición", texto_huecos)
+    occidentales = re.search(r"De las (\d+) escalas occidentales", texto_huecos)
+    if not cifras or not occidentales:
+        errores.append(f"{HUECOS.name}: no encuentro las cifras del resumen («… escalas en … listas de tradición», "
+                       "«De las … escalas occidentales»)")
+    else:
+        for dicho, contado, que in [(int(cifras.group(1)), len(definidas), "escalas"),
+                                    (int(cifras.group(2)), len(listas) - 2, "listas de tradición"),
+                                    (int(occidentales.group(1)), len(todos), "escalas occidentales")]:
+            if dicho != contado:
+                errores.append(f"{HUECOS.name}: dice {dicho} {que} y el catálogo tiene {contado}")
 
 print(f"{len(definidas)} escalas declaradas, {len(todos)} en `occidentales`, {len(listas) - 2} listas de tradición")
 if avisos:

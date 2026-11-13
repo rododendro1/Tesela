@@ -228,6 +228,9 @@ struct TextosDeConsola: TextosTraducidos {
     let usoDesconocido: Plantilla  // {1} uso
     let lugarDesconocido: Plantilla  // {1} lugar
     let agrupacionDesconocida: Plantilla  // {1} agrupacion
+    let epocaDesconocida: Plantilla  // {1} epoca
+    let escuelaDesconocida: Plantilla  // {1} escuela
+    let afinacionDesconocida: Plantilla  // {1} afinación
     let ordenDeEscalasDesconocido: Plantilla  // {1} orden
     let ordenDeAcordesDesconocido: Plantilla  // {1} orden
     let intervaloDeEscalasDesconocido: Plantilla  // {1} intervalo
@@ -347,6 +350,7 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeEscalas: String
     let mensajeHabituales: String
     let mensajeSinLugar: String
+    let mensajeSinEpoca: String
     let mensajeNingunaEscala: String
     let mensajeNingunaProgresion: String
     let mensajeNingunRitmo: String

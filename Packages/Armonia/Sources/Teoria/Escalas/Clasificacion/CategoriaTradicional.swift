@@ -226,9 +226,25 @@ extension TipoDeEscala {
     /// ¿Es un rāga (indostánico, mēḷa o janya)?
     public var esRaga: Bool { categoria?.esRaga ?? false }
 
-    /// La clase de la escala (modo, escala madre, fragmento o afinación), la de su categoría; `nil` en las
-    /// occidentales y en las propias.
-    public var clase: ClaseDeEscala? { categoria?.clase }
+    /// La clase de la escala (modo, escala madre, fragmento o afinación): la de su categoría o, en una occidental, la
+    /// de su declaración (el hexacordo es un fragmento); `nil` en las demás occidentales y en las propias.
+    public var clase: ClaseDeEscala? { categoria?.clase ?? fichaDelCatalogo.clase }
+
+    /// ¿Es un fragmento de menos de una octava, que no se repite a la octava (un tetracordo, un jins, un hexacordo)?
+    /// Un fragmento no tiene modos, y lo que se mide de él como conjunto de clases de altura (`estadisticas`) lo
+    /// trata como si se repitiera.
+    ///
+    ///     TipoDeEscala.tetracordoDiatonico.esFragmento   // true
+    ///     TipoDeEscala.hexacordo.esFragmento             // true
+    ///     TipoDeEscala.mayor.esFragmento                 // false
+    public var esFragmento: Bool { clase == .fragmento }
+
+    /// Lo que abarca un fragmento, de su nota más grave a la más aguda: la 4ª justa de un tetracordo, la 5ª de un
+    /// pentacordo, la 6ª mayor de un hexacordo. `nil` en las escalas que llenan la octava.
+    ///
+    ///     TipoDeEscala.tetracordoDiatonico.ambito?.semitonos   // 5
+    ///     TipoDeEscala.hexacordo.ambito?.semitonos             // 9
+    public var ambito: Intervalo? { esFragmento ? intervalos.last : nil }
 
     /// Las escalas de otras tradiciones de una categoría: `tradicionales(categoria: .melakarta)` da los 72 mēḷa.
     public static func tradicionales(categoria: CategoriaTradicional) -> [TipoDeEscala] {

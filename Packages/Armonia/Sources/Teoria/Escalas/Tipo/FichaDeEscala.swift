@@ -77,14 +77,18 @@ package struct FichaDeEscala: Sendable {
     package let referencias: [Referencia]
     /// La obra más antigua que da la escala, con su año: de ahí sale su época de origen.
     package let documentada: Referencia?
+    /// La clase de una occidental que no es un modo (el hexacordo, un fragmento); `nil` en las demás. En las de otras
+    /// tradiciones la da su categoría.
+    package let clase: ClaseDeEscala?
 
     package init(
         tradicion: Tradicion? = nil, estilos: [Estilo] = [], corrientes: [Corriente] = [], escuelas: [Escuela] = [],
         regiones: [RegionDeEscala] = [],
         categoria: CategoriaTradicional? = nil,
         padre: IdentidadDeEscala? = nil, afinaciones: [Afinacion] = [], fuente: FuenteTeorica? = nil,
-        referencias: [Referencia] = [], documentada: Referencia? = nil
+        referencias: [Referencia] = [], documentada: Referencia? = nil, clase: ClaseDeEscala? = nil
     ) {
+        self.clase = clase
         self.referencias = referencias
         self.documentada = documentada
         self.estilos = Estilo.sinRepetir(estilos)

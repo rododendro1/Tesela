@@ -207,12 +207,13 @@ TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72
 CategoriaTradicional.escala.nombre(en: Notacion.compacta(.espanol).conTextos(en: .frances))   // "gamme"
 ```
 
-Las subtradiciones dicen de dónde es una escala dentro de su tradición, de tres maneras: `estilos`, el estilo o
-repertorio occidental en que se usa (la clásica o el jazz); `escuelas`, el de otra tradición (``Escuela``: la música
-carnática o la indostánica en la India, el gagaku en Japón), y `regiones`, la región, el país o el pueblo de donde viene (Java, Bali o Sunda en Indonesia, el de una
-escala de África, de Europa o del sudeste asiático, las Ryūkyū en Japón). En la India la escuela la da la categoría (un
-mēḷa es carnático, un thāṭ indostánico); en las demás se escriben en la declaración de la escala, y puede haber varias:
-el sléndro se toca en Java y en Bali. `subtradiciones` da las tres juntas, como `Subtradicion`.
+Dentro de su tradición, una escala dice en qué música se usa y de dónde viene. `estilos` es el estilo o repertorio
+occidental en que se usa (la clásica o el jazz) y `escuelas`, el de otra tradición (``Escuela``: la música carnática o
+la indostánica en la India, el gagaku en Japón). `regiones` es la región, el país o el pueblo de donde viene (Java,
+Bali o Sunda en Indonesia, el de una escala de África, de Europa o del sudeste asiático, las Ryūkyū en Japón): es un
+lugar, y está también en `lugaresDeOrigen`, como ``Lugar``, con los países y los continentes que la contienen. En la
+India la escuela la da la categoría (un mēḷa es carnático, un thāṭ indostánico); en las demás se escriben en la
+declaración de la escala, y puede haber varias: el sléndro se toca en Java y en Bali.
 
 ```swift
 TipoDeEscala.mohanam.escuelas == [.carnatica]      // true

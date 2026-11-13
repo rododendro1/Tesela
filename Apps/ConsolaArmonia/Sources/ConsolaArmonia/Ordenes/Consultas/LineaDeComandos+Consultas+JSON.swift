@@ -135,6 +135,12 @@ extension LineaDeComandos {
         let clases: [Int]
         let modo: String?
         let acordes: [EscalaPresentada.AcordeDelGrado]?
+        /// Lo que abarca, si es un fragmento: «6ª mayor».
+        let ambito: String?
+        /// El carácter de su afinación, si tiene una propia: «microtonal».
+        let afinacion: String?
+        /// De cuándo y de dónde es: su año, su época, su período, sus lugares, sus estilos y sus escuelas.
+        let origen: OrigenDeEscalaPresentado?
         /// `--acordes`.
         var acordesQueCaben: [Grado]?
         /// `--secuencia`.
@@ -185,6 +191,9 @@ extension LineaDeComandos {
             clases = datos.clases
             modo = datos.modo
             acordes = datos.acordes
+            origen = datos.origen
+            ambito = datos.ambito
+            afinacion = datos.afinacion
         }
     }
 
@@ -449,6 +458,26 @@ extension LineaDeComandos {
         let lugaresDeUso: [String]
         let paises: [String]
         let continentes: [String]
+        /// Las claves de su época de origen (`TipoDeEscala.epocaDeOrigen`) y de las de uso, su año de origen, la de
+        /// su período, las de sus estilos (de más a menos importante), sus corrientes y sus escuelas.
+        let anio: Int?
+        let epoca: String?
+        let epocasDeUso: [String]
+        let periodo: String?
+        let estilos: [String]
+        let corrientes: [String]
+        let escuelas: [String]
+        /// Si es un fragmento de menos de una octava, los semitonos que abarca (5 en un tetracordo); `nil` si no.
+        let ambito: Int?
+        /// La clave del carácter de su afinación («temperada», «justa», «microtonal», «partes-iguales») y, en las de
+        /// partes iguales, cuántas; `nil` si no tiene una propia.
+        let afinacion: String?
+        let partesIguales: Int?
+    }
+
+    /// Las partes iguales de una afinación `.partesIguales`; `nil` en las demás.
+    private static func partesIguales(_ caracter: CaracterDeLaAfinacion?) -> Int? {
+        if case .partesIguales(let partes) = caracter { partes } else { nil }
     }
 
     /// Un grupo de `escalas --json`: «Japón · escala» y sus escalas, en el orden de `--orden`.
@@ -477,7 +506,12 @@ extension LineaDeComandos {
                             lugaresDeOrigen: tipo.lugaresDeOrigen.map { $0.nombre(en: notacion) },
                             lugaresDeUso: tipo.lugaresDeUso.map { $0.nombre(en: notacion) },
                             paises: tipo.paisesDeOrigen.map(\.codigoISO),
-                            continentes: tipo.continentesDeOrigen.map(\.rawValue))
+                            continentes: tipo.continentesDeOrigen.map(\.rawValue), anio: tipo.anioDeOrigen,
+                            epoca: tipo.epocaDeOrigen?.rawValue, epocasDeUso: tipo.epocasDeUso.map(\.rawValue),
+                            periodo: tipo.periodo?.rawValue, estilos: tipo.estilos.map(\.rawValue),
+                            corrientes: tipo.corrientes.map(\.rawValue), escuelas: tipo.escuelas.map(\.rawValue),
+                            ambito: tipo.ambito?.semitonos, afinacion: tipo.caracterDeLaAfinacion?.clave,
+                            partesIguales: partesIguales(tipo.caracterDeLaAfinacion))
                     })
             }
         }

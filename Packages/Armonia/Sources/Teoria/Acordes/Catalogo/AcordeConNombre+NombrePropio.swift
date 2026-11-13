@@ -11,7 +11,7 @@ extension AcordeConNombre {
     public static let tristan = AcordeConNombre(
         nombre: "acorde de Tristán",
         intervalos: [.unisono, .cuartaAumentada, .sextaAumentada, .novenaAumentada],
-        estilos: [.clasica], referencias: [.rothgeb1995])
+        estilos: [.clasica], referencias: [.rothgeb1995], documentada: .wagner1859)
     /// El acorde místico o de Prometeo de Skriabin, por cuartas: Do Fa♯ Si♭ Mi La Re.
     public static let mistico = AcordeConNombre(
         nombre: "acorde místico",
@@ -20,7 +20,7 @@ extension AcordeConNombre {
             .novenaMayor + .octava,
         ],
         alias: ["acorde de Prometeo"],
-        estilos: [.deCompositor], referencias: [Referencia.samson1977.paginas("156–157")])
+        estilos: [.deCompositor], referencias: [Referencia.samson1977.paginas("156–157")], documentada: .skriabin1910)
     /// El acorde de Petrushka (Stravinski, 1911): Do mayor y Fa♯ mayor a la vez, a un trítono. No se lee por terceras.
     public static let petrushka = AcordeConNombre(
         nombre: "acorde de Petrushka",
@@ -28,12 +28,14 @@ extension AcordeConNombre {
             .unisono, .terceraMayor, .quintaJusta, .cuartaAumentada + .octava, .sextaAumentada + .octava,
             .unisonoAumentado + .octava + .octava,
         ],
-        estilos: [.deCompositor], referencias: [Referencia.taruskin1987.paginas("269")])
+        estilos: [.deCompositor], referencias: [Referencia.taruskin1987.paginas("269")],
+        documentada: .stravinski1911)
     /// El acorde de «Farben», la tercera de las Cinco piezas para orquesta, op. 16, de Schönberg (1909): Do Sol♯ Si Mi La.
     public static let farben = AcordeConNombre(
         nombre: "acorde de Farben",
         intervalos: [.unisono, .quintaAumentada, .septimaMayor, .terceraMayor + .octava, .sextaMayor + .octava],
-        estilos: [.deCompositor], referencias: [Referencia.burkhart1973.paginas("146")])
+        estilos: [.deCompositor], referencias: [Referencia.burkhart1973.paginas("146")],
+        documentada: .schoenberg1909)
     /// El acorde So What, el de Bill Evans en «So What» (Miles Davis, 1959): tres cuartas justas y una tercera mayor.
     /// Sobre Mi, Mi La Re Sol Si.
     public static let soWhat = AcordeConNombre(
@@ -61,7 +63,7 @@ extension AcordeConNombre {
     public static let elektra = AcordeConNombre(
         nombre: "acorde de Elektra",
         intervalos: [.unisono, .terceraMayor, .quintaJusta, .terceraMenor + .octava, .septimaMenor + .octava],
-        estilos: [.deCompositor])
+        estilos: [.deCompositor], documentada: .strauss1909)
     /// El acorde de los augures, de «La consagración de la primavera» (Stravinski, 1913): Mi♭7 sobre Fa♭ mayor,
     /// Fa♭ La♭ Do♭ Mi♭ Sol Si♭ Re♭.
     public static let augures = AcordeConNombre(
@@ -70,12 +72,14 @@ extension AcordeConNombre {
             .unisono, .terceraMayor, .quintaJusta, .septimaMayor, .novenaAumentada, .undecimaAumentada,
             .decimoterceraMayor,
         ],
-        alias: ["acorde de La consagración de la primavera"], estilos: [.deCompositor], referencias: [.taruskin1996])
+        alias: ["acorde de La consagración de la primavera"], estilos: [.deCompositor], referencias: [.taruskin1996],
+        documentada: .stravinski1913)
     /// El acorde con que empieza la «Sinfonía de los salmos» (Stravinski, 1930): Mi menor con la tercera doblada,
     /// Mi Sol Si Sol.
     public static let salmos = AcordeConNombre(
         nombre: "acorde de la Sinfonía de los salmos",
-        intervalos: [.unisono, .terceraMenor, .quintaJusta, .terceraMenor + .octava], estilos: [.deCompositor])
+        intervalos: [.unisono, .terceraMenor, .quintaJusta, .terceraMenor + .octava], estilos: [.deCompositor],
+        documentada: .stravinski1930)
     /// El acorde alfa de Lendvai, en Bartók: dos séptimas disminuidas superpuestas, Do Mi♭ Fa♯ La Do♯ Mi Sol Si♭. Está
     /// por comprobar en Lendvai (1971) qué notas da.
     public static let alfa = AcordeConNombre(

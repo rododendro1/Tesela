@@ -24,7 +24,7 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
-        ], variantes: ["Hijaz", "Hicaz", "Χιτζάζ"],
+        ], variantes: ["Hicaz", "Χιτζάζ"],
         categoria: .dromos, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 35, 44])])
     public static let hitzazkiar = TipoDeEscala(
         nombre: "Hitzazkiár",
@@ -57,7 +57,7 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ], variantes: ["Nihavent", "Νιαβέντ"],
+        ], variantes: ["Νιαβέντ"],
         categoria: .dromos,
         // Niavént, como Nev'eser: un pentacordo Nikriz y un tetracordo Hicaz.
         afinaciones: [.init(.comas53, pasos: [0, 9, 13, 26, 31, 36, 48])])

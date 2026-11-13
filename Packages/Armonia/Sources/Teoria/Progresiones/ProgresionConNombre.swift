@@ -30,17 +30,19 @@ public struct ProgresionConNombre: Sendable {
     package let ficha: FichaDelCatalogo
 
     /// Una progresión con nombre, del catálogo o fuera de él. No comprueba el cifrado: una que no se lee da sus
-    /// acordes vacíos. Para comprobarlo al crearla, `init(nombre:leyendo:modo:alias:variantes:estilos:referencias:)`.
+    /// acordes vacíos. Para comprobarlo al crearla,
+    /// `init(nombre:leyendo:modo:alias:variantes:estilos:referencias:documentada:)`. `documentada` es la obra más
+    /// antigua que la da, con su año, y va también entre sus referencias.
     public init(
         nombre: String, cifrado: String, modo: Tonalidad.Modo = .mayor, alias: [String] = [], variantes: [String] = [],
-        estilos: [Estilo] = [], referencias: [Referencia] = []
+        estilos: [Estilo] = [], referencias: [Referencia] = [], documentada: Referencia? = nil
     ) {
         self.nombre = nombre
         self.cifrado = cifrado
         self.modo = modo
         self.alias = alias
         self.variantes = variantes
-        self.ficha = FichaDelCatalogo(estilos: estilos, referencias: referencias)
+        self.ficha = FichaDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada)
     }
 
     /// Una progresión con nombre, comprobando que su cifrado se lee en su modo: lanza el error de
@@ -50,12 +52,13 @@ public struct ProgresionConNombre: Sendable {
     ///     try ProgresionConNombre(nombre: "mía", leyendo: "I X I")          // lanza un error
     public init(
         nombre: String, leyendo cifrado: String, modo: Tonalidad.Modo = .mayor, alias: [String] = [],
-        variantes: [String] = [], estilos: [Estilo] = [], referencias: [Referencia] = []
+        variantes: [String] = [], estilos: [Estilo] = [], referencias: [Referencia] = [],
+        documentada: Referencia? = nil
     ) throws {
         _ = try Tonalidad(.do, modo).acordes(romanos: cifrado)
         self.init(
             nombre: nombre, cifrado: cifrado, modo: modo, alias: alias, variantes: variantes, estilos: estilos,
-            referencias: referencias)
+            referencias: referencias, documentada: documentada)
     }
 
     // MARK: Propiedades
@@ -65,6 +68,10 @@ public struct ProgresionConNombre: Sendable {
 
     /// Dónde se lee la progresión.
     public var referencias: [Referencia] { ficha.referencias }
+
+    /// La obra más antigua que da la progresión, con su año: Riepel (1755) en el monte, la fonte y el ponte; Ortiz
+    /// (1553) en el passamezzo y la folía. `nil` si no se sabe.
+    public var documentada: Referencia? { ficha.documentada }
 
     /// Los grados, uno por acorde: ["ii7", "V7", "Imaj7"].
     public var grados: [String] { cifrado.split(separator: " ").map(String.init) }

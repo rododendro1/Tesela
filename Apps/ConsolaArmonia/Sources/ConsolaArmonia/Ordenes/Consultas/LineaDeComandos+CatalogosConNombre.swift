@@ -6,8 +6,9 @@ import Exposicion
 extension LineaDeComandos {
     // MARK: Progresiones
 
-    /// Las progresiones que pide `progresiones [<texto>] [--en <tonalidad>]` y la tónica sobre la que se realizan.
-    /// Con un nombre exacto, solo esa; si no, las que lo contienen (todas, sin texto).
+    /// Las progresiones que pide `progresiones [<texto>] [--en <tonalidad>] [--epoca <época>]` y la tónica sobre la que
+    /// se realizan. Con un nombre exacto, solo esa; si no, las que lo contienen (todas, sin texto); con `--epoca`,
+    /// solo las de esa época, de origen o de uso.
     static func progresionesPedidas(_ textos: [String], _ notacion: Notacion) throws -> (
         progresiones: [ProgresionConNombre], tonica: Nota
     ) {
@@ -19,11 +20,14 @@ extension LineaDeComandos {
                 try (try? Nota(leyendo: texto, enLaOrden: notacion))
                 ?? Tonalidad(leyendo: texto, enLaOrden: notacion).tonica
         }
+        // `--epoca barroco`: las de una época, de origen o de uso, como en `escalas`.
+        var epocas: [Epoca] = []
+        if let texto = try argumentos.valor(.epoca) { epocas = try self.epocas(leyendo: texto, notacion) }
         try argumentos.sinOpcionesDesconocidas()
         let texto = argumentos.unidos
         let halladas =
             ProgresionConNombre.buscar(nombre: texto).map { [$0] } ?? ProgresionConNombre.buscar(conteniendo: texto)
-        return (halladas, tonica)
+        return (halladas.filter { epocas.isEmpty || $0.epocas.contains(where: epocas.contains) }, tonica)
     }
 
     /// `progresiones [<texto>] [--en <tonalidad>]`: cada progresión del catálogo, o las que tienen el texto en el
@@ -47,6 +51,10 @@ extension LineaDeComandos {
         let modo: String
         let acordes: [String]
         let estilos: [String]
+        /// El año de la obra que la documenta, y las claves de su época de origen y de las de uso.
+        let anio: Int?
+        let epoca: String?
+        let epocasDeUso: [String]
     }
 
     /// `progresiones [<texto>] [--en <tonalidad>] --json`: las mismas progresiones, con su modo y sus estilos.
@@ -57,7 +65,8 @@ extension LineaDeComandos {
                 nombre: progresion.nombre(en: notacion), cifrado: progresion.cifrado,
                 modo: progresion.modo.nombre(en: notacion),
                 acordes: progresion.acordes(sobre: tonica).map { $0.cifrado(en: notacion) },
-                estilos: progresion.estilos.map { $0.nombre(en: notacion) })
+                estilos: progresion.estilos.map { $0.nombre(en: notacion) }, anio: progresion.anioDeOrigen,
+                epoca: progresion.epocaDeOrigen?.rawValue, epocasDeUso: progresion.epocasDeUso.map(\.rawValue))
         }
     }
 
@@ -74,15 +83,18 @@ extension LineaDeComandos {
         let resumen: Bool
     }
 
-    /// Los acordes que pide `acordes [<texto>] [--sobre <nota>] [--notas 4] [--uso jazz] [--por-terceras]
-    /// [--no-por-terceras] [--sin-semitonos] [--con-intervalo tritono] [--sin-intervalo 1] [--orden brillo]`. Con un
-    /// nombre exacto, solo ese; si no, los que lo contienen (todos, sin texto), con los filtros.
+    /// Los acordes que pide `acordes [<texto>] [--sobre <nota>] [--notas 4] [--uso jazz] [--epoca barroco]
+    /// [--por-terceras] [--no-por-terceras] [--sin-semitonos] [--con-intervalo tritono] [--sin-intervalo 1]
+    /// [--orden brillo]`. Con un nombre exacto, solo ese; si no, los que lo contienen (todos, sin texto), con los filtros.
     static func acordesPedidos(_ textos: [String], _ notacion: Notacion) throws -> PedidoDeAcordes {
         var argumentos = Argumentos(textos)
         var sobre = Nota.do
         if let texto = try argumentos.valorConPalabras(.sobre) { sobre = try Nota(leyendo: texto, enLaOrden: notacion) }
         var usos: [Estilo] = []
         if let texto = try argumentos.valor(.uso) { usos = try estilosDeUso(leyendo: texto, notacion) }
+        // `--epoca romanticismo`: los de una época, de origen o de uso.
+        var epocas: [Epoca] = []
+        if let texto = try argumentos.valor(.epoca) { epocas = try self.epocas(leyendo: texto, notacion) }
         // `--notas 4` o `--notas tétrada`: solo los de cuatro notas.
         var numeroDeNotas: Int?
         if let texto = try argumentos.valor(.notas, siFalta: .notasFueraDeRango) {
@@ -111,6 +123,7 @@ extension LineaDeComandos {
         let elegidos = hallados.filter { acorde in
             let medidas = acorde.estadisticas
             if !usos.isEmpty, !acorde.estilos.contains(where: usos.contains) { return false }
+            if !epocas.isEmpty, !acorde.epocas.contains(where: epocas.contains) { return false }
             if let numeroDeNotas, medidas.numeroDeNotas != numeroDeNotas { return false }
             if porTerceras && !medidas.porTerceras { return false }
             if noPorTerceras && medidas.porTerceras { return false }
@@ -219,6 +232,10 @@ extension LineaDeComandos {
         let cifrado: String?
         let notas: [String]
         let estilos: [String]
+        /// El año de la obra que lo documenta, y las claves de su época de origen y de las de uso.
+        let anio: Int?
+        let epoca: String?
+        let epocasDeUso: [String]
         /// Con `--estadisticas`: lo que se mide del acorde.
         let estadisticas: EstadisticasDeAcordePresentadas?
     }
@@ -232,7 +249,8 @@ extension LineaDeComandos {
             AcordeConNombreJSON(
                 nombre: acorde.nombre(en: notacion), cifrado: cifradoDelGenerico(acorde, sobre: pedido.sobre, notacion),
                 notas: acorde.notas(sobre: pedido.sobre).map { $0.nombre(en: notacion) },
-                estilos: acorde.estilos.map { $0.nombre(en: notacion) },
+                estilos: acorde.estilos.map { $0.nombre(en: notacion) }, anio: acorde.anioDeOrigen,
+                epoca: acorde.epocaDeOrigen?.rawValue, epocasDeUso: acorde.epocasDeUso.map(\.rawValue),
                 estadisticas: pedido.estadisticas
                     ? EstadisticasDeAcordePresentadas(acorde.estadisticas, en: notacion) : nil)
         }

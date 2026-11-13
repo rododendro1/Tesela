@@ -14,6 +14,39 @@ import Testing
         #expect(Epoca.antiguedad < .sigloXX)
     }
 
+    /// Los años de las épocas se suceden sin huecos ni solapes, de `Int.min` a `Int.max`, y `init(anio:)` sale de
+    /// ellos.
+    @Test func losAnios() {
+        let epocas = Epoca.allCases
+        #expect(epocas.first?.anios.lowerBound == Int.min && epocas.last?.anios.upperBound == Int.max)
+        for (una, siguiente) in zip(epocas, epocas.dropFirst()) {
+            #expect(una.anios.upperBound == siguiente.anios.lowerBound, "\(una)")
+            #expect(una.fin == siguiente.inicio)
+        }
+        for epoca in epocas {
+            if let inicio = epoca.inicio { #expect(Epoca(anio: inicio) == epoca) }
+            if let fin = epoca.fin { #expect(Epoca(anio: fin - 1) == epoca) }
+        }
+        #expect(Epoca.barroco.anios == 1600..<1750)
+        #expect(Epoca(anio: -380) == .antiguedad && Epoca(anio: 2026) == .sigloXXI)
+        #expect(Epoca.antiguedad.inicio == nil && Epoca.sigloXXI.fin == nil)
+        #expect(Epoca.barroco.nombreConAnios(en: .compacta(.espanol)) == "Barroco (1600–1750)")
+        #expect(Epoca.antiguedad.nombreConAnios(en: .compacta(.espanol)).hasSuffix("(…–500)"))
+        #expect(Epoca.sigloXXI.nombreConAnios(en: .compacta(.espanol)).hasSuffix("(2000–…)"))
+    }
+
+    /// Toda occidental de un estilo con épocas de uso (la clásica, el jazz, el blues, las de compositor, el pop y el
+    /// rock) tiene época de origen: las que no tienen son populares sin obra o sintéticas sin madre fechada, y son las
+    /// que lista `Docs/HUECOS_DEL_CATALOGO.md`.
+    @Test func lasOccidentalesConEstiloDeEpocaTienenEpoca() {
+        for tipo in TipoDeEscala.occidentales where tipo.estilos.contains(where: { !$0.epocasDeUso.isEmpty }) {
+            #expect(tipo.epocaDeOrigen != nil, Comment(rawValue: tipo.nombre))
+        }
+        let sinEpoca = TipoDeEscala.occidentales.filter { $0.epocaDeOrigen == nil }
+        #expect(sinEpoca.allSatisfy { $0.estilos.allSatisfy { $0.esPopular || $0 == .sintetica } })
+        #expect(sinEpoca.count == 14, "Si cambia, cambia también la tabla de Docs/HUECOS_DEL_CATALOGO.md")
+    }
+
     /// Cada época tiene nombre en los trece idiomas, distinto en cada uno de los cinco.
     @Test func nombres() {
         #expect(Epoca.romanticismo.nombre == "Romanticismo")

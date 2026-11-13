@@ -42,7 +42,8 @@ public struct ModeloDelCatalogo: Sendable {
         /// Lo que es: el cifrado romano y los acordes de una progresión, las notas de un acorde, el patrón de un
         /// ritmo.
         public let detalle: String
-        /// Los estilos o la familia, separados por « · », o vacío.
+        /// Los estilos o la familia y, en las progresiones y los acordes, la época de origen (con el año de su obra, si
+        /// lo tiene), separados por « · », o vacío: «clásica · Romanticismo (1859)».
         public let estilos: String
         /// Las obras de donde sale, ya citadas.
         public let fuentes: [String]
@@ -76,7 +77,8 @@ public struct ModeloDelCatalogo: Sendable {
         return Ficha(
             id: progresion.nombre, nombre: progresion.nombre(en: notacion),
             detalle: acordes.isEmpty ? progresion.cifrado : progresion.cifrado + " · " + cifrados,
-            estilos: Self.estilos(progresion.estilos, en: notacion), fuentes: progresion.referencias.map(\.cita),
+            estilos: Self.estilos(progresion.estilos, progresion.epocaDeOrigen, progresion.anioDeOrigen, en: notacion),
+            fuentes: progresion.referencias.map(\.cita),
             sonido: .acordes(acordes), destino: acordes.isEmpty ? nil : .analisis(cifrados))
     }
 
@@ -94,7 +96,8 @@ public struct ModeloDelCatalogo: Sendable {
         }
         return Ficha(
             id: acorde.nombre, nombre: acorde.nombre(en: notacion), detalle: detalle,
-            estilos: Self.estilos(acorde.estilos, en: notacion), fuentes: acorde.referencias.map(\.cita),
+            estilos: Self.estilos(acorde.estilos, acorde.epocaDeOrigen, acorde.anioDeOrigen, en: notacion),
+            fuentes: acorde.referencias.map(\.cita),
             sonido: sonido, destino: delTipo.map { .acordes($0) })
     }
 
@@ -107,7 +110,8 @@ public struct ModeloDelCatalogo: Sendable {
             sonido: .ritmo(ritmo), destino: nil)
     }
 
-    private static func estilos(_ estilos: [Estilo], en notacion: Notacion) -> String {
-        estilos.map { $0.nombre(en: notacion) }.joined(separator: " · ")
+    private static func estilos(_ estilos: [Estilo], _ epoca: Epoca?, _ anio: Int?, en notacion: Notacion) -> String {
+        let epoca = epoca.map { $0.nombre(en: notacion) + (anio.map { " (\($0))" } ?? "") }
+        return (estilos.map { $0.nombre(en: notacion) } + [epoca].compactMap { $0 }).joined(separator: " · ")
     }
 }

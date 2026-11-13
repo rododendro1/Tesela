@@ -56,6 +56,38 @@ import Testing
         #expect(PeriodoMusical.de(.bizancio, anio: 1832) == nil)
     }
 
+    /// La tabla de cada tradición va en orden, sin huecos, hasta `Int.max`, y de ella salen `de(_:anio:)`,
+    /// `periodos(de:)` y `anios(en:)`.
+    @Test func laTablaDeCadaTradicion() {
+        for tradicion in Tradicion.allCases {
+            let tabla = PeriodoMusical.tabla(de: tradicion)
+            #expect(tabla.map(\.periodo) == PeriodoMusical.periodos(de: tradicion))
+            guard let ultimo = tabla.last else { continue }
+            #expect(ultimo.anios.upperBound == Int.max, "\(tradicion)")
+            for (uno, siguiente) in zip(tabla, tabla.dropFirst()) {
+                #expect(uno.anios.upperBound == siguiente.anios.lowerBound, "\(tradicion)")
+            }
+            for fila in tabla {
+                #expect(fila.periodo.anios(en: tradicion) == fila.anios)
+                #expect(PeriodoMusical.de(tradicion, anio: fila.anios.lowerBound) == fila.periodo)
+                if fila.anios.lowerBound > Int.min {
+                    #expect(PeriodoMusical.de(tradicion, anio: fila.anios.lowerBound - 1) != fila.periodo)
+                }
+            }
+        }
+        #expect(PeriodoMusical.cantemir.anios(en: .turquia) == 1650..<1789)
+        #expect(PeriodoMusical.otomanoSafavi.anios(en: .persia) == 1500..<1736)
+        #expect(PeriodoMusical.otomanoSafavi.anios(en: .mundoArabe) == 1500..<1932)
+        #expect(PeriodoMusical.cantemir.anios(en: .india) == nil)
+        #expect(PeriodoMusical.de(.china, anio: -1047) == nil)
+        #expect(
+            PeriodoMusical.cantemir.nombreConAnios(en: .turquia, notacion: .compacta(.espanol))
+                == PeriodoMusical.cantemir.nombre + " (1650–1789)")
+        #expect(
+            PeriodoMusical.cantemir.nombreConAnios(en: .india, notacion: .compacta(.espanol))
+                == PeriodoMusical.cantemir.nombre)
+    }
+
     /// El período de una escala sale de su tradición y de su año.
     @Test func elPeriodoDeUnaEscala() {
         #expect(TipoDeEscala.melakarta(29)?.periodo == .mela)
