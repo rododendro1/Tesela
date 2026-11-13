@@ -245,9 +245,10 @@ Sources/
 │   │                      (hexatónico, octatónico, LR), ConduccionParsimoniosa (vecinos a un semitono,
 │   │                      conducción mínima)
 │   ├── Escalas/
-│   │   ├── Escala/        Escala (con NombreDeGrado, la búsqueda por notas y la ortografía) y lo que se hace con
-│   │   │                  ella: acordes, estudio, simetría, estadísticas, armonía modal, escalas propias y vecinas
-│   │   │                  (CalculosDeEscala: Myhill, Rothenberg, Carey, Krumhansl y Kessler…) y RelacionEntreEscalas
+│   │   ├── Escala/        Escala (con los hexacordos), NombreDeGrado y lo que se hace con una escala: la búsqueda
+│   │   │                  por notas, la ortografía, acordes, estudio, simetría, estadísticas, armonía modal, escalas
+│   │   │                  propias y vecinas (CalculosDeEscala: Myhill, Rothenberg, Carey, Krumhansl y Kessler…) y
+│   │   │                  RelacionEntreEscalas
 │   │   ├── Tipo/          TipoDeEscala (el tipo, las escalas básicas, el catálogo con la búsqueda por nombre y
 │   │   │                  `nombre(en:)`), DatosDeEscala (lo que el catálogo sabe de cada una), CardinalDeEscala,
 │   │   │                  Microtonos (SistemaDeAlturas, AfinacionPropia) y CaracterDeLaAfinacion

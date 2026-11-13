@@ -47,9 +47,12 @@ import Testing
         #expect(Escala("C Major Pentatonic").tipo == .pentatonicaMayor)
         #expect(Escala(.re, .dorico).nombre(en: .ascii(.ingles)) == "D dorian")
         #expect(Escala("Mib menor armónica").nombre(en: .compacta(.ingles)) == "E♭ harmonic minor")
+        // Una escala sin nombre en inglés se escribe con el suyo.
+        let propia = TipoDeEscala(nombre: "pentatónica mía", intervalos: [.unisono, .segundaMenor, .cuartaJusta])
+        #expect(Escala(.do, propia).modo(grado: 2).nombre(en: .ascii(.ingles)) == "Db pentatónica mía, modo 2")
+        // El modo de una occidental puede ser una escala de otra tradición.
         #expect(
-            Escala(.do, TipoDeEscala.pentatonicaMayor.modo(grado: 3)).nombre(en: .ascii(.ingles))
-                == "C pentatónica mayor, modo 3")
+            Escala(.do, TipoDeEscala.pentatonicaMayor.modo(grado: 3)).nombre(en: .ascii(.ingles)) == "C Hindolam")
         #expect(Escala(.do, TipoDeEscala.pentatonicaMayor.modo(grado: 2)).nombre(en: .ascii(.ingles)) == "C Egyptian")
         for tipo in TipoDeEscala.occidentales {
             let escala = Escala("F#", tipo)

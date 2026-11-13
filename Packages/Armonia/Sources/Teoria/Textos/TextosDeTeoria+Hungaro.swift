@@ -73,7 +73,7 @@ extension TextosDeTeoria {
         // TipoDeAcorde.swift
         acordeDesconocido: { vacio, latino, propio in vacio ? "dúr hármashangzat" : "\(propio) akkord" },
 
-        // Escala.swift
+        // NombreDeGrado.swift
         gradoTonica: "tonika",
         gradoSupertonica: "szupertonika",
         gradoMediante: "mediáns",

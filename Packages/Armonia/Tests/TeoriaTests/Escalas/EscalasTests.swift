@@ -340,3 +340,31 @@ import Testing
         #expect(Acorde.identificar(alturas: [Altura("Mi3"), Altura("Sol3"), Altura("Do4")]).first == Acorde("Do/Mi"))
     }
 }
+
+@Suite struct ContenidoYModosTests {
+    /// `==` compara lo que suena; `contenido` lo dice al juntar, e `identidad` separa las que se llaman distinto.
+    @Test func elContenidoJuntaLasQueSuenanIgual() {
+        #expect(TipoDeEscala.kafi.contenido == TipoDeEscala.dorico.contenido)
+        #expect(Set([TipoDeEscala.kafi, .dorico].map(\.contenido)).count == 1)
+        #expect(Set([TipoDeEscala.kafi, .dorico].map(\.identidad)).count == 2)
+        #expect(TipoDeEscala.rast.contenido != TipoDeEscala.mayor.contenido)
+    }
+
+    /// Un modo es la primera escala del catálogo que suena así, también de otra tradición.
+    @Test func losModosSeBuscanEnTodoElCatalogo() {
+        #expect(TipoDeEscala.mayor.modo(grado: 6) == .menorNatural)
+        #expect(TipoDeEscala.mayor.modo(grado: 6).esIdentico(a: .menorNatural))
+        #expect(TipoDeEscala.pentatonicaMayor.modo(grado: 3).clave == "hindolam")
+        #expect(TipoDeEscala.mayor.modo(grado: 1).esIdentico(a: .mayor))
+    }
+
+    /// El modo de una escala que sube y baja distinto rota la subida, y solo es una del catálogo si esta sube y baja
+    /// igual.
+    @Test func elModoDeUnaDireccionalNoEsUnaDireccional() {
+        for tipo in TipoDeEscala.catalogo where tipo.esDireccional {
+            for grado in 2...tipo.intervalos.count {
+                #expect(!tipo.modo(grado: grado).esDireccional)
+            }
+        }
+    }
+}

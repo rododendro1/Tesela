@@ -76,7 +76,7 @@ struct TextosDeTeoria: TextosTraducidos {
     // MARK: TipoDeAcorde.swift
     let acordeDesconocido: @Sendable (Bool, String, String) -> String
 
-    // MARK: Escala.swift
+    // MARK: NombreDeGrado.swift
     let gradoTonica: String
     let gradoSupertonica: String
     let gradoMediante: String
