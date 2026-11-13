@@ -3,7 +3,8 @@ import Teoria
 
 // La partitura en SVG (`Partitura.svg(opciones:)`): con un pentagrama, el de su voz (o sus dos voces), con lo que se
 // anota en ella; con varios, un sistema, sin anotaciones. Es la única puerta pública al pentagrama con ritmo: los
-// dibujos de cada caso (`Voz.svgPentagrama(titulo:acordes:grados:bajoCifrado:dedos:tablatura:opciones:)`, `svgPentagrama(junto:)`, `Voz.svgSistema(_:titulo:claves:llave:opciones:)`) son internos.
+// dibujos de cada caso (`Voz.svgPentagrama(titulo:acordes:grados:bajoCifrado:dedos:tablatura:opciones:)`,
+// `svgPentagrama(junto:)`, `Voz.svgSistema(_:titulo:claves:llave:opciones:)`) son internos.
 
 extension Partitura {
     /// La partitura en SVG, en su notación (``notacion``) y con su armadura si las opciones no fijan otras, y con el

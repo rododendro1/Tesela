@@ -54,7 +54,8 @@ extension TipoDeEscala {
             .harmoniaDoria,
             [
                 .init(
-                    [.valiente, .majestuoso, .severo], testigo: .heraclides, pasaje: "XIV 624–625", referencia: heraclides),
+                    [.valiente, .majestuoso, .severo], testigo: .heraclides, pasaje: "XIV 624–625",
+                    referencia: heraclides),
                 .init([.grave, .sereno], testigo: .aristoteles, pasaje: "1340b, 1342b", referencia: aristoteles),
             ]
         ),

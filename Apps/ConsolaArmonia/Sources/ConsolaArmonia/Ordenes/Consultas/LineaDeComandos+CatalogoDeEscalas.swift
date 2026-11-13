@@ -22,8 +22,8 @@ extension LineaDeComandos {
     ]
 
     /// Cómo se escribe cada estilo occidental en `--estilo`, en español y en inglés (se aceptan los dos en cualquier
-    /// idioma): `--estilo de-compositor`, `--style composer`. `popular` da los tres populares, y `siglo-xx`, el nombre de
-    /// antes, las de compositor.
+    /// idioma): `--estilo de-compositor`, `--style composer`. `popular` da los tres populares, y `siglo-xx`, el nombre
+    /// de antes, las de compositor.
     static let nombresDeLosEstilos: [(usos: [Estilo], espanol: String, ingles: String)] = [
         ([.clasica], "clasica", "classical"), ([.jazz], "jazz", "jazz"), ([.blues], "blues", "blues"),
         ([.deCompositor], "de-compositor", "composer"), ([.folclore], "folclore", "folk"),
@@ -40,8 +40,8 @@ extension LineaDeComandos {
         (.metalNeoclasico, "metal-neoclasico", "neoclassical-metal"),
     ]
 
-    /// La corriente de `escalas --estilo modal`, por su clave, en español o en inglés, o por su nombre en español o en el
-    /// idioma de la notación («jazz modal»); `nil` si no es ninguna.
+    /// La corriente de `escalas --estilo modal`, por su clave, en español o en inglés, o por su nombre en español o en
+    /// el idioma de la notación («jazz modal»); `nil` si no es ninguna.
     static func corriente(leyendo texto: String, _ notacion: Notacion) -> Corriente? {
         let clave = claveDeBusqueda(texto)
         if let porClave = nombresDeLasCorrientes.first(where: {
