@@ -379,7 +379,7 @@ extension Notacion {
 
 // MARK: - Idiomas
 //
-// Las letras, las alteraciones y los nombres de nota en las doce lenguas de `Notacion`. Siguen el idioma
+// Las letras, las alteraciones y los nombres de nota en las trece lenguas de `Notacion`. Siguen el idioma
 // de las notas (`Notacion.idiomaDeLasNotas`), no el de los textos. Los intervalos, en `Intervalo.swift`.
 
 // MARK: - NotaNatural

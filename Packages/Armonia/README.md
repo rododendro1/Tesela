@@ -320,7 +320,7 @@ Sources/
 
 Los nombres que dependen del idioma están en el fichero de cada tipo, al final, tras `// MARK: - Idiomas`
 (`grep -rl 'MARK: - Idiomas' Sources` los lista): en el núcleo, `Nota.swift` (letras, alteraciones
-y nombres de nota en las doce lenguas de las notaciones), `Intervalo.swift` (calidades de
+y nombres de nota en las trece lenguas de las notaciones), `Intervalo.swift` (calidades de
 intervalo, intervalos y consonancias) y `ErrorDeLectura.swift` (los mensajes de error generales y los de las
 notas); en las demás capas, los errores de lectura de cada una (`ErrorDeLecturaDeTeoria.swift`,
 `ErrorDeLecturaDePartitura.swift`), los modos y las tonalidades, los papeles en el acorde, las calidades de tríada, los grados, las claves,

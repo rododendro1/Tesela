@@ -28,11 +28,12 @@ Cada presentación da tres cosas a la vez:
 - **Lo que se exporta**, una lista de ``FicheroParaExportar`` (MusicXML, MEI, MIDI o SVG), con su nombre de fichero.
 
 Los nombres siguen dos reglas. Las funciones están en un espacio de nombres `PresentacionDeX` (``PresentacionDeCoral``,
-``PresentacionDeAnalisis``…) y lo que devuelven se llama `XPresentado` o `XPresentada`. La notación se pasa con `en:`
-(`PentagramaPresentado(escala, en: notacion)`), salvo cuando `en:` ya es la tonalidad, el mástil o la red: entonces va
-con `notacion:` (`PresentacionDeAnalisis.analizar(texto, en: tonalidad, notacion: notacion)`).
+``PresentacionDeAnalisis``…) y lo que devuelven se llama `XPresentado` o `XPresentada`; cada fichero se llama como el
+tipo que guarda. La notación se pasa con `en:` (`PentagramaPresentado(escala, en: notacion)`), salvo cuando `en:` ya es
+la tonalidad, el mástil o la red: entonces va con `notacion:` (`PresentacionDeAnalisis.analizar(texto, en: tonalidad,
+notacion: notacion)`).
 
-Los textos de la interfaz (pestañas, etiquetas, indicaciones) son campos de ``TextosDeApps``, en los mismos doce
+Los textos de la interfaz (pestañas, etiquetas, indicaciones) son campos de ``TextosDeApps``, en los mismos trece
 idiomas que los textos del motor, y se leen con `notacion.texto(\.digitaciones)`: siguen la notación elegida, así que
 el selector de notación cambia la app entera.
 
@@ -122,6 +123,21 @@ El Tonnetz, la tabla armónica y los teclados isomórficos y de cuadrícula en q
 
 - ``Escucha``
 - ``CambioMIDI``
+
+### Catálogos con nombre
+
+Un elemento de uno de los catálogos con nombre, escrito con su nombre, sus alias, las citas de sus obras y su origen
+(``ElementoConNombrePresentado``), igual en la consola, la app y las hojas.
+
+- ``ElementoConNombrePresentado``
+- ``OrigenPresentado``
+- ``AcordeConNombrePresentado``
+- ``ProgresionConNombrePresentada``
+- ``RitmoPresentado``
+- ``TemperamentoPresentado``
+- ``NotaPresentada``
+- ``FuncionDeNotaPresentada``
+- ``OrigenDeEscalaPresentado``
 
 ### Consultas
 
