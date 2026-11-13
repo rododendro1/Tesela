@@ -189,7 +189,7 @@ struct OpcionesDePartitura {
             patron = elegido
         }
         let figura = try opciones["figura"].map { try Duracion(leyendo: $0) } ?? .corchea
-        if figura <= .cero, let texto = opciones["figura"] {  // "0/4"
+        if figura <= .cero, let texto = opciones["figura"] { // "0/4"
             throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .duracionNoValida(texto))
         }
         let porAcorde = try opciones["duracion"].map { try Duracion(leyendo: $0) }

@@ -60,7 +60,7 @@ private struct DibujoDeLaTabla {
     /// El origen, el ancho y el alto de la imagen.
     let caja: (Double, Double, Double, Double)
 
-    private static let coseno = 0.8660254037844386  // cos 30°
+    private static let coseno = 0.8660254037844386 // cos 30°
 
     init(tabla: TablaArmonica, notacion: Notacion, escala: Double, margen: Int?) {
         self.tabla = tabla
@@ -100,7 +100,7 @@ private struct DibujoDeLaTabla {
         (marcados, principales) = DibujoSVG.marcar(tabla.puntos, en: red, clave: clave)
         triadasMarcadas = DibujoSVG.triadas(en: red, marcados: marcados)
 
-        let radio = trazado.tamano.x  // del centro a un vértice
+        let radio = trazado.tamano.x // del centro a un vértice
         let borde = paso * 0.08
         caja = (
             minX - radio - borde, minY - paso / 2 - borde, maxX - minX + 2 * (radio + borde),
