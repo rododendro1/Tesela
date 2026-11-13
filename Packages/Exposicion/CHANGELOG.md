@@ -68,6 +68,9 @@
 - En la consola, `escalas` marca «microtonos» solo en las escalas microtonales (`TipoDeEscala.esMicrotonal`), y
   `microtonal` en su JSON dice lo mismo: Kalyāṇ y las chinas, que tienen afinación propia pero justa, ya no lo son.
 
+- Por dentro, sin cambios de API: las presentaciones de los catálogos (temperamentos, notas, funciones de nota y
+  ritmos) van a `Catalogos/`, con `ElementoConNombrePresentado` y `OrigenPresentado`, que estaban en la raíz.
+
 ## 0.5.0 (2026-11-10)
 
 ### Cambios incompatibles
