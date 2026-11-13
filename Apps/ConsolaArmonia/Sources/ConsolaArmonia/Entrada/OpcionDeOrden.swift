@@ -199,7 +199,8 @@ extension OpcionDeOrden {
     /// `escalas --estilo jazz`: las de un estilo (`Estilo`) o una corriente.
     static let estilo = valor("--estilo", "--style")
     static let vecinas = marca("--vecinas", "--neighbors", ocultos: ["--neighbours"])
-    /// `escalas --vecinas Re dórico`, `--parecidas`, `--escalera`: como las marcas de `escala`, pero con la escala detrás.
+    /// `escalas --vecinas Re dórico`, `--parecidas`, `--escalera`: como las marcas de `escala`, pero con la escala
+    /// detrás.
     static let vecinasDe = valor("--vecinas", "--neighbors", ocultos: ["--neighbours"])
     static let parecidasA = valor("--parecidas", "--closest")
     static let escaleraDe = valor("--escalera", "--brightness-ladder")

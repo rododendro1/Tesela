@@ -2,10 +2,10 @@ import Elementos
 
 // MARK: - Tradición y categoría de una escala
 
-/// La tradición musical de que viene una escala: la occidental, la de las escalas de `TipoDeEscala.occidentales` (la tonal
-/// y modal, el jazz, el blues…), o una de las de `TipoDeEscala.tradicionales`. El canto gregoriano, el Renacimiento,
-/// la Grecia antigua y el folklore europeo, que también son de Occidente, son tradiciones aparte, con sus propias
-/// escalas.
+/// La tradición musical de que viene una escala: la occidental, la de las escalas de `TipoDeEscala.occidentales` (la
+/// tonal y modal, el jazz, el blues…), o una de las de `TipoDeEscala.tradicionales`. El canto gregoriano, el
+/// Renacimiento, la Grecia antigua y el folklore europeo, que también son de Occidente, son tradiciones aparte, con sus
+/// propias escalas.
 public enum Tradicion: String, Sendable, Codable, CaseIterable {
     case occidental, india, grecia, greciaAntigua, mundoArabe, persia, turquia, azerbaiyan
     case china, japon, corea, etiopia, indonesia, klezmer, andes, bizancio, mesopotamia
