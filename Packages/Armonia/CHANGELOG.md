@@ -22,8 +22,9 @@
 
 ### Lo nuevo
 
-- `TipoDeEscala.alias(en:)` y `variantes(en:)`: los otros nombres de una escala y sus otras grafías en el idioma de
-  una notación, como `nombre(en:)`. El TSV de `EjemploCatalogos` los lleva en `alias_en_*` y `variantes_en_*`.
+- `alias(en:)` y `variantes(en:)` en `TipoDeEscala`, `AcordeConNombre`, `ProgresionConNombre`, `RitmoConNombre`,
+  `TemperamentoConNombre`, `NotaConNombre` y `FuncionDeNota`: los otros nombres y las otras grafías en el idioma de
+  una notación, como `nombre(en:)`. Los TSV de `EjemploCatalogos` los llevan en `alias_en_*` y `variantes_en_*`.
 - `CaracterDeLaAfinacion` y `TipoDeEscala.caracterDeLaAfinacion` / `esMicrotonal`: si la afinación propia de una
   escala es temperada, justa (los śruti, Zarlino, las chinas), microtonal (los cuartos de tono, el koron, los moria,
   las 53 comas turcas, el blues, el enarmónico griego) o una octava en otras partes iguales (el sléndro en 5, el

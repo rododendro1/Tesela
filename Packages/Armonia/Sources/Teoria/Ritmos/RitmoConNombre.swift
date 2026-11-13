@@ -84,6 +84,12 @@ public struct RitmoConNombre: Sendable {
     /// catálogo se llama en todos los idiomas como se escribió.
     public func nombre(en notacion: Notacion) -> String { nombreTraducido(en: notacion) }
 
+    /// Los otros nombres de el ritmo en el idioma de la notación, como `nombre(en:)`; vacío si no tiene.
+    public func alias(en notacion: Notacion) -> [String] { aliasTraducidos(en: notacion) }
+
+    /// Las otras formas de escribir su nombre o un alias en el idioma de la notación; vacío si no tiene.
+    public func variantes(en notacion: Notacion) -> [String] { variantesTraducidas(en: notacion) }
+
     /// El ritmo euclídeo E(k, n) de Bjorklund y Toussaint: `ataques` golpes repartidos lo más uniformemente posible
     /// entre `pulsos`, empezando por uno. E(3, 8) es el tresillo y, girados, E(5, 8) es el cinquillo y E(7, 12), el
     /// bembé.

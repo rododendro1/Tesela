@@ -22,9 +22,7 @@ private func numeros(_ valores: [Int]) -> String { valores.map(String.init).join
 private func nombres(_ tipos: [TipoDeEscala]) -> String { tipos.map(\.nombre).joined(separator: " · ") }
 
 let columnasDeEscalas: [String] =
-    ["nombre", "nombre_completo"] + traducciones.map { "nombre_en_\($0.rawValue)" } + [
-        "alias", "variantes",
-    ] + traducciones.flatMap { ["alias_en_\($0.rawValue)", "variantes_en_\($0.rawValue)"] } + [
+    ["nombre", "nombre_completo"] + traducciones.map { "nombre_en_\($0.rawValue)" } + columnasDeAliasYVariantes() + [
         "tradicion", "estilos", "regiones", "lugares_de_origen", "paises_de_origen",
         "continentes_de_origen", "lugares_de_uso", "epoca_de_origen", "epocas_de_uso", "categoria", "clase", "fuente",
         "numero_de_notas",
@@ -52,13 +50,7 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
     let medidas = sobreDo.estadisticas
     let conjunto = sobreDo.conjuntoDeClasesDeAltura
     let comoSeLlama = [tipo.nombre, tipo.nombreCompleto] + traducciones.map { tipo.nombre(en: .delIdioma($0)) }
-    let otrosNombres =
-        [tipo.alias.joined(separator: " · "), tipo.variantes.joined(separator: " · ")]
-        + traducciones.flatMap { idioma in
-            [tipo.alias(en: .delIdioma(idioma)), tipo.variantes(en: .delIdioma(idioma))].map {
-                $0.joined(separator: " · ")
-            }
-        }
+    let otros: [String] = aliasYVariantes(tipo.alias(en:), tipo.variantes(en:))
     let resto: [String] = [
         tipo.tradicion?.nombre ?? "",
         tipo.estilos.map(\.nombre).joined(separator: " · "),
@@ -147,7 +139,7 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         nombres(tipo.derivadas),
         tipo.referencias.map(\.cita).joined(separator: " · "),
     ]
-    return comoSeLlama + otrosNombres + resto
+    return comoSeLlama + otros + resto
 }
 
 /// Las escalas del catálogo, o solo las de una tradición.

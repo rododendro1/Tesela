@@ -13,10 +13,13 @@ private let medidasDeAcordes = MedidaDeAcorde.todas.filter(\.vaAlJSON)
 /// Los nombres, como en la API: con ♭ y ♯ y en español.
 private let notacionDeAcordes = Notacion.compacta(.espanol)
 
+private let columnasDeLosNombresDeAcordes: [String] = columnasDeNombres + columnasDeAliasYVariantes()
+private let columnasDeLaFichaDeAcordes: [String] = [
+    "grupo", "intervalos", "semitonos", "notas_sobre_do", "cifrado", "nombre_del_tipo",
+]
 let columnasDeAcordes: [String] =
-    ["nombre"] + traducciones.map { "nombre_en_\($0.rawValue)" } + [
-        "alias", "variantes", "grupo", "intervalos", "semitonos", "notas_sobre_do", "cifrado", "nombre_del_tipo",
-    ] + medidasDeAcordes.map(\.clave) + ["estilos", "referencias"]
+    columnasDeLosNombresDeAcordes + columnasDeLaFichaDeAcordes + medidasDeAcordes.map(\.clave)
+    + ["estilos", "referencias"]
 
 private let genericos = Set(AcordeConNombre.genericos)
 
@@ -24,9 +27,8 @@ private let genericos = Set(AcordeConNombre.genericos)
 func filaDeAcorde(_ acorde: AcordeConNombre) -> [String] {
     let comoSeLlama = [acorde.nombre] + traducciones.map { acorde.nombre(en: .delIdioma($0)) }
     let estadisticas = acorde.estadisticas
-    let antes: [String] = [
-        acorde.alias.joined(separator: " · "),
-        acorde.variantes.joined(separator: " · "),
+    let otros: [String] = aliasYVariantes(acorde.alias(en:), acorde.variantes(en:))
+    let ficha: [String] = [
         genericos.contains(acorde) ? "genérico" : "nombre propio",
         acorde.intervalos.map(\.abreviatura).joined(separator: " "),
         acorde.intervalos.map { String($0.semitonos) }.joined(separator: " "),
@@ -34,6 +36,7 @@ func filaDeAcorde(_ acorde: AcordeConNombre) -> [String] {
         acorde.tipo?.cifrado ?? "",
         acorde.tipo?.acordeConNombre?.nombre ?? "",
     ]
+    let antes: [String] = otros + ficha
     // En `numeroDeNotas`, las notas distintas: el acorde de la Sinfonía de los salmos tiene cuatro voces y tres notas.
     let valores = medidasDeAcordes.map { $0.valor(de: estadisticas, en: notacionDeAcordes)?.textoPlano ?? "" }
     let despues = [

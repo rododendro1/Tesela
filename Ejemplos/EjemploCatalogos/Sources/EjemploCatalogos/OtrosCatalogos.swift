@@ -1,12 +1,12 @@
 import Armonia
 
-// Los demás catálogos del motor: los ritmos, los temperamentos, las notas con nombre y sus funciones, las escalas
+// Los demás catálogos del motor (con los alias, y las variantes si las tienen, en los trece idiomas): los ritmos, los temperamentos, las notas con nombre y sus funciones, las escalas
 // microtonales, las referencias, los encordados, los teclados isomórficos y cuadrados, los modos gregorianos y los
 // instrumentos de la partitura.
 
 let columnasDeRitmos: [String] =
-    columnasDeNombres + [
-        "alias", "familia", "patron", "agrupacion", "unidad", "compas", "pulsos", "ataques", "fuertes", "intervalos",
+    columnasDeNombres + columnasDeAliasYVariantes(conVariantes: false) + [
+        "familia", "patron", "agrupacion", "unidad", "compas", "pulsos", "ataques", "fuertes", "intervalos",
         "vector_de_distancias", "euclideo", "profundo", "simetrias_por_rotacion", "uniformidad", "contratiempo",
         "sincopa", "referencias",
     ]
@@ -14,15 +14,16 @@ let columnasDeRitmos: [String] =
 func filaDeRitmo(_ ritmo: RitmoConNombre) -> [String] {
     let medidas = ritmo.estadisticas
     let nombres: [String] = [ritmo.nombre] + traducciones.map { ritmo.nombre(en: .delIdioma($0)) }
+    let otros: [String] = aliasYVariantes(ritmo.alias(en:))
     let resto: [String] = [
-        ritmo.alias.joined(separator: " · "), ritmo.familia.nombre, ritmo.patron,
+        ritmo.familia.nombre, ritmo.patron,
         ritmo.agrupacion.map(String.init).joined(separator: "+"), String(ritmo.unidad), ritmo.compas.description,
         String(medidas.pulsos), String(medidas.ataques), String(medidas.fuertes), lista(medidas.intervalos),
         lista(medidas.vectorDeDistancias), siONo(medidas.euclideo), siONo(medidas.profundo),
         String(medidas.simetriasPorRotacion), numero(medidas.uniformidad), String(medidas.contratiempo),
         numero(medidas.sincopa), citas(ritmo.referencias),
     ]
-    return nombres + resto
+    return nombres + otros + resto
 }
 
 let ritmos = Catalogo(
@@ -31,9 +32,10 @@ let ritmos = Catalogo(
 
 let razonesJustas = ["3_2", "5_4", "6_5", "7_4", "11_8"]
 
-let columnasAntesDeLosErrores: [String] = [
-    "alias", "familia", "autor", "anio", "pasos_por_octava", "quinta", "uniforme", "paso_menor", "paso_mayor",
-]
+let columnasAntesDeLosErrores: [String] =
+    ["alias"] + columnasDeOtrosNombres(conVariantes: false) + [
+        "familia", "autor", "anio", "pasos_por_octava", "quinta", "uniforme", "paso_menor", "paso_mayor",
+    ]
 let columnasDeLosErrores: [String] = razonesJustas.map { "error_\($0)" }
 let columnasTrasLosErrores: [String] = [
     "quinta_del_lobo", "tercera_mas_pura", "tercera_mas_lejana", "desviaciones_del_igual", "pasos",
@@ -45,8 +47,9 @@ let columnasDeTemperamentos: [String] =
 func filaDeTemperamento(_ temperamento: TemperamentoConNombre) -> [String] {
     let medidas = temperamento.estadisticas
     let nombres: [String] = [temperamento.nombre] + traducciones.map { temperamento.nombre(en: .delIdioma($0)) }
+    let otros: [String] = aliasYVariantes(temperamento.alias(en:))
     let ficha: [String] = [
-        temperamento.alias.joined(separator: " · "), temperamento.familia.nombre, temperamento.autor ?? "",
+        temperamento.familia.nombre, temperamento.autor ?? "",
         temperamento.anio.map(String.init) ?? "", String(medidas.pasosPorOctava), numero(temperamento.quinta),
         siONo(medidas.uniforme), numero(medidas.pasoMenor), numero(medidas.pasoMayor),
     ]
@@ -58,7 +61,7 @@ func filaDeTemperamento(_ temperamento: TemperamentoConNombre) -> [String] {
         temperamento.sistemaMicrotonal?.rawValue ?? "",
         citas(temperamento.referencias),
     ]
-    return nombres + ficha + errores + resto
+    return nombres + otros + ficha + errores + resto
 }
 
 let temperamentos = Catalogo(
@@ -67,8 +70,8 @@ let temperamentos = Catalogo(
     obras: TemperamentoConNombre.catalogo.flatMap(\.referencias))
 
 let columnasDeNotas: [String] =
-    columnasDeNombres + [
-        "alias", "variantes", "familia", "altura", "desvio", "frecuencia", "frecuencia_del_la4", "midi", "anio",
+    columnasDeNombres + columnasDeAliasYVariantes() + [
+        "familia", "altura", "desvio", "frecuencia", "frecuencia_del_la4", "midi", "anio",
         "referencias",
     ]
 
@@ -76,12 +79,13 @@ let columnasDeNotas: [String] =
 func filaDeNota(_ nota: NotaConNombre) -> [String] {
     let nombres: [String] = [nota.nombre] + traducciones.map { nota.nombre(en: .delIdioma($0)) }
     let anio: String = nota.anio.map { String($0) } ?? ""
+    let otros: [String] = aliasYVariantes(nota.alias(en:), nota.variantes(en:))
     let resto: [String] = [
-        nota.alias.joined(separator: " · "), nota.variantes.joined(separator: " · "), nota.familia.nombre,
+        nota.familia.nombre,
         nota.altura.description, numero(nota.desvio), numero(nota.frecuencia), numero(nota.frecuenciaDelLa4),
         String(nota.midi), anio, citas(nota.referencias),
     ]
-    return nombres + resto
+    return nombres + otros + resto
 }
 
 let notas = Catalogo(
@@ -89,17 +93,18 @@ let notas = Catalogo(
     obras: NotaConNombre.catalogo.flatMap(\.referencias))
 
 let columnasDeFunciones: [String] =
-    columnasDeNombres + ["alias", "familia", "intervalo", "cents", "desvio", "referencias"]
+    columnasDeNombres + columnasDeAliasYVariantes() + ["familia", "intervalo", "cents", "desvio", "referencias"]
 
 /// Una función de nota: su familia y, si lo tiene, su intervalo desde la tónica.
 func filaDeFuncion(_ funcion: FuncionDeNota) -> [String] {
     let nombres: [String] = [funcion.nombre] + traducciones.map { funcion.nombre(en: .delIdioma($0)) }
     let intervalo: String = funcion.intervalo?.description ?? ""
+    let otros: [String] = aliasYVariantes(funcion.alias(en:), funcion.variantes(en:))
     let resto: [String] = [
-        funcion.alias.joined(separator: " · "), funcion.familia.nombre, intervalo, numero(funcion.cents),
+        funcion.familia.nombre, intervalo, numero(funcion.cents),
         numero(funcion.desvio), citas(funcion.referencias),
     ]
-    return nombres + resto
+    return nombres + otros + resto
 }
 
 let funciones = Catalogo(

@@ -23,6 +23,30 @@ func citas(_ referencias: [Referencia]) -> String { referencias.map(\.cita).join
 let traducciones = Idioma.allCases.filter { $0 != .espanol }
 let columnasDeNombres = ["nombre"] + traducciones.map { "nombre_en_\($0.rawValue)" }
 
+/// Las columnas de los alias y, si los catálogos los tienen, de las variantes en los demás idiomas, idioma a idioma:
+/// «alias_en_ingles», «variantes_en_ingles», «alias_en_catalan»…
+func columnasDeOtrosNombres(conVariantes: Bool = true) -> [String] {
+    traducciones.flatMap { idioma in
+        ["alias_en_\(idioma.rawValue)"] + (conVariantes ? ["variantes_en_\(idioma.rawValue)"] : [])
+    }
+}
+
+/// Las columnas de los alias y las variantes en español y, después, en los demás idiomas.
+func columnasDeAliasYVariantes(conVariantes: Bool = true) -> [String] {
+    (conVariantes ? ["alias", "variantes"] : ["alias"]) + columnasDeOtrosNombres(conVariantes: conVariantes)
+}
+
+/// Los alias y las variantes de un elemento en español y en los demás idiomas, en el orden de
+/// `columnasDeAliasYVariantes`; sin `variantes`, solo los alias.
+func aliasYVariantes(_ alias: (Notacion) -> [String], _ variantes: ((Notacion) -> [String])? = nil) -> [String] {
+    ([Idioma.espanol] + traducciones).flatMap { idioma -> [String] in
+        let notacion = Notacion.delIdioma(idioma)
+        var listas: [[String]] = [alias(notacion)]
+        if let variantes { listas.append(variantes(notacion)) }
+        return listas.map { $0.joined(separator: " · ") }
+    }
+}
+
 /// Un catálogo: el fichero, las columnas, una fila por elemento y las obras que citan sus elementos.
 struct Catalogo {
     let fichero: String

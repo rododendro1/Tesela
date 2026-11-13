@@ -6,9 +6,8 @@ import Armonia
 // sus propios acordes, estilos y las obras que la citan.
 
 let columnasDeProgresiones: [String] =
-    ["nombre"] + traducciones.map { "nombre_en_\($0.rawValue)" } + [
-        "alias", "variantes", "modo", "numero_de_acordes", "cifrado", "acordes_sobre_do", "se_reconoce", "estilos",
-        "referencias",
+    columnasDeNombres + columnasDeAliasYVariantes() + [
+        "modo", "numero_de_acordes", "cifrado", "acordes_sobre_do", "se_reconoce", "estilos", "referencias",
     ]
 
 /// La fila de una progresión, en el orden de `columnasDeProgresiones`.
@@ -16,9 +15,8 @@ func filaDeProgresion(_ progresion: ProgresionConNombre) -> [String] {
     let comoSeLlama = [progresion.nombre] + traducciones.map { progresion.nombre(en: .delIdioma($0)) }
     let acordes = progresion.acordes(sobre: .do)
     let reconocida = EsquemaArmonico.buscar(en: acordes).contains { $0.progresion == progresion && $0.inicio == 0 }
+    let otros: [String] = aliasYVariantes(progresion.alias(en:), progresion.variantes(en:))
     let resto: [String] = [
-        progresion.alias.joined(separator: " · "),
-        progresion.variantes.joined(separator: " · "),
         progresion.modo.nombre,
         String(progresion.grados.count),
         progresion.cifrado,
@@ -27,7 +25,7 @@ func filaDeProgresion(_ progresion: ProgresionConNombre) -> [String] {
         progresion.estilos.map(\.nombre).joined(separator: " · "),
         progresion.referencias.map(\.cita).joined(separator: " · "),
     ]
-    return comoSeLlama + resto
+    return comoSeLlama + otros + resto
 }
 
 let progresiones = Catalogo(

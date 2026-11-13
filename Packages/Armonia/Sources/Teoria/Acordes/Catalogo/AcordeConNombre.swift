@@ -79,6 +79,12 @@ public struct AcordeConNombre: Sendable {
     /// «Dominantseptakkord», «dominantseptakkord» (en ruso transliterado)… Un acorde fuera del catálogo se llama en
     /// todos los idiomas como se escribió.
     public func nombre(en notacion: Notacion) -> String { nombreTraducido(en: notacion) }
+
+    /// Los otros nombres de el acorde en el idioma de la notación, como `nombre(en:)`; vacío si no tiene.
+    public func alias(en notacion: Notacion) -> [String] { aliasTraducidos(en: notacion) }
+
+    /// Las otras formas de escribir su nombre o un alias en el idioma de la notación; vacío si no tiene.
+    public func variantes(en notacion: Notacion) -> [String] { variantesTraducidas(en: notacion) }
 }
 
 extension AcordeConNombre: Hashable {
