@@ -73,7 +73,7 @@ extension TextosDeTeoria {
         // TipoDeAcorde.swift
         acordeDesconocido: { vacio, latino, propio in vacio ? "durtreklang" : "ackord \(propio)" },
 
-        // Escala.swift
+        // NombreDeGrado.swift
         gradoTonica: "tonika",
         gradoSupertonica: "supertonika",
         gradoMediante: "mediant",

@@ -54,6 +54,9 @@
 
 ### Lo nuevo
 
+- `TipoDeEscala.contenido` (`TipoDeEscala.Contenido`): lo que suena de una escala, sin su nombre, que es lo que
+  compara `==`. Sirve para juntar escalas por cómo suenan y dejarlo claro, porque un `Set<TipoDeEscala>` junta Kāfī y
+  el dórico.
 - `TipoDeEscala.clave`: la clave fija de cada escala del catálogo («kafi», «rast-makami»). Sale de su nombre en
   español, pero no cambia si el nombre cambia. Es lo que identifica a la escala (su tradición, su categoría, sus
   nombres en otros idiomas) y lo que guarda el JSON, así que lo guardado sigue siendo la misma escala aunque se
@@ -227,6 +230,13 @@
 
 ### Cambios
 
+- `TipoDeEscala.modo(grado:)` busca el modo en todo el catálogo, no solo en las occidentales, y solo da una escala
+  del catálogo si sube y baja igual que la rotación: el tercer modo de la pentatónica mayor es Hindolam, y no
+  «pentatónica mayor, modo 3». `TipoDeEscala.propio(_:)` y `modo(grado:)` buscan en un índice por contenido, sin
+  recorrer el catálogo.
+- Por dentro, sin cambios de API: `Escala.swift` se parte en `NombreDeGrado.swift`, `Escala+Busqueda.swift` y
+  `Escala+Ortografia.swift`, y los hexacordos (`Escala.hexacordoNatural`…) pasan de `TipoDeEscala.swift` a
+  `Escala.swift`.
 - Por dentro, sin cambios de API: `Geografia.swift` se parte en `Lugar.swift` (`Continente`, `Pais`, `Lugar`…) y
   `TipoDeEscala+Lugar.swift` (dónde está cada escala). En la consola, los catálogos pasan a
   `Ordenes/Consultas/Catalogos/`, y `ErrorDeUso` y el catálogo de escalas se parten en tres ficheros cada uno.

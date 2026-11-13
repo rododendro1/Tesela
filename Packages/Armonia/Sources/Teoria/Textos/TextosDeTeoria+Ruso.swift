@@ -73,7 +73,7 @@ extension TextosDeTeoria {
         // TipoDeAcorde.swift
         acordeDesconocido: { vacio, latino, propio in vacio ? "мажорный аккорд" : "аккорд \(propio)" },
 
-        // Escala.swift
+        // NombreDeGrado.swift
         gradoTonica: "тоника",
         gradoSupertonica: "супертоника",
         gradoMediante: "медианта",

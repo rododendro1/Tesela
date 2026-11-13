@@ -217,20 +217,51 @@ public struct TipoDeEscala: Sendable, Codable {
         TipoDeEscala.catalogo.filter { $0 == self && $0.nombre != nombre }
     }
 
-    /// El modo que empieza en el grado `grado` (1 = la propia escala): la rotación de sus intervalos.
-    /// Si la rotación coincide con un tipo conocido, devuelve ese tipo.
+    /// El modo que empieza en el grado `grado` (1 = la propia escala): la rotación de sus intervalos al subir.
+    /// Si la rotación es una escala del catálogo (con las mismas notas al subir y al bajar), devuelve esa, la primera
+    /// de `catalogo`: el segundo modo de la mayor es el dórico, y el de una pentatónica china, otra pentatónica china.
+    ///
+    ///     TipoDeEscala.mayor.modo(grado: 6)   // .menorNatural
     public func modo(grado: Int) -> TipoDeEscala {
         let n = intervalos.count
         let desde = modulo(grado - 1, n)
+        if desde == 0 { return self }
         let nuevos = (0..<n).map { i in
             Intervalo.simpleAscendente(
                 pasosDeQuinta: intervalos[(desde + i) % n].pasosDeQuinta - intervalos[desde].pasosDeQuinta)
         }
-        if desde == 0 { return self }
         let candidato = TipoDeEscala(nombre: "\(nombre), modo \(desde + 1)", intervalos: nuevos)
-        return TipoDeEscala.occidentales.first { $0 == candidato }
-            ?? TipoDeEscala.occidentales.first { $0.intervalos == candidato.intervalos } ?? candidato
+        return TipoDeEscala.delCatalogo(con: candidato.contenido) ?? candidato
     }
+
+    // MARK: Contenido
+
+    /// Lo que suena de una escala, sin su nombre: sus intervalos al subir y al bajar. Es lo que compara `==`, así que
+    /// un `Set<TipoDeEscala>` junta Kāfī y el dórico; para guardar escalas distintas aunque suenen igual, `identidad`
+    /// (o `clave`, en las del catálogo); para dejarlo claro al juntarlas por cómo suenan, `contenido`.
+    ///
+    ///     Set([TipoDeEscala.kafi, .dorico].map(\.contenido)).count   // 1
+    public struct Contenido: Hashable, Sendable {
+        /// Los intervalos al subir, ordenados (`TipoDeEscala.intervalos`).
+        public let intervalos: [Intervalo]
+        /// Los de bajar, si son otros (`TipoDeEscala.intervalosDescendentes`).
+        public let intervalosDescendentes: [Intervalo]?
+    }
+
+    /// Sus intervalos al subir y al bajar, sin el nombre: lo que compara `==`.
+    public var contenido: Contenido {
+        Contenido(intervalos: intervalos, intervalosDescendentes: intervalosDescendentes)
+    }
+
+    /// La primera escala de `catalogo` con ese contenido, si la hay.
+    package static func delCatalogo(con contenido: Contenido) -> TipoDeEscala? { porContenido[contenido] }
+
+    /// Contenido → la primera escala de `catalogo` que suena así.
+    private static let porContenido: [Contenido: TipoDeEscala] = {
+        var tabla: [Contenido: TipoDeEscala] = [:]
+        for tipo in catalogo where tabla[tipo.contenido] == nil { tabla[tipo.contenido] = tipo }
+        return tabla
+    }()
 }
 
 /// Los datos y la clave de un `TipoDeEscala`, en el montón. Son inmutables, así que compartirlos entre copias y entre
@@ -263,29 +294,13 @@ package enum IdentidadDeEscala: Hashable, Sendable {
 }
 
 extension TipoDeEscala: Hashable {
-    public static func == (a: TipoDeEscala, b: TipoDeEscala) -> Bool {
-        a.intervalos == b.intervalos && a.intervalosDescendentes == b.intervalosDescendentes
-    }
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(intervalos)
-        hasher.combine(intervalosDescendentes)
-    }
+    public static func == (a: TipoDeEscala, b: TipoDeEscala) -> Bool { a.contenido == b.contenido }
+    public func hash(into hasher: inout Hasher) { hasher.combine(contenido) }
 }
-
-// Más escalas, búsqueda de escalas, armaduras, círculo de quintas y funciones de grado.
 
 // Las escalas adicionales (modos derivados, exóticas, hexatónicas, Messiaen, jazz…) están en
 // `Catalogo/TipoDeEscala+Occidental.swift` y `+Occidental+Exoticas.swift`, y las de otras tradiciones, en un fichero
 // por tradición en `Catalogo/`.
-
-extension Escala {
-    /// El hexacordo natural, sobre Do (Do Re Mi Fa Sol La).
-    public static let hexacordoNatural = Escala(.do, .hexacordo)
-    /// El hexacordo duro, sobre Sol (Sol La Si Do Re Mi), con el si «cuadrado».
-    public static let hexacordoDuro = Escala(.sol, .hexacordo)
-    /// El hexacordo blando, sobre Fa (Fa Sol La Si♭ Do Re), con el si «redondo».
-    public static let hexacordoBlando = Escala(.fa, .hexacordo)
-}
 
 // MARK: - Idiomas
 
