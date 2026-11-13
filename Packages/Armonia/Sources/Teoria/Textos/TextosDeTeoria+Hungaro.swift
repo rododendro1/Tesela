@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: "„{1}” nem állhat a perjel után: dúr vagy moll alaphelyzetű hármashangzatnak kell lennie (V/V, vii°7/ii)",
         cifrasNoValidas: "„{1}” nem számozott basszus: számok 1-től 9-ig, mindegyik legfeljebb egy módosítójellel (6, 64, 7, ♯6, 4+)",
         cifrasSinAcorde: "a(z) „{1}” számok ezen a basszuson nem adnak akkordot",
-        // UsoDeEscala.swift
+        // Estilo.swift
         estiloClasica: "klasszikus",
         estiloJazz: "jazz",
         estiloBlues: "blues",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         tradicionVietnam: "Vietnám",
         tradicionBrasil: "Brazília",
         tradicionRenacimiento: "Reneszánsz",
-        // Estilo.swift y RegionDeEscala.swift
+        // Escuela.swift y RegionDeEscala.swift
         escuelaCarnatica: "Karnatikus",
         escuelaIndostanica: "Hindusztáni",
         escuelaIndiaAntigua: "Ókori India",

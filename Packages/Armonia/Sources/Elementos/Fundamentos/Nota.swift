@@ -309,8 +309,6 @@ public struct Nota: Hashable, Sendable {
                 }
             }
         }
-        // «H Be», como se escribía el Si♭ en `.conPalabras(.aleman)` (antes `.aleman`) en la 0.3.0, se sigue leyendo.
-        if notacion == .conPalabras(.aleman) { tabla["H Be".claveDeBusqueda] = Nota(.si, .bemol) }
         return tabla
     }
 

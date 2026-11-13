@@ -6,9 +6,6 @@ public struct DatoPresentado: Hashable, Sendable {
     public let valor: String
 }
 
-/// El nombre de antes de `DatoPresentado`, cuando solo lo daban las escalas.
-public typealias DatoDeEscalaPresentado = DatoPresentado
-
 /// Un peldaño de la escalera de brillo: la escala, su brillo por quintas y la nota que sube desde el anterior.
 public struct PeldanoDeBrilloPresentado: Hashable, Sendable {
     public let escala: Escala

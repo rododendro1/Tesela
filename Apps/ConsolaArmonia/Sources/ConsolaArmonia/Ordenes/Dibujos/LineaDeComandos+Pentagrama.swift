@@ -10,7 +10,7 @@ extension LineaDeComandos {
     /// `pentagrama acordes Rem7 Sol7 Do7M [--romanos] [--bajo-cifrado]`, `pentagrama melodia Do4:8 Re4:8 … --sobre Do
     /// Sol7`: lo que se pide en un pentagrama, en SVG. Con `--nombres`, `--intervalos`, `--semitonos` y `--tonica`, el
     /// nombre y el intervalo de cada nota, los semitonos y la tónica en color; con `--ajenas`, las notas que no son del
-    /// acorde en color; con `--octava`, `--clave`, `--doble` y `--cambiar-clave`, el registro y las claves; con
+    /// acorde en color; con `--registro`, `--clave`, `--doble` y `--cambiar-clave`, el registro y las claves; con
     /// `--en <tonalidad>` (al final), la armadura de esa tonalidad.
     static func pentagrama(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(try conLosDedos(textos, soloPiano: false))

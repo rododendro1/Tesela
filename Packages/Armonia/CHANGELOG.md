@@ -4,14 +4,16 @@
 
 ### Cambios incompatibles
 
+- Fuera lo que había quedado obsoleto: `Nota(leyendo:en:)` ya no lee «H Be», el Si♭ del alemán con palabras de la
+  0.3.0 (es «B»), y la consola ya no lee `--uso`. Lo guardado con `Codable` se sigue leyendo.
 - Los nombres que decían «microtonal» donde no siempre hay microtonos: `NotaMicrotonal` pasa a ser
   `NotaDeLaAfinacion` (también es una de los śruti, que son justos). `SignoMicrotonal` y `esMicrotonal` no cambian.
 - `Caracter.fuente` pasa a ser `referencia`, como en el resto del código: «fuente» queda solo para `FuenteTeorica`, la
   teoría con que se mide una escala.
 - La consola: `--estilo` (`--style` en inglés) elige un estilo en `escalas`, `acordes` y `ritmos`, en lugar de `--uso`
-  (`--use`), que se sigue leyendo igual pero ya no sale en la ayuda: en el resto del código, «de uso» es dónde y
-  cuándo se usa algo (`epocasDeUso`, `lugaresDeUso`), no su estilo. Los textos de los estilos (`usoJazz`…) pasan a
-  ser `estiloJazz`…, y `reloj --microtonal` con una escala sin afinación propia dice que «no tiene afinación propia».
+  (`--use`), que ya no existe: en el resto del código, «de uso» es dónde y cuándo se usa algo (`epocasDeUso`,
+  `lugaresDeUso`), no su estilo. Los textos de los estilos (`usoJazz`…) pasan a ser `estiloJazz`…, y `reloj
+  --microtonal` con una escala sin afinación propia dice que «no tiene afinación propia».
 
 - `SistemaMicrotonal` pasa a ser `SistemaDeAlturas`, y `TemperamentoConNombre.sistemaMicrotonal` y
   `NombresPorOctava.sistemaMicrotonal`, `sistemaDeAlturas`: los 22 śruti y las razones de Ptolomeo son justos, no

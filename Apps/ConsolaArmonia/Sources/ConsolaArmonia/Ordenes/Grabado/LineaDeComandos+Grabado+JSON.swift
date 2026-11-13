@@ -2,7 +2,7 @@ import Armonia
 import Exposicion
 import Foundation
 
-// `--json` de `grabar --motores`. Lo común a todas las órdenes está en LineaDeComandos+JSON.swift.
+// `--json` de `armonia motores`. Lo común a todas las órdenes está en LineaDeComandos+JSON.swift.
 
 extension LineaDeComandos {
     // MARK: Motores de grabado

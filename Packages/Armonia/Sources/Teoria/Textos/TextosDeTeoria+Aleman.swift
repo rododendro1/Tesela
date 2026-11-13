@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: "„{1}“ kann nicht nach dem Schrägstrich stehen: Es muss ein Dur- oder Molldreiklang in Grundstellung sein (V/V, vii°7/ii)",
         cifrasNoValidas: "„{1}“ ist kein Generalbass: Zahlen von 1 bis 9 mit höchstens einem Vorzeichen (6, 64, 7, ♯6, 4+)",
         cifrasSinAcorde: "die Ziffern „{1}“ ergeben über diesem Bass keinen Akkord",
-        // UsoDeEscala.swift
+        // Estilo.swift
         estiloClasica: "klassisch",
         estiloJazz: "Jazz",
         estiloBlues: "Blues",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         tradicionVietnam: "Vietnam",
         tradicionBrasil: "Brasilien",
         tradicionRenacimiento: "Renaissance",
-        // Estilo.swift y RegionDeEscala.swift
+        // Escuela.swift y RegionDeEscala.swift
         escuelaCarnatica: "Karnatisch",
         escuelaIndostanica: "Hindustanisch",
         escuelaIndiaAntigua: "Altes Indien",

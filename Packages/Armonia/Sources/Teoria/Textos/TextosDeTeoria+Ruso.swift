@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: "«{1}» не может стоять после косой черты: нужно мажорное или минорное трезвучие в основном виде (V/V, vii°7/ii)",
         cifrasNoValidas: "«{1}» — не генерал-бас: цифры от 1 до 9, каждая не более чем с одним знаком альтерации (6, 64, 7, ♯6, 4+)",
         cifrasSinAcorde: "цифры «{1}» не образуют над этим басом никакого аккорда",
-        // UsoDeEscala.swift
+        // Estilo.swift
         estiloClasica: "классическая",
         estiloJazz: "джаз",
         estiloBlues: "блюз",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         tradicionVietnam: "Вьетнам",
         tradicionBrasil: "Бразилия",
         tradicionRenacimiento: "Возрождение",
-        // Estilo.swift y RegionDeEscala.swift
+        // Escuela.swift y RegionDeEscala.swift
         escuelaCarnatica: "Карнатическая",
         escuelaIndostanica: "Хиндустанская",
         escuelaIndiaAntigua: "Древняя Индия",

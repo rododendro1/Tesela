@@ -167,7 +167,7 @@ extension TextosDeTeoria {
         destinoNoTonicalizable: "«{1}» não pode vir depois da barra: tem de ser uma tríade maior ou menor no estado fundamental (V/V, vii°7/ii)",
         cifrasNoValidas: "«{1}» não são cifras de baixo contínuo: números de 1 a 9 com, no máximo, uma alteração (6, 64, 7, ♯6, 4+)",
         cifrasSinAcorde: "as cifras «{1}» não formam nenhum acorde sobre esse baixo",
-        // UsoDeEscala.swift
+        // Estilo.swift
         estiloClasica: "clássica",
         estiloJazz: "jazz",
         estiloBlues: "blues",
@@ -263,7 +263,7 @@ extension TextosDeTeoria {
         tradicionVietnam: "Vietname",
         tradicionBrasil: "Brasil",
         tradicionRenacimiento: "Renascimento",
-        // Estilo.swift y RegionDeEscala.swift
+        // Escuela.swift y RegionDeEscala.swift
         escuelaCarnatica: "Carnática",
         escuelaIndostanica: "Indostânica",
         escuelaIndiaAntigua: "Índia antiga",

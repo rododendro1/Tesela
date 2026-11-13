@@ -53,7 +53,7 @@ import Testing
 
     @Test func lasNotasSeLeenEnCadaNotacion() throws {
         #expect(try Nota(leyendo: "Fis", en: .compacta(.aleman)) == Nota(.fa, .sostenido))
-        #expect(try Nota(leyendo: "H Be", en: .conPalabras(.aleman)) == Nota(.si, .bemol))
+        #expect(try Nota(leyendo: "F Kreuz", en: .conPalabras(.aleman)) == Nota(.fa, .sostenido))
         #expect(Nota.porNombre[.conPalabras(.frances)]["re bemol".claveDeBusqueda] == Nota(.re, .bemol))
     }
 }
