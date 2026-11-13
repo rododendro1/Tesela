@@ -61,7 +61,7 @@ extension TextosDeConsola {
         descripcionTradiciones: "οι παραδόσεις του καταλόγου, με τις κατηγορίες τους και πόσες κλίμακες έχει η καθεμία· με μία, οι κλίμακές της",
         sintaxisProgresiones: "progressions [<κείμενο>] [--in <τονικότητα>] [--era <εποχή>] [--affect <συναίσθημα>]",
         descripcionProgresiones: "οι διαδοχές του καταλόγου με το ρωμαϊκό τους συμβολισμό και τις συγχορδίες τους πάνω στο Ντο ή στην τονική του --in· με ένα κείμενο, όσες το έχουν στο όνομα",
-        sintaxisRitmos: "rhythms [<κείμενο>] [--family <οικογένεια>] [--statistics] [--compare <ρυθμός>]",
+        sintaxisRitmos: "rhythms [<κείμενο>] [--family <οικογένεια>] [--use <ύφος>] [--era <εποχή>] [--statistics] [--compare <ρυθμός>]",
         descripcionRitmos: "οι ρυθμοί του καταλόγου με το μοτίβο τους (x ισχυρό, o ασθενές, . παύση) και το μέτρο τους· με κείμενο, όσοι το έχουν στο όνομα",
         notasRitmos: "επιλογές: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) αφήνει όσους είναι μιας οικογένειας· --statistics προσθέτει το δελτίο τους και τα μέτρα του Toussaint (διάνυσμα αποστάσεων, ευκλείδειος, βαθύς, ομοιομορφία, αντιχρονισμός, συγκοπή)· --compare <ρυθμός> δίνει τις αποστάσεις Hamming και ανταλλαγής από άλλον με ίδιους παλμούς",
         sintaxisTemperamentos: "temperaments [<κείμενο>] [--family <οικογένεια>] [--statistics | --clock [--fifths] [--colors]]",

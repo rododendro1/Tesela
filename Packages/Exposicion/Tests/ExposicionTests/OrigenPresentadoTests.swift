@@ -19,6 +19,40 @@ import Testing
         // El de una escala es el mismo que da `OrigenDeEscalaPresentado`.
         let hungara = try #require(OrigenDeEscalaPresentado(.menorHungara, en: notacion))
         #expect(OrigenPresentado(TipoDeEscala.menorHungara, en: notacion) == hungara.origen)
-        #expect(hungara.datos(en: notacion).first?.valor == hungara.origen.texto)
+        #expect(hungara.datos(en: notacion).first?.valor == hungara.origen?.texto)
+    }
+
+    /// Los seis catálogos presentados llevan lo mismo: el nombre, los alias, las citas y el origen.
+    @Test func losCatalogosPresentados() {
+        let notacion = Notacion.compacta(.espanol)
+        let tristan = AcordeConNombrePresentado(.tristan, sobre: .fa, en: notacion)
+        #expect(tristan.notas == ["Fa", "Si", "Re♯", "Sol♯"] && tristan.cifrado == nil)
+        #expect(tristan.origen?.texto == "Romanticismo (1859)")
+        #expect(tristan.estilosYOrigen == "clásica · Romanticismo (1859)")
+        #expect(AcordeConNombrePresentado(.dominanteSeptima, en: notacion).cifrado == "Do7")
+        let andaluza = ProgresionConNombrePresentada(.andaluza, sobre: .la, en: notacion)
+        #expect(andaluza.cifrado == "i VII VI V" && andaluza.acordes == ["Lam", "Sol", "Fa", "Mi"])
+        let solea = RitmoPresentado(.solea, en: notacion)
+        #expect(solea.estilos == ["flamenco"] && solea.alias == ["soleares"])
+        let otros = solea.datosDelCatalogo(en: notacion).first
+        #expect(otros?.nombre == "Otros nombres" && otros?.valor == "soleares")
+        let werckmeister = TemperamentoPresentado(.werckmeisterIII, en: notacion)
+        #expect(werckmeister.referencias.first == Referencia.werckmeister1691.cita)
+        #expect(werckmeister.datosDelCatalogo(en: notacion).last?.valor == "Barroco (1691)")
+        #expect(FuncionDeNotaPresentada(.dominante, en: notacion).origen == nil)
+    }
+
+    /// Los estilos con la época de origen, y las épocas de uso por su nombre, en los acordes, las progresiones y los
+    /// ritmos.
+    @Test func losEstilosYLasEpocasDeUso() {
+        let notacion = Notacion.compacta(.espanol)
+        let andaluza = ProgresionConNombrePresentada(.andaluza, en: notacion)
+        #expect(
+            !andaluza.estilos.isEmpty && andaluza.estilosYOrigen.hasPrefix(andaluza.estilos.joined(separator: " · ")))
+        #expect(andaluza.estilosYOrigen.hasSuffix(andaluza.origen?.texto ?? ""))
+        let acordes = AcordeConNombre.catalogo.map { AcordeConNombrePresentado($0, en: notacion) }
+        #expect(acordes.contains { !$0.epocasDeUso.isEmpty })
+        let ritmos = RitmoConNombre.catalogo.map { RitmoPresentado($0, en: notacion) }
+        #expect(ritmos.contains { !$0.epocasDeUso.isEmpty })
     }
 }

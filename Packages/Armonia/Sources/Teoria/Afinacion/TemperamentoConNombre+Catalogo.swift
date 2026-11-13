@@ -13,8 +13,8 @@ extension TemperamentoConNombre {
 
     /// Doce semitonos iguales de 100 cents: la quinta, 2 cents más estrecha que la pura.
     public static let temperamentoIgual = TemperamentoConNombre(
-        nombre: "temperamento igual", construccion: .regular(700), familia: .regular, autor: "Zhu Zaiyu", anio: 1584,
-        alias: ["12 divisiones iguales", "12-TET"], referencias: [.lindley2001, .barbour1951])
+        nombre: "temperamento igual", construccion: .regular(700), familia: .regular,
+        alias: ["12 divisiones iguales", "12-TET"], referencias: [.lindley2001, .barbour1951], documentada: .zhu1584)
     /// Todas las quintas puras (3/2): las terceras mayores, una coma sintónica más anchas que las puras.
     public static let pitagorico = TemperamentoConNombre(
         nombre: "afinación pitagórica", construccion: .regular(1200 * log2(1.5)), familia: .regular,
@@ -23,17 +23,17 @@ extension TemperamentoConNombre {
     public static let mesotonicoCuartoDeComa = TemperamentoConNombre(
         nombre: "mesotónico de 1/4 de coma",
         construccion: .regular(TemperamentoRegular.mesotonico(fraccionDeComa: 4).quinta), familia: .regular,
-        autor: "Pietro Aron", anio: 1523, alias: ["mesotónico"], referencias: [.barbour1951, .lindley2001])
+        alias: ["mesotónico"], referencias: [.barbour1951, .lindley2001], documentada: .aron1523)
     /// Cada quinta, ⅓ de coma sintónica más estrecha: las terceras menores puras (6/5).
     public static let mesotonicoTercioDeComa = TemperamentoConNombre(
         nombre: "mesotónico de 1/3 de coma",
         construccion: .regular(TemperamentoRegular.mesotonico(fraccionDeComa: 3).quinta), familia: .regular,
-        autor: "Francisco de Salinas", referencias: [.barbour1951], documentada: .salinas1577)
+        referencias: [.barbour1951], documentada: .salinas1577)
     /// Cada quinta, 2/7 de coma sintónica más estrecha: el de Zarlino, entre el de ¼ y el de ⅓.
     public static let mesotonicoDosSeptimosDeComa = TemperamentoConNombre(
         nombre: "mesotónico de 2/7 de coma",
         construccion: .regular(TemperamentoRegular.mesotonico(fraccionDeComa: 3.5).quinta), familia: .regular,
-        autor: "Gioseffo Zarlino", referencias: [.barbour1951], documentada: .zarlino1558)
+        referencias: [.barbour1951], documentada: .zarlino1558)
     /// Cada quinta, ⅕ de coma sintónica más estrecha: las terceras mayores y las quintas, igual de impuras.
     public static let mesotonicoQuintoDeComa = TemperamentoConNombre(
         nombre: "mesotónico de 1/5 de coma",
@@ -49,11 +49,11 @@ extension TemperamentoConNombre {
     /// Do–Sol, Sol–Re, Re–La y Si–Fa♯, ¼ de coma pitagórica más estrechas; las demás, puras.
     public static let werckmeisterIII = TemperamentoConNombre(
         nombre: "Werckmeister III", construccion: .circular(.werckmeisterIII), familia: .circular,
-        autor: "Andreas Werckmeister", anio: 1691, referencias: [.lindley2001, .barbour1951])
+        referencias: [.lindley2001, .barbour1951], documentada: .werckmeister1691)
     /// Re–La y La–Mi, ½ coma sintónica más estrechas, con Do–Mi pura; Fa♯–Do♯, un esquisma.
     public static let kirnbergerII = TemperamentoConNombre(
         nombre: "Kirnberger II", construccion: .circular(.kirnbergerII), familia: .circular,
-        autor: "Johann Philipp Kirnberger", anio: 1771, referencias: [.lindley2001, .barbour1951])
+        referencias: [.lindley2001, .barbour1951], documentada: .kirnberger1771)
     /// De Do a Mi, cuatro quintas ¼ de coma sintónica más estrechas, con Do–Mi pura; Fa♯–Do♯, un esquisma.
     public static let kirnbergerIII = TemperamentoConNombre(
         nombre: "Kirnberger III", construccion: .circular(.kirnbergerIII), familia: .circular,
@@ -77,15 +77,15 @@ extension TemperamentoConNombre {
     /// La octava en 19 partes: la quinta, casi la del mesotónico de ⅓ de coma; distingue Do♯ de Re♭.
     public static let divisiones19 = TemperamentoConNombre(
         nombre: "19 divisiones iguales", construccion: .divisiones(19), familia: .divisionesIguales,
-        autor: "Joel Mandelbaum", anio: 1961, alias: ["19-TET"], referencias: [.sethares2005])
+        alias: ["19-TET"], referencias: [.sethares2005], documentada: .mandelbaum1961)
     /// La octava en 22 partes: terceras casi puras y la séptima armónica cerca; no tiene un mesotónico.
     public static let divisiones22 = TemperamentoConNombre(
         nombre: "22 divisiones iguales", construccion: .divisiones(22), familia: .divisionesIguales,
-        autor: "R. H. M. Bosanquet", anio: 1876, alias: ["22-TET"], referencias: [.sethares2005])
+        alias: ["22-TET"], referencias: [.sethares2005], documentada: .bosanquet1876)
     /// La octava en 31 partes: casi el mesotónico de ¼ de coma, y la séptima armónica casi pura.
     public static let divisiones31 = TemperamentoConNombre(
         nombre: "31 divisiones iguales", construccion: .divisiones(31), familia: .divisionesIguales,
-        autor: "Christiaan Huygens", anio: 1691, alias: ["31-TET"], referencias: [.sethares2005])
+        alias: ["31-TET"], referencias: [.sethares2005], documentada: .huygens1691)
     /// La octava en 41 partes: quintas casi pitagóricas y terceras casi puras.
     public static let divisiones41 = TemperamentoConNombre(
         nombre: "41 divisiones iguales", construccion: .divisiones(41), familia: .divisionesIguales, alias: ["41-TET"],

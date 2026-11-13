@@ -18,14 +18,20 @@ extension LineaDeComandos {
         let comparado: RitmoConNombre?
     }
 
-    /// Los ritmos que pide `ritmos [<texto>] [--familia <familia>] [--estadisticas] [--comparar <ritmo>]`. Con un
-    /// nombre exacto, solo ese; si no, los que lo contienen (todos, sin texto), de la familia de `--familia`.
+    /// Los ritmos que pide `ritmos [<texto>] [--familia <familia>] [--uso <estilo>] [--epoca <época>] [--estadisticas]
+    /// [--comparar <ritmo>]`. Con un nombre exacto, solo ese; si no, los que lo contienen (todos, sin texto), de la
+    /// familia de `--familia`, de un estilo de `--uso` y de una época de `--epoca` (de origen o de uso), como en
+    /// `acordes`.
     static func ritmosPedidos(_ textos: [String], _ notacion: Notacion) throws -> PedidoDeRitmos {
         var argumentos = Argumentos(textos)
         var familia: FamiliaDeRitmo?
         if let texto = try argumentos.valorConPalabras(.familia) {
             familia = try familiaDeRitmo(leyendo: texto, notacion)
         }
+        var usos: [Estilo] = []
+        if let texto = try argumentos.valor(.uso) { usos = try estilosDeUso(leyendo: texto, notacion) }
+        var epocas: [Epoca] = []
+        if let texto = try argumentos.valor(.epoca) { epocas = try self.epocas(leyendo: texto, notacion) }
         var comparado: RitmoConNombre?
         if let texto = try argumentos.valorConPalabras(.comparar) {
             guard let ritmo = RitmoConNombre.buscar(nombre: texto) else { throw ErrorDeUso.ritmoDesconocido(texto) }
@@ -36,7 +42,11 @@ extension LineaDeComandos {
         let texto = argumentos.unidos
         let hallados = RitmoConNombre.buscar(nombre: texto).map { [$0] } ?? RitmoConNombre.buscar(conteniendo: texto)
         return PedidoDeRitmos(
-            ritmos: hallados.filter { familia == nil || $0.familia == familia }, estadisticas: estadisticas,
+            ritmos: hallados.filter { ritmo in
+                (familia == nil || ritmo.familia == familia)
+                    && (usos.isEmpty || ritmo.estilos.contains(where: usos.contains))
+                    && (epocas.isEmpty || ritmo.epocas.contains(where: epocas.contains))
+            }, estadisticas: estadisticas,
             comparado: comparado)
     }
 

@@ -10,8 +10,8 @@ import Testing
     /// La menor húngara: el año de Liszt, el Romanticismo, sus lugares y su estilo.
     @Test func laMenorHungara() throws {
         let origen = try #require(OrigenDeEscalaPresentado(.menorHungara, en: notacion))
-        #expect(origen.anio == 1859)
-        #expect(origen.epoca == "Romanticismo")
+        #expect(origen.origen?.anio == 1859)
+        #expect(origen.origen?.epoca == "Romanticismo")
         #expect(origen.lugaresDeOrigen.contains("Hungría"))
         #expect(origen.estilos == ["folclore"])
         #expect(origen.escuelas.isEmpty && origen.periodo == nil)
@@ -24,7 +24,7 @@ import Testing
     /// El dórico: medieval, con sus épocas de uso y la corriente de su estilo de jazz entre paréntesis.
     @Test func elDoricoYSusCorrientes() throws {
         let origen = try #require(OrigenDeEscalaPresentado(.dorico, en: notacion))
-        #expect(origen.anio == nil && origen.epoca == "Edad Media")
+        #expect(origen.origen?.anio == nil && origen.origen?.epoca == "Edad Media")
         #expect(origen.epocasDeUso.first == "Barroco" && origen.epocasDeUso.count == 5)
         #expect(origen.estilos.first?.hasPrefix("jazz (") == true)
         let datos = origen.datos(en: notacion)
@@ -36,7 +36,7 @@ import Testing
     @Test func losPeriodosYLasEscuelas() throws {
         let mela = try #require(TipoDeEscala.melakarta(29))
         let origen = try #require(OrigenDeEscalaPresentado(mela, en: notacion))
-        #expect(origen.anio == 1660 && origen.epoca == "Barroco")
+        #expect(origen.origen?.anio == 1660 && origen.origen?.epoca == "Barroco")
         #expect(origen.periodo == PeriodoMusical.mela.nombre)
         #expect(origen.periodosDeUso == [PeriodoMusical.bhatkhande.nombre])
         #expect(origen.escuelas == ["Carnática"])
@@ -53,7 +53,7 @@ import Testing
         let propia = TipoDeEscala(nombre: "mía", intervalos: [.unisono, .segundaMenor, .quintaJusta])
         #expect(OrigenDeEscalaPresentado(propia, en: notacion) == nil)
         #expect(EscalaPresentada(Escala(.do, propia), en: notacion).origen == nil)
-        #expect(EscalaPresentada(Escala(.re, .dorico), en: notacion).origen?.epoca == "Edad Media")
+        #expect(EscalaPresentada(Escala(.re, .dorico), en: notacion).origen?.origen?.epoca == "Edad Media")
     }
 
     /// La hoja de estudio en HTML lleva el origen con las estadísticas, y no sin ellas.

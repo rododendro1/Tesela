@@ -13,7 +13,7 @@ import Testing
         #expect(clave.compas == "4/4")
         #expect(clave.patron == "x..x..x...x.x...")
         let ficha = clave.ficha(en: notacion)
-        #expect(ficha.map(\.valor) == ["líneas de tiempo", "x..x..x...x.x...", "4 + 4 + 4 + 4", "4/4"])
+        #expect(ficha.map(\.valor) == ["líneas de tiempo", "clave 3-2", "x..x..x...x.x...", "4 + 4 + 4 + 4", "4/4"])
         let datos = clave.datos(en: notacion)
         #expect(datos.first == DatoPresentado(nombre: "Pulsos · golpes · fuertes", valor: "16 · 5 · 5"))
         #expect(datos.contains(DatoPresentado(nombre: "Intervalos", valor: "[3, 3, 4, 2, 4]")))

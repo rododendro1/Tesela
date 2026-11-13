@@ -61,7 +61,7 @@ extension TextosDeConsola {
         descripcionTradiciones: "katalogoko tradizioak, beren kategoriekin eta bakoitzean zenbat eskala dauden; batekin, haren eskalak",
         sintaxisProgresiones: "progresiones [<testua>] [--en <tonalitatea>] [--epoca <garaia>] [--afecto <afektua>]",
         descripcionProgresiones: "katalogoko progresioak, beren zenbaki erromatarrekin eta Do-ren gaineko akordeekin, edo --en-en tonikaren gainekoekin; testu batekin, izenean daramatenak",
-        sintaxisRitmos: "rhythms [<testua>] [--family <familia>] [--statistics] [--compare <erritmoa>]",
+        sintaxisRitmos: "rhythms [<testua>] [--family <familia>] [--use <estiloa>] [--epoca <garaia>] [--statistics] [--compare <erritmoa>]",
         descripcionRitmos: "katalogoko erritmoak, beren ereduarekin (x indartsua, o ahula, . isilunea) eta konpasarekin; testu batekin, izenean daramatenak",
         notasRitmos: "aukerak: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) familia bateko erritmoak uzten ditu; --statistics fitxa eta Toussainten neurriak gehitzen ditu (distantzien bektorea, euklidearra, sakona, uniformetasuna, kontratenporea, sinkopa); --compare <erritmoa> pultsu berdinetako beste batekiko Hamming eta trukatze-distantziak ematen ditu",
         sintaxisTemperamentos: "temperaments [<testua>] [--family <familia>] [--statistics | --clock [--fifths] [--colors]]",

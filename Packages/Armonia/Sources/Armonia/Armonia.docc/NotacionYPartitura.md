@@ -223,7 +223,7 @@ NombresPorOctava.turco.nombre(de: Altura(.si, octava: 4), ajuste: -1)   // "Seg�
 NombresPorOctava.griegoAntiguo.nombre(de: Altura(.la, octava: 3))       // "mésē"
 Escala(.do, .maqamRast).nombres(en: .arabe, octava: 4).compactMap { $0 }.joined(separator: " ")
 // "Rāst Dūkāh Sīkāh Jahārkāh Nawā Ḥusaynī Awj"
-SistemaMicrotonal.nombresDeLosSruti().first                             // "tīvrā"
+SistemaDeAlturas.nombresDeLosSruti().first                             // "tīvrā"
 Escala(.sol, .pelogNem).nombresDelGamelan()?.joined(separator: " ")     // "lima nem bem gulu dhadha"
 SistemaDeNombres.solfeoHebreo.nombre(de: Nota("Fa"), grafia: .original) // "פה"
 ```

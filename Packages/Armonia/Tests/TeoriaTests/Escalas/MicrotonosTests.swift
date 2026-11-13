@@ -202,17 +202,17 @@ import Testing
         #expect(TipoDeEscala.echosTritos == .mayor && TipoDeEscala.echosTritos.afinacionPropia == nil)
         #expect(TipoDeEscala.echoi.filter { $0.afinacionPropia == nil } == [.echosTritos])
         #expect(TipoDeEscala.echosProtos.tradicion == .bizancio && TipoDeEscala.echosProtos.categoria == .echos)
-        #expect(SistemaMicrotonal.moria72.cents(de: 12) == 200)
+        #expect(SistemaDeAlturas.moria72.cents(de: 12) == 200)
     }
 
     @Test func thaatEnSruti() {
         // Los 22 śruti: razones justas, con un limma, una coma o un semitono menor entre dos seguidos.
-        #expect(SistemaMicrotonal.razonesDeLosSruti.count == 22)
-        #expect(SistemaMicrotonal.razonesDeLosSruti[1] == RazonDeFrecuencias(256, 243))
-        #expect(SistemaMicrotonal.razonesDeLosSruti[7].description == "5/4")
-        #expect(abs(SistemaMicrotonal.sruti.cents(de: 7) - 386.31) < 0.01)
-        #expect(abs(SistemaMicrotonal.sruti.cents(de: 22 + 13) - 1901.96) < 0.01)
-        #expect(abs(SistemaMicrotonal.sruti.cents(de: -9) - (-498.04)) < 0.01)
+        #expect(SistemaDeAlturas.razonesDeLosSruti.count == 22)
+        #expect(SistemaDeAlturas.razonesDeLosSruti[1] == RazonDeFrecuencias(256, 243))
+        #expect(SistemaDeAlturas.razonesDeLosSruti[7].description == "5/4")
+        #expect(abs(SistemaDeAlturas.sruti.cents(de: 7) - 386.31) < 0.01)
+        #expect(abs(SistemaDeAlturas.sruti.cents(de: 22 + 13) - 1901.96) < 0.01)
+        #expect(abs(SistemaDeAlturas.sruti.cents(de: -9) - (-498.04)) < 0.01)
         let bilaval = TipoDeEscala.bilaval.afinacionPropia
         #expect(bilaval?.sistema == .sruti)
         #expect(nombres(Escala(.do, .bilaval)) == "Do Re↓ Mi↓ Fa Sol La↓ Si↓")
@@ -285,8 +285,8 @@ import Testing
     }
 
     @Test func generosDeArquitasYPtolomeo() {
-        #expect(SistemaMicrotonal.razones.pasosPorOctava == 1200)
-        #expect(SistemaMicrotonal.razones.cents(de: 63) == 63)
+        #expect(SistemaDeAlturas.razones.pasosPorOctava == 1200)
+        #expect(SistemaDeAlturas.razones.cents(de: 63) == 63)
         #expect(nombres(Escala(.mi, .tetracordoDiatonicoDeArquitas)) == "Mi Fa(−37¢) Sol(−6¢) La(−2¢)")
         #expect(
             nombres(Escala(.mi, .tetracordoDiatonicoDeArquitas), en: .ascii(.ingles)) == "E F(-37c) G(-6c) A(-2c)")

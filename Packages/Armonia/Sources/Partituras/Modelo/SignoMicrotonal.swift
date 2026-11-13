@@ -70,7 +70,7 @@ public enum SignoMicrotonal: Hashable, Sendable {
     /// El signo de una nota escrita en un sistema microtonal, `ajuste` pasos apartada (``NotaMicrotonal/ajuste``):
     /// el koron de un dastgāh, los moria de un echos bizantino, la flecha de un śruti; en los demás, por los cents,
     /// como `init(semitonos:desvio:)`.
-    public init?(sistema: SistemaMicrotonal, ajuste: Int, semitonos: Int, desvio: Double) {
+    public init?(sistema: SistemaDeAlturas, ajuste: Int, semitonos: Int, desvio: Double) {
         switch sistema {
         case .sruti:
             guard ajuste != 0, abs(ajuste) == 1, (-1...1).contains(semitonos) else { return nil }
@@ -232,7 +232,7 @@ extension SignoMicrotonal {
     /// cents más alta (``NotaMicrotonal/ajuste``): el koron y el sori son persas; las comas, de Arel-Ezgi-Uzdilek
     /// (contadas desde la nota pitagórica); los moria, de un echos, y las flechas, de un śruti. `nil` para los
     /// cuartos de tono, cuyo signo ya dan los cents.
-    public func sistemaYAjuste(altura: Altura, desvio: Double) -> (sistema: SistemaMicrotonal, ajuste: Int)? {
+    public func sistemaYAjuste(altura: Altura, desvio: Double) -> (sistema: SistemaDeAlturas, ajuste: Int)? {
         switch self {
         case .cuartos: return nil
         case .koron, .sori: return (.persa, Int((desvio / 50).rounded()))

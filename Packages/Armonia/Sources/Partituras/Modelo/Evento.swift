@@ -131,7 +131,7 @@ public struct Evento: Hashable, Sendable {
         for trozo in parteNotas.split(separator: "+", omittingEmptySubsequences: false) {
             var nota = String(trozo)
             var desvio = 0.0
-            var sistema: SistemaMicrotonal?
+            var sistema: SistemaDeAlturas?
             var ajuste = 0
             if let parentesis = nota.firstIndex(of: "("), nota.trimmingEspacios().hasSuffix(")") {
                 let dentro = String(String(nota[nota.index(after: parentesis)...]).trimmingEspacios().dropLast())
@@ -139,8 +139,8 @@ public struct Evento: Hashable, Sendable {
                 let cifra = dentro[0].replacingOccurrences(of: "¢", with: "").replacingOccurrences(of: "c", with: "")
                 // Los cents (como mucho un semitono arriba o abajo) y, si los hay, el sistema y los pasos que se
                 // aparta en él: «50¢,persa,1».
-                let leidos: (SistemaMicrotonal?, Int?) =
-                    dentro.count == 3 ? (SistemaMicrotonal(rawValue: dentro[1]), Int(dentro[2])) : (nil, nil)
+                let leidos: (SistemaDeAlturas?, Int?) =
+                    dentro.count == 3 ? (SistemaDeAlturas(rawValue: dentro[1]), Int(dentro[2])) : (nil, nil)
                 guard let cents = Double(cifra.trimmingEspacios()), cents.isFinite, abs(cents) <= 100,
                     dentro.count == 1 || (leidos.0 != nil && leidos.1 != nil)
                 else {
@@ -187,13 +187,13 @@ extension Evento {
         public let desvio: Double
         /// La teoría en que se escribe el microtono; `nil` si no se aparta de la temperada o si no se sabe (su signo
         /// se deduce entonces de los cents).
-        public let sistema: SistemaMicrotonal?
+        public let sistema: SistemaDeAlturas?
         /// Los pasos de `sistema` que se aparta (``NotaMicrotonal/ajuste``); 0 si no hay sistema.
         public let ajuste: Int
 
         /// La altura apartada `desvio` cents de la temperada, redondeado a la centésima, y escrita en `sistema`,
         /// `ajuste` pasos apartada. Una nota que no se aparta no tiene sistema.
-        public init(_ altura: Altura, desvio: Double = 0, sistema: SistemaMicrotonal? = nil, ajuste: Int = 0) {
+        public init(_ altura: Altura, desvio: Double = 0, sistema: SistemaDeAlturas? = nil, ajuste: Int = 0) {
             self.altura = altura
             let redondeado = (desvio * 100).rounded() / 100
             self.desvio = redondeado == 0 ? 0 : redondeado // sin -0

@@ -257,11 +257,15 @@ extension LineaDeComandosTests {
         // Y en `escala --json`, su origen escrito.
         let hungara = try #require(try json("escala La menor húngara") as? [String: Any])
         let origen = try #require(hungara["origen"] as? [String: Any])
-        #expect(origen["anio"] as? Int == 1859 && origen["epoca"] as? String == "Romanticismo")
+        let fecha = try #require(origen["origen"] as? [String: Any])
+        #expect(fecha["anio"] as? Int == 1859 && fecha["epoca"] as? String == "Romanticismo")
+        // Los acordes y las progresiones con nombre, con su origen como los demás catálogos (`OrigenPresentado`).
         let tristan = try #require(try json("acordes tristan") as? [[String: Any]])
-        #expect(tristan.first?["anio"] as? Int == 1859 && tristan.first?["epoca"] as? String == "romanticismo")
+        let deTristan = try #require(tristan.first?["origen"] as? [String: Any])
+        #expect(deTristan["anio"] as? Int == 1859 && deTristan["epoca"] as? String == "Romanticismo")
         let monte = try #require(try json("progresiones monte") as? [[String: Any]])
-        #expect(monte.first?["anio"] as? Int == 1755 && monte.first?["epoca"] as? String == "clasicismo")
+        let delMonte = try #require(monte.first?["origen"] as? [String: Any])
+        #expect(delMonte["anio"] as? Int == 1755 && delMonte["epoca"] as? String == "Clasicismo")
         let ptolomeo = try #require(try json("escalas --fuente ptolomeo") as? [[String: Any]])
         let generos = try #require(ptolomeo.first?["escalas"] as? [[String: Any]])
         #expect(generos.allSatisfy { $0["fuente"] as? String == "ptolomeo" })

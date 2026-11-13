@@ -1227,7 +1227,7 @@ import Hexagonos
         comprobar(NombresPorOctava.turco.nombre(de: Altura(.si, octava: 4), ajuste: -1), #""Segâh""#, doc, 1)
         comprobar(NombresPorOctava.griegoAntiguo.nombre(de: Altura(.la, octava: 3)), #""mésē""#, doc, 2)
         comprobar(Escala(.do, .maqamRast).nombres(en: .arabe, octava: 4).compactMap { $0 }.joined(separator: " "), #""Rāst Dūkāh Sīkāh Jahārkāh Nawā Ḥusaynī Awj""#, doc, 3)
-        comprobar(SistemaMicrotonal.nombresDeLosSruti().first, #""tīvrā""#, doc, 5)
+        comprobar(SistemaDeAlturas.nombresDeLosSruti().first, #""tīvrā""#, doc, 5)
         comprobar(Escala(.sol, .pelogNem).nombresDelGamelan()?.joined(separator: " "), #""lima nem bem gulu dhadha""#, doc, 6)
         comprobar(SistemaDeNombres.solfeoHebreo.nombre(de: Nota("Fa"), grafia: .original), #""פה""#, doc, 7)
     }

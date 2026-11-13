@@ -4,6 +4,12 @@
 
 ### Lo nuevo
 
+- `ElementoConNombrePresentado`: lo que tienen en común los catálogos presentados (el nombre, los alias, las citas y
+  el origen), con `datosDelCatalogo(en:)` para las filas «Otros nombres» y «Época» de sus fichas. Lo siguen
+  `TemperamentoPresentado`, `NotaPresentada`, `FuncionDeNotaPresentada` y `RitmoPresentado`, que ganan los alias, las
+  referencias y el origen que les faltaban (y los ritmos, sus estilos y sus épocas de uso), y los nuevos
+  `AcordeConNombrePresentado` y `ProgresionConNombrePresentada`, que usan la consola y la app.
+
 - `OrigenPresentado(_:en:)`: de cuándo es un elemento de cualquiera de los siete catálogos con nombre
   (`ElementoConNombre`), escrito: su año, su época y la obra que lo documenta, con `texto` («Barroco (1691)») y
   `datos(en:)`. `OrigenDeEscalaPresentado.origen` lo da para una escala, que ahora tiene también `documentada`. La
@@ -50,6 +56,10 @@
   análisis y de escalas las exportan también en HTML.
 
 ### Cambios incompatibles
+
+- `OrigenDeEscalaPresentado`, `TemperamentoPresentado` y `NotaPresentada` llevan su fecha en `origen`
+  (`OrigenPresentado`), en lugar de `anio` y `epoca` sueltos, y en su JSON `"anio": 1691` pasa a ser
+  `"origen": {"anio": 1691, "epoca": "Barroco"}`. Fuera `TextosDeApps.anioDelTemperamento` y `anioDeLaNota`.
 
 - `Escucha.escala(_:afinacion:)`, `Escucha.grados(de:afinacion:)` y `relojMicrotonal(de:afinacion:…)` toman una
   `AfinacionPropia`, el nuevo nombre de `TipoDeEscalaMicrotonal`.

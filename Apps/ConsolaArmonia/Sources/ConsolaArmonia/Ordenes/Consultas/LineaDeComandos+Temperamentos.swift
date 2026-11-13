@@ -55,7 +55,7 @@ extension LineaDeComandos {
             if let quinta = presentado.quinta {
                 linea += " · " + Redondeo.texto(quinta)
             }
-            let origen = [presentado.autor, presentado.anio.map(String.init)].compactMap { $0 }
+            let origen = [presentado.autor, presentado.origen?.anio.map(String.init)].compactMap { $0 }
             if !origen.isEmpty { linea += " (" + origen.joined(separator: ", ") + ")" }
             guard estadisticas else { return [linea] }
             return [linea]

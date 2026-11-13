@@ -21,7 +21,7 @@ extension RitmoConNombre {
     /// El tresillo con un golpe más en el cuarto tiempo: el ritmo de la habanera y del tango.
     public static let habanera = RitmoConNombre(
         nombre: "habanera", patron: "x..xx.x.", agrupacion: [2, 2, 2, 2], unidad: 8, familia: .lineaDeTiempo,
-        referencias: [.toussaint2013])
+        estilos: [.clasica], referencias: [.toussaint2013])
     /// La clave 3-2 del son cubano: tres golpes en el primer compás y dos en el segundo.
     public static let claveDeSon = RitmoConNombre(
         nombre: "clave de son", patron: "x..x..x...x.x...", agrupacion: [4, 4, 4, 4], unidad: 16,
@@ -38,7 +38,7 @@ extension RitmoConNombre {
     /// saudade» de João Gilberto.
     public static let bossaNova = RitmoConNombre(
         nombre: "bossa nova", patron: "x..x..x...x..x..", agrupacion: [4, 4, 4, 4], unidad: 16, familia: .lineaDeTiempo,
-        referencias: [.toussaint2013], anio: 1958)
+        estilos: [.jazz], referencias: [.toussaint2013], anio: 1958)
     /// La línea de tiempo del soukous congoleño, una de las seis claves de Toussaint.
     public static let soukous = RitmoConNombre(
         nombre: "soukous", patron: "x..x..x...xx....", agrupacion: [4, 4, 4, 4], unidad: 16, familia: .lineaDeTiempo,
@@ -60,15 +60,15 @@ extension RitmoConNombre {
     /// El compás de doce tiempos de la soleá, con los acentos en el 3, el 6, el 8, el 10 y el 12.
     public static let solea = RitmoConNombre(
         nombre: "soleá", patron: "ooxooxoxoxox", agrupacion: [3, 3, 2, 2, 2], unidad: 8, familia: .flamenco,
-        alias: ["soleares"], referencias: [.fernandez2004])
+        alias: ["soleares"], estilos: [.flamenco], referencias: [.fernandez2004])
     /// El compás de la bulería: el de la soleá contado desde el 12.
     public static let buleria = RitmoConNombre(
         nombre: "bulería", patron: "xooxooxoxoxo", agrupacion: [3, 3, 2, 2, 2], unidad: 8, familia: .flamenco,
-        alias: ["bulerías"], referencias: [.fernandez2004])
+        alias: ["bulerías"], estilos: [.flamenco], referencias: [.fernandez2004])
     /// El compás de la seguiriya: doce pulsos en cinco tiempos desiguales, 2 + 2 + 3 + 3 + 2.
     public static let seguiriya = RitmoConNombre(
         nombre: "seguiriya", patron: "x.x.x..x..x.", agrupacion: [2, 2, 3, 3, 2], unidad: 8, familia: .flamenco,
-        alias: ["siguiriya"], referencias: [.fernandez2004])
+        alias: ["siguiriya"], estilos: [.flamenco], referencias: [.fernandez2004])
     // MARK: Tāla de la India
 
     /// El tāla de dieciséis mātrā en cuatro vibhāg: palmadas en el 1, el 5 y el 13, y la onda (khālī) en el 9.
@@ -122,23 +122,23 @@ extension RitmoConNombre {
     /// El aksak de cinco pulsos, 2 + 3, de la danza búlgara.
     public static let paidushko = RitmoConNombre(
         nombre: "paidushko", patron: "x.x..", agrupacion: [2, 3], unidad: 8, familia: .aksak,
-        referencias: [.brailoiu1951])
+        estilos: [.folclore], referencias: [.brailoiu1951])
     /// El aksak de siete pulsos, 2 + 2 + 3, de la danza búlgara.
     public static let ruchenitsa = RitmoConNombre(
         nombre: "ruchenitsa", patron: "x.x.x..", agrupacion: [2, 2, 3], unidad: 8, familia: .aksak,
-        alias: ["račenica", "rachenitsa"], referencias: [.brailoiu1951])
+        alias: ["račenica", "rachenitsa"], estilos: [.folclore], referencias: [.brailoiu1951])
     /// El aksak de siete pulsos de Macedonia, 3 + 2 + 2.
     public static let lesnoto = RitmoConNombre(
         nombre: "lesnoto", patron: "x..x.x.", agrupacion: [3, 2, 2], unidad: 8, familia: .aksak, alias: ["lesnoto oro"],
-        referencias: [.brailoiu1951])
+        estilos: [.folclore], referencias: [.brailoiu1951])
     /// El aksak de nueve pulsos, 2 + 2 + 2 + 3, de Bulgaria; el karşılama turco tiene la misma agrupación.
     public static let daichovo = RitmoConNombre(
         nombre: "daichovo", patron: "x.x.x.x..", agrupacion: [2, 2, 2, 3], unidad: 8, familia: .aksak,
-        alias: ["dajchovo", "karşılama"], referencias: [.brailoiu1951])
+        alias: ["dajchovo", "karşılama"], estilos: [.folclore], referencias: [.brailoiu1951])
     /// El aksak de once pulsos, 2 + 2 + 3 + 2 + 2, de Bulgaria.
     public static let kopanitsa = RitmoConNombre(
         nombre: "kopanitsa", patron: "x.x.x..x.x.", agrupacion: [2, 2, 3, 2, 2], unidad: 8, familia: .aksak,
-        alias: ["gankino"], referencias: [.brailoiu1951])
+        alias: ["gankino"], estilos: [.folclore], referencias: [.brailoiu1951])
     /// El usul turco de diez pulsos, 3 + 2 + 2 + 3.
     public static let curcuna = RitmoConNombre(
         nombre: "curcuna", patron: "x..x.x.x..", agrupacion: [3, 2, 2, 3], unidad: 8, familia: .aksak,
@@ -154,44 +154,45 @@ extension RitmoConNombre {
     /// Dos pies del modo de la escuela de Notre Dame. Longa y breve: el troqueo.
     public static let primerModoRitmico = RitmoConNombre(
         nombre: "primer modo rítmico (troqueo)", patron: "x.xx.x", agrupacion: [3, 3], unidad: 8, familia: .modoRitmico,
-        referencias: [.apel1953], anio: 1250)
+        estilos: [.clasica], referencias: [.apel1953], anio: 1250)
     /// Dos pies del modo de la escuela de Notre Dame. Breve y longa: el yambo.
     public static let segundoModoRitmico = RitmoConNombre(
         nombre: "segundo modo rítmico (yambo)", patron: "xx.xx.", agrupacion: [3, 3], unidad: 8, familia: .modoRitmico,
-        referencias: [.apel1953], anio: 1250)
+        estilos: [.clasica], referencias: [.apel1953], anio: 1250)
     /// Dos pies del modo de la escuela de Notre Dame. Longa con puntillo, breve y longa: el dáctilo.
     public static let tercerModoRitmico = RitmoConNombre(
         nombre: "tercer modo rítmico (dáctilo)", patron: "x..xx.", agrupacion: [3, 3], unidad: 8, familia: .modoRitmico,
-        referencias: [.apel1953], anio: 1250)
+        estilos: [.clasica], referencias: [.apel1953], anio: 1250)
     /// Dos pies del modo de la escuela de Notre Dame. Breve, longa y longa con puntillo: el anapesto.
     public static let cuartoModoRitmico = RitmoConNombre(
         nombre: "cuarto modo rítmico (anapesto)", patron: "xx.x..", agrupacion: [3, 3], unidad: 8,
-        familia: .modoRitmico, referencias: [.apel1953], anio: 1250)
+        familia: .modoRitmico, estilos: [.clasica], referencias: [.apel1953], anio: 1250)
     /// Dos pies del modo de la escuela de Notre Dame. Dos longas con puntillo: el espondeo.
     public static let quintoModoRitmico = RitmoConNombre(
         nombre: "quinto modo rítmico (espondeo)", patron: "x..x..", agrupacion: [3, 3], unidad: 8,
-        familia: .modoRitmico, referencias: [.apel1953], anio: 1250)
+        familia: .modoRitmico, estilos: [.clasica], referencias: [.apel1953], anio: 1250)
     /// Dos pies del modo de la escuela de Notre Dame. Breves seguidas: el tríbraco.
     public static let sextoModoRitmico = RitmoConNombre(
         nombre: "sexto modo rítmico (tríbraco)", patron: "xxxxxx", agrupacion: [3, 3], unidad: 8, familia: .modoRitmico,
-        referencias: [.apel1953], anio: 1250)
+        estilos: [.clasica], referencias: [.apel1953], anio: 1250)
     // MARK: Danzas
 
     /// Tres tiempos con el acento en el primero.
     public static let vals = RitmoConNombre(
-        nombre: "vals", patron: "xoo", agrupacion: [1, 1, 1], unidad: 4, familia: .danza, referencias: [.toussaint2013])
+        nombre: "vals", patron: "xoo", agrupacion: [1, 1, 1], unidad: 4, familia: .danza, estilos: [.clasica],
+        referencias: [.toussaint2013])
     /// La corchea y las dos semicorcheas del primer tiempo, y las cuatro corcheas de los otros dos.
     public static let polonesa = RitmoConNombre(
         nombre: "polonesa", patron: "x.xxx.x.x.x.", agrupacion: [4, 4, 4], unidad: 16, familia: .danza,
-        referencias: [.toussaint2013])
+        estilos: [.clasica], referencias: [.toussaint2013])
     /// La corchea con puntillo, la semicorchea y la corchea de cada tiempo de 6/8.
     public static let siciliana = RitmoConNombre(
         nombre: "siciliana", patron: "x..xx.x..xx.", agrupacion: [6, 6], unidad: 16, familia: .danza,
-        referencias: [.toussaint2013])
+        estilos: [.clasica], referencias: [.toussaint2013])
     /// La negra con puntillo y la corchea ligada del charleston de los años veinte: el de James P. Johnson es de 1923.
     public static let charleston = RitmoConNombre(
         nombre: "charleston", patron: "x..x....", agrupacion: [2, 2, 2, 2], unidad: 8, familia: .danza,
-        referencias: [.toussaint2013], anio: 1923)
+        estilos: [.jazz], referencias: [.toussaint2013], anio: 1923)
 
     /// Todo el catálogo, en el orden de este fichero.
     public static let catalogo: [RitmoConNombre] = [

@@ -15,8 +15,9 @@ import Foundation
 // justa (los géneros de Arquitas y de Ptolomeo) o de una octava en partes iguales (el gamelan, los xilófonos
 // africanos, la música de Tailandia y Camboya).
 
-/// Con qué teoría se mide una escala microtonal: cuántos pasos tiene la octava y cómo se escriben.
-public enum SistemaMicrotonal: String, Sendable, Codable, CaseIterable {
+/// Con qué teoría se miden las alturas de la afinación propia de una escala (`AfinacionPropia`): cuántos pasos tiene
+/// la octava y cómo se escriben. No siempre son microtonos: los 22 śruti y las razones de Ptolomeo son justos.
+public enum SistemaDeAlturas: String, Sendable, Codable, CaseIterable {
     /// 24 cuartos de tono por octava, la teoría árabe moderna: Mi𝄳 (medio bemol) y Fa𝄲 (medio sostenido).
     case cuartosDeTono
     /// Las 53 comas de Arel-Ezgi-Uzdilek, la teoría turca: la nota pitagórica y las comas que se aparta de ella
@@ -54,7 +55,7 @@ public enum SistemaMicrotonal: String, Sendable, Codable, CaseIterable {
     public func cents(de pasos: Int) -> Double {
         guard self == .sruti else { return Double(pasos) * 1200 / Double(pasosPorOctava) }
         let octavas = pasos >= 0 ? pasos / 22 : (pasos - 21) / 22
-        return 1200 * Double(octavas) + SistemaMicrotonal.centsDeLosSruti[pasos - 22 * octavas]
+        return 1200 * Double(octavas) + SistemaDeAlturas.centsDeLosSruti[pasos - 22 * octavas]
     }
 
     /// Las razones de los 22 śruti desde Sa: entre dos seguidos hay un limma (256/243), una coma sintónica (81/80)
@@ -78,7 +79,7 @@ public enum SistemaMicrotonal: String, Sendable, Codable, CaseIterable {
 public struct AfinacionPropia: Hashable, Sendable {
     /// La escala de doce notas a la que se aproxima.
     public let temperada: TipoDeEscala
-    public let sistema: SistemaMicrotonal
+    public let sistema: SistemaDeAlturas
     /// Posición de cada grado al subir, en pasos del sistema desde la tónica temperada (uno por cada intervalo
     /// de `temperada`, en el mismo orden; el primero, 0 salvo que la tónica sea un microtono).
     public let pasos: [Int]
@@ -93,7 +94,7 @@ public struct AfinacionPropia: Hashable, Sendable {
 
     /// Una escala con microtonos; si `pasosDescendentes` es igual que `pasos`, se guarda `nil`.
     public init(
-        _ temperada: TipoDeEscala, _ sistema: SistemaMicrotonal, pasos: [Int], pasosDescendentes: [Int]? = nil,
+        _ temperada: TipoDeEscala, _ sistema: SistemaDeAlturas, pasos: [Int], pasosDescendentes: [Int]? = nil,
         fuente: FuenteTeorica? = nil, referencias: [Referencia] = []
     ) {
         self.referencias = Referencia.unicas(referencias + [fuente?.referencia].compactMap { $0 })
@@ -181,7 +182,7 @@ public struct AfinacionPropia: Hashable, Sendable {
 public struct NotaMicrotonal: Hashable, Sendable {
     /// La nota de la aproximación de doce notas.
     public let temperada: Nota
-    public let sistema: SistemaMicrotonal
+    public let sistema: SistemaDeAlturas
     /// Cuartos de tono sobre la nota temperada (−1: medio bemol más), comas sobre la pitagórica (comas53), moria
     /// sobre la temperada (moria72), comas sintónicas sobre la pitagórica (śruti) o cents sobre la temperada
     /// (razones).
@@ -201,7 +202,7 @@ public struct NotaMicrotonal: Hashable, Sendable {
 
     /// El nombre de la nota temperada que se aparta `ajuste` pasos de `sistema`, como `nombre(en:)`.
     package static func nombre(
-        _ temperada: Nota, sistema: SistemaMicrotonal, ajuste: Int, en notacion: Notacion
+        _ temperada: Nota, sistema: SistemaDeAlturas, ajuste: Int, en notacion: Notacion
     ) -> String {
         switch sistema {
         case .cuartosDeTono, .persa:

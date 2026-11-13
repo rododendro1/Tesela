@@ -56,10 +56,17 @@ extension RitmoConNombre {
     /// El año en que aparece, si se sabe: el de los modos rítmicos de Garlandia (hacia 1250), el del charleston (1923).
     public var anioDeOrigen: Int? { ficha.anioDeOrigen }
 
-    /// La época en que aparece, la de su año (`anioDeOrigen`); `nil` si no se sabe.
+    /// La época en que aparece: la de su año (`anioDeOrigen`) o, si no se sabe, la más antigua de las de uso de sus
+    /// estilos (`Estilo.epocasDeUso`). `nil` si no tiene ni año ni estilos con épocas.
     ///
     ///     RitmoConNombre.primerModoRitmico.epocaDeOrigen   // .edadMedia
     public var epocaDeOrigen: Epoca? { ficha.epocaDeOrigen }
+
+    /// Las épocas en que se usa por sus estilos, en orden, después de la de origen.
+    public var epocasDeUso: [Epoca] { ficha.epocasDeUso }
+
+    /// La de origen y las de uso, en orden.
+    public var epocas: [Epoca] { ficha.epocas }
 }
 
 extension TemperamentoConNombre {

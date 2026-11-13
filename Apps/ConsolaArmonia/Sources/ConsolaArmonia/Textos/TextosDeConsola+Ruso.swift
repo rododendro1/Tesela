@@ -61,7 +61,7 @@ extension TextosDeConsola {
         descripcionTradiciones: "традиции каталога с их категориями и числом гамм в каждой; с одной — её гаммы",
         sintaxisProgresiones: "progressions [<текст>] [--in <тональность>] [--era <эпоха>] [--affect <аффект>]",
         descripcionProgresiones: "последовательности каталога с римскими цифрами и аккордами от до или от тоники --in; с текстом — те, в названии которых он есть",
-        sintaxisRitmos: "rhythms [<текст>] [--family <семейство>] [--statistics] [--compare <ритм>]",
+        sintaxisRitmos: "rhythms [<текст>] [--family <семейство>] [--use <стиль>] [--era <эпоха>] [--statistics] [--compare <ритм>]",
         descripcionRitmos: "ритмы каталога с их рисунком (x сильная, o слабая, . пауза) и размером; с текстом — те, в чьём названии он есть",
         notasRitmos: "опции: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) оставляет ритмы одного семейства; --statistics добавляет карточку и меры Туссена (вектор расстояний, евклидов, глубокий, равномерность, затактовость, синкопированность); --compare <ритм> даёт расстояния Хэмминга и перестановок до другого ритма с тем же числом пульсов",
         sintaxisTemperamentos: "temperaments [<текст>] [--family <семейство>] [--statistics | --clock [--fifths] [--colors]]",

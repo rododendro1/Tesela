@@ -61,7 +61,7 @@ extension TextosDeConsola {
         descripcionTradiciones: "las tradiciones del catálogo, con sus categorías y cuántas escalas hay en cada una; con una, sus escalas",
         sintaxisProgresiones: "progresiones [<texto>] [--en <tonalidad>] [--epoca <época>] [--afecto <afecto>]",
         descripcionProgresiones: "las progresiones del catálogo con su cifrado romano y sus acordes sobre Do, o sobre la tónica de --en; con un texto, las que lo tienen en el nombre",
-        sintaxisRitmos: "ritmos [<texto>] [--familia <familia>] [--estadisticas] [--comparar <ritmo>]",
+        sintaxisRitmos: "ritmos [<texto>] [--familia <familia>] [--uso <estilo>] [--epoca <época>] [--estadisticas] [--comparar <ritmo>]",
         descripcionRitmos: "los ritmos del catálogo con su patrón (x fuerte, o débil, . silencio) y su compás; con un texto, los que lo tienen en el nombre",
         notasRitmos: "opciones: --familia (linea-de-tiempo, flamenco, tala, iqa, aksak, modo-ritmico, danza) deja los de una familia; --estadisticas añade su ficha y las medidas de Toussaint (vector de distancias, euclídeo, profundo, uniformidad, contratiempo, síncopa); --comparar <ritmo> da las distancias de Hamming y de intercambio con otro de los mismos pulsos",
         sintaxisTemperamentos: "temperamentos [<texto>] [--familia <familia>] [--estadisticas | --reloj [--quintas] [--colores]]",

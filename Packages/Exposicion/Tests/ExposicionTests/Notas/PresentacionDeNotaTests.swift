@@ -12,7 +12,7 @@ import Testing
         #expect(la.nombre == "La 422,5" && la.frecuencia == 422.5 && la.midi == 69)
         #expect(
             la.ficha(en: notacion).map(\.valor) == [
-                "diapasones", "La₄", "422.5 Hz", "422.5 Hz", "69", "Clasicismo (1751)",
+                "diapasones", "La₄", "422.5 Hz", "422.5 Hz", "69", "diapasón de Händel", "Clasicismo (1751)",
             ])
         #expect(la.referencias == ["Haynes 2002"])
         let json = try JSONEncoder().encode(la)

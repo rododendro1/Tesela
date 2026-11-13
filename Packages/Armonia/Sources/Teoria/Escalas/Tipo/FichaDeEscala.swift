@@ -34,14 +34,14 @@ package struct FichaDeEscala: Sendable {
     /// Una versión microtonal, sin la escala temperada (que es la de la ficha): los argumentos de
     /// `AfinacionPropia` salvo el primero.
     package struct Afinacion: Sendable {
-        let sistema: SistemaMicrotonal
+        let sistema: SistemaDeAlturas
         let pasos: [Int]
         let pasosDescendentes: [Int]?
         let fuente: FuenteTeorica?
         let referencias: [Referencia]
 
         package init(
-            _ sistema: SistemaMicrotonal, pasos: [Int], pasosDescendentes: [Int]? = nil, fuente: FuenteTeorica? = nil,
+            _ sistema: SistemaDeAlturas, pasos: [Int], pasosDescendentes: [Int]? = nil, fuente: FuenteTeorica? = nil,
             referencias: [Referencia] = []
         ) {
             self.sistema = sistema
