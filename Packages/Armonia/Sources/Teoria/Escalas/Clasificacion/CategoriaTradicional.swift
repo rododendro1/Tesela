@@ -236,8 +236,8 @@ extension TipoDeEscala {
     }
 
     /// Los nombres originales con la palabra de su categoría en su escritura, como `nombreCompleto`: «مقام حجاز»,
-    /// «राग यमन», «मेळ कनकाङ्गी», «宫调» y «宮調», «ትዝታ ቅኝት». Un nombre que ya la lleva («جنس صبا», «Ήχος πρώτος», «평조», los shadd)
-    /// o cuya categoría no la tiene se queda como está. La lectura es la del nombre sin la palabra.
+    /// «राग यमन», «मेळ कनकाङ्गी», «宫调» y «宮調», «ትዝታ ቅኝት». Un nombre que ya la lleva («جنس صبا», «Ήχος πρώτος»,
+    /// «평조», los shadd) o cuya categoría no la tiene se queda como está. La lectura es la del nombre sin la palabra.
     ///
     ///     TipoDeEscala.hiyaz.nombreOriginalCompleto?.texto   // "مقام حجاز"
     public var nombresOriginalesCompletos: [NombreOriginal] {
