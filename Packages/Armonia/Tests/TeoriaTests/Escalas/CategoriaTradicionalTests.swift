@@ -215,7 +215,7 @@ import Testing
             #expect(modos.contains { suyas.isSubset(of: $0) }, "\(tipo.nombre) ↛ \(padre.nombre)")
             if padre.categoria == .thaat { #expect(suyas.isSubset(of: delPadre), "\(tipo.nombre) ↛ \(padre.nombre)") }
         }
-        #expect(conPadre == 19 + 13 + 14 + 3 + 3)
+        #expect(conPadre == 30 + 17 + 14 + 3 + 3)
         #expect(TipoDeEscala.yaman.padre == .kalyan && TipoDeEscala.yaman.padre?.categoria == .thaat)
         #expect(TipoDeEscala.darbariKanada.padre?.nombre == TipoDeEscala.asavari.nombre)
         #expect(TipoDeEscala.candrakauns.padre == nil && TipoDeEscala.madhuvanti.padre == nil)
@@ -261,7 +261,7 @@ import Testing
     /// «ṣaḍja-grāma») o, en los jo coreanos, al final («P'yŏngjo»); los shadd llevan «shadd» en lugar de «maqām».
     /// Así una escala nueva no sale «makam Rast makamı» ni pierde «rāga».
     @Test func llevaLaCategoriaCuandoElNombreLaTiene() throws {
-        #expect(TipoDeEscala.tradicionales.filter(\.llevaLaCategoria).count == 71)
+        #expect(TipoDeEscala.tradicionales.filter(\.llevaLaCategoria).count == 76)
         #expect(TipoDeEscala.rastMakami.llevaLaCategoria && TipoDeEscala.rastMakami.nombreCompleto == "Rast makamı")
         #expect(TipoDeEscala.surMugami.llevaLaCategoria)
         #expect(TipoDeEscala.jinsHijaz.llevaLaCategoria)

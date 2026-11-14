@@ -65,6 +65,15 @@ extension Referencia {
         "wright1978", .libro, autores: ["Wright, Owen"],
         titulo: "The Modal System of Arab and Persian Music, A.D. 1250–1300", anio: 1978,
         editorial: "Oxford University Press", lugar: "Oxford")
+    /// La lista de modos de Scala, de Manuel Op de Coul: los doce shudūd de Ṣafī al-Dīn en pasos de su gama de 17.
+    public static let opDeCoulModos = Referencia(
+        "opDeCoulModos", .web, autores: ["Op de Coul, Manuel"], titulo: "List of Musical Modes", anio: nil,
+        publicadoEn: "Huygens-Fokker Foundation", url: "https://www.huygens-fokker.org/docs/modename.html")
+    /// Microtonal Theory: los shudūd de Ṣafī al-Dīn con sus intervalos pitagóricos.
+    public static let microtonalTheory = Referencia(
+        "microtonalTheory", .web, autores: ["Microtonal Theory"], titulo: "Medieval Perso-Arabic Music Theory",
+        anio: nil,
+        url: "https://www.microtonaltheory.com/microtonal-ethnography/medieval-perso-arabic-music-theory")
     /// Farhat, los dastgāh.
     public static let farhat1990 = Referencia(
         "farhat1990", .libro, autores: ["Farhat, Hormoz"], titulo: "The Dastgāh Concept in Persian Music",
@@ -218,6 +227,11 @@ extension Referencia {
         titulo:
             "Two Theories of Ujo and Pyeongjo in Pansori: Comparing Baek Daewoong's and Lee Bohyeong's Theories of Pansori Modes",
         anio: 2024, publicadoEn: "Music Theory Online", volumen: "30 (4)", doi: "10.30535/mto.30.4.10")
+    /// Son In-ae, los artículos de la Encyclopedia of Korean Culture sobre las cuatro tori de los minyo.
+    public static let son2013 = Referencia(
+        "son2013", .web, autores: ["Son, In-ae"], titulo: "경토리, 메나리토리, 육자배기토리, 수심가토리", anio: 2013,
+        publicadoEn: "한국민족문화대백과사전 (Encyclopedia of Korean Culture)",
+        url: "https://encykorea.aks.ac.kr/Article/E0072826")
     /// DeWoskin, la música en la China antigua: lo que representan las cinco notas en el Yueji y sus fases.
     public static let dewoskin1982 = Referencia(
         "dewoskin1982", .libro, autores: ["DeWoskin, Kenneth J."],
@@ -642,7 +656,8 @@ extension Referencia {
         .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .dewoskin1982, .garfias1975,
         .tranVanKhe1962, .morton1976,
         .sam1988, .williamson2000, .miller1985,
-        .surjodiningrat1972, .hood1954, .tenzer2000, .shin2024, .rubin2020, .kebede1971, .kilmer1971, .gurney1994,
+        .surjodiningrat1972, .hood1954, .tenzer2000, .shin2024, .son2013, .opDeCoulModos, .microtonalTheory, .rubin2020,
+        .kebede1971, .kilmer1971, .gurney1994,
         .west1994,
         .tracey1948, .kubik1994,
         .berliner1978, .knight1973, .harcourt1925, .siqueira1981, .rothgeb1995, .samson1977, .taruskin1987,

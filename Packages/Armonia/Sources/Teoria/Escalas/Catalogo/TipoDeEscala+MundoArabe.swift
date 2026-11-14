@@ -348,10 +348,16 @@ extension TipoDeEscala {
     //
     // Ṣafī al-Dīn al-Urmawī (siglo XIII), en el Kitāb al-adwār, parte la octava en diecisiete notas pitagóricas, con
     // dos tamaños de paso: el limma (256/243, 90 cents) y la coma (531441/524288, 24 cents). Con ellos el tono
-    // (9/8, 204) es limma, limma y coma, y la segunda neutra, dos limmas (180). De sus doce modos (shudūd), estos son
-    // los cuatro de siete notas que se describen igual en las fuentes; Rāst tiene la tercera y la sexta neutras.
-    // Los demás (ʿIrāq, Iṣfahān, Zīrafkand, Buzurg, Rāhawī, Zankūla, Ḥusaynī y Ḥijāzī) faltan: o tienen ocho notas o
-    // las fuentes no coinciden en sus grados. Se llaman «shadd» para no confundirse con los maqamat de hoy.
+    // (9/8, 204) es limma, limma y coma, y la segunda neutra, dos limmas (180). Se llaman «shadd» para no confundirse
+    // con los maqamat de hoy.
+    //
+    // De sus doce modos (shudūd), los cuatro primeros son los que se describen igual en todas las fuentes; Rāst tiene
+    // la tercera y la sexta neutras. Los otros cinco salen de dos fuentes que coinciden: la lista de modos de Scala
+    // (`Referencia.opDeCoulModos`) da cuántos pasos de la gama de diecisiete tiene cada intervalo, y Microtonal Theory
+    // (`Referencia.microtonalTheory`), qué intervalo pitagórico es: un paso de dos es dos limmas (180) o limma y coma
+    // (114). Faltan ʿIrāq, Iṣfahān y Buzurg: los dos primeros tienen una octava nota una coma por debajo de la octava,
+    // y Buzurg, dos notas a una coma la una de la otra, que en doce notas son la misma. Las grafías árabes de los
+    // nombres persas varían; se usa la más corriente.
 
     /// شد عشاق (Do Re Mi Fa Sol La Si♭, pitagórico): tono, tono, limma, tono, tono, limma y tono.
     public static let shaddUshshaq = TipoDeEscala(
@@ -400,6 +406,75 @@ extension TipoDeEscala {
         categoria: .maqam, fuente: .safiAlDin,
         afinaciones: [.init(.razones, pasos: [0, 204, 384, 498, 702, 882, 996])])
 
-    /// Los cuatro shudūd de Ṣafī al-Dīn que están: ʿUshshāq, Nawā, Abū Salīk y Rāst.
-    package static let adwar: [TipoDeEscala] = [.shaddUshshaq, .shaddNawa, .shaddAbuSalik, .shaddRast]
+    /// شد زيرافكند (ocho notas: Do Re Mi♭ Fa Sol La♭ La Si, pitagórico): dos limmas, limma y coma, tono, dos limmas,
+    /// limma y coma, limma, tono y limma y coma.
+    public static let shaddZirafkand = TipoDeEscala(
+        nombre: "shadd Zīrafkand",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["Zīrafkand de Ṣafī al-Dīn"],
+        nombresOriginales: [.init("شد زيرافكند", .arabe)],
+        categoria: .maqam, fuente: .safiAlDin,
+        afinaciones: [.init(.razones, pasos: [0, 180, 294, 498, 678, 792, 882, 1086])],
+        referencias: [.opDeCoulModos, .microtonalTheory])
+    /// شد زنكلاه (Do Re Mi Fa Sol La Si♭, con el Mi, el Sol y el La bajos): tono, dos limmas, limma y coma, dos
+    /// limmas, tono, limma y coma, y tono.
+    public static let shaddZankula = TipoDeEscala(
+        nombre: "shadd Zankūla",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["Zankūla de Ṣafī al-Dīn"], variantes: ["shadd Zangūla", "shadd Zangulah"],
+        nombresOriginales: [.init("شد زنكلاه", .arabe)],
+        categoria: .maqam, fuente: .safiAlDin,
+        afinaciones: [.init(.razones, pasos: [0, 204, 384, 498, 678, 882, 996])],
+        referencias: [.opDeCoulModos, .microtonalTheory])
+    /// شد رهاوي (Do Re Mi Fa Sol La♭ Si♭, con el Re, el Mi y el Sol bajos): dos limmas, tono, limma y coma, dos
+    /// limmas, limma y coma, tono y tono.
+    public static let shaddRahawi = TipoDeEscala(
+        nombre: "shadd Rāhawī",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Rāhawī de Ṣafī al-Dīn"], variantes: ["shadd Rahāwī"],
+        nombresOriginales: [.init("شد رهاوي", .arabe)],
+        categoria: .maqam, fuente: .safiAlDin,
+        afinaciones: [.init(.razones, pasos: [0, 180, 384, 498, 678, 792, 996])],
+        referencias: [.opDeCoulModos, .microtonalTheory])
+    /// شد حسيني (Do Re Mi♭ Fa Sol La♭ Si♭, con el Re y el Sol bajos): dos limmas, limma y coma, tono, dos limmas,
+    /// limma y coma, tono y tono.
+    public static let shaddHusayni = TipoDeEscala(
+        nombre: "shadd Ḥusaynī",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["Ḥusaynī de Ṣafī al-Dīn"], variantes: ["shadd Husaini"],
+        nombresOriginales: [.init("شد حسيني", .arabe)],
+        categoria: .maqam, fuente: .safiAlDin,
+        afinaciones: [.init(.razones, pasos: [0, 180, 294, 498, 678, 792, 996])],
+        referencias: [.opDeCoulModos, .microtonalTheory])
+    /// شد حجازي (Do Re Mi♭ Fa Sol La Si♭, con el Re, el Sol y el La bajos): dos limmas, limma y coma, tono, dos
+    /// limmas, tono, limma y coma, y tono.
+    public static let shaddHijazi = TipoDeEscala(
+        nombre: "shadd Ḥijāzī",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["Ḥijāzī de Ṣafī al-Dīn"], variantes: ["shadd Higazi"],
+        nombresOriginales: [.init("شد حجازي", .arabe)],
+        categoria: .maqam, fuente: .safiAlDin,
+        afinaciones: [.init(.razones, pasos: [0, 180, 294, 498, 678, 882, 996])],
+        referencias: [.opDeCoulModos, .microtonalTheory])
+
+    /// Los nueve shudūd de Ṣafī al-Dīn que están.
+    package static let adwar: [TipoDeEscala] = [
+        .shaddUshshaq, .shaddNawa, .shaddAbuSalik, .shaddRast, .shaddZirafkand, .shaddZankula, .shaddRahawi,
+        .shaddHusayni, .shaddHijazi,
+    ]
 }

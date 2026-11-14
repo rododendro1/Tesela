@@ -185,6 +185,31 @@ import Testing
         #expect((try? TipoDeEscala(leyendo: "Rast de Safi al-Din"))?.nombre == "shadd Rāst")
     }
 
+    /// Cinco shudūd más: Zīrafkand, de ocho notas, y Zankūla, Rāhawī, Ḥusaynī y Ḥijāzī, con la quinta una coma baja.
+    @Test func cincoShududMas() {
+        let shudud: [(TipoDeEscala, String, String)] = [
+            (.shaddZirafkand, "شد زيرافكند", "Do Re Mi♭ Fa Sol La♭ La Si"),
+            (.shaddZankula, "شد زنكلاه", "Do Re Mi Fa Sol La Si♭"),
+            (.shaddRahawi, "شد رهاوي", "Do Re Mi Fa Sol La♭ Si♭"),
+            (.shaddHusayni, "شد حسيني", "Do Re Mi♭ Fa Sol La♭ Si♭"),
+            (.shaddHijazi, "شد حجازي", "Do Re Mi♭ Fa Sol La Si♭"),
+        ]
+        for (tipo, arabe, notas) in shudud {
+            #expect(tipo.nombreOriginal == NombreOriginal(arabe, .arabe), Comment(rawValue: tipo.nombre))
+            #expect(Escala(.do, tipo).notas.map(\.description).joined(separator: " ") == notas)
+            #expect(tipo.fuente == .safiAlDin && tipo.referencias.starts(with: [.opDeCoulModos, .microtonalTheory]))
+            // Cada paso es un tono (204), dos limmas (180), limma y coma (114) o un limma (90).
+            let pasos = tipo.afinacionPropia?.pasos ?? []
+            let saltos = zip(pasos, pasos.dropFirst() + [1200]).map { $1 - $0 }
+            #expect(saltos.allSatisfy { [204, 180, 114, 90].contains($0) }, Comment(rawValue: tipo.nombre))
+            #expect(pasos[4] == 678, Comment(rawValue: tipo.nombre))
+        }
+        #expect(TipoDeEscala.shaddZirafkand.afinacionPropia?.desvios == [0, -20, -6, -2, -22, -8, -18, -14])
+        #expect(TipoDeEscala.shaddHusayni == .menorNatural && TipoDeEscala.shaddHijazi == .dorico)
+        #expect((try? TipoDeEscala(leyendo: "Husayni de Safi al-Din"))?.nombre == "shadd Ḥusaynī")
+        #expect(TipoDeEscala.adwar.count == 9)
+    }
+
     /// Los cuatro maqāmāt que salen de sus ajnas en Maqam World: ʿAjam ʿUshayrān, Shawq Afzā, ʿUshshāq Maṣrī y
     /// Zanjarān.
     @Test func maqamatQueSalenDeSusAjnas() {
