@@ -232,6 +232,8 @@ extension TextosDeApps {
         fragmento: "Απόσπασμα",
         nombreOriginal: "Πρωτότυπο όνομα",
         notasExternas: "Ξένες νότες",
+        derivaDe: "Προέρχεται από",
+        derivadas: "Παράγωγες",
         afinacion: "Κούρδισμα",
         afinacionTemperada: "συγκερασμένο",
         afinacionJusta: "φυσικό",

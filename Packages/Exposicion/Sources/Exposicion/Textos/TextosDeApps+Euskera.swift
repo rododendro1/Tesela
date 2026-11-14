@@ -232,6 +232,8 @@ extension TextosDeApps {
         fragmento: "Zatia",
         nombreOriginal: "Jatorrizko izena",
         notasExternas: "Kanpoko notak",
+        derivaDe: "Nondik dator",
+        derivadas: "Eratorriak",
         afinacion: "Afinazioa",
         afinacionTemperada: "tenperatua",
         afinacionJusta: "justua",

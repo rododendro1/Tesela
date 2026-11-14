@@ -26,6 +26,12 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
     /// En un rāga bhāṣāṅga, las notas que no son de su mēḷa (`TipoDeEscala.notasExternas`), desde la tónica: Do
     /// Mukhāri lleva «La♭». `nil` si no tiene.
     public let notasExternas: [String]?
+    /// La escala madre de la que sale por su tradición (`TipoDeEscala.padre`), con la palabra de su categoría: Do
+    /// Mukhāri sale del «mēḷa Kharaharapriyā», y Do Yaman, del «thāṭ Kalyāṇ». `nil` si no tiene.
+    public let padre: String?
+    /// Las escalas del catálogo que salen de esta (`TipoDeEscala.derivadas`), por su nombre: los janya de un mēḷa
+    /// («Mukhāri», «Kāpi»…), los rāgas de un thāṭ. `nil` si no sale ninguna.
+    public let derivadas: [String]?
     public let clases: [Int]
     /// De qué escala es modo («Modo 2 de Do mayor»), si lo es de alguna conocida.
     public let modo: String?
@@ -51,6 +57,9 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
         recorridoDescendente = escala.tipo.recorridoDescendente == nil ? nil : enOrden(.descendente)
         let externas = escala.tipo.notasExternas.map { (escala.tonica + $0).nombre(en: notacion) }
         notasExternas = externas.isEmpty ? nil : externas
+        padre = escala.tipo.padre?.nombreCompleto(en: notacion)
+        let derivadas = escala.tipo.derivadas.map { $0.nombre(en: notacion) }
+        self.derivadas = derivadas.isEmpty ? nil : derivadas
         clases = escala.notas.map(\.claseDeAltura)
         modo = PresentacionDeEscalaYAcorde.modo(de: escala, en: notacion)
         let cuatriadas = escala.armonizar(cuatriadas: true).compactMap { $0 }

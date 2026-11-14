@@ -232,6 +232,8 @@ extension TextosDeApps {
         fragmento: "Töredék",
         nombreOriginal: "Eredeti név",
         notasExternas: "Idegen hangok",
+        derivaDe: "Eredete",
+        derivadas: "Származékok",
         afinacion: "Hangolás",
         afinacionTemperada: "temperált",
         afinacionJusta: "tiszta",

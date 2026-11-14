@@ -120,7 +120,7 @@ extension LineaDeComandos {
             notas: TextosDeConsola.traduccion(\.notasEscalas),
             opciones: [
                 .tradicion, .categoria, .fuente, .estilo, .lugar, .agrupar, .epoca, .afecto, .escuela, .notas, .orden,
-                .sinSemitonos, .regulares, .fragmentos, .sinFragmentos, .vakra, .afinacion,
+                .sinSemitonos, .regulares, .fragmentos, .sinFragmentos, .vakra, .padre, .afinacion,
                 .conIntervalo,
                 .sinIntervalo,
                 .conPaso, .comparar, .vecinasDe, .parecidasA, .escaleraDe, .mapa,

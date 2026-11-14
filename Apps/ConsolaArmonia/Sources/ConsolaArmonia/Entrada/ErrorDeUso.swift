@@ -49,6 +49,8 @@ enum ErrorDeUso: ErrorDeArmonia {
     case epocaDesconocida(String)
     case afectoDesconocido(String)
     case escuelaDesconocida(String)
+    /// `--padre` con una escala que no es del catálogo o de la que no sale ninguna.
+    case padreDesconocido(String)
     case afinacionDesconocida(String)
     case ordenDeEscalasDesconocido(String)
     case ordenDeAcordesDesconocido(String)

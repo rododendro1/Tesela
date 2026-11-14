@@ -216,7 +216,7 @@ import Testing
             #expect(modos.contains { suyas.isSubset(of: $0) }, "\(tipo.nombre) ↛ \(padre.nombre)")
             if padre.categoria == .thaat { #expect(suyas.isSubset(of: delPadre), "\(tipo.nombre) ↛ \(padre.nombre)") }
         }
-        #expect(conPadre == 61 + 21 + 14 + 3 + 3)
+        #expect(conPadre == 62 + 21 + 14 + 3 + 3)
         #expect(TipoDeEscala.yaman.padre == .kalyan && TipoDeEscala.yaman.padre?.categoria == .thaat)
         #expect(TipoDeEscala.darbariKanada.padre?.nombre == TipoDeEscala.asavari.nombre)
         #expect(TipoDeEscala.candrakauns.padre == nil && TipoDeEscala.madhuvanti.padre == nil)

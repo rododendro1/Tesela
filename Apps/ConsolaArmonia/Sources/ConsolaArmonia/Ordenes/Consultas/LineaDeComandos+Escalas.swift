@@ -315,6 +315,11 @@ extension LineaDeComandos {
         if let externas = datos.notasExternas {
             lineas.append("  " + notacion.texto(\.notasExternas) + ": " + externas.joined(separator: " "))
         }
+        // De qué escala sale y cuáles salen de ella: «Deriva de: mēḷa Kharaharapriyā», «Derivadas: Mukhāri, Kāpi…».
+        if let padre = datos.padre { lineas.append("  " + notacion.texto(\.derivaDe) + ": " + padre) }
+        if let derivadas = datos.derivadas {
+            lineas.append("  " + notacion.texto(\.derivadas) + ": " + derivadas.joined(separator: ", "))
+        }
         // Con un sistema móvil (--sistema sargam), los grados con sus nombres, desde la tónica: Sā Re ga ma Pa Dha ni.
         if let movil {
             let nombres = escala.nombres(en: movil.sistema, grafia: movil.grafia)

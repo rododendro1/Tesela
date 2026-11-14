@@ -338,11 +338,11 @@ Amṛtavarṣiṇī, Śuddha Sāveri, Śuddha Dhanyāsi, Śrīrañjani, Mālayam
 Bhūpālam, Revagupti, Lalitā, Megharañjani, Nāgasvarāvaḷi, Sunādavinodinī y Śuddha Hindolam (iguales al subir y al
 bajar), y Bilahari, Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri, Nāṭa, Kalyāṇavasantam, Bauḷi, Dhanyāsi,
 Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini, Rasikarañjani, Dēvagāndhāri y
-Bhairavi carnática (distintos). Veintitrés más son vakra, y suben o bajan en zigzag:
+Bhairavi carnática (distintos). Veinticuatro más son vakra, y suben o bajan en zigzag:
 Ānandabhairavi, Suruṭṭi, Aṭāṇā, Kēdāram, Darbār, Mukhāri, Gauḷa, Nalinakānti, Kathanakutūhalam, Bēgaḍa, Sahānā,
 Rītigauḷa, Darbārī Kānaḍa carnática, Kāpi, Kānaḍa, Nīlāmbari, Nāyaki, Sāraṅga, Śrī carnática, Hamīr Kalyāṇi,
-Yamunā Kalyāṇi, Dēvamanōhari y Behāg carnática (ver abajo). Llevan su nombre en sánscrito, en telugu y en canarés,
-y los 38 que tienen artículo en la Wikipedia en tamil, también en tamil.
+Yamunā Kalyāṇi, Dēvamanōhari, Behāg carnática y Khamās (ver abajo). Llevan su nombre en sánscrito, en telugu y en
+canarés, y los 39 que tienen artículo en la Wikipedia en tamil, también en tamil.
 `melakartasCompatibles` dice de qué mēḷa puede derivar cada uno:
 `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 
@@ -371,7 +371,10 @@ Escala(.do, .darbariKanadaCarnatica).alturas(octava: 4).first?.description  // "
 Escala(.do, .darbariKanadaCarnatica).notas.first                           // Do
 ```
 
-`armonia escalas --vakra` los enseña todos juntos.
+Entre los rāgas indostánicos, Bihāg es vakra: sube desde el Ni de abajo y baja Ṡa Ni Dha Pa Ma Pa Ga ma Ga Re Sa,
+con el Ma tīvra de paso como nota externa. Los demás van en su forma recta.
+
+`armonia escalas --vakra` los enseña todos juntos, y `armonia escalas --padre 22`, los janya de un mēḷa.
 
 ### Notas externas
 

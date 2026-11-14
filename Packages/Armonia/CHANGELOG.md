@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.5.2 (2026-11-14)
 
 ### Cambios incompatibles
 
@@ -11,6 +11,15 @@
 
 ### Novedades
 
+- Khamās, janya vakra del mēḷa 28 (Harikāmbhojī), de la Wikipedia en inglés: sube Sa ma Ga ma Pa Dha ni Ṡa y
+  baja recto, con el Ni₃ de algunas frases como nota externa, y su nombre en sánscrito, telugu, canarés y tamil.
+- Bihāg tiene su recorrido vakra, también de la Wikipedia en inglés: sube desde el Ni de abajo (Ni Sa Ga ma Pa Ni Ṡa)
+  y baja Ṡa Ni Dha Pa Ma Pa Ga ma Ga Re Sa. El Ma tīvra de esa bajada entra en `intervalosDescendentes` y es una nota
+  externa, con el śruti del de Kalyāṇ; por eso un Bihāg guardado antes ya no es `==` al del catálogo, aunque se lee
+  como Bihāg por su clave.
+- El catálogo de la India pasa de un fichero a cuatro: los mēḷa (`TipoDeEscala+India.swift`), los janya
+  (`+India+Janya`), los thāṭ y los rāgas indostánicos (`+India+Indostanica`) y los grāma y las mūrchanā
+  (`+India+Grama`). La API no cambia.
 - Los rāgas vakra, que suben o bajan en zigzag, tienen su recorrido: `TipoDeEscala.recorrido` y
   `recorridoDescendente` dan el orden en que se tocan los grados, `esVakra` dice si hay alguno, y
   `Escala.alturas(octava:sentido:)` los sigue. Van en el JSON (`recorrido`, `recorridoDescendente`) solo si los hay,
