@@ -337,8 +337,8 @@ Los rāgas janya incluidos son Mohanam, Hindolam, Haṃsadhvani, Ābhogi, Madhya
 Amṛtavarṣiṇī, Śuddha Sāveri, Śuddha Dhanyāsi, Śrīrañjani, Mālayamārutam, Gambhīranāṭa, Haṃsanādam, Haṃsānandi,
 Bhūpālam, Revagupti, Lalitā, Megharañjani, Nāgasvarāvaḷi, Sunādavinodinī y Śuddha Hindolam (iguales al subir y al
 bajar), y Bilahari, Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri, Nāṭa, Kalyāṇavasantam, Bauḷi, Dhanyāsi,
-Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini y Rasikarañjani (distintos). Llevan su nombre en sánscrito, en telugu y en canarés, y los 29 que tienen artículo en la Wikipedia en tamil, también en tamil. Tres más son vakra, y suben o bajan en
-zigzag: Ānandabhairavi, Suruṭṭi y Aṭāṇā (ver abajo). `melakartasCompatibles` dice de qué mēḷa puede derivar
+Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini y Rasikarañjani (distintos). Llevan su nombre en sánscrito, en telugu y en canarés, y los 34 que tienen artículo en la Wikipedia en tamil, también en tamil. Nueve más son vakra, y suben o bajan en
+zigzag: Ānandabhairavi, Suruṭṭi, Aṭāṇā, Kēdāram, Darbār, Mukhāri, Gauḷa, Nalinakānti y Kathanakutūhalam (ver abajo). `melakartasCompatibles` dice de qué mēḷa puede derivar
 cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 
 ### Recorridos en zigzag

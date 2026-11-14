@@ -26,6 +26,22 @@ struct RecorridoTests {
             ])
     }
 
+    @Test func losOtrosVakraDelCatalogo() {
+        #expect(alturas(.kedaram) == ["Do4", "Fa4", "Mi4", "Fa4", "Sol4", "Si4", "Do5"])
+        #expect(
+            alturas(.darbar, .descendente) == [
+                "Do5", "Si♭4", "La4", "Sol4", "Fa4", "Re4", "Mi♭4", "Mi♭4", "Re4", "Do4",
+            ])
+        #expect(alturas(.mukhari) == ["Do4", "Re4", "Fa4", "Sol4", "Si♭4", "La4", "Do5"])
+        #expect(alturas(.mukhari, .descendente) == ["Do5", "Si♭4", "La♭4", "Sol4", "Fa4", "Mi♭4", "Re4", "Do4"])
+        #expect(alturas(.gaula) == ["Do4", "Re♭4", "Fa4", "Sol4", "Si4", "Do5"])
+        #expect(
+            alturas(.gaula, .descendente) == ["Do5", "Si4", "Sol4", "Fa4", "Re♭4", "Mi4", "Fa4", "Re♭4", "Do4"])
+        #expect(alturas(.nalinakanti) == ["Do4", "Mi4", "Re4", "Fa4", "Sol4", "Si4", "Do5"])
+        #expect(alturas(.nalinakanti, .descendente) == ["Do5", "Si4", "Sol4", "Fa4", "Mi4", "Re4", "Do4"])
+        #expect(alturas(.kathanakutuhalam) == ["Do4", "Re4", "Fa4", "La4", "Si4", "Mi4", "Sol4", "Do5"])
+    }
+
     @Test func losGradosFueraDeLaOctavaVanALaDeArribaOALaDeAbajo() {
         let tipo = TipoDeEscala(
             nombre: "mía", intervalos: TipoDeEscala.mayor.intervalos, recorrido: [1, 0, 1, 2, 3, 4, 5, 6, 7, 9, 8])
@@ -56,7 +72,11 @@ struct RecorridoTests {
     /// Todo recorrido del catálogo sale de la tónica, llega a la otra y pasa por todos los grados.
     @Test func losDelCatalogoVanDeTonicaATonicaPorTodosLosGrados() {
         let vakra = TipoDeEscala.catalogo.filter(\.esVakra)
-        #expect(vakra.map(\.nombre) == ["Ānandabhairavi", "Suruṭṭi", "Aṭāṇā"])
+        #expect(
+            vakra.map(\.nombre) == [
+                "Ānandabhairavi", "Suruṭṭi", "Aṭāṇā", "Kēdāram", "Darbār", "Mukhāri", "Gauḷa", "Nalinakānti",
+                "Kathanakutūhalam",
+            ])
         for tipo in vakra {
             let subida = tipo.intervalos.count
             let bajada = (tipo.intervalosDescendentes ?? tipo.intervalos).count

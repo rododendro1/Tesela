@@ -32,7 +32,7 @@ let columnasDeEscalas: [String] =
         "continentes_de_origen", "lugares_de_uso", "epoca_de_origen", "epocas_de_uso", "categoria", "clase", "fuente",
         "numero_de_notas",
         "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
-        "melakarta", "padre", "afinaciones", "sistema_microtonal", "cents",
+        "numero_de_melakarta", "mnemonico_de_melakarta", "padre", "afinaciones", "sistema_microtonal", "cents",
         // Lo que se mide de sus notas, sobre Do (`EstadisticasDeEscala`).
         "cardinal", "pasos", "brillo", "brillo_por_quintas", "forma_prima", "forte", "vector_intervalico",
         "nombre_del_conjunto", "anhemitonica", "cohemitonica", "maximamente_regular", "transposiciones_distintas",
@@ -58,6 +58,8 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
     let sobreDo = Escala(.do, tipo)
     let medidas = sobreDo.estadisticas
     let conjunto = sobreDo.conjuntoDeClasesDeAltura
+    // Su mēḷa: el suyo si es heptatónica y encaja en uno, y si no, el del padre, cuando el padre es un mēḷa.
+    let mela = tipo.numeroDeMelakarta != nil ? tipo : tipo.padre.flatMap { $0.categoria == .melakarta ? $0 : nil }
     let comoSeLlama =
         [
             tipo.nombre, tipo.nombreCompleto, tipo.nombresOriginales.map(\.texto).joined(separator: " · "),
@@ -83,7 +85,8 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         numeros(tipo.intervalos.map(\.semitonos)),
         tipo.intervalosDescendentes?.map(\.abreviatura).joined(separator: " ") ?? "",
         sobreDo.notas.map(\.nombre).joined(separator: " "),
-        tipo.numeroDeMelakarta.map(String.init) ?? "",
+        mela.flatMap(\.numeroDeMelakarta).map(String.init) ?? "",
+        mela?.mnemonicoDeMela ?? "",
         tipo.padre?.nombre ?? "",
         String(tipo.afinaciones.count),
         microtonal?.sistema.rawValue ?? "",

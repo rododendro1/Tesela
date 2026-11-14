@@ -537,9 +537,10 @@ extension TipoDeEscala {
         ],
         categoria: .janya, padre: .melakarta(22))
 
-    // Tres vakra, que suben o bajan en zigzag y llevan su recorrido (`recorrido`, `recorridoDescendente`), de la
-    // Wikipedia en inglés. Bēgaḍa, Sahānā, Rītigauḷa y Darbārī Kānaḍa no están: sus artículos dan escalas distintas en
-    // distintos sitios.
+    // Nueve vakra, que suben o bajan en zigzag y llevan su recorrido (`recorrido`, `recorridoDescendente`), de la
+    // Wikipedia en inglés (Nalinakānti y Kathanakutūhalam, del artículo «Janya»). Bēgaḍa, Sahānā, Rītigauḷa y Darbārī
+    // Kānaḍa no están: sus artículos dan escalas distintas en distintos sitios. Devagāndhāri tampoco: baja con los dos
+    // Ni, el ni₂ y el Ni₃, y la escala no puede tener dos notas en el mismo grado.
 
     /// Ānandabhairavi, del mēḷa 22 (Kharaharapriyā): sube Sa ga Re ga ma Pa Dha Pa Ṡa (sin ni) y baja recto con las
     /// siete. Es bhāṣāṅga: en sus frases entran el Ga, el dha y el Ni, que la escala no recoge.
@@ -579,6 +580,81 @@ extension TipoDeEscala {
             .init("अटाणा", .sanscrito), .init("అటాణ", .telugu), .init("ಅಟಾಣ", .canares), .init("அடாணா", .tamil),
         ],
         categoria: .janya, padre: .melakarta(29))
+    /// Kēdāram, del mēḷa 29 (Dhīraśaṅkarābharaṇam): sube Sa ma Ga ma Pa Ni Ṡa (sin Re ni Dha) y baja recto Ṡa Ni Pa
+    /// ma Ga Re Sa.
+    public static let kedaram = TipoDeEscala(
+        nombre: "Kēdāram",
+        intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
+        intervalosDescendentes: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
+        recorrido: [1, 3, 2, 3, 4, 5, 6],
+        nombresOriginales: [
+            .init("केदारम्", .sanscrito), .init("కేదారం", .telugu), .init("ಕೇದಾರಂ", .canares),
+            .init("கேதாரம்", .tamil),
+        ],
+        categoria: .janya, padre: .melakarta(29))
+    /// Darbār, del mēḷa 22 (Kharaharapriyā): sube recto Sa Re ma Pa Dha ni Ṡa (sin ga) y baja Ṡa ni Dha Pa ma Re ga
+    /// ga Re Sa.
+    public static let darbar = TipoDeEscala(
+        nombre: "Darbār",
+        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        recorridoDescendente: [8, 7, 6, 5, 4, 2, 3, 3, 2, 1],
+        nombresOriginales: [
+            .init("दर्बार्", .sanscrito), .init("దర్బార్", .telugu), .init("ದರ್ಬಾರ್", .canares),
+            .init("தர்பார்", .tamil),
+        ],
+        categoria: .janya, padre: .melakarta(22))
+    /// Mukhāri, janya de Kharaharapriyā: sube Sa Re ma Pa ni Dha Ṡa (sin ga) y baja recto Ṡa ni dha Pa ma ga Re Sa,
+    /// con el dha₁ que Kharaharapriyā no tiene. Sin `padre`: las dos formas juntas tienen ocho notas.
+    public static let mukhari = TipoDeEscala(
+        nombre: "Mukhāri",
+        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        recorrido: [1, 2, 3, 4, 6, 5, 7],
+        nombresOriginales: [
+            .init("मुखारि", .sanscrito), .init("ముఖారి", .telugu), .init("ಮುಖಾರಿ", .canares),
+            .init("முகாரி", .tamil),
+        ],
+        categoria: .janya)
+    /// Gauḷa, del mēḷa 15 (Māyāmālavagauḷa): sube recto Sa re ma Pa Ni Ṡa y baja Ṡa Ni Pa ma re Ga ma re Sa.
+    public static let gaula = TipoDeEscala(
+        nombre: "Gauḷa",
+        intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .septimaMayor],
+        intervalosDescendentes: [.unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
+        variantes: ["Gowla"],
+        recorridoDescendente: [7, 6, 5, 4, 2, 3, 4, 2, 1],
+        nombresOriginales: [
+            .init("गौळ", .sanscrito), .init("గౌళ", .telugu), .init("ಗೌಳ", .canares), .init("கௌளை", .tamil),
+        ],
+        categoria: .janya, padre: .melakarta(15))
+    /// Nalinakānti: sube Sa Ga Re ma Pa Ni Ṡa y baja recto Ṡa Ni Pa ma Ga Re Sa (sin Dha). Sin `padre`: la fuente no
+    /// lo da, y sin Dha las notas caben en los mēḷa 27 y 29.
+    public static let nalinakanti = TipoDeEscala(
+        nombre: "Nalinakānti",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
+        recorrido: [1, 3, 2, 4, 5, 6, 7],
+        nombresOriginales: [
+            .init("नलिनकान्ति", .sanscrito), .init("నలినకాంతి", .telugu), .init("ನಲಿನಕಾಂತಿ", .canares),
+        ],
+        categoria: .janya)
+    /// Kathanakutūhalam, con las siete notas del mēḷa 29 (Dhīraśaṅkarābharaṇam): sube Sa Re ma Dha Ni Ga Pa Ṡa y baja
+    /// recto.
+    public static let kathanakutuhalam = TipoDeEscala(
+        nombre: "Kathanakutūhalam",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        variantes: ["Kathanakuthuhalam"],
+        recorrido: [1, 2, 4, 6, 7, 3, 5, 8],
+        nombresOriginales: [
+            .init("कथनकुतूहलम्", .sanscrito), .init("కథనకుతూహలం", .telugu), .init("ಕಥನಕುತೂಹಲಂ", .canares),
+            .init("கதனகுதூகலம்", .tamil),
+        ],
+        categoria: .janya, padre: .melakarta(29))
 
     /// Rāgas janya incluidos.
     package static let janyas: [TipoDeEscala] = [
@@ -587,7 +663,7 @@ extension TipoDeEscala {
         .malayamarutam, .gambhiranata, .hamsanadam, .hamsanandi, .kalyanavasantam, .bhupalam, .revagupti, .bauli,
         .lalita, .megharanjani, .dhanyasi, .abheri, .manirangu, .nagasvaravali, .sunadavinodini,
         .andolika, .garudadhvani, .bahudari, .salagabhairavi, .jaganmohini, .rasikaranjani, .suddhaHindolam,
-        .anandabhairavi, .surutti, .atana,
+        .anandabhairavi, .surutti, .atana, .kedaram, .darbar, .mukhari, .gaula, .nalinakanti, .kathanakutuhalam,
     ]
 
     // MARK: Thāṭ (música indostánica)
