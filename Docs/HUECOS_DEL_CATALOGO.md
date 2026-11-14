@@ -81,6 +81,21 @@ los ṭubūʿ tunecinos) no se pueden leer desde aquí.
   Kumoi-jōshi (雲井調子) como Sol La♭ Do Re Mi♭ (Do Re♭ Fa Sol La♭), y no como el Kumoijōshi del catálogo (Do Re Mi♭
   Sol La): está por revisar.
 
+- **India, los pann tamiles:** las fuentes en abierto no coinciden en el rāga que le toca a cada pann (Kurinci es
+  Harikāmbhoji en shaivam.org y Malahari en Bharatpedia; Intaḷam, Māyāmālavagauḷa o Nāṭanāmakriyā), y los que sí
+  coinciden (Takkēci, Kāmbhoji; Kāntārapañcamam, Kedāragauḷa) son escalas que el catálogo ya tiene.
+- **China, los modos de Chaozhou:** Dujunco («Birth of a New Mode?», *Ethnomusicology OnLine* 8) describe los cuatro
+  diaoti (qingsan qingliu, zhongsan zhongliu, qingsan zhongliu, huowu) por qué notas se aprietan y cuánto, pero sus
+  escalas están en una figura que es una imagen, y la entrada de zh.wikipedia no se puede leer desde aquí.
+- **Sunda, los laras madenda y pelog degung:** la guía de Ableton de la afinación sundanesa, que sigue a
+  Kusumadinata (1969), da los cents en tablas que son imágenes, y se contradice en cuál de los degung es el «tri suara».
+- **Filipinas, el kulintang:** duyug, sinulog, tidtu, binalig y tagonggo son modos rítmicos, no escalas, y cada juego
+  de gongs tiene su afinación (Maceda 1963, Trimillos 2004, en la Wikipedia en inglés).
+- **Mundo árabe, Mustaʿār:** Maqam World da su jins (un Sīkāh con la segunda alta) solo en una imagen. Ṣabā Zamzam
+  ya está en el catálogo.
+- **Mongolia:** la colección de Sipos (*Mongolian Folk Songs*, ERHFM) clasifica las canciones por pentatónicas que el
+  catálogo ya tiene (las cinco rotaciones de la pentatónica, como los modos chinos).
+
 Con una de esas tablas en texto, o con un escaneo de las obras, se pueden añadir.
 
 También en noviembre de 2026 se buscaron los modos de la liturgia etíope y los octoechos de otras iglesias, para
