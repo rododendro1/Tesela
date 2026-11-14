@@ -44,5 +44,43 @@ extension TipoDeEscala {
         // En cents: 182, 182, 327, 182 y 327.
         afinaciones: [.init(.razones, pasos: [0, 182, 364, 691, 873])], referencias: [.williamson2000])
 
-    package static let sudesteAsiaticas: [TipoDeEscala] = [.piphat, .pinpeat, .saung]
+    // MARK: Los lai del khaen
+    //
+    // El khaen, el órgano de boca de los lao de Laos y del Isán (el nordeste de Tailandia), se toca en cinco modos
+    // (lai), cada uno sobre una nota fija y con sus bordones. Se agrupan en dos familias pentatónicas: los de thang
+    // san (ทางสั้น), Re Mi Sol La Si y sus transposiciones, y los de thang yao (ทางยาว), la pentatónica menor. Las
+    // notas son las de Miller (1985), en la afinación occidental con que se suele transcribir el khaen. El nombre
+    // original va en tailandés, como se escribe en el Isán.
+
+    /// ลายสุดสะแนน: el «padre de los lai», de thang san, sobre Sol (Sol La Do Re Mi).
+    public static let laiSutsanaen = TipoDeEscala(
+        nombre: "Lai sutsanaen", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
+        variantes: ["Sutsanaen", "Lai sootsanaen"],
+        nombresOriginales: [.init("ลายสุดสะแนน", .tailandes)],
+        categoria: .escala, regiones: [.laos], referencias: [.miller1985])
+    /// ลายโป้ซ้าย: el más antiguo, de thang san, sobre Do (Do Re Fa Sol La).
+    public static let laiPoSai = TipoDeEscala(
+        nombre: "Lai po sai", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
+        variantes: ["Po sai"],
+        nombresOriginales: [.init("ลายโป้ซ้าย", .tailandes)],
+        categoria: .escala, regiones: [.laos], referencias: [.miller1985])
+    /// ลายสร้อย: de thang san, sobre Re (Re Mi Sol La Si).
+    public static let laiSoi = TipoDeEscala(
+        nombre: "Lai soi", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
+        nombresOriginales: [.init("ลายสร้อย", .tailandes)],
+        categoria: .escala, regiones: [.laos], referencias: [.miller1985])
+    /// ลายใหญ่: de thang yao, sobre La (La Do Re Mi Sol).
+    public static let laiYai = TipoDeEscala(
+        nombre: "Lai yai", intervalos: TipoDeEscala.pentatonicaMenor.intervalos,
+        nombresOriginales: [.init("ลายใหญ่", .tailandes)],
+        categoria: .escala, regiones: [.laos], referencias: [.miller1985])
+    /// ลายน้อย: de thang yao, sobre Re (Re Fa Sol La Do).
+    public static let laiNoi = TipoDeEscala(
+        nombre: "Lai noi", intervalos: TipoDeEscala.pentatonicaMenor.intervalos,
+        nombresOriginales: [.init("ลายน้อย", .tailandes)],
+        categoria: .escala, regiones: [.laos], referencias: [.miller1985])
+
+    package static let sudesteAsiaticas: [TipoDeEscala] = [
+        .piphat, .pinpeat, .saung, .laiSutsanaen, .laiPoSai, .laiSoi, .laiYai, .laiNoi,
+    ]
 }

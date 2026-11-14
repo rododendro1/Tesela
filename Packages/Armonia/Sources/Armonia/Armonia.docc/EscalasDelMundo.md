@@ -101,7 +101,9 @@ usan microtonos):
   sauta (lidia) y tomora mesengo (dórica). Y la nyamaropa de la mbira shona, cercana al mixolidio.
 - **El sudeste asiático**: las siete partes iguales de la música clásica de Tailandia (piphat) y de Camboya
   (pinpeat), escritas como el timbila, y el saung, el arpa de Myanmar: una pentatónica de pasos de 182 y 327
-  cents (Do Re Mi Sol La en doce notas).
+  cents (Do Re Mi Sol La en doce notas). Y los cinco lai del khaen de los lao, cada uno sobre su nota: lai
+  sutsanaen, lai po sai y lai soi (thang san, Re Mi Sol La Si y sus transposiciones), y lai yai y lai noi (thang
+  yao, la pentatónica menor).
 - **Los 8 modos gregorianos**, con sus nombres latinos (protus authenticus, protus plagalis…), cada uno desde su
   final. Ver «Modos gregorianos», más abajo. Y los tres hexacordos de Guido de Arezzo (hexachordum naturale,
   durum y molle: Ut Re Mi Fa Sol La desde Do, Sol y Fa), y su gamut en ``ManoGuidoniana``. Y los cuatro que añadió Glareano en el Dodecachordon

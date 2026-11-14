@@ -11,6 +11,10 @@
 
 ### Novedades
 
+- Los cinco lai del khaen, el órgano de boca de los lao (Miller 1985): Lai sutsanaen (ลายสุดสะแนน, sobre Sol), Lai
+  po sai (ลายโป้ซ้าย, Do) y Lai soi (ลายสร้อย, Re), de thang san, y Lai yai (ลายใหญ่, La) y Lai noi (ลายน้อย, Re),
+  de thang yao, con su nombre en tailandés, como se escribe en el Isán. `RegionDeEscala` gana `laos` (Laos y el
+  Isán) y `Pais`, `laos`.
 - Los seis chōshi del gagaku (六調子): Ichikotsuchō (壱越調), Sōjō (双調) y Taishikichō (太食調), sobre la ryo, e
   Hyōjō (平調), Ōshikichō (黄鐘調) y Banshikichō (盤渉調), sobre la ritsu. Cada uno lleva en su documentación su
   tónica fija, la del lü que le da nombre (Re, Sol, Mi, Mi, La y Si). «Mi 平調» es el Hyōjō y «Do 平調子», el

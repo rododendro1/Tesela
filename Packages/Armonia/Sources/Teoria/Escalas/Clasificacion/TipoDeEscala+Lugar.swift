@@ -15,6 +15,7 @@ extension RegionDeEscala {
         case .tailandia: [.tailandia]
         case .camboya: [.camboya]
         case .birmania: [.myanmar]
+        case .laos: [.laos, .tailandia]
         case .buganda: [.uganda]
         case .chopi: [.mozambique]
         case .mandinga: [.mali, .senegal, .gambia, .guinea]

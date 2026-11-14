@@ -67,7 +67,7 @@ import Testing
         #expect((try? TipoDeEscala(leyendo: "hexacordo duro")) == .hexacordoDuro)
         // Las siete afinaciones babilónicas, las equidistantes de África y del sudeste asiático y los doce lü.
         let afinaciones =
-            TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas + [.shierLu]
+            TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + [.piphat, .pinpeat, .saung] + [.shierLu]
         #expect(TipoDeEscala.tradicionales(categoria: .afinacion) == afinaciones)
         #expect(TipoDeEscala.tradicionales(tradicion: .africa).map(\.nombre) == TipoDeEscala.africanas.map(\.nombre))
         #expect(TipoDeEscala.africanas.count == 7 && TipoDeEscala.sauta == .lidio)
@@ -244,7 +244,7 @@ import Testing
         let afinaciones = TipoDeEscala.tradicionales(clase: .afinacion)
         #expect(
             afinaciones
-                == TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas + [.shierLu])
+                == TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + [.piphat, .pinpeat, .saung] + [.shierLu])
         let madres = TipoDeEscala.tradicionales(clase: .escalaMadre)
         let thaatsGramasYLaras = TipoDeEscala.thaats + TipoDeEscala.gramas + TipoDeEscala.indonesias
         #expect(madres.count == 72 + thaatsGramasYLaras.count)
