@@ -72,6 +72,11 @@ package struct DatosDeEscala: Sendable {
     /// Las notas que no son de su madre (los anya svara de un rāga bhāṣāṅga), ordenadas: el Dha₁ con que baja
     /// Mukhāri, que Kharaharapriyā no tiene, o las que Ānandabhairavi solo toca en algunas frases.
     package let notasExternas: [Intervalo]
+    /// El vādī y el saṃvādī de un rāga indostánico, desde la tónica (`TipoDeEscala.funciones`); `nil` si no los da.
+    package let vadi: Intervalo?
+    package let samvadi: Intervalo?
+    /// Los ajnas de un maqām o los çeşni de un makam, del grave al agudo (`TipoDeEscala.ajnas`).
+    package let ajnas: [FragmentoDeLaEscala]
     /// Las versiones microtonales: la primera, la de su teoría de hoy; las demás, de otros autores (con `fuente`).
     package let afinaciones: [Afinacion]
     /// El teórico que definió la escala (los géneros de Ptolomeo, los colores de Aristóxeno…); `nil` en las demás.
@@ -92,7 +97,8 @@ package struct DatosDeEscala: Sendable {
         corrientes: [Corriente] = [], escuelas: [Escuela] = [],
         regiones: [RegionDeEscala] = [],
         categoria: CategoriaTradicional? = nil,
-        madre: IdentidadDeEscala? = nil, notasExternas: [Intervalo] = [], afinaciones: [Afinacion] = [],
+        madre: IdentidadDeEscala? = nil, notasExternas: [Intervalo] = [], vadi: Intervalo? = nil,
+        samvadi: Intervalo? = nil, ajnas: [FragmentoDeLaEscala] = [], afinaciones: [Afinacion] = [],
         fuente: FuenteTeorica? = nil, referencias: [Referencia] = [], documentada: Referencia? = nil,
         clase: ClaseDeEscala? = nil
     ) {
@@ -113,6 +119,9 @@ package struct DatosDeEscala: Sendable {
         self.categoria = categoria
         self.madre = madre
         self.notasExternas = notasExternas.sorted { ($0.pasos, $0.semitonos) < ($1.pasos, $1.semitonos) }
+        self.vadi = vadi
+        self.samvadi = samvadi
+        self.ajnas = ajnas
         self.afinaciones = afinaciones
         self.fuente = fuente
     }
