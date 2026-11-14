@@ -275,6 +275,10 @@ extension TextosDeTeoria {
         idiomaCoreano: "Koreanisch",
         idiomaAmarico: "Amharisch",
         idiomaGriego: "Griechisch",
+        idiomaGriegoAntiguo: "Altgriechisch",
+        idiomaHebreo: "Hebräisch",
+        idiomaYidis: "Jiddisch",
+        idiomaBirmano: "Birmanisch",
         idiomaTailandes: "Thai",
         idiomaJemer: "Khmer",
         // Escuela.swift y RegionDeEscala.swift

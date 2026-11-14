@@ -11,6 +11,10 @@
 
 ### Novedades
 
+- Más nombres originales: el árabe de los cuatro *shudūd* de Ṣafī al-Dīn (شد عشاق…), el birmano de Saung (စောင်း),
+  el hebreo y el yidis del klezmer (פֿריגיש, אהבה רבה, מי שברך, ה׳ מלך, מגן אבות) y el griego politónico de las
+  harmoniai (δωριστί…) y de los géneros y sus colores (γένος διατονικόν, χρῶμα μαλακόν…), estos con su lectura.
+  `IdiomaOriginal` gana `griegoAntiguo` («grc»), `hebreo`, `yidis` y `birmano`, y `Escritura`, `hebrea` y `birmana`.
 - `TipoDeEscala.nombresOriginales` y `nombreOriginal`: el nombre en la escritura de su tradición, con su idioma
   (`IdiomaOriginal`, con la etiqueta BCP 47: «ar», «zh-Hant»), su escritura (`Escritura`, con el código ISO 15924) y,
   si no es la del nombre, su lectura («Yō onkai» para 陽音階). Los tienen 233 escalas: las de la India, el mundo

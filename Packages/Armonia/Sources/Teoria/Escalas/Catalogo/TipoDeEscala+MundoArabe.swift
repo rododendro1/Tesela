@@ -316,6 +316,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["ʿUshshāq de Ṣafī al-Dīn"],
+        nombresOriginales: [.init("شد عشاق", .arabe)],
         categoria: .maqam, fuente: .safiAlDin,
         // Los shudūd de Ṣafī al-Dīn, en cents de sus razones pitagóricas.
         afinaciones: [.init(.razones, pasos: [0, 204, 408, 498, 702, 906, 996])])
@@ -327,6 +328,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["Nawā de Ṣafī al-Dīn"],
+        nombresOriginales: [.init("شد نوى", .arabe)],
         categoria: .maqam, fuente: .safiAlDin,
         afinaciones: [.init(.razones, pasos: [0, 204, 294, 498, 702, 792, 996])])
     /// شد أبو سليك (Do Re♭ Mi♭ Fa Sol♭ La♭ Si♭, pitagórico): limma, tono, tono, limma, tono, tono y tono.
@@ -337,6 +339,7 @@ extension TipoDeEscala {
             .quintaDisminuida, .sextaMenor, .septimaMenor,
         ],
         alias: ["Abū Salīk de Ṣafī al-Dīn"], variantes: ["shadd Būsalīk"],
+        nombresOriginales: [.init("شد أبو سليك", .arabe)],
         categoria: .maqam, fuente: .safiAlDin,
         afinaciones: [.init(.razones, pasos: [0, 90, 294, 498, 588, 792, 996])])
     /// شد راست (Do Re Mi Fa Sol La Si♭, con el Mi y el La neutros): tono, dos limmas, limma y coma, tono, dos limmas,
@@ -348,6 +351,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["Rāst de Ṣafī al-Dīn"],
+        nombresOriginales: [.init("شد راست", .arabe)],
         categoria: .maqam, fuente: .safiAlDin,
         afinaciones: [.init(.razones, pasos: [0, 204, 384, 498, 702, 882, 996])])
 

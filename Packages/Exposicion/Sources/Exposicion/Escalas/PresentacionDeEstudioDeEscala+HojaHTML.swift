@@ -223,6 +223,9 @@ extension PresentacionDeEstudioDeEscala {
         :lang(am){font-family:Kefa,"Noto Sans Ethiopic",sans-serif}\
         :lang(th){font-family:Thonburi,"Noto Sans Thai",sans-serif}\
         :lang(km){font-family:"Khmer Sangam MN","Noto Sans Khmer",sans-serif}\
+        :lang(he),:lang(yi){font-family:"Arial Hebrew","Noto Sans Hebrew",sans-serif}\
+        :lang(my){font-family:"Myanmar Sangam MN","Noto Sans Myanmar",sans-serif}\
+        :lang(grc){font-family:"Noto Serif","Times New Roman",serif}\
         .notas{display:flex;flex-wrap:wrap;gap:0 .6em;color:var(--suave);font-size:13pt}\
         figure{margin:0 0 8px;background:#fff;color:#222;border-radius:8px}\
         figure svg{display:block;width:100%;height:auto}\

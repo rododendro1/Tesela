@@ -13,6 +13,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["Ahavah Rabbah"], variantes: ["Ahava Rabbah", "Freigish", "Ahava Raba"],
+        nombresOriginales: [.init("פֿריגיש", .yidis), .init("אהבה רבה", .hebreo, lectura: "Ahavah Rabbah")],
         categoria: .shteyger)
     /// Misheberakh, el dórico ♯4.
     public static let misheberakh = TipoDeEscala(
@@ -22,6 +23,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["Mi Sheberach", "Av Harachamim"],
+        nombresOriginales: [.init("מי שברך", .hebreo), .init("אב הרחמים", .hebreo, lectura: "Av Harachamim")],
         categoria: .shteyger)
     /// Adonai Malakh: un mixolidio con la 3ª menor de paso (Do Re Mi♭ Mi Fa Sol La Si♭).
     public static let adonaiMalakh = TipoDeEscala(
@@ -31,6 +33,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["Adonoi Moloch", "Adoshem Malakh"],
+        nombresOriginales: [.init("ה׳ מלך", .hebreo)],
         categoria: .shteyger)
     /// Magen Avot, la menor natural.
     public static let magenAvot = TipoDeEscala(
@@ -40,6 +43,7 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["Mogen Ovos"],
+        nombresOriginales: [.init("מגן אבות", .hebreo)],
         categoria: .shteyger)
 
     package static let klezmer: [TipoDeEscala] = [.freygish, .misheberakh, .adonaiMalakh, .magenAvot]
