@@ -11,6 +11,8 @@
 
 ### Novedades
 
+- Los 72 mēḷa tienen también su nombre en tamil (கனகாங்கி), de la Wikipedia en tamil y cotejado con el IAST.
+  `IdiomaOriginal` gana `tamil` («ta»), y `Escritura`, `tamil` («Taml»).
 - Los 72 mēḷa tienen también su nombre en telugu y en canarés (కనకాంగి, ಕನಕಾಂಗಿ), con su forma completa (మేళ
   కనకాంగి), y se leen por ellos al buscar. Salen del devanagari con tres reglas de esas ortografías (anusvara ante
   consonante de su grupo, -ం final, ī y ā finales breves) y están cotejados con la Wikipedia en telugu.

@@ -43,7 +43,7 @@ EXCEPCIONES = {
     "engines",  # el nombre de la orden
     "sheet <scale>",  # la sintaxis de la orden, sin opciones
     "own",      # el nombre de `--engine own`
-    "Hindi", "Sanskrit", "Thai", "Khmer", "Telugu", "Kannada",  # alemán: los nombres de esos idiomas son los mismos
+    "Hindi", "Sanskrit", "Thai", "Khmer", "Telugu", "Kannada", "Tamil",  # alemán: los nombres de esos idiomas son los mismos
     "Japan",    # alemán: el nombre del país
     "Korea",    # alemán: el nombre del país
     "Vietnam",  # alemán: el nombre del país

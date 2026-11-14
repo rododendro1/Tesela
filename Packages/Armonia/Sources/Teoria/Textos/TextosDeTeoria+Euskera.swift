@@ -273,6 +273,7 @@ extension TextosDeTeoria {
         idiomaHindi: "hindia",
         idiomaTelugu: "telugua",
         idiomaCanares: "kannada",
+        idiomaTamil: "tamilera",
         idiomaChino: "txinera",
         idiomaChinoSimplificado: "txinera sinplifikatua",
         idiomaChinoTradicional: "txinera tradizionala",

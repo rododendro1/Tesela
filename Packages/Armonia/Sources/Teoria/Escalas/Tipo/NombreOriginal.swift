@@ -36,6 +36,7 @@ public enum IdiomaOriginal: String, Sendable, CaseIterable, Codable {
     case hindi = "hi"
     case telugu = "te"
     case canares = "kn"
+    case tamil = "ta"
     /// Los caracteres que se escriben igual en chino simplificado y tradicional: 商, 羽, 十二律.
     case chino = "zh"
     case chinoSimplificado = "zh-Hans"
@@ -61,6 +62,7 @@ public enum IdiomaOriginal: String, Sendable, CaseIterable, Codable {
         case .sanscrito, .hindi: .devanagari
         case .telugu: .telugu
         case .canares: .kannada
+        case .tamil: .tamil
         case .chino, .chinoSimplificado, .chinoTradicional: .han
         case .japones: .japonesa
         case .coreano: .hangul
@@ -90,6 +92,7 @@ public enum IdiomaOriginal: String, Sendable, CaseIterable, Codable {
         case .hindi: TextosDeTeoria.traduccion(\.idiomaHindi)
         case .telugu: TextosDeTeoria.traduccion(\.idiomaTelugu)
         case .canares: TextosDeTeoria.traduccion(\.idiomaCanares)
+        case .tamil: TextosDeTeoria.traduccion(\.idiomaTamil)
         case .chino: TextosDeTeoria.traduccion(\.idiomaChino)
         case .chinoSimplificado: TextosDeTeoria.traduccion(\.idiomaChinoSimplificado)
         case .chinoTradicional: TextosDeTeoria.traduccion(\.idiomaChinoTradicional)
@@ -117,6 +120,7 @@ public enum Escritura: String, Sendable, CaseIterable, Codable {
     case devanagari = "Deva"
     case telugu = "Telu"
     case kannada = "Knda"
+    case tamil = "Taml"
     case han = "Hani"
     /// Los kanji y los kana.
     case japonesa = "Jpan"
@@ -135,7 +139,8 @@ public enum Escritura: String, Sendable, CaseIterable, Codable {
     public var deDerechaAIzquierda: Bool {
         switch self {
         case .arabe, .hebrea: true
-        case .devanagari, .telugu, .kannada, .han, .japonesa, .hangul, .etiope, .griega, .tailandesa, .jemer, .birmana:
+        case .devanagari, .telugu, .kannada, .tamil, .han, .japonesa, .hangul, .etiope, .griega, .tailandesa, .jemer,
+            .birmana:
             false
         }
     }
@@ -148,6 +153,7 @@ public enum Escritura: String, Sendable, CaseIterable, Codable {
         case .devanagari: [0x0900...0x097F, 0xA8E0...0xA8FF]
         case .telugu: [0x0C00...0x0C7F]
         case .kannada: [0x0C80...0x0CFF]
+        case .tamil: [0x0B80...0x0BFF]
         case .han: [0x3400...0x4DBF, 0x4E00...0x9FFF, 0xF900...0xFAFF, 0x20000...0x2FA1F]
         case .japonesa: [0x3040...0x30FF, 0x3400...0x4DBF, 0x4E00...0x9FFF, 0xF900...0xFAFF]
         case .hangul: [0x1100...0x11FF, 0x3130...0x318F, 0xAC00...0xD7AF]
@@ -161,10 +167,10 @@ public enum Escritura: String, Sendable, CaseIterable, Codable {
     }
 
     /// ¿Usa ZWNJ y ZWJ dentro de las palabras? El persa (سه\u{200C}گاه) y las escrituras índicas (devanagari, telugu,
-    /// kannada).
+    /// kannada, tamil).
     package var admiteUnionesDeAnchoCero: Bool {
         switch self {
-        case .arabe, .devanagari, .telugu, .kannada: true
+        case .arabe, .devanagari, .telugu, .kannada, .tamil: true
         case .han, .japonesa, .hangul, .etiope, .griega, .tailandesa, .jemer, .hebrea, .birmana: false
         }
     }

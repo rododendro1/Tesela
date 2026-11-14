@@ -4,7 +4,7 @@
 
 ### Lo nuevo
 
-- La hoja HTML tiene fuentes del sistema para los nombres originales en telugu y en canarés.
+- La hoja HTML tiene fuentes del sistema para los nombres originales en telugu, canarés y tamil.
 - `NombreOriginalPresentado.completo`: el nombre original con la palabra de su categoría, si es otro («مقام حجاز»),
   también en el JSON de `escala` y `escalas`; `NombreOriginalPresentado.de(_:en:)` los da todos de una escala.
 - `EscalaPresentada.nombresOriginales` y `NombreOriginalPresentado`: el nombre de la escala en su escritura original,

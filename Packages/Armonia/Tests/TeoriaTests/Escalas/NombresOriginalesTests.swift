@@ -219,15 +219,23 @@ import Testing
         #expect(devanagari.map { pasar($0, desplazamiento: 0x300) } == TipoDeEscala.nombresDeMelakartaEnTelugu)
         #expect(devanagari.map { pasar($0, desplazamiento: 0x380) } == TipoDeEscala.nombresDeMelakartaEnCanares)
         let kanakangi = try? #require(TipoDeEscala.melakarta(1))
-        #expect(kanakangi?.nombresOriginales.map(\.texto) == ["कनकाङ्गी", "కనకాంగి", "ಕನಕಾಂಗಿ"])
+        #expect(kanakangi?.nombresOriginales.map(\.texto) == ["कनकाङ्गी", "కనకాంగి", "ಕನಕಾಂಗಿ", "கனகாங்கி"])
         #expect(kanakangi?.nombreOriginal?.idioma == .sanscrito)
         #expect(
-            kanakangi?.nombresOriginalesCompletos.map(\.texto) == ["मेळ कनकाङ्गी", "మేళ కనకాంగి", "ಮೇಳ ಕನಕಾಂಗಿ"])
+            kanakangi?.nombresOriginalesCompletos.map(\.texto) == [
+                "मेळ कनकाङ्गी", "మేళ కనకాంగి", "ಮೇಳ ಕನಕಾಂಗಿ", "கனகாங்கி",
+            ])
         #expect(TipoDeEscala.melakarta(29)?.nombresOriginales[1].texto == "ధీరశంకరాభరణం")
         #expect(TipoDeEscala.melakarta(56)?.nombresOriginales[2].texto == "ಷಣ್ಮುಖಪ್ರಿಯ")
         #expect(TipoDeEscala.buscar(nombre: "ఖరహరప్రియ")?.esIdentico(a: .melakarta(22)!) == true)
         #expect(TipoDeEscala.buscar(nombre: "ಕೀರವಾಣಿ")?.esIdentico(a: .melakarta(21)!) == true)
         #expect(IdiomaOriginal.telugu.escritura == .telugu && IdiomaOriginal.canares.escritura == .kannada)
         #expect(IdiomaOriginal.canares.nombre(en: .compacta(.espanol)) == "canarés")
+        // El tamil no lleva la palabra mēḷa: no tiene una forma fija.
+        #expect(TipoDeEscala.nombresDeMelakartaEnTamil.count == 72)
+        #expect(Set(TipoDeEscala.nombresDeMelakartaEnTamil).count == 72)
+        #expect(TipoDeEscala.melakarta(22)?.nombresOriginales.last == NombreOriginal("கரகரப்பிரியா", .tamil))
+        #expect(TipoDeEscala.buscar(nombre: "சண்முகப்பிரியா")?.esIdentico(a: .melakarta(56)!) == true)
+        #expect(IdiomaOriginal.tamil.escritura.codigo == "Taml")
     }
 }

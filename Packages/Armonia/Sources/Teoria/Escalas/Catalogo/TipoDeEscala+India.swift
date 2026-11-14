@@ -95,6 +95,26 @@ extension TipoDeEscala {
         "ಸುಚರಿತ್ರ", "ಜ್ಯೋತಿಸ್ವರೂಪಿಣಿ", "ಧಾತುವರ್ಧನಿ", "ನಾಸಿಕಾಭೂಷಣಿ", "ಕೋಸಲಂ", "ರಸಿಕಪ್ರಿಯ",
     ]
 
+    /// Los mismos nombres en tamil, que no se pueden pasar del devanagari: el tamil no tiene aspiradas ni sonoras y
+    /// escribe los nombres de rāga a su manera (கரகரப்பிரியா, அரிக்காம்போதி, மாயாமாளவகௌளை). Son los títulos de la
+    /// Wikipedia en tamil, cotejados letra a letra con el IAST de `nombresDeMelakarta`: los que no casan solo
+    /// difieren en esas costumbres (la h que se vuelve க o se pierde, la -ai final, la i que separa grupos). El 8 es
+    /// ஹனுமத்தோடி, porque la Wikipedia lo titula con su nombre corriente, தோடி.
+    package static let nombresDeMelakartaEnTamil: [String] = [
+        "கனகாங்கி", "ரத்னாங்கி", "கானமூர்த்தி", "வனஸ்பதி", "மானவதி", "தானரூபி",
+        "சேனாவதி", "ஹனுமத்தோடி", "தேனுகா", "நாடகப்பிரியா", "கோகிலப்பிரியா", "ரூபவதி",
+        "காயகப்பிரியா", "வகுளாபரணம்", "மாயாமாளவகௌளை", "சக்ரவாகம்", "சூர்யகாந்தம்", "ஹாடகாம்பரி",
+        "ஜங்காரத்வனி", "நடபைரவி", "கீரவாணி", "கரகரப்பிரியா", "கௌரிமனோகரி", "வருணப்பிரியா",
+        "மாரரஞ்சனி", "சாருகேசி", "சரசாங்கி", "அரிக்காம்போதி", "தீரசங்கராபரணம்", "நாகாநந்தினி",
+        "யாகப்பிரியா", "ராகவர்த்தனி", "காங்கேயபூஷணி", "வாகதீச்வரி", "சூலினி", "சலநாட",
+        "சாலகம்", "ஜலார்ணவம்", "ஜாலவராளி", "நவநீதம்", "பாவனி", "ரகுப்பிரியா",
+        "கவாம்போதி", "பவப்பிரியா", "சுபபந்துவராளி", "ஷட்விதமார்க்கிணி", "சுவர்ணாங்கி", "திவ்யமணி",
+        "தவளாம்பரி", "நாமநாராயணி", "காமவர்த்தனி", "ராமப்பிரியா", "கமனாச்ரம", "விஷ்வம்பரி",
+        "சியாமளாங்கி", "சண்முகப்பிரியா", "சிம்மேந்திரமத்திமம்", "ஹேமவதி", "தர்மவதி", "நீதிமதி",
+        "காந்தாமணி", "ரிஷபப்பிரியா", "லதாங்கி", "வாசஸ்பதி", "மேசகல்யாணி", "சித்ராம்பரி",
+        "சுசரித்ர", "ஜோதிஸ்வரூபிணி", "தாதுவர்த்தனி", "நாசிகாபூஷணி", "கோசலம்", "ரசிகப்பிரியா",
+    ]
+
     /// Los 72 mēḷa, en orden. Cada uno tiene Sa y Pa (unísono y 5ª justa), un Ma (4ª justa
     /// en los 36 primeros, aumentada en los 36 últimos) y una de las seis parejas Ri–Ga y Dha–Ni.
     /// Ri3 se escribe como 2ª aumentada, Ga1 como 3ª disminuida, Dha3 como 6ª aumentada y Ni1
@@ -126,6 +146,7 @@ extension TipoDeEscala {
                                 .init(nombresDeMelakartaEnDevanagari[numero - 1], .sanscrito),
                                 .init(nombresDeMelakartaEnTelugu[numero - 1], .telugu),
                                 .init(nombresDeMelakartaEnCanares[numero - 1], .canares),
+                                .init(nombresDeMelakartaEnTamil[numero - 1], .tamil),
                             ],
                             categoria: .melakarta))
                 }

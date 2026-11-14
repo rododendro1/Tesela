@@ -270,6 +270,7 @@ extension TextosDeTeoria {
         idiomaHindi: "хинди",
         idiomaTelugu: "телугу",
         idiomaCanares: "каннада",
+        idiomaTamil: "тамильский",
         idiomaChino: "китайский",
         idiomaChinoSimplificado: "упрощённый китайский",
         idiomaChinoTradicional: "традиционный китайский",
