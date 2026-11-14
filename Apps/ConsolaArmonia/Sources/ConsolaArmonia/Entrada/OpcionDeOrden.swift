@@ -170,6 +170,8 @@ extension OpcionDeOrden {
     /// `--sin-fragmentos`, sin ellos.
     static let fragmentos = marca("--fragmentos", "--fragments")
     static let sinFragmentos = marca("--sin-fragmentos", "--no-fragments")
+    /// `escalas --vakra`: solo los rāgas que suben o bajan en zigzag (`TipoDeEscala.esVakra`).
+    static let vakra = marca("--vakra")
     /// `temperamentos … --reloj`: el temperamento en un reloj de cents, en SVG.
     static let reloj = marca("--reloj", "--clock")
     /// El reloj con cada nota del color de sus cents.

@@ -337,9 +337,12 @@ Los rāgas janya incluidos son Mohanam, Hindolam, Haṃsadhvani, Ābhogi, Madhya
 Amṛtavarṣiṇī, Śuddha Sāveri, Śuddha Dhanyāsi, Śrīrañjani, Mālayamārutam, Gambhīranāṭa, Haṃsanādam, Haṃsānandi,
 Bhūpālam, Revagupti, Lalitā, Megharañjani, Nāgasvarāvaḷi, Sunādavinodinī y Śuddha Hindolam (iguales al subir y al
 bajar), y Bilahari, Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri, Nāṭa, Kalyāṇavasantam, Bauḷi, Dhanyāsi,
-Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini y Rasikarañjani (distintos). Llevan su nombre en sánscrito, en telugu y en canarés, y los 34 que tienen artículo en la Wikipedia en tamil, también en tamil. Nueve más son vakra, y suben o bajan en
-zigzag: Ānandabhairavi, Suruṭṭi, Aṭāṇā, Kēdāram, Darbār, Mukhāri, Gauḷa, Nalinakānti y Kathanakutūhalam (ver abajo). `melakartasCompatibles` dice de qué mēḷa puede derivar
-cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
+Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini, Rasikarañjani, Dēvagāndhāri y
+Bhairavi carnática (distintos). Trece más son vakra, y suben o bajan en zigzag: Ānandabhairavi, Suruṭṭi, Aṭāṇā, Kēdāram, Darbār,
+Mukhāri, Gauḷa, Nalinakānti, Kathanakutūhalam, Bēgaḍa, Sahānā, Rītigauḷa y Darbārī Kānaḍa carnática (ver abajo). Llevan su nombre en
+sánscrito, en telugu y en canarés, y los 37 que tienen artículo en la Wikipedia en tamil, también en tamil.
+`melakartasCompatibles` dice de qué mēḷa puede derivar cada uno:
+`TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 
 ### Recorridos en zigzag
 
@@ -355,6 +358,32 @@ TipoDeEscala.anandabhairavi.esVakra               // true
 TipoDeEscala.atana.recorrido                      // nil
 TipoDeEscala.atana.recorridoDescendente           // [8, 7, 6, 5, 4, 5, 3, 2, 1]
 Escala(.do, .atana).alturas(octava: 4, sentido: .descendente)   // [Do5, Si4, La4, Sol4, Fa4, Sol4, Mi4, Re4, Do4]
+```
+
+Un recorrido puede empezar por debajo de la tónica: Darbārī Kānaḍa carnática sube desde el ni de abajo, el grado 0.
+Sus notas, sus cents y su tónica siguen saliendo de Sa.
+
+```swift
+TipoDeEscala.darbariKanadaCarnatica.recorrido?.first                       // 0
+Escala(.do, .darbariKanadaCarnatica).alturas(octava: 4).first?.description  // "Si♭3"
+Escala(.do, .darbariKanadaCarnatica).notas.first                           // Do
+```
+
+`armonia escalas --vakra` los enseña todos juntos.
+
+### Notas externas
+
+Un rāga bhāṣāṅga usa notas que no son de su mēḷa (anya svara), y van en `notasExternas`. Unas están en su escala:
+Mukhāri baja con el Dha₁, que Kharaharapriyā no tiene. Otras solo salen en algunas frases: Ānandabhairavi toca a
+veces el Ga₃, el Dha₁ y el Ni₃, que no están ni en su subida ni en su bajada. Las notas externas son del catálogo,
+como `padre`: no cuentan para `==` ni van en el JSON, y `melakartasCompatibles` no las mira.
+
+```swift
+TipoDeEscala.mukhari.notasExternas == [.sextaMenor]        // true
+TipoDeEscala.mukhari.padre?.nombre                        // "Kharaharapriyā"
+TipoDeEscala.mukhari.melakartasCompatibles                // [22]
+TipoDeEscala.anandabhairavi.notasExternas.count           // 3
+TipoDeEscala.mayor.notasExternas.isEmpty                  // true
 ```
 
 ### Qué forma usa cada operación

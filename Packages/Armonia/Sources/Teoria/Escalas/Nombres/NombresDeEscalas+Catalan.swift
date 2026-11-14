@@ -199,6 +199,8 @@ extension NombresDeEscalas {
         .tradicional(.doricoNordestino, "dòric nordestí", alias: ["mode dòric nordestí"]),
         .tradicional(.lidioNordestino, "lidi nordestí", alias: ["mode lidi nordestí", "lidi-mixolidi"]),
         .tradicional(.mixolidioNordestino, "mixolidi nordestí", alias: ["mode mixolidi nordestí"]),
+        .tradicional(.bhairaviCarnatica, "Bhairavi carnàtica"),
+        .tradicional(.darbariKanadaCarnatica, "Darbārī Kānaḍa carnàtica"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

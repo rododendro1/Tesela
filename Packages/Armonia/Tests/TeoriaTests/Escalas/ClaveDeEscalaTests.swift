@@ -106,7 +106,8 @@ import Testing
         "basant", "sri", "patdip", "kirvani", "bairagi", "nat-bhairav", "dhani", "gunakri", "bayati-makami",
         "pelog-baro",
         "pelog-lebeng", "anandabhairavi", "surutti", "atana", "kedaram", "darbar", "mukhari", "gaula", "nalinakanti",
-        "kathanakutuhalam",
+        "kathanakutuhalam", "begada", "sahana", "ritigaula", "devagandhari", "bhairavi-carnatica",
+        "darbari-kanada-carnatica",
     ]
 
     @Test func lasClavesDelCatalogoNoCambian() {

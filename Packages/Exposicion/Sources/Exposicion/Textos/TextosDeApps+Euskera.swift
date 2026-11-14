@@ -231,6 +231,7 @@ extension TextosDeApps {
         escuelas: "Eskolak",
         fragmento: "Zatia",
         nombreOriginal: "Jatorrizko izena",
+        notasExternas: "Kanpoko notak",
         afinacion: "Afinazioa",
         afinacionTemperada: "tenperatua",
         afinacionJusta: "justua",

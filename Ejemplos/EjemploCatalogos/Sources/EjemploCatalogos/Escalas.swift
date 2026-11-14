@@ -32,7 +32,10 @@ let columnasDeEscalas: [String] =
         "continentes_de_origen", "lugares_de_uso", "epoca_de_origen", "epocas_de_uso", "categoria", "clase", "fuente",
         "numero_de_notas",
         "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
-        "numero_de_melakarta", "mnemonico_de_melakarta", "padre", "afinaciones", "sistema_microtonal", "cents",
+        // Los rāgas vakra, en el orden en que se tocan sobre Do, y las notas que no son de su mēḷa.
+        "es_vakra", "recorrido", "recorrido_descendente", "notas_externas",
+        "numero_de_melakarta", "mnemonico_de_melakarta", "cakra", "solfa_de_melakarta", "padre", "afinaciones",
+        "sistema_microtonal", "cents",
         // Lo que se mide de sus notas, sobre Do (`EstadisticasDeEscala`).
         "cardinal", "pasos", "brillo", "brillo_por_quintas", "forma_prima", "forte", "vector_intervalico",
         "nombre_del_conjunto", "anhemitonica", "cohemitonica", "maximamente_regular", "transposiciones_distintas",
@@ -59,6 +62,10 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
     let medidas = sobreDo.estadisticas
     let conjunto = sobreDo.conjuntoDeClasesDeAltura
     // Su mēḷa: el suyo si es heptatónica y encaja en uno, y si no, el del padre, cuando el padre es un mēḷa.
+    // Las notas sobre Do en el orden del recorrido: «Do Mi♭ Re Mi♭ Fa Sol La Sol Do».
+    func recorrido(_ sentido: SentidoDelIntervalo) -> String {
+        sobreDo.alturas(octava: 4, sentido: sentido).map(\.nota.nombre).joined(separator: " ")
+    }
     let mela = tipo.numeroDeMelakarta != nil ? tipo : tipo.padre.flatMap { $0.categoria == .melakarta ? $0 : nil }
     let comoSeLlama =
         [
@@ -85,8 +92,14 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         numeros(tipo.intervalos.map(\.semitonos)),
         tipo.intervalosDescendentes?.map(\.abreviatura).joined(separator: " ") ?? "",
         sobreDo.notas.map(\.nombre).joined(separator: " "),
+        siONo(tipo.esVakra),
+        tipo.recorrido == nil ? "" : recorrido(.ascendente),
+        tipo.recorridoDescendente == nil ? "" : recorrido(.descendente),
+        tipo.notasExternas.map(\.abreviatura).joined(separator: " "),
         mela.flatMap(\.numeroDeMelakarta).map(String.init) ?? "",
         mela?.mnemonicoDeMela ?? "",
+        mela?.cakra?.nombre ?? "",
+        mela?.solfaDeMela?.joined(separator: " ") ?? "",
         tipo.padre?.nombre ?? "",
         String(tipo.afinaciones.count),
         microtonal?.sistema.rawValue ?? "",

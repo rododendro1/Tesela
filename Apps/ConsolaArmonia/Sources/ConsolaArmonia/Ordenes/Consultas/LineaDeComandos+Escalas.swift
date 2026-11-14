@@ -311,6 +311,10 @@ extension LineaDeComandos {
         // Un rāga vakra, en el orden en que se toca: «↑: Do Mi♭ Re Mi♭ Fa Sol La Sol Do».
         if let recorrido = datos.recorrido { lineas.append("  ↑: " + recorrido.joined(separator: " ")) }
         if let recorrido = datos.recorridoDescendente { lineas.append("  ↓: " + recorrido.joined(separator: " ")) }
+        // Las notas que no son de su mēḷa, en un bhāṣāṅga: «Notas externas: La♭».
+        if let externas = datos.notasExternas {
+            lineas.append("  " + notacion.texto(\.notasExternas) + ": " + externas.joined(separator: " "))
+        }
         // Con un sistema móvil (--sistema sargam), los grados con sus nombres, desde la tónica: Sā Re ga ma Pa Dha ni.
         if let movil {
             let nombres = escala.nombres(en: movil.sistema, grafia: movil.grafia)

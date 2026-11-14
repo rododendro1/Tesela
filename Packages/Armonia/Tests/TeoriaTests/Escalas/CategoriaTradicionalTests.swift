@@ -197,8 +197,9 @@ import Testing
     /// (los rāgas en su thāṭ, desde la misma tónica) o las de uno de sus modos (las mūrchanā, los pathet). Salvo
     /// Deś, en Khamāj por la tradición aunque sube con una nota que no es del thāṭ.
     @Test func elPadreEsUnaEscalaMadreDeLaQueSale() {
+        // Sin las notas externas, que por definición no son del padre.
         func clases(_ tipo: TipoDeEscala) -> Set<Int> {
-            Set((tipo.intervalos + (tipo.intervalosDescendentes ?? [])).map { $0.semitonos % 12 })
+            Set(tipo.intervalosEnAmbasDirecciones.filter { !tipo.notasExternas.contains($0) }.map { $0.semitonos % 12 })
         }
         var conPadre = 0
         for tipo in TipoDeEscala.catalogo {
@@ -207,15 +208,15 @@ import Testing
             #expect(padre.clase == .escalaMadre, Comment(rawValue: tipo.nombre))
             #expect(padre.tradicion == tipo.tradicion, Comment(rawValue: tipo.nombre))
             #expect(padre.derivadas.contains { $0.esIdentico(a: tipo) }, Comment(rawValue: tipo.nombre))
-            // Deś sube con el Ni natural y baja con el komal, y Bhatkhande lo pone en Khamāj, que solo tiene el komal.
-            guard !tipo.esIdentico(a: .des) else { continue }
             let suyas = clases(tipo)
             let delPadre = clases(padre)
+            #expect(
+                tipo.notasExternas.allSatisfy { !padre.intervalos.contains($0) }, "\(tipo.nombre): externa del padre")
             let modos = delPadre.map { tonica in Set(delPadre.map { ($0 - tonica + 12) % 12 }) }
             #expect(modos.contains { suyas.isSubset(of: $0) }, "\(tipo.nombre) ↛ \(padre.nombre)")
             if padre.categoria == .thaat { #expect(suyas.isSubset(of: delPadre), "\(tipo.nombre) ↛ \(padre.nombre)") }
         }
-        #expect(conPadre == 44 + 21 + 14 + 3 + 3)
+        #expect(conPadre == 51 + 21 + 14 + 3 + 3)
         #expect(TipoDeEscala.yaman.padre == .kalyan && TipoDeEscala.yaman.padre?.categoria == .thaat)
         #expect(TipoDeEscala.darbariKanada.padre?.nombre == TipoDeEscala.asavari.nombre)
         #expect(TipoDeEscala.candrakauns.padre == nil && TipoDeEscala.madhuvanti.padre == nil)

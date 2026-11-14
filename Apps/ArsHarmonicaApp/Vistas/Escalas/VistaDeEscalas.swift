@@ -111,7 +111,8 @@ struct VistaDeEscalas: View {
         }
     }
 
-    /// El nombre de la escala, de qué escala es modo, sus notas (y las microtonales), sus pasos y «Escuchar».
+    /// El nombre de la escala, de qué escala es modo, sus notas (y las microtonales), su recorrido si es vakra, sus
+    /// notas externas, sus pasos y «Escuchar».
     private func notas(de escala: Escala, sonido: Escucha) -> some View {
         Section(notacion.texto(\.notas)) {
             Text(escala.nombre(en: notacion)).font(.headline)
@@ -123,6 +124,26 @@ struct VistaDeEscalas: View {
             }
             Text(escala.notas.map { $0.nombre(en: notacion) }.joined(separator: "  "))
                 .font(.system(.body, design: .monospaced))
+            // Un rāga vakra, en el orden en que se toca al subir y al bajar: «↑  Do  Mi♭  Re  Mi♭  Fa…».
+            if escala.tipo.recorrido != nil {
+                Text("↑  " + escala.alturas(octava: 4).map { $0.nota.nombre(en: notacion) }.joined(separator: "  "))
+                    .font(.system(.body, design: .monospaced))
+            }
+            if escala.tipo.recorridoDescendente != nil {
+                Text(
+                    "↓  "
+                        + escala.alturas(octava: 4, sentido: .descendente).map { $0.nota.nombre(en: notacion) }
+                        .joined(separator: "  ")
+                )
+                .font(.system(.body, design: .monospaced))
+            }
+            // Las notas que no son de su mēḷa, en un rāga bhāṣāṅga: «Notas externas  La♭».
+            if !escala.tipo.notasExternas.isEmpty {
+                LabeledContent(
+                    notacion.texto(\.notasExternas),
+                    value: escala.tipo.notasExternas.map { (escala.tonica + $0).nombre(en: notacion) }
+                        .joined(separator: "  "))
+            }
             // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.
             if let microtonos = escala.notasMicrotonales() {
                 Text(microtonos.map { $0.nombre(en: notacion) }.joined(separator: "  "))

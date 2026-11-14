@@ -480,6 +480,8 @@ extension NombresDeEscalas {
         .tradicional(.vongCo, "Вонг ко"),
         .tradicional(.hoMaiNhi, "Хо май ньи"),
         .tradicional(.saMac, "Са мак"),
+        .tradicional(.bhairaviCarnatica, "Карнатская Бхайрави"),
+        .tradicional(.darbariKanadaCarnatica, "Карнатская Дарбари Канада"),
         .tradicional(.danCa, "Зан ка"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
