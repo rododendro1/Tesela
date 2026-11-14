@@ -118,7 +118,7 @@ import Testing
     /// Madhuvantī, Multānī, Hindol y Sohinī, en su forma recta.
     /// Los rāgas con thāṭ llevan sus śruti, nota a nota; Deś sube con el Ni de Bilāval.
     @Test func losRagasConThaatLlevanSusSruti() {
-        for raga in TipoDeEscala.ragasIndostanicos where raga.padre?.categoria == .thaat {
+        for raga in TipoDeEscala.ragasIndostanicos where raga.madre?.categoria == .thaat {
             #expect(raga.afinacionPropia?.esCoherente == true, Comment(rawValue: raga.nombre))
         }
         #expect(TipoDeEscala.bhupali.afinacionPropia?.pasos == [0, 3, 7, 13, 16])
@@ -135,10 +135,10 @@ import Testing
         #expect(notas(TipoDeEscala.multani.intervalosDescendentes ?? []) == "Do Re♭ Mi♭ Fa♯ Sol La♭ Si")
         #expect(notas(TipoDeEscala.hindol.intervalos) == "Do Mi Fa♯ La Si")
         #expect(notas(TipoDeEscala.sohini.intervalosDescendentes ?? []) == "Do Re♭ Mi Fa♯ La Si")
-        #expect(TipoDeEscala.multani.padre == .todi && TipoDeEscala.sohini.padre == .marva)
+        #expect(TipoDeEscala.multani.madre == .todi && TipoDeEscala.sohini.madre == .marva)
         #expect(TipoDeEscala.buscar(nombre: "मुलतानी")?.esIdentico(a: .multani) == true)
         #expect(TipoDeEscala.buscar(nombre: "Sohni")?.esIdentico(a: .sohini) == true)
-        #expect(TipoDeEscala.ragasIndostanicos.count == 35)
+        #expect(TipoDeEscala.ragasIndostanicos.count == 36)
     }
 
     /// Ocho rāgas indostánicos más y doce janya, de la Wikipedia en inglés.
@@ -152,13 +152,13 @@ import Testing
         #expect(notas(TipoDeEscala.vrindavaniSarang.intervalos) == "Do Re Fa Sol Si")
         #expect(notas(TipoDeEscala.jog.intervalosDescendentes ?? []) == "Do Mi♭ Mi Fa Sol Si♭")
         #expect(notas(TipoDeEscala.ahirBhairav.intervalos) == "Do Re♭ Mi Fa Sol La Si♭")
-        #expect(TipoDeEscala.puriya.padre == .marva && TipoDeEscala.jaunpuri.padre == .asavari)
+        #expect(TipoDeEscala.puriya.madre == .marva && TipoDeEscala.jaunpuri.madre == .asavari)
         #expect(TipoDeEscala.buscar(nombre: "Brindabani Sarang")?.esIdentico(a: .vrindavaniSarang) == true)
         #expect(notas(TipoDeEscala.hamsanandi.intervalos) == "Do Re♭ Mi Fa♯ La Si")
         #expect(notas(TipoDeEscala.kalyanavasantam.intervalosDescendentes ?? []) == "Do Re Mi♭ Fa Sol La♭ Si")
         #expect(notas(TipoDeEscala.dhanyasi.intervalosDescendentes ?? []) == "Do Re♭ Mi♭ Fa Sol La♭ Si♭")
-        #expect(TipoDeEscala.sunadavinodini == .hindol && TipoDeEscala.bauli.padre == nil)
-        #expect(TipoDeEscala.lalita.padre == .melakarta(15) && TipoDeEscala.bhupalam.padre == .melakarta(45))
+        #expect(TipoDeEscala.sunadavinodini == .hindol && TipoDeEscala.bauli.madre == nil)
+        #expect(TipoDeEscala.lalita.madre == .melakarta(15) && TipoDeEscala.bhupalam.madre == .melakarta(45))
         #expect(TipoDeEscala.buscar(nombre: "Bowli")?.esIdentico(a: .bauli) == true)
         #expect(TipoDeEscala.buscar(nombre: "ಹಂಸಾನಂದಿ")?.esIdentico(a: .hamsanandi) == true)
     }

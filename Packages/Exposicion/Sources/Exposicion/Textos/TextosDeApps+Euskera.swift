@@ -232,7 +232,7 @@ extension TextosDeApps {
         fragmento: "Zatia",
         nombreOriginal: "Jatorrizko izena",
         notasExternas: "Kanpoko notak",
-        derivaDe: "Nondik dator",
+        escalaMadre: "Eskala ama",
         derivadas: "Eratorriak",
         afinacion: "Afinazioa",
         afinacionTemperada: "tenperatua",

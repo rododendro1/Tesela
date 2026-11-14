@@ -163,32 +163,41 @@ extension LineaDeComandosTests {
         #expect(salida("escala Do mukhari --json").contains("\"notasExternas\""))
         #expect(!salida("escala Do kedaram").contains("Notas externas"))
         let vakra = salida("escalas --vakra")
-        #expect(vakra.hasPrefix("India · janya (24)"), Comment(rawValue: vakra))
+        #expect(vakra.hasPrefix("India · janya (26)"), Comment(rawValue: vakra))
         #expect(vakra.contains("Suruṭṭi") && vakra.contains("Khamās") && vakra.contains("Bihāg"))
         #expect(!vakra.contains("Mohanam"))
     }
 
-    /// `escala` dice de qué escala sale un rāga y cuáles salen de un mēḷa o de un thāṭ; `escalas --padre`, por número
+    /// `escala` dice de qué escala sale un rāga y cuáles salen de un mēḷa o de un thāṭ; `escalas --madre`, por número
     /// de mēḷa o por nombre, deja solo esas.
     @Test func elPadreYLasDerivadas() {
         let mukhari = salida("escala Do mukhari")
-        #expect(mukhari.contains("\n  Deriva de: mēḷa Kharaharapriyā\n"), Comment(rawValue: mukhari))
+        #expect(mukhari.contains("\n  Escala madre: mēḷa Kharaharapriyā\n"), Comment(rawValue: mukhari))
         let kharaharapriya = salida("escala Do kharaharapriya")
         #expect(kharaharapriya.contains("\n  Derivadas: "), Comment(rawValue: kharaharapriya))
         #expect(kharaharapriya.contains("Mukhāri") && kharaharapriya.contains("Kāpi"))
-        #expect(salida("escala Do yaman").contains("\n  Deriva de: thāṭ Kalyāṇ\n"))
-        #expect(!salida("escala Do mayor").contains("Deriva de") && !salida("escala Do mayor").contains("Derivadas"))
+        #expect(salida("escala Do yaman").contains("\n  Escala madre: thāṭ Kalyāṇ\n"))
+        #expect(!salida("escala Do mayor").contains("Escala madre") && !salida("escala Do mayor").contains("Derivadas"))
         let json = salida("escala Do kharaharapriya --json")
-        #expect(json.contains("\"derivadas\"") && !json.contains("\"padre\""))
-        #expect(salida("escala Do mukhari --json").contains("\"padre\""))
-        let janya = salida("escalas --padre 22")
+        #expect(json.contains("\"derivadas\"") && !json.contains("\"madre\""))
+        #expect(salida("escala Do mukhari --json").contains("\"madre\""))
+        let janya = salida("escalas --madre 22")
         #expect(
             janya.contains("Mukhāri") && janya.contains("Kāpi") && !janya.contains("Mohanam"), Comment(rawValue: janya))
-        #expect(salida("escalas --padre Kharaharapriya") == janya)
-        let kafi = salida("escalas --padre kafi")
+        #expect(salida("escalas --madre Kharaharapriya") == janya)
+        let kafi = salida("escalas --madre kafi")
         #expect(kafi.contains("Bāgeśrī") && !kafi.contains("Yaman"), Comment(rawValue: kafi))
-        #expect(LineaDeComandos.ejecutar(["escalas", "--padre", "mayor"]).codigo == 2)
-        #expect(LineaDeComandos.ejecutar(["escalas", "--padre", "xyz"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["escalas", "--madre", "mayor"]).codigo == 2)
+        #expect(LineaDeComandos.ejecutar(["escalas", "--madre", "xyz"]).codigo == 2)
+    }
+
+    /// `escala` escribe las notas con función: el vādī y el saṃvādī de un rāga, el qarār y el ghammāz de un maqām.
+    @Test func lasNotasConFuncion() {
+        let yaman = salida("escala Do yaman")
+        #expect(yaman.contains("\n  vādī: Mi · saṃvādī: Si\n"), Comment(rawValue: yaman))
+        #expect(salida("escala Re bayati").contains("\n  qarār: Re · ghammāz: Sol\n"))
+        #expect(salida("escala Do yaman --json").contains("\"funciones\""))
+        #expect(!salida("escala Do mayor").contains("vādī"))
     }
 
     @Test func referenciasDeUnaEscala() {

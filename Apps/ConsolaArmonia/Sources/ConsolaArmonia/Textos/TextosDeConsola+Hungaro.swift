@@ -258,7 +258,7 @@ extension TextosDeConsola {
         epocaDesconocida: "„{1}”: ez nem korszak (antiquity, middle-ages, renaissance, baroque, classicism, romanticism, 20th-century, 21st-century, tonal)",
         afectoDesconocido: "„{1}”: ez nem affektus (alegre, festivo, sereno, templado, tierno, amoroso, blando, nostalgico, inquieto, triste, lastimero, grave, severo, noble, solemne, majestuoso, valiente, energico, entusiasta, devoto, contemplativo)",
         escuelaDesconocida: "„{1}”: ez nem iskola (carnatic, hindustani, ancient-india, gagaku)",
-        padreDesconocido: "„{1}”: ez nem olyan skála, amelyből mások származnak (egy mēḷa, mint a Kharaharapriya vagy a 22, egy thāṭ, egy grāma…)",
+        madreDesconocida: "„{1}”: ez nem olyan skála, amelyből mások származnak (egy mēḷa, mint a Kharaharapriya vagy a 22, egy thāṭ, egy grāma…)",
         afinacionDesconocida: "„{1}”: ez nem hangolás (tempered, just, microtonal, equal-divisions)",
         ordenDeEscalasDesconocido: "„{1}”: a skálák brightness vagy notes szerint rendezhetők: --sort brightness",
         ordenDeAcordesDesconocido: "„{1}”: az akkordok brightness, notes vagy consonance szerint rendezhetők: --sort consonance",

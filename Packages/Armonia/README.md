@@ -260,7 +260,7 @@ Sources/
 │   │   │                  Escala+Diao
 │   │   ├── Catalogo/      Un fichero por tradición (TipoDeEscala+Occidental y +Occidental+Exoticas, +India,
 │   │   │                  +MundoArabe, +Turquia, +GreciaAntigua…), cada uno con sus escalas (con su categoría, sus
-│   │   │                  microtonos, su padre y sus referencias) y sus listas; TipoDeEscala+Tradiciones
+│   │   │                  microtonos, su madre y sus referencias) y sus listas; TipoDeEscala+Tradiciones
 │   │   │                  (`listasTradicionales` y `tradicionales`)
 │   │   └── Nombres/       NombresDeEscalas y un fichero por idioma (`NombresDeEscalas+Catalan.swift`…): el nombre de cada
 │   │                      tipo, sus alias, las escalas de otras tradiciones y el nombre de cada clase

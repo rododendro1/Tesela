@@ -251,10 +251,10 @@ public struct TextosDeApps: TextosTraducidos {
     /// La fila de la afinación de una escala (`CaracterDeLaAfinacion`): «Afinación: microtonal».
     /// La línea con el nombre de la escala en su escritura original: «Nombre original: حجاز (árabe)».
     public let nombreOriginal: String
-    /// La línea con las notas que no son del padre de un rāga bhāṣāṅga: «Notas externas: Mi La♭ Si».
+    /// La línea con las notas que no son de la madre de un rāga bhāṣāṅga: «Notas externas: Mi La♭ Si».
     public let notasExternas: String
-    /// «Deriva de»: la escala madre de un rāga (su mēḷa o su thāṭ).
-    public let derivaDe: String
+    /// «Escala madre»: la escala madre de un rāga (su mēḷa o su thāṭ).
+    public let escalaMadre: String
     /// «Derivadas»: las escalas que salen de una (los janya de un mēḷa).
     public let derivadas: String
     public let afinacion: String

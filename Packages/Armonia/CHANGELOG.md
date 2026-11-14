@@ -4,6 +4,11 @@
 
 ### Cambios incompatibles
 
+- `TipoDeEscala.padre` pasa a llamarse `madre`, la escala madre de la que sale una escala por su tradición (el mēḷa
+  de un janya, el thāṭ de un rāga), y en el catálogo se escribe `madre: .melakarta(28)`. No queda `padre` como
+  obsoleto. La columna `padre` del TSV de escalas de `EjemploCatalogos` pasa a ser `madre`.
+- Deś y Kedār, como Bihāg, llevan en `intervalosDescendentes` la nota externa por la que pasan al bajar (el Ni natural
+  de abajo y el Ma tīvra): un Deś guardado antes ya no es `==` al del catálogo, aunque se lee como Deś por su clave.
 - La escritura original de las escalas de otras tradiciones sale de `TipoDeEscala.variantes` (y, en los mēḷa, de
   `alias`) y pasa a `TipoDeEscala.nombresOriginales`: `variantes` queda solo para las grafías latinas. Se siguen
   leyendo igual («Re حجاز», «Do 宮»), y el JSON no cambia: un fichero antiguo con «بياتي» en `variantes` se lee como
@@ -11,6 +16,15 @@
 
 ### Novedades
 
+- `TipoDeEscala.funciones` y `NotaConFuncion`: las notas de una escala con nombre por su papel. El vādī y el saṃvādī
+  de 29 rāgas indostánicos, de la Wikipedia en inglés (Yaman: Ga y Ni), y el qarār y el ghammāz de los maqāmāt y los
+  makamlar con dos ajnas o çeşni, que salen de `ajnas` (Bayātī: la tónica y la 4ª). `intervalo(de:)` da la nota de
+  una función y `funciones(de:)`, las de una nota. Son del catálogo: no cuentan para `==` ni van en el JSON.
+- Cuatro janya más: Kuriñji (de guruguha.org), de ámbito corto, del Ni de abajo al Dha; Sindhu Bhairavi, del mēḷa 8,
+  bhāṣāṅga con las doce notas; Navarōj (de karnATik), de Pa a Pa, y el rāga indostánico Kedār, vakra, del thāṭ
+  Kalyāṇ, con el Ma śuddha como nota externa. Deś y Darbārī Kānaḍa tienen ya su recorrido vakra, el del cuadro de la
+  Wikipedia en inglés, y un recorrido puede no ir de tónica a tónica: Kuriñji sube del grado 0 al 6 y Navarōj, del -2
+  al 5.
 - Khamās, janya vakra del mēḷa 28 (Harikāmbhojī), de la Wikipedia en inglés: sube Sa ma Ga ma Pa Dha ni Ṡa y
   baja recto, con el Ni₃ de algunas frases como nota externa, y su nombre en sánscrito, telugu, canarés y tamil.
 - Bihāg tiene su recorrido vakra, también de la Wikipedia en inglés: sube desde el Ni de abajo (Ni Sa Ga ma Pa Ni Ṡa)
@@ -27,8 +41,8 @@
   Ānandabhairavi, Suruṭṭi y Aṭāṇā. `armonia escala` los muestra con «↑:» y «↓:», y `--json`, con `recorrido`.
 - `TipoDeEscala.notasExternas`: las notas que no son del padre de un rāga bhāṣāṅga (anya svara), estén en la
   escala, como el Dha₁ de Mukhāri, o solo en algunas frases, como el Ga₃, el Dha₁ y el Ni₃ de Ānandabhairavi. Son
-  del catálogo, como `padre`: no cuentan para `==` ni van en el JSON, y `melakartasCompatibles` no las mira, así que
-  Mukhāri tiene ahora padre (Kharaharapriyā). Deś lleva su Ni natural, que Khamāj no tiene, como nota externa.
+  del catálogo, como `madre`: no cuentan para `==` ni van en el JSON, y `melakartasCompatibles` no las mira, así que
+  Mukhāri tiene ahora madre (Kharaharapriyā). Deś lleva su Ni natural, que Khamāj no tiene, como nota externa.
 - Un recorrido puede empezar por debajo de la tónica (con el grado 0 o uno negativo), y entra Darbārī Kānaḍa
   carnática, de karnATik, que sube desde el ni de abajo; va aparte de la indostánica, que sigue recta.
   `Escala.cents(con:sentido:)` da los cents de un vakra en el orden de sus notas, y no en el de su recorrido.
@@ -44,7 +58,7 @@
   Kathanakutūhalam, con su recorrido y su nombre en sánscrito, telugu y canarés, y todos menos Nalinakānti también en
   tamil.
 - El TSV de escalas de `EjemploCatalogos` tiene `numero_de_melakarta` (antes `melakarta`) y `mnemonico_de_melakarta`:
-  el mēḷa de la escala o, si no encaja en ninguno, el de su padre, cuando el padre es un mēḷa.
+  el mēḷa de la escala o, si no encaja en ninguno, el de su madre, cuando la madre es un mēḷa.
 - Los 24 rāgas indostánicos con thāṭ tienen versión microtonal en los 22 śruti, con los de su thāṭ nota a nota.
 - Kumoijōshi tiene ahora las notas del koto, Sol La♭ Do Re Mi♭ (Do Re♭ Fa Sol La♭), según las tablas de KORG y de
   asahi-net; antes tenía las de Akebono.

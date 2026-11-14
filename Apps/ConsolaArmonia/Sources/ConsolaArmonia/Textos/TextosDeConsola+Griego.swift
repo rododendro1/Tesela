@@ -258,7 +258,7 @@ extension TextosDeConsola {
         epocaDesconocida: "«{1}»: δεν είναι εποχή (antiquity, middle-ages, renaissance, baroque, classicism, romanticism, 20th-century, 21st-century, tonal)",
         afectoDesconocido: "«{1}»: δεν είναι συναίσθημα (alegre, festivo, sereno, templado, tierno, amoroso, blando, nostalgico, inquieto, triste, lastimero, grave, severo, noble, solemne, majestuoso, valiente, energico, entusiasta, devoto, contemplativo)",
         escuelaDesconocida: "«{1}»: δεν είναι σχολή (carnatic, hindustani, ancient-india, gagaku)",
-        padreDesconocido: "«{1}»: δεν είναι κλίμακα από την οποία προέρχονται άλλες (ένα mēḷa, όπως Kharaharapriya ή 22, ένα thāṭ, ένα grāma…)",
+        madreDesconocida: "«{1}»: δεν είναι κλίμακα από την οποία προέρχονται άλλες (ένα mēḷa, όπως Kharaharapriya ή 22, ένα thāṭ, ένα grāma…)",
         afinacionDesconocida: "«{1}»: δεν είναι κούρδισμα (tempered, just, microtonal, equal-divisions)",
         ordenDeEscalasDesconocido: "«{1}»: οι κλίμακες ταξινομούνται κατά brightness ή notes: --sort brightness",
         ordenDeAcordesDesconocido: "«{1}»: οι συγχορδίες ταξινομούνται κατά brightness, notes ή consonance: --sort consonance",

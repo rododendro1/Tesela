@@ -59,12 +59,12 @@ usan microtonos):
   cinco; en doce notas cada grado va al semitono más cercano desde su tónica (el sléndro, Do Re Fa Sol Si♭), y
   en cents en su versión microtonal. Y el degung del gamelan de Sunda, en el oeste de Java (Do Mi Fa Sol Si desde
   da), que no lleva versión en cents.
-- **35 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
+- **36 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
   (el Valaji carnático), Candrakauns, Megh, Hindol, Bairāgī, Dhānī y Guṇakrī, pentatónicos; Yaman, Lalit, Pūriyā
-  Dhanāśrī, Ahir Bhairav, Pūriyā, Gujarī Toḍī, Kirvāṇī, Naṭ Bhairav y Darbārī Kānaḍa (en su forma recta: es vakra,
-  y su ga y su dha ati-komal no caben en doce notas); y Bāgeśrī, Deś, Bhīmpalāsī, Bihāg, Madhuvantī, Multānī,
+  Dhanāśrī, Ahir Bhairav, Pūriyā, Gujarī Toḍī, Kirvāṇī y Naṭ Bhairav; Bāgeśrī, Bhīmpalāsī, Madhuvantī, Multānī,
   Sohinī, Jaunpurī, Miyāṅ kī Toḍī, Rāgeśrī, Vṛndāvanī Sāraṅg, Jog, Basant, Śrī y Paṭdīp, que suben y bajan
-  distinto.
+  distinto; y Deś, Bihāg, Kedār y Darbārī Kānaḍa, vakra (su ga y su dha ati-komal no caben en doce notas).
+  Veintinueve llevan su vādī y su saṃvādī (`TipoDeEscala.funciones`).
 - **Los 2 grāma y las 14 mūrchanā** del Nāṭyaśāstra: el ṣaḍja-grāma (el dórico, las razones de Kāfī) y el
   madhyama-grāma (con Pa una coma más bajo), y las siete escalas de cada uno, una desde cada nota: Uttaramandrā,
   Rajanī, Uttarāyatā, Śuddhaṣaḍjā, Matsarīkṛtā, Aśvakrāntā y Abhirudgatā; Sauvīrī, Hariṇāśvā, Kalopanatā,
@@ -201,7 +201,7 @@ sus variantes (otras transliteraciones), menos los que están en español, y en 
 `categoria` y `tradicion` dicen qué es una escala de otra tradición. La categoría vale `nil` en las
 occidentales, cuya tradición es `.occidental`, y las dos valen `nil` en las escalas propias (también en una propia
 que se llame «Kāfī» pero suene distinta). Un mēḷa es también un rāga (`esRaga`); un thāṭ, que es una escala madre de la que se
-derivan rāgas, no. `padre` es la escala madre de la que sale una escala por la tradición: el mēḷa de un rāga
+derivan rāgas, no. `madre` es la escala madre de la que sale una escala por la tradición: el mēḷa de un rāga
 janya, el thāṭ de un rāga indostánico (en la clasificación de Bhatkhande), el grāma de una mūrchanā y el laras de
 un pathet; `derivadas` da al revés las que salen de una.
 
@@ -212,8 +212,8 @@ TipoDeEscala.hitzaz.tradicion                   // .grecia
 TipoDeEscala.rastMakami.categoria               // .makam
 TipoDeEscala.mohanam.esRaga                     // true
 TipoDeEscala.kafi.esRaga                        // false
-TipoDeEscala.mohanam.padre?.numeroDeMelakarta   // 28
-TipoDeEscala.yaman.padre == .kalyan             // true
+TipoDeEscala.mohanam.madre?.numeroDeMelakarta   // 28
+TipoDeEscala.yaman.madre == .kalyan             // true
 TipoDeEscala.sadjaGrama.derivadas.count         // 7
 TipoDeEscala.menorNatural.categoria             // nil: las occidentales no tienen categoría
 TipoDeEscala.tradicionales(categoria: .melakarta).count   // 72

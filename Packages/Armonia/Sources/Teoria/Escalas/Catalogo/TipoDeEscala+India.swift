@@ -7,7 +7,7 @@ import Elementos
 // de E. J. Arnold: Kāfī es Sa Re(10/9) ga(32/27) ma Pa Dha(5/3) ni(16/9); Khamāj sube ga a Ga(5/4), Bilāval también ni
 // a Ni(15/8) y Kalyāṇ, ma a Ma(45/32). Los rāgas con ati-komal (Bhairav, Bhairavī, Toḍī) llevan el re y el dha
 // pitagóricos (256/243, 128/81); Toḍī, como lo miden Bel y otros (Ga 32/27, Ma 45/32, Ni 243/128); Mārvā y Pūrvī, el re
-// de 16/15. Cada rāga con `padre` lleva los śruti de su thāṭ, nota a nota, como Yaman los de Kalyāṇ; Deś, que sube con
+// de 16/15. Cada rāga con `madre` lleva los śruti de su thāṭ, nota a nota, como Yaman los de Kalyāṇ; Deś, que sube con
 // el Ni de Bilāval y baja con el ni de Khamāj, lleva el Ni de Bilāval (15/8), y Darbārī Kānaḍa, los de Āsāvarī, sin su
 // ga y su dha ati-komal. Los janya no tienen: el modelo de Arnold es el de los thāṭ, y cada svara carnático puede ir en
 // dos śruti según el rāga, sin una fuente que diga cuál.
@@ -173,11 +173,11 @@ extension TipoDeEscala {
             .map { $0 + 1 }
     }
 
-    /// Las notas que no son de su padre (los anya svara de un rāga bhāṣāṅga), de grave a agudo. Unas están en sus
+    /// Las notas que no son de su madre (los anya svara de un rāga bhāṣāṅga), de grave a agudo. Unas están en sus
     /// formas, como el Dha₁ con que baja Mukhāri sobre Kharaharapriyā; otras solo salen en algunas frases, como el Ga₃,
     /// el Dha₁ y el Ni₃ de Ānandabhairavi. En un rāga indostánico, las que no son de su thāṭ: el Ni natural con que
     /// sube Deś, que Khamāj no tiene. No cuentan para `melakartasCompatibles` ni para `==`, y no van en el JSON:
-    /// son del catálogo, como `padre`. Vacía en las demás escalas.
+    /// son del catálogo, como `madre`. Vacía en las demás escalas.
     ///
     ///     TipoDeEscala.mukhari.notasExternas    // [.sextaMenor]
     public var notasExternas: [Intervalo] { datosDelCatalogo.notasExternas }

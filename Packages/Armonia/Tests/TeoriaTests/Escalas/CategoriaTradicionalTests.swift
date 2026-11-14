@@ -175,58 +175,58 @@ import Testing
         #expect(igual.categoria == .thaat)
     }
 
-    /// El padre de un janya es un mēḷa que contiene todas sus notas; Revati no tiene uno único.
+    /// La madre de un janya es un mēḷa que contiene todas sus notas; Revati no tiene uno único.
     @Test func elPadreDeUnJanyaEsUnMelakartaCompatible() {
-        #expect(TipoDeEscala.mohanam.padre?.numeroDeMelakarta == 28)
-        #expect(TipoDeEscala.hindolam.padre?.nombre == "Naṭabhairavī")
-        #expect(TipoDeEscala.revati.padre == nil)
-        #expect(TipoDeEscala.mohanakalyani.padre?.numeroDeMelakarta == 65)
-        #expect(TipoDeEscala.saveri.padre?.numeroDeMelakarta == 15)
-        #expect(TipoDeEscala.nata.padre?.numeroDeMelakarta == 36)
-        #expect(TipoDeEscala.lalit.categoria == .raga && TipoDeEscala.lalit.padre == nil)
+        #expect(TipoDeEscala.mohanam.madre?.numeroDeMelakarta == 28)
+        #expect(TipoDeEscala.hindolam.madre?.nombre == "Naṭabhairavī")
+        #expect(TipoDeEscala.revati.madre == nil)
+        #expect(TipoDeEscala.mohanakalyani.madre?.numeroDeMelakarta == 65)
+        #expect(TipoDeEscala.saveri.madre?.numeroDeMelakarta == 15)
+        #expect(TipoDeEscala.nata.madre?.numeroDeMelakarta == 36)
+        #expect(TipoDeEscala.lalit.categoria == .raga && TipoDeEscala.lalit.madre == nil)
         for janya in TipoDeEscala.janyas {
-            guard let padre = janya.padre, let numero = padre.numeroDeMelakarta else { continue }
-            #expect(padre.categoria == .melakarta, Comment(rawValue: janya.nombre))
+            guard let madre = janya.madre, let numero = madre.numeroDeMelakarta else { continue }
+            #expect(madre.categoria == .melakarta, Comment(rawValue: janya.nombre))
             #expect(janya.melakartasCompatibles.contains(numero), "\(janya.nombre) ↛ \(numero)")
         }
-        #expect(TipoDeEscala.mayor.padre == nil)
-        #expect(TipoDeEscala.thaats[0].padre == nil)
+        #expect(TipoDeEscala.mayor.madre == nil)
+        #expect(TipoDeEscala.thaats[0].madre == nil)
     }
 
-    /// Un padre es siempre una escala madre de la misma tradición, y la escala sale de él: sus notas son las del padre
-    /// (los rāgas en su thāṭ, desde la misma tónica) o las de uno de sus modos (las mūrchanā, los pathet). Salvo
+    /// Una madre es siempre una escala madre de la misma tradición, y la escala sale de ella: sus notas son las de la
+    /// madre (los rāgas en su thāṭ, desde la misma tónica) o las de uno de sus modos (las mūrchanā, los pathet). Salvo
     /// Deś, en Khamāj por la tradición aunque sube con una nota que no es del thāṭ.
     @Test func elPadreEsUnaEscalaMadreDeLaQueSale() {
-        // Sin las notas externas, que por definición no son del padre.
+        // Sin las notas externas, que por definición no son de la madre.
         func clases(_ tipo: TipoDeEscala) -> Set<Int> {
             Set(tipo.intervalosEnAmbasDirecciones.filter { !tipo.notasExternas.contains($0) }.map { $0.semitonos % 12 })
         }
-        var conPadre = 0
+        var conMadre = 0
         for tipo in TipoDeEscala.catalogo {
-            guard let padre = tipo.padre else { continue }
-            conPadre += 1
-            #expect(padre.clase == .escalaMadre, Comment(rawValue: tipo.nombre))
-            #expect(padre.tradicion == tipo.tradicion, Comment(rawValue: tipo.nombre))
-            #expect(padre.derivadas.contains { $0.esIdentico(a: tipo) }, Comment(rawValue: tipo.nombre))
+            guard let madre = tipo.madre else { continue }
+            conMadre += 1
+            #expect(madre.clase == .escalaMadre, Comment(rawValue: tipo.nombre))
+            #expect(madre.tradicion == tipo.tradicion, Comment(rawValue: tipo.nombre))
+            #expect(madre.derivadas.contains { $0.esIdentico(a: tipo) }, Comment(rawValue: tipo.nombre))
             let suyas = clases(tipo)
-            let delPadre = clases(padre)
+            let delPadre = clases(madre)
             #expect(
-                tipo.notasExternas.allSatisfy { !padre.intervalos.contains($0) }, "\(tipo.nombre): externa del padre")
+                tipo.notasExternas.allSatisfy { !madre.intervalos.contains($0) }, "\(tipo.nombre): externa de la madre")
             let modos = delPadre.map { tonica in Set(delPadre.map { ($0 - tonica + 12) % 12 }) }
-            #expect(modos.contains { suyas.isSubset(of: $0) }, "\(tipo.nombre) ↛ \(padre.nombre)")
-            if padre.categoria == .thaat { #expect(suyas.isSubset(of: delPadre), "\(tipo.nombre) ↛ \(padre.nombre)") }
+            #expect(modos.contains { suyas.isSubset(of: $0) }, "\(tipo.nombre) ↛ \(madre.nombre)")
+            if madre.categoria == .thaat { #expect(suyas.isSubset(of: delPadre), "\(tipo.nombre) ↛ \(madre.nombre)") }
         }
-        #expect(conPadre == 62 + 21 + 14 + 3 + 3)
-        #expect(TipoDeEscala.yaman.padre == .kalyan && TipoDeEscala.yaman.padre?.categoria == .thaat)
-        #expect(TipoDeEscala.darbariKanada.padre?.nombre == TipoDeEscala.asavari.nombre)
-        #expect(TipoDeEscala.candrakauns.padre == nil && TipoDeEscala.madhuvanti.padre == nil)
+        #expect(conMadre == 65 + 22 + 14 + 3 + 3)
+        #expect(TipoDeEscala.yaman.madre == .kalyan && TipoDeEscala.yaman.madre?.categoria == .thaat)
+        #expect(TipoDeEscala.darbariKanada.madre?.nombre == TipoDeEscala.asavari.nombre)
+        #expect(TipoDeEscala.candrakauns.madre == nil && TipoDeEscala.madhuvanti.madre == nil)
         #expect(TipoDeEscala.sadjaGrama.derivadas.map(\.nombre) == TipoDeEscala.murchanas.prefix(7).map(\.nombre))
         #expect(TipoDeEscala.madhyamaGrama.derivadas.map(\.nombre) == TipoDeEscala.murchanas.suffix(7).map(\.nombre))
         #expect(
             TipoDeEscala.slendro.derivadas.map(\.nombre) == [
                 "Sléndro pathet nem", "Sléndro pathet sanga", "Sléndro pathet manyura",
             ])
-        #expect(TipoDeEscala.kalyan.derivadas.map(\.nombre) == ["Bhūpālī", "Yaman", "Hindol"])
+        #expect(TipoDeEscala.kalyan.derivadas.map(\.nombre) == ["Bhūpālī", "Yaman", "Kedār", "Hindol"])
         #expect(TipoDeEscala.mayor.derivadas.isEmpty)
         // Una escala propia con los intervalos del sléndro no tiene sus pathet.
         #expect(TipoDeEscala(nombre: "mía", intervalos: TipoDeEscala.slendro.intervalos).derivadas.isEmpty)

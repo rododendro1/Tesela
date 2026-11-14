@@ -213,18 +213,18 @@ extension TipoDeEscala {
     /// La escala madre de la que sale, por la tradición: el mēḷa de un rāga janya («Mohanam» → Harikāmbhojī,
     /// siempre uno de los `melakartasCompatibles`), el thāṭ de un rāga indostánico en la clasificación de Bhatkhande
     /// (Yaman → Kalyāṇ), el grāma de una mūrchanā (Uttaramandrā → ṣaḍja-grāma) y el laras de un pathet (Sléndro
-    /// pathet nem → Sléndro). `nil` en las demás escalas y en las que no tienen un padre claro (Revati, Lalit).
-    public var padre: TipoDeEscala? {
-        datosDelCatalogo.padre.flatMap { TipoDeEscala.delCatalogo[$0]?.tipo }
+    /// pathet nem → Sléndro). `nil` en las demás escalas y en las que no tienen una madre clara (Revati, Lalit).
+    public var madre: TipoDeEscala? {
+        datosDelCatalogo.madre.flatMap { TipoDeEscala.delCatalogo[$0]?.tipo }
     }
 
-    /// Las escalas del catálogo que salen de esta (las que la tienen de `padre`), en el orden del catálogo: los janya
+    /// Las escalas del catálogo que salen de esta (las que la tienen de `madre`), en el orden del catálogo: los janya
     /// de un mēḷa, los rāgas de un thāṭ, las siete mūrchanā de un grāma.
     public var derivadas: [TipoDeEscala] { TipoDeEscala.derivadasPorPadre[identidad] ?? [] }
 
-    /// Padre → sus derivadas, en el orden del catálogo.
+    /// Madre → sus derivadas, en el orden del catálogo.
     private static let derivadasPorPadre: [IdentidadDeEscala: [TipoDeEscala]] = Dictionary(
-        grouping: catalogo.filter { $0.datos.padre != nil }, by: { $0.datos.padre! })
+        grouping: catalogo.filter { $0.datos.madre != nil }, by: { $0.datos.madre! })
 
     /// El nombre con la palabra de su categoría delante: «thāṭ Kāfī», «mēḷa Māyāmālavagauḷa», «rāga Mohanam» (un
     /// janya es un rāga), «maqām Bayātī», «drómos Hitzáz». Es el nombre a secas si ya la lleva («jins Ḥijāz»,

@@ -26,12 +26,15 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
     /// En un rāga bhāṣāṅga, las notas que no son de su mēḷa (`TipoDeEscala.notasExternas`), desde la tónica: Do
     /// Mukhāri lleva «La♭». `nil` si no tiene.
     public let notasExternas: [String]?
-    /// La escala madre de la que sale por su tradición (`TipoDeEscala.padre`), con la palabra de su categoría: Do
+    /// La escala madre de la que sale por su tradición (`TipoDeEscala.madre`), con la palabra de su categoría: Do
     /// Mukhāri sale del «mēḷa Kharaharapriyā», y Do Yaman, del «thāṭ Kalyāṇ». `nil` si no tiene.
-    public let padre: String?
+    public let madre: String?
     /// Las escalas del catálogo que salen de esta (`TipoDeEscala.derivadas`), por su nombre: los janya de un mēḷa
     /// («Mukhāri», «Kāpi»…), los rāgas de un thāṭ. `nil` si no sale ninguna.
     public let derivadas: [String]?
+    /// Las notas con función de la escala (`TipoDeEscala.funciones`): el vādī y el saṃvādī de Do Yaman son Mi y Si, y
+    /// el qarār y el ghammāz de Re Bayātī, Re y Sol. `nil` si no tiene.
+    public let funciones: [NotaConFuncionPresentada]?
     public let clases: [Int]
     /// De qué escala es modo («Modo 2 de Do mayor»), si lo es de alguna conocida.
     public let modo: String?
@@ -57,9 +60,14 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
         recorridoDescendente = escala.tipo.recorridoDescendente == nil ? nil : enOrden(.descendente)
         let externas = escala.tipo.notasExternas.map { (escala.tonica + $0).nombre(en: notacion) }
         notasExternas = externas.isEmpty ? nil : externas
-        padre = escala.tipo.padre?.nombreCompleto(en: notacion)
+        madre = escala.tipo.madre?.nombreCompleto(en: notacion)
         let derivadas = escala.tipo.derivadas.map { $0.nombre(en: notacion) }
         self.derivadas = derivadas.isEmpty ? nil : derivadas
+        let funciones = escala.tipo.funciones.map {
+            NotaConFuncionPresentada(
+                funcion: $0.funcion.nombre(en: notacion), nota: (escala.tonica + $0.intervalo).nombre(en: notacion))
+        }
+        self.funciones = funciones.isEmpty ? nil : funciones
         clases = escala.notas.map(\.claseDeAltura)
         modo = PresentacionDeEscalaYAcorde.modo(de: escala, en: notacion)
         let cuatriadas = escala.armonizar(cuatriadas: true).compactMap { $0 }
@@ -73,6 +81,13 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
         ambito = escala.tipo.ambito?.nombre(en: notacion)
         afinacion = PresentacionDeEstudioDeEscala.afinacion(de: escala.tipo, en: notacion)
     }
+}
+
+/// Una nota de la escala con su función: «vādī» «Mi».
+public struct NotaConFuncionPresentada: Hashable, Sendable, Codable {
+    /// El nombre de la función en la notación: «vādī», «ghammāz».
+    public let funcion: String
+    public let nota: String
 }
 
 /// Un nombre de la escala en su escritura original, con su idioma.

@@ -34,7 +34,7 @@ let columnasDeEscalas: [String] =
         "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
         // Los rāgas vakra, en el orden en que se tocan sobre Do, y las notas que no son de su mēḷa.
         "es_vakra", "recorrido", "recorrido_descendente", "notas_externas",
-        "numero_de_melakarta", "mnemonico_de_melakarta", "cakra", "solfa_de_melakarta", "padre", "afinaciones",
+        "numero_de_melakarta", "mnemonico_de_melakarta", "cakra", "solfa_de_melakarta", "madre", "afinaciones",
         "sistema_microtonal", "cents",
         // Lo que se mide de sus notas, sobre Do (`EstadisticasDeEscala`).
         "cardinal", "pasos", "brillo", "brillo_por_quintas", "forma_prima", "forte", "vector_intervalico",
@@ -61,12 +61,12 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
     let sobreDo = Escala(.do, tipo)
     let medidas = sobreDo.estadisticas
     let conjunto = sobreDo.conjuntoDeClasesDeAltura
-    // Su mēḷa: el suyo si es heptatónica y encaja en uno, y si no, el del padre, cuando el padre es un mēḷa.
+    // Su mēḷa: el suyo si es heptatónica y encaja en uno, y si no, el de la madre, cuando la madre es un mēḷa.
     // Las notas sobre Do en el orden del recorrido: «Do Mi♭ Re Mi♭ Fa Sol La Sol Do».
     func recorrido(_ sentido: SentidoDelIntervalo) -> String {
         sobreDo.alturas(octava: 4, sentido: sentido).map(\.nota.nombre).joined(separator: " ")
     }
-    let mela = tipo.numeroDeMelakarta != nil ? tipo : tipo.padre.flatMap { $0.categoria == .melakarta ? $0 : nil }
+    let mela = tipo.numeroDeMelakarta != nil ? tipo : tipo.madre.flatMap { $0.categoria == .melakarta ? $0 : nil }
     let comoSeLlama =
         [
             tipo.nombre, tipo.nombreCompleto, tipo.nombresOriginales.map(\.texto).joined(separator: " · "),
@@ -100,7 +100,7 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         mela?.mnemonicoDeMela ?? "",
         mela?.cakra?.nombre ?? "",
         mela?.solfaDeMela?.joined(separator: " ") ?? "",
-        tipo.padre?.nombre ?? "",
+        tipo.madre?.nombre ?? "",
         String(tipo.afinaciones.count),
         microtonal?.sistema.rawValue ?? "",
         microtonal.map { cents($0.cents) } ?? "",

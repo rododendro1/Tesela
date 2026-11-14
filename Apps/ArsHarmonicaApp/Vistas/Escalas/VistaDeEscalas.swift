@@ -146,10 +146,15 @@ struct VistaDeEscalas: View {
             }
             // De qué escala sale por su tradición (Mukhāri → mēḷa Kharaharapriyā) y cuáles salen de ella (los janya
             // de un mēḷa, los rāgas de un thāṭ), sobre la misma tónica; cada una se abre al tocarla.
-            if let padre = escala.tipo.padre {
-                LabeledContent(notacion.texto(\.derivaDe)) {
-                    Button(padre.nombreCompleto(en: notacion)) { navegacion.ver(Escala(escala.tonica, padre)) }
+            if let madre = escala.tipo.madre {
+                LabeledContent(notacion.texto(\.escalaMadre)) {
+                    Button(madre.nombreCompleto(en: notacion)) { navegacion.ver(Escala(escala.tonica, madre)) }
                 }
+            }
+            // Las notas con función: el vādī y el saṃvādī de un rāga, el qarār y el ghammāz de un maqām.
+            ForEach(Array(escala.tipo.funciones.enumerated()), id: \.offset) { _, nota in
+                LabeledContent(
+                    nota.funcion.nombre(en: notacion), value: (escala.tonica + nota.intervalo).nombre(en: notacion))
             }
             if !escala.tipo.derivadas.isEmpty {
                 DisclosureGroup(notacion.texto(\.derivadas) + " (\(escala.tipo.derivadas.count))") {

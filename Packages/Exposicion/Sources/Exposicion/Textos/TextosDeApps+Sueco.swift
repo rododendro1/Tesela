@@ -232,7 +232,7 @@ extension TextosDeApps {
         fragmento: "Fragment",
         nombreOriginal: "Originalnamn",
         notasExternas: "Främmande toner",
-        derivaDe: "Härledd från",
+        escalaMadre: "Moderskala",
         derivadas: "Härledda",
         afinacion: "Stämning",
         afinacionTemperada: "liksvävande",
