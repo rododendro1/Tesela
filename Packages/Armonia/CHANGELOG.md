@@ -11,6 +11,11 @@
 
 ### Novedades
 
+- Los rāgas vakra, que suben o bajan en zigzag, tienen su recorrido: `TipoDeEscala.recorrido` y
+  `recorridoDescendente` dan el orden en que se tocan los grados, `esVakra` dice si hay alguno, y
+  `Escala.alturas(octava:sentido:)` los sigue. Van en el JSON (`recorrido`, `recorridoDescendente`) solo si los hay,
+  y los ficheros sin ellos se leen igual. No cuentan para `==`. Entran tres janya vakra de la Wikipedia en inglés:
+  Ānandabhairavi, Suruṭṭi y Aṭāṇā. `armonia escala` los muestra con «↑:» y «↓:», y `--json`, con `recorrido`.
 - Los 24 rāgas indostánicos con thāṭ tienen versión microtonal en los 22 śruti, con los de su thāṭ nota a nota.
 - Kumoijōshi tiene ahora las notas del koto, Sol La♭ Do Re Mi♭ (Do Re♭ Fa Sol La♭), según las tablas de KORG y de
   asahi-net; antes tenía las de Akebono.

@@ -134,6 +134,9 @@ extension LineaDeComandos {
         /// El nombre en la escritura de su tradición, si lo tiene: «حجاز».
         let nombresOriginales: [NombreOriginalPresentado]?
         let notas: [String]
+        /// En un rāga vakra, las notas en el orden en que se toca al subir y al bajar.
+        let recorrido: [String]?
+        let recorridoDescendente: [String]?
         let clases: [Int]
         let modo: String?
         let acordes: [EscalaPresentada.AcordeDelGrado]?
@@ -191,6 +194,8 @@ extension LineaDeComandos {
             nombre = datos.nombre
             nombresOriginales = datos.nombresOriginales
             notas = datos.notas
+            recorrido = datos.recorrido
+            recorridoDescendente = datos.recorridoDescendente
             clases = datos.clases
             modo = datos.modo
             acordes = datos.acordes

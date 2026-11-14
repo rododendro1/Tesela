@@ -95,14 +95,25 @@ public struct Escala: Hashable, Sendable {
 
     /// Alturas de la escala con octava. Al subir, de la tónica en `octava` a la tónica superior;
     /// al bajar, de la tónica superior a la tónica en `octava`, con la forma descendente del tipo
-    /// (La menor melódica baja con Sol♮ y Fa♮).
+    /// (La menor melódica baja con Sol♮ y Fa♮). Si el tipo tiene recorrido (`TipoDeEscala.recorrido`,
+    /// `recorridoDescendente`), en su orden: Do Ānandabhairavi sube Do Mi♭ Re Mi♭ Fa Sol La Sol Do.
     public func alturas(octava: Int, sentido: SentidoDelIntervalo = .ascendente) -> [Altura] {
-        guard sentido == .ascendente else {
-            return Array(Escala(tonica, tipo.formaDescendente).alturas(octava: octava).reversed())
-        }
         let inicio = Altura(tonica, octava: octava)
-        let alturas: [Altura] = tipo.intervalos.map { inicio + $0 }
-        return alturas + [inicio + Intervalo.octava]
+        let intervalos =
+            sentido == .ascendente ? tipo.intervalos : tipo.intervalosDescendentes ?? tipo.intervalos
+        if let recorrido = sentido == .ascendente ? tipo.recorrido : tipo.recorridoDescendente {
+            return recorrido.map { grado in
+                let indice = grado - 1
+                let octavas = Int((Double(indice) / Double(intervalos.count)).rounded(.down))
+                var altura = inicio + intervalos[modulo(indice, intervalos.count)]
+                for _ in 0..<abs(octavas) {
+                    altura = octavas > 0 ? altura + Intervalo.octava : altura - Intervalo.octava
+                }
+                return altura
+            }
+        }
+        let alturas = intervalos.map { inicio + $0 } + [inicio + Intervalo.octava]
+        return sentido == .ascendente ? alturas : alturas.reversed()
     }
 
     /// Contiene el nombre exacto (Fa♯ ≠ Sol♭), al subir o al bajar; con `sentido`, solo en

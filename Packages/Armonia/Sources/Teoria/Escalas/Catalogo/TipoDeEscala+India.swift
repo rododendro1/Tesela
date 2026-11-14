@@ -186,8 +186,8 @@ extension TipoDeEscala {
 
     // MARK: Janya (rāgas derivados, música carnática)
 
-    // Algunos rāgas janya muy habituales, con su ārohaṇa (subida) y avarohaṇa (bajada). Se dejan
-    // fuera los vakra (los que suben o bajan en zigzag), que no son escalas ordenadas.
+    // Algunos rāgas janya muy habituales, con su ārohaṇa (subida) y avarohaṇa (bajada). Los vakra (los que suben o
+    // bajan en zigzag) llevan además su recorrido, el orden en que se tocan los grados.
 
     public static let mohanam = TipoDeEscala(
         nombre: "Mohanam", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
@@ -537,6 +537,49 @@ extension TipoDeEscala {
         ],
         categoria: .janya, padre: .melakarta(22))
 
+    // Tres vakra, que suben o bajan en zigzag y llevan su recorrido (`recorrido`, `recorridoDescendente`), de la
+    // Wikipedia en inglés. Bēgaḍa, Sahānā, Rītigauḷa y Darbārī Kānaḍa no están: sus artículos dan escalas distintas en
+    // distintos sitios.
+
+    /// Ānandabhairavi, del mēḷa 22 (Kharaharapriyā): sube Sa ga Re ga ma Pa Dha Pa Ṡa (sin ni) y baja recto con las
+    /// siete. Es bhāṣāṅga: en sus frases entran el Ga, el dha y el Ni, que la escala no recoge.
+    public static let anandabhairavi = TipoDeEscala(
+        nombre: "Ānandabhairavi",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        recorrido: [1, 3, 2, 3, 4, 5, 6, 5, 7],
+        nombresOriginales: [
+            .init("आनन्दभैरवि", .sanscrito), .init("ఆనందభైరవి", .telugu), .init("ಆನಂದಭೈರವಿ", .canares),
+            .init("ஆனந்தபைரவி", .tamil),
+        ],
+        categoria: .janya, padre: .melakarta(22))
+    /// Suruṭṭi, del mēḷa 28 (Harikāmbhojī): sube Sa Re ma Pa ni Dha ni Ṡa (sin Ga) y baja Ṡa ni Dha Pa ma Ga Pa ma
+    /// Re Sa.
+    public static let surutti = TipoDeEscala(
+        nombre: "Suruṭṭi",
+        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        recorrido: [1, 2, 3, 4, 6, 5, 6, 7],
+        recorridoDescendente: [8, 7, 6, 5, 4, 3, 5, 4, 2, 1],
+        nombresOriginales: [.init("सुरुट्टि", .sanscrito), .init("సురుట్టి", .telugu), .init("ಸುರುಟ್ಟಿ", .canares)],
+        categoria: .janya, padre: .melakarta(28))
+    /// Aṭāṇā, del mēḷa 29 (Dhīraśaṅkarābharaṇam): sube recto Sa Re ma Pa Ni Ṡa y baja Ṡa Ni Dha Pa ma Pa Ga Re Sa.
+    public static let atana = TipoDeEscala(
+        nombre: "Aṭāṇā",
+        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        recorridoDescendente: [8, 7, 6, 5, 4, 5, 3, 2, 1],
+        nombresOriginales: [
+            .init("अटाणा", .sanscrito), .init("అటాణ", .telugu), .init("ಅಟಾಣ", .canares), .init("அடாணா", .tamil),
+        ],
+        categoria: .janya, padre: .melakarta(29))
+
     /// Rāgas janya incluidos.
     package static let janyas: [TipoDeEscala] = [
         .mohanam, .hindolam, .hamsadhvani, .abhogi, .madhyamavati, .bilahari, .kambhoji, .arabhi, .kedaragaula,
@@ -544,6 +587,7 @@ extension TipoDeEscala {
         .malayamarutam, .gambhiranata, .hamsanadam, .hamsanandi, .kalyanavasantam, .bhupalam, .revagupti, .bauli,
         .lalita, .megharanjani, .dhanyasi, .abheri, .manirangu, .nagasvaravali, .sunadavinodini,
         .andolika, .garudadhvani, .bahudari, .salagabhairavi, .jaganmohini, .rasikaranjani, .suddhaHindolam,
+        .anandabhairavi, .surutti, .atana,
     ]
 
     // MARK: Thāṭ (música indostánica)

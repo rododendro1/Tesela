@@ -11,7 +11,9 @@ import Foundation
 /// una escala, `equivalentes`.
 ///
 /// Algunas escalas suben y bajan con notas distintas (la menor melódica, el dromos Rast, muchos
-/// rāgas): `intervalos` es la forma ascendente e `intervalosDescendentes`, la descendente.
+/// rāgas): `intervalos` es la forma ascendente e `intervalosDescendentes`, la descendente. Las que no suben o bajan
+/// en línea recta (los rāgas vakra, como Ānandabhairavi: Sa Ga Re Ga Ma Pa Dha Pa Ṡa) tienen además su recorrido
+/// (`recorrido`, `recorridoDescendente`): el orden en que se tocan sus grados.
 public struct TipoDeEscala: Sendable, Codable {
     public let nombre: String
     /// La clave fija de una escala del catálogo: «dorico», «kafi», «pelog-lima». Sale de su nombre en español, pero
@@ -23,6 +25,18 @@ public struct TipoDeEscala: Sendable, Codable {
     /// Intervalos de la forma descendente, si es distinta de la ascendente (también ordenados
     /// de grave a agudo); `nil` si la escala baja con las mismas notas con que sube.
     public let intervalosDescendentes: [Intervalo]?
+    /// El orden en que se tocan los grados al subir, si no es el recto (1, 2, 3… hasta la octava): cada número es un
+    /// grado de `intervalos`, contado desde 1; el que sigue al último (`intervalos.count + 1`) es la tónica de arriba,
+    /// y 0 y los negativos, los de la octava de abajo. Ānandabhairavi (Sa Re ga ma Pa Dha al subir) sube
+    /// `[1, 3, 2, 3, 4, 5, 6, 5, 7]`: Sa ga Re ga ma Pa Dha Pa Ṡa. `nil` si sube en línea recta. No cuenta para `==`:
+    /// dos escalas con las mismas notas y distinto recorrido suenan igual a efectos de `contenido`.
+    public var recorrido: [Int]? { recorridos?.subida }
+    /// El orden en que se tocan los grados al bajar, desde la tónica de arriba, en los grados de la forma
+    /// descendente (`intervalosDescendentes`, o `intervalos` si es la misma): Aṭāṇā baja `[8, 7, 6, 5, 4, 5, 3, 2,
+    /// 1]`, Ṡa Ni Dha Pa ma Pa Ga Re Sa. `nil` si baja en línea recta.
+    public var recorridoDescendente: [Int]? { recorridos?.bajada }
+    /// Los dos recorridos, en el montón y solo si hay alguno, para que un `TipoDeEscala` siga ocupando poco.
+    private let recorridos: Recorridos?
     /// Otros nombres de la escala, escritos correctamente (con diacríticos, ♯/♭…): «jónico» para la mayor,
     /// «bizantina» para la doble armónica. Las grafías simplificadas («dorico», «lidio #5») no se guardan: salen
     /// de `aliasNormalizados`.
@@ -50,7 +64,7 @@ public struct TipoDeEscala: Sendable, Codable {
 
     // «descenso» es el nombre que tenía `intervalosDescendentes`: se conserva al codificar.
     private enum CodingKeys: String, CodingKey {
-        case nombre, clave, intervalos, alias, variantes
+        case nombre, clave, intervalos, alias, variantes, recorrido, recorridoDescendente
         case intervalosDescendentes = "descenso"
     }
 
@@ -59,11 +73,12 @@ public struct TipoDeEscala: Sendable, Codable {
     /// es distinto de `intervalos`.
     public init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
-        variantes: [String] = []
+        variantes: [String] = [], recorrido: [Int]? = nil, recorridoDescendente: [Int]? = nil
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
-            variantes: variantes, clave: nil, datos: nil)
+            variantes: variantes, recorrido: recorrido, recorridoDescendente: recorridoDescendente, clave: nil,
+            datos: nil)
     }
 
     /// Una escala occidental del catálogo, con sus estilos, las regiones de donde viene (las populares: la flamenca,
@@ -89,8 +104,8 @@ public struct TipoDeEscala: Sendable, Codable {
     /// dan la categoría, los estilos, las regiones ni la fuente (`tradicion: .japon, categoria: .escala`).
     package init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]? = nil, alias: [String] = [],
-        variantes: [String] = [], nombresOriginales: [NombreOriginal] = [], tradicion: Tradicion? = nil,
-        categoria: CategoriaTradicional,
+        variantes: [String] = [], recorrido: [Int]? = nil, recorridoDescendente: [Int]? = nil,
+        nombresOriginales: [NombreOriginal] = [], tradicion: Tradicion? = nil, categoria: CategoriaTradicional,
         escuelas: [Escuela] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
         padre: TipoDeEscala? = nil,
         afinaciones: [DatosDeEscala.Afinacion] = [], referencias: [Referencia] = [], documentada: Referencia? = nil,
@@ -98,7 +113,7 @@ public struct TipoDeEscala: Sendable, Codable {
     ) {
         self.init(
             nombre: nombre, intervalos: intervalos, intervalosDescendentes: intervalosDescendentes, alias: alias,
-            variantes: variantes, clave: clave,
+            variantes: variantes, recorrido: recorrido, recorridoDescendente: recorridoDescendente, clave: clave,
             datos: DatosDeEscala(
                 nombresOriginales: nombresOriginales, tradicion: tradicion, escuelas: escuelas, regiones: regiones,
                 categoria: categoria,
@@ -111,13 +126,19 @@ public struct TipoDeEscala: Sendable, Codable {
     /// (`claveDeNombre(_:)`). Si se cambia el nombre de una, se le da la clave que tenía, que las pruebas guardan.
     init(
         nombre: String, intervalos: [Intervalo], intervalosDescendentes: [Intervalo]?, alias: [String],
-        variantes: [String], clave: String? = nil, datos: DatosDeEscala?
+        variantes: [String], recorrido: [Int]? = nil, recorridoDescendente: [Int]? = nil, clave: String? = nil,
+        datos: DatosDeEscala?
     ) {
         self.nombre = nombre
         let subida = TipoDeEscala.ordenar(intervalos)
         let bajada = intervalosDescendentes.map(TipoDeEscala.ordenar)
         self.intervalos = subida
         self.intervalosDescendentes = bajada == subida ? nil : bajada
+        // Un recorrido recto no se guarda: es el que se toca sin él.
+        let grados = (bajada ?? subida).count
+        recorridos = Recorridos(
+            subida: recorrido == Array(1...(subida.count + 1)) ? nil : recorrido,
+            bajada: recorridoDescendente == Array((1...(grados + 1)).reversed()) ? nil : recorridoDescendente)
         self.alias = alias
         self.variantes = variantes
         caja = datos.map { CajaDeDatos($0, clave: clave ?? TipoDeEscala.claveDeNombre(nombre)) } ?? .vacia
@@ -132,6 +153,9 @@ public struct TipoDeEscala: Sendable, Codable {
         intervalosDescendentes = try datos.decodeIfPresent([Intervalo].self, forKey: .intervalosDescendentes)
         alias = try datos.decode([String].self, forKey: .alias)
         variantes = try datos.decodeIfPresent([String].self, forKey: .variantes) ?? []
+        recorridos = Recorridos(
+            subida: try datos.decodeIfPresent([Int].self, forKey: .recorrido),
+            bajada: try datos.decodeIfPresent([Int].self, forKey: .recorridoDescendente))
         caja = try datos.decodeIfPresent(String.self, forKey: .clave).map { CajaDeDatos(.vacia, clave: $0) } ?? .vacia
     }
 
@@ -143,6 +167,8 @@ public struct TipoDeEscala: Sendable, Codable {
         try datos.encodeIfPresent(intervalosDescendentes, forKey: .intervalosDescendentes)
         try datos.encode(alias, forKey: .alias)
         try datos.encode(variantes, forKey: .variantes)
+        try datos.encodeIfPresent(recorrido, forKey: .recorrido)
+        try datos.encodeIfPresent(recorridoDescendente, forKey: .recorridoDescendente)
     }
 
     package static func ordenar(_ intervalos: [Intervalo]) -> [Intervalo] {
@@ -160,8 +186,11 @@ public struct TipoDeEscala: Sendable, Codable {
     /// ¿Baja con notas distintas de las que sube?
     public var esDireccional: Bool { intervalosDescendentes != nil }
 
+    /// ¿Sube o baja en zigzag (`recorrido`, `recorridoDescendente`), como los rāgas vakra?
+    public var esVakra: Bool { recorrido != nil || recorridoDescendente != nil }
+
     /// Forma que se usa al descender (la menor melódica baja como menor natural). Si la escala
-    /// no es direccional, ella misma.
+    /// no es direccional, ella misma. Las formas ascendente y descendente no llevan recorrido.
     public var formaDescendente: TipoDeEscala {
         guard let intervalosDescendentes else { return self }
         return TipoDeEscala(nombre: "\(nombre) (descendente)", intervalos: intervalosDescendentes)
@@ -276,6 +305,18 @@ public struct TipoDeEscala: Sendable, Codable {
 
     /// Contenido → las escalas de `catalogo` que suenan así, en su orden.
     private static let porContenido: [Contenido: [TipoDeEscala]] = Dictionary(grouping: catalogo, by: \.contenido)
+}
+
+/// Los recorridos de un `TipoDeEscala` vakra (`recorrido`, `recorridoDescendente`), en el montón. `nil` si no tiene
+/// ninguno.
+private final class Recorridos: Sendable {
+    let subida: [Int]?
+    let bajada: [Int]?
+    init?(subida: [Int]?, bajada: [Int]?) {
+        guard subida != nil || bajada != nil else { return nil }
+        self.subida = subida
+        self.bajada = bajada
+    }
 }
 
 /// Los datos y la clave de un `TipoDeEscala`, en el montón. Son inmutables, así que compartirlos entre copias y entre

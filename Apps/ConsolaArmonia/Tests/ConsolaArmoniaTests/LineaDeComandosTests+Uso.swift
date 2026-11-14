@@ -147,6 +147,16 @@ extension LineaDeComandosTests {
     /// `escalas` busca por el nombre: con unas notas, remite a `identificar --escalas`. `escala` da la línea de las
     /// referencias de una escala, y `--bibtex`, solo sus obras en BibTeX; una sintética de siete notas tiene a Busoni,
     /// y una hexatónica alterada, ninguna.
+    /// Un rāga vakra lleva, debajo de sus notas, el orden en que se toca al subir y al bajar; en JSON, `recorrido`.
+    @Test func elRecorridoDeUnVakra() throws {
+        let texto = salida("escala Do surutti")
+        #expect(texto.contains("\n  ↑: Do Re Fa Sol Si♭ La Si♭ Do\n"), Comment(rawValue: texto))
+        #expect(texto.contains("\n  ↓: Do Si♭ La Sol Fa Mi Sol Fa Re Do\n"), Comment(rawValue: texto))
+        #expect(salida("escala Do atana").contains("\n  ↓: Do Si La Sol Fa Sol Mi Re Do\n"))
+        #expect(!salida("escala Do atana").contains("↑:") && !salida("escala Do bilahari").contains("↓:"))
+        #expect(salida("escala Do anandabhairavi --json").contains("\"recorrido\""))
+    }
+
     @Test func referenciasDeUnaEscala() {
         #expect(
             salida("escala Re bayati").contains(
