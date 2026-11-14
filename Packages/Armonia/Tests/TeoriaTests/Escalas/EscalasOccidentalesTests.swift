@@ -25,7 +25,7 @@ import Testing
         #expect(notas(.bebopLidio) == "Do Re Mi Fa♯ Sol Sol♯ La Si")
         #expect(notas(.pentatonicaMayorTerceraMenor) == "Do Re Mi♭ Sol La")
         #expect(notas(.pentatonicaMenorSextaMenor) == "Do Mi♭ Fa Sol La♭")
-        #expect(TipoDeEscala.pentatonicaMayorTerceraMenor.equivalentes.contains { $0.esIdentico(a: .kumoijoshi) })
+        #expect(TipoDeEscala.pentatonicaMayorTerceraMenor.equivalentes.contains { $0.esIdentico(a: .akebono) })
         #expect(notas(.disminuidaSemitonoTono) == "Do Re♭ Mi♭ Mi Fa♯ Sol La Si♭")
         #expect(notas(.aumentada) == "Do Mi♭ Mi Sol Sol♯ Si")
         #expect(notas(.jonicoSegundaMenor) == "Do Re♭ Mi Fa Sol La Si")

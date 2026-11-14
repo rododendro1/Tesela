@@ -155,13 +155,15 @@ extension LineaDeComandosTests {
         #expect(
             salida("escala Re dórico").contains("\n  referencias: Powers et al. 2001; Levine 1995; Rechberger 2008\n"))
         #expect(salida("escala Re lidio ♯2").contains("\n  referencias: Busoni 1916\n"))
-        #expect(!salida("escala Re jónico sin 4ª").contains("referencias"))
+        #expect(!salida("escala Re hexatónica de armónicos").contains("referencias"))
         let bib = salida("escala Re bayati --bibtex")
         #expect(bib.hasPrefix("@online{maqamWorld,\n"))
         #expect(bib.contains("@book{touma1996,\n  author = {Touma, Habib Hassan},"))
         #expect(salida("escala Re dórico --bibtex").hasPrefix("@incollection{powers2001,\n"))
         #expect(salida("escala Re lidio ♯2 --bibtex").hasPrefix("@book{busoni1916,\n"))
-        #expect(salida("escala Re jónico sin 4ª --bibtex").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        #expect(
+            salida("escala Re hexatónica de armónicos --bibtex").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        )
     }
 
     @Test func escalasConNotas() {

@@ -11,6 +11,10 @@
 
 ### Novedades
 
+- Los 24 rāgas indostánicos con thāṭ tienen versión microtonal en los 22 śruti, con los de su thāṭ nota a nota.
+- Kumoijōshi tiene ahora las notas del koto, Sol La♭ Do Re Mi♭ (Do Re♭ Fa Sol La♭), según las tablas de KORG y de
+  asahi-net; antes tenía las de Akebono.
+- Quince pentatónicas, hexatónicas y blues alteradas citan la lista de modos de Op de Coul (`Referencia.opDeCoulModos`).
 - Siete rāgas janya más, de la Wikipedia en inglés: Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini,
   Rasikarañjani y Śuddha Hindolam, con su nombre en sánscrito, telugu y canarés, y cuatro también en tamil.
 - Ocho rāgas indostánicos más: Basant y Śrī (de Pūrvī), Dhānī (de Kāfī), Guṇakrī (de Bhairav), y Paṭdīp, Kirvāṇī,

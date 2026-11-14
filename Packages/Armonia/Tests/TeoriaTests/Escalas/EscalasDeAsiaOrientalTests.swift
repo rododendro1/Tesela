@@ -92,7 +92,8 @@ import Testing
             Escala(tonica, tipo).notas.map(\.description).joined(separator: " ")
         }
         #expect(notas(.do, .hirajoshi) == "Do Re Mi♭ Sol La♭")
-        #expect(notas(.do, .kumoijoshi) == "Do Re Mi♭ Sol La")
+        #expect(notas(.do, .kumoijoshi) == "Do Re♭ Fa Sol La♭")
+        #expect(notas(.sol, .kumoijoshi) == "Sol La♭ Do Re Mi♭")
         #expect(notas(.do, .iwato) == "Do Re♭ Fa Sol♭ Si♭")
         #expect(notas(.do, .insen) == "Do Re♭ Fa Sol Si♭")
         #expect(notas(.mi, .miyakobushi) == "Mi Fa La Si Do")
@@ -108,7 +109,7 @@ import Testing
         #expect(TipoDeEscala.ryo == .pentatonicaMayor)
         #expect(
             Set(TipoDeEscala.in.equivalentes.map(\.nombre)) == [
-                "Miyakobushi", "Ambassäl", "Pélog pathet nem", "Guṇakrī",
+                "Miyakobushi", "Ambassäl", "Pélog pathet nem", "Guṇakrī", "Kumoijōshi",
             ])
         // Con macrones, sin ellos y en japonés.
         for (texto, nombre) in [

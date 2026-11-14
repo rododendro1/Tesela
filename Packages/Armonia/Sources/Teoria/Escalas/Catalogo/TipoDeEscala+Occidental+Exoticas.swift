@@ -394,7 +394,7 @@ extension TipoDeEscala {
         nombre: "pentatónica menor ♭5",
         intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaDisminuida, .septimaMenor],
         estilos: [.jazz])
-    /// Do Re Mi♭ Sol La: la mayor con la 3ª menor. Tiene las notas del kumoijōshi japonés y del Śivarañjanī indio.
+    /// Do Re Mi♭ Sol La: la mayor con la 3ª menor. Tiene las notas del Akebono japonés y del Śivarañjanī indio.
     public static let pentatonicaMayorTerceraMenor = TipoDeEscala(
         nombre: "pentatónica mayor ♭3",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMayor],

@@ -116,6 +116,16 @@ import Testing
     }
 
     /// Madhuvantī, Multānī, Hindol y Sohinī, en su forma recta.
+    /// Los rāgas con thāṭ llevan sus śruti, nota a nota; Deś sube con el Ni de Bilāval.
+    @Test func losRagasConThaatLlevanSusSruti() {
+        for raga in TipoDeEscala.ragasIndostanicos where raga.padre?.categoria == .thaat {
+            #expect(raga.afinacionPropia?.esCoherente == true, Comment(rawValue: raga.nombre))
+        }
+        #expect(TipoDeEscala.bhupali.afinacionPropia?.pasos == [0, 3, 7, 13, 16])
+        #expect(TipoDeEscala.des.afinacionPropia?.pasos == [0, 3, 9, 13, 20])
+        #expect(TipoDeEscala.bauli.afinacionPropia == nil)
+    }
+
     @Test func cuatroRagasMas() {
         func notas(_ intervalos: [Intervalo]) -> String {
             intervalos.map { (Nota.do + $0).description }.joined(separator: " ")

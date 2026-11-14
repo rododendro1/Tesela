@@ -4,7 +4,7 @@ Estado a 14 de noviembre de 2026, tras las escalas sintéticas, los lugares, las
 
 ## Resumen
 
-Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 28 escalas occidentales sin ninguna referencia y
+Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 13 escalas occidentales sin ninguna referencia y
 cuatro acordes sin fuente. El catálogo tiene 509 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
@@ -77,9 +77,9 @@ los ṭubūʿ tunecinos) no se pueden leer desde aquí.
   entran como escalas aparte para que el nombre no lleve a dos.
 - **Japón, más afinaciones del koto:** Nakazora-jōshi (中空調子) es, en la tabla de afinaciones del afinador de KORG
   que copia shamisen.info, el Hirajōshi sobre otra nota (Re Mi Fa La Si♭ con un Sol grave): en doce notas no es una
-  escala nueva. Han-iwato (半岩戸調子) no está en ninguna de las tablas que se leen en abierto. La misma tabla da
-  Kumoi-jōshi (雲井調子) como Sol La♭ Do Re Mi♭ (Do Re♭ Fa Sol La♭), y no como el Kumoijōshi del catálogo (Do Re Mi♭
-  Sol La): está por revisar.
+  escala nueva. Han-iwato (半岩戸調子) no está en ninguna de las tablas que se leen en abierto. Kumoi-jōshi (雲井調子)
+  estaba como Do Re Mi♭ Sol La, las notas de Akebono; la tabla de KORG y la de asahi-net, cuerda a cuerda, coinciden
+  en Sol La♭ Do Re Mi♭ (Do Re♭ Fa Sol La♭), y así está ahora.
 
 - **India, los pann tamiles:** las fuentes en abierto no coinciden en el rāga que le toca a cada pann (Kurinci es
   Harikāmbhoji en shaivam.org y Malahari en Bharatpedia; Intaḷam, Māyāmālavagauḷa o Nāṭanāmakriyā), y los que sí
@@ -105,6 +105,10 @@ los ṭubūʿ tunecinos) no se pueden leer desde aquí.
   Asnawa), y lebeng solo tiene siete notas en el semar pegulingan; en el gambuh es pentatónico, sin una escala fija.
 - **Turquía, Nişâbur y Şehnaz:** la TDV İslâm Ansiklopedisi los describe con más de un dizi o con un recorrido que no
   deja una escala sola, así que de esta tanda solo entra Bayâtî.
+- **India, los janya en śruti:** los rāgas indostánicos con thāṭ llevan los śruti de su thāṭ (el modelo de Arnold),
+  pero los janya no: cada svara carnático (el śuddha ṛṣabha, el sādhāraṇa gāndhāra…) puede ir en dos śruti según el
+  rāga, y la Wikipedia en inglés («Shruti (music)») no da qué śruti le toca a cada uno. Hace falta una tabla carnática
+  en texto, como la de Sambamoorthy.
 - **Mongolia:** la colección de Sipos (*Mongolian Folk Songs*, ERHFM) clasifica las canciones por pentatónicas que el
   catálogo ya tiene (las cinco rotaciones de la pentatónica, como los modos chinos).
 
@@ -143,18 +147,22 @@ acadio es la norma).
 
 ## Escalas occidentales sin fuente
 
-De las 118 escalas occidentales, 28 no citan ninguna obra. Son las alteradas que no tienen siete notas y que, por
-tanto, Busoni no cubre.
+De las 118 escalas occidentales, 13 no citan ninguna obra. Quince pentatónicas, hexatónicas y blues alteradas citan
+ahora la lista de modos de Op de Coul (Huygens-Fokker), que da sus pasos en texto. Algunas van allí con otro nombre:
+el jónico sin 4ª es su «Lydian Hexatonic», el eólico sin 2ª su «Phrygian Hexatonic», la mayor ♭3 su «Dorian
+Pentatonic», la menor ♭6 su «Blues Aeolian Pentatonic I» y la blues menor con 2ª su «Modified Blues».
 
 | Grupo | Escalas | Cuántas |
 | --- | --- | --- |
-| Pentatónicas alteradas | dominante, menor 6, mayor ♭6, menor ♭5, mayor ♭3, menor ♭6, mixolidia, lidia, escocesa, egipcia | 10 |
-| Hexatónicas | jónico sin 4ª, mixolidio sin 3ª, dórico sin 6ª, eólico sin 2ª, de dos tríadas (mayor y menor), de armónicos, trítono de dos semitonos | 8 |
+| Pentatónicas alteradas | menor ♭5 y mayor ♭6, que la lista solo trae como rāgas (Jayakauns, Bhupeshwari) | 2 |
+| Hexatónicas | de dos tríadas (mayor y menor), de armónicos | 3 |
 | Cromáticas con alteraciones | con uno, dos, tres y cinco bemoles, con cinco sostenidos | 5 |
-| De ocho o nueve notas | bebop locrio, bebop lidio, bebop menor armónica, blues de nueve notas, blues menor con 2ª | 5 |
+| De ocho notas | bebop locrio, bebop lidio, bebop menor armónica | 3 |
 
 Las bebop locria, lidia y menor armónica no están, que sepamos, en Levine (1995): sus bebop son la de dominante, la
-mayor, la dórica y la menor melódica, que ya lo citan. Hace falta otra obra que las traiga.
+mayor, la dórica y la menor melódica, que ya lo citan. La lista de Op de Coul tiene los pasos de la bebop locria y de
+la menor armónica, pero como «Phrygian/Locrian mixed» y «Maqam Nahawand»: no como bebop. Hace falta otra obra que
+las traiga.
 
 Las hexatónicas de dos tríadas no encajan en Cohn (1996), como se pensaba: sus sistemas hexatónicos juntan dos
 tríadas a una tercera mayor, que es la escala aumentada (y esa ya lo cita). Las del catálogo juntan dos tríadas a un
@@ -171,6 +179,11 @@ la suya, y lo comprueban las pruebas (`EpocaTests`). Quedan sin época 14 occide
 | Populares | dórico ♯4, egipcia, flamenca, argelina, mayor rumana, pentatónica escocesa, y los cuatro hexatónicos sin una nota (jónico sin 4ª, mixolidio sin 3ª, dórico sin 6ª, eólico sin 2ª) | Una obra que las documente con su año (`documentada:`), como Liszt (1859) en la menor húngara |
 | Sintéticas | persa, jónico ♭2, jónico ♭5, jónico ♯6 | Una escala madre fechada de la que sean modo, o una obra que las traiga |
 | De otras tradiciones | 74 de la India (rāgas y janya), 35 del mundo árabe, 19 de Japón, 14 de Turquía, 13 de Indonesia y las de África, los Andes, Brasil, China, Corea, Etiopía, Europa, el klezmer, el sudeste asiático y Vietnam | El año de su obra o de su categoría; muchas son de tradiciones vivas sin una fecha de origen clara, y es mejor dejarlas sin época que inventarla |
+
+Se buscaron en noviembre de 2026 fechas para los catorce makamlar sin época (los que no están en Cantemir). Los
+artículos de la TDV İslâm Ansiklopedisi dan, como mucho, quién los compuso, sin año: Sultânîyegâh es de Hamâmîzâde
+İsmâil Dede Efendi, Ferahfezâ de Vardakosta Ahmed Ağa, y la pieza más antigua en Şedaraban, de II. Gazi Giray Han;
+de Hicazkâr y Suzinak no dicen ni eso. Sin una obra con su año no se les pone época.
 
 ## Acordes que faltaban
 
