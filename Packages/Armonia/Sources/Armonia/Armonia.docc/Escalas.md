@@ -337,10 +337,10 @@ Los rāgas janya incluidos son Mohanam, Hindolam, Haṃsadhvani, Ābhogi, Madhya
 Amṛtavarṣiṇī, Śuddha Sāveri, Śuddha Dhanyāsi, Śrīrañjani, Mālayamārutam, Gambhīranāṭa, Haṃsanādam, Haṃsānandi,
 Bhūpālam, Revagupti, Lalitā, Megharañjani, Nāgasvarāvaḷi, Sunādavinodinī y Śuddha Hindolam (iguales al subir y al
 bajar), y Bilahari, Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri, Nāṭa, Kalyāṇavasantam, Bauḷi, Dhanyāsi,
-Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini, Rasikarañjani y Dēvagāndhāri
-(distintos). Doce más son vakra, y suben o bajan en zigzag: Ānandabhairavi, Suruṭṭi, Aṭāṇā, Kēdāram, Darbār,
+Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini, Rasikarañjani, Dēvagāndhāri y
+Bhairavi carnática (distintos). Doce más son vakra, y suben o bajan en zigzag: Ānandabhairavi, Suruṭṭi, Aṭāṇā, Kēdāram, Darbār,
 Mukhāri, Gauḷa, Nalinakānti, Kathanakutūhalam, Bēgaḍa, Sahānā y Rītigauḷa (ver abajo). Llevan su nombre en
-sánscrito, en telugu y en canarés, y los 36 que tienen artículo en la Wikipedia en tamil, también en tamil.
+sánscrito, en telugu y en canarés, y los 37 que tienen artículo en la Wikipedia en tamil, también en tamil.
 `melakartasCompatibles` dice de qué mēḷa puede derivar cada uno:
 `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 

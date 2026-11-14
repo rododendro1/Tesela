@@ -201,6 +201,7 @@ extension NombresDeEscalas {
         .tradicional(.doricoNordestino, "nordöstlig dorisk", alias: ["nordöstlig dorisk modus"]),
         .tradicional(.lidioNordestino, "nordöstlig lydisk", alias: ["lydisk-mixolydisk"]),
         .tradicional(.mixolidioNordestino, "nordöstlig mixolydisk"),
+        .tradicional(.bhairaviCarnatica, "karnatisk Bhairavi"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "Rāga"),

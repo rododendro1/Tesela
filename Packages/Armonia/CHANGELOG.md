@@ -20,8 +20,9 @@
   escala, como el Dha₁ de Mukhāri, o solo en algunas frases, como el Ga₃, el Dha₁ y el Ni₃ de Ānandabhairavi. Son
   del catálogo, como `padre`: no cuentan para `==` ni van en el JSON, y `melakartasCompatibles` no las mira, así que
   Mukhāri tiene ahora padre (Kharaharapriyā).
-- Cuatro janya más, de karnATik (`Referencia.karnatik`): Bēgaḍa, Sahānā y Rītigauḷa, vakra, y Dēvagāndhāri, que
-  sube y baja recto y lleva el ni₂ de algunas frases en `notasExternas`.
+- Cinco janya más, de karnATik (`Referencia.karnatik`): Bēgaḍa, Sahānā y Rītigauḷa, vakra; Dēvagāndhāri, que
+  sube y baja recto y lleva el ni₂ de algunas frases en `notasExternas`, y Bhairavi carnática (con ese nombre, para
+  no confundirla con el thāṭ Bhairavī), del mēḷa 20 con el Dha₂ como nota externa.
 - El TSV de escalas de `EjemploCatalogos` tiene `es_vakra`, `recorrido`, `recorrido_descendente`, `notas_externas`,
   `cakra` y `solfa_de_melakarta`.
 - Seis janya vakra más, de la Wikipedia en inglés: Kēdāram, Darbār, Mukhāri, Gauḷa, Nalinakānti y

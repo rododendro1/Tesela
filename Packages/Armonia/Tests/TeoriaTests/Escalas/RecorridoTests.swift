@@ -72,6 +72,10 @@ struct RecorridoTests {
         #expect(
             TipoDeEscala.begada.notasExternas == [.septimaMenor]
                 && TipoDeEscala.devagandhari.notasExternas == [.septimaMenor])
+        let bhairavi = TipoDeEscala.bhairaviCarnatica
+        #expect(bhairavi.notasExternas == [.sextaMayor] && bhairavi.padre?.nombre == "Naṭabhairavī")
+        #expect((try? TipoDeEscala(leyendo: "Bhairavi"))?.esIdentico(a: .bhairavi) == true)
+        #expect((try? TipoDeEscala(leyendo: "Carnatic Bhairavi"))?.esIdentico(a: bhairavi) == true)
         #expect(TipoDeEscala.mayor.notasExternas.isEmpty && TipoDeEscala.kedaram.notasExternas.isEmpty)
         // No van en el JSON ni cuentan para `==`: son del catálogo, por la identidad.
         let propia = TipoDeEscala(

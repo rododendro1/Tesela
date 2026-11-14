@@ -706,9 +706,7 @@ extension TipoDeEscala {
         ],
         categoria: .janya, padre: .melakarta(22), referencias: [.karnatik])
 
-    // Un bhāṣāṅga que sube y baja recto, con la nota que no es de su mēḷa en `notasExternas`. Bhairavi, de
-    // Naṭabhairavi con el Dha₂ al subir, no está: se llamaría igual que el thāṭ Bhairavī, y la búsqueda por nombre no
-    // podría separarlas.
+    // Dos bhāṣāṅga que suben y bajan rectos, con las notas que no son de su mēḷa en `notasExternas`.
 
     /// Dēvagāndhāri, del mēḷa 29 (Dhīraśaṅkarābharaṇam): sube Sa Re ma Pa Dha Ṡa y baja recto con las siete. En
     /// algunas frases entra el ni₂ (`notasExternas`), que la Wikipedia escribe en la bajada (Ṡa Ni Dha ni Dha Pa…) y
@@ -724,6 +722,22 @@ extension TipoDeEscala {
             .init("தேவகாந்தாரி", .tamil),
         ],
         categoria: .janya, padre: .melakarta(29), notasExternas: [.septimaMenor], referencias: [.karnatik])
+    /// Bhairavi carnática, del mēḷa 20 (Naṭabhairavi): sube Sa Re ga ma Pa Dha ni Ṡa, con el Dha₂ que el mēḷa no
+    /// tiene (`notasExternas`), y baja Ṡa ni dha Pa ma ga Re Sa. Se llama así para no confundirse con el thāṭ
+    /// Bhairavī, que es indostánico.
+    public static let bhairaviCarnatica = TipoDeEscala(
+        nombre: "Bhairavi carnática",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        nombresOriginales: [
+            .init("भैरवि", .sanscrito), .init("భైరవి", .telugu), .init("ಭೈರವಿ", .canares), .init("பைரவி", .tamil),
+        ],
+        categoria: .janya, padre: .melakarta(20), notasExternas: [.sextaMayor], referencias: [.karnatik])
+
     /// Rāgas janya incluidos.
     package static let janyas: [TipoDeEscala] = [
         .mohanam, .hindolam, .hamsadhvani, .abhogi, .madhyamavati, .bilahari, .kambhoji, .arabhi, .kedaragaula,
@@ -732,7 +746,7 @@ extension TipoDeEscala {
         .lalita, .megharanjani, .dhanyasi, .abheri, .manirangu, .nagasvaravali, .sunadavinodini,
         .andolika, .garudadhvani, .bahudari, .salagabhairavi, .jaganmohini, .rasikaranjani, .suddhaHindolam,
         .anandabhairavi, .surutti, .atana, .kedaram, .darbar, .mukhari, .gaula, .nalinakanti, .kathanakutuhalam,
-        .begada, .sahana, .ritigaula, .devagandhari,
+        .begada, .sahana, .ritigaula, .devagandhari, .bhairaviCarnatica,
     ]
 
     // MARK: Thāṭ (música indostánica)

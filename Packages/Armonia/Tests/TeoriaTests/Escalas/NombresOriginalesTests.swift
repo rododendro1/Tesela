@@ -231,7 +231,7 @@ import Testing
         }
         #expect(TipoDeEscala.suddhaSaveri.nombresOriginales[1].texto == "శుద్ధ సావేరి")
         let conTamil = TipoDeEscala.janyas.filter { $0.nombresOriginales.contains { $0.idioma == .tamil } }
-        #expect(conTamil.count == 36)
+        #expect(conTamil.count == 37)
         #expect(TipoDeEscala.buscar(nombre: "ஹம்சத்வனி")?.esIdentico(a: .hamsadhvani) == true)
         let kanakangi = try? #require(TipoDeEscala.melakarta(1))
         #expect(kanakangi?.nombresOriginales.map(\.texto) == ["कनकाङ्गी", "కనకాంగి", "ಕನಕಾಂಗಿ", "கனகாங்கி"])

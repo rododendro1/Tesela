@@ -148,6 +148,7 @@ extension NombresDeEscalas {
 
         // Brasil: modos nordestinos
         .tradicional(.lidioNordestino, "lidio nordestino"),
+        .tradicional(.bhairaviCarnatica, "Bhairavi carnática"),
         .tradicional(.mixolidioNordestino, "mixolidio nordestino"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).

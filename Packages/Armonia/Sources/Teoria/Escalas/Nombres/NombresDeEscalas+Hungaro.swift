@@ -201,6 +201,7 @@ extension NombresDeEscalas {
         .tradicional(.doricoNordestino, "északkeleti dór"),
         .tradicional(.lidioNordestino, "északkeleti líd"),
         .tradicional(.mixolidioNordestino, "északkeleti mixolíd"),
+        .tradicional(.bhairaviCarnatica, "karnatikus Bhairavi"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "Rāga"),

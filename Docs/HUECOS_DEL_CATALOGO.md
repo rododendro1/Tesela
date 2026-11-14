@@ -5,7 +5,7 @@ Estado a 14 de noviembre de 2026, tras las escalas sintéticas, los lugares, las
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 13 escalas occidentales sin ninguna referencia y
-cuatro acordes sin fuente. El catálogo tiene 522 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
+cuatro acordes sin fuente. El catálogo tiene 523 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -34,7 +34,7 @@ cifras de las que sí están son las escalas declaradas en su fichero del catál
 | Mongolia | ninguna | Las pentatónicas del canto largo y del morin khuur |
 | Uigures | ninguna | Los doce muqam |
 
-Son más largas India (114), el mundo árabe (44) y Turquía (40).
+Son más largas India (115), el mundo árabe (44) y Turquía (40).
 
 ### Dónde buscar las que faltan
 
@@ -114,9 +114,6 @@ los ṭubūʿ tunecinos) no se pueden leer desde aquí.
   forma recta: la Wikipedia da otro āroha en cada sección, y karnATik lo sube desde el ni de abajo, mientras que un
   recorrido sale de la tónica. Nalinakānti no tiene `padre`: la fuente no lo da y, sin Dha, sus notas caben en dos
   mēḷa.
-- **India, Bhairavi carnática:** karnATik y la Wikipedia coinciden (mēḷa 20, sube con Dha₂ y baja con Dha₁), pero se
-  llamaría igual que el thāṭ Bhairavī, y la búsqueda por nombre no podría separarlas. Hace falta decidir cómo se
-  nombra.
 - **Mongolia:** la colección de Sipos (*Mongolian Folk Songs*, ERHFM) clasifica las canciones por pentatónicas que el
   catálogo ya tiene (las cinco rotaciones de la pentatónica, como los modos chinos).
 
@@ -180,13 +177,13 @@ tono, la técnica de los «triad pairs» del jazz, y necesitan una obra de impro
 
 La época de una escala no se escribe: sale de lo que el catálogo ya sabe de ella (`TipoDeEscala.epocaDeOrigen`). Toda
 occidental de un estilo con épocas (la música clásica, el jazz, el blues, las de compositor y el pop y el rock) tiene
-la suya, y lo comprueban las pruebas (`EpocaTests`). Quedan sin época 14 occidentales y 222 de otras tradiciones.
+la suya, y lo comprueban las pruebas (`EpocaTests`). Quedan sin época 14 occidentales y 223 de otras tradiciones.
 
 | Grupo | Escalas | Qué falta |
 | --- | --- | --- |
 | Populares | dórico ♯4, egipcia, flamenca, argelina, mayor rumana, pentatónica escocesa, y los cuatro hexatónicos sin una nota (jónico sin 4ª, mixolidio sin 3ª, dórico sin 6ª, eólico sin 2ª) | Una obra que las documente con su año (`documentada:`), como Liszt (1859) en la menor húngara |
 | Sintéticas | persa, jónico ♭2, jónico ♭5, jónico ♯6 | Una escala madre fechada de la que sean modo, o una obra que las traiga |
-| De otras tradiciones | 87 de la India (rāgas y janya), 35 del mundo árabe, 19 de Japón, 14 de Turquía, 13 de Indonesia y las de África, los Andes, Brasil, China, Corea, Etiopía, Europa, el klezmer, el sudeste asiático y Vietnam | El año de su obra o de su categoría; muchas son de tradiciones vivas sin una fecha de origen clara, y es mejor dejarlas sin época que inventarla |
+| De otras tradiciones | 88 de la India (rāgas y janya), 35 del mundo árabe, 19 de Japón, 14 de Turquía, 13 de Indonesia y las de África, los Andes, Brasil, China, Corea, Etiopía, Europa, el klezmer, el sudeste asiático y Vietnam | El año de su obra o de su categoría; muchas son de tradiciones vivas sin una fecha de origen clara, y es mejor dejarlas sin época que inventarla |
 
 Se buscaron en noviembre de 2026 fechas para los catorce makamlar sin época (los que no están en Cantemir). Los
 artículos de la TDV İslâm Ansiklopedisi dan, como mucho, quién los compuso, sin año: Sultânîyegâh es de Hamâmîzâde

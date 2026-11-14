@@ -202,6 +202,7 @@ extension NombresDeEscalas {
         .tradicional(.doricoNordestino, "Northeastern Dorian", alias: ["Northeastern Dorian mode"]),
         .tradicional(.lidioNordestino, "Northeastern Lydian", alias: ["Northeastern Lydian mode", "Lydian-Mixolydian"]),
         .tradicional(.mixolidioNordestino, "Northeastern Mixolydian", alias: ["Northeastern Mixolydian mode"]),
+        .tradicional(.bhairaviCarnatica, "Carnatic Bhairavi"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

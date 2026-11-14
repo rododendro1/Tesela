@@ -188,6 +188,7 @@ extension NombresDeEscalas {
         .tradicional(.lidioConSiBemol, "lídio com si bemol", alias: ["lídio com b molle", "tritus com b molle"]),
         .tradicional(.tetracordoDiatonicoDeVicentino, "tetracorde diatónico de Vicentino"),
         .tradicional(.tetracordoCromaticoDeVicentino, "tetracorde cromático de Vicentino"),
+        .tradicional(.bhairaviCarnatica, "Bhairavi carnática"),
         .tradicional(.tetracordoEnarmonicoDeVicentino, "tetracorde enarmónico de Vicentino"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
