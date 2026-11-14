@@ -231,7 +231,7 @@ extension LineaDeComandosTests {
         let grupos = try #require(try json("escalas --tradicion japon") as? [[String: Any]])
         #expect(grupos.count == 1 && grupos[0]["titulo"] as? String == "Japón · escala")
         let escalas = try #require(grupos[0]["escalas"] as? [[String: Any]])
-        #expect(escalas.count == 13)
+        #expect(escalas.count == 19)
         let hirajoshi = try #require(escalas.first { $0["nombre"] as? String == "Hirajōshi" })
         #expect(hirajoshi["clases"] as? [Int] == [0, 2, 3, 7, 8])
         #expect(hirajoshi["tradicion"] as? String == "japon" && hirajoshi["categoria"] as? String == "escala")

@@ -94,6 +94,7 @@ import Testing
         "tetracordo-diatonico-blando-de-aristoxeno", "shadd-ushshaq", "shadd-nawa", "shadd-abu-salik", "shadd-rast",
         "shier-lu", "yanglu", "yinlu", "dorico-con-ficta", "mixolidio-con-ficta", "lidio-con-si-bemol", "musica-recta",
         "tetracordo-diatonico-de-vicentino", "tetracordo-cromatico-de-vicentino", "tetracordo-enarmonico-de-vicentino",
+        "ichikotsucho", "sojo", "taishikicho", "hyojo", "oshikicho", "banshikicho",
     ]
 
     @Test func lasClavesDelCatalogoNoCambian() {

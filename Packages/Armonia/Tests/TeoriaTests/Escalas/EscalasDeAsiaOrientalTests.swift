@@ -83,7 +83,8 @@ import Testing
     @Test func escalasJaponesas() {
         #expect(
             TipoDeEscala.japonesas.map(\.nombre) == [
-                "Ritsu", "Ryo", "Yō", "Min'yō", "Miyakobushi", "In", "Insen", "Iwato", "Hirajōshi", "Kumoijōshi",
+                "Ritsu", "Ryo", "Ichikotsuchō", "Sōjō", "Taishikichō", "Hyōjō", "Ōshikichō", "Banshikichō", "Yō",
+                "Min'yō", "Miyakobushi", "In", "Insen", "Iwato", "Hirajōshi", "Kumoijōshi",
                 "Ryūkyū",
                 "Akebono", "Kokin-jōshi",
             ])
@@ -117,6 +118,37 @@ import Testing
         }
         #expect(Escala(.do, .hirajoshi).nombre(en: .ascii(.ingles)) == "C Hirajōshi")
         #expect(!(TipoDeEscala.occidentales.contains { $0.nombre == "Hirajōshi" }))
+    }
+
+    /// Los seis chōshi del gagaku: la ryo o la ritsu sobre el lü que les da nombre.
+    @Test func losSeisChoshiDelGagaku() throws {
+        let choshi: [(TipoDeEscala, String, TipoDeEscala, Nota, String)] = [
+            (.ichikotsucho, "壱越調", .ryo, .re, "Re Mi Fa♯ La Si"),
+            (.sojo, "双調", .ryo, .sol, "Sol La Si Re Mi"),
+            (.taishikicho, "太食調", .ryo, .mi, "Mi Fa♯ Sol♯ Si Do♯"),
+            (.hyojo, "平調", .ritsu, .mi, "Mi Fa♯ La Si Do♯"),
+            (.oshikicho, "黄鐘調", .ritsu, .la, "La Si Re Mi Fa♯"),
+            (.banshikicho, "盤渉調", .ritsu, .si, "Si Do♯ Mi Fa♯ Sol♯"),
+        ]
+        for (tipo, kanji, madre, tonica, notas) in choshi {
+            #expect(tipo.nombreOriginal == NombreOriginal(kanji, .japones), Comment(rawValue: tipo.nombre))
+            #expect(tipo.intervalos == madre.intervalos, Comment(rawValue: tipo.nombre))
+            #expect(tipo.escuelas == [.gagaku])
+            #expect(tipo.tradicion == .japon)
+            #expect(Escala(tonica, tipo).notas.map(\.description).joined(separator: " ") == notas)
+            #expect((try? Escala(leyendo: "\(tonica) \(kanji)"))?.tipo.nombre == tipo.nombre, Comment(rawValue: kanji))
+            // La tónica es el lü del nombre (壱越, ichikotsu, es Re), salvo en el taishikichō, sobre hyōjō (Mi).
+            guard tipo != .taishikicho else { continue }
+            let lu = SistemaDeNombres.luJaponeses.nombre(de: tonica)
+            #expect(
+                tipo.nombre.folding(options: .diacriticInsensitive, locale: nil).lowercased()
+                    .hasPrefix(lu.folding(options: .diacriticInsensitive, locale: nil)), Comment(rawValue: tipo.nombre))
+        }
+        // 平調 es el chōshi; 平調子, la afinación del koto.
+        #expect(try Escala(leyendo: "Mi 平調").tipo.nombre == "Hyōjō")
+        #expect(try Escala(leyendo: "Do 平調子").tipo.nombre == "Hirajōshi")
+        #expect(try Escala(leyendo: "La oshikicho").tipo.nombre == "Ōshikichō")
+        #expect(try Escala(leyendo: "Re ichikotsu-cho").tipo.nombre == "Ichikotsuchō")
     }
 
     /// Vietnam, Brasil y el arpa birmana.
