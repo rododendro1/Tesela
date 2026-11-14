@@ -5,7 +5,7 @@ Estado a 12 de noviembre de 2026, tras las escalas sintéticas, los lugares, las
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 28 escalas occidentales sin ninguna referencia y
-cuatro acordes sin fuente. El catálogo tiene 458 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
+cuatro acordes sin fuente. El catálogo tiene 462 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -34,7 +34,7 @@ cifras de las que sí están son las escalas declaradas en su fichero del catál
 | Mongolia | ninguna | Las pentatónicas del canto largo y del morin khuur |
 | Uigures | ninguna | Los doce muqam |
 
-Son más largas India (62), Turquía (39) y el mundo árabe (35).
+Son más largas India (66), el mundo árabe (39) y Turquía (39).
 
 ### Dónde buscar las que faltan
 

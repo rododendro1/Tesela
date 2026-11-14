@@ -512,10 +512,47 @@ extension TipoDeEscala {
         variantes: ["Puriya Dhanashri", "Puriya Dhanashree"], nombresOriginales: [.init("पूरिया धनाश्री", .hindi)],
         categoria: .raga, padre: .purvi)
 
+    // Cuatro más, con el āroh y el avaroh de la Wikipedia en inglés (noviembre de 2026), en su forma recta: dos con
+    // ga komal, Ma tivra y Pa (Madhuvantī, con Re y Dha śuddha al bajar; Multānī, de Toḍī, con re y dha komal),
+    // Hindol (Kalyāṇ sin Re ni Pa) y Sohinī (Mārvā sin Pa, que sube sin Re).
+
+    /// Madhuvantī: sube Sa ga Ma Pa Ni y baja Sa Ni Dha Pa Ma ga Re. Sin `padre`: se suele poner en Toḍī, pero su Re y
+    /// su Dha śuddha no están en ese thāṭ.
+    public static let madhuvanti = TipoDeEscala(
+        nombre: "Madhuvantī",
+        intervalos: [.unisono, .terceraMenor, .cuartaAumentada, .quintaJusta, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        nombresOriginales: [.init("मधुवंती", .hindi)],
+        categoria: .raga)
+    /// Multānī: sube Sa ga Ma Pa Ni y baja Sa Ni dha Pa Ma ga re.
+    public static let multani = TipoDeEscala(
+        nombre: "Multānī",
+        intervalos: [.unisono, .terceraMenor, .cuartaAumentada, .quintaJusta, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaAumentada, .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        nombresOriginales: [.init("मुलतानी", .hindi)],
+        categoria: .raga, padre: .todi)
+    /// Hindol (Sa Ga Ma Dha Ni, con Ma tivra), en su forma recta; no es el Hindolam carnático, que es Mālkauns.
+    public static let hindol = TipoDeEscala(
+        nombre: "Hindol",
+        intervalos: [.unisono, .terceraMayor, .cuartaAumentada, .sextaMayor, .septimaMayor],
+        nombresOriginales: [.init("हिंडोल", .hindi)],
+        categoria: .raga, padre: .kalyan)
+    /// Sohinī: sube Sa Ga Ma Dha Ni y baja Sa Ni Dha Ma Ga re, en su forma recta.
+    public static let sohini = TipoDeEscala(
+        nombre: "Sohinī",
+        intervalos: [.unisono, .terceraMayor, .cuartaAumentada, .sextaMayor, .septimaMayor],
+        intervalosDescendentes: [.unisono, .segundaMenor, .terceraMayor, .cuartaAumentada, .sextaMayor, .septimaMayor],
+        variantes: ["Sohni"], nombresOriginales: [.init("सोहनी", .hindi)],
+        categoria: .raga, padre: .marva)
+
     /// Rāgas indostánicos incluidos.
     package static let ragasIndostanicos: [TipoDeEscala] = [
         .bhupali, .malkauns, .durga, .yaman, .bagesri, .des, .sivaranjani, .kalavati, .candrakauns, .megh, .lalit,
-        .bhimpalasi, .bihag, .darbariKanada, .puriyaDhanasri,
+        .bhimpalasi, .bihag, .darbariKanada, .puriyaDhanasri, .madhuvanti, .multani, .hindol, .sohini,
     ]
 
     // MARK: Grāma y mūrchanā (el Nāṭyaśāstra)

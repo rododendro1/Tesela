@@ -58,10 +58,10 @@ usan microtonos):
   cinco; en doce notas cada grado va al semitono más cercano desde su tónica (el sléndro, Do Re Fa Sol Si♭), y
   en cents en su versión microtonal. Y el degung del gamelan de Sunda, en el oeste de Java (Do Mi Fa Sol Si desde
   da), que no lleva versión en cents.
-- **15 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
-  (el Valaji carnático), Candrakauns y Megh, pentatónicos; Yaman, Lalit, Pūriyā Dhanāśrī y Darbārī
+- **19 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
+  (el Valaji carnático), Candrakauns, Megh y Hindol, pentatónicos; Yaman, Lalit, Pūriyā Dhanāśrī y Darbārī
   Kānaḍa (en su forma recta: es vakra, y su ga y su dha ati-komal no caben en doce notas); y Bāgeśrī,
-  Deś, Bhīmpalāsī y Bihāg, que suben y bajan distinto.
+  Deś, Bhīmpalāsī, Bihāg, Madhuvantī, Multānī y Sohinī, que suben y bajan distinto.
 - **Los 2 grāma y las 14 mūrchanā** del Nāṭyaśāstra: el ṣaḍja-grāma (el dórico, las razones de Kāfī) y el
   madhyama-grāma (con Pa una coma más bajo), y las siete escalas de cada uno, una desde cada nota: Uttaramandrā,
   Rajanī, Uttarāyatā, Śuddhaṣaḍjā, Matsarīkṛtā, Aśvakrāntā y Abhirudgatā; Sauvīrī, Hariṇāśvā, Kalopanatā,

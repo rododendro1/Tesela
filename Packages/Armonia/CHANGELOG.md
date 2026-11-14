@@ -11,6 +11,8 @@
 
 ### Novedades
 
+- Cuatro rāgas indostánicos más, en su forma recta: Madhuvantī (मधुवंती), Multānī (मुलतानी, del thāṭ Toḍī), Hindol
+  (हिंडोल, de Kalyāṇ) y Sohinī (सोहनी, de Mārvā).
 - Cuatro maqāmāt más, de Maqam World, con sus ajnas: ʿAjam ʿUshayrān (عجم عشيران: ʿAjam, Kurd en la tercera y
   Nahāwand en la sexta), Shawq Afzā (شوق افزا: ʿAjam y Ḥijāz en la quinta), ʿUshshāq Maṣrī (عشاق مصري: Nahāwand y
   Bayātī en la quinta, con su versión en cuartos de tono) y Zanjarān (زنجران: Ḥijāz y ʿAjam en la cuarta).
