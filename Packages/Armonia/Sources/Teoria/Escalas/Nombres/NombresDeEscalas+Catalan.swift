@@ -201,6 +201,8 @@ extension NombresDeEscalas {
         .tradicional(.mixolidioNordestino, "mixolidi nordestí", alias: ["mode mixolidi nordestí"]),
         .tradicional(.bhairaviCarnatica, "Bhairavi carnàtica"),
         .tradicional(.darbariKanadaCarnatica, "Darbārī Kānaḍa carnàtica"),
+        .tradicional(.sriCarnatica, "Śrī carnàtica"),
+        .tradicional(.behagCarnatica, "Behāg carnàtica"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

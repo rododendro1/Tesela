@@ -107,7 +107,8 @@ import Testing
         "pelog-baro",
         "pelog-lebeng", "anandabhairavi", "surutti", "atana", "kedaram", "darbar", "mukhari", "gaula", "nalinakanti",
         "kathanakutuhalam", "begada", "sahana", "ritigaula", "devagandhari", "bhairavi-carnatica",
-        "darbari-kanada-carnatica",
+        "darbari-kanada-carnatica", "kapi", "kanada", "nilambari", "nayaki", "saranga", "sri-carnatica",
+        "hamir-kalyani", "yamuna-kalyani", "devamanohari", "behag-carnatica",
     ]
 
     @Test func lasClavesDelCatalogoNoCambian() {

@@ -163,7 +163,7 @@ extension LineaDeComandosTests {
         #expect(salida("escala Do mukhari --json").contains("\"notasExternas\""))
         #expect(!salida("escala Do kedaram").contains("Notas externas"))
         let vakra = salida("escalas --vakra")
-        #expect(vakra.hasPrefix("India · janya (13)"), Comment(rawValue: vakra))
+        #expect(vakra.hasPrefix("India · janya (23)"), Comment(rawValue: vakra))
         #expect(vakra.contains("Suruṭṭi") && !vakra.contains("Mohanam"))
     }
 

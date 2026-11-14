@@ -338,9 +338,11 @@ Amṛtavarṣiṇī, Śuddha Sāveri, Śuddha Dhanyāsi, Śrīrañjani, Mālayam
 Bhūpālam, Revagupti, Lalitā, Megharañjani, Nāgasvarāvaḷi, Sunādavinodinī y Śuddha Hindolam (iguales al subir y al
 bajar), y Bilahari, Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri, Nāṭa, Kalyāṇavasantam, Bauḷi, Dhanyāsi,
 Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini, Rasikarañjani, Dēvagāndhāri y
-Bhairavi carnática (distintos). Trece más son vakra, y suben o bajan en zigzag: Ānandabhairavi, Suruṭṭi, Aṭāṇā, Kēdāram, Darbār,
-Mukhāri, Gauḷa, Nalinakānti, Kathanakutūhalam, Bēgaḍa, Sahānā, Rītigauḷa y Darbārī Kānaḍa carnática (ver abajo). Llevan su nombre en
-sánscrito, en telugu y en canarés, y los 37 que tienen artículo en la Wikipedia en tamil, también en tamil.
+Bhairavi carnática (distintos). Veintitrés más son vakra, y suben o bajan en zigzag:
+Ānandabhairavi, Suruṭṭi, Aṭāṇā, Kēdāram, Darbār, Mukhāri, Gauḷa, Nalinakānti, Kathanakutūhalam, Bēgaḍa, Sahānā,
+Rītigauḷa, Darbārī Kānaḍa carnática, Kāpi, Kānaḍa, Nīlāmbari, Nāyaki, Sāraṅga, Śrī carnática, Hamīr Kalyāṇi,
+Yamunā Kalyāṇi, Dēvamanōhari y Behāg carnática (ver abajo). Llevan su nombre en sánscrito, en telugu y en canarés,
+y los 38 que tienen artículo en la Wikipedia en tamil, también en tamil.
 `melakartasCompatibles` dice de qué mēḷa puede derivar cada uno:
 `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 

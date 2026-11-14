@@ -153,6 +153,7 @@ import Testing
             "mixolidio con ficta", "lidio con si bemol", "tetracordo diatónico de Vicentino",
             "tetracordo cromático de Vicentino", "tetracordo enarmónico de Vicentino", "dórico nordestino",
             "lídio nordestino", "mixolídio nordestino", "Bhairavi carnática", "Darbārī Kānaḍa carnática",
+            "Śrī carnática", "Behāg carnática",
         ]
         let especies = ["mixolidia", "lidia", "frigia", "doria", "hipolidia", "hipofrigia", "hipodoria"]
         traducidos.formUnion(especies.filter { $0 != "doria" }.map { "harmonía \($0) cromática" })

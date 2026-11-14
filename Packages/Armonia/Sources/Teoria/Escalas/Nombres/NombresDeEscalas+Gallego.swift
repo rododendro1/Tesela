@@ -150,6 +150,8 @@ extension NombresDeEscalas {
         .tradicional(.lidioNordestino, "lidio nordestino"),
         .tradicional(.bhairaviCarnatica, "Bhairavi carnática"),
         .tradicional(.darbariKanadaCarnatica, "Darbārī Kānaḍa carnática"),
+        .tradicional(.sriCarnatica, "Śrī carnática"),
+        .tradicional(.behagCarnatica, "Behāg carnática"),
         .tradicional(.mixolidioNordestino, "mixolidio nordestino"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).

@@ -201,6 +201,8 @@ extension NombresDeEscalas {
         .tradicional(.lidioNordestino, "lidio nordestino", alias: ["modo lidio nordestino", "lidio-misolidio"]),
         .tradicional(.bhairaviCarnatica, "Bhairavi carnatica"),
         .tradicional(.darbariKanadaCarnatica, "Darbārī Kānaḍa carnatica"),
+        .tradicional(.sriCarnatica, "Śrī carnatica"),
+        .tradicional(.behagCarnatica, "Behāg carnatica"),
         .tradicional(.mixolidioNordestino, "misolidio nordestino", alias: ["modo misolidio nordestino"]),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
