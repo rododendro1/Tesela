@@ -98,6 +98,34 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         }
     }
 
+    /// La palabra de la categoría en la escritura de un nombre original, para `nombresOriginalesCompletos`: «مقام»
+    /// delante en árabe, «ቅኝት» detrás en amárico, «調» detrás y sin espacio en chino tradicional. `nil` si la
+    /// categoría no la lleva en ese idioma: las de tradiciones que se escriben en letra latina (makam, muğam,
+    /// pathet), las que ya la llevan en el nombre (los echoi, los jo, los grāma) y el klezmer, que no tiene una fija.
+    /// El `switch` no tiene `default`: una categoría nueva no compila sin decidir la suya.
+    package func palabraOriginal(en idioma: IdiomaOriginal) -> (texto: String, delante: Bool, conEspacio: Bool)? {
+        switch self {
+        case .maqam: idioma == .arabe ? ("مقام", true, true) : nil
+        case .jins: idioma == .arabe ? ("جنس", true, true) : nil
+        case .dastgah: idioma == .persa ? ("دستگاه", true, true) : nil
+        // Como en `nombreCompleto`: los mēḷa, «mēḷa Kanakāṅgī»; los janya, que son rāgas, «rāga Mohanam».
+        case .melakarta: idioma == .sanscrito ? ("मेळ", true, true) : nil
+        case .raga, .janya: idioma == .hindi || idioma == .sanscrito ? ("राग", true, true) : nil
+        case .thaat: idioma == .hindi ? ("थाट", true, true) : nil
+        case .dromos: idioma == .griego ? ("δρόμος", true, true) : nil
+        case .qenet: idioma == .amarico ? ("ቅኝት", false, true) : nil
+        case .diao:
+            switch idioma {
+            case .chinoSimplificado: ("调", false, false)
+            case .chino, .chinoTradicional: ("調", false, false)
+            default: nil
+            }
+        case .grama, .murchana, .makam, .mugam, .echos, .shteyger, .laras, .pathet, .jo, .tetracordo, .cesni,
+            .harmonia, .afinacion, .modoGregoriano, .hexacordo, .escala:
+            nil
+        }
+    }
+
     /// La tradición de sus escalas, si todas son de una: `.india` en un rāga, `.mundoArabe` en un maqām. `nil` en las
     /// que hay en varias (las afinaciones, las escalas, los tetracordos), que la dicen en su declaración o por su
     /// región o su fuente. El `switch` no tiene `default`: una categoría nueva no compila sin decidir la suya.
@@ -206,6 +234,26 @@ extension TipoDeEscala {
         guard let palabra = datosDelCatalogo.categoria?.palabraDelNombre, !llevaLaCategoria else { return suyo }
         return "\(palabra.nombre(en: notacion)) \(suyo)"
     }
+
+    /// Los nombres originales con la palabra de su categoría en su escritura, como `nombreCompleto`: «مقام حجاز»,
+    /// «राग यमन», «मेळ कनकाङ्गी», «宫调» y «宮調», «ትዝታ ቅኝት». Un nombre que ya la lleva («جنس صبا», «Ήχος πρώτος»,
+    /// «평조», los shadd) o cuya categoría no la tiene se queda como está. La lectura es la del nombre sin la palabra.
+    ///
+    ///     TipoDeEscala.hiyaz.nombreOriginalCompleto?.texto   // "مقام حجاز"
+    public var nombresOriginalesCompletos: [NombreOriginal] {
+        let categoria = datosDelCatalogo.categoria
+        return nombresOriginales.map { original in
+            guard let (palabra, delante, conEspacio) = categoria?.palabraOriginal(en: original.idioma),
+                !llevaLaCategoria, !original.texto.contains(palabra)
+            else { return original }
+            let separador = conEspacio ? " " : ""
+            let texto = delante ? palabra + separador + original.texto : original.texto + separador + palabra
+            return NombreOriginal(texto, original.idioma, lectura: original.lectura)
+        }
+    }
+
+    /// El primero de `nombresOriginalesCompletos`.
+    public var nombreOriginalCompleto: NombreOriginal? { nombresOriginalesCompletos.first }
 
     /// ¿Lleva ya el nombre de la escala del catálogo, en español, la palabra de su categoría, o una que la sustituye?
     /// Una palabra del nombre empieza por ella («Rast makamı», «jins Ḥijāz», «échos prótos», «ṣaḍja-grāma»), en los jo

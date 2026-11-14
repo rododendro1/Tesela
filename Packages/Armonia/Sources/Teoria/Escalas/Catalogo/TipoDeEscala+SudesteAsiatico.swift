@@ -39,6 +39,7 @@ extension TipoDeEscala {
     public static let saung = TipoDeEscala(
         nombre: "Saung", intervalos: TipoDeEscala.pentatonicaMayor.intervalos,
         alias: ["saung gauk", "arpa birmana", "birmana"],
+        nombresOriginales: [.init("စောင်း", .birmano)],
         categoria: .afinacion, regiones: [.birmania],
         // En cents: 182, 182, 327, 182 y 327.
         afinaciones: [.init(.razones, pasos: [0, 182, 364, 691, 873])], referencias: [.williamson2000])

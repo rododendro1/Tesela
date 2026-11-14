@@ -278,6 +278,10 @@ extension TextosDeTeoria {
         idiomaCoreano: "koreera",
         idiomaAmarico: "amharera",
         idiomaGriego: "greziera",
+        idiomaGriegoAntiguo: "antzinako greziera",
+        idiomaHebreo: "hebreera",
+        idiomaYidis: "yiddisha",
+        idiomaBirmano: "birmaniera",
         idiomaTailandes: "thailandiera",
         idiomaJemer: "khmerera",
         // Escuela.swift y RegionDeEscala.swift

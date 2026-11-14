@@ -213,6 +213,8 @@ extension LineaDeComandosTests {
         #expect(salida("escala Re سیکاه").hasPrefix("Re Sīkāh\n"))
         #expect(!salida("escala Do mayor").contains("Nombre original"))
         #expect(salida("escala Re Bayātī --json").contains(#""nombresOriginales":[{"#))
+        #expect(salida("escala Re Bayātī --json").contains(#""completo":"مقام بياتي""#))
+        #expect(salida("escala Re مقام بياتي").hasPrefix("Re Bayātī\n"))
     }
 
     /// `escalas --afecto lastimero`, `--affect plaintive`: las que tienen ese afecto en alguna fuente. `escala` dice

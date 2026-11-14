@@ -23,7 +23,10 @@ private func numeros(_ valores: [Int]) -> String { valores.map(String.init).join
 private func nombres(_ tipos: [TipoDeEscala]) -> String { tipos.map(\.nombre).joined(separator: " · ") }
 
 let columnasDeEscalas: [String] =
-    ["nombre", "nombre_completo", "nombres_originales", "idiomas_de_los_nombres_originales"]
+    [
+        "nombre", "nombre_completo", "nombres_originales", "nombres_originales_completos",
+        "idiomas_de_los_nombres_originales",
+    ]
     + traducciones.map { "nombre_en_\($0.rawValue)" } + columnasDeAliasYVariantes() + [
         "tradicion", "estilos", "regiones", "lugares_de_origen", "paises_de_origen",
         "continentes_de_origen", "lugares_de_uso", "epoca_de_origen", "epocas_de_uso", "categoria", "clase", "fuente",
@@ -58,6 +61,7 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
     let comoSeLlama =
         [
             tipo.nombre, tipo.nombreCompleto, tipo.nombresOriginales.map(\.texto).joined(separator: " · "),
+            tipo.nombresOriginalesCompletos.map(\.texto).joined(separator: " · "),
             tipo.nombresOriginales.map(\.idioma.codigo).joined(separator: " · "),
         ] + traducciones.map { tipo.nombre(en: .delIdioma($0)) }
     let otros: [String] = aliasYVariantes(de: tipo)

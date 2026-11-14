@@ -15,13 +15,12 @@ import Testing
     /// Las tradiciones cuyas escalas llevan su nombre original, salvo las de `sinNombreOriginal`.
     private static let tradicionesConEscrituraPropia: Set<Tradicion> = [
         .india, .mundoArabe, .persia, .china, .japon, .corea, .etiopia, .grecia, .bizancio, .sudesteAsiatico,
+        .klezmer,
     ]
 
     /// Las escalas de esas tradiciones que aún no lo tienen (los huecos de `Docs/HUECOS_DEL_CATALOGO.md`) o cuyo
     /// nombre no lo tiene (el mayor y el menor etíopes llevan el original en el mayor).
-    private static let sinNombreOriginal: Set<String> = [
-        "shadd ʿUshshāq", "shadd Nawā", "shadd Abū Salīk", "shadd Rāst", "Təzəta menor", "Bati menor", "Saung",
-    ]
+    private static let sinNombreOriginal: Set<String> = ["Təzəta menor", "Bati menor"]
 
     @Test func cadaTextoEstaEnSuEscrituraYEnNFC() {
         for tipo in Self.catalogo {
@@ -88,6 +87,40 @@ import Testing
         }
     }
 
+    /// De la Grecia antigua, las que tienen nombre en los teóricos: las harmoniai y los géneros y sus colores.
+    @Test func lasGriegasAntiguas() {
+        #expect(
+            TipoDeEscala.harmoniaDoria.nombreOriginal == NombreOriginal("δωριστί", .griegoAntiguo, lectura: "dōristí"))
+        #expect(TipoDeEscala.tetracordoCromaticoBlandoDeAristoxeno.nombreOriginal?.texto == "χρῶμα μαλακόν")
+        #expect(TipoDeEscala.harmoniaDoriaCromatica.nombresOriginales.isEmpty)
+        #expect(TipoDeEscala.freygish.nombresOriginales.map(\.idioma) == [.yidis, .hebreo])
+        #expect(IdiomaOriginal.hebreo.deDerechaAIzquierda && !IdiomaOriginal.birmano.deDerechaAIzquierda)
+    }
+
+    /// La forma completa, con la palabra de la categoría delante o detrás, y sin repetirla.
+    @Test func losNombresOriginalesCompletos() {
+        #expect(TipoDeEscala.hiyaz.nombreOriginalCompleto?.texto == "مقام حجاز")
+        #expect(TipoDeEscala.mahur.nombreOriginalCompleto?.texto == "دستگاه ماهور")
+        #expect(TipoDeEscala.yaman.nombreOriginalCompleto?.texto == "राग यमन")
+        #expect(TipoDeEscala.bilaval.nombreOriginalCompleto?.texto == "थाट बिलावल")
+        #expect(TipoDeEscala.melakarta(1)?.nombreOriginalCompleto?.texto == "मेळ कनकाङ्गी")
+        #expect(TipoDeEscala.ousak.nombreOriginalCompleto?.texto == "δρόμος Ουσάκ")
+        #expect(TipoDeEscala.tezetaMayor.nombreOriginalCompleto?.texto == "ትዝታ ቅኝት")
+        #expect(TipoDeEscala.gong.nombresOriginalesCompletos.map(\.texto) == ["宫调", "宮調"])
+        #expect(TipoDeEscala.zhi.nombresOriginalesCompletos.map(\.texto) == ["徵調", "徴"])
+        // Las que ya la llevan, o cuya categoría no la tiene, se quedan como están.
+        for tipo in [TipoDeEscala.jinsSaba, .shaddRast, .echosProtos, .pyongjo, .yo, .freygish, .harmoniaDoria] {
+            #expect(tipo.nombresOriginalesCompletos == tipo.nombresOriginales, "\(tipo.nombre)")
+        }
+        #expect(TipoDeEscala.buscar(nombre: "مقام حجاز")?.esIdentico(a: .hiyaz) == true)
+        for tipo in Self.catalogo {
+            #expect(tipo.nombresOriginalesCompletos.count == tipo.nombresOriginales.count, "\(tipo.nombre)")
+            for (corto, completo) in zip(tipo.nombresOriginales, tipo.nombresOriginalesCompletos) {
+                #expect(completo.texto.contains(corto.texto) && completo.idioma == corto.idioma, "\(tipo.nombre)")
+            }
+        }
+    }
+
     @Test func lasDemasNoLoTienen() {
         for tipo in TipoDeEscala.occidentales { #expect(tipo.nombresOriginales.isEmpty, "\(tipo.nombre)") }
         #expect(TipoDeEscala.rastMakami.nombresOriginales.isEmpty)
@@ -108,8 +141,10 @@ import Testing
     @Test func seLeenPorSuNombreOriginalEnTodosLosIdiomas() {
         for tipo in Self.catalogo {
             for original in tipo.nombresOriginales {
+                // Dos escalas pueden compartir el nombre original (δωριστί, la doria y la de Arístides): basta con
+                // que la que se encuentra lo tenga.
                 #expect(
-                    TipoDeEscala.buscar(nombre: original.texto)?.esIdentico(a: tipo) == true,
+                    TipoDeEscala.buscar(nombre: original.texto)?.nombresOriginales.contains(original) == true,
                     "\(tipo.nombre): \(original.texto)")
                 for idioma in Idioma.allCases where !tipo.nombresOriginales.isEmpty {
                     let indice = NombresDeEscalas.de(idioma).indice

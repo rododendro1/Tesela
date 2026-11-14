@@ -296,6 +296,10 @@ struct TextosDeTeoria: TextosTraducidos {
     let idiomaCoreano: String
     let idiomaAmarico: String
     let idiomaGriego: String
+    let idiomaGriegoAntiguo: String
+    let idiomaHebreo: String
+    let idiomaYidis: String
+    let idiomaBirmano: String
     let idiomaTailandes: String
     let idiomaJemer: String
 

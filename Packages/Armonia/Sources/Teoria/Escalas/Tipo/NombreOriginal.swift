@@ -42,6 +42,11 @@ public enum IdiomaOriginal: String, Sendable, CaseIterable, Codable {
     case coreano = "ko"
     case amarico = "am"
     case griego = "el"
+    /// El politónico de los teóricos antiguos: δωριστί, χρῶμα μαλακόν.
+    case griegoAntiguo = "grc"
+    case hebreo = "he"
+    case yidis = "yi"
+    case birmano = "my"
     case tailandes = "th"
     case jemer = "km"
 
@@ -56,13 +61,15 @@ public enum IdiomaOriginal: String, Sendable, CaseIterable, Codable {
         case .japones: .japonesa
         case .coreano: .hangul
         case .amarico: .etiope
-        case .griego: .griega
+        case .griego, .griegoAntiguo: .griega
+        case .hebreo, .yidis: .hebrea
+        case .birmano: .birmana
         case .tailandes: .tailandesa
         case .jemer: .jemer
         }
     }
 
-    /// ¿Se escribe de derecha a izquierda? El árabe y el persa.
+    /// ¿Se escribe de derecha a izquierda? El árabe, el persa, el hebreo y el yidis.
     public var deDerechaAIzquierda: Bool { escritura.deDerechaAIzquierda }
 
     /// El nombre del idioma en el idioma de los textos de la notación: «árabe», «Arabic», «arabiera».
@@ -84,6 +91,10 @@ public enum IdiomaOriginal: String, Sendable, CaseIterable, Codable {
         case .coreano: TextosDeTeoria.traduccion(\.idiomaCoreano)
         case .amarico: TextosDeTeoria.traduccion(\.idiomaAmarico)
         case .griego: TextosDeTeoria.traduccion(\.idiomaGriego)
+        case .griegoAntiguo: TextosDeTeoria.traduccion(\.idiomaGriegoAntiguo)
+        case .hebreo: TextosDeTeoria.traduccion(\.idiomaHebreo)
+        case .yidis: TextosDeTeoria.traduccion(\.idiomaYidis)
+        case .birmano: TextosDeTeoria.traduccion(\.idiomaBirmano)
         case .tailandes: TextosDeTeoria.traduccion(\.idiomaTailandes)
         case .jemer: TextosDeTeoria.traduccion(\.idiomaJemer)
         }
@@ -104,6 +115,8 @@ public enum Escritura: String, Sendable, CaseIterable, Codable {
     case hangul = "Hang"
     case etiope = "Ethi"
     case griega = "Grek"
+    case hebrea = "Hebr"
+    case birmana = "Mymr"
     case tailandesa = "Thai"
     case jemer = "Khmr"
 
@@ -113,8 +126,8 @@ public enum Escritura: String, Sendable, CaseIterable, Codable {
     /// ¿Se escribe de derecha a izquierda?
     public var deDerechaAIzquierda: Bool {
         switch self {
-        case .arabe: true
-        case .devanagari, .han, .japonesa, .hangul, .etiope, .griega, .tailandesa, .jemer: false
+        case .arabe, .hebrea: true
+        case .devanagari, .han, .japonesa, .hangul, .etiope, .griega, .tailandesa, .jemer, .birmana: false
         }
     }
 
@@ -131,6 +144,8 @@ public enum Escritura: String, Sendable, CaseIterable, Codable {
         case .griega: [0x0370...0x03FF, 0x1F00...0x1FFF]
         case .tailandesa: [0x0E00...0x0E7F]
         case .jemer: [0x1780...0x17FF, 0x19E0...0x19FF]
+        case .hebrea: [0x0590...0x05FF, 0xFB1D...0xFB4F]
+        case .birmana: [0x1000...0x109F, 0xA9E0...0xA9FF, 0xAA60...0xAA7F]
         }
     }
 
@@ -138,7 +153,7 @@ public enum Escritura: String, Sendable, CaseIterable, Codable {
     package var admiteUnionesDeAnchoCero: Bool {
         switch self {
         case .arabe, .devanagari: true
-        case .han, .japonesa, .hangul, .etiope, .griega, .tailandesa, .jemer: false
+        case .han, .japonesa, .hangul, .etiope, .griega, .tailandesa, .jemer, .hebrea, .birmana: false
         }
     }
 

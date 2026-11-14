@@ -303,6 +303,7 @@ TipoDeEscala.gong.nombresOriginales.map(\.texto)          // ["宫", "宮"]
 TipoDeEscala.gong.nombresOriginales.map(\.idioma.codigo)  // ["zh-Hans", "zh-Hant"]
 TipoDeEscala.yo.nombresOriginales[1].lectura               // "Yō onkai" (陽音階)
 TipoDeEscala.hiyaz.nombreOriginal?.idioma.deDerechaAIzquierda   // true
+TipoDeEscala.hiyaz.nombreOriginalCompleto?.texto              // "مقام حجاز", como `nombreCompleto`
 ```
 
 `TipoDeEscala.alias` y `variantes` guardan solo las grafías correctas («dórico ♭2», «húngara»). Las simplificadas («dorico b2»,

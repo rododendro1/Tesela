@@ -34,7 +34,7 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
     /// Los datos de la escala, escritos en la notación.
     public init(_ escala: Escala, en notacion: Notacion) {
         nombre = escala.nombre(en: notacion)
-        let originales = escala.tipo.nombresOriginales.map { NombreOriginalPresentado($0, en: notacion) }
+        let originales = NombreOriginalPresentado.de(escala.tipo, en: notacion)
         nombresOriginales = originales.isEmpty ? nil : originales
         notas = escala.notas.map { $0.nombre(en: notacion) }
         clases = escala.notas.map(\.claseDeAltura)
@@ -54,11 +54,13 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
 
 /// Un nombre de la escala en su escritura original, con su idioma.
 ///
-/// En JSON (`armonia escala Re Ḥijāz --json`), `{"texto": "حجاز", "idioma": "ar", "nombreDelIdioma": "árabe",
-/// "derechaAIzquierda": true}`, con `lectura` si la tiene.
+/// En JSON (`armonia escala Re Ḥijāz --json`), `{"texto": "حجاز", "completo": "مقام حجاز", "idioma": "ar",
+/// "nombreDelIdioma": "árabe", "derechaAIzquierda": true}`, con `lectura` si la tiene y `completo` si es otro.
 public struct NombreOriginalPresentado: Hashable, Sendable, Codable {
     /// «حجاز», «陽音階».
     public let texto: String
+    /// Con la palabra de su categoría (`TipoDeEscala.nombresOriginalesCompletos`), si la lleva: «مقام حجاز».
+    public let completo: String?
     /// La etiqueta BCP 47 del idioma, para el `lang` del HTML: «ar», «zh-Hant».
     public let idioma: String
     /// El nombre del idioma en la notación: «árabe», «chino tradicional».
@@ -68,12 +70,21 @@ public struct NombreOriginalPresentado: Hashable, Sendable, Codable {
     /// ¿Se escribe de derecha a izquierda (el árabe, el persa)?
     public let derechaAIzquierda: Bool
 
-    public init(_ original: NombreOriginal, en notacion: Notacion) {
+    /// `completo`, el mismo nombre con la palabra de su categoría, si es distinto.
+    public init(_ original: NombreOriginal, completo: NombreOriginal? = nil, en notacion: Notacion) {
         texto = original.texto
+        self.completo = completo.map(\.texto).flatMap { $0 == original.texto ? nil : $0 }
         idioma = original.idioma.codigo
         nombreDelIdioma = original.idioma.nombre(en: notacion)
         lectura = original.lectura
         derechaAIzquierda = original.idioma.deDerechaAIzquierda
+    }
+
+    /// Los nombres originales de la escala, cada uno con su forma completa.
+    public static func de(_ tipo: TipoDeEscala, en notacion: Notacion) -> [NombreOriginalPresentado] {
+        zip(tipo.nombresOriginales, tipo.nombresOriginalesCompletos).map {
+            NombreOriginalPresentado($0, completo: $1, en: notacion)
+        }
     }
 
     /// Para una línea de texto: el nombre entre aislantes bidireccionales (U+2068 y U+2069), para que un nombre de
