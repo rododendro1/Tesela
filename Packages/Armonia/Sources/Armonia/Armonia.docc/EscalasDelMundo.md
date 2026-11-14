@@ -29,7 +29,8 @@ usan microtonos):
   六吕), tonos enteros con un paso de 180 cents. Los modos se leen también con el lü de su tónica, como los sesenta
   diao (`Escala(diao:)`, `Escala.sesentaDiao(grafia:)`): «林钟商» es Sol shāng, y con 之, el lü es gōng: «林钟之商» es
   La shāng. La cadena de sesenta quintas de Jing Fang, en ``JingFang``, con la coma de Mercator en la quinta 53.
-- **13 escalas japonesas**: Ritsu y Ryo, del gagaku; Yō, Min'yō, Miyakobushi, In e Insen, de la
+- **19 escalas japonesas**: Ritsu y Ryo, del gagaku, y sus seis chōshi, cada uno sobre un lü fijo
+  (Ichikotsuchō, Sōjō y Taishikichō, de la ryo; Hyōjō, Ōshikichō y Banshikichō, de la ritsu); Yō, Min'yō, Miyakobushi, In e Insen, de la
   música popular y urbana; Iwato, Hirajōshi, Kumoijōshi, Akebono y Kokin-jōshi, afinaciones del
   koto; y Ryūkyū, de Okinawa. Las fuentes occidentales describen algunas de varias formas: aquí
   va la más citada.

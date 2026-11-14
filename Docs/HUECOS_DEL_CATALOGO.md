@@ -5,7 +5,7 @@ Estado a 12 de noviembre de 2026, tras las escalas sintéticas, los lugares, las
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 28 escalas occidentales sin ninguna referencia y
-cuatro acordes sin fuente. El catálogo tiene 443 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
+cuatro acordes sin fuente. El catálogo tiene 449 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -49,6 +49,20 @@ leer en abierto no da sus escalas en texto, y sin una obra que las dé no se esc
   Según esa página son escalas de tonos y semitonos, sin microtonos.
 
 Con una de esas tablas en texto, o con un escaneo de las obras, se pueden añadir.
+
+También en noviembre de 2026 se buscaron los modos de la liturgia etíope y los octoechos de otras iglesias, para
+traerlos con su nombre original, y tampoco entró ninguno: las fuentes en abierto los nombran, pero no dan las notas
+de cada modo.
+
+- **Etiopía, los modos del zema:** ግዕዝ (gəʿəz), ዕዝል (ʿəzl) y አራራይ (ʾarārāy), los tres de la tradición de Yared,
+  se describen por su uso en la liturgia (ferial, de cuaresma y de duelo, festivo), no como escalas. Las cuatro
+  qənet del catálogo (ትዝታ, ባቲ, አምባሰል, አንቺሆዬ) son las de la música profana, y no son estos.
+- **Armenia, los ութ ձայն:** las fuentes en abierto (Arts 15/6, 117, MDPI) dan los nombres de los ocho ձայն
+  romanizados (Ayp Tza…) y el principio de los tetracordos que los forman, pero no la escala de cada uno.
+- **Siria, los ocho ܩܠܐ (qolē) del Beth Gazo:** hay estudios que los ponen en relación con ocho maqāmāt, pero no hay una
+  tabla de qué maqām le toca a cada ܩܠܐ en la que coincidan.
+- **Rusia, los ocho гласы del znamenny:** son fórmulas melódicas (попевки), no escalas, y la escala del обиход en la
+  que se cantan no se repite a la octava, de modo que no cabe en un `TipoDeEscala`.
 
 ## Escalas sin nombre original
 

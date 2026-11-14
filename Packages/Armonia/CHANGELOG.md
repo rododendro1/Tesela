@@ -11,6 +11,10 @@
 
 ### Novedades
 
+- Los seis chōshi del gagaku (六調子): Ichikotsuchō (壱越調), Sōjō (双調) y Taishikichō (太食調), sobre la ryo, e
+  Hyōjō (平調), Ōshikichō (黄鐘調) y Banshikichō (盤渉調), sobre la ritsu. Cada uno lleva en su documentación su
+  tónica fija, la del lü que le da nombre (Re, Sol, Mi, Mi, La y Si). «Mi 平調» es el Hyōjō y «Do 平調子», el
+  Hirajōshi.
 - Más nombres originales: el árabe de los cuatro *shudūd* de Ṣafī al-Dīn (شد عشاق…), el birmano de Saung (စောင်း),
   el hebreo y el yidis del klezmer (פֿריגיש, אהבה רבה, מי שברך, ה׳ מלך, מגן אבות) y el griego politónico de las
   harmoniai (δωριστί…) y de los géneros y sus colores (γένος διατονικόν, χρῶμα μαλακόν…), estos con su lectura.

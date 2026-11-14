@@ -19,6 +19,45 @@ extension TipoDeEscala {
         nombre: "Ryo", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         nombresOriginales: [.init("呂", .japones)],
         categoria: .escala, escuelas: [.gagaku], referencias: [.garfias1975])
+
+    // MARK: Los seis chōshi del gagaku
+    //
+    // Los 六調子 (rokuchōshi) son los modos del tōgaku: la ryo o la ritsu sobre un lü fijo, que les da nombre salvo en
+    // el taishikichō, sobre hyōjō (los lü de `SistemaDeNombres.luJaponeses`, con 壱越 ichikotsu en Re). Aquí van con
+    // los intervalos pentatónicos de la ryo o la ritsu; en la práctica la melodía usa además dos notas auxiliares, que
+    // hacen de la ryo una lidia y de la ritsu una dórica (Malm 1959, Garfias 1975).
+
+    /// 壱越調: la ryo sobre ichikotsu, Re (Re Mi Fa♯ La Si).
+    public static let ichikotsucho = TipoDeEscala(
+        nombre: "Ichikotsuchō", intervalos: TipoDeEscala.ryo.intervalos, variantes: ["Ichikotsu-chō"],
+        nombresOriginales: [.init("壱越調", .japones)],
+        categoria: .escala, escuelas: [.gagaku], referencias: [.garfias1975])
+    /// 双調: la ryo sobre sōjō, Sol (Sol La Si Re Mi).
+    public static let sojo = TipoDeEscala(
+        nombre: "Sōjō", intervalos: TipoDeEscala.ryo.intervalos, alias: ["Sōjōchō"],
+        nombresOriginales: [.init("双調", .japones)],
+        categoria: .escala, escuelas: [.gagaku], referencias: [.garfias1975])
+    /// 太食調: la ryo sobre hyōjō, Mi (Mi Fa♯ Sol♯ Si Do♯); es el único que no lleva el nombre de su lü.
+    public static let taishikicho = TipoDeEscala(
+        nombre: "Taishikichō", intervalos: TipoDeEscala.ryo.intervalos, variantes: ["Taishiki-chō"],
+        nombresOriginales: [.init("太食調", .japones)],
+        categoria: .escala, escuelas: [.gagaku], referencias: [.garfias1975])
+    /// 平調: la ritsu sobre hyōjō, Mi (Mi Fa♯ La Si Do♯). No es el Hirajōshi del koto (平調子).
+    public static let hyojo = TipoDeEscala(
+        nombre: "Hyōjō", intervalos: TipoDeEscala.ritsu.intervalos,
+        nombresOriginales: [.init("平調", .japones)],
+        categoria: .escala, escuelas: [.gagaku], referencias: [.garfias1975])
+    /// 黄鐘調: la ritsu sobre ōshiki, La (La Si Re Mi Fa♯).
+    public static let oshikicho = TipoDeEscala(
+        nombre: "Ōshikichō", intervalos: TipoDeEscala.ritsu.intervalos, variantes: ["Ōshiki-chō"],
+        nombresOriginales: [.init("黄鐘調", .japones)],
+        categoria: .escala, escuelas: [.gagaku], referencias: [.garfias1975])
+    /// 盤渉調: la ritsu sobre banshiki, Si (Si Do♯ Mi Fa♯ Sol♯).
+    public static let banshikicho = TipoDeEscala(
+        nombre: "Banshikichō", intervalos: TipoDeEscala.ritsu.intervalos, variantes: ["Banshiki-chō"],
+        nombresOriginales: [.init("盤渉調", .japones)],
+        categoria: .escala, escuelas: [.gagaku], referencias: [.garfias1975])
+
     /// 陽音階, la escala yō de la música popular, sin semitonos (Re Mi Sol La Si).
     public static let yo = TipoDeEscala(
         nombre: "Yō", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
@@ -83,7 +122,7 @@ extension TipoDeEscala {
 
     /// Las escalas japonesas: del gagaku, populares y afinaciones del koto.
     package static let japonesas: [TipoDeEscala] = [
-        .ritsu, .ryo, .yo, .minyo, .miyakobushi, .in, .insen, .iwato, .hirajoshi, .kumoijoshi, .ryukyu,
-        .akebono, .kokinjoshi,
+        .ritsu, .ryo, .ichikotsucho, .sojo, .taishikicho, .hyojo, .oshikicho, .banshikicho, .yo, .minyo, .miyakobushi,
+        .in, .insen, .iwato, .hirajoshi, .kumoijoshi, .ryukyu, .akebono, .kokinjoshi,
     ]
 }
