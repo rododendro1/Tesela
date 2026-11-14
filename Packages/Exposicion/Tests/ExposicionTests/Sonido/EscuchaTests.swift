@@ -47,6 +47,17 @@ import Testing
         #expect(sonido.notas.allSatisfy { $0.microtono == 0 })
     }
 
+    /// Un vakra sube y baja en el orden de su recorrido: Aṭāṇā sube recto y baja Do Si La Sol Fa Sol Mi Re Do.
+    @Test func unVakraSubeYBajaEnZigzag() {
+        let atana = Escucha.escala(Escala(.do, .atana))
+        #expect(atana.notas.map(\.midi) == [60, 62, 65, 67, 71, 72, 71, 69, 67, 65, 67, 64, 62, 60])
+        #expect(atana.notas.allSatisfy { $0.microtono == 0 } && atana.tonica == .do)
+        #expect(
+            Escucha.escala(Escala(.re, .anandabhairavi)).notas.prefix(9).map(\.midi) == [
+                62, 65, 64, 65, 67, 69, 71, 69, 74,
+            ])
+    }
+
     @Test func losMicrotonosSuenanEnCualquierTemperamento() throws {
         // Re Bayātī: el Mi𝄳 es un Mi♭4 cincuenta cents más alto.
         let bayati = Escucha.escala(Escala(.re, .bayati))

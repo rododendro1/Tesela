@@ -4,6 +4,9 @@
 
 ### Lo nuevo
 
+- `Escucha.escala(_:afinacion:)` toca los rāgas vakra en zigzag: suben en el orden de su recorrido y bajan en el de
+  bajada (Do Aṭāṇā: Do Re Fa Sol Si Do Si La Sol Fa Sol Mi Re Do). Las demás escalas suenan como antes. ArsHarmonica
+  enseña además su recorrido («↑», «↓») y sus notas externas en la ficha de la escala.
 - `EscalaPresentada.notasExternas`: las notas de un rāga bhāṣāṅga que no son de su mēḷa (`TipoDeEscala.notasExternas`),
   también en el JSON de `escala`. La consola las escribe bajo el recorrido («Notas externas: La♭»). Texto nuevo, en
   los trece idiomas: `notasExternas`. `escalas --vakra` deja solo los rāgas que suben o bajan en zigzag.

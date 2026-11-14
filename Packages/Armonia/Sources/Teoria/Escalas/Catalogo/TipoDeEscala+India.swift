@@ -175,7 +175,8 @@ extension TipoDeEscala {
 
     /// Las notas que no son de su padre (los anya svara de un rāga bhāṣāṅga), de grave a agudo. Unas están en sus
     /// formas, como el Dha₁ con que baja Mukhāri sobre Kharaharapriyā; otras solo salen en algunas frases, como el Ga₃,
-    /// el Dha₁ y el Ni₃ de Ānandabhairavi. No cuentan para `melakartasCompatibles` ni para `==`, y no van en el JSON:
+    /// el Dha₁ y el Ni₃ de Ānandabhairavi. En un rāga indostánico, las que no son de su thāṭ: el Ni natural con que
+    /// sube Deś, que Khamāj no tiene. No cuentan para `melakartasCompatibles` ni para `==`, y no van en el JSON:
     /// son del catálogo, como `padre`. Vacía en las demás escalas.
     ///
     ///     TipoDeEscala.mukhari.notasExternas    // [.sextaMenor]
@@ -888,7 +889,8 @@ extension TipoDeEscala {
         nombre: "Megh", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
         alias: ["Megh Malhar"], nombresOriginales: [.init("मेघ", .hindi)],
         categoria: .raga, padre: .kafi, afinaciones: [.init(.sruti, pasos: [0, 3, 9, 13, 18])])
-    /// Deś: sube sin Ga ni Dha y con Ni natural; baja con ni komal.
+    /// Deś: sube sin Ga ni Dha y con Ni natural; baja con ni komal. Bhatkhande lo pone en Khamāj, que solo tiene el
+    /// komal: el Ni natural es una nota externa (`notasExternas`).
     public static let des = TipoDeEscala(
         nombre: "Deś",
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
@@ -896,7 +898,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         variantes: ["Desh"], nombresOriginales: [.init("देश", .hindi)],
-        categoria: .raga, padre: .khamaj,
+        categoria: .raga, padre: .khamaj, notasExternas: [.septimaMayor],
         afinaciones: [.init(.sruti, pasos: [0, 3, 9, 13, 20], pasosDescendentes: [0, 3, 7, 9, 13, 16, 18])])
     /// Lalit (Sa re Ga ma Ma dha Ni, sin Pa): los dos Ma seguidos, el natural y el tīvra (Do Re♭ Mi Fa Fa♯ La♭ Si).
     public static let lalit = TipoDeEscala(

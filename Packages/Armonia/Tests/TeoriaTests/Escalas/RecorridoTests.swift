@@ -72,6 +72,8 @@ struct RecorridoTests {
         #expect(
             TipoDeEscala.begada.notasExternas == [.septimaMenor]
                 && TipoDeEscala.devagandhari.notasExternas == [.septimaMenor])
+        // Deś sube con el Ni natural, que Khamāj, su thāṭ, no tiene.
+        #expect(TipoDeEscala.des.notasExternas == [.septimaMayor] && TipoDeEscala.des.padre?.nombre == "Khamāj")
         let bhairavi = TipoDeEscala.bhairaviCarnatica
         #expect(bhairavi.notasExternas == [.sextaMayor] && bhairavi.padre?.nombre == "Naṭabhairavī")
         #expect((try? TipoDeEscala(leyendo: "Bhairavi"))?.esIdentico(a: .bhairavi) == true)

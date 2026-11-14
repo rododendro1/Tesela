@@ -19,7 +19,7 @@
 - `TipoDeEscala.notasExternas`: las notas que no son del padre de un rāga bhāṣāṅga (anya svara), estén en la
   escala, como el Dha₁ de Mukhāri, o solo en algunas frases, como el Ga₃, el Dha₁ y el Ni₃ de Ānandabhairavi. Son
   del catálogo, como `padre`: no cuentan para `==` ni van en el JSON, y `melakartasCompatibles` no las mira, así que
-  Mukhāri tiene ahora padre (Kharaharapriyā).
+  Mukhāri tiene ahora padre (Kharaharapriyā). Deś lleva su Ni natural, que Khamāj no tiene, como nota externa.
 - Cinco janya más, de karnATik (`Referencia.karnatik`): Bēgaḍa, Sahānā y Rītigauḷa, vakra; Dēvagāndhāri, que
   sube y baja recto y lleva el ni₂ de algunas frases en `notasExternas`, y Bhairavi carnática (con ese nombre, para
   no confundirla con el thāṭ Bhairavī), del mēḷa 20 con el Dha₂ como nota externa.

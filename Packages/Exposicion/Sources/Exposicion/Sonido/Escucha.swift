@@ -173,13 +173,24 @@ public struct Escucha: Hashable, Sendable {
     ///     Escucha.escala(Escala(.re, .bayati)).notas.map(\.microtono)   // [0, 50, 0, 0, 0, 0, 0, 0]
     ///
     /// Con `afinacion`, los microtonos de otra de las de `escala.tipo.afinaciones` (la de Chrysanthos en los echoi).
+    /// Un rāga vakra sube y baja en zigzag, en el orden de su recorrido (`Escala.alturas(octava:sentido:)`).
     public static func escala(_ escala: Escala, afinacion: AfinacionPropia? = nil) -> Escucha {
         let subida = cerrada(escala.notas, desde: 60)
         guard let tonica = subida.first else { return .silencio }
-        let alturas = subida + [tonica + .octava]
+        var alturas = subida + [tonica + .octava]
         // La tónica de arriba, como la de abajo: en Sīkāh, las dos son Mi𝄳.
         let desvios = Self.desvios(de: escala, afinacion: afinacion)
-        let microtonos: [Double] = desvios + [desvios.first ?? 0]
+        var microtonos: [Double] = desvios + [desvios.first ?? 0]
+        // Un rāga vakra sube y baja en el orden de su recorrido: Do Ānandabhairavi, Do Mi♭ Re Mi♭ Fa Sol La Sol Do, y
+        // baja Si♭ La Sol Fa Mi♭ Re Do. Cada nota lleva el microtono de su grado al subir.
+        if escala.tipo.esVakra {
+            let bajada = escala.alturas(octava: tonica.octava, sentido: .descendente)
+            alturas = escala.alturas(octava: tonica.octava, sentido: .ascendente) + bajada.dropFirst()
+            microtonos = alturas.map { altura in
+                escala.notas.firstIndex(of: altura.nota).flatMap { desvios.indices.contains($0) ? desvios[$0] : nil }
+                    ?? 0
+            }
+        }
         let paso = 0.3
         return Escucha(
             notas: alturas.enumerated().map { i, altura in

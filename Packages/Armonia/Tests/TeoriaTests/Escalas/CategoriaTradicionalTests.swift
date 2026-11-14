@@ -208,8 +208,6 @@ import Testing
             #expect(padre.clase == .escalaMadre, Comment(rawValue: tipo.nombre))
             #expect(padre.tradicion == tipo.tradicion, Comment(rawValue: tipo.nombre))
             #expect(padre.derivadas.contains { $0.esIdentico(a: tipo) }, Comment(rawValue: tipo.nombre))
-            // Deś sube con el Ni natural y baja con el komal, y Bhatkhande lo pone en Khamāj, que solo tiene el komal.
-            guard !tipo.esIdentico(a: .des) else { continue }
             let suyas = clases(tipo)
             let delPadre = clases(padre)
             #expect(
