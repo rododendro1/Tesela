@@ -5,7 +5,7 @@ Estado a 14 de noviembre de 2026, tras las escalas sintéticas, los lugares, las
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 28 escalas occidentales sin ninguna referencia y
-cuatro acordes sin fuente. El catálogo tiene 491 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
+cuatro acordes sin fuente. El catálogo tiene 509 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -34,7 +34,7 @@ cifras de las que sí están son las escalas declaradas en su fichero del catál
 | Mongolia | ninguna | Las pentatónicas del canto largo y del morin khuur |
 | Uigures | ninguna | Los doce muqam |
 
-Son más largas India (86), el mundo árabe (44) y Turquía (39).
+Son más largas India (101), el mundo árabe (44) y Turquía (40).
 
 ### Dónde buscar las que faltan
 
@@ -93,6 +93,18 @@ los ṭubūʿ tunecinos) no se pueden leer desde aquí.
   de gongs tiene su afinación (Maceda 1963, Trimillos 2004, en la Wikipedia en inglés).
 - **Mundo árabe, Mustaʿār:** Maqam World da su jins (un Sīkāh con la segunda alta) solo en una imagen. Ṣabā Zamzam
   ya está en el catálogo.
+- **Azerbaiyán, más muğam:** los siete lad de Hacıbəyov (Rast, Şur, Segah, Çahargah, Şüştər, Bayatı-Şiraz y
+  Hümayun) ya están todos. Los otros muğam (Mahur-hindi, Rahab, Bayatı-Kürd, Zabul…) son dəstgah que se tocan en
+  alguno de esos siete lad, y los tres «colaterales» que cita la Wikipedia en inglés («Mugham»: Şahnaz, Sarənc y otra
+  forma de Çahargah) no tienen sus notas en ningún texto que se lea en abierto.
+- **Grecia, más dromoi:** los quince del catálogo llevan ya su nombre en griego. Los que se nombran además en lo que se
+  lee en abierto (Bouselik, Machour, Rechavi, Tsargkiach, Neveser, Bestenigkiar, en las páginas de Carmelo Siciliano)
+  no dan sus notas en texto, o son las de un dromos o un makam que ya está (Tsargkiach es la mayor; Neveser, Niavént).
+- **Bali, lebeng y baro:** entran los dos con la tabla de la Wikipedia en inglés («Pelog»), que avisa de que son poco
+  usados y menos fijos que los otros tres: baro tiene al menos cuatro lecturas (la del catálogo es la de Beratha y
+  Asnawa), y lebeng solo tiene siete notas en el semar pegulingan; en el gambuh es pentatónico, sin una escala fija.
+- **Turquía, Nişâbur y Şehnaz:** la TDV İslâm Ansiklopedisi los describe con más de un dizi o con un recorrido que no
+  deja una escala sola, así que de esta tanda solo entra Bayâtî.
 - **Mongolia:** la colección de Sipos (*Mongolian Folk Songs*, ERHFM) clasifica las canciones por pentatónicas que el
   catálogo ya tiene (las cinco rotaciones de la pentatónica, como los modos chinos).
 
@@ -152,13 +164,13 @@ tono, la técnica de los «triad pairs» del jazz, y necesitan una obra de impro
 
 La época de una escala no se escribe: sale de lo que el catálogo ya sabe de ella (`TipoDeEscala.epocaDeOrigen`). Toda
 occidental de un estilo con épocas (la música clásica, el jazz, el blues, las de compositor y el pop y el rock) tiene
-la suya, y lo comprueban las pruebas (`EpocaTests`). Quedan sin época 14 occidentales y 191 de otras tradiciones.
+la suya, y lo comprueban las pruebas (`EpocaTests`). Quedan sin época 14 occidentales y 209 de otras tradiciones.
 
 | Grupo | Escalas | Qué falta |
 | --- | --- | --- |
 | Populares | dórico ♯4, egipcia, flamenca, argelina, mayor rumana, pentatónica escocesa, y los cuatro hexatónicos sin una nota (jónico sin 4ª, mixolidio sin 3ª, dórico sin 6ª, eólico sin 2ª) | Una obra que las documente con su año (`documentada:`), como Liszt (1859) en la menor húngara |
 | Sintéticas | persa, jónico ♭2, jónico ♭5, jónico ♯6 | Una escala madre fechada de la que sean modo, o una obra que las traiga |
-| De otras tradiciones | 59 de la India (rāgas y janya), 35 del mundo árabe, 19 de Japón, 13 de Turquía, 11 de Indonesia y las de África, los Andes, Brasil, China, Corea, Etiopía, Europa, el klezmer, el sudeste asiático y Vietnam | El año de su obra o de su categoría; muchas son de tradiciones vivas sin una fecha de origen clara, y es mejor dejarlas sin época que inventarla |
+| De otras tradiciones | 74 de la India (rāgas y janya), 35 del mundo árabe, 19 de Japón, 14 de Turquía, 13 de Indonesia y las de África, los Andes, Brasil, China, Corea, Etiopía, Europa, el klezmer, el sudeste asiático y Vietnam | El año de su obra o de su categoría; muchas son de tradiciones vivas sin una fecha de origen clara, y es mejor dejarlas sin época que inventarla |
 
 ## Acordes que faltaban
 

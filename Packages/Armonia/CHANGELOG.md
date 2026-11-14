@@ -11,6 +11,14 @@
 
 ### Novedades
 
+- Siete rāgas janya más, de la Wikipedia en inglés: Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini,
+  Rasikarañjani y Śuddha Hindolam, con su nombre en sánscrito, telugu y canarés, y cuatro también en tamil.
+- Ocho rāgas indostánicos más: Basant y Śrī (de Pūrvī), Dhānī (de Kāfī), Guṇakrī (de Bhairav), y Paṭdīp, Kirvāṇī,
+  Bairāgī y Naṭ Bhairav, sin thāṭ porque tienen notas que no están en el que les da su artículo (Kirvāṇī no cabe en
+  ninguno).
+- Bayâtî makamı, con las notas de Uşşak en 53 comas (TDV İslâm Ansiklopedisi).
+- Pélog baro y Pélog lebeng, los dos modos del gambuh y del semar pegulingan de Bali que faltaban, con sus cents en el
+  modelo de nueve partes.
 - Doce rāgas janya más, con su ārohaṇa, su avarohaṇa y su mēḷa de la Wikipedia en inglés: Haṃsānandi,
   Kalyāṇavasantam, Bhūpālam, Revagupti, Bauḷi, Lalitā, Megharañjani, Dhanyāsi, Ābheri, Maṇiraṅgu, Nāgasvarāvaḷi y
   Sunādavinodinī. Los janya llevan ahora su nombre también en telugu y en canarés, pasado del sánscrito con las reglas

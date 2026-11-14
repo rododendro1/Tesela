@@ -321,7 +321,7 @@ extension LineaDeComandosTests {
         let lineas = todas.split(separator: "\n")
         #expect(lineas.count == Tradicion.allCases.count - 1)
         #expect(lineas.contains("Japón (japon): escala 19"))
-        #expect(lineas.contains("Turquía (turquia): makam 27 · çeşni 12"))
+        #expect(lineas.contains("Turquía (turquia): makam 28 · çeşni 12"))
         #expect(salida("traditions --ingles").contains("Japan (japan): scale 19"))
         #expect(salida("tradiciones --idioma eu").contains("Japonia (japon)"))
         // Lo que dice cada línea suma lo que da `escalas --tradicion`.

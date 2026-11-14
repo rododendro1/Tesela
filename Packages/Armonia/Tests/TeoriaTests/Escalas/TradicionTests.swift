@@ -104,7 +104,7 @@ import Testing
         #expect(mia.estilos.isEmpty && mia.escuelas.isEmpty && mia.regiones.isEmpty)
         #expect(RegionDeEscala.java.tipos.count == 7)
         #expect(TipoDeEscala.degung.regiones == [.sunda] && RegionDeEscala.sunda.tradicion == .indonesia)
-        #expect(RegionDeEscala.bali.tipos.count == 4)
+        #expect(RegionDeEscala.bali.tipos.count == 6)
         // Toda escala de la India tiene escuela, y cada estilo, cada escuela y cada región tiene alguna escala.
         for tipo in TipoDeEscala.tradicionales(tradicion: .india) {
             #expect(!tipo.escuelas.isEmpty, Comment(rawValue: tipo.nombre))

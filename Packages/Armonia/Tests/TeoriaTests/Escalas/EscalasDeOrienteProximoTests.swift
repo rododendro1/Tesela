@@ -109,6 +109,9 @@ import Testing
         #expect(notas(.pelogNem, .sol) == "Sol La♭ Do Re Mi♭")
         #expect(notas(.pelogBarang, .la) == "La Si♭ Re Mi Sol♯")
         #expect(TipoDeEscala.pelogSunaren == .pelog && TipoDeEscala.pelogTembung == .pelog)
+        #expect(notas(.pelogBaro) == "Do Re♯ Mi Sol La")
+        #expect(notas(.pelogLebeng) == "Do Re♭ Mi♭ Fa Sol La♭ Si𝄫")
+        #expect(TipoDeEscala.bayatiMakami == .ussakMakami)
         // El sléndro, equidistante: los tres pathet tienen los mismos intervalos.
         #expect(TipoDeEscala.slendroSanga == .slendro && TipoDeEscala.slendroManyura == .slendro)
         #expect(TipoDeEscala.slendroNem == .egipcia)

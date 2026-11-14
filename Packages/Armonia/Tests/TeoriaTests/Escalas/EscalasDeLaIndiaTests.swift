@@ -128,7 +128,7 @@ import Testing
         #expect(TipoDeEscala.multani.padre == .todi && TipoDeEscala.sohini.padre == .marva)
         #expect(TipoDeEscala.buscar(nombre: "मुलतानी")?.esIdentico(a: .multani) == true)
         #expect(TipoDeEscala.buscar(nombre: "Sohni")?.esIdentico(a: .sohini) == true)
-        #expect(TipoDeEscala.ragasIndostanicos.count == 27)
+        #expect(TipoDeEscala.ragasIndostanicos.count == 35)
     }
 
     /// Ocho rāgas indostánicos más y doce janya, de la Wikipedia en inglés.
