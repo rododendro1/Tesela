@@ -23,6 +23,9 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
     /// Do Ānandabhairavi sube «Do Mi♭ Re Mi♭ Fa Sol La Sol Do». `nil` si sube o baja en línea recta.
     public let recorrido: [String]?
     public let recorridoDescendente: [String]?
+    /// En un rāga bhāṣāṅga, las notas que no son de su mēḷa (`TipoDeEscala.notasExternas`), desde la tónica: Do
+    /// Mukhāri lleva «La♭». `nil` si no tiene.
+    public let notasExternas: [String]?
     public let clases: [Int]
     /// De qué escala es modo («Modo 2 de Do mayor»), si lo es de alguna conocida.
     public let modo: String?
@@ -46,6 +49,8 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
         }
         recorrido = escala.tipo.recorrido == nil ? nil : enOrden(.ascendente)
         recorridoDescendente = escala.tipo.recorridoDescendente == nil ? nil : enOrden(.descendente)
+        let externas = escala.tipo.notasExternas.map { (escala.tonica + $0).nombre(en: notacion) }
+        notasExternas = externas.isEmpty ? nil : externas
         clases = escala.notas.map(\.claseDeAltura)
         modo = PresentacionDeEscalaYAcorde.modo(de: escala, en: notacion)
         let cuatriadas = escala.armonizar(cuatriadas: true).compactMap { $0 }

@@ -137,6 +137,8 @@ extension LineaDeComandos {
         /// En un rāga vakra, las notas en el orden en que se toca al subir y al bajar.
         let recorrido: [String]?
         let recorridoDescendente: [String]?
+        /// En un bhāṣāṅga, las notas que no son de su mēḷa.
+        let notasExternas: [String]?
         let clases: [Int]
         let modo: String?
         let acordes: [EscalaPresentada.AcordeDelGrado]?
@@ -196,6 +198,7 @@ extension LineaDeComandos {
             notas = datos.notas
             recorrido = datos.recorrido
             recorridoDescendente = datos.recorridoDescendente
+            notasExternas = datos.notasExternas
             clases = datos.clases
             modo = datos.modo
             acordes = datos.acordes

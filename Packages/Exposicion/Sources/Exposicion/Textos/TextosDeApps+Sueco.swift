@@ -231,6 +231,7 @@ extension TextosDeApps {
         escuelas: "Skolor",
         fragmento: "Fragment",
         nombreOriginal: "Originalnamn",
+        notasExternas: "Främmande toner",
         afinacion: "Stämning",
         afinacionTemperada: "liksvävande",
         afinacionJusta: "ren",

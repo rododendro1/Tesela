@@ -45,6 +45,8 @@ extension LineaDeComandos {
         var afinacion: String?
         /// `true` con `--fragmentos` (solo ellos), `false` con `--sin-fragmentos`; `nil`, todas.
         var fragmentos: Bool?
+        /// `true` con `--vakra`: solo los rāgas que suben o bajan en zigzag.
+        var vakra = false
         /// El texto suelto, como clave de búsqueda; vacío si no hay.
         var buscado = ""
 
@@ -56,6 +58,7 @@ extension LineaDeComandos {
             guard !sinSemitonos || estadisticas(tipo).anhemitonica else { return false }
             guard !regulares || estadisticas(tipo).maximamenteRegular else { return false }
             guard fragmentos == nil || tipo.esFragmento == fragmentos else { return false }
+            guard !vakra || tipo.esVakra else { return false }
             guard afinacion == nil || tipo.caracterDeLaAfinacion?.clave == afinacion else { return false }
             if !lugares.isEmpty {
                 let suyos = Set((tipo.lugaresDeOrigen + tipo.lugaresDeUso).flatMap(\.conLosQueLoContienen))
@@ -232,6 +235,8 @@ extension LineaDeComandos {
         let soloFragmentos = entrada.quitarMarca(.fragmentos)
         let sinFragmentos = entrada.quitarMarca(.sinFragmentos)
         if soloFragmentos != sinFragmentos { filtro.fragmentos = soloFragmentos }
+        // `--vakra`: los rāgas que suben o bajan en zigzag, con su recorrido.
+        filtro.vakra = entrada.quitarMarca(.vakra)
         try entrada.sinOpcionesDesconocidas()
         filtro.buscado = claveDeBusqueda(entrada.unidos)
         return filtro

@@ -69,6 +69,10 @@ extension Referencia {
     public static let opDeCoulModos = Referencia(
         "opDeCoulModos", .web, autores: ["Op de Coul, Manuel"], titulo: "List of Musical Modes", anio: nil,
         publicadoEn: "Huygens-Fokker Foundation", url: "https://www.huygens-fokker.org/docs/modename.html")
+    /// karnATik, el índice de rāgas carnáticos con el āroha, el avaroha y el mēḷa de cada uno.
+    public static let karnatik = Referencia(
+        "karnatik", .web, autores: ["karnATik"], titulo: "Royal Carpet: Carnatic Ragas", anio: nil,
+        url: "https://www.karnatik.com/ragas.shtml")
     /// Microtonal Theory: los shudūd de Ṣafī al-Dīn con sus intervalos pitagóricos.
     public static let microtonalTheory = Referencia(
         "microtonalTheory", .web, autores: ["Microtonal Theory"], titulo: "Medieval Perso-Arabic Music Theory",
@@ -656,7 +660,8 @@ extension Referencia {
         .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .dewoskin1982, .garfias1975,
         .tranVanKhe1962, .morton1976,
         .sam1988, .williamson2000, .miller1985,
-        .surjodiningrat1972, .hood1954, .tenzer2000, .shin2024, .son2013, .opDeCoulModos, .microtonalTheory, .rubin2020,
+        .surjodiningrat1972, .hood1954, .tenzer2000, .shin2024, .son2013, .opDeCoulModos, .karnatik, .microtonalTheory,
+        .rubin2020,
         .kebede1971, .kilmer1971, .gurney1994,
         .west1994,
         .tracey1948, .kubik1994,

@@ -231,6 +231,7 @@ extension TextosDeApps {
         escuelas: "Σχολές",
         fragmento: "Απόσπασμα",
         nombreOriginal: "Πρωτότυπο όνομα",
+        notasExternas: "Ξένες νότες",
         afinacion: "Κούρδισμα",
         afinacionTemperada: "συγκερασμένο",
         afinacionJusta: "φυσικό",

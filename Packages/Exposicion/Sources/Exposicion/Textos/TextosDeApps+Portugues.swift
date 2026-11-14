@@ -231,6 +231,7 @@ extension TextosDeApps {
         escuelas: "Escolas",
         fragmento: "Fragmento",
         nombreOriginal: "Nome original",
+        notasExternas: "Notas externas",
         afinacion: "Afinação",
         afinacionTemperada: "temperada",
         afinacionJusta: "justa",

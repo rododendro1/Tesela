@@ -107,7 +107,7 @@ public struct TipoDeEscala: Sendable, Codable {
         variantes: [String] = [], recorrido: [Int]? = nil, recorridoDescendente: [Int]? = nil,
         nombresOriginales: [NombreOriginal] = [], tradicion: Tradicion? = nil, categoria: CategoriaTradicional,
         escuelas: [Escuela] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
-        padre: TipoDeEscala? = nil,
+        padre: TipoDeEscala? = nil, notasExternas: [Intervalo] = [],
         afinaciones: [DatosDeEscala.Afinacion] = [], referencias: [Referencia] = [], documentada: Referencia? = nil,
         clave: String? = nil
     ) {
@@ -117,7 +117,7 @@ public struct TipoDeEscala: Sendable, Codable {
             datos: DatosDeEscala(
                 nombresOriginales: nombresOriginales, tradicion: tradicion, escuelas: escuelas, regiones: regiones,
                 categoria: categoria,
-                padre: padre?.identidad,
+                padre: padre?.identidad, notasExternas: notasExternas,
                 afinaciones: afinaciones,
                 fuente: fuente, referencias: referencias, documentada: documentada))
     }

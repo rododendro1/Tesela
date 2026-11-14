@@ -231,6 +231,7 @@ extension TextosDeApps {
         escuelas: "Iskolák",
         fragmento: "Töredék",
         nombreOriginal: "Eredeti név",
+        notasExternas: "Idegen hangok",
         afinacion: "Hangolás",
         afinacionTemperada: "temperált",
         afinacionJusta: "tiszta",

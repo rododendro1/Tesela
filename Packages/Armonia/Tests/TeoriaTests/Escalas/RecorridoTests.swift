@@ -40,6 +40,46 @@ struct RecorridoTests {
         #expect(alturas(.nalinakanti) == ["Do4", "Mi4", "Re4", "Fa4", "Sol4", "Si4", "Do5"])
         #expect(alturas(.nalinakanti, .descendente) == ["Do5", "Si4", "Sol4", "Fa4", "Mi4", "Re4", "Do4"])
         #expect(alturas(.kathanakutuhalam) == ["Do4", "Re4", "Fa4", "La4", "Si4", "Mi4", "Sol4", "Do5"])
+        #expect(
+            alturas(.begada) == ["Do4", "Mi4", "Re4", "Mi4", "Fa4", "Sol4", "La4", "Si♭4", "La4", "Sol4", "Do5"])
+        #expect(alturas(.sahana) == ["Do4", "Re4", "Mi4", "Fa4", "Sol4", "Fa4", "La4", "Si♭4", "Do5"])
+        #expect(
+            alturas(.sahana, .descendente) == [
+                "Do5", "Si♭4", "Do5", "La4", "Si♭4", "La4", "Sol4", "Fa4", "Mi4", "Fa4", "Re4", "Mi4", "Re4", "Do4",
+            ])
+        #expect(
+            alturas(.ritigaula) == [
+                "Do4", "Mi♭4", "Re4", "Mi♭4", "Fa4", "Si♭4", "La4", "Fa4", "Si♭4", "Si♭4", "Do5",
+            ])
+        #expect(
+            alturas(.ritigaula, .descendente) == [
+                "Do5", "Si♭4", "La4", "Fa4", "Mi♭4", "Fa4", "Sol4", "Fa4", "Mi♭4", "Re4", "Do4",
+            ])
+    }
+
+    /// Las notas externas (anya svara): las que no son del padre, estén en la escala o solo en sus frases.
+    @Test func lasNotasExternasNoSonDelPadre() {
+        #expect(
+            TipoDeEscala.mukhari.notasExternas == [.sextaMenor]
+                && TipoDeEscala.mukhari.padre?.nombre == "Kharaharapriyā")
+        #expect(TipoDeEscala.mukhari.melakartasCompatibles == [22])
+        #expect(TipoDeEscala.anandabhairavi.notasExternas == [.terceraMayor, .sextaMenor, .septimaMayor])
+        // Las de Ānandabhairavi no están en sus formas: solo salen en algunas frases.
+        #expect(
+            TipoDeEscala.anandabhairavi.notasExternas.allSatisfy {
+                !TipoDeEscala.anandabhairavi.intervalosEnAmbasDirecciones.contains($0)
+            })
+        #expect(
+            TipoDeEscala.begada.notasExternas == [.septimaMenor]
+                && TipoDeEscala.devagandhari.notasExternas == [.septimaMenor])
+        #expect(TipoDeEscala.mayor.notasExternas.isEmpty && TipoDeEscala.kedaram.notasExternas.isEmpty)
+        // No van en el JSON ni cuentan para `==`: son del catálogo, por la identidad.
+        let propia = TipoDeEscala(
+            nombre: "mía", intervalos: TipoDeEscala.mukhari.intervalos,
+            intervalosDescendentes: TipoDeEscala.mukhari.intervalosDescendentes)
+        #expect(propia == .mukhari && propia.notasExternas.isEmpty)
+        let datos = try? JSONEncoder().encode(TipoDeEscala.mukhari)
+        #expect(datos.flatMap { String(data: $0, encoding: .utf8) }?.contains("Externas") == false)
     }
 
     @Test func losGradosFueraDeLaOctavaVanALaDeArribaOALaDeAbajo() {
@@ -75,7 +115,7 @@ struct RecorridoTests {
         #expect(
             vakra.map(\.nombre) == [
                 "Ānandabhairavi", "Suruṭṭi", "Aṭāṇā", "Kēdāram", "Darbār", "Mukhāri", "Gauḷa", "Nalinakānti",
-                "Kathanakutūhalam",
+                "Kathanakutūhalam", "Bēgaḍa", "Sahānā", "Rītigauḷa",
             ])
         for tipo in vakra {
             let subida = tipo.intervalos.count

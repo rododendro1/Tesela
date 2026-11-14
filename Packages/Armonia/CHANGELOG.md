@@ -16,6 +16,14 @@
   `Escala.alturas(octava:sentido:)` los sigue. Van en el JSON (`recorrido`, `recorridoDescendente`) solo si los hay,
   y los ficheros sin ellos se leen igual. No cuentan para `==`. Entran tres janya vakra de la Wikipedia en inglés:
   Ānandabhairavi, Suruṭṭi y Aṭāṇā. `armonia escala` los muestra con «↑:» y «↓:», y `--json`, con `recorrido`.
+- `TipoDeEscala.notasExternas`: las notas que no son del padre de un rāga bhāṣāṅga (anya svara), estén en la
+  escala, como el Dha₁ de Mukhāri, o solo en algunas frases, como el Ga₃, el Dha₁ y el Ni₃ de Ānandabhairavi. Son
+  del catálogo, como `padre`: no cuentan para `==` ni van en el JSON, y `melakartasCompatibles` no las mira, así que
+  Mukhāri tiene ahora padre (Kharaharapriyā).
+- Cuatro janya más, de karnATik (`Referencia.karnatik`): Bēgaḍa, Sahānā y Rītigauḷa, vakra, y Dēvagāndhāri, que
+  sube y baja recto y lleva el ni₂ de algunas frases en `notasExternas`.
+- El TSV de escalas de `EjemploCatalogos` tiene `es_vakra`, `recorrido`, `recorrido_descendente`, `notas_externas`,
+  `cakra` y `solfa_de_melakarta`.
 - Seis janya vakra más, de la Wikipedia en inglés: Kēdāram, Darbār, Mukhāri, Gauḷa, Nalinakānti y
   Kathanakutūhalam, con su recorrido y su nombre en sánscrito, telugu y canarés, y todos menos Nalinakānti también en
   tamil.

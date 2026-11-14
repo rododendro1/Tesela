@@ -4,6 +4,9 @@
 
 ### Lo nuevo
 
+- `EscalaPresentada.notasExternas`: las notas de un rāga bhāṣāṅga que no son de su mēḷa (`TipoDeEscala.notasExternas`),
+  también en el JSON de `escala`. La consola las escribe bajo el recorrido («Notas externas: La♭»). Texto nuevo, en
+  los trece idiomas: `notasExternas`. `escalas --vakra` deja solo los rāgas que suben o bajan en zigzag.
 - La hoja HTML tiene fuentes del sistema para los nombres originales en telugu, canarés y tamil.
 - `NombreOriginalPresentado.completo`: el nombre original con la palabra de su categoría, si es otro («مقام حجاز»),
   también en el JSON de `escala` y `escalas`; `NombreOriginalPresentado.de(_:en:)` los da todos de una escala.

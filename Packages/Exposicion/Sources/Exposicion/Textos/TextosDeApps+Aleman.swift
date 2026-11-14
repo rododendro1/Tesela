@@ -231,6 +231,7 @@ extension TextosDeApps {
         escuelas: "Schulen",
         fragmento: "Fragment",
         nombreOriginal: "Originalname",
+        notasExternas: "Fremde Töne",
         afinacion: "Stimmung",
         afinacionTemperada: "gleichstufig",
         afinacionJusta: "rein",
