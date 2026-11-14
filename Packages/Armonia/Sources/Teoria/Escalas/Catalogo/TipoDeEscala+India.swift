@@ -546,11 +546,11 @@ extension TipoDeEscala {
         ],
         categoria: .janya, padre: .melakarta(22))
 
-    // Doce vakra, que suben o bajan en zigzag y llevan su recorrido (`recorrido`, `recorridoDescendente`), de la
+    // Trece vakra, que suben o bajan en zigzag y llevan su recorrido (`recorrido`, `recorridoDescendente`), de la
     // Wikipedia en inglés (Nalinakānti y Kathanakutūhalam, del artículo «Janya») y, Bēgaḍa, Sahānā y Rītigauḷa, de
-    // karnATik, porque sus artículos dan escalas distintas en distintos sitios. Darbārī Kānaḍa sigue recta: karnATik
-    // la sube desde el ni de abajo, y un recorrido sale de la tónica. Los bhāṣāṅga llevan las notas que no son de su
-    // mēḷa en `notasExternas`.
+    // karnATik, porque sus artículos dan escalas distintas en distintos sitios; también de karnATik, Darbārī Kānaḍa
+    // carnática, que sube desde el ni de abajo (el grado 0 del recorrido). Los bhāṣāṅga llevan las notas que no son
+    // de su mēḷa en `notasExternas`.
 
     /// Ānandabhairavi, del mēḷa 22 (Kharaharapriyā): sube Sa ga Re ga ma Pa Dha Pa Ṡa (sin ni) y baja recto con las
     /// siete. Es bhāṣāṅga: en sus frases entran el Ga₃, el Dha₁ y el Ni₃ (`notasExternas`), que la escala no recoge.
@@ -707,6 +707,21 @@ extension TipoDeEscala {
         ],
         categoria: .janya, padre: .melakarta(22), referencias: [.karnatik])
 
+    /// Darbārī Kānaḍa carnática, del mēḷa 20 (Naṭabhairavi): sube desde el ni de abajo, ni Sa Re ga Re Sa ma Pa dha
+    /// ni Ṡa, y baja Ṡa dha ni Pa ma Pa ga ma Re Sa. Se llama así para no confundirse con la indostánica, que va
+    /// recta y es del thāṭ Āsāvarī.
+    public static let darbariKanadaCarnatica = TipoDeEscala(
+        nombre: "Darbārī Kānaḍa carnática",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        recorrido: [0, 1, 2, 3, 2, 1, 4, 5, 6, 7, 8],
+        recorridoDescendente: [8, 6, 7, 5, 4, 5, 3, 4, 2, 1],
+        nombresOriginales: [
+            .init("दर्बारी कानड", .sanscrito), .init("దర్బారీ కానడ", .telugu), .init("ದರ್ಬಾರೀ ಕಾನಡ", .canares),
+        ],
+        categoria: .janya, padre: .melakarta(20), referencias: [.karnatik])
+
     // Dos bhāṣāṅga que suben y bajan rectos, con las notas que no son de su mēḷa en `notasExternas`.
 
     /// Dēvagāndhāri, del mēḷa 29 (Dhīraśaṅkarābharaṇam): sube Sa Re ma Pa Dha Ṡa y baja recto con las siete. En
@@ -748,6 +763,7 @@ extension TipoDeEscala {
         .andolika, .garudadhvani, .bahudari, .salagabhairavi, .jaganmohini, .rasikaranjani, .suddhaHindolam,
         .anandabhairavi, .surutti, .atana, .kedaram, .darbar, .mukhari, .gaula, .nalinakanti, .kathanakutuhalam,
         .begada, .sahana, .ritigaula, .devagandhari, .bhairaviCarnatica,
+        .darbariKanadaCarnatica,
     ]
 
     // MARK: Thāṭ (música indostánica)

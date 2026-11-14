@@ -189,6 +189,7 @@ extension NombresDeEscalas {
         .tradicional(.tetracordoDiatonicoDeVicentino, "tetracorde diatónico de Vicentino"),
         .tradicional(.tetracordoCromaticoDeVicentino, "tetracorde cromático de Vicentino"),
         .tradicional(.bhairaviCarnatica, "Bhairavi carnática"),
+        .tradicional(.darbariKanadaCarnatica, "Darbārī Kānaḍa carnática"),
         .tradicional(.tetracordoEnarmonicoDeVicentino, "tetracorde enarmónico de Vicentino"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).

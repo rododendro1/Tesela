@@ -79,8 +79,10 @@ extension Escala {
         con temperamento: TemperamentoQueAfina, sentido: SentidoDelIntervalo = .ascendente
     ) -> [Double] {
         let afinada = temperamento.afinacion(tonica: tonica)
-        let forma = sentido == .ascendente ? self : Escala(tonica, tipo.formaDescendente)
-        let alturas = forma.alturas(octava: 4).dropLast()
+        // Las notas de la forma, en orden y desde la tónica: sin el recorrido de un vakra, que podría empezar en otra.
+        let inicio = Altura(tonica, octava: 4)
+        let intervalos = sentido == .ascendente ? tipo.intervalos : tipo.intervalosDescendentes ?? tipo.intervalos
+        let alturas = intervalos.map { inicio + $0 }
         guard let primera = alturas.first else { return [] }
         return alturas.map { afinada.cents(desde: primera, hasta: $0) }
     }

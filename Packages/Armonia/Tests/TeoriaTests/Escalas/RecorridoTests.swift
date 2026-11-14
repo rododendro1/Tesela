@@ -57,6 +57,30 @@ struct RecorridoTests {
             ])
     }
 
+    /// Un recorrido puede empezar por debajo de la tónica: Darbārī Kānaḍa carnática sube desde el ni de abajo. Las
+    /// notas de la escala y sus cents siguen saliendo de la tónica.
+    @Test func unRecorridoQueEmpiezaPorDebajo() {
+        let darbari = Escala(.do, .darbariKanadaCarnatica)
+        #expect(
+            alturas(.darbariKanadaCarnatica) == [
+                "Si♭3", "Do4", "Re4", "Mi♭4", "Re4", "Do4", "Fa4", "Sol4", "La♭4", "Si♭4", "Do5",
+            ])
+        #expect(
+            alturas(.darbariKanadaCarnatica, .descendente) == [
+                "Do5", "La♭4", "Si♭4", "Sol4", "Fa4", "Sol4", "Mi♭4", "Fa4", "Re4", "Do4",
+            ])
+        #expect(darbari.notas.first == .do && darbari.tipo.padre?.nombre == "Naṭabhairavī")
+        #expect(darbari.cents(con: .afinacionJusta).first == 0 && darbari.cents(con: .afinacionJusta).count == 7)
+        // Sus mismas notas son las de la indostánica, que va recta: el recorrido no cuenta para `==`.
+        #expect(darbari.tipo == .darbariKanada && !darbari.tipo.esIdentico(a: .darbariKanada))
+    }
+
+    /// Los cents de un vakra van en el orden de sus notas, no en el de su recorrido.
+    @Test func losCentsDeUnVakraVanEnOrden() {
+        let cents = Escala(.do, .anandabhairavi).cents(con: .afinacionJusta)
+        #expect(cents.count == 6 && cents == cents.sorted())
+    }
+
     /// Las notas externas (anya svara): las que no son del padre, estén en la escala o solo en sus frases.
     @Test func lasNotasExternasNoSonDelPadre() {
         #expect(
@@ -121,14 +145,16 @@ struct RecorridoTests {
         #expect(
             vakra.map(\.nombre) == [
                 "Ānandabhairavi", "Suruṭṭi", "Aṭāṇā", "Kēdāram", "Darbār", "Mukhāri", "Gauḷa", "Nalinakānti",
-                "Kathanakutūhalam", "Bēgaḍa", "Sahānā", "Rītigauḷa",
+                "Kathanakutūhalam", "Bēgaḍa", "Sahānā", "Rītigauḷa", "Darbārī Kānaḍa carnática",
             ])
         for tipo in vakra {
             let subida = tipo.intervalos.count
             let bajada = (tipo.intervalosDescendentes ?? tipo.intervalos).count
+            // Al subir puede empezar por debajo de la tónica (Darbārī Kānaḍa carnática, desde el ni de abajo).
             if let recorrido = tipo.recorrido {
-                #expect(recorrido.first == 1 && recorrido.last == subida + 1, Comment(rawValue: tipo.nombre))
-                #expect(Set(recorrido) == Set(1...(subida + 1)), Comment(rawValue: tipo.nombre))
+                #expect(recorrido.first! <= 1 && recorrido.last == subida + 1, Comment(rawValue: tipo.nombre))
+                #expect(Set(recorrido.filter { $0 >= 1 }) == Set(1...(subida + 1)), Comment(rawValue: tipo.nombre))
+                #expect(recorrido.allSatisfy { $0 > -subida && $0 <= subida + 1 }, Comment(rawValue: tipo.nombre))
             }
             if let recorrido = tipo.recorridoDescendente {
                 #expect(recorrido.first == bajada + 1 && recorrido.last == 1, Comment(rawValue: tipo.nombre))

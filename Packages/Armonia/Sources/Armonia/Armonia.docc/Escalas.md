@@ -338,8 +338,8 @@ Amṛtavarṣiṇī, Śuddha Sāveri, Śuddha Dhanyāsi, Śrīrañjani, Mālayam
 Bhūpālam, Revagupti, Lalitā, Megharañjani, Nāgasvarāvaḷi, Sunādavinodinī y Śuddha Hindolam (iguales al subir y al
 bajar), y Bilahari, Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri, Nāṭa, Kalyāṇavasantam, Bauḷi, Dhanyāsi,
 Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini, Rasikarañjani, Dēvagāndhāri y
-Bhairavi carnática (distintos). Doce más son vakra, y suben o bajan en zigzag: Ānandabhairavi, Suruṭṭi, Aṭāṇā, Kēdāram, Darbār,
-Mukhāri, Gauḷa, Nalinakānti, Kathanakutūhalam, Bēgaḍa, Sahānā y Rītigauḷa (ver abajo). Llevan su nombre en
+Bhairavi carnática (distintos). Trece más son vakra, y suben o bajan en zigzag: Ānandabhairavi, Suruṭṭi, Aṭāṇā, Kēdāram, Darbār,
+Mukhāri, Gauḷa, Nalinakānti, Kathanakutūhalam, Bēgaḍa, Sahānā, Rītigauḷa y Darbārī Kānaḍa carnática (ver abajo). Llevan su nombre en
 sánscrito, en telugu y en canarés, y los 37 que tienen artículo en la Wikipedia en tamil, también en tamil.
 `melakartasCompatibles` dice de qué mēḷa puede derivar cada uno:
 `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
@@ -358,6 +358,15 @@ TipoDeEscala.anandabhairavi.esVakra               // true
 TipoDeEscala.atana.recorrido                      // nil
 TipoDeEscala.atana.recorridoDescendente           // [8, 7, 6, 5, 4, 5, 3, 2, 1]
 Escala(.do, .atana).alturas(octava: 4, sentido: .descendente)   // [Do5, Si4, La4, Sol4, Fa4, Sol4, Mi4, Re4, Do4]
+```
+
+Un recorrido puede empezar por debajo de la tónica: Darbārī Kānaḍa carnática sube desde el ni de abajo, el grado 0.
+Sus notas, sus cents y su tónica siguen saliendo de Sa.
+
+```swift
+TipoDeEscala.darbariKanadaCarnatica.recorrido?.first                       // 0
+Escala(.do, .darbariKanadaCarnatica).alturas(octava: 4).first?.description  // "Si♭3"
+Escala(.do, .darbariKanadaCarnatica).notas.first                           // Do
 ```
 
 `armonia escalas --vakra` los enseña todos juntos.

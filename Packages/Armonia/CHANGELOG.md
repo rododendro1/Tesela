@@ -20,6 +20,9 @@
   escala, como el Dha₁ de Mukhāri, o solo en algunas frases, como el Ga₃, el Dha₁ y el Ni₃ de Ānandabhairavi. Son
   del catálogo, como `padre`: no cuentan para `==` ni van en el JSON, y `melakartasCompatibles` no las mira, así que
   Mukhāri tiene ahora padre (Kharaharapriyā). Deś lleva su Ni natural, que Khamāj no tiene, como nota externa.
+- Un recorrido puede empezar por debajo de la tónica (con el grado 0 o uno negativo), y entra Darbārī Kānaḍa
+  carnática, de karnATik, que sube desde el ni de abajo; va aparte de la indostánica, que sigue recta.
+  `Escala.cents(con:sentido:)` da los cents de un vakra en el orden de sus notas, y no en el de su recorrido.
 - Cinco janya más, de karnATik (`Referencia.karnatik`): Bēgaḍa, Sahānā y Rītigauḷa, vakra; Dēvagāndhāri, que
   sube y baja recto y lleva el ni₂ de algunas frases en `notasExternas`, y Bhairavi carnática (con ese nombre, para
   no confundirla con el thāṭ Bhairavī), del mēḷa 20 con el Dha₂ como nota externa.

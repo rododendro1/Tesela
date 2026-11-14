@@ -28,8 +28,10 @@ public struct TipoDeEscala: Sendable, Codable {
     /// El orden en que se tocan los grados al subir, si no es el recto (1, 2, 3… hasta la octava): cada número es un
     /// grado de `intervalos`, contado desde 1; el que sigue al último (`intervalos.count + 1`) es la tónica de arriba,
     /// y 0 y los negativos, los de la octava de abajo. Ānandabhairavi (Sa Re ga ma Pa Dha al subir) sube
-    /// `[1, 3, 2, 3, 4, 5, 6, 5, 7]`: Sa ga Re ga ma Pa Dha Pa Ṡa. `nil` si sube en línea recta. No cuenta para `==`:
-    /// dos escalas con las mismas notas y distinto recorrido suenan igual a efectos de `contenido`.
+    /// `[1, 3, 2, 3, 4, 5, 6, 5, 7]`: Sa ga Re ga ma Pa Dha Pa Ṡa. En el catálogo, todos acaban en la tónica de
+    /// arriba y pasan por todos los grados, pero pueden empezar por debajo: Darbārī Kānaḍa carnática sube desde el ni
+    /// de abajo, el 0. `nil` si sube en línea recta. No cuenta para `==`: dos escalas con las mismas notas y distinto
+    /// recorrido suenan igual a efectos de `contenido`.
     public var recorrido: [Int]? { recorridos?.subida }
     /// El orden en que se tocan los grados al bajar, desde la tónica de arriba, en los grados de la forma
     /// descendente (`intervalosDescendentes`, o `intervalos` si es la misma): Aṭāṇā baja `[8, 7, 6, 5, 4, 5, 3, 2,

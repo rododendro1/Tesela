@@ -482,6 +482,7 @@ extension NombresDeEscalas {
         .tradicional(.saMac, "Σα μακ"),
         .tradicional(.danCa, "Ζαν κα"),
         .tradicional(.bhairaviCarnatica, "Καρνατική Μπαϊραβί"),
+        .tradicional(.darbariKanadaCarnatica, "Καρνατική Νταρμπαρί Κάναντα"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "ράγκα"),
