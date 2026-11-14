@@ -16,6 +16,11 @@
   `Escala.alturas(octava:sentido:)` los sigue. Van en el JSON (`recorrido`, `recorridoDescendente`) solo si los hay,
   y los ficheros sin ellos se leen igual. No cuentan para `==`. Entran tres janya vakra de la Wikipedia en inglés:
   Ānandabhairavi, Suruṭṭi y Aṭāṇā. `armonia escala` los muestra con «↑:» y «↓:», y `--json`, con `recorrido`.
+- Seis janya vakra más, de la Wikipedia en inglés: Kēdāram, Darbār, Mukhāri, Gauḷa, Nalinakānti y
+  Kathanakutūhalam, con su recorrido y su nombre en sánscrito, telugu y canarés, y todos menos Nalinakānti también en
+  tamil.
+- El TSV de escalas de `EjemploCatalogos` tiene `numero_de_melakarta` (antes `melakarta`) y `mnemonico_de_melakarta`:
+  el mēḷa de la escala o, si no encaja en ninguno, el de su padre, cuando el padre es un mēḷa.
 - Los 24 rāgas indostánicos con thāṭ tienen versión microtonal en los 22 śruti, con los de su thāṭ nota a nota.
 - Kumoijōshi tiene ahora las notas del koto, Sol La♭ Do Re Mi♭ (Do Re♭ Fa Sol La♭), según las tablas de KORG y de
   asahi-net; antes tenía las de Akebono.
