@@ -97,6 +97,11 @@ import Testing
         "ichikotsucho", "sojo", "taishikicho", "hyojo", "oshikicho", "banshikicho",
         "lai-sutsanaen", "lai-po-sai", "lai-soi", "lai-yai", "lai-noi",
         "ajam-ushayran", "shawq-afza", "ushshaq-masri", "zanjaran", "madhuvanti", "multani", "hindol", "sohini",
+        "hamsanandi", "kalyanavasantam", "bhupalam", "revagupti", "bauli", "lalita", "megharanjani", "dhanyasi",
+        "abheri",
+        "manirangu", "nagasvaravali", "sunadavinodini", "jaunpuri", "miyan-ki-todi", "gujari-todi", "ragesri",
+        "vrndavani-sarang", "jog", "ahir-bhairav", "puriya", "shadd-zirafkand", "shadd-zankula", "shadd-rahawi",
+        "shadd-husayni", "shadd-hijazi", "kyongtori", "menaritori", "yukchabaegitori", "susimgatori",
     ]
 
     @Test func lasClavesDelCatalogoNoCambian() {

@@ -11,6 +11,16 @@
 
 ### Novedades
 
+- Doce rāgas janya más, con su ārohaṇa, su avarohaṇa y su mēḷa de la Wikipedia en inglés: Haṃsānandi,
+  Kalyāṇavasantam, Bhūpālam, Revagupti, Bauḷi, Lalitā, Megharañjani, Dhanyāsi, Ābheri, Maṇiraṅgu, Nāgasvarāvaḷi y
+  Sunādavinodinī. Los janya llevan ahora su nombre también en telugu y en canarés, pasado del sánscrito con las reglas
+  de los mēḷa.
+- Ocho rāgas indostánicos más, en su forma recta: Jaunpurī, Miyāṅ kī Toḍī, Gujarī Toḍī, Rāgeśrī, Vṛndāvanī Sāraṅg,
+  Jog, Ahir Bhairav y Pūriyā.
+- Cinco shudūd más de Ṣafī al-Dīn, con sus cents pitagóricos: Zīrafkand, Zankūla, Rāhawī, Ḥusaynī y Ḥijāzī
+  (`Referencia.opDeCoulModos`, `Referencia.microtonalTheory`).
+- Las cuatro tori de los minyo coreanos: Kyŏngt'ori (경토리), Menarit'ori (메나리토리), Yukchabaegit'ori (육자배기토리)
+  y Susimgat'ori (수심가토리), de la Encyclopedia of Korean Culture (`Referencia.son2013`).
 - Cuatro rāgas indostánicos más, en su forma recta: Madhuvantī (मधुवंती), Multānī (मुलतानी, del thāṭ Toḍī), Hindol
   (हिंडोल, de Kalyāṇ) y Sohinī (सोहनी, de Mārvā).
 - Cuatro maqāmāt más, de Maqam World, con sus ajnas: ʿAjam ʿUshayrān (عجم عشيران: ʿAjam, Kurd en la tercera y

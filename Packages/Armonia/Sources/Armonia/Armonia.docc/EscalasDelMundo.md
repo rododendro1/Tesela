@@ -50,18 +50,20 @@ usan microtonos):
 - **9 ajnas árabes**, los fragmentos de los que se hacen los maqamat, con «jins» delante para no confundirse
   con su maqam: Rāst, Bayātī, Ṣabā y Sīkāh (con cuartos de tono, aproximados como sus maqamat), Ḥijāz y Kurd,
   tetracordos; Sīkāh es un tricordo, y Nahāwand, ʿAjam y Nikrīz, pentacordos.
-- **4 adwār de Ṣafī al-Dīn al-Urmawī** (siglo XIII), los modos de su sistema de diecisiete notas pitagóricas, con
-  «shadd» delante: ʿUshshāq, Nawā, Abū Salīk y Rāst (con la tercera y la sexta neutras), con sus cents. Los otros
-  ocho de sus doce shudūd faltan, porque las fuentes no coinciden en sus grados.
+- **9 adwār de Ṣafī al-Dīn al-Urmawī** (siglo XIII), los modos de su sistema de diecisiete notas pitagóricas, con
+  «shadd» delante: ʿUshshāq, Nawā, Abū Salīk y Rāst (con la tercera y la sexta neutras), y Zīrafkand (de ocho
+  notas), Zankūla, Rāhawī, Ḥusaynī y Ḥijāzī, con sus cents. Faltan ʿIrāq, Iṣfahān y Buzurg, que tienen dos notas a una
+  coma la una de la otra y en doce notas no se distinguen.
 - **Indonesia**: Pélog selisir (también «balinesa») y Sléndro, y los pathet de Java y los modos de Bali. Siguen
   los modelos de las medidas de Surjodiningrat: el pélog en nueve partes iguales de la octava y el sléndro en
   cinco; en doce notas cada grado va al semitono más cercano desde su tónica (el sléndro, Do Re Fa Sol Si♭), y
   en cents en su versión microtonal. Y el degung del gamelan de Sunda, en el oeste de Java (Do Mi Fa Sol Si desde
   da), que no lleva versión en cents.
-- **19 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
-  (el Valaji carnático), Candrakauns, Megh y Hindol, pentatónicos; Yaman, Lalit, Pūriyā Dhanāśrī y Darbārī
-  Kānaḍa (en su forma recta: es vakra, y su ga y su dha ati-komal no caben en doce notas); y Bāgeśrī,
-  Deś, Bhīmpalāsī, Bihāg, Madhuvantī, Multānī y Sohinī, que suben y bajan distinto.
+- **27 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
+  (el Valaji carnático), Candrakauns, Megh y Hindol, pentatónicos; Yaman, Lalit, Pūriyā Dhanāśrī, Ahir Bhairav,
+  Pūriyā, Gujarī Toḍī y Darbārī Kānaḍa (en su forma recta: es vakra, y su ga y su dha ati-komal no caben en doce
+  notas); y Bāgeśrī, Deś, Bhīmpalāsī, Bihāg, Madhuvantī, Multānī, Sohinī, Jaunpurī, Miyāṅ kī Toḍī, Rāgeśrī,
+  Vṛndāvanī Sāraṅg y Jog, que suben y bajan distinto.
 - **Los 2 grāma y las 14 mūrchanā** del Nāṭyaśāstra: el ṣaḍja-grāma (el dórico, las razones de Kāfī) y el
   madhyama-grāma (con Pa una coma más bajo), y las siete escalas de cada uno, una desde cada nota: Uttaramandrā,
   Rajanī, Uttarāyatā, Śuddhaṣaḍjā, Matsarīkṛtā, Aśvakrāntā y Abhirudgatā; Sauvīrī, Hariṇāśvā, Kalopanatā,
@@ -97,7 +99,9 @@ usan microtonos):
   con las escalas descendentes que siguen Gurney y West desde 1994, desde la cuerda más aguda. En la lectura
   ascendente de 1971 cada nombre era otra especie de octava (išartu, la doria griega). Como se afinaban por
   quintas y cuartas, su versión microtonal va en cents pitagóricos (tono de 204, semitono de 90).
-- **2 escalas coreanas**: P'yŏngjo y Kyemyŏnjo.
+- **7 escalas coreanas**: los jo P'yŏngjo, Kyemyŏnjo y Ujo, y las cuatro tori de los minyo, de Son In-ae en la
+  Encyclopedia of Korean Culture: Kyŏngt'ori (Sol La Do Re Mi), Menarit'ori (Mi Sol La Do Re, con Sol solo al bajar),
+  Yukchabaegit'ori (Mi La Si Do) y Susimgat'ori (Re Mi Sol La Do).
 - **África**: dos afinaciones de xilófono casi equidistantes, el amadinda de Buganda (cinco partes iguales de
   240 cents, Do Re Fa Sol Si♭ en doce notas) y el timbila de los chopi (siete de 171 cents, el dórico). Las
   cuatro afinaciones de la kora mandinga, con los cents que midió Roderic Knight: hardino y tomora ba (mayores),

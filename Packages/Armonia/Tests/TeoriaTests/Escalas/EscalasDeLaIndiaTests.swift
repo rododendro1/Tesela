@@ -128,6 +128,28 @@ import Testing
         #expect(TipoDeEscala.multani.padre == .todi && TipoDeEscala.sohini.padre == .marva)
         #expect(TipoDeEscala.buscar(nombre: "मुलतानी")?.esIdentico(a: .multani) == true)
         #expect(TipoDeEscala.buscar(nombre: "Sohni")?.esIdentico(a: .sohini) == true)
-        #expect(TipoDeEscala.ragasIndostanicos.count == 19)
+        #expect(TipoDeEscala.ragasIndostanicos.count == 27)
+    }
+
+    /// Ocho rāgas indostánicos más y doce janya, de la Wikipedia en inglés.
+    @Test func ochoRagasYDoceJanyasMas() {
+        func notas(_ intervalos: [Intervalo]) -> String {
+            intervalos.map { (Nota.do + $0).description }.joined(separator: " ")
+        }
+        #expect(notas(TipoDeEscala.jaunpuri.intervalos) == "Do Re Fa Sol La♭ Si♭")
+        #expect(notas(TipoDeEscala.miyanKiTodi.intervalosDescendentes ?? []) == "Do Re♭ Mi♭ Fa♯ Sol La♭ Si")
+        #expect(notas(TipoDeEscala.rageshri.intervalosDescendentes ?? []) == "Do Re Mi Fa La Si♭")
+        #expect(notas(TipoDeEscala.vrindavaniSarang.intervalos) == "Do Re Fa Sol Si")
+        #expect(notas(TipoDeEscala.jog.intervalosDescendentes ?? []) == "Do Mi♭ Mi Fa Sol Si♭")
+        #expect(notas(TipoDeEscala.ahirBhairav.intervalos) == "Do Re♭ Mi Fa Sol La Si♭")
+        #expect(TipoDeEscala.puriya.padre == .marva && TipoDeEscala.jaunpuri.padre == .asavari)
+        #expect(TipoDeEscala.buscar(nombre: "Brindabani Sarang")?.esIdentico(a: .vrindavaniSarang) == true)
+        #expect(notas(TipoDeEscala.hamsanandi.intervalos) == "Do Re♭ Mi Fa♯ La Si")
+        #expect(notas(TipoDeEscala.kalyanavasantam.intervalosDescendentes ?? []) == "Do Re Mi♭ Fa Sol La♭ Si")
+        #expect(notas(TipoDeEscala.dhanyasi.intervalosDescendentes ?? []) == "Do Re♭ Mi♭ Fa Sol La♭ Si♭")
+        #expect(TipoDeEscala.sunadavinodini == .hindol && TipoDeEscala.bauli.padre == nil)
+        #expect(TipoDeEscala.lalita.padre == .melakarta(15) && TipoDeEscala.bhupalam.padre == .melakarta(45))
+        #expect(TipoDeEscala.buscar(nombre: "Bowli")?.esIdentico(a: .bauli) == true)
+        #expect(TipoDeEscala.buscar(nombre: "ಹಂಸಾನಂದಿ")?.esIdentico(a: .hamsanandi) == true)
     }
 }

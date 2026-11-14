@@ -193,4 +193,26 @@ import Testing
         #expect(try Escala(leyendo: "Sol sutsanaen").tipo.nombre == "Lai sutsanaen")
         #expect(Lugar.pais(.laos).nombre(en: .compacta(.espanol)) == "Laos")
     }
+
+    /// Las cuatro tori de los minyo coreanos: Menarit'ori solo tiene Sol al bajar.
+    @Test func lasCuatroTori() {
+        let tori: [(TipoDeEscala, String, Nota, String)] = [
+            (.kyongtori, "경토리", .sol, "Sol La Do Re Mi"),
+            (.menaritori, "메나리토리", .mi, "Mi La Do Re"),
+            (.yukchabaegitori, "육자배기토리", .mi, "Mi La Si Do"),
+            (.susimgatori, "수심가토리", .re, "Re Mi Sol La Do"),
+        ]
+        for (tipo, coreano, tonica, notas) in tori {
+            #expect(tipo.nombreOriginal == NombreOriginal(coreano, .coreano), Comment(rawValue: tipo.nombre))
+            #expect(tipo.tradicion == .corea && tipo.referencias.contains(.son2013))
+            #expect(Escala(tonica, tipo).notas.map(\.description).joined(separator: " ") == notas)
+            #expect(TipoDeEscala.buscar(nombre: coreano)?.esIdentico(a: tipo) == true)
+        }
+        #expect(
+            Escala(.mi, .menaritori).alturas(octava: 4, sentido: .descendente).map(\.description) == [
+                "Mi5", "Re5", "Do5", "La4", "Sol4", "Mi4",
+            ])
+        #expect(TipoDeEscala.kyongtori == .pyongjo)
+        #expect((try? Escala(leyendo: "Mi Yukjabaegitori"))?.tipo.nombre == "Yukchabaegit'ori")
+    }
 }
