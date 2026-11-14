@@ -48,6 +48,14 @@ leer en abierto no da sus escalas en texto, y sin una obra que las dé no se esc
   los once ṭubūʿ marroquíes, también en imágenes, sacadas del árbol de los modos del manuscrito al-Ḥāʾik (Tetuán).
   Según esa página son escalas de tonos y semitonos, sin microtonos.
 
+- **Asia Central, el shashmaqom:** los seis maqom de Bujará (Buzruk, Rost, Navo, Dugoh, Segoh, Iroq) se nombran por
+  el modo en que suenan, pero cada uno es una suite de muchas shuʿba con escalas distintas, y ni la Gran Enciclopedia
+  Rusa («Маком») ni lo que se lee en abierto da el звукоряд de cada uno. Hacen falta Levin (1984) o Rajabov (1963).
+
+Se volvió a buscar los tres en noviembre de 2026, con el mismo resultado: el estudio de Zhou Ji sigue dando los
+音列 solo en imágenes, y las fuentes en árabe sobre los ṭubūʿ (Kunnāsh al-Ḥāyik, la tesis de Liberty University sobre
+los ṭubūʿ tunecinos) no se pueden leer desde aquí.
+
 Con una de esas tablas en texto, o con un escaneo de las obras, se pueden añadir.
 
 También en noviembre de 2026 se buscaron los modos de la liturgia etíope y los octoechos de otras iglesias, para
