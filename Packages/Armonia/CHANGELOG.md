@@ -11,6 +11,9 @@
 
 ### Novedades
 
+- Cuatro maqāmāt más, de Maqam World, con sus ajnas: ʿAjam ʿUshayrān (عجم عشيران: ʿAjam, Kurd en la tercera y
+  Nahāwand en la sexta), Shawq Afzā (شوق افزا: ʿAjam y Ḥijāz en la quinta), ʿUshshāq Maṣrī (عشاق مصري: Nahāwand y
+  Bayātī en la quinta, con su versión en cuartos de tono) y Zanjarān (زنجران: Ḥijāz y ʿAjam en la cuarta).
 - Los 72 mēḷa tienen también su nombre en tamil (கனகாங்கி), de la Wikipedia en tamil y cotejado con el IAST.
   `IdiomaOriginal` gana `tamil` («ta»), y `Escritura`, `tamil` («Taml»).
 - Los 72 mēḷa tienen también su nombre en telugu y en canarés (కనకాంగి, ಕನಕಾಂಗಿ), con su forma completa (మేళ

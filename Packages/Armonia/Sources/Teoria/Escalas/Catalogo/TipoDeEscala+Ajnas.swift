@@ -75,6 +75,10 @@ extension TipoDeEscala {
         arabe(.rahatAlArwah, .init(.jinsSikah, en: 1), .init(.jinsHijaz, en: 3), .init(.jinsRast, en: 6))
         arabe(.bayatiShuri, .init(.jinsBayati, en: 1), .init(.jinsHijaz, en: 4))
         arabe(.maqamNikriz, .init(.jinsNikriz, en: 1), .init(.jinsNahawand, en: 5))
+        arabe(.ajamUshayran, .init(.jinsAjam, en: 1), .init(.jinsKurd, en: 3), .init(.jinsNahawand, en: 6))
+        arabe(.shawqAfza, .init(.jinsAjam, en: 1), .init(.jinsHijaz, en: 5))
+        arabe(.ushshaqMasri, .init(.jinsNahawand, en: 1), .init(.jinsBayati, en: 5))
+        arabe(.zanjaran, .init(.jinsHijaz, en: 1), .init(.jinsAjam, en: 4))
         // Makamlar turcos, como los describe la TDV İslâm Ansiklopedisi en el artículo de cada uno.
         turco(.rastMakami, .init(.rastBeslisi, en: 1), .init(.rastDortlusu, en: 5))
         turco(.hicazMakami, .init(.hicazDortlusu, en: 1), .init(.rastBeslisi, en: 4))

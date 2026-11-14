@@ -19,7 +19,7 @@ import Testing
     /// Cada fragmento declarado tiene las notas de la escala, subiendo o bajando, y es un fragmento del catálogo.
     @Test func cadaFragmentoCasaConSuEscala() {
         let declarados = TipoDeEscala.tradicionales.filter { !$0.ajnas.isEmpty }
-        #expect(declarados.count == 32)
+        #expect(declarados.count == 36)
         for tipo in declarados {
             let escala = Escala(.do, tipo)
             for fragmento in tipo.ajnas {

@@ -96,6 +96,7 @@ import Testing
         "tetracordo-diatonico-de-vicentino", "tetracordo-cromatico-de-vicentino", "tetracordo-enarmonico-de-vicentino",
         "ichikotsucho", "sojo", "taishikicho", "hyojo", "oshikicho", "banshikicho",
         "lai-sutsanaen", "lai-po-sai", "lai-soi", "lai-yai", "lai-noi",
+        "ajam-ushayran", "shawq-afza", "ushshaq-masri", "zanjaran",
     ]
 
     @Test func lasClavesDelCatalogoNoCambian() {

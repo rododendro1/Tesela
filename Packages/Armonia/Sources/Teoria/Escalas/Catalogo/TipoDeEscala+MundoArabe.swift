@@ -231,10 +231,55 @@ extension TipoDeEscala {
         nombresOriginales: [.init("صبا زمزم", .arabe)],
         categoria: .maqam)
 
+    // MARK: Más maqāmāt de Maqam World
+    //
+    // Cuatro que se describen con ajnas del catálogo, y de ellos salen sus notas: ʿAjam ʿUshayrān, ʿAjam con Kurd y
+    // Nahāwand; Shawq Afzā, ʿAjam con Ḥijāz arriba; ʿUshshāq Maṣrī, Nahāwand con Bayātī arriba; y Zanjarān, Ḥijāz con
+    // ʿAjam arriba. Falta Māhūr: su nombre árabe, ماهور, es el del dastgāh persa, y al buscarlo saldría ese.
+
+    /// عجم عشيران (Si♭ Do Re Mi♭ Fa Sol La: un jins ʿAjam, un jins Kurd en la tercera y un jins Nahāwand en la
+    /// sexta): el ʿAjam sobre el Si♭ grave, el ʿushayrān.
+    public static let ajamUshayran = TipoDeEscala(
+        nombre: "ʿAjam ʿUshayrān",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        alias: ["maqam Ajam Ushayran"], nombresOriginales: [.init("عجم عشيران", .arabe)],
+        categoria: .maqam)
+    /// شوق افزا (Do Re Mi Fa Sol La♭ Si: un jins ʿAjam y un jins Ḥijāz en la quinta): la mayor armónica.
+    public static let shawqAfza = TipoDeEscala(
+        nombre: "Shawq Afzā",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        alias: ["maqam Shawq Afza"], nombresOriginales: [.init("شوق افزا", .arabe)],
+        categoria: .maqam)
+    /// عشاق مصري (Re Mi Fa Sol La Si𝄳 Do: un jins Nahāwand y un jins Bayātī en la quinta), aproximado: el eólico.
+    public static let ushshaqMasri = TipoDeEscala(
+        nombre: "ʿUshshāq Maṣrī",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["maqam Ushaq Masri"], variantes: ["Ushaq Masri"],
+        nombresOriginales: [.init("عشاق مصري", .arabe)],
+        categoria: .maqam, afinaciones: [.init(.cuartosDeTono, pasos: [0, 4, 6, 10, 14, 17, 20])])
+    /// زنجران (Re Mi♭ Fa♯ Sol La Si Do: un jins Ḥijāz y un jins ʿAjam en la cuarta).
+    public static let zanjaran = TipoDeEscala(
+        nombre: "Zanjarān",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
+            .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        alias: ["maqam Zanjaran"], nombresOriginales: [.init("زنجران", .arabe)],
+        categoria: .maqam)
+
     package static let maqamat: [TipoDeEscala] = [
         .hiyaz, .nahawand, .kurd, .ajam, .hiyazkar, .nawaAthar, .maqamRast, .bayati, .saba, .suznak, .husayni,
         .nayruz, .sikah, .huzam, .iraq, .rahatAlArwah, .bayatiShuri, .jiharkah, .atharKurd, .maqamNikriz, .lami,
-        .sabaZamzam,
+        .sabaZamzam, .ajamUshayran, .shawqAfza, .ushshaqMasri, .zanjaran,
     ]
 
     // MARK: Ajnas (fragmentos)

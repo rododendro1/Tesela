@@ -5,7 +5,7 @@ Estado a 12 de noviembre de 2026, tras las escalas sintéticas, los lugares, las
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 28 escalas occidentales sin ninguna referencia y
-cuatro acordes sin fuente. El catálogo tiene 454 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
+cuatro acordes sin fuente. El catálogo tiene 458 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -61,6 +61,14 @@ los ṭubūʿ tunecinos) no se pueden leer desde aquí.
   pero no sus cinco notas, y su tabla de modos del hsaing no coincide con la del saung en todos. Como el saung del
   catálogo ya recoge la forma común de todas (pasos pequeño, pequeño, grande, pequeño, grande), harían falta las
   notas de Williamson (2000) para escribirlas por separado, y la grafía birmana de cada nombre.
+
+- **Turquía, el otomano:** los makam no llevan su nombre en la escritura otomana. La Wikipedia turca no la da en
+  ningún artículo de makam, y las obras que la tienen (el diccionario Redhouse, la edición de Cantemir) solo están
+  escaneadas.
+- **Mundo árabe, los maqāmāt que faltan de Maqam World:** Māhūr (su nombre árabe, ماهور, es el del dastgāh persa),
+  Kirdān (las mismas notas y ajnas que Rāst), y los que usan un jins que el catálogo no tiene (Mustaʿār, Nahāwand
+  Muraṣṣaʿ, Ṣabā Dalanshīn) o que Maqam World no describe en texto (Sūzdalārā, Sīkāh Baladī). Awj ʿIrāq, Bastanikār
+  e Ḥijāzkār Kurd esperan a que se confirmen sus notas fuera de las imágenes de Maqam World.
 
 Con una de esas tablas en texto, o con un escaneo de las obras, se pueden añadir.
 
