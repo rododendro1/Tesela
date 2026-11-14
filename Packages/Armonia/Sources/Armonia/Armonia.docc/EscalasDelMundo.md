@@ -36,13 +36,16 @@ usan microtonos):
   va la más citada.
 - **6 qenet etíopes**: Təzəta mayor y menor, Bati mayor y menor, Ambassäl y Ančihoye. Las
   fuentes no coinciden del todo en sus notas: aquí va la versión más citada.
-- **18 maqamat árabes**: seis que no necesitan cuartos de tono, Ḥijāz (frigio dominante),
+- **26 maqamat árabes**: seis que no necesitan cuartos de tono, Ḥijāz (frigio dominante),
   Nahāwand (menor armónica), Kurd (frigio), ʿAjam (mayor), Ḥijāzkār (doble armónica) y Nawā
   Athar (menor húngara); y doce aproximados, con el cuarto de tono en su letra y redondeado
   como se suele escribir: maqām Rāst (como el dromos Rast), Bayātī (frigio), Ṣabā, Sūznāk
   (mayor armónica), Ḥusaynī (frigio), Nayrūz (menor natural), Bayātī Shūrī (Bayātī con Ḥijāz
   en la cuarta), Jiharkāh (la mayor, con la séptima un cuarto de tono baja), y Sīkāh, maqām
   Huzām, ʿIrāq y Rāḥat al-Arwāḥ, con la tónica en un cuarto de tono, escritos sobre Mi y Si.
+  Āthār Kurd, maqām Nikrīz, Lāmī y Ṣabā Zamzam, también sin cuartos de tono. Y cuatro que salen
+  de sus ajnas en Maqam World: ʿAjam ʿUshayrān, Shawq Afzā (mayor armónica), ʿUshshāq Maṣrī
+  (Nahāwand con Bayātī arriba) y Zanjarān (Ḥijāz con ʿAjam arriba).
   ʿUshshāq Turkī no está: en cuartos de tono es Bayātī.
 - **9 ajnas árabes**, los fragmentos de los que se hacen los maqamat, con «jins» delante para no confundirse
   con su maqam: Rāst, Bayātī, Ṣabā y Sīkāh (con cuartos de tono, aproximados como sus maqamat), Ḥijāz y Kurd,
@@ -55,10 +58,10 @@ usan microtonos):
   cinco; en doce notas cada grado va al semitono más cercano desde su tónica (el sléndro, Do Re Fa Sol Si♭), y
   en cents en su versión microtonal. Y el degung del gamelan de Sunda, en el oeste de Java (Do Mi Fa Sol Si desde
   da), que no lleva versión en cents.
-- **15 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
-  (el Valaji carnático), Candrakauns y Megh, pentatónicos; Yaman, Lalit, Pūriyā Dhanāśrī y Darbārī
+- **19 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
+  (el Valaji carnático), Candrakauns, Megh y Hindol, pentatónicos; Yaman, Lalit, Pūriyā Dhanāśrī y Darbārī
   Kānaḍa (en su forma recta: es vakra, y su ga y su dha ati-komal no caben en doce notas); y Bāgeśrī,
-  Deś, Bhīmpalāsī y Bihāg, que suben y bajan distinto.
+  Deś, Bhīmpalāsī, Bihāg, Madhuvantī, Multānī y Sohinī, que suben y bajan distinto.
 - **Los 2 grāma y las 14 mūrchanā** del Nāṭyaśāstra: el ṣaḍja-grāma (el dórico, las razones de Kāfī) y el
   madhyama-grāma (con Pa una coma más bajo), y las siete escalas de cada uno, una desde cada nota: Uttaramandrā,
   Rajanī, Uttarāyatā, Śuddhaṣaḍjā, Matsarīkṛtā, Aśvakrāntā y Abhirudgatā; Sauvīrī, Hariṇāśvā, Kalopanatā,
@@ -101,7 +104,9 @@ usan microtonos):
   sauta (lidia) y tomora mesengo (dórica). Y la nyamaropa de la mbira shona, cercana al mixolidio.
 - **El sudeste asiático**: las siete partes iguales de la música clásica de Tailandia (piphat) y de Camboya
   (pinpeat), escritas como el timbila, y el saung, el arpa de Myanmar: una pentatónica de pasos de 182 y 327
-  cents (Do Re Mi Sol La en doce notas).
+  cents (Do Re Mi Sol La en doce notas). Y los cinco lai del khaen de los lao, cada uno sobre su nota: lai
+  sutsanaen, lai po sai y lai soi (thang san, Re Mi Sol La Si y sus transposiciones), y lai yai y lai noi (thang
+  yao, la pentatónica menor).
 - **Los 8 modos gregorianos**, con sus nombres latinos (protus authenticus, protus plagalis…), cada uno desde su
   final. Ver «Modos gregorianos», más abajo. Y los tres hexacordos de Guido de Arezzo (hexachordum naturale,
   durum y molle: Ut Re Mi Fa Sol La desde Do, Sol y Fa), y su gamut en ``ManoGuidoniana``. Y los cuatro que añadió Glareano en el Dodecachordon

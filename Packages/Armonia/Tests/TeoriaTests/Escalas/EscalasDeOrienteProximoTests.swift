@@ -184,4 +184,21 @@ import Testing
         #expect(TipoDeEscala.shaddRast.afinacionPropia?.desvios == [0, 4, -16, -2, 2, -18, -4])
         #expect((try? TipoDeEscala(leyendo: "Rast de Safi al-Din"))?.nombre == "shadd Rāst")
     }
+
+    /// Los cuatro maqāmāt que salen de sus ajnas en Maqam World: ʿAjam ʿUshayrān, Shawq Afzā, ʿUshshāq Maṣrī y
+    /// Zanjarān.
+    @Test func maqamatQueSalenDeSusAjnas() {
+        func notas(_ tipo: TipoDeEscala, _ tonica: Nota) -> String {
+            Escala(tonica, tipo).notas.map(\.description).joined(separator: " ")
+        }
+        #expect(notas(.ajamUshayran, Nota("Si♭")) == "Si♭ Do Re Mi♭ Fa Sol La")
+        #expect(notas(.shawqAfza, .do) == "Do Re Mi Fa Sol La♭ Si")
+        #expect(notas(.ushshaqMasri, .re) == "Re Mi Fa Sol La Si♭ Do")
+        #expect(notas(.zanjaran, .re) == "Re Mi♭ Fa♯ Sol La Si Do")
+        #expect(TipoDeEscala.ushshaqMasri.afinacionPropia?.pasos == [0, 4, 6, 10, 14, 17, 20])
+        #expect(TipoDeEscala.zanjaran.ajnas.map(\.fragmento) == [.jinsHijaz, .jinsAjam])
+        #expect(TipoDeEscala.ajamUshayran.ajnas.map(\.grado) == [1, 3, 6])
+        #expect(TipoDeEscala.buscar(nombre: "شوق افزا")?.esIdentico(a: .shawqAfza) == true)
+        #expect(TipoDeEscala.maqamat.count == 26)
+    }
 }

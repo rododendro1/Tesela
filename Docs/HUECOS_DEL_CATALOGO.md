@@ -5,7 +5,7 @@ Estado a 12 de noviembre de 2026, tras las escalas sintéticas, los lugares, las
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 28 escalas occidentales sin ninguna referencia y
-cuatro acordes sin fuente. El catálogo tiene 449 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
+cuatro acordes sin fuente. El catálogo tiene 462 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -27,14 +27,14 @@ cifras de las que sí están son las escalas declaradas en su fichero del catál
 
 | Tradición | Escalas ahora | Qué falta |
 | --- | --- | --- |
-| Sudeste asiático | 3 (piphat, pinpeat, saung) | Los pathet laosianos, los modos filipinos del kulintang y más escalas jemeres y birmanas |
+| Sudeste asiático | 8 (piphat, pinpeat, saung y los cinco lai del khaen) | Los modos filipinos del kulintang y más escalas jemeres y birmanas |
 | África | 7 (amadinda, timbila, cuatro de la kora, nyamaropa) | Las escalas de África occidental fuera de la kora, como las del balafon, y las del Sahel |
 | Asia Central | ninguna | El shashmaqom de Bujará y Samarcanda |
 | Magreb | ninguna | Los ṭubūʿ de las nubas andalusíes |
 | Mongolia | ninguna | Las pentatónicas del canto largo y del morin khuur |
 | Uigures | ninguna | Los doce muqam |
 
-Son más largas India (62), Turquía (39) y el mundo árabe (35).
+Son más largas India (66), el mundo árabe (39) y Turquía (39).
 
 ### Dónde buscar las que faltan
 
@@ -55,6 +55,20 @@ leer en abierto no da sus escalas en texto, y sin una obra que las dé no se esc
 Se volvió a buscar los tres en noviembre de 2026, con el mismo resultado: el estudio de Zhou Ji sigue dando los
 音列 solo en imágenes, y las fuentes en árabe sobre los ṭubūʿ (Kunnāsh al-Ḥāyik, la tesis de Liberty University sobre
 los ṭubūʿ tunecinos) no se pueden leer desde aquí.
+
+- **Birmania, las afinaciones del saung:** Garfias («Preliminary Thoughts on Burmese Modes», *Asian Music* 7/1, 1975)
+  da la tónica de cada una (hnyin loun en Do, auk pyan en Fa, pule en Si, myin saing en Mi…) y su modo del hsaing,
+  pero no sus cinco notas, y su tabla de modos del hsaing no coincide con la del saung en todos. Como el saung del
+  catálogo ya recoge la forma común de todas (pasos pequeño, pequeño, grande, pequeño, grande), harían falta las
+  notas de Williamson (2000) para escribirlas por separado, y la grafía birmana de cada nombre.
+
+- **Turquía, el otomano:** los makam no llevan su nombre en la escritura otomana. La Wikipedia turca no la da en
+  ningún artículo de makam, y las obras que la tienen (el diccionario Redhouse, la edición de Cantemir) solo están
+  escaneadas.
+- **Mundo árabe, los maqāmāt que faltan de Maqam World:** Māhūr (su nombre árabe, ماهور, es el del dastgāh persa),
+  Kirdān (las mismas notas y ajnas que Rāst), y los que usan un jins que el catálogo no tiene (Mustaʿār, Nahāwand
+  Muraṣṣaʿ, Ṣabā Dalanshīn) o que Maqam World no describe en texto (Sūzdalārā, Sīkāh Baladī). Awj ʿIrāq, Bastanikār
+  e Ḥijāzkār Kurd esperan a que se confirmen sus notas fuera de las imágenes de Maqam World.
 
 Con una de esas tablas en texto, o con un escaneo de las obras, se pueden añadir.
 

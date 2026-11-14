@@ -109,7 +109,13 @@ public enum CategoriaTradicional: String, Sendable, Codable, CaseIterable {
         case .jins: idioma == .arabe ? ("جنس", true, true) : nil
         case .dastgah: idioma == .persa ? ("دستگاه", true, true) : nil
         // Como en `nombreCompleto`: los mēḷa, «mēḷa Kanakāṅgī»; los janya, que son rāgas, «rāga Mohanam».
-        case .melakarta: idioma == .sanscrito ? ("मेळ", true, true) : nil
+        case .melakarta:
+            switch idioma {
+            case .sanscrito: ("मेळ", true, true)
+            case .telugu: ("మేళ", true, true)
+            case .canares: ("ಮೇಳ", true, true)
+            default: nil
+            }
         case .raga, .janya: idioma == .hindi || idioma == .sanscrito ? ("राग", true, true) : nil
         case .thaat: idioma == .hindi ? ("थाट", true, true) : nil
         case .dromos: idioma == .griego ? ("δρόμος", true, true) : nil

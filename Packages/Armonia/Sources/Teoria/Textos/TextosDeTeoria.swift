@@ -289,6 +289,9 @@ struct TextosDeTeoria: TextosTraducidos {
     let idiomaPersa: String
     let idiomaSanscrito: String
     let idiomaHindi: String
+    let idiomaTelugu: String
+    let idiomaCanares: String
+    let idiomaTamil: String
     let idiomaChino: String
     let idiomaChinoSimplificado: String
     let idiomaChinoTradicional: String
@@ -313,6 +316,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let regionTailandia: String
     let regionCamboya: String
     let regionBirmania: String
+    let regionLaos: String
     let regionBuganda: String
     let regionChopi: String
     let regionMandinga: String
@@ -358,6 +362,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let paisIndonesia: String
     let paisTailandia: String
     let paisCamboya: String
+    let paisLaos: String
     let paisMyanmar: String
     let paisUganda: String
     let paisMozambique: String

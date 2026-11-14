@@ -196,6 +196,11 @@ extension Referencia {
         "williamson2000", .libro, autores: ["Williamson, Muriel C."],
         titulo: "The Burmese Harp: Its Classical Music, Tunings, and Modes", anio: 2000,
         editorial: "Northern Illinois University, Center for Southeast Asian Studies", lugar: "DeKalb")
+    /// Miller, el khaen de los lao del Isán y sus cinco lai.
+    public static let miller1985 = Referencia(
+        "miller1985", .libro, autores: ["Miller, Terry E."],
+        titulo: "Traditional Music of the Lao: Kaen Playing and Mawlum Singing in Northeast Thailand", anio: 1985,
+        editorial: "Greenwood Press", lugar: "Westport (Connecticut)")
     /// Surjodiningrat, Sudarjana y Susanto, las medidas de los gamelan de Java central.
     public static let surjodiningrat1972 = Referencia(
         "surjodiningrat1972", .libro, autores: ["Surjodiningrat, Wasisto", "Sudarjana, P. J.", "Susanto, Adhi"],
@@ -636,7 +641,7 @@ extension Referencia {
         .ramos1482,
         .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .dewoskin1982, .garfias1975,
         .tranVanKhe1962, .morton1976,
-        .sam1988, .williamson2000,
+        .sam1988, .williamson2000, .miller1985,
         .surjodiningrat1972, .hood1954, .tenzer2000, .shin2024, .rubin2020, .kebede1971, .kilmer1971, .gurney1994,
         .west1994,
         .tracey1948, .kubik1994,

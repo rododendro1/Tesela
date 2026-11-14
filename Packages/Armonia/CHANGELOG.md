@@ -11,6 +11,21 @@
 
 ### Novedades
 
+- Cuatro rāgas indostánicos más, en su forma recta: Madhuvantī (मधुवंती), Multānī (मुलतानी, del thāṭ Toḍī), Hindol
+  (हिंडोल, de Kalyāṇ) y Sohinī (सोहनी, de Mārvā).
+- Cuatro maqāmāt más, de Maqam World, con sus ajnas: ʿAjam ʿUshayrān (عجم عشيران: ʿAjam, Kurd en la tercera y
+  Nahāwand en la sexta), Shawq Afzā (شوق افزا: ʿAjam y Ḥijāz en la quinta), ʿUshshāq Maṣrī (عشاق مصري: Nahāwand y
+  Bayātī en la quinta, con su versión en cuartos de tono) y Zanjarān (زنجران: Ḥijāz y ʿAjam en la cuarta).
+- Los 72 mēḷa tienen también su nombre en tamil (கனகாங்கி), de la Wikipedia en tamil y cotejado con el IAST.
+  `IdiomaOriginal` gana `tamil` («ta»), y `Escritura`, `tamil` («Taml»).
+- Los 72 mēḷa tienen también su nombre en telugu y en canarés (కనకాంగి, ಕನಕಾಂಗಿ), con su forma completa (మేళ
+  కనకాంగి), y se leen por ellos al buscar. Salen del devanagari con tres reglas de esas ortografías (anusvara ante
+  consonante de su grupo, -ం final, ī y ā finales breves) y están cotejados con la Wikipedia en telugu.
+  `IdiomaOriginal` gana `telugu` («te») y `canares` («kn»), y `Escritura`, `telugu` («Telu») y `kannada` («Knda»).
+- Los cinco lai del khaen, el órgano de boca de los lao (Miller 1985): Lai sutsanaen (ลายสุดสะแนน, sobre Sol), Lai
+  po sai (ลายโป้ซ้าย, Do) y Lai soi (ลายสร้อย, Re), de thang san, y Lai yai (ลายใหญ่, La) y Lai noi (ลายน้อย, Re),
+  de thang yao, con su nombre en tailandés, como se escribe en el Isán. `RegionDeEscala` gana `laos` (Laos y el
+  Isán) y `Pais`, `laos`.
 - Los seis chōshi del gagaku (六調子): Ichikotsuchō (壱越調), Sōjō (双調) y Taishikichō (太食調), sobre la ryo, e
   Hyōjō (平調), Ōshikichō (黄鐘調) y Banshikichō (盤渉調), sobre la ritsu. Cada uno lleva en su documentación su
   tónica fija, la del lü que le da nombre (Re, Sol, Mi, Mi, La y Si). «Mi 平調» es el Hyōjō y «Do 平調子», el

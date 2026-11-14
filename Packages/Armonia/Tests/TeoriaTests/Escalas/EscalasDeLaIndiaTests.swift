@@ -114,4 +114,20 @@ import Testing
         #expect((try? TipoDeEscala(leyendo: "सौवीरी"))?.nombre == "Sauvīrī")
         #expect((try? TipoDeEscala(leyendo: "tetracordo pitagórico"))?.nombre == "tetracordo diatónico ditónico")
     }
+
+    /// Madhuvantī, Multānī, Hindol y Sohinī, en su forma recta.
+    @Test func cuatroRagasMas() {
+        func notas(_ intervalos: [Intervalo]) -> String {
+            intervalos.map { (Nota.do + $0).description }.joined(separator: " ")
+        }
+        #expect(notas(TipoDeEscala.madhuvanti.intervalos) == "Do Mi♭ Fa♯ Sol Si")
+        #expect(notas(TipoDeEscala.madhuvanti.intervalosDescendentes ?? []) == "Do Re Mi♭ Fa♯ Sol La Si")
+        #expect(notas(TipoDeEscala.multani.intervalosDescendentes ?? []) == "Do Re♭ Mi♭ Fa♯ Sol La♭ Si")
+        #expect(notas(TipoDeEscala.hindol.intervalos) == "Do Mi Fa♯ La Si")
+        #expect(notas(TipoDeEscala.sohini.intervalosDescendentes ?? []) == "Do Re♭ Mi Fa♯ La Si")
+        #expect(TipoDeEscala.multani.padre == .todi && TipoDeEscala.sohini.padre == .marva)
+        #expect(TipoDeEscala.buscar(nombre: "मुलतानी")?.esIdentico(a: .multani) == true)
+        #expect(TipoDeEscala.buscar(nombre: "Sohni")?.esIdentico(a: .sohini) == true)
+        #expect(TipoDeEscala.ragasIndostanicos.count == 19)
+    }
 }

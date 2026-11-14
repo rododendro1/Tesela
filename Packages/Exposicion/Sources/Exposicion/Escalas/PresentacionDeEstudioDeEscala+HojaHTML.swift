@@ -216,6 +216,9 @@ extension PresentacionDeEstudioDeEscala {
         .originales{font-size:16pt;color:var(--suave);margin:0 0 4px}.originales small{font-size:10pt}\
         :lang(ar),:lang(fa){font-family:"Geeza Pro","Noto Naskh Arabic","Noto Sans Arabic",serif}\
         :lang(hi),:lang(sa){font-family:"Kohinoor Devanagari","Devanagari Sangam MN","Noto Sans Devanagari",sans-serif}\
+        :lang(te){font-family:"Kohinoor Telugu","Telugu Sangam MN","Noto Sans Telugu",sans-serif}\
+        :lang(kn){font-family:"Kannada Sangam MN","Noto Sans Kannada",sans-serif}\
+        :lang(ta){font-family:"Tamil Sangam MN","Noto Sans Tamil",sans-serif}\
         :lang(zh){font-family:"PingFang TC","Noto Sans CJK TC","Noto Sans TC",sans-serif}\
         :lang(zh-Hans){font-family:"PingFang SC","Noto Sans CJK SC","Noto Sans SC",sans-serif}\
         :lang(ja){font-family:"Hiragino Sans","Noto Sans CJK JP","Noto Sans JP",sans-serif}\

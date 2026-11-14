@@ -64,6 +64,7 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
     case indonesia
     case tailandia
     case camboya
+    case laos
     case myanmar
     case uganda
     case mozambique
@@ -123,6 +124,7 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
         case .indonesia: "ID"
         case .tailandia: "TH"
         case .camboya: "KH"
+        case .laos: "LA"
         case .myanmar: "MM"
         case .uganda: "UG"
         case .mozambique: "MZ"
@@ -164,7 +166,8 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
             .georgia, .grecia:
             .europa
         case .turquia, .azerbaiyan, .iran, .irak, .india, .china, .japon, .coreaDelSur, .coreaDelNorte, .vietnam,
-            .indonesia, .tailandia, .camboya, .myanmar, .siria, .libano, .palestina, .jordania, .arabiaSaudi, .kuwait,
+            .indonesia, .tailandia, .camboya, .laos, .myanmar, .siria, .libano, .palestina, .jordania, .arabiaSaudi,
+            .kuwait,
             .barein, .catar, .emiratos, .oman, .yemen:
             .asia
         case .uganda, .mozambique, .zimbabue, .mali, .senegal, .gambia, .guinea, .etiopia, .egipto, .marruecos,
@@ -207,6 +210,7 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
         case .indonesia: TextosDeTeoria.traduccion(\.paisIndonesia)
         case .tailandia: TextosDeTeoria.traduccion(\.paisTailandia)
         case .camboya: TextosDeTeoria.traduccion(\.paisCamboya)
+        case .laos: TextosDeTeoria.traduccion(\.paisLaos)
         case .myanmar: TextosDeTeoria.traduccion(\.paisMyanmar)
         case .uganda: TextosDeTeoria.traduccion(\.paisUganda)
         case .mozambique: TextosDeTeoria.traduccion(\.paisMozambique)

@@ -11,8 +11,9 @@ import Elementos
 public enum RegionDeEscala: String, Sendable, Codable, CaseIterable {
     /// Indonesia: los gamelan de Java, de Bali y de Sunda (el oeste de Java).
     case java, bali, sunda
-    /// Sudeste asiático: los conjuntos piphat de Tailandia y pinpeat de Camboya, y el arpa de Birmania.
-    case tailandia, camboya, birmania
+    /// Sudeste asiático: los conjuntos piphat de Tailandia y pinpeat de Camboya, el arpa de Birmania y el khaen de los
+    /// lao (Laos y el Isán, el nordeste de Tailandia).
+    case tailandia, camboya, birmania, laos
     /// África: el amadinda de Buganda (Uganda), el timbila de los chopi (Mozambique), la kora mandinga y la mbira de
     /// los shona (Zimbabue).
     case buganda, chopi, mandinga, shona
@@ -31,7 +32,7 @@ public enum RegionDeEscala: String, Sendable, Codable, CaseIterable {
     public var tradicion: Tradicion {
         switch self {
         case .java, .bali, .sunda: .indonesia
-        case .tailandia, .camboya, .birmania: .sudesteAsiatico
+        case .tailandia, .camboya, .birmania, .laos: .sudesteAsiatico
         case .buganda, .chopi, .mandinga, .shona: .africa
         case .ucrania, .polonia, .hungria, .alpes, .escocia, .georgia, .istria: .europa
         case .andalucia, .rumania: .occidental
@@ -68,6 +69,7 @@ public enum RegionDeEscala: String, Sendable, Codable, CaseIterable {
         case .tailandia: TextosDeTeoria.traduccion(\.regionTailandia)
         case .camboya: TextosDeTeoria.traduccion(\.regionCamboya)
         case .birmania: TextosDeTeoria.traduccion(\.regionBirmania)
+        case .laos: TextosDeTeoria.traduccion(\.regionLaos)
         case .buganda: TextosDeTeoria.traduccion(\.regionBuganda)
         case .chopi: TextosDeTeoria.traduccion(\.regionChopi)
         case .mandinga: TextosDeTeoria.traduccion(\.regionMandinga)

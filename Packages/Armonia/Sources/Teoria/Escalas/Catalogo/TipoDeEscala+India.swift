@@ -60,6 +60,61 @@ extension TipoDeEscala {
         "सुचरित्र", "ज्योतिस्वरूपिणी", "धातुवर्धनी", "नासिकाभूषणी", "कोसलम्", "रसिकप्रिया",
     ]
 
+    /// Los mismos nombres en telugu y en canarés, pasados del devanagari letra a letra con tres reglas de la
+    /// ortografía de esas lenguas para los nombres de rāga: la nasal ante una consonante de su grupo se escribe con
+    /// anusvara (కనకాంగి, no కనకాఙ్గీ), la -m final también (చక్రవాకం) y la ī y la ā finales se acortan
+    /// (ఖరహరప్రియ). Cotejados con los títulos de la Wikipedia en telugu: de los 72 coinciden 57, y los otros 15
+    /// difieren en lo que el IAST de `nombresDeMelakarta` da por bueno (నటభైరవి, no నఠభైరవి; ఋషభప్రియ).
+    package static let nombresDeMelakartaEnTelugu: [String] = [
+        "కనకాంగి", "రత్నాంగి", "గానమూర్తి", "వనస్పతి", "మానవతి", "తానరూపి",
+        "సేనావతి", "హనుమత్తోడి", "ధేనుక", "నాటకప్రియ", "కోకిలప్రియ", "రూపవతి",
+        "గాయకప్రియ", "వకుళాభరణం", "మాయామాలవగౌళ", "చక్రవాకం", "సూర్యకాంతం", "హాటకాంబరి",
+        "ఝంకారధ్వని", "నటభైరవి", "కీరవాణి", "ఖరహరప్రియ", "గౌరీమనోహరి", "వరుణప్రియ",
+        "మారరంజని", "చారుకేశి", "సరసాంగి", "హరికాంభోజి", "ధీరశంకరాభరణం", "నాగనందిని",
+        "యాగప్రియ", "రాగవర్ధిని", "గాంగేయభూషణి", "వాగధీశ్వరి", "శూలిని", "చలనాట",
+        "సాలగం", "జలార్ణవం", "ఝాలవరాళి", "నవనీతం", "పావని", "రఘుప్రియ",
+        "గవాంభోధి", "భవప్రియ", "శుభపంతువరాళి", "షడ్విధమార్గిణి", "సువర్ణాంగి", "దివ్యమణి",
+        "ధవళాంబరి", "నామనారాయణి", "కామవర్ధిని", "రామప్రియ", "గమనాశ్రమ", "విశ్వంభరి",
+        "శ్యామలాంగి", "షణ్ముఖప్రియ", "సింహేంద్రమధ్యమం", "హేమవతి", "ధర్మవతి", "నీతిమతి",
+        "కాంతామణి", "ఋషభప్రియ", "లతాంగి", "వాచస్పతి", "మేచకల్యాణి", "చిత్రాంబరి",
+        "సుచరిత్ర", "జ్యోతిస్వరూపిణి", "ధాతువర్ధని", "నాసికాభూషణి", "కోసలం", "రసికప్రియ",
+    ]
+
+    package static let nombresDeMelakartaEnCanares: [String] = [
+        "ಕನಕಾಂಗಿ", "ರತ್ನಾಂಗಿ", "ಗಾನಮೂರ್ತಿ", "ವನಸ್ಪತಿ", "ಮಾನವತಿ", "ತಾನರೂಪಿ",
+        "ಸೇನಾವತಿ", "ಹನುಮತ್ತೋಡಿ", "ಧೇನುಕ", "ನಾಟಕಪ್ರಿಯ", "ಕೋಕಿಲಪ್ರಿಯ", "ರೂಪವತಿ",
+        "ಗಾಯಕಪ್ರಿಯ", "ವಕುಳಾಭರಣಂ", "ಮಾಯಾಮಾಲವಗೌಳ", "ಚಕ್ರವಾಕಂ", "ಸೂರ್ಯಕಾಂತಂ", "ಹಾಟಕಾಂಬರಿ",
+        "ಝಂಕಾರಧ್ವನಿ", "ನಟಭೈರವಿ", "ಕೀರವಾಣಿ", "ಖರಹರಪ್ರಿಯ", "ಗೌರೀಮನೋಹರಿ", "ವರುಣಪ್ರಿಯ",
+        "ಮಾರರಂಜನಿ", "ಚಾರುಕೇಶಿ", "ಸರಸಾಂಗಿ", "ಹರಿಕಾಂಭೋಜಿ", "ಧೀರಶಂಕರಾಭರಣಂ", "ನಾಗನಂದಿನಿ",
+        "ಯಾಗಪ್ರಿಯ", "ರಾಗವರ್ಧಿನಿ", "ಗಾಂಗೇಯಭೂಷಣಿ", "ವಾಗಧೀಶ್ವರಿ", "ಶೂಲಿನಿ", "ಚಲನಾಟ",
+        "ಸಾಲಗಂ", "ಜಲಾರ್ಣವಂ", "ಝಾಲವರಾಳಿ", "ನವನೀತಂ", "ಪಾವನಿ", "ರಘುಪ್ರಿಯ",
+        "ಗವಾಂಭೋಧಿ", "ಭವಪ್ರಿಯ", "ಶುಭಪಂತುವರಾಳಿ", "ಷಡ್ವಿಧಮಾರ್ಗಿಣಿ", "ಸುವರ್ಣಾಂಗಿ", "ದಿವ್ಯಮಣಿ",
+        "ಧವಳಾಂಬರಿ", "ನಾಮನಾರಾಯಣಿ", "ಕಾಮವರ್ಧಿನಿ", "ರಾಮಪ್ರಿಯ", "ಗಮನಾಶ್ರಮ", "ವಿಶ್ವಂಭರಿ",
+        "ಶ್ಯಾಮಲಾಂಗಿ", "ಷಣ್ಮುಖಪ್ರಿಯ", "ಸಿಂಹೇಂದ್ರಮಧ್ಯಮಂ", "ಹೇಮವತಿ", "ಧರ್ಮವತಿ", "ನೀತಿಮತಿ",
+        "ಕಾಂತಾಮಣಿ", "ಋಷಭಪ್ರಿಯ", "ಲತಾಂಗಿ", "ವಾಚಸ್ಪತಿ", "ಮೇಚಕಲ್ಯಾಣಿ", "ಚಿತ್ರಾಂಬರಿ",
+        "ಸುಚರಿತ್ರ", "ಜ್ಯೋತಿಸ್ವರೂಪಿಣಿ", "ಧಾತುವರ್ಧನಿ", "ನಾಸಿಕಾಭೂಷಣಿ", "ಕೋಸಲಂ", "ರಸಿಕಪ್ರಿಯ",
+    ]
+
+    /// Los mismos nombres en tamil, que no se pueden pasar del devanagari: el tamil no tiene aspiradas ni sonoras y
+    /// escribe los nombres de rāga a su manera (கரகரப்பிரியா, அரிக்காம்போதி, மாயாமாளவகௌளை). Son los títulos de la
+    /// Wikipedia en tamil, cotejados letra a letra con el IAST de `nombresDeMelakarta`: los que no casan solo
+    /// difieren en esas costumbres (la h que se vuelve க o se pierde, la -ai final, la i que separa grupos). El 8 es
+    /// ஹனுமத்தோடி, porque la Wikipedia lo titula con su nombre corriente, தோடி.
+    package static let nombresDeMelakartaEnTamil: [String] = [
+        "கனகாங்கி", "ரத்னாங்கி", "கானமூர்த்தி", "வனஸ்பதி", "மானவதி", "தானரூபி",
+        "சேனாவதி", "ஹனுமத்தோடி", "தேனுகா", "நாடகப்பிரியா", "கோகிலப்பிரியா", "ரூபவதி",
+        "காயகப்பிரியா", "வகுளாபரணம்", "மாயாமாளவகௌளை", "சக்ரவாகம்", "சூர்யகாந்தம்", "ஹாடகாம்பரி",
+        "ஜங்காரத்வனி", "நடபைரவி", "கீரவாணி", "கரகரப்பிரியா", "கௌரிமனோகரி", "வருணப்பிரியா",
+        "மாரரஞ்சனி", "சாருகேசி", "சரசாங்கி", "அரிக்காம்போதி", "தீரசங்கராபரணம்", "நாகாநந்தினி",
+        "யாகப்பிரியா", "ராகவர்த்தனி", "காங்கேயபூஷணி", "வாகதீச்வரி", "சூலினி", "சலநாட",
+        "சாலகம்", "ஜலார்ணவம்", "ஜாலவராளி", "நவநீதம்", "பாவனி", "ரகுப்பிரியா",
+        "கவாம்போதி", "பவப்பிரியா", "சுபபந்துவராளி", "ஷட்விதமார்க்கிணி", "சுவர்ணாங்கி", "திவ்யமணி",
+        "தவளாம்பரி", "நாமநாராயணி", "காமவர்த்தனி", "ராமப்பிரியா", "கமனாச்ரம", "விஷ்வம்பரி",
+        "சியாமளாங்கி", "சண்முகப்பிரியா", "சிம்மேந்திரமத்திமம்", "ஹேமவதி", "தர்மவதி", "நீதிமதி",
+        "காந்தாமணி", "ரிஷபப்பிரியா", "லதாங்கி", "வாசஸ்பதி", "மேசகல்யாணி", "சித்ராம்பரி",
+        "சுசரித்ர", "ஜோதிஸ்வரூபிணி", "தாதுவர்த்தனி", "நாசிகாபூஷணி", "கோசலம்", "ரசிகப்பிரியா",
+    ]
+
     /// Los 72 mēḷa, en orden. Cada uno tiene Sa y Pa (unísono y 5ª justa), un Ma (4ª justa
     /// en los 36 primeros, aumentada en los 36 últimos) y una de las seis parejas Ri–Ga y Dha–Ni.
     /// Ri3 se escribe como 2ª aumentada, Ga1 como 3ª disminuida, Dha3 como 6ª aumentada y Ni1
@@ -87,7 +142,12 @@ extension TipoDeEscala {
                             intervalos: [.unisono, ri, ga, ma, .quintaJusta, dha, ni],
                             alias: ["melakarta \(numero)"]
                                 + (normalizar(otraGrafia) == normalizar(nombre) ? [] : [otraGrafia]),
-                            nombresOriginales: [.init(nombresDeMelakartaEnDevanagari[numero - 1], .sanscrito)],
+                            nombresOriginales: [
+                                .init(nombresDeMelakartaEnDevanagari[numero - 1], .sanscrito),
+                                .init(nombresDeMelakartaEnTelugu[numero - 1], .telugu),
+                                .init(nombresDeMelakartaEnCanares[numero - 1], .canares),
+                                .init(nombresDeMelakartaEnTamil[numero - 1], .tamil),
+                            ],
                             categoria: .melakarta))
                 }
             }
@@ -452,10 +512,47 @@ extension TipoDeEscala {
         variantes: ["Puriya Dhanashri", "Puriya Dhanashree"], nombresOriginales: [.init("पूरिया धनाश्री", .hindi)],
         categoria: .raga, padre: .purvi)
 
+    // Cuatro más, con el āroh y el avaroh de la Wikipedia en inglés (noviembre de 2026), en su forma recta: dos con
+    // ga komal, Ma tivra y Pa (Madhuvantī, con Re y Dha śuddha al bajar; Multānī, de Toḍī, con re y dha komal),
+    // Hindol (Kalyāṇ sin Re ni Pa) y Sohinī (Mārvā sin Pa, que sube sin Re).
+
+    /// Madhuvantī: sube Sa ga Ma Pa Ni y baja Sa Ni Dha Pa Ma ga Re. Sin `padre`: se suele poner en Toḍī, pero su Re y
+    /// su Dha śuddha no están en ese thāṭ.
+    public static let madhuvanti = TipoDeEscala(
+        nombre: "Madhuvantī",
+        intervalos: [.unisono, .terceraMenor, .cuartaAumentada, .quintaJusta, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        nombresOriginales: [.init("मधुवंती", .hindi)],
+        categoria: .raga)
+    /// Multānī: sube Sa ga Ma Pa Ni y baja Sa Ni dha Pa Ma ga re.
+    public static let multani = TipoDeEscala(
+        nombre: "Multānī",
+        intervalos: [.unisono, .terceraMenor, .cuartaAumentada, .quintaJusta, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaAumentada, .quintaJusta, .sextaMenor, .septimaMayor,
+        ],
+        nombresOriginales: [.init("मुलतानी", .hindi)],
+        categoria: .raga, padre: .todi)
+    /// Hindol (Sa Ga Ma Dha Ni, con Ma tivra), en su forma recta; no es el Hindolam carnático, que es Mālkauns.
+    public static let hindol = TipoDeEscala(
+        nombre: "Hindol",
+        intervalos: [.unisono, .terceraMayor, .cuartaAumentada, .sextaMayor, .septimaMayor],
+        nombresOriginales: [.init("हिंडोल", .hindi)],
+        categoria: .raga, padre: .kalyan)
+    /// Sohinī: sube Sa Ga Ma Dha Ni y baja Sa Ni Dha Ma Ga re, en su forma recta.
+    public static let sohini = TipoDeEscala(
+        nombre: "Sohinī",
+        intervalos: [.unisono, .terceraMayor, .cuartaAumentada, .sextaMayor, .septimaMayor],
+        intervalosDescendentes: [.unisono, .segundaMenor, .terceraMayor, .cuartaAumentada, .sextaMayor, .septimaMayor],
+        variantes: ["Sohni"], nombresOriginales: [.init("सोहनी", .hindi)],
+        categoria: .raga, padre: .marva)
+
     /// Rāgas indostánicos incluidos.
     package static let ragasIndostanicos: [TipoDeEscala] = [
         .bhupali, .malkauns, .durga, .yaman, .bagesri, .des, .sivaranjani, .kalavati, .candrakauns, .megh, .lalit,
-        .bhimpalasi, .bihag, .darbariKanada, .puriyaDhanasri,
+        .bhimpalasi, .bihag, .darbariKanada, .puriyaDhanasri, .madhuvanti, .multani, .hindol, .sohini,
     ]
 
     // MARK: Grāma y mūrchanā (el Nāṭyaśāstra)

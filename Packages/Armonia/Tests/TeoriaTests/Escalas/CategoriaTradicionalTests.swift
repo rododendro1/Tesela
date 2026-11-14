@@ -67,7 +67,7 @@ import Testing
         #expect((try? TipoDeEscala(leyendo: "hexacordo duro")) == .hexacordoDuro)
         // Las siete afinaciones babilónicas, las equidistantes de África y del sudeste asiático y los doce lü.
         let afinaciones =
-            TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas + [.shierLu]
+            TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + [.piphat, .pinpeat, .saung] + [.shierLu]
         #expect(TipoDeEscala.tradicionales(categoria: .afinacion) == afinaciones)
         #expect(TipoDeEscala.tradicionales(tradicion: .africa).map(\.nombre) == TipoDeEscala.africanas.map(\.nombre))
         #expect(TipoDeEscala.africanas.count == 7 && TipoDeEscala.sauta == .lidio)
@@ -215,17 +215,17 @@ import Testing
             #expect(modos.contains { suyas.isSubset(of: $0) }, "\(tipo.nombre) ↛ \(padre.nombre)")
             if padre.categoria == .thaat { #expect(suyas.isSubset(of: delPadre), "\(tipo.nombre) ↛ \(padre.nombre)") }
         }
-        #expect(conPadre == 19 + 13 + 14 + 3)
+        #expect(conPadre == 19 + 13 + 14 + 3 + 3)
         #expect(TipoDeEscala.yaman.padre == .kalyan && TipoDeEscala.yaman.padre?.categoria == .thaat)
         #expect(TipoDeEscala.darbariKanada.padre?.nombre == TipoDeEscala.asavari.nombre)
-        #expect(TipoDeEscala.candrakauns.padre == nil)
+        #expect(TipoDeEscala.candrakauns.padre == nil && TipoDeEscala.madhuvanti.padre == nil)
         #expect(TipoDeEscala.sadjaGrama.derivadas.map(\.nombre) == TipoDeEscala.murchanas.prefix(7).map(\.nombre))
         #expect(TipoDeEscala.madhyamaGrama.derivadas.map(\.nombre) == TipoDeEscala.murchanas.suffix(7).map(\.nombre))
         #expect(
             TipoDeEscala.slendro.derivadas.map(\.nombre) == [
                 "Sléndro pathet nem", "Sléndro pathet sanga", "Sléndro pathet manyura",
             ])
-        #expect(TipoDeEscala.kalyan.derivadas.map(\.nombre) == ["Bhūpālī", "Yaman"])
+        #expect(TipoDeEscala.kalyan.derivadas.map(\.nombre) == ["Bhūpālī", "Yaman", "Hindol"])
         #expect(TipoDeEscala.mayor.derivadas.isEmpty)
         // Una escala propia con los intervalos del sléndro no tiene sus pathet.
         #expect(TipoDeEscala(nombre: "mía", intervalos: TipoDeEscala.slendro.intervalos).derivadas.isEmpty)
@@ -244,7 +244,7 @@ import Testing
         let afinaciones = TipoDeEscala.tradicionales(clase: .afinacion)
         #expect(
             afinaciones
-                == TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + TipoDeEscala.sudesteAsiaticas + [.shierLu])
+                == TipoDeEscala.mesopotamicas + TipoDeEscala.africanas + [.piphat, .pinpeat, .saung] + [.shierLu])
         let madres = TipoDeEscala.tradicionales(clase: .escalaMadre)
         let thaatsGramasYLaras = TipoDeEscala.thaats + TipoDeEscala.gramas + TipoDeEscala.indonesias
         #expect(madres.count == 72 + thaatsGramasYLaras.count)

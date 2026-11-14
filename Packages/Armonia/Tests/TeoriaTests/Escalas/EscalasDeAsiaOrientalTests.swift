@@ -4,7 +4,7 @@ import Testing
 @testable import Elementos
 @testable import Teoria
 
-/// Las escalas de Asia oriental y del sudeste asiático: China, Japón, Vietnam y Myanmar.
+/// Las escalas de Asia oriental y del sudeste asiático: China, Japón, Vietnam, Myanmar y Laos.
 @Suite struct EscalasDeAsiaOrientalTests {
     @Test func escalasChinas() {
         #expect(
@@ -169,5 +169,28 @@ import Testing
         #expect(TipoDeEscala.saung.afinacionPropia?.desvios == [0, -18, -36, -9, -27])
         #expect(Tradicion.vietnam.nombre(en: Notacion.compacta(.espanol).conTextos(en: .portugues)) == "Vietname")
         #expect(Tradicion.brasil.nombre(en: Notacion.compacta(.espanol).conTextos(en: .ingles)) == "Brazil")
+    }
+
+    /// Los cinco lai del khaen: tres de thang san y dos de thang yao, cada uno sobre su nota.
+    @Test func losCincoLaiDelKhaen() throws {
+        let lai: [(TipoDeEscala, String, Nota, String)] = [
+            (.laiSutsanaen, "ลายสุดสะแนน", .sol, "Sol La Do Re Mi"),
+            (.laiPoSai, "ลายโป้ซ้าย", .do, "Do Re Fa Sol La"),
+            (.laiSoi, "ลายสร้อย", .re, "Re Mi Sol La Si"),
+            (.laiYai, "ลายใหญ่", .la, "La Do Re Mi Sol"),
+            (.laiNoi, "ลายน้อย", .re, "Re Fa Sol La Do"),
+        ]
+        for (tipo, tailandes, tonica, notas) in lai {
+            #expect(tipo.nombreOriginal == NombreOriginal(tailandes, .tailandes), Comment(rawValue: tipo.nombre))
+            #expect(tipo.tradicion == .sudesteAsiatico)
+            #expect(tipo.regiones == [.laos])
+            #expect(tipo.paisesDeOrigen == [.tailandia, .laos])
+            #expect(Escala(tonica, tipo).notas.map(\.description).joined(separator: " ") == notas)
+            #expect((try? Escala(leyendo: "\(tonica) \(tailandes)"))?.tipo.nombre == tipo.nombre)
+        }
+        #expect(TipoDeEscala.laiYai == .pentatonicaMenor && TipoDeEscala.laiNoi == .pentatonicaMenor)
+        #expect(TipoDeEscala.laiSoi == .ritsu)
+        #expect(try Escala(leyendo: "Sol sutsanaen").tipo.nombre == "Lai sutsanaen")
+        #expect(Lugar.pais(.laos).nombre(en: .compacta(.espanol)) == "Laos")
     }
 }
