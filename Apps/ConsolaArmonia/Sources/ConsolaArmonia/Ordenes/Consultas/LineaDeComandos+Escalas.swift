@@ -315,8 +315,12 @@ extension LineaDeComandos {
         if let externas = datos.notasExternas {
             lineas.append("  " + notacion.texto(\.notasExternas) + ": " + externas.joined(separator: " "))
         }
-        // De qué escala sale y cuáles salen de ella: «Deriva de: mēḷa Kharaharapriyā», «Derivadas: Mukhāri, Kāpi…».
-        if let padre = datos.padre { lineas.append("  " + notacion.texto(\.derivaDe) + ": " + padre) }
+        // De qué escala sale y cuáles salen de ella: «Escala madre: mēḷa Kharaharapriyā», «Derivadas: Mukhāri, Kāpi…».
+        if let madre = datos.madre { lineas.append("  " + notacion.texto(\.escalaMadre) + ": " + madre) }
+        // Las notas con función: «vādī: Mi · saṃvādī: Si».
+        if let funciones = datos.funciones {
+            lineas.append("  " + funciones.map { $0.funcion + ": " + $0.nota }.joined(separator: " · "))
+        }
         if let derivadas = datos.derivadas {
             lineas.append("  " + notacion.texto(\.derivadas) + ": " + derivadas.joined(separator: ", "))
         }

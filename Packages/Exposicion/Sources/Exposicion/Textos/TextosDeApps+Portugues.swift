@@ -232,7 +232,7 @@ extension TextosDeApps {
         fragmento: "Fragmento",
         nombreOriginal: "Nome original",
         notasExternas: "Notas externas",
-        derivaDe: "Deriva de",
+        escalaMadre: "Escala-mãe",
         derivadas: "Derivadas",
         afinacion: "Afinação",
         afinacionTemperada: "temperada",

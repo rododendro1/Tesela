@@ -172,8 +172,8 @@ extension OpcionDeOrden {
     static let sinFragmentos = marca("--sin-fragmentos", "--no-fragments")
     /// `escalas --vakra`: solo los rāgas que suben o bajan en zigzag (`TipoDeEscala.esVakra`).
     static let vakra = marca("--vakra")
-    /// `escalas --padre Kharaharapriyā`: solo las que salen de esa escala madre (`TipoDeEscala.derivadas`).
-    static let padre = valor("--padre", "--parent")
+    /// `escalas --madre Kharaharapriyā`: solo las que salen de esa escala madre (`TipoDeEscala.derivadas`).
+    static let madre = valor("--madre", "--parent")
     /// `temperamentos … --reloj`: el temperamento en un reloj de cents, en SVG.
     static let reloj = marca("--reloj", "--clock")
     /// El reloj con cada nota del color de sus cents.

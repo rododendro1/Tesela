@@ -27,7 +27,7 @@ import Elementos
 // MundoArabe (maqamat y ajnas), Persia (dastgāh), Renacimiento (musica ficta), SudesteAsiatico, Turquia (makamlar
 // y çeşni) y Vietnam. Cada uno declara sus escalas y sus listas. Una escala nueva se declara en el fichero de su
 // tradición con todos sus datos (`DatosDeEscala`): su categoría, su versión microtonal si la tiene (`afinaciones:
-// [.init(.cuartosDeTono, pasos: […])]`) y su escala madre, si la tiene (`padre: .melakarta(28)`, `padre: .kalyan`);
+// [.init(.cuartosDeTono, pasos: […])]`) y su escala madre, si la tiene (`madre: .melakarta(28)`, `madre: .kalyan`);
 // y se apunta en una de sus listas. Una lista nueva se apunta, con su tradición, en `listasTradicionales`.
 
 extension TipoDeEscala {

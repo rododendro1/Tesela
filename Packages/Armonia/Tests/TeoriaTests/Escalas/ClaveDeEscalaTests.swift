@@ -109,6 +109,7 @@ import Testing
         "kathanakutuhalam", "begada", "sahana", "ritigaula", "devagandhari", "bhairavi-carnatica",
         "darbari-kanada-carnatica", "kapi", "kanada", "nilambari", "nayaki", "saranga", "sri-carnatica",
         "hamir-kalyani", "yamuna-kalyani", "devamanohari", "behag-carnatica", "khamas",
+        "kurinji", "sindhu-bhairavi", "navaroj", "kedar",
     ]
 
     @Test func lasClavesDelCatalogoNoCambian() {

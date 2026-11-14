@@ -101,7 +101,7 @@ public struct TipoDeEscala: Sendable, Codable {
     }
 
     /// Una escala de otra tradición, con su categoría y, si los tiene, sus estilos (si no los da la categoría), sus
-    /// regiones, el teórico que la definió (`fuente`), la escala madre de la que sale (`padre`: el mēḷa de un
+    /// regiones, el teórico que la definió (`fuente`), la escala madre de la que sale (`madre`: el mēḷa de un
     /// janya, el thāṭ de un rāga indostánico…) y sus versiones microtonales. La tradición se escribe solo si no la
     /// dan la categoría, los estilos, las regiones ni la fuente (`tradicion: .japon, categoria: .escala`).
     package init(
@@ -109,7 +109,7 @@ public struct TipoDeEscala: Sendable, Codable {
         variantes: [String] = [], recorrido: [Int]? = nil, recorridoDescendente: [Int]? = nil,
         nombresOriginales: [NombreOriginal] = [], tradicion: Tradicion? = nil, categoria: CategoriaTradicional,
         escuelas: [Escuela] = [], regiones: [RegionDeEscala] = [], fuente: FuenteTeorica? = nil,
-        padre: TipoDeEscala? = nil, notasExternas: [Intervalo] = [],
+        madre: TipoDeEscala? = nil, notasExternas: [Intervalo] = [],
         afinaciones: [DatosDeEscala.Afinacion] = [], referencias: [Referencia] = [], documentada: Referencia? = nil,
         clave: String? = nil
     ) {
@@ -119,7 +119,7 @@ public struct TipoDeEscala: Sendable, Codable {
             datos: DatosDeEscala(
                 nombresOriginales: nombresOriginales, tradicion: tradicion, escuelas: escuelas, regiones: regiones,
                 categoria: categoria,
-                padre: padre?.identidad, notasExternas: notasExternas,
+                madre: madre?.identidad, notasExternas: notasExternas,
                 afinaciones: afinaciones,
                 fuente: fuente, referencias: referencias, documentada: documentada))
     }

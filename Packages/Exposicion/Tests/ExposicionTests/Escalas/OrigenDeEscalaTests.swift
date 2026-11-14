@@ -69,14 +69,21 @@ import Testing
     /// Un rāga dice de qué escala sale, con la palabra de su categoría, y un mēḷa o un thāṭ, cuáles salen de él.
     @Test func elPadreYLasDerivadas() throws {
         let mukhari = EscalaPresentada(Escala(.do, .mukhari), en: notacion)
-        #expect(mukhari.padre == "mēḷa Kharaharapriyā" && mukhari.derivadas == nil)
+        #expect(mukhari.madre == "mēḷa Kharaharapriyā" && mukhari.derivadas == nil)
         let mela = EscalaPresentada(Escala(.do, try #require(.melakarta(22))), en: notacion)
-        #expect(mela.padre == nil)
+        #expect(mela.madre == nil)
         #expect(mela.derivadas?.contains("Mukhāri") == true && mela.derivadas?.contains("Mohanam") == false)
-        #expect(EscalaPresentada(Escala(.do, .yaman), en: notacion).padre == "thāṭ Kalyāṇ")
+        #expect(EscalaPresentada(Escala(.do, .yaman), en: notacion).madre == "thāṭ Kalyāṇ")
         #expect(EscalaPresentada(Escala(.do, .kafi), en: notacion).derivadas?.contains("Bāgeśrī") == true)
-        #expect(EscalaPresentada(Escala(.do), en: notacion).padre == nil)
+        #expect(EscalaPresentada(Escala(.do), en: notacion).madre == nil)
         #expect(EscalaPresentada(Escala(.do), en: notacion).derivadas == nil)
+    }
+
+    /// Las notas con función, sobre la tónica: el vādī y el saṃvādī de Do Yaman.
+    @Test func lasNotasConFuncion() {
+        let yaman = EscalaPresentada(Escala(.do, .yaman), en: notacion).funciones
+        #expect(yaman == [.init(funcion: "vādī", nota: "Mi"), .init(funcion: "saṃvādī", nota: "Si")])
+        #expect(EscalaPresentada(Escala(.do), en: notacion).funciones == nil)
     }
 
     /// Un fragmento lo dice, con lo que abarca, en el JSON y en lo que se mide de él.

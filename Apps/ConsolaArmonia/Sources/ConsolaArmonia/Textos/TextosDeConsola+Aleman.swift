@@ -258,7 +258,7 @@ extension TextosDeConsola {
         epocaDesconocida: "„{1}“ ist keine Epoche (antiquity, middle-ages, renaissance, baroque, classicism, romanticism, 20th-century, 21st-century, tonal)",
         afectoDesconocido: "„{1}“ ist kein Affekt (alegre, festivo, sereno, templado, tierno, amoroso, blando, nostalgico, inquieto, triste, lastimero, grave, severo, noble, solemne, majestuoso, valiente, energico, entusiasta, devoto, contemplativo)",
         escuelaDesconocida: "„{1}“ ist keine Schule (carnatic, hindustani, ancient-india, gagaku)",
-        padreDesconocido: "„{1}“ ist keine Skala, von der andere abgeleitet sind (ein Mēḷa wie Kharaharapriya oder 22, ein Thāṭ, ein Grāma…)",
+        madreDesconocida: "„{1}“ ist keine Skala, von der andere abgeleitet sind (ein Mēḷa wie Kharaharapriya oder 22, ein Thāṭ, ein Grāma…)",
         afinacionDesconocida: "„{1}“ ist keine Stimmung (tempered, just, microtonal, equal-divisions)",
         ordenDeEscalasDesconocido: "„{1}“: Skalen werden nach brightness oder notes sortiert: --sort brightness",
         ordenDeAcordesDesconocido: "„{1}“: Akkorde werden nach brightness, notes oder consonance sortiert: --sort consonance",

@@ -232,7 +232,7 @@ extension TextosDeApps {
         fragmento: "Απόσπασμα",
         nombreOriginal: "Πρωτότυπο όνομα",
         notasExternas: "Ξένες νότες",
-        derivaDe: "Προέρχεται από",
+        escalaMadre: "Μητρική κλίμακα",
         derivadas: "Παράγωγες",
         afinacion: "Κούρδισμα",
         afinacionTemperada: "συγκερασμένο",

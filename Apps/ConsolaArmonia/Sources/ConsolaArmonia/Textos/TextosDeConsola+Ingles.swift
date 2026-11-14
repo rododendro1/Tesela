@@ -260,7 +260,7 @@ extension TextosDeConsola {
         epocaDesconocida: "\"{1}\" is not an era (antiquity, middle-ages, renaissance, baroque, classicism, romanticism, 20th-century, 21st-century, tonal)",
         afectoDesconocido: "\"{1}\" is not an affect (alegre, festivo, sereno, templado, tierno, amoroso, blando, nostalgico, inquieto, triste, lastimero, grave, severo, noble, solemne, majestuoso, valiente, energico, entusiasta, devoto, contemplativo)",
         escuelaDesconocida: "\"{1}\" is not a school (carnatic, hindustani, ancient-india, gagaku)",
-        padreDesconocido: "\"{1}\" is not a scale others derive from (a mēḷa, such as Kharaharapriya or 22, a thāṭ, a grāma…)",
+        madreDesconocida: "\"{1}\" is not a scale others derive from (a mēḷa, such as Kharaharapriya or 22, a thāṭ, a grāma…)",
         afinacionDesconocida: "\"{1}\" is not a tuning (tempered, just, microtonal, equal-divisions)",
         ordenDeEscalasDesconocido: "\"{1}\": scales are sorted by brightness or by notes: --sort brightness",
         ordenDeAcordesDesconocido: "\"{1}\": chords are sorted by brightness, by notes or by consonance: --sort consonance",

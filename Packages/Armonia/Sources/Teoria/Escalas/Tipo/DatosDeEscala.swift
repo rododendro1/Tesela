@@ -3,7 +3,7 @@ import Elementos
 // MARK: - Ficha de una escala del catálogo
 
 /// Lo que el catálogo sabe de una escala además de su nombre y sus intervalos: sus estilos, sus escuelas y las
-/// regiones de donde viene, su categoría (las de otras tradiciones), su escala madre (`padre`) y sus
+/// regiones de donde viene, su categoría (las de otras tradiciones), su escala madre (`madre`) y sus
 /// versiones microtonales.
 ///
 /// Se escribe en la declaración de la escala, con el resto de sus datos:
@@ -12,7 +12,7 @@ import Elementos
 ///         nombre: "dórico", intervalos: […], alias: ["menor dórica"], variantes: ["dórica"],
 ///         estilos: [.jazz, .clasica])
 ///     public static let mohanam = TipoDeEscala(
-///         nombre: "Mohanam", intervalos: […], categoria: .janya, padre: .melakarta(28))
+///         nombre: "Mohanam", intervalos: […], categoria: .janya, madre: .melakarta(28))
 ///     public static let pelogTembung = TipoDeEscala(nombre: "Pélog tembung", intervalos: […], categoria: .pathet,
 ///         regiones: [.bali], afinaciones: [.init(.razones, pasos: […])])
 ///     public static let rastMakami = TipoDeEscala(nombre: "Rast makamı", intervalos: […], categoria: .makam)
@@ -20,7 +20,7 @@ import Elementos
 /// Que el nombre ya lleve la palabra de su categoría («Rast makamı») no se escribe: se deduce del nombre
 /// (`TipoDeEscala.llevaLaCategoria`), para que `nombreCompleto` no la repita.
 ///
-/// De ahí salen `TipoDeEscala.estilos`, `regiones`, `categoria`, `padre`, `afinacionPropia` y `afinaciones`, y
+/// De ahí salen `TipoDeEscala.estilos`, `regiones`, `categoria`, `madre`, `afinacionPropia` y `afinaciones`, y
 /// `Estilo.tipos`, `RegionDeEscala.tipos` y `AfinacionPropia.catalogo`. La tradición (`tradicion`) se deduce de
 /// la categoría, de los estilos, las escuelas y las regiones, o de la fuente, y solo se escribe en las que no la dan
 /// (`tradicion: .japon, categoria: .escala`); cada lista de `TipoDeEscala.listasTradicionales` tiene solo escalas de la
@@ -68,8 +68,8 @@ package struct DatosDeEscala: Sendable {
     package let categoria: CategoriaTradicional?
     /// La escala madre de la que sale (el mēḷa de un janya, el thāṭ de un rāga, el grāma de una mūrchanā, el laras
     /// de un pathet), por su identidad; `nil` si no tiene una clara.
-    package let padre: IdentidadDeEscala?
-    /// Las notas que no son de su padre (los anya svara de un rāga bhāṣāṅga), ordenadas: el Dha₁ con que baja
+    package let madre: IdentidadDeEscala?
+    /// Las notas que no son de su madre (los anya svara de un rāga bhāṣāṅga), ordenadas: el Dha₁ con que baja
     /// Mukhāri, que Kharaharapriyā no tiene, o las que Ānandabhairavi solo toca en algunas frases.
     package let notasExternas: [Intervalo]
     /// Las versiones microtonales: la primera, la de su teoría de hoy; las demás, de otros autores (con `fuente`).
@@ -92,7 +92,7 @@ package struct DatosDeEscala: Sendable {
         corrientes: [Corriente] = [], escuelas: [Escuela] = [],
         regiones: [RegionDeEscala] = [],
         categoria: CategoriaTradicional? = nil,
-        padre: IdentidadDeEscala? = nil, notasExternas: [Intervalo] = [], afinaciones: [Afinacion] = [],
+        madre: IdentidadDeEscala? = nil, notasExternas: [Intervalo] = [], afinaciones: [Afinacion] = [],
         fuente: FuenteTeorica? = nil, referencias: [Referencia] = [], documentada: Referencia? = nil,
         clase: ClaseDeEscala? = nil
     ) {
@@ -111,7 +111,7 @@ package struct DatosDeEscala: Sendable {
             ?? regiones.first?.tradicion
             ?? fuente?.tradicion
         self.categoria = categoria
-        self.padre = padre
+        self.madre = madre
         self.notasExternas = notasExternas.sorted { ($0.pasos, $0.semitonos) < ($1.pasos, $1.semitonos) }
         self.afinaciones = afinaciones
         self.fuente = fuente

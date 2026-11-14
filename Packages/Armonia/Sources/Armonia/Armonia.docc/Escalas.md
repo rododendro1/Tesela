@@ -338,11 +338,11 @@ Amṛtavarṣiṇī, Śuddha Sāveri, Śuddha Dhanyāsi, Śrīrañjani, Mālayam
 Bhūpālam, Revagupti, Lalitā, Megharañjani, Nāgasvarāvaḷi, Sunādavinodinī y Śuddha Hindolam (iguales al subir y al
 bajar), y Bilahari, Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri, Nāṭa, Kalyāṇavasantam, Bauḷi, Dhanyāsi,
 Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini, Rasikarañjani, Dēvagāndhāri y
-Bhairavi carnática (distintos). Veinticuatro más son vakra, y suben o bajan en zigzag:
+Bhairavi carnática (distintos), y Sindhu Bhairavi, bhāṣāṅga, con las doce notas. Veintiséis más son vakra, y suben o bajan en zigzag:
 Ānandabhairavi, Suruṭṭi, Aṭāṇā, Kēdāram, Darbār, Mukhāri, Gauḷa, Nalinakānti, Kathanakutūhalam, Bēgaḍa, Sahānā,
 Rītigauḷa, Darbārī Kānaḍa carnática, Kāpi, Kānaḍa, Nīlāmbari, Nāyaki, Sāraṅga, Śrī carnática, Hamīr Kalyāṇi,
-Yamunā Kalyāṇi, Dēvamanōhari, Behāg carnática y Khamās (ver abajo). Llevan su nombre en sánscrito, en telugu y en
-canarés, y los 39 que tienen artículo en la Wikipedia en tamil, también en tamil.
+Yamunā Kalyāṇi, Dēvamanōhari, Behāg carnática, Khamās, Kuriñji y Navarōj (ver abajo). Llevan su nombre en
+sánscrito, en telugu y en canarés, y los 40 que tienen artículo en la Wikipedia en tamil, también en tamil.
 `melakartasCompatibles` dice de qué mēḷa puede derivar cada uno:
 `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 
@@ -371,21 +371,34 @@ Escala(.do, .darbariKanadaCarnatica).alturas(octava: 4).first?.description  // "
 Escala(.do, .darbariKanadaCarnatica).notas.first                           // Do
 ```
 
-Entre los rāgas indostánicos, Bihāg es vakra: sube desde el Ni de abajo y baja Ṡa Ni Dha Pa Ma Pa Ga ma Ga Re Sa,
-con el Ma tīvra de paso como nota externa. Los demás van en su forma recta.
+Hay recorridos que no van de tónica a tónica. Kuriñji tiene un ámbito corto, del Ni de abajo al Dha, y Navarōj va
+de Pa a Pa. Deś baja hasta el Ni de abajo. Entre los rāgas indostánicos son vakra Deś, Bihāg, Kedār y Darbārī
+Kānaḍa; los demás van en su forma recta.
 
-`armonia escalas --vakra` los enseña todos juntos, y `armonia escalas --padre 22`, los janya de un mēḷa.
+### Notas con función
+
+`funciones` da las notas de una escala que tienen nombre por su papel: el vādī y el saṃvādī de 29 rāgas
+indostánicos, y el qarār y el ghammāz de los maqāmāt y los makamlar con dos ajnas o çeşni. El ghammāz es la nota en
+que empieza el segundo. Son del catálogo, como `madre`, y no cuentan para `==`.
+
+```swift
+TipoDeEscala.yaman.intervalo(de: .vadi)      // .terceraMayor
+TipoDeEscala.bayati.intervalo(de: .ghammaz)  // .cuartaJusta
+TipoDeEscala.yaman.funciones(de: .septimaMayor).map(\.nombre)   // ["saṃvādī"]
+```
+
+`armonia escalas --vakra` los enseña todos juntos, y `armonia escalas --madre 22`, los janya de un mēḷa.
 
 ### Notas externas
 
 Un rāga bhāṣāṅga usa notas que no son de su mēḷa (anya svara), y van en `notasExternas`. Unas están en su escala:
 Mukhāri baja con el Dha₁, que Kharaharapriyā no tiene. Otras solo salen en algunas frases: Ānandabhairavi toca a
 veces el Ga₃, el Dha₁ y el Ni₃, que no están ni en su subida ni en su bajada. Las notas externas son del catálogo,
-como `padre`: no cuentan para `==` ni van en el JSON, y `melakartasCompatibles` no las mira.
+como `madre`: no cuentan para `==` ni van en el JSON, y `melakartasCompatibles` no las mira.
 
 ```swift
 TipoDeEscala.mukhari.notasExternas == [.sextaMenor]        // true
-TipoDeEscala.mukhari.padre?.nombre                        // "Kharaharapriyā"
+TipoDeEscala.mukhari.madre?.nombre                        // "Kharaharapriyā"
 TipoDeEscala.mukhari.melakartasCompatibles                // [22]
 TipoDeEscala.anandabhairavi.notasExternas.count           // 3
 TipoDeEscala.mayor.notasExternas.isEmpty                  // true

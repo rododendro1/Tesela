@@ -69,9 +69,9 @@ extension ErrorDeUso {
         case .escuelaDesconocida(let escuela):
             return LineaDeComandos.propuesta(
                 para: escuela, entre: LineaDeComandos.nombresDeLasEscuelas.flatMap { [$0.espanol, $0.ingles] })
-        case .padreDesconocido(let padre):
+        case .madreDesconocida(let madre):
             return LineaDeComandos.propuesta(
-                para: padre, entre: TipoDeEscala.catalogo.filter { !$0.derivadas.isEmpty }.map(\.nombre))
+                para: madre, entre: TipoDeEscala.catalogo.filter { !$0.derivadas.isEmpty }.map(\.nombre))
         case .afinacionDesconocida(let afinacion):
             return LineaDeComandos.propuesta(
                 para: afinacion, entre: LineaDeComandos.nombresDeLasAfinaciones.flatMap { [$0.espanol, $0.ingles] })

@@ -258,7 +258,7 @@ extension TextosDeConsola {
         epocaDesconocida: "«{1}»: это не эпоха (antiquity, middle-ages, renaissance, baroque, classicism, romanticism, 20th-century, 21st-century, tonal)",
         afectoDesconocido: "«{1}»: это не аффект (alegre, festivo, sereno, templado, tierno, amoroso, blando, nostalgico, inquieto, triste, lastimero, grave, severo, noble, solemne, majestuoso, valiente, energico, entusiasta, devoto, contemplativo)",
         escuelaDesconocida: "«{1}»: это не школа (carnatic, hindustani, ancient-india, gagaku)",
-        padreDesconocido: "«{1}»: это не гамма, от которой происходят другие (мела, как Kharaharapriya или 22, тхат, грама…)",
+        madreDesconocida: "«{1}»: это не гамма, от которой происходят другие (мела, как Kharaharapriya или 22, тхат, грама…)",
         afinacionDesconocida: "«{1}»: это не строй (tempered, just, microtonal, equal-divisions)",
         ordenDeEscalasDesconocido: "«{1}»: гаммы сортируются по brightness или notes: --sort brightness",
         ordenDeAcordesDesconocido: "«{1}»: аккорды сортируются по brightness, notes или consonance: --sort consonance",

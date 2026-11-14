@@ -62,13 +62,13 @@ struct RecorridoTests {
     @Test func khamasYBihag() {
         #expect(alturas(.khamas) == ["Do4", "Fa4", "Mi4", "Fa4", "Sol4", "La4", "Si♭4", "Do5"])
         #expect(alturas(.khamas, .descendente) == ["Do5", "Si♭4", "La4", "Sol4", "Fa4", "Mi4", "Re4", "Do4"])
-        #expect(TipoDeEscala.khamas.padre == .melakarta(28) && TipoDeEscala.khamas.melakartasCompatibles == [28])
+        #expect(TipoDeEscala.khamas.madre == .melakarta(28) && TipoDeEscala.khamas.melakartasCompatibles == [28])
         #expect(alturas(.bihag) == ["Si3", "Do4", "Mi4", "Fa4", "Sol4", "Si4", "Do5"])
         #expect(
             alturas(.bihag, .descendente) == [
                 "Do5", "Si4", "La4", "Sol4", "Fa♯4", "Sol4", "Mi4", "Fa4", "Mi4", "Re4", "Do4",
             ])
-        #expect(TipoDeEscala.bihag.notasExternas == [.cuartaAumentada] && TipoDeEscala.bihag.padre == .bilaval)
+        #expect(TipoDeEscala.bihag.notasExternas == [.cuartaAumentada] && TipoDeEscala.bihag.madre == .bilaval)
     }
 
     /// Un recorrido puede empezar por debajo de la tónica: Darbārī Kānaḍa carnática sube desde el ni de abajo. Las
@@ -83,7 +83,7 @@ struct RecorridoTests {
             alturas(.darbariKanadaCarnatica, .descendente) == [
                 "Do5", "La♭4", "Si♭4", "Sol4", "Fa4", "Sol4", "Mi♭4", "Fa4", "Re4", "Do4",
             ])
-        #expect(darbari.notas.first == .do && darbari.tipo.padre?.nombre == "Naṭabhairavī")
+        #expect(darbari.notas.first == .do && darbari.tipo.madre?.nombre == "Naṭabhairavī")
         #expect(darbari.cents(con: .afinacionJusta).first == 0 && darbari.cents(con: .afinacionJusta).count == 7)
         // Sus mismas notas son las de la indostánica, que va recta: el recorrido no cuenta para `==`.
         #expect(darbari.tipo == .darbariKanada && !darbari.tipo.esIdentico(a: .darbariKanada))
@@ -95,11 +95,11 @@ struct RecorridoTests {
         #expect(cents.count == 6 && cents == cents.sorted())
     }
 
-    /// Las notas externas (anya svara): las que no son del padre, estén en la escala o solo en sus frases.
+    /// Las notas externas (anya svara): las que no son de la madre, estén en la escala o solo en sus frases.
     @Test func lasNotasExternasNoSonDelPadre() {
         #expect(
             TipoDeEscala.mukhari.notasExternas == [.sextaMenor]
-                && TipoDeEscala.mukhari.padre?.nombre == "Kharaharapriyā")
+                && TipoDeEscala.mukhari.madre?.nombre == "Kharaharapriyā")
         #expect(TipoDeEscala.mukhari.melakartasCompatibles == [22])
         #expect(TipoDeEscala.anandabhairavi.notasExternas == [.terceraMayor, .sextaMenor, .septimaMayor])
         // Las de Ānandabhairavi no están en sus formas: solo salen en algunas frases.
@@ -111,9 +111,9 @@ struct RecorridoTests {
             TipoDeEscala.begada.notasExternas == [.septimaMenor]
                 && TipoDeEscala.devagandhari.notasExternas == [.septimaMenor])
         // Deś sube con el Ni natural, que Khamāj, su thāṭ, no tiene.
-        #expect(TipoDeEscala.des.notasExternas == [.septimaMayor] && TipoDeEscala.des.padre?.nombre == "Khamāj")
+        #expect(TipoDeEscala.des.notasExternas == [.septimaMayor] && TipoDeEscala.des.madre?.nombre == "Khamāj")
         let bhairavi = TipoDeEscala.bhairaviCarnatica
-        #expect(bhairavi.notasExternas == [.sextaMayor] && bhairavi.padre?.nombre == "Naṭabhairavī")
+        #expect(bhairavi.notasExternas == [.sextaMayor] && bhairavi.madre?.nombre == "Naṭabhairavī")
         #expect((try? TipoDeEscala(leyendo: "Bhairavi"))?.esIdentico(a: .bhairavi) == true)
         #expect((try? TipoDeEscala(leyendo: "Carnatic Bhairavi"))?.esIdentico(a: bhairavi) == true)
         #expect(TipoDeEscala.mayor.notasExternas.isEmpty && TipoDeEscala.kedaram.notasExternas.isEmpty)
@@ -161,22 +161,52 @@ struct RecorridoTests {
                 "Ānandabhairavi", "Suruṭṭi", "Aṭāṇā", "Kēdāram", "Darbār", "Mukhāri", "Gauḷa", "Nalinakānti",
                 "Kathanakutūhalam", "Bēgaḍa", "Sahānā", "Rītigauḷa", "Darbārī Kānaḍa carnática",
                 "Kāpi", "Kānaḍa", "Nīlāmbari", "Nāyaki", "Sāraṅga", "Śrī carnática", "Hamīr Kalyāṇi", "Yamunā Kalyāṇi",
-                "Dēvamanōhari", "Behāg carnática", "Khamās", "Bihāg",
+                "Dēvamanōhari", "Behāg carnática", "Khamās", "Kuriñji", "Navarōj", "Deś", "Bihāg",
+                "Darbārī Kānaḍa", "Kedār",
             ])
         for tipo in vakra {
             let subida = tipo.intervalos.count
             let bajada = (tipo.intervalosDescendentes ?? tipo.intervalos).count
-            // Al subir puede empezar por debajo de la tónica (Darbārī Kānaḍa carnática, desde el ni de abajo).
+            let grado = { (n: Int, de: Int) in ((n - 1) % de + de) % de }
+            // Pasan por todos los grados, en alguna octava, sin salirse de la de abajo ni de la de arriba. Casi todos
+            // van de tónica a tónica; los de ámbito corto, como Kuriñji (de Ni a Dha) y Navarōj (de Pa a Pa), no.
             if let recorrido = tipo.recorrido {
-                #expect(recorrido.first! <= 1 && recorrido.last == subida + 1, Comment(rawValue: tipo.nombre))
-                #expect(Set(recorrido.filter { $0 >= 1 }) == Set(1...(subida + 1)), Comment(rawValue: tipo.nombre))
+                #expect(recorrido.first! <= 1, Comment(rawValue: tipo.nombre))
+                #expect(Set(recorrido.map { grado($0, subida) }) == Set(0..<subida), Comment(rawValue: tipo.nombre))
                 #expect(recorrido.allSatisfy { $0 > -subida && $0 <= subida + 1 }, Comment(rawValue: tipo.nombre))
             }
             if let recorrido = tipo.recorridoDescendente {
-                #expect(recorrido.first == bajada + 1 && recorrido.last == 1, Comment(rawValue: tipo.nombre))
-                #expect(Set(recorrido) == Set(1...(bajada + 1)), Comment(rawValue: tipo.nombre))
+                #expect(recorrido.last! <= 1, Comment(rawValue: tipo.nombre))
+                #expect(Set(recorrido.map { grado($0, bajada) }) == Set(0..<bajada), Comment(rawValue: tipo.nombre))
+                #expect(recorrido.allSatisfy { $0 > -bajada && $0 <= bajada + 1 }, Comment(rawValue: tipo.nombre))
             }
+            // La bajada empieza donde acaba la subida.
+            let escala = Escala(.do, tipo)
+            #expect(
+                escala.alturas(octava: 4).last == escala.alturas(octava: 4, sentido: .descendente).first,
+                Comment(rawValue: tipo.nombre))
         }
+    }
+
+    /// Los de ámbito corto, los que bajan hasta el Ni de abajo y los indostánicos con su recorrido.
+    @Test func losQueNoVanDeTonicaATonica() {
+        #expect(alturas(.kurinji) == ["Si3", "Do4", "Re4", "Mi4", "Fa4", "Sol4", "La4"])
+        #expect(alturas(.kurinji, .descendente) == ["La4", "Sol4", "Fa4", "Mi4", "Re4", "Do4", "Si3"])
+        #expect(alturas(.navaroj) == ["Sol3", "La3", "Si3", "Do4", "Re4", "Mi4", "Fa4", "Sol4"])
+        #expect(alturas(.navaroj, .descendente) == ["Sol4", "Fa4", "Mi𝄫4", "Re♯4", "Do4", "Si♭3", "La3", "Sol3"])
+        #expect(alturas(.des) == ["Si3", "Do4", "Re4", "Fa4", "Sol4", "Si4", "Do5"])
+        #expect(
+            alturas(.des, .descendente) == [
+                "Do5", "Si♭4", "La4", "Sol4", "La4", "Fa4", "Mi4", "Re4", "Sol4", "Fa4", "Mi4", "Re4", "Mi4", "Si3",
+                "Do4",
+            ])
+        #expect(alturas(.kedar) == ["Do4", "Fa4", "Mi4", "Sol4", "La4", "Si4", "Do5"])
+        #expect(alturas(.kedar, .descendente) == ["Do5", "Si4", "La4", "Sol4", "Fa♯4", "Sol4", "Fa4", "Re4", "Do4"])
+        #expect(
+            alturas(.darbariKanada, .descendente) == [
+                "Do5", "La♭4", "Si♭4", "Sol4", "Fa4", "Sol4", "Mi♭4", "Fa4", "Re4", "Do4",
+            ])
+        #expect(!TipoDeEscala.sindhuBhairavi.esVakra && TipoDeEscala.sindhuBhairavi.notasExternas.count == 5)
     }
 
     @Test func seGuardaEnJSONYLoQueNoLoTraeSeLeeSinEl() throws {

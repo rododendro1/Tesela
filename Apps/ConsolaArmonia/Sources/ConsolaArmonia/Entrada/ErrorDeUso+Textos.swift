@@ -79,8 +79,8 @@ extension ErrorDeUso {
             return TextosDeConsola.traduccion { $0.afectoDesconocido(afecto) }
         case .escuelaDesconocida(let escuela):
             return TextosDeConsola.traduccion { $0.escuelaDesconocida(escuela) }
-        case .padreDesconocido(let padre):
-            return TextosDeConsola.traduccion { $0.padreDesconocido(padre) }
+        case .madreDesconocida(let madre):
+            return TextosDeConsola.traduccion { $0.madreDesconocida(madre) }
         case .afinacionDesconocida(let afinacion):
             return TextosDeConsola.traduccion { $0.afinacionDesconocida(afinacion) }
         case .ordenDeEscalasDesconocido(let orden):

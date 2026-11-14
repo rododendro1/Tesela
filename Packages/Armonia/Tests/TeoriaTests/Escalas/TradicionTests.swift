@@ -22,9 +22,9 @@ import Testing
                 #expect(tipo.datos.categoria != nil, Comment(rawValue: tipo.nombre))
                 #expect(tipo.categoria == tipo.datos.categoria, Comment(rawValue: tipo.nombre))
                 #expect(lista.tradicion != .occidental, Comment(rawValue: tipo.nombre))
-                if let padre = tipo.datos.padre {
-                    // El padre es una escala del catálogo.
-                    #expect(tipo.padre?.identidad == padre, Comment(rawValue: tipo.nombre))
+                if let madre = tipo.datos.madre {
+                    // La madre es una escala del catálogo.
+                    #expect(tipo.madre?.identidad == madre, Comment(rawValue: tipo.nombre))
                 }
             }
         }
@@ -35,7 +35,7 @@ import Testing
         )
         // Las occidentales no tienen categoría, y su tradición es la occidental.
         for tipo in TipoDeEscala.occidentales {
-            #expect(tipo.datos.categoria == nil && tipo.datos.padre == nil, Comment(rawValue: tipo.nombre))
+            #expect(tipo.datos.categoria == nil && tipo.datos.madre == nil, Comment(rawValue: tipo.nombre))
             #expect(tipo.tradicion == .occidental, Comment(rawValue: tipo.nombre))
         }
         #expect(TipoDeEscala(nombre: "mía", intervalos: [.unisono, .quintaJusta]).tradicion == nil)
