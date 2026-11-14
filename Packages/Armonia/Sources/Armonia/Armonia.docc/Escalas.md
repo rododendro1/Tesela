@@ -337,9 +337,25 @@ Los rāgas janya incluidos son Mohanam, Hindolam, Haṃsadhvani, Ābhogi, Madhya
 Amṛtavarṣiṇī, Śuddha Sāveri, Śuddha Dhanyāsi, Śrīrañjani, Mālayamārutam, Gambhīranāṭa, Haṃsanādam, Haṃsānandi,
 Bhūpālam, Revagupti, Lalitā, Megharañjani, Nāgasvarāvaḷi, Sunādavinodinī y Śuddha Hindolam (iguales al subir y al
 bajar), y Bilahari, Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri, Nāṭa, Kalyāṇavasantam, Bauḷi, Dhanyāsi,
-Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini y Rasikarañjani (distintos). Llevan su nombre en sánscrito, en telugu y en canarés, y los 27 que tienen artículo en la Wikipedia en tamil, también en tamil. Se dejan fuera los vakra, que suben o bajan en
-zigzag. `melakartasCompatibles` dice de qué mēḷa puede derivar
+Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini y Rasikarañjani (distintos). Llevan su nombre en sánscrito, en telugu y en canarés, y los 29 que tienen artículo en la Wikipedia en tamil, también en tamil. Tres más son vakra, y suben o bajan en
+zigzag: Ānandabhairavi, Suruṭṭi y Aṭāṇā (ver abajo). `melakartasCompatibles` dice de qué mēḷa puede derivar
 cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
+
+### Recorridos en zigzag
+
+Un rāga vakra no sube o no baja en línea recta: Ānandabhairavi sube Sa ga Re ga ma Pa Dha Pa Ṡa. Sus notas siguen
+en `intervalos` y `intervalosDescendentes`, en orden, y el orden en que se tocan va aparte, en `recorrido` y
+`recorridoDescendente`: los grados de esas notas, contados desde 1, con el siguiente al último como la tónica de
+arriba (y 0 y los negativos, los de la octava de abajo). `alturas(octava:sentido:)` los sigue. No cuentan para `==`:
+Aṭāṇā y una escala con sus mismas notas que baje recta son iguales, como Kāfī y el dórico.
+
+```swift
+TipoDeEscala.anandabhairavi.recorrido             // [1, 3, 2, 3, 4, 5, 6, 5, 7]
+TipoDeEscala.anandabhairavi.esVakra               // true
+TipoDeEscala.atana.recorrido                      // nil
+TipoDeEscala.atana.recorridoDescendente           // [8, 7, 6, 5, 4, 5, 3, 2, 1]
+Escala(.do, .atana).alturas(octava: 4, sentido: .descendente)   // [Do5, Si4, La4, Sol4, Fa4, Sol4, Mi4, Re4, Do4]
+```
 
 ### Qué forma usa cada operación
 

@@ -308,6 +308,9 @@ extension LineaDeComandos {
                 "  " + notacion.texto(\.nombreOriginal) + ": " + originales.map(\.enUnaLinea).joined(separator: " · "))
         }
         lineas.append("  \(traducir(.notas)): " + datos.notas.joined(separator: " "))
+        // Un rāga vakra, en el orden en que se toca: «↑: Do Mi♭ Re Mi♭ Fa Sol La Sol Do».
+        if let recorrido = datos.recorrido { lineas.append("  ↑: " + recorrido.joined(separator: " ")) }
+        if let recorrido = datos.recorridoDescendente { lineas.append("  ↓: " + recorrido.joined(separator: " ")) }
         // Con un sistema móvil (--sistema sargam), los grados con sus nombres, desde la tónica: Sā Re ga ma Pa Dha ni.
         if let movil {
             let nombres = escala.nombres(en: movil.sistema, grafia: movil.grafia)

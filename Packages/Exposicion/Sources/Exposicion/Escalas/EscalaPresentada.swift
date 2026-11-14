@@ -19,6 +19,10 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
     /// El nombre en la escritura de su tradición, si la escala lo tiene: «حجاز» para Ḥijāz.
     public let nombresOriginales: [NombreOriginalPresentado]?
     public let notas: [String]
+    /// En los rāgas vakra, las notas en el orden en que se tocan al subir y al bajar (`TipoDeEscala.recorrido`):
+    /// Do Ānandabhairavi sube «Do Mi♭ Re Mi♭ Fa Sol La Sol Do». `nil` si sube o baja en línea recta.
+    public let recorrido: [String]?
+    public let recorridoDescendente: [String]?
     public let clases: [Int]
     /// De qué escala es modo («Modo 2 de Do mayor»), si lo es de alguna conocida.
     public let modo: String?
@@ -37,6 +41,11 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
         let originales = NombreOriginalPresentado.de(escala.tipo, en: notacion)
         nombresOriginales = originales.isEmpty ? nil : originales
         notas = escala.notas.map { $0.nombre(en: notacion) }
+        func enOrden(_ sentido: SentidoDelIntervalo) -> [String] {
+            escala.alturas(octava: 4, sentido: sentido).map { $0.nota.nombre(en: notacion) }
+        }
+        recorrido = escala.tipo.recorrido == nil ? nil : enOrden(.ascendente)
+        recorridoDescendente = escala.tipo.recorridoDescendente == nil ? nil : enOrden(.descendente)
         clases = escala.notas.map(\.claseDeAltura)
         modo = PresentacionDeEscalaYAcorde.modo(de: escala, en: notacion)
         let cuatriadas = escala.armonizar(cuatriadas: true).compactMap { $0 }
