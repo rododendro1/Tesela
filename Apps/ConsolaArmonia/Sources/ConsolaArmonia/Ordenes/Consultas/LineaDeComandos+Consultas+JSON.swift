@@ -503,7 +503,7 @@ extension LineaDeComandos {
                     titulo: grupo.titulo,
                     escalas: grupo.tipos.map { tipo in
                         let escala = Escala(.do, tipo)
-                        let originales = tipo.nombresOriginales.map { NombreOriginalPresentado($0, en: notacion) }
+                        let originales = NombreOriginalPresentado.de(tipo, en: notacion)
                         return EscalaDelCatalogoJSON(
                             nombre: tipo.nombre(en: notacion), nombresOriginales: originales.isEmpty ? nil : originales,
                             notas: escala.notas.map { $0.nombre(en: notacion) },

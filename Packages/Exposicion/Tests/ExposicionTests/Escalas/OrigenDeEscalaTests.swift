@@ -94,9 +94,12 @@ import Testing
     @Test func elNombreOriginal() throws {
         let gong = try #require(EscalaPresentada(Escala(.do, .gong), en: notacion).nombresOriginales)
         #expect(gong.map(\.idioma) == ["zh-Hans", "zh-Hant"])
+        #expect(gong.map(\.completo) == ["宫调", "宮調"])
         #expect(gong[1].enUnaLinea == "\u{2068}宮\u{2069} (chino tradicional)")
         let enIngles = try #require(EscalaPresentada(Escala(.re, .hiyaz), en: .compacta(.ingles)).nombresOriginales)
         #expect(enIngles.first?.nombreDelIdioma == "Arabic" && enIngles.first?.derechaAIzquierda == true)
         #expect(EscalaPresentada(Escala(.re, .dorico), en: notacion).nombresOriginales == nil)
+        let yo = try #require(EscalaPresentada(Escala(.do, .yo), en: notacion).nombresOriginales)
+        #expect(yo.allSatisfy { $0.completo == nil })
     }
 }

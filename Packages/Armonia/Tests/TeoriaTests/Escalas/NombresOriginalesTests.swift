@@ -97,6 +97,30 @@ import Testing
         #expect(IdiomaOriginal.hebreo.deDerechaAIzquierda && !IdiomaOriginal.birmano.deDerechaAIzquierda)
     }
 
+    /// La forma completa, con la palabra de la categoría delante o detrás, y sin repetirla.
+    @Test func losNombresOriginalesCompletos() {
+        #expect(TipoDeEscala.hiyaz.nombreOriginalCompleto?.texto == "مقام حجاز")
+        #expect(TipoDeEscala.mahur.nombreOriginalCompleto?.texto == "دستگاه ماهور")
+        #expect(TipoDeEscala.yaman.nombreOriginalCompleto?.texto == "राग यमन")
+        #expect(TipoDeEscala.bilaval.nombreOriginalCompleto?.texto == "थाट बिलावल")
+        #expect(TipoDeEscala.melakarta(1)?.nombreOriginalCompleto?.texto == "मेळ कनकाङ्गी")
+        #expect(TipoDeEscala.ousak.nombreOriginalCompleto?.texto == "δρόμος Ουσάκ")
+        #expect(TipoDeEscala.tezetaMayor.nombreOriginalCompleto?.texto == "ትዝታ ቅኝት")
+        #expect(TipoDeEscala.gong.nombresOriginalesCompletos.map(\.texto) == ["宫调", "宮調"])
+        #expect(TipoDeEscala.zhi.nombresOriginalesCompletos.map(\.texto) == ["徵調", "徴"])
+        // Las que ya la llevan, o cuya categoría no la tiene, se quedan como están.
+        for tipo in [TipoDeEscala.jinsSaba, .shaddRast, .echosProtos, .pyongjo, .yo, .freygish, .harmoniaDoria] {
+            #expect(tipo.nombresOriginalesCompletos == tipo.nombresOriginales, "\(tipo.nombre)")
+        }
+        #expect(TipoDeEscala.buscar(nombre: "مقام حجاز")?.esIdentico(a: .hiyaz) == true)
+        for tipo in Self.catalogo {
+            #expect(tipo.nombresOriginalesCompletos.count == tipo.nombresOriginales.count, "\(tipo.nombre)")
+            for (corto, completo) in zip(tipo.nombresOriginales, tipo.nombresOriginalesCompletos) {
+                #expect(completo.texto.contains(corto.texto) && completo.idioma == corto.idioma, "\(tipo.nombre)")
+            }
+        }
+    }
+
     @Test func lasDemasNoLoTienen() {
         for tipo in TipoDeEscala.occidentales { #expect(tipo.nombresOriginales.isEmpty, "\(tipo.nombre)") }
         #expect(TipoDeEscala.rastMakami.nombresOriginales.isEmpty)

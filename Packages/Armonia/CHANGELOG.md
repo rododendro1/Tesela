@@ -15,6 +15,11 @@
   el hebreo y el yidis del klezmer (פֿריגיש, אהבה רבה, מי שברך, ה׳ מלך, מגן אבות) y el griego politónico de las
   harmoniai (δωριστί…) y de los géneros y sus colores (γένος διατονικόν, χρῶμα μαλακόν…), estos con su lectura.
   `IdiomaOriginal` gana `griegoAntiguo` («grc»), `hebreo`, `yidis` y `birmano`, y `Escritura`, `hebrea` y `birmana`.
+- `TipoDeEscala.nombresOriginalesCompletos` y `nombreOriginalCompleto`: el nombre original con la palabra de su
+  categoría en su escritura, como `nombreCompleto` («مقام حجاز», «دستگاه ماهور», «राग यमन», «मेळ कनकाङ्गी»,
+  «δρόμος Ουσάκ», «ትዝታ ቅኝት», «宫调» y «宮調»). Los que ya la llevan (جنس صبا, Ήχος πρώτος, 평조, los shadd) y los de
+  categorías sin una fija (el klezmer, las japonesas, las harmoniai) se quedan como están. Se leen al buscar, y el
+  TSV de `EjemploCatalogos` los tiene en `nombres_originales_completos`.
 - `TipoDeEscala.nombresOriginales` y `nombreOriginal`: el nombre en la escritura de su tradición, con su idioma
   (`IdiomaOriginal`, con la etiqueta BCP 47: «ar», «zh-Hant»), su escritura (`Escritura`, con el código ISO 15924) y,
   si no es la del nombre, su lectura («Yō onkai» para 陽音階). Los tienen 233 escalas: las de la India, el mundo

@@ -123,9 +123,11 @@ package struct NombresDeEscalas: Sendable {
             guard let tipo = fila.tipo else { continue }
             if indice[TipoDeEscala.normalizar(fila.nombre)] == nil { indice[TipoDeEscala.normalizar(fila.nombre)] = tipo }
         }
-        // Las tradicionales se leen también por su nombre original, que es el mismo en todos los idiomas: «حجاز».
+        // Las tradicionales se leen también por su nombre original, que es el mismo en todos los idiomas, con la
+        // palabra de su categoría o sin ella: «حجاز», «مقام حجاز».
         func otros(_ fila: Fila) -> [String] {
-            fila.alias + fila.variantes + (fila.tradicional == nil ? [] : fila.tipo?.nombresOriginales.map(\.texto) ?? [])
+            guard fila.tradicional != nil, let tipo = fila.tipo else { return fila.alias + fila.variantes }
+            return fila.alias + fila.variantes + (tipo.nombresOriginales + tipo.nombresOriginalesCompletos).map(\.texto)
         }
         for fila in filas {
             guard let tipo = fila.tipo else { continue }

@@ -631,6 +631,7 @@ import Hexagonos
         comprobar(TipoDeEscala.gong.nombresOriginales.map(\.idioma.codigo), #"["zh-Hans", "zh-Hant"]"#, doc, 4)
         comprobar(TipoDeEscala.yo.nombresOriginales[1].lectura, #""Yō onkai""#, doc, 5)
         comprobar(TipoDeEscala.hiyaz.nombreOriginal?.idioma.deDerechaAIzquierda, #"true"#, doc, 6)
+        comprobar(TipoDeEscala.hiyaz.nombreOriginalCompleto?.texto, #""مقام حجاز""#, doc, 7)
     }
 
     @Test func escalas10() throws {
