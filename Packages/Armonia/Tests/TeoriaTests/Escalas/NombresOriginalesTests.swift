@@ -230,6 +230,9 @@ import Testing
                 textos[.canares] == sanscrito.map { pasar($0, desplazamiento: 0x380) }, Comment(rawValue: janya.nombre))
         }
         #expect(TipoDeEscala.suddhaSaveri.nombresOriginales[1].texto == "శుద్ధ సావేరి")
+        let conTamil = TipoDeEscala.janyas.filter { $0.nombresOriginales.contains { $0.idioma == .tamil } }
+        #expect(conTamil.count == 23)
+        #expect(TipoDeEscala.buscar(nombre: "ஹம்சத்வனி")?.esIdentico(a: .hamsadhvani) == true)
         let kanakangi = try? #require(TipoDeEscala.melakarta(1))
         #expect(kanakangi?.nombresOriginales.map(\.texto) == ["कनकाङ्गी", "కనకాంగి", "ಕನಕಾಂಗಿ", "கனகாங்கி"])
         #expect(kanakangi?.nombreOriginal?.idioma == .sanscrito)

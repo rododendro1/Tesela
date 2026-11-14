@@ -14,7 +14,7 @@
 - Doce rāgas janya más, con su ārohaṇa, su avarohaṇa y su mēḷa de la Wikipedia en inglés: Haṃsānandi,
   Kalyāṇavasantam, Bhūpālam, Revagupti, Bauḷi, Lalitā, Megharañjani, Dhanyāsi, Ābheri, Maṇiraṅgu, Nāgasvarāvaḷi y
   Sunādavinodinī. Los janya llevan ahora su nombre también en telugu y en canarés, pasado del sánscrito con las reglas
-  de los mēḷa.
+  de los mēḷa, y 23 de ellos en tamil, el título de su artículo en la Wikipedia en tamil.
 - Ocho rāgas indostánicos más, en su forma recta: Jaunpurī, Miyāṅ kī Toḍī, Gujarī Toḍī, Rāgeśrī, Vṛndāvanī Sāraṅg,
   Jog, Ahir Bhairav y Pūriyā.
 - Cinco shudūd más de Ṣafī al-Dīn, con sus cents pitagóricos: Zīrafkand, Zankūla, Rāhawī, Ḥusaynī y Ḥijāzī

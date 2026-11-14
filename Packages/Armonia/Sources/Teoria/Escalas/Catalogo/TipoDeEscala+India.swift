@@ -189,11 +189,15 @@ extension TipoDeEscala {
     public static let mohanam = TipoDeEscala(
         nombre: "Mohanam", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         variantes: ["Mohana"],
-        nombresOriginales: [.init("मोहनम्", .sanscrito), .init("మోహనం", .telugu), .init("ಮೋಹನಂ", .canares)],
+        nombresOriginales: [
+            .init("मोहनम्", .sanscrito), .init("మోహనం", .telugu), .init("ಮೋಹನಂ", .canares), .init("மோகனம்", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(28))
     public static let hindolam = TipoDeEscala(
         nombre: "Hindolam", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .sextaMenor, .septimaMenor],
-        nombresOriginales: [.init("हिन्दोलम्", .sanscrito), .init("హిందోలం", .telugu), .init("ಹಿಂದೋಲಂ", .canares)],
+        nombresOriginales: [
+            .init("हिन्दोलम्", .sanscrito), .init("హిందోలం", .telugu), .init("ಹಿಂದೋಲಂ", .canares), .init("இந்தோளம்", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(20))
     /// Sa ri ma Pa ni (Do Re♭ Fa Sol Si♭).
     public static let revati = TipoDeEscala(
@@ -204,20 +208,29 @@ extension TipoDeEscala {
     public static let amrtavarsini = TipoDeEscala(
         nombre: "Amṛtavarṣiṇī", intervalos: [.unisono, .terceraMayor, .cuartaAumentada, .quintaJusta, .septimaMayor],
         variantes: ["Amritavarshini", "Amrutavarshini"],
-        nombresOriginales: [.init("अमृतवर्षिणी", .sanscrito), .init("అమృతవర్షిణి", .telugu), .init("ಅಮೃತವರ್ಷಿಣಿ", .canares)],
+        nombresOriginales: [
+            .init("अमृतवर्षिणी", .sanscrito), .init("అమృతవర్షిణి", .telugu), .init("ಅಮೃತವರ್ಷಿಣಿ", .canares),
+            .init("அமிர்தவர்ஷிணி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(65))
     public static let hamsadhvani = TipoDeEscala(
         nombre: "Haṃsadhvani", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .septimaMayor],
         variantes: ["Hamsadhwani"],
-        nombresOriginales: [.init("हंसध्वनि", .sanscrito), .init("హంసధ్వని", .telugu), .init("ಹಂಸಧ್ವನಿ", .canares)],
+        nombresOriginales: [
+            .init("हंसध्वनि", .sanscrito), .init("హంసధ్వని", .telugu), .init("ಹಂಸಧ್ವನಿ", .canares), .init("ஹம்சத்வனி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(29))
     public static let abhogi = TipoDeEscala(
         nombre: "Ābhogi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .sextaMayor],
-        nombresOriginales: [.init("आभोगि", .sanscrito), .init("ఆభోగి", .telugu), .init("ಆಭೋಗಿ", .canares)],
+        nombresOriginales: [
+            .init("आभोगि", .sanscrito), .init("ఆభోగి", .telugu), .init("ಆಭೋಗಿ", .canares), .init("ஆபோகி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(22))
     public static let madhyamavati = TipoDeEscala(
         nombre: "Madhyamāvatī", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        nombresOriginales: [.init("मध्यमावती", .sanscrito), .init("మధ్యమావతి", .telugu), .init("ಮಧ್ಯಮಾವತಿ", .canares)],
+        nombresOriginales: [
+            .init("मध्यमावती", .sanscrito), .init("మధ్యమావతి", .telugu), .init("ಮಧ್ಯಮಾವತಿ", .canares), .init("மத்தியமாவதி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(22))
     public static let bilahari = TipoDeEscala(
         nombre: "Bilahari",
@@ -225,7 +238,9 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        nombresOriginales: [.init("बिलहरि", .sanscrito), .init("బిలహరి", .telugu), .init("ಬಿಲಹರಿ", .canares)],
+        nombresOriginales: [
+            .init("बिलहरि", .sanscrito), .init("బిలహరి", .telugu), .init("ಬಿಲಹರಿ", .canares), .init("பிலகரி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(29))
     public static let kambhoji = TipoDeEscala(
         nombre: "Kāmbhoji",
@@ -234,7 +249,9 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         variantes: ["Kambodhi"],
-        nombresOriginales: [.init("काम्भोजि", .sanscrito), .init("కాంభోజి", .telugu), .init("ಕಾಂಭೋಜಿ", .canares)],
+        nombresOriginales: [
+            .init("काम्भोजि", .sanscrito), .init("కాంభోజి", .telugu), .init("ಕಾಂಭೋಜಿ", .canares), .init("காம்போதி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(28))
     public static let arabhi = TipoDeEscala(
         nombre: "Ārabhi",
@@ -242,7 +259,9 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        nombresOriginales: [.init("आरभि", .sanscrito), .init("ఆరభి", .telugu), .init("ಆರಭಿ", .canares)],
+        nombresOriginales: [
+            .init("आरभि", .sanscrito), .init("ఆరభి", .telugu), .init("ಆರಭಿ", .canares), .init("ஆரபி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(29))
     public static let kedaragaula = TipoDeEscala(
         nombre: "Kedāragauḷa",
@@ -251,7 +270,9 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         variantes: ["Kedaragowla"],
-        nombresOriginales: [.init("केदारगौळ", .sanscrito), .init("కేదారగౌళ", .telugu), .init("ಕೇದಾರಗೌಳ", .canares)],
+        nombresOriginales: [
+            .init("केदारगौळ", .sanscrito), .init("కేదారగౌళ", .telugu), .init("ಕೇದಾರಗೌಳ", .canares), .init("கேதாரகௌளை", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(28))
     /// Mohanakalyāṇi, del mēḷa 65 (Mecakalyāṇī): sube como Mohanam (Sa Ri₂ Ga₃ Pa Dha₂) y baja con las siete notas,
     /// con Ma₂ (Do Si La Sol Fa♯ Mi Re).
@@ -261,7 +282,9 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
-        nombresOriginales: [.init("मोहनकल्याणि", .sanscrito), .init("మోహనకల్యాణి", .telugu), .init("ಮೋಹನಕಲ್ಯಾಣಿ", .canares)],
+        nombresOriginales: [
+            .init("मोहनकल्याणि", .sanscrito), .init("మోహనకల్యాణి", .telugu), .init("ಮೋಹನಕಲ್ಯಾಣಿ", .canares), .init("மோகனகல்யாணி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(65))
     /// Sāveri, del mēḷa 15 (Māyāmālavagauḷa): sube Sa Ri₁ Ma₁ Pa Dha₁ y baja con las siete notas (Do Si La♭ Sol Fa
     /// Mi Re♭).
@@ -271,7 +294,9 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        nombresOriginales: [.init("सावेरि", .sanscrito), .init("సావేరి", .telugu), .init("ಸಾವೇರಿ", .canares)],
+        nombresOriginales: [
+            .init("सावेरि", .sanscrito), .init("సావేరి", .telugu), .init("ಸಾವೇರಿ", .canares), .init("சாவேரி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(15))
     /// Nāṭa, del mēḷa 36 (Calanāṭa): sube Sa Ri₃ Ga₃ Ma₁ Pa Dha₃ Ni₃ (Do Re♯ Mi Fa Sol La♯ Si) y baja sin Ga ni Dha.
     public static let nata = TipoDeEscala(
@@ -281,14 +306,18 @@ extension TipoDeEscala {
         ],
         intervalosDescendentes: [.unisono, .segundaAumentada, .cuartaJusta, .quintaJusta, .septimaMayor],
         variantes: ["Nattai"],
-        nombresOriginales: [.init("नाट", .sanscrito), .init("నాట", .telugu), .init("ನಾಟ", .canares)],
+        nombresOriginales: [
+            .init("नाट", .sanscrito), .init("నాట", .telugu), .init("ನಾಟ", .canares), .init("நாட்டை", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(36))
 
     /// Śuddha Sāveri, del mēḷa 29 (Dhīraśaṅkarābharaṇam): Sa Ri₂ Ma₁ Pa Dha₂ (Do Re Fa Sol La), la Durgā indostánica.
     public static let suddhaSaveri = TipoDeEscala(
         nombre: "Śuddha Sāveri", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         variantes: ["Shuddha Saveri"],
-        nombresOriginales: [.init("शुद्ध सावेरि", .sanscrito), .init("శుద్ధ సావేరి", .telugu), .init("ಶುದ್ಧ ಸಾವೇರಿ", .canares)],
+        nombresOriginales: [
+            .init("शुद्ध सावेरि", .sanscrito), .init("శుద్ధ సావేరి", .telugu), .init("ಶುದ್ಧ ಸಾವೇರಿ", .canares), .init("சுத்தசாவேரி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(29))
     /// Śuddha Dhanyāsi, del mēḷa 22 (Kharaharapriyā): Sa Ga₂ Ma₁ Pa Ni₂ (Do Mi♭ Fa Sol Si♭), la pentatónica menor.
     public static let suddhaDhanyasi = TipoDeEscala(
@@ -301,20 +330,26 @@ extension TipoDeEscala {
         nombre: "Śrīrañjani",
         intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .sextaMayor, .septimaMenor],
         variantes: ["Shriranjani"],
-        nombresOriginales: [.init("श्रीरञ्जनि", .sanscrito), .init("శ్రీరంజని", .telugu), .init("ಶ್ರೀರಂಜನಿ", .canares)],
+        nombresOriginales: [
+            .init("श्रीरञ्जनि", .sanscrito), .init("శ్రీరంజని", .telugu), .init("ಶ್ರೀರಂಜನಿ", .canares), .init("சிறீரஞ்சனி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(22))
     /// Mālayamārutam, del mēḷa 16 (Cakravākam): Sa Ri₁ Ga₃ Pa Dha₂ Ni₂ (Do Re♭ Mi Sol La Si♭), sin Ma.
     public static let malayamarutam = TipoDeEscala(
         nombre: "Mālayamārutam",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .quintaJusta, .sextaMayor, .septimaMenor],
         variantes: ["Malayamarutham"],
-        nombresOriginales: [.init("मलयमारुतम्", .sanscrito), .init("మలయమారుతం", .telugu), .init("ಮಲಯಮಾರುತಂ", .canares)],
+        nombresOriginales: [
+            .init("मलयमारुतम्", .sanscrito), .init("మలయమారుతం", .telugu), .init("ಮಲಯಮಾರುತಂ", .canares), .init("மலயமாருதம்", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(16))
     /// Gambhīranāṭa, del mēḷa 36 (Calanāṭa): Sa Ga₃ Ma₁ Pa Ni₃ (Do Mi Fa Sol Si).
     public static let gambhiranata = TipoDeEscala(
         nombre: "Gambhīranāṭa", intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
         variantes: ["Gambheera Nattai"],
-        nombresOriginales: [.init("गम्भीरनाट", .sanscrito), .init("గంభీరనాట", .telugu), .init("ಗಂಭೀರನಾಟ", .canares)],
+        nombresOriginales: [
+            .init("गम्भीरनाट", .sanscrito), .init("గంభీరనాట", .telugu), .init("ಗಂಭೀರನಾಟ", .canares), .init("கம்பீரநாட்டை", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(36))
     /// Haṃsanādam, del mēḷa 60 (Nītimati): Sa Ri₂ Ma₂ Pa Ni₃ (Do Re Fa♯ Sol Si).
     public static let hamsanadam = TipoDeEscala(
@@ -329,7 +364,9 @@ extension TipoDeEscala {
     public static let hamsanandi = TipoDeEscala(
         nombre: "Haṃsānandi",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaAumentada, .sextaMayor, .septimaMayor],
-        nombresOriginales: [.init("हंसानन्दि", .sanscrito), .init("హంసానంది", .telugu), .init("ಹಂಸಾನಂದಿ", .canares)],
+        nombresOriginales: [
+            .init("हंसानन्दि", .sanscrito), .init("హంసానంది", .telugu), .init("ಹಂಸಾನಂದಿ", .canares), .init("ஹம்சானந்தி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(53))
     /// Kalyāṇavasantam, del mēḷa 21 (Kīravāṇī): sube Sa Ga₂ Ma₁ Dha₁ Ni₃ (Do Mi♭ Fa La♭ Si) y baja con las siete notas.
     public static let kalyanavasantam = TipoDeEscala(
@@ -341,6 +378,7 @@ extension TipoDeEscala {
         variantes: ["Kalyana Vasantham"],
         nombresOriginales: [
             .init("कल्याणवसन्तम्", .sanscrito), .init("కల్యాణవసంతం", .telugu), .init("ಕಲ್ಯಾಣವಸಂತಂ", .canares),
+            .init("கல்யாணவசந்தம்", .tamil),
         ],
         categoria: .janya, padre: .melakarta(21))
     /// Bhūpālam, del mēḷa 45 (Śubhapantuvarāḷi): Sa Ri₁ Ga₂ Pa Dha₁ (Do Re♭ Mi♭ Sol La♭).
@@ -351,7 +389,9 @@ extension TipoDeEscala {
     /// Revagupti, del mēḷa 15 (Māyāmālavagauḷa): Sa Ri₁ Ga₃ Pa Dha₁ (Do Re♭ Mi Sol La♭).
     public static let revagupti = TipoDeEscala(
         nombre: "Revagupti", intervalos: [.unisono, .segundaMenor, .terceraMayor, .quintaJusta, .sextaMenor],
-        nombresOriginales: [.init("रेवगुप्ति", .sanscrito), .init("రేవగుప్తి", .telugu), .init("ರೇವಗುಪ್ತಿ", .canares)],
+        nombresOriginales: [
+            .init("रेवगुप्ति", .sanscrito), .init("రేవగుప్తి", .telugu), .init("ರೇವಗುಪ್ತಿ", .canares), .init("ரேவகுப்தி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(15))
     /// Bauḷi: sube como Revagupti (Sa Ri₁ Ga₃ Pa Dha₁) y baja con Ni₃ (Do Si La♭ Sol Mi Re♭).
     public static let bauli = TipoDeEscala(
@@ -390,7 +430,9 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        nombresOriginales: [.init("आभेरि", .sanscrito), .init("ఆభేరి", .telugu), .init("ಆಭೇರಿ", .canares)],
+        nombresOriginales: [
+            .init("आभेरि", .sanscrito), .init("ఆభేరి", .telugu), .init("ಆಭೇರಿ", .canares), .init("ஆபேரி", .tamil),
+        ],
         categoria: .janya, padre: .melakarta(22))
     /// Maṇiraṅgu, del mēḷa 22 (Kharaharapriyā): sube Sa Ri₂ Ma₁ Pa Ni₂ (Do Re Fa Sol Si♭) y baja con Ga₂.
     public static let manirangu = TipoDeEscala(
@@ -404,7 +446,7 @@ extension TipoDeEscala {
         nombre: "Nāgasvarāvaḷi", intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         variantes: ["Nagaswaravali"],
         nombresOriginales: [
-            .init("नागस्वरावळि", .sanscrito), .init("నాగస్వరావళి", .telugu), .init("ನಾಗಸ್ವರಾವಳಿ", .canares),
+            .init("नागस्वरावळि", .sanscrito), .init("నాగస్వరావళి", .telugu), .init("ನಾಗಸ್ವರಾವಳಿ", .canares), .init("நாகஸ்வராவளி", .tamil),
         ],
         categoria: .janya, padre: .melakarta(28))
     /// Sunādavinodinī, del mēḷa 53 (Gamanaśrama): Sa Ga₃ Ma₂ Dha₂ Ni₃ (Do Mi Fa♯ La Si), como el Hindol indostánico.
@@ -413,6 +455,7 @@ extension TipoDeEscala {
         intervalos: [.unisono, .terceraMayor, .cuartaAumentada, .sextaMayor, .septimaMayor],
         nombresOriginales: [
             .init("सुनादविनोदिनी", .sanscrito), .init("సునాదవినోదిని", .telugu), .init("ಸುನಾದವಿನೋದಿನಿ", .canares),
+            .init("சுநாதவினோதினி", .tamil),
         ],
         categoria: .janya, padre: .melakarta(53))
 
