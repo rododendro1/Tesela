@@ -271,6 +271,8 @@ extension TextosDeTeoria {
         idiomaPersa: "persiera",
         idiomaSanscrito: "sanskritoa",
         idiomaHindi: "hindia",
+        idiomaTelugu: "telugua",
+        idiomaCanares: "kannada",
         idiomaChino: "txinera",
         idiomaChinoSimplificado: "txinera sinplifikatua",
         idiomaChinoTradicional: "txinera tradizionala",

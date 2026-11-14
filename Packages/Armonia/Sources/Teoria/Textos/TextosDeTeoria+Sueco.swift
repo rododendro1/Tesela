@@ -271,6 +271,8 @@ extension TextosDeTeoria {
         idiomaPersa: "persiska",
         idiomaSanscrito: "sanskrit",
         idiomaHindi: "hindi",
+        idiomaTelugu: "telugu",
+        idiomaCanares: "kannada",
         idiomaChino: "kinesiska",
         idiomaChinoSimplificado: "förenklad kinesiska",
         idiomaChinoTradicional: "traditionell kinesiska",

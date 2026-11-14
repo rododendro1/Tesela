@@ -289,6 +289,8 @@ struct TextosDeTeoria: TextosTraducidos {
     let idiomaPersa: String
     let idiomaSanscrito: String
     let idiomaHindi: String
+    let idiomaTelugu: String
+    let idiomaCanares: String
     let idiomaChino: String
     let idiomaChinoSimplificado: String
     let idiomaChinoTradicional: String

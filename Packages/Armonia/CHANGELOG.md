@@ -11,6 +11,10 @@
 
 ### Novedades
 
+- Los 72 mēḷa tienen también su nombre en telugu y en canarés (కనకాంగి, ಕನಕಾಂಗಿ), con su forma completa (మేళ
+  కనకాంగి), y se leen por ellos al buscar. Salen del devanagari con tres reglas de esas ortografías (anusvara ante
+  consonante de su grupo, -ం final, ī y ā finales breves) y están cotejados con la Wikipedia en telugu.
+  `IdiomaOriginal` gana `telugu` («te») y `canares` («kn»), y `Escritura`, `telugu` («Telu») y `kannada` («Knda»).
 - Los cinco lai del khaen, el órgano de boca de los lao (Miller 1985): Lai sutsanaen (ลายสุดสะแนน, sobre Sol), Lai
   po sai (ลายโป้ซ้าย, Do) y Lai soi (ลายสร้อย, Re), de thang san, y Lai yai (ลายใหญ่, La) y Lai noi (ลายน้อย, Re),
   de thang yao, con su nombre en tailandés, como se escribe en el Isán. `RegionDeEscala` gana `laos` (Laos y el

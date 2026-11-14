@@ -268,6 +268,8 @@ extension TextosDeTeoria {
         idiomaPersa: "περσικά",
         idiomaSanscrito: "σανσκριτικά",
         idiomaHindi: "χίντι",
+        idiomaTelugu: "τελούγκου",
+        idiomaCanares: "κανάντα",
         idiomaChino: "κινεζικά",
         idiomaChinoSimplificado: "απλοποιημένα κινεζικά",
         idiomaChinoTradicional: "παραδοσιακά κινεζικά",
