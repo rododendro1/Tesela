@@ -152,9 +152,9 @@ extension NombresDeEscalas {
         .tradicional(.pyongjo, "Пхёнджо"),
         .tradicional(.kyemyonjo, "Кемёнджо"),
         // Etiopía
-        .tradicional(.tezetaMayor, "Тезета мажор", alias: ["Tezeta", "Тезета"], variantes: ["Tizita", "Təzəta", "ትዝታ"]),
+        .tradicional(.tezetaMayor, "Тезета мажор", alias: ["Tezeta", "Тезета"], variantes: ["Tizita", "Təzəta"]),
         .tradicional(.tezetaMenor, "Тезета минор"),
-        .tradicional(.batiMayor, "Бати мажор", alias: ["Bati", "Бати"], variantes: ["Batti", "ባቲ"]),
+        .tradicional(.batiMayor, "Бати мажор", alias: ["Bati", "Бати"], variantes: ["Batti"]),
         .tradicional(.batiMenor, "Бати минор"),
         .tradicional(.ambassel, "Амбассель"),
         .tradicional(.anchihoye, "Анчихойе"),

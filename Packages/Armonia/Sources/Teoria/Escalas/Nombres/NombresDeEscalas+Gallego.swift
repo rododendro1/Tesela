@@ -128,8 +128,8 @@ extension NombresDeEscalas {
         // Solo llevan fila las que se traducen o tienen alias en este idioma: sin fila, una escala conserva su nombre
         // original, como los 72 mēḷa.
         // Etiopía
-        .tradicional(.tezetaMayor, "Təzəta maior", alias: ["Tezeta"], variantes: ["Tizita", "Təzəta", "ትዝታ"]),
-        .tradicional(.batiMayor, "Bati maior", alias: ["Bati"], variantes: ["Batti", "ባቲ"]),
+        .tradicional(.tezetaMayor, "Təzəta maior", alias: ["Tezeta"], variantes: ["Tizita", "Təzəta"]),
+        .tradicional(.batiMayor, "Bati maior", alias: ["Bati"], variantes: ["Batti"]),
         // Grecia antigua
         .tradicional(.harmoniaDoria, "harmonía dórica"),
         .tradicional(.harmoniaDoriaCromatica, "harmonía dórica cromática"),

@@ -131,6 +131,8 @@ extension LineaDeComandos {
         // texto, cuando el JSON lleva lo mismo (`ModoPresentado`, `TablaDeAcordesPresentada`…, que saben qué
         // campos van en JSON), o, si lleva otra cosa (números en lugar de textos), los de aquí.
         let nombre: String
+        /// El nombre en la escritura de su tradición, si lo tiene: «حجاز».
+        let nombresOriginales: [NombreOriginalPresentado]?
         let notas: [String]
         let clases: [Int]
         let modo: String?
@@ -187,6 +189,7 @@ extension LineaDeComandos {
 
         init(_ datos: EscalaPresentada) {
             nombre = datos.nombre
+            nombresOriginales = datos.nombresOriginales
             notas = datos.notas
             clases = datos.clases
             modo = datos.modo
@@ -444,6 +447,8 @@ extension LineaDeComandos {
     /// Una escala del catálogo de `escalas --json`: su nombre, sus notas desde Do y sus clases, y de dónde es.
     struct EscalaDelCatalogoJSON: Encodable {
         let nombre: String
+        /// El nombre en la escritura de su tradición, si lo tiene.
+        let nombresOriginales: [NombreOriginalPresentado]?
         let notas: [String]
         let clases: [Int]
         let microtonal: Bool
@@ -498,8 +503,10 @@ extension LineaDeComandos {
                     titulo: grupo.titulo,
                     escalas: grupo.tipos.map { tipo in
                         let escala = Escala(.do, tipo)
+                        let originales = tipo.nombresOriginales.map { NombreOriginalPresentado($0, en: notacion) }
                         return EscalaDelCatalogoJSON(
-                            nombre: tipo.nombre(en: notacion), notas: escala.notas.map { $0.nombre(en: notacion) },
+                            nombre: tipo.nombre(en: notacion), nombresOriginales: originales.isEmpty ? nil : originales,
+                            notas: escala.notas.map { $0.nombre(en: notacion) },
                             clases: escala.notas.map(\.claseDeAltura), microtonal: tipo.esMicrotonal,
                             brilloPorQuintas: escala.estadisticas.brilloPorQuintas, tradicion: tipo.tradicion?.rawValue,
                             categoria: tipo.categoria?.rawValue, fuente: tipo.fuente?.rawValue,

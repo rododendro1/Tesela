@@ -6,8 +6,9 @@ import Elementos
 //
 // Un idioma por fichero: `NombresDeEscalas+Catalan.swift`, `…+Ingles.swift`… Cada uno da el nombre de cada tipo
 // del catálogo occidental y, si los tiene, sus otros nombres (alias) y otras formas de escribirlos (variantes: el
-// femenino, otra transliteración); los dos se leen igual y van del más usado al menos (en las de otras tradiciones,
-// la escritura original al final). Las escalas de otras
+// femenino, otra transliteración); los dos se leen igual y van del más usado al menos. La escritura original (حجاز,
+// ትዝታ) no va en las filas: está en el catálogo (`TipoDeEscala.nombresOriginales`) y se lee en todos los idiomas.
+// Las escalas de otras
 // tradiciones (Kafi, Hitzaz, Hirajoshi…) llevan casi todas un nombre propio que se escribe igual en todos los
 // idiomas, y no tienen fila: sin ella, una escala conserva su nombre original. Solo la llevan, al final del fichero,
 // las que se traducen o se transcriben en ese idioma (las andinas, los tetracordos y las harmoniai griegas, el mayor
@@ -95,7 +96,7 @@ package struct NombresDeEscalas: Sendable {
 
     init(_ listadas: [Fila]) {
         // Las tradicionales sin fila (los mēḷa) conservan su nombre original, y sus alias y sus variantes (otras
-        // transliteraciones, su escritura original: «Hicaz», «ትዝታ»), salvo los que están en español.
+        // transliteraciones: «Hicaz»), salvo los que están en español.
         let conFila = Set(listadas.compactMap(\.tradicional))
         var vistas = Set<IdentidadDeEscala>()
         let filas = listadas + TipoDeEscala.tradicionales
@@ -122,16 +123,20 @@ package struct NombresDeEscalas: Sendable {
             guard let tipo = fila.tipo else { continue }
             if indice[TipoDeEscala.normalizar(fila.nombre)] == nil { indice[TipoDeEscala.normalizar(fila.nombre)] = tipo }
         }
+        // Las tradicionales se leen también por su nombre original, que es el mismo en todos los idiomas: «حجاز».
+        func otros(_ fila: Fila) -> [String] {
+            fila.alias + fila.variantes + (fila.tradicional == nil ? [] : fila.tipo?.nombresOriginales.map(\.texto) ?? [])
+        }
         for fila in filas {
             guard let tipo = fila.tipo else { continue }
-            for alias in fila.alias + fila.variantes where indice[TipoDeEscala.normalizar(alias)] == nil {
+            for alias in otros(fila) where indice[TipoDeEscala.normalizar(alias)] == nil {
                 indice[TipoDeEscala.normalizar(alias)] = tipo
             }
         }
         // Los nombres en cirílico o en griego se leen también transliterados: «dorijskij», «dórios», «dorios».
         for fila in filas {
             guard let tipo = fila.tipo else { continue }
-            for nombre in [fila.nombre] + fila.alias + fila.variantes {
+            for nombre in [fila.nombre] + otros(fila) {
                 for escrito in [Transliteracion.latina(nombre), Transliteracion.ascii(nombre)] {
                     let clave = TipoDeEscala.normalizar(escrito)
                     if indice[clave] == nil { indice[clave] = tipo }

@@ -11,12 +11,12 @@ extension TipoDeEscala {
     /// 평조 (Sol La Do Re Mi).
     public static let pyongjo = TipoDeEscala(
         nombre: "P'yŏngjo", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
-        variantes: ["Pyeongjo", "Pyongjo", "평조"],
+        variantes: ["Pyeongjo", "Pyongjo"], nombresOriginales: [.init("평조", .coreano)],
         categoria: .jo)
     /// 계면조 (La Do Re Mi Sol).
     public static let kyemyonjo = TipoDeEscala(
         nombre: "Kyemyŏnjo", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
-        variantes: ["Gyemyeonjo", "계면조"],
+        variantes: ["Gyemyeonjo"], nombresOriginales: [.init("계면조", .coreano)],
         categoria: .jo)
 
     /// 우조 (Do Re Mi Sol La): las notas de P'yŏngjo con la tónica en Do. Entre la tónica (본청) y la nota aguda de
@@ -24,7 +24,7 @@ extension TipoDeEscala {
     /// `Referencia.shin2024`).
     public static let ujo = TipoDeEscala(
         nombre: "Ujo", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
-        variantes: ["우조"],
+        nombresOriginales: [.init("우조", .coreano)],
         categoria: .jo)
 
     package static let coreanas: [TipoDeEscala] = [.pyongjo, .kyemyonjo, .ujo]

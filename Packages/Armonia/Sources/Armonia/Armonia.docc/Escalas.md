@@ -284,19 +284,25 @@ del propio catálogo). `TipoDeEscala.nombre(en:)` usa el fichero del idioma de l
 `TipoDeEscala.occidentales`, el nombre de cada `CategoriaTradicional` (`.categoria`) y las escalas de otras tradiciones
 que se traducen en ese idioma (`.tradicional(.andina, "…")`, que apunta al miembro de `TipoDeEscala` y no compila si
 deja de existir); las demás, sin fila, conservan su nombre original (Kāfī, Hitzáz) y sus alias y variantes del
-catálogo («Hicaz», «ትዝታ»), menos los que están en español (`NombresDeEscalas.aliasEnEspanol`: «modo gregoriano 1»,
+catálogo («Hicaz»), menos los que están en español (`NombresDeEscalas.aliasEnEspanol`: «modo gregoriano 1»,
 «hexacordo duro»…), así que también se leen por ellos con la tónica en alemán, en húngaro o en sueco.
 `Scripts/comprobaciones/comprobar_catalogo.py` vigila que no falte ninguno y que no haya filas que no traducen nada. Un idioma nuevo es un fichero más.
 
 Un alias es otro nombre de la escala («jónico» para la mayor, «bizantina» para la doble armónica); una variante es
-otra forma de escribir el nombre o un alias: otro género («dórica»), otra transliteración («Hicaz» por Hitzáz) u
-otra escritura («Χιτζάζ», «बिलावल»). `TipoDeEscala.alias` y `TipoDeEscala.variantes` se leen igual; para enseñar
-los otros nombres de una escala, basta con los alias.
+otra forma de escribir en letra latina el nombre o un alias: otro género («dórica») u otra transliteración («Hicaz»
+por Hitzáz). La escritura de su tradición («Χιτζάζ», «बिलावल», «宮») va aparte, en `TipoDeEscala.nombresOriginales`,
+con su idioma (`IdiomaOriginal`, cuyo valor es la etiqueta BCP 47 que pide el `lang` del HTML) y, si no es la del
+nombre, su lectura. `TipoDeEscala.alias`, `TipoDeEscala.variantes` y los nombres originales se leen igual; para
+enseñar los otros nombres de una escala, basta con los alias.
 
 ```swift
 TipoDeEscala.dorico.alias        // ["menor dórica"]
 TipoDeEscala.dorico.variantes    // ["dórica"]
 try TipoDeEscala(leyendo: "dórica") == .dorico   // true
+TipoDeEscala.gong.nombresOriginales.map(\.texto)          // ["宫", "宮"]
+TipoDeEscala.gong.nombresOriginales.map(\.idioma.codigo)  // ["zh-Hans", "zh-Hant"]
+TipoDeEscala.yo.nombresOriginales[1].lectura               // "Yō onkai" (陽音階)
+TipoDeEscala.hiyaz.nombreOriginal?.idioma.deDerechaAIzquierda   // true
 ```
 
 `TipoDeEscala.alias` y `variantes` guardan solo las grafías correctas («dórico ♭2», «húngara»). Las simplificadas («dorico b2»,

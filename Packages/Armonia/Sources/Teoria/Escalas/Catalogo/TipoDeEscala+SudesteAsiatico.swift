@@ -17,14 +17,14 @@ extension TipoDeEscala {
     public static let piphat = TipoDeEscala(
         nombre: "Piphat",
         intervalos: TipoDeEscala.dorico.intervalos,
-        alias: ["tailandesa"], variantes: ["ปี่พาทย์"],
+        alias: ["tailandesa"], nombresOriginales: [.init("ปี่พาทย์", .tailandes)],
         categoria: .afinacion, regiones: [.tailandia],
         afinaciones: [.equiheptatonica], referencias: [.morton1976])
     /// Pinpeat (siete partes iguales de 171 cents): Do Re Mi♭ Fa Sol La Si♭ en doce notas.
     public static let pinpeat = TipoDeEscala(
         nombre: "Pinpeat",
         intervalos: TipoDeEscala.dorico.intervalos,
-        alias: ["camboyana", "jemer"], variantes: ["ពិណពាទ្យ"],
+        alias: ["camboyana", "jemer"], nombresOriginales: [.init("ពិណពាទ្យ", .jemer)],
         categoria: .afinacion, regiones: [.camboya],
         afinaciones: [.equiheptatonica], referencias: [.sam1988])
 

@@ -249,6 +249,8 @@ public struct TextosDeApps: TextosTraducidos {
     /// La fila de un fragmento de menos de una octava, con lo que abarca: «Fragmento: 4ª justa».
     public let fragmento: String
     /// La fila de la afinación de una escala (`CaracterDeLaAfinacion`): «Afinación: microtonal».
+    /// La línea con el nombre de la escala en su escritura original: «Nombre original: حجاز (árabe)».
+    public let nombreOriginal: String
     public let afinacion: String
     public let afinacionTemperada: String
     public let afinacionJusta: String

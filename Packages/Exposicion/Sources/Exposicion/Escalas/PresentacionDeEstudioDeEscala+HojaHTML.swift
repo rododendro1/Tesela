@@ -22,6 +22,10 @@ extension PresentacionDeEstudioDeEscala {
         // El nombre y las notas.
         cuerpo.append("<header>")
         cuerpo.append("<h1>" + html(nombre) + "</h1>")
+        if let originales = EscalaPresentada(escala, en: notacion).nombresOriginales {
+            cuerpo.append(
+                "<p class=\"originales\">" + originales.map(nombreOriginalHTML).joined(separator: " · ") + "</p>")
+        }
         let notas = escala.notas.map { "<li>" + html($0.nombre(en: notacion)) + "</li>" }.joined()
         cuerpo.append("<ul class=\"notas\">" + notas + "</ul>")
         cuerpo.append("</header>")
@@ -166,6 +170,14 @@ extension PresentacionDeEstudioDeEscala {
         EscrituraXML.escapar(texto)
     }
 
+    /// Un nombre original con su idioma (`lang`, que escoge los glifos y la voz) y su dirección (`dir`), y la lectura,
+    /// si la tiene, detrás: `<span lang="ja">陽音階</span> <small>Yō onkai</small>`.
+    static func nombreOriginalHTML(_ original: NombreOriginalPresentado) -> String {
+        "<span lang=\"" + html(original.idioma) + "\"" + (original.derechaAIzquierda ? " dir=\"rtl\"" : "")
+            + " title=\"" + html(original.nombreDelIdioma) + "\">" + html(original.texto) + "</span>"
+            + (original.lectura.map { " <small>" + html($0) + "</small>" } ?? "")
+    }
+
     /// La página entera: la cabecera con el título, el idioma y la hoja de estilo, y `cuerpo` dentro, una línea por
     /// elemento.
     static func paginaHTML(titulo: String, idioma: String, _ cuerpo: [String]) -> String {
@@ -201,6 +213,16 @@ extension PresentacionDeEstudioDeEscala {
         .sub{color:var(--suave)}\
         ul,ol{margin:0;padding:0;list-style:none}\
         li{padding:2px 0}\
+        .originales{font-size:16pt;color:var(--suave);margin:0 0 4px}.originales small{font-size:10pt}\
+        :lang(ar),:lang(fa){font-family:"Geeza Pro","Noto Naskh Arabic","Noto Sans Arabic",serif}\
+        :lang(hi),:lang(sa){font-family:"Kohinoor Devanagari","Devanagari Sangam MN","Noto Sans Devanagari",sans-serif}\
+        :lang(zh){font-family:"PingFang TC","Noto Sans CJK TC","Noto Sans TC",sans-serif}\
+        :lang(zh-Hans){font-family:"PingFang SC","Noto Sans CJK SC","Noto Sans SC",sans-serif}\
+        :lang(ja){font-family:"Hiragino Sans","Noto Sans CJK JP","Noto Sans JP",sans-serif}\
+        :lang(ko){font-family:"Apple SD Gothic Neo","Noto Sans CJK KR","Noto Sans KR",sans-serif}\
+        :lang(am){font-family:Kefa,"Noto Sans Ethiopic",sans-serif}\
+        :lang(th){font-family:Thonburi,"Noto Sans Thai",sans-serif}\
+        :lang(km){font-family:"Khmer Sangam MN","Noto Sans Khmer",sans-serif}\
         .notas{display:flex;flex-wrap:wrap;gap:0 .6em;color:var(--suave);font-size:13pt}\
         figure{margin:0 0 8px;background:#fff;color:#222;border-radius:8px}\
         figure svg{display:block;width:100%;height:auto}\

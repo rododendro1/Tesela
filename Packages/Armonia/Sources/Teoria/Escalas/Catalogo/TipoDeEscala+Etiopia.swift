@@ -14,7 +14,8 @@ extension TipoDeEscala {
     public static let tezetaMayor = TipoDeEscala(
         nombre: "Təzəta mayor", intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta, .sextaMayor],
         alias: ["Tezeta", "Tezeta major"],
-        variantes: ["Tizita", "Tizita mayor", "Tezeta mayor", "Tizita major", "Təzəta", "ትዝታ"],
+        variantes: ["Tizita", "Tizita mayor", "Tezeta mayor", "Tizita major", "Təzəta"],
+        nombresOriginales: [.init("ትዝታ", .amarico, lectura: "Təzəta")],
         categoria: .qenet)
     /// Do Re Mi♭ Sol La♭.
     public static let tezetaMenor = TipoDeEscala(
@@ -24,7 +25,8 @@ extension TipoDeEscala {
     /// ባቲ (Do Mi Fa Sol Si).
     public static let batiMayor = TipoDeEscala(
         nombre: "Bati mayor", intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
-        alias: ["Bati", "Bati major"], variantes: ["Batti", "ባቲ"],
+        alias: ["Bati", "Bati major"], variantes: ["Batti"],
+        nombresOriginales: [.init("ባቲ", .amarico, lectura: "Bati")],
         categoria: .qenet)
     /// Do Mi♭ Fa Sol Si♭.
     public static let batiMenor = TipoDeEscala(
@@ -34,12 +36,12 @@ extension TipoDeEscala {
     /// አምባሰል (Do Re♭ Fa Sol La♭).
     public static let ambassel = TipoDeEscala(
         nombre: "Ambassäl", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
-        variantes: ["Ambassel", "Ambasel", "Ambessel", "አምባሰል"],
+        variantes: ["Ambassel", "Ambasel", "Ambessel"], nombresOriginales: [.init("አምባሰል", .amarico)],
         categoria: .qenet)
     /// አንቺሆዬ (Do Re♭ Fa Sol♭ La).
     public static let anchihoye = TipoDeEscala(
         nombre: "Ančihoye", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaDisminuida, .sextaMayor],
-        variantes: ["Anchihoye", "Anchihoy", "Anchi hoye", "አንቺሆዬ"],
+        variantes: ["Anchihoye", "Anchihoy", "Anchi hoye"], nombresOriginales: [.init("አንቺሆዬ", .amarico)],
         categoria: .qenet)
 
     package static let etiopes: [TipoDeEscala] = [

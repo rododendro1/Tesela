@@ -17,28 +17,28 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMenor, .terceraMenor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
-        ], variantes: ["Usak", "Oussak", "Ουσάκ"],
+        ], variantes: ["Usak", "Oussak"], nombresOriginales: [.init("Ουσάκ", .griego)],
         categoria: .dromos, afinaciones: [.init(.cuartosDeTono, pasos: [0, 3, 6, 10, 14, 16, 20])])
     public static let hitzaz = TipoDeEscala(
         nombre: "Hitzáz",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMenor,
-        ], variantes: ["Hicaz", "Χιτζάζ"],
+        ], variantes: ["Hicaz"], nombresOriginales: [.init("Χιτζάζ", .griego)],
         categoria: .dromos, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 35, 44])])
     public static let hitzazkiar = TipoDeEscala(
         nombre: "Hitzazkiár",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ], variantes: ["Hijazkiar", "Hicazkar", "Χιτζαζκιάρ"],
+        ], variantes: ["Hijazkiar", "Hicazkar"], nombresOriginales: [.init("Χιτζαζκιάρ", .griego)],
         categoria: .dromos, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 36, 48])])
     public static let pireotikos = TipoDeEscala(
         nombre: "Pireótikos",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ], variantes: ["Piraiotikos", "Pireaiotikos", "Πειραιώτικος"],
+        ], variantes: ["Piraiotikos", "Pireaiotikos"], nombresOriginales: [.init("Πειραιώτικος", .griego)],
         categoria: .dromos,
         // Pireótikos: Hicaz con la cuarta aumentada de Nikriz y un tetracordo Hicaz en la quinta.
         afinaciones: [.init(.comas53, pasos: [0, 5, 17, 26, 31, 36, 48])])
@@ -48,7 +48,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
-        variantes: ["Ταμπαχανιώτικος"],
+        nombresOriginales: [.init("Ταμπαχανιώτικος", .griego)],
         categoria: .dromos,
         // Tabahaniótikos, como Suzinak: un pentacordo Rast y un tetracordo Hicaz.
         afinaciones: [.init(.comas53, pasos: [0, 9, 17, 22, 31, 36, 48])])
@@ -57,7 +57,7 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ], variantes: ["Νιαβέντ"],
+        ], nombresOriginales: [.init("Νιαβέντ", .griego)],
         categoria: .dromos,
         // Niavént, como Nev'eser: un pentacordo Nikriz y un tetracordo Hicaz.
         afinaciones: [.init(.comas53, pasos: [0, 9, 13, 26, 31, 36, 48])])
@@ -66,7 +66,7 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMenor,
-        ], alias: ["Souzinak", "Poimeniko"], variantes: ["Susinak", "Νικρίζ"],
+        ], alias: ["Souzinak", "Poimeniko"], variantes: ["Susinak"], nombresOriginales: [.init("Νικρίζ", .griego)],
         categoria: .dromos,
         // Nikríz: un pentacordo Nikriz y un tetracordo Bûselik.
         afinaciones: [.init(.comas53, pasos: [0, 9, 13, 26, 31, 40, 44])])
@@ -75,7 +75,7 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
             .quintaDisminuida, .sextaMayor, .septimaMenor,
-        ], variantes: ["Kartsigar", "Karcigar", "Καρτσιγάρ"],
+        ], variantes: ["Kartsigar", "Karcigar"], nombresOriginales: [.init("Καρτσιγάρ", .griego)],
         categoria: .dromos,
         // Kartzigár, como Karcığar: un tetracordo Uşşak y un pentacordo Hicaz en la cuarta.
         afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 27, 39, 44])])
@@ -84,14 +84,14 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaDisminuida,
             .quintaJusta, .sextaMenor, .septimaMenor,
-        ], variantes: ["Sabach", "Sampah", "Σαμπάχ"],
+        ], variantes: ["Sabach", "Sampah"], nombresOriginales: [.init("Σαμπάχ", .griego)],
         categoria: .dromos, afinaciones: [.init(.cuartosDeTono, pasos: [0, 3, 6, 8, 14, 16, 20])])
     public static let houzam = TipoDeEscala(
         nombre: "Houzám",
         intervalos: [
             .unisono, .segundaAumentada, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
-        ], variantes: ["Huzam", "Χουζάμ"],
+        ], variantes: ["Huzam"], nombresOriginales: [.init("Χουζάμ", .griego)],
         categoria: .dromos,
         // Houzám y Sengáh: la segunda aumentada de 13 comas, y dos semitonos de 4 y 5 hasta la cuarta.
         afinaciones: [.init(.comas53, pasos: [0, 13, 17, 22, 31, 40, 49])])
@@ -100,7 +100,7 @@ extension TipoDeEscala {
         intervalos: [
             .unisono, .segundaAumentada, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMenor, .septimaMayor,
-        ], variantes: ["Segah", "Sengiach", "Σεγκιάχ"],
+        ], variantes: ["Segah", "Sengiach"], nombresOriginales: [.init("Σεγκιάχ", .griego)],
         categoria: .dromos, afinaciones: [.init(.comas53, pasos: [0, 13, 17, 22, 31, 36, 48])])
     public static let tsinganikos = TipoDeEscala(
         nombre: "Tsingánikos",
@@ -108,7 +108,7 @@ extension TipoDeEscala {
             .unisono, .segundaMenor, .terceraMayor, .cuartaJusta,
             .quintaDisminuida, .sextaMayor, .septimaMenor,
         ],
-        variantes: ["Τσιγγάνικος"],
+        nombresOriginales: [.init("Τσιγγάνικος", .griego)],
         categoria: .dromos,
         // Tsingánikos: un tetracordo Hicaz y otro en la cuarta.
         afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 27, 39, 44])])
@@ -122,7 +122,7 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
         ],
-        variantes: ["Ραστ"],
+        nombresOriginales: [.init("Ραστ", .griego)],
         categoria: .dromos,
         afinaciones: [
             .init(.comas53, pasos: [0, 9, 17, 22, 31, 40, 48], pasosDescendentes: [0, 9, 17, 22, 31, 40, 44])
@@ -136,7 +136,7 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["Kurdi", "Kioúrdi", "Κιουρντί"],
+        variantes: ["Kurdi", "Kioúrdi"], nombresOriginales: [.init("Κιουρντί", .griego)],
         categoria: .dromos,
         // Kiourdí sube como Kartzigár y baja como Uşşak; Houseïní sube como Rast al bajar y baja como Bûselik.
         afinaciones: [
@@ -149,7 +149,7 @@ extension TipoDeEscala {
         intervalosDescendentes: [
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
         ],
-        variantes: ["Huseyni", "Houséïni", "Χουσεϊνί"],
+        variantes: ["Huseyni", "Houséïni"], nombresOriginales: [.init("Χουσεϊνί", .griego)],
         categoria: .dromos,
         afinaciones: [
             .init(.comas53, pasos: [0, 9, 17, 22, 31, 40, 44], pasosDescendentes: [0, 9, 13, 22, 31, 35, 44])

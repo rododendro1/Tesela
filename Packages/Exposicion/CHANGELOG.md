@@ -1,5 +1,15 @@
 # Cambios
 
+## Sin publicar
+
+### Lo nuevo
+
+- `EscalaPresentada.nombresOriginales` y `NombreOriginalPresentado`: el nombre de la escala en su escritura original,
+  con la etiqueta de su idioma, el nombre del idioma, su lectura y su dirección. La consola lo escribe bajo el nombre
+  («Nombre original: ⁨حجاز⁩ (árabe)», entre aislantes bidireccionales, con `enUnaLinea`), el JSON de `escala` y de
+  `escalas` lo lleva en `nombresOriginales`, y la hoja HTML lo pone bajo el título, con su `lang` y su `dir` y las
+  fuentes del sistema de cada escritura. Texto nuevo, en los trece idiomas: `nombreOriginal`.
+
 ## 0.5.1 (2026-11-13)
 
 ### Lo nuevo

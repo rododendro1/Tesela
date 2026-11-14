@@ -180,6 +180,11 @@ import Testing
             de: Escala(.re, .bayati), en: notacion, secciones: [.reloj])
         #expect(bayati.components(separatedBy: "<figure").count - 1 == 2 && bayati.contains(">Mi𝄳</text>"))
         #expect(!bayati.contains("<h2>Estadísticas</h2>") && !bayati.contains("<h2>Pentagrama</h2>"))
+        // El nombre original, bajo el título, con su idioma y su dirección.
+        #expect(
+            bayati.contains("<p class=\"originales\"><span lang=\"ar\" dir=\"rtl\" title=\"árabe\">بياتي</span></p>"))
+        let yo = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(de: Escala(.do, .yo), en: notacion, secciones: [])
+        #expect(yo.contains("<span lang=\"ja\" title=\"japonés\">陽音階</span> <small>Yō onkai</small>"))
         let soloElNombre = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
             de: Escala(.do), en: .ascii(.ingles), secciones: [])
         #expect(soloElNombre.contains("<html lang=\"en\">") && soloElNombre.contains("<h1>C major</h1>"))
