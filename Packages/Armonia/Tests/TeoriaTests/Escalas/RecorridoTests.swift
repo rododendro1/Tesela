@@ -57,6 +57,20 @@ struct RecorridoTests {
             ])
     }
 
+    /// Khamās sube en zigzag, sin Re; Bihāg sube desde el Ni de abajo y baja en zigzag, con el Ma tīvra de paso, que
+    /// es una nota externa.
+    @Test func khamasYBihag() {
+        #expect(alturas(.khamas) == ["Do4", "Fa4", "Mi4", "Fa4", "Sol4", "La4", "Si♭4", "Do5"])
+        #expect(alturas(.khamas, .descendente) == ["Do5", "Si♭4", "La4", "Sol4", "Fa4", "Mi4", "Re4", "Do4"])
+        #expect(TipoDeEscala.khamas.padre == .melakarta(28) && TipoDeEscala.khamas.melakartasCompatibles == [28])
+        #expect(alturas(.bihag) == ["Si3", "Do4", "Mi4", "Fa4", "Sol4", "Si4", "Do5"])
+        #expect(
+            alturas(.bihag, .descendente) == [
+                "Do5", "Si4", "La4", "Sol4", "Fa♯4", "Sol4", "Mi4", "Fa4", "Mi4", "Re4", "Do4",
+            ])
+        #expect(TipoDeEscala.bihag.notasExternas == [.cuartaAumentada] && TipoDeEscala.bihag.padre == .bilaval)
+    }
+
     /// Un recorrido puede empezar por debajo de la tónica: Darbārī Kānaḍa carnática sube desde el ni de abajo. Las
     /// notas de la escala y sus cents siguen saliendo de la tónica.
     @Test func unRecorridoQueEmpiezaPorDebajo() {
@@ -147,7 +161,7 @@ struct RecorridoTests {
                 "Ānandabhairavi", "Suruṭṭi", "Aṭāṇā", "Kēdāram", "Darbār", "Mukhāri", "Gauḷa", "Nalinakānti",
                 "Kathanakutūhalam", "Bēgaḍa", "Sahānā", "Rītigauḷa", "Darbārī Kānaḍa carnática",
                 "Kāpi", "Kānaḍa", "Nīlāmbari", "Nāyaki", "Sāraṅga", "Śrī carnática", "Hamīr Kalyāṇi", "Yamunā Kalyāṇi",
-                "Dēvamanōhari", "Behāg carnática",
+                "Dēvamanōhari", "Behāg carnática", "Khamās", "Bihāg",
             ])
         for tipo in vakra {
             let subida = tipo.intervalos.count

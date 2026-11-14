@@ -253,6 +253,10 @@ public struct TextosDeApps: TextosTraducidos {
     public let nombreOriginal: String
     /// La línea con las notas que no son del padre de un rāga bhāṣāṅga: «Notas externas: Mi La♭ Si».
     public let notasExternas: String
+    /// «Deriva de»: la escala madre de un rāga (su mēḷa o su thāṭ).
+    public let derivaDe: String
+    /// «Derivadas»: las escalas que salen de una (los janya de un mēḷa).
+    public let derivadas: String
     public let afinacion: String
     public let afinacionTemperada: String
     public let afinacionJusta: String

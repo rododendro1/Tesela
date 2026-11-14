@@ -232,6 +232,8 @@ extension TextosDeApps {
         fragmento: "Fragment",
         nombreOriginal: "Originalnamn",
         notasExternas: "Främmande toner",
+        derivaDe: "Härledd från",
+        derivadas: "Härledda",
         afinacion: "Stämning",
         afinacionTemperada: "liksvävande",
         afinacionJusta: "ren",

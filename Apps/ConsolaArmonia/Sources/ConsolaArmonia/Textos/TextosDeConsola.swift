@@ -235,6 +235,7 @@ struct TextosDeConsola: TextosTraducidos {
     let epocaDesconocida: Plantilla  // {1} epoca
     let afectoDesconocido: Plantilla  // {1} afecto
     let escuelaDesconocida: Plantilla  // {1} escuela
+    let padreDesconocido: Plantilla  // {1} escala
     let afinacionDesconocida: Plantilla  // {1} afinación
     let ordenDeEscalasDesconocido: Plantilla  // {1} orden
     let ordenDeAcordesDesconocido: Plantilla  // {1} orden

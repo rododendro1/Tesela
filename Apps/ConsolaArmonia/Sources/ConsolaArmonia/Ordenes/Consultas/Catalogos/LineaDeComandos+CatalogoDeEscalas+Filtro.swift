@@ -47,6 +47,8 @@ extension LineaDeComandos {
         var fragmentos: Bool?
         /// `true` con `--vakra`: solo los rāgas que suben o bajan en zigzag.
         var vakra = false
+        /// La de `--padre`: solo las que la tienen de padre (los janya de un mēḷa, los rāgas de un thāṭ).
+        var padre: TipoDeEscala?
         /// El texto suelto, como clave de búsqueda; vacío si no hay.
         var buscado = ""
 
@@ -59,6 +61,7 @@ extension LineaDeComandos {
             guard !regulares || estadisticas(tipo).maximamenteRegular else { return false }
             guard fragmentos == nil || tipo.esFragmento == fragmentos else { return false }
             guard !vakra || tipo.esVakra else { return false }
+            if let padre, !padre.derivadas.contains(where: { $0.esIdentico(a: tipo) }) { return false }
             guard afinacion == nil || tipo.caracterDeLaAfinacion?.clave == afinacion else { return false }
             if !lugares.isEmpty {
                 let suyos = Set((tipo.lugaresDeOrigen + tipo.lugaresDeUso).flatMap(\.conLosQueLoContienen))
@@ -202,6 +205,14 @@ extension LineaDeComandos {
         if let texto = try entrada.valor(.escuela) { filtro.escuela = try escuela(leyendo: texto, notacion) }
         // `--afecto lastimero`, `--affect plaintive`: las que tienen ese afecto en alguna de sus fuentes.
         if let texto = try entrada.valor(.afecto) { filtro.afecto = try afecto(leyendo: texto, notacion) }
+        // `--padre Kharaharapriyā`, `--padre 22`, `--parent kafi`: las que salen de una escala madre.
+        if let texto = try entrada.valor(.padre) {
+            let numero = Int(texto.trimmingCharacters(in: .whitespaces))
+            guard let padre = numero.flatMap(TipoDeEscala.melakarta) ?? TipoDeEscala.buscar(nombre: texto),
+                !padre.derivadas.isEmpty
+            else { throw ErrorDeUso.padreDesconocido(texto) }
+            filtro.padre = padre
+        }
         // `--afinacion microtonal`, `--tuning just`: por el carácter de su afinación.
         if let texto = try entrada.valor(.afinacion) { filtro.afinacion = try claveDeAfinacion(leyendo: texto) }
         if let texto = try entrada.valor(.agrupar) {

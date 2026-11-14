@@ -232,6 +232,8 @@ extension TextosDeApps {
         fragmento: "Фрагмент",
         nombreOriginal: "Исходное название",
         notasExternas: "Внешние ноты",
+        derivaDe: "Происходит от",
+        derivadas: "Производные",
         afinacion: "Строй",
         afinacionTemperada: "равномерно темперированный",
         afinacionJusta: "чистый",

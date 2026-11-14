@@ -232,6 +232,8 @@ extension TextosDeApps {
         fragmento: "Fragmento",
         nombreOriginal: "Nome original",
         notasExternas: "Notas externas",
+        derivaDe: "Deriva de",
+        derivadas: "Derivadas",
         afinacion: "Afinação",
         afinacionTemperada: "temperada",
         afinacionJusta: "justa",

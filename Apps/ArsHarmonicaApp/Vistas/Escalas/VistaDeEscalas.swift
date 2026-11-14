@@ -144,6 +144,20 @@ struct VistaDeEscalas: View {
                     value: escala.tipo.notasExternas.map { (escala.tonica + $0).nombre(en: notacion) }
                         .joined(separator: "  "))
             }
+            // De qué escala sale por su tradición (Mukhāri → mēḷa Kharaharapriyā) y cuáles salen de ella (los janya
+            // de un mēḷa, los rāgas de un thāṭ), sobre la misma tónica; cada una se abre al tocarla.
+            if let padre = escala.tipo.padre {
+                LabeledContent(notacion.texto(\.derivaDe)) {
+                    Button(padre.nombreCompleto(en: notacion)) { navegacion.ver(Escala(escala.tonica, padre)) }
+                }
+            }
+            if !escala.tipo.derivadas.isEmpty {
+                DisclosureGroup(notacion.texto(\.derivadas) + " (\(escala.tipo.derivadas.count))") {
+                    ForEach(Array(escala.tipo.derivadas.enumerated()), id: \.offset) { _, tipo in
+                        Button(tipo.nombre(en: notacion)) { navegacion.ver(Escala(escala.tonica, tipo)) }
+                    }
+                }
+            }
             // La versión microtonal (Re Bayātī: Re Mi𝄳 Fa…) y los cents de cada grado, si la escala la tiene.
             if let microtonos = escala.notasMicrotonales() {
                 Text(microtonos.map { $0.nombre(en: notacion) }.joined(separator: "  "))

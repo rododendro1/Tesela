@@ -4,6 +4,12 @@
 
 ### Lo nuevo
 
+- `EscalaPresentada.padre` y `derivadas`: la escala madre de un rāga, con la palabra de su categoría («mēḷa
+  Kharaharapriyā», «thāṭ Kalyāṇ»), y las que salen de un mēḷa, un thāṭ o un grāma (`TipoDeEscala.padre`,
+  `derivadas`), también en el JSON de `escala`. La consola las escribe bajo las notas externas («Deriva de: mēḷa
+  Kharaharapriyā», «Derivadas: Mukhāri, Kāpi…»), y ArsHarmonica las pone en la ficha de la escala, sobre la misma
+  tónica, y abre cada una al tocarla. `escalas --padre 22` (o `--padre Kharaharapriyā`, `--parent kafi`) deja solo
+  las que salen de esa escala. Textos nuevos, en los trece idiomas: `derivaDe` y `derivadas`.
 - `Escucha.escala(_:afinacion:)` toca los rāgas vakra en zigzag: suben en el orden de su recorrido y bajan en el de
   bajada (Do Aṭāṇā: Do Re Fa Sol Si Do Si La Sol Fa Sol Mi Re Do). Las demás escalas suenan como antes. ArsHarmonica
   enseña además su recorrido («↑», «↓») y sus notas externas en la ficha de la escala.

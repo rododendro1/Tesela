@@ -139,6 +139,9 @@ extension LineaDeComandos {
         let recorridoDescendente: [String]?
         /// En un bhāṣāṅga, las notas que no son de su mēḷa.
         let notasExternas: [String]?
+        /// La escala madre de la que sale y las que salen de ella.
+        let padre: String?
+        let derivadas: [String]?
         let clases: [Int]
         let modo: String?
         let acordes: [EscalaPresentada.AcordeDelGrado]?
@@ -199,6 +202,8 @@ extension LineaDeComandos {
             recorrido = datos.recorrido
             recorridoDescendente = datos.recorridoDescendente
             notasExternas = datos.notasExternas
+            padre = datos.padre
+            derivadas = datos.derivadas
             clases = datos.clases
             modo = datos.modo
             acordes = datos.acordes

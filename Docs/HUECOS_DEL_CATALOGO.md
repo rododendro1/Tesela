@@ -5,7 +5,7 @@ Estado a 14 de noviembre de 2026, tras las escalas sintéticas, los lugares, las
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 13 escalas occidentales sin ninguna referencia y
-cuatro acordes sin fuente. El catálogo tiene 534 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
+cuatro acordes sin fuente. El catálogo tiene 535 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -34,7 +34,7 @@ cifras de las que sí están son las escalas declaradas en su fichero del catál
 | Mongolia | ninguna | Las pentatónicas del canto largo y del morin khuur |
 | Uigures | ninguna | Los doce muqam |
 
-Son más largas India (126), el mundo árabe (44) y Turquía (40).
+Son más largas India (127, en sus cuatro ficheros), el mundo árabe (44) y Turquía (40).
 
 ### Dónde buscar las que faltan
 
@@ -114,10 +114,19 @@ los ṭubūʿ tunecinos) no se pueden leer desde aquí.
   Darbārī Kānaḍa carnática, que karnATik sube desde el ni de abajo, va aparte de la indostánica, que sigue recta.
   Nalinakānti no tiene `padre`: la fuente no lo da y, sin Dha, sus notas caben en dos mēḷa.
 - **India, rāgas de karnATik que faltan:** de karnATik salen también Kāpi, Kānaḍa, Nīlāmbari, Nāyaki, Sāraṅga,
-  Śrī carnática, Hamīr Kalyāṇi, Yamunā Kalyāṇi, Dēvamanōhari y Behāg carnática. Faltan Khamās y Kuriñji, porque la
-  página de la K de karnATik no se puede leer entera y se corta antes, igual que la de la S antes de Sindhu Bhairavi
-  (cuyo artículo en la Wikipedia en inglés da una escala en el cuadro y otra en el texto). Navarōj tampoco entra: va
-  de Pa a Pa, y la bajada de karnATik trae notas (ga₁, Re₃, ni) que no casan con su mēḷa.
+  Śrī carnática, Hamīr Kalyāṇi, Yamunā Kalyāṇi, Dēvamanōhari y Behāg carnática. La página de la K se corta a los
+  61 084 caracteres, antes de Khamās y Kuriñji, y karnATik no tiene una ficha por rāga. Khamās entra con la
+  Wikipedia en inglés, que da su subida vakra y su Ni₃ externo. Los otros tres siguen fuera:
+  - Kuriñji, porque su forma de hoy va del Ni de abajo al Dha (Ni Sa Re Ga ma Pa Dha, según guruguha.org, 2020) y
+    no llega a la tónica de arriba, que es lo que pide un recorrido.
+  - Sindhu Bhairavi, porque la Wikipedia en inglés da una escala en el cuadro y otra en el texto, y no cita fuente
+    para su mēḷa (Hanumattoḍī) ni para que sea bhāṣāṅga.
+  - Navarōj, porque va de Pa a Pa y la bajada de karnATik trae notas (ga₁, Re₃, ni) que no casan con su mēḷa.
+- **India, los rāgas indostánicos vakra:** Bihāg tiene ya su recorrido, el de la Wikipedia en inglés: sube desde el
+  Ni de abajo y baja Ṡa Ni Dha Pa Ma Pa Ga ma Ga Re Sa, con el Ma tīvra de paso como nota externa. Los demás siguen
+  rectos. Deś baja hasta el Ni de abajo (Re Ga Ni Sa), y un recorrido de bajada termina en Sa. Kedār y la Darbārī
+  Kānaḍa indostánica tienen en la Wikipedia un recorrido en el cuadro y otro en el texto, y Kedār cambia además la
+  convención del Ma tīvra entre párrafos. Hace falta una obra que los dé en texto, como Bor (1999).
 - **Mongolia:** la colección de Sipos (*Mongolian Folk Songs*, ERHFM) clasifica las canciones por pentatónicas que el
   catálogo ya tiene (las cinco rotaciones de la pentatónica, como los modos chinos).
 
