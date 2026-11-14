@@ -146,6 +146,8 @@ struct RecorridoTests {
             vakra.map(\.nombre) == [
                 "Ānandabhairavi", "Suruṭṭi", "Aṭāṇā", "Kēdāram", "Darbār", "Mukhāri", "Gauḷa", "Nalinakānti",
                 "Kathanakutūhalam", "Bēgaḍa", "Sahānā", "Rītigauḷa", "Darbārī Kānaḍa carnática",
+                "Kāpi", "Kānaḍa", "Nīlāmbari", "Nāyaki", "Sāraṅga", "Śrī carnática", "Hamīr Kalyāṇi", "Yamunā Kalyāṇi",
+                "Dēvamanōhari", "Behāg carnática",
             ])
         for tipo in vakra {
             let subida = tipo.intervalos.count

@@ -203,6 +203,8 @@ extension NombresDeEscalas {
         .tradicional(.mixolidioNordestino, "Nordesteko mixolidiarra"),
         .tradicional(.bhairaviCarnatica, "Bhairavi karnatikoa"),
         .tradicional(.darbariKanadaCarnatica, "Darbārī Kānaḍa karnatikoa"),
+        .tradicional(.sriCarnatica, "Śrī karnatikoa"),
+        .tradicional(.behagCarnatica, "Behāg karnatikoa"),
 
         // Categorías de las escalas de otras tradiciones (`CategoriaTradicional`).
         .categoria(.raga, "rāga"),

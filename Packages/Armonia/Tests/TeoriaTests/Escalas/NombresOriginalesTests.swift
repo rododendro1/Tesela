@@ -141,10 +141,12 @@ import Testing
     @Test func seLeenPorSuNombreOriginalEnTodosLosIdiomas() {
         for tipo in Self.catalogo {
             for original in tipo.nombresOriginales {
-                // Dos escalas pueden compartir el nombre original (δωριστί, la doria y la de Arístides): basta con
-                // que la que se encuentra lo tenga.
+                // Dos escalas pueden compartir el nombre original (δωριστί, la doria y la de Arístides; श्री, en
+                // hindi el Śrī indostánico y en sánscrito el carnático): basta con que la que se encuentra lo tenga.
                 #expect(
-                    TipoDeEscala.buscar(nombre: original.texto)?.nombresOriginales.contains(original) == true,
+                    TipoDeEscala.buscar(nombre: original.texto)?.nombresOriginales.contains {
+                        $0.texto == original.texto
+                    } == true,
                     "\(tipo.nombre): \(original.texto)")
                 for idioma in Idioma.allCases where !tipo.nombresOriginales.isEmpty {
                     let indice = NombresDeEscalas.de(idioma).indice
@@ -206,7 +208,11 @@ import Testing
             }
             letras = salida
             if letras.suffix(2) == [0x92E, virama] { letras = letras.dropLast(2) + [0x902] }
-            if letras.last == 0x940 {
+            // La ī final se acorta (Kalyāṇī, కల్యాణి), salvo en una palabra de una sílaba (Śrī, శ్రీ).
+            let silabas = letras.indices.filter {
+                (0x915...0x939).contains(letras[$0]) && ($0 + 1 == letras.count || letras[$0 + 1] != virama)
+            }
+            if letras.last == 0x940 && silabas.count > 1 {
                 letras[letras.count - 1] = 0x93F
             } else if letras.last == 0x93E {
                 letras.removeLast()
@@ -231,7 +237,7 @@ import Testing
         }
         #expect(TipoDeEscala.suddhaSaveri.nombresOriginales[1].texto == "శుద్ధ సావేరి")
         let conTamil = TipoDeEscala.janyas.filter { $0.nombresOriginales.contains { $0.idioma == .tamil } }
-        #expect(conTamil.count == 37)
+        #expect(conTamil.count == 38)
         #expect(TipoDeEscala.buscar(nombre: "ஹம்சத்வனி")?.esIdentico(a: .hamsadhvani) == true)
         let kanakangi = try? #require(TipoDeEscala.melakarta(1))
         #expect(kanakangi?.nombresOriginales.map(\.texto) == ["कनकाङ्गी", "కనకాంగి", "ಕನಕಾಂಗಿ", "கனகாங்கி"])

@@ -546,11 +546,11 @@ extension TipoDeEscala {
         ],
         categoria: .janya, padre: .melakarta(22))
 
-    // Trece vakra, que suben o bajan en zigzag y llevan su recorrido (`recorrido`, `recorridoDescendente`), de la
-    // Wikipedia en inglés (Nalinakānti y Kathanakutūhalam, del artículo «Janya») y, Bēgaḍa, Sahānā y Rītigauḷa, de
-    // karnATik, porque sus artículos dan escalas distintas en distintos sitios; también de karnATik, Darbārī Kānaḍa
-    // carnática, que sube desde el ni de abajo (el grado 0 del recorrido). Los bhāṣāṅga llevan las notas que no son
-    // de su mēḷa en `notasExternas`.
+    // Veintitrés vakra, que suben o bajan en zigzag y llevan su recorrido (`recorrido`, `recorridoDescendente`).
+    // Nalinakānti y Kathanakutūhalam son de la Wikipedia en inglés (artículo «Janya»); el resto, de karnATik:
+    // Bēgaḍa, Sahānā y Rītigauḷa porque sus artículos dan escalas distintas en distintos sitios, Darbārī Kānaḍa
+    // carnática, que sube desde el ni de abajo (el grado 0 del recorrido), y los diez del final. Los bhāṣāṅga
+    // llevan las notas que no son de su mēḷa en `notasExternas`.
 
     /// Ānandabhairavi, del mēḷa 22 (Kharaharapriyā): sube Sa ga Re ga ma Pa Dha Pa Ṡa (sin ni) y baja recto con las
     /// siete. Es bhāṣāṅga: en sus frases entran el Ga₃, el Dha₁ y el Ni₃ (`notasExternas`), que la escala no recoge.
@@ -754,6 +754,132 @@ extension TipoDeEscala {
         ],
         categoria: .janya, padre: .melakarta(20), notasExternas: [.sextaMayor], referencias: [.karnatik])
 
+    /// Kāpi, bhāṣāṅga del mēḷa 22 (Kharaharapriyā): sube recto Sa Re ma Pa Ni Ṡa, con el Ni₃ que el mēḷa no tiene
+    /// (`notasExternas`), y baja Ṡa ni Dha ni Pa ma ga Re Sa.
+    public static let kapi = TipoDeEscala(
+        nombre: "Kāpi",
+        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        recorridoDescendente: [8, 7, 6, 7, 5, 4, 3, 2, 1],
+        nombresOriginales: [
+            .init("कापि", .sanscrito), .init("కాపి", .telugu), .init("ಕಾಪಿ", .canares), .init("காபி", .tamil),
+        ],
+        categoria: .janya, padre: .melakarta(22), notasExternas: [.septimaMayor], referencias: [.karnatik])
+    /// Kānaḍa, del mēḷa 22 (Kharaharapriyā): sube recto Sa Re ga ma Dha ni Ṡa, sin Pa, y baja Ṡa ni Pa ma ga ma Re
+    /// Sa, sin Dha. La fuente escribe el Dha sin número; es el Dha₂ del mēḷa.
+    public static let kanada = TipoDeEscala(
+        nombre: "Kānaḍa",
+        intervalos: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .septimaMenor,
+        ],
+        recorridoDescendente: [7, 6, 5, 4, 3, 4, 2, 1],
+        nombresOriginales: [.init("कानड", .sanscrito), .init("కానడ", .telugu), .init("ಕಾನಡ", .canares)],
+        categoria: .janya, padre: .melakarta(22), referencias: [.karnatik])
+    /// Nīlāmbari, del mēḷa 29 (Dhīraśaṅkarābharaṇam): sube Sa Re Ga ma Pa Dha Pa Ni Ṡa y baja Ṡa Ni Pa ma Ga Re Ga
+    /// Sa, sin Dha.
+    public static let nilambari = TipoDeEscala(
+        nombre: "Nīlāmbari",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .septimaMayor,
+        ],
+        recorrido: [1, 2, 3, 4, 5, 6, 5, 7, 8],
+        recorridoDescendente: [7, 6, 5, 4, 3, 2, 3, 1],
+        nombresOriginales: [
+            .init("नीलाम्बरि", .sanscrito), .init("నీలాంబరి", .telugu), .init("ನೀಲಾಂಬರಿ", .canares),
+        ],
+        categoria: .janya, padre: .melakarta(29), referencias: [.karnatik])
+    /// Nāyaki, del mēḷa 22 (Kharaharapriyā): sube Sa Re ma Pa Dha ni Dha Pa Ṡa, sin ga, y baja Ṡa ni Dha Pa ma Re ga
+    /// Re Sa.
+    public static let nayaki = TipoDeEscala(
+        nombre: "Nāyaki",
+        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        recorrido: [1, 2, 3, 4, 5, 6, 5, 4, 7],
+        recorridoDescendente: [8, 7, 6, 5, 4, 2, 3, 2, 1],
+        nombresOriginales: [.init("नायकि", .sanscrito), .init("నాయకి", .telugu), .init("ನಾಯಕಿ", .canares)],
+        categoria: .janya, padre: .melakarta(22), referencias: [.karnatik])
+    /// Sāraṅga, bhāṣāṅga del mēḷa 65 (Mēcakalyāṇi): sube recto con las siete notas del mēḷa y baja Ṡa Ni Dha Pa Ma
+    /// Re Ga ma Re Sa, con el ma₁ que el mēḷa no tiene (`notasExternas`).
+    public static let saranga = TipoDeEscala(
+        nombre: "Sāraṅga",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .cuartaAumentada, .quintaJusta, .sextaMayor,
+            .septimaMayor,
+        ],
+        recorridoDescendente: [9, 8, 7, 6, 5, 2, 3, 4, 2, 1],
+        nombresOriginales: [.init("सारङ्ग", .sanscrito), .init("సారంగ", .telugu), .init("ಸಾರಂಗ", .canares)],
+        categoria: .janya, padre: .melakarta(65), notasExternas: [.cuartaJusta], referencias: [.karnatik])
+    /// Śrī carnática, del mēḷa 22 (Kharaharapriyā): sube recto Sa Re ma Pa ni Ṡa y baja Ṡa ni Pa Dha ni Pa ma Re ga
+    /// Re Sa. Se llama así para no confundirse con el Śrī indostánico, que es del thāṭ Pūrvī.
+    public static let sriCarnatica = TipoDeEscala(
+        nombre: "Śrī carnática",
+        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor,
+        ],
+        recorridoDescendente: [8, 7, 5, 6, 7, 5, 4, 2, 3, 2, 1],
+        nombresOriginales: [.init("श्री", .sanscrito), .init("శ్రీ", .telugu), .init("ಶ್ರೀ", .canares)],
+        categoria: .janya, padre: .melakarta(22), referencias: [.karnatik])
+    /// Hamīr Kalyāṇi, bhāṣāṅga del mēḷa 65 (Mēcakalyāṇi): sube Sa Pa Ma Pa Dha Ni Ṡa y baja Ṡa Ni Dha Pa Ma ma Ga Pa
+    /// ma Re Sa, con el ma₁ que el mēḷa no tiene (`notasExternas`).
+    public static let hamirKalyani = TipoDeEscala(
+        nombre: "Hamīr Kalyāṇi",
+        intervalos: [.unisono, .cuartaAumentada, .quintaJusta, .sextaMayor, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .cuartaAumentada, .quintaJusta, .sextaMayor,
+            .septimaMayor,
+        ],
+        recorrido: [1, 3, 2, 3, 4, 5, 6],
+        recorridoDescendente: [9, 8, 7, 6, 5, 4, 3, 6, 4, 2, 1],
+        nombresOriginales: [
+            .init("हमीर् कल्याणि", .sanscrito), .init("హమీర్ కల్యాణి", .telugu), .init("ಹಮೀರ್ ಕಲ್ಯಾಣಿ", .canares),
+        ],
+        categoria: .janya, padre: .melakarta(65), notasExternas: [.cuartaJusta], referencias: [.karnatik])
+    /// Yamunā Kalyāṇi, del mēḷa 65 (Mēcakalyāṇi), sin Ni: sube Sa Re Ga Pa Ma Pa Dha Ṡa y baja Ṡa Dha Pa Ma Pa Ga Re
+    /// Sa.
+    public static let yamunaKalyani = TipoDeEscala(
+        nombre: "Yamunā Kalyāṇi",
+        intervalos: [.unisono, .segundaMayor, .terceraMayor, .cuartaAumentada, .quintaJusta, .sextaMayor],
+        recorrido: [1, 2, 3, 5, 4, 5, 6, 7],
+        recorridoDescendente: [7, 6, 5, 4, 5, 3, 2, 1],
+        nombresOriginales: [
+            .init("यमुना कल्याणि", .sanscrito), .init("యమునా కల్యాణి", .telugu), .init("ಯಮುನಾ ಕಲ್ಯಾಣಿ", .canares),
+        ],
+        categoria: .janya, padre: .melakarta(65), referencias: [.karnatik])
+    /// Dēvamanōhari, del mēḷa 22 (Kharaharapriyā), sin ga: sube recto Sa Re ma Pa Dha ni Ṡa y baja Ṡa ni Dha ni Pa ma
+    /// Re Sa.
+    public static let devamanohari = TipoDeEscala(
+        nombre: "Dēvamanōhari",
+        intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMenor],
+        recorridoDescendente: [7, 6, 5, 6, 4, 3, 2, 1],
+        nombresOriginales: [
+            .init("देवमनोहरि", .sanscrito), .init("దేవమనోహరి", .telugu), .init("ದೇವಮನೋಹರಿ", .canares),
+        ],
+        categoria: .janya, padre: .melakarta(22), referencias: [.karnatik])
+    /// Behāg carnática, del mēḷa 29 (Dhīraśaṅkarābharaṇam): sube Sa Ga ma Pa Ni Dha Ni Ṡa, sin Re, y baja recto con
+    /// las siete notas del mēḷa. Se llama así para no confundirse con el Bihāg indostánico, que también se escribe
+    /// Behag.
+    public static let behagCarnatica = TipoDeEscala(
+        nombre: "Behāg carnática",
+        intervalos: [.unisono, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor],
+        intervalosDescendentes: [
+            .unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
+        ],
+        recorrido: [1, 2, 3, 4, 6, 5, 6, 7],
+        nombresOriginales: [.init("बेहाग्", .sanscrito), .init("బేహాగ్", .telugu), .init("ಬೇಹಾಗ್", .canares)],
+        categoria: .janya, padre: .melakarta(29), referencias: [.karnatik])
+
     /// Rāgas janya incluidos.
     package static let janyas: [TipoDeEscala] = [
         .mohanam, .hindolam, .hamsadhvani, .abhogi, .madhyamavati, .bilahari, .kambhoji, .arabhi, .kedaragaula,
@@ -763,7 +889,8 @@ extension TipoDeEscala {
         .andolika, .garudadhvani, .bahudari, .salagabhairavi, .jaganmohini, .rasikaranjani, .suddhaHindolam,
         .anandabhairavi, .surutti, .atana, .kedaram, .darbar, .mukhari, .gaula, .nalinakanti, .kathanakutuhalam,
         .begada, .sahana, .ritigaula, .devagandhari, .bhairaviCarnatica,
-        .darbariKanadaCarnatica,
+        .darbariKanadaCarnatica, .kapi, .kanada, .nilambari, .nayaki, .saranga, .sriCarnatica, .hamirKalyani,
+        .yamunaKalyani, .devamanohari, .behagCarnatica,
     ]
 
     // MARK: Thāṭ (música indostánica)
