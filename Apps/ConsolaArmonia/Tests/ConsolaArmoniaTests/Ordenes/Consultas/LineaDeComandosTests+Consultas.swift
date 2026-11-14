@@ -466,10 +466,10 @@ extension LineaDeComandosTests {
     @Test func catalogoDeEscalas() {
         let todas = salida("escalas")
         #expect(todas.hasPrefix("habituales ("), Comment(rawValue: todas))
-        #expect(todas.contains("Turquía · makam (27)"), Comment(rawValue: todas))
+        #expect(todas.contains("Turquía · makam (28)"), Comment(rawValue: todas))
         #expect(todas.contains("  Bayātī: Do Re♭ Mi♭ Fa Sol La♭ Si♭ · microtonos"))
         let turcas = salida("escalas --tradicion turquia")
-        #expect(turcas.hasPrefix("Turquía · makam (27)\n"), Comment(rawValue: turcas))
+        #expect(turcas.hasPrefix("Turquía · makam (28)\n"), Comment(rawValue: turcas))
         #expect(turcas.contains("  Hicaz makamı: Do Re♭ Mi Fa Sol La Si♭ · microtonos"), Comment(rawValue: turcas))
         #expect(!turcas.contains("habituales"))
         // Las tradiciones y las categorías se escriben de varias maneras, en español o en inglés.
@@ -521,7 +521,7 @@ extension LineaDeComandosTests {
         #expect(salida("escalas --categoria mēḷa") == salida("escalas --categoria melakarta"))
         #expect(salida("escalas --categoria mela") == salida("escalas --categoria melakarta"))
         #expect(salida("escalas --categoria rāga") == salida("escalas --categoria raga"))
-        #expect(salida("escalas --tradition turkey --ingles").hasPrefix("Turkey · makam (27)"))
+        #expect(salida("escalas --tradition turkey --ingles").hasPrefix("Turkey · makam (28)"))
         // Un texto busca en los nombres, sin tildes.
         let hicaz = salida("escalas hicaz")
         #expect(hicaz.contains("Hicaz makamı") && hicaz.contains("Hicazkâr makamı"), Comment(rawValue: hicaz))

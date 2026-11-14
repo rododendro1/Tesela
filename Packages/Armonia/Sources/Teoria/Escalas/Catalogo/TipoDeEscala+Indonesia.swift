@@ -20,7 +20,9 @@ extension TipoDeEscala {
     // sléndro nem en 2, sanga en 5 y manyura en 6. En Bali, selisir (1 2 3 5 6), tembung (4 5 6 1 2) y sunaren
     // (5 6 7 2 3), los tres modos del pélog de siete notas (saih pitu); con el modelo de nueve partes los tres salen
     // con los mismos intervalos, aunque en Bali cada gamelan tiene su afinación. En el sléndro, equidistante, los
-    // tres pathet tienen los mismos intervalos: Do Re Fa Sol Si♭ en doce notas.
+    // tres pathet tienen los mismos intervalos: Do Re Fa Sol Si♭ en doce notas. Del gambuh y del semar pegulingan
+    // vienen otros dos, poco usados y menos fijos: baro (3 4 5 7 1, la lectura de I Wayan Beratha y I Ketut Gede
+    // Asnawa de las cuatro que tiene) y lebeng, que en el semar pegulingan usa las siete notas desde el 1.
     // Fuente: Wikipedia («Pathet», «Pelog», «Slendro»).
 
     /// Pélog en el modo selisir de Bali (1 2 3 5 6: Do Re♭ Mi♭ Sol La♭).
@@ -83,6 +85,24 @@ extension TipoDeEscala {
         intervalos: TipoDeEscala.pelog.intervalos,
         alias: ["Sunaren"],
         categoria: .pathet, regiones: [.bali], afinaciones: [.pelogSelisir])
+    /// Baro, el modo de Bali sobre el 3 (3 4 5 7 1: Do Re♯ Mi Sol La en doce notas), en la lectura de Beratha y
+    /// Asnawa.
+    public static let pelogBaro = TipoDeEscala(
+        nombre: "Pélog baro",
+        intervalos: [.unisono, .segundaAumentada, .terceraMayor, .quintaJusta, .sextaMayor],
+        alias: ["Baro"],
+        categoria: .pathet, regiones: [.bali],
+        afinaciones: [.init(.razones, pasos: [0, 267, 400, 667, 933])])
+    /// Lebeng, el modo del semar pegulingan con las siete notas desde el 1 (Do Re♭ Mi♭ Fa Sol La♭ Si𝄫 en doce
+    /// notas).
+    public static let pelogLebeng = TipoDeEscala(
+        nombre: "Pélog lebeng",
+        intervalos: [
+            .unisono, .segundaMenor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaDisminuida,
+        ],
+        alias: ["Lebeng"],
+        categoria: .pathet, regiones: [.bali],
+        afinaciones: [.init(.razones, pasos: [0, 133, 267, 533, 667, 800, 933])])
 
     // MARK: Sunda
     //
@@ -102,6 +122,6 @@ extension TipoDeEscala {
     /// Los pathet de Java y los modos de Bali.
     package static let pathets: [TipoDeEscala] = [
         .pelogLima, .pelogNem, .pelogBarang, .slendroNem, .slendroSanga, .slendroManyura, .pelogTembung,
-        .pelogSunaren,
+        .pelogSunaren, .pelogBaro, .pelogLebeng,
     ]
 }

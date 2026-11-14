@@ -335,9 +335,9 @@ TipoDeEscala.bilahari.intervalosEnAmbasDirecciones
 
 Los rāgas janya incluidos son Mohanam, Hindolam, Haṃsadhvani, Ābhogi, Madhyamāvatī, Revati,
 Amṛtavarṣiṇī, Śuddha Sāveri, Śuddha Dhanyāsi, Śrīrañjani, Mālayamārutam, Gambhīranāṭa, Haṃsanādam, Haṃsānandi,
-Bhūpālam, Revagupti, Lalitā, Megharañjani, Nāgasvarāvaḷi y Sunādavinodinī (iguales al subir y al bajar), y Bilahari,
-Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri, Nāṭa, Kalyāṇavasantam, Bauḷi, Dhanyāsi, Ābheri y Maṇiraṅgu
-(distintos). Llevan su nombre en sánscrito, en telugu y en canarés, y los 23 que tienen artículo en la Wikipedia en tamil, también en tamil. Se dejan fuera los vakra, que suben o bajan en
+Bhūpālam, Revagupti, Lalitā, Megharañjani, Nāgasvarāvaḷi, Sunādavinodinī y Śuddha Hindolam (iguales al subir y al
+bajar), y Bilahari, Kāmbhoji, Ārabhi, Kedāragauḷa, Mohanakalyāṇi, Sāveri, Nāṭa, Kalyāṇavasantam, Bauḷi, Dhanyāsi,
+Ābheri, Maṇiraṅgu, Āndolikā, Garuḍadhvani, Bahudāri, Sālagabhairavi, Jaganmohini y Rasikarañjani (distintos). Llevan su nombre en sánscrito, en telugu y en canarés, y los 27 que tienen artículo en la Wikipedia en tamil, también en tamil. Se dejan fuera los vakra, que suben o bajan en
 zigzag. `melakartasCompatibles` dice de qué mēḷa puede derivar
 cada uno: `TipoDeEscala.mohanam.melakartasCompatibles` → `[28, 29, 64, 65]`.
 

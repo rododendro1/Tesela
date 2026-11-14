@@ -104,6 +104,16 @@ extension TipoDeEscala {
         alias: ["makam Uşşak"],
         categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31, 35, 44])], documentada: .cantemir1700
     )
+    /// Bayâtî: las notas de Uşşak (la TDV İslâm Ansiklopedisi dice que su dizi es el mismo), con el güçlü en nevâ y un
+    /// recorrido que va casi siempre a Karcığar; acaba con un tetracordo Uşşak en la dügâh.
+    public static let bayatiMakami = TipoDeEscala(
+        nombre: "Bayâtî makamı",
+        intervalos: [
+            .unisono, .segundaMayor, .terceraMenor, .cuartaJusta,
+            .quintaJusta, .sextaMenor, .septimaMenor,
+        ],
+        alias: ["makam Bayâtî"],
+        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31, 35, 44])])
     /// Hüseynî (La Si Do Re Mi Fa♯ Sol, con la segâh y Fa♯ una koma bajo): un pentacordo Hüseynî y un tetracordo
     /// Uşşak en la quinta; al bajar, Fa. Aproximado: sube como el dórico y baja como la menor natural.
     public static let huseyniMakami = TipoDeEscala(
@@ -317,7 +327,7 @@ extension TipoDeEscala {
         .ussakMakami, .huseyniMakami, .segahMakami, .huzzamMakami, .sabaMakami, .karcigarMakami, .suzinakMakami,
         .nikrizMakami, .neveserMakami, .mahurMakami, .acemasiranMakami, .sultaniyegahMakami, .sedarabanMakami,
         .humayunMakami, .uzzalMakami, .zirguleliHicazMakami, .kurdilihicazkarMakami, .muhayyerMakami,
-        .ferahfezaMakami, .isfahanMakami,
+        .ferahfezaMakami, .isfahanMakami, .bayatiMakami,
     ]
 
     // MARK: Çeşni (fragmentos)

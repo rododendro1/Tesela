@@ -102,6 +102,10 @@ import Testing
         "manirangu", "nagasvaravali", "sunadavinodini", "jaunpuri", "miyan-ki-todi", "gujari-todi", "ragesri",
         "vrndavani-sarang", "jog", "ahir-bhairav", "puriya", "shadd-zirafkand", "shadd-zankula", "shadd-rahawi",
         "shadd-husayni", "shadd-hijazi", "kyongtori", "menaritori", "yukchabaegitori", "susimgatori",
+        "andolika", "garudadhvani", "bahudari", "salagabhairavi", "jaganmohini", "rasikaranjani", "suddha-hindolam",
+        "basant", "sri", "patdip", "kirvani", "bairagi", "nat-bhairav", "dhani", "gunakri", "bayati-makami",
+        "pelog-baro",
+        "pelog-lebeng",
     ]
 
     @Test func lasClavesDelCatalogoNoCambian() {

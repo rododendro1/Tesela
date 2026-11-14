@@ -59,11 +59,12 @@ usan microtonos):
   cinco; en doce notas cada grado va al semitono más cercano desde su tónica (el sléndro, Do Re Fa Sol Si♭), y
   en cents en su versión microtonal. Y el degung del gamelan de Sunda, en el oeste de Java (Do Mi Fa Sol Si desde
   da), que no lleva versión en cents.
-- **27 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
-  (el Valaji carnático), Candrakauns, Megh y Hindol, pentatónicos; Yaman, Lalit, Pūriyā Dhanāśrī, Ahir Bhairav,
-  Pūriyā, Gujarī Toḍī y Darbārī Kānaḍa (en su forma recta: es vakra, y su ga y su dha ati-komal no caben en doce
-  notas); y Bāgeśrī, Deś, Bhīmpalāsī, Bihāg, Madhuvantī, Multānī, Sohinī, Jaunpurī, Miyāṅ kī Toḍī, Rāgeśrī,
-  Vṛndāvanī Sāraṅg y Jog, que suben y bajan distinto.
+- **35 rāgas indostánicos** que no son thāṭ: Bhūpālī, Mālkauns, Durgā, Śivarañjanī, Kalāvatī
+  (el Valaji carnático), Candrakauns, Megh, Hindol, Bairāgī, Dhānī y Guṇakrī, pentatónicos; Yaman, Lalit, Pūriyā
+  Dhanāśrī, Ahir Bhairav, Pūriyā, Gujarī Toḍī, Kirvāṇī, Naṭ Bhairav y Darbārī Kānaḍa (en su forma recta: es vakra,
+  y su ga y su dha ati-komal no caben en doce notas); y Bāgeśrī, Deś, Bhīmpalāsī, Bihāg, Madhuvantī, Multānī,
+  Sohinī, Jaunpurī, Miyāṅ kī Toḍī, Rāgeśrī, Vṛndāvanī Sāraṅg, Jog, Basant, Śrī y Paṭdīp, que suben y bajan
+  distinto.
 - **Los 2 grāma y las 14 mūrchanā** del Nāṭyaśāstra: el ṣaḍja-grāma (el dórico, las razones de Kāfī) y el
   madhyama-grāma (con Pa una coma más bajo), y las siete escalas de cada uno, una desde cada nota: Uttaramandrā,
   Rajanī, Uttarāyatā, Śuddhaṣaḍjā, Matsarīkṛtā, Aśvakrāntā y Abhirudgatā; Sauvīrī, Hariṇāśvā, Kalopanatā,
@@ -74,7 +75,7 @@ usan microtonos):
   dastgāh Navā y Segāh, este con la tónica en un *koron* (escrito sobre Mi); y los āvāz Bayāt-e
   Tork, Afšāri, Dašti (las notas de Šur), Abu ʿAtā y Bayāt-e Esfahān, con el *koron* en su letra
   y redondeado al bemol, como se suele escribir.
-- **27 makamlar turcos**: Rast, Hicaz, Hicazkâr, Nihâvend, Kürdî, Bûselik, Çârgâh, Uşşak,
+- **28 makamlar turcos**: Rast, Hicaz, Hicazkâr, Nihâvend, Kürdî, Bûselik, Çârgâh, Uşşak, Bayâtî,
   Hüseynî, Segâh, Hüzzam, Saba, Karcığar, Suzinak, Nikriz, Nev'eser, Mâhur, Acemaşiran, Sultânîyegâh,
   Şedaraban, Hümâyun, Uzzâl, Zirgüleli Hicaz, Kürdîlihicazkâr, Muhayyer, Ferahfezâ e Isfahan, con
   «makamı» detrás (Rast makamı). Cada nota del sistema de Arel-Ezgi-Uzdilek, de 53 comas, va a su semitono más
