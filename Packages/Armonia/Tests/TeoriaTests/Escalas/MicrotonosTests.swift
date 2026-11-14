@@ -20,7 +20,7 @@ import Testing
                 microtonal.temperada.afinaciones.contains(microtonal), Comment(rawValue: microtonal.temperada.nombre))
             #expect(microtonal.pasos == microtonal.pasos.sorted(), Comment(rawValue: microtonal.temperada.nombre))
         }
-        #expect(AfinacionPropia.catalogo.count == 219)
+        #expect(AfinacionPropia.catalogo.count == 242)
         // La primera de cada escala es la de su teoría de hoy, sin fuente.
         #expect(TipoDeEscala.catalogo.allSatisfy { $0.afinacionPropia?.fuente == nil })
     }

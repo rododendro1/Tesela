@@ -4,9 +4,11 @@ import Elementos
 //
 // Las occidentales no llevan las obras en su declaración: van aquí, por obras, y `TipoDeEscala.referencias` las junta.
 // Una escala puede estar en varias. Las sintéticas de siete notas (`Estilo.sintetica`, las que salen de
-// alterar los grados de otra) se citan por Busoni, que las cuenta todas sin nombrarlas. Las demás variantes que no
-// trata ninguna obra general (las cromáticas con alteraciones, las pentatónicas y hexatónicas alteradas, las de ocho
-// notas) no tienen.
+// alterar los grados de otra) se citan por Busoni, que las cuenta todas sin nombrarlas. Las pentatónicas y
+// hexatónicas alteradas, y dos blues, se citan por la lista de modos de Op de Coul, que da sus pasos en texto, a
+// veces con otro nombre (el jónico sin 4ª es su «Lydian Hexatonic»; el eólico sin 2ª, su «Phrygian Hexatonic»; la
+// mayor ♭3, su «Dorian Pentatonic»). Las que no están en ninguna obra (las cromáticas con alteraciones, las bebop
+// que no son de Levine, las hexatónicas de dos tríadas…) no tienen.
 
 extension TipoDeEscala {
     /// Cada obra con las escalas occidentales que trata.
@@ -63,6 +65,15 @@ extension TipoDeEscala {
                 .menorArmonicaQuintaDisminuida, .superlocrioSextaNatural, .menorMelodicaQuintaAumentada,
                 .doricoSegundaMenorCuartaAumentada, .lidioAumentadoTerceraAumentada, .jonicoSegundaMenor,
                 .jonicoQuintaDisminuida, .jonicoSextaAumentada,
+            ]
+        ),
+        (
+            .opDeCoulModos,
+            [
+                .egipcia, .pentatonicaDominante, .pentatonicaMenorSexta, .pentatonicaMayorTerceraMenor,
+                .pentatonicaMenorSextaMenor, .pentatonicaMixolidia, .pentatonicaLidia, .pentatonicaEscocesa,
+                .tritonoDeDosSemitonos, .jonicoSinCuarta, .mixolidioSinTercera, .doricoSinSexta, .eolicoSinSegunda,
+                .bluesDeNueveNotas, .bluesMenorConSegunda,
             ]
         ),
     ]

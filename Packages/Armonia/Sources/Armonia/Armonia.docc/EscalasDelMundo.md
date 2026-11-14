@@ -338,7 +338,7 @@ desde la tónica temperada. La tienen todos los maqamat que usan cuartos de tono
 (`.cuartosDeTono`, la teoría árabe moderna); los dastgāh y āvāz con *koron*, con el de Vaziri (`.persa`); los
 makamlar, salvo los seis pitagóricos (Nihâvend, Kürdî, Bûselik, Çârgâh, Mâhur y Acemaşiran), en las 53 comas de Arel-Ezgi-Uzdilek
 (`.comas53`); los quince dromoi, con la afinación de su maqam o su makam; los echoi bizantinos, salvo el trítos, en
-los 72 moria de la Comisión Patriarcal de 1881 (`.moria72`); y los diez thāṭ y Yaman, en los 22 śruti indios
+los 72 moria de la Comisión Patriarcal de 1881 (`.moria72`); y los diez thāṭ y los 24 rāgas indostánicos que tienen uno (con los śruti de su thāṭ), en los 22 śruti indios
 (`.sruti`), cada uno una razón justa, como los grāma y las mūrchanā; el tetracordo enarmónico griego, en cuartos de
 tono (Mi Fa𝄳 Fa La), con las harmoniai enarmónicas y las de Arístides; el gamelan, los xilófonos africanos y el piphat y el pinpeat, en cents, con la octava en
 partes iguales; y los géneros de Arquitas, Ptolomeo, Dídimo y Eratóstenes, los colores de Aristóxeno, los adwār de Ṣafī al-Dīn, las escalas chinas y las del Renacimiento, en cents (`.razones`), igual que las mūrchanā con

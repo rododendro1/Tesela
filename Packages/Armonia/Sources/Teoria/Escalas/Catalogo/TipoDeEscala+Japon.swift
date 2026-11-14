@@ -96,9 +96,11 @@ extension TipoDeEscala {
         nombre: "Hirajōshi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMenor],
         variantes: ["Hira-jōshi"], nombresOriginales: [.init("平調子", .japones)],
         tradicion: .japon, categoria: .escala)
-    /// 雲井調子, otra afinación del koto (Do Re Mi♭ Sol La).
+    /// 雲井調子, otra afinación del koto: Sol La♭ Do Re Mi♭ (Do Re♭ Fa Sol La♭), con las notas de la in. Así la dan
+    /// la tabla del afinador de KORG que copia shamisen.info y la de cada cuerda en semitonos de asahi-net (Re Mi♭ Sol
+    /// La♭ Do desde la primera). El Do Re Mi♭ Sol La que le dan algunos libros occidentales es el de Akebono.
     public static let kumoijoshi = TipoDeEscala(
-        nombre: "Kumoijōshi", intervalos: [.unisono, .segundaMayor, .terceraMenor, .quintaJusta, .sextaMayor],
+        nombre: "Kumoijōshi", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
         alias: ["Kumoi"], variantes: ["Kumoi-jōshi"], nombresOriginales: [.init("雲井調子", .japones)],
         tradicion: .japon, categoria: .escala)
     /// 琉球音階, la escala de Okinawa (Do Mi Fa Sol Si).

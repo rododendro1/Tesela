@@ -90,9 +90,11 @@ import Testing
         #expect(TipoDeEscala.hitzaz.referencias == [.pennanen1999])
         #expect(TipoDeEscala.ujo.referencias == [.shin2024])
         #expect(TipoDeEscala.lidioNordestino.referencias == [.siqueira1981])
-        // Las sintéticas de siete notas, por Busoni; las propias y las demás alteradas no tienen.
+        // Las sintéticas de siete notas, por Busoni; las pentatónicas y hexatónicas alteradas, por Op de Coul; las
+        // propias y las demás alteradas no tienen.
         #expect(TipoDeEscala.lidioSegundaAumentada.referencias == [.busoni1916])
-        #expect(TipoDeEscala.pentatonicaMenorSexta.referencias.isEmpty)
+        #expect(TipoDeEscala.pentatonicaMenorSexta.referencias == [.opDeCoulModos])
+        #expect(TipoDeEscala.pentatonicaMenorQuintaDisminuida.referencias.isEmpty)
         #expect(TipoDeEscala(nombre: "mía", intervalos: TipoDeEscala.bayati.intervalos).referencias.isEmpty)
     }
 
