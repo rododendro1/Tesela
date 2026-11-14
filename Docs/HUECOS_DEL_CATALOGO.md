@@ -91,8 +91,8 @@ los ṭubūʿ tunecinos) no se pueden leer desde aquí.
   Kusumadinata (1969), da los cents en tablas que son imágenes, y se contradice en cuál de los degung es el «tri suara».
 - **Filipinas, el kulintang:** duyug, sinulog, tidtu, binalig y tagonggo son modos rítmicos, no escalas, y cada juego
   de gongs tiene su afinación (Maceda 1963, Trimillos 2004, en la Wikipedia en inglés).
-- **Mundo árabe, Mustaʿār y Ṣabā Zamzam:** Maqam World da sus ajnas solo en imágenes; de Ṣabā Zamzam el texto dice
-  sus ajnas (Ṣabā Zamzam, Ḥijāz en el 3.er grado, ʿAjam o Nikrīz en el 6.º), pero no la segunda.
+- **Mundo árabe, Mustaʿār:** Maqam World da su jins (un Sīkāh con la segunda alta) solo en una imagen. Ṣabā Zamzam
+  ya está en el catálogo.
 - **Mongolia:** la colección de Sipos (*Mongolian Folk Songs*, ERHFM) clasifica las canciones por pentatónicas que el
   catálogo ya tiene (las cinco rotaciones de la pentatónica, como los modos chinos).
 
