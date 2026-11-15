@@ -28,10 +28,10 @@ let package = Package(
         .library(name: "Polifonia", targets: ["Polifonia"]),
         .library(name: "Formatos", targets: ["Formatos"]),
         .library(name: "Trastes", targets: ["Trastes"]),
-        // Packages/Exposicion
-        .library(name: "Exposicion", targets: ["Exposicion"]),
-        // Packages/Interfaz
-        .library(name: "Interfaz", targets: ["Interfaz"]),
+        // Packages/ExposicionArmonia
+        .library(name: "ExposicionArmonia", targets: ["ExposicionArmonia"]),
+        // Packages/InterfazArmonia
+        .library(name: "InterfazArmonia", targets: ["InterfazArmonia"]),
     ],
     targets: [
         .target(name: "Hexagonos", path: "Packages/Hexagonos/Sources/Hexagonos"),
@@ -64,13 +64,13 @@ let package = Package(
             path: "Packages/Armonia/Sources/Armonia"),
 
         .target(
-            name: "Exposicion",
+            name: "ExposicionArmonia",
             dependencies: ["Armonia", "Hexagonos"],
-            path: "Packages/Exposicion/Sources/Exposicion"),
+            path: "Packages/ExposicionArmonia/Sources/ExposicionArmonia"),
 
         .target(
-            name: "Interfaz",
-            dependencies: ["Exposicion", "Armonia", "Hexagonos"],
-            path: "Packages/Interfaz/Sources/Interfaz"),
+            name: "InterfazArmonia",
+            dependencies: ["ExposicionArmonia", "Armonia", "Hexagonos"],
+            path: "Packages/InterfazArmonia/Sources/InterfazArmonia"),
     ]
 )

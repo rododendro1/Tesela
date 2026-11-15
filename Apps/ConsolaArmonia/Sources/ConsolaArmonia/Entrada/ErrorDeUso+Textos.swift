@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 
 // El texto de cada error de uso (`ErrorDeUso.swift`), de los campos de `TextosDeConsola`.
 

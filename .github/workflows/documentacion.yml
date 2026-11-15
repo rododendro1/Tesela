@@ -45,17 +45,17 @@ jobs:
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
           xcodebuild docbuild -scheme Hexagonos -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-hexagonos" CODE_SIGNING_ALLOWED=NO | tail -n 20
-      - name: Exposicion
-        working-directory: Packages/Exposicion
+      - name: ExposicionArmonia
+        working-directory: Packages/ExposicionArmonia
         run: |
           set -o pipefail
-          xcodebuild docbuild -scheme Exposicion -destination 'generic/platform=macOS' \
+          xcodebuild docbuild -scheme ExposicionArmonia -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-exposicion" CODE_SIGNING_ALLOWED=NO | tail -n 20
-      - name: Interfaz
-        working-directory: Packages/Interfaz
+      - name: InterfazArmonia
+        working-directory: Packages/InterfazArmonia
         run: |
           set -o pipefail
-          xcodebuild docbuild -scheme Interfaz -destination 'generic/platform=macOS' \
+          xcodebuild docbuild -scheme InterfazArmonia -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-interfaz" CODE_SIGNING_ALLOWED=NO | tail -n 20
       - name: Preparar el sitio
         env:
@@ -66,8 +66,8 @@ jobs:
           sitio="$RUNNER_TEMP/sitio"
           mkdir -p "$sitio"
           enlaces=""
-          # Un archivo por módulo (Armonia, Elementos…, Hexagonos, Interfaz…), cada uno en su carpeta; los que
-          # salen repetidos (Interfaz construye también los de sus dependencias) se toman una vez.
+          # Un archivo por módulo (Armonia, Elementos…, Hexagonos, InterfazArmonia…), cada uno en su carpeta; los que
+          # salen repetidos (InterfazArmonia construye también los de sus dependencias) se toman una vez.
           for archivo in $(find "$RUNNER_TEMP/docc" "$RUNNER_TEMP/docc-hexagonos" "$RUNNER_TEMP/docc-exposicion" "$RUNNER_TEMP/docc-interfaz" -name "*.doccarchive" -type d -prune | sort); do
             modulo=$(basename "$archivo" .doccarchive)
             carpeta=$(echo "$modulo" | tr '[:upper:]' '[:lower:]')

@@ -27,7 +27,7 @@ body:
         - TonnetzApp
         - Línea de comandos (armonia)
         - Paquete Armonia
-        - Paquete Interfaz
+        - Paquete InterfazArmonia
         - Paquete Hexagonos
         - Documentación
     validations:

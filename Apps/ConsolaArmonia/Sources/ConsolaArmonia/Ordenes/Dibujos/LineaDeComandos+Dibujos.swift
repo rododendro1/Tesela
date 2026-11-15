@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 import Foundation
 
 // MARK: - Dibujos: Tonnetz, tabla armónica y teclados de cuadrícula, y lo que comparten con los demás dibujos

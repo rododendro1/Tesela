@@ -1,5 +1,5 @@
 import Armonia
-import Interfaz
+import InterfazArmonia
 import SwiftUI
 
 /// Los catálogos con nombre: las progresiones, los acordes con nombre y los ritmos. Se buscan por su nombre en

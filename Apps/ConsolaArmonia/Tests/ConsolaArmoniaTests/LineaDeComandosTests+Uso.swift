@@ -268,6 +268,23 @@ extension LineaDeComandosTests {
         #expect(pentatonica.contains("\n  2 —\n  3 Mi–La–Re–Sol (Mim7(11,omit5))\n"))
     }
 
+    /// Las líneas sobre una progresión (el bajo caminante y el fraseo) y los avisos de lo que no se encuentra.
+    @Test func lineasSobreLaProgresionYLoQueNoSeEncuentra() {
+        #expect(salida("musicxml bajo Rem7 Sol7 Domaj7").contains("<score-partwise"))
+        #expect(salida("musicxml fraseo Rem7 Sol7 Domaj7 --compas 3/4").contains("<beats>3</beats>"))
+        let compas = resultado("musicxml bajo Rem7 Sol7 --compas 3/4")
+        #expect(compas.codigo == 2)
+        #expect(compas.error.contains("4/4"))
+        #expect(resultado("digitaciones C --traste").codigo == 2)
+        let afinacion = resultado("escalas --afinacion rara")
+        #expect(afinacion.codigo == 2)
+        #expect(afinacion.error.contains("«rara»"))
+        #expect(salida("identificar Do").contains("No forman ningún acorde conocido"))
+        let tonalidades = resultado("tonalidades --afecto templado")
+        #expect(tonalidades.codigo == 1)
+        #expect(tonalidades.error.contains("ninguna fuente describe una tonalidad así"))
+    }
+
     @Test func referenciasDeUnaEscala() {
         #expect(
             salida("escala Re bayati").contains(

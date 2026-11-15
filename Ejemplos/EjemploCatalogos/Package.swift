@@ -11,8 +11,8 @@ import PackageDescription
 //     swift run EjemploCatalogos --bibtex obras.bib       # y las obras que citan, en BibTeX
 let package = Package(
     name: "EjemploCatalogos",
-    // Como `Armonia` y `Exposicion`: SwiftPM rechaza que un paquete con un mínimo más bajo dependa de otro con uno
-    // más alto.
+    // Como `Armonia` y `ExposicionArmonia`: SwiftPM rechaza que un paquete con un mínimo más bajo dependa de otro con
+    // uno más alto.
     platforms: [.macOS(.v13)],
     products: [
         .executable(name: "EjemploCatalogos", targets: ["EjemploCatalogos"])
@@ -20,14 +20,14 @@ let package = Package(
     dependencies: [
         .package(path: "../../Packages/Armonia"),
         // Las medidas de cada acorde, descritas una sola vez (`MedidaDeAcorde`).
-        .package(path: "../../Packages/Exposicion"),
+        .package(path: "../../Packages/ExposicionArmonia"),
     ],
     targets: [
         .executableTarget(
             name: "EjemploCatalogos",
             dependencies: [
                 .product(name: "Armonia", package: "Armonia"),
-                .product(name: "Exposicion", package: "Exposicion"),
+                .product(name: "ExposicionArmonia", package: "ExposicionArmonia"),
             ])
     ]
 )

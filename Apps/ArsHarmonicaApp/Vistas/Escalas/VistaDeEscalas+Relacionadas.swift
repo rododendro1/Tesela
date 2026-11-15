@@ -1,5 +1,5 @@
 import Armonia
-import Interfaz
+import InterfazArmonia
 import SwiftUI
 
 // Las secciones de la pestaña de escalas con lo que se relaciona con ella: los acordes que caben, las escalas más

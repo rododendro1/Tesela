@@ -19,8 +19,8 @@ XcodeGen. Los pasos están en el apartado «Empezar» de [Docs/DESARROLLO.md](Do
 ```sh
 cd Packages/Armonia && swift test        # el motor
 cd Packages/Hexagonos && swift test      # las rejillas hexagonales
-cd Packages/Exposicion && swift test     # lo que enseñan las apps, sin SwiftUI
-cd Packages/Interfaz && swift test       # la interfaz (en Linux, solo la parte sin SwiftUI)
+cd Packages/ExposicionArmonia && swift test     # lo que enseñan las apps, sin SwiftUI
+cd Packages/InterfazArmonia && swift test       # la interfaz (en Linux, solo la parte sin SwiftUI)
 ./Scripts/compilacion/compilar_todo.sh               # todo, por capas, como el CI
 ```
 
@@ -89,10 +89,15 @@ python3 Scripts/generadores/generar_pruebas_de_documentacion.py --comprobar
 python3 Scripts/version/notas_de_version.py --comprobar
 ```
 
+Los TSV de `Ejemplos/EjemploCatalogos` sí necesitan Swift: `python3 Scripts/comprobaciones/comprobar_tsv.py` los
+escribe y los comprueba (en el CI va con el ejemplo, en Linux).
+
 En cada pull request corren estas comprobaciones, la del formato y las pruebas en Linux (Swift 6.0 y 6.2). Si el pull
-request cambia las apps, `Exposicion`, `Interfaz` o el proyecto de Xcode, las dos apps se compilan además en macOS (el job `apps`). Los
-demás jobs de macOS (las pruebas de interfaz, el simulador de iOS y DocC) corren los lunes y a mano desde la pestaña
-Actions; si tu cambio toca las vistas o la documentación, pide en el pull request que se lancen.
+request cambia las apps, `ExposicionArmonia`, `InterfazArmonia`, el código del motor o de `Hexagonos`, o el
+proyecto de Xcode, las dos apps se compilan y pasan sus pruebas de interfaz en macOS y en el simulador de iOS (el job
+`interfaz`). Si cambia un paquete o la consola, sus pruebas corren también en macOS (`macos-paquetes`). Los demás
+jobs de macOS (la compilación de las apps para el simulador, los idiomas de las apps y DocC) corren los lunes y a mano
+desde la pestaña Actions; si tu cambio toca la documentación, pide en el pull request que se lancen.
 
 ## Pull requests
 

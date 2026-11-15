@@ -1,5 +1,5 @@
 import Armonia
-import Interfaz
+import InterfazArmonia
 import SwiftUI
 
 /// Una serie dodecafónica: se escribe con cifras («5 4 0 9 7 2 8 1 3 6 t e») o con nombres de notas, y se ven sus

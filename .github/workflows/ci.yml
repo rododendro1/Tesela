@@ -2,9 +2,10 @@ name: CI
 
 # `push` solo en la rama principal: en una rama con pull request ya corre el de `pull_request`, y con los
 # dos se ejecutaba todo dos veces. Si tu rama principal no se llama main ni master, cámbialo aquí.
-# Los jobs de macOS solo corren a mano (workflow_dispatch) y una vez por semana (`schedule`), salvo `interfaz`, que en
-# los pull requests que tocan las apps las compila y pasa sus pruebas de interfaz. Si una máquina de macOS se pierde a
-# mitad, `reintentar.yml` repite los jobs que fallaron (una vez).
+# Los jobs de macOS solo corren a mano (workflow_dispatch) y una vez por semana (`schedule`), salvo dos en los pull
+# requests: `interfaz`, que compila las apps y pasa sus pruebas de interfaz si el pull request toca las apps o aquello
+# de lo que dependen, y `macos-paquetes`, que pasa las pruebas de los paquetes y de la consola si toca alguno. Si una
+# máquina de macOS se pierde a mitad, `reintentar.yml` repite los jobs que fallaron (una vez).
 on:
   push:
     branches: [main, master]
@@ -158,9 +159,16 @@ jobs:
       - name: Ejemplo
         if: startsWith(matrix.paquete.nombre, 'Ejemplo')
         run: swift run ${{ matrix.paquete.nombre }}
+      # Los TSV de los catálogos, además de escribirse, tienen que estar bien formados y no perder columnas.
+      - name: TSV de los catálogos
+        if: matrix.paquete.nombre == 'EjemploCatalogos'
+        run: |
+          command -v python3 > /dev/null || { apt-get update -q && apt-get install -y -q --no-install-recommends python3; }
+          swift run EjemploCatalogos "$RUNNER_TEMP/catalogos" > /dev/null
+          python3 "$GITHUB_WORKSPACE/Scripts/comprobaciones/comprobar_tsv.py" "$RUNNER_TEMP/catalogos"
       - name: Sin avisos
-        if: matrix.paquete.nombre == 'ConsolaArmonia' && matrix.swift == '6.2'
-        run: swift build --scratch-path .build/sin-avisos --target ConsolaArmonia -Xswiftc -warnings-as-errors
+        if: matrix.swift == '6.2'
+        run: swift build --scratch-path .build/sin-avisos -Xswiftc -warnings-as-errors
       - uses: actions/cache/save@v6
         if: github.event_name != 'pull_request'
         with:
@@ -322,7 +330,7 @@ jobs:
       fail-fast: false
       matrix:
         swift: ["6.0", "6.2"]
-        paquete: [Exposicion, Interfaz, Hexagonos]
+        paquete: [ExposicionArmonia, InterfazArmonia, Hexagonos]
     defaults:
       run:
         working-directory: Packages/${{ matrix.paquete }}
@@ -339,8 +347,8 @@ jobs:
       - name: Pruebas
         run: swift test --parallel
       - name: Sin avisos
-        if: matrix.paquete == 'Hexagonos' && matrix.swift == '6.2'
-        run: swift build --scratch-path .build/sin-avisos --target Hexagonos -Xswiftc -warnings-as-errors
+        if: matrix.swift == '6.2'
+        run: swift build --scratch-path .build/sin-avisos --target ${{ matrix.paquete }} -Xswiftc -warnings-as-errors
       - uses: actions/cache/save@v6
         if: github.event_name != 'pull_request'
         with:
@@ -365,8 +373,8 @@ jobs:
         paquete:
           # Las exhaustivas tardan y no prueban código distinto del de las rápidas.
           - { nombre: Armonia, ruta: Packages/Armonia, filtro: "^(Armonia|ArmoniaDocumentacion|Elementos|Teoria|Diagramas|Partituras|Polifonia|Formatos|Trastes)Tests\\.", funciones: 95.5, lineas: 98.0 }
-          - { nombre: Exposicion, ruta: Packages/Exposicion, filtro: "", funciones: 96.0, lineas: 98.5 }
-          - { nombre: Interfaz, ruta: Packages/Interfaz, filtro: "", funciones: 97.0, lineas: 99.0 }
+          - { nombre: ExposicionArmonia, ruta: Packages/ExposicionArmonia, filtro: "", funciones: 96.0, lineas: 98.5 }
+          - { nombre: InterfazArmonia, ruta: Packages/InterfazArmonia, filtro: "", funciones: 97.0, lineas: 99.0 }
           - { nombre: Hexagonos, ruta: Packages/Hexagonos, filtro: "", funciones: 93.5, lineas: 97.5 }
           - { nombre: ConsolaArmonia, ruta: Apps/ConsolaArmonia, filtro: "", funciones: 96.0, lineas: 98.0 }
     defaults:
@@ -465,10 +473,12 @@ jobs:
             .build
           key: ${{ steps.cache.outputs.clave }}
 
-  # Un pull request que cambia las apps, sus vistas (Interfaz) o el proyecto de Xcode pasa `interfaz`, que compila
-  # las dos apps en macOS y en el simulador de iOS antes de probarlas: es lo que Linux no puede compilar. Lo demás de
-  # macOS sigue en el job `macos`. `cambios-en-las-apps` corre en Linux y solo mira los ficheros, para no ocupar un
-  # runner de macOS en los demás.
+  # Un pull request que cambia las apps, sus vistas (InterfazArmonia), lo que enseñan (ExposicionArmonia), el motor
+  # o Hexagonos, de los que dependen, o el proyecto de Xcode pasa `interfaz`, que compila las dos apps en macOS y en
+  # el simulador de iOS antes de probarlas: es lo que Linux no puede compilar, y un cambio en la API del motor
+  # puede romperlas sin tocarlas. Uno que cambia un paquete o la consola pasa `macos-paquetes`, sus pruebas con la
+  # Foundation de Apple. Lo demás de macOS sigue en el job `macos`. `cambios-en-las-apps` corre en Linux y solo mira
+  # los ficheros, para no ocupar un runner de macOS en los demás.
   cambios-en-las-apps:
     name: ¿Toca las apps?
     if: github.event_name == 'pull_request'
@@ -476,6 +486,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       apps: ${{ steps.mirar.outputs.apps }}
+      paquetes: ${{ steps.mirar.outputs.paquetes }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -486,10 +497,17 @@ jobs:
         run: |
           cambiados=$(git diff --name-only "$BASE"...HEAD)
           echo "$cambiados"
-          if echo "$cambiados" | grep -qE '^(Apps/ArsHarmonicaApp/|Apps/TonnetzApp/|PruebasDeInterfaz/|Packages/Interfaz/|Packages/Exposicion/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
+          # Del motor y de Hexagonos, solo el código y el manifiesto: sus pruebas y su documentación no llegan a
+          # las apps.
+          if echo "$cambiados" | grep -qE '^(Apps/ArsHarmonicaApp/|Apps/TonnetzApp/|PruebasDeInterfaz/|Packages/InterfazArmonia/|Packages/ExposicionArmonia/|Packages/(Armonia|Hexagonos)/(Sources/|Package\.swift$)|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
             echo "apps=true" >> "$GITHUB_OUTPUT"
           else
             echo "apps=false" >> "$GITHUB_OUTPUT"
+          fi
+          if echo "$cambiados" | grep -qE '^(Packages/|Apps/ConsolaArmonia/)'; then
+            echo "paquetes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "paquetes=false" >> "$GITHUB_OUTPUT"
           fi
 
   # Los jobs de macOS (este, las pruebas de interfaz y DocC) son los que más tardan: corren a mano desde la
@@ -511,12 +529,12 @@ jobs:
       - name: Armonia
         run: swift build && swift test --parallel --filter "^(Armonia|Elementos|Teoria|Diagramas|Partituras|Polifonia|Formatos|Trastes)Tests\\."
         working-directory: Packages/Armonia
-      - name: Exposicion
+      - name: ExposicionArmonia
         run: swift test --parallel
-        working-directory: Packages/Exposicion
-      - name: Interfaz
+        working-directory: Packages/ExposicionArmonia
+      - name: InterfazArmonia
         run: swift test --parallel
-        working-directory: Packages/Interfaz
+        working-directory: Packages/InterfazArmonia
       - name: Hexagonos
         run: swift test --parallel
         working-directory: Packages/Hexagonos
@@ -565,6 +583,36 @@ jobs:
             echo "$app: $idiomas idiomas en el Info.plist, $carpetas carpetas .lproj"
             test "$idiomas" -eq 13 && test "$carpetas" -ge 13 || { echo "::error::$app no declara los trece idiomas"; exit 1; }
           done
+
+  # Las pruebas de los paquetes y de la consola en macOS, en los pull requests que los cambian: lo que solo falla con
+  # la Foundation de Apple (fechas, formatos, ficheros) se ve en el pull request y no el lunes. Sin las exhaustivas,
+  # que no prueban código distinto. Fuera de los pull requests ya lo hace `macos`.
+  macos-paquetes:
+    name: Paquetes · macOS
+    needs: cambios-en-las-apps
+    if: needs.cambios-en-las-apps.outputs.paquetes == 'true'
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE }}
+      - name: Armonia
+        run: swift test --parallel --filter "^(Armonia|ArmoniaDocumentacion|Elementos|Teoria|Diagramas|Partituras|Polifonia|Formatos|Trastes)Tests\\."
+        working-directory: Packages/Armonia
+      - name: ExposicionArmonia
+        run: swift test --parallel
+        working-directory: Packages/ExposicionArmonia
+      - name: InterfazArmonia
+        run: swift test --parallel
+        working-directory: Packages/InterfazArmonia
+      - name: Hexagonos
+        run: swift test --parallel
+        working-directory: Packages/Hexagonos
+      - name: ConsolaArmonia
+        run: swift test --parallel
+        working-directory: Apps/ConsolaArmonia
 
   # Las pruebas de interfaz corren también en los pull requests que cambian las apps, para que una vista nueva o
   # cambiada no espere al lunes. `xcodebuild test` compila antes cada app (en macOS y para el simulador de iOS), así
@@ -650,18 +698,18 @@ jobs:
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
           xcodebuild docbuild -scheme Hexagonos -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-hexagonos" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-hexagonos.log"
-      - name: Construir la documentación de Exposicion
-        working-directory: Packages/Exposicion
+      - name: Construir la documentación de ExposicionArmonia
+        working-directory: Packages/ExposicionArmonia
         run: |
           set -o pipefail
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
-          xcodebuild docbuild -scheme Exposicion -destination 'generic/platform=macOS' \
+          xcodebuild docbuild -scheme ExposicionArmonia -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-exposicion" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-exposicion.log"
-      - name: Construir la documentación de Interfaz
-        working-directory: Packages/Interfaz
+      - name: Construir la documentación de InterfazArmonia
+        working-directory: Packages/InterfazArmonia
         run: |
           set -o pipefail
-          xcodebuild docbuild -scheme Interfaz -destination 'generic/platform=macOS' \
+          xcodebuild docbuild -scheme InterfazArmonia -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-interfaz" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-interfaz.log"
       - name: Enlaces sin resolver
         run: |

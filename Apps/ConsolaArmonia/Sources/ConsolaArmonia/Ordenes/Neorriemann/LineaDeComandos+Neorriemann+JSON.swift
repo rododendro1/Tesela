@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 import Foundation
 
 // `--json` de la teoría neorriemanniana: vecinos, caminos, conducción mínima y plr. Lo común a todas las órdenes
