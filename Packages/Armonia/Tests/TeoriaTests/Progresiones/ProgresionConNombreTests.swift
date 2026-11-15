@@ -7,7 +7,7 @@ import Testing
     /// Cada progresión del catálogo tiene un nombre que no se repite y su cifrado se lee entero.
     @Test func catalogo() throws {
         let catalogo = ProgresionConNombre.catalogo
-        #expect(catalogo.count == 52)
+        #expect(catalogo.count == 58)
         #expect(Set(catalogo.map(\.nombre)).count == catalogo.count)
         #expect(Set(catalogo).count == catalogo.count)
         for progresion in catalogo {

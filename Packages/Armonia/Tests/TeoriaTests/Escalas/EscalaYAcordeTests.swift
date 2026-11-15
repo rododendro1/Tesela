@@ -135,7 +135,8 @@ import Testing
         #expect(PapelEnLaEscala.delAcorde.description == "nota del acorde")
         #expect(PapelEnLaEscala.choque.nombre(en: .compacta(.espanol)) == "nota que choca")
         #expect(PapelEnLaEscala.dePaso.nombre(en: .ascii(.ingles)) == "passing note")
-        #expect(PapelEnLaEscala.allCases.count == 5)
+        #expect(PapelEnLaEscala.allCases.count == 6)
+        #expect(PapelEnLaEscala.septimaDeLaEscala.nombre(en: .compacta(.espanol)) == "séptima de la escala")
     }
 
     // MARK: Escala madre
@@ -169,7 +170,7 @@ import Testing
             let nombre = modo?.nombre(en: notacion) ?? ""
             #expect(nombre.contains("2"), Comment(rawValue: nombre))
             #expect(nombre.contains(Escala(.do, .mayor).nombre(en: notacion)), Comment(rawValue: nombre))
-            #expect(Set(PapelEnLaEscala.allCases.map { $0.nombre(en: notacion) }).count == 5)
+            #expect(Set(PapelEnLaEscala.allCases.map { $0.nombre(en: notacion) }).count == 6)
         }
         let nota = Escala(.do, .mayor).notas(sobre: Acorde("Do7M"))[3]
         #expect(nota.description == "Fa (11)")

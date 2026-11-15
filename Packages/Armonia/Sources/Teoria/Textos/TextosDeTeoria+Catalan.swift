@@ -119,6 +119,11 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "nota a evitar",
         papelChoque: "nota que xoca",
         papelDePaso: "nota de pas",
+        papelSeptimaDeLaEscala: "setena de l'escala",
+        motivoDeLaTonalidad: "de la tonalitat",
+        motivoDelCifrado: "del xifrat",
+        motivoDelBajo: "del baix",
+        motivoCompatible: "compatible",
         modoDe: { modo, escala in "mode \(modo) de \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "substitut de trítò",

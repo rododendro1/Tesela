@@ -248,6 +248,26 @@ extension LineaDeComandosTests {
         #expect(salida("clock rāgas --ingles").contains(">Rāga clock<"))
     }
 
+    /// `acorde --escalas`: las escalas para el acorde con su motivo, en la tonalidad de `--en` si se da.
+    @Test func lasEscalasDeUnAcorde() {
+        let do7 = salida("acorde Do7 --escalas")
+        #expect(do7.contains("Escalas compatibles:\n  Do mixolidio (del cifrado) — Tensiones: Re 9 · La 13"))
+        #expect(salida("acorde Rem7 --escalas --en Do mayor").contains("Re dórico (de la tonalidad)"))
+        #expect(salida("acorde Fa/Sol --escalas").contains("Sol mixolidio (del bajo)"))
+        #expect(salida("chord C7 --scales --ingles").contains("C mixolydian (from the chord symbol)"))
+    }
+
+    /// `escala --tensiones-disponibles` y `escala --cuartas`: las tensiones de cada grado y la armonía cuartal.
+    @Test func lasTensionesYLasCuartasDeUnaEscala() {
+        let tensiones = salida("escala Do mayor --tensiones-disponibles")
+        #expect(tensiones.contains("  2 Rem7: Mi 9 · Sol 11 · Si 13\n"))
+        #expect(tensiones.contains("  7 Sim7(♭5): Mi 11 · Sol ♭13"))
+        #expect(salida("escala Re dórico --cuartas").contains("Acordes por cuartas:\n  1 Re–Sol–Do–Fa"))
+        #expect(salida("scale D dorian --fourths --ingles").contains("Chords in fourths:"))
+        let pentatonica = salida("escala Do pentatónica mayor --cuartas")
+        #expect(pentatonica.contains("\n  2 —\n  3 Mi–La–Re–Sol (Mim7(11,omit5))\n"))
+    }
+
     @Test func referenciasDeUnaEscala() {
         #expect(
             salida("escala Re bayati").contains(
@@ -327,7 +347,7 @@ extension LineaDeComandosTests {
         #expect(salida("progresiones andaluza --en La menor") == salida("progresiones andaluza --en La"))
         // El nombre exacto da solo esa; si no, todas las que lo contienen.
         #expect(salida("progressions ii-V-I --in Bb --ingles") == "ii–V–I: ii7 V7 Imaj7 · Cm7 F7 Bbmaj7\n")
-        #expect(salida("progresiones cadencia").split(separator: "\n").count == 11)
+        #expect(salida("progresiones cadencia").split(separator: "\n").count == 12)
         #expect(salida("progresiones Trugschluss --idioma de") == "Trugschluss: V7 vi · G7 Am\n")
         #expect(resultado("progresiones", "zzz").error.contains("no hay ninguna progresión así"))
         #expect(resultado("progresiones", "blues", "--en").error.contains("falta la tonalidad tras --en"))

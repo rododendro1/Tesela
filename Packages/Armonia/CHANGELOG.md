@@ -1,5 +1,50 @@
 # Cambios
 
+## Sin publicar
+
+### Novedades
+
+- `TipoDeEscala.delCifrado(_:)`: la escala que pide el cifrado de un acorde, sin tonalidad (Do7 → mixolidio, Do7M →
+  jónico, Doø7 → locrio ♮2, Do7(♭9) y Do7(♯9) → disminuida semitono-tono, Do7alt → alterada).
+- `EscalaParaElAcorde` y `Acorde.escalas(en:siguiente:entre:)`: las escalas para un acorde con su motivo (de la
+  tonalidad, del cifrado, del bajo o solo compatible), sus notas sobre él y las alteraciones que añade sin que las
+  pida el cifrado. Los motivos, en los trece idiomas. `Acorde.acordeSobreElBajo`: Fa/Sol → Sol9sus4.
+- `PapelEnLaEscala.septimaDeLaEscala`: la 7.ª de la escala sobre un acorde sin séptima ya no sale como tensión.
+- `Escala.acorde(grado:notas:por:)` y `Escala.armonizar(notas:por:)`: de 2 a 7 notas por grado, por terceras (los de
+  9.ª, 11.ª y 13.ª) o por cuartas (`Escala.Apilamiento`). `Escala.notasApiladas(grado:notas:por:)` da esas notas en
+  el orden en que se apilan.
+- `Escala.tensionesDisponibles(grado:)` y `Escala.armonizacionConTensiones`: las tensiones de la cuatríada de cada
+  grado con su modo, la tabla de Berklee. En la consola, `armonia escala … --tensiones-disponibles` y `--cuartas`.
+- `armonia acorde … --escalas [--en <tonalidad>]`: las escalas del acorde con su motivo, también en `--json`.
+- Cinco acordes más en el catálogo, con sus nombres en los trece idiomas: la novena con undécima aumentada, la
+  decimotercera con novena menor y el semidisminuido con novena (Levine 1995), los de las escalas lidia dominante,
+  disminuida semitono-tono y locria ♮2; el acorde del sueño de La Monte Young (Sol Do Do♯ Re, de Smith 1977, obra
+  nueva `Referencia.smith1977`) y el tricordo vienés (3-5 de Forte).
+- Seis progresiones más, con sus nombres en los trece idiomas: la cadencia con cuarta y sexta (ii6–I64–V7–I, Aldwell
+  2011), el ciclo hexatónico (I–i–♭VI–♭vi–III–iii, Cohn 1996), el passo indietro (V42–I6, Gjerdingen 2007), el
+  turnaround con dominante secundaria (I–VI7–ii–V), el que empieza en el iii y la progresión de ragtime
+  (III7–VI7–II7–V7, el puente de rhythm changes), de Levine 1995.
+- `EsquemaArmonico` reconoce una progresión que no pasa por la tónica, como la de ragtime.
+
+### Cambios
+
+- Las escalas de un acorde se ordenan con un solo criterio en `escalasCompatibles(entre:)`,
+  `Tonalidad.escalaDelAcorde(_:)` (cuando la tonalidad no basta) y `Arpegio.nota(delGrado:)`: primero la del cifrado,
+  y después la que menos alteraciones no pedidas añade, la que menos notas a evitar tiene y la de siete notas. Do7 da
+  primero Do mixolidio, y no Do lidio dominante; Do7M, Do jónico. La 11 de un arpegio de Do7 es Fa.
+- `Escala.contiene(acorde:)` cuenta el bajo ajeno: Do lidio ya no sirve para Do/Re♭. Si el bajo hace del acorde un
+  sus, sus escalas van primero (Fa/Sol → Sol mixolidio).
+- `7alt` es la séptima de dominante sin la 5.ª justa: `7(♭5,♯5,♭9,♯9)`, las notas de la escala alterada, que ya le
+  sirve. Antes llevaba la 5.ª justa y no le servía ninguna.
+- Fuera de las heptatónicas, `Escala.acorde(grado:cuatriada:)` apila terceras de verdad, por el nombre de las notas: Do
+  blues da Dom7 en el 1.º grado y no Dosus4, y un grado sin 3.ª da `nil`.
+- `Escala.acordesQueCaben(grado:sentido:)` mira un solo sentido, la subida por defecto: La menor melódica clásica ya
+  no tiene Do7M(♯11).
+- Las tríadas y las cuatríadas de `EstadisticasTonalesDeEscala` salen de `Escala.armonizar`, por el nombre de las
+  notas, y no de una tabla de semitonos aparte. Solo cambian dos escalas por cómo se escriben: Lalit pierde el +7 del
+  6.º grado y la harmonía mixolidia de Arístides, la tríada disminuida del 2.º.
+- Una 5.ª justa que el acorde calla (Sol7(omit5), Sol9sus4) es nota del acorde en `Escala.notas(sobre:)`.
+
 ## 0.5.3 (2026-11-15)
 
 ### Novedades

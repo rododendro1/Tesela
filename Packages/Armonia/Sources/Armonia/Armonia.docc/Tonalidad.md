@@ -383,7 +383,7 @@ try Tonalidad(.do).acordes(romanos: "I ♭VI ♭VII I") == ["Do", "Lab", "Sib", 
 
 ## El catálogo de progresiones
 
-`ProgresionConNombre.catalogo` reúne 52 progresiones con nombre, cada una con sus grados en
+`ProgresionConNombre.catalogo` reúne 58 progresiones con nombre, cada una con sus grados en
 cifrado romano, su modo, sus estilos y, si la hay, la obra donde se lee:
 
 - Las cadencias (perfecta, plagal, rota, semicadencia, frigia, napolitana, con sexta aumentada,

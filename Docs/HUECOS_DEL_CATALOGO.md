@@ -5,7 +5,7 @@ Estado a 14 de noviembre de 2026, tras las escalas sintéticas, los lugares, las
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 13 escalas occidentales sin ninguna referencia y
-cuatro acordes sin fuente. El catálogo tiene 539 escalas en 50 listas de tradición y 55 acordes, todos con nombre en
+cinco acordes sin fuente. El catálogo tiene 539 escalas en 50 listas de tradición y 60 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -204,7 +204,7 @@ de Hicazkâr y Suzinak no dicen ni eso. Sin una obra con su año no se les pone 
 
 ## Acordes que faltaban
 
-Hay 43 acordes genéricos y 12 de nombre propio. Los que faltaban ya están, pero algunos sin fuente:
+Hay 46 acordes genéricos y 14 de nombre propio. Los que faltaban ya están, pero algunos sin fuente:
 
 | Acorde | Notas | Fuente | Qué queda |
 | --- | --- | --- | --- |
@@ -215,7 +215,30 @@ Hay 43 acordes genéricos y 12 de nombre propio. Los que faltaban ya están, per
 | Acorde de la Sinfonía de los salmos | Mi Sol Si Sol | La partitura (Stravinski, 1930) | Citar a White (1979) |
 | Acorde alfa de Lendvai | Do Mi♭ Fa♯ La + Do♯ Mi Sol Si♭ | Ninguna | Confirmar en Lendvai (1971) qué notas da |
 
-Los acordes de Hendrix y mu tampoco citan ninguna obra.
+| Tricordo vienés | Do Re♭ Sol♭ (3-5 de Forte) | Ninguna leída | Leer DeLone (1975: 348) o Martin (2000: 149), que cita la Wikipedia |
+
+Los acordes de Hendrix y mu tampoco citan ninguna obra. El acorde del sueño de La Monte Young (Sol Do Do♯ Re) cita a
+Smith (1977), que da sus notas.
+
+Quedan fuera, por ahora:
+
+- Los acordes beta, gamma, delta y épsilon de Lendvai: lo que se lee de él en la red da el gamma por sus intervalos
+  (3 + 5 + 3) y ninguno por sus notas. Hay que leerlos en Lendvai (1971).
+- El acorde mayor-menor de Bartók (la 3.ª mayor y la menor a la vez): sin una obra leída que lo defina así. Candidato:
+  Antokoletz, *The Music of Béla Bartók* (1984).
+- El disminuido con séptima mayor, °(7M): sin una obra que lo nombre.
+- El de *A Hard Day's Night*, el «acorde de Chopin» y el de la Décima de Mahler: no hay acuerdo sobre sus notas o no
+  hay una fuente seria que los nombre así.
+
+## Progresiones que faltan
+
+El catálogo tiene 58 progresiones. Quedan fuera, hasta leer una obra que las dé:
+
+- El line cliché (i–i(7M)–i7–i6): falta una obra que lo nombre así.
+- La progresión Omnibus: Telesco, «Enharmonicism and the Omnibus Progression», *Music Theory Spectrum* (1998).
+- La cadenza doppia de Gjerdingen (2007): es un esquema de voces, no de acordes.
+- El ciclo octatónico (P y R): Cohn la trata en otro artículo (1997), que no está entre las referencias.
+- El ōdō shinkō del J-pop (IV–V–iii–vi) y el blues de 8 compases, que tiene muchas formas: sin una fuente académica.
 
 ## Carácter sin fuente
 

@@ -5,8 +5,9 @@ import Foundation
 // MARK: - Consultas: acordes y arpegios
 
 extension LineaDeComandos {
-    /// `acorde Sol7 [--disposiciones] [--nombres] [--tonalidades] [--sustituciones] [--comparar Do] [--en Do mayor]
-    /// [--estadisticas]`: cada acorde con sus notas y, si se piden, sus disposiciones, sus otros nombres, las
+    /// `acorde Sol7 [--escalas] [--disposiciones] [--nombres] [--tonalidades] [--sustituciones] [--comparar Do]
+    /// [--en Do mayor] [--estadisticas]`: cada acorde con sus notas y, si se piden, sus escalas (en la tonalidad de
+    /// `--en`, con su motivo), sus disposiciones, sus otros nombres, las
     /// tonalidades en que está, sus sustituciones (en la tonalidad de `--en` o en la suya), la conducción hasta otro
     /// acorde y lo que se mide de él.
     static func acorde(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
@@ -17,6 +18,7 @@ extension LineaDeComandos {
         var otro: Acorde?
         if let texto = try argumentos.valor(.comparar) { otro = try Acorde(leyendo: texto, enLaOrden: notacion) }
         let pedido = RelacionesPedidas(
+            escalas: argumentos.quitarMarca(.escalas),
             bebop: argumentos.quitarMarca(.bebop),
             pentatonicas: argumentos.quitarMarca(.pentatonicas),
             disposiciones: argumentos.quitarMarca(.disposiciones),
@@ -37,6 +39,8 @@ extension LineaDeComandos {
 
     /// Lo que se pide de cada acorde además de sus notas.
     struct RelacionesPedidas {
+        /// `--escalas`: las escalas para el acorde, con su motivo (`Acorde.escalas(en:)`).
+        var escalas: Bool
         var bebop: Bool
         var pentatonicas: Bool
         var disposiciones: Bool
@@ -52,6 +56,16 @@ extension LineaDeComandos {
     /// Las líneas de lo pedido de un acorde, cada parte con su título.
     static func relaciones(de acorde: Acorde, _ pedido: RelacionesPedidas, _ notacion: Notacion) -> [String] {
         var lineas: [String] = []
+        if pedido.escalas {
+            let escalas = PresentacionDeEscalaYAcorde.escalas(de: acorde, en: pedido.tonalidad, notacion: notacion)
+            lineas.append(
+                notacion.texto(\.escalasCompatibles)
+                    + (pedido.tonalidad.map { " (" + $0.nombre(en: notacion) + ")" } ?? "") + ":")
+            lineas += escalas.prefix(10).map { presentada in
+                "  " + PresentacionDeEscalaYAcorde.nombreConMotivo(presentada)
+                    + (presentada.resumen.isEmpty ? "" : " — " + presentada.resumen)
+            }
+        }
         if pedido.disposiciones {
             lineas.append(notacion.texto(\.disposicion) + ":")
             for disposicion in DisposicionDeAcorde.allCases {

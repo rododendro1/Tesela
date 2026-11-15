@@ -38,6 +38,11 @@ extension LineaDeComandos {
         let tetracordos: Bool
         /// `--bibtex`: solo sus referencias, en BibTeX.
         let bibtex: Bool
+        /// `--cuartas`: los acordes de cada grado por cuartas (`Escala.armonizar(notas:por:)`).
+        var cuartas = false
+        /// `--tensiones-disponibles`: la cuatríada de cada grado con sus tensiones
+        /// (`Escala.tensionesDisponibles(grado:)`).
+        var tensionesDeLosGrados = false
 
         var sentido: SentidoDelIntervalo { bajando ? .descendente : .ascendente }
     }
@@ -62,6 +67,8 @@ extension LineaDeComandos {
         let progresiones = argumentos.quitarMarca(.progresiones)
         let tetracordos = argumentos.quitarMarca(.tetracordos)
         let bibtex = argumentos.quitarMarca(.bibtex)
+        let cuartas = argumentos.quitarMarca(.cuartas)
+        let tensionesDeLosGrados = argumentos.quitarMarca(.tensionesDeLosGrados)
         let estadisticas = argumentos.quitarMarca(.estadisticas)
         let escalera = argumentos.quitarMarca(.escalera)
         let doce = argumentos.quitarMarca(.doce)
@@ -80,16 +87,20 @@ extension LineaDeComandos {
         }
         try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaEscala }
-        return PedidoDeEscala(
+        var pedido = PedidoDeEscala(
             escala: try Escala(leyendo: argumentos.unidos, enLaOrden: notacion), conAcordes: conAcordes,
             secuencia: secuencia,
             octavas: octavas, bajando: bajando, piano: piano, modos: modos, simetria: simetria, vecinas: vecinas,
             estadisticas: estadisticas, escalera: escalera, doce: doce, triadas: triadas, otra: otra,
             parecidas: parecidas, progresiones: progresiones, tetracordos: tetracordos, bibtex: bibtex)
+        pedido.cuartas = cuartas
+        pedido.tensionesDeLosGrados = tensionesDeLosGrados
+        return pedido
     }
 
-    /// `escala Do mayor [--acordes] [--secuencia terceras] [--bajando] [--octavas 2] [--dedos] [--modos]
-    /// [--estadisticas] [--escalera] [--comparar Do lidio]`: la escala y, si se piden, todos los acordes que caben en
+    /// `escala Do mayor [--acordes] [--cuartas] [--tensiones-disponibles] [--secuencia terceras] [--bajando]
+    /// [--octavas 2] [--dedos] [--modos] [--estadisticas] [--escalera] [--comparar Do lidio]`: la escala y, si se
+    /// piden, las tensiones de cada grado, sus acordes por cuartas, todos los acordes que caben en
     /// cada grado, una secuencia de estudio, la digitación de piano, los modos paralelos y relativos, lo que se mide de
     /// ella, su escalera de brillo y la comparación con otra escala.
     static func escala(_ textos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {
@@ -123,6 +134,26 @@ extension LineaDeComandos {
             let relativos = PresentacionDeEstudioDeEscala.modosRelativos(de: escala, en: notacion)
             lineas.append(notacion.texto(\.modosRelativos) + ":")
             lineas.append("  " + relativos.map(\.nombre).joined(separator: " · "))
+        }
+        if pedido.tensionesDeLosGrados {
+            lineas.append(notacion.texto(\.tensiones) + ":")
+            for (i, grado) in escala.armonizacionConTensiones.enumerated() {
+                guard let acorde = grado.acorde else { continue }
+                let tensiones = grado.tensiones.map { $0.nota.nombre(en: notacion) + " " + $0.cifra }
+                lineas.append(
+                    "  \(i + 1) " + acorde.cifrado(en: notacion) + ": "
+                        + (tensiones.isEmpty ? "—" : tensiones.joined(separator: " · ")))
+            }
+        }
+        if pedido.cuartas {
+            lineas.append(TextosDeConsola.en(notacion, \.acordesPorCuartas) + ":")
+            for (i, acorde) in escala.armonizar(notas: 4, por: .cuartas).enumerated() {
+                let notas = (escala.notasApiladas(grado: i + 1, notas: 4, por: .cuartas) ?? []).map {
+                    $0.nombre(en: notacion)
+                }
+                let cifrado = acorde.map { " (" + $0.cifrado(en: notacion) + ")" } ?? ""
+                lineas.append("  \(i + 1) " + (notas.isEmpty ? "—" : notas.joined(separator: "–")) + cifrado)
+            }
         }
         if pedido.simetria { lineas += lineasDeSimetria(de: escala, notacion) }
         if pedido.tetracordos { lineas += lineasDeTetracordos(de: escala, notacion) }

@@ -106,6 +106,21 @@ extension AcordeConNombre {
         nombre: "séptima mayor con undécima aumentada",
         intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMayor, .undecimaAumentada],
         referencias: [.levine1995])
+    /// El de la escala lidia dominante entera, menos la 13: la novena con la undécima aumentada.
+    public static let dominanteNovenaUndecimaAumentada = AcordeConNombre(
+        nombre: "novena con undécima aumentada",
+        intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMayor, .undecimaAumentada],
+        referencias: [.levine1995])
+    /// El de la disminuida semitono-tono: la decimotercera con la novena menor.
+    public static let dominanteDecimoterceraNovenaMenor = AcordeConNombre(
+        nombre: "decimotercera con novena menor",
+        intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMenor, .decimoterceraMayor],
+        referencias: [.levine1995])
+    /// El del locrio ♮2: el semidisminuido con la novena mayor.
+    public static let semidisminuidoNovena = AcordeConNombre(
+        nombre: "semidisminuido con novena",
+        intervalos: [.unisono, .terceraMenor, .quintaDisminuida, .septimaMenor, .novenaMayor],
+        referencias: [.levine1995])
     public static let sus4Novena = AcordeConNombre(
         nombre: "novena suspendida",
         intervalos: [.unisono, .cuartaJusta, .quintaJusta, .septimaMenor, .novenaMayor], referencias: [.levine1995])
@@ -113,13 +128,13 @@ extension AcordeConNombre {
         nombre: "decimotercera suspendida",
         intervalos: [.unisono, .cuartaJusta, .quintaJusta, .septimaMenor, .novenaMayor, .decimoterceraMayor],
         referencias: [.levine1995])
-    /// La de `7alt`: la séptima de dominante con la novena menor y la aumentada, la undécima aumentada y la
-    /// decimotercera menor (las cuatro tensiones alteradas).
+    /// La de `7alt`: la séptima de dominante con todo lo alterado y sin la 5.ª justa, que son las notas de la
+    /// escala alterada: la quinta disminuida y la aumentada (la ♯11 y la ♭13), y la novena menor y la aumentada.
     public static let dominanteAlterado = AcordeConNombre(
         nombre: "séptima alterada",
         intervalos: [
-            .unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMenor, .novenaAumentada, .undecimaAumentada,
-            .decimoterceraMenor,
+            .unisono, .terceraMayor, .quintaDisminuida, .quintaAumentada, .septimaMenor, .novenaMenor,
+            .novenaAumentada,
         ], alias: ["acorde alterado"], referencias: [.levine1995])
     public static let menorSeptimaMayorNovena = AcordeConNombre(
         nombre: "menor con séptima mayor y novena",
@@ -159,7 +174,8 @@ extension AcordeConNombre {
         .aumentadoSeptimaMayor, .sus4Septima, .mayorSexta, .menorSexta, .mayorSextaNovena, .dominanteNovena,
         .mayorSeptimaMayorNovena, .menorSeptimaNovena, .mayorNovenaAnadida, .dominanteUndecima, .menorSeptimaUndecima,
         .dominanteDecimotercera, .menorSeptimaDecimotercera, .dominanteNovenaMenor, .dominanteQuintaDisminuida,
-        .dominanteNovenaAumentada, .dominanteUndecimaAumentada, .mayorSeptimaMayorUndecimaAumentada, .sus4Novena,
+        .dominanteNovenaAumentada, .dominanteUndecimaAumentada, .mayorSeptimaMayorUndecimaAumentada,
+        .dominanteNovenaUndecimaAumentada, .dominanteDecimoterceraNovenaMenor, .semidisminuidoNovena, .sus4Novena,
         .sus4Decimotercera, .dominanteAlterado, .menorSeptimaMayorNovena, .mayorSeptimaMayorDecimotercera,
         .menorSextaNovena, .menorNovenaAnadida, .sextaAumentadaItaliana,
         .sextaAumentadaFrancesa, .sextaAumentadaAlemana, .sextaAumentadaSuiza,

@@ -36,6 +36,9 @@ extension NombresDeAcordes {
         .init(.dominanteNovenaAumentada, "zazpigarrena bederatzigarren gehituarekin"),
         .init(.dominanteUndecimaAumentada, "zazpigarrena hamaikagarren gehituarekin"),
         .init(.mayorSeptimaMayorUndecimaAumentada, "zazpigarren handia hamaikagarren gehituarekin"),
+        .init(.dominanteNovenaUndecimaAumentada, "bederatzigarrena hamaikagarren gehituarekin"),
+        .init(.dominanteDecimoterceraNovenaMenor, "hamahirugarrena bederatzigarren txikiarekin"),
+        .init(.semidisminuidoNovena, "erdi-txikitua bederatzigarrenarekin"),
         .init(.sus4Novena, "bederatzigarren esekia"),
         .init(.sus4Decimotercera, "hamahirugarren esekia"),
         .init(.dominanteAlterado, "zazpigarren aldatua"),
@@ -59,5 +62,7 @@ extension NombresDeAcordes {
         .init(.augures, "augurren akordea"),
         .init(.salmos, "Salmoen Sinfoniaren akordea"),
         .init(.alfa, "alfa akordea"),
+        .init(.delSueno, "ametsaren akordea"),
+        .init(.tricordoVienes, "Vienako trikordioa"),
     ])
 }

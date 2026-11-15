@@ -119,6 +119,11 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "undvikton",
         papelChoque: "krockande ton",
         papelDePaso: "genomgångston",
+        papelSeptimaDeLaEscala: "skalans septima",
+        motivoDeLaTonalidad: "från tonarten",
+        motivoDelCifrado: "från ackordsymbolen",
+        motivoDelBajo: "från basen",
+        motivoCompatible: "passande",
         modoDe: { modo, escala in
             let sufijo = [1, 2].contains(modo % 10) && ![11, 12].contains(modo % 100) ? "a" : "e"
             return "\(modo):\(sufijo) modus av \(escala)"

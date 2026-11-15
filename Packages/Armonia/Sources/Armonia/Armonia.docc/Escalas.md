@@ -467,8 +467,8 @@ guarda un ``Acorde``, el orden del recorrido (``Arpegio/Patron``: ascendente, de
 las octavas que abarca. Se obtiene de un acorde o de un grado de una escala, se lee y se nombra en los trece idiomas
 («Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur») y se dibuja en un pentagrama. ``Acorde/escalasCompatibles(entre:)``
 da la relación acorde-escala del jazz: las escalas sobre la fundamental que sirven para el acorde
-(``Escala/esCompatible(con:)``), entre las de ``TipoDeEscala/deJazz`` y de las que tienen menos notas a evitar a las
-que más.
+(``Escala/esCompatible(con:)``), entre las de ``TipoDeEscala/deJazz``, con la que pide el cifrado delante (ver
+«Escalas sobre un acorde»).
 
 ```swift
 Arpegio(Acorde("Do7")).alturas(octava: 4).map(\.midi) == [60, 64, 67, 70, 72]       // true
@@ -489,13 +489,27 @@ de dominante, la ♭9 y la ♭13 no se evitan; en uno sus4, sí la tercera mayor
 solo se evitan (``PapelEnLaEscala/choque``): la otra séptima (el Si♭ de Do mixolidio sobre Do7M, el Si de Do jónico
 sobre Do7) y la quinta justa sobre un acorde de quinta disminuida o aumentada (el Sol sobre Doø7, Do°7 o Do+7M). La
 nota cromática de una escala bebop es de paso (``PapelEnLaEscala/dePaso``), y no cuenta como nota a evitar: el Si de Do
-bebop dominante sobre Do7.
+bebop dominante sobre Do7. Sobre un acorde sin séptima, la de la escala no es tensión: es la séptima que la escala le
+pone (``PapelEnLaEscala/septimaDeLaEscala``, el Si♭ de Fa lidio dominante sobre Fa). Y la 5.ª justa que calla un
+acorde, como la de Sol9sus4, es suya.
 
 Una escala sirve para un acorde (``Escala/esCompatible(con:)``) si tiene todas sus notas, ninguna choca con él y, si
 es una bebop, también sirve su escala de siete notas sin la de paso. Así, Do bebop dominante no sirve para Do7M, porque
-el mixolidio choca con el Si, ni Do bebop dórica para Do7, porque el dórico no tiene el Mi. Solo esas escalas salen en
-``Acorde/escalasCompatibles(entre:)``, en ``Acorde/escalasBebop``, en ``Acorde/pentatonicas`` y cuando la tonalidad no
-da la escala de un acorde.
+el mixolidio choca con el Si, ni Do bebop dórica para Do7, porque el dórico no tiene el Mi. El bajo ajeno cuenta: Do
+lidio no sirve para Do/Re♭. Solo esas escalas salen en ``Acorde/escalasCompatibles(entre:)``, en
+``Acorde/escalasBebop``, en ``Acorde/pentatonicas`` y cuando la tonalidad no da la escala de un acorde.
+
+Todas se ordenan con un solo criterio. Primero va la que pide el cifrado (``TipoDeEscala/delCifrado(_:)``): 7M, 6 y la
+tríada mayor → jónico; 7, 9, 13 y 7sus4 → mixolidio; 7(♯11) → lidio dominante; 7(♭9) y 7(♯9) → disminuida
+semitono-tono; 7alt → alterada; m7 → dórico; m6 y m(7M) → menor melódica; ø7 → locrio ♮2; °7 → disminuida
+tono-semitono. Después, la que menos alteraciones añade que el cifrado no pide (la ♭9, la ♯9 sobre una 3.ª mayor, la
+♯11 y la ♭13 sobre una 5.ª justa), la que menos notas a evitar tiene y la de siete notas. Do7 da Do mixolidio, Do bebop
+dominante y Do lidio dominante.
+
+``Acorde/escalas(en:siguiente:entre:)`` da esas escalas como ``EscalaParaElAcorde``, con sus notas sobre el acorde, las
+alteraciones que añade y el motivo (``EscalaParaElAcorde/Motivo``): de la tonalidad, si se da y lo pide lo que hace el
+acorde en ella; del cifrado; del bajo, si el bajo ajeno forma otro acorde con el resto (Fa/Sol es Sol9sus4, y como es
+un sus va primero Sol mixolidio); o solo compatible. En la consola, `armonia acorde Do7 --escalas [--en Fa mayor]`.
 
 Cada nota lleva su grado sobre la
 fundamental como en los cifrados de jazz, como número (``NotaSobreElAcorde/numero``) y alteración
@@ -506,7 +520,8 @@ Qué escala toca sobre cada acorde depende de lo que hace en la tonalidad. ``Ton
 ``AnalisisArmonico/escalas`` la eligen por su papel en el análisis: el modo de la tonalidad para un acorde diatónico
 (Rem7 en Do, dórico), el de la escala del destino para una dominante secundaria (V7/ii, frigio dominante: el
 mixolidio ♭9 ♭13), el de la homónima para un préstamo (♭VI, lidio) y lidio dominante para el sustituto tritonal. Si el
-acorde no cabe en esa escala, se queda con la de ``TipoDeEscala/paraAcordes`` que saca menos notas de la tonalidad.
+acorde no cabe en esa escala, se queda con la de ``TipoDeEscala/paraAcordes`` que saca menos notas de la tonalidad y,
+a igualdad, con el orden de arriba: Sol7(♭9) da en Do el frigio dominante; sin tonalidad, la disminuida semitono-tono.
 
 ``Escala/escalaMadre`` dice de qué escala es modo cada una, entre las mayores, las menores melódicas, las menores
 armónicas y las mayores armónicas (``TipoDeEscala/familiasDeModos``).
@@ -520,6 +535,9 @@ Tonalidad(.do).escalaDelAcorde(Acorde("Sib7")) == Escala(Nota(.si, .bemol), .lid
 Escala(.do, .alterada).escalaMadre?.madre == Escala(Nota(.re, .bemol), .menorMelodicaJazz)               // true
 Escala(.re, .dorico).escalaMadre?.nombre(en: .compacta(.espanol)) == "modo 2 de Do mayor"                   // true
 Acorde("Do7(#11)").escalasCompatibles().first == Escala(.do, .lidioDominante)                            // true
+Acorde("Do7").escalasCompatibles().first == Escala(.do, .mixolidio)                                      // true
+Acorde("Do7").escalas().first?.motivo == .delCifrado                                                     // true
+Acorde("Fa/Sol").escalas().first?.escala == Escala(.sol, .mixolidio)                                     // true
 Escala(.do, .mixolidio).notas(sobre: Acorde("Do7M"))[6].papel == .choque                                  // true
 Escala(.do, .bebopDominante).notas(sobre: Acorde("Do7"))[7].papel == .dePaso                              // true
 Escala(.do, .bebopDominante).esCompatible(con: Acorde("Do7M"))                                            // false
@@ -534,8 +552,21 @@ Do(add9); en Do frigio dominante, Do7(♭9). ``Escala/estructurasSuperiores(sobr
 de la escala que se pueden tocar sobre el acorde: las que tienen alguna tensión y ninguna nota a evitar, primero las
 de más tensiones. Sobre Do7M en lidio, Re mayor: la 9, la ♯11 y la 13.
 
+En una escala que cambia al bajar, ``Escala/acordesQueCaben(grado:sentido:)`` mira solo un sentido, la subida por
+defecto: La menor melódica clásica no tiene Do7M(♯11).
+
+``Escala/armonizar(notas:por:)`` apila de 2 a 7 notas sobre cada grado, por terceras (los de 9.ª, 11.ª y 13.ª) o por
+cuartas (``Escala/Apilamiento``: Mi–La–Re–Sol en Re dórico, la base del acorde de *So What*). Fuera de las
+heptatónicas, cada nota es la siguiente de la escala que está a una 3.ª (o a una 4.ª) de la anterior, por su nombre,
+así que Do blues da Dom7 en el 1.º grado y no Dosus4, y un grado sin esa 3.ª no da acorde.
+``Escala/tensionesDisponibles(grado:)`` da las tensiones de la cuatríada de cada grado con su modo: en Do mayor, 9 y
+13 en el I7M; 9, 11 y 13 en el ii7; 11 en el iii7. En la consola, `armonia escala Do mayor --tensiones-disponibles` y
+`--cuartas`.
+
 ```swift
 Escala(.do, .mayor).acordesQueCaben(grado: 1).contains(Acorde(.do, .mayorSexta))                        // true
+Escala(.do, .blues).acorde(grado: 1, cuatriada: true) == Acorde("Dom7")                                // true
+Escala(.do, .mayor).tensionesDisponibles(grado: 2).map(\.cifra) == ["9", "11", "13"]                    // true
 Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor)             // true
 ```
 

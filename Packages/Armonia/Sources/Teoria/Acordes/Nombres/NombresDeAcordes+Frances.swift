@@ -36,6 +36,9 @@ extension NombresDeAcordes {
         .init(.dominanteNovenaAumentada, "septième avec neuvième augmentée"),
         .init(.dominanteUndecimaAumentada, "septième avec onzième augmentée"),
         .init(.mayorSeptimaMayorUndecimaAumentada, "septième majeure avec onzième augmentée"),
+        .init(.dominanteNovenaUndecimaAumentada, "neuvième avec onzième augmentée"),
+        .init(.dominanteDecimoterceraNovenaMenor, "treizième avec neuvième mineure"),
+        .init(.semidisminuidoNovena, "demi-diminué avec neuvième"),
         .init(.sus4Novena, "neuvième suspendue"),
         .init(.sus4Decimotercera, "treizième suspendue"),
         .init(.dominanteAlterado, "septième altérée"),
@@ -59,5 +62,7 @@ extension NombresDeAcordes {
         .init(.augures, "accord des augures"),
         .init(.salmos, "accord de la Symphonie de psaumes"),
         .init(.alfa, "accord alpha"),
+        .init(.delSueno, "accord du rêve"),
+        .init(.tricordoVienes, "trichorde viennois"),
     ])
 }

@@ -74,12 +74,12 @@ extension PresentacionDeRelacionesDeAcorde {
         }
 
         // Las escalas compatibles, con sus tensiones y las notas a evitar.
-        let escalas = acorde.escalasCompatibles().prefix(6)
+        let escalas = PresentacionDeEscalaYAcorde.escalas(de: acorde, notacion: notacion).prefix(6)
         if !escalas.isEmpty {
             titulo(notacion.texto(\.escalasCompatibles))
-            for escala in escalas {
-                let presentada = PresentacionDeEscalaYAcorde.presentar(escala, sobre: acorde, en: notacion)
-                linea(presentada.nombre + (presentada.resumen.isEmpty ? "" : " — " + presentada.resumen))
+            for presentada in escalas {
+                let nombre = PresentacionDeEscalaYAcorde.nombreConMotivo(presentada)
+                linea(nombre + (presentada.resumen.isEmpty ? "" : " — " + presentada.resumen))
             }
             y += 8
         }

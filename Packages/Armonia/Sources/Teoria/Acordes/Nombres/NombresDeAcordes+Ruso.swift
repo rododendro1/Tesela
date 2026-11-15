@@ -36,6 +36,9 @@ extension NombresDeAcordes {
         .init(.dominanteNovenaAumentada, "доминантсептаккорд с увеличенной ноной"),
         .init(.dominanteUndecimaAumentada, "доминантсептаккорд с увеличенной ундецимой"),
         .init(.mayorSeptimaMayorUndecimaAumentada, "большой мажорный септаккорд с увеличенной ундецимой"),
+        .init(.dominanteNovenaUndecimaAumentada, "нонаккорд с увеличенной ундецимой"),
+        .init(.dominanteDecimoterceraNovenaMenor, "терцдецимаккорд с малой ноной"),
+        .init(.semidisminuidoNovena, "полууменьшённый нонаккорд"),
         .init(.sus4Novena, "доминантнонаккорд с задержанием кварты"),
         .init(.sus4Decimotercera, "доминантовый терцдецимаккорд с задержанием кварты"),
         .init(.dominanteAlterado, "альтерированный доминантсептаккорд"),
@@ -59,5 +62,7 @@ extension NombresDeAcordes {
         .init(.augures, "аккорд «Весенних гаданий»"),
         .init(.salmos, "аккорд «Симфонии псалмов»"),
         .init(.alfa, "альфа-аккорд"),
+        .init(.delSueno, "аккорд сна"),
+        .init(.tricordoVienes, "венский трихорд"),
     ])
 }

@@ -103,32 +103,6 @@ enum CalculosDeEscala {
         return Double(anchuras.reduce(0, +)) / Double(anchuras.count)
     }
 
-    /// Las tríadas y las cuatríadas por terceras sobre cada grado de una heptatónica, con los símbolos del cifrado
-    /// («», «m», «°», «+»; «maj7», «7», «m7», «ø7», «°7»…), o «?» si no tiene nombre. `nil` si no tiene siete notas.
-    /// Los acordes de ``armonizacion(_:)``, como tipos: `nil` en un grado sin tríada o sin cuatríada conocida.
-    static func acordesPorGrados(_ clases: [Int]) -> (triadas: [TipoDeAcorde?], cuatriadas: [TipoDeAcorde?])? {
-        guard let armonizacion = armonizacion(clases) else { return nil }
-        func tipo(_ cifrado: String) -> TipoDeAcorde? {
-            cifrado == "?" ? nil : cifrado.isEmpty ? .mayor : try? TipoDeAcorde(leyendo: cifrado)
-        }
-        return (armonizacion.triadas.map(tipo), armonizacion.cuatriadas.map(tipo))
-    }
-
-    static func armonizacion(_ clases: [Int]) -> (triadas: [String], cuatriadas: [String])? {
-        guard clases.count == 7 else { return nil }
-        let triadas: [[Int]: String] = [[4, 3]: "", [3, 4]: "m", [3, 3]: "°", [4, 4]: "+"]
-        let cuatriadas: [[Int]: String] = [
-            [4, 3, 4]: "maj7", [4, 3, 3]: "7", [3, 4, 3]: "m7", [3, 3, 4]: "ø7", [3, 3, 3]: "°7",
-            [3, 4, 4]: "m(maj7)", [4, 4, 3]: "+maj7", [4, 4, 2]: "+7", [4, 2, 4]: "7♭5",
-        ]
-        func terceras(_ i: Int, _ cuantas: Int) -> [Int] {
-            (0..<cuantas).map { j in tamano(clases, desde: (i + 2 * j) % 7, pasos: 2) }
-        }
-        return (
-            (0..<7).map { triadas[terceras($0, 2)] ?? "?" }, (0..<7).map { cuatriadas[terceras($0, 3)] ?? "?" }
-        )
-    }
-
     /// La rugosidad de Sethares media de los intervalos entre cada par de sus notas, como díadas desde el Do central.
     static func rugosidadMedia(_ clases: [Int]) -> Double {
         var suma = 0.0

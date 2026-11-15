@@ -56,6 +56,8 @@ struct TextosDeConsola: TextosTraducidos {
     let descripcionIntervalo: String
     let sintaxisEscala: String
     let descripcionEscala: String
+    /// El título de `escala --cuartas`: «Acordes por cuartas».
+    let acordesPorCuartas: String
     let notasEscala: String
 
     // MARK: Catalogos/Ayuda+Catalogos.swift

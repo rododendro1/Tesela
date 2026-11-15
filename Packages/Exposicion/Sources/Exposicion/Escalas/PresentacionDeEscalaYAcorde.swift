@@ -6,6 +6,9 @@ public struct EscalaSobreAcordePresentada: Hashable, Sendable {
     public let escala: Escala
     /// «Re dórico».
     public let nombre: String
+    /// Por qué se propone para el acorde («del cifrado», «de la tonalidad», «del bajo»), o `nil` si no se sabe
+    /// o solo es compatible.
+    public let motivo: String?
     /// «modo 2 de Do mayor»; `nil` si no es modo de otra escala o si es la propia madre (Do mayor).
     public let modo: String?
     /// Cada nota con su grado sobre el acorde: «Re 1 · Mi 9 · Fa ♭3 · Sol 11 · La 5 · Si 13 · Do ♭7».
@@ -40,7 +43,7 @@ public struct AcordesDelGrado: Hashable, Sendable {
 public enum PresentacionDeEscalaYAcorde {
     /// La escala sobre el acorde, escrita en la notación: sus notas, las del acorde y las que evitar.
     public static func presentar(
-        _ escala: Escala, sobre acorde: Acorde, en notacion: Notacion
+        _ escala: Escala, sobre acorde: Acorde, en notacion: Notacion, motivo: String? = nil
     ) -> EscalaSobreAcordePresentada {
         let notas = escala.notas(sobre: acorde)
         func lista(_ papeles: Set<PapelEnLaEscala>?) -> String {
@@ -56,6 +59,7 @@ public enum PresentacionDeEscalaYAcorde {
         return EscalaSobreAcordePresentada(
             escala: escala,
             nombre: escala.nombre(en: notacion),
+            motivo: motivo,
             modo: modo(de: escala, en: notacion),
             notas: lista(nil),
             tensiones: tensiones,
@@ -63,6 +67,30 @@ public enum PresentacionDeEscalaYAcorde {
             resumen: partes.joined(separator: " — "),
             estructurasSuperiores: escala.estructurasSuperiores(sobre: acorde).map { $0.cifrado(en: notacion) }
                 .joined(separator: " · "))
+    }
+
+    /// Una escala propuesta para el acorde (``Acorde/escalas(en:siguiente:entre:)``), con su motivo si no es solo
+    /// compatible.
+    public static func presentar(
+        _ propuesta: EscalaParaElAcorde, sobre acorde: Acorde, en notacion: Notacion
+    ) -> EscalaSobreAcordePresentada {
+        let motivo = propuesta.motivo == .compatible ? nil : propuesta.motivo.nombre(en: notacion)
+        // Las del bajo se leen sobre el acorde que forma el bajo.
+        let sobre = propuesta.motivo == .delBajo ? acorde.acordeSobreElBajo ?? acorde : acorde
+        return presentar(propuesta.escala, sobre: sobre, en: notacion, motivo: motivo)
+    }
+
+    /// Las escalas para el acorde, en la tonalidad si se da, presentadas con su motivo: las de la hoja del acorde,
+    /// de la vista de acordes y de `armonia acorde --escalas`.
+    public static func escalas(
+        de acorde: Acorde, en tonalidad: Tonalidad? = nil, notacion: Notacion
+    ) -> [EscalaSobreAcordePresentada] {
+        acorde.escalas(en: tonalidad).map { presentar($0, sobre: acorde, en: notacion) }
+    }
+
+    /// El nombre con su motivo: «Do mixolidio (del cifrado)».
+    public static func nombreConMotivo(_ presentada: EscalaSobreAcordePresentada) -> String {
+        presentada.nombre + (presentada.motivo.map { " (" + $0 + ")" } ?? "")
     }
 
     /// Los acordes que caben en la escala, grado a grado (`Escala.acordesQueCaben(grado:)`), sin los grados en los

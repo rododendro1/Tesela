@@ -88,15 +88,15 @@ import Testing
         #expect(pentatonica.tonal.triadas == nil)
     }
 
-    /// Cada acorde de la armonización por grados se lee de su cifrado, en todas las escalas de siete notas del
-    /// catálogo.
-    @Test func losAcordesPorGradosSonLosDeSuCifrado() throws {
+    /// Las tríadas y las cuatríadas por grados son las de `armonizar`, solo las conocidas.
+    @Test func losAcordesPorGradosSonLosDeArmonizar() {
         for tipo in TipoDeEscala.catalogo where tipo.intervalos.count == 7 {
-            let clases = Escala(.do, tipo).notas.map(\.claseDeAltura)
-            let cifrados = try #require(CalculosDeEscala.armonizacion(clases))
-            let tipos = try #require(CalculosDeEscala.acordesPorGrados(clases))
-            for (cifrado, acorde) in zip(cifrados.triadas + cifrados.cuatriadas, tipos.triadas + tipos.cuatriadas) {
-                #expect((acorde == nil) == (cifrado == "?"), "\(tipo.nombre): \(cifrado)")
+            let escala = Escala(.do, tipo)
+            let tonal = escala.estadisticas.tonal
+            #expect(tonal.triadas?.count == 7 && tonal.cuatriadas?.count == 7, Comment(rawValue: tipo.nombre))
+            for (grado, triada) in (tonal.triadas ?? []).enumerated() {
+                #expect(
+                    triada == nil || escala.acorde(grado: grado + 1)?.tipo == triada, Comment(rawValue: tipo.nombre))
             }
         }
     }

@@ -44,7 +44,7 @@ extension LineaDeComandos {
                 "armonia chord G7/B"),
             notas: TextosDeConsola.traduccion(\.notasAcorde),
             opciones: [
-                .disposiciones, .nombres, .tonalidades, .sustituciones, .en, .comparar, .bebop, .pentatonicas,
+                .escalas, .disposiciones, .nombres, .tonalidades, .sustituciones, .en, .comparar, .bebop, .pentatonicas,
                 .estadisticas,
             ])
     ]
@@ -93,7 +93,8 @@ extension LineaDeComandos {
                 "armonia scale D dorian"),
             notas: TextosDeConsola.traduccion(\.notasEscala),
             opciones: [
-                .acordes, .secuencia, .bajando, .octavas, .piano, .modos, .comparar, .simetria, .vecinas, .doce,
+                .acordes, .cuartas, .tensionesDeLosGrados, .secuencia, .bajando, .octavas, .piano, .modos, .comparar,
+                .simetria, .vecinas, .doce,
                 .triadas, .estadisticas, .escalera, .parecidas, .progresiones, .tetracordos, .bibtex,
             ])
     ]

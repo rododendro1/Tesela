@@ -320,9 +320,12 @@ struct LecturaDeCifrado {
             notas.sexta = true
             notas.tensiones.insert(2)
         }
+        // «alt» es la séptima de dominante con todo lo alterado y sin la 5.ª justa (Levine 1995): la ♭5 y la ♯5
+        // (la ♯11 y la ♭13), la ♭9 y la ♯9. Son las notas de la escala alterada.
         if alterado {
             notas.tensiones.subtract([2, -1, 3])
-            notas.tensiones.formUnion([-5, 9, 6, -4])
+            notas.tensiones.formUnion([-5, 9])
+            notas.quintas = [-6, 8]
         }
         return notas
     }

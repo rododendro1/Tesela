@@ -39,11 +39,20 @@ extension ProgresionConNombre {
     /// La dominante que no resuelve en la tónica en estado fundamental: V–V42–I6.
     public static let evitada = ProgresionConNombre(
         nombre: "cadencia evitada", cifrado: "V V42 I6", estilos: [.clasica])
+    /// La cadencia con el 6/4 cadencial, el I64 que tiene la función de la dominante: ii6–I64–V7–I.
+    public static let cadenciaCompuesta = ProgresionConNombre(
+        nombre: "cadencia con cuarta y sexta", cifrado: "ii6 I64 V7 I", alias: ["cadencia compuesta"],
+        estilos: [.clasica], referencias: [.aldwell2011])
     /// Las fundamentales bajan por quintas por todos los grados: I–IV–vii°–iii–vi–ii–V–I.
     public static let quintasDescendentes = ProgresionConNombre(
         nombre: "progresión por quintas", cifrado: "I IV vii° iii vi ii V I",
         alias: ["círculo de quintas", "quintas descendentes"], estilos: [.clasica, .jazz], referencias: [.aldwell2011])
 
+    /// El ciclo hexatónico de Cohn: seis tríadas, mayores y menores, que alternan P y L y vuelven a la primera
+    /// cambiando una nota cada vez. Do–Dom–La♭–La♭m–Mi–Mim.
+    public static let cicloHexatonico = ProgresionConNombre(
+        nombre: "ciclo hexatónico", cifrado: "I i ♭VI ♭vi III iii", alias: ["ciclo de Cohn"], estilos: [.clasica],
+        referencias: [.cohn1996])
     // MARK: Esquemas del barroco y del estilo galante, y bajos de danza
 
     /// La romanesca galante: baja una cuarta y sube una segunda, dos veces.
@@ -86,6 +95,9 @@ extension ProgresionConNombre {
     /// El ii65 que se repite, y el bajo que sube por la sensible de la dominante, antes de la cadencia.
     public static let indugio = ProgresionConNombre(
         nombre: "indugio", cifrado: "ii65 V65/V V7 I", estilos: [.clasica], referencias: [.gjerdingen2007])
+    /// El paso atrás antes de la cadencia: el bajo baja del 4.º al 3.º, V42–I6.
+    public static let passoIndietro = ProgresionConNombre(
+        nombre: "passo indietro", cifrado: "V42 I6", estilos: [.clasica], referencias: [.gjerdingen2007])
     /// La folía: i–V–i–VII–III–VII–i–V, en menor.
     public static let folia = ProgresionConNombre(
         nombre: "folía", cifrado: "i V i VII III VII i V", modo: .menor, alias: ["follia", "folia de España"],
@@ -131,6 +143,17 @@ extension ProgresionConNombre {
         nombre: "ii–V–i menor", cifrado: "iiø7 V7 i", modo: .menor, estilos: [.jazz], referencias: [.levine1995])
     public static let turnaround = ProgresionConNombre(
         nombre: "turnaround", cifrado: "Imaj7 vi7 ii7 V7", estilos: [.jazz], referencias: [.levine1995])
+    /// El turnaround con la dominante secundaria del ii en lugar del vi7: I–VI7–ii–V.
+    public static let turnaroundConDominante = ProgresionConNombre(
+        nombre: "turnaround con dominante secundaria", cifrado: "Imaj7 VI7 ii7 V7", estilos: [.jazz],
+        referencias: [.levine1995])
+    /// El turnaround que empieza en el iii, el sustituto de la tónica: iii–VI7–ii–V.
+    public static let turnaroundDesdeElIII = ProgresionConNombre(
+        nombre: "turnaround desde el iii", cifrado: "iii7 VI7 ii7 V7", estilos: [.jazz], referencias: [.levine1995])
+    /// Cuatro dominantes por quintas hasta el V7, el puente de rhythm changes: III7–VI7–II7–V7.
+    public static let ragtime = ProgresionConNombre(
+        nombre: "progresión de ragtime", cifrado: "III7 VI7 II7 V7", alias: ["puente de rhythm changes"],
+        estilos: [.jazz], referencias: [.levine1995])
     /// La dominante por la puerta de atrás: un ii–V que resuelve un tono más arriba.
     public static let backdoor = ProgresionConNombre(
         nombre: "backdoor", cifrado: "iv7 ♭VII7 Imaj7", alias: ["ii–V por la puerta de atrás"], estilos: [.jazz],
@@ -194,10 +217,13 @@ extension ProgresionConNombre {
     /// Todas, en este orden: la armonía tonal, el barroco, el galante y las danzas, el jazz y el blues, y el pop.
     public static let catalogo: [ProgresionConNombre] = [
         .cadenciaPerfecta, .cadenciaPlagal, .cadenciaRota, .semicadencia, .cadenciaFrigia, .cadenciaNapolitana,
-        .cadenciaConSextaAumentada, .picardia, .evitada, .quintasDescendentes, .romanesca, .pachelbel, .monte, .fonte,
-        .ponte, .doReMi, .prinner, .fenaroli, .quiescenza, .meyer, .solFaMi, .indugio, .folia, .bajoDeLamento,
+        .cadenciaConSextaAumentada, .picardia, .evitada, .cadenciaCompuesta, .quintasDescendentes, .cicloHexatonico,
+        .romanesca, .pachelbel, .monte, .fonte,
+        .ponte, .doReMi, .prinner, .fenaroli, .quiescenza, .meyer, .solFaMi, .indugio, .passoIndietro, .folia,
+        .bajoDeLamento,
         .lamentoCromatico, .passamezzoAntico, .passamezzoModerno, .ruggiero, .bergamasca, .chacona, .passacaglia,
-        .iiVI, .iiV, .iiVIMenor, .turnaround, .backdoor, .blues, .bluesMenor, .rhythmChanges, .coltrane, .iiSubVI,
+        .iiVI, .iiV, .iiVIMenor, .turnaround, .turnaroundConDominante, .turnaroundDesdeElIII, .ragtime, .backdoor,
+        .blues, .bluesMenor, .rhythmChanges, .coltrane, .iiSubVI,
         .dameron, .birdBlues, .autumnLeaves, .ejePop, .deLos50, .eolica, .andaluza, .mixolidia, .eolicaRock, .laBamba,
         .creep,
     ]

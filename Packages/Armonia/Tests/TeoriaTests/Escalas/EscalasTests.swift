@@ -35,6 +35,17 @@ import Testing
         #expect(e.cifradosRomanos(cuatriadas: true) == ["Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "viiø7"])
     }
 
+    /// Fuera de las heptatónicas, por terceras de verdad: Do blues da Dom7 en el 1.º grado, y no Dosus4.
+    @Test func armonizacionPorTercerasDeVerdad() {
+        let blues = Escala(.do, .blues)
+        #expect(blues.acorde(grado: 1)?.cifrado == "Dom")
+        #expect(blues.acorde(grado: 1, cuatriada: true)?.cifrado == "Dom7")
+        let pentatonica = Escala(.do, .pentatonicaMayor)
+        #expect(pentatonica.acorde(grado: 1)?.cifrado == "Do")
+        #expect(pentatonica.acorde(grado: 2) == nil) // Re no tiene Fa, ni Sol tiene Si para Mi
+        #expect(pentatonica.armonizar().map { $0?.cifrado } == ["Do", nil, nil, nil, "Lam"])
+    }
+
     @Test func armonizacionMenor() {
         let armonica = Escala(.la, .menorArmonica)
         #expect(armonica.cifradosRomanos() == ["i", "ii°", "♭III+", "iv", "V", "♭VI", "vii°"])
@@ -366,5 +377,50 @@ import Testing
                 #expect(!tipo.modo(grado: grado).esDireccional)
             }
         }
+    }
+}
+
+/// Lo que se construye sobre cada grado: por terceras o por cuartas, con más de cuatro notas, y las tensiones.
+@Suite struct AcordesDeLosGradosTests {
+    @Test func porCuartasYConMasNotas() throws {
+        let dorico = Escala(.re, .dorico)
+        #expect(Set(dorico.armonizar(notas: 4, por: .cuartas)[1]?.notas ?? []) == [.mi, .la, .re, .sol])
+        #expect(dorico.acorde(grado: 1, notas: 4, por: .cuartas)?.notas.count == 4)
+        let mayor = Escala(.do, .mayor)
+        #expect(mayor.acorde(grado: 1, notas: 5)?.notas == [.do, .mi, .sol, .si, .re])
+        #expect(mayor.acorde(grado: 5, notas: 5)?.cifrado == "Sol9")
+        #expect(mayor.acorde(grado: 1, notas: 8) == nil)
+        #expect(mayor.armonizar(cuatriadas: true) == mayor.armonizar(notas: 4))
+        // En una pentatónica, por cuartas: Do–Fa no está en la mayor, pero Re–Sol–Do sí.
+        #expect(
+            Set(Escala(.do, .pentatonicaMayor).acorde(grado: 2, notas: 3, por: .cuartas)?.notas ?? []) == [
+                .re, .sol, .do,
+            ])
+        // Las notas apiladas, en su orden (el acorde las guarda en el canónico).
+        let pentatonica = Escala(.do, .pentatonicaMayor)
+        #expect(pentatonica.notasApiladas(grado: 3, notas: 4, por: .cuartas) == [.mi, .la, .re, .sol])
+        #expect(pentatonica.notasApiladas(grado: 1, notas: 4, por: .cuartas) == nil)
+        #expect(dorico.notasApiladas(grado: 1, notas: 3, por: .cuartas) == [.re, .sol, .do])
+        #expect(dorico.notasApiladas(grado: 1, notas: 1) == nil)
+    }
+
+    /// La tabla de las tensiones de cada grado de la mayor.
+    @Test func lasTensionesDeCadaGrado() {
+        let mayor = Escala(.do, .mayor)
+        let tabla = (1...7).map { mayor.tensionesDisponibles(grado: $0).map(\.cifra) }
+        #expect(
+            tabla == [
+                ["9", "13"], ["9", "11", "13"], ["11"], ["9", "♯11", "13"], ["9", "13"], ["9", "11"], ["11", "♭13"],
+            ])
+        #expect(mayor.armonizacionConTensiones[4].acorde?.cifrado == "Sol7")
+        #expect(Escala(.do, .pentatonicaMayor).tensionesDisponibles(grado: 1).isEmpty) // sin cuatríada
+    }
+
+    @Test func losAcordesQueCabenNoMezclanLosDosSentidos() {
+        let clasica = Escala(.la, .menorMelodica)
+        #expect(clasica.tipo.esDireccional)
+        #expect(!clasica.acordesQueCaben(grado: 3).contains(Acorde("Do7M(#11)")))
+        #expect(clasica.acordesQueCaben(grado: 3, sentido: .descendente).contains(Acorde("Do7M")))
+        #expect(!clasica.acordesQueCaben(grado: 3).contains(Acorde("Do7M")))
     }
 }

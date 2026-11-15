@@ -36,6 +36,9 @@ extension NombresDeAcordes {
         .init(.dominanteNovenaAumentada, "setena amb novena augmentada", variantes: ["sèptima amb novena augmentada"]),
         .init(.dominanteUndecimaAumentada, "setena amb onzena augmentada", variantes: ["sèptima amb onzena augmentada"]),
         .init(.mayorSeptimaMayorUndecimaAumentada, "setena major amb onzena augmentada", variantes: ["sèptima major amb onzena augmentada"]),
+        .init(.dominanteNovenaUndecimaAumentada, "novena amb onzena augmentada"),
+        .init(.dominanteDecimoterceraNovenaMenor, "tretzena amb novena menor"),
+        .init(.semidisminuidoNovena, "semidisminuït amb novena"),
         .init(.sus4Novena, "novena suspesa"),
         .init(.sus4Decimotercera, "tretzena suspesa"),
         .init(.dominanteAlterado, "setena alterada", variantes: ["sèptima alterada"]),
@@ -59,5 +62,7 @@ extension NombresDeAcordes {
         .init(.augures, "acord dels àugurs"),
         .init(.salmos, "acord de la Simfonia dels salms"),
         .init(.alfa, "acord alfa"),
+        .init(.delSueno, "acord del somni"),
+        .init(.tricordoVienes, "tricord vienès"),
     ])
 }

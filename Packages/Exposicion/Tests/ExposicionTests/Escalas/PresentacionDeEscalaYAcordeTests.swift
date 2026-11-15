@@ -24,6 +24,20 @@ import Testing
         #expect(jonico.estructurasSuperiores == "Sol · Lam")
     }
 
+    /// Las escalas de un acorde llevan su motivo, salvo las que solo son compatibles.
+    @Test func lasEscalasConSuMotivo() {
+        let escalas = PresentacionDeEscalaYAcorde.escalas(de: Acorde("Do7"), notacion: .compacta(.espanol))
+        #expect(PresentacionDeEscalaYAcorde.nombreConMotivo(escalas[0]) == "Do mixolidio (del cifrado)")
+        #expect(
+            escalas[1].motivo == nil && PresentacionDeEscalaYAcorde.nombreConMotivo(escalas[1]) == escalas[1].nombre)
+        let enDo = PresentacionDeEscalaYAcorde.escalas(
+            de: Acorde("Rem7"), en: Tonalidad(.do), notacion: .compacta(.ingles))
+        #expect(enDo[0].motivo == "from the key")
+        // Las del bajo se leen sobre el acorde que forma: el Re de Sol mixolidio es la 5.ª de Sol9sus4.
+        let delBajo = PresentacionDeEscalaYAcorde.escalas(de: Acorde("Fa/Sol"), notacion: .compacta(.espanol))[0]
+        #expect(delBajo.motivo == "del bajo" && !delBajo.tensiones.contains("Re"))
+    }
+
     @Test func enOtroIdioma() {
         let mixolidio = PresentacionDeEscalaYAcorde.presentar(
             Escala(.sol, .mixolidio), sobre: Acorde("Sol7"), en: .ascii(.ingles))

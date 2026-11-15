@@ -119,6 +119,11 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "φθόγγος προς αποφυγή",
         papelChoque: "φθόγγος σύγκρουσης",
         papelDePaso: "φθόγγος διάβασης",
+        papelSeptimaDeLaEscala: "έβδομη της κλίμακας",
+        motivoDeLaTonalidad: "από την τονικότητα",
+        motivoDelCifrado: "από το σύμβολο",
+        motivoDelBajo: "από το μπάσο",
+        motivoCompatible: "συμβατή",
         modoDe: { modo, escala in "τρόπος \(modo) της κλίμακας \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "τριτονική υποκατάσταση",

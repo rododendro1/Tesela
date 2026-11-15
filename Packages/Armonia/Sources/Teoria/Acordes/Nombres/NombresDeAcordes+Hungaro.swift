@@ -36,6 +36,9 @@ extension NombresDeAcordes {
         .init(.dominanteNovenaAumentada, "domináns szeptimakkord bővített nónával"),
         .init(.dominanteUndecimaAumentada, "domináns szeptimakkord bővített undecimával"),
         .init(.mayorSeptimaMayorUndecimaAumentada, "nagy szeptimakkord bővített undecimával"),
+        .init(.dominanteNovenaUndecimaAumentada, "nónakkord bővített undecimával"),
+        .init(.dominanteDecimoterceraNovenaMenor, "tercdecimakkord kis nónával"),
+        .init(.semidisminuidoNovena, "félszűkített nónakkord"),
         .init(.sus4Novena, "domináns nónakkord felfüggesztett kvarttal"),
         .init(.sus4Decimotercera, "domináns tercdecimakkord felfüggesztett kvarttal"),
         .init(.dominanteAlterado, "alterált domináns szeptimakkord"),
@@ -59,5 +62,7 @@ extension NombresDeAcordes {
         .init(.augures, "jósok akkordja"),
         .init(.salmos, "Zsoltárszimfónia-akkord"),
         .init(.alfa, "alfa-akkord"),
+        .init(.delSueno, "álomakkord"),
+        .init(.tricordoVienes, "bécsi trichord"),
     ])
 }

@@ -156,9 +156,32 @@ public struct Escala: Hashable, Sendable {
 
     // MARK: Armonización
 
-    /// Acorde por terceras superpuestas sobre un grado (tríada o cuatríada).
+    /// Cómo se apilan las notas de los acordes de una escala.
+    public enum Apilamiento: Hashable, Sendable, CaseIterable {
+        /// Por terceras, la armonía tonal: Do–Mi–Sol–Si en Do mayor.
+        case terceras
+        /// Por cuartas, la armonía cuartal del jazz modal: Mi–La–Re–Sol en Re dórico, la base del acorde de *So
+        /// What*.
+        case cuartas
+
+        /// El número del intervalo entre una nota y la siguiente: 3 o 4.
+        var numero: Int { self == .terceras ? 3 : 4 }
+    }
+
+    /// Acorde por terceras superpuestas sobre un grado (tríada o cuatríada): ``acorde(grado:notas:por:)`` con tres o
+    /// cuatro notas.
     public func acorde(grado: Int, cuatriada: Bool = false) -> Acorde? {
-        let nombres = (0..<(cuatriada ? 4 : 3)).map { self.grado(grado + 2 * $0) }
+        acorde(grado: grado, notas: cuatriada ? 4 : 3)
+    }
+
+    /// El acorde de `notas` notas (de 2 a 7) apiladas sobre un grado, por terceras o por cuartas. En una
+    /// heptatónica, por terceras, un grado sí y otro no (con 5, 6 y 7 notas, los de 9.ª, 11.ª y 13.ª: Do7M(9) en
+    /// Do mayor); por cuartas, dos grados no y uno sí. En las demás, cada nota es la siguiente de la escala que
+    /// está a una 3.ª (o a una 4.ª) de la anterior, por su nombre: en Do blues, Do–Mi♭–Sol–Si♭ (Dom7), y no
+    /// Do–Fa–Sol. `nil` si falta ese intervalo (el 2.º grado de Do pentatónica mayor, Re, no tiene Fa) o si las
+    /// notas no forman un tipo conocido.
+    public func acorde(grado: Int, notas cuantas: Int, por apilamiento: Apilamiento = .terceras) -> Acorde? {
+        guard let nombres = notasApiladas(grado: grado, notas: cuantas, por: apilamiento) else { return nil }
         let raiz = nombres[0]
         guard let tipo = TipoDeAcorde(pasosDeQuinta: Set(nombres.map { $0.pasosDeQuinta - raiz.pasosDeQuinta })) else {
             return nil
@@ -166,9 +189,55 @@ public struct Escala: Hashable, Sendable {
         return Acorde(raiz, tipo)
     }
 
-    /// Acordes de todos los grados (`nil` si un grado no forma un tipo conocido).
+    /// Las notas de ``acorde(grado:notas:por:)`` en el orden en que se apilan, desde el grado: el acorde las guarda
+    /// en su orden canónico. `nil` si falta un intervalo, pero no si las notas no forman un tipo conocido.
+    ///
+    ///     Escala(.do, .pentatonicaMayor).notasApiladas(grado: 3, notas: 4, por: .cuartas)   // Mi–La–Re–Sol
+    public func notasApiladas(grado: Int, notas cuantas: Int, por apilamiento: Apilamiento = .terceras) -> [Nota]? {
+        guard (2...7).contains(cuantas) else { return nil }
+        if tipo.intervalos.count == 7 {
+            return (0..<cuantas).map { self.grado(grado + (apilamiento.numero - 1) * $0) }
+        }
+        var nombres = [self.grado(grado)]
+        var posicion = grado
+        while nombres.count < cuantas, let ultima = nombres.last {
+            guard
+                let paso = (1..<tipo.intervalos.count).first(where: {
+                    ultima.intervalo(hasta: self.grado(posicion + $0)).numeroSimple == apilamiento.numero
+                })
+            else { return nil }
+            posicion += paso
+            nombres.append(self.grado(posicion))
+        }
+        return nombres
+    }
+
+    /// Acordes de todos los grados, por terceras (``acorde(grado:cuatriada:)``): `nil` si un grado no tiene la 3.ª
+    /// o no forma un tipo conocido.
     public func armonizar(cuatriadas: Bool = false) -> [Acorde?] {
-        (1...tipo.intervalos.count).map { acorde(grado: $0, cuatriada: cuatriadas) }
+        armonizar(notas: cuatriadas ? 4 : 3)
+    }
+
+    /// Los acordes de `notas` notas de todos los grados, por terceras o por cuartas (``acorde(grado:notas:por:)``).
+    ///
+    ///     Escala(.re, .dorico).armonizar(notas: 4, por: .cuartas)[1]?.fundamental   // Mi (Mi–La–Re–Sol)
+    public func armonizar(notas cuantas: Int, por apilamiento: Apilamiento = .terceras) -> [Acorde?] {
+        (1...tipo.intervalos.count).map { acorde(grado: $0, notas: cuantas, por: apilamiento) }
+    }
+
+    /// Las tensiones disponibles sobre la cuatríada de un grado, con el modo de la escala que empieza en él: la
+    /// tabla de la teoría acorde-escala que se enseña en Berklee. En Do mayor, I7M: 9 y 13; ii7: 9, 11 y 13; iii7:
+    /// 11; IV7M: 9, ♯11 y 13; V7: 9 y 13; vi7: 9 y 11; viiø7: 11 y ♭13. La 13 del ii7 cuenta como tensión, aunque
+    /// forma un tritono con la 3.ª (hay quien la evita). Vacío si el grado no tiene cuatríada.
+    public func tensionesDisponibles(grado: Int) -> [NotaSobreElAcorde] {
+        guard let acorde = acorde(grado: grado, cuatriada: true) else { return [] }
+        return modo(grado: grado).notas(sobre: acorde).filter { $0.papel == .tension }
+    }
+
+    /// La cuatríada de cada grado con sus tensiones disponibles (``tensionesDisponibles(grado:)``): lo que piden
+    /// la hoja de la escala y `armonia escala --tensiones`.
+    public var armonizacionConTensiones: [(acorde: Acorde?, tensiones: [NotaSobreElAcorde])] {
+        (1...tipo.intervalos.count).map { (acorde(grado: $0, cuatriada: true), tensionesDisponibles(grado: $0)) }
     }
 
     /// Cifrado romano del acorde de un grado. Las alteraciones del numeral se miden
