@@ -44,7 +44,8 @@ let columnasDeEscalas: [String] =
         "myhill", "generador", "bien_formada", "rothenberg", "ambiguedades", "contradicciones", "estabilidad",
         "cociente_de_igualdad", "anchura_del_espectro", "profunda", "consonancia_diadica", "fourier", "equilibrada",
         "uniformidad", "triadas", "hanson", "modo_de_messiaen", "simetrica_por_inversion", "pareja_z", "complemento",
-        "imperfecciones", "unicidad", "simplicidad", "triadas_por_grados", "cuatriadas_por_grados", "combinatoriedad",
+        "imperfecciones", "unicidad", "simplicidad", "triadas_por_grados", "cuatriadas_por_grados",
+        "cuatriadas_por_cuartas", "tensiones_por_grados", "combinatoriedad",
         "entropia_intervalica", "parsimonia", "gradus", "altura_de_tenney", "limite_impar", "entropia_armonica",
         "rugosidad_media", "perfil_mayor", "perfil_menor", "con_sensible", "tetracordos_iguales",
         // Su carácter: los afectos, los momentos del día y lo que dice cada fuente, con su cita.
@@ -53,6 +54,20 @@ let columnasDeEscalas: [String] =
         "equivalentes", "derivadas", "referencias",
     ]
 
+/// Los acordes de los grados, separados por espacios; «?» en el que no forma un tipo conocido.
+private func acordesDeLosGrados(_ acordes: [Acorde?]) -> String {
+    acordes.map { $0?.cifrado ?? "?" }.joined(separator: " ")
+}
+
+/// Las tensiones disponibles de cada grado (`Escala.armonizacionConTensiones`): las de un grado separadas por
+/// espacios, los grados por « · »; «?» en el que no tiene cuatríada y «—» en el que no tiene tensiones.
+private func tensionesPorGrados(de escala: Escala) -> String {
+    escala.armonizacionConTensiones.map { grado in
+        guard grado.acorde != nil else { return "?" }
+        return grado.tensiones.isEmpty ? "—" : grado.tensiones.map(\.cifra).joined(separator: " ")
+    }.joined(separator: " · ")
+}
+
 /// La fila de una escala, en el orden de `columnasDeEscalas`.
 func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
     // En el orden de `columnasDelCaracter`.
@@ -60,6 +75,8 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
     let microtonal = tipo.afinacionPropia
     let sobreDo = Escala(.do, tipo)
     let medidas = sobreDo.estadisticas
+    // Un fragmento no se repite a la octava: no se armoniza.
+    let tieneAcordes = !tipo.esFragmento
     let conjunto = sobreDo.conjuntoDeClasesDeAltura
     // Su mēḷa: el suyo si es heptatónica y encaja en uno, y si no, el de la madre, cuando la madre es un mēḷa.
     // Las notas sobre Do en el orden del recorrido: «Do Mi♭ Re Mi♭ Fa Sol La Sol Do».
@@ -147,8 +164,12 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         String(medidas.conjunto.imperfecciones),
         siONo(medidas.conjunto.unicidad),
         siONo(medidas.conjunto.simplicidad),
-        medidas.tonal.triadas.map { $0.map { $0?.cifrado ?? "?" }.joined(separator: " ") } ?? "",
-        medidas.tonal.cuatriadas.map { $0.map { $0?.cifrado ?? "?" }.joined(separator: " ") } ?? "",
+        // Los acordes de cada grado sobre Do, con su fundamental: con el tipo solo, la tríada mayor no se vería (su
+        // cifrado es «»).
+        tieneAcordes ? acordesDeLosGrados(sobreDo.armonizar(notas: 3)) : "",
+        tieneAcordes ? acordesDeLosGrados(sobreDo.armonizar(notas: 4)) : "",
+        tieneAcordes ? acordesDeLosGrados(sobreDo.armonizar(notas: 4, por: .cuartas)) : "",
+        tieneAcordes ? tensionesPorGrados(de: sobreDo) : "",
         medidas.conjunto.combinatoriedad.map { c in
             (c.transposiciones.map { "T\($0)" } + c.inversiones.map { "I\($0)" }).joined(separator: " ")
                 + (c.tipo.map { " (\($0))" } ?? "")

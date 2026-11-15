@@ -16,6 +16,7 @@ private let notacionDeAcordes = Notacion.compacta(.espanol)
 private let columnasDeLosNombresDeAcordes: [String] = columnasDeNombres + columnasDeAliasYVariantes()
 private let columnasDeLaFichaDeAcordes: [String] = [
     "grupo", "intervalos", "semitonos", "notas_sobre_do", "cifrado", "nombre_del_tipo",
+    "escala_del_cifrado", "escalas_compatibles",
 ]
 let columnasDeAcordes: [String] =
     columnasDeLosNombresDeAcordes + columnasDeLaFichaDeAcordes + medidasDeAcordes.map(\.clave)
@@ -35,6 +36,9 @@ func filaDeAcorde(_ acorde: AcordeConNombre) -> [String] {
         acorde.notas(sobre: .do).map(\.nombre).joined(separator: " "),
         acorde.tipo?.cifrado ?? "",
         acorde.tipo?.acordeConNombre?.nombre ?? "",
+        acorde.tipo.flatMap { TipoDeEscala.delCifrado($0.estructura)?.nombre } ?? "",
+        // Sobre Do, de la que mejor le va a la que peor (`Acorde.escalasCompatibles(entre:)`).
+        acorde.tipo.map { Acorde(.do, $0).escalasCompatibles().map(\.nombre).joined(separator: " · ") } ?? "",
     ]
     let antes: [String] = otros + ficha
     // En `numeroDeNotas`, las notas distintas: el acorde de la Sinfonía de los salmos tiene cuatro voces y tres notas.

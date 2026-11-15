@@ -53,7 +53,7 @@ let columnasDeGrados: [String] =
     [
         "modo", "cifrado", "categoria", "grado", "nombre_del_grado", "funcion", "acorde_sobre_do", "notas",
         "do_movil", "do_movil_con_do_en_menor",
-    ] + sistemasMoviles.map { "notas_en_\($0.rawValue)" } + ["se_reconoce"]
+    ] + sistemasMoviles.map { "notas_en_\($0.rawValue)" } + ["se_reconoce", "escala_del_acorde", "motivo_de_la_escala"]
 
 /// De dónde sale un acorde, con una palabra: «diatónico», «dominante secundaria»…
 private func categoria(_ categoria: AcordeAnalizado.Categoria) -> String {
@@ -94,7 +94,12 @@ private func filaDeGrado(_ grado: Grado, en tonalidad: Tonalidad) -> [String] {
         modo, grado.cifrado, categoria(analizado.categoria), String(analizado.grado), nombreDelGrado, funcion,
         acorde.cifrado, notas.map(\.nombre).joined(separator: " "), doMovil, doMovilConDo,
     ]
-    return ficha + nombresDeLasNotas + [siONo(analizado.cifrado == grado.cifrado)]
+    // La primera de `Acorde.escalas(en:siguiente:entre:)`: la de la tonalidad si la hay, y si no la del cifrado o
+    // la compatible que mejor le va.
+    let escala = acorde.escalas(en: tonalidad, siguiente: siguiente).first
+    return ficha + nombresDeLasNotas + [
+        siONo(analizado.cifrado == grado.cifrado), escala?.escala.nombre ?? "", escala?.motivo.nombre ?? "",
+    ]
 }
 
 let grados = Catalogo(
