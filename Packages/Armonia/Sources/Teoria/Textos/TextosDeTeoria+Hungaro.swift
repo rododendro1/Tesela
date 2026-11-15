@@ -117,6 +117,8 @@ extension TextosDeTeoria {
         papelNotaDelAcorde: "akkordhang",
         papelTensionDisponible: "feszültség",
         papelNotaAEvitar: "kerülendő hang",
+        papelChoque: "ütköző hang",
+        papelDePaso: "átmenőhang",
         modoDe: { modo, escala in "\(escala) \(modo). módusza" },
         // Rearmonizacion.swift
         sustitutoTritonal: "tritónuszhelyettesítés",

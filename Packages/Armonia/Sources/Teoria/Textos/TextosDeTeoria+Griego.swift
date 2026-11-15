@@ -117,6 +117,8 @@ extension TextosDeTeoria {
         papelNotaDelAcorde: "φθόγγος της συγχορδίας",
         papelTensionDisponible: "ένταση",
         papelNotaAEvitar: "φθόγγος προς αποφυγή",
+        papelChoque: "φθόγγος σύγκρουσης",
+        papelDePaso: "φθόγγος διάβασης",
         modoDe: { modo, escala in "τρόπος \(modo) της κλίμακας \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "τριτονική υποκατάσταση",

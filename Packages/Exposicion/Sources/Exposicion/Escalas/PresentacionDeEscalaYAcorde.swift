@@ -12,7 +12,7 @@ public struct EscalaSobreAcordePresentada: Hashable, Sendable {
     public let notas: String
     /// «Mi 9 · Sol 11 · Si 13», o "" si no tiene.
     public let tensiones: String
-    /// «Si♭ ♭13», o "" si no tiene.
+    /// «Si♭ ♭13», o "" si no tiene: las notas a evitar y las que chocan con el acorde.
     public let aEvitar: String
     /// Lo que cabe en una línea: «Tensiones: Mi 9 · Sol 11 · Si 13 — A evitar: Si♭ ♭13».
     public let resumen: String
@@ -43,13 +43,13 @@ public enum PresentacionDeEscalaYAcorde {
         _ escala: Escala, sobre acorde: Acorde, en notacion: Notacion
     ) -> EscalaSobreAcordePresentada {
         let notas = escala.notas(sobre: acorde)
-        func lista(_ papel: PapelEnLaEscala?) -> String {
-            notas.filter { papel == nil || $0.papel == papel }
+        func lista(_ papeles: Set<PapelEnLaEscala>?) -> String {
+            notas.filter { papeles?.contains($0.papel) ?? true }
                 .map { "\($0.nota.nombre(en: notacion)) \($0.cifra)" }
                 .joined(separator: " · ")
         }
-        let tensiones = lista(.tension)
-        let aEvitar = lista(.aEvitar)
+        let tensiones = lista([.tension])
+        let aEvitar = lista([.aEvitar, .choque])
         var partes: [String] = []
         if !tensiones.isEmpty { partes.append(notacion.texto(\.tensiones) + ": " + tensiones) }
         if !aEvitar.isEmpty { partes.append(notacion.texto(\.notasAEvitar) + ": " + aEvitar) }

@@ -117,6 +117,8 @@ extension TextosDeTeoria {
         papelNotaDelAcorde: "nota do acorde",
         papelTensionDisponible: "tensión",
         papelNotaAEvitar: "nota que evitar",
+        papelChoque: "nota que choca",
+        papelDePaso: "nota de paso",
         modoDe: { modo, escala in "modo \(modo) de \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "substituto de trítono",

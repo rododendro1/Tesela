@@ -317,13 +317,14 @@ extension Acorde {
         Arpegio(self, patron: patron, octavas: octavas, conOctava: conOctava)
     }
 
-    /// Las escalas sobre la fundamental del acorde que contienen todas sus notas (la relación acorde-escala del
-    /// jazz: Do7 → Do mixolidio…), de las que tienen menos notas a evitar sobre el acorde
+    /// Las escalas sobre la fundamental del acorde que contienen todas sus notas sin chocar con él
+    /// (``Escala/esCompatible(con:)``: la relación acorde-escala del jazz, Do7 → Do mixolidio…), de las que tienen
+    /// menos notas a evitar sobre el acorde
     /// (``Escala/notasAEvitar(sobre:)``) a las que más y, a igualdad, en el orden de `tipos`. Por defecto, entre
     /// las de ``TipoDeEscala/deJazz``: Do7(♯11) da primero Do lidio dominante, sin ninguna. Las tensiones cuentan
     /// como la nota que son (la novena, como la segunda), y una nota escrita de otra forma vale (Fa♭ por Mi).
     public func escalasCompatibles(entre tipos: [TipoDeEscala] = TipoDeEscala.deJazz) -> [Escala] {
-        let compatibles = tipos.map { Escala(fundamental, $0) }.filter { $0.contiene(acorde: self) }
+        let compatibles = tipos.map { Escala(fundamental, $0) }.filter { $0.esCompatible(con: self) }
         let aEvitar = compatibles.map { $0.notasAEvitar(sobre: self).count }
         return compatibles.indices.sorted { a, b in
             aEvitar[a] != aEvitar[b] ? aEvitar[a] < aEvitar[b] : a < b

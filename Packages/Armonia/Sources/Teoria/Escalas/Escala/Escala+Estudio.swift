@@ -164,7 +164,8 @@ public struct PentatonicaSobreElAcorde: Hashable, Sendable {
 extension Acorde {
     /// Las escalas bebop sobre la fundamental del acorde que, bajando en corcheas desde alguna nota del acorde,
     /// ponen una nota del acorde en cada parte fuerte. En un acorde sin séptima menor, la 6.ª cuenta como nota del
-    /// acorde (Do bebop mayor sobre Do7M: Do La Sol Mi en las partes fuertes).
+    /// acorde (Do bebop mayor sobre Do7M: Do La Sol Mi en las partes fuertes). Solo salen las que son compatibles con
+    /// el acorde (``Escala/esCompatible(con:)``), como su escala de siete notas: Do bebop dominante no sale sobre Do7M.
     ///
     ///     Acorde("Do7").escalasBebop.first?.notaDePaso   // Si
     public var escalasBebop: [EscalaBebop] {
@@ -174,6 +175,7 @@ extension Acorde {
         var resultado: [EscalaBebop] = []
         for tipo in TipoDeEscala.bebop {
             let escala = Escala(fundamental, tipo)
+            guard escala.esCompatible(con: self) else { continue }
             let notas = escala.notas
             let bajando = [notas[0]] + notas.dropFirst().reversed()
             for inicio in bajando.indices where esDelAcorde(bajando[inicio]) {
@@ -211,7 +213,7 @@ extension Acorde {
                 let escala = Escala(fundamental + intervalo, tipo)
                 let sobre = escala.notas(sobre: self)
                 let conTercera = tercera.map { escala.contieneEnarmonico($0) } ?? true
-                if conTercera && sobre.allSatisfy({ $0.papel != .aEvitar }) {
+                if conTercera && sobre.allSatisfy({ $0.papel == .delAcorde || $0.papel == .tension }) {
                     resultado.append(PentatonicaSobreElAcorde(escala: escala, notas: sobre))
                 }
             }

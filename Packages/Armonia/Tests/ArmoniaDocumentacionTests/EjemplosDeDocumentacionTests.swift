@@ -739,6 +739,10 @@ import Hexagonos
         comprobar(Escala(.do, .alterada).escalaMadre?.madre == Escala(Nota(.re, .bemol), .menorMelodicaJazz), #"true"#, doc, 5)
         comprobar(Escala(.re, .dorico).escalaMadre?.nombre(en: .compacta(.espanol)) == "modo 2 de Do mayor", #"true"#, doc, 6)
         comprobar(Acorde("Do7(#11)").escalasCompatibles().first == Escala(.do, .lidioDominante), #"true"#, doc, 7)
+        comprobar(Escala(.do, .mixolidio).notas(sobre: Acorde("Do7M"))[6].papel == .choque, #"true"#, doc, 8)
+        comprobar(Escala(.do, .bebopDominante).notas(sobre: Acorde("Do7"))[7].papel == .dePaso, #"true"#, doc, 9)
+        comprobar(Escala(.do, .bebopDominante).esCompatible(con: Acorde("Do7M")), #"false"#, doc, 10)
+        comprobar(Escala(.do, .doricoCuartaAumentada).esCompatible(con: Acorde("Doø7")), #"false"#, doc, 11)
     }
 
     @Test func escalas21() throws {

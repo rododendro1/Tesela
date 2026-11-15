@@ -120,6 +120,8 @@ extension TextosDeTeoria {
         papelNotaDelAcorde: "akordeko nota",
         papelTensionDisponible: "tentsioa",
         papelNotaAEvitar: "saihesteko nota",
+        papelChoque: "talka egiten duen nota",
+        papelDePaso: "igarotze-nota",
         modoDe: { modo, escala in "\(escala): \(modo). modua" },
         // Rearmonizacion.swift
         sustitutoTritonal: "tritono-ordezkapena",

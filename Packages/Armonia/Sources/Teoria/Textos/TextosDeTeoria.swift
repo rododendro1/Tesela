@@ -123,6 +123,8 @@ struct TextosDeTeoria: TextosTraducidos {
     let papelNotaDelAcorde: String
     let papelTensionDisponible: String
     let papelNotaAEvitar: String
+    let papelChoque: String
+    let papelDePaso: String
     /// Una escala como modo de otra: «modo 2 de Do mayor», «mode 2 of C major».
     let modoDe: @Sendable (_ modo: Int, _ escala: String) -> String
 

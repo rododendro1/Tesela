@@ -117,6 +117,8 @@ extension TextosDeTeoria {
         papelNotaDelAcorde: "звук аккорда",
         papelTensionDisponible: "напряжение",
         papelNotaAEvitar: "избегаемый звук",
+        papelChoque: "конфликтующий звук",
+        papelDePaso: "проходящий звук",
         modoDe: { modo, escala in "\(modo)-й лад гаммы \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "тритоновая замена",

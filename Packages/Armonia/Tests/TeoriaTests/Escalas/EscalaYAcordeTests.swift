@@ -45,6 +45,72 @@ import Testing
         #expect(disminuida.notasAEvitar(sobre: Acorde("Do7")).isEmpty)
     }
 
+    @Test func laOtraSeptimaChoca() {
+        // El Si♭ de Do mixolidio sobre Do7M y el Si de Do dórico sobre Dom(7M).
+        #expect(cifras(Escala(.do, .mixolidio), Acorde("Do7M"), .choque) == ["♭7"])
+        #expect(Escala(.do, .mixolidio).esCompatible(con: Acorde("Do"))) // sin 7.ª en el acorde, no hay otra
+        #expect(cifras(Escala(.do, .dorico), Acorde("Dom(7M)"), .choque) == ["♭7"])
+        #expect(cifras(Escala(.do, .mayor), Acorde("Do7"), .choque) == ["7"])
+        // La disminuida semitono-tono sigue sirviendo para Do7: no tiene la 7.ª mayor.
+        #expect(Escala(.do, .disminuidaSemitonoTono).esCompatible(con: Acorde("Do7")))
+    }
+
+    @Test func laQuintaJustaChocaConLaDisminuidaYLaAumentada() throws {
+        // Sol sobre Doø7 y Do°7: el dórico ♯4 y la disminuida semitono-tono no sirven.
+        for cifrado in ["Doø7", "Do°7"] {
+            let acorde = try Acorde(leyendo: cifrado)
+            #expect(cifras(Escala(.do, .doricoCuartaAumentada), acorde, .choque) == ["5"], "\(cifrado)")
+            #expect(!Escala(.do, .doricoCuartaAumentada).esCompatible(con: acorde), "\(cifrado)")
+            #expect(!Escala(.do, .disminuidaSemitonoTono).esCompatible(con: acorde), "\(cifrado)")
+        }
+        #expect(Escala(.do, .locrioSegundaNatural).esCompatible(con: Acorde("Doø7")))
+        #expect(Escala(.do, .disminuida).esCompatible(con: Acorde("Do°7")))
+        // Sobre Do+7M, la bebop mayor tiene el Sol.
+        #expect(!Escala(.do, .bebopMayor).esCompatible(con: Acorde("Do+7M")))
+        #expect(Escala(.do, .lidioAumentado).esCompatible(con: Acorde("Do+7M")))
+    }
+
+    @Test func laNotaDePasoDeLasBebop() {
+        // El Si de Do bebop dominante sobre Do7 es de paso, no a evitar.
+        let notas = Escala(.do, .bebopDominante).notas(sobre: Acorde("Do7"))
+        #expect(notas.first { $0.nota == .si }?.papel == .dePaso)
+        #expect(Escala(.do, .bebopDominante).notasAEvitar(sobre: Acorde("Do7")) == [.fa])
+        #expect(Escala(.do, .bebopDominante).esCompatible(con: Acorde("Do7")))
+        // Con Do7M, el mixolidio choca: la bebop dominante no sirve aunque tenga el Si.
+        #expect(Escala(.do, .bebopDominante).contiene(acorde: Acorde("Do7M")))
+        #expect(!Escala(.do, .bebopDominante).esCompatible(con: Acorde("Do7M")))
+        // La bebop dórica no sirve para Do7: su Mi es de paso, y el dórico no lo tiene.
+        #expect(Escala(.do, .bebopDorico).contiene(acorde: Acorde("Do7")))
+        #expect(!Escala(.do, .bebopDorico).esCompatible(con: Acorde("Do7")))
+        #expect(Escala(.do, .bebopDorico).esCompatible(con: Acorde("Dom7")))
+        // Cada bebop es su escala madre con una nota más.
+        for (bebop, datos) in TipoDeEscala.bebopYSuMadre {
+            #expect(bebop.intervalos.count == 8 && datos.madre.intervalos.count == 7, "\(bebop)")
+            #expect(Set(bebop.intervalos) == Set(datos.madre.intervalos + [datos.paso]), "\(bebop)")
+        }
+        #expect(Set(TipoDeEscala.bebop).isSubset(of: Set(TipoDeEscala.bebopYSuMadre.keys)))
+    }
+
+    @Test func ningunaEscalaCompatibleChoca() throws {
+        for cifrado in ["Do7M", "Do7", "Dom7", "Do6", "Do", "Do7sus4", "Doø7", "Do°7", "Do+7M", "Dom(7M)", "Do7(b9)"] {
+            let acorde = try Acorde(leyendo: cifrado)
+            for escala in acorde.escalasCompatibles() {
+                let choca = escala.notas(sobre: acorde).contains { $0.papel == PapelEnLaEscala.choque }
+                #expect(!choca, "\(escala) sobre \(cifrado)")
+                if let datos = TipoDeEscala.bebopYSuMadre[escala.tipo] {
+                    #expect(Escala(escala.tonica, datos.madre).esCompatible(con: acorde), "\(escala) sobre \(cifrado)")
+                }
+            }
+        }
+        // Lo que quita la propuesta de las listas de hoy.
+        #expect(!Acorde("Do7M").escalasCompatibles().contains(Escala(.do, .bebopDominante)))
+        #expect(!Acorde("Do7").escalasCompatibles().contains(Escala(.do, .bebopDorico)))
+        #expect(!Acorde("Doø7").escalasCompatibles().contains(Escala(.do, .doricoCuartaAumentada)))
+        #expect(!Acorde("Do°7").escalasCompatibles().contains(Escala(.do, .disminuidaSemitonoTono)))
+        #expect(!Acorde("Do+7M").escalasCompatibles().contains(Escala(.do, .bebopMayor)))
+        #expect(Acorde("Do7M").escalasBebop.allSatisfy { $0.escala.tipo != .bebopDominante })
+    }
+
     @Test func sus4() {
         // Sin tercera en el acorde, la tercera mayor de la escala choca con la cuarta.
         let notas = Escala(.sol, .mixolidio).notas(sobre: Acorde(.sol, .sus4Septima))
@@ -67,7 +133,9 @@ import Testing
         #expect(PapelEnLaEscala.aEvitar.nombre(en: .compacta(.espanol)) == "nota a evitar")
         #expect(PapelEnLaEscala.aEvitar.nombre(en: .ascii(.ingles)) == "avoid note")
         #expect(PapelEnLaEscala.delAcorde.description == "nota del acorde")
-        #expect(PapelEnLaEscala.allCases.count == 3)
+        #expect(PapelEnLaEscala.choque.nombre(en: .compacta(.espanol)) == "nota que choca")
+        #expect(PapelEnLaEscala.dePaso.nombre(en: .ascii(.ingles)) == "passing note")
+        #expect(PapelEnLaEscala.allCases.count == 5)
     }
 
     // MARK: Escala madre
@@ -101,7 +169,7 @@ import Testing
             let nombre = modo?.nombre(en: notacion) ?? ""
             #expect(nombre.contains("2"), Comment(rawValue: nombre))
             #expect(nombre.contains(Escala(.do, .mayor).nombre(en: notacion)), Comment(rawValue: nombre))
-            #expect(Set(PapelEnLaEscala.allCases.map { $0.nombre(en: notacion) }).count == 3)
+            #expect(Set(PapelEnLaEscala.allCases.map { $0.nombre(en: notacion) }).count == 5)
         }
         let nota = Escala(.do, .mayor).notas(sobre: Acorde("Do7M"))[3]
         #expect(nota.description == "Fa (11)")

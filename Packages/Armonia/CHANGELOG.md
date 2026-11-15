@@ -1,5 +1,24 @@
 # Cambios
 
+## Sin publicar
+
+### Novedades
+
+- `PapelEnLaEscala` tiene dos papeles más. `.choque` es la nota que contradice al acorde: la otra séptima (el Si♭ de
+  Do mixolidio sobre Do7M, el Si de Do jónico sobre Do7) y la quinta justa sobre un acorde de quinta disminuida o
+  aumentada (el Sol sobre Doø7, Do°7 o Do+7M). `.dePaso` es la nota cromática de una bebop (el Si de Do bebop
+  dominante), que ya no cuenta como nota a evitar. Sus nombres, en los trece idiomas.
+- `Escala.esCompatible(con:)`: si la escala sirve para el acorde, es decir, si tiene todas sus notas, ninguna choca con
+  él y, si es una bebop, también sirve su escala de siete notas sin la de paso.
+
+### Correcciones
+
+- `Acorde.escalasCompatibles(entre:)`, `Acorde.escalasBebop`, `Acorde.pentatonicas`, la escala de un acorde que la
+  tonalidad no explica (`Tonalidad.escalaDelAcorde(_:)`) y las estructuras superiores dejan fuera las escalas y las
+  tríadas que chocan con el acorde. Do7M ya no da Do bebop dominante; Do7, Do bebop dórica; Doø7 y Do°7, el dórico ♯4 ni
+  la disminuida semitono-tono; y Do+7M, la bebop mayor.
+- `Escala.notasAEvitar(sobre:)` cuenta también las notas que chocan con el acorde.
+
 ## 0.5.2 (2026-11-14)
 
 ### Cambios incompatibles

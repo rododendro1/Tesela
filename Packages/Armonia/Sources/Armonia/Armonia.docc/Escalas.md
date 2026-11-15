@@ -466,8 +466,9 @@ Un arpegio no es un tipo de escala sino un acorde tocado nota a nota, así que `
 guarda un ``Acorde``, el orden del recorrido (``Arpegio/Patron``: ascendente, descendente, de ida y vuelta o el bajo de Alberti) y
 las octavas que abarca. Se obtiene de un acorde o de un grado de una escala, se lee y se nombra en los trece idiomas
 («Arpegio de Do mayor», «C major arpeggio», «Arpège de Do majeur») y se dibuja en un pentagrama. ``Acorde/escalasCompatibles(entre:)``
-da la relación acorde-escala del jazz: las escalas sobre la fundamental que contienen todas las notas del acorde, entre
-las de ``TipoDeEscala/deJazz`` y de las que tienen menos notas a evitar a las que más.
+da la relación acorde-escala del jazz: las escalas sobre la fundamental que sirven para el acorde
+(``Escala/esCompatible(con:)``), entre las de ``TipoDeEscala/deJazz`` y de las que tienen menos notas a evitar a las
+que más.
 
 ```swift
 Arpegio(Acorde("Do7")).alturas(octava: 4).map(\.midi) == [60, 64, 67, 70, 72]       // true
@@ -484,7 +485,19 @@ let dibujo = Arpegio(Acorde("Do7")).svgPentagrama()
 La teoría acorde-escala del jazz mira cada nota de una escala desde el acorde que suena. ``Escala/notas(sobre:)`` dice
 qué es cada una (``PapelEnLaEscala``): una nota del acorde, una tensión disponible o una nota a evitar, la que está un
 semitono por encima de una nota del acorde y choca con ella si se sostiene (el fa sobre Do7M en jónico). En un acorde
-de dominante, la ♭9 y la ♭13 no se evitan; en uno sus4, sí la tercera mayor. Cada nota lleva su grado sobre la
+de dominante, la ♭9 y la ♭13 no se evitan; en uno sus4, sí la tercera mayor. Hay notas que chocan con el acorde y no
+solo se evitan (``PapelEnLaEscala/choque``): la otra séptima (el Si♭ de Do mixolidio sobre Do7M, el Si de Do jónico
+sobre Do7) y la quinta justa sobre un acorde de quinta disminuida o aumentada (el Sol sobre Doø7, Do°7 o Do+7M). La
+nota cromática de una escala bebop es de paso (``PapelEnLaEscala/dePaso``), y no cuenta como nota a evitar: el Si de Do
+bebop dominante sobre Do7.
+
+Una escala sirve para un acorde (``Escala/esCompatible(con:)``) si tiene todas sus notas, ninguna choca con él y, si
+es una bebop, también sirve su escala de siete notas sin la de paso. Así, Do bebop dominante no sirve para Do7M, porque
+el mixolidio choca con el Si, ni Do bebop dórica para Do7, porque el dórico no tiene el Mi. Solo esas escalas salen en
+``Acorde/escalasCompatibles(entre:)``, en ``Acorde/escalasBebop``, en ``Acorde/pentatonicas`` y cuando la tonalidad no
+da la escala de un acorde.
+
+Cada nota lleva su grado sobre la
 fundamental como en los cifrados de jazz, como número (``NotaSobreElAcorde/numero``) y alteración
 (``NotaSobreElAcorde/alteracion``), y escrito (``NotaSobreElAcorde/cifra``): las 2.ª, 4.ª y 6.ª se cuentan como 9, 11
 y 13, y una 3.ª menor sobre un acorde mayor, como ♯9.
@@ -507,6 +520,10 @@ Tonalidad(.do).escalaDelAcorde(Acorde("Sib7")) == Escala(Nota(.si, .bemol), .lid
 Escala(.do, .alterada).escalaMadre?.madre == Escala(Nota(.re, .bemol), .menorMelodicaJazz)               // true
 Escala(.re, .dorico).escalaMadre?.nombre(en: .compacta(.espanol)) == "modo 2 de Do mayor"                   // true
 Acorde("Do7(#11)").escalasCompatibles().first == Escala(.do, .lidioDominante)                            // true
+Escala(.do, .mixolidio).notas(sobre: Acorde("Do7M"))[6].papel == .choque                                  // true
+Escala(.do, .bebopDominante).notas(sobre: Acorde("Do7"))[7].papel == .dePaso                              // true
+Escala(.do, .bebopDominante).esCompatible(con: Acorde("Do7M"))                                            // false
+Escala(.do, .doricoCuartaAumentada).esCompatible(con: Acorde("Doø7"))                                     // false
 ```
 
 ### Los acordes de una escala
