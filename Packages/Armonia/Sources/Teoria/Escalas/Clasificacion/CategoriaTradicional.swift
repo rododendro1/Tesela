@@ -220,10 +220,10 @@ extension TipoDeEscala {
 
     /// Las escalas del catálogo que salen de esta (las que la tienen de `madre`), en el orden del catálogo: los janya
     /// de un mēḷa, los rāgas de un thāṭ, las siete mūrchanā de un grāma.
-    public var derivadas: [TipoDeEscala] { TipoDeEscala.derivadasPorPadre[identidad] ?? [] }
+    public var derivadas: [TipoDeEscala] { TipoDeEscala.derivadasPorMadre[identidad] ?? [] }
 
     /// Madre → sus derivadas, en el orden del catálogo.
-    private static let derivadasPorPadre: [IdentidadDeEscala: [TipoDeEscala]] = Dictionary(
+    private static let derivadasPorMadre: [IdentidadDeEscala: [TipoDeEscala]] = Dictionary(
         grouping: catalogo.filter { $0.datos.madre != nil }, by: { $0.datos.madre! })
 
     /// El nombre con la palabra de su categoría delante: «thāṭ Kāfī», «mēḷa Māyāmālavagauḷa», «rāga Mohanam» (un

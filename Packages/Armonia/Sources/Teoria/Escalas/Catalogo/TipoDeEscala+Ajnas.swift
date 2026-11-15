@@ -14,6 +14,9 @@ import Elementos
 // otro, si lo hay. De Nayrūz no hay ninguno, y de ʿIrāq falta el Bayātī de la tercera: su aproximación temperada no
 // casa con la de su jins Rāst o Bayātī. Tampoco están Hüzzam, Karcığar, Sûzinak ni Nikriz, que no se han podido
 // comprobar en la TDV. Todos están comprobados en sus páginas de Maqam World y de la TDV (noviembre de 2026).
+//
+// Se escriben en la declaración de cada uno (`ajnas: [.init(.jinsBayati, en: 1), .init(.jinsNahawand, en: 4)]`), en
+// TipoDeEscala+MundoArabe.swift y TipoDeEscala+Turquia.swift.
 
 /// Un fragmento (jins o çeşni) de una escala y el grado en que empieza, desde 1: el jins Nahāwand en el 4.º de Bayātī.
 public struct FragmentoDeLaEscala: Hashable, Sendable {
@@ -35,69 +38,14 @@ extension TipoDeEscala {
     ///
     ///     TipoDeEscala.bayati.ajnas.map(\.fragmento.nombre)   // ["jins Bayātī", "jins Nahāwand"]
     ///     TipoDeEscala.bayati.ajnas.map(\.grado)              // [1, 4]
-    public var ajnas: [FragmentoDeLaEscala] { TipoDeEscala.ajnasDeclarados[identidad]?.fragmentos ?? [] }
+    public var ajnas: [FragmentoDeLaEscala] { datosDelCatalogo.ajnas }
 
-    /// La obra de la que salen sus `ajnas`; `nil` si no tiene.
-    public var fuenteDeLosAjnas: Referencia? { TipoDeEscala.ajnasDeclarados[identidad]?.fuente }
-
-    struct AjnasDeclarados: Sendable {
-        let fragmentos: [FragmentoDeLaEscala]
-        let fuente: Referencia
+    /// La obra de la que salen sus `ajnas`: Maqam World en los maqāmāt y la TDV İslâm Ansiklopedisi en los makamlar;
+    /// `nil` si no tiene.
+    public var fuenteDeLosAjnas: Referencia? {
+        guard !ajnas.isEmpty else { return nil }
+        return categoria == .makam ? .tdvIslamAnsiklopedisi : .maqamWorld
     }
-
-    static let ajnasDeclarados: [IdentidadDeEscala: AjnasDeclarados] = {
-        var tabla: [IdentidadDeEscala: AjnasDeclarados] = [:]
-        func arabe(_ maqam: TipoDeEscala, _ fragmentos: FragmentoDeLaEscala...) {
-            tabla[maqam.identidad] = AjnasDeclarados(fragmentos: fragmentos, fuente: .maqamWorld)
-        }
-        func turco(_ makam: TipoDeEscala, _ fragmentos: FragmentoDeLaEscala...) {
-            tabla[makam.identidad] = AjnasDeclarados(fragmentos: fragmentos, fuente: .tdvIslamAnsiklopedisi)
-        }
-        // Maqāmāt árabes.
-        arabe(.hiyaz, .init(.jinsHijaz, en: 1), .init(.jinsNahawand, en: 4))
-        arabe(.nahawand, .init(.jinsNahawand, en: 1), .init(.jinsHijaz, en: 5))
-        arabe(.kurd, .init(.jinsKurd, en: 1), .init(.jinsNahawand, en: 4))
-        // Maqam World da arriba el «ʿAjam alto», con la tónica en la octava; aquí, el jins ʿAjam en la quinta.
-        arabe(.ajam, .init(.jinsAjam, en: 1), .init(.jinsAjam, en: 5))
-        // Arriba, el jins Ḥijāzkār en la octava, que no está en el catálogo.
-        arabe(.hiyazkar, .init(.jinsHijaz, en: 1))
-        // Arriba, el jins Ḥijāzkār en torno a la quinta, que no está en el catálogo.
-        arabe(.nawaAthar, .init(.jinsNikriz, en: 1))
-        // El de la quinta es el «Rāst alto» de Maqam World, con la tónica en la octava: las mismas notas.
-        arabe(.maqamRast, .init(.jinsRast, en: 1), .init(.jinsRast, en: 5))
-        arabe(.bayati, .init(.jinsBayati, en: 1), .init(.jinsNahawand, en: 4))
-        arabe(.saba, .init(.jinsSaba, en: 1), .init(.jinsHijaz, en: 3))
-        arabe(.suznak, .init(.jinsRast, en: 1), .init(.jinsHijaz, en: 5))
-        arabe(.husayni, .init(.jinsBayati, en: 1))
-        arabe(.sikah, .init(.jinsSikah, en: 1), .init(.jinsRast, en: 3))
-        arabe(.huzam, .init(.jinsSikah, en: 1), .init(.jinsHijaz, en: 3), .init(.jinsRast, en: 6))
-        arabe(.iraq, .init(.jinsSikah, en: 1), .init(.jinsRast, en: 6))
-        arabe(.rahatAlArwah, .init(.jinsSikah, en: 1), .init(.jinsHijaz, en: 3), .init(.jinsRast, en: 6))
-        arabe(.bayatiShuri, .init(.jinsBayati, en: 1), .init(.jinsHijaz, en: 4))
-        arabe(.maqamNikriz, .init(.jinsNikriz, en: 1), .init(.jinsNahawand, en: 5))
-        arabe(.ajamUshayran, .init(.jinsAjam, en: 1), .init(.jinsKurd, en: 3), .init(.jinsNahawand, en: 6))
-        arabe(.shawqAfza, .init(.jinsAjam, en: 1), .init(.jinsHijaz, en: 5))
-        arabe(.ushshaqMasri, .init(.jinsNahawand, en: 1), .init(.jinsBayati, en: 5))
-        arabe(.zanjaran, .init(.jinsHijaz, en: 1), .init(.jinsAjam, en: 4))
-        // Makamlar turcos, como los describe la TDV İslâm Ansiklopedisi en el artículo de cada uno.
-        turco(.rastMakami, .init(.rastBeslisi, en: 1), .init(.rastDortlusu, en: 5))
-        turco(.hicazMakami, .init(.hicazDortlusu, en: 1), .init(.rastBeslisi, en: 4))
-        turco(.hicazkarMakami, .init(.hicazBeslisi, en: 1), .init(.hicazDortlusu, en: 5))
-        turco(.nihavendMakami, .init(.buselikBeslisi, en: 1), .init(.hicazDortlusu, en: 5))
-        turco(.kurdiMakami, .init(.kurdiDortlusu, en: 1), .init(.buselikBeslisi, en: 4))
-        turco(.buselikMakami, .init(.buselikBeslisi, en: 1), .init(.kurdiDortlusu, en: 5))
-        turco(.cargahMakami, .init(.cargahBeslisi, en: 1), .init(.cargahDortlusu, en: 5))
-        turco(.ussakMakami, .init(.ussakDortlusu, en: 1), .init(.buselikBeslisi, en: 4))
-        // Abajo, el Hüseynî beşlisi; en Saba, el Saba dörtlüsü; en Nev'eser, el Nikriz beşlisi.
-        turco(.huseyniMakami, .init(.ussakDortlusu, en: 5))
-        turco(.sabaMakami, .init(.hicazBeslisi, en: 3))
-        turco(.neveserMakami, .init(.hicazDortlusu, en: 5))
-        turco(.mahurMakami, .init(.cargahBeslisi, en: 1), .init(.cargahDortlusu, en: 5))
-        turco(.sultaniyegahMakami, .init(.buselikBeslisi, en: 1), .init(.hicazDortlusu, en: 5))
-        turco(.uzzalMakami, .init(.hicazBeslisi, en: 1), .init(.ussakDortlusu, en: 5))
-        turco(.zirguleliHicazMakami, .init(.hicazBeslisi, en: 1), .init(.hicazDortlusu, en: 5))
-        return tabla
-    }()
 }
 
 extension Escala {

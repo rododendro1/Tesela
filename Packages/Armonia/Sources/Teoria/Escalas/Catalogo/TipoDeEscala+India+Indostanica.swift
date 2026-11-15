@@ -14,7 +14,8 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMayor, .cuartaJusta,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ], variantes: ["Bilawal"], nombresOriginales: [.init("बिलावल", .hindi)],
-        categoria: .thaat, afinaciones: [.init(.sruti, pasos: [0, 3, 7, 9, 13, 16, 20])])
+        categoria: .thaat, vadi: .sextaMayor, samvadi: .terceraMayor,
+        afinaciones: [.init(.sruti, pasos: [0, 3, 7, 9, 13, 16, 20])])
     public static let kalyan = TipoDeEscala(
         nombre: "Kalyāṇ",
         intervalos: [
@@ -34,7 +35,8 @@ extension TipoDeEscala {
         nombre: "Kāfī",
         intervalos: TipoDeEscala.dorico.intervalos,
         nombresOriginales: [.init("काफ़ी", .hindi)],
-        categoria: .thaat, afinaciones: [.init(.sruti, pasos: [0, 3, 5, 9, 13, 16, 18])])
+        categoria: .thaat, vadi: .quintaJusta, samvadi: .segundaMayor,
+        afinaciones: [.init(.sruti, pasos: [0, 3, 5, 9, 13, 16, 18])])
     public static let asavari = TipoDeEscala(
         nombre: "Āsāvarī",
         intervalos: [
@@ -42,7 +44,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         nombresOriginales: [.init("आसावरी", .hindi)],
-        categoria: .thaat, afinaciones: [.init(.sruti, pasos: [0, 3, 5, 9, 13, 14, 18])])
+        categoria: .thaat, vadi: .sextaMenor, samvadi: .terceraMenor,
+        afinaciones: [.init(.sruti, pasos: [0, 3, 5, 9, 13, 14, 18])])
     public static let bhairavi = TipoDeEscala(
         nombre: "Bhairavī",
         intervalos: [
@@ -58,14 +61,16 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         nombresOriginales: [.init("भैरव", .hindi)],
-        categoria: .thaat, afinaciones: [.init(.sruti, pasos: [0, 1, 7, 9, 13, 14, 20])])
+        categoria: .thaat, vadi: .sextaMenor, samvadi: .segundaMenor,
+        afinaciones: [.init(.sruti, pasos: [0, 1, 7, 9, 13, 14, 20])])
     public static let marva = TipoDeEscala(
         nombre: "Mārvā",
         intervalos: [
             .unisono, .segundaMenor, .terceraMayor, .cuartaAumentada,
             .quintaJusta, .sextaMayor, .septimaMayor,
         ], variantes: ["Marwa"], nombresOriginales: [.init("मारवा", .hindi)],
-        categoria: .thaat, afinaciones: [.init(.sruti, pasos: [0, 2, 7, 11, 13, 16, 20])])
+        categoria: .thaat, vadi: .segundaMenor, samvadi: .sextaMayor,
+        afinaciones: [.init(.sruti, pasos: [0, 2, 7, 11, 13, 16, 20])])
     public static let purvi = TipoDeEscala(
         nombre: "Pūrvī",
         intervalos: [
@@ -80,7 +85,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         nombresOriginales: [.init("तोडी", .hindi)],
-        categoria: .thaat, afinaciones: [.init(.sruti, pasos: [0, 1, 5, 11, 13, 14, 21])])
+        categoria: .thaat, vadi: .sextaMenor, samvadi: .terceraMenor,
+        afinaciones: [.init(.sruti, pasos: [0, 1, 5, 11, 13, 14, 21])])
 
     /// Los diez thāṭ de Bhatkhande.
     package static let thaats: [TipoDeEscala] = [
@@ -102,12 +108,14 @@ extension TipoDeEscala {
     public static let malkauns = TipoDeEscala(
         nombre: "Mālkauns", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .sextaMenor, .septimaMenor],
         variantes: ["Malkosh"], nombresOriginales: [.init("मालकौंस", .hindi)],
-        categoria: .raga, madre: .bhairavi, afinaciones: [.init(.sruti, pasos: [0, 5, 9, 14, 18])])
+        categoria: .raga, madre: .bhairavi, vadi: .cuartaJusta, samvadi: .unisono,
+        afinaciones: [.init(.sruti, pasos: [0, 5, 9, 14, 18])])
     /// Durgā (Sa Re ma Pa Dha).
     public static let durga = TipoDeEscala(
         nombre: "Durgā", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .sextaMayor],
         nombresOriginales: [.init("दुर्गा", .hindi)],
-        categoria: .raga, madre: .bilaval, afinaciones: [.init(.sruti, pasos: [0, 3, 9, 13, 16])])
+        categoria: .raga, madre: .bilaval, vadi: .cuartaJusta, samvadi: .unisono,
+        afinaciones: [.init(.sruti, pasos: [0, 3, 9, 13, 16])])
     /// Yaman: el thāṭ Kalyāṇ entero, con la 4ª aumentada.
     public static let yaman = TipoDeEscala(
         nombre: "Yaman",
@@ -116,7 +124,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         alias: ["Yaman Kalyāṇ"], variantes: ["Iman"], nombresOriginales: [.init("यमन", .hindi)],
-        categoria: .raga, madre: .kalyan, afinaciones: [.init(.sruti, pasos: [0, 3, 7, 11, 13, 16, 20])])
+        categoria: .raga, madre: .kalyan, vadi: .terceraMayor, samvadi: .septimaMayor,
+        afinaciones: [.init(.sruti, pasos: [0, 3, 7, 11, 13, 16, 20])])
     /// Bāgeśrī: sube sin Re ni Pa y baja sin Pa.
     public static let bagesri = TipoDeEscala(
         nombre: "Bāgeśrī",
@@ -124,6 +133,7 @@ extension TipoDeEscala {
         intervalosDescendentes: [.unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .sextaMayor, .septimaMenor],
         variantes: ["Bageshri", "Bageshree"], nombresOriginales: [.init("बागेश्री", .hindi)],
         categoria: .raga, madre: .kafi,
+        vadi: .cuartaJusta, samvadi: .unisono,
         afinaciones: [.init(.sruti, pasos: [0, 5, 9, 16, 18], pasosDescendentes: [0, 3, 5, 9, 16, 18])])
     /// Śivarañjanī (Sa Re ga Pa Dha).
     public static let sivaranjani = TipoDeEscala(
@@ -134,7 +144,8 @@ extension TipoDeEscala {
     public static let kalavati = TipoDeEscala(
         nombre: "Kalāvatī", intervalos: [.unisono, .terceraMayor, .quintaJusta, .sextaMayor, .septimaMenor],
         alias: ["Valaji"], nombresOriginales: [.init("कलावती", .hindi)],
-        categoria: .raga, madre: .khamaj, afinaciones: [.init(.sruti, pasos: [0, 7, 13, 16, 18])])
+        categoria: .raga, madre: .khamaj, vadi: .quintaJusta, samvadi: .unisono,
+        afinaciones: [.init(.sruti, pasos: [0, 7, 13, 16, 18])])
     /// Candrakauns (Sa ga ma dha Ni): el Mālkauns con Ni natural.
     public static let candrakauns = TipoDeEscala(
         nombre: "Candrakauns", intervalos: [.unisono, .terceraMenor, .cuartaJusta, .sextaMenor, .septimaMayor],
@@ -144,7 +155,8 @@ extension TipoDeEscala {
     public static let megh = TipoDeEscala(
         nombre: "Megh", intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
         alias: ["Megh Malhar"], nombresOriginales: [.init("मेघ", .hindi)],
-        categoria: .raga, madre: .kafi, afinaciones: [.init(.sruti, pasos: [0, 3, 9, 13, 18])])
+        categoria: .raga, madre: .kafi, vadi: .unisono, samvadi: .quintaJusta,
+        afinaciones: [.init(.sruti, pasos: [0, 3, 9, 13, 18])])
     /// Deś: sube desde el Ni natural de abajo sin Ga ni Dha (Ni Sa Re ma Pa Ni Ṡa) y baja en zigzag con el ni komal,
     /// Ṡa ni Dha Pa Dha ma Ga Re Pa ma Ga Re Ga Ni Sa, hasta el Ni natural de abajo. Bhatkhande lo pone en Khamāj, que
     /// solo tiene el komal: el Ni natural es una nota externa (`notasExternas`), y está en las dos direcciones.
@@ -159,6 +171,7 @@ extension TipoDeEscala {
         recorridoDescendente: [9, 7, 6, 5, 6, 4, 3, 2, 5, 4, 3, 2, 3, 0, 1],
         nombresOriginales: [.init("देश", .hindi)],
         categoria: .raga, madre: .khamaj, notasExternas: [.septimaMayor],
+        vadi: .segundaMayor, samvadi: .quintaJusta,
         afinaciones: [.init(.sruti, pasos: [0, 3, 9, 13, 20], pasosDescendentes: [0, 3, 7, 9, 13, 16, 18, 20])])
     /// Lalit (Sa re Ga ma Ma dha Ni, sin Pa): los dos Ma seguidos, el natural y el tīvra (Do Re♭ Mi Fa Fa♯ La♭ Si).
     public static let lalit = TipoDeEscala(
@@ -177,6 +190,7 @@ extension TipoDeEscala {
         ],
         variantes: ["Bhimpalas", "Bheempalasi"], nombresOriginales: [.init("भीमपलासी", .hindi)],
         categoria: .raga, madre: .kafi,
+        vadi: .cuartaJusta, samvadi: .unisono,
         afinaciones: [.init(.sruti, pasos: [0, 5, 9, 13, 18], pasosDescendentes: [0, 3, 5, 9, 13, 16, 18])])
     /// Bihāg (thāṭ Bilāval): sube desde el Ni de abajo sin Re ni Dha (Ni Sa Ga ma Pa Ni Ṡa) y baja en zigzag con
     /// todas, Ṡa Ni Dha Pa Ma Pa Ga ma Ga Re Sa. El Ma tīvra solo sale ahí, de paso, y no es de Bilāval: es una nota
@@ -193,6 +207,7 @@ extension TipoDeEscala {
         recorridoDescendente: [9, 8, 7, 6, 5, 6, 3, 4, 3, 2, 1],
         nombresOriginales: [.init("बिहाग", .hindi)],
         categoria: .raga, madre: .bilaval, notasExternas: [.cuartaAumentada],
+        vadi: .terceraMayor, samvadi: .septimaMayor,
         afinaciones: [.init(.sruti, pasos: [0, 7, 9, 13, 20], pasosDescendentes: [0, 3, 7, 9, 11, 13, 16, 20])])
     /// Darbārī Kānaḍa (thāṭ Āsāvarī: Sa Re ga ma Pa dha ni): sube recto, la menor natural, como Āsāvarī, y baja en
     /// zigzag, Ṡa dha ni Pa ma Pa ga ma Re Sa, como la carnática.
@@ -205,7 +220,8 @@ extension TipoDeEscala {
         alias: ["Darbari"], variantes: ["Darbārī Kānaṛā", "Darbari Kanhra"],
         recorridoDescendente: [8, 6, 7, 5, 4, 5, 3, 4, 2, 1],
         nombresOriginales: [.init("दरबारी कान्हड़ा", .hindi)],
-        categoria: .raga, madre: .asavari, afinaciones: [.init(.sruti, pasos: [0, 3, 5, 9, 13, 14, 18])])
+        categoria: .raga, madre: .asavari, vadi: .segundaMayor, samvadi: .quintaJusta,
+        afinaciones: [.init(.sruti, pasos: [0, 3, 5, 9, 13, 14, 18])])
     /// Kedār (thāṭ Kalyāṇ): sube en zigzag Sa ma Ga Pa Dha Ni Ṡa, sin Re, y baja Ṡa Ni Dha Pa Ma Pa ma Re Sa, sin Ga,
     /// con los dos Ma. El tīvra es el de Kalyāṇ; el śuddha, que es el que más suena (su vādī), es una nota externa
     /// (`notasExternas`). Lleva los śruti de Kalyāṇ y el ma de Bilāval (4/3).
@@ -218,6 +234,7 @@ extension TipoDeEscala {
         variantes: ["Kedara"], recorrido: [1, 3, 2, 4, 5, 6, 7], recorridoDescendente: [8, 7, 6, 5, 4, 5, 3, 2, 1],
         nombresOriginales: [.init("केदार", .hindi)],
         categoria: .raga, madre: .kalyan, notasExternas: [.cuartaJusta],
+        vadi: .cuartaJusta, samvadi: .unisono,
         afinaciones: [.init(.sruti, pasos: [0, 7, 9, 13, 16, 20], pasosDescendentes: [0, 3, 9, 11, 13, 16, 20])])
     /// Pūriyā Dhanāśrī (thāṭ Pūrvī: Sa re Ga Ma Pa dha Ni, Do Re♭ Mi Fa♯ Sol La♭ Si).
     public static let puriyaDhanasri = TipoDeEscala(
@@ -227,7 +244,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         variantes: ["Puriya Dhanashri", "Puriya Dhanashree"], nombresOriginales: [.init("पूरिया धनाश्री", .hindi)],
-        categoria: .raga, madre: .purvi, afinaciones: [.init(.sruti, pasos: [0, 2, 7, 11, 13, 15, 20])])
+        categoria: .raga, madre: .purvi, vadi: .quintaJusta, samvadi: .segundaMenor,
+        afinaciones: [.init(.sruti, pasos: [0, 2, 7, 11, 13, 15, 20])])
 
     // Cuatro más, con el āroh y el avaroh de la Wikipedia en inglés (noviembre de 2026), en su forma recta: dos con
     // ga komal, Ma tivra y Pa (Madhuvantī, con Re y Dha śuddha al bajar; Multānī, de Toḍī, con re y dha komal),
@@ -252,13 +270,15 @@ extension TipoDeEscala {
         ],
         nombresOriginales: [.init("मुलतानी", .hindi)],
         categoria: .raga, madre: .todi,
+        vadi: .quintaJusta, samvadi: .unisono,
         afinaciones: [.init(.sruti, pasos: [0, 5, 11, 13, 21], pasosDescendentes: [0, 1, 5, 11, 13, 14, 21])])
     /// Hindol (Sa Ga Ma Dha Ni, con Ma tivra), en su forma recta; no es el Hindolam carnático, que es Mālkauns.
     public static let hindol = TipoDeEscala(
         nombre: "Hindol",
         intervalos: [.unisono, .terceraMayor, .cuartaAumentada, .sextaMayor, .septimaMayor],
         nombresOriginales: [.init("हिंडोल", .hindi)],
-        categoria: .raga, madre: .kalyan, afinaciones: [.init(.sruti, pasos: [0, 7, 11, 16, 20])])
+        categoria: .raga, madre: .kalyan, vadi: .sextaMayor, samvadi: .terceraMayor,
+        afinaciones: [.init(.sruti, pasos: [0, 7, 11, 16, 20])])
     /// Sohinī: sube Sa Ga Ma Dha Ni y baja Sa Ni Dha Ma Ga re, en su forma recta.
     public static let sohini = TipoDeEscala(
         nombre: "Sohinī",
@@ -266,6 +286,7 @@ extension TipoDeEscala {
         intervalosDescendentes: [.unisono, .segundaMenor, .terceraMayor, .cuartaAumentada, .sextaMayor, .septimaMayor],
         variantes: ["Sohni"], nombresOriginales: [.init("सोहनी", .hindi)],
         categoria: .raga, madre: .marva,
+        vadi: .sextaMayor, samvadi: .terceraMayor,
         afinaciones: [.init(.sruti, pasos: [0, 7, 11, 16, 20], pasosDescendentes: [0, 2, 7, 11, 16, 20])])
 
     // Ocho más, también de la Wikipedia en inglés (noviembre de 2026) y en su forma recta. Van sin `madre` los que
@@ -305,6 +326,7 @@ extension TipoDeEscala {
         intervalosDescendentes: [.unisono, .segundaMayor, .terceraMayor, .cuartaJusta, .sextaMayor, .septimaMenor],
         variantes: ["Rageshri", "Rageshree"], nombresOriginales: [.init("रागेश्री", .hindi)],
         categoria: .raga, madre: .khamaj,
+        vadi: .terceraMayor, samvadi: .septimaMenor,
         afinaciones: [.init(.sruti, pasos: [0, 7, 9, 16, 18], pasosDescendentes: [0, 3, 7, 9, 16, 18])])
     /// Vṛndāvanī Sāraṅg: sube con Ni (Sa Re ma Pa Ni) y baja con ni komal (Sa ni Pa ma Re), sin Ga ni Dha. Su artículo
     /// la pone en Kāfī, que no tiene Ni.
@@ -313,7 +335,7 @@ extension TipoDeEscala {
         intervalos: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMayor],
         intervalosDescendentes: [.unisono, .segundaMayor, .cuartaJusta, .quintaJusta, .septimaMenor],
         variantes: ["Brindabani Sarang", "Vrindavani Sarang"], nombresOriginales: [.init("वृन्दावनी सारंग", .hindi)],
-        categoria: .raga)
+        categoria: .raga, vadi: .segundaMayor, samvadi: .quintaJusta)
     /// Jog: sube Sa Ga ma Pa ni y baja Sa ni Pa ma Ga ma ga, con las dos Ga; en la forma recta, Sa ni Pa ma Ga ga.
     public static let jog = TipoDeEscala(
         nombre: "Jog",
@@ -334,7 +356,8 @@ extension TipoDeEscala {
         nombre: "Pūriyā",
         intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaAumentada, .sextaMayor, .septimaMayor],
         nombresOriginales: [.init("पूरिया", .hindi)],
-        categoria: .raga, madre: .marva, afinaciones: [.init(.sruti, pasos: [0, 2, 7, 11, 16, 20])])
+        categoria: .raga, madre: .marva, vadi: .terceraMayor, samvadi: .septimaMayor,
+        afinaciones: [.init(.sruti, pasos: [0, 2, 7, 11, 16, 20])])
 
     // Ocho más, de la misma fuente. Van sin `madre` Paṭdīp (Kāfī con Ni y Dha śuddha), Kirvāṇī (que no cabe en ningún
     // thāṭ), Bairāgī (Bhairav con ni komal) y Naṭ Bhairav (Bhairav con Re śuddha).
@@ -348,6 +371,7 @@ extension TipoDeEscala {
         ],
         variantes: ["Vasant"], nombresOriginales: [.init("बसंत", .hindi)],
         categoria: .raga, madre: .purvi,
+        vadi: .unisono, samvadi: .quintaJusta,
         afinaciones: [.init(.sruti, pasos: [0, 7, 11, 15, 20], pasosDescendentes: [0, 2, 7, 11, 13, 15, 20])])
     /// Śrī (thāṭ Pūrvī): sube Sa re Ma Pa Ni y baja con todas.
     public static let shri = TipoDeEscala(
@@ -358,6 +382,7 @@ extension TipoDeEscala {
         ],
         variantes: ["Shree"], nombresOriginales: [.init("श्री", .hindi)],
         categoria: .raga, madre: .purvi,
+        vadi: .segundaMenor, samvadi: .quintaJusta,
         afinaciones: [.init(.sruti, pasos: [0, 2, 11, 13, 20], pasosDescendentes: [0, 2, 7, 11, 13, 15, 20])])
     /// Paṭdīp: Bhīmpalāsī con Ni śuddha; sube Sa ga ma Pa Ni y baja con Re y Dha śuddha.
     public static let patdip = TipoDeEscala(
@@ -367,7 +392,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         variantes: ["Patdeep"], nombresOriginales: [.init("पटदीप", .hindi)],
-        categoria: .raga)
+        categoria: .raga, vadi: .quintaJusta, samvadi: .unisono)
     /// Kirvāṇī: Sa Re ga ma Pa dha Ni, como el mēḷa Kīravāṇī.
     public static let kirvani = TipoDeEscala(
         nombre: "Kirvāṇī",
@@ -381,7 +406,7 @@ extension TipoDeEscala {
         nombre: "Bairāgī",
         intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .septimaMenor],
         variantes: ["Bairagi Bhairav"], nombresOriginales: [.init("बैरागी", .hindi)],
-        categoria: .raga)
+        categoria: .raga, vadi: .cuartaJusta, samvadi: .unisono)
     /// Naṭ Bhairav: Sa Re Ga ma Pa dha Ni, la mayor armónica.
     public static let natBhairav = TipoDeEscala(
         nombre: "Naṭ Bhairav",
@@ -399,7 +424,8 @@ extension TipoDeEscala {
     public static let gunakri = TipoDeEscala(
         nombre: "Guṇakrī", intervalos: [.unisono, .segundaMenor, .cuartaJusta, .quintaJusta, .sextaMenor],
         variantes: ["Gunkali"], nombresOriginales: [.init("गुणक्री", .hindi)],
-        categoria: .raga, madre: .bhairav, afinaciones: [.init(.sruti, pasos: [0, 1, 9, 13, 14])])
+        categoria: .raga, madre: .bhairav, vadi: .sextaMenor, samvadi: .segundaMenor,
+        afinaciones: [.init(.sruti, pasos: [0, 1, 9, 13, 14])])
 
     /// Rāgas indostánicos incluidos.
     package static let ragasIndostanicos: [TipoDeEscala] = [

@@ -8,7 +8,8 @@ import Elementos
 // 2026), y solo donde los dos no se contradicen: faltan Ahir Bhairav y Naṭ Bhairav, que dan dos parejas distintas, y
 // Bhairavī, que da «Ma/Pa». Mārvā lleva la del texto (re y Dha), aunque recuerda que Patwardhan prefiere Dha y Ga. Los
 // que no tienen artículo, o no la dan (Bhūpālī, Śivarañjanī, Lalit, Madhuvantī…), van sin ella. Los janya carnáticos
-// no tienen vādī en su teoría.
+// no tienen vādī en su teoría. Se escriben en la declaración de cada rāga (`vadi: .terceraMayor, samvadi:
+// .septimaMayor`), en TipoDeEscala+India+Indostanica.swift.
 //
 // El ghammāz no se escribe: es la nota en que empieza el segundo jins o çeşni de la escala (`ajnas`), como lo definen
 // Maqam World y la TDV İslâm Ansiklopedisi, y el qarār es la tónica.
@@ -39,7 +40,10 @@ extension TipoDeEscala {
     ///     TipoDeEscala.yaman.funciones.map(\.funcion.nombre)   // ["vādī", "saṃvādī"]
     ///     TipoDeEscala.yaman.funciones.map(\.intervalo)        // [.terceraMayor, .septimaMayor]
     public var funciones: [NotaConFuncion] {
-        if let declaradas = TipoDeEscala.funcionesDeLosRagas[identidad] { return declaradas }
+        let datos = datosDelCatalogo
+        if let vadi = datos.vadi, let samvadi = datos.samvadi {
+            return [NotaConFuncion(.vadi, vadi), NotaConFuncion(.samvadi, samvadi)]
+        }
         let fragmentos = ajnas
         guard fragmentos.count >= 2, let fuente = fuenteDeLosAjnas else { return [] }
         let intervalos = self.intervalos
@@ -61,46 +65,4 @@ extension TipoDeEscala {
     public func funciones(de intervalo: Intervalo) -> [FuncionDeNota] {
         funciones.filter { $0.intervalo == intervalo }.map(\.funcion)
     }
-
-    /// Rāga → su vādī y su saṃvādī, de la Wikipedia en inglés.
-    private static let funcionesDeLosRagas: [IdentidadDeEscala: [NotaConFuncion]] = {
-        let parejas: [(TipoDeEscala, Intervalo, Intervalo)] = [
-            // Los que dan nombre a un thāṭ.
-            (.bilaval, .sextaMayor, .terceraMayor),
-            (.kafi, .quintaJusta, .segundaMayor),
-            (.asavari, .sextaMenor, .terceraMenor),
-            (.bhairav, .sextaMenor, .segundaMenor),
-            (.marva, .segundaMenor, .sextaMayor),
-            (.todi, .sextaMenor, .terceraMenor),
-            // Los demás.
-            (.yaman, .terceraMayor, .septimaMayor),
-            (.malkauns, .cuartaJusta, .unisono),
-            (.durga, .cuartaJusta, .unisono),
-            (.bagesri, .cuartaJusta, .unisono),
-            (.bihag, .terceraMayor, .septimaMayor),
-            (.des, .segundaMayor, .quintaJusta),
-            (.darbariKanada, .segundaMayor, .quintaJusta),
-            (.kalavati, .quintaJusta, .unisono),
-            (.megh, .unisono, .quintaJusta),
-            (.bhimpalasi, .cuartaJusta, .unisono),
-            (.puriyaDhanasri, .quintaJusta, .segundaMenor),
-            (.multani, .quintaJusta, .unisono),
-            (.hindol, .sextaMayor, .terceraMayor),
-            (.sohini, .sextaMayor, .terceraMayor),
-            (.vrindavaniSarang, .segundaMayor, .quintaJusta),
-            (.puriya, .terceraMayor, .septimaMayor),
-            (.basant, .unisono, .quintaJusta),
-            (.shri, .segundaMenor, .quintaJusta),
-            (.patdip, .quintaJusta, .unisono),
-            (.bairagi, .cuartaJusta, .unisono),
-            (.gunakri, .sextaMenor, .segundaMenor),
-            (.rageshri, .terceraMayor, .septimaMenor),
-            (.kedar, .cuartaJusta, .unisono),
-        ]
-        var tabla: [IdentidadDeEscala: [NotaConFuncion]] = [:]
-        for (raga, vadi, samvadi) in parejas {
-            tabla[raga.identidad] = [NotaConFuncion(.vadi, vadi), NotaConFuncion(.samvadi, samvadi)]
-        }
-        return tabla
-    }()
 }

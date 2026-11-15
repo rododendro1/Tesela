@@ -31,6 +31,7 @@ extension TipoDeEscala {
         ],
         alias: ["makam Rast"],
         categoria: .makam,
+        ajnas: [.init(.rastBeslisi, en: 1), .init(.rastDortlusu, en: 5)],
         afinaciones: [
             .init(.comas53, pasos: [0, 9, 17, 22, 31, 40, 48], pasosDescendentes: [0, 9, 17, 22, 31, 40, 44])
         ], documentada: .cantemir1700)
@@ -44,6 +45,7 @@ extension TipoDeEscala {
         ],
         alias: ["makam Hicaz"],
         categoria: .makam,
+        ajnas: [.init(.hicazDortlusu, en: 1), .init(.rastBeslisi, en: 4)],
         afinaciones: [
             .init(.comas53, pasos: [0, 5, 17, 22, 31, 39, 44], pasosDescendentes: [0, 5, 17, 22, 30, 35, 44])
         ], documentada: .cantemir1700)
@@ -55,7 +57,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         alias: ["makam Hicazkâr"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 36, 48])])
+        categoria: .makam, ajnas: [.init(.hicazBeslisi, en: 1), .init(.hicazDortlusu, en: 5)],
+        afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 36, 48])])
     /// Nihâvend (Sol La Si♭ Do Re Mi♭ Fa♯): un pentacordo Bûselik y, en la quinta, un tetracordo Hicaz al
     /// subir y uno Kürdî al bajar: la menor armónica y la natural.
     public static let nihavendMakami = TipoDeEscala(
@@ -65,7 +68,7 @@ extension TipoDeEscala {
             .unisono, .segundaMayor, .terceraMenor, .cuartaJusta, .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Nihâvend"],
-        categoria: .makam)
+        categoria: .makam, ajnas: [.init(.buselikBeslisi, en: 1), .init(.hicazDortlusu, en: 5)])
     /// Kürdî (La Si♭ Do Re Mi Fa Sol): el frigio.
     public static let kurdiMakami = TipoDeEscala(
         nombre: "Kürdî makamı",
@@ -74,7 +77,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Kürdî"],
-        categoria: .makam, documentada: .cantemir1700)
+        categoria: .makam, ajnas: [.init(.kurdiDortlusu, en: 1), .init(.buselikBeslisi, en: 4)],
+        documentada: .cantemir1700)
     /// Bûselik (La Si Do Re Mi Fa Sol): un pentacordo Bûselik y un tetracordo Kürdî, la menor natural.
     public static let buselikMakami = TipoDeEscala(
         nombre: "Bûselik makamı",
@@ -83,7 +87,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Bûselik"],
-        categoria: .makam, documentada: .cantemir1700)
+        categoria: .makam, ajnas: [.init(.buselikBeslisi, en: 1), .init(.kurdiDortlusu, en: 5)],
+        documentada: .cantemir1700)
     /// Çârgâh (Do Re Mi Fa Sol La Si): la mayor.
     public static let cargahMakami = TipoDeEscala(
         nombre: "Çârgâh makamı",
@@ -92,7 +97,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         alias: ["makam Çârgâh"],
-        categoria: .makam, documentada: .cantemir1700)
+        categoria: .makam, ajnas: [.init(.cargahBeslisi, en: 1), .init(.cargahDortlusu, en: 5)],
+        documentada: .cantemir1700)
     /// Uşşak (La Si Do Re Mi Fa Sol, con Si una koma y media bajo: la segâh): un tetracordo Uşşak y un pentacordo
     /// Bûselik en la cuarta. Aproximado: la menor natural; su segâh solo suena en la versión microtonal.
     public static let ussakMakami = TipoDeEscala(
@@ -102,7 +108,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Uşşak"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31, 35, 44])], documentada: .cantemir1700
+        categoria: .makam, ajnas: [.init(.ussakDortlusu, en: 1), .init(.buselikBeslisi, en: 4)],
+        afinaciones: [.init(.comas53, pasos: [0, 8, 13, 22, 31, 35, 44])], documentada: .cantemir1700
     )
     /// Bayâtî: las notas de Uşşak (la TDV İslâm Ansiklopedisi dice que su dizi es el mismo), con el güçlü en nevâ y un
     /// recorrido que va casi siempre a Karcığar; acaba con un tetracordo Uşşak en la dügâh.
@@ -124,6 +131,8 @@ extension TipoDeEscala {
         ],
         alias: ["makam Hüseynî"],
         categoria: .makam,
+        // Abajo, el Hüseynî beşlisi, que no está en el catálogo.
+        ajnas: [.init(.ussakDortlusu, en: 5)],
         afinaciones: [
             .init(.comas53, pasos: [0, 8, 13, 22, 31, 39, 44], pasosDescendentes: [0, 8, 13, 22, 31, 35, 44])
         ], documentada: .cantemir1700)
@@ -160,7 +169,10 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMenor,
         ],
         alias: ["makam Saba"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 8, 13, 18, 31, 35, 44])], documentada: .cantemir1700
+        categoria: .makam,
+        // Abajo, el Saba dörtlüsü, que no está en el catálogo.
+        ajnas: [.init(.hicazBeslisi, en: 3)], afinaciones: [.init(.comas53, pasos: [0, 8, 13, 18, 31, 35, 44])],
+        documentada: .cantemir1700
     )
     /// Karcığar (La Si Do Re Mi♭ Fa♯ Sol): un tetracordo Uşşak y un pentacordo Hicaz en la cuarta, como el dromos
     /// Kartzigár.
@@ -198,7 +210,9 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         alias: ["makam Nev'eser"], variantes: ["Neveser makamı"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 9, 13, 26, 31, 36, 48])])
+        categoria: .makam,
+        // Abajo, el Nikriz beşlisi, que no está en el catálogo.
+        ajnas: [.init(.hicazDortlusu, en: 5)], afinaciones: [.init(.comas53, pasos: [0, 9, 13, 26, 31, 36, 48])])
 
     /// Mâhur (Sol La Si Do Re Mi Fa♯): un pentacordo y un tetracordo Çârgâh, la mayor pitagórica sobre la rast.
     public static let mahurMakami = TipoDeEscala(
@@ -208,7 +222,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMayor,
         ],
         alias: ["makam Mâhur"],
-        categoria: .makam, documentada: .cantemir1700)
+        categoria: .makam, ajnas: [.init(.cargahBeslisi, en: 1), .init(.cargahDortlusu, en: 5)],
+        documentada: .cantemir1700)
     /// Acemaşiran (Fa Sol La Si♭ Do Re Mi): Çârgâh llevado a la acemaşiran, con el Si♭ (kürdî) en la armadura.
     public static let acemasiranMakami = TipoDeEscala(
         nombre: "Acemaşiran makamı",
@@ -231,6 +246,7 @@ extension TipoDeEscala {
         // Sultânîyegâh, Bûselik en la yegâh: el tetracordo Hicaz de la dügâh (Si♭ y Do♯ con bakiye) al subir y el
         // Kürdî al bajar. Şedaraban y Zirgüleli Hicaz, con las perdes de Hicazkâr; Hümâyun y Uzzâl, con el
         // tetracordo Hicaz de Hicaz y su pentacordo Bûselik o su tetracordo Uşşak (eviç, Fa♯ una koma bajo).
+        ajnas: [.init(.buselikBeslisi, en: 1), .init(.hicazDortlusu, en: 5)],
         afinaciones: [
             .init(.comas53, pasos: [0, 9, 13, 22, 31, 36, 48], pasosDescendentes: [0, 9, 13, 22, 31, 35, 44])
         ])
@@ -264,7 +280,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMayor, .septimaMenor,
         ],
         alias: ["makam Uzzâl"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 39, 44])], documentada: .cantemir1700
+        categoria: .makam, ajnas: [.init(.hicazBeslisi, en: 1), .init(.ussakDortlusu, en: 5)],
+        afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 39, 44])], documentada: .cantemir1700
     )
     /// Zirgüleli Hicaz (La Si♭ Do♯ Re Mi Fa Sol♯): un pentacordo Hicaz y un tetracordo Hicaz en la hüseynî, la doble
     /// armónica.
@@ -275,7 +292,8 @@ extension TipoDeEscala {
             .quintaJusta, .sextaMenor, .septimaMayor,
         ],
         alias: ["makam Zirgüleli Hicaz"],
-        categoria: .makam, afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 36, 48])])
+        categoria: .makam, ajnas: [.init(.hicazBeslisi, en: 1), .init(.hicazDortlusu, en: 5)],
+        afinaciones: [.init(.comas53, pasos: [0, 5, 17, 22, 31, 36, 48])])
 
     /// Kürdîlihicazkâr (Sol La♭ Si♭ Do Re Mi♭ Fa): el Kürdî llevado a la rast, inicio y reposo de un makam que arriba
     /// toma prestadas las regiones de Hicazkâr, Arazbar o de un Bûselik en la çârgâh. Su dizi de la rast es el frigio.
