@@ -58,9 +58,9 @@ extension Tonalidad {
     ///     Tonalidad(.do).modulaciones(hasta: Tonalidad(Nota.la.bemol))[0].tecnica  // .disminuidaEnarmonica
     public func modulaciones(hasta destino: Tonalidad) -> [PlanDeModulacion] {
         guard destino != self else { return [] }
-        let partida = [acorde(grado: 1), acorde(grado: 4), acorde(grado: 5, cuatriada: true), acorde(grado: 1)]
-        let tonicaNueva = destino.acorde(grado: 1)
-        let dominanteNueva = destino.acorde(grado: 5, cuatriada: true)
+        let partida = [acordeDelGrado(1), acordeDelGrado(4), acordeDelGrado(5, cuatriada: true), acordeDelGrado(1)]
+        let tonicaNueva = destino.acordeDelGrado(1)
+        let dominanteNueva = destino.acordeDelGrado(5, cuatriada: true)
         var planes: [PlanDeModulacion] = []
 
         func plan(_ tecnica: PlanDeModulacion.Tecnica, _ puente: (Acorde, Acorde)?, _ llegada: [Acorde])
@@ -79,9 +79,9 @@ extension Tonalidad {
         }
 
         // 1. Acordes comunes, por el grado que tienen en la nueva.
-        let propios = armonizar()
+        let propios = (1...7).map { acordeDelGrado($0) }
         for grado in [2, 4, 6, 3] {
-            let comun = destino.acorde(grado: grado)
+            let comun = destino.acordeDelGrado(grado)
             let calidad = comun.tipo.estructura.calidadDeTriada
             guard calidad == .mayor || calidad == .menor, comun != propios[0],
                 propios.contains(comun), comun != tonicaNueva
@@ -94,7 +94,7 @@ extension Tonalidad {
         let clases = Set(sensibleNueva.notas.map(\.claseDeAltura))
         let cuartaYSexta = Acorde(tonicaNueva.fundamental, tonicaNueva.tipo, inversion: 2)
         for grado in 1...6 {
-            let objetivo = acorde(grado: grado)
+            let objetivo = acordeDelGrado(grado)
             let calidad = objetivo.tipo.estructura.calidadDeTriada
             guard calidad == .mayor || calidad == .menor else { continue }
             let disminuida = Acorde(objetivo.fundamental + .septimaMayor, .disminuidoSeptima)
@@ -106,7 +106,7 @@ extension Tonalidad {
         }
 
         // 3. Directa.
-        let segundo = destino.acorde(grado: 2, cuatriada: true)
+        let segundo = destino.acordeDelGrado(2, cuatriada: true)
         planes.append(plan(.directa, nil, [segundo, dominanteNueva, tonicaNueva]))
         return planes
     }

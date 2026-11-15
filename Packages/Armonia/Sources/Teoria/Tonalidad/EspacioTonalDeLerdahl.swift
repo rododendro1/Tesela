@@ -52,7 +52,7 @@ extension Tonalidad {
     ///     Tonalidad(.do).tensionDeLerdahl([Acorde("Do"), Acorde("Fa"), Acorde("Sol"), Acorde("Do")])
     ///         .map(\.secuencial)   // [0, 5, 8, 5]
     public func tensionDeLerdahl(_ acordes: [Acorde]) -> [TensionDeLerdahl] {
-        let tonica = acorde(grado: 1)
+        let tonica = acordeDelGrado(1)
         return acordes.indices.map { n in
             TensionDeLerdahl(
                 secuencial: n == 0 ? 0 : distanciaDeLerdahl(de: acordes[n - 1], a: acordes[n]),

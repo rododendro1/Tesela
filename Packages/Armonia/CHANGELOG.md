@@ -2,7 +2,35 @@
 
 ## Sin publicar
 
+### Novedades
+
+- `CifradoRomano`: el cifrado romano por sus partes, con el numeral (un grado con su alteración, el sustituto
+  tritonal o una sexta aumentada), la calidad, la inversión y sus cifras y el grado de destino. Su texto es el de
+  siempre («V65/V», «♭VI», «Ger+6»). `AcordeAnalizado.romano` y `AnalisisArmonico.romanos` lo dan; `cifrado` y
+  `cifrados` siguen siendo su texto, y el JSON de `AcordeAnalizado` no cambia. `CifradoRomano(leyendo:)` lo lee
+  sin tonalidad, y `Tonalidad.acorde(_:)` da su acorde.
+- `Tonalidad.romano(grado:notas:)` y `romanos(notas:)`, y `Escala.romano(grado:notas:referencia:)` y
+  `romanos(notas:referencia:)`: los cifrados romanos de los grados, por sus partes.
+- `Escala.gradosArmonizados` y `GradoArmonizado`: la cuatríada de cada grado con su número y sus tensiones
+  disponibles, en un tipo `Hashable` en lugar de una tupla.
+
+### Obsoleto
+
+Lo de antes sigue funcionando con un aviso, hasta la 0.6.0:
+
+- `acorde(grado:cuatriada:)`, `armonizar(cuatriadas:)`, `arpegio(grado:cuatriada:…)` y `arpegios(cuatriadas:)`:
+  hay una sola llamada, con el número de notas, `acorde(grado:notas:)` (3 por defecto), `armonizar(notas:)`,
+  `arpegio(grado:notas:…)` y `arpegios(notas:)`.
+- `Tonalidad.cifradoRomano(grado:cuatriada:)`, `cifradosRomanos(cuatriadas:)` y los de `Escala`, que daban texto: en
+  su lugar, `romano(grado:notas:)` y `romanos(notas:)`, y su `description` si hace falta el texto.
+- `Escala.armonizacionConTensiones`, la tupla: en su lugar, `gradosArmonizados`.
+
 ### Cambios
+
+- `Tonalidad.acorde(grado:notas:)` y `armonizar(notas:)` son opcionales, como los de `Escala`: con 5 notas o más,
+  un grado puede no formar un tipo conocido. Antes, `acorde(grado:cuatriada:)` daba una tríada mayor sin avisar si
+  el grado no formaba acorde; en mayor y en menor no pasaba, y las pruebas lo comprueban en las veinticuatro
+  tonalidades.
 
 - `EstadisticasTonalesDeEscala.triadas` y `cuatriadas` son los tipos de `Escala.armonizar(cuatriadas:)` en todas las
   escalas que no son fragmentos, también las que no tienen siete notas (en la pentatónica mayor, Do y Lam), y con

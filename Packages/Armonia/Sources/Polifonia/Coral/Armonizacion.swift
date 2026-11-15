@@ -244,16 +244,16 @@ extension Tonalidad {
         }
         let costes: [Double] = modo == .mayor ? [0, 0.2, 0.9, 0, 0, 0.3, 0.8] : [0, 0.5, 0.6, 0, 0, 0.3, 0.8]
         for grado in 1...7 {
-            let acorde = self.acorde(grado: grado)
+            let acorde = self.acordeDelGrado(grado)
             // vii° (y en menor ii°) en primera inversión.
             let disminuido = acorde.tipo.estructura.calidadDeTriada == .disminuida
             anadir(disminuido ? acorde.cambiarInversion(1) : acorde, costes[grado - 1])
         }
-        anadir(acorde(grado: 5, cuatriada: true), 0.15)
-        if modo == .mayor { anadir(acorde(grado: 2).cambiarInversion(1), 0.25) }
+        anadir(acordeDelGrado(5, cuatriada: true), 0.15)
+        if modo == .mayor { anadir(acordeDelGrado(2).cambiarInversion(1), 0.25) }
         // Dominantes secundarias.
         for destino in modo == .mayor ? [5, 6, 2, 4] : [4, 6] {
-            let raiz = acorde(grado: destino).fundamental + .quintaJusta
+            let raiz = acordeDelGrado(destino).fundamental + .quintaJusta
             anadir(Acorde(raiz, .mayor), destino == 5 ? 0.6 : 0.8, destino)
             anadir(Acorde(raiz, .dominanteSeptima), destino == 5 ? 0.6 : 0.8, destino)
         }
@@ -287,7 +287,7 @@ extension Tonalidad {
             if !(1...2).contains(paso) { coste += 2 }
         }
         if let destino {
-            return coste + (b.grado == destino && b.acorde.fundamental == acorde(grado: destino).fundamental ? 0 : 5)
+            return coste + (b.grado == destino && b.acorde.fundamental == acordeDelGrado(destino).fundamental ? 0 : 5)
         }
         if a.acorde.notas == b.acorde.notas { return coste + (a.acorde == b.acorde ? 0.6 : 0.3) }
         // V7 → V: la séptima se queda sin resolver.
@@ -322,7 +322,7 @@ extension Tonalidad {
             guard let penultimo else { return 0 }
             return Cadencia.esDominante(penultimo) ? 0 : 1
         }
-        let iTieneLaNota = acorde(grado: 1).notas.contains(melodia[melodia.count - 1])
+        let iTieneLaNota = acordeDelGrado(1).notas.contains(melodia[melodia.count - 1])
         if ultimo.grado == 5 && ultimo.categoria == .diatonico && ultimo.acorde.tipo == .mayor {
             return iTieneLaNota ? 2 : 0.5
         }

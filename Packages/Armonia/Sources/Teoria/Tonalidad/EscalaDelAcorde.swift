@@ -139,7 +139,7 @@ extension Tonalidad {
         case .diatonico, .cuartaYSextaCadencial:
             return Self.modos(sobre: raiz, de: madres(de: self))
         case .dominanteSecundaria(let grado), .sensibleSecundaria(let grado):
-            let destino = self.acorde(grado: grado)
+            let destino = self.acordeDelGrado(grado)
             let mayor = Escala(destino.fundamental, .mayor)
             let armonica = Escala(destino.fundamental, .menorArmonica)
             return Self.modos(sobre: raiz, de: destino.tipo.esMenor ? [armonica] : [mayor, armonica])

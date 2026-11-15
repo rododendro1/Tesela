@@ -131,7 +131,7 @@ import Testing
             let grados =
                 [1] + (0..<Int.random(in: 2...6, using: &azar)).map { _ in Int.random(in: 1...7, using: &azar) }
                 + [5, 1]
-            let acordes = grados.map { tonalidad.acorde(grado: $0) }
+            let acordes = try grados.map { try #require(tonalidad.acorde(grado: $0)) }
             let i = Intervalo(pasosDeQuinta: Int.random(in: -3...3, using: &azar), pasosDeOctava: 0)
             let analisis = try #require(AnalisisArmonico.analizar(acordes))
             let transpuesto = try #require(AnalisisArmonico.analizar(acordes.map { $0.transponer(i) }))

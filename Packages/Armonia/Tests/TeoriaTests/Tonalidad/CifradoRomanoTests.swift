@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 
 @testable import Elementos
@@ -131,5 +132,98 @@ import Testing
             let cifrados = texto.split(separator: " ").map(String.init)
             #expect(tonalidad.analizar(acordes).cifrados == cifrados, "\(texto)")
         }
+    }
+
+    // MARK: El cifrado por sus partes
+
+    @Test func elAnalisisDaElCifradoPorSusPartes() {
+        let secundaria = doMayor.analizar(Acorde("Re7/Do"), siguiente: Acorde("Sol")).romano
+        #expect(secundaria.numeral == .grado(5, alteracion: 0, mayuscula: true))
+        #expect(secundaria.calidad == "7")
+        #expect(secundaria.inversion == 3)
+        #expect(secundaria.cifras == "42")
+        #expect(secundaria.destino == CifradoRomano(.grado(5, alteracion: 0, mayuscula: true)))
+        #expect(secundaria.esSecundario)
+        #expect(secundaria.description == "V42/V")
+
+        let prestado = doMayor.analizar(Acorde("La♭")).romano
+        #expect(prestado.numeral == .grado(6, alteracion: -1, mayuscula: true))
+        #expect(prestado.grado == 6)
+        #expect(!prestado.esSecundario)
+        #expect(prestado.description == "♭VI")
+
+        let alemana = doMayor.analizar(Acorde("La♭7"), siguiente: Acorde("Sol")).romano
+        #expect(alemana.numeral == .sextaAumentada(.alemana))
+        #expect(alemana.grado == nil)
+        #expect(alemana.description == "Ger+6")
+
+        let sustituto = doMayor.analizar(Acorde("Mi♭7"), siguiente: Acorde("Rem")).romano
+        #expect(sustituto.numeral == .sustitutoTritonal)
+        #expect(sustituto.destino?.description == "ii")
+        #expect(sustituto.description == "subV7/ii")
+
+        let napolitana = doMayor.analizar(Acorde("Re♭/Fa")).romano
+        #expect(napolitana.description == "♭II6")
+        #expect(napolitana.inversion == 1)
+    }
+
+    @Test func leerElCifradoPorSusPartes() throws {
+        let leido = try CifradoRomano(leyendo: "viiø43/V")
+        #expect(leido.numeral == .grado(7, alteracion: 0, mayuscula: false))
+        #expect(leido.calidad == "ø7")
+        #expect(leido.inversion == 2)
+        #expect(leido.destino?.grado == 5)
+        #expect(leido.description == "viiø43/V")
+        // Las formas cortas se escriben como las escribe el análisis.
+        #expect(try CifradoRomano(leyendo: "N6").description == "♭II6")
+        #expect(try CifradoRomano(leyendo: "V2").description == "V42")
+        #expect(try CifradoRomano(leyendo: "It6").numeral == .sextaAumentada(.italiana))
+        // Los destinos encadenados.
+        let encadenado = try CifradoRomano(leyendo: "V/V/V")
+        #expect(encadenado.destino?.destino?.grado == 5)
+        #expect(encadenado.destino?.destino?.destino == nil)
+        #expect(encadenado.description == "V/V/V")
+        // Lo que no se lee, en su carácter.
+        #expect(throws: ErrorDeLectura.self) { try CifradoRomano(leyendo: "  ") }
+        let error = try #require(
+            #expect(throws: ErrorDeLecturaDeTeoria.self) { try CifradoRomano(leyendo: "V7/X") })
+        #expect(error.posicion == 3)
+        #expect(throws: ErrorDeLecturaDeTeoria.self) { try CifradoRomano(leyendo: "♭subV7") }
+    }
+
+    /// El cifrado del análisis se lee y da su acorde, y se codifica como su texto en la clave de siempre.
+    @Test func elCifradoVuelveASuAcorde() throws {
+        let acordes = try doMayor.acordes(romanos: "I V65/V V7 ♭VI Ger+6 subV7/ii ii vii°7/V")
+        for (acorde, analizado) in zip(acordes, doMayor.analizar(acordes).acordes) {
+            #expect(try doMayor.acorde(analizado.romano) == acorde, "\(analizado.romano)")
+            #expect(try CifradoRomano(leyendo: analizado.cifrado) == analizado.romano, "\(analizado.romano)")
+        }
+        let analizado = doMayor.analizar(Acorde("Re7"), siguiente: Acorde("Sol"))
+        let datos = try JSONEncoder().encode(analizado)
+        let objeto = try #require(try JSONSerialization.jsonObject(with: datos) as? [String: Any])
+        #expect(objeto["cifrado"] as? String == "V7/V")
+        #expect(try JSONDecoder().decode(AcordeAnalizado.self, from: datos) == analizado)
+        #expect(try AnalisisArmonico.analizar(leyendo: "Do Sol7 Do").romanos.map(\.description) == ["I", "V7", "I"])
+    }
+
+    /// Los grados de la tonalidad: la tríada y la cuatríada de cada uno, en las veinticuatro, siempre forman un
+    /// acorde, y su cifrado es el del análisis.
+    @Test func losGradosDeLasVeinticuatroTonalidades() throws {
+        for modo in [Tonalidad.Modo.mayor, .menor] {
+            for tonica in Tonalidad.circuloDeQuintas(modo).map(\.tonica) {
+                let tonalidad = Tonalidad(tonica, modo)
+                for notas in [3, 4] {
+                    for grado in 1...7 {
+                        let acorde = try #require(tonalidad.acorde(grado: grado, notas: notas), "\(tonalidad) \(grado)")
+                        let romano = try #require(tonalidad.romano(grado: grado, notas: notas))
+                        #expect(romano.grado == grado)
+                        #expect(try tonalidad.acorde(romano) == acorde, "\(tonalidad) \(romano)")
+                    }
+                }
+            }
+        }
+        #expect(Tonalidad(.do).acorde(grado: 1, notas: 8) == nil)
+        #expect(Tonalidad(.do).romano(grado: 7, notas: 4)?.description == "viiø7")
+        #expect(Tonalidad(.la, .menor).acorde(grado: 5, notas: 4) == Acorde("Mi7"))
     }
 }

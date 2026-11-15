@@ -473,7 +473,7 @@ da la relación acorde-escala del jazz: las escalas sobre la fundamental que sir
 ```swift
 Arpegio(Acorde("Do7")).alturas(octava: 4).map(\.midi) == [60, 64, 67, 70, 72]       // true
 Arpegio(Acorde("Do"), patron: .alberti).alturas(octava: 3).map(\.midi) == [48, 55, 52, 55]   // true
-Escala("Do mayor").arpegio(grado: 5, cuatriada: true)?.acorde == Acorde("Sol7")      // true
+Escala("Do mayor").arpegio(grado: 5, notas: 4)?.acorde == Acorde("Sol7")           // true
 Escala("Do mayor").arpegios().count == 7                                              // true
 try Arpegio(leyendo: "arpegio Dom7").acorde == Acorde("Dom7")                        // true
 Acorde("Do7").escalasCompatibles().contains(Escala(.do, .mixolidio))                 // true
@@ -565,7 +565,7 @@ así que Do blues da Dom7 en el 1.º grado y no Dosus4, y un grado sin esa 3.ª 
 
 ```swift
 Escala(.do, .mayor).acordesQueCaben(grado: 1).contains(Acorde(.do, .mayorSexta))                        // true
-Escala(.do, .blues).acorde(grado: 1, cuatriada: true) == Acorde("Dom7")                                // true
+Escala(.do, .blues).acorde(grado: 1, notas: 4) == Acorde("Dom7")                                       // true
 Escala(.do, .mayor).tensionesDisponibles(grado: 2).map(\.cifra) == ["9", "11", "13"]                    // true
 Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor)             // true
 ```

@@ -64,10 +64,10 @@ private func acordesDeLosGrados(_ tipos: [TipoDeAcorde?], de escala: Escala) -> 
     acordesDeLosGrados(tipos.enumerated().map { i, tipo in tipo.map { Acorde(escala.grado(i + 1), $0) } })
 }
 
-/// Las tensiones disponibles de cada grado (`Escala.armonizacionConTensiones`): las de un grado separadas por
+/// Las tensiones disponibles de cada grado (`Escala.gradosArmonizados`): las de un grado separadas por
 /// espacios, los grados por « · »; «?» en el que no tiene cuatríada y «—» en el que no tiene tensiones.
 private func tensionesPorGrados(de escala: Escala) -> String {
-    escala.armonizacionConTensiones.map { grado in
+    escala.gradosArmonizados.map { grado in
         guard grado.acorde != nil else { return "?" }
         return grado.tensiones.isEmpty ? "—" : grado.tensiones.map(\.cifra).joined(separator: " ")
     }.joined(separator: " · ")

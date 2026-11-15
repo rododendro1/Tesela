@@ -78,8 +78,8 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
         self.funciones = funciones.isEmpty ? nil : funciones
         clases = escala.notas.map(\.claseDeAltura)
         modo = PresentacionDeEscalaYAcorde.modo(de: escala, en: notacion)
-        let cuatriadas = escala.armonizar(cuatriadas: true).compactMap { $0 }
-        let romanos = escala.cifradosRomanos(cuatriadas: true).compactMap { $0 }
+        let cuatriadas = escala.armonizar(notas: 4).compactMap { $0 }
+        let romanos = escala.romanos(notas: 4).compactMap { $0?.description }
         if cuatriadas.count == escala.notas.count, romanos.count == cuatriadas.count {
             acordes = zip(romanos, cuatriadas).map { AcordeDelGrado(grado: $0, cifrado: $1.cifrado(en: notacion)) }
         } else {

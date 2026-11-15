@@ -24,11 +24,11 @@ extension PresentacionDeTonalidad {
         if let caracter = Hoja.caracterHTML(tonalidad.caracter, en: notacion) { cuerpo.append(caracter) }
 
         // Los acordes de cada grado: el cifrado romano, el acorde y su función.
-        let acordes = tonalidad.armonizar(cuatriadas: true)
+        let acordes = tonalidad.armonizar(notas: 4).compactMap { $0 }
         let analizados = tonalidad.analizar(acordes).acordes
         let grados = acordes.enumerated().map { i, acorde in
             let funcion = i < analizados.count ? analizados[i].funcion?.nombre(en: notacion) ?? "" : ""
-            return "<li><strong>" + Hoja.html(tonalidad.cifradoRomano(grado: i + 1, cuatriada: true)) + "</strong>"
+            return "<li><strong>" + Hoja.html(tonalidad.romano(grado: i + 1, notas: 4)?.description ?? "") + "</strong>"
                 + "<span>" + Hoja.html(acorde.cifrado(en: notacion)) + "</span>"
                 + "<small>" + Hoja.html(funcion) + "</small></li>"
         }

@@ -133,9 +133,9 @@ import Testing
 
     @Test func desdeUnaEscala() throws {
         let doMayor = Escala("Do mayor")
-        #expect(try (#require(doMayor.arpegio(grado: 5, cuatriada: true)).acorde) == Acorde("Sol7"))
+        #expect(try (#require(doMayor.arpegio(grado: 5, notas: 4)).acorde) == Acorde("Sol7"))
         #expect(try (#require(doMayor.arpegio(grado: 2)).acorde) == Acorde("Rem"))
-        #expect(try (#require(Escala("Re dórico").arpegio(cuatriada: true)).acorde) == Acorde("Rem7"))
+        #expect(try (#require(Escala("Re dórico").arpegio(notas: 4)).acorde) == Acorde("Rem7"))
         #expect(try midis(#require(doMayor.arpegio(grados: [1, 3, 5, 6]))) == [60, 64, 67, 69, 72])
         #expect(doMayor.arpegio(grados: [1]) == nil)
         #expect(doMayor.arpegios().count == 7)
@@ -257,7 +257,7 @@ import Testing
         // compatibles.
         for madre in [Escala(.do, .mayor), Escala(.do, .menorMelodicaJazz)] {
             for grado in 1...7 {
-                guard let acorde = madre.acorde(grado: grado, cuatriada: true) else { continue }
+                guard let acorde = madre.acorde(grado: grado, notas: 4) else { continue }
                 #expect(
                     acorde.escalasCompatibles().contains(madre.modo(grado: grado)), Comment(rawValue: acorde.cifrado))
             }

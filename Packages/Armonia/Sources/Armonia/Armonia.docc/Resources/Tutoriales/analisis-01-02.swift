@@ -5,4 +5,4 @@ Tonalidad.identificar(midi: melodia).first // La menor
 
 let laMenor: Tonalidad = "La menor"
 laMenor.relativa // Do mayor
-laMenor.cifradosRomanos() // i ii° III iv V VI vii°
+laMenor.romanos() // i ii° III iv V VI vii°

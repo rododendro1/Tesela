@@ -47,10 +47,10 @@ extension PresentacionDeEstudioDeEscala {
     public static func tensionesDisponibles(
         de escala: Escala, en notacion: Notacion
     ) -> [TensionesDelGradoPresentadas] {
-        escala.armonizacionConTensiones.enumerated().compactMap { i, grado in
+        escala.gradosArmonizados.compactMap { grado in
             guard let acorde = grado.acorde else { return nil }
             return TensionesDelGradoPresentadas(
-                grado: i + 1, acorde: acorde.cifrado(en: notacion),
+                grado: grado.grado, acorde: acorde.cifrado(en: notacion),
                 tensiones: grado.tensiones.map { $0.nota.nombre(en: notacion) + " " + $0.cifra })
         }
     }

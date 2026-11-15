@@ -41,8 +41,8 @@ extension PresentacionDeEstudioDeEscala {
             guard acordes.count == grados.count else { return nil }
             var romanos: [String] = []
             for grado in grados {
-                if let romano = escala.cifradoRomano(grado: grado, referencia: referencia.tipo) {
-                    romanos.append(romano)
+                if let romano = escala.romano(grado: grado, referencia: referencia.tipo) {
+                    romanos.append(romano.description)
                 } else {
                     romanos.append(String(grado))
                 }

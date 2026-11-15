@@ -111,13 +111,13 @@ extension Tonalidad {
             let prestado: Acorde
             if modo == .mayor {
                 // Del menor natural. La dominante menor suena débil: en su lugar va el ♭VII (Si♭ en Do mayor).
-                prestado = homonima.escala.acorde(grado: grado == 5 ? 7 : grado, cuatriada: cuatriada) ?? acorde
+                prestado = homonima.escala.acorde(grado: grado == 5 ? 7 : grado, notas: cuatriada ? 4 : 3) ?? acorde
             } else {
-                prestado = homonima.acorde(grado: grado, cuatriada: cuatriada)
+                prestado = homonima.acordeDelGrado(grado, cuatriada: cuatriada)
             }
             proponer(.prestamoModal, [prestado])
             let sustituto = [1: 6, 2: 4, 3: 1, 4: 2, 5: 7, 6: 1, 7: 5][grado] ?? grado
-            proponer(.sustitutoDiatonico, [self.acorde(grado: sustituto, cuatriada: cuatriada)])
+            proponer(.sustitutoDiatonico, [self.acordeDelGrado(sustituto, cuatriada: cuatriada)])
 
             // Su ii–V, a los acordes mayores y menores que no son la tónica (ni tienen ya su dominante delante).
             if grado != 1, acorde.tipo.esMayor || acorde.tipo.esMenor, acorde.tipo.pasosDeQuinta.contains(1) {
@@ -143,7 +143,7 @@ extension Tonalidad {
     func grado(de acorde: Acorde) -> Int? {
         let fundamental = Acorde(acorde.fundamental, acorde.tipo)
         return (1...7).first { grado in
-            [false, true].contains { self.acorde(grado: grado, cuatriada: $0) == fundamental }
+            [false, true].contains { self.acordeDelGrado(grado, cuatriada: $0) == fundamental }
         }
     }
 
