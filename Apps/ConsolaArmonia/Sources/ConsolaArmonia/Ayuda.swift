@@ -158,9 +158,112 @@ extension LineaDeComandos {
 
     /// La ayuda de una orden: sus entradas, como en la ayuda completa (`armonia ayuda acorde`, `armonia acorde
     /// --help`).
+    /// La ayuda de una orden (`armonia ayuda escalas`, `armonia escalas --help`): como en la ayuda completa, pero con
+    /// todo el ancho de la terminal y cada opción en su línea (`lineasDetalladas(de:en:grafia:)`).
     static func ayuda(de orden: Orden, en notacion: Notacion) -> String {
-        orden.ayuda.flatMap { lineas(de: $0, en: notacion.textos, grafia: notacion.grafiaDeLosTextos) }
-            .joined(separator: "\n")
+        orden.ayuda.map { lineasDetalladas(de: $0, en: notacion.textos, grafia: notacion.grafiaDeLosTextos) }
+            .map { $0.joined(separator: "\n") }.joined(separator: "\n\n")
+    }
+
+    /// Lo que ocupa una línea en la ayuda de una orden: desde la columna de la descripción hasta la 80.
+    static let anchoDeLaAyudaDeUnaOrden = 80 - columnaDeLaDescripcion
+
+    /// Una entrada de la ayuda de una orden: la sintaxis, la descripción con todo el ancho, el ejemplo en su línea y
+    /// las opciones una debajo de otra. Un párrafo de opciones («opciones: --cuartas (…), --bajando; --simetria…»)
+    /// se parte en el título («opciones:») y una línea por cada parte, que empieza por su opción; un párrafo que
+    /// explica una opción («--escalas: …») va también como una de ellas. Los textos son los de la ayuda completa:
+    /// no hay que traducir nada más.
+    static func lineasDetalladas(de entrada: EntradaDeAyuda, en idioma: Idioma, grafia: Grafia = .original) -> [String]
+    {
+        let sangria = String(repeating: " ", count: columnaDeLaDescripcion)
+        var lineas = entrada.sintaxis.texto(en: idioma, grafia: grafia).components(separatedBy: "\n")
+            .map { String(repeating: " ", count: columnaDeLaSintaxis) + $0 }
+        var opciones: [String] = []
+        var titulo: String?
+        let parrafos =
+            entrada.descripcion.texto(en: idioma, grafia: grafia).components(separatedBy: "\n")
+            + (entrada.notas?.texto(en: idioma, grafia: grafia).components(separatedBy: "\n") ?? [])
+        var prosa: [String] = []
+        for parrafo in parrafos where !parrafo.isEmpty {
+            if let (palabra, resto) = parrafoDeOpciones(parrafo) {
+                titulo = titulo ?? palabra
+                // Lo que no nombra ninguna opción («un texto busca en los nombres») va con la descripción.
+                for parte in partesDeLasOpciones(resto) {
+                    if parte.contains("--") { opciones.append(parte) } else { prosa.append(parte) }
+                }
+            } else if parrafo.hasPrefix("--") {
+                opciones += partesDeLasOpciones(parrafo)
+            } else {
+                prosa.append(parrafo)
+            }
+        }
+        var descripcion = ajustar(prosa.joined(separator: "\n"), ancho: anchoDeLaAyudaDeUnaOrden)[...]
+        // La primera línea de la descripción va junto a la sintaxis si queda al menos un espacio.
+        if let primera = descripcion.first, let ultima = lineas.last, ultima.count < columnaDeLaDescripcion {
+            lineas[lineas.count - 1] = ultima + String(repeating: " ", count: columnaDeLaDescripcion - ultima.count) + primera
+            descripcion = descripcion.dropFirst()
+        }
+        lineas += descripcion.map { sangria + $0 }
+        if let ejemplo = entrada.ejemplo?.texto(en: idioma, grafia: grafia), !ejemplo.isEmpty {
+            lineas.append(sangria + ejemplo)
+        }
+        guard !opciones.isEmpty else { return lineas }
+        // «opciones:», y si el párrafo no lo traía, el de la ayuda de este idioma.
+        lineas.append(sangria + (titulo ?? palabraDeLasOpciones(en: idioma)))
+        for opcion in opciones {
+            let partes = ajustar(opcion, ancho: anchoDeLaAyudaDeUnaOrden - 4)
+            lineas += partes.enumerated().map { sangria + ($0.offset == 0 ? "  " : "    ") + $0.element }
+        }
+        return lineas
+    }
+
+    /// Si el párrafo es de opciones («opciones: --cuartas…», «options : --tradition…»): la palabra con sus dos puntos,
+    /// como se escriben en ese idioma, y lo que la sigue.
+    static func parrafoDeOpciones(_ parrafo: String) -> (String, String)? {
+        guard let dosPuntos = parrafo.firstIndex(of: ":") else { return nil }
+        let palabra = parrafo[..<dosPuntos].trimmingCharacters(in: .whitespaces)
+        let resto = parrafo[parrafo.index(after: dosPuntos)...].trimmingCharacters(in: .whitespaces)
+        guard !palabra.isEmpty, !palabra.contains(" "), !palabra.hasPrefix("-"), resto.hasPrefix("--") else {
+            return nil
+        }
+        return (String(parrafo[...dosPuntos]), resto)
+    }
+
+    /// La palabra de las opciones en un idioma, la de su ayuda completa («opciones:», «options :»…).
+    static func palabraDeLasOpciones(en idioma: Idioma) -> String {
+        parrafoDeOpciones(TextosDeConsola.traduccion(\.notasEscalas).texto(en: idioma))?.0 ?? "opciones:"
+    }
+
+    /// Las partes de un párrafo de opciones, cada una con sus opciones: se parte por «;» (o «·», en griego) y por
+    /// cada «, --» que no está entre paréntesis y sigue a una explicación entre paréntesis («--cuartas (…), --bajando»;
+    /// en «--vecinas Re dórico, --parecidas Re dórico … dan…», lo que sigue explica las dos).
+    static func partesDeLasOpciones(_ texto: String) -> [String] {
+        var partes: [String] = []
+        var actual = ""
+        var profundidad = 0
+        var i = texto.startIndex
+        func cerrar() {
+            let parte = actual.trimmingCharacters(in: .whitespaces)
+            if !parte.isEmpty { partes.append(parte) }
+            actual = ""
+        }
+        while i < texto.endIndex {
+            let caracter = texto[i]
+            if caracter == "(" { profundidad += 1 }
+            if caracter == ")" { profundidad = max(0, profundidad - 1) }
+            if profundidad == 0, caracter == ";" || caracter == "·" {
+                cerrar()
+            } else if profundidad == 0, caracter == ",", actual.hasSuffix(")"),
+                texto[texto.index(after: i)...].hasPrefix(" --")
+            {
+                cerrar()
+            } else {
+                actual.append(caracter)
+            }
+            i = texto.index(after: i)
+        }
+        cerrar()
+        return partes
     }
 
     static func lineas(de entrada: EntradaDeAyuda, en idioma: Idioma, grafia: Grafia = .original) -> [String] {
