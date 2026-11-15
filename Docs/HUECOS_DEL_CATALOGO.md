@@ -230,6 +230,16 @@ Quedan fuera, por ahora:
 - El de *A Hard Day's Night*, el «acorde de Chopin» y el de la Décima de Mahler: no hay acuerdo sobre sus notas o no
   hay una fuente seria que los nombre así.
 
+## Progresiones que faltan
+
+El catálogo tiene 58 progresiones. Quedan fuera, hasta leer una obra que las dé:
+
+- El line cliché (i–i(7M)–i7–i6): falta una obra que lo nombre así.
+- La progresión Omnibus: Telesco, «Enharmonicism and the Omnibus Progression», *Music Theory Spectrum* (1998).
+- La cadenza doppia de Gjerdingen (2007): es un esquema de voces, no de acordes.
+- El ciclo octatónico (P y R): Cohn la trata en otro artículo (1997), que no está entre las referencias.
+- El ōdō shinkō del J-pop (IV–V–iii–vi) y el blues de 8 compases, que tiene muchas formas: sin una fuente académica.
+
 ## Carácter sin fuente
 
 El carácter de una escala o de una tonalidad solo entra con una fuente que se haya podido leer. En noviembre de 2026 se
