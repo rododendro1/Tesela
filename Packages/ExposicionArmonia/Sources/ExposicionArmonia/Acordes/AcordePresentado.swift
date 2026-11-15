@@ -5,7 +5,8 @@ import Armonia
 // que no depende de ella (las clases de altura: 0 = Do … 11 = Si).
 //
 // Son `Codable`, y sus nombres son las claves del JSON de `armonia … --json`: en español, sin tildes y siempre las
-// mismas, sea cual sea el idioma. Cambiar uno rompe a quien lee ese JSON. Lo que es `nil` no sale en el JSON.
+// mismas, sea cual sea el idioma. Cambiar uno rompe a quien lee ese JSON. Lo que es `nil` no sale en el JSON. Un valor
+// traducido lleva al lado, en una clave que acaba en `Id`, el mismo valor sin traducir (`papel` y `papelId`).
 
 /// Un acorde: su cifrado, su nombre, sus notas y el papel de cada una.
 ///
@@ -16,6 +17,22 @@ public struct AcordePresentado: Hashable, Sendable, Codable {
     public struct Componente: Hashable, Sendable, Codable {
         public let nota: String
         public let papel: String
+        /// El papel sin traducir, el mismo en todos los idiomas: `fundamental`, `tercera`, `suspension`, `quinta`,
+        /// `sexta`, `septima` o `tension9`, `tension11`, `tension13` (`clave(de:)`).
+        public let papelId: String?
+
+        /// La clave de un papel, sin traducir.
+        public static func clave(de papel: PapelEnAcorde) -> String {
+            switch papel {
+            case .fundamental: return "fundamental"
+            case .tercera: return "tercera"
+            case .suspension: return "suspension"
+            case .quinta: return "quinta"
+            case .sexta: return "sexta"
+            case .septima: return "septima"
+            case .tension(let numero): return "tension\(numero)"
+            }
+        }
     }
 
     public let cifrado: String
@@ -38,7 +55,9 @@ public struct AcordePresentado: Hashable, Sendable, Codable {
         notas = acorde.notas.map { $0.nombre(en: notacion) }
         clases = acorde.notas.map(\.claseDeAltura)
         componentes = acorde.componentes.map {
-            Componente(nota: $0.nota.nombre(en: notacion), papel: $0.papel.nombre(en: notacion))
+            Componente(
+                nota: $0.nota.nombre(en: notacion), papel: $0.papel.nombre(en: notacion),
+                papelId: Componente.clave(de: $0.papel))
         }
     }
 

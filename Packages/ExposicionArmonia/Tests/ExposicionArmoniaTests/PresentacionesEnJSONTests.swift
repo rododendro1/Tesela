@@ -34,10 +34,10 @@ import Testing
 
     @Test func elAnalisis() throws {
         let analisis = try PresentacionDeAnalisis.analizar("Do Lam Re7 Sol7 Do", notacion: notacion)
-        #expect(try claves(analisis) == ["titulo", "tramos", "cadencias"])
+        #expect(try claves(analisis) == ["titulo", "tramos", "cadencias", "cadenciasId"])
         let tramo = try #require(analisis.tramos.first)
         #expect(try claves(tramo).isSuperset(of: ["acordes"]))
         #expect(!(try claves(tramo).contains("filas")))
-        #expect(try claves(try #require(tramo.filas.first)) == ["cifrado", "grado", "funcion"])
+        #expect(try claves(try #require(tramo.filas.first)) == ["cifrado", "grado", "funcion", "funcionId"])
     }
 }

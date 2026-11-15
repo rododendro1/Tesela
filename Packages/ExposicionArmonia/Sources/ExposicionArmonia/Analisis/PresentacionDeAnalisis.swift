@@ -13,17 +13,46 @@ public struct AnalisisPresentado: Hashable, Sendable, Encodable {
         public let grado: String
         /// La función tonal, o "" si no tiene.
         public let funcion: String
+        /// La función sin traducir (`tonica`, `subdominante`, `dominante`); `nil` si no tiene.
+        public let funcionId: String?
         /// La escala del acorde en su tonalidad (Re7 en V7/V → Re mixolidio), con sus tensiones y sus notas a
         /// evitar; `nil` si ninguna tiene todas sus notas.
         public let escala: EscalaSobreAcordePresentada?
 
-        private enum CodingKeys: String, CodingKey { case cifrado, grado, funcion }
+        private enum CodingKeys: String, CodingKey { case cifrado, grado, funcion, funcionId }
+    }
+
+    /// Una cadencia sin traducir, al lado de su frase (`cadencias`): su tipo y el primero de sus dos acordes.
+    public struct CadenciaPresentada: Hashable, Sendable, Encodable {
+        /// `autentica`, `plagal`, `rota` o `semicadencia`.
+        public let tipo: String
+        /// El índice del primer acorde, contando desde 0 por toda la progresión (el segundo es el siguiente).
+        public let acorde: Int
+        /// Las auténticas perfectas, las semicadencias frigias y las plagales menores.
+        public let perfecta: Bool
+        public let frigia: Bool
+        public let plagalMenor: Bool
+
+        init(_ cadencia: Cadencia) {
+            switch cadencia.tipo {
+            case .autentica: tipo = "autentica"
+            case .plagal: tipo = "plagal"
+            case .rota: tipo = "rota"
+            case .semicadencia: tipo = "semicadencia"
+            }
+            acorde = cadencia.acorde
+            perfecta = cadencia.esPerfecta
+            frigia = cadencia.esFrigia
+            plagalMenor = cadencia.esPlagalMenor
+        }
     }
 
     /// La tonalidad, o el recorrido de tonalidades si modula («Do mayor → Sol mayor»).
     public let titulo: String
     public let tramos: [TramoPresentado]
     public let cadencias: [String]
+    /// Las mismas cadencias, sin traducir.
+    public let cadenciasId: [CadenciaPresentada]
     public let ficheros: [FicheroParaExportar]
     /// Los acordes uno detrás de otro, para «Escuchar».
     public internal(set) var sonido: Escucha
@@ -34,7 +63,7 @@ public struct AnalisisPresentado: Hashable, Sendable, Encodable {
     /// arpegiarlos).
     public internal(set) var ritmo: RitmoArmonico?
 
-    private enum CodingKeys: String, CodingKey { case titulo, tramos, cadencias }
+    private enum CodingKeys: String, CodingKey { case titulo, tramos, cadencias, cadenciasId }
 
     /// La progresión arpegiada con un patrón, en la tonalidad de la partitura y con su ritmo armónico; las notas,
     /// en corcheas o en la figura que se diga.
@@ -143,6 +172,7 @@ public enum PresentacionDeAnalisis {
             titulo: titulo,
             tramos: tramos,
             cadencias: cadencias.map { $0.descripcion(en: notacion) },
+            cadenciasId: cadencias.map(AnalisisPresentado.CadenciaPresentada.init),
             ficheros: ficheros,
             sonido: sonido.conTonica(analisis.tonalidad.tonica),
             acordes: acordes,
@@ -155,7 +185,7 @@ public enum PresentacionDeAnalisis {
     ) -> AnalisisPresentado.AcordeDelAnalisis {
         AnalisisPresentado.AcordeDelAnalisis(
             cifrado: analizado.acorde.cifrado(en: notacion), grado: analizado.cifrado,
-            funcion: analizado.funcion?.nombre(en: notacion) ?? "",
+            funcion: analizado.funcion?.nombre(en: notacion) ?? "", funcionId: analizado.funcion?.rawValue,
             escala: PresentacionDeEscalaYAcorde.escala(de: analizado, en: tonalidad, notacion: notacion))
     }
 }

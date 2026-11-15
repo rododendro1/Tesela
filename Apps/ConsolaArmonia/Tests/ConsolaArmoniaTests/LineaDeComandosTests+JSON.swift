@@ -26,7 +26,8 @@ extension LineaDeComandosTests {
         #expect(sol7["notas"] as? [String] == ["Sol", "Si", "Re", "Fa"])
         #expect(sol7["clases"] as? [Int] == [7, 11, 2, 5])
         let componentes = try #require(sol7["componentes"] as? [[String: String]])
-        #expect(componentes.first == ["nota": "Sol", "papel": "fundamental"])
+        #expect(componentes.first == ["nota": "Sol", "papel": "fundamental", "papelId": "fundamental"])
+        #expect(componentes.last?["papelId"] == "septima")
         // Un bajo que no es del acorde no tiene inversión.
         let ajeno = try #require(try json("acorde Do/Re") as? [[String: Any]])
         #expect(ajeno[0]["inversion"] is NSNull || ajeno[0]["inversion"] == nil)
@@ -49,6 +50,35 @@ extension LineaDeComandosTests {
         #expect(Set(espanol[0].keys) == Set(aleman[0].keys))
         #expect(ingles[0]["cifrado"] as? String == "G7")
         #expect(ingles[0]["clases"] as? [Int] == espanol[0]["clases"] as? [Int])
+    }
+
+    /// Lo que acaba en `Id` no se traduce: es lo mismo en español, en inglés y en alemán.
+    @Test func losValoresIdNoCambianConElIdioma() throws {
+        /// Los valores de las claves que acaban en `Id` y lo que hay dentro de ellas, en orden.
+        func ids(_ valor: Any, dentro: Bool = false) -> [String] {
+            if let objeto = valor as? [String: Any] {
+                return objeto.keys.sorted().flatMap { clave in
+                    let suyo = dentro || clave.hasSuffix("Id")
+                    let hoja = objeto[clave].map { $0 is [String: Any] || $0 is [Any] } == false
+                    return (suyo && hoja ? ["\(clave)=\(objeto[clave]!)"] : []) + ids(objeto[clave]!, dentro: suyo)
+                }
+            }
+            if let lista = valor as? [Any] { return lista.flatMap { ids($0, dentro: dentro) } }
+            return []
+        }
+        for orden in ["acorde Sol7 Do9 Lam6", "analizar Do Fa Sol7 Do Lam Rem Mi7 Lam", "analizar Do Lam Fam Do"] {
+            let espanol = ids(try json(orden))
+            #expect(!espanol.isEmpty, Comment(rawValue: orden))
+            #expect(espanol == ids(try json(orden + " --ingles")), Comment(rawValue: orden))
+            #expect(espanol == ids(try json(orden + " --idioma de")), Comment(rawValue: orden))
+        }
+        let analisis = try #require(try json("analizar Do Fa Sol7 Do") as? [String: Any])
+        let cadencias = try #require(analisis["cadenciasId"] as? [[String: Any]])
+        #expect(cadencias.first?["tipo"] as? String == "autentica" && cadencias.first?["acorde"] as? Int == 2)
+        #expect((analisis["cadencias"] as? [String])?.count == cadencias.count)
+        let tramos = try #require(analisis["tramos"] as? [[String: Any]])
+        let filas = try #require(tramos.first?["acordes"] as? [[String: Any]])
+        #expect(filas.map { $0["funcionId"] as? String } == ["tonica", "subdominante", "dominante", "tonica"])
     }
 
     @Test func identificarEnJSON() throws {
