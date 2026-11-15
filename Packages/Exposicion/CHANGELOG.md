@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.5.3 (2026-11-15)
 
 ### Lo nuevo
 
