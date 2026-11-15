@@ -1,5 +1,13 @@
 # Cambios
 
+## Sin publicar
+
+### Lo nuevo
+
+- `TonalidadPresentada`, `IntervaloPresentado` y `NotasDeArpegioPresentadas`: lo que se consulta de una tonalidad, de
+  un intervalo y de un arpegio, con las claves del JSON de `armonia tonalidad`, `intervalo` y `arpegio --json`. El
+  texto de la consola sale de los mismos datos.
+
 ## 0.5.4 (2026-11-15)
 
 ### Cambia de nombre

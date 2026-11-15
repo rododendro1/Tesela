@@ -49,9 +49,9 @@ extension LineaDeComandos {
     }
 
     static func intervalo(_ a: String, _ b: String, _ notacion: Notacion) throws -> String {
-        let medido = try intervalo(a, b, en: notacion)
-        let semitonos = Mensaje.semitonos(medido.semitonos).texto(en: notacion)
-        return "\(medido.nombre(en: notacion)) (\(medido.texto(en: notacion)), \(semitonos))"
+        // Los datos de `--json` (`IntervaloPresentado`), en texto.
+        let medido = IntervaloPresentado(try intervalo(a, b, en: notacion), en: notacion)
+        return "\(medido.nombre) (\(medido.abreviatura), \(Mensaje.semitonos(medido.semitonos).texto(en: notacion)))"
     }
 
     /// El intervalo de una nota a otra: entre las alturas si las dos llevan octava (Do4 Mi5 es una décima), y si no,
@@ -69,9 +69,18 @@ extension LineaDeComandos {
     /// · “Furieux et emporté” (Charpentier (Cessac 1988))»; y, si dos no coinciden en nada, «las fuentes no
     /// coinciden: Charpentier · Schubart». Lo mismo para una escala que para una tonalidad.
     static func lineasDelCaracter(_ caracter: [Caracter], _ notacion: Notacion) -> [String] {
+        lineasDelCaracter(
+            CaracterPresentado.de(caracter, en: notacion), CaracterPresentado.discrepancias(caracter, en: notacion),
+            notacion)
+    }
+
+    /// Las mismas líneas, de los datos de `--json` (`CaracterPresentado.de(_:en:)`, `discrepancias(_:en:)`).
+    static func lineasDelCaracter(
+        _ caracter: [CaracterPresentado]?, _ discrepancias: [String]?, _ notacion: Notacion
+    ) -> [String] {
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
-        var lineas = caracter.map { "  \(traducir(.caracter)): " + CaracterPresentado($0, en: notacion).enUnaLinea }
-        if let pares = CaracterPresentado.discrepancias(caracter, en: notacion) {
+        var lineas = (caracter ?? []).map { "  \(traducir(.caracter)): " + $0.enUnaLinea }
+        if let pares = discrepancias {
             lineas.append("  \(traducir(.fuentesQueNoCoinciden)): " + pares.joined(separator: "; "))
         }
         return lineas
@@ -79,24 +88,22 @@ extension LineaDeComandos {
 
     static func describir(tonalidad: Tonalidad, _ notacion: Notacion) -> String {
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        // Los datos de `--json` (`TonalidadPresentada`), en texto.
+        let datos = TonalidadPresentada(tonalidad, en: notacion)
         let armadura: String
-        switch tonalidad.armadura {
+        switch datos.armadura {
         case 0: armadura = traducir(.sinAlteraciones)
         default:
-            let signos = tonalidad.notasDeLaArmadura.map { $0.nombre(en: notacion) }.joined(separator: " ")
-            let alteraciones = traducir(.alteraciones(abs(tonalidad.armadura), sostenidos: tonalidad.armadura > 0))
-            armadura = "\(signos) (\(alteraciones))"
+            let alteraciones = traducir(.alteraciones(abs(datos.armadura), sostenidos: datos.armadura > 0))
+            armadura = datos.alteraciones.joined(separator: " ") + " (\(alteraciones))"
         }
-        let acordes = zip(tonalidad.cifradosRomanos(cuatriadas: true), tonalidad.armonizar(cuatriadas: true))
-            .map { "\($0) \($1.cifrado(en: notacion))" }.joined(separator: " · ")
         let lineas = [
-            tonalidad.nombre(en: notacion),
+            datos.nombre,
             "  \(traducir(.armadura)): " + armadura,
-            "  \(traducir(.relativa)): " + tonalidad.relativa.nombre(en: notacion)
-                + " · \(traducir(.homonima)): " + tonalidad.homonima.nombre(en: notacion),
-            "  \(traducir(.acordes)): " + acordes,
+            "  \(traducir(.relativa)): " + datos.relativa + " · \(traducir(.homonima)): " + datos.homonima,
+            "  \(traducir(.acordes)): " + datos.acordes.map { "\($0.grado) \($0.cifrado)" }.joined(separator: " · "),
         ]
-        return (lineas + lineasDelCaracter(tonalidad.caracter, notacion)).joined(separator: "\n")
+        return (lineas + lineasDelCaracter(datos.caracter, datos.discrepancias, notacion)).joined(separator: "\n")
     }
 
     static func analizar(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {
