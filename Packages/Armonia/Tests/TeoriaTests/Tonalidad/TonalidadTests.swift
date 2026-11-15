@@ -91,14 +91,17 @@ import Testing
         #expect(laMenor.nombreDeGrado(de: "Sib") == nil)
         #expect(Tonalidad(.do).nombreDeGrado(de: .si) == .sensible)
 
-        #expect(laMenor.armonizar().map(\.cifrado) == ["Lam", "Si°", "Do", "Rem", "Mi", "Fa", "Sol♯°"])
+        #expect(laMenor.armonizar().map { $0?.cifrado } == ["Lam", "Si°", "Do", "Rem", "Mi", "Fa", "Sol♯°"])
         #expect(
-            laMenor.armonizar(cuatriadas: true).map(\.cifrado) == [
+            laMenor.armonizar(notas: 4).map { $0?.cifrado } == [
                 "Lam7", "Sim7(♭5)", "Domaj7", "Rem7", "Mi7", "Famaj7", "Sol♯°7",
             ])
-        #expect(laMenor.cifradosRomanos() == ["i", "ii°", "III", "iv", "V", "VI", "vii°"])
-        #expect(laMenor.cifradosRomanos(cuatriadas: true) == ["i7", "iiø7", "IIImaj7", "iv7", "V7", "VImaj7", "vii°7"])
-        #expect(Tonalidad(.do).cifradosRomanos() == ["I", "ii", "iii", "IV", "V", "vi", "vii°"])
+        #expect(laMenor.romanos().map { $0?.description } == ["i", "ii°", "III", "iv", "V", "VI", "vii°"])
+        #expect(
+            laMenor.romanos(notas: 4).map { $0?.description } == [
+                "i7", "iiø7", "IIImaj7", "iv7", "V7", "VImaj7", "vii°7",
+            ])
+        #expect(Tonalidad(.do).romanos().map { $0?.description } == ["I", "ii", "iii", "IV", "V", "vi", "vii°"])
     }
 
     @Test func ortografiaEIdentificacion() {

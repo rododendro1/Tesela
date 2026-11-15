@@ -94,7 +94,7 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
         conjuntoDeClases = conjunto
         acordesPorGrados =
             tipo.esFragmento
-            ? nil : [escala.armonizar().map { $0?.tipo }, escala.armonizar(cuatriadas: true).map { $0?.tipo }]
+            ? nil : [escala.armonizar().map { $0?.tipo }, escala.armonizar(notas: 4).map { $0?.tipo }]
     }
 
     /// Para cada intervalo genérico `k`, los tamaños de los `k` pasos seguidos, desde cada nota, se separan a lo

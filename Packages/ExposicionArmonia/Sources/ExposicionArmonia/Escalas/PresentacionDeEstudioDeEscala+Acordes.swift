@@ -41,9 +41,9 @@ extension PresentacionDeEstudioDeEscala {
     public static func acordesEnLasDoceTonalidades(
         _ escala: Escala, cuatriadas: Bool = true, en notacion: Notacion
     ) -> TablaDeAcordesPresentada? {
-        let grados = escala.cifradosRomanos(cuatriadas: cuatriadas).compactMap { $0 }
+        let grados = escala.romanos(notas: cuatriadas ? 4 : 3).compactMap { $0?.description }
         let tonalidades = escala.enLasDoceTonalidades.map { transportada in
-            (escala: transportada, acordes: transportada.armonizar(cuatriadas: cuatriadas).compactMap { $0 })
+            (escala: transportada, acordes: transportada.armonizar(notas: cuatriadas ? 4 : 3).compactMap { $0 })
         }
         let voces = tonalidades.flatMap { $0.acordes.map { Escucha.cerrada($0.notasDesdeElBajo, desde: 48) } }
         guard grados.count == escala.notas.count, tonalidades.allSatisfy({ $0.acordes.count == grados.count }),

@@ -169,12 +169,13 @@ print("La menor melódica bajando:", lista(Escala(.la, .menorMelodica).alturas(o
 titulo("Armonización")
 for escala in [Escala(.do), Escala(.la, .menorArmonica), Escala(.la, .menorMelodica)] {
     print(escala)
-    print("  ", escala.armonizar(cuatriadas: true).map { $0?.cifrado ?? "?" }.joined(separator: "  "))
-    print("  ", escala.cifradosRomanos(cuatriadas: true).map { $0 ?? "?" }.joined(separator: "  "))
+    print("  ", escala.armonizar(notas: 4).map { $0?.cifrado ?? "?" }.joined(separator: "  "))
+    print("  ", escala.romanos(notas: 4).map { $0?.description ?? "?" }.joined(separator: "  "))
 }
 print(
     "La menor armónica (ref. menor natural):",
-    Escala(.la, .menorArmonica).cifradosRomanos(referencia: .menorNatural).map { $0 ?? "?" }.joined(separator: "  "))
+    Escala(.la, .menorArmonica).romanos(referencia: .menorNatural).map { $0?.description ?? "?" }.joined(
+        separator: "  "))
 
 titulo("Escalas de la India y dromoi griegos")
 for tipo in [TipoDeEscala.melakarta(15)!, .todi, .hitzaz, .houzam] {
@@ -191,8 +192,8 @@ print("  Otros nombres de la escala mayor:", TipoDeEscala.mayor.equivalentes.map
 titulo("Tonalidad")
 let laMenor: Tonalidad = "La menor"
 print("  \(laMenor): armadura \(laMenor.armadura), relativa \(laMenor.relativa), homónima \(laMenor.homonima)")
-print("  Armonía:", laMenor.armonizar(cuatriadas: true).map(\.cifrado).joined(separator: " "))
-print("  Cifrado romano:", laMenor.cifradosRomanos(cuatriadas: true).joined(separator: " "))
+print("  Armonía:", laMenor.armonizar(notas: 4).map { $0?.cifrado ?? "?" }.joined(separator: " "))
+print("  Cifrado romano:", laMenor.romanos(notas: 4).map { $0?.description ?? "?" }.joined(separator: " "))
 if let sol = laMenor.nombreDeGrado(de: .sol), let solSostenido = laMenor.nombreDeGrado(de: "Sol#") {
     print("  Sol y Sol♯:", sol, "/", solSostenido)
 }

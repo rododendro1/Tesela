@@ -31,15 +31,16 @@ import Testing
     @Test func armonizacionMayor() {
         let e = Escala(.do)
         #expect(e.armonizar().map { $0?.cifrado } == ["Do", "Rem", "Mim", "Fa", "Sol", "Lam", "Si°"])
-        #expect(e.cifradosRomanos() == ["I", "ii", "iii", "IV", "V", "vi", "vii°"])
-        #expect(e.cifradosRomanos(cuatriadas: true) == ["Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "viiø7"])
+        #expect(e.romanos().map { $0?.description } == ["I", "ii", "iii", "IV", "V", "vi", "vii°"])
+        #expect(
+            e.romanos(notas: 4).map { $0?.description } == ["Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "viiø7"])
     }
 
     /// Fuera de las heptatónicas, por terceras de verdad: Do blues da Dom7 en el 1.º grado, y no Dosus4.
     @Test func armonizacionPorTercerasDeVerdad() {
         let blues = Escala(.do, .blues)
         #expect(blues.acorde(grado: 1)?.cifrado == "Dom")
-        #expect(blues.acorde(grado: 1, cuatriada: true)?.cifrado == "Dom7")
+        #expect(blues.acorde(grado: 1, notas: 4)?.cifrado == "Dom7")
         let pentatonica = Escala(.do, .pentatonicaMayor)
         #expect(pentatonica.acorde(grado: 1)?.cifrado == "Do")
         #expect(pentatonica.acorde(grado: 2) == nil) // Re no tiene Fa, ni Sol tiene Si para Mi
@@ -48,16 +49,18 @@ import Testing
 
     @Test func armonizacionMenor() {
         let armonica = Escala(.la, .menorArmonica)
-        #expect(armonica.cifradosRomanos() == ["i", "ii°", "♭III+", "iv", "V", "♭VI", "vii°"])
+        #expect(armonica.romanos().map { $0?.description } == ["i", "ii°", "♭III+", "iv", "V", "♭VI", "vii°"])
         #expect(
-            armonica.cifradosRomanos(cuatriadas: true) == [
+            armonica.romanos(notas: 4).map { $0?.description } == [
                 "i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7",
             ])
-        #expect(armonica.acorde(grado: 5, cuatriada: true)?.cifrado == "Mi7")
+        #expect(armonica.acorde(grado: 5, notas: 4)?.cifrado == "Mi7")
 
         let melodica = Escala(.la, .menorMelodica)
         #expect(
-            melodica.cifradosRomanos(cuatriadas: true) == ["i(maj7)", "ii7", "♭III+maj7", "IV7", "V7", "viø7", "viiø7"])
+            melodica.romanos(notas: 4).map { $0?.description } == [
+                "i(maj7)", "ii7", "♭III+maj7", "IV7", "V7", "viø7", "viiø7",
+            ])
     }
 
     @Test func notasConOctava() {
@@ -86,7 +89,10 @@ import Testing
 
     @Test func cifradoRomanoConReferencia() {
         let armonica = Escala(.la, .menorArmonica)
-        #expect(armonica.cifradosRomanos(referencia: .menorNatural) == ["i", "ii°", "III+", "iv", "V", "VI", "♯vii°"])
+        #expect(
+            armonica.romanos(referencia: .menorNatural).map { $0?.description } == [
+                "i", "ii°", "III+", "iv", "V", "VI", "♯vii°",
+            ])
     }
 
     /// Los nombres de la menor de los conservatorios españoles: bachiana, dórica y antigua.
@@ -390,7 +396,7 @@ import Testing
         #expect(mayor.acorde(grado: 1, notas: 5)?.notas == [.do, .mi, .sol, .si, .re])
         #expect(mayor.acorde(grado: 5, notas: 5)?.cifrado == "Sol9")
         #expect(mayor.acorde(grado: 1, notas: 8) == nil)
-        #expect(mayor.armonizar(cuatriadas: true) == mayor.armonizar(notas: 4))
+        #expect(mayor.armonizar() == mayor.armonizar(notas: 3))
         // En una pentatónica, por cuartas: Do–Fa no está en la mayor, pero Re–Sol–Do sí.
         #expect(
             Set(Escala(.do, .pentatonicaMayor).acorde(grado: 2, notas: 3, por: .cuartas)?.notas ?? []) == [
@@ -412,7 +418,10 @@ import Testing
             tabla == [
                 ["9", "13"], ["9", "11", "13"], ["11"], ["9", "♯11", "13"], ["9", "13"], ["9", "11"], ["11", "♭13"],
             ])
-        #expect(mayor.armonizacionConTensiones[4].acorde?.cifrado == "Sol7")
+        #expect(mayor.gradosArmonizados[4].acorde?.cifrado == "Sol7")
+        #expect(mayor.gradosArmonizados[4].grado == 5)
+        #expect(mayor.gradosArmonizados[1].tensiones.map(\.cifra) == ["9", "11", "13"])
+        #expect(Escala(.do, .pentatonicaMayor).gradosArmonizados[1].acorde == nil)
         #expect(Escala(.do, .pentatonicaMayor).tensionesDisponibles(grado: 1).isEmpty) // sin cuatríada
     }
 

@@ -35,8 +35,8 @@ Nota.re + "3M"                                 // Fa♯
 String(decoding: try JSONEncoder().encode([a]), as: UTF8.self)   // ["Sol7\/Si"]  (Codable como texto)
 [Intervalo.quintaJusta, .terceraMayor].sorted()      // [3ª mayor, 5ª justa]  (Comparable)
 Escala("La menor melódica").alturas(octava: 4, sentido: .descendente)   // baja con Sol♮ y Fa♮
-Escala(.la, .menorArmonica).cifradosRomanos(referencia: .menorNatural)
-// ["i", "ii°", "III+", "iv", "V", "VI", "♯vii°"]
+Escala(.la, .menorArmonica).romanos(referencia: .menorNatural)
+// i ii° III+ iv V VI ♯vii°
 ```
 
 Literales y `Codable` llegan a través de `RepresentableComoTexto`. Solo `Escala` tiene su propio `Codable`, con la tónica y

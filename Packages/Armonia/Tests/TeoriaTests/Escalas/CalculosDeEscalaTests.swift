@@ -101,7 +101,7 @@ import Testing
             }
             #expect(tonal.triadas == escala.armonizar().map { $0?.tipo }, Comment(rawValue: tipo.nombre))
             #expect(
-                tonal.cuatriadas == escala.armonizar(cuatriadas: true).map { $0?.tipo }, Comment(rawValue: tipo.nombre))
+                tonal.cuatriadas == escala.armonizar(notas: 4).map { $0?.tipo }, Comment(rawValue: tipo.nombre))
         }
     }
 

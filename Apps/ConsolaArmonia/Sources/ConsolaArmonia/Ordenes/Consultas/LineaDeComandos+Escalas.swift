@@ -135,24 +135,19 @@ extension LineaDeComandos {
             lineas.append(notacion.texto(\.modosRelativos) + ":")
             lineas.append("  " + relativos.map(\.nombre).joined(separator: " · "))
         }
+        // Los datos de `--json` (`TensionesDelGradoPresentadas`, `AcordePorCuartasPresentado`), en texto.
         if pedido.tensionesDeLosGrados {
             lineas.append(notacion.texto(\.tensiones) + ":")
-            for (i, grado) in escala.armonizacionConTensiones.enumerated() {
-                guard let acorde = grado.acorde else { continue }
-                let tensiones = grado.tensiones.map { $0.nota.nombre(en: notacion) + " " + $0.cifra }
-                lineas.append(
-                    "  \(i + 1) " + acorde.cifrado(en: notacion) + ": "
-                        + (tensiones.isEmpty ? "—" : tensiones.joined(separator: " · ")))
+            lineas += PresentacionDeEstudioDeEscala.tensionesDisponibles(de: escala, en: notacion).map {
+                "  \($0.grado) " + $0.acorde + ": "
+                    + ($0.tensiones.isEmpty ? "—" : $0.tensiones.joined(separator: " · "))
             }
         }
         if pedido.cuartas {
             lineas.append(TextosDeConsola.en(notacion, \.acordesPorCuartas) + ":")
-            for (i, acorde) in escala.armonizar(notas: 4, por: .cuartas).enumerated() {
-                let notas = (escala.notasApiladas(grado: i + 1, notas: 4, por: .cuartas) ?? []).map {
-                    $0.nombre(en: notacion)
-                }
-                let cifrado = acorde.map { " (" + $0.cifrado(en: notacion) + ")" } ?? ""
-                lineas.append("  \(i + 1) " + (notas.isEmpty ? "—" : notas.joined(separator: "–")) + cifrado)
+            lineas += PresentacionDeEstudioDeEscala.acordesPorCuartas(de: escala, en: notacion).map {
+                let cifrado = $0.cifrado.map { " (" + $0 + ")" } ?? ""
+                return "  \($0.grado) " + ($0.notas.isEmpty ? "—" : $0.notas.joined(separator: "–")) + cifrado
             }
         }
         if pedido.simetria { lineas += lineasDeSimetria(de: escala, notacion) }
@@ -247,14 +242,12 @@ extension LineaDeComandos {
     static func lineasDeTetracordos(de escala: Escala, _ notacion: Notacion) -> [String] {
         let titulo = Mensaje.tetracordos.texto(en: notacion) + ":"
         let divisiones = piezasDeTetracordos(de: escala, notacion)
+        // Los de `--json` (`AjnasPresentados`), en texto.
         var ajnas: [String] = []
-        if let fuente = escala.tipo.fuenteDeLosAjnas {
-            let fragmentos = escala.tipo.ajnas.map { fragmento in
-                fragmento.fragmento.nombre(en: notacion) + " (" + escala.grado(fragmento.grado).nombre(en: notacion)
-                    + ")"
-            }
+        if let presentados = PresentacionDeEstudioDeEscala.ajnas(de: escala, en: notacion) {
+            let fragmentos = presentados.fragmentos.map { $0.nombre + " (" + $0.desde + ")" }
             ajnas = [
-                "  " + Mensaje.ajnas.texto(en: notacion) + " (" + fuente.cita + "): "
+                "  " + Mensaje.ajnas.texto(en: notacion) + " (" + presentados.fuente + "): "
                     + fragmentos.joined(separator: " · ")
             ]
         }
@@ -280,21 +273,6 @@ extension LineaDeComandos {
         var notas: [String]?
         var nombres: [String]?
         var separacion: String?
-    }
-
-    /// Un jins o un çeşni de un maqām o un makam, para `--json`: su nombre y sus notas.
-    struct FragmentoJSON: Encodable {
-        let nombre: String
-        let notas: [String]
-    }
-
-    /// Los ajnas o çeşni de un maqām o un makam (`TipoDeEscala.ajnas`), para `--json`; `nil` si no tiene.
-    static func ajnasJSON(de escala: Escala, _ notacion: Notacion) -> [FragmentoJSON]? {
-        guard escala.tipo.fuenteDeLosAjnas != nil else { return nil }
-        return escala.tipo.ajnas.map {
-            FragmentoJSON(
-                nombre: $0.fragmento.nombre(en: notacion), notas: escala.notas(de: $0).map { $0.nombre(en: notacion) })
-        }
     }
 
     /// Las divisiones en tetracordos de una escala, pieza a pieza.

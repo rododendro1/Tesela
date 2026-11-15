@@ -80,13 +80,13 @@ public enum PresentacionDeTonalidad {
             y += 32
         }
         seccion(notacion.texto(\.acordesDeLaEscala))
-        let acordes = tonalidad.armonizar(cuatriadas: true)
+        let acordes = tonalidad.armonizar(notas: 4).compactMap { $0 }
         let analizados = tonalidad.analizar(acordes).acordes
         let columna = util / Double(max(acordes.count, 1))
         for (i, acorde) in acordes.enumerated() {
             let x = margen + Double(i) * columna
             let funcion = i < analizados.count ? analizados[i].funcion?.nombre(en: notacion) ?? "" : ""
-            let romano = tonalidad.cifradoRomano(grado: i + 1, cuatriada: true)
+            let romano = tonalidad.romano(grado: i + 1, notas: 4)?.description ?? ""
             cuerpo.append(Hoja.texto(romano, x: x, y: y, tamano: 12, negrita: true))
             cuerpo.append(Hoja.texto(acorde.cifrado(en: notacion), x: x, y: y + 16, tamano: 12))
             cuerpo.append(Hoja.texto(funcion, x: x, y: y + 31, tamano: 9, color: "#666666"))

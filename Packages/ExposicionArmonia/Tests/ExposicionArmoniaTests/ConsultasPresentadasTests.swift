@@ -34,6 +34,54 @@ import Testing
         #expect(datos.acordes?.first?.cifrado == "Rem7")
     }
 
+    @Test func lasEstadisticasDeUnaEscala() {
+        let datos = EstadisticasDeEscalaPresentadas(Escala(.do, .mayor), en: .compacta(.espanol))
+        #expect(datos.numeroDeNotas == 7)
+        #expect(datos.cardinal == "heptatónica")
+        #expect(datos.brilloPorQuintas == 2)
+        #expect(datos.numeroDeForte == "7-35")
+        #expect(datos.maximamenteRegular)
+    }
+
+    @Test func elCatalogoDeEscalas() throws {
+        let lidio = EscalaDelCatalogoPresentada(.lidio, en: .compacta(.espanol))
+        #expect(lidio.notas == ["Do", "Re", "Mi", "Fa♯", "Sol", "La", "Si"])
+        #expect(lidio.clases == [0, 2, 4, 6, 7, 9, 11])
+        #expect(lidio.brilloPorQuintas == 3)
+        #expect(lidio.tradicion == "occidental")
+        #expect(lidio.categoria == nil)
+        #expect(!lidio.microtonal)
+        let slendro = EscalaDelCatalogoPresentada(.slendro, en: .compacta(.espanol))
+        #expect(slendro.afinacion == "partes-iguales")
+        #expect(slendro.partesIguales == 5)
+        let grupo = GrupoDeEscalasPresentado(titulo: "modos", tipos: [.mayor, .dorico], en: .compacta(.espanol))
+        #expect(grupo.escalas.map(\.notas.first) == ["Do", "Do"])
+        let japon = TradicionPresentada(.japon, clave: "japon", en: .compacta(.espanol))
+        #expect(japon.clave == "japon")
+        #expect(japon.escalas == japon.categorias.map(\.escalas).reduce(0, +))
+        #expect(japon.escalas == TipoDeEscala.tradicionales.filter { $0.tradicion == .japon }.count)
+    }
+
+    @Test func losGradosDeUnaEscala() throws {
+        let notacion = Notacion.compacta(.espanol)
+        let mayor = PresentacionDeEstudioDeEscala.tensionesDisponibles(de: Escala(.do), en: notacion)
+        #expect(mayor.count == 7)
+        #expect(mayor[1].acorde == "Rem7")
+        #expect(mayor[1].tensiones == ["Mi 9", "Sol 11", "Si 13"])
+        let cuartas = PresentacionDeEstudioDeEscala.acordesPorCuartas(de: Escala(.re, .dorico), en: notacion)
+        #expect(cuartas.count == 7)
+        #expect(cuartas[1].notas == ["Mi", "La", "Re", "Sol"])
+        #expect(PresentacionDeEstudioDeEscala.ajnas(de: Escala(.do), en: notacion) == nil)
+        let bayati = try #require(
+            PresentacionDeEstudioDeEscala.ajnas(de: try Escala(leyendo: "Re bayati"), en: notacion))
+        #expect(bayati.fragmentos.map(\.nombre) == ["jins Bayātī", "jins Nahāwand"])
+        #expect(bayati.fragmentos[1].desde == "Sol")
+        #expect(!bayati.fuente.isEmpty)
+        let referencia = ReferenciaPresentada(.persichetti1961)
+        #expect(referencia.clave == Referencia.persichetti1961.clave)
+        #expect(referencia.paginas == nil)
+    }
+
     @Test func unaTonalidadConSuArmaduraYSusAcordes() throws {
         let datos = TonalidadPresentada(try Tonalidad(leyendo: "Fa mayor"), en: .compacta(.espanol))
         #expect(datos.tonica == "Fa")

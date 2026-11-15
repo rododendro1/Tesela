@@ -332,3 +332,47 @@ public struct MedidasDeEscalaPresentadas: Hashable, Sendable, Codable {
         tetracordosIguales = medidas.tonal.tetracordosIguales
     }
 }
+
+/// Lo que se mide de una escala (`EstadisticasDeEscala`), para `armonia escala … --estadisticas --json`: los mismos
+/// datos que ``PresentacionDeEstudioDeEscala/estadisticas(de:en:)`` da escritos, pero en números, con el cardinal por
+/// su nombre y, en `teoria`, lo que dicen las teorías.
+///
+///     let datos = EstadisticasDeEscalaPresentadas(Escala(.do, .mayor), en: .compacta(.espanol))
+///     datos.cardinal         // "heptatónica"
+///     datos.numeroDeForte    // "7-35"
+public struct EstadisticasDeEscalaPresentadas: Hashable, Sendable, Codable {
+    public let numeroDeNotas: Int
+    /// «heptatónica»; `nil` si el cardinal no tiene nombre.
+    public let cardinal: String?
+    /// Solo en las de siete notas.
+    public let brillo: Int?
+    /// Redondeado a dos decimales.
+    public let brilloPorQuintas: Double
+    public let pasos: [Int]
+    public let vectorIntervalico: [Int]
+    public let anhemitonica: Bool
+    public let cohemitonica: Bool
+    public let transposicionesDistintas: Int
+    public let numeroDeForte: String?
+    public let maximamenteRegular: Bool
+    public let aproximada: Bool
+    /// Lo que dicen las teorías: Myhill, Rothenberg, Hanson, Messiaen, Balzano…
+    public let teoria: MedidasDeEscalaPresentadas
+
+    public init(_ escala: Escala, en notacion: Notacion) {
+        let medidas = escala.estadisticas
+        numeroDeNotas = medidas.numeroDeNotas
+        cardinal = medidas.cardinal?.nombre(en: notacion)
+        brillo = medidas.brillo
+        brilloPorQuintas = Redondeo.valor(medidas.brilloPorQuintas, decimales: 2)
+        pasos = medidas.pasos
+        vectorIntervalico = medidas.vectorIntervalico
+        anhemitonica = medidas.anhemitonica
+        cohemitonica = medidas.cohemitonica
+        transposicionesDistintas = medidas.transposicionesDistintas
+        numeroDeForte = medidas.numeroDeForte
+        maximamenteRegular = medidas.maximamenteRegular
+        aproximada = medidas.aproximada
+        teoria = MedidasDeEscalaPresentadas(medidas, en: notacion)
+    }
+}

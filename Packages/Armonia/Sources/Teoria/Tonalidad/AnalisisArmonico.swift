@@ -48,6 +48,7 @@ extension FuncionTonal: Nombrable {}
 ///
 ///     let a = Tonalidad(.do).analizar(["Re7", "Sol"]).acordes[0]
 ///     a.cifrado     // "V7/V"
+///     a.romano.destino?.description   // "V"
 ///     a.funcion     // .dominante
 ///     a.categoria   // .dominanteSecundaria(de: 5)
 public struct AcordeAnalizado: Hashable, Sendable, CustomStringConvertible, Codable {
@@ -79,13 +80,33 @@ public struct AcordeAnalizado: Hashable, Sendable, CustomStringConvertible, Coda
     public let acorde: Acorde
     /// Grado de la fundamental (1…7), contado por el nombre de la nota: en Do mayor, Si♭ es el 7.º.
     public let grado: Int
-    /// Cifrado romano, con la inversión en cifra de bajo continuo: "I", "V65", "♭VI", "vii°7/V".
-    public let cifrado: String
+    /// El cifrado romano por sus partes (el numeral, la calidad, la inversión y el destino), con la inversión en
+    /// cifra de bajo continuo: «I», «V65», «♭VI», «vii°7/V».
+    public let romano: CifradoRomano
+    /// El texto de ``romano``: «I», «V65», «♭VI», «vii°7/V».
+    public var cifrado: String { romano.description }
     /// `nil` para los acordes cromáticos que no tienen una función clara.
     public let funcion: FuncionTonal?
     public let categoria: Categoria
 
     public var description: String { cifrado }
+
+    public init(
+        acorde: Acorde, grado: Int, romano: CifradoRomano, funcion: FuncionTonal?, categoria: Categoria
+    ) {
+        self.acorde = acorde
+        self.grado = grado
+        self.romano = romano
+        self.funcion = funcion
+        self.categoria = categoria
+    }
+
+    // El cifrado romano va con su texto en la clave de siempre, `cifrado`.
+    private enum CodingKeys: String, CodingKey {
+        case acorde, grado
+        case romano = "cifrado"
+        case funcion, categoria
+    }
 }
 
 // MARK: - AnalisisArmonico
@@ -102,6 +123,8 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
     public let acordes: [AcordeAnalizado]
 
     public var cifrados: [String] { acordes.map(\.cifrado) }
+    /// Los cifrados romanos por sus partes (``AcordeAnalizado/romano``).
+    public var romanos: [CifradoRomano] { acordes.map(\.romano) }
     public var funciones: [FuncionTonal?] { acordes.map(\.funcion) }
 
     /// "I–IV–V7–I en Do mayor".
@@ -230,52 +253,56 @@ extension Tonalidad {
         let tipo = acorde.tipo
         let propias = notasPropias
 
-        func analizado(_ cifrado: String, _ funcion: FuncionTonal?, _ categoria: AcordeAnalizado.Categoria)
+        func analizado(_ romano: CifradoRomano, _ funcion: FuncionTonal?, _ categoria: AcordeAnalizado.Categoria)
             -> AcordeAnalizado
         {
-            AcordeAnalizado(acorde: acorde, grado: grado, cifrado: cifrado, funcion: funcion, categoria: categoria)
+            AcordeAnalizado(acorde: acorde, grado: grado, romano: romano, funcion: funcion, categoria: categoria)
+        }
+        func delGrado(_ numeral: CifradoRomano.Numeral, destino: CifradoRomano? = nil) -> CifradoRomano {
+            let (calidad, inversion, cifras) = sufijo(acorde)
+            return CifradoRomano(numeral, calidad: calidad, inversion: inversion, cifras: cifras, destino: destino)
         }
 
         // Diatónico (el I64 que va a la dominante, con su función).
         if acorde.notas.allSatisfy(propias.contains) {
-            let cifrado = numeral(acorde, grado: grado) + sufijo(acorde)
+            let romano = delGrado(numeral(acorde, grado: grado))
             if esCuartaYSextaCadencial(acorde, grado: grado, siguiente: siguiente) {
-                return analizado(cifrado, .dominante, .cuartaYSextaCadencial)
+                return analizado(romano, .dominante, .cuartaYSextaCadencial)
             }
-            return analizado(cifrado, FuncionTonal(grado: grado), .diatonico)
+            return analizado(romano, FuncionTonal(grado: grado), .diatonico)
         }
 
         // Sexta aumentada, antes que cualquier lectura por su fundamental.
-        if let cifrado = sextaAumentada(acorde, siguiente: siguiente) {
-            return analizado(cifrado, .subdominante, .sextaAumentada)
+        if let sexta = sextaAumentada(acorde, siguiente: siguiente) {
+            return analizado(CifradoRomano(.sextaAumentada(sexta)), .subdominante, .sextaAumentada)
         }
 
         // Dominante o sensible de otro grado (cuando resuelve en él, o si no hay otra lectura).
         let secundaria = secundariaDe(acorde)
         if let secundaria, gradoDe(siguiente?.fundamental) == secundaria.destino {
-            return analizado(secundaria.cifrado, .dominante, secundaria.categoria)
+            return analizado(secundaria.romano, .dominante, secundaria.categoria)
         }
 
         // Sustituto tritonal: una séptima de dominante que baja medio tono a su destino.
         if let destino = sustitutoTritonalDe(acorde, siguiente: siguiente) {
-            let cifrado = "subV" + sufijo(acorde) + (destino == 1 ? "" : "/" + cifradoRomano(grado: destino))
-            return analizado(cifrado, .dominante, .sustitutoTritonal(de: destino))
+            let romano = delGrado(.sustitutoTritonal, destino: destino == 1 ? nil : self.romano(grado: destino))
+            return analizado(romano, .dominante, .sustitutoTritonal(de: destino))
         }
 
         // Sexta napolitana: ♭II mayor.
         if tipo == .mayor, acorde.fundamental == tonica + .segundaMenor {
-            return analizado("♭II" + sufijo(acorde), .subdominante, .napolitana)
+            return analizado(delGrado(.grado(2, alteracion: -1, mayuscula: true)), .subdominante, .napolitana)
         }
 
         // Prestado del modo homónimo.
         if acorde.notas.allSatisfy(homonima.notasPropias.contains) {
-            return analizado(numeral(acorde, grado: grado) + sufijo(acorde), FuncionTonal(grado: grado), .prestamo)
+            return analizado(delGrado(numeral(acorde, grado: grado)), FuncionTonal(grado: grado), .prestamo)
         }
 
         if let secundaria {
-            return analizado(secundaria.cifrado, .dominante, secundaria.categoria)
+            return analizado(secundaria.romano, .dominante, secundaria.categoria)
         }
-        return analizado(numeral(acorde, grado: grado) + sufijo(acorde), nil, .cromatico)
+        return analizado(delGrado(numeral(acorde, grado: grado)), nil, .cromatico)
     }
 
     // MARK: Auxiliares
@@ -289,45 +316,46 @@ extension Tonalidad {
 
     /// Numeral romano del grado de la fundamental, en minúscula si el acorde es menor o disminuido
     /// y con la alteración delante si la fundamental no es propia de la tonalidad: ♭VII, ♯iv°.
-    private func numeral(_ acorde: Acorde, grado: Int) -> String {
-        let romanos = ["I", "II", "III", "IV", "V", "VI", "VII"]
-        let numeral = acorde.tipo.esMenor ? romanos[grado - 1].lowercased() : romanos[grado - 1]
-        guard !notasPropias.contains(acorde.fundamental) else { return numeral }
+    private func numeral(_ acorde: Acorde, grado: Int) -> CifradoRomano.Numeral {
+        let mayuscula = !acorde.tipo.esMenor
+        guard !notasPropias.contains(acorde.fundamental) else {
+            return .grado(grado, alteracion: 0, mayuscula: mayuscula)
+        }
         let alteracion = (acorde.fundamental.pasosDeQuinta - escala.grado(grado).pasosDeQuinta) / 7
-        return Alteracion(alteracion).simbolo + numeral
+        return .grado(grado, alteracion: alteracion, mayuscula: mayuscula)
     }
 
-    /// El sufijo del tipo con la inversión en cifra de bajo continuo: tríadas 6 y 64;
+    /// La calidad del tipo y la inversión en cifra de bajo continuo: tríadas 6 y 64;
     /// cuatríadas 65, 43 y 42 ("V65", "viiø43"). En los demás acordes invertidos se escriben
     /// todos los intervalos sobre el bajo, de mayor a menor: Fa6/La en Do es "IV(add6)643".
-    private func sufijo(_ acorde: Acorde) -> String {
-        let sufijo = acorde.tipo.sufijoRomano
-        guard let inversion = acorde.inversion, inversion > 0 else { return sufijo }
+    private func sufijo(_ acorde: Acorde) -> (calidad: String, inversion: Int, cifras: String) {
+        let calidad = acorde.tipo.sufijoRomano
+        guard let inversion = acorde.inversion, inversion > 0 else { return (calidad, 0, "") }
         switch acorde.tipo.intervalos.count {
         case 3 where (acorde.tipo.esMayor || acorde.tipo.esMenor) && inversion <= 2:
-            return sufijo + ["6", "64"][inversion - 1]
-        case 4 where sufijo.hasSuffix("7") && inversion <= 3:
-            return String(sufijo.dropLast()) + ["65", "43", "42"][inversion - 1]
+            return (calidad, inversion, ["6", "64"][inversion - 1])
+        case 4 where calidad.hasSuffix("7") && inversion <= 3:
+            return (calidad, inversion, ["65", "43", "42"][inversion - 1])
         default:
             let bajo = acorde.bajo.natural.indiceDiatonico
             let cifras = Set(
                 acorde.notas.filter { $0 != acorde.bajo }.map { modulo($0.natural.indiceDiatonico - bajo, 7) + 1 })
-            return sufijo + cifras.sorted(by: >).map(String.init).joined()
+            return (calidad, inversion, cifras.sorted(by: >).map(String.init).joined())
         }
     }
 
     /// "It+6", "Fr+6" o "Ger+6" si el acorde tiene ♭6̂, la tónica y ♯4̂, y además nada (italiana),
     /// 2̂ (francesa) o ♭3̂ (alemana), sea cual sea el bajo. La alemana escrita como séptima de
     /// dominante (La♭7 en Do, con Sol♭ en vez de Fa♯) también lo es si va a la dominante.
-    private func sextaAumentada(_ acorde: Acorde, siguiente: Acorde?) -> String? {
+    private func sextaAumentada(_ acorde: Acorde, siguiente: Acorde?) -> CifradoRomano.SextaAumentada? {
         var resto = Set(acorde.notas)
         guard resto.remove(tonica + .sextaMenor) != nil, resto.remove(tonica) != nil else { return nil }
         let terceraMenor = tonica + .terceraMenor
         if resto.remove(tonica + .cuartaAumentada) != nil {
             switch resto {
-            case []: return "It+6"
-            case [tonica + .segundaMayor]: return "Fr+6"
-            case [terceraMenor]: return "Ger+6"
+            case []: return .italiana
+            case [tonica + .segundaMayor]: return .francesa
+            case [terceraMenor]: return .alemana
             default: return nil
             }
         }
@@ -335,7 +363,7 @@ extension Tonalidad {
         guard resto == [terceraMenor, tonica + .quintaDisminuida],
             let siguiente, siguiente.fundamental == dominante || siguiente.bajo == dominante
         else { return nil }
-        return "Ger+6"
+        return .alemana
     }
 
     /// Si el acorde es la tónica en segunda inversión (tríada mayor o menor con la quinta en el bajo) y el
@@ -357,7 +385,7 @@ extension Tonalidad {
             notasPropias.contains(siguiente.fundamental)
         else { return nil }
         let grado = gradoDe(siguiente.fundamental)
-        let acordeDestino = self.acorde(grado: grado)
+        let acordeDestino = self.acordeDelGrado(grado)
         guard acordeDestino.fundamental == siguiente.fundamental,
             acordeDestino.tipo.estructura.calidadDeTriada != .disminuida
         else { return nil }
@@ -367,7 +395,7 @@ extension Tonalidad {
     /// Si el acorde es la dominante (V, V7) o el acorde de sensible (vii°, vii°7, viiø7) de un
     /// grado de la tonalidad que no sea la tónica, su cifrado ("V7/V"), su categoría y el grado.
     private func secundariaDe(_ acorde: Acorde) -> (
-        cifrado: String, categoria: AcordeAnalizado.Categoria, destino: Int
+        romano: CifradoRomano, categoria: AcordeAnalizado.Categoria, destino: Int
     )? {
         let estructura = acorde.tipo.estructura
         let esDeDominante =
@@ -378,14 +406,14 @@ extension Tonalidad {
         let destino = acorde.fundamental + (esDeDominante ? Intervalo.cuartaJusta : .segundaMenor)
         let grado = gradoDe(destino)
         guard grado != 1, notasPropias.contains(destino) else { return nil }
-        let acordeDestino = self.acorde(grado: grado)
+        let acordeDestino = self.acordeDelGrado(grado)
         guard acordeDestino.fundamental == destino,
             acordeDestino.tipo.estructura.calidadDeTriada != .disminuida
         else { return nil }
-        let romanoDestino = cifradoRomano(grado: grado)
-        if esDeDominante {
-            return ("V" + sufijo(acorde) + "/" + romanoDestino, .dominanteSecundaria(de: grado), grado)
-        }
-        return ("vii" + sufijo(acorde) + "/" + romanoDestino, .sensibleSecundaria(de: grado), grado)
+        let (calidad, inversion, cifras) = sufijo(acorde)
+        let romano = CifradoRomano(
+            .grado(esDeDominante ? 5 : 7, alteracion: 0, mayuscula: esDeDominante), calidad: calidad,
+            inversion: inversion, cifras: cifras, destino: self.romano(grado: grado))
+        return (romano, esDeDominante ? .dominanteSecundaria(de: grado) : .sensibleSecundaria(de: grado), grado)
     }
 }
