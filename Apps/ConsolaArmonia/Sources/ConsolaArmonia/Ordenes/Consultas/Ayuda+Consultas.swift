@@ -93,7 +93,7 @@ extension LineaDeComandos {
                 "armonia scale D dorian"),
             notas: TextosDeConsola.traduccion(\.notasEscala),
             opciones: [
-                .acordes, .secuencia, .bajando, .octavas, .piano, .modos, .comparar, .simetria, .vecinas, .doce,
+                .acordes, .cuartas, .tensionesDeLosGrados, .secuencia, .bajando, .octavas, .piano, .modos, .comparar, .simetria, .vecinas, .doce,
                 .triadas, .estadisticas, .escalera, .parecidas, .progresiones, .tetracordos, .bibtex,
             ])
     ]

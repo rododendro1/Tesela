@@ -257,6 +257,15 @@ extension LineaDeComandosTests {
         #expect(salida("chord C7 --scales --ingles").contains("C mixolydian (from the chord symbol)"))
     }
 
+    /// `escala --tensiones-disponibles` y `escala --cuartas`: las tensiones de cada grado y la armonía cuartal.
+    @Test func lasTensionesYLasCuartasDeUnaEscala() {
+        let tensiones = salida("escala Do mayor --tensiones-disponibles")
+        #expect(tensiones.contains("  2 Rem7: Mi 9 · Sol 11 · Si 13\n"))
+        #expect(tensiones.contains("  7 Sim7(♭5): Mi 11 · Sol ♭13"))
+        #expect(salida("escala Re dórico --cuartas").contains("Acordes por cuartas:\n  1 Re–Sol–Do–Fa"))
+        #expect(salida("scale D dorian --fourths --ingles").contains("Chords in fourths:"))
+    }
+
     @Test func referenciasDeUnaEscala() {
         #expect(
             salida("escala Re bayati").contains(
