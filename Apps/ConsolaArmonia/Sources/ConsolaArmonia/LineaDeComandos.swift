@@ -46,7 +46,7 @@ public enum LineaDeComandos {
         do throws(ErrorEnUnaOpcionGeneral) {
             generales = try opcionesGenerales(&opciones, entorno: entorno)
         } catch {
-            return uso(error.error, error.notacion)
+            return uso(error.error, error.notacion, json: argumentos.contains("--json"))
         }
         let (notacion, movil, json, destino) = (generales.notacion, generales.movil, generales.json, generales.destino)
         let argumentos = opciones.restantes
@@ -54,18 +54,22 @@ public enum LineaDeComandos {
         guard let nombre = argumentos.first?.lowercased() else {
             return bien(indiceDeAyuda(en: notacion.textos, grafia: notacion.grafiaDeLosTextos))
         }
-        guard let orden = orden(llamada: nombre) else { return uso(.ordenDesconocida(nombre), notacion) }
+        guard let orden = orden(llamada: nombre) else { return uso(.ordenDesconocida(nombre), notacion, json: json) }
         var resto = Array(argumentos.dropFirst())
 
         // Toda la ayuda (`armonia ayuda --todo`) y la de una orden: `armonia ayuda acorde`, `armonia acorde --help`.
         if orden.nombres.contains("ayuda"), let pedida = resto.first?.lowercased() {
             if marcasDeToda.contains(pedida) { return bien(ayuda(en: notacion)) }
-            guard let otra = self.orden(llamada: pedida) else { return uso(.ordenDesconocida(pedida), notacion) }
+            guard let otra = self.orden(llamada: pedida) else {
+                return uso(.ordenDesconocida(pedida), notacion, json: json)
+            }
             return bien(ayuda(de: otra, en: notacion))
         }
         if resto.contains(where: marcasDeAyuda.contains) { return bien(ayuda(de: orden, en: notacion)) }
         // Un sistema móvil nombra grados: solo `escala`, que tiene tónica, sabe qué nombre lleva cada nota.
-        if let movil, !orden.nombres.contains("escala") { return uso(.sistemaMovil(movil.nombre), notacion) }
+        if let movil, !orden.nombres.contains("escala") {
+            return uso(.sistemaMovil(movil.nombre), notacion, json: json)
+        }
 
         let estandar = entrada.map(EntradaEstandar.init)
         if let estandar {
@@ -101,19 +105,20 @@ public enum LineaDeComandos {
         do {
             guard json else { return try orden.ejecutar(resto, contexto) }
             guard let salida = orden.json else {
-                return uso(.sinSalidaJSON(nombre), notacion, enCurso: enCurso)
+                return uso(.sinSalidaJSON(nombre), notacion, enCurso: enCurso, json: true)
             }
             let datos = try salida(resto, contexto)
             let texto = try textoJSON(datos, enUnaLinea: !salidaEsTerminal)
             let conFaltas = (datos as? any ConFaltas)?.hayFaltas ?? false
             return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: conFaltas ? 3 : 0)
         } catch let error as ErrorDeUso {
-            return uso(error, notacion, enCurso: enCurso)
+            return uso(error, notacion, enCurso: enCurso, json: json)
         } catch let error as any ErrorDeArmonia {
-            return ResultadoDeOrden(
-                salida: "", error: "armonia: " + error.descripcion(en: notacion) + "\n", codigo: 1)
+            let texto = json ? ErrorEnJSON(error, en: notacion).texto : "armonia: " + error.descripcion(en: notacion) + "\n"
+            return ResultadoDeOrden(salida: "", error: texto, codigo: 1)
         } catch {
-            return ResultadoDeOrden(salida: "", error: "armonia: \(error)\n", codigo: 1)
+            let texto = json ? ErrorEnJSON(otro: error).texto : "armonia: \(error)\n"
+            return ResultadoDeOrden(salida: "", error: texto, codigo: 1)
         }
     }
 
@@ -289,9 +294,15 @@ public enum LineaDeComandos {
         }
     }
 
-    /// El error de uso, con la ayuda de la orden en curso si la hay.
-    static func uso(_ error: ErrorDeUso, _ notacion: Notacion, enCurso: OrdenEnCurso? = nil) -> ResultadoDeOrden {
-        ResultadoDeOrden(salida: "", error: error.mensajeDeUso(en: notacion, enCurso: enCurso), codigo: 2)
+    /// El error de uso, con la ayuda de la orden en curso si la hay; con `--json`, en JSON (`ErrorEnJSON`).
+    static func uso(
+        _ error: ErrorDeUso, _ notacion: Notacion, enCurso: OrdenEnCurso? = nil, json: Bool = false
+    ) -> ResultadoDeOrden {
+        let texto =
+            json
+            ? ErrorEnJSON(error, en: notacion, enCurso: enCurso).texto
+            : error.mensajeDeUso(en: notacion, enCurso: enCurso)
+        return ResultadoDeOrden(salida: "", error: texto, codigo: 2)
     }
 
     /// La ayuda en el idioma de los textos de la notación (`Notacion.textos`).

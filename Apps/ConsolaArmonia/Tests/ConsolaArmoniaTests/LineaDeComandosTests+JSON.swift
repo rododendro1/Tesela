@@ -5,7 +5,7 @@ import Testing
 @testable import ConsolaArmonia
 
 // Las pruebas de la salida en JSON (`--json`): que se lee como JSON, que las claves no cambian con el idioma y que
-// los errores siguen yendo en texto.
+// los errores también van en JSON, en la salida de errores.
 
 extension LineaDeComandosTests {
     /// La salida de una orden con `--json`, leída como JSON.
@@ -268,6 +268,32 @@ extension LineaDeComandosTests {
         #expect(ilegible.salida.isEmpty)
         #expect(LineaDeComandos.ejecutar(["serie", "0", "1", "2", "--json"]).codigo == 1)
         #expect(salida("ayuda").contains("--json"))
+    }
+
+    /// Con `--json`, el error sale en JSON en la salida de errores, con un tipo que no cambia con el idioma.
+    @Test func erroresEnJSON() throws {
+        func error(_ argumentos: String...) throws -> [String: Any] {
+            let resultado = LineaDeComandos.ejecutar(argumentos)
+            let objeto = try JSONSerialization.jsonObject(with: Data(resultado.error.utf8)) as? [String: Any]
+            let error = try #require(objeto?["error"] as? [String: Any], Comment(rawValue: resultado.error))
+            #expect(error["codigo"] as? Int == Int(resultado.codigo))
+            #expect(resultado.salida.isEmpty)
+            return error
+        }
+        let lectura = try error("acorde", "Xyz", "--json")
+        #expect(lectura["tipo"] as? String == "notaNoReconocida")
+        #expect(lectura["texto"] as? String == "Xyz" && lectura["posicion"] as? Int == 0)
+        #expect((try error("acorde", "Xyz", "--json", "--ingles"))["tipo"] as? String == "notaNoReconocida")
+        let opcion = try error("acorde", "Sol7", "--jsn", "--json")
+        #expect(opcion["tipo"] as? String == "opcionDesconocida" && opcion["propuesta"] as? String == "--json")
+        #expect((try error("acordee", "--json"))["propuesta"] as? String == "acorde")
+        #expect((try error("tonnetz", "Do", "--json"))["tipo"] as? String == "sinSalidaJSON")
+        #expect((try error("acorde", "--json"))["tipo"] as? String == "faltaCifrado")
+        #expect((try error("--idioma", "xx", "--json"))["tipo"] as? String == "idiomaDesconocido")
+        let fichero = try error("scala", "--archivo", "/no/existe.scl", "--json")
+        #expect(fichero["tipo"] as? String == "ArchivoIlegible")
+        // Sin --json, en texto, como siempre.
+        #expect(LineaDeComandos.ejecutar(["acorde", "Xyz"]).error.hasPrefix("armonia: "))
     }
 }
 
