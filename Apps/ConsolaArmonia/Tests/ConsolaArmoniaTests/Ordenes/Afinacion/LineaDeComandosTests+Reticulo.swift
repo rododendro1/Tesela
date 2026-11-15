@@ -46,12 +46,21 @@ extension LineaDeComandosTests {
                     #"{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"escala","arguments":{"argumentos":["Re","dórico"]}}}"#
             ))
         #expect(lista2.contains(#""isError":false"#), Comment(rawValue: lista2))
+        // Los datos, también como objeto: el de `escala` tal cual, la lista de `acorde` en `resultados`.
+        func estructurado(_ respuesta: String) throws -> [String: Any] {
+            let mensaje = try #require(try JSONSerialization.jsonObject(with: Data(respuesta.utf8)) as? [String: Any])
+            let resultado = try #require(mensaje["result"] as? [String: Any])
+            return try #require(resultado["structuredContent"] as? [String: Any])
+        }
+        #expect(try estructurado(lista2)["nombre"] as? String == "Re dórico")
+        let acordes = try #require(try estructurado(llamada)["resultados"] as? [[String: Any]])
+        #expect(acordes.first?["bajo"] as? String == "Si")
         let mal = try #require(
             servidor.responder(
                 a:
                     #"{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"acorde","arguments":{"argumentos":"Xyz"}}}"#
             ))
-        #expect(mal.contains(#""isError":true"#))
+        #expect(mal.contains(#""isError":true"#) && !mal.contains("structuredContent"))
         let desconocida = try #require(
             servidor.responder(a: #"{"jsonrpc":"2.0","id":6,"method":"tools/call","params":{"name":"nada"}}"#))
         #expect(desconocida.contains(#""code":-32602"#))
