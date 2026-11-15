@@ -169,6 +169,31 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.ejecutar(["escala", "Do", "mayor", "--secuencia", "foo", "--json"]).codigo == 2)
     }
 
+    /// Las opciones que antes solo daban texto: cada una, con su clave en el JSON y los mismos datos que el texto.
+    @Test func escalaConTodasSusOpcionesEnJSON() throws {
+        let orden = "escala Re dórico --tensiones-disponibles --cuartas --progresiones --parecidas"
+        let dorico = try #require(try json(orden) as? [String: Any])
+        let tensiones = try #require(dorico["tensionesDisponibles"] as? [[String: Any]])
+        #expect(tensiones.count == 7)
+        #expect(tensiones[0]["grado"] as? Int == 1)
+        #expect(tensiones[0]["acorde"] as? String == "Rem7")
+        let cuartas = try #require(dorico["acordesPorCuartas"] as? [[String: Any]])
+        #expect(cuartas[1]["notas"] as? [String] == ["Mi", "La", "Re", "Sol"])
+        #expect((dorico["progresiones"] as? [[String: Any]])?.first?["grados"] is String)
+        #expect((dorico["parecidas"] as? [[String: String]])?.isEmpty == false)
+        let texto = salida(orden)
+        for grado in tensiones {
+            let lista = grado["tensiones"] as? [String] ?? []
+            #expect(
+                texto.contains(
+                    "\(grado["acorde"] as? String ?? ""): " + (lista.isEmpty ? "—" : lista.joined(separator: " · "))))
+        }
+        let bayati = try #require(try json("escala Re bayati --tetracordos") as? [String: Any])
+        let fuente = try #require(bayati["fuenteDeLosAjnas"] as? String)
+        #expect(salida("escala Re bayati --tetracordos").contains("(" + fuente + "): "))
+        #expect((bayati["ajnas"] as? [[String: Any]])?.first?["desde"] as? String == "Re")
+    }
+
     @Test func analizarEnJSON() throws {
         let analisis = try #require(try json("analizar Do Fa Sol7 Do") as? [String: Any])
         #expect((analisis["titulo"] as? String)?.isEmpty == false)

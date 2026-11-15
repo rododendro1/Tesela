@@ -4,6 +4,16 @@
 
 ### Lo nuevo
 
+- `EstadisticasDeEscalaPresentadas`, `EscalaDelCatalogoPresentada`, `GrupoDeEscalasPresentado`, `TradicionPresentada` y
+  `ReferenciaPresentada`: lo que se mide de una escala, el catálogo de escalas, sus tradiciones y una referencia, con
+  las claves del JSON de `armonia escala --estadisticas`, `escalas` y `tradiciones --json`. El texto de la consola sale
+  de los mismos datos.
+- `PresentacionDeEstudioDeEscala.tensionesDisponibles(de:en:)`, `acordesPorCuartas(de:en:)` y `ajnas(de:en:)`, con
+  `TensionesDelGradoPresentadas`, `AcordePorCuartasPresentado` y `AjnasPresentados`: lo que dan `escala
+  --tensiones-disponibles`, `--cuartas` y `--tetracordos`, en texto y en JSON. `ProgresionDeLaEscala` es `Encodable`
+  (sus grados, sus cifrados y lo que queda fuera). Con ellos, `escala … --json` lleva también
+  `tensionesDisponibles`, `acordesPorCuartas`, `progresiones`, `parecidas` y `fuenteDeLosAjnas`, que antes solo daba
+  el texto, y cada jins de `ajnas`, su nota de partida (`desde`).
 - `TonalidadPresentada`, `IntervaloPresentado` y `NotasDeArpegioPresentadas`: lo que se consulta de una tonalidad, de
   un intervalo y de un arpegio, con las claves del JSON de `armonia tonalidad`, `intervalo` y `arpegio --json`. El
   texto de la consola sale de los mismos datos.

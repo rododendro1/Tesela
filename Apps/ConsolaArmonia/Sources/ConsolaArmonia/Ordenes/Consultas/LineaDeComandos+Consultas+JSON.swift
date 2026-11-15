@@ -116,23 +116,6 @@ extension LineaDeComandos {
             let tonicas: String?
             let ciclos: [EscalaConDetallePresentada]
         }
-        /// `EstadisticasDeEscala`, con el cardinal por su nombre.
-        struct Estadisticas: Encodable {
-            let numeroDeNotas: Int
-            let cardinal: String?
-            let brillo: Int?
-            let brilloPorQuintas: Double
-            let pasos: [Int]
-            let vectorIntervalico: [Int]
-            let anhemitonica: Bool
-            let cohemitonica: Bool
-            let transposicionesDistintas: Int
-            let numeroDeForte: String?
-            let maximamenteRegular: Bool
-            let aproximada: Bool
-            /// Lo que dicen las teorías: Myhill, Rothenberg, Hanson, Messiaen, Balzano…
-            let teoria: MedidasDeEscalaPresentadas
-        }
         struct Peldano: Encodable {
             let nombre: String
             let brilloPorQuintas: Double
@@ -182,12 +165,21 @@ extension LineaDeComandos {
             var simetria: Simetria?
             /// `--tetracordos`: cada división, pieza a pieza.
             var tetracordos: [[PiezaDeTetracordos]]?
-            /// `--tetracordos` en un maqām o un makam: sus ajnas o çeşni.
-            var ajnas: [FragmentoJSON]?
+            /// `--tetracordos` en un maqām o un makam: sus ajnas o çeşni y la obra que los da.
+            var ajnas: [FragmentoDeLaEscalaPresentado]?
+            var fuenteDeLosAjnas: String?
             /// `--vecinas`.
             var vecinas: [EscalaConDetallePresentada]?
             /// `--estadisticas`.
-            var estadisticas: Estadisticas?
+            var estadisticas: EstadisticasDeEscalaPresentadas?
+            /// `--tensiones-disponibles`: la cuatríada de cada grado con sus tensiones.
+            var tensionesDisponibles: [TensionesDelGradoPresentadas]?
+            /// `--cuartas`: el acorde por cuartas de cada grado.
+            var acordesPorCuartas: [AcordePorCuartasPresentado]?
+            /// `--progresiones`: progresiones con sus tríadas.
+            var progresiones: [ProgresionDeLaEscala]?
+            /// `--parecidas`: las escalas con más notas en común.
+            var parecidas: [EscalaConDetallePresentada]?
             /// `--escalera`: de la más oscura a la más brillante.
             var escaleraDeBrillo: [Peldano]?
             /// `--doce`, con la secuencia de `--secuencia` si se da; con `--acordes`, también los acordes de cada
@@ -202,17 +194,7 @@ extension LineaDeComandos {
             var mnemonico: String?
             var solfa: [String]?
             /// Dónde se lee la escala, si es de otra tradición; `nil` en las demás.
-            var referencias: [ReferenciaJSON]?
-        }
-
-        /// Una obra o una cita: su clave de BibTeX, la cita breve («West 1992: 160–172») y la referencia completa.
-        struct ReferenciaJSON: Encodable {
-            let clave: String
-            let cita: String
-            let descripcion: String
-            let paginas: String?
-            let doi: String?
-            let url: String?
+            var referencias: [ReferenciaPresentada]?
         }
     }
 
@@ -230,11 +212,7 @@ extension LineaDeComandos {
         }
         let referencias = escala.tipo.referencias
         if !referencias.isEmpty {
-            opciones.referencias = referencias.map {
-                EscalaJSON.ReferenciaJSON(
-                    clave: $0.clave, cita: $0.cita, descripcion: $0.descripcion, paginas: $0.paginasCitadas,
-                    doi: $0.doi, url: $0.url)
-            }
+            opciones.referencias = referencias.map(ReferenciaPresentada.init)
         }
         if pedido.conAcordes {
             opciones.acordesQueCaben = PresentacionDeEscalaYAcorde.acordesQueCaben(escala, en: notacion).map {
@@ -272,20 +250,27 @@ extension LineaDeComandos {
         }
         if pedido.tetracordos {
             opciones.tetracordos = piezasDeTetracordos(de: escala, notacion)
-            opciones.ajnas = ajnasJSON(de: escala, notacion)
+            let ajnas = PresentacionDeEstudioDeEscala.ajnas(de: escala, en: notacion)
+            opciones.ajnas = ajnas?.fragmentos
+            opciones.fuenteDeLosAjnas = ajnas?.fuente
         }
         if pedido.vecinas {
             opciones.vecinas = PresentacionDeEstudioDeEscala.vecinas(de: escala, en: notacion)
         }
         if pedido.estadisticas {
-            let medidas = escala.estadisticas
-            opciones.estadisticas = EscalaJSON.Estadisticas(
-                numeroDeNotas: medidas.numeroDeNotas, cardinal: medidas.cardinal?.nombre(en: notacion),
-                brillo: medidas.brillo, brilloPorQuintas: Redondeo.valor(medidas.brilloPorQuintas, decimales: 2),
-                pasos: medidas.pasos, vectorIntervalico: medidas.vectorIntervalico, anhemitonica: medidas.anhemitonica,
-                cohemitonica: medidas.cohemitonica, transposicionesDistintas: medidas.transposicionesDistintas,
-                numeroDeForte: medidas.numeroDeForte, maximamenteRegular: medidas.maximamenteRegular,
-                aproximada: medidas.aproximada, teoria: MedidasDeEscalaPresentadas(medidas, en: notacion))
+            opciones.estadisticas = EstadisticasDeEscalaPresentadas(escala, en: notacion)
+        }
+        if pedido.tensionesDeLosGrados {
+            opciones.tensionesDisponibles = PresentacionDeEstudioDeEscala.tensionesDisponibles(de: escala, en: notacion)
+        }
+        if pedido.cuartas {
+            opciones.acordesPorCuartas = PresentacionDeEstudioDeEscala.acordesPorCuartas(de: escala, en: notacion)
+        }
+        if pedido.progresiones {
+            opciones.progresiones = PresentacionDeEstudioDeEscala.progresiones(de: escala, en: notacion)
+        }
+        if pedido.parecidas {
+            opciones.parecidas = PresentacionDeEstudioDeEscala.parecidas(a: escala, en: notacion)
         }
         if pedido.escalera {
             let peldanos = PresentacionDeEstudioDeEscala.escaleraDeBrillo(de: escala, en: notacion)
@@ -344,36 +329,14 @@ extension LineaDeComandos {
 
     // MARK: Tradiciones
 
-    struct TradicionJSON: Encodable {
-        struct Categoria: Encodable {
-            /// «maqam», «raga»…: como se escribe en `--categoria`, siempre igual.
-            let clave: String
-            let nombre: String
-            let escalas: Int
-        }
-        /// Como se escribe en `--tradicion`, en español: «japon», «mundo-arabe».
-        let clave: String
-        let nombre: String
-        let escalas: Int
-        let categorias: [Categoria]
-    }
-
     /// `tradiciones --json`: cada tradición con sus categorías y cuántas escalas tiene de cada una. Las escalas de una
     /// tradición (`tradiciones japon`) no dan JSON, como `escalas`.
-    static func tradicionesJSON(_ textos: [String], _ notacion: Notacion) throws -> [TradicionJSON] {
+    static func tradicionesJSON(_ textos: [String], _ notacion: Notacion) throws -> [TradicionPresentada] {
         if let primera = textos.first, !Argumentos.pareceUnaOpcion(primera) {
             throw ErrorDeUso.sinSalidaJSON("tradiciones " + primera)
         }
         try Argumentos(textos).sinOpcionesDesconocidas()
-        return catalogoDeTradiciones().map { ficha in
-            TradicionJSON(
-                clave: ficha.claves.espanol, nombre: ficha.tradicion.nombre(en: notacion),
-                escalas: ficha.categorias.map(\.escalas).reduce(0, +),
-                categorias: ficha.categorias.map {
-                    TradicionJSON.Categoria(
-                        clave: $0.categoria.rawValue, nombre: $0.categoria.nombre(en: notacion), escalas: $0.escalas)
-                })
-        }
+        return catalogoDeTradiciones(en: notacion).map(\.datos)
     }
 
     // MARK: Teoría postonal
@@ -392,83 +355,14 @@ extension LineaDeComandos {
 
     // MARK: El catálogo de escalas
 
-    /// Una escala del catálogo de `escalas --json`: su nombre, sus notas desde Do y sus clases, y de dónde es.
-    struct EscalaDelCatalogoJSON: Encodable {
-        let nombre: String
-        /// El nombre en la escritura de su tradición, si lo tiene.
-        let nombresOriginales: [NombreOriginalPresentado]?
-        let notas: [String]
-        let clases: [Int]
-        let microtonal: Bool
-        let brilloPorQuintas: Double
-        /// Las claves de `--tradicion`, `--categoria` y `--fuente`, o `nil` en las occidentales.
-        let tradicion: String?
-        let categoria: String?
-        let fuente: String?
-        /// Los nombres de sus lugares de origen y de uso (`TipoDeEscala.lugaresDeOrigen`, `lugaresDeUso`), los
-        /// códigos ISO de sus países de origen y las claves de sus continentes de origen.
-        let lugaresDeOrigen: [String]
-        let lugaresDeUso: [String]
-        let paises: [String]
-        let continentes: [String]
-        /// Las claves de su época de origen (`TipoDeEscala.epocaDeOrigen`) y de las de uso, su año de origen, la de
-        /// su período, las de sus estilos (de más a menos importante), sus corrientes y sus escuelas.
-        let anio: Int?
-        let epoca: String?
-        let epocasDeUso: [String]
-        let periodo: String?
-        let estilos: [String]
-        let corrientes: [String]
-        let escuelas: [String]
-        /// Si es un fragmento de menos de una octava, los semitonos que abarca (5 en un tetracordo); `nil` si no.
-        let ambito: Int?
-        /// La clave del carácter de su afinación («temperada», «justa», «microtonal», «partes-iguales») y, en las de
-        /// partes iguales, cuántas; `nil` si no tiene una propia.
-        let afinacion: String?
-        let partesIguales: Int?
-    }
-
-    /// Las partes iguales de una afinación `.partesIguales`; `nil` en las demás.
-    private static func partesIguales(_ caracter: CaracterDeLaAfinacion?) -> Int? {
-        if case .partesIguales(let partes) = caracter { partes } else { nil }
-    }
-
-    /// Un grupo de `escalas --json`: «Japón · escala» y sus escalas, en el orden de `--orden`.
-    struct GrupoDeEscalasJSON: Encodable {
-        let titulo: String
-        let escalas: [EscalaDelCatalogoJSON]
-    }
-
     /// `escalas --tradicion japon --json`: los grupos del catálogo, los mismos que da el texto. Vacío si no hay
     /// ninguna. `--comparar`, `--mapa`, `--vecinas`, `--parecidas` y `--escalera` no dan JSON.
-    static func escalasJSON(_ textos: [String], _ notacion: Notacion) throws -> [GrupoDeEscalasJSON] {
+    static func escalasJSON(_ textos: [String], _ notacion: Notacion) throws -> [GrupoDeEscalasPresentado] {
         switch try catalogoDeEscalas(textos, notacion) {
         case .otraCosa(_, let opcion): throw ErrorDeUso.sinSalidaJSON("escalas " + opcion)
         case .ninguna: return []
         case .grupos(let grupos, _):
-            return grupos.map { grupo in
-                GrupoDeEscalasJSON(
-                    titulo: grupo.titulo,
-                    escalas: grupo.tipos.map { tipo in
-                        let escala = Escala(.do, tipo)
-                        let originales = NombreOriginalPresentado.de(tipo, en: notacion)
-                        return EscalaDelCatalogoJSON(
-                            nombre: tipo.nombre(en: notacion), nombresOriginales: originales.isEmpty ? nil : originales,
-                            notas: escala.notas.map { $0.nombre(en: notacion) },
-                            clases: escala.notas.map(\.claseDeAltura), microtonal: tipo.esMicrotonal,
-                            brilloPorQuintas: escala.estadisticas.brilloPorQuintas, tradicion: tipo.tradicion?.rawValue,
-                            categoria: tipo.categoria?.rawValue, fuente: tipo.fuente?.rawValue,
-                            lugaresDeOrigen: tipo.lugaresDeOrigen.map { $0.nombre(en: notacion) },
-                            lugaresDeUso: tipo.lugaresDeUso.map { $0.nombre(en: notacion) },
-                            paises: tipo.paisesDeOrigen.map(\.codigoISO),
-                            continentes: tipo.continentesDeOrigen.map(\.rawValue), anio: tipo.anioDeOrigen,
-                            epoca: tipo.epocaDeOrigen?.rawValue, epocasDeUso: tipo.epocasDeUso.map(\.rawValue),
-                            periodo: tipo.periodo?.rawValue, estilos: tipo.estilos.map(\.rawValue),
-                            corrientes: tipo.corrientes.map(\.rawValue), escuelas: tipo.escuelas.map(\.rawValue),
-                            ambito: tipo.ambito?.semitonos, afinacion: tipo.caracterDeLaAfinacion?.clave,
-                            partesIguales: partesIguales(tipo.caracterDeLaAfinacion))
-                    })
-            }
+            return grupos.map { GrupoDeEscalasPresentado(titulo: $0.titulo, tipos: $0.tipos, en: notacion) }
         }
     }
 }

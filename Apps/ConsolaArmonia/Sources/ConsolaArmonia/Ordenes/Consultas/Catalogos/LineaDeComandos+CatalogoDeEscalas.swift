@@ -15,38 +15,30 @@ extension LineaDeComandos {
             return try escalas(["--tradicion"] + argumentos, notacion)
         }
         try Argumentos(argumentos).sinOpcionesDesconocidas()
-        let lineas = catalogoDeTradiciones().map { ficha in
-            let clave = ejemplo(ficha.claves.espanol, ficha.claves.ingles).en(notacion)
-            let categorias = ficha.categorias.map { "\($0.categoria.nombre(en: notacion)) \($0.escalas)" }
-            return "\(ficha.tradicion.nombre(en: notacion)) (\(clave)): " + categorias.joined(separator: " · ")
+        // Los datos de `--json` (`TradicionPresentada`), en texto, con la clave en el idioma de la orden.
+        let lineas = catalogoDeTradiciones(en: notacion).map { ficha in
+            let clave = ejemplo(ficha.datos.clave, ficha.claveEnIngles).en(notacion)
+            let categorias = ficha.datos.categorias.map { "\($0.nombre) \($0.escalas)" }
+            return "\(ficha.datos.nombre) (\(clave)): " + categorias.joined(separator: " · ")
         }
         return bien(lineas.joined(separator: "\n"))
     }
 
-    /// Una tradición del catálogo: cómo se escribe en `--tradicion` y cuántas escalas tiene de cada categoría, en el
-    /// orden del catálogo.
+    /// Una tradición del catálogo (`TradicionPresentada`, con su clave de `--tradicion` en español) y cómo se escribe
+    /// su clave en inglés.
     struct TradicionDelCatalogo {
-        let tradicion: Tradicion
-        let claves: (espanol: String, ingles: String)
-        let categorias: [(categoria: CategoriaTradicional, escalas: Int)]
+        let datos: TradicionPresentada
+        let claveEnIngles: String
     }
 
     /// Las tradiciones, en el orden de `Tradicion.allCases`, con sus categorías en el de `TipoDeEscala.tradicionales`;
     /// sin la occidental, que no tiene `--tradicion` (sus escalas son las habituales, por estilos con `--estilo`).
-    static func catalogoDeTradiciones() -> [TradicionDelCatalogo] {
+    static func catalogoDeTradiciones(en notacion: Notacion) -> [TradicionDelCatalogo] {
         Tradicion.allCases.compactMap { tradicion in
             guard let claves = nombresDeLasTradiciones.first(where: { $0.tradicion == tradicion }) else { return nil }
-            var categorias: [(categoria: CategoriaTradicional, escalas: Int)] = []
-            for tipo in TipoDeEscala.tradicionales where tipo.tradicion == tradicion {
-                guard let categoria = tipo.categoria else { continue }
-                if let i = categorias.firstIndex(where: { $0.categoria == categoria }) {
-                    categorias[i].escalas += 1
-                } else {
-                    categorias.append((categoria, 1))
-                }
-            }
             return TradicionDelCatalogo(
-                tradicion: tradicion, claves: (claves.espanol, claves.ingles), categorias: categorias)
+                datos: TradicionPresentada(tradicion, clave: claves.espanol, en: notacion), claveEnIngles: claves.ingles
+            )
         }
     }
 
@@ -103,19 +95,18 @@ extension LineaDeComandos {
         case .otraCosa(let resultado, _), .ninguna(let resultado): return resultado
         case .grupos(let pedidos, let elegido): (grupos, orden) = (pedidos, elegido)
         }
+        // Los datos de `--json` (`GrupoDeEscalasPresentado`), en texto.
         var lineas: [String] = []
-        for grupo in grupos {
+        for grupo in grupos.map({ GrupoDeEscalasPresentado(titulo: $0.titulo, tipos: $0.tipos, en: notacion) }) {
             if !lineas.isEmpty { lineas.append("") }
-            lineas.append("\(grupo.titulo) (\(grupo.tipos.count))")
-            for tipo in grupo.tipos {
-                let notas = Escala(.do, tipo).notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
-                let microtonos = tipo.esMicrotonal ? " · " + traducir(.microtonos) : ""
+            lineas.append("\(grupo.titulo) (\(grupo.escalas.count))")
+            for escala in grupo.escalas {
+                let notas = escala.notas.joined(separator: " ")
+                let microtonos = escala.microtonal ? " · " + traducir(.microtonos) : ""
                 // Ordenadas por brillo, con su brillo por quintas: «lidio: Do Re Mi Fa♯ Sol La Si · +3».
                 let brillo =
-                    orden == .brillo
-                    ? " · " + PresentacionDeEstudioDeEscala.conSigno(Escala(.do, tipo).estadisticas.brilloPorQuintas)
-                    : ""
-                lineas.append("  \(tipo.nombre(en: notacion)): \(notas)\(microtonos)\(brillo)")
+                    orden == .brillo ? " · " + PresentacionDeEstudioDeEscala.conSigno(escala.brilloPorQuintas) : ""
+                lineas.append("  \(escala.nombre): \(notas)\(microtonos)\(brillo)")
             }
         }
         return bien(lineas.joined(separator: "\n"))

@@ -2,7 +2,9 @@ import Armonia
 
 /// Una progresión hecha con los acordes de una escala (la húngara menor, la doble armónica…), con su análisis: los
 /// grados en números romanos frente a la mayor o la menor de la misma tónica y las notas que no son de esa.
-public struct ProgresionDeLaEscala: Hashable, Sendable {
+///
+/// En JSON (`armonia escala … --progresiones --json`), sus grados, sus cifrados y lo que queda fuera.
+public struct ProgresionDeLaEscala: Hashable, Sendable, Encodable {
     /// «i–♯vii–i».
     public let grados: String
     public let acordes: [Acorde]
@@ -11,6 +13,8 @@ public struct ProgresionDeLaEscala: Hashable, Sendable {
     /// «Fuera de La menor: Re♯, Sol♯»; vacío si todas son de ella.
     public let fuera: String
     public let sonido: Escucha
+
+    private enum CodingKeys: String, CodingKey { case grados, cifrados, fuera }
 }
 
 extension PresentacionDeEstudioDeEscala {
