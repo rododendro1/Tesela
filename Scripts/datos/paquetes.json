@@ -1,0 +1,41 @@
+{
+  "_": "Los paquetes del repositorio, sus dependencias permitidas y sus mínimos de cobertura: lo leen Scripts/comprobaciones/comprobar_dependencias.py y comprobar_paquetes.py, que vigila que la CI, la documentación y los scripts digan lo mismo. De más básico a más alto: cada paquete solo puede depender de los anteriores.",
+  "paquetes": [
+    {
+      "nombre": "Hexagonos",
+      "descripcion": "Rejillas hexagonales: no depende de nada.",
+      "depende": [],
+      "modulos": ["Hexagonos"],
+      "cobertura": {"funciones": 93.5, "lineas": 97.5}
+    },
+    {
+      "nombre": "Armonia",
+      "descripcion": "El motor: usa la geometría de Hexagonos para el Tonnetz, la tabla armónica y los teclados isomórficos.",
+      "depende": ["Hexagonos"],
+      "modulos": ["Elementos", "Teoria", "Diagramas", "Partituras", "Polifonia", "Formatos", "Trastes", "Armonia"],
+      "cobertura": {"funciones": 95.5, "lineas": 98.0}
+    },
+    {
+      "nombre": "ExposicionArmonia",
+      "descripcion": "Lo que enseñan las apps y la línea de comandos, sin SwiftUI (con las casillas de las redes, de Hexagonos).",
+      "depende": ["Armonia", "Hexagonos"],
+      "modulos": ["ExposicionArmonia"],
+      "cobertura": {"funciones": 96.0, "lineas": 98.5}
+    },
+    {
+      "nombre": "InterfazArmonia",
+      "descripcion": "Las vistas de SwiftUI y lo que comparten las apps.",
+      "depende": ["Armonia", "ExposicionArmonia", "Hexagonos"],
+      "modulos": ["InterfazArmonia"],
+      "cobertura": {"funciones": 97.0, "lineas": 99.0}
+    }
+  ],
+  "swiftpm": [
+    {"nombre": "ConsolaArmonia", "ruta": "Apps/ConsolaArmonia", "cobertura": {"funciones": 96.0, "lineas": 98.0}},
+    {"nombre": "EjemploArmonia", "ruta": "Ejemplos/EjemploArmonia"},
+    {"nombre": "EjemploCatalogos", "ruta": "Ejemplos/EjemploCatalogos"},
+    {"nombre": "EjemploHexagonos", "ruta": "Ejemplos/EjemploHexagonos"},
+    {"nombre": "RendimientoArmonia", "ruta": "Herramientas/RendimientoArmonia"},
+    {"nombre": "FuzzArmonia", "ruta": "Herramientas/FuzzArmonia"}
+  ]
+}

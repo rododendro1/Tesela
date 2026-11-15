@@ -43,6 +43,8 @@ jobs:
         run: python3 Scripts/comprobaciones/comprobar_higiene.py
       - name: Dependencias entre paquetes y apps
         run: python3 Scripts/comprobaciones/comprobar_dependencias.py
+      - name: Paquetes en la CI, la documentación y los scripts (Scripts/datos/paquetes.json)
+        run: python3 Scripts/comprobaciones/comprobar_paquetes.py
       - name: Rutas sin colisiones de mayúsculas
         run: |
           duplicadas=$(git ls-files | tr 'A-Z' 'a-z' | sort | uniq -d)
@@ -360,8 +362,9 @@ jobs:
   # probadas, en el resumen de la ejecución, y el informe entero por fichero como artefacto
   # (`cobertura-<paquete>.txt`). Falla si el porcentaje de funciones o de líneas probadas baja del mínimo del paquete
   # (`funciones` y `lineas`, un poco por debajo de lo que se tiene, para que un cambio sin pruebas no lo haga bajar).
-  # Si sube, sube el mínimo. El de líneas es el que más dice y queda a medio punto o menos; el de funciones deja un
-  # punto o más, porque cada clausura cuenta como una función y basta con mover código de sitio para que cambie.
+  # Si sube, sube el mínimo, aquí y en Scripts/datos/paquetes.json (comprobar_paquetes.py mira que coincidan). El
+  # de líneas es el que más dice y queda a medio punto o menos; el de funciones deja un punto o más, porque cada
+  # clausura cuenta como una función y basta con mover código de sitio para que cambie.
   cobertura:
     name: Cobertura · ${{ matrix.paquete.nombre }} · Linux
     runs-on: ubuntu-latest

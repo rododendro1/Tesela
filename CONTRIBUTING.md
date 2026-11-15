@@ -78,6 +78,7 @@ Son las del primer job del CI y no necesitan Swift. Pásalas antes de abrir el p
 ```sh
 python3 Scripts/comprobaciones/comprobar_higiene.py
 python3 Scripts/comprobaciones/comprobar_dependencias.py
+python3 Scripts/comprobaciones/comprobar_paquetes.py
 python3 Scripts/comprobaciones/comprobar_modulos.py
 python3 Scripts/comprobaciones/comprobar_catalogo.py
 python3 Scripts/comprobaciones/comprobar_enlaces_docc.py

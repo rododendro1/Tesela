@@ -53,7 +53,8 @@ Scripts/
 ├── version/          Las notas de cada versión y su publicación (notas_de_version.py)
 ├── compilacion/      Todo, por capas, como el CI (compilar_todo.sh), y el empaquetado de `armonia` (empaquetar_cli.sh)
 ├── comun/            Lo que importan los demás scripts: los idiomas (idiomas.py) y la normalización de los nombres de escalas
-└── datos/            Los casos que comparten las comprobaciones en Python y las pruebas en Swift (normalizar.tsv)
+└── datos/            Los casos que comparten las comprobaciones en Python y las pruebas en Swift (normalizar.tsv) y
+                      el manifiesto de los paquetes (paquetes.json)
 Docs/               Este documento
 Config/             Ajustes de compilación de las apps (Local.xcconfig, el de tu equipo, no se guarda en git), su
                     manifiesto de privacidad (PrivacyInfo.xcprivacy) y sus trece idiomas (Idiomas.plist; cada
@@ -158,12 +159,13 @@ arregla con su prueba en `ImportacionAlAzarTests`, con el caso dentro.
 ## Añadir un paquete o una app
 
 1. Crea la carpeta en `Packages/` (con el mismo nombre que el paquete) o en `Apps/`.
-2. Un paquete se añade a `PERMITIDO` en `Scripts/comprobaciones/comprobar_dependencias.py`, con los paquetes de los que puede depender,
-   y se regenera el `Package.swift` de la raíz con `python3 Scripts/generadores/generar_paquete_raiz.py`, que reúne
+2. Un paquete se añade a `Scripts/datos/paquetes.json`, con los paquetes de los que puede depender, sus módulos y
+   sus mínimos de cobertura (una app de SwiftPM, un ejemplo o una herramienta, en su lista `swiftpm`), y se regenera el `Package.swift` de la raíz con `python3 Scripts/generadores/generar_paquete_raiz.py`, que reúne
    los módulos y las bibliotecas de todos (el CI comprueba que está al día).
 3. Una app de SwiftUI, además, en `project.yml` (un `target` y su `scheme`, y sus pruebas de interfaz en `PruebasDeInterfaz/<App>`); un paquete, en `packages:`. Una app de
    SwiftPM solo necesita su `Package.swift`, con dependencias por ruta a `Packages/`.
-4. Añade su job a `.github/workflows/ci.yml`.
+4. Añádelo a `.github/workflows/ci.yml`, a `documentacion.yml`, a `.spi.yml` y a
+   `Scripts/compilacion/compilar_todo.sh`: `python3 Scripts/comprobaciones/comprobar_paquetes.py` dice dónde falta.
 
 ## Estado
 
