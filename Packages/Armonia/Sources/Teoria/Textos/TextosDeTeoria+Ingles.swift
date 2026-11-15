@@ -119,6 +119,7 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "avoid note",
         papelChoque: "clashing note",
         papelDePaso: "passing note",
+        papelSeptimaDeLaEscala: "scale seventh",
         motivoDeLaTonalidad: "from the key",
         motivoDelCifrado: "from the chord symbol",
         motivoDelBajo: "from the bass",

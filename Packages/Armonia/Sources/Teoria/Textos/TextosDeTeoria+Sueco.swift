@@ -119,6 +119,7 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "undvikton",
         papelChoque: "krockande ton",
         papelDePaso: "genomgångston",
+        papelSeptimaDeLaEscala: "skalans septima",
         motivoDeLaTonalidad: "från tonarten",
         motivoDelCifrado: "från ackordsymbolen",
         motivoDelBajo: "från basen",

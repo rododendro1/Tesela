@@ -119,6 +119,7 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "kerülendő hang",
         papelChoque: "ütköző hang",
         papelDePaso: "átmenőhang",
+        papelSeptimaDeLaEscala: "a skála szeptimje",
         motivoDeLaTonalidad: "a hangnemből",
         motivoDelCifrado: "az akkordjelből",
         motivoDelBajo: "a basszusból",

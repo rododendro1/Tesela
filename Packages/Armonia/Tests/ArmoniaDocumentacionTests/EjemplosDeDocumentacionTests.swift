@@ -31,7 +31,7 @@ import Hexagonos
         comprobar(Acorde("G7(b9,#11)").cifrado, #""Sol7(♭9,♯11)""#, doc, 0)
         comprobar(TipoDeAcorde("m11").cifrado, #""m11""#, doc, 1)
         comprobar(TipoDeAcorde("13sus4").intervalos, #"[1ª justa, 4ª justa, 5ª justa, 7ª menor, 9ª mayor, 13ª mayor]"#, doc, 2)
-        comprobar(TipoDeAcorde("7alt").cifrado, #""7(♭9,♯9,♯11,♭13)""#, doc, 3)
+        comprobar(TipoDeAcorde("7alt").cifrado, #""7(♭5,♯5,♭9,♯9)""#, doc, 3)
         _ = Acorde("Do6/9/Mi")
         comprobar(Acorde("Do/Re").tieneBajoAjeno, #"true"#, doc, 5)
     }

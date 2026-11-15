@@ -13,7 +13,7 @@ con la misma gramática, sin una lista cerrada de tipos:
 Acorde("G7(b9,#11)").cifrado        // "Sol7(♭9,♯11)"
 TipoDeAcorde("m11").cifrado           // "m11"
 TipoDeAcorde("13sus4").intervalos     // [1ª justa, 4ª justa, 5ª justa, 7ª menor, 9ª mayor, 13ª mayor]
-TipoDeAcorde("7alt").cifrado          // "7(♭9,♯9,♯11,♭13)"
+TipoDeAcorde("7alt").cifrado          // "7(♭5,♯5,♭9,♯9)"
 Acorde("Do6/9/Mi")                  // la barra del bajo es la última seguida de una nota
 Acorde("Do/Re").tieneBajoAjeno      // true
 ```

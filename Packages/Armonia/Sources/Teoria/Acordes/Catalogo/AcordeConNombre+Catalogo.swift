@@ -113,13 +113,13 @@ extension AcordeConNombre {
         nombre: "decimotercera suspendida",
         intervalos: [.unisono, .cuartaJusta, .quintaJusta, .septimaMenor, .novenaMayor, .decimoterceraMayor],
         referencias: [.levine1995])
-    /// La de `7alt`: la séptima de dominante con la novena menor y la aumentada, la undécima aumentada y la
-    /// decimotercera menor (las cuatro tensiones alteradas).
+    /// La de `7alt`: la séptima de dominante con todo lo alterado y sin la 5.ª justa, que son las notas de la
+    /// escala alterada: la quinta disminuida y la aumentada (la ♯11 y la ♭13), y la novena menor y la aumentada.
     public static let dominanteAlterado = AcordeConNombre(
         nombre: "séptima alterada",
         intervalos: [
-            .unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMenor, .novenaAumentada, .undecimaAumentada,
-            .decimoterceraMenor,
+            .unisono, .terceraMayor, .quintaDisminuida, .quintaAumentada, .septimaMenor, .novenaMenor,
+            .novenaAumentada,
         ], alias: ["acorde alterado"], referencias: [.levine1995])
     public static let menorSeptimaMayorNovena = AcordeConNombre(
         nombre: "menor con séptima mayor y novena",

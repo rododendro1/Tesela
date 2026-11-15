@@ -22,6 +22,9 @@ public enum PapelEnLaEscala: Hashable, Sendable, CaseIterable, CustomStringConve
     /// La nota cromática de paso de una escala bebop (el Si de Do bebop dominante): no es tensión ni nota a evitar,
     /// porque es la que pone las notas del acorde en las partes fuertes.
     case dePaso
+    /// La 7.ª de la escala sobre un acorde que no tiene séptima (el Si de Do mayor sobre Do, el Si♭ de Do mixolidio):
+    /// no es tensión ni nota a evitar, sino la séptima que la escala le pone al acorde.
+    case septimaDeLaEscala
 
     public var description: String { nombre }
 }
@@ -35,6 +38,7 @@ extension PapelEnLaEscala: Nombrable {
         case .aEvitar: return TextosDeTeoria.en(notacion, \.papelNotaAEvitar)
         case .choque: return TextosDeTeoria.en(notacion, \.papelChoque)
         case .dePaso: return TextosDeTeoria.en(notacion, \.papelDePaso)
+        case .septimaDeLaEscala: return TextosDeTeoria.en(notacion, \.papelSeptimaDeLaEscala)
         }
     }
 }
@@ -124,6 +128,13 @@ extension Escala {
             let papel: PapelEnLaEscala
             if let dePaso, nota.esEnarmonica(de: dePaso) {
                 papel = .dePaso
+            } else if quinta == nil && semitonosDeLaNota == 7 && intervalo.numeroSimple == 5 {
+                // La 5.ª justa de un acorde que no la tiene (Sol7(omit5), Sol9sus4 de Fa/Sol) es suya, callada.
+                return NotaSobreElAcorde(nota: nota, papel: .delAcorde, numero: 5, alteracion: Alteracion(0))
+            } else if estructura.septima == nil && estructura.sexta == nil && intervalo.numeroSimple == 7
+                && (semitonosDeLaNota == 10 || semitonosDeLaNota == 11)
+            {
+                papel = .septimaDeLaEscala
             } else if choques.contains(semitonosDeLaNota) {
                 papel = .choque
             } else {

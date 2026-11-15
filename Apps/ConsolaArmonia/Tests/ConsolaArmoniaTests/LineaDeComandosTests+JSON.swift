@@ -217,6 +217,18 @@ extension LineaDeComandosTests {
         #expect((resumen["porNumeroDeNotas"] as? [[String: Any]])?.first?["nombre"] as? String == "2 (díada)")
     }
 
+    /// `acorde --escalas --json`: las escalas con su motivo, en la tonalidad de `--en`.
+    @Test func lasEscalasDelAcordeEnJSON() throws {
+        let datos = Data(salida("acorde Do7 --escalas --json").utf8)
+        let acordes = try #require(try JSONSerialization.jsonObject(with: datos) as? [[String: Any]])
+        let escalas = try #require(acordes.first?["escalas"] as? [[String: Any]])
+        #expect(escalas.first?["nombre"] as? String == "Do mixolidio")
+        #expect(escalas.first?["motivo"] as? String == "del cifrado")
+        #expect(escalas.first?["tensiones"] as? [String] == ["Re 9", "La 13"])
+        #expect(escalas[1]["motivo"] == nil)
+        #expect(salida("acorde Do7 --json").contains("\"escalas\"") == false)
+    }
+
     /// Los errores siguen en texto, en la salida de errores, con su código.
     @Test func erroresConJSON() {
         let sinJSON = LineaDeComandos.ejecutar(["tonnetz", "Do", "Mi", "Sol", "--json"])

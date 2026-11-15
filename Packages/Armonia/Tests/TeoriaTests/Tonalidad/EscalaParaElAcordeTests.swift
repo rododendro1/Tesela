@@ -52,4 +52,34 @@ import Testing
             #expect(Set(nombres).count == 4 && !nombres.contains(""), Comment(rawValue: "\(idioma)"))
         }
     }
+
+    /// 7alt es la séptima de dominante sin la 5.ª justa, con la ♭5, la ♯5, la ♭9 y la ♯9: le va la alterada.
+    @Test func elAlteradoTieneSuEscala() {
+        let alt = Acorde("Do7alt")
+        #expect(alt.tipo.cifrado == "7(♭5,♯5,♭9,♯9)")
+        #expect(!alt.notas.contains(.sol))
+        #expect(alt.escalas().first?.escala == Escala(.do, .alterada))
+        #expect(alt.escalas().first?.motivo == .delCifrado)
+    }
+
+    /// Un bajo ajeno que hace del acorde un sus manda: Fa/Sol se toca como Sol9sus4.
+    @Test func elBajoQueHaceUnSusVaPrimero() throws {
+        let primera = try #require(Acorde("Fa/Sol").escalas().first)
+        #expect(primera.escala == Escala(.sol, .mixolidio) && primera.motivo == .delBajo)
+        // El Re, la 5.ª que el acorde calla, es suya.
+        let re = try #require(primera.notas.first { $0.nota == .re })
+        #expect(re.papel == .delAcorde && re.cifra == "5")
+        // Do/Re♭ no es un sus sobre el Re♭: van antes las de Do.
+        #expect(Acorde("Do/Reb").escalas().first?.escala.tonica == .do)
+    }
+
+    /// Sobre una tríada, la 7.ª de la escala no es tensión: es la séptima que la escala le pone.
+    @Test func laSeptimaSobreUnaTriada() throws {
+        let notas = Escala(.fa, .lidioDominante).notas(sobre: Acorde("Fa"))
+        let mi = try #require(notas.first { $0.nota == .mi.bemol })
+        #expect(mi.papel == .septimaDeLaEscala && mi.cifra == "♭7")
+        #expect(!Escala(.fa, .lidioDominante).tensiones(sobre: Acorde("Fa")).contains(.mi.bemol))
+        // Sobre un acorde con séptima, como siempre.
+        #expect(Escala(.do, .mixolidio).notas(sobre: Acorde("Do7")).allSatisfy { $0.papel != .septimaDeLaEscala })
+    }
 }

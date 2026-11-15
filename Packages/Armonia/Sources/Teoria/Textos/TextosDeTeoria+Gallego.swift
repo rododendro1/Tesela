@@ -119,6 +119,7 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "nota que evitar",
         papelChoque: "nota que choca",
         papelDePaso: "nota de paso",
+        papelSeptimaDeLaEscala: "sétima da escala",
         motivoDeLaTonalidad: "da tonalidade",
         motivoDelCifrado: "do cifrado",
         motivoDelBajo: "do baixo",

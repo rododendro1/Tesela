@@ -237,7 +237,8 @@ extension Acorde {
     /// 2. Las demás de `tipos` que sirven para el acorde (``Escala/esCompatible(con:)``), en el orden de
     ///    ``escalasCompatibles(entre:)``: primero la del cifrado. Con tonalidad, antes las que menos notas sacan
     ///    de ella.
-    /// 3. Si el bajo es ajeno y forma con el acorde otro tipo sobre él, las de ese acorde: Fa/Sol → Sol mixolidio.
+    /// 3. Si el bajo es ajeno y forma con el acorde otro tipo sobre él, las de ese acorde. Si ese acorde es un sus,
+    ///    van antes que las del paso 2, porque se toca como él: Fa/Sol (Sol9sus4) da primero Sol mixolidio.
     ///
     /// Sin tonalidad, Do7 da Do mixolidio (del cifrado), Do bebop dominante y Do lidio dominante (que añade la
     /// ♯11); en Fa mayor, Do7 es el V y da primero Do mixolidio, de la tonalidad.
@@ -264,6 +265,16 @@ extension Acorde {
                 proponer(escala, .deLaTonalidad(analizado.categoria), sobre: self)
             }
         }
+        // Un bajo ajeno que hace del acorde un sus sobre él (Fa/Sol, Sol9sus4) manda: se toca como ese acorde.
+        let sobreElBajo = acordeSobreElBajo
+        let mandaElBajo = sobreElBajo.map { $0.estructura.tercera == nil && $0.estructura.suspension != nil } ?? false
+        func proponerLasDelBajo() {
+            guard let sobreElBajo else { return }
+            for escala in sobreElBajo.escalasCompatibles(entre: tipos) where escala.contiene(acorde: self) {
+                proponer(escala, .delBajo, sobre: sobreElBajo)
+            }
+        }
+        if mandaElBajo { proponerLasDelBajo() }
         let contexto = tonalidad.map { Set(($0.notasPropias + notasDesdeElBajo).map(\.claseDeAltura)) }
         let compatibles = tipos.map { Escala(fundamental, $0) }.filter { $0.esCompatible(con: self) }
         let delCifrado = TipoDeEscala.delCifrado(estructura)
@@ -273,11 +284,7 @@ extension Acorde {
         for escala in ordenadas {
             proponer(escala, escala.tipo == delCifrado ? .delCifrado : .compatible, sobre: self)
         }
-        if inversion == nil, let sobreElBajo = acordeSobreElBajo {
-            for escala in sobreElBajo.escalasCompatibles(entre: tipos) where escala.contiene(acorde: self) {
-                proponer(escala, .delBajo, sobre: sobreElBajo)
-            }
-        }
+        if !mandaElBajo { proponerLasDelBajo() }
         return resultado
     }
 

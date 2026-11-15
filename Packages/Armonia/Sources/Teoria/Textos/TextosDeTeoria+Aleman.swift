@@ -119,6 +119,7 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "Avoid-Ton",
         papelChoque: "Reibungston",
         papelDePaso: "Durchgangston",
+        papelSeptimaDeLaEscala: "Septime der Skala",
         motivoDeLaTonalidad: "aus der Tonart",
         motivoDelCifrado: "aus dem Akkordsymbol",
         motivoDelBajo: "aus dem Bass",

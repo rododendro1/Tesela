@@ -23,10 +23,15 @@ extension LineaDeComandos {
         var otro: Acorde?
         if let texto = try argumentos.valor(.comparar) { otro = try Acorde(leyendo: texto, enLaOrden: notacion) }
         let estadisticas = argumentos.quitarMarca(.estadisticas)
+        let conEscalas = argumentos.quitarMarca(.escalas)
         return try palabras(argumentos, siFaltan: .faltaCifrado).map {
             let acorde = try Acorde(leyendo: $0, enLaOrden: notacion)
             return AcordeJSON(
                 acorde: AcordePresentado(acorde, en: notacion),
+                escalas: conEscalas
+                    ? PresentacionDeEscalaYAcorde.escalas(de: acorde, en: tonalidad, notacion: notacion).map {
+                        EscalaDelAcordeJSON($0)
+                    } : nil,
                 estadisticas: estadisticas
                     ? EstadisticasDeAcordePresentadas(acorde.estadisticas, sobre: acorde.fundamental, en: notacion)
                     : nil,
@@ -39,22 +44,45 @@ extension LineaDeComandos {
         }
     }
 
-    /// Un acorde de `acorde --json`: las claves de `AcordePresentado` y, con `--estadisticas`, `estadisticas` y
-    /// `enLaTonalidad`; con `--comparar`, `relacion`.
+    /// Un acorde de `acorde --json`: las claves de `AcordePresentado` y, con `--escalas`, `escalas` (en la
+    /// tonalidad de `--en`); con `--estadisticas`, `estadisticas` y `enLaTonalidad`; con `--comparar`, `relacion`.
     struct AcordeJSON: Encodable {
         let acorde: AcordePresentado
+        let escalas: [EscalaDelAcordeJSON]?
         let estadisticas: EstadisticasDeAcordePresentadas?
         let enLaTonalidad: AcordeEnLaTonalidadPresentado?
         let relacion: RelacionEntreAcordesPresentada?
 
-        private enum Clave: String, CodingKey { case estadisticas, enLaTonalidad, relacion }
+        private enum Clave: String, CodingKey { case escalas, estadisticas, enLaTonalidad, relacion }
 
         func encode(to encoder: any Encoder) throws {
             try acorde.encode(to: encoder)
             var contenedor = encoder.container(keyedBy: Clave.self)
+            try contenedor.encodeIfPresent(escalas, forKey: .escalas)
             try contenedor.encodeIfPresent(estadisticas, forKey: .estadisticas)
             try contenedor.encodeIfPresent(enLaTonalidad, forKey: .enLaTonalidad)
             try contenedor.encodeIfPresent(relacion, forKey: .relacion)
+        }
+    }
+
+    /// Una escala para el acorde, en `acorde --escalas --json`: su nombre, su motivo («del cifrado»; no sale si
+    /// solo es compatible), sus notas con su grado sobre el acorde, las tensiones y las notas a evitar.
+    struct EscalaDelAcordeJSON: Encodable {
+        let nombre: String
+        let motivo: String?
+        let notas: [String]
+        let tensiones: [String]
+        let aEvitar: [String]
+
+        init(_ presentada: EscalaSobreAcordePresentada) {
+            func lista(_ texto: String) -> [String] {
+                texto.isEmpty ? [] : texto.components(separatedBy: " · ")
+            }
+            nombre = presentada.nombre
+            motivo = presentada.motivo
+            notas = lista(presentada.notas)
+            tensiones = lista(presentada.tensiones)
+            aEvitar = lista(presentada.aEvitar)
         }
     }
 

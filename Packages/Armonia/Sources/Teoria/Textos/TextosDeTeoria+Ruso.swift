@@ -119,6 +119,7 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "избегаемый звук",
         papelChoque: "конфликтующий звук",
         papelDePaso: "проходящий звук",
+        papelSeptimaDeLaEscala: "септима гаммы",
         motivoDeLaTonalidad: "из тональности",
         motivoDelCifrado: "из обозначения",
         motivoDelBajo: "из баса",

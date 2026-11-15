@@ -125,6 +125,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let papelNotaAEvitar: String
     let papelChoque: String
     let papelDePaso: String
+    let papelSeptimaDeLaEscala: String
     /// Por qué se propone una escala para un acorde (`EscalaParaElAcorde.Motivo`): «de la tonalidad», «del cifrado»,
     /// «del bajo», «compatible».
     let motivoDeLaTonalidad: String

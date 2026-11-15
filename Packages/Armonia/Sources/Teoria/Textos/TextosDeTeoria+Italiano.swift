@@ -119,6 +119,7 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "nota da evitare",
         papelChoque: "nota in conflitto",
         papelDePaso: "nota di passaggio",
+        papelSeptimaDeLaEscala: "settima della scala",
         motivoDeLaTonalidad: "dalla tonalità",
         motivoDelCifrado: "dalla sigla",
         motivoDelBajo: "dal basso",
