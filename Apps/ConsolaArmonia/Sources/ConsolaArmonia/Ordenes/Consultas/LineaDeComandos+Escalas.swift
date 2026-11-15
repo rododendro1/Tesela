@@ -365,10 +365,11 @@ extension LineaDeComandos {
             lineas += origen.datos(en: notacion).map { "  " + $0.nombre + ": " + $0.valor }
         }
         // Lo que dicen sus fuentes de su carácter, una línea por fuente: «carácter: banquete · blando (Platón 398e
-        // (Monro 1894: 7–8))».
-        for caracter in escala.tipo.caracter {
-            let texto = caracter.descripcion(en: notacion) + " (" + caracter.cita(en: notacion) + ")"
-            lineas.append("  \(traducir(.caracter)): " + texto)
+        // (Monro 1894: 7–8))», y lo que mide un estudio con oyentes: «afecto medido: alegre: 83 % (Temperley & Tan
+        // 2013: 248)».
+        lineas += lineasDelCaracter(escala.tipo.caracter, notacion)
+        for medida in escala.tipo.medidasDelAfecto {
+            lineas.append("  \(traducir(.afectoMedido)): " + MedidaDelAfectoPresentada(medida, en: notacion).enUnaLinea)
         }
         // Las occidentales, que no tienen carácter de fuente, tienen una sonoridad calculada por el brillo:
         // «sonoridad (calculada): clara».

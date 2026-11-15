@@ -28,6 +28,10 @@ extension LineaDeComandos {
     /// círculo de su afinación, cada grado en el ángulo de sus cents: `reloj Re bayati --microtonal`; `--fuente` elige
     /// otra de sus afinaciones (`reloj Re echos protos --microtonal --fuente chrysanthos`).
     static func reloj(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        // `reloj ragas`: las veinticuatro horas con los rāgas de cada prahar.
+        if argumentos.count == 1, ["ragas", "raga"].contains(claveDeBusqueda(argumentos[0])) {
+            return bien(PresentacionDelRelojDeLosRagas.svg(en: notacion).trimmingCharacters(in: "\n"))
+        }
         var argumentos = Argumentos(argumentos)
         let quintas = argumentos.quitarMarca(.quintas)
         let microtonal = argumentos.quitarMarca(.microtonal)

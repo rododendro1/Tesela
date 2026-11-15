@@ -427,15 +427,21 @@ ProgresionConNombre.chacona.ocasiones == [.danza]           // true
 RitmoConNombre.seguiriya.afectos.first == .lastimero        // true
 ```
 
-Las tonalidades también tienen `caracter` (``Tonalidad/caracter``): el que les da Schubart (*Ideen zu einer Ästhetik
-der Tonkunst*, 1806), en la traducción de Steblin (1983), resumido en el vocabulario de ``Afecto``. Do mayor es
-inocente; Re mayor, festiva y majestuosa; Fa menor, sombría y de lamento. Es del nombre: Re♭ mayor tiene el suyo y Do♯
-mayor, que Schubart no describe, ninguno. `armonia tonalidad Re mayor` lo escribe.
+Las tonalidades también tienen `caracter` (``Tonalidad/caracter``), y por ahora de dos fuentes: la «énergie des
+modes» de Charpentier (*Règles de composition*, hacia 1690), en Cessac (1988), y Schubart (*Ideen zu einer Ästhetik der
+Tonkunst*, 1806), en la traducción de Steblin (1983). Cada una va resumida en el vocabulario de ``Afecto`` y con sus
+palabras en `texto`. Juntas enseñan cómo cambia una tonalidad en un siglo: Fa mayor es «furieux et emporté» en
+Charpentier y «complaisance & calm» en Schubart. Es del nombre: Re♭ mayor tiene el suyo y Do♯ mayor, que no describe
+nadie, ninguno. `Tonalidad.conCaracter` son las 25 que describe alguna. `armonia tonalidad Fa mayor` lo escribe, con
+una línea si las fuentes no coinciden, y `armonia tonalidades --afecto sombrio` busca por afecto.
 
 ```swift
-Tonalidad(.do).caracter[0].afectos == [.inocente]               // true
-Tonalidad(.re).caracter[0].testigo                             // .schubart
-Tonalidad(Nota(.do, .sostenido)).caracter.isEmpty               // true
+Tonalidad(.do).caracter.map(\.testigo) == [.charpentier, .schubart]   // true
+Tonalidad(.do).caracter[0].texto                                      // "Gai et guerrier"
+Tonalidad(.do).caracter[1].afectos == [.inocente]                     // true
+Tonalidad(Nota(.do, .sostenido)).caracter.isEmpty                     // true
+Caracter.discrepancias(Tonalidad(.fa).caracter).count                 // 1
+Tonalidad.conCaracter.count                                           // 25
 ```
 
 ## Bajo cifrado

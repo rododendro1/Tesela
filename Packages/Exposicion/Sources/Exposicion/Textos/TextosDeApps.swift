@@ -248,7 +248,6 @@ public struct TextosDeApps: TextosTraducidos {
     public let escuelas: String
     /// La fila de un fragmento de menos de una octava, con lo que abarca: «Fragmento: 4ª justa».
     public let fragmento: String
-    /// La fila de la afinación de una escala (`CaracterDeLaAfinacion`): «Afinación: microtonal».
     /// La línea con el nombre de la escala en su escritura original: «Nombre original: حجاز (árabe)».
     public let nombreOriginal: String
     /// La línea con las notas que no son de la madre de un rāga bhāṣāṅga: «Notas externas: Mi La♭ Si».
@@ -257,6 +256,17 @@ public struct TextosDeApps: TextosTraducidos {
     public let escalaMadre: String
     /// «Derivadas»: las escalas que salen de una (los janya de un mēḷa).
     public let derivadas: String
+    /// El título de lo que dicen las fuentes del carácter de una escala o una tonalidad: «Carácter».
+    public let caracterDeLaFuente: String
+    /// La línea de dos fuentes que no comparten ningún afecto: «Las fuentes no coinciden: Charpentier · Schubart».
+    public let fuentesQueNoCoinciden: String
+    /// La línea de lo que mide un estudio con oyentes: «Afecto medido: alegre: 83 % (Temperley & Tan 2013: 248)».
+    public let afectoMedido: String
+    /// La línea de la sonoridad que calcula Tesela por el brillo: «Sonoridad (calculada): clara».
+    public let sonoridadCalculada: String
+    /// El título del reloj de las horas de los rāgas: «Reloj de los rāgas».
+    public let relojDeLosRagas: String
+    /// La fila de la afinación de una escala (`CaracterDeLaAfinacion`): «Afinación: microtonal».
     public let afinacion: String
     public let afinacionTemperada: String
     public let afinacionJusta: String

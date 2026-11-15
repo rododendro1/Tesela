@@ -66,6 +66,10 @@ extension ErrorDeUso {
         case .afectoDesconocido(let afecto):
             return LineaDeComandos.propuesta(
                 para: afecto, entre: Afecto.allCases.flatMap { [$0.rawValue, $0.nombre(en: .compacta(.ingles))] })
+        case .momentoDesconocido(let momento):
+            return LineaDeComandos.propuesta(
+                para: momento,
+                entre: MomentoDelDia.allCases.flatMap { [$0.nombre, $0.nombre(en: .compacta(.ingles))] })
         case .escuelaDesconocida(let escuela):
             return LineaDeComandos.propuesta(
                 para: escuela, entre: LineaDeComandos.nombresDeLasEscuelas.flatMap { [$0.espanol, $0.ingles] })

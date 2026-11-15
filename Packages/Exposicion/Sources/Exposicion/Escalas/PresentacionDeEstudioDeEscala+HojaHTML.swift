@@ -47,6 +47,15 @@ extension PresentacionDeEstudioDeEscala {
                 seccionHTML(notacion.texto(\.origen), "<dl>" + datos.joined() + "</dl>", clase: "seccion-origen"))
         }
 
+        // Lo que dicen sus fuentes de su carácter, lo que mide un estudio y la sonoridad calculada.
+        if secciones.contains(.estadisticas),
+            let caracter = caracterHTML(
+                escala.tipo.caracter, medidas: escala.tipo.medidasDelAfecto, sonoridad: escala.tipo.sonoridad,
+                en: notacion)
+        {
+            cuerpo.append(caracter)
+        }
+
         // Las estadísticas y el reloj (con el círculo de su afinación, si tiene microtonos), en dos columnas.
         var columnas: [String] = []
         if secciones.contains(.estadisticas) {
@@ -120,6 +129,33 @@ extension PresentacionDeEstudioDeEscala {
     static func seccionHTML(_ titulo: String, _ contenido: String, clase: String? = nil) -> String {
         "<section" + (clase.map { " class=\"" + $0 + "\"" } ?? "") + "><h2>" + html(titulo) + "</h2>" + contenido
             + "</section>"
+    }
+
+    /// La sección del carácter: una línea por fuente, con sus palabras entre comillas y su cita; las fuentes que no
+    /// coinciden, lo que mide un estudio y la sonoridad calculada. `nil` si no hay nada que decir.
+    static func caracterHTML(
+        _ caracter: [Caracter], medidas: [MedidaDelAfecto] = [], sonoridad: Sonoridad? = nil, en notacion: Notacion
+    ) -> String? {
+        let fuentes = caracter.map { CaracterPresentado($0, en: notacion) }.map { fuente in
+            "<li>" + html(fuente.descripcion) + (fuente.texto.map { " <q>" + html($0) + "</q>" } ?? "")
+                + " <small>" + html(fuente.cita) + "</small></li>"
+        }
+        func fila(_ nombre: String, _ valor: String) -> String {
+            "<div><dt>" + html(nombre) + "</dt><dd>" + html(valor) + "</dd></div>"
+        }
+        var filas: [String] = []
+        if let pares = CaracterPresentado.discrepancias(caracter, en: notacion) {
+            filas.append(fila(notacion.texto(\.fuentesQueNoCoinciden), pares.joined(separator: "; ")))
+        }
+        for medida in medidas {
+            filas.append(
+                fila(notacion.texto(\.afectoMedido), MedidaDelAfectoPresentada(medida, en: notacion).enUnaLinea))
+        }
+        if let sonoridad { filas.append(fila(notacion.texto(\.sonoridadCalculada), sonoridad.nombre(en: notacion))) }
+        guard !fuentes.isEmpty || !filas.isEmpty else { return nil }
+        let lista = fuentes.isEmpty ? "" : "<ul class=\"caracter\">" + fuentes.joined() + "</ul>"
+        let datos = filas.isEmpty ? "" : "<dl>" + filas.joined() + "</dl>"
+        return seccionHTML(notacion.texto(\.caracterDeLaFuente), lista + datos, clase: "seccion-caracter")
     }
 
     /// Una lista de textos, cada uno escapado.
@@ -211,6 +247,7 @@ extension PresentacionDeEstudioDeEscala {
         h3{font-size:11pt;margin:12px 0 2px}\
         p{margin:2px 0}\
         .sub{color:var(--suave)}\
+        ul.caracter{margin:0 0 8px;padding-left:1.2em}ul.caracter small{color:var(--suave)}\
         ul,ol{margin:0;padding:0;list-style:none}\
         li{padding:2px 0}\
         .originales{font-size:16pt;color:var(--suave);margin:0 0 4px}.originales small{font-size:10pt}\

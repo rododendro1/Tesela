@@ -48,6 +48,7 @@ enum ErrorDeUso: ErrorDeArmonia {
     case agrupacionDesconocida(String)
     case epocaDesconocida(String)
     case afectoDesconocido(String)
+    case momentoDesconocido(String)
     case escuelaDesconocida(String)
     /// `--madre` con una escala que no es del catálogo o de la que no sale ninguna.
     case madreDesconocida(String)

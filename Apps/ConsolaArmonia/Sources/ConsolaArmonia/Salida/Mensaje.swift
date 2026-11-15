@@ -22,12 +22,15 @@ enum Mensaje {
     case referencias
     case caracter
     case sonoridad
+    case fuentesQueNoCoinciden
+    case afectoMedido
     case escalas
     case habituales
     case sinLugar
     case sinEpoca
     case ningunaEscala
     case ningunaProgresion
+    case ningunaTonalidad
     case ningunRitmo
     case ningunTemperamento
     case ningunaNota
@@ -79,12 +82,15 @@ enum Mensaje {
         case .referencias: return TextosDeConsola.traduccion(\.mensajeReferencias)
         case .caracter: return TextosDeConsola.traduccion(\.mensajeCaracter)
         case .sonoridad: return TextosDeConsola.traduccion(\.mensajeSonoridad)
+        case .fuentesQueNoCoinciden: return TextosDeConsola.traduccion(\.mensajeFuentesQueNoCoinciden)
+        case .afectoMedido: return TextosDeConsola.traduccion(\.mensajeAfectoMedido)
         case .escalas: return TextosDeConsola.traduccion(\.mensajeEscalas)
         case .habituales: return TextosDeConsola.traduccion(\.mensajeHabituales)
         case .sinLugar: return TextosDeConsola.traduccion(\.mensajeSinLugar)
         case .sinEpoca: return TextosDeConsola.traduccion(\.mensajeSinEpoca)
         case .ningunaEscala: return TextosDeConsola.traduccion(\.mensajeNingunaEscala)
         case .ningunaProgresion: return TextosDeConsola.traduccion(\.mensajeNingunaProgresion)
+        case .ningunaTonalidad: return TextosDeConsola.traduccion(\.mensajeNingunaTonalidad)
         case .ningunRitmo: return TextosDeConsola.traduccion(\.mensajeNingunRitmo)
         case .ningunTemperamento: return TextosDeConsola.traduccion(\.mensajeNingunTemperamento)
         case .ningunaNota: return TextosDeConsola.traduccion(\.mensajeNingunaNota)

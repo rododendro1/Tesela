@@ -121,35 +121,95 @@ import Testing
     }
 }
 
-/// El carácter de las tonalidades, de Schubart.
+/// El carácter de las tonalidades, de Charpentier y de Schubart.
 @Suite struct CaracterDeLasTonalidadesTests {
-    /// Schubart describe 24 tonalidades, cada una una vez.
-    @Test func lasVeinticuatroDeSchubart() {
-        let tonalidades = Tonalidad.caracteres.map(\.tonalidad)
-        #expect(tonalidades.count == 24 && Set(tonalidades).count == 24)
-        #expect(tonalidades.filter { $0.modo == .mayor }.count == 12)
-        for (tonalidad, caracter) in Tonalidad.caracteres {
-            #expect(caracter.allSatisfy { $0.testigo == .schubart && $0.referencia == .steblin1983 }, "\(tonalidad)")
-            #expect(caracter.allSatisfy { !$0.afectos.isEmpty }, "\(tonalidad)")
-        }
+    private func deUnTestigo(_ testigo: TestigoDelCaracter) -> [Tonalidad] {
+        Tonalidad.caracteres.filter { $0.caracter.allSatisfy { $0.testigo == testigo } }.map(\.tonalidad)
     }
 
-    /// Es del nombre: Re♭ mayor tiene carácter, y Do♯ mayor no.
+    /// Schubart describe 24 tonalidades y Charpentier 18, cada una una vez, con su obra, sus afectos y sus palabras.
+    @Test func lasDeSchubartYLasDeCharpentier() {
+        let schubart = deUnTestigo(.schubart)
+        #expect(schubart.count == 24 && Set(schubart).count == 24)
+        #expect(schubart.filter { $0.modo == .mayor }.count == 12)
+        let charpentier = deUnTestigo(.charpentier)
+        #expect(charpentier.count == 18 && Set(charpentier).count == 18)
+        #expect(schubart.count + charpentier.count == Tonalidad.caracteres.count)
+        for (tonalidad, caracter) in Tonalidad.caracteres {
+            for fuente in caracter {
+                let obra: Referencia = fuente.testigo == .schubart ? .steblin1983 : .cessac1988
+                #expect(fuente.referencia == obra && !fuente.afectos.isEmpty, "\(tonalidad)")
+                #expect(fuente.texto.map { !$0.isEmpty } == true, "\(tonalidad)")
+            }
+        }
+        // Mi♭ menor solo la describe Charpentier; Re♯ menor, solo Schubart.
+        #expect(Tonalidad.conCaracter.count == 25)
+        #expect(Tonalidad(Nota(.mi, .bemol), .menor).caracter.map(\.testigo) == [.charpentier])
+        #expect(Tonalidad(Nota(.re, .sostenido), .menor).caracter.map(\.testigo) == [.schubart])
+    }
+
+    /// Es del nombre: Re♭ mayor tiene carácter, y Do♯ mayor no. Charpentier (hacia 1690) va antes que Schubart.
     @Test func esDelNombre() {
-        #expect(Tonalidad(.do).caracter.first?.afectos == [.inocente])
+        #expect(Tonalidad(.do).caracter.map(\.testigo) == [.charpentier, .schubart])
+        #expect(Tonalidad(.do).caracter[1].afectos == [.inocente])
         #expect(Tonalidad(Nota(.re, .bemol)).caracter.first?.afectos == [.inquieto, .triste])
         #expect(Tonalidad(Nota(.do, .sostenido)).caracter.isEmpty)
         #expect(Tonalidad(Nota(.la, .bemol), .menor).caracter.first?.afectos == [.lastimero, .inquieto])
         #expect(Tonalidad(Nota(.sol, .sostenido), .menor).caracter.isEmpty)
-        #expect(Tonalidad(.fa, .menor).caracter.first?.ocasion == .lamento)
+        #expect(Tonalidad(.fa, .menor).caracter.last?.ocasion == .lamento)
     }
 
-    @Test func laCita() {
+    @Test func laCitaYLasPalabras() {
         let espanol = Notacion.compacta(.espanol)
-        let re = Tonalidad(.re).caracter[0]
-        #expect(re.cita(en: espanol) == "Schubart (Steblin 1983)")
-        #expect(re.descripcion(en: espanol) == "festivo, majestuoso")
-        #expect(re.descripcion(en: .compacta(.ingles)) == "festive, majestic")
+        let re = Tonalidad(.re).caracter
+        #expect(re[0].cita(en: espanol) == "Charpentier (Cessac 1988)")
+        #expect(re[0].texto == "Joyeux et très guerrier")
+        #expect(re[1].cita(en: espanol) == "Schubart (Steblin 1983)")
+        #expect(re[1].descripcion(en: espanol) == "festivo, majestuoso")
+        #expect(re[1].descripcion(en: .compacta(.ingles)) == "festive, majestic")
+        #expect(TipoDeEscala.saba.caracter[0].texto == "sadness and pain")
+    }
+
+    /// Dos fuentes no coinciden si no comparten ningún afecto: Fa mayor, colérico en Charpentier y sereno en
+    /// Schubart; en Si♭ menor, las dos lo oyen sombrío.
+    @Test func lasFuentesQueNoCoinciden() {
+        let fa = Caracter.discrepancias(Tonalidad(.fa).caracter)
+        #expect(fa.count == 1 && fa[0].0.testigo == .charpentier && fa[0].1.testigo == .schubart)
+        #expect(Caracter.discrepancias(Tonalidad(Nota(.si, .bemol), .menor).caracter).isEmpty)
+        #expect(Caracter.discrepancias(Tonalidad(.do).caracter.prefix(1).map { $0 }).isEmpty)
+        // En la doria, Heraclides (valiente, majestuosa, severa) y Aristóteles (grave, serena) no coinciden.
+        #expect(Caracter.discrepancias(TipoDeEscala.harmoniaDoria.caracter).count == 1)
+    }
+}
+
+/// Lo que mide un estudio con oyentes: Temperley y Tan.
+@Suite struct MedidaDelAfectoTests {
+    @Test func losSeisModos() {
+        let modos: [TipoDeEscala] = [.mayor, .mixolidio, .lidio, .dorico, .menorNatural, .frigio]
+        let proporciones = modos.map { $0.medidasDelAfecto.first?.proporcion }
+        #expect(proporciones == [0.83, 0.64, 0.58, 0.40, 0.34, 0.21])
+        #expect(modos.allSatisfy { $0.medidasDelAfecto.allSatisfy { $0.afecto == .alegre } })
+        #expect(TipoDeEscala.locrio.medidasDelAfecto.isEmpty)
+        #expect(TipoDeEscala.bilaval.medidasDelAfecto.isEmpty)
+        #expect(TipoDeEscala.mayor.medidasDelAfecto[0].descripcion(en: .compacta(.espanol)) == "alegre: 83 %")
+    }
+
+    /// No es el brillo: el lidio, el más claro por quintas, sale menos alegre que el mixolidio.
+    @Test func noEsElBrillo() {
+        let lidio = TipoDeEscala.lidio.medidasDelAfecto[0].proporcion
+        #expect(lidio < TipoDeEscala.mixolidio.medidasDelAfecto[0].proporcion)
+        #expect(TipoDeEscala.lidio.sonoridad == .clara)
+    }
+}
+
+/// Las escalas con carácter, de donde salen `escalas --momento` y el reloj de los rāgas.
+@Suite struct EscalasConCaracterTests {
+    @Test func cadaUnaUnaVez() {
+        let identidades = TipoDeEscala.conCaracter.map(\.identidad)
+        #expect(Set(identidades).count == identidades.count)
+        #expect(TipoDeEscala.conCaracter.allSatisfy { !$0.caracter.isEmpty })
+        let alAnochecer = TipoDeEscala.conCaracter.filter { $0.momentos.contains(.anochecer) }
+        #expect(alAnochecer.map(\.nombre) == ["Yaman", "Bhūpālī"])
     }
 }
 

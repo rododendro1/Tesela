@@ -356,6 +356,10 @@ extension LineaDeComandos {
         let homonima: String
         /// Las cuatríadas de cada grado, con su cifrado romano.
         let acordes: [AcordeDelGrado]
+        /// Lo que dicen sus fuentes de su carácter (Charpentier, Schubart); no sale si ninguna dice nada.
+        var caracter: [CaracterPresentado]? = nil
+        /// Los pares de fuentes que no coinciden en nada: «Charpentier · Schubart».
+        var discrepancias: [String]? = nil
     }
 
     /// Como `EscalaPresentada.AcordeDelGrado`: «ii» «Rem7».
@@ -381,7 +385,9 @@ extension LineaDeComandos {
             homonima: tonalidad.homonima.nombre(en: notacion),
             acordes: zip(tonalidad.cifradosRomanos(cuatriadas: true), tonalidad.armonizar(cuatriadas: true)).map {
                 AcordeDelGrado(grado: $0, cifrado: $1.cifrado(en: notacion))
-            })
+            },
+            caracter: CaracterPresentado.de(tonalidad.caracter, en: notacion),
+            discrepancias: CaracterPresentado.discrepancias(tonalidad.caracter, en: notacion))
     }
 
     // MARK: Tradiciones

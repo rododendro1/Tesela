@@ -77,6 +77,8 @@ extension ErrorDeUso {
             return TextosDeConsola.traduccion { $0.epocaDesconocida(epoca) }
         case .afectoDesconocido(let afecto):
             return TextosDeConsola.traduccion { $0.afectoDesconocido(afecto) }
+        case .momentoDesconocido(let momento):
+            return TextosDeConsola.traduccion { $0.momentoDesconocido(momento) }
         case .escuelaDesconocida(let escuela):
             return TextosDeConsola.traduccion { $0.escuelaDesconocida(escuela) }
         case .madreDesconocida(let madre):

@@ -85,3 +85,21 @@ extension Caracter {
             .map(\.element)
     }
 }
+
+extension Caracter {
+    /// Los pares de fuentes que no coinciden en nada: las dos dan afectos y ninguno es el mismo. En Fa mayor,
+    /// Charpentier («furieux et emporté», colérico) y Schubart («complaisance & calm», sereno). Van en el orden de la
+    /// lista, el primero de cada par antes que el segundo.
+    ///
+    ///     Caracter.discrepancias(Tonalidad(.fa).caracter).count   // 1
+    ///     Caracter.discrepancias(Tonalidad(Nota(.si, .bemol), .menor).caracter).count   // 0: los dos, sombrío
+    public static func discrepancias(_ lista: [Caracter]) -> [(Caracter, Caracter)] {
+        var pares: [(Caracter, Caracter)] = []
+        for (i, primero) in lista.enumerated() where !primero.afectos.isEmpty {
+            for segundo in lista[(i + 1)...] where !segundo.afectos.isEmpty {
+                if Set(primero.afectos).isDisjoint(with: segundo.afectos) { pares.append((primero, segundo)) }
+            }
+        }
+        return pares
+    }
+}

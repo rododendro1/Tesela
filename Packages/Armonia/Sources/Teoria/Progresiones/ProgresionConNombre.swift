@@ -29,8 +29,9 @@ public struct ProgresionConNombre: Sendable {
     /// Lo demás que sabe el catálogo de la progresión: sus estilos y sus referencias.
     package let datos: DatosDelCatalogo
 
-    /// Una progresión del catálogo, sin comprobar el cifrado: lo comprueban sus pruebas. Fuera del catálogo se crea con
-    /// `init(nombre:leyendo:modo:alias:variantes:estilos:referencias:documentada:)`, que lo lee.
+    /// Una progresión del catálogo. En depuración comprueba al crearla que el cifrado se lee, y sus pruebas lo
+    /// comprueban siempre. Fuera del catálogo se crea con
+    /// `init(nombre:leyendo:modo:alias:variantes:estilos:referencias:documentada:)`, que lanza un error si no se lee.
     package init(
         nombre: String, cifrado: String, modo: Tonalidad.Modo = .mayor, alias: [String] = [], variantes: [String] = [],
         estilos: [Estilo] = [], referencias: [Referencia] = [], documentada: Referencia? = nil
@@ -41,6 +42,7 @@ public struct ProgresionConNombre: Sendable {
         self.alias = alias
         self.variantes = variantes
         self.datos = DatosDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada)
+        assert((try? Tonalidad(.do, modo).acordes(romanos: cifrado)) != nil, "El cifrado de «\(nombre)» no se lee")
     }
 
     /// Una progresión con nombre, del catálogo o fuera de él, comprobando que su cifrado se lee en su modo: lanza el
@@ -78,11 +80,19 @@ public struct ProgresionConNombre: Sendable {
     /// La tonalidad de la progresión con esa tónica, en su modo.
     public func tonalidad(sobre tonica: Nota) -> Tonalidad { Tonalidad(tonica, modo) }
 
-    /// Los acordes en una tonalidad, uno por grado. El cifrado siempre se lee: el de las del catálogo lo comprueban sus
-    /// pruebas, y el de una propia, `init(nombre:leyendo:…)` al crearla.
+    /// Los acordes en una tonalidad, uno por grado. El cifrado siempre se lee: el de una propia lo comprueba
+    /// `init(nombre:leyendo:…)` al crearla, y el de las del catálogo, sus pruebas. Si alguno no se leyera, sería un
+    /// error del catálogo, y para el programa con el nombre de la progresión en vez de devolver una lista vacía. Los
+    /// errores de `Tonalidad.acordes(romanos:)` son de escritura y no dependen de la tónica.
     ///
     ///     ProgresionConNombre.monte.acordes(en: Tonalidad(.do))   // [Do7, Fa, Re7, Sol]
-    public func acordes(en tonalidad: Tonalidad) -> [Acorde] { (try? tonalidad.acordes(romanos: cifrado)) ?? [] }
+    public func acordes(en tonalidad: Tonalidad) -> [Acorde] {
+        do {
+            return try tonalidad.acordes(romanos: cifrado)
+        } catch {
+            preconditionFailure("El cifrado de «\(nombre)» no se lee: \(error)")
+        }
+    }
 
     /// Los acordes con esa tónica, en el modo de la progresión.
     public func acordes(sobre tonica: Nota) -> [Acorde] { acordes(en: tonalidad(sobre: tonica)) }

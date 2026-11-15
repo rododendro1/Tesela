@@ -58,6 +58,59 @@ extension LineaDeComandos {
         return halladas.map { ProgresionConNombrePresentada($0, sobre: tonica, en: notacion) }
     }
 
+    // MARK: Tonalidades
+
+    /// Las tonalidades que pide `tonalidades [<texto>] [--afecto <afecto>]`: las que describe alguna fuente
+    /// (`Tonalidad.conCaracter`), las que tienen el texto en el nombre y, con `--afecto`, las que tienen ese afecto
+    /// en alguna fuente.
+    static func tonalidadesPedidas(_ textos: [String], _ notacion: Notacion) throws -> [Tonalidad] {
+        var argumentos = Argumentos(textos)
+        var afecto: Afecto?
+        if let texto = try argumentos.valor(.afecto) { afecto = try self.afecto(leyendo: texto, notacion) }
+        try argumentos.sinOpcionesDesconocidas()
+        let buscado = claveDeBusqueda(argumentos.unidos)
+        return Tonalidad.conCaracter.filter { tonalidad in
+            (buscado.isEmpty || claveDeBusqueda(tonalidad.nombre(en: notacion)).contains(buscado))
+                && (afecto.map { afecto in tonalidad.caracter.contains { $0.afectos.contains(afecto) } } ?? true)
+        }
+    }
+
+    /// `tonalidades [--afecto triste]`: cada tonalidad con lo que dice de ella cada fuente, en orden cronológico.
+    ///
+    ///     Fa mayor: colérico (Charpentier) · sereno (Schubart)
+    static func tonalidades(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        let halladas = try tonalidadesPedidas(textos, notacion)
+        guard !halladas.isEmpty else { return ninguno(.ningunaTonalidad, notacion) }
+        let lineas = halladas.map { tonalidad in
+            let fuentes = tonalidad.caracter.map { caracter in
+                caracter.descripcion(en: notacion) + " ("
+                    + (caracter.testigo?.nombre(en: notacion) ?? caracter.referencia.cita) + ")"
+            }
+            return tonalidad.nombre(en: notacion) + ": " + fuentes.joined(separator: " · ")
+        }
+        return bien(lineas.joined(separator: "\n"))
+    }
+
+    /// Una tonalidad de `tonalidades --json`, con su carácter.
+    struct TonalidadConCaracterJSON: Encodable {
+        let nombre: String
+        /// «mayor» o «menor», siempre en español.
+        let modo: String
+        let armadura: Int
+        let caracter: [CaracterPresentado]
+        let discrepancias: [String]?
+    }
+
+    /// `tonalidades [--afecto triste] --json`.
+    static func tonalidadesJSON(_ textos: [String], _ notacion: Notacion) throws -> [TonalidadConCaracterJSON] {
+        try tonalidadesPedidas(textos, notacion).map { tonalidad in
+            TonalidadConCaracterJSON(
+                nombre: tonalidad.nombre(en: notacion), modo: tonalidad.modo == .mayor ? "mayor" : "menor",
+                armadura: tonalidad.armadura, caracter: CaracterPresentado.de(tonalidad.caracter, en: notacion) ?? [],
+                discrepancias: CaracterPresentado.discrepancias(tonalidad.caracter, en: notacion))
+        }
+    }
+
     // MARK: Acordes
 
     /// Lo que pide `acordes`: los acordes, ya filtrados y ordenados, la nota sobre la que se escriben y si se quiere la

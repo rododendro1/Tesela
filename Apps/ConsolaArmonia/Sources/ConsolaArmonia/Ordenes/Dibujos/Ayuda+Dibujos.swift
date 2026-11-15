@@ -80,7 +80,12 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia reloj Do disminuida --quintas > disminuida.svg",
                 "armonia clock C diminished --fifths > diminished.svg"),
-            opciones: [.quintas, .microtonal, .fuente, .colores])
+            opciones: [.quintas, .microtonal, .fuente, .colores]),
+        // reloj ragas
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisRelojDeLosRagas),
+            descripcion: TextosDeConsola.traduccion(\.descripcionRelojDeLosRagas),
+            ejemplo: ejemplo("armonia reloj ragas > ragas.svg", "armonia clock ragas > ragas.svg")),
     ]
 
     static let ayudaDePentagrama: [EntradaDeAyuda] = [
