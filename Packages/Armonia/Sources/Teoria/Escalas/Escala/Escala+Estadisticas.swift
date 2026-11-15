@@ -47,7 +47,7 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
     /// Sus notas en quintas desde la tónica, sin repetir.
     let quintas: Set<Int>
     let conjuntoDeClases: ConjuntoDeClasesDeAltura
-    /// Las tríadas y las cuatríadas de `Escala.armonizar(cuatriadas:)`, si tiene siete notas.
+    /// Las tríadas y las cuatríadas de `Escala.armonizar(cuatriadas:)`, si no es un fragmento.
     let acordesPorGrados: [[TipoDeAcorde?]]?
 
     // MARK: Lo que dicen las teorías de escalas
@@ -93,8 +93,8 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
         self.quintas = Set(quintas)
         conjuntoDeClases = conjunto
         acordesPorGrados =
-            tipo.intervalos.count == 7
-            ? [EstadisticasTonalesDeEscala.triadas(escala), EstadisticasTonalesDeEscala.cuatriadas(escala)] : nil
+            tipo.esFragmento
+            ? nil : [escala.armonizar().map { $0?.tipo }, escala.armonizar(cuatriadas: true).map { $0?.tipo }]
     }
 
     /// Para cada intervalo genérico `k`, los tamaños de los `k` pasos seguidos, desde cada nota, se separan a lo
@@ -153,11 +153,11 @@ public struct IntervalosGenericosDeEscala: Hashable, Sendable {
 /// Lo que dice de una escala la armonía tonal: sus tríadas y cuatríadas por grados, cuánto se parece a una tonalidad
 /// mayor o menor, si tiene sensible y si se parte en dos tetracordos iguales.
 public struct EstadisticasTonalesDeEscala: Hashable, Sendable {
-    /// La tríada por terceras de cada grado (solo en las de siete notas): `.mayor`, `.menor`, `.disminuido`,
-    /// `.aumentado`, o `nil` si sus terceras no forman ninguna de las cuatro.
+    /// El tipo de la tríada por terceras de cada grado, el de ``Escala/armonizar(cuatriadas:)``: `.mayor`,
+    /// `.menor`, `.disminuido`… o `nil` si al grado le falta la 3.ª o la 5.ª (el 2.º de la pentatónica mayor). `nil`
+    /// entera en los fragmentos, que no se repiten a la octava.
     public let triadas: [TipoDeAcorde?]?
-    /// La cuatríada por terceras de cada grado (solo en las de siete notas): `.dominanteSeptima`, `.menorSeptima`,
-    /// `.semidisminuido`…, o `nil` si no es ninguna de las nueve conocidas.
+    /// El tipo de la cuatríada por terceras de cada grado: `.dominanteSeptima`, `.menorSeptima`, `.semidisminuido`…
     public let cuatriadas: [TipoDeAcorde?]?
     /// La correlación de sus notas con el perfil de Krumhansl y Kessler de la tonalidad mayor sobre su tónica.
     public let perfilMayor: Double
@@ -167,22 +167,6 @@ public struct EstadisticasTonalesDeEscala: Hashable, Sendable {
     public let conSensible: Bool
     /// Se parte en dos tetracordos iguales separados por un tono, como la mayor.
     public let tetracordosIguales: Bool
-
-    /// Las cuatro tríadas que se cuentan: mayor, menor, disminuida y aumentada.
-    static let triadasConocidas: Set<TipoDeAcorde> = [.mayor, .menor, .disminuido, .aumentado]
-    /// Las nueve cuatríadas que se cuentan: 7M, 7, m7, ø7, °7, m(7M), +7M, +7 y 7(♭5).
-    static let cuatriadasConocidas: Set<TipoDeAcorde> = Set(
-        ["maj7", "7", "m7", "ø7", "°7", "m(maj7)", "+maj7", "+7", "7♭5"].compactMap { try? TipoDeAcorde(leyendo: $0) })
-
-    /// Las tríadas por terceras de cada grado (``Escala/armonizar(cuatriadas:)``), solo las cuatro conocidas.
-    static func triadas(_ escala: Escala) -> [TipoDeAcorde?] {
-        escala.armonizar().map { $0.flatMap { triadasConocidas.contains($0.tipo) ? $0.tipo : nil } }
-    }
-
-    /// Las cuatríadas por terceras de cada grado, solo las nueve conocidas.
-    static func cuatriadas(_ escala: Escala) -> [TipoDeAcorde?] {
-        escala.armonizar(cuatriadas: true).map { $0.flatMap { cuatriadasConocidas.contains($0.tipo) ? $0.tipo : nil } }
-    }
 
     /// Las de unas clases de altura desde la tónica, con las tríadas y las cuatríadas de cada grado.
     init(_ clases: [Int], acordes: [[TipoDeAcorde?]]?) {
