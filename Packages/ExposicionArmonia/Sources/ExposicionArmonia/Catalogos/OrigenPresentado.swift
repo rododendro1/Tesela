@@ -14,6 +14,8 @@ public struct OrigenPresentado: Hashable, Sendable, Codable {
     public let anio: Int?
     /// La época en que aparece (`epocaDeOrigen`), por su nombre.
     public let epoca: String?
+    /// La misma época sin traducir: `barroco`, `edadMedia`… (`Epoca`).
+    public let epocaId: String?
     /// La cita de la obra más antigua que lo documenta (`documentada`), si la tiene.
     public let documentada: String?
 
@@ -21,6 +23,7 @@ public struct OrigenPresentado: Hashable, Sendable, Codable {
     public init?(_ elemento: some ElementoConNombre, en notacion: Notacion) {
         anio = elemento.anioDeOrigen
         epoca = elemento.epocaDeOrigen?.nombre(en: notacion)
+        epocaId = elemento.epocaDeOrigen?.rawValue
         documentada = elemento.documentada?.cita
         if anio == nil, epoca == nil, documentada == nil { return nil }
     }

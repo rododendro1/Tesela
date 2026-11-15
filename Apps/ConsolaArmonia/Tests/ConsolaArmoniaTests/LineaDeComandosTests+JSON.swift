@@ -66,12 +66,21 @@ extension LineaDeComandosTests {
             if let lista = valor as? [Any] { return lista.flatMap { ids($0, dentro: dentro) } }
             return []
         }
-        for orden in ["acorde Sol7 Do9 Lam6", "analizar Do Fa Sol7 Do Lam Rem Mi7 Lam", "analizar Do Lam Fam Do"] {
+        for orden in [
+            "acorde Sol7 Do9 Lam6", "analizar Do Fa Sol7 Do Lam Rem Mi7 Lam", "analizar Do Lam Fam Do",
+            "escala Re dórico", "escala Do menor húngara", "escala La Yaman",
+        ] {
             let espanol = ids(try json(orden))
             #expect(!espanol.isEmpty, Comment(rawValue: orden))
             #expect(espanol == ids(try json(orden + " --ingles")), Comment(rawValue: orden))
             #expect(espanol == ids(try json(orden + " --idioma de")), Comment(rawValue: orden))
         }
+        let dorico = try #require(try json("escala Re dórico") as? [String: Any])
+        let modo = try #require(dorico["modoId"] as? [String: Any])
+        #expect(modo["grado"] as? Int == 2 && modo["escala"] as? String == "mayor" && modo["tonica"] as? Int == 0)
+        let origen = try #require(dorico["origen"] as? [String: Any])
+        #expect((origen["origen"] as? [String: Any])?["epocaId"] as? String == "edadMedia")
+        #expect(origen["lugaresDeUsoId"] as? [String] == ["estadosUnidos"])
         let analisis = try #require(try json("analizar Do Fa Sol7 Do") as? [String: Any])
         let cadencias = try #require(analisis["cadenciasId"] as? [[String: Any]])
         #expect(cadencias.first?["tipo"] as? String == "autentica" && cadencias.first?["acorde"] as? Int == 2)
@@ -99,7 +108,8 @@ extension LineaDeComandosTests {
         // Tan y su sonoridad calculada).
         #expect(
             Set(dorico.keys) == [
-                "nombre", "notas", "clases", "modo", "acordes", "referencias", "origen", "medidas", "sonoridad",
+                "nombre", "notas", "clases", "modo", "modoId", "acordes", "referencias", "origen", "medidas", "sonoridad",
+                "sonoridadId",
             ])
         let medidas = try #require(dorico["medidas"] as? [[String: Any]])
         #expect(medidas.first?["proporcion"] as? Double == 0.40 && medidas.first?["afecto"] as? String == "alegre")
