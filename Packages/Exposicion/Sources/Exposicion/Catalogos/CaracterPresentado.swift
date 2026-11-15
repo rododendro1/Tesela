@@ -82,3 +82,47 @@ public struct MedidaDelAfectoPresentada: Hashable, Sendable, Codable {
     /// «alegre: 83 % (Temperley & Tan 2013: 248)».
     public var enUnaLinea: String { descripcion + " (" + cita + ")" }
 }
+
+extension PresentacionDeEstudioDeEscala {
+    /// Las filas del carácter de una escala, para una lista de las apps: una por fuente (quién lo dice, y lo que dice
+    /// con sus palabras), y después las fuentes que no coinciden, lo que mide un estudio y la sonoridad calculada.
+    /// Vacío si no hay nada que decir.
+    ///
+    ///     let filas = PresentacionDeEstudioDeEscala.caracter(de: .saba, en: .compacta(.espanol))
+    ///     filas[0].valor   // "triste, lastimero · “sadness and pain”"
+    public static func caracter(de tipo: TipoDeEscala, en notacion: Notacion) -> [DatoPresentado] {
+        filasDelCaracter(
+            tipo.caracter, medidas: tipo.medidasDelAfecto, sonoridad: tipo.sonoridad, en: notacion)
+    }
+
+    /// Las filas del carácter de una tonalidad: las de Charpentier y Schubart, y si no coinciden.
+    public static func caracter(de tonalidad: Tonalidad, en notacion: Notacion) -> [DatoPresentado] {
+        filasDelCaracter(tonalidad.caracter, en: notacion)
+    }
+
+    private static func filasDelCaracter(
+        _ caracter: [Caracter], medidas: [MedidaDelAfecto] = [], sonoridad: Sonoridad? = nil, en notacion: Notacion
+    ) -> [DatoPresentado] {
+        var filas = caracter.map { fuente in
+            let presentado = CaracterPresentado(fuente, en: notacion)
+            let valor = [presentado.descripcion, presentado.texto.map { "“" + $0 + "”" }].compactMap { $0 }
+                .filter { !$0.isEmpty }.joined(separator: " · ")
+            return DatoPresentado(nombre: presentado.cita, valor: valor)
+        }
+        if let pares = CaracterPresentado.discrepancias(caracter, en: notacion) {
+            filas.append(
+                DatoPresentado(nombre: notacion.texto(\.fuentesQueNoCoinciden), valor: pares.joined(separator: "; ")))
+        }
+        for medida in medidas {
+            filas.append(
+                DatoPresentado(
+                    nombre: notacion.texto(\.afectoMedido),
+                    valor: MedidaDelAfectoPresentada(medida, en: notacion).enUnaLinea))
+        }
+        if let sonoridad {
+            filas.append(
+                DatoPresentado(nombre: notacion.texto(\.sonoridadCalculada), valor: sonoridad.nombre(en: notacion)))
+        }
+        return filas
+    }
+}

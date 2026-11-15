@@ -3,7 +3,7 @@ import Interfaz
 import SwiftUI
 
 // Las secciones de la pestaña de escalas para estudiarla: la secuencia, la digitación de piano, la simetría, el
-// origen, las estadísticas, el mapa de brillo, el reloj y la hoja de estudio.
+// origen, el carácter, las estadísticas, el mapa de brillo, el reloj y la hoja de estudio.
 
 /// La escala en una secuencia de estudio (por terceras, en grupos, en tríadas…), subiendo o bajando, con su
 /// pentagrama y «Escuchar»; se exporta con la barra.
@@ -98,6 +98,24 @@ struct SeccionDelOrigen: View {
             Section(notacion.texto(\.origen)) {
                 ForEach(origen.datos(en: notacion), id: \.self) { dato in
                     LabeledContent(dato.nombre, value: dato.valor)
+                }
+            }
+        }
+    }
+}
+
+/// Lo que dicen las fuentes del carácter de la escala, con sus palabras, si no coinciden, lo que mide un estudio y la
+/// sonoridad calculada de las occidentales. No sale si no hay nada (las propias, los mēḷa).
+struct SeccionDelCaracter: View {
+    let escala: Escala
+    @Environment(\.notacion) private var notacion
+
+    var body: some View {
+        let filas = PresentacionDeEstudioDeEscala.caracter(de: escala.tipo, en: notacion)
+        if !filas.isEmpty {
+            Section(notacion.texto(\.caracterDeLaFuente)) {
+                ForEach(filas, id: \.self) { fila in
+                    LabeledContent(fila.nombre, value: fila.valor)
                 }
             }
         }

@@ -235,6 +235,9 @@ buscaron, sin encontrar un texto con el que comprobarlas, las fuentes de la segu
   («majestuoso») y Magen Avot («la paz del sábado») no lleva la nota de su fuente.
 - **Mattheson** para las tonalidades (*Das neu-eröffnete Orchestre*, 1713): están Charpentier (en Cessac 1988) y
   Schubart (en Steblin 1983), pero no una traducción de Mattheson que se haya podido leer.
+- **Glareano y Zarlino** para los doce modos: los dos los describen (el *Dodecachordon*, 1547, y la cuarta parte de
+  las *Istitutioni*, 1558), pero no se han encontrado sus frases en una traducción con página (Miller 1965, Cohen
+  1983); la Wikipedia solo da sus nombres y su clasificación.
 
 ## Datos comprobados y por confirmar
 
