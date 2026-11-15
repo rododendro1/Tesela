@@ -111,7 +111,8 @@ import Testing
                 "ritmos", "temperamentos", "notas", "funciones",
                 "acordes", "tonalidad",
                 "conjunto", "serie", "analizar", "armonizar", "realizar", "revisar", "contrapunto", "transponer",
-                "rearmonizar", "motores", "scala", "reticulo", "vecinos", "camino-parsimonioso", "conduccion-minima", "plr",
+                "rearmonizar", "motores", "scala", "reticulo", "vecinos", "camino-parsimonioso", "conduccion-minima",
+                "plr",
                 "digitaciones", "posiciones",
             ])
     }

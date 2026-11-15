@@ -234,7 +234,7 @@ struct OpcionesDePartitura {
     // MARK: Líneas sobre la progresión
 
     /// Un bajo caminante en negras, un compás por acorde, en clave de fa y con la tablatura del bajo
-    /// (`PresentacionDeAnalisis.bajoCaminante`).
+    /// (`PresentacionDeAnalisis.bajoCaminante(_:en:)`).
     func bajo() throws -> Data {
         try sinClaveNiAnacrusa()
         if !marcas.isEmpty { throw ErrorDeUso.acordesConCifradosYAnalisis }

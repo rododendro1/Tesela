@@ -59,7 +59,8 @@ import Testing
     @Test func elDibujo() throws {
         let svg = ReticuloJusto(try acordes("Do", "Lam", "Rem", "Sol", "Do")).svg()
         #expect(svg.hasPrefix("<svg"))
-        #expect(svg.contains("<title>Do – Lam – Rem – Sol – Do · deriva de -21.506 cents</title>"), Comment(rawValue: svg))
+        #expect(
+            svg.contains("<title>Do – Lam – Rem – Sol – Do · deriva de -21.506 cents</title>"), Comment(rawValue: svg))
         #expect(svg.contains(">160/81</text>") && svg.contains(">10/9</text>"))
         #expect(svg.contains("marker-end=\"url(#flecha)\""))
         #expect(svg.contains("de una fundamental a la siguiente"))

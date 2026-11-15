@@ -3,7 +3,9 @@ import Armonia
 extension LineaDeComandos {
     /// Los ficheros de afinación de Scala, que salen en la ayuda con las partituras.
     static let ordenesDeAfinacion: [Orden] = [
-        Orden(nombres: ["scala"], ayuda: ayudaDeScala, json: { try scalaJSON($0, $1) }) { try scala($0, $1) }
+        Orden(
+            nombres: ["scala"], ayuda: ayudaDeScala, json: { try scalaJSON($0, $1) },
+            ejecutar: { try scala($0, $1) })
     ]
 
     static let ayudaDeScala: [EntradaDeAyuda] = [

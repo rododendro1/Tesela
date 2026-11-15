@@ -199,7 +199,9 @@ extension ReticuloJusto {
             cuerpo += "  " + ElementoSVG("defs").conHijos(marcador.conHijos(punta)) + "\n"
             for (uno, otro) in zip(acordes, acordes.dropFirst()) where uno.fundamental != otro.fundamental {
                 // Del borde de un círculo al del otro.
-                let (x1, y1, x2, y2) = (x(uno.fundamental), y(uno.fundamental), x(otro.fundamental), y(otro.fundamental))
+                let (x1, y1, x2, y2) = (
+                    x(uno.fundamental), y(uno.fundamental), x(otro.fundamental), y(otro.fundamental)
+                )
                 let largo = ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)).squareRoot()
                 let recorte = paso * 0.3 / largo
                 cuerpo +=
@@ -215,8 +217,10 @@ extension ReticuloJusto {
             titulo = TextosDeDiagramas.en(notacion) { $0.tituloConDeriva(titulo, Redondeo.texto(deriva)) }
         }
         let leyenda = [
-            EntradaDeLeyenda(muestra: .linea("#dddddd", grosor: 2), texto: TextosDeDiagramas.en(notacion, \.leyendaQuintasYTerceras)),
-            EntradaDeLeyenda(muestra: .flecha, texto: TextosDeDiagramas.en(notacion, \.leyendaDeFundamentalEnFundamental)),
+            EntradaDeLeyenda(
+                muestra: .linea("#dddddd", grosor: 2), texto: TextosDeDiagramas.en(notacion, \.leyendaQuintasYTerceras)),
+            EntradaDeLeyenda(
+                muestra: .flecha, texto: TextosDeDiagramas.en(notacion, \.leyendaDeFundamentalEnFundamental)),
             EntradaDeLeyenda(
                 muestra: .circulo(relleno: DibujoSVG.Color.nota, borde: DibujoSVG.Color.primera),
                 texto: DibujoSVG.Texto.fundamentalDelPrimerAcorde.en(notacion)),

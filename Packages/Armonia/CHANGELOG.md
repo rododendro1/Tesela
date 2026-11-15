@@ -1,5 +1,26 @@
 # Cambios
 
+## Sin publicar
+
+### Novedades
+
+- `ArchivoScala` y `MapaDeTeclado`: los ficheros `.scl` y `.kbm` de Scala, los que leen casi todos los
+  sintetizadores. Un temperamento del catálogo o una escala (con sus microtonos, o en un temperamento que afina sus
+  notas) se escribe como `.scl`; la justa y los 22 śruti, en razones. Un `.scl` cualquiera se lee
+  (`ErrorDeLecturaDeScala` dice qué falla) y `parecidos(tolerancia:limite:)` da lo que se le parece en el catálogo:
+  los temperamentos con tantos pasos, empiece en la nota que empiece, y las escalas con tantos grados. En la consola,
+  `armonia scala temperamento|escala … [--kbm]` y `armonia scala --archivo f.scl`.
+- `Voz(fraseando:tonalidad:compas:octava:)`: un fraseo en corcheas sobre una progresión, un compás por acorde, con la
+  nota guía en el primer tiempo, la escala de cada acorde y una nota cromática que lleva a la nota guía del siguiente.
+  En la consola, `armonia midi fraseo Rem7 Sol7 Do7M` (y en MusicXML, MEI, LilyPond, GUIDO y ABC), y el bajo caminante
+  que ya daba `analizar --bajo`, como partitura: `armonia midi bajo Rem7 Sol7 Do7M`.
+- `ReticuloJusto`: el retículo de Euler y Fokker de la entonación justa de 5 límites. Cada fundamental de una
+  progresión va al punto de su nota más cercano a la anterior, y `deriva` da lo que baja o sube al volver a la primera
+  (−21,506 cents, una coma, en Do–Lam–Rem–Sol–Do). Con su SVG, y en la consola, `armonia reticulo Do Lam Rem Sol Do`
+  (`--resumen`, en texto; `--json`).
+- `armonia mcp`: el motor como servidor del Model Context Protocol, para que un asistente lo use. Cada orden que da
+  JSON es una herramienta.
+
 ## 0.5.2 (2026-11-14)
 
 ### Cambios incompatibles

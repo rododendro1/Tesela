@@ -7,9 +7,10 @@ import Teoria
 
 extension Voz {
     /// Un fraseo en corcheas sobre una progresión, un compás por acorde: empieza cada compás en una nota guía del
-    /// acorde (la tercera o la séptima, la más cercana a la anterior, como ``Acorde/lineaDeNotasGuia(_:desde:octava:)``),
-    /// sigue por grados de su escala (la del acorde en la tonalidad, ``Tonalidad/escalaDelAcorde(_:siguiente:)``)
-    /// hacia la nota guía del siguiente y llega a ella por semitono desde la última corchea, del lado del que viene.
+    /// acorde (la tercera o la séptima, la más cercana a la anterior, como
+    /// ``Acorde/lineaDeNotasGuia(_:desde:octava:)``), sigue por grados de su escala (la del acorde en la tonalidad,
+    /// ``Tonalidad/escalaDelAcorde(_:siguiente:)``) hacia la nota guía del siguiente y llega a ella por semitono desde
+    /// la última corchea, del lado del que viene.
     /// El último acorde, su nota guía en una redonda (lo que dure el compás).
     ///
     ///     let acordes = try ["Rem7", "Sol7", "Do7M"].map { try Acorde(leyendo: $0) }

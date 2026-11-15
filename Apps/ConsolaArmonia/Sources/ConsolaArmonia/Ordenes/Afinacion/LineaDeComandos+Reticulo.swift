@@ -9,7 +9,9 @@ extension LineaDeComandos {
         var argumentos = Argumentos(argumentos)
         let resumen = argumentos.quitarMarca(.resumen)
         let reticulo = try reticuloPedido(&argumentos, notacion)
-        guard resumen else { return bien(reticulo.svg(opciones: .init(notacion: notacion)).trimmingCharacters(in: "\n")) }
+        guard resumen else {
+            return bien(reticulo.svg(opciones: .init(notacion: notacion)).trimmingCharacters(in: "\n"))
+        }
         var lineas = reticulo.acordes.map { puesto in
             let punto = puesto.fundamental
             return puesto.acorde.cifrado(en: notacion) + ": " + reticulo.nota(de: punto).nombreCompacto(en: notacion)

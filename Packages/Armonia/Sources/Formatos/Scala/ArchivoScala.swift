@@ -263,12 +263,12 @@ extension ArchivoScala {
 /// que más se aparta una de sus notas.
 public struct ParecidoDeScala: Hashable, Sendable {
     /// Un temperamento o un tipo de escala.
-    public enum Elemento: Hashable, Sendable {
+    public enum Coincidente: Hashable, Sendable {
         case temperamento(TemperamentoConNombre)
         case escala(TipoDeEscala)
     }
 
-    public let elemento: Elemento
+    public let elemento: Coincidente
     /// Lo que más se aparta una nota del fichero de la del catálogo, en cents.
     public let desviacionMaxima: Double
     /// En un temperamento, el paso desde el que empieza el fichero (0: desde Do, o desde el primero); en una escala,
@@ -309,9 +309,14 @@ extension ArchivoScala {
         }
         // De más a menos parecido; a igual desviación, los que empiezan donde el fichero, y luego los temperamentos y
         // el orden del catálogo.
+        // Las desviaciones, a la milésima de cent: lo que escribe un .scl con seis decimales es la misma nota.
+        func clave(_ parecido: ParecidoDeScala) -> (Double, Int) {
+            (Redondeo.valor(parecido.desviacionMaxima), parecido.desde == 0 ? 0 : 1)
+        }
         let ordenados = hallados.enumerated().sorted {
-            ($0.element.desviacionMaxima, $0.element.desde == 0 ? 0 : 1, $0.offset)
-                < ($1.element.desviacionMaxima, $1.element.desde == 0 ? 0 : 1, $1.offset)
+            (clave($0.element).0, clave($0.element).1, $0.offset) < (
+                clave($1.element).0, clave($1.element).1, $1.offset
+            )
         }
         return ordenados.prefix(max(0, limite)).map(\.element)
     }

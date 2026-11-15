@@ -47,7 +47,8 @@ extension LineaDeComandosTests {
         #expect(leido.hasPrefix("Vallotti: 12 notas por periodo, de 1200 cents\n  0 "), Comment(rawValue: leido))
         #expect(leido.contains("Se le parece") && leido.contains("  Vallotti (temperamento) · 0 ¢\n"))
         let json = salida("scala --archivo \(ruta.path) --limite 1 --json")
-        #expect(json.contains(#""parecidos":[{"clase":"temperamento","desde":0,"desviacion":0,"nombre":"Vallotti"}]"#),
+        #expect(
+            json.contains(#""parecidos":[{"clase":"temperamento","desde":0,"desviacion":0,"nombre":"Vallotti"}]"#),
             Comment(rawValue: json))
         let nada = salida("scala --archivo \(ruta.path) --tolerancia 0.001 --limite 1")
         #expect(nada.contains("Vallotti (temperamento)"))
@@ -58,7 +59,8 @@ extension LineaDeComandosTests {
         try Data("Mal\n3\n100.0\n".utf8).write(to: estropeado)
         defer { try? FileManager.default.removeItem(at: estropeado) }
         let error = resultado("scala", "--archivo", estropeado.path)
-        #expect(error.codigo == 1 && error.error.contains("dice 3 pasos y solo tiene 1"), Comment(rawValue: error.error))
+        #expect(
+            error.codigo == 1 && error.error.contains("dice 3 pasos y solo tiene 1"), Comment(rawValue: error.error))
         #expect(resultado("scala", "temperamento", "Vallotti", "--json").codigo == 2)
     }
 }

@@ -54,7 +54,8 @@ struct ServidorMCP {
         self.opciones = opciones
         self.entorno = entorno
         var argumentos = Argumentos(opciones)
-        notacion = (try? LineaDeComandos.opcionesGenerales(&argumentos, entorno: entorno).notacion) ?? .compacta(.espanol)
+        notacion =
+            (try? LineaDeComandos.opcionesGenerales(&argumentos, entorno: entorno).notacion) ?? .compacta(.espanol)
     }
 
     /// Las órdenes que se ofrecen: las que dan JSON.
@@ -67,12 +68,11 @@ struct ServidorMCP {
         guard let datos = linea.data(using: .utf8),
             let mensaje = try? JSONSerialization.jsonObject(with: datos) as? [String: Any]
         else { return Self.error(id: NSNull(), codigo: -32700, "Parse error") }
-        let id = mensaje["id"]
         guard let metodo = mensaje["method"] as? String else {
-            return id == nil ? nil : Self.error(id: id!, codigo: -32600, "Invalid Request")
+            return mensaje["id"].map { Self.error(id: $0, codigo: -32600, "Invalid Request") }
         }
         // Una notificación no lleva id y no se responde.
-        guard let id else { return nil }
+        guard let id = mensaje["id"] else { return nil }
         let parametros = mensaje["params"] as? [String: Any] ?? [:]
         switch metodo {
         case "initialize":

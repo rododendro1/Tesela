@@ -40,6 +40,9 @@ armonia                                                      # en la terminal, u
 armonia < ejercicios.txt                                     # una orden por línea; sale con el peor código
 armonia midi acordes Do Fa Sol Do -o cadencia.mid           # -o: al fichero, también en la sesión
 armonia acorde H7 --idioma de                                # las notas, también en el idioma elegido
+armonia scala temperamento Werckmeister III > w.scl          # para un sintetizador (y --kbm, su mapa de teclado)
+armonia reticulo Do Lam Rem Sol Do > coma.svg                # la deriva de la coma, en el retículo de la justa
+armonia mcp                                                  # el motor como servidor MCP, para un asistente
 ```
 
 Lee los nombres en español o en inglés (Do, C, Sib, Bb) y responde en el idioma de `--idioma`, o en el de
