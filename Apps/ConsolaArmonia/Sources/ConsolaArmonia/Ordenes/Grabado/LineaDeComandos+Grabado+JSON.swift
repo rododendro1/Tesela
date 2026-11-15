@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 import Foundation
 
 // `--json` de `armonia motores`. Lo común a todas las órdenes está en LineaDeComandos+JSON.swift.

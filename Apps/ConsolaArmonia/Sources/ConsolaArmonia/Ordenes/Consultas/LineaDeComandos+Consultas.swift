@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 import Foundation
 
 // MARK: - Consultas: intervalos, tonalidades, análisis y teoría postonal

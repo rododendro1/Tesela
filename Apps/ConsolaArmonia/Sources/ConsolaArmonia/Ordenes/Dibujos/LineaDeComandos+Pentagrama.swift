@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 import Foundation
 
 // MARK: - El pentagrama: escalas, arpegios, acordes y melodías

@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 import Foundation
 
 // MARK: - Consultas: el catálogo de escalas

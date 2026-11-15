@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 
 // MARK: - Consultas: el catálogo de ritmos
 

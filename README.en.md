@@ -16,7 +16,7 @@ and its documentation are written in Spanish; this page is a short English summa
   isomorphic keyboard (Wicki-Hayden, Jankó, chromatic button accordion…).
 - **`armonia`** (command line): the same from the terminal, as text or JSON, plus engraved scores in PDF, SVG or PNG.
 - **Packages** you can use in your own project: `Armonia` (the engine), `Hexagonos` (hexagonal grids), and
-  `Exposicion` and `Interfaz` (what the apps share).
+  `ExposicionArmonia` and `InterfazArmonia` (what the apps share).
 
 ## Command line
 

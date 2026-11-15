@@ -1,5 +1,5 @@
 import Armonia
-import Interfaz
+import InterfazArmonia
 import SwiftUI
 
 /// Escribe un cifrado (Sol7/Si, Dom, Fa#m7b5…) y muestra el acorde, su arpegio, las escalas que encajan con él,

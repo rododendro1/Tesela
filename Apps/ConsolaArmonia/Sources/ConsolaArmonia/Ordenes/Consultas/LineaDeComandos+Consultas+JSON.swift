@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 import Foundation
 
 // `--json` de las consultas: acordes, escalas, arpegios, intervalos, tonalidades, tradiciones, teoría postonal y el
@@ -8,8 +8,8 @@ import Foundation
 extension LineaDeComandos {
     // MARK: Acordes y escalas
     //
-    // Los datos son los de `Exposicion` (`AcordePresentado`, `EscalaPresentada`…), los mismos que da el texto: sus
-    // nombres son las claves del JSON.
+    // Los datos son los de `ExposicionArmonia` (`AcordePresentado`, `EscalaPresentada`…), los mismos que da el
+    // texto: sus nombres son las claves del JSON.
 
     /// `acorde Sol7 Do --json`: cada acorde con sus notas, una lista aunque sea uno solo; con `--estadisticas`, cada
     /// uno lleva también la clave `estadisticas` (`EstadisticasDeAcordePresentadas`).
@@ -165,9 +165,9 @@ extension LineaDeComandos {
             try opciones.encode(to: encoder)
         }
 
-        /// Lo que añaden las opciones. Son los tipos de Exposicion que enseña el texto, cuando el JSON lleva lo mismo
-        /// (`ModoPresentado`, `TablaDeAcordesPresentada`…, que saben qué campos van en JSON), o, si lleva otra cosa
-        /// (números en lugar de textos), los de aquí.
+        /// Lo que añaden las opciones. Son los tipos de ExposicionArmonia que enseña el texto, cuando el JSON lleva lo
+        /// mismo (`ModoPresentado`, `TablaDeAcordesPresentada`…, que saben qué campos van en JSON), o, si lleva otra
+        /// cosa (números en lugar de textos), los de aquí.
         struct Opciones: Encodable {
             /// `--acordes`.
             var acordesQueCaben: [Grado]?

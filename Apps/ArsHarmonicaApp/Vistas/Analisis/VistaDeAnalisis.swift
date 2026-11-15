@@ -1,5 +1,5 @@
 import Armonia
-import Interfaz
+import InterfazArmonia
 import SwiftUI
 
 /// Escribe una progresión (Do Fa Sol7 Do Lam Re7 Sol), o la saca de un fichero MIDI, MusicXML, MEI o ABC con «Abrir»

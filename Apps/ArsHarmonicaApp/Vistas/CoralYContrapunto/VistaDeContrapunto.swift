@@ -1,5 +1,5 @@
 import Armonia
-import Interfaz
+import InterfazArmonia
 import SwiftUI
 
 /// Un ejercicio de contrapunto de especies a dos voces, como los del Gradus ad Parnassum de Fux: se escriben el

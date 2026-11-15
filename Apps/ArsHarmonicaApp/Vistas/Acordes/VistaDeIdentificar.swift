@@ -1,5 +1,5 @@
 import Armonia
-import Interfaz
+import InterfazArmonia
 import SwiftUI
 
 /// Toca notas en el mástil, una por cuerda como al tocar, o en un teclado MIDI conectado, y muestra qué acorde

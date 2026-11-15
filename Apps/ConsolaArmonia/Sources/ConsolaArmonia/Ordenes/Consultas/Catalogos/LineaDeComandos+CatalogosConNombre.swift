@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 
 // MARK: - Consultas: los catálogos de acordes y de progresiones
 

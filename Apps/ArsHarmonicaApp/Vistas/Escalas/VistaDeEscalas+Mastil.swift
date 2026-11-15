@@ -1,5 +1,5 @@
 import Armonia
-import Interfaz
+import InterfazArmonia
 import SwiftUI
 
 // Las secciones de la pestaña de escalas que van en el mástil: las posiciones, las formas de la pentatónica y la

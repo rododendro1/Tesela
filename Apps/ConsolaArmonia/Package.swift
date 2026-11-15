@@ -16,15 +16,15 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../../Packages/Armonia"),
-        // Solo `Exposicion`, sin SwiftUI: el análisis y el coral que también enseñan las apps.
-        .package(path: "../../Packages/Exposicion"),
+        // Solo `ExposicionArmonia`, sin SwiftUI: el análisis y el coral que también enseñan las apps.
+        .package(path: "../../Packages/ExposicionArmonia"),
     ],
     targets: [
         .target(
             name: "ConsolaArmonia",
             dependencies: [
                 .product(name: "Armonia", package: "Armonia"),
-                .product(name: "Exposicion", package: "Exposicion"),
+                .product(name: "ExposicionArmonia", package: "ExposicionArmonia"),
             ]),
         // El directorio del ejecutable no se llama `armonia`: en sistemas de ficheros que no
         // distinguen mayúsculas (macOS, Windows) chocaría con otros nombres. El producto

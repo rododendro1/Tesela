@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 import Foundation
 
 // `--json` del análisis, la armonización, la revisión, el contrapunto, la transposición y la rearmonización. Lo

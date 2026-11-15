@@ -4,8 +4,9 @@ import Elementos
 //
 // Los siete catálogos del motor tienen la misma forma: un nombre en español con sus alias y sus variantes, los mismos
 // en los trece idiomas, una búsqueda por cualquiera de ellos, sus referencias y la fecha en que aparecen.
-// `ElementoConNombre` lo dice, para que quien los presenta (la consola, Exposicion, los TSV de `EjemploCatalogos`)
-// escriba una sola función para todos. Cada tipo da lo suyo en su fichero; aquí solo va lo que sale de eso.
+// `ElementoConNombre` lo dice, para que quien los presenta (la consola, ExposicionArmonia, los TSV de
+// `EjemploCatalogos`) escriba una sola función para todos. Cada tipo da lo suyo en su fichero; aquí solo va lo que
+// sale de eso.
 
 /// Un elemento de uno de los catálogos con nombre: `TipoDeEscala`, `AcordeConNombre`, `ProgresionConNombre`,
 /// `RitmoConNombre`, `TemperamentoConNombre`, `NotaConNombre` y `FuncionDeNota`.

@@ -322,7 +322,7 @@ jobs:
       fail-fast: false
       matrix:
         swift: ["6.0", "6.2"]
-        paquete: [Exposicion, Interfaz, Hexagonos]
+        paquete: [ExposicionArmonia, InterfazArmonia, Hexagonos]
     defaults:
       run:
         working-directory: Packages/${{ matrix.paquete }}
@@ -365,8 +365,8 @@ jobs:
         paquete:
           # Las exhaustivas tardan y no prueban código distinto del de las rápidas.
           - { nombre: Armonia, ruta: Packages/Armonia, filtro: "^(Armonia|ArmoniaDocumentacion|Elementos|Teoria|Diagramas|Partituras|Polifonia|Formatos|Trastes)Tests\\.", funciones: 95.5, lineas: 98.0 }
-          - { nombre: Exposicion, ruta: Packages/Exposicion, filtro: "", funciones: 96.0, lineas: 98.5 }
-          - { nombre: Interfaz, ruta: Packages/Interfaz, filtro: "", funciones: 97.0, lineas: 99.0 }
+          - { nombre: ExposicionArmonia, ruta: Packages/ExposicionArmonia, filtro: "", funciones: 96.0, lineas: 98.5 }
+          - { nombre: InterfazArmonia, ruta: Packages/InterfazArmonia, filtro: "", funciones: 97.0, lineas: 99.0 }
           - { nombre: Hexagonos, ruta: Packages/Hexagonos, filtro: "", funciones: 93.5, lineas: 97.5 }
           - { nombre: ConsolaArmonia, ruta: Apps/ConsolaArmonia, filtro: "", funciones: 96.0, lineas: 98.0 }
     defaults:
@@ -465,7 +465,7 @@ jobs:
             .build
           key: ${{ steps.cache.outputs.clave }}
 
-  # Un pull request que cambia las apps, sus vistas (Interfaz) o el proyecto de Xcode pasa `interfaz`, que compila
+  # Un pull request que cambia las apps, sus vistas (InterfazArmonia) o el proyecto de Xcode pasa `interfaz`, que compila
   # las dos apps en macOS y en el simulador de iOS antes de probarlas: es lo que Linux no puede compilar. Lo demás de
   # macOS sigue en el job `macos`. `cambios-en-las-apps` corre en Linux y solo mira los ficheros, para no ocupar un
   # runner de macOS en los demás.
@@ -486,7 +486,7 @@ jobs:
         run: |
           cambiados=$(git diff --name-only "$BASE"...HEAD)
           echo "$cambiados"
-          if echo "$cambiados" | grep -qE '^(Apps/ArsHarmonicaApp/|Apps/TonnetzApp/|PruebasDeInterfaz/|Packages/Interfaz/|Packages/Exposicion/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
+          if echo "$cambiados" | grep -qE '^(Apps/ArsHarmonicaApp/|Apps/TonnetzApp/|PruebasDeInterfaz/|Packages/InterfazArmonia/|Packages/ExposicionArmonia/|project\.yml$|Scripts/generadores/generar_proyecto\.sh$)'; then
             echo "apps=true" >> "$GITHUB_OUTPUT"
           else
             echo "apps=false" >> "$GITHUB_OUTPUT"
@@ -511,12 +511,12 @@ jobs:
       - name: Armonia
         run: swift build && swift test --parallel --filter "^(Armonia|Elementos|Teoria|Diagramas|Partituras|Polifonia|Formatos|Trastes)Tests\\."
         working-directory: Packages/Armonia
-      - name: Exposicion
+      - name: ExposicionArmonia
         run: swift test --parallel
-        working-directory: Packages/Exposicion
-      - name: Interfaz
+        working-directory: Packages/ExposicionArmonia
+      - name: InterfazArmonia
         run: swift test --parallel
-        working-directory: Packages/Interfaz
+        working-directory: Packages/InterfazArmonia
       - name: Hexagonos
         run: swift test --parallel
         working-directory: Packages/Hexagonos
@@ -650,18 +650,18 @@ jobs:
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
           xcodebuild docbuild -scheme Hexagonos -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-hexagonos" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-hexagonos.log"
-      - name: Construir la documentación de Exposicion
-        working-directory: Packages/Exposicion
+      - name: Construir la documentación de ExposicionArmonia
+        working-directory: Packages/ExposicionArmonia
         run: |
           set -o pipefail
           # Con un solo producto, el esquema se llama como él (sin «-Package»).
-          xcodebuild docbuild -scheme Exposicion -destination 'generic/platform=macOS' \
+          xcodebuild docbuild -scheme ExposicionArmonia -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-exposicion" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-exposicion.log"
-      - name: Construir la documentación de Interfaz
-        working-directory: Packages/Interfaz
+      - name: Construir la documentación de InterfazArmonia
+        working-directory: Packages/InterfazArmonia
         run: |
           set -o pipefail
-          xcodebuild docbuild -scheme Interfaz -destination 'generic/platform=macOS' \
+          xcodebuild docbuild -scheme InterfazArmonia -destination 'generic/platform=macOS' \
             -derivedDataPath "$RUNNER_TEMP/docc-interfaz" CODE_SIGNING_ALLOWED=NO 2>&1 | tee "$RUNNER_TEMP/docbuild-interfaz.log"
       - name: Enlaces sin resolver
         run: |

@@ -18,7 +18,7 @@ y el griego también se escriben en alfabeto latino.
   armónica o un teclado isomórfico (Wicki-Hayden, Jankó, acordeón cromático…).
 - **`armonia`**, la línea de comandos: lo mismo desde la terminal, en texto o en JSON, y partituras en PDF, SVG o PNG.
 - **Los paquetes**, para usarlos en otro proyecto: `Armonia` (el motor), `Hexagonos` (rejillas hexagonales), y
-  `Exposicion` y `Interfaz` (lo que comparten las apps).
+  `ExposicionArmonia` y `InterfazArmonia` (lo que comparten las apps).
 
 ## La línea de comandos
 
@@ -56,7 +56,7 @@ dependencies: [
 ],
 targets: [
     .target(name: "MiApp", dependencies: [
-        .product(name: "Armonia", package: "Tesela"),     // o Teoria, Hexagonos, Interfaz…
+        .product(name: "Armonia", package: "Tesela"),     // o Teoria, Hexagonos, InterfazArmonia…
     ]),
 ]
 ```

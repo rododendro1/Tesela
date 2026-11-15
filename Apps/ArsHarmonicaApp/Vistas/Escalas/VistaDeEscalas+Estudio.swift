@@ -1,5 +1,5 @@
 import Armonia
-import Interfaz
+import InterfazArmonia
 import SwiftUI
 
 // Las secciones de la pestaña de escalas para estudiarla: la secuencia, la digitación de piano, la simetría, el

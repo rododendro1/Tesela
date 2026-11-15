@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 import Foundation
 
 // MARK: - Digitaciones: cómo tocar un acorde en un instrumento de cuerda con trastes

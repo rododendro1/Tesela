@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 import Foundation
 
 // `--json` de los trastes: digitaciones y posiciones. Lo común a todas las órdenes está en LineaDeComandos+JSON.swift.

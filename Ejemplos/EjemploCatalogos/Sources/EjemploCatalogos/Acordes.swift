@@ -1,5 +1,5 @@
 import Armonia
-import Exposicion
+import ExposicionArmonia
 
 // El catálogo de acordes (`AcordeConNombre.catalogo`: los genéricos y después los de nombre propio, en su orden), una
 // fila por acorde con lo que dice de él la API pública: nombres (y su traducción a los otros doce idiomas),
