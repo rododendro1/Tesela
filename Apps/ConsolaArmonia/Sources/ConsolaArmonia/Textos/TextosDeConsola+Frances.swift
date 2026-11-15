@@ -8,7 +8,7 @@ extension TextosDeConsola {
     static let frances = TextosDeConsola(
         // Ayuda+Armonizacion.swift
         sintaxisAnalizar: "analizar <accords> [--en <tonalité>] [--escalas]",
-        descripcionAnalizar: "chiffrage romain, fonctions, cadences et modulations (avec l'accord pivot ; sans --en) --escalas : la gamme de chaque accord, ses tensions et notes à éviter",
+        descripcionAnalizar: "chiffrage romain, fonctions, cadences et modulations (avec l'accord pivot ; sans --en)\n--escalas: la gamme de chaque accord, ses tensions et notes à éviter",
         notasAnalizar: "--notas-guia : deux lignes de notes guides, depuis la tierce et depuis la septième ; --conduccion : comment chaque voix va d’un accord au suivant (en drop 2), avec les notes communes ; --comparar : l’autre version accord par accord, avec ce qui change, ses degrés et les notes communes ; --bajo : une walking bass en noires, une mesure par accord ; --estadisticas : la tension de Lerdahl accord par accord, le mouvement des voix, les fonctions probables et le chromatisme",
         sintaxisAnalizarArchivo: "analizar --archivo <fichier> [--ventana <durée>]",
         descripcionAnalizarArchivo: "la même chose, avec les accords d'un fichier MIDI, MusicXML, MEI ou ABC (un par temps ; --ventana 2 : un par blanche)",

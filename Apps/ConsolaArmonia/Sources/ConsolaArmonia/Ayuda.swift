@@ -111,11 +111,19 @@ extension LineaDeComandos {
                 texto.append(caracter)
             }
         }
-        for corte in [";", ":", " --"] {
+        for corte in [";", ":", "·"] {
             if let rango = texto.range(of: corte) { texto = String(texto[..<rango.lowerBound]) }
         }
+        // Lo que nombra una opción («o sobre la tónica de --en») se queda sin ella colgando: se corta en la coma de
+        // antes, si la hay.
+        if let rango = texto.range(of: " --") {
+            texto = String(texto[..<rango.lowerBound])
+            if let coma = texto.range(of: ", ", options: .backwards) { texto = String(texto[..<coma.lowerBound]) }
+        }
+        // El espacio que dejan los paréntesis delante de una coma o de un punto final, pero no el de «.scl».
         let palabras = texto.split(separator: " ").joined(separator: " ")
-            .replacingOccurrences(of: " ,", with: ",").replacingOccurrences(of: " .", with: ".")
+            .replacingOccurrences(of: " ,", with: ",")
+            .replacingOccurrences(of: #" \.(?=\s|$)"#, with: ".", options: .regularExpression)
         return palabras.isEmpty ? enUnaLinea(descripcion) : palabras
     }
 
