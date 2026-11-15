@@ -181,27 +181,35 @@ public struct Escala: Hashable, Sendable {
     /// Do–Fa–Sol. `nil` si falta ese intervalo (el 2.º grado de Do pentatónica mayor, Re, no tiene Fa) o si las
     /// notas no forman un tipo conocido.
     public func acorde(grado: Int, notas cuantas: Int, por apilamiento: Apilamiento = .terceras) -> Acorde? {
-        guard (2...7).contains(cuantas) else { return nil }
-        var nombres = [self.grado(grado)]
-        if tipo.intervalos.count == 7 {
-            nombres = (0..<cuantas).map { self.grado(grado + (apilamiento.numero - 1) * $0) }
-        } else {
-            var posicion = grado
-            while nombres.count < cuantas, let ultima = nombres.last {
-                guard
-                    let paso = (1..<tipo.intervalos.count).first(where: {
-                        ultima.intervalo(hasta: self.grado(posicion + $0)).numeroSimple == apilamiento.numero
-                    })
-                else { return nil }
-                posicion += paso
-                nombres.append(self.grado(posicion))
-            }
-        }
+        guard let nombres = notasApiladas(grado: grado, notas: cuantas, por: apilamiento) else { return nil }
         let raiz = nombres[0]
         guard let tipo = TipoDeAcorde(pasosDeQuinta: Set(nombres.map { $0.pasosDeQuinta - raiz.pasosDeQuinta })) else {
             return nil
         }
         return Acorde(raiz, tipo)
+    }
+
+    /// Las notas de ``acorde(grado:notas:por:)`` en el orden en que se apilan, desde el grado: el acorde las guarda
+    /// en su orden canónico. `nil` si falta un intervalo, pero no si las notas no forman un tipo conocido.
+    ///
+    ///     Escala(.do, .pentatonicaMayor).notasApiladas(grado: 3, notas: 4, por: .cuartas)   // Mi–La–Re–Sol
+    public func notasApiladas(grado: Int, notas cuantas: Int, por apilamiento: Apilamiento = .terceras) -> [Nota]? {
+        guard (2...7).contains(cuantas) else { return nil }
+        if tipo.intervalos.count == 7 {
+            return (0..<cuantas).map { self.grado(grado + (apilamiento.numero - 1) * $0) }
+        }
+        var nombres = [self.grado(grado)]
+        var posicion = grado
+        while nombres.count < cuantas, let ultima = nombres.last {
+            guard
+                let paso = (1..<tipo.intervalos.count).first(where: {
+                    ultima.intervalo(hasta: self.grado(posicion + $0)).numeroSimple == apilamiento.numero
+                })
+            else { return nil }
+            posicion += paso
+            nombres.append(self.grado(posicion))
+        }
+        return nombres
     }
 
     /// Acordes de todos los grados, por terceras (``acorde(grado:cuatriada:)``): `nil` si un grado no tiene la 3.ª

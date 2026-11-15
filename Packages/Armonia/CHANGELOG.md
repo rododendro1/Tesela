@@ -11,7 +11,8 @@
   pida el cifrado. Los motivos, en los trece idiomas. `Acorde.acordeSobreElBajo`: Fa/Sol → Sol9sus4.
 - `PapelEnLaEscala.septimaDeLaEscala`: la 7.ª de la escala sobre un acorde sin séptima ya no sale como tensión.
 - `Escala.acorde(grado:notas:por:)` y `Escala.armonizar(notas:por:)`: de 2 a 7 notas por grado, por terceras (los de
-  9.ª, 11.ª y 13.ª) o por cuartas (`Escala.Apilamiento`).
+  9.ª, 11.ª y 13.ª) o por cuartas (`Escala.Apilamiento`). `Escala.notasApiladas(grado:notas:por:)` da esas notas en
+  el orden en que se apilan.
 - `Escala.tensionesDisponibles(grado:)` y `Escala.armonizacionConTensiones`: las tensiones de la cuatríada de cada
   grado con su modo, la tabla de Berklee. En la consola, `armonia escala … --tensiones-disponibles` y `--cuartas`.
 - `armonia acorde … --escalas [--en <tonalidad>]`: las escalas del acorde con su motivo, también en `--json`.

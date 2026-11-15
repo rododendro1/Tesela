@@ -264,6 +264,8 @@ extension LineaDeComandosTests {
         #expect(tensiones.contains("  7 Sim7(♭5): Mi 11 · Sol ♭13"))
         #expect(salida("escala Re dórico --cuartas").contains("Acordes por cuartas:\n  1 Re–Sol–Do–Fa"))
         #expect(salida("scale D dorian --fourths --ingles").contains("Chords in fourths:"))
+        let pentatonica = salida("escala Do pentatónica mayor --cuartas")
+        #expect(pentatonica.contains("\n  2 —\n  3 Mi–La–Re–Sol (Mim7(11,omit5))\n"))
     }
 
     @Test func referenciasDeUnaEscala() {

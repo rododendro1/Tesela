@@ -148,12 +148,11 @@ extension LineaDeComandos {
         if pedido.cuartas {
             lineas.append(TextosDeConsola.en(notacion, \.acordesPorCuartas) + ":")
             for (i, acorde) in escala.armonizar(notas: 4, por: .cuartas).enumerated() {
-                let notas =
-                    escala.tipo.intervalos.count == 7
-                    ? (0..<4).map { escala.grado(i + 1 + 3 * $0).nombre(en: notacion) }
-                    : (acorde?.notas ?? []).map { $0.nombre(en: notacion) }
+                let notas = (escala.notasApiladas(grado: i + 1, notas: 4, por: .cuartas) ?? []).map {
+                    $0.nombre(en: notacion)
+                }
                 let cifrado = acorde.map { " (" + $0.cifrado(en: notacion) + ")" } ?? ""
-                lineas.append("  \(i + 1) " + notas.joined(separator: "–") + cifrado)
+                lineas.append("  \(i + 1) " + (notas.isEmpty ? "—" : notas.joined(separator: "–")) + cifrado)
             }
         }
         if pedido.simetria { lineas += lineasDeSimetria(de: escala, notacion) }

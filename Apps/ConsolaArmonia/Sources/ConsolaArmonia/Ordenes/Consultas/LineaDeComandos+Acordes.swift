@@ -40,7 +40,7 @@ extension LineaDeComandos {
     /// Lo que se pide de cada acorde además de sus notas.
     struct RelacionesPedidas {
         /// `--escalas`: las escalas para el acorde, con su motivo (`Acorde.escalas(en:)`).
-        var escalas: Bool = false
+        var escalas: Bool
         var bebop: Bool
         var pentatonicas: Bool
         var disposiciones: Bool

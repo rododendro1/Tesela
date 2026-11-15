@@ -396,6 +396,12 @@ import Testing
             Set(Escala(.do, .pentatonicaMayor).acorde(grado: 2, notas: 3, por: .cuartas)?.notas ?? []) == [
                 .re, .sol, .do,
             ])
+        // Las notas apiladas, en su orden (el acorde las guarda en el canónico).
+        let pentatonica = Escala(.do, .pentatonicaMayor)
+        #expect(pentatonica.notasApiladas(grado: 3, notas: 4, por: .cuartas) == [.mi, .la, .re, .sol])
+        #expect(pentatonica.notasApiladas(grado: 1, notas: 4, por: .cuartas) == nil)
+        #expect(dorico.notasApiladas(grado: 1, notas: 3, por: .cuartas) == [.re, .sol, .do])
+        #expect(dorico.notasApiladas(grado: 1, notas: 1) == nil)
     }
 
     /// La tabla de las tensiones de cada grado de la mayor.
