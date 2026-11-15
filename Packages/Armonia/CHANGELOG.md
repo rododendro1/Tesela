@@ -16,6 +16,15 @@
 - `Escala.tensionesDisponibles(grado:)` y `Escala.armonizacionConTensiones`: las tensiones de la cuatríada de cada
   grado con su modo, la tabla de Berklee. En la consola, `armonia escala … --tensiones-disponibles` y `--cuartas`.
 - `armonia acorde … --escalas [--en <tonalidad>]`: las escalas del acorde con su motivo, también en `--json`.
+- Cinco acordes más en el catálogo, con sus nombres en los trece idiomas: la novena con undécima aumentada, la
+  decimotercera con novena menor y el semidisminuido con novena (Levine 1995), los de las escalas lidia dominante,
+  disminuida semitono-tono y locria ♮2; el acorde del sueño de La Monte Young (Sol Do Do♯ Re, de Smith 1977, obra
+  nueva `Referencia.smith1977`) y el tricordo vienés (3-5 de Forte).
+- Seis progresiones más, con sus nombres en los trece idiomas: la cadencia con cuarta y sexta (ii6–I64–V7–I, Aldwell
+  2011), el ciclo hexatónico (I–i–♭VI–♭vi–III–iii, Cohn 1996), el passo indietro (V42–I6, Gjerdingen 2007), el
+  turnaround con dominante secundaria (I–VI7–ii–V), el que empieza en el iii y la progresión de ragtime
+  (III7–VI7–II7–V7, el puente de rhythm changes), de Levine 1995.
+- `EsquemaArmonico` reconoce una progresión que no pasa por la tónica, como la de ragtime.
 
 ### Cambios
 

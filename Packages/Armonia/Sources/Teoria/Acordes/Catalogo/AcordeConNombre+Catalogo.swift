@@ -106,6 +106,21 @@ extension AcordeConNombre {
         nombre: "séptima mayor con undécima aumentada",
         intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMayor, .undecimaAumentada],
         referencias: [.levine1995])
+    /// El de la escala lidia dominante entera, menos la 13: la novena con la undécima aumentada.
+    public static let dominanteNovenaUndecimaAumentada = AcordeConNombre(
+        nombre: "novena con undécima aumentada",
+        intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMayor, .undecimaAumentada],
+        referencias: [.levine1995])
+    /// El de la disminuida semitono-tono: la decimotercera con la novena menor.
+    public static let dominanteDecimoterceraNovenaMenor = AcordeConNombre(
+        nombre: "decimotercera con novena menor",
+        intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMenor, .decimoterceraMayor],
+        referencias: [.levine1995])
+    /// El del locrio ♮2: el semidisminuido con la novena mayor.
+    public static let semidisminuidoNovena = AcordeConNombre(
+        nombre: "semidisminuido con novena",
+        intervalos: [.unisono, .terceraMenor, .quintaDisminuida, .septimaMenor, .novenaMayor],
+        referencias: [.levine1995])
     public static let sus4Novena = AcordeConNombre(
         nombre: "novena suspendida",
         intervalos: [.unisono, .cuartaJusta, .quintaJusta, .septimaMenor, .novenaMayor], referencias: [.levine1995])
@@ -159,7 +174,8 @@ extension AcordeConNombre {
         .aumentadoSeptimaMayor, .sus4Septima, .mayorSexta, .menorSexta, .mayorSextaNovena, .dominanteNovena,
         .mayorSeptimaMayorNovena, .menorSeptimaNovena, .mayorNovenaAnadida, .dominanteUndecima, .menorSeptimaUndecima,
         .dominanteDecimotercera, .menorSeptimaDecimotercera, .dominanteNovenaMenor, .dominanteQuintaDisminuida,
-        .dominanteNovenaAumentada, .dominanteUndecimaAumentada, .mayorSeptimaMayorUndecimaAumentada, .sus4Novena,
+        .dominanteNovenaAumentada, .dominanteUndecimaAumentada, .mayorSeptimaMayorUndecimaAumentada,
+        .dominanteNovenaUndecimaAumentada, .dominanteDecimoterceraNovenaMenor, .semidisminuidoNovena, .sus4Novena,
         .sus4Decimotercera, .dominanteAlterado, .menorSeptimaMayorNovena, .mayorSeptimaMayorDecimotercera,
         .menorSextaNovena, .menorNovenaAnadida, .sextaAumentadaItaliana,
         .sextaAumentadaFrancesa, .sextaAumentadaAlemana, .sextaAumentadaSuiza,

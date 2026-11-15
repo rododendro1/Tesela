@@ -36,6 +36,9 @@ extension NombresDeAcordes {
         .init(.dominanteNovenaAumentada, "dominantseptimackord med överstigande nona"),
         .init(.dominanteUndecimaAumentada, "dominantseptimackord med överstigande undecima"),
         .init(.mayorSeptimaMayorUndecimaAumentada, "stort septimackord med överstigande undecima"),
+        .init(.dominanteNovenaUndecimaAumentada, "nonackord med överstigande undecima"),
+        .init(.dominanteDecimoterceraNovenaMenor, "tredecimackord med liten nona"),
+        .init(.semidisminuidoNovena, "halvminskat nonackord"),
         .init(.sus4Novena, "dominantnonackord med kvartförhållning"),
         .init(.sus4Decimotercera, "dominanttredecimackord med kvartförhållning"),
         .init(.dominanteAlterado, "altererat dominantseptimackord"),
@@ -59,5 +62,7 @@ extension NombresDeAcordes {
         .init(.augures, "augurackord"),
         .init(.salmos, "Psalmsymfoni-ackord"),
         .init(.alfa, "alfaackord"),
+        .init(.delSueno, "drömackord"),
+        .init(.tricordoVienes, "wienertrikord"),
     ])
 }

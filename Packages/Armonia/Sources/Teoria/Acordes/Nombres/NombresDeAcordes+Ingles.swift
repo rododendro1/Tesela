@@ -36,6 +36,9 @@ extension NombresDeAcordes {
         .init(.dominanteNovenaAumentada, "dominant seventh sharp nine"),
         .init(.dominanteUndecimaAumentada, "dominant seventh sharp eleven"),
         .init(.mayorSeptimaMayorUndecimaAumentada, "major seventh sharp eleven"),
+        .init(.dominanteNovenaUndecimaAumentada, "dominant ninth sharp eleven"),
+        .init(.dominanteDecimoterceraNovenaMenor, "dominant thirteenth flat nine"),
+        .init(.semidisminuidoNovena, "half-diminished ninth"),
         .init(.sus4Novena, "dominant ninth suspended fourth"),
         .init(.sus4Decimotercera, "dominant thirteenth suspended fourth"),
         .init(.dominanteAlterado, "altered dominant"),
@@ -59,5 +62,7 @@ extension NombresDeAcordes {
         .init(.augures, "Augurs chord"),
         .init(.salmos, "Psalms chord"),
         .init(.alfa, "alpha chord"),
+        .init(.delSueno, "dream chord"),
+        .init(.tricordoVienes, "Viennese trichord"),
     ])
 }

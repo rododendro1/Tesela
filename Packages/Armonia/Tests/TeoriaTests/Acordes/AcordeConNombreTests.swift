@@ -7,7 +7,7 @@ import Testing
     /// Cada acorde del catálogo se lee por terceras y tiene un nombre que no se repite.
     @Test func catalogo() {
         let catalogo = AcordeConNombre.catalogo
-        #expect(AcordeConNombre.genericos.count == 43)
+        #expect(AcordeConNombre.genericos.count == 46)
         #expect(catalogo == AcordeConNombre.genericos + AcordeConNombre.conNombrePropio)
         #expect(Set(catalogo.map(\.nombre)).count == catalogo.count)
         #expect(Set(catalogo).count == catalogo.count)
@@ -75,7 +75,8 @@ import Testing
             ("maj13", .mayorSeptimaMayorDecimotercera), ("m6/9", .menorSextaNovena),
             ("7(b5)", .dominanteQuintaDisminuida),
             ("7(#11)", .dominanteUndecimaAumentada), ("maj7(#11)", .mayorSeptimaMayorUndecimaAumentada),
-            ("9sus4", .sus4Novena), ("13sus4", .sus4Decimotercera),
+            ("9sus4", .sus4Novena), ("13sus4", .sus4Decimotercera), ("9(#11)", .dominanteNovenaUndecimaAumentada),
+            ("13(b9)", .dominanteDecimoterceraNovenaMenor), ("m9(b5)", .semidisminuidoNovena),
         ] {
             #expect(try TipoDeAcorde(leyendo: cifrado).acordeConNombre == acorde, "\(cifrado)")
         }
@@ -162,5 +163,28 @@ import Testing
         #expect(
             sextas == [.sextaAumentadaItaliana, .sextaAumentadaFrancesa, .sextaAumentadaAlemana, .sextaAumentadaSuiza])
         #expect(AcordeConNombre.buscar(conteniendo: "").count == AcordeConNombre.catalogo.count)
+    }
+}
+
+/// Los acordes y las progresiones que entran con la relación escala-acorde.
+@Suite struct CatalogosNuevosTests {
+    @Test func losAcordesNuevos() {
+        #expect(AcordeConNombre.delSueno.intervalos.map { Nota.sol + $0 } == [Nota.sol, .do, Nota.do.sostenido, .re])
+        #expect(AcordeConNombre.delSueno.referencias == [.smith1977])
+        #expect(AcordeConNombre.tricordoVienes.intervalos.map(\.semitonos) == [0, 1, 6])
+        #expect(AcordeConNombre.semidisminuidoNovena.tipo?.acordeConNombre == .semidisminuidoNovena)
+        // El ø9 es el del locrio ♮2, que lo tiene entero.
+        let o9 = Acorde(.do, AcordeConNombre.semidisminuidoNovena.tipo!)
+        #expect(o9.escalasCompatibles().first == Escala(.do, .locrioSegundaNatural))
+    }
+
+    @Test func lasProgresionesNuevas() {
+        #expect(
+            ProgresionConNombre.cicloHexatonico.acordes(sobre: .do).map(\.cifrado) == [
+                "Do", "Dom", "La♭", "La♭m", "Mi", "Mim",
+            ])
+        // La progresión de ragtime no pasa por la tónica, pero se reconoce: en Si♭, Re7 Sol7 Do7 Fa7.
+        let ragtime = EsquemaArmonico.buscar(en: ["Re7", "Sol7", "Do7", "Fa7"])
+        #expect(ragtime.contains { $0.progresion == .ragtime && $0.tonica == .si.bemol })
     }
 }

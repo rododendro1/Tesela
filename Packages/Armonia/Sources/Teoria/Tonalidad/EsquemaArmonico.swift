@@ -238,20 +238,18 @@ extension EsquemaArmonico {
         let fundamentales: [Int]
         let calidades: [CalidadDeTriada]
         let bajos: [Int?]
-        /// El primer acorde sobre la tónica.
-        let deLaTonica: Int
+        /// De la fundamental del primer acorde a la tónica: la tónica no tiene por qué tener acorde (III7–VI7–II7–V7).
+        let hastaLaTonica: Intervalo
 
         init?(_ progresion: ProgresionConNombre) {
             let acordes = progresion.acordes(sobre: .do)
             guard let primero = acordes.first else { return nil }
             func sobre(_ a: Nota, _ b: Nota) -> Int { modulo(b.claseDeAltura - a.claseDeAltura, 12) }
-            guard let deLaTonica = acordes.firstIndex(where: { $0.fundamental.claseDeAltura == Nota.do.claseDeAltura })
-            else { return nil }
             self.progresion = progresion
             fundamentales = acordes.map { sobre(primero.fundamental, $0.fundamental) }
             calidades = acordes.map(\.tipo.estructura.calidadDeTriada)
             bajos = acordes.map { $0.bajo == $0.fundamental ? nil : sobre($0.fundamental, $0.bajo) }
-            self.deLaTonica = deLaTonica
+            hastaLaTonica = primero.fundamental.intervalo(hasta: .do)
         }
 
         /// La tónica, si la progresión está en `acordes` desde `inicio`.
@@ -269,7 +267,7 @@ extension EsquemaArmonico {
                     return nil
                 }
             }
-            return acordes[inicio + deLaTonica].fundamental
+            return primero + hastaLaTonica
         }
     }
 

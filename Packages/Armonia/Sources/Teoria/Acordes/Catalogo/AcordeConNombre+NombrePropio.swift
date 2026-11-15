@@ -90,11 +90,23 @@ extension AcordeConNombre {
             .terceraMayor + .octava, .quintaJusta + .octava, .septimaMenor + .octava,
         ],
         alias: ["acorde alfa de Lendvai"], estilos: [.deCompositor])
+    /// El acorde del sueño de La Monte Young, el de *The Four Dreams of China* (1962) y el *Trio for Strings*:
+    /// Sol Do Do♯ Re (Smith 1977).
+    public static let delSueno = AcordeConNombre(
+        nombre: "acorde del sueño",
+        intervalos: [.unisono, .cuartaJusta, .cuartaAumentada, .quintaJusta],
+        alias: ["dream chord"], estilos: [.deCompositor], referencias: [.smith1977])
+    /// El tricordo vienés, el conjunto 3-5 de Forte (0 1 6): un semitono y un tritono, Do Re♭ Sol♭. Es el preferido de
+    /// la Segunda Escuela de Viena, de Webern sobre todo.
+    public static let tricordoVienes = AcordeConNombre(
+        nombre: "tricordo vienés",
+        intervalos: [.unisono, .segundaMenor, .quintaDisminuida],
+        estilos: [.deCompositor])
 
     /// Los de nombre propio, en su orden.
     public static let conNombrePropio: [AcordeConNombre] = [
         .tristan, .mistico, .petrushka, .farben, .soWhat, .hendrix, .mu, .porCuartas, .elektra, .augures, .salmos,
-        .alfa,
+        .alfa, .delSueno, .tricordoVienes,
     ]
 
     /// Todos los acordes del catálogo: los genéricos (`genericos`) y después los de nombre propio (`conNombrePropio`).

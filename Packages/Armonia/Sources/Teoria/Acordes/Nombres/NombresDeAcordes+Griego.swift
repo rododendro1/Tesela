@@ -36,6 +36,9 @@ extension NombresDeAcordes {
         .init(.dominanteNovenaAumentada, "συγχορδία έβδομης δεσπόζουσας με αυξημένη ένατη"),
         .init(.dominanteUndecimaAumentada, "συγχορδία έβδομης δεσπόζουσας με αυξημένη ενδέκατη"),
         .init(.mayorSeptimaMayorUndecimaAumentada, "μείζονα συγχορδία μεγάλης έβδομης με αυξημένη ενδέκατη"),
+        .init(.dominanteNovenaUndecimaAumentada, "ένατη με αυξημένη ενδέκατη"),
+        .init(.dominanteDecimoterceraNovenaMenor, "δέκατη τρίτη με μικρή ένατη"),
+        .init(.semidisminuidoNovena, "ημιελαττωμένη με ένατη"),
         .init(.sus4Novena, "συγχορδία ένατης δεσπόζουσας με καθυστέρηση τέταρτης"),
         .init(.sus4Decimotercera, "συγχορδία δέκατης τρίτης δεσπόζουσας με καθυστέρηση τέταρτης"),
         .init(.dominanteAlterado, "αλλοιωμένη συγχορδία έβδομης δεσπόζουσας"),
@@ -59,5 +62,7 @@ extension NombresDeAcordes {
         .init(.augures, "συγχορδία των οιωνοσκόπων"),
         .init(.salmos, "συγχορδία της Συμφωνίας των ψαλμών"),
         .init(.alfa, "συγχορδία άλφα"),
+        .init(.delSueno, "συγχορδία του ονείρου"),
+        .init(.tricordoVienes, "βιεννέζικο τρίχορδο"),
     ])
 }

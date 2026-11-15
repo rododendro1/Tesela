@@ -371,6 +371,10 @@ extension Referencia {
     public static let messiaen1944 = Referencia(
         "messiaen1944", .libro, autores: ["Messiaen, Olivier"], titulo: "Technique de mon langage musical",
         anio: 1944, editorial: "Alphonse Leduc", lugar: "París")
+    /// Smith, sobre La Monte Young: el acorde del sueño.
+    public static let smith1977 = Referencia(
+        "smith1977", .articulo, autores: ["Smith, Dave"], titulo: "Following a Straight Line: La Monte Young",
+        anio: 1977, publicadoEn: "Contact", volumen: "18", paginas: "4–9")
     /// Lendvai, la escala acústica en Bartók.
     public static let lendvai1971 = Referencia(
         "lendvai1971", .libro, autores: ["Lendvai, Ernő"], titulo: "Béla Bartók: An Analysis of His Music",
@@ -687,7 +691,7 @@ extension Referencia {
         .berliner1978, .knight1973, .harcourt1925, .siqueira1981, .rothgeb1995, .samson1977, .taruskin1987,
         .taruskin1996,
         .burkhart1973,
-        .levine1989, .persichetti1961, .aldwell2011, .levine1995, .messiaen1944, .lendvai1971, .cohn1996,
+        .levine1989, .persichetti1961, .aldwell2011, .levine1995, .messiaen1944, .smith1977, .lendvai1971, .cohn1996,
         .temperleyTan2013,
         .slonimsky1947, .slonimsky1968, .burke2015,
         .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .gjerdingen2007, .hudson1982, .hudsonPassacaglia1982,
