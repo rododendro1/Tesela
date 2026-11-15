@@ -188,11 +188,12 @@ public struct Escala: Hashable, Sendable {
         } else {
             var posicion = grado
             while nombres.count < cuantas, let ultima = nombres.last {
-                let siguiente = (1..<tipo.intervalos.count).first {
-                    ultima.intervalo(hasta: self.grado(posicion + $0)).numeroSimple == apilamiento.numero
-                }
-                guard let siguiente else { return nil }
-                posicion += siguiente
+                guard
+                    let paso = (1..<tipo.intervalos.count).first(where: {
+                        ultima.intervalo(hasta: self.grado(posicion + $0)).numeroSimple == apilamiento.numero
+                    })
+                else { return nil }
+                posicion += paso
                 nombres.append(self.grado(posicion))
             }
         }
@@ -217,9 +218,9 @@ public struct Escala: Hashable, Sendable {
     }
 
     /// Las tensiones disponibles sobre la cuatríada de un grado, con el modo de la escala que empieza en él: la
-    /// tabla de la teoría acorde-escala que se enseña en Berklee. En Do mayor, I7M: 9 y 13; ii7: 9, 11 y 13; iii7: 11; IV7M:
-    /// 9, ♯11 y 13; V7: 9 y 13; vi7: 9 y 11; viiø7: 11 y ♭13. La 13 del ii7 cuenta como tensión, aunque forma un
-    /// tritono con la 3.ª (hay quien la evita). Vacío si el grado no tiene cuatríada.
+    /// tabla de la teoría acorde-escala que se enseña en Berklee. En Do mayor, I7M: 9 y 13; ii7: 9, 11 y 13; iii7:
+    /// 11; IV7M: 9, ♯11 y 13; V7: 9 y 13; vi7: 9 y 11; viiø7: 11 y ♭13. La 13 del ii7 cuenta como tensión, aunque
+    /// forma un tritono con la 3.ª (hay quien la evita). Vacío si el grado no tiene cuatríada.
     public func tensionesDisponibles(grado: Int) -> [NotaSobreElAcorde] {
         guard let acorde = acorde(grado: grado, cuatriada: true) else { return [] }
         return modo(grado: grado).notas(sobre: acorde).filter { $0.papel == .tension }

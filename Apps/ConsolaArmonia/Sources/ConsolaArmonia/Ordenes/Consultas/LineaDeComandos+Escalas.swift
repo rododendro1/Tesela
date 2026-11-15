@@ -40,7 +40,8 @@ extension LineaDeComandos {
         let bibtex: Bool
         /// `--cuartas`: los acordes de cada grado por cuartas (`Escala.armonizar(notas:por:)`).
         var cuartas = false
-        /// `--tensiones-disponibles`: la cuatríada de cada grado con sus tensiones (`Escala.tensionesDisponibles`).
+        /// `--tensiones-disponibles`: la cuatríada de cada grado con sus tensiones
+        /// (`Escala.tensionesDisponibles(grado:)`).
         var tensionesDeLosGrados = false
 
         var sentido: SentidoDelIntervalo { bajando ? .descendente : .ascendente }
@@ -97,8 +98,9 @@ extension LineaDeComandos {
         return pedido
     }
 
-    /// `escala Do mayor [--acordes] [--cuartas] [--tensiones-disponibles] [--secuencia terceras] [--bajando] [--octavas 2] [--dedos] [--modos]
-    /// [--estadisticas] [--escalera] [--comparar Do lidio]`: la escala y, si se piden, todos los acordes que caben en
+    /// `escala Do mayor [--acordes] [--cuartas] [--tensiones-disponibles] [--secuencia terceras] [--bajando]
+    /// [--octavas 2] [--dedos] [--modos] [--estadisticas] [--escalera] [--comparar Do lidio]`: la escala y, si se
+    /// piden, las tensiones de cada grado, sus acordes por cuartas, todos los acordes que caben en
     /// cada grado, una secuencia de estudio, la digitación de piano, los modos paralelos y relativos, lo que se mide de
     /// ella, su escalera de brillo y la comparación con otra escala.
     static func escala(_ textos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {

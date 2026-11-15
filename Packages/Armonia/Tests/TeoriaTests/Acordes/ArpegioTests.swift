@@ -208,7 +208,10 @@ import Testing
         #expect(!escalas.contains(Escala(.do, .mayor))) // le falta el Si♭
         // Primero la del cifrado; después, la que no añade alteraciones (la bebop dominante) antes que la que sí
         // (el lidio dominante, con la ♯11).
-        #expect(Array(escalas.prefix(3)) == [Escala(.do, .mixolidio), Escala(.do, .bebopDominante), Escala(.do, .lidioDominante)])
+        #expect(
+            Array(escalas.prefix(3)) == [
+                Escala(.do, .mixolidio), Escala(.do, .bebopDominante), Escala(.do, .lidioDominante),
+            ])
         #expect(escalas.allSatisfy { TipoDeEscala.deJazz.contains($0.tipo) })
         // Con la ♯11 en el cifrado, el lidio dominante va primero y el mixolidio ya no cabe.
         let conOncena = Acorde("Do7(#11)").escalasCompatibles()
@@ -227,7 +230,7 @@ import Testing
             ("Do7M", .mayor), ("Do6", .mayor), ("Do6/9", .mayor), ("Do", .mayor), ("Do7M(#11)", .lidio),
             ("Do7", .mixolidio), ("Do9", .mixolidio), ("Do13", .mixolidio), ("Do7sus4", .mixolidio),
             ("Do7(#11)", .lidioDominante), ("Do7(b13)", .mixolidioSextaMenor), ("Do7(#9)", .disminuidaSemitonoTono),
-("Do7(b9)", .disminuidaSemitonoTono), ("Do+7", .tonosEnteros),
+            ("Do7(b9)", .disminuidaSemitonoTono), ("Do+7", .tonosEnteros),
             ("Dom", .dorico), ("Dom7", .dorico), ("Dom9", .dorico), ("Dom11", .dorico),
             ("Dom6", .menorMelodicaJazz), ("Dom(7M)", .menorMelodicaJazz), ("Doø7", .locrioSegundaNatural),
             ("Do°7", .disminuida), ("Do+", .lidioAumentado), ("Do+7M", .lidioAumentado),
@@ -245,7 +248,9 @@ import Testing
         for (cifrado, _) in casos {
             let acorde = Acorde(stringLiteral: cifrado)
             for escala in acorde.escalasCompatibles() {
-                #expect(!escala.notas(sobre: acorde).contains { $0.papel == PapelEnLaEscala.choque }, Comment(rawValue: cifrado))
+                #expect(
+                    !escala.notas(sobre: acorde).contains { $0.papel == PapelEnLaEscala.choque },
+                    Comment(rawValue: cifrado))
             }
         }
         // Ida y vuelta: la cuatríada de cada grado de Do mayor y de Do menor melódica tiene su modo entre las
@@ -253,7 +258,8 @@ import Testing
         for madre in [Escala(.do, .mayor), Escala(.do, .menorMelodicaJazz)] {
             for grado in 1...7 {
                 guard let acorde = madre.acorde(grado: grado, cuatriada: true) else { continue }
-                #expect(acorde.escalasCompatibles().contains(madre.modo(grado: grado)), Comment(rawValue: acorde.cifrado))
+                #expect(
+                    acorde.escalasCompatibles().contains(madre.modo(grado: grado)), Comment(rawValue: acorde.cifrado))
             }
         }
     }

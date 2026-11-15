@@ -95,7 +95,8 @@ import Testing
             let tonal = escala.estadisticas.tonal
             #expect(tonal.triadas?.count == 7 && tonal.cuatriadas?.count == 7, Comment(rawValue: tipo.nombre))
             for (grado, triada) in (tonal.triadas ?? []).enumerated() {
-                #expect(triada == nil || escala.acorde(grado: grado + 1)?.tipo == triada, Comment(rawValue: tipo.nombre))
+                #expect(
+                    triada == nil || escala.acorde(grado: grado + 1)?.tipo == triada, Comment(rawValue: tipo.nombre))
             }
         }
     }

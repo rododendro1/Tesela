@@ -1,5 +1,13 @@
 # Cambios
 
+## Sin publicar
+
+### Lo nuevo
+
+- `EscalaSobreAcordePresentada.motivo` y `PresentacionDeEscalaYAcorde.escalas(de:en:notacion:)`: las escalas de un
+  acorde con su motivo («del cifrado», «de la tonalidad», «del bajo»), en la hoja del acorde (SVG y HTML) y en la vista
+  de acordes de Ars Harmonica.
+
 ## 0.5.3 (2026-11-15)
 
 ### Lo nuevo

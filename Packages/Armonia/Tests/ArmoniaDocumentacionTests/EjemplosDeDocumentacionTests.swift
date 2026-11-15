@@ -739,17 +739,22 @@ import Hexagonos
         comprobar(Escala(.do, .alterada).escalaMadre?.madre == Escala(Nota(.re, .bemol), .menorMelodicaJazz), #"true"#, doc, 5)
         comprobar(Escala(.re, .dorico).escalaMadre?.nombre(en: .compacta(.espanol)) == "modo 2 de Do mayor", #"true"#, doc, 6)
         comprobar(Acorde("Do7(#11)").escalasCompatibles().first == Escala(.do, .lidioDominante), #"true"#, doc, 7)
-        comprobar(Escala(.do, .mixolidio).notas(sobre: Acorde("Do7M"))[6].papel == .choque, #"true"#, doc, 8)
-        comprobar(Escala(.do, .bebopDominante).notas(sobre: Acorde("Do7"))[7].papel == .dePaso, #"true"#, doc, 9)
-        comprobar(Escala(.do, .bebopDominante).esCompatible(con: Acorde("Do7M")), #"false"#, doc, 10)
-        comprobar(Escala(.do, .doricoCuartaAumentada).esCompatible(con: Acorde("Doø7")), #"false"#, doc, 11)
+        comprobar(Acorde("Do7").escalasCompatibles().first == Escala(.do, .mixolidio), #"true"#, doc, 8)
+        comprobar(Acorde("Do7").escalas().first?.motivo == .delCifrado, #"true"#, doc, 9)
+        comprobar(Acorde("Fa/Sol").escalas().first?.escala == Escala(.sol, .mixolidio), #"true"#, doc, 10)
+        comprobar(Escala(.do, .mixolidio).notas(sobre: Acorde("Do7M"))[6].papel == .choque, #"true"#, doc, 11)
+        comprobar(Escala(.do, .bebopDominante).notas(sobre: Acorde("Do7"))[7].papel == .dePaso, #"true"#, doc, 12)
+        comprobar(Escala(.do, .bebopDominante).esCompatible(con: Acorde("Do7M")), #"false"#, doc, 13)
+        comprobar(Escala(.do, .doricoCuartaAumentada).esCompatible(con: Acorde("Doø7")), #"false"#, doc, 14)
     }
 
     @Test func escalas21() throws {
         // Sources/Armonia/Armonia.docc/Escalas.md, bloque 21
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 21)
         comprobar(Escala(.do, .mayor).acordesQueCaben(grado: 1).contains(Acorde(.do, .mayorSexta)), #"true"#, doc, 0)
-        comprobar(Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor), #"true"#, doc, 1)
+        comprobar(Escala(.do, .blues).acorde(grado: 1, cuatriada: true) == Acorde("Dom7"), #"true"#, doc, 1)
+        comprobar(Escala(.do, .mayor).tensionesDisponibles(grado: 2).map(\.cifra) == ["9", "11", "13"], #"true"#, doc, 2)
+        comprobar(Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor), #"true"#, doc, 3)
     }
 
     @Test func escalas22() throws {

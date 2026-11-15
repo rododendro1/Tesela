@@ -392,14 +392,20 @@ import Testing
         #expect(mayor.acorde(grado: 1, notas: 8) == nil)
         #expect(mayor.armonizar(cuatriadas: true) == mayor.armonizar(notas: 4))
         // En una pentatónica, por cuartas: Do–Fa no está en la mayor, pero Re–Sol–Do sí.
-        #expect(Set(Escala(.do, .pentatonicaMayor).acorde(grado: 2, notas: 3, por: .cuartas)?.notas ?? []) == [.re, .sol, .do])
+        #expect(
+            Set(Escala(.do, .pentatonicaMayor).acorde(grado: 2, notas: 3, por: .cuartas)?.notas ?? []) == [
+                .re, .sol, .do,
+            ])
     }
 
     /// La tabla de las tensiones de cada grado de la mayor.
     @Test func lasTensionesDeCadaGrado() {
         let mayor = Escala(.do, .mayor)
         let tabla = (1...7).map { mayor.tensionesDisponibles(grado: $0).map(\.cifra) }
-        #expect(tabla == [["9", "13"], ["9", "11", "13"], ["11"], ["9", "♯11", "13"], ["9", "13"], ["9", "11"], ["11", "♭13"]])
+        #expect(
+            tabla == [
+                ["9", "13"], ["9", "11", "13"], ["11"], ["9", "♯11", "13"], ["9", "13"], ["9", "11"], ["11", "♭13"],
+            ])
         #expect(mayor.armonizacionConTensiones[4].acorde?.cifrado == "Sol7")
         #expect(Escala(.do, .pentatonicaMayor).tensionesDisponibles(grado: 1).isEmpty) // sin cuatríada
     }
