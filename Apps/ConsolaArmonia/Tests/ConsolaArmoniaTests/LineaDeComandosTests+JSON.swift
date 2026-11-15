@@ -72,8 +72,9 @@ extension LineaDeComandosTests {
         ] {
             let espanol = ids(try json(orden))
             #expect(!espanol.isEmpty, Comment(rawValue: orden))
-            #expect(espanol == ids(try json(orden + " --ingles")), Comment(rawValue: orden))
-            #expect(espanol == ids(try json(orden + " --idioma de")), Comment(rawValue: orden))
+            let (ingles, aleman) = (ids(try json(orden + " --ingles")), ids(try json(orden + " --idioma de")))
+            #expect(espanol == ingles, Comment(rawValue: orden))
+            #expect(espanol == aleman, Comment(rawValue: orden))
         }
         let dorico = try #require(try json("escala Re dórico") as? [String: Any])
         let modo = try #require(dorico["modoId"] as? [String: Any])
