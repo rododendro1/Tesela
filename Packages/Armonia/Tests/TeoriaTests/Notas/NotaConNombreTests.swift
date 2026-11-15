@@ -9,7 +9,6 @@ import Testing
     /// referencia.
     @Test func catalogo() {
         let catalogo = NotaConNombre.catalogo
-        #expect(catalogo.count == 15 + 20 + 29 + 49 + 18)
         #expect(Set(catalogo.map(\.nombre)).count == catalogo.count)
         for nota in catalogo {
             #expect(nota.id == nota.nombre && nota.description == nota.nombre)

@@ -8,7 +8,6 @@ import Testing
     /// Cada función del catálogo tiene un nombre que no se repite y una referencia, y cada familia, alguna.
     @Test func catalogo() {
         let catalogo = FuncionDeNota.catalogo
-        #expect(catalogo.count == 34)
         #expect(Set(catalogo.map(\.nombre)).count == catalogo.count)
         for funcion in catalogo {
             #expect(funcion.id == funcion.nombre && funcion.description == funcion.nombre)

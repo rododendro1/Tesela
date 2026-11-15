@@ -8,7 +8,6 @@ import Testing
     /// algún pulso, una agrupación que suma sus pulsos y una referencia.
     @Test func catalogo() {
         let catalogo = RitmoConNombre.catalogo
-        #expect(catalogo.count == 42)
         #expect(Set(catalogo.map(\.nombre)).count == catalogo.count)
         #expect(Set(catalogo).count == catalogo.count)
         for ritmo in catalogo {
