@@ -4,7 +4,7 @@
 Reglas:
   1. Cada paquete de `Packages/` se llama como su carpeta (SwiftPM identifica los paquetes locales
      por el nombre de la carpeta, y `.product(package:)` debe coincidir).
-  2. Un paquete solo depende de los que están en PERMITIDO, y de ninguna app.
+  2. Un paquete solo depende de los que permite `Scripts/datos/paquetes.json` (PERMITIDO), y de ninguna app.
   3. Los paquetes y las apps nombran en `project.yml` solo paquetes que existen; las apps de SwiftPM
      (`Apps/*/Package.swift`), los ejemplos (`Ejemplos/*/Package.swift`) y las herramientas
      (`Herramientas/*/Package.swift`) dependen solo de paquetes de `Packages/`.
@@ -12,6 +12,7 @@ Reglas:
 
 Uso:  python3 Scripts/comprobaciones/comprobar_dependencias.py     (sale con 1 si hay un problema)
 """
+import json
 import re
 import sys
 from pathlib import Path
@@ -19,15 +20,11 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parents[2]
 PAQUETES = RAIZ / "Packages"
 
-# De más básico a más alto: cada paquete solo puede depender de los anteriores que se listan.
+# De más básico a más alto: cada paquete solo puede depender de los anteriores que se listan
+# (Scripts/datos/paquetes.json, con lo que hace cada uno).
 PERMITIDO = {
-    # Rejillas hexagonales: no depende de nada.
-    "Hexagonos": set(),
-    # El motor usa su geometría para el Tonnetz, la tabla armónica y los teclados isomórficos.
-    "Armonia": {"Hexagonos"},
-    # Lo que enseñan las apps y la línea de comandos, sin SwiftUI (con las casillas de las redes, de Hexagonos).
-    "ExposicionArmonia": {"Armonia", "Hexagonos"},
-    "InterfazArmonia": {"Armonia", "ExposicionArmonia", "Hexagonos"},
+    p["nombre"]: set(p["depende"])
+    for p in json.loads((RAIZ / "Scripts" / "datos" / "paquetes.json").read_text(encoding="utf-8"))["paquetes"]
 }
 
 errores = []
@@ -38,7 +35,7 @@ for esperado in PERMITIDO:
         errores.append(f"Falta el paquete {esperado} en Packages/")
 for carpeta in carpetas:
     if carpeta not in PERMITIDO:
-        errores.append(f"Packages/{carpeta} no está en PERMITIDO: añádelo con sus dependencias")
+        errores.append(f"Packages/{carpeta} no está en Scripts/datos/paquetes.json: añádelo con sus dependencias")
 
 for carpeta in carpetas:
     texto = (PAQUETES / carpeta / "Package.swift").read_text(encoding="utf-8")

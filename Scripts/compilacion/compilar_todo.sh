@@ -81,8 +81,8 @@ else
     omitir "Motor: pruebas" "el motor no compila"
 fi
 
-# 3. Lo que depende del motor: ExposicionArmonia, la línea de comandos, el ejemplo, la medida del rendimiento y
-#    InterfazArmonia.
+# 3. Lo que depende del motor: ExposicionArmonia, la línea de comandos, los ejemplos, la medida del rendimiento, el
+#    fuzzing (sus pruebas, sin libFuzzer) e InterfazArmonia.
 if [ "$MOTOR_COMPILA" = 1 ]; then
     paso "ExposicionArmonia: compilar" Packages/ExposicionArmonia swift build &&
         paso "ExposicionArmonia: pruebas" Packages/ExposicionArmonia swift test --parallel
@@ -91,10 +91,12 @@ if [ "$MOTOR_COMPILA" = 1 ]; then
     paso "Ejemplo: ejecutar" Ejemplos/EjemploArmonia swift run EjemploArmonia
     paso "Ejemplo de los catálogos: ejecutar" Ejemplos/EjemploCatalogos swift run EjemploCatalogos
     paso "Rendimiento: compilar" Herramientas/RendimientoArmonia swift build
+    paso "Fuzzing: compilar" Herramientas/FuzzArmonia swift build &&
+        paso "Fuzzing: pruebas" Herramientas/FuzzArmonia swift test --parallel
     paso "InterfazArmonia: compilar" Packages/InterfazArmonia swift build &&
         paso "InterfazArmonia: pruebas" Packages/InterfazArmonia swift test --parallel
 else
-    omitir "ExposicionArmonia, línea de comandos, ejemplo, rendimiento y InterfazArmonia" "el motor no compila"
+    omitir "ExposicionArmonia, línea de comandos, ejemplos, rendimiento, fuzzing e InterfazArmonia" "el motor no compila"
 fi
 
 # 4. Las rejillas hexagonales: no dependen del motor.
