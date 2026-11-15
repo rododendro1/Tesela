@@ -80,6 +80,7 @@ struct VistaDeEscalas: View {
             SeccionDeLaDigitacionDePiano(escala: escala)
             SeccionDeLaSimetria(escala: escala)
             SeccionDelOrigen(escala: escala)
+            SeccionDelCaracter(escala: escala)
             SeccionDeLasEstadisticas(escala: escala)
             SeccionDeLaEscaleraDeBrillo(escala: escala)
             SeccionDelMapaDeBrillo(escala: escala)

@@ -1,8 +1,9 @@
 import Armonia
 
 extension LineaDeComandos {
-    /// Las consultas de los catálogos: escalas, tradiciones, progresiones, ritmos, temperamentos, notas, funciones y
-    /// acordes con nombre. Salen en la ayuda entre `escala` y `tonalidad`, dentro de las consultas.
+    /// Las consultas de los catálogos: escalas, tradiciones, progresiones, ritmos, temperamentos, notas, funciones,
+    /// acordes con nombre y tonalidades con carácter. Salen en la ayuda entre `escala` y `tonalidad`, dentro de las
+    /// consultas.
     static let ordenesDeCatalogos: [Orden] = [
         Orden(
             nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas, json: { try escalasJSON($0, $1.notacion) },
@@ -31,6 +32,18 @@ extension LineaDeComandos {
             nombres: ["acordes", "chords"], ayuda: ayudaDeAcordesConNombre,
             json: { try acordesConNombreJSON($0, $1.notacion) },
             ejecutar: { try acordesConNombre($0, $1.notacion) }),
+        Orden(
+            nombres: ["tonalidades", "keys"], ayuda: ayudaDeTonalidades,
+            json: { try tonalidadesJSON($0, $1.notacion) }, ejecutar: { try tonalidades($0, $1.notacion) }),
+    ]
+
+    static let ayudaDeTonalidades: [EntradaDeAyuda] = [
+        // tonalidades [--afecto <afecto>]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisTonalidades),
+            descripcion: TextosDeConsola.traduccion(\.descripcionTonalidades),
+            ejemplo: ejemplo("armonia tonalidades --afecto sombrio", "armonia keys --affect gloomy"),
+            opciones: [.afecto])
     ]
 
     static let ayudaDeTradiciones: [EntradaDeAyuda] = [
@@ -119,7 +132,8 @@ extension LineaDeComandos {
                 "armonia scales --tradition turkey"),
             notas: TextosDeConsola.traduccion(\.notasEscalas),
             opciones: [
-                .tradicion, .categoria, .fuente, .estilo, .lugar, .agrupar, .epoca, .afecto, .escuela, .notas, .orden,
+                .tradicion, .categoria, .fuente, .estilo, .lugar, .agrupar, .epoca, .afecto, .momento, .escuela, .notas,
+                .orden,
                 .sinSemitonos, .regulares, .fragmentos, .sinFragmentos, .vakra, .madre, .afinacion,
                 .conIntervalo,
                 .sinIntervalo,

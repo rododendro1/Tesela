@@ -117,6 +117,28 @@ extension LineaDeComandos {
         return afecto
     }
 
+    /// Cómo se escribe cada momento del día en `--momento`, en español y en inglés: `--momento anochecer`,
+    /// `--time dusk`.
+    static let nombresDeLosMomentos: [(momento: MomentoDelDia, espanol: String, ingles: String)] = [
+        (.madrugada, "madrugada", "before-dawn"), (.manana, "manana", "morning"),
+        (.finalDeLaManana, "final-de-la-manana", "late-morning"),
+        (.primeraHoraDeLaTarde, "primera-hora-de-la-tarde", "early-afternoon"), (.tarde, "tarde", "afternoon"),
+        (.anochecer, "anochecer", "dusk"), (.noche, "noche", "night"), (.medianoche, "medianoche", "after-midnight"),
+    ]
+
+    /// El momento de `--momento anochecer`, en español o en inglés (`--time dusk`), por su clave o por su nombre en
+    /// el idioma de la notación; lanza `momentoDesconocido` si no es ninguno.
+    static func momento(leyendo texto: String, _ notacion: Notacion) throws -> MomentoDelDia {
+        let clave = claveDeBusqueda(texto)
+        guard
+            let momento = nombresDeLosMomentos.first(where: {
+                [$0.espanol, $0.ingles, $0.momento.rawValue, $0.momento.nombre(en: notacion)].map(claveDeBusqueda)
+                    .contains(clave)
+            })?.momento
+        else { throw ErrorDeUso.momentoDesconocido(texto) }
+        return momento
+    }
+
     /// Cómo se escribe cada escuela en `--escuela`, en español y en inglés: `--escuela carnatica`, `--school carnatic`.
     static let nombresDeLasEscuelas: [(escuela: Escuela, espanol: String, ingles: String)] = [
         (.carnatica, "carnatica", "carnatic"), (.indostanica, "indostanica", "hindustani"),

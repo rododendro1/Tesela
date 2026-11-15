@@ -31,6 +31,8 @@ extension LineaDeComandos {
         var epocas: [Epoca] = []
         /// El de `--afecto`: solo las que lo tienen en alguna de sus fuentes.
         var afecto: Afecto?
+        /// El de `--momento`: solo las que se tocan a esa hora en alguna de sus fuentes.
+        var momento: MomentoDelDia?
         /// La de `--escuela`: solo las de esa escuela.
         var escuela: Escuela?
         var agrupacion: AgrupacionDeEscalas?
@@ -69,6 +71,7 @@ extension LineaDeComandos {
             }
             if !epocas.isEmpty, !tipo.epocas.contains(where: epocas.contains) { return false }
             if let afecto, !tipo.afectos.contains(afecto) { return false }
+            if let momento, !tipo.momentos.contains(momento) { return false }
             if let escuela, !tipo.escuelas.contains(escuela) { return false }
             if conIntervalo != nil || sinIntervalo != nil || conPaso != nil {
                 let medidas = estadisticas(tipo)
@@ -205,6 +208,8 @@ extension LineaDeComandos {
         if let texto = try entrada.valor(.escuela) { filtro.escuela = try escuela(leyendo: texto, notacion) }
         // `--afecto lastimero`, `--affect plaintive`: las que tienen ese afecto en alguna de sus fuentes.
         if let texto = try entrada.valor(.afecto) { filtro.afecto = try afecto(leyendo: texto, notacion) }
+        // `--momento anochecer`, `--time dusk`: las que se tocan a esa hora (los rāgas, los pathet).
+        if let texto = try entrada.valor(.momento) { filtro.momento = try momento(leyendo: texto, notacion) }
         // `--madre Kharaharapriyā`, `--madre 22`, `--parent kafi`: las que salen de una escala madre.
         if let texto = try entrada.valor(.madre) {
             let numero = Int(texto.trimmingCharacters(in: .whitespaces))

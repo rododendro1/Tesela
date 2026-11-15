@@ -69,14 +69,18 @@ import Testing
 
     @Test func unicasQuitaLasRepetidas() {
         let citas: [Referencia] = [.west1992, .barker1989, .west1992.paginas("12"), .barker1989]
-        #expect(Referencia.unicas(citas).map(\.id) == ["barker1989", "west1992:12"])
+        // La cita con páginas ocupa el puesto de la obra sin ellas.
+        #expect(Referencia.unicas(citas).map(\.id) == ["west1992:12", "barker1989"])
+        // Si hay varias, la primera; las demás se quedan en el suyo.
+        let varias: [Referencia] = [.west1992, .barker1989, .west1992.paginas("12"), .west1992.paginas("160")]
+        #expect(Referencia.unicas(varias).map(\.id) == ["west1992:12", "barker1989", "west1992:160"])
         #expect(Referencia.sinRepetir(citas).map(\.clave) == ["west1992", "barker1989"])
     }
 
     @Test func lasEscalasTienenLasDeSuListaSuFuenteYSusAfinaciones() {
         // La de su carácter, con la página, ocupa el sitio de la obra entera.
         #expect(
-            TipoDeEscala.bayati.referencias == [.maqamWorld, .farraj2019, .rechberger2008, .touma1996.paginas("43")])
+            TipoDeEscala.bayati.referencias == [.maqamWorld, .touma1996.paginas("43"), .farraj2019, .rechberger2008])
         // Ptolomeo, por su fuente (Barker), y su lista.
         #expect(TipoDeEscala.tetracordoDiatonicoTenso.referencias == [.barker1989, .chalmers1993, .west1992])
         // Los echoi, por la afinación de Chrysanthos.
@@ -105,7 +109,11 @@ import Testing
 
     /// Las occidentales, por `referenciasOccidentales`, y los acordes genéricos, por su declaración.
     @Test func lasOccidentalesYLosAcordesTienenLasSuyas() {
-        #expect(TipoDeEscala.mayor.referencias == [.aldwell2011, .powers2001, .levine1995, .rechberger2008])
+        // Y Temperley y Tan, por lo que miden de los modos.
+        #expect(
+            TipoDeEscala.mayor.referencias == [
+                .aldwell2011, .powers2001, .levine1995, .rechberger2008, .temperleyTan2013.paginas("248"),
+            ])
         #expect(
             TipoDeEscala.lidioDominante.referencias == [.levine1995, .persichetti1961, .lendvai1971, .tymoczko2011])
         #expect(TipoDeEscala.flamenca.referencias == [.manuel1989])

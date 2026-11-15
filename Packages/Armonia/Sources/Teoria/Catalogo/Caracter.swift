@@ -32,13 +32,17 @@ public struct Caracter: Hashable, Sendable {
     public let testigo: TestigoDelCaracter?
     /// Dónde lo dice el `testigo`, en su numeración de siempre: «398e–399a» en la República, «1340a–b» en la Política.
     public let pasaje: String?
+    /// Lo que dice, con sus palabras y en la lengua en que se lee en la `referencia`: «Gai et guerrier» (Charpentier),
+    /// «Key of the grave» (Schubart, en la traducción de Steblin). Los `afectos` lo resumen para buscar y agrupar, y
+    /// se pierde mucho: «la tonalidad de la tumba» queda en «sombrío, solemne». `nil` si no se ha copiado.
+    public let texto: String?
     /// La obra donde se lee, con las páginas si se saben.
     public let referencia: Referencia
 
     package init(
         _ afectos: [Afecto] = [], momento: MomentoDelDia? = nil, estacion: Estacion? = nil, ocasion: Ocasion? = nil,
         papel: PapelDeLaNota? = nil, fase: FaseDeLaNaturaleza? = nil, testigo: TestigoDelCaracter? = nil,
-        pasaje: String? = nil, referencia: Referencia
+        pasaje: String? = nil, texto: String? = nil, referencia: Referencia
     ) {
         self.afectos = afectos
         self.momento = momento
@@ -48,6 +52,7 @@ public struct Caracter: Hashable, Sendable {
         self.fase = fase
         self.testigo = testigo
         self.pasaje = pasaje
+        self.texto = texto
         self.referencia = referencia
     }
 
@@ -80,6 +85,8 @@ public enum Afecto: String, Sendable, Codable, CaseIterable, Nombrable {
     /// Los de Schubart para las tonalidades: la inocencia de Do mayor, lo sombrío de Fa♯ menor, la desesperación de
     /// Re♯ menor y la cólera de Si mayor.
     case inocente, sombrio, desesperado, colerico
+    /// El de Charpentier para Mi♭ menor («horrible et affreux») y Si♭ menor («obscur et terrible»).
+    case terrible
 
     /// El nombre en el idioma de los textos de la notación: «lastimero», «plaintive», «klagend».
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
@@ -112,6 +119,7 @@ public enum Afecto: String, Sendable, Codable, CaseIterable, Nombrable {
         case .sombrio: TextosDeTeoria.traduccion(\.afectoSombrio)
         case .desesperado: TextosDeTeoria.traduccion(\.afectoDesesperado)
         case .colerico: TextosDeTeoria.traduccion(\.afectoColerico)
+        case .terrible: TextosDeTeoria.traduccion(\.afectoTerrible)
         }
     }
 }
@@ -242,7 +250,8 @@ public enum FaseDeLaNaturaleza: String, Sendable, Codable, CaseIterable, Nombrab
 // MARK: - Quién lo dice
 
 /// Los autores antiguos que describen el carácter de una escala, o el de una tonalidad, y que se leen en una obra
-/// moderna: Platón y Aristóteles, en Monro; Cotón, en la traducción de Babb; Schubart, en la de Steblin.
+/// moderna: Platón y Aristóteles, en Monro; Cotón, en la traducción de Babb; Charpentier, en Cessac; Schubart, en la
+/// traducción de Steblin.
 public enum TestigoDelCaracter: String, Sendable, Codable, CaseIterable, Nombrable {
     /// Platón, la *República* (hacia 375 a. C.).
     case platon
@@ -258,6 +267,9 @@ public enum TestigoDelCaracter: String, Sendable, Codable, CaseIterable, Nombrab
     case yueji
     /// Johannes Afflighemensis (Cotón), *De musica* (hacia 1100).
     case coton
+    /// Marc-Antoine Charpentier, las *Règles de composition* (hacia 1690): la «énergie des modes», el carácter de
+    /// dieciocho tonalidades.
+    case charpentier
     /// Christian Friedrich Daniel Schubart, *Ideen zu einer Ästhetik der Tonkunst* (1806, escrito hacia 1784): el
     /// carácter de cada tonalidad.
     case schubart
@@ -272,6 +284,7 @@ public enum TestigoDelCaracter: String, Sendable, Codable, CaseIterable, Nombrab
         case .lushiChunqiu: -239
         case .yueji: -100
         case .coton: 1100
+        case .charpentier: 1690
         case .schubart: 1806
         }
     }
@@ -287,6 +300,7 @@ public enum TestigoDelCaracter: String, Sendable, Codable, CaseIterable, Nombrab
         case .lushiChunqiu: TextosDeTeoria.traduccion(\.fuenteLushiChunqiu)
         case .yueji: TextosDeTeoria.traduccion(\.testigoYueji)
         case .coton: TextosDeTeoria.traduccion(\.testigoCoton)
+        case .charpentier: TextosDeTeoria.traduccion(\.testigoCharpentier)
         case .schubart: TextosDeTeoria.traduccion(\.testigoSchubart)
         }
     }

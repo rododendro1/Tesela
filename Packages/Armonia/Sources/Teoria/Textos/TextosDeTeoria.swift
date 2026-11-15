@@ -449,6 +449,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let afectoSombrio: String
     let afectoDesesperado: String
     let afectoColerico: String
+    let afectoTerrible: String
     let momentoMadrugada: String
     let momentoManana: String
     let momentoFinalDeLaManana: String
@@ -482,6 +483,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let testigoProblemas: String
     let testigoYueji: String
     let testigoCoton: String
+    let testigoCharpentier: String
     let testigoSchubart: String
     /// La sonoridad calculada de una escala por su brillo (`Sonoridad`).
     let sonoridadClara: String

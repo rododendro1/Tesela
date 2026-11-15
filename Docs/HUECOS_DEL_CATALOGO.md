@@ -233,7 +233,11 @@ buscaron, sin encontrar un texto con el que comprobarlas, las fuentes de la segu
 - **Japón, Bizancio y el klezmer**: de In y Yō no se ha encontrado nada citable en Malm (1959); el ēthos de los echoi
   que circula es de Savas, sin obra ni página, y no de Chrysanthos; y lo que la Wikipedia dice de Adonai Malakh
   («majestuoso») y Magen Avot («la paz del sábado») no lleva la nota de su fuente.
-- **Mattheson y Charpentier** para las tonalidades: solo está Schubart, en la traducción de Steblin (1983).
+- **Mattheson** para las tonalidades (*Das neu-eröffnete Orchestre*, 1713): están Charpentier (en Cessac 1988) y
+  Schubart (en Steblin 1983), pero no una traducción de Mattheson que se haya podido leer.
+- **Glareano y Zarlino** para los doce modos: los dos los describen (el *Dodecachordon*, 1547, y la cuarta parte de
+  las *Istitutioni*, 1558), pero no se han encontrado sus frases en una traducción con página (Miller 1965, Cohen
+  1983); la Wikipedia solo da sus nombres y su clasificación.
 
 ## Datos comprobados y por confirmar
 

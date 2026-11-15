@@ -161,13 +161,23 @@ extension Referencia {
         return String(decoding: datos, as: UTF8.self)
     }
 
-    /// Unas citas sin repetir, en su orden: la misma obra sin páginas no se repite si también se cita con ellas.
+    /// Unas citas sin repetir, en su orden: la misma obra sin páginas no se repite si también se cita con ellas, y
+    /// la primera cita con páginas ocupa el puesto de la obra sin ellas, si va antes. Bayātī cita a Touma sin páginas
+    /// en su ficha y con ellas en su carácter, y Touma sigue en el puesto de la ficha.
     public static func unicas(_ referencias: [Referencia]) -> [Referencia] {
-        let conPaginas = Set(referencias.filter { $0.paginasCitadas != nil }.map(\.clave))
-        var vistas = Set<String>()
-        return referencias.filter {
-            ($0.paginasCitadas != nil || !conPaginas.contains($0.clave)) && vistas.insert($0.id).inserted
+        // La primera cita con páginas de cada obra.
+        var primeraConPaginas: [String: Referencia] = [:]
+        for referencia in referencias where referencia.paginasCitadas != nil {
+            if primeraConPaginas[referencia.clave] == nil { primeraConPaginas[referencia.clave] = referencia }
         }
+        var vistas = Set<String>()
+        var resultado: [Referencia] = []
+        for referencia in referencias {
+            let cita =
+                referencia.paginasCitadas == nil ? primeraConPaginas[referencia.clave] ?? referencia : referencia
+            if vistas.insert(cita.id).inserted { resultado.append(cita) }
+        }
+        return resultado
     }
 
     /// Las obras de unas citas, en su orden, sin repetir ninguna.

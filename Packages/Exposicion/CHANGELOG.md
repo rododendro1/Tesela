@@ -1,9 +1,19 @@
 # Cambios
 
-## Sin publicar
+## 0.5.3 (2026-11-15)
 
 ### Lo nuevo
 
+- `CaracterPresentado` y `MedidaDelAfectoPresentada`: el carácter y lo que mide un estudio, escritos. `EscalaPresentada`
+  lleva `caracter`, `discrepancias`, `medidas` y `sonoridad`, y salen en su JSON.
+- Las hojas HTML de una escala y de una tonalidad tienen una sección «Carácter», con las palabras de cada fuente, las
+  fuentes que no coinciden, el afecto medido y la sonoridad calculada.
+- `PresentacionDelRelojDeLosRagas`: las veinticuatro horas con los rāgas de cada prahar, en SVG.
+- `PresentacionDeEstudioDeEscala.caracter(de:en:)`, de una escala o de una tonalidad: las filas del carácter para una
+  lista de las apps. La pestaña de escalas de Ars Harmonica tiene una sección «Carácter» con ellas.
+- Por dentro, sin cambios de API: `RelacionesPresentadas.swift` pasa de `Relaciones/` a `Postonal/`, con sus pruebas.
+- Cinco textos más en los trece idiomas (`caracterDeLaFuente`, `fuentesQueNoCoinciden`, `afectoMedido`,
+  `sonoridadCalculada` y `relojDeLosRagas`).
 - `EscalaSobreAcordePresentada.aEvitar` lleva también las notas que chocan con el acorde (`PapelEnLaEscala.choque`):
   el Si♭ de Do mixolidio sobre Do7M sale entre las notas a evitar.
 

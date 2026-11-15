@@ -66,6 +66,8 @@ struct TextosDeConsola: TextosTraducidos {
     let descripcionTradiciones: String
     let sintaxisProgresiones: String
     let descripcionProgresiones: String
+    let sintaxisTonalidades: String
+    let descripcionTonalidades: String
     let sintaxisRitmos: String
     let descripcionRitmos: String
     let notasRitmos: String
@@ -166,6 +168,8 @@ struct TextosDeConsola: TextosTraducidos {
     let descripcionTeclado: String
     let sintaxisReloj: String
     let descripcionReloj: String
+    let sintaxisRelojDeLosRagas: String
+    let descripcionRelojDeLosRagas: String
     let sintaxisHoja: String
     let descripcionHoja: String
     let sintaxisHojaDeAcorde: String
@@ -234,6 +238,7 @@ struct TextosDeConsola: TextosTraducidos {
     let agrupacionDesconocida: Plantilla  // {1} agrupacion
     let epocaDesconocida: Plantilla  // {1} epoca
     let afectoDesconocido: Plantilla  // {1} afecto
+    let momentoDesconocido: Plantilla  // {1} momento
     let escuelaDesconocida: Plantilla  // {1} escuela
     let madreDesconocida: Plantilla  // {1} escala
     let afinacionDesconocida: Plantilla  // {1} afinación
@@ -355,12 +360,15 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeReferencias: String
     let mensajeCaracter: String
     let mensajeSonoridad: String
+    let mensajeFuentesQueNoCoinciden: String
+    let mensajeAfectoMedido: String
     let mensajeEscalas: String
     let mensajeHabituales: String
     let mensajeSinLugar: String
     let mensajeSinEpoca: String
     let mensajeNingunaEscala: String
     let mensajeNingunaProgresion: String
+    let mensajeNingunaTonalidad: String
     let mensajeNingunRitmo: String
     let mensajeNingunTemperamento: String
     let mensajeNingunaNota: String

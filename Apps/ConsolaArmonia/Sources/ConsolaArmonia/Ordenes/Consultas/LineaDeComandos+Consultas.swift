@@ -65,6 +65,18 @@ extension LineaDeComandos {
         return try Nota(leyendo: a, enLaOrden: notacion).intervalo(hasta: try Nota(leyendo: b, enLaOrden: notacion))
     }
 
+    /// Lo que dicen las fuentes del carácter, una línea por fuente, con sus palabras si se saben: «carácter: colérico
+    /// · “Furieux et emporté” (Charpentier (Cessac 1988))»; y, si dos no coinciden en nada, «las fuentes no
+    /// coinciden: Charpentier · Schubart». Lo mismo para una escala que para una tonalidad.
+    static func lineasDelCaracter(_ caracter: [Caracter], _ notacion: Notacion) -> [String] {
+        let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
+        var lineas = caracter.map { "  \(traducir(.caracter)): " + CaracterPresentado($0, en: notacion).enUnaLinea }
+        if let pares = CaracterPresentado.discrepancias(caracter, en: notacion) {
+            lineas.append("  \(traducir(.fuentesQueNoCoinciden)): " + pares.joined(separator: "; "))
+        }
+        return lineas
+    }
+
     static func describir(tonalidad: Tonalidad, _ notacion: Notacion) -> String {
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
         let armadura: String
@@ -84,11 +96,7 @@ extension LineaDeComandos {
                 + " · \(traducir(.homonima)): " + tonalidad.homonima.nombre(en: notacion),
             "  \(traducir(.acordes)): " + acordes,
         ]
-        // Lo que dicen sus fuentes de su carácter: «carácter: inocente (Schubart (Steblin 1983))».
-        let caracter = tonalidad.caracter.map {
-            "  \(traducir(.caracter)): " + $0.descripcion(en: notacion) + " (" + $0.cita(en: notacion) + ")"
-        }
-        return (lineas + caracter).joined(separator: "\n")
+        return (lineas + lineasDelCaracter(tonalidad.caracter, notacion)).joined(separator: "\n")
     }
 
     static func analizar(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {

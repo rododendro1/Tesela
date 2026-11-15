@@ -18,9 +18,8 @@ terminal.
 | `CoralYContrapunto/` | El coral a cuatro voces, el contrapunto de especies y la rearmonización                     |
 | `Escalas/`           | Lo que se consulta de una escala y su estudio: sus acordes, sus progresiones, sus estadísticas, el mapa de brillo y la comparación con otras |
 | `Partituras/`        | El pentagrama de una escala o de un acorde                                                   |
-| `Postonal/`          | Lo que se consulta de un conjunto o de una serie, el análisis postonal y la matriz de la serie |
+| `Postonal/`          | Lo que se consulta de un conjunto o de una serie, el análisis postonal, la matriz de la serie, y lo que separa a dos acordes, a dos escalas o a los acordes de una progresión (Fourier, Morris, Forte), con cómo encaja un acorde en una tonalidad |
 | `Redes/`             | El Tonnetz, la tabla armónica y los teclados isomórficos, y el recorrido de una partitura     |
-| `Relaciones/`        | Lo que separa a dos acordes, a dos escalas o a los acordes de una progresión, y cómo encaja un acorde en una tonalidad |
 | `Sonido/`            | Lo que suena al pulsar «Escuchar» y lo que llega de un teclado MIDI                          |
 | `Textos/`            | `TextosDeApps`, un fichero por idioma                                                        |
 

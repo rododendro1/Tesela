@@ -7,7 +7,7 @@ import Armonia
 // Son `Codable`, y sus nombres son las claves del JSON de `armonia … --json`: en español, sin tildes y siempre las
 // mismas, sea cual sea el idioma. Cambiar uno rompe a quien lee ese JSON. Lo que es `nil` no sale en el JSON.
 
-/// Una escala: su nombre, sus notas, de qué escala es modo, los acordes de sus grados y su origen.
+/// Una escala: su nombre, sus notas, de qué escala es modo, los acordes de sus grados, su origen y su carácter.
 public struct EscalaPresentada: Hashable, Sendable, Codable {
     /// El acorde de un grado, con su cifrado romano: «ii» «Rem7».
     public struct AcordeDelGrado: Hashable, Sendable, Codable {
@@ -46,6 +46,14 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
     public let ambito: String?
     /// El carácter de su afinación, si tiene una propia: «microtonal», «justa», «octava en 5 partes iguales».
     public let afinacion: String?
+    /// Lo que dicen sus fuentes de su carácter, en orden cronológico (`TipoDeEscala.caracter`). `nil` si ninguna.
+    public let caracter: [CaracterPresentado]?
+    /// Los pares de fuentes de su carácter que no coinciden en nada: «Heraclides · Aristóteles». `nil` si coinciden.
+    public let discrepancias: [String]?
+    /// Lo que miden de su afecto los estudios con oyentes (`TipoDeEscala.medidasDelAfecto`). `nil` si ninguno.
+    public let medidas: [MedidaDelAfectoPresentada]?
+    /// En las occidentales, la sonoridad que calcula Tesela por el brillo (`TipoDeEscala.sonoridad`): «clara».
+    public let sonoridad: String?
 
     /// Los datos de la escala, escritos en la notación.
     public init(_ escala: Escala, en notacion: Notacion) {
@@ -80,6 +88,11 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
         origen = OrigenDeEscalaPresentado(escala.tipo, en: notacion)
         ambito = escala.tipo.ambito?.nombre(en: notacion)
         afinacion = PresentacionDeEstudioDeEscala.afinacion(de: escala.tipo, en: notacion)
+        caracter = CaracterPresentado.de(escala.tipo.caracter, en: notacion)
+        discrepancias = CaracterPresentado.discrepancias(escala.tipo.caracter, en: notacion)
+        let medidas = escala.tipo.medidasDelAfecto.map { MedidaDelAfectoPresentada($0, en: notacion) }
+        self.medidas = medidas.isEmpty ? nil : medidas
+        sonoridad = escala.tipo.sonoridad?.nombre(en: notacion)
     }
 }
 

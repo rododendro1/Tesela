@@ -291,13 +291,13 @@ hexatónicas, las cromáticas) ninguna. El compendio de Rechberger
 las listas que trata enteras (los maqāmāt, los makam, los dastgāh, los thāṭ y los mēḷa, las japonesas, las chinas, los
 echoi, las harmoniai y los modos gregorianos). Cada obra es una constante
 (`Referencia.west1992`, `.touma1996`…; todas en `Referencia.catalogo`), y una cita es la obra con las páginas que
-se citan (`.west1992.paginas("160–172")`). Si una obra se cita con páginas (Touma, por lo que dice del carácter de
-Bayātī), la cita con páginas ocupa el sitio de la obra entera. `fuente` dice quién definió la escala; `referencias`, dónde la hemos
-leído. Los títulos no se traducen. `Referencia.bibtex(_:)` y `Referencia.cslJSON(_:)` las escriben en BibTeX y en
+se citan (`.west1992.paginas("160–172")`). Si una obra se cita también con páginas (Touma, por lo que dice del
+carácter de Bayātī), la primera cita con páginas ocupa el sitio de la obra entera. `fuente` dice quién definió la
+escala; `referencias`, dónde la hemos leído. Los títulos no se traducen. `Referencia.bibtex(_:)` y `Referencia.cslJSON(_:)` las escriben en BibTeX y en
 CSL-JSON (el formato de Zotero y de Pandoc).
 
 ```swift
-TipoDeEscala.bayati.referencias.map(\.clave)              // ["maqamWorld", "farraj2019", "rechberger2008", "touma1996"]
+TipoDeEscala.bayati.referencias.map(\.cita)               // ["Maqam World", "Touma 1996: 43", "Farraj & Abu Shumays 2019", "Rechberger 2008"]
 TipoDeEscala.tetracordoDiatonicoTenso.referencias.first == .barker1989   // true
 Referencia.west1992.paginas("160–172").cita              // "West 1992: 160–172"
 Referencia.west1992.descripcion                          // "West, M. L. (1992). Ancient Greek Music. Oxford: Clarendon Press."
@@ -312,8 +312,10 @@ ritmos): los afectos que expresa (``Afecto``, un
 vocabulario cerrado en los trece idiomas), el momento del día en que se toca (``MomentoDelDia``, en tramos de tres
 horas como los prahar), la estación (``Estacion``), la ocasión (``Ocasion``) y, en China, lo que representa
 (``PapelDeLaNota``) y su fase (``FaseDeLaNaturaleza``). Cada uno lleva su fuente, la obra donde se lee (`fuente`) y,
-si lo dice un autor antiguo, quién (`testigo`, un ``TestigoDelCaracter``) y en qué pasaje. Van en orden cronológico,
-porque las fuentes no siempre coinciden: Platón y Aristóteles no dicen lo mismo de la harmonía frigia.
+si lo dice un autor antiguo, quién (`testigo`, un ``TestigoDelCaracter``) y en qué pasaje; y, cuando se han copiado,
+sus palabras (`texto`), porque los afectos las resumen y se pierde mucho. Van en orden cronológico, porque las fuentes
+no siempre coinciden: `Caracter.discrepancias(_:)` da los pares que no comparten ningún afecto, como Heraclides y
+Aristóteles sobre la harmonía doria.
 
 El carácter no sale de los intervalos, y es del nombre, no de las notas: Bilāval lo tiene y el jónico no. Solo lo
 tienen las escalas con una fuente: las harmoniai, en Platón, Heraclides, Aristóteles y los *Problemas* (Monro 1894); los
@@ -328,6 +330,16 @@ Las occidentales tienen en su lugar una sonoridad que Tesela calcula con su bril
 mayor del más claro al más oscuro, y va aparte de `caracter` porque no lo dice ninguna fuente. El carácter de las
 tonalidades, que es otra cosa (Re mayor no tiene el de Mi♭ mayor), está en ``Tonalidad/caracter``.
 
+Hay un tercer dato, aparte del carácter de una tradición y de la sonoridad calculada: lo que mide un estudio con
+oyentes (``MedidaDelAfecto``, en `TipoDeEscala.medidasDelAfecto`). Temperley y Tan (2013) tocaron a no músicos la misma
+melodía en dos modos y les preguntaron cuál era la más alegre: el jónico ganó en el 83 % de sus comparaciones y el
+frigio, en el 21 %. El lidio, el más claro por quintas, salió por debajo del mixolidio, así que la medida no es el
+brillo.
+
+`TipoDeEscala.conCaracter` son las escalas que describe alguna fuente. De ellas salen `armonia escalas --afecto
+lastimero`, `armonia escalas --momento anochecer` y el reloj de los rāgas (`armonia reloj ragas`), con los ocho prahar
+y los rāgas de cada uno.
+
 ```swift
 TipoDeEscala.harmoniaDoria.afectos.first == .valiente   // true
 TipoDeEscala.harmoniaFrigia.caracter[0].testigo      // .aristoteles
@@ -338,6 +350,10 @@ TipoDeEscala.mayor.caracter.isEmpty                  // true
 TipoDeEscala.saba.afectos == [.triste, .lastimero]   // true
 TipoDeEscala.lidio.sonoridad                         // .clara
 TipoDeEscala.frigio.sonoridad                        // .oscura
+TipoDeEscala.saba.caracter[0].texto                  // "sadness and pain"
+TipoDeEscala.mayor.medidasDelAfecto[0].proporcion    // 0.83
+TipoDeEscala.locrio.medidasDelAfecto.isEmpty         // true
+Caracter.discrepancias(TipoDeEscala.harmoniaDoria.caracter).count   // 1
 ```
 
 ## Microtonos

@@ -93,6 +93,27 @@ def coma_de_nivel_superior(codigo):
     return False
 
 
+def cierre_de_lista(texto):
+    """La posición del `]` que cierra el `[` del principio, sin contar los de dentro de una cadena; None si no hay."""
+    nivel, en_cadena, i = 0, False, 0
+    while i < len(texto):
+        c = texto[i]
+        if c == "\\" and en_cadena:
+            i += 2
+            continue
+        if c == '"':
+            en_cadena = not en_cadena
+        elif not en_cadena:
+            if c == "[":
+                nivel += 1
+            elif c == "]":
+                nivel -= 1
+                if nivel == 0:
+                    return i
+        i += 1
+    return None
+
+
 def valor_esperado(comentario):
     """La parte del comentario que es un valor, o None si es solo una explicación."""
     if not comentario or comentario.startswith("…"):
@@ -105,6 +126,9 @@ def valor_esperado(comentario):
     if comentario.startswith('"'):  # una cadena, entera aunque lleve paréntesis o espacios
         cierre = comentario.find('"', 1)
         return comentario[: cierre + 1] if cierre > 0 else None
+    if comentario.startswith("["):  # una lista, entera aunque sus cadenas lleven «: » o paréntesis
+        cierre = cierre_de_lista(comentario)
+        return comentario[: cierre + 1] if cierre is not None else None
     valor = re.split(r"\s{2,}|\s\(|:\s|;\s| — ", comentario, maxsplit=1)[0].strip()
     # Una explicación en prosa: empieza por minúscula y no es un valor reconocible.
     if re.match(r"^[a-záéíóúñ]", valor) and not re.match(r"^(nil|true|false|[a-z]+\()", valor):

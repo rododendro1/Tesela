@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.5.3 (2026-11-15)
 
 ### Novedades
 
@@ -36,8 +36,32 @@
 - `armonia mcp`: el motor como servidor del Model Context Protocol, para que un asistente lo use. Cada orden que da
   JSON es una herramienta.
 
+- `Caracter.texto`: lo que dice la fuente con sus palabras, en la lengua en que se lee en la obra. Lo llevan las
+  tonalidades de Schubart (en la traducción de Steblin), las de Charpentier y los maqāmāt de Touma.
+- El carácter de dieciocho tonalidades según la «énergie des modes» de Charpentier (*Règles de composition*, hacia
+  1690), en Cessac (1988), con `TestigoDelCaracter.charpentier`, la obra nueva `Referencia.cessac1988` y un afecto más,
+  `Afecto.terrible`. Va antes que el de Schubart, así que `Tonalidad(.do).caracter[0]` es ahora el de Charpentier.
+  `Tonalidad.conCaracter` da las 25 tonalidades que describe alguna fuente.
+- `Caracter.discrepancias(_:)`: los pares de fuentes que no comparten ningún afecto, como Charpentier y Schubart en Fa
+  mayor.
+- `MedidaDelAfecto` y `TipoDeEscala.medidasDelAfecto`: lo que mide un estudio con oyentes, aparte del carácter y de la
+  sonoridad. Por ahora, lo alegres que sonaron seis modos de la mayor en Temperley y Tan (2013), obra nueva
+  (`Referencia.temperleyTan2013`), que entra en las referencias de esos modos.
+- `TipoDeEscala.conCaracter`: las escalas que describe alguna fuente.
+- En la consola: `armonia tonalidades [--afecto <afecto>]` da las tonalidades con carácter; `armonia escalas --momento
+  anochecer` (`--time dusk`), las que se tocan a esa hora; y `armonia reloj ragas`, el reloj de los rāgas en SVG.
+  `armonia tonalidad` y `armonia escala` escriben las palabras de la fuente, una línea si las fuentes no coinciden y,
+  en los modos medidos, el afecto medido. El JSON de `escala` y de `tonalidad` lleva el carácter.
+- Por dentro, sin cambios de API: `Lugar.swift` (`Continente`, `Pais`, `Lugar`…) pasa de `Escalas/Clasificacion/` a
+  `Teoria/Catalogo/`, junto a `Epoca`, `Escuela` y `Estilo`.
 ### Correcciones
 
+- `Referencia.unicas(_:)` pone la primera cita con páginas de una obra en el puesto de la obra sin ellas, si va antes,
+  en vez de dejarla al final: las referencias de Bayātī vuelven a ser Maqam World, Touma 1996: 43, Farraj & Abu
+  Shumays 2019 y Rechberger 2008.
+- `ProgresionConNombre.acordes(en:)` ya no devuelve una lista vacía si el cifrado no se lee: para el programa con el
+  nombre de la progresión, y las del catálogo lo comprueban al crearse en depuración.
+- El generador de las pruebas de la documentación lee entera una lista esperada aunque sus cadenas lleven «: ».
 - `Acorde.escalasCompatibles(entre:)`, `Acorde.escalasBebop`, `Acorde.pentatonicas`, la escala de un acorde que la
   tonalidad no explica (`Tonalidad.escalaDelAcorde(_:)`) y las estructuras superiores dejan fuera las escalas y las
   tríadas que chocan con el acorde. Do7M ya no da Do bebop dominante; Do7, Do bebop dórica; Doø7 y Do°7, el dórico ♯4 ni

@@ -183,6 +183,10 @@ extension Referencia {
         "steblin1983", .libro, autores: ["Steblin, Rita"],
         titulo: "A History of Key Characteristics in the Eighteenth and Early Nineteenth Centuries", anio: 1983,
         editorial: "UMI Research Press", lugar: "Ann Arbor")
+    /// Cessac, la biografía de Charpentier, que reproduce sus *Règles de composition* con la «énergie des modes».
+    public static let cessac1988 = Referencia(
+        "cessac1988", .libro, autores: ["Cessac, Catherine"], titulo: "Marc-Antoine Charpentier", anio: 1988,
+        editorial: "Fayard", lugar: "París")
 
     // MARK: Asia oriental y sudeste asiático
 
@@ -376,6 +380,11 @@ extension Referencia {
         "cohn1996", .articulo, autores: ["Cohn, Richard"],
         titulo: "Maximally Smooth Cycles, Hexatonic Systems, and the Analysis of Late-Romantic Triadic Progressions",
         anio: 1996, publicadoEn: "Music Analysis", volumen: "15 (1)", paginas: "9–40")
+    /// Temperley y Tan, el estudio con oyentes de lo alegre que suena cada modo diatónico.
+    public static let temperleyTan2013 = Referencia(
+        "temperleyTan2013", .articulo, autores: ["Temperley, David", "Tan, Daphne"],
+        titulo: "Emotional Connotations of Diatonic Modes", anio: 2013, publicadoEn: "Music Perception",
+        volumen: "30 (3)", paginas: "237–257")
     /// Slonimsky, el tesauro de escalas: las divisiones de la octava en partes iguales (tritono, ditono, sesquitono)
     /// con notas interpoladas, de donde salen la aumentada semitono-tercera y Petrushka menor.
     public static let slonimsky1947 = Referencia(
@@ -664,7 +673,7 @@ extension Referencia {
         .maqamWorld, .wright1978, .farhat1990, .signell1977, .tdvIslamAnsiklopedisi, .hacibeyov1945, .west1992,
         .barker1989, .monro1894, .chalmers1993, .mathiesen1999, .chrysanthos1832, .cantemir1700, .ezgi1933,
         .pennanen1999,
-        .apel1958, .babb1978, .steblin1983, .glareano1547,
+        .apel1958, .babb1978, .steblin1983, .cessac1988, .glareano1547,
         .ramos1482,
         .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .dewoskin1982, .garfias1975,
         .tranVanKhe1962, .morton1976,
@@ -679,6 +688,7 @@ extension Referencia {
         .taruskin1996,
         .burkhart1973,
         .levine1989, .persichetti1961, .aldwell2011, .levine1995, .messiaen1944, .lendvai1971, .cohn1996,
+        .temperleyTan2013,
         .slonimsky1947, .slonimsky1968, .burke2015,
         .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .gjerdingen2007, .hudson1982, .hudsonPassacaglia1982,
         .hudsonChaconne1982,

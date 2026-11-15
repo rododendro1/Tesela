@@ -59,7 +59,7 @@ extension LineaDeComandosTests {
     @Test func loQueSeQuisoEscribir() {
         #expect(resultado("acordee", "Do").error.contains("¿Querías decir «acorde»?\n"))
         #expect(resultado("identifcar", "Do", "Mi").error.contains("«identificar»"))
-        #expect(resultado("tonal", "Do", "mayor").error.contains("«tonalidad»"))
+        #expect(resultado("tonalida", "Do", "mayor").error.contains("«tonalidad»"))
         #expect(
             resultado("chrod", "G7", "--ingles").error
                 == "armonia: unknown command: \"chrod\"\nDid you mean \"chord\"?\nTry \"armonia help\".\n")
@@ -200,22 +200,62 @@ extension LineaDeComandosTests {
         #expect(!salida("escala Do mayor").contains("vādī"))
     }
 
-    /// El carácter de una tonalidad, de Schubart, y la sonoridad calculada de una escala occidental.
+    /// El carácter de una tonalidad, de Charpentier y de Schubart, con sus palabras, y la sonoridad calculada de una
+    /// escala occidental.
     @Test func elCaracterDeLaTonalidadYLaSonoridad() {
-        #expect(salida("tonalidad Re mayor").contains("\n  carácter: festivo, majestuoso (Schubart (Steblin 1983))"))
+        let re = salida("tonalidad Re mayor")
+        #expect(re.contains("\n  carácter: alegre, valiente · “Joyeux et très guerrier” (Charpentier (Cessac 1988))\n"))
+        #expect(re.contains("\n  carácter: festivo, majestuoso · “The key of triumph, of Hallelujahs, of war-cries,"))
+        #expect(re.hasSuffix("\n  las fuentes no coinciden: Charpentier · Schubart\n"), Comment(rawValue: re))
+        #expect(!salida("tonalidad Si♭ menor").contains("no coinciden"))
         #expect(!salida("tonalidad Do# mayor").contains("carácter"))
         #expect(salida("escala Do lidio").contains("\n  sonoridad (calculada): clara\n"))
         #expect(!salida("escala Re bayati").contains("sonoridad"))
-        #expect(salida("escala Re bayati").contains("\n  carácter: enérgico, alegre (Touma 1996: 43)\n"))
+        #expect(
+            salida("escala Re bayati").contains(
+                "\n  carácter: enérgico, alegre · “vitality, joy, and femininity” (Touma 1996: 43)\n"))
+        #expect(salida("escala Do frigio").contains("\n  afecto medido: alegre: 21 % (Temperley & Tan 2013: 248)\n"))
+    }
+
+    /// `tonalidades`: las que describe alguna fuente, con lo que dice cada una, y por afecto.
+    @Test func lasTonalidadesConCaracter() {
+        let todas = salida("tonalidades")
+        #expect(todas.split(separator: "\n").count == 25)
+        #expect(todas.contains("\nFa mayor: colérico (Charpentier) · sereno (Schubart)\n"))
+        #expect(
+            salida("tonalidades --afecto terrible")
+                == "Mi♭ menor: terrible (Charpentier)\nSi♭ menor: sombrío, terrible (Charpentier) · sombrío, colérico (Schubart)\n"
+        )
+        #expect(salida("keys --affect terrible --ingles").hasPrefix("Eb minor: terrible (Charpentier)\n"))
+        #expect(resultado("tonalidades", "--afecto", "nada").codigo != 0)
+        #expect(salida("tonalidades sol menor").hasPrefix("Sol menor: grave, majestuoso (Charpentier)"))
+        let fa = try? JSONSerialization.jsonObject(with: Data(salida("tonalidades fa mayor --json").utf8))
+        let primera = (fa as? [[String: Any]])?.first
+        #expect(primera?["discrepancias"] as? [String] == ["Charpentier · Schubart"])
+        #expect((primera?["caracter"] as? [[String: Any]])?.first?["texto"] as? String == "Furieux et emporté")
+    }
+
+    /// `escalas --momento`: las que se tocan a esa hora; y el reloj de los rāgas.
+    @Test func elMomentoYElRelojDeLosRagas() {
+        #expect(
+            salida("escalas --momento anochecer")
+                == "India · rāga (2)\n  Bhūpālī: Do Re Mi Sol La\n  Yaman: Do Re Mi Fa♯ Sol La Si\n")
+        #expect(salida("scales --time dusk --ingles").contains("Yaman"))
+        #expect(salida("escalas --momento noche").contains("pathet"))
+        #expect(resultado("escalas", "--momento", "siesta").error.contains("no es un momento del día"))
+        let reloj = salida("reloj ragas")
+        #expect(reloj.hasPrefix("<svg") && reloj.contains(">Yaman<") && reloj.contains(">Lalit<"))
+        #expect(salida("clock rāgas --ingles").contains(">Rāga clock<"))
     }
 
     @Test func referenciasDeUnaEscala() {
         #expect(
             salida("escala Re bayati").contains(
-                "\n  referencias: Maqam World; Farraj & Abu Shumays 2019; Rechberger 2008; Touma 1996: 43\n"))
+                "\n  referencias: Maqam World; Touma 1996: 43; Farraj & Abu Shumays 2019; Rechberger 2008\n"))
         #expect(salida("escala Re bayati --ingles").contains("\n  references: Maqam World;"))
         #expect(
-            salida("escala Re dórico").contains("\n  referencias: Powers et al. 2001; Levine 1995; Rechberger 2008\n"))
+            salida("escala Re dórico").contains(
+                "\n  referencias: Powers et al. 2001; Levine 1995; Rechberger 2008; Temperley & Tan 2013: 248\n"))
         #expect(salida("escala Re lidio ♯2").contains("\n  referencias: Busoni 1916\n"))
         #expect(!salida("escala Re hexatónica de armónicos").contains("referencias"))
         let bib = salida("escala Re bayati --bibtex")

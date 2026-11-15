@@ -864,7 +864,7 @@ import Hexagonos
     @Test func escalasDelMundo7() throws {
         // Sources/Armonia/Armonia.docc/EscalasDelMundo.md, bloque 7
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/EscalasDelMundo.md"#, 7)
-        comprobar(TipoDeEscala.bayati.referencias.map(\.clave), #"["maqamWorld", "farraj2019", "rechberger2008", "touma1996"]"#, doc, 0)
+        comprobar(TipoDeEscala.bayati.referencias.map(\.cita), #"["Maqam World", "Touma 1996: 43", "Farraj & Abu Shumays 2019", "Rechberger 2008"]"#, doc, 0)
         comprobar(TipoDeEscala.tetracordoDiatonicoTenso.referencias.first == .barker1989, #"true"#, doc, 1)
         comprobar(Referencia.west1992.paginas("160–172").cita, #""West 1992: 160–172""#, doc, 2)
         comprobar(Referencia.west1992.descripcion, #""West, M. L. (1992). Ancient Greek Music. Oxford: Clarendon Press.""#, doc, 3)
@@ -884,6 +884,10 @@ import Hexagonos
         comprobar(TipoDeEscala.saba.afectos == [.triste, .lastimero], #"true"#, doc, 6)
         comprobarIgual(TipoDeEscala.lidio.sonoridad, .clara, doc, 7)
         comprobarIgual(TipoDeEscala.frigio.sonoridad, .oscura, doc, 8)
+        comprobar(TipoDeEscala.saba.caracter[0].texto, #""sadness and pain""#, doc, 9)
+        comprobar(TipoDeEscala.mayor.medidasDelAfecto[0].proporcion, #"0.83"#, doc, 10)
+        comprobar(TipoDeEscala.locrio.medidasDelAfecto.isEmpty, #"true"#, doc, 11)
+        comprobar(Caracter.discrepancias(TipoDeEscala.harmoniaDoria.caracter).count, #"1"#, doc, 12)
     }
 
     @Test func escalasDelMundo9() throws {
@@ -1718,9 +1722,12 @@ import Hexagonos
     @Test func tonalidad24() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 24
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 24)
-        comprobar(Tonalidad(.do).caracter[0].afectos == [.inocente], #"true"#, doc, 0)
-        comprobarIgual(Tonalidad(.re).caracter[0].testigo, .schubart, doc, 1)
-        comprobar(Tonalidad(Nota(.do, .sostenido)).caracter.isEmpty, #"true"#, doc, 2)
+        comprobar(Tonalidad(.do).caracter.map(\.testigo) == [.charpentier, .schubart], #"true"#, doc, 0)
+        comprobar(Tonalidad(.do).caracter[0].texto, #""Gai et guerrier""#, doc, 1)
+        comprobar(Tonalidad(.do).caracter[1].afectos == [.inocente], #"true"#, doc, 2)
+        comprobar(Tonalidad(Nota(.do, .sostenido)).caracter.isEmpty, #"true"#, doc, 3)
+        comprobar(Caracter.discrepancias(Tonalidad(.fa).caracter).count, #"1"#, doc, 4)
+        comprobar(Tonalidad.conCaracter.count, #"25"#, doc, 5)
     }
 
     @Test func tonalidad25() throws {

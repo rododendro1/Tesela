@@ -163,16 +163,28 @@ extension TipoDeEscala {
     // enseñanza y no una tabla aceptada (Farraj y Abu Shumays 2019 lo advierten), así que solo entran los cuatro que
     // Touma describe con un afecto. De Ḥijāz dice «el desierto lejano», que no es un afecto, y no entra.
 
+    private static func touma(_ afectos: [Afecto], _ texto: String, pagina: String) -> [Caracter] {
+        [.init(afectos, texto: texto, referencia: Referencia.touma1996.paginas(pagina))]
+    }
+
     private static let caracteresArabes: [(tipo: TipoDeEscala, caracter: [Caracter])] = [
-        // «pride, power, and soundness of mind»
-        (.maqamRast, [.init([.majestuoso, .energico, .templado], referencia: Referencia.touma1996.paginas("43"))]),
-        // «vitality, joy, and femininity»
-        (.bayati, [.init([.energico, .alegre], referencia: Referencia.touma1996.paginas("43"))]),
-        // «love»
-        (.sikah, [.init([.amoroso], referencia: Referencia.touma1996.paginas("43"))]),
-        // «sadness and pain»; sus oyentes la llaman triste, trágica y de lamento.
-        (.saba, [.init([.triste, .lastimero], referencia: Referencia.touma1996.paginas("44"))]),
+        (.maqamRast, touma([.majestuoso, .energico, .templado], "pride, power, and soundness of mind", pagina: "43")),
+        (.bayati, touma([.energico, .alegre], "vitality, joy, and femininity", pagina: "43")),
+        (.sikah, touma([.amoroso], "love", pagina: "43")),
+        // Sus oyentes, añade, la llaman triste, trágica y de lamento.
+        (.saba, touma([.triste, .lastimero], "sadness and pain", pagina: "44")),
     ]
+
+    /// Las escalas que describe alguna fuente, en el orden del catálogo del carácter: las harmoniai, los modos
+    /// gregorianos, los rāgas, los pathet, los modos chinos y los maqāmāt. De ellas salen `escalas --afecto`,
+    /// `escalas --momento` y el reloj de los rāgas.
+    ///
+    ///     TipoDeEscala.conCaracter.filter { $0.momentos.contains(.anochecer) }.map(\.nombre)
+    ///     // ["Yaman", "Bhūpālī"]
+    public static let conCaracter: [TipoDeEscala] = {
+        var vistas = Set<IdentidadDeEscala>()
+        return caracteres.map(\.tipo).filter { vistas.insert($0.identidad).inserted }
+    }()
 
     /// Identidad → lo que dicen sus fuentes, en orden cronológico.
     package static let caracterPorIdentidad: [IdentidadDeEscala: [Caracter]] = {

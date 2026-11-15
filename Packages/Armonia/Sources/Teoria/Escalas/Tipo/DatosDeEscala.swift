@@ -171,7 +171,9 @@ extension TipoDeEscala {
                     referencias: $0.referencias)
             }
             let propias: [Referencia] = [tipo.datos.documentada, tipo.datos.fuente?.referencia].compactMap { $0 }
-            let deSuCaracter: [Referencia] = (caracterPorIdentidad[tipo.identidad] ?? []).map(\.referencia)
+            let deSuCaracter: [Referencia] =
+                (caracterPorIdentidad[tipo.identidad] ?? []).map(\.referencia)
+                + (medidasPorIdentidad[tipo.identidad] ?? []).map(\.referencia)
             let referencias = Referencia.unicas(
                 tipo.datos.referencias + propias + (deSuLista[tipo.identidad] ?? [])
                     + afinaciones.flatMap(\.referencias) + deSuCaracter)
@@ -181,10 +183,10 @@ extension TipoDeEscala {
     }()
 
     /// Dónde se lee la escala: las obras que cita su declaración, la que la documenta, la de su fuente, las de su
-    /// lista, las de sus afinaciones y las de su carácter, sin repetir; en las occidentales, las de
-    /// `referenciasOccidentales`. Vacío en las propias y en las occidentales sintéticas.
+    /// lista, las de sus afinaciones, las de su carácter y las de los estudios que la miden, sin repetir; en las
+    /// occidentales, las de `referenciasOccidentales`. Vacío en las propias y en las occidentales sintéticas.
     ///
-    ///     TipoDeEscala.bayati.referencias.map(\.cita)   // ["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019"]
+    ///     TipoDeEscala.bayati.referencias.map(\.cita)   // ["Maqam World", "Touma 1996: 43", "Farraj & Abu Shumays 2019", "Rechberger 2008"]
     ///     TipoDeEscala.lidioDominante.referencias.map(\.cita)   // ["Levine 1995", "Persichetti 1961", "Lendvai 1971", "Tymoczko 2011"]
     public var referencias: [Referencia] { TipoDeEscala.delCatalogo[identidad]?.referencias ?? [] }
 

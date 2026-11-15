@@ -65,8 +65,14 @@ extension LineaDeComandosTests {
         let acordes = try #require(dorico["acordes"] as? [[String: String]])
         #expect(acordes.count == 7)
         #expect(acordes.first?["cifrado"] == "Rem7")
-        // Sin opciones, solo esas claves (y sus referencias, Powers y Levine, y su origen).
-        #expect(Set(dorico.keys) == ["nombre", "notas", "clases", "modo", "acordes", "referencias", "origen"])
+        // Sin opciones, solo esas claves (y sus referencias, Powers y Levine, su origen, lo que mide de él Temperley y
+        // Tan y su sonoridad calculada).
+        #expect(
+            Set(dorico.keys) == [
+                "nombre", "notas", "clases", "modo", "acordes", "referencias", "origen", "medidas", "sonoridad",
+            ])
+        let medidas = try #require(dorico["medidas"] as? [[String: Any]])
+        #expect(medidas.first?["proporcion"] as? Double == 0.40 && medidas.first?["afecto"] as? String == "alegre")
     }
 
     /// Un fragmento lleva lo que abarca: escrito en `escala`, en semitonos en el catálogo.
@@ -93,10 +99,10 @@ extension LineaDeComandosTests {
     @Test func referenciasEnJSON() throws {
         let bayati = try #require(try json("escala Re bayati") as? [String: Any])
         let referencias = try #require(bayati["referencias"] as? [[String: String]])
-        // Touma, con la página de lo que dice de su carácter, al final.
-        #expect(referencias.map { $0["clave"] } == ["maqamWorld", "farraj2019", "rechberger2008", "touma1996"])
-        #expect(referencias[3]["cita"] == "Touma 1996: 43")
-        #expect(referencias[3]["descripcion"]?.hasPrefix("Touma, Habib Hassan (1996). The Music of the Arabs.") == true)
+        // Touma, con la página de lo que dice de su carácter, en el puesto de la obra entera.
+        #expect(referencias.map { $0["clave"] } == ["maqamWorld", "touma1996", "farraj2019", "rechberger2008"])
+        #expect(referencias[1]["cita"] == "Touma 1996: 43")
+        #expect(referencias[1]["descripcion"]?.hasPrefix("Touma, Habib Hassan (1996). The Music of the Arabs.") == true)
         #expect(referencias[0]["url"] == "https://www.maqamworld.com")
         #expect(resultado("escala", "Re", "bayati", "--bibtex", "--json").error.contains("--bibtex"))
     }
