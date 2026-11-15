@@ -35,6 +35,17 @@ import Testing
         #expect(e.cifradosRomanos(cuatriadas: true) == ["Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "viiø7"])
     }
 
+    /// Fuera de las heptatónicas, por terceras de verdad: Do blues da Dom7 en el 1.º grado, y no Dosus4.
+    @Test func armonizacionPorTercerasDeVerdad() {
+        let blues = Escala(.do, .blues)
+        #expect(blues.acorde(grado: 1)?.cifrado == "Dom")
+        #expect(blues.acorde(grado: 1, cuatriada: true)?.cifrado == "Dom7")
+        let pentatonica = Escala(.do, .pentatonicaMayor)
+        #expect(pentatonica.acorde(grado: 1)?.cifrado == "Do")
+        #expect(pentatonica.acorde(grado: 2) == nil) // Re no tiene Fa, ni Sol tiene Si para Mi
+        #expect(pentatonica.armonizar().map { $0?.cifrado } == ["Do", nil, nil, nil, "Lam"])
+    }
+
     @Test func armonizacionMenor() {
         let armonica = Escala(.la, .menorArmonica)
         #expect(armonica.cifradosRomanos() == ["i", "ii°", "♭III+", "iv", "V", "♭VI", "vii°"])

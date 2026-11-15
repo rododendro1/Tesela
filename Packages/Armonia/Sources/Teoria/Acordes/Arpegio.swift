@@ -189,8 +189,8 @@ public struct Arpegio: Hashable, Sendable {
     }
 
     /// La nota de un grado (de 1 a 7) sobre la fundamental: la del acorde si la tiene (la 3.ª de Dom es Mi♭) y, si
-    /// no, la de su escala, la primera de siete notas de ``Acorde/escalasCompatibles(entre:)`` (la que menos notas
-    /// a evitar tiene: en Do7, Do lidio dominante, así que la 11 es Fa♯), o la mayor si no encaja ninguna.
+    /// no, la de su escala, la primera de siete notas de ``Acorde/escalasCompatibles(entre:)`` (la que pide el
+    /// cifrado: en Do7, Do mixolidio, así que la 11 es Fa; en Do7(♯11), Fa♯), o la mayor si no encaja ninguna.
     public func nota(delGrado grado: Int) -> Nota {
         let fundamental = acorde.fundamental
         if let propia = acorde.notas.first(where: { fundamental.intervalo(hasta: $0).numeroSimple == grado }) {
@@ -317,18 +317,17 @@ extension Acorde {
         Arpegio(self, patron: patron, octavas: octavas, conOctava: conOctava)
     }
 
-    /// Las escalas sobre la fundamental del acorde que contienen todas sus notas sin chocar con él
-    /// (``Escala/esCompatible(con:)``: la relación acorde-escala del jazz, Do7 → Do mixolidio…), de las que tienen
-    /// menos notas a evitar sobre el acorde
-    /// (``Escala/notasAEvitar(sobre:)``) a las que más y, a igualdad, en el orden de `tipos`. Por defecto, entre
-    /// las de ``TipoDeEscala/deJazz``: Do7(♯11) da primero Do lidio dominante, sin ninguna. Las tensiones cuentan
-    /// como la nota que son (la novena, como la segunda), y una nota escrita de otra forma vale (Fa♭ por Mi).
+    /// Las escalas sobre la fundamental del acorde que contienen todas sus notas, y el bajo si es ajeno, sin chocar
+    /// con él (``Escala/esCompatible(con:)``: la relación acorde-escala del jazz), de la que mejor le va a la que
+    /// peor: primero la que pide el cifrado (``TipoDeEscala/delCifrado(_:)``: Do7 → Do mixolidio, Do7(♯11) → Do
+    /// lidio dominante); después, la que menos alteraciones añade que el cifrado no pide (la ♭9, la ♯9 sobre una
+    /// 3.ª mayor, la ♯11 y la ♭13 sobre una 5.ª justa), la que menos notas a evitar tiene
+    /// (``Escala/notasAEvitar(sobre:)``), la de siete notas antes que otra y, a igualdad, en el orden de `tipos`.
+    /// Por defecto, entre las de ``TipoDeEscala/deJazz``: Do7 da Do mixolidio, Do bebop dominante y Do lidio
+    /// dominante. Las tensiones cuentan como la nota que son (la novena, como la segunda), y una nota escrita de
+    /// otra forma vale (Fa♭ por Mi).
     public func escalasCompatibles(entre tipos: [TipoDeEscala] = TipoDeEscala.deJazz) -> [Escala] {
-        let compatibles = tipos.map { Escala(fundamental, $0) }.filter { $0.esCompatible(con: self) }
-        let aEvitar = compatibles.map { $0.notasAEvitar(sobre: self).count }
-        return compatibles.indices.sorted { a, b in
-            aEvitar[a] != aEvitar[b] ? aEvitar[a] < aEvitar[b] : a < b
-        }.map { compatibles[$0] }
+        ordenar(tipos.map { Escala(fundamental, $0) }.filter { $0.esCompatible(con: self) })
     }
 }
 

@@ -54,9 +54,10 @@ import Testing
         let do7 = Acorde("Do7")
         // La 9 por encima de la séptima, y la octava final, a dos octavas.
         #expect(midis(Arpegio(do7, tensiones: [9])) == [60, 64, 67, 70, 74, 84])
-        // En Do7, la escala es el lidio dominante: la 11 es Fa♯.
-        #expect(midis(Arpegio(do7, conOctava: false, tensiones: [13, 9, 11])) == [60, 64, 67, 70, 74, 78, 81])
-        #expect(Arpegio(do7).nota(delGrado: 4) == Nota.fa.sostenido)
+        // En Do7, la escala es la del cifrado, el mixolidio: la 11 es Fa. Con la ♯11, el lidio dominante.
+        #expect(midis(Arpegio(do7, conOctava: false, tensiones: [13, 9, 11])) == [60, 64, 67, 70, 74, 77, 81])
+        #expect(Arpegio(do7).nota(delGrado: 4) == Nota.fa)
+        #expect(Arpegio(Acorde("Do9(#11)")).nota(delGrado: 4) == Nota.fa.sostenido)
         #expect(Arpegio(Acorde("Dom")).nota(delGrado: 3) == Nota.mi.bemol)
         // Las que el acorde ya tiene no se repiten, y las que no son 9, 11 o 13 no cuentan.
         #expect(midis(Arpegio(Acorde("Do9"), tensiones: [9])) == midis(Arpegio(Acorde("Do9"))))
@@ -205,19 +206,72 @@ import Testing
         let escalas = Acorde("Do7").escalasCompatibles()
         #expect(escalas.contains(Escala(.do, .mixolidio)))
         #expect(!escalas.contains(Escala(.do, .mayor))) // le falta el Si♭
-        // De las que tienen menos notas a evitar a las que más.
-        let aEvitar = escalas.map { $0.notasAEvitar(sobre: Acorde("Do7")).count }
-        #expect(aEvitar == aEvitar.sorted())
-        #expect(escalas.first == Escala(.do, .lidioDominante))
+        // Primero la del cifrado; después, la que no añade alteraciones (la bebop dominante) antes que la que sí
+        // (el lidio dominante, con la ♯11).
+        #expect(Array(escalas.prefix(3)) == [Escala(.do, .mixolidio), Escala(.do, .bebopDominante), Escala(.do, .lidioDominante)])
         #expect(escalas.allSatisfy { TipoDeEscala.deJazz.contains($0.tipo) })
         // Con la ♯11 en el cifrado, el lidio dominante va primero y el mixolidio ya no cabe.
         let conOncena = Acorde("Do7(#11)").escalasCompatibles()
         #expect(conOncena.first == Escala(.do, .lidioDominante))
         #expect(!conOncena.contains(Escala(.do, .mixolidio)))
-        // En Do7M, el lidio (sin notas a evitar) antes que el jónico (con el fa).
+        // En Do7M, el jónico, que es el del cifrado, antes que el lidio, que añade la ♯11.
         let mayor = Acorde("Do7M").escalasCompatibles()
-        #expect(mayor.firstIndex(of: Escala(.do, .lidio))! < mayor.firstIndex(of: Escala(.do, .mayor))!)
+        #expect(mayor.firstIndex(of: Escala(.do, .mayor))! < mayor.firstIndex(of: Escala(.do, .lidio))!)
         #expect(Acorde("Do").escalasCompatibles(entre: [.mayor, .menorNatural]) == [Escala(.do, .mayor)])
         #expect(Acorde("Dom").escalasCompatibles().contains(Escala(.do, .dorico)))
+    }
+
+    /// La primera escala de cada cifrado, sin tonalidad: la que pide (``TipoDeEscala/delCifrado(_:)``).
+    @Test func laPrimeraEscalaEsLaDelCifrado() {
+        let casos: [(String, TipoDeEscala)] = [
+            ("Do7M", .mayor), ("Do6", .mayor), ("Do6/9", .mayor), ("Do", .mayor), ("Do7M(#11)", .lidio),
+            ("Do7", .mixolidio), ("Do9", .mixolidio), ("Do13", .mixolidio), ("Do7sus4", .mixolidio),
+            ("Do7(#11)", .lidioDominante), ("Do7(b13)", .mixolidioSextaMenor), ("Do7(#9)", .disminuidaSemitonoTono),
+("Do7(b9)", .disminuidaSemitonoTono), ("Do+7", .tonosEnteros),
+            ("Dom", .dorico), ("Dom7", .dorico), ("Dom9", .dorico), ("Dom11", .dorico),
+            ("Dom6", .menorMelodicaJazz), ("Dom(7M)", .menorMelodicaJazz), ("Doø7", .locrioSegundaNatural),
+            ("Do°7", .disminuida), ("Do+", .lidioAumentado), ("Do+7M", .lidioAumentado),
+        ]
+        for (cifrado, tipo) in casos {
+            let acorde = Acorde(stringLiteral: cifrado)
+            #expect(TipoDeEscala.delCifrado(acorde.estructura) == tipo, Comment(rawValue: cifrado))
+            #expect(acorde.escalasCompatibles().first == Escala(.do, tipo), Comment(rawValue: cifrado))
+        }
+        #expect(TipoDeEscala.delCifrado(Acorde("Do°").estructura) == nil)
+        // Do7alt pide la alterada, pero tiene también la 5.ª justa y la ♯11: no le sirve ninguna de siete notas.
+        #expect(TipoDeEscala.delCifrado(Acorde("Do7alt").estructura) == .alterada)
+        #expect(TipoDeEscala.delCifrado(Acorde("Do7(b5,#9)").estructura) == .alterada)
+        // Ninguna compatible tiene una nota que choque, ni una bebop sale sin su escala de siete notas.
+        for (cifrado, _) in casos {
+            let acorde = Acorde(stringLiteral: cifrado)
+            for escala in acorde.escalasCompatibles() {
+                #expect(!escala.notas(sobre: acorde).contains { $0.papel == PapelEnLaEscala.choque }, Comment(rawValue: cifrado))
+            }
+        }
+        // Ida y vuelta: la cuatríada de cada grado de Do mayor y de Do menor melódica tiene su modo entre las
+        // compatibles.
+        for madre in [Escala(.do, .mayor), Escala(.do, .menorMelodicaJazz)] {
+            for grado in 1...7 {
+                guard let acorde = madre.acorde(grado: grado, cuatriada: true) else { continue }
+                #expect(acorde.escalasCompatibles().contains(madre.modo(grado: grado)), Comment(rawValue: acorde.cifrado))
+            }
+        }
+    }
+
+    /// Sin tonalidad, Sol7(♭9) da la disminuida semitono-tono; en Do, la tonalidad pide el frigio dominante, que
+    /// saca menos notas de ella. Las dos con el mismo criterio después.
+    @Test func laTonalidadMandaAntesQueElCifrado() {
+        let acorde = Acorde("Sol7(b9)")
+        #expect(acorde.escalasCompatibles().first == Escala(.sol, .disminuidaSemitonoTono))
+        #expect(Tonalidad(.do, .mayor).escalaDelAcorde(acorde) == Escala(.sol, .frigioDominante))
+    }
+
+    /// El bajo ajeno cuenta: Do lidio no sirve para Do/Re♭, que pide el Re♭.
+    @Test func elBajoAjenoCuenta() {
+        let conBajo = Acorde("Do/Reb")
+        #expect(!Escala(.do, .lidio).contiene(acorde: conBajo))
+        #expect(!conBajo.escalasCompatibles().contains(Escala(.do, .lidio)))
+        #expect(conBajo.escalasCompatibles().allSatisfy { $0.contieneEnarmonico(.re.bemol) })
+        #expect(Escala(.do, .mayor).contiene(acorde: Acorde("Do/Re")))
     }
 }

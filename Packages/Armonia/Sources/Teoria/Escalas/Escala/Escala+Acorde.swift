@@ -68,9 +68,10 @@ public struct NotaSobreElAcorde: Hashable, Sendable, CustomStringConvertible {
 }
 
 extension Escala {
-    /// Si la escala tiene todas las notas del acorde, sin importar cómo se escriban (Fa♭ vale por Mi).
+    /// Si la escala tiene todas las notas del acorde, y su bajo si es ajeno, sin importar cómo se escriban (Fa♭
+    /// vale por Mi). Do lidio no tiene Do/Re♭, porque le falta el Re♭.
     public func contiene(acorde: Acorde) -> Bool {
-        acorde.notas.allSatisfy { contieneEnarmonico($0) }
+        acorde.notasDesdeElBajo.allSatisfy { contieneEnarmonico($0) }
     }
 
     /// Si la escala sirve para el acorde: tiene todas sus notas (``contiene(acorde:)``), ninguna choca con él

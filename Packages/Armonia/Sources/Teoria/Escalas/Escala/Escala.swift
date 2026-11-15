@@ -156,9 +156,26 @@ public struct Escala: Hashable, Sendable {
 
     // MARK: Armonización
 
-    /// Acorde por terceras superpuestas sobre un grado (tríada o cuatríada).
+    /// Acorde por terceras superpuestas sobre un grado (tríada o cuatríada). En una heptatónica, un grado sí y otro
+    /// no. En las demás, cada nota es la siguiente de la escala que está a una 3.ª de la anterior, por su nombre:
+    /// en Do blues, Do–Mi♭–Sol–Si♭ (Dom7), y no Do–Fa–Sol. `nil` si falta esa 3.ª (el 2.º grado de Do pentatónica
+    /// mayor, Re, no tiene Fa) o si las notas no forman un tipo conocido.
     public func acorde(grado: Int, cuatriada: Bool = false) -> Acorde? {
-        let nombres = (0..<(cuatriada ? 4 : 3)).map { self.grado(grado + 2 * $0) }
+        let cuantas = cuatriada ? 4 : 3
+        var nombres = [self.grado(grado)]
+        if tipo.intervalos.count == 7 {
+            nombres = (0..<cuantas).map { self.grado(grado + 2 * $0) }
+        } else {
+            var posicion = grado
+            while nombres.count < cuantas, let ultima = nombres.last {
+                let siguiente = (1..<tipo.intervalos.count).first {
+                    ultima.intervalo(hasta: self.grado(posicion + $0)).numeroSimple == 3
+                }
+                guard let siguiente else { return nil }
+                posicion += siguiente
+                nombres.append(self.grado(posicion))
+            }
+        }
         let raiz = nombres[0]
         guard let tipo = TipoDeAcorde(pasosDeQuinta: Set(nombres.map { $0.pasosDeQuinta - raiz.pasosDeQuinta })) else {
             return nil
@@ -166,7 +183,8 @@ public struct Escala: Hashable, Sendable {
         return Acorde(raiz, tipo)
     }
 
-    /// Acordes de todos los grados (`nil` si un grado no forma un tipo conocido).
+    /// Acordes de todos los grados, por terceras (``acorde(grado:cuatriada:)``): `nil` si un grado no tiene la 3.ª
+    /// o no forma un tipo conocido.
     public func armonizar(cuatriadas: Bool = false) -> [Acorde?] {
         (1...tipo.intervalos.count).map { acorde(grado: $0, cuatriada: cuatriadas) }
     }
