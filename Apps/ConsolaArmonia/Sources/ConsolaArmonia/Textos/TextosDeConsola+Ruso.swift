@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <обозначение>…",
         descripcionAcorde: "ноты, тип и роль каждой ноты",
-        notasAcorde: "параметры: --voicings, --names, --keys, --substitutions (в тональности --in C major, в конце) и --compare C (общие ноты и голосоведение); --bebop и --pentatonics (гаммы для импровизации); --statistics (число звуков и его название, яркость, интервальный вектор, номер Форта…); с --estadisticas — ещё и как он вписывается в тональность (Крумхансл, вероятная функция, звукоряды каталога); с --comparar — расстояния Тимочко, Лердала, Фурье и Форта",
+        notasAcorde: "параметры: --scales (гаммы для аккорда, с причиной выбора), --voicings, --names, --keys, --substitutions (в тональности --in C major, в конце) и --compare C (общие ноты и голосоведение); --bebop и --pentatonics (гаммы для импровизации); --statistics (число звуков и его название, яркость, интервальный вектор, номер Форта…); с --estadisticas — ещё и как он вписывается в тональность (Крумхансл, вероятная функция, звукоряды каталога); с --comparar — расстояния Тимочко, Лердала, Фурье и Форта",
         sintaxisArpegio: "arpeggio <обозначение> [--pattern <рисунок>]",
         descripcionArpegio: "ноты арпеджио и подходящие гаммы (--pattern ascending, descending, up-down, down-up, broken, alberti)",
         notasArpegio: "параметры: --octaves 2 (от 1 до 4), --no-octave, --from E (или 3: начать с этой ноты), --tensions 9,13, --degrees 1-5-3-8 (свой рисунок) и --approach below, above или enclosure (хроматические ноты, ведущие к каждой)",

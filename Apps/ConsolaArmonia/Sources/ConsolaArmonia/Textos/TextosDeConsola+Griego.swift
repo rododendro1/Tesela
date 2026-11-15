@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <σύμβολο>…",
         descripcionAcorde: "νότες, είδος και ρόλος κάθε νότας",
-        notasAcorde: "επιλογές: --voicings, --names, --keys, --substitutions (στην τονικότητα του --in C major, στο τέλος) και --compare C (κοινές νότες και οδήγηση φωνών); --bebop και --pentatonics (κλίμακες για αυτοσχεδιασμό)· --statistics (αριθμός φθόγγων και το όνομά του, φωτεινότητα, διάνυσμα διαστημάτων, αριθμός Forte…); με --estadisticas, και πώς ταιριάζει στην τονικότητα (Krumhansl, πιθανή λειτουργία, κλίμακες του καταλόγου)· με --comparar, οι αποστάσεις Tymoczko, Lerdahl, Fourier και Forte",
+        notasAcorde: "επιλογές: --scales (οι κλίμακες για τη συγχορδία, με την αιτία τους), --voicings, --names, --keys, --substitutions (στην τονικότητα του --in C major, στο τέλος) και --compare C (κοινές νότες και οδήγηση φωνών); --bebop και --pentatonics (κλίμακες για αυτοσχεδιασμό)· --statistics (αριθμός φθόγγων και το όνομά του, φωτεινότητα, διάνυσμα διαστημάτων, αριθμός Forte…); με --estadisticas, και πώς ταιριάζει στην τονικότητα (Krumhansl, πιθανή λειτουργία, κλίμακες του καταλόγου)· με --comparar, οι αποστάσεις Tymoczko, Lerdahl, Fourier και Forte",
         sintaxisArpegio: "arpeggio <σύμβολο> [--pattern <μοτίβο>]",
         descripcionArpegio: "νότες του αρπέζ και κλίμακες της συγχορδίας (--pattern ascending, descending, up-down, down-up, broken, alberti)",
         notasArpegio: "επιλογές: --octaves 2 (από 1 έως 4), --no-octave, --from E (ή 3: ξεκινά από αυτή τη νότα), --tensions 9,13, --degrees 1-5-3-8 (δική σας πορεία) και --approach below, above ή enclosure (χρωματικές νότες που οδηγούν σε καθεμία)",

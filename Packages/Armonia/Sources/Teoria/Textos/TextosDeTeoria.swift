@@ -125,6 +125,12 @@ struct TextosDeTeoria: TextosTraducidos {
     let papelNotaAEvitar: String
     let papelChoque: String
     let papelDePaso: String
+    /// Por qué se propone una escala para un acorde (`EscalaParaElAcorde.Motivo`): «de la tonalidad», «del cifrado»,
+    /// «del bajo», «compatible».
+    let motivoDeLaTonalidad: String
+    let motivoDelCifrado: String
+    let motivoDelBajo: String
+    let motivoCompatible: String
     /// Una escala como modo de otra: «modo 2 de Do mayor», «mode 2 of C major».
     let modoDe: @Sendable (_ modo: Int, _ escala: String) -> String
 

@@ -54,12 +54,12 @@ extension PresentacionDeRelacionesDeAcorde {
         }
 
         // Las escalas compatibles, con sus tensiones y las notas a evitar.
-        let escalas = acorde.escalasCompatibles().prefix(6).map {
-            PresentacionDeEscalaYAcorde.presentar($0, sobre: acorde, en: notacion)
-        }
+        let escalas = PresentacionDeEscalaYAcorde.escalas(de: acorde, notacion: notacion).prefix(6)
         if !escalas.isEmpty {
             let filas = escalas.map {
-                "<li><strong>" + Hoja.html($0.nombre) + "</strong> " + Hoja.html($0.resumen) + "</li>"
+                "<li><strong>" + Hoja.html($0.nombre) + "</strong>"
+                    + ($0.motivo.map { " <em>(" + Hoja.html($0) + ")</em>" } ?? "") + " " + Hoja.html($0.resumen)
+                    + "</li>"
             }
             cuerpo.append(Hoja.seccionHTML(notacion.texto(\.escalasCompatibles), "<ul>" + filas.joined() + "</ul>"))
         }

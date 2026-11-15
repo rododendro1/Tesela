@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <xifrat>…",
         descripcionAcorde: "notes, tipus i paper de cada nota",
-        notasAcorde: "opcions: --disposiciones, --nombres, --tonalidades, --sustituciones (en la tonalitat de --en Do mayor, al final) i --comparar Do (notes comunes i conducció de les veus); --bebop i --pentatonicas (escales per improvisar-hi); --estadisticas (nombre de notes i el seu cardinal, brillantor, vector interval·lic, nombre de Forte…); amb --estadisticas, també com encaixa en la tonalitat (Krumhansl, funció probable, escales del catàleg); amb --comparar, les distàncies de Tymoczko, Lerdahl, Fourier i Forte",
+        notasAcorde: "opcions: --escalas (les escales per a l'acord, amb el seu motiu), --disposiciones, --nombres, --tonalidades, --sustituciones (en la tonalitat de --en Do mayor, al final) i --comparar Do (notes comunes i conducció de les veus); --bebop i --pentatonicas (escales per improvisar-hi); --estadisticas (nombre de notes i el seu cardinal, brillantor, vector interval·lic, nombre de Forte…); amb --estadisticas, també com encaixa en la tonalitat (Krumhansl, funció probable, escales del catàleg); amb --comparar, les distàncies de Tymoczko, Lerdahl, Fourier i Forte",
         sintaxisArpegio: "arpegio <xifrat> [--patron <patró>]",
         descripcionArpegio: "notes de l'arpegi i escales de l'acord (--patron ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado, alberti)",
         notasArpegio: "opcions: --octavas 2 (d'1 a 4), --sin-octava, --desde Mi (o 3: comença per aquesta nota), --tensiones 9,13, --grados 1-5-3-8 (un recorregut propi) i --aproximacion abajo, arriba o encierro (notes cromàtiques que porten a cadascuna)",

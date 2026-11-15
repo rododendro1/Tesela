@@ -44,7 +44,7 @@ extension LineaDeComandos {
                 "armonia chord G7/B"),
             notas: TextosDeConsola.traduccion(\.notasAcorde),
             opciones: [
-                .disposiciones, .nombres, .tonalidades, .sustituciones, .en, .comparar, .bebop, .pentatonicas,
+                .escalas, .disposiciones, .nombres, .tonalidades, .sustituciones, .en, .comparar, .bebop, .pentatonicas,
                 .estadisticas,
             ])
     ]

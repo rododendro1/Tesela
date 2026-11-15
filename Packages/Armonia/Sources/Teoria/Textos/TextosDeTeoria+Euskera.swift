@@ -122,6 +122,10 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "saihesteko nota",
         papelChoque: "talka egiten duen nota",
         papelDePaso: "igarotze-nota",
+        motivoDeLaTonalidad: "tonalitatetik",
+        motivoDelCifrado: "zifratutik",
+        motivoDelBajo: "baxutik",
+        motivoCompatible: "bateragarria",
         modoDe: { modo, escala in "\(escala): \(modo). modua" },
         // Rearmonizacion.swift
         sustitutoTritonal: "tritono-ordezkapena",

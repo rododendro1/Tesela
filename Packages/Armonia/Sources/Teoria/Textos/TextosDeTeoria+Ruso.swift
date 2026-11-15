@@ -119,6 +119,10 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "избегаемый звук",
         papelChoque: "конфликтующий звук",
         papelDePaso: "проходящий звук",
+        motivoDeLaTonalidad: "из тональности",
+        motivoDelCifrado: "из обозначения",
+        motivoDelBajo: "из баса",
+        motivoCompatible: "подходящая",
         modoDe: { modo, escala in "\(modo)-й лад гаммы \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "тритоновая замена",

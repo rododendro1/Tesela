@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <ackordsymbol>…",
         descripcionAcorde: "toner, typ och varje tons funktion",
-        notasAcorde: "Alternativ: --voicings, --names, --keys, --substitutions (i tonarten från --in C major, sist) och --compare C (gemensamma toner och stämföring); --bebop och --pentatonics (skalor att improvisera över); --statistics (antal toner och dess namn, ljushet, intervallvektor, Forte-nummer…); med --estadisticas även hur det passar i tonarten (Krumhansl, trolig funktion, skalor i katalogen); med --comparar avstånden enligt Tymoczko, Lerdahl, Fourier och Forte",
+        notasAcorde: "Alternativ: --scales (skalorna för ackordet, med skälet till varje), --voicings, --names, --keys, --substitutions (i tonarten från --in C major, sist) och --compare C (gemensamma toner och stämföring); --bebop och --pentatonics (skalor att improvisera över); --statistics (antal toner och dess namn, ljushet, intervallvektor, Forte-nummer…); med --estadisticas även hur det passar i tonarten (Krumhansl, trolig funktion, skalor i katalogen); med --comparar avstånden enligt Tymoczko, Lerdahl, Fourier och Forte",
         sintaxisArpegio: "arpeggio <ackordsymbol> [--pattern <mönster>]",
         descripcionArpegio: "arpeggiots toner och passande skalor (--pattern ascending, descending, up-down, down-up, broken, alberti)",
         notasArpegio: "Alternativ: --octaves 2 (1 till 4), --no-octave, --from E (eller 3: börjar på den tonen), --tensions 9,13, --degrees 1-5-3-8 (ett eget förlopp) och --approach below, above eller enclosure (kromatiska toner som leder till var och en)",

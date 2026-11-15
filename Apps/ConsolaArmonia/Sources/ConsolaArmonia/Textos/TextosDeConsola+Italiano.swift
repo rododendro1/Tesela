@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <sigla>…",
         descripcionAcorde: "note, tipo e ruolo di ogni nota",
-        notasAcorde: "opzioni: --disposiciones, --nombres, --tonalidades, --sustituciones (nella tonalità di --en Do mayor, alla fine) e --comparar Do (note comuni e condotta delle voci); --bebop e --pentatonicas (scale per improvvisarci sopra); --estadisticas (numero di note e il suo cardinale, brillantezza, vettore intervallare, numero di Forte…); con --estadisticas, anche come si adatta alla tonalità (Krumhansl, funzione probabile, scale del catalogo); con --comparar, le distanze di Tymoczko, Lerdahl, Fourier e Forte",
+        notasAcorde: "opzioni: --escalas (le scale per l'accordo, con il loro motivo), --disposiciones, --nombres, --tonalidades, --sustituciones (nella tonalità di --en Do mayor, alla fine) e --comparar Do (note comuni e condotta delle voci); --bebop e --pentatonicas (scale per improvvisarci sopra); --estadisticas (numero di note e il suo cardinale, brillantezza, vettore intervallare, numero di Forte…); con --estadisticas, anche come si adatta alla tonalità (Krumhansl, funzione probabile, scale del catalogo); con --comparar, le distanze di Tymoczko, Lerdahl, Fourier e Forte",
         sintaxisArpegio: "arpegio <sigla> [--patron <schema>]",
         descripcionArpegio: "note dell'arpeggio e scale dell'accordo (--patron ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado, alberti)",
         notasArpegio: "opzioni: --octavas 2 (da 1 a 4), --sin-octava, --desde Mi (o 3: comincia da quella nota), --tensiones 9,13, --grados 1-5-3-8 (un percorso proprio) e --aproximacion abajo, arriba o encierro (note cromatiche che portano a ciascuna)",

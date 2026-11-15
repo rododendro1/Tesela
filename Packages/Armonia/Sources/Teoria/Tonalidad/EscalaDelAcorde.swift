@@ -120,17 +120,7 @@ extension Tonalidad {
     /// fuera de la tonalidad y, a igualdad, la primera en el orden de ``Acorde/escalasCompatibles(entre:)`` (Sol
     /// frigio dominante; sin tonalidad, Sol7(♭9) da la disminuida semitono-tono). `nil` si ninguna sirve.
     public func escalaDelAcorde(_ analizado: AcordeAnalizado) -> Escala? {
-        let acorde = analizado.acorde
-        if let propuesta = escalasPropuestas(para: analizado).first(where: { $0.contiene(acorde: acorde) }) {
-            return propuesta
-        }
-        let contexto = Set((notasPropias + acorde.notasDesdeElBajo).map(\.claseDeAltura))
-        let compatibles = TipoDeEscala.paraAcordes.map { Escala(acorde.fundamental, $0) }.filter {
-            $0.esCompatible(con: acorde)
-        }
-        return acorde.ordenar(compatibles) { escala in
-            escala.notas.filter { !contexto.contains($0.claseDeAltura) }.count
-        }.first
+        analizado.acorde.escalas(en: self, analizado: analizado, entre: TipoDeEscala.paraAcordes).first?.escala
     }
 
     /// La escala para un acorde, analizándolo antes en esta tonalidad (`siguiente` decide, como en
@@ -140,7 +130,7 @@ extension Tonalidad {
     }
 
     /// Las escalas que pide el acorde por lo que hace en la tonalidad, de la más propia a la menos.
-    private func escalasPropuestas(para analizado: AcordeAnalizado) -> [Escala] {
+    fileprivate func escalasPropuestas(para analizado: AcordeAnalizado) -> [Escala] {
         let acorde = analizado.acorde
         let raiz = acorde.fundamental
         let estructura = acorde.estructura
@@ -188,4 +178,114 @@ extension AnalisisArmonico {
     /// La escala de cada acorde en la tonalidad del análisis (`Tonalidad.escalaDelAcorde(_:)`):
     /// en «Rem7 Sol7 Do7M», Re dórico, Sol mixolidio y Do mayor.
     public var escalas: [Escala?] { acordes.map { tonalidad.escalaDelAcorde($0) } }
+}
+
+// MARK: - EscalaParaElAcorde
+
+/// Una escala para un acorde, con el motivo por el que se propone y lo que le añade: el resultado de
+/// ``Acorde/escalas(en:siguiente:entre:)``.
+///
+///     let primera = Acorde("Do7").escalas().first!
+///     primera.escala                          // Do mixolidio
+///     primera.motivo                          // .delCifrado
+///     Acorde("Do7").escalas()[2].alteracionesNoPedidas.map(\.cifra)   // ["♯11"] (Do lidio dominante)
+public struct EscalaParaElAcorde: Hashable, Sendable, CustomStringConvertible {
+    /// Por qué se propone la escala.
+    public enum Motivo: Hashable, Sendable {
+        /// Es la que pide lo que hace el acorde en la tonalidad (Re dórico para Rem7 en Do; La frigio dominante
+        /// para La7, V7/ii).
+        case deLaTonalidad(AcordeAnalizado.Categoria)
+        /// Es la que pide el cifrado, sin tonalidad (``TipoDeEscala/delCifrado(_:)``).
+        case delCifrado
+        /// Sale del bajo ajeno, que con el acorde forma otro sobre él: Fa/Sol → Sol mixolidio (Sol9sus4).
+        case delBajo
+        /// Sirve para el acorde, sin que lo pida nada más.
+        case compatible
+    }
+
+    public let escala: Escala
+    public let motivo: Motivo
+    /// Cada nota de la escala sobre el acorde (``Escala/notas(sobre:)``).
+    public let notas: [NotaSobreElAcorde]
+    /// Las alteraciones que la escala añade sin que las pida el cifrado: la ♭9, la ♯9 sobre una 3.ª mayor, y la
+    /// ♯11 y la ♭13 sobre una 5.ª justa.
+    public let alteracionesNoPedidas: [NotaSobreElAcorde]
+
+    public var description: String { escala.nombre }
+}
+
+extension EscalaParaElAcorde.Motivo: Nombrable {
+    /// «de la tonalidad», «del cifrado», «del bajo», «compatible»; «from the key», «from the chord symbol»…
+    public func nombre(en notacion: Notacion) -> String {
+        switch self {
+        case .deLaTonalidad: return TextosDeTeoria.en(notacion, \.motivoDeLaTonalidad)
+        case .delCifrado: return TextosDeTeoria.en(notacion, \.motivoDelCifrado)
+        case .delBajo: return TextosDeTeoria.en(notacion, \.motivoDelBajo)
+        case .compatible: return TextosDeTeoria.en(notacion, \.motivoCompatible)
+        }
+    }
+
+    public var description: String { nombre }
+}
+
+extension Acorde {
+    /// Las escalas para el acorde, de la que mejor le va a la que peor, cada una con su motivo:
+    ///
+    /// 1. Con tonalidad, las que pide lo que hace el acorde en ella (``Tonalidad/escalaDelAcorde(_:)``), si tienen
+    ///    sus notas. `siguiente` decide, como en ``Tonalidad/analizar(_:siguiente:)``, si es una dominante
+    ///    secundaria.
+    /// 2. Las demás de `tipos` que sirven para el acorde (``Escala/esCompatible(con:)``), en el orden de
+    ///    ``escalasCompatibles(entre:)``: primero la del cifrado. Con tonalidad, antes las que menos notas sacan
+    ///    de ella.
+    /// 3. Si el bajo es ajeno y forma con el acorde otro tipo sobre él, las de ese acorde: Fa/Sol → Sol mixolidio.
+    ///
+    /// Sin tonalidad, Do7 da Do mixolidio (del cifrado), Do bebop dominante y Do lidio dominante (que añade la
+    /// ♯11); en Fa mayor, Do7 es el V y da primero Do mixolidio, de la tonalidad.
+    public func escalas(
+        en tonalidad: Tonalidad? = nil, siguiente: Acorde? = nil, entre tipos: [TipoDeEscala] = TipoDeEscala.deJazz
+    ) -> [EscalaParaElAcorde] {
+        escalas(en: tonalidad, analizado: tonalidad?.analizar(self, siguiente: siguiente), entre: tipos)
+    }
+
+    fileprivate func escalas(
+        en tonalidad: Tonalidad?, analizado: AcordeAnalizado?, entre tipos: [TipoDeEscala]
+    ) -> [EscalaParaElAcorde] {
+        var vistas: Set<Escala> = []
+        var resultado: [EscalaParaElAcorde] = []
+        func proponer(_ escala: Escala, _ motivo: EscalaParaElAcorde.Motivo, sobre acorde: Acorde) {
+            guard vistas.insert(escala).inserted else { return }
+            resultado.append(
+                EscalaParaElAcorde(
+                    escala: escala, motivo: motivo, notas: escala.notas(sobre: acorde),
+                    alteracionesNoPedidas: acorde.alteracionesNoPedidas(en: escala)))
+        }
+        if let tonalidad, let analizado {
+            for escala in tonalidad.escalasPropuestas(para: analizado) where escala.contiene(acorde: self) {
+                proponer(escala, .deLaTonalidad(analizado.categoria), sobre: self)
+            }
+        }
+        let contexto = tonalidad.map { Set(($0.notasPropias + notasDesdeElBajo).map(\.claseDeAltura)) }
+        let compatibles = tipos.map { Escala(fundamental, $0) }.filter { $0.esCompatible(con: self) }
+        let delCifrado = TipoDeEscala.delCifrado(estructura)
+        let ordenadas = ordenar(compatibles) { escala in
+            contexto.map { contexto in escala.notas.filter { !contexto.contains($0.claseDeAltura) }.count } ?? 0
+        }
+        for escala in ordenadas {
+            proponer(escala, escala.tipo == delCifrado ? .delCifrado : .compatible, sobre: self)
+        }
+        if inversion == nil, let sobreElBajo = acordeSobreElBajo {
+            for escala in sobreElBajo.escalasCompatibles(entre: tipos) where escala.contiene(acorde: self) {
+                proponer(escala, .delBajo, sobre: sobreElBajo)
+            }
+        }
+        return resultado
+    }
+
+    /// El acorde que forman el bajo ajeno y las notas del acorde, con el bajo de fundamental: Fa/Sol → Sol9sus4.
+    /// `nil` si el bajo es del acorde o si las notas no forman un tipo conocido.
+    public var acordeSobreElBajo: Acorde? {
+        guard inversion == nil else { return nil }
+        let pasos = Set(notasDesdeElBajo.map { $0.pasosDeQuinta - bajo.pasosDeQuinta })
+        return TipoDeAcorde(pasosDeQuinta: pasos).map { Acorde(bajo, $0) }
+    }
 }

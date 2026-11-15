@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "chord <Akkordsymbol>…",
         descripcionAcorde: "Noten, Art und Funktion jeder Note",
-        notasAcorde: "Optionen: --voicings, --names, --keys, --substitutions (in der Tonart von --in C major, am Ende) und --compare C (gemeinsame Töne und Stimmführung); --bebop und --pentatonics (Skalen zum Improvisieren darüber); --statistics (Anzahl der Töne mit ihrem Namen, Helligkeit, Intervallvektor, Forte-Zahl…); mit --estadisticas auch, wie er in die Tonart passt (Krumhansl, wahrscheinliche Funktion, Skalen im Katalog); mit --comparar die Abstände nach Tymoczko, Lerdahl, Fourier und Forte",
+        notasAcorde: "Optionen: --scales (die Skalen für den Akkord, mit ihrem Grund), --voicings, --names, --keys, --substitutions (in der Tonart von --in C major, am Ende) und --compare C (gemeinsame Töne und Stimmführung); --bebop und --pentatonics (Skalen zum Improvisieren darüber); --statistics (Anzahl der Töne mit ihrem Namen, Helligkeit, Intervallvektor, Forte-Zahl…); mit --estadisticas auch, wie er in die Tonart passt (Krumhansl, wahrscheinliche Funktion, Skalen im Katalog); mit --comparar die Abstände nach Tymoczko, Lerdahl, Fourier und Forte",
         sintaxisArpegio: "arpeggio <Akkordsymbol> [--pattern <Muster>]",
         descripcionArpegio: "Töne des Arpeggios und passende Skalen (--pattern ascending, descending, up-down, down-up, broken, alberti)",
         notasArpegio: "Optionen: --octaves 2 (1 bis 4), --no-octave, --from E (oder 3: beginnt mit diesem Ton), --tensions 9,13, --degrees 1-5-3-8 (ein eigener Verlauf) und --approach below, above oder enclosure (chromatische Töne, die zu jedem führen)",

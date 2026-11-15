@@ -42,7 +42,7 @@ extension TextosDeConsola {
         // Ayuda+Consultas.swift
         sintaxisAcorde: "acorde <zifratua>…",
         descripcionAcorde: "notak, mota eta nota bakoitzaren papera",
-        notasAcorde: "aukerak: --disposiciones, --nombres, --tonalidades, --sustituciones (--en Do mayor tonalitatean, amaieran) eta --comparar Do (nota komunak eta ahotsen eramatea); --bebop eta --pentatonicas (gainean inprobisatzeko eskalak); --estadisticas (nota kopurua eta bere kardinala, distira, tarte-bektorea, Forte zenbakia…); --estadisticas-ekin, tonalitatean nola egokitzen den ere (Krumhansl, funtzio probablea, katalogoko eskalak); --comparar-ekin, Tymoczko, Lerdahl, Fourier eta Forteren distantziak",
+        notasAcorde: "aukerak: --escalas (akordearentzako eskalak, haien arrazoiarekin), --disposiciones, --nombres, --tonalidades, --sustituciones (--en Do mayor tonalitatean, amaieran) eta --comparar Do (nota komunak eta ahotsen eramatea); --bebop eta --pentatonicas (gainean inprobisatzeko eskalak); --estadisticas (nota kopurua eta bere kardinala, distira, tarte-bektorea, Forte zenbakia…); --estadisticas-ekin, tonalitatean nola egokitzen den ere (Krumhansl, funtzio probablea, katalogoko eskalak); --comparar-ekin, Tymoczko, Lerdahl, Fourier eta Forteren distantziak",
         sintaxisArpegio: "arpegio <zifratua> [--patron <eredua>]",
         descripcionArpegio: "arpegioaren notak eta akordeari dagozkion eskalak (--patron ascendente, descendente, ida-y-vuelta, baja-y-sube, quebrado, alberti)",
         notasArpegio: "aukerak: --octavas 2 (1etik 4ra), --sin-octava, --desde Mi (edo 3: nota horretatik hasten da), --tensiones 9,13, --grados 1-5-3-8 (ibilbide propioa) eta --aproximacion abajo, arriba edo encierro (nota bakoitzera daramaten nota kromatikoak)",

@@ -119,6 +119,10 @@ extension TextosDeTeoria {
         papelNotaAEvitar: "avoid note",
         papelChoque: "clashing note",
         papelDePaso: "passing note",
+        motivoDeLaTonalidad: "from the key",
+        motivoDelCifrado: "from the chord symbol",
+        motivoDelBajo: "from the bass",
+        motivoCompatible: "compatible",
         modoDe: { modo, escala in "mode \(modo) of \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "tritone substitution",
