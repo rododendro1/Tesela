@@ -366,6 +366,7 @@ extension TextosDeConsola {
         mensajeMicrotonos: "microtones",
         mensajeReferencias: "references",
         mensajeCaracter: "character",
+        mensajeSonoridad: "sonority (computed)",
         mensajeEscalas: "scales",
         mensajeHabituales: "common",
         mensajeSinLugar: "no place",

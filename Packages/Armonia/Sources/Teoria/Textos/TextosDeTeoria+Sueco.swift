@@ -117,6 +117,8 @@ extension TextosDeTeoria {
         papelNotaDelAcorde: "ackordton",
         papelTensionDisponible: "spänningston",
         papelNotaAEvitar: "undvikton",
+        papelChoque: "krockande ton",
+        papelDePaso: "genomgångston",
         modoDe: { modo, escala in
             let sufijo = [1, 2].contains(modo % 10) && ![11, 12].contains(modo % 100) ? "a" : "e"
             return "\(modo):\(sufijo) modus av \(escala)"
@@ -419,6 +421,10 @@ extension TextosDeTeoria {
         afectoEntusiasta: "entusiastisk",
         afectoDevoto: "andäktig",
         afectoContemplativo: "kontemplativ",
+        afectoInocente: "oskyldig",
+        afectoSombrio: "dyster",
+        afectoDesesperado: "förtvivlad",
+        afectoColerico: "vredgad",
         momentoMadrugada: "före gryningen",
         momentoManana: "morgon",
         momentoFinalDeLaManana: "sen förmiddag",
@@ -452,6 +458,10 @@ extension TextosDeTeoria {
         testigoProblemas: "Problemata (pseudo-Aristoteles)",
         testigoYueji: "Yueji",
         testigoCoton: "Johannes Cotto",
+        testigoSchubart: "Schubart",
+        sonoridadClara: "ljus",
+        sonoridadIntermedia: "mellan",
+        sonoridadOscura: "mörk",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{1} på {2}",
         enLaTonalidad: { tonalidad in "i " + tonalidad }

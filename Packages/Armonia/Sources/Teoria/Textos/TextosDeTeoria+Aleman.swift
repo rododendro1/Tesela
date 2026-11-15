@@ -117,6 +117,8 @@ extension TextosDeTeoria {
         papelNotaDelAcorde: "Akkordton",
         papelTensionDisponible: "Spannungston",
         papelNotaAEvitar: "Avoid-Ton",
+        papelChoque: "Reibungston",
+        papelDePaso: "Durchgangston",
         modoDe: { modo, escala in "\(modo). Modus von \(escala)" },
         // Rearmonizacion.swift
         sustitutoTritonal: "Tritonussubstitution",
@@ -416,6 +418,10 @@ extension TextosDeTeoria {
         afectoEntusiasta: "enthusiastisch",
         afectoDevoto: "andächtig",
         afectoContemplativo: "besinnlich",
+        afectoInocente: "unschuldig",
+        afectoSombrio: "düster",
+        afectoDesesperado: "verzweifelt",
+        afectoColerico: "zornig",
         momentoMadrugada: "vor der Morgendämmerung",
         momentoManana: "Morgen",
         momentoFinalDeLaManana: "später Vormittag",
@@ -449,6 +455,10 @@ extension TextosDeTeoria {
         testigoProblemas: "Problemata (Pseudo-Aristoteles)",
         testigoYueji: "Yueji",
         testigoCoton: "Johannes Cotto",
+        testigoSchubart: "Schubart",
+        sonoridadClara: "hell",
+        sonoridadIntermedia: "mittel",
+        sonoridadOscura: "dunkel",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{1} auf {2}",
         enLaTonalidad: { tonalidad in "in " + tonalidad }

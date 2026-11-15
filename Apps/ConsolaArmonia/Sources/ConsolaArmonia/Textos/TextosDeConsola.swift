@@ -354,6 +354,7 @@ struct TextosDeConsola: TextosTraducidos {
     let mensajeMicrotonos: String
     let mensajeReferencias: String
     let mensajeCaracter: String
+    let mensajeSonoridad: String
     let mensajeEscalas: String
     let mensajeHabituales: String
     let mensajeSinLugar: String

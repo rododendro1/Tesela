@@ -35,9 +35,9 @@ extension Tonalidad {
     ///   lidio dominante (♭VII7 → Si♭ lidio dominante).
     /// - **Cromático**: un acorde de dominante, lidio dominante (el sustituto tritonal).
     ///
-    /// Si esa escala no tiene todas las notas del acorde (Sol7(♭9) en Do), se elige entre
-    /// ``TipoDeEscala/paraAcordes`` la que tiene menos notas fuera de la tonalidad y, a igualdad, menos notas a
-    /// evitar (Sol frigio dominante). `nil` si ninguna tiene todas sus notas.
+    /// Si esa escala no tiene todas las notas del acorde (Sol7(♭9) en Do), se elige, entre las de
+    /// ``TipoDeEscala/paraAcordes`` que no chocan con él (``Escala/esCompatible(con:)``), la que tiene menos notas
+    /// fuera de la tonalidad y, a igualdad, menos notas a evitar (Sol frigio dominante). `nil` si ninguna sirve.
     public func escalaDelAcorde(_ analizado: AcordeAnalizado) -> Escala? {
         let acorde = analizado.acorde
         if let propuesta = escalasPropuestas(para: analizado).first(where: { $0.contiene(acorde: acorde) }) {
@@ -47,7 +47,7 @@ extension Tonalidad {
         var mejor = ElMejor<Escala, [Int]>(por: { $0.lexicographicallyPrecedes($1) })
         for (puesto, tipo) in TipoDeEscala.paraAcordes.enumerated() {
             let escala = Escala(acorde.fundamental, tipo)
-            guard escala.contiene(acorde: acorde) else { continue }
+            guard escala.esCompatible(con: acorde) else { continue }
             let fuera = escala.notas.filter { !contexto.contains($0.claseDeAltura) }.count
             mejor.proponer(escala, coste: [fuera, escala.notasAEvitar(sobre: acorde).count, puesto])
         }

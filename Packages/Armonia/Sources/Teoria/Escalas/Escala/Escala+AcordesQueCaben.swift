@@ -50,7 +50,7 @@ extension Escala {
             for tipo in [TipoDeAcorde.mayor, .menor] {
                 let triada = Acorde(raiz, tipo)
                 let suyos = triada.notas.map(papel)
-                guard suyos.allSatisfy({ $0 != nil && $0 != .aEvitar }) else { continue }
+                guard suyos.allSatisfy({ $0 == .delAcorde || $0 == .tension }) else { continue }
                 let tensiones = suyos.filter { $0 == .tension }.count
                 if tensiones > 0 { encontradas.append((triada, tensiones)) }
             }

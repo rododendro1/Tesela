@@ -365,6 +365,7 @@ extension TextosDeConsola {
         mensajeMicrotonos: "mikrotonuak",
         mensajeReferencias: "erreferentziak",
         mensajeCaracter: "izaera",
+        mensajeSonoridad: "soinu-izaera (kalkulatua)",
         mensajeEscalas: "eskalak",
         mensajeHabituales: "ohikoak",
         mensajeSinLugar: "lekurik gabe",

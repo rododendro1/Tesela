@@ -364,6 +364,7 @@ extension TextosDeConsola {
         mensajeMicrotonos: "mikrohangok",
         mensajeReferencias: "hivatkozások",
         mensajeCaracter: "jelleg",
+        mensajeSonoridad: "hangzás (számított)",
         mensajeEscalas: "skálák",
         mensajeHabituales: "szokásos",
         mensajeSinLugar: "hely nélkül",

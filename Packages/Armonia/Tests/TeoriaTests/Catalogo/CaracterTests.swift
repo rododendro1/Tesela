@@ -107,9 +107,75 @@ import Testing
         #expect(Afecto.lastimero.nombre(en: .compacta(.aleman)) == "klagend")
     }
 
+    /// Los maqāmāt de Touma.
+    @Test func losMaqamatDeTouma() {
+        #expect(TipoDeEscala.maqamRast.afectos == [.majestuoso, .energico, .templado])
+        #expect(TipoDeEscala.saba.caracter.first?.referencia.cita == "Touma 1996: 44")
+        #expect(TipoDeEscala.sikah.afectos == [.amoroso])
+        #expect(TipoDeEscala.hiyaz.caracter.isEmpty) // «el desierto lejano» no es un afecto
+    }
+
     /// Los momentos cubren el día en tramos de tres horas, sin huecos.
     @Test func losMomentosCubrenElDia() {
         #expect(Set(MomentoDelDia.allCases.map(\.horaDeInicio)) == Set(stride(from: 0, to: 24, by: 3)))
+    }
+}
+
+/// El carácter de las tonalidades, de Schubart.
+@Suite struct CaracterDeLasTonalidadesTests {
+    /// Schubart describe 24 tonalidades, cada una una vez.
+    @Test func lasVeinticuatroDeSchubart() {
+        let tonalidades = Tonalidad.caracteres.map(\.tonalidad)
+        #expect(tonalidades.count == 24 && Set(tonalidades).count == 24)
+        #expect(tonalidades.filter { $0.modo == .mayor }.count == 12)
+        for (tonalidad, caracter) in Tonalidad.caracteres {
+            #expect(caracter.allSatisfy { $0.testigo == .schubart && $0.referencia == .steblin1983 }, "\(tonalidad)")
+            #expect(caracter.allSatisfy { !$0.afectos.isEmpty }, "\(tonalidad)")
+        }
+    }
+
+    /// Es del nombre: Re♭ mayor tiene carácter, y Do♯ mayor no.
+    @Test func esDelNombre() {
+        #expect(Tonalidad(.do).caracter.first?.afectos == [.inocente])
+        #expect(Tonalidad(Nota(.re, .bemol)).caracter.first?.afectos == [.inquieto, .triste])
+        #expect(Tonalidad(Nota(.do, .sostenido)).caracter.isEmpty)
+        #expect(Tonalidad(Nota(.la, .bemol), .menor).caracter.first?.afectos == [.lastimero, .inquieto])
+        #expect(Tonalidad(Nota(.sol, .sostenido), .menor).caracter.isEmpty)
+        #expect(Tonalidad(.fa, .menor).caracter.first?.ocasion == .lamento)
+    }
+
+    @Test func laCita() {
+        let espanol = Notacion.compacta(.espanol)
+        let re = Tonalidad(.re).caracter[0]
+        #expect(re.cita(en: espanol) == "Schubart (Steblin 1983)")
+        #expect(re.descripcion(en: espanol) == "festivo, majestuoso")
+        #expect(re.descripcion(en: .compacta(.ingles)) == "festive, majestic")
+    }
+}
+
+/// La sonoridad calculada de las escalas occidentales.
+@Suite struct SonoridadTests {
+    /// Los modos de la mayor, del más claro al más oscuro, como los ordena Persichetti.
+    @Test func losModosDeLaMayor() {
+        let sonoridades = TipoDeEscala.modosPorBrillo.map(\.sonoridad)
+        #expect(sonoridades == [.clara, .clara, .clara, .intermedia, .oscura, .oscura, .oscura])
+        #expect(sonoridades.compactMap { $0 } == sonoridades.compactMap { $0 }.sorted())
+    }
+
+    @Test func soloLasOccidentales() {
+        #expect(TipoDeEscala.pentatonicaMayor.sonoridad == .clara)
+        #expect(TipoDeEscala.pentatonicaMenor.sonoridad == .oscura)
+        #expect(TipoDeEscala.bilaval.sonoridad == nil) // las mismas notas que la mayor, pero de la India
+        #expect(TipoDeEscala.bayati.sonoridad == nil)
+        #expect(TipoDeEscala.occidentales.allSatisfy { $0.sonoridad != nil })
+    }
+
+    @Test func losNombres() {
+        for idioma in Idioma.allCases {
+            let nombres = Sonoridad.allCases.map { $0.nombre(en: .compacta(idioma)) }
+            #expect(Set(nombres).count == 3 && nombres.allSatisfy { !$0.isEmpty }, "\(idioma)")
+        }
+        #expect(Sonoridad.clara.nombre(en: .compacta(.ingles)) == "bright")
     }
 }
 

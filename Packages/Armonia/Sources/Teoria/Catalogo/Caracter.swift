@@ -77,6 +77,9 @@ public struct Caracter: Hashable, Sendable {
 public enum Afecto: String, Sendable, Codable, CaseIterable, Nombrable {
     case alegre, festivo, sereno, templado, tierno, amoroso, blando, nostalgico, inquieto, triste, lastimero
     case grave, severo, noble, solemne, majestuoso, valiente, energico, entusiasta, devoto, contemplativo
+    /// Los de Schubart para las tonalidades: la inocencia de Do mayor, lo sombrío de Fa♯ menor, la desesperación de
+    /// Re♯ menor y la cólera de Si mayor.
+    case inocente, sombrio, desesperado, colerico
 
     /// El nombre en el idioma de los textos de la notación: «lastimero», «plaintive», «klagend».
     public func nombre(en notacion: Notacion) -> String { traduccion.en(notacion) }
@@ -105,6 +108,10 @@ public enum Afecto: String, Sendable, Codable, CaseIterable, Nombrable {
         case .entusiasta: TextosDeTeoria.traduccion(\.afectoEntusiasta)
         case .devoto: TextosDeTeoria.traduccion(\.afectoDevoto)
         case .contemplativo: TextosDeTeoria.traduccion(\.afectoContemplativo)
+        case .inocente: TextosDeTeoria.traduccion(\.afectoInocente)
+        case .sombrio: TextosDeTeoria.traduccion(\.afectoSombrio)
+        case .desesperado: TextosDeTeoria.traduccion(\.afectoDesesperado)
+        case .colerico: TextosDeTeoria.traduccion(\.afectoColerico)
         }
     }
 }
@@ -234,8 +241,8 @@ public enum FaseDeLaNaturaleza: String, Sendable, Codable, CaseIterable, Nombrab
 
 // MARK: - Quién lo dice
 
-/// Los autores antiguos que describen el carácter de una escala y que se leen en una obra moderna: Platón y
-/// Aristóteles, en Monro; Cotón, en la traducción de Babb.
+/// Los autores antiguos que describen el carácter de una escala, o el de una tonalidad, y que se leen en una obra
+/// moderna: Platón y Aristóteles, en Monro; Cotón, en la traducción de Babb; Schubart, en la de Steblin.
 public enum TestigoDelCaracter: String, Sendable, Codable, CaseIterable, Nombrable {
     /// Platón, la *República* (hacia 375 a. C.).
     case platon
@@ -251,6 +258,9 @@ public enum TestigoDelCaracter: String, Sendable, Codable, CaseIterable, Nombrab
     case yueji
     /// Johannes Afflighemensis (Cotón), *De musica* (hacia 1100).
     case coton
+    /// Christian Friedrich Daniel Schubart, *Ideen zu einer Ästhetik der Tonkunst* (1806, escrito hacia 1784): el
+    /// carácter de cada tonalidad.
+    case schubart
 
     /// El año aproximado (negativo antes de Cristo). El `switch` no tiene `default`.
     public var anio: Int {
@@ -262,6 +272,7 @@ public enum TestigoDelCaracter: String, Sendable, Codable, CaseIterable, Nombrab
         case .lushiChunqiu: -239
         case .yueji: -100
         case .coton: 1100
+        case .schubart: 1806
         }
     }
 
@@ -276,6 +287,7 @@ public enum TestigoDelCaracter: String, Sendable, Codable, CaseIterable, Nombrab
         case .lushiChunqiu: TextosDeTeoria.traduccion(\.fuenteLushiChunqiu)
         case .yueji: TextosDeTeoria.traduccion(\.testigoYueji)
         case .coton: TextosDeTeoria.traduccion(\.testigoCoton)
+        case .schubart: TextosDeTeoria.traduccion(\.testigoSchubart)
         }
     }
 }

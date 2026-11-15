@@ -217,6 +217,24 @@ Hay 43 acordes genéricos y 12 de nombre propio. Los que faltaban ya están, per
 
 Los acordes de Hendrix y mu tampoco citan ninguna obra.
 
+## Carácter sin fuente
+
+El carácter de una escala o de una tonalidad solo entra con una fuente que se haya podido leer. En noviembre de 2026 se
+buscaron, sin encontrar un texto con el que comprobarlas, las fuentes de la segunda fase de la propuesta:
+
+- **Las rasa de los rāgas**: Bor (1999) da la hora y la estación, que ya están, pero no se ha podido ver qué rasa da a
+  cada uno.
+- **Ḥijāz y los demás maqāmāt**: Touma (1996: 43–44) solo describe Rāst, Bayātī, Sīkāh, Ṣabā y Ḥijāz, y de Ḥijāz dice
+  «el desierto lejano», que no es un afecto. Para los demás harían falta Racy (2003) o Farraj y Abu Shumays (2019), que
+  advierten que no hay una tabla aceptada.
+- **Los makamlar**: los tratados otomanos de musicoterapia (Gevrekzâde Hâfız Hasan, Şuûrî) dan a cada makam una hora y
+  una dolencia, pero solo se han encontrado resúmenes que no dicen qué autor lo dice de cada uno.
+- **Los dastgāh**: no se ha encontrado en Farhat (1990) ni en During (1991) un pasaje que se pueda citar.
+- **Japón, Bizancio y el klezmer**: de In y Yō no se ha encontrado nada citable en Malm (1959); el ēthos de los echoi
+  que circula es de Savas, sin obra ni página, y no de Chrysanthos; y lo que la Wikipedia dice de Adonai Malakh
+  («majestuoso») y Magen Avot («la paz del sábado») no lleva la nota de su fuente.
+- **Mattheson y Charpentier** para las tonalidades: solo está Schubart, en la traducción de Steblin (1983).
+
 ## Datos comprobados y por confirmar
 
 Comprobado en noviembre de 2026:

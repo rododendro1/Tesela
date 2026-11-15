@@ -15,6 +15,13 @@ public enum PapelEnLaEscala: Hashable, Sendable, CaseIterable, CustomStringConve
     /// (el fa sobre Do7M en jónico), salvo la ♭9 y la ♭13 de un acorde de dominante, y la tercera mayor de un
     /// acorde sus4. Se usa de paso.
     case aEvitar
+    /// Una nota que contradice al acorde: la otra séptima (la ♭7 sobre un acorde de 7.ª mayor, la 7.ª mayor sobre
+    /// uno de 7.ª menor) y la 5.ª justa sobre un acorde de 5.ª disminuida o aumentada (el Sol sobre Doø7). Una escala
+    /// con una nota así no es compatible con el acorde (``Escala/esCompatible(con:)``).
+    case choque
+    /// La nota cromática de paso de una escala bebop (el Si de Do bebop dominante): no es tensión ni nota a evitar,
+    /// porque es la que pone las notas del acorde en las partes fuertes.
+    case dePaso
 
     public var description: String { nombre }
 }
@@ -26,6 +33,8 @@ extension PapelEnLaEscala: Nombrable {
         case .delAcorde: return TextosDeTeoria.en(notacion, \.papelNotaDelAcorde)
         case .tension: return TextosDeTeoria.en(notacion, \.papelTensionDisponible)
         case .aEvitar: return TextosDeTeoria.en(notacion, \.papelNotaAEvitar)
+        case .choque: return TextosDeTeoria.en(notacion, \.papelChoque)
+        case .dePaso: return TextosDeTeoria.en(notacion, \.papelDePaso)
         }
     }
 }
@@ -64,8 +73,21 @@ extension Escala {
         acorde.notas.allSatisfy { contieneEnarmonico($0) }
     }
 
+    /// Si la escala sirve para el acorde: tiene todas sus notas (``contiene(acorde:)``), ninguna choca con él
+    /// (``PapelEnLaEscala/choque``) y, si es una bebop, también sirve su escala de siete notas sin la de paso. Así
+    /// Do bebop dominante no sirve para Do7M (el mixolidio choca con el Si) ni Do bebop dórica para Do7 (el dórico no
+    /// tiene el Mi, que en la bebop es solo de paso).
+    public func esCompatible(con acorde: Acorde) -> Bool {
+        guard contiene(acorde: acorde), !notas(sobre: acorde).contains(where: { $0.papel == .choque }) else {
+            return false
+        }
+        guard let bebop = TipoDeEscala.bebopYSuMadre[tipo] else { return true }
+        return Escala(tonica, bebop.madre).esCompatible(con: acorde)
+    }
+
     /// Las notas de la escala, en su orden, con lo que es cada una sobre el acorde: nota del acorde, tensión
-    /// disponible o nota a evitar. Las notas del acorde que no están en la escala no salen.
+    /// disponible, nota a evitar, nota que choca con el acorde o nota de paso de una bebop. Las notas del acorde que
+    /// no están en la escala no salen.
     ///
     ///     Escala(.re, .dorico).notas(sobre: Acorde("Rem7")).filter { $0.papel == .tension }.map(\.cifra)
     ///     // ["9", "11", "13"]
@@ -79,6 +101,15 @@ extension Escala {
         func semitonos(_ nota: Nota) -> Int { modulo(nota.claseDeAltura - raiz.claseDeAltura, 12) }
         let tercera = acorde.tercera.map(semitonos)
         let quinta = acorde.quinta.map(semitonos)
+        // Las que chocan: la otra séptima y, sobre una 5.ª disminuida o aumentada, la justa.
+        var choques: Set<Int> = []
+        switch estructura.septima {
+        case .septimaMayor?: choques.insert(10)
+        case .septimaMenor?: choques.insert(11)
+        default: break
+        }
+        if let quinta, quinta != 7 { choques.insert(7) }
+        let dePaso = TipoDeEscala.bebopYSuMadre[tipo].map { tonica + $0.paso }
 
         return notas.map { nota in
             if let propia = propias.first(where: { $0.nota.esEnarmonica(de: nota) }) {
@@ -89,10 +120,16 @@ extension Escala {
             }
             let semitonosDeLaNota = semitonos(nota)
             let intervalo = raiz.intervalo(hasta: nota)
-            // Un semitono por encima de una nota del acorde: choca con ella.
-            var aEvitar = clases.contains(modulo(nota.claseDeAltura - 1, 12))
-            if esDominante && (semitonosDeLaNota == 1 || semitonosDeLaNota == 8) { aEvitar = false }
-            if esSus4 && semitonosDeLaNota == 4 { aEvitar = true }
+            let papel: PapelEnLaEscala
+            if let dePaso, nota.esEnarmonica(de: dePaso) {
+                papel = .dePaso
+            } else if choques.contains(semitonosDeLaNota) {
+                papel = .choque
+            } else {
+                let evitada = Self.evitada(
+                    semitonosDeLaNota, clases: clases, raiz: raiz, dominante: esDominante, sus4: esSus4)
+                papel = evitada ? .aEvitar : .tension
+            }
             // La 2.ª, la 4.ª y la 6.ª se cuentan una octava más arriba (9, 11, 13). Una 3.ª o una 5.ª que no son
             // las del acorde se leen como tensiones: la 3.ª menor de un acorde mayor es la ♯9; una 5.ª por debajo
             // de la del acorde, la ♯11, y por encima, la ♭13.
@@ -106,6 +143,8 @@ extension Escala {
                 numero = ordinal + 7
             case 3 where bajoLaTercera:
                 (ordinal, numero) = (2, 9)
+            case 5 where papel == .choque:
+                break // la 5.ª justa sobre una disminuida o aumentada: se escribe como lo que es
             case 5 where bajoLaQuinta:
                 (ordinal, numero) = (4, 11)
             case 5 where sobreLaQuinta:
@@ -114,7 +153,7 @@ extension Escala {
                 break
             }
             return NotaSobreElAcorde(
-                nota: nota, papel: aEvitar ? .aEvitar : .tension, numero: numero,
+                nota: nota, papel: papel, numero: numero,
                 alteracion: Escala.alteracion(semitonos: semitonosDeLaNota, ordinal: ordinal))
         }
     }
@@ -124,9 +163,20 @@ extension Escala {
         notas(sobre: acorde).filter { $0.papel == .tension }.map(\.nota)
     }
 
-    /// Las notas a evitar de la escala sobre el acorde: Fa en Do jónico sobre Do7M.
+    /// Las notas a evitar de la escala sobre el acorde, también las que chocan con él: Fa en Do jónico sobre Do7M;
+    /// Si♭ y Fa en Do bebop dominante.
     public func notasAEvitar(sobre acorde: Acorde) -> [Nota] {
-        notas(sobre: acorde).filter { $0.papel == .aEvitar }.map(\.nota)
+        notas(sobre: acorde).filter { $0.papel == .aEvitar || $0.papel == .choque }.map(\.nota)
+    }
+
+    /// Si una nota que no es del acorde, a `semitonos` de su fundamental, es a evitar: la que está un semitono por
+    /// encima de una nota del acorde, salvo la ♭9 y la ♭13 de un acorde de dominante; y la 3.ª mayor de un sus4.
+    private static func evitada(
+        _ semitonos: Int, clases: Set<Int>, raiz: Nota, dominante: Bool, sus4: Bool
+    ) -> Bool {
+        if sus4 && semitonos == 4 { return true }
+        if dominante && (semitonos == 1 || semitonos == 8) { return false }
+        return clases.contains(modulo(raiz.claseDeAltura + semitonos - 1, 12))
     }
 
     /// El número con el que se cifra una nota del acorde según su papel: la tensión, como 9, 11 o 13; la
@@ -144,6 +194,22 @@ extension Escala {
         if diferencia > 6 { diferencia -= 12 }
         return Alteracion(diferencia)
     }
+}
+
+// MARK: - Las bebop y su escala de siete notas
+
+extension TipoDeEscala {
+    /// Cada bebop con su nota de paso (el intervalo desde la tónica) y la escala de siete notas que queda sin ella:
+    /// la bebop dominante es el mixolidio con la 7.ª mayor de paso.
+    package static let bebopYSuMadre: [TipoDeEscala: (paso: Intervalo, madre: TipoDeEscala)] = [
+        .bebopDominante: (.septimaMayor, .mixolidio),
+        .bebopMayor: (.quintaAumentada, .mayor),
+        .bebopDorico: (.terceraMayor, .dorico),
+        .bebopLocrio: (.quintaJusta, .locrio),
+        .bebopLidio: (.quintaAumentada, .lidio),
+        .bebopMenorMelodica: (.quintaAumentada, .menorMelodicaJazz),
+        .bebopMenorArmonica: (.septimaMenor, .menorArmonica),
+    ]
 }
 
 // MARK: - ModoDeEscala

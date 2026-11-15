@@ -123,6 +123,8 @@ struct TextosDeTeoria: TextosTraducidos {
     let papelNotaDelAcorde: String
     let papelTensionDisponible: String
     let papelNotaAEvitar: String
+    let papelChoque: String
+    let papelDePaso: String
     /// Una escala como modo de otra: «modo 2 de Do mayor», «mode 2 of C major».
     let modoDe: @Sendable (_ modo: Int, _ escala: String) -> String
 
@@ -443,6 +445,10 @@ struct TextosDeTeoria: TextosTraducidos {
     let afectoEntusiasta: String
     let afectoDevoto: String
     let afectoContemplativo: String
+    let afectoInocente: String
+    let afectoSombrio: String
+    let afectoDesesperado: String
+    let afectoColerico: String
     let momentoMadrugada: String
     let momentoManana: String
     let momentoFinalDeLaManana: String
@@ -476,6 +482,11 @@ struct TextosDeTeoria: TextosTraducidos {
     let testigoProblemas: String
     let testigoYueji: String
     let testigoCoton: String
+    let testigoSchubart: String
+    /// La sonoridad calculada de una escala por su brillo (`Sonoridad`).
+    let sonoridadClara: String
+    let sonoridadIntermedia: String
+    let sonoridadOscura: String
 
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».

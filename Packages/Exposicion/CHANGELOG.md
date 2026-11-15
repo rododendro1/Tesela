@@ -1,5 +1,12 @@
 # Cambios
 
+## Sin publicar
+
+### Lo nuevo
+
+- `EscalaSobreAcordePresentada.aEvitar` lleva también las notas que chocan con el acorde (`PapelEnLaEscala.choque`):
+  el Si♭ de Do mixolidio sobre Do7M sale entre las notas a evitar.
+
 ## 0.5.2 (2026-11-14)
 
 ### Lo nuevo

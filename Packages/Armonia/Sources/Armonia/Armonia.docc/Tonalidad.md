@@ -427,6 +427,17 @@ ProgresionConNombre.chacona.ocasiones == [.danza]           // true
 RitmoConNombre.seguiriya.afectos.first == .lastimero        // true
 ```
 
+Las tonalidades también tienen `caracter` (``Tonalidad/caracter``): el que les da Schubart (*Ideen zu einer Ästhetik
+der Tonkunst*, 1806), en la traducción de Steblin (1983), resumido en el vocabulario de ``Afecto``. Do mayor es
+inocente; Re mayor, festiva y majestuosa; Fa menor, sombría y de lamento. Es del nombre: Re♭ mayor tiene el suyo y Do♯
+mayor, que Schubart no describe, ninguno. `armonia tonalidad Re mayor` lo escribe.
+
+```swift
+Tonalidad(.do).caracter[0].afectos == [.inocente]               // true
+Tonalidad(.re).caracter[0].testigo                             // .schubart
+Tonalidad(Nota(.do, .sostenido)).caracter.isEmpty               // true
+```
+
 ## Bajo cifrado
 
 `acorde(sobre:cifras:)` lee las cifras del bajo continuo sobre una nota del bajo, contando los

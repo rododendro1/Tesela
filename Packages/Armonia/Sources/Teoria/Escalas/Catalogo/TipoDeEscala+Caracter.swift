@@ -10,6 +10,7 @@ extension TipoDeEscala {
     /// Cada escala con lo que dicen de ella sus fuentes.
     package static let caracteres: [(tipo: TipoDeEscala, caracter: [Caracter])] =
         caracteresGriegos + caracteresGregorianos + caracteresIndios + caracteresJavaneses + caracteresChinos
+        + caracteresArabes
 
     // MARK: Grecia antigua
     //
@@ -154,6 +155,23 @@ extension TipoDeEscala {
         (.jue, chino(.pueblo, .madera, .primavera)),
         (.zhi, chino(.asuntos, .fuego, .verano)),
         (.yu, chino(.cosas, .agua, .invierno)),
+    ]
+
+    // MARK: Mundo árabe
+    //
+    // Lo que «se dice» que evoca cada maqām en la pedagogía árabe, según Touma (1996: 43–44). Es tradición de
+    // enseñanza y no una tabla aceptada (Farraj y Abu Shumays 2019 lo advierten), así que solo entran los cuatro que
+    // Touma describe con un afecto. De Ḥijāz dice «el desierto lejano», que no es un afecto, y no entra.
+
+    private static let caracteresArabes: [(tipo: TipoDeEscala, caracter: [Caracter])] = [
+        // «pride, power, and soundness of mind»
+        (.maqamRast, [.init([.majestuoso, .energico, .templado], referencia: Referencia.touma1996.paginas("43"))]),
+        // «vitality, joy, and femininity»
+        (.bayati, [.init([.energico, .alegre], referencia: Referencia.touma1996.paginas("43"))]),
+        // «love»
+        (.sikah, [.init([.amoroso], referencia: Referencia.touma1996.paginas("43"))]),
+        // «sadness and pain»; sus oyentes la llaman triste, trágica y de lamento.
+        (.saba, [.init([.triste, .lastimero], referencia: Referencia.touma1996.paginas("44"))]),
     ]
 
     /// Identidad → lo que dicen sus fuentes, en orden cronológico.

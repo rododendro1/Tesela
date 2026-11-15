@@ -120,6 +120,8 @@ extension TextosDeTeoria {
         papelNotaDelAcorde: "akordeko nota",
         papelTensionDisponible: "tentsioa",
         papelNotaAEvitar: "saihesteko nota",
+        papelChoque: "talka egiten duen nota",
+        papelDePaso: "igarotze-nota",
         modoDe: { modo, escala in "\(escala): \(modo). modua" },
         // Rearmonizacion.swift
         sustitutoTritonal: "tritono-ordezkapena",
@@ -419,6 +421,10 @@ extension TextosDeTeoria {
         afectoEntusiasta: "gogotsua",
         afectoDevoto: "debotoa",
         afectoContemplativo: "kontenplatiboa",
+        afectoInocente: "errugabea",
+        afectoSombrio: "iluna",
+        afectoDesesperado: "etsia",
+        afectoColerico: "haserrea",
         momentoMadrugada: "goizaldea",
         momentoManana: "goiza",
         momentoFinalDeLaManana: "goiz-azkena",
@@ -452,6 +458,10 @@ extension TextosDeTeoria {
         testigoProblemas: "Problemak (sasi-Aristoteles)",
         testigoYueji: "Yueji",
         testigoCoton: "Coton",
+        testigoSchubart: "Schubart",
+        sonoridadClara: "argia",
+        sonoridadIntermedia: "tartekoa",
+        sonoridadOscura: "iluna",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{2} {1}",
         enLaTonalidad: { tonalidad in Tonalidad.declinar(tonalidad, "ean") }

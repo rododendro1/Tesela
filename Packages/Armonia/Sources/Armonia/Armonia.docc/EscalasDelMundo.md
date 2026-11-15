@@ -291,12 +291,13 @@ hexatónicas, las cromáticas) ninguna. El compendio de Rechberger
 las listas que trata enteras (los maqāmāt, los makam, los dastgāh, los thāṭ y los mēḷa, las japonesas, las chinas, los
 echoi, las harmoniai y los modos gregorianos). Cada obra es una constante
 (`Referencia.west1992`, `.touma1996`…; todas en `Referencia.catalogo`), y una cita es la obra con las páginas que
-se citan (`.west1992.paginas("160–172")`). `fuente` dice quién definió la escala; `referencias`, dónde la hemos
+se citan (`.west1992.paginas("160–172")`). Si una obra se cita con páginas (Touma, por lo que dice del carácter de
+Bayātī), la cita con páginas ocupa el sitio de la obra entera. `fuente` dice quién definió la escala; `referencias`, dónde la hemos
 leído. Los títulos no se traducen. `Referencia.bibtex(_:)` y `Referencia.cslJSON(_:)` las escriben en BibTeX y en
 CSL-JSON (el formato de Zotero y de Pandoc).
 
 ```swift
-TipoDeEscala.bayati.referencias.map(\.cita)               // ["Maqam World", "Touma 1996", "Farraj & Abu Shumays 2019", "Rechberger 2008"]
+TipoDeEscala.bayati.referencias.map(\.clave)              // ["maqamWorld", "farraj2019", "rechberger2008", "touma1996"]
 TipoDeEscala.tetracordoDiatonicoTenso.referencias.first == .barker1989   // true
 Referencia.west1992.paginas("160–172").cita              // "West 1992: 160–172"
 Referencia.west1992.descripcion                          // "West, M. L. (1992). Ancient Greek Music. Oxford: Clarendon Press."
@@ -318,8 +319,14 @@ El carácter no sale de los intervalos, y es del nombre, no de las notas: Bilāv
 tienen las escalas con una fuente: las harmoniai, en Platón, Heraclides, Aristóteles y los *Problemas* (Monro 1894); los
 modos gregorianos, en Cotón (Babb 1978); los rāgas y los thāṭ, por el rāga que les da nombre, con su hora y su
 estación (Bor 1999); los pathet del sléndro, con su parte de la noche en el wayang (Hood 1954); y los cinco modos
-chinos, con su papel en el *Yueji* y su fase y su estación en el *Lüshi Chunqiu* (DeWoskin 1982). Los mēḷa, las
-sintéticas y casi todas las occidentales no tienen. Sus fuentes están también en `referencias`.
+chinos, con su papel en el *Yueji* y su fase y su estación en el *Lüshi Chunqiu* (DeWoskin 1982); y cuatro maqāmāt
+(Rāst, Bayātī, Sīkāh y Ṣabā), con lo que la pedagogía árabe dice que evocan (Touma 1996: 43–44). Los mēḷa, las
+sintéticas y las occidentales no tienen. Sus fuentes están también en `referencias`.
+
+Las occidentales tienen en su lugar una sonoridad que Tesela calcula con su brillo por quintas (``Sonoridad``, en
+`TipoDeEscala.sonoridad`): clara, intermedia u oscura. Es el criterio con que Persichetti (1961) ordena los modos de la
+mayor del más claro al más oscuro, y va aparte de `caracter` porque no lo dice ninguna fuente. El carácter de las
+tonalidades, que es otra cosa (Re mayor no tiene el de Mi♭ mayor), está en ``Tonalidad/caracter``.
 
 ```swift
 TipoDeEscala.harmoniaDoria.afectos.first == .valiente   // true
@@ -328,6 +335,9 @@ TipoDeEscala.bhairav.momentos == [.manana]           // true
 TipoDeEscala.megh.caracter[0].estacion               // .lluvias
 TipoDeEscala.gong.caracter[1].papel                  // .soberano
 TipoDeEscala.mayor.caracter.isEmpty                  // true
+TipoDeEscala.saba.afectos == [.triste, .lastimero]   // true
+TipoDeEscala.lidio.sonoridad                         // .clara
+TipoDeEscala.frigio.sonoridad                        // .oscura
 ```
 
 ## Microtonos

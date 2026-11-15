@@ -370,6 +370,11 @@ extension LineaDeComandos {
             let texto = caracter.descripcion(en: notacion) + " (" + caracter.cita(en: notacion) + ")"
             lineas.append("  \(traducir(.caracter)): " + texto)
         }
+        // Las occidentales, que no tienen carácter de fuente, tienen una sonoridad calculada por el brillo:
+        // «sonoridad (calculada): clara».
+        if let sonoridad = escala.tipo.sonoridad {
+            lineas.append("  \(traducir(.sonoridad)): " + sonoridad.nombre(en: notacion))
+        }
         // Dónde se lee la escala: «West 1992; Barker 1989».
         let referencias = escala.tipo.referencias
         if !referencias.isEmpty {

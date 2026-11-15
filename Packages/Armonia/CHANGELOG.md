@@ -4,6 +4,21 @@
 
 ### Novedades
 
+- `PapelEnLaEscala` tiene dos papeles más. `.choque` es la nota que contradice al acorde: la otra séptima (el Si♭ de
+  Do mixolidio sobre Do7M, el Si de Do jónico sobre Do7) y la quinta justa sobre un acorde de quinta disminuida o
+  aumentada (el Sol sobre Doø7, Do°7 o Do+7M). `.dePaso` es la nota cromática de una bebop (el Si de Do bebop
+  dominante), que ya no cuenta como nota a evitar. Sus nombres, en los trece idiomas.
+- `Escala.esCompatible(con:)`: si la escala sirve para el acorde, es decir, si tiene todas sus notas, ninguna choca con
+  él y, si es una bebop, también sirve su escala de siete notas sin la de paso.
+- `Tonalidad.caracter`: el carácter de las 24 tonalidades que describe Schubart (*Ideen zu einer Ästhetik der
+  Tonkunst*, 1806), en la traducción de Steblin (1983), con `TestigoDelCaracter.schubart` y la obra nueva
+  `Referencia.steblin1983`. Es del nombre: Re♭ mayor lo tiene y Do♯ mayor no. `armonia tonalidad` lo escribe.
+- Cuatro afectos más para Schubart (`Afecto.inocente`, `.sombrio`, `.desesperado` y `.colerico`), en los trece idiomas.
+- El carácter de Rāst, Bayātī, Sīkāh y Ṣabā, de Touma (1996: 43–44). Bayātī y los demás citan ahora a Touma con la
+  página, y esa cita ocupa en `referencias` el sitio de la obra entera.
+- `Sonoridad` y `TipoDeEscala.sonoridad`: lo clara, intermedia u oscura que suena una escala occidental, calculado con
+  su brillo por quintas, como ordena Persichetti (1961) los modos de la mayor. Va aparte del carácter, porque no lo
+  dice ninguna fuente. `armonia escala` la escribe como «sonoridad (calculada)».
 - `ArchivoScala` y `MapaDeTeclado`: los ficheros `.scl` y `.kbm` de Scala, los que leen casi todos los
   sintetizadores. Un temperamento del catálogo o una escala (con sus microtonos, o en un temperamento que afina sus
   notas) se escribe como `.scl`; la justa y los 22 śruti, en razones. Un `.scl` cualquiera se lee
@@ -20,6 +35,14 @@
   (`--resumen`, en texto; `--json`).
 - `armonia mcp`: el motor como servidor del Model Context Protocol, para que un asistente lo use. Cada orden que da
   JSON es una herramienta.
+
+### Correcciones
+
+- `Acorde.escalasCompatibles(entre:)`, `Acorde.escalasBebop`, `Acorde.pentatonicas`, la escala de un acorde que la
+  tonalidad no explica (`Tonalidad.escalaDelAcorde(_:)`) y las estructuras superiores dejan fuera las escalas y las
+  tríadas que chocan con el acorde. Do7M ya no da Do bebop dominante; Do7, Do bebop dórica; Doø7 y Do°7, el dórico ♯4 ni
+  la disminuida semitono-tono; y Do+7M, la bebop mayor.
+- `Escala.notasAEvitar(sobre:)` cuenta también las notas que chocan con el acorde.
 
 ## 0.5.2 (2026-11-14)
 

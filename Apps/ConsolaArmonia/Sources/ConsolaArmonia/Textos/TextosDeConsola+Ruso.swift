@@ -364,6 +364,7 @@ extension TextosDeConsola {
         mensajeMicrotonos: "микротоны",
         mensajeReferencias: "литература",
         mensajeCaracter: "характер",
+        mensajeSonoridad: "звучание (вычисленное)",
         mensajeEscalas: "гаммы",
         mensajeHabituales: "обычные",
         mensajeSinLugar: "без места",
