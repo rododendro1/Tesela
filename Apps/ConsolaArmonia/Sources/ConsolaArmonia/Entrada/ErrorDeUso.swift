@@ -151,6 +151,8 @@ enum ErrorDeUso: ErrorDeArmonia {
     case faltanNotasDeLaMelodia(orden: String)
     case marcasSoloCoral
     case duracionSoloCoral
+    /// `musicxml bajo … --compas`: el bajo caminante va siempre en 4/4.
+    case compasDeLaLinea
     case claveDesconocida(String)
     case faltanAcordesDelCoral(orden: String)
     case soloParaMelodia(String)
@@ -200,4 +202,8 @@ enum ErrorDeUso: ErrorDeArmonia {
     case soloConArchivoDeScala(String)
     /// `--tolerancia` con algo que no es un número de 0 en adelante.
     case toleranciaNoValida(String)
+    /// `reticulo` sin acordes.
+    case faltanAcordesDelReticulo
+    /// `mcp` desde una sesión o un lote, cuya entrada ya es de las órdenes.
+    case mcpSoloComoServidor
 }

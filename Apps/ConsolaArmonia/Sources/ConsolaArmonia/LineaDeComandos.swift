@@ -257,7 +257,7 @@ public enum LineaDeComandos {
     static let gruposDeOrdenes: [[Orden]] = [
         ordenesDeConsultas, ordenesDeArmonizacion, ordenesDePartituras + ordenesDeGrabado + ordenesDeAfinacion,
         ordenesDeDibujos,
-        ordenesDeNeorriemann, ordenesDeTrastes, ordenesDeLaTerminal + ordenesDeAyuda,
+        ordenesDeNeorriemann, ordenesDeTrastes, ordenesDeLaTerminal + ordenesDelServidor + ordenesDeAyuda,
     ]
 
     /// Todas las órdenes, en el orden en que salen en la ayuda.

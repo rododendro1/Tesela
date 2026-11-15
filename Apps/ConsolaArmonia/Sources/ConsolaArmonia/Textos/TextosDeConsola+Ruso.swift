@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--file — только для «chords» и «arpeggios»",
         ventanaSinArchivo: "--window используется с --file",
         acordesConCifradosYAnalisis: "аккорды всегда выводятся с обозначениями и анализом",
-        tipoDePartituraDesconocido: "«{1}»: экспортируется «melody», «chorale», «chords», их «arpeggios» или «scale»",
+        tipoDePartituraDesconocido: "«{1}»: экспортируется «melody», «chorale», «chords», их «arpeggios», «scale», «bass» или «line»",
         faltaLoQueSeGraba: "не указано, что набирать: {1}",
         motorDesconocido: "«{1}»: движки — lilypond, musescore, verovio, guido и own",
         formatoDeGrabadoDesconocido: "«{1}»: формат — «pdf», «svg» или «png»",
@@ -444,6 +444,22 @@ extension TextosDeConsola {
         temperamentoSoloDeEscala: "--temperament используется со scala scale",
         temperamentoQueNoAfina: "«{1}» не настраивает двенадцать нот: это система микротонов некоторых гамм",
         soloConArchivoDeScala: "{1} используется со scala --file",
-        toleranciaNoValida: "«{1}» — не допуск в центах: число от 0 и выше"
+        toleranciaNoValida: "«{1}» — не допуск в центах: число от 0 и выше",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bass|line <обозначения> [параметры]",
+        descripcionMusicxmlLineas: "линия над аккордами, по такту на аккорд: bass — уокинг-бас четвертями с табулатурой; line — восьмые по гамме каждого аккорда, с направляющим тоном на сильной доле и хроматической нотой к следующему, в размере --time",
+        compasDeLaLinea: "уокинг-бас всегда в 4/4: --time — для line",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <аккорды> [--summary]",
+        descripcionReticulo: "последовательность на решётке чистого строя (SVG): квинты по горизонтали, терции по вертикали, каждый основной тон в точке, ближайшей к предыдущему, и дрейф коммы, если она возвращается к первому основному тону; с --summary — текстом: отношение каждого основного тона и его отклонение от равномерной темперации",
+        derivaDelReticulo: "дрейф: {1} центов",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "движок как сервер MCP (Model Context Protocol) через стандартный ввод и вывод, чтобы им пользовался ассистент: каждая команда с выводом в JSON — инструмент, который получает то, что писалось бы после имени команды",
+        argumentosDeLaHerramienta: "то, что идёт после имени команды, как в терминале: «G7/B», «D dorian --chords»",
+        mcpSoloComoServidor: "mcp запускается отдельно, как сервер: armonia mcp"
     )
 }

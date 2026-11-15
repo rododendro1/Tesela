@@ -84,11 +84,13 @@ extension ArchivoScala {
     /// detrás del valor en la línea de un paso (un comentario, un nombre) no cuenta, y tampoco las líneas que sobran.
     public init(leyendo texto: String) throws(ErrorDeLecturaDeScala) {
         // Los finales de línea de Windows y los antiguos de Mac, también.
-        let lineas = texto.replacingOccurrences(of: "\r\n", with: "\n").replacingOccurrences(of: "\r", with: "\n")
+        let todas = texto.replacingOccurrences(of: "\r\n", with: "\n").replacingOccurrences(of: "\r", with: "\n")
             .split(separator: "\n", omittingEmptySubsequences: false).enumerated()
             .filter { !$0.element.hasPrefix("!") }
-        guard let primera = lineas.first else { throw .sinDescripcion }
+        guard let primera = todas.first else { throw .sinDescripcion }
         let descripcion = primera.element.trimmingCharacters(in: .whitespaces)
+        // Tras la descripción, que puede estar en blanco, las líneas en blanco no cuentan.
+        let lineas = [primera] + todas.dropFirst().filter { !$0.element.allSatisfy(\.isWhitespace) }
         guard lineas.count > 1 else { throw .sinCuenta }
         let cuenta = lineas[1]
         guard let total = Int(Self.primerValor(cuenta.element)), total >= 1, total <= Self.maximoDePasos else {
@@ -305,9 +307,11 @@ extension ArchivoScala {
                 hallados.append(.init(elemento: .escala(tipo), desviacionMaxima: desviacion, desde: 0))
             }
         }
-        // De más a menos parecido; a igual desviación, los temperamentos y el orden del catálogo.
+        // De más a menos parecido; a igual desviación, los que empiezan donde el fichero, y luego los temperamentos y
+        // el orden del catálogo.
         let ordenados = hallados.enumerated().sorted {
-            ($0.element.desviacionMaxima, $0.offset) < ($1.element.desviacionMaxima, $1.offset)
+            ($0.element.desviacionMaxima, $0.element.desde == 0 ? 0 : 1, $0.offset)
+                < ($1.element.desviacionMaxima, $1.element.desde == 0 ? 0 : 1, $1.offset)
         }
         return ordenados.prefix(max(0, limite)).map(\.element)
     }

@@ -312,7 +312,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--archivo «acordes» eta «arpegios»-etarako bakarrik da",
         ventanaSinArchivo: "--ventana --archivo-rekin doa",
         acordesConCifradosYAnalisis: "akordeek beti daramatzate zifratuak eta analisia",
-        tipoDePartituraDesconocido: "«{1}»: «melodia», «coral», «acordes», haien «arpegios» edo «escala» bat esportatzen da",
+        tipoDePartituraDesconocido: "«{1}»: «melodia», «coral», «acordes», haien «arpegios», «escala», «bajo» edo «fraseo» bat esportatzen da",
         faltaLoQueSeGraba: "grabatzekoa falta da: {1}",
         motorDesconocido: "«{1}»: motorrak lilypond, musescore, verovio, guido eta propio dira",
         formatoDeGrabadoDesconocido: "«{1}»: «pdf», «svg» edo «png» formatuan grabatzen da",
@@ -445,6 +445,22 @@ extension TextosDeConsola {
         temperamentoSoloDeEscala: "--temperament scala scale-rekin doa",
         temperamentoQueNoAfina: "«{1}»-ek ez ditu hamabi notak afinatzen: eskala batzuen mikrotonuen sistema da",
         soloConArchivoDeScala: "{1} scala --file-rekin doa",
-        toleranciaNoValida: "«{1}» ez da zentimotako tolerantzia bat: 0tik gorako zenbaki bat"
+        toleranciaNoValida: "«{1}» ez da zentimotako tolerantzia bat: 0tik gorako zenbaki bat",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bajo|fraseo <zifratuak> [aukerak]",
+        descripcionMusicxmlLineas: "akordeen gaineko lerro bat, konpas bat akorde bakoitzeko: bajo, beltzetan dabilen baxu bat bere tablaturarekin; fraseo, kortxeak akorde bakoitzaren eskalan zehar, lehen denboran nota gida batekin eta hurrengorako nota kromatiko batekin, --time-ren konpasean",
+        compasDeLaLinea: "baxu ibiltaria 4/4-n doa: --time fraseo-rako da",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <akordeak> [--summary]",
+        descripcionReticulo: "progresioa intonazio justuaren sarean (SVG): bosgarrenak horizontalean, hirugarrenak bertikalean, oinarrizko bakoitza aurrekotik hurbilen dagoen puntuan, eta komaren desbiderapena lehen oinarrizkora itzultzen bada; --summary-rekin, testuan, oinarrizko bakoitzaren arrazoia eta tenperamentu berdinetik zenbat aldentzen den",
+        derivaDelReticulo: "desbiderapena: {1} zentimo",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "motorra MCP (Model Context Protocol) zerbitzari gisa sarrera eta irteera estandarretik, laguntzaile batek erabil dezan: JSONa ematen duen agindu bakoitza tresna bat da, eta aginduaren izenaren ondoren idatziko litzatekeena jasotzen du",
+        argumentosDeLaHerramienta: "aginduaren izenaren ondoren doana, terminalean bezala: «Sol7/Si», «Re doriar --chords»",
+        mcpSoloComoServidor: "mcp bakarrik exekutatzen da, zerbitzari gisa: armonia mcp"
     )
 }

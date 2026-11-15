@@ -313,7 +313,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--file is only for \"chords\" and \"arpeggios\"",
         ventanaSinArchivo: "--window goes with --file",
         acordesConCifradosYAnalisis: "chords always come with chord symbols and analysis",
-        tipoDePartituraDesconocido: "\"{1}\": the export is a \"melody\", a \"chorale\", \"chords\", their \"arpeggios\" or a \"scale\"",
+        tipoDePartituraDesconocido: "\"{1}\": the export is a \"melody\", a \"chorale\", \"chords\", their \"arpeggios\", a \"scale\", a \"bass\" or a \"line\"",
         faltaLoQueSeGraba: "missing what to engrave: {1}",
         motorDesconocido: "\"{1}\": the engines are lilypond, musescore, verovio, guido and own",
         formatoDeGrabadoDesconocido: "\"{1}\": the output is \"pdf\", \"svg\" or \"png\"",
@@ -446,6 +446,22 @@ extension TextosDeConsola {
         temperamentoSoloDeEscala: "--temperament goes with scala scale",
         temperamentoQueNoAfina: "\"{1}\" does not tune the twelve notes: it is the microtone system of some scales",
         soloConArchivoDeScala: "{1} goes with scala --file",
-        toleranciaNoValida: "\"{1}\" is not a tolerance in cents: a number from 0 up"
+        toleranciaNoValida: "\"{1}\" is not a tolerance in cents: a number from 0 up",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bass|line <symbols> [options]",
+        descripcionMusicxmlLineas: "a line over the chords, one bar per chord: bass, a walking bass in quarter notes with its tablature; line, eighth notes through each chord's scale, with a guide tone on the downbeat and a chromatic note into the next, in the meter of --time",
+        compasDeLaLinea: "the walking bass is in 4/4: --time is for the line",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <chords> [--summary]",
+        descripcionReticulo: "the progression on the just-intonation lattice (SVG): fifths across, thirds up, each root at the point nearest the previous one, and the comma drift if it returns to its first root; with --summary, as text, each root's ratio and how far it is from equal temperament",
+        derivaDelReticulo: "drift: {1} cents",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "the engine as an MCP (Model Context Protocol) server over standard input and output, so that an assistant can use it: each command that gives JSON is a tool, which takes what would be written after the command's name",
+        argumentosDeLaHerramienta: "what follows the command's name, as in the terminal: \"G7/B\", \"D dorian --chords\"",
+        mcpSoloComoServidor: "mcp runs on its own, as a server: armonia mcp"
     )
 }

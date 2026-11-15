@@ -46,6 +46,11 @@ extension TextosDeDiagramas {
         intervalosIncoherentes: "Несогласованные интервалы: {1},{2},{3}. Должно выполняться 0 < L ≤ D и G = L + D.",
         giroNoValido: "Поворот на {1}° не кратен 30°.",
         afinacionNoSoportada: "Рисуются только клавиатуры на 12 звуков, а не на {1}.",
-        cizallaNoSoportada: "Сдвиг S{1} не поддерживается."
+        cizallaNoSoportada: "Сдвиг S{1} не поддерживается.",
+
+        // ReticuloJusto.swift
+        tituloConDeriva: "{1} · дрейф {2} центов",
+        leyendaQuintasYTerceras: "квинты (3/2) по горизонтали, терции (5/4) по вертикали",
+        leyendaDeFundamentalEnFundamental: "от одного основного тона к следующему"
     )
 }

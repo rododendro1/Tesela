@@ -1,4 +1,5 @@
 import Armonia
+import Exposicion
 import Foundation
 
 // MARK: - Las opciones de una partitura
@@ -12,6 +13,8 @@ struct OpcionesDePartitura {
     /// Los nombres de los tipos de acordes y de arpegios.
     static let tiposDeAcordes: Set = ["acordes", "progresion", "progresión", "chords"]
     static let tiposDeArpegios: Set = ["arpegios", "arpegio", "arpeggios", "arpeggio"]
+    static let tiposDeBajo: Set = ["bajo", "bajo-caminante", "walking-bass", "bass"]
+    static let tiposDeFraseo: Set = ["fraseo", "linea", "línea", "line"]
 
     let tipo: String
     let formato: FormatoDePartitura
@@ -88,6 +91,7 @@ struct OpcionesDePartitura {
             return
         }
         let tipos = OpcionesDePartitura.tiposDeAcordes.union(OpcionesDePartitura.tiposDeArpegios)
+            .union(OpcionesDePartitura.tiposDeBajo).union(OpcionesDePartitura.tiposDeFraseo)
         guard tipos.contains(tipo) else { throw ErrorDeUso.archivoSoloParaAcordes }
         guard musica.isEmpty else { throw ErrorDeUso.archivoConAcordes }
         let datos = try LineaDeComandos.datos(deArchivo: archivo, contexto)
@@ -224,6 +228,40 @@ struct OpcionesDePartitura {
             encabezado: Encabezado(
                 titulo: titulo ?? escala.nombre(en: notacion), tonalidad: tonalidad, tempo: tempo,
                 instrumento: instrumento)
+        ).exportar(como: formato)
+    }
+
+    // MARK: Líneas sobre la progresión
+
+    /// Un bajo caminante en negras, un compás por acorde, en clave de fa y con la tablatura del bajo
+    /// (`PresentacionDeAnalisis.bajoCaminante`).
+    func bajo() throws -> Data {
+        try sinClaveNiAnacrusa()
+        if !marcas.isEmpty { throw ErrorDeUso.acordesConCifradosYAnalisis }
+        if opciones["duracion"] != nil { throw ErrorDeUso.duracionSoloCoral }
+        if opciones["compas"] != nil { throw ErrorDeUso.compasDeLaLinea }
+        guard let leida = try progresion(),
+            let bajo = PresentacionDeAnalisis.bajoCaminante(leida.analisis.acordes.map(\.acorde), en: notacion)
+        else { throw ErrorDeUso.faltanAcordesDeLaProgresion(orden: orden) }
+        var partitura = bajo.partitura
+        partitura.encabezado = Encabezado(
+            titulo: titulo ?? partitura.encabezado.titulo, tonalidad: leida.analisis.tonalidad, tempo: tempo,
+            instrumento: instrumento)
+        return partitura.exportar(como: formato)
+    }
+
+    /// Un fraseo en corcheas sobre la progresión, un compás por acorde: notas guía en el primer tiempo, la escala de
+    /// cada acorde y una nota cromática que lleva al siguiente (`Voz(fraseando:)`).
+    func fraseo() throws -> Data {
+        try sinClaveNiAnacrusa()
+        if !marcas.isEmpty { throw ErrorDeUso.acordesConCifradosYAnalisis }
+        if opciones["duracion"] != nil { throw ErrorDeUso.duracionSoloCoral }
+        guard let leida = try progresion() else { throw ErrorDeUso.faltanAcordesDeLaProgresion(orden: orden) }
+        let analisis = leida.analisis
+        let voz = Voz(fraseando: analisis.acordes.map(\.acorde), tonalidad: analisis.tonalidad, compas: compas)
+        return voz.partitura(
+            encabezado: Encabezado(
+                titulo: titulo, tonalidad: analisis.tonalidad, tempo: tempo, instrumento: instrumento)
         ).exportar(como: formato)
     }
 }

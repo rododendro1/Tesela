@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--archivo n'est que pour « acordes » et « arpegios »",
         ventanaSinArchivo: "--ventana va avec --archivo",
         acordesConCifradosYAnalisis: "les accords ont toujours chiffrages et analyse",
-        tipoDePartituraDesconocido: "« {1} » : on exporte une « melodia », un « coral », des « acordes », leurs « arpegios » ou une « escala »",
+        tipoDePartituraDesconocido: "« {1} » : on exporte une « melodia », un « coral », des « acordes », leurs « arpegios », une « escala », un « bajo » ou un « fraseo »",
         faltaLoQueSeGraba: "il manque ce qu'on grave : {1}",
         motorDesconocido: "« {1} » : les moteurs sont lilypond, musescore, verovio, guido et propio",
         formatoDeGrabadoDesconocido: "« {1} » : on grave en « pdf », « svg » ou « png »",
@@ -444,6 +444,22 @@ extension TextosDeConsola {
         temperamentoSoloDeEscala: "--temperament va avec scala scale",
         temperamentoQueNoAfina: "« {1} » n'accorde pas les douze notes : c'est le système des micro-intervalles de certaines gammes",
         soloConArchivoDeScala: "{1} va avec scala --file",
-        toleranciaNoValida: "« {1} » n'est pas une tolérance en cents : un nombre à partir de 0"
+        toleranciaNoValida: "« {1} » n'est pas une tolérance en cents : un nombre à partir de 0",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bajo|fraseo <chiffrages> [options]",
+        descripcionMusicxmlLineas: "une ligne sur les accords, une mesure par accord : bajo, une walking bass en noires avec sa tablature ; fraseo, des croches dans la gamme de chaque accord, avec une note guide sur le premier temps et une note chromatique vers le suivant, dans la mesure de --time",
+        compasDeLaLinea: "la walking bass est en 4/4 : --time est pour fraseo",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <accords> [--summary]",
+        descripcionReticulo: "la progression sur le réseau de l'intonation juste (SVG) : quintes à l'horizontale, tierces à la verticale, chaque fondamentale au point le plus proche de la précédente, et la dérive du comma si elle revient à sa première fondamentale ; avec --summary, en texte, le rapport de chaque fondamentale et son écart au tempérament égal",
+        derivaDelReticulo: "dérive : {1} cents",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "le moteur comme serveur MCP (Model Context Protocol) sur l'entrée et la sortie standard, pour qu'un assistant l'utilise : chaque commande qui donne du JSON est un outil, qui reçoit ce qu'on écrirait après le nom de la commande",
+        argumentosDeLaHerramienta: "ce qui suit le nom de la commande, comme dans le terminal : « Sol7/Si », « Ré dorien --chords »",
+        mcpSoloComoServidor: "mcp s'exécute seul, comme serveur : armonia mcp"
     )
 }

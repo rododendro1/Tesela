@@ -440,6 +440,22 @@ struct TextosDeConsola: TextosTraducidos {
     let soloConArchivoDeScala: Plantilla  // {1} opcion
     let toleranciaNoValida: Plantilla  // {1} tolerancia
 
+    // MARK: Ayuda+Partituras.swift: las líneas sobre una progresión
+    let sintaxisMusicxmlLineas: String
+    let descripcionMusicxmlLineas: String
+    let compasDeLaLinea: String
+
+    // MARK: LineaDeComandos+Reticulo.swift
+    let sintaxisReticulo: String
+    let descripcionReticulo: String
+    let derivaDelReticulo: Plantilla  // {1} cents
+
+    // MARK: ServidorMCP.swift
+    let sintaxisMCP: String
+    let descripcionMCP: String
+    let argumentosDeLaHerramienta: String
+    let mcpSoloComoServidor: String
+
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeConsola>(

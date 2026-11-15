@@ -26,6 +26,8 @@ extension LineaDeComandos {
         case _ where OpcionesDePartitura.tiposDeAcordes.contains(tipo): datos = try partitura.acordes()
         case _ where OpcionesDePartitura.tiposDeArpegios.contains(tipo): datos = try partitura.arpegios()
         case "escala", "scale": datos = try partitura.escala()
+        case _ where OpcionesDePartitura.tiposDeBajo.contains(tipo): datos = try partitura.bajo()
+        case _ where OpcionesDePartitura.tiposDeFraseo.contains(tipo): datos = try partitura.fraseo()
         default: throw ErrorDeUso.tipoDePartituraDesconocido(tipo)
         }
         return salida(formato, datos)

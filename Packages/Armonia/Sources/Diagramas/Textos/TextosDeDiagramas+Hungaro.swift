@@ -46,6 +46,11 @@ extension TextosDeDiagramas {
         intervalosIncoherentes: "Ellentmondó hangközök: {1},{2},{3}. Teljesülnie kell: 0 < L ≤ D és G = L + D.",
         giroNoValido: "A {1}°-os elforgatás nem többszöröse a 30°-nak.",
         afinacionNoSoportada: "Csak 12 hangú billentyűzet rajzolható, {1} hangú nem.",
-        cizallaNoSoportada: "Az S{1} nyírás nem támogatott."
+        cizallaNoSoportada: "Az S{1} nyírás nem támogatott.",
+
+        // ReticuloJusto.swift
+        tituloConDeriva: "{1} · {2} cent elcsúszás",
+        leyendaQuintasYTerceras: "kvintek (3/2) vízszintesen, tercek (5/4) függőlegesen",
+        leyendaDeFundamentalEnFundamental: "egyik alaphangtól a következőig"
     )
 }

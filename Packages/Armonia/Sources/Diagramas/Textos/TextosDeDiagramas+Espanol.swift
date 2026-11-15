@@ -46,6 +46,11 @@ extension TextosDeDiagramas {
         intervalosIncoherentes: "Intervalos incoherentes: {1},{2},{3}. Deben cumplir 0 < L ≤ D y G = L + D.",
         giroNoValido: "El giro de {1}° no es múltiplo de 30°.",
         afinacionNoSoportada: "Solo se dibujan teclados de 12 notas, no de {1}.",
-        cizallaNoSoportada: "La cizalla S{1} no está soportada."
+        cizallaNoSoportada: "La cizalla S{1} no está soportada.",
+
+        // ReticuloJusto.swift
+        tituloConDeriva: "{1} · deriva de {2} cents",
+        leyendaQuintasYTerceras: "quintas (3/2) en horizontal, terceras (5/4) en vertical",
+        leyendaDeFundamentalEnFundamental: "de una fundamental a la siguiente"
     )
 }

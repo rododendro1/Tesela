@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--file är bara för ”chords” och ”arpeggios”",
         ventanaSinArchivo: "--window hör till --file",
         acordesConCifradosYAnalisis: "ackord kommer alltid med ackordsymboler och analys",
-        tipoDePartituraDesconocido: "”{1}”: det som exporteras är en ”melody”, en ”chorale”, ”chords”, deras ”arpeggios” eller en ”scale”",
+        tipoDePartituraDesconocido: "”{1}”: det som exporteras är en ”melody”, en ”chorale”, ”chords”, deras ”arpeggios”, en ”scale”, en ”bass” eller en ”line”",
         faltaLoQueSeGraba: "det som ska sättas saknas: {1}",
         motorDesconocido: "”{1}”: motorerna är lilypond, musescore, verovio, guido och own",
         formatoDeGrabadoDesconocido: "”{1}”: utdata är ”pdf”, ”svg” eller ”png”",
@@ -444,6 +444,22 @@ extension TextosDeConsola {
         temperamentoSoloDeEscala: "--temperament hör till scala scale",
         temperamentoQueNoAfina: "”{1}” stämmer inte de tolv tonerna: det är vissa skalors mikrotonssystem",
         soloConArchivoDeScala: "{1} hör till scala --file",
-        toleranciaNoValida: "”{1}” är ingen tolerans i cent: ett tal från 0 och uppåt"
+        toleranciaNoValida: "”{1}” är ingen tolerans i cent: ett tal från 0 och uppåt",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bass|line <symboler> [alternativ]",
+        descripcionMusicxmlLineas: "en linje över ackorden, en takt per ackord: bass, en walking bass i fjärdedelar med tabulatur; line, åttondelar genom varje ackords skala, med en ledton på ettan och en kromatisk ton in i nästa, i taktarten från --time",
+        compasDeLaLinea: "walking bass går i 4/4: --time är för line",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <ackord> [--summary]",
+        descripcionReticulo: "progressionen i den rena stämningens gitter (SVG): kvinter vågrätt, terser lodrätt, varje grundton i den punkt som ligger närmast den förra, och kommadriften om den återvänder till sin första grundton; med --summary som text varje grundtons förhållande och hur långt den ligger från liksvävande temperatur",
+        derivaDelReticulo: "drift: {1} cent",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "motorn som MCP-server (Model Context Protocol) över standard in och ut, så att en assistent kan använda den: varje kommando som ger JSON är ett verktyg, som tar emot det man skulle skriva efter kommandots namn",
+        argumentosDeLaHerramienta: "det som följer kommandots namn, som i terminalen: ”G7/B”, ”D dorian --chords”",
+        mcpSoloComoServidor: "mcp körs för sig, som server: armonia mcp"
     )
 }

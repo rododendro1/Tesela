@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--archivo è solo per «acordes» e «arpegios»",
         ventanaSinArchivo: "--ventana va con --archivo",
         acordesConCifradosYAnalisis: "gli accordi hanno sempre sigle e analisi",
-        tipoDePartituraDesconocido: "«{1}»: si esporta una «melodia», un «coral», degli «acordes», i loro «arpegios» o una «escala»",
+        tipoDePartituraDesconocido: "«{1}»: si esporta una «melodia», un «coral», degli «acordes», i loro «arpegios», una «escala», un «bajo» o un «fraseo»",
         faltaLoQueSeGraba: "manca ciò che si incide: {1}",
         motorDesconocido: "«{1}»: i motori sono lilypond, musescore, verovio, guido e propio",
         formatoDeGrabadoDesconocido: "«{1}»: si incide in «pdf», «svg» o «png»",
@@ -444,6 +444,22 @@ extension TextosDeConsola {
         temperamentoSoloDeEscala: "--temperament va con scala scale",
         temperamentoQueNoAfina: "«{1}» non accorda le dodici note: è il sistema dei microtoni di alcune scale",
         soloConArchivoDeScala: "{1} va con scala --file",
-        toleranciaNoValida: "«{1}» non è una tolleranza in cent: un numero da 0 in su"
+        toleranciaNoValida: "«{1}» non è una tolleranza in cent: un numero da 0 in su",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bajo|fraseo <sigle> [opzioni]",
+        descripcionMusicxmlLineas: "una linea sugli accordi, una battuta per accordo: bajo, un walking bass in semiminime con la sua intavolatura; fraseo, crome lungo la scala di ogni accordo, con una nota guida sul primo tempo e una nota cromatica verso il successivo, nel tempo di --time",
+        compasDeLaLinea: "il walking bass è in 4/4: --time è per fraseo",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <accordi> [--summary]",
+        descripcionReticulo: "la progressione nel reticolo dell'intonazione naturale (SVG): quinte in orizzontale, terze in verticale, ogni fondamentale nel punto più vicino alla precedente, e la deriva del comma se torna alla prima fondamentale; con --summary, in testo, il rapporto di ogni fondamentale e lo scarto dal temperamento equabile",
+        derivaDelReticulo: "deriva: {1} cent",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "il motore come server MCP (Model Context Protocol) sull'input e l'output standard, perché un assistente lo usi: ogni comando che dà JSON è uno strumento, che riceve ciò che si scriverebbe dopo il nome del comando",
+        argumentosDeLaHerramienta: "ciò che segue il nome del comando, come nel terminale: «Sol7/Si», «Re dorico --chords»",
+        mcpSoloComoServidor: "mcp si esegue da solo, come server: armonia mcp"
     )
 }

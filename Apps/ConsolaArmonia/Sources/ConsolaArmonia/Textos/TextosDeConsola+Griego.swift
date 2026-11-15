@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "το --file είναι μόνο για «chords» και «arpeggios»",
         ventanaSinArchivo: "το --window πάει με το --file",
         acordesConCifradosYAnalisis: "οι συγχορδίες έχουν πάντα σύμβολα και ανάλυση",
-        tipoDePartituraDesconocido: "«{1}»: εξάγεται «melody», «chorale», «chords», τα «arpeggios» τους ή «scale»",
+        tipoDePartituraDesconocido: "«{1}»: εξάγεται «melody», «chorale», «chords», τα «arpeggios» τους, «scale», «bass» ή «line»",
         faltaLoQueSeGraba: "λείπει τι θα χαραχθεί: {1}",
         motorDesconocido: "«{1}»: οι μηχανές είναι lilypond, musescore, verovio, guido και own",
         formatoDeGrabadoDesconocido: "«{1}»: η έξοδος είναι «pdf», «svg» ή «png»",
@@ -444,6 +444,22 @@ extension TextosDeConsola {
         temperamentoSoloDeEscala: "το --temperament πάει με το scala scale",
         temperamentoQueNoAfina: "το «{1}» δεν κουρδίζει τις δώδεκα νότες: είναι το σύστημα μικροδιαστημάτων κάποιων κλιμάκων",
         soloConArchivoDeScala: "το {1} πάει με το scala --file",
-        toleranciaNoValida: "το «{1}» δεν είναι ανοχή σε cents: ένας αριθμός από 0 και πάνω"
+        toleranciaNoValida: "το «{1}» δεν είναι ανοχή σε cents: ένας αριθμός από 0 και πάνω",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bass|line <σύμβολα> [επιλογές]",
+        descripcionMusicxmlLineas: "μια γραμμή πάνω στις συγχορδίες, ένα μέτρο ανά συγχορδία: bass, ένα walking bass σε τέταρτα με την ταμπλατούρα του· line, όγδοα μέσα στην κλίμακα κάθε συγχορδίας, με μια νότα-οδηγό στον πρώτο χρόνο και μια χρωματική νότα προς την επόμενη, στο μέτρο του --time",
+        compasDeLaLinea: "το walking bass είναι σε 4/4: το --time είναι για το line",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <συγχορδίες> [--summary]",
+        descripcionReticulo: "η αλληλουχία στο πλέγμα του καθαρού κουρδίσματος (SVG): πέμπτες οριζόντια, τρίτες κάθετα, κάθε θεμέλιος στο σημείο που είναι πιο κοντά στον προηγούμενο, και η ολίσθηση του κόμματος αν επιστρέφει στον πρώτο θεμέλιο· με --summary, σε κείμενο, ο λόγος κάθε θεμελίου και η απόκλισή του από τον ίσο συγκερασμό",
+        derivaDelReticulo: "ολίσθηση: {1} cents",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "ο πυρήνας ως διακομιστής MCP (Model Context Protocol) μέσω της τυπικής εισόδου και εξόδου, ώστε να τον χρησιμοποιεί ένας βοηθός: κάθε εντολή που δίνει JSON είναι ένα εργαλείο, που δέχεται ό,τι θα γραφόταν μετά το όνομα της εντολής",
+        argumentosDeLaHerramienta: "ό,τι ακολουθεί το όνομα της εντολής, όπως στο τερματικό: «G7/B», «D dorian --chords»",
+        mcpSoloComoServidor: "το mcp εκτελείται μόνο του, ως διακομιστής: armonia mcp"
     )
 }

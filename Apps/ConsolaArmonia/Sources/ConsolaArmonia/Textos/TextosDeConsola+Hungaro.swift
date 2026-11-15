@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "a --file csak a „chords” és az „arpeggios” számára van",
         ventanaSinArchivo: "a --window a --file mellé tartozik",
         acordesConCifradosYAnalisis: "az akkordok mindig akkordjelzéssel és elemzéssel jelennek meg",
-        tipoDePartituraDesconocido: "„{1}”: az export lehet „melody”, „chorale”, „chords”, ezek „arpeggios” változata vagy „scale”",
+        tipoDePartituraDesconocido: "„{1}”: az export lehet „melody”, „chorale”, „chords”, ezek „arpeggios” változata, „scale”, „bass” vagy „line”",
         faltaLoQueSeGraba: "hiányzik, mit kell szedni: {1}",
         motorDesconocido: "„{1}”: a motorok: lilypond, musescore, verovio, guido és own",
         formatoDeGrabadoDesconocido: "„{1}”: a kimenet „pdf”, „svg” vagy „png”",
@@ -444,6 +444,22 @@ extension TextosDeConsola {
         temperamentoSoloDeEscala: "a --temperament a scala scale-lel jár",
         temperamentoQueNoAfina: "a(z) „{1}” nem hangolja a tizenkét hangot: egyes skálák mikrohangrendszere",
         soloConArchivoDeScala: "a(z) {1} a scala --file-lal jár",
-        toleranciaNoValida: "a(z) „{1}” nem centben megadott tűrés: 0 vagy nagyobb szám"
+        toleranciaNoValida: "a(z) „{1}” nem centben megadott tűrés: 0 vagy nagyobb szám",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bass|line <jelzések> [opciók]",
+        descripcionMusicxmlLineas: "egy dallamvonal az akkordok fölött, akkordonként egy ütem: bass, negyedekben járó walking bass a tabulatúrájával; line, nyolcadok az egyes akkordok skáláján, az első ütésen vezérhanggal és kromatikus hanggal a következő felé, a --time ütemében",
+        compasDeLaLinea: "a walking bass 4/4-es: a --time a line-hoz való",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <akkordok> [--summary]",
+        descripcionReticulo: "az akkordmenet a tiszta hangolás rácsán (SVG): kvintek vízszintesen, tercek függőlegesen, minden alaphang az előzőhöz legközelebbi ponton, és a kommaelcsúszás, ha visszatér az első alaphangra; --summary-vel szövegként minden alaphang aránya és eltérése a kiegyenlített temperálástól",
+        derivaDelReticulo: "elcsúszás: {1} cent",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "a motor MCP-kiszolgálóként (Model Context Protocol) a szabványos bemeneten és kimeneten, hogy egy asszisztens használhassa: minden JSON-t adó parancs egy eszköz, amely azt kapja, amit a parancs neve után írnánk",
+        argumentosDeLaHerramienta: "ami a parancs neve után jön, mint a terminálban: „G7/B”, „D dorian --chords”",
+        mcpSoloComoServidor: "az mcp önállóan, kiszolgálóként fut: armonia mcp"
     )
 }

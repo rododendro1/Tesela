@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--file ist nur für „chords“ und „arpeggios“",
         ventanaSinArchivo: "--window gehört zu --file",
         acordesConCifradosYAnalisis: "Akkorde kommen immer mit Akkordsymbolen und Analyse",
-        tipoDePartituraDesconocido: "„{1}“: exportiert wird eine „melody“, ein „chorale“, „chords“, ihre „arpeggios“ oder eine „scale“",
+        tipoDePartituraDesconocido: "„{1}“: exportiert wird eine „melody“, ein „chorale“, „chords“, ihre „arpeggios“, eine „scale“, ein „bass“ oder eine „line“",
         faltaLoQueSeGraba: "es fehlt, was gesetzt werden soll: {1}",
         motorDesconocido: "„{1}“: die Engines sind lilypond, musescore, verovio, guido und own",
         formatoDeGrabadoDesconocido: "„{1}“: ausgegeben wird „pdf“, „svg“ oder „png“",
@@ -444,6 +444,22 @@ extension TextosDeConsola {
         temperamentoSoloDeEscala: "--temperament gehört zu scala scale",
         temperamentoQueNoAfina: "„{1}“ stimmt nicht die zwölf Töne: Es ist das Mikrotonsystem einiger Tonleitern",
         soloConArchivoDeScala: "{1} gehört zu scala --file",
-        toleranciaNoValida: "„{1}“ ist keine Toleranz in Cent: eine Zahl ab 0"
+        toleranciaNoValida: "„{1}“ ist keine Toleranz in Cent: eine Zahl ab 0",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bass|line <Symbole> [Optionen]",
+        descripcionMusicxmlLineas: "eine Linie über den Akkorden, ein Takt pro Akkord: bass, ein Walking Bass in Vierteln mit Tabulatur; line, Achtel durch die Tonleiter jedes Akkords, mit einem Leitton auf der Eins und einem chromatischen Ton zum nächsten, in der Taktart von --time",
+        compasDeLaLinea: "der Walking Bass steht im 4/4-Takt: --time gilt für line",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <Akkorde> [--summary]",
+        descripcionReticulo: "die Progression im Gitter der reinen Stimmung (SVG): Quinten waagrecht, Terzen senkrecht, jeder Grundton am Punkt, der dem vorigen am nächsten liegt, und die Kommadrift, wenn sie zum ersten Grundton zurückkehrt; mit --summary als Text das Verhältnis jedes Grundtons und seine Abweichung von der gleichstufigen Stimmung",
+        derivaDelReticulo: "Drift: {1} Cent",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "die Engine als MCP-Server (Model Context Protocol) über Standardein- und -ausgabe, damit ein Assistent sie nutzen kann: Jeder Befehl mit JSON-Ausgabe ist ein Werkzeug, das erhält, was man nach dem Befehlsnamen schreiben würde",
+        argumentosDeLaHerramienta: "was auf den Befehlsnamen folgt, wie im Terminal: „G7/B“, „D dorian --chords“",
+        mcpSoloComoServidor: "mcp läuft eigenständig als Server: armonia mcp"
     )
 }
