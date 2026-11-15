@@ -133,8 +133,8 @@ struct ServidorMCP {
     }
 
     /// Ejecuta la orden con `--json` y da su salida como texto y, como datos, en `structuredContent`; si falla, el
-    /// error en JSON, marcado como error. `structuredContent` tiene que ser un objeto: lo que da una lista (`acorde`, que
-    /// puede llevar varios cifrados) va en `{"resultados": […]}`.
+    /// error en JSON, marcado como error. `structuredContent` tiene que ser un objeto: lo que da una lista
+    /// (`acorde`, que puede llevar varios cifrados) va en `{"resultados": […]}`.
     func llamar(_ orden: LineaDeComandos.Orden, _ argumentos: Any?) -> [String: Any] {
         let palabras: [String]
         if let lista = argumentos as? [String] {

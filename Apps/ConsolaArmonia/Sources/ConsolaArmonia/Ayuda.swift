@@ -200,7 +200,8 @@ extension LineaDeComandos {
         var descripcion = ajustar(prosa.joined(separator: "\n"), ancho: anchoDeLaAyudaDeUnaOrden)[...]
         // La primera línea de la descripción va junto a la sintaxis si queda al menos un espacio.
         if let primera = descripcion.first, let ultima = lineas.last, ultima.count < columnaDeLaDescripcion {
-            lineas[lineas.count - 1] = ultima + String(repeating: " ", count: columnaDeLaDescripcion - ultima.count) + primera
+            lineas[lineas.count - 1] =
+                ultima + String(repeating: " ", count: columnaDeLaDescripcion - ultima.count) + primera
             descripcion = descripcion.dropFirst()
         }
         lineas += descripcion.map { sangria + $0 }

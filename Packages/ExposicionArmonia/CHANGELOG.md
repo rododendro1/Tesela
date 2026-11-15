@@ -4,6 +4,11 @@
 
 ### Lo nuevo
 
+- Los valores sin traducir, al lado de los traducidos, para el JSON de la consola: `AcordePresentado.Componente.papelId`
+  (y `clave(de:)`), `AnalisisPresentado.cadenciasId` con `CadenciaPresentada`, `AcordeDelAnalisis.funcionId`,
+  `EscalaPresentada.modoId` (`ModoDeEscalaPresentado`) y `sonoridadId`, `OrigenPresentado.epocaId` y, en
+  `OrigenDeEscalaPresentado`, `epocasDeUsoId`, `periodoId`, `periodosDeUsoId`, `lugaresDeOrigenId`, `lugaresDeUsoId`,
+  `estilosId`, `corrientesId` y `escuelasId`.
 - `EstadisticasDeEscalaPresentadas`, `EscalaDelCatalogoPresentada`, `GrupoDeEscalasPresentado`, `TradicionPresentada` y
   `ReferenciaPresentada`: lo que se mide de una escala, el catálogo de escalas, sus tradiciones y una referencia, con
   las claves del JSON de `armonia escala --estadisticas`, `escalas` y `tradiciones --json`. El texto de la consola sale

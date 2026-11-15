@@ -108,7 +108,8 @@ extension LineaDeComandosTests {
         // Tan y su sonoridad calculada).
         #expect(
             Set(dorico.keys) == [
-                "nombre", "notas", "clases", "modo", "modoId", "acordes", "referencias", "origen", "medidas", "sonoridad",
+                "nombre", "notas", "clases", "modo", "modoId", "acordes", "referencias", "origen", "medidas",
+                "sonoridad",
                 "sonoridadId",
             ])
         let medidas = try #require(dorico["medidas"] as? [[String: Any]])

@@ -24,8 +24,8 @@ public struct OrigenDeEscalaPresentado: Hashable, Sendable, Codable {
     public let estilos: [String]
     /// Sus escuelas: «Carnática».
     public let escuelas: [String]
-    /// Lo mismo sin traducir, en el mismo orden: los casos de `Epoca`, `PeriodoMusical`, `Estilo`, `Corriente` y `Escuela` y las
-    /// claves de `Lugar` (`reinoUnido`), las que leen los filtros de `armonia escalas`.
+    /// Lo mismo sin traducir, en el mismo orden: los casos de `Epoca`, `PeriodoMusical`, `Estilo`, `Corriente` y
+    /// `Escuela` y las claves de `Lugar` (`reinoUnido`), las que leen los filtros de `armonia escalas`.
     public let epocasDeUsoId: [String]
     public let periodoId: String?
     public let periodosDeUsoId: [String]

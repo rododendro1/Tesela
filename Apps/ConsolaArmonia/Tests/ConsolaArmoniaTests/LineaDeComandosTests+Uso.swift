@@ -51,13 +51,15 @@ extension LineaDeComandosTests {
             let notacion = Notacion.delIdioma(idioma)
             for orden in LineaDeComandos.ordenes {
                 let suya = LineaDeComandos.ayuda(de: orden, en: notacion)
-                let enLaCompleta = orden.ayuda.flatMap { LineaDeComandos.lineas(de: $0, en: idioma) }.joined(separator: "\n")
+                let enLaCompleta = orden.ayuda.flatMap { LineaDeComandos.lineas(de: $0, en: idioma) }.joined(
+                    separator: "\n")
                 let nombre = Comment(rawValue: "\(idioma) \(orden.nombres[0])")
                 #expect(opciones(suya) == opciones(enLaCompleta), nombre)
                 // Salvo la sintaxis, que es como en la ayuda completa.
                 for linea in suya.split(separator: "\n") where linea.count > 80 && linea.hasPrefix("   ") {
                     // Solo una palabra o un ejemplo que no se pueden partir.
-                    #expect(!linea.trimmingCharacters(in: .whitespaces).contains(" ") || linea.contains("armonia "), nombre)
+                    #expect(
+                        !linea.trimmingCharacters(in: .whitespaces).contains(" ") || linea.contains("armonia "), nombre)
                 }
             }
         }

@@ -114,7 +114,8 @@ public enum LineaDeComandos {
         } catch let error as ErrorDeUso {
             return uso(error, notacion, enCurso: enCurso, json: json)
         } catch let error as any ErrorDeArmonia {
-            let texto = json ? ErrorEnJSON(error, en: notacion).texto : "armonia: " + error.descripcion(en: notacion) + "\n"
+            let texto =
+                json ? ErrorEnJSON(error, en: notacion).texto : "armonia: " + error.descripcion(en: notacion) + "\n"
             return ResultadoDeOrden(salida: "", error: texto, codigo: 1)
         } catch {
             let texto = json ? ErrorEnJSON(otro: error).texto : "armonia: \(error)\n"

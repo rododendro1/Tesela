@@ -18,7 +18,8 @@ import Testing
     @Test func opcionConIgual() {
         let conocidas: Set = ["--limite", "--en", "--patron"]
         #expect(
-            Argumentos.conValoresSeparados(["Do", "--limite=3", "--en=Re mayor", "--json=1", "x=y"], conocidas: conocidas)
+            Argumentos.conValoresSeparados(
+                ["Do", "--limite=3", "--en=Re mayor", "--json=1", "x=y"], conocidas: conocidas)
                 == ["Do", "--limite", "3", "--en", "Re", "mayor", "--json=1", "x=y"])
         #expect(Argumentos.conValoresSeparados(["--patrón=alberti"], conocidas: conocidas) == ["--patrón", "alberti"])
         #expect(LineaDeComandos.nombresDeLasOpciones.contains("--limit"))
