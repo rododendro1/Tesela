@@ -178,6 +178,11 @@ extension Referencia {
         "babb1978", .libro, autores: ["Babb, Warren", "Palisca, Claude V."],
         titulo: "Hucbald, Guido, and John on Music: Three Medieval Treatises", anio: 1978,
         editorial: "Yale University Press", lugar: "New Haven")
+    /// Steblin, la historia del carácter de las tonalidades, con la traducción de lo que dice Schubart de cada una.
+    public static let steblin1983 = Referencia(
+        "steblin1983", .libro, autores: ["Steblin, Rita"],
+        titulo: "A History of Key Characteristics in the Eighteenth and Early Nineteenth Centuries", anio: 1983,
+        editorial: "UMI Research Press", lugar: "Ann Arbor")
 
     // MARK: Asia oriental y sudeste asiático
 
@@ -659,7 +664,7 @@ extension Referencia {
         .maqamWorld, .wright1978, .farhat1990, .signell1977, .tdvIslamAnsiklopedisi, .hacibeyov1945, .west1992,
         .barker1989, .monro1894, .chalmers1993, .mathiesen1999, .chrysanthos1832, .cantemir1700, .ezgi1933,
         .pennanen1999,
-        .apel1958, .babb1978, .glareano1547,
+        .apel1958, .babb1978, .steblin1983, .glareano1547,
         .ramos1482,
         .vicentino1555, .zarlino1558, .salinas1577, .kuttner1990, .malm1959, .dewoskin1982, .garfias1975,
         .tranVanKhe1962, .morton1976,

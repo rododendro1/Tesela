@@ -445,6 +445,10 @@ struct TextosDeTeoria: TextosTraducidos {
     let afectoEntusiasta: String
     let afectoDevoto: String
     let afectoContemplativo: String
+    let afectoInocente: String
+    let afectoSombrio: String
+    let afectoDesesperado: String
+    let afectoColerico: String
     let momentoMadrugada: String
     let momentoManana: String
     let momentoFinalDeLaManana: String
@@ -478,6 +482,11 @@ struct TextosDeTeoria: TextosTraducidos {
     let testigoProblemas: String
     let testigoYueji: String
     let testigoCoton: String
+    let testigoSchubart: String
+    /// La sonoridad calculada de una escala por su brillo (`Sonoridad`).
+    let sonoridadClara: String
+    let sonoridadIntermedia: String
+    let sonoridadOscura: String
 
     // MARK: Gramática (Acorde.swift, Tonalidad.swift)
     /// El tipo de un acorde sobre su fundamental: «Do mayor», «Dominantseptakkord auf G».

@@ -7,9 +7,11 @@ import Testing
 /// Las referencias bibliográficas del catálogo (`Referencia`, `TipoDeEscala.referencias`).
 @Suite struct ReferenciasTests {
     /// Todas las obras citadas, por las escalas, sus listas, sus fuentes y sus afinaciones, por los acordes, por las
-    /// progresiones, por los ritmos, por los temperamentos, por las notas y por sus funciones.
+    /// progresiones, por los ritmos, por los temperamentos, por las notas y por sus funciones, y por el carácter de las
+    /// tonalidades.
     private var citadas: [Referencia] {
-        TipoDeEscala.catalogo.flatMap(\.referencias)
+        let deLasTonalidades: [Referencia] = Tonalidad.caracteres.flatMap { $0.caracter.map(\.referencia) }
+        return TipoDeEscala.catalogo.flatMap(\.referencias)
             + TipoDeEscala.listasTradicionales.flatMap(\.referencias)
             + FuenteTeorica.allCases.compactMap(\.referencia)
             + AcordeConNombre.catalogo.flatMap(\.referencias)
@@ -18,6 +20,7 @@ import Testing
             + TemperamentoConNombre.catalogo.flatMap(\.referencias)
             + NotaConNombre.catalogo.flatMap(\.referencias)
             + FuncionDeNota.catalogo.flatMap(\.referencias)
+            + deLasTonalidades
     }
 
     @Test func cadaObraEstaUnaVezEnElCatalogoYSeCita() {
@@ -71,7 +74,9 @@ import Testing
     }
 
     @Test func lasEscalasTienenLasDeSuListaSuFuenteYSusAfinaciones() {
-        #expect(TipoDeEscala.bayati.referencias == [.maqamWorld, .touma1996, .farraj2019, .rechberger2008])
+        // La de su carácter, con la página, ocupa el sitio de la obra entera.
+        #expect(
+            TipoDeEscala.bayati.referencias == [.maqamWorld, .farraj2019, .rechberger2008, .touma1996.paginas("43")])
         // Ptolomeo, por su fuente (Barker), y su lista.
         #expect(TipoDeEscala.tetracordoDiatonicoTenso.referencias == [.barker1989, .chalmers1993, .west1992])
         // Los echoi, por la afinación de Chrysanthos.

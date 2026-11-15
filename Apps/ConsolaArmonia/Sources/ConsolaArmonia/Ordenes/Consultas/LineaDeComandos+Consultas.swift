@@ -77,13 +77,18 @@ extension LineaDeComandos {
         }
         let acordes = zip(tonalidad.cifradosRomanos(cuatriadas: true), tonalidad.armonizar(cuatriadas: true))
             .map { "\($0) \($1.cifrado(en: notacion))" }.joined(separator: " · ")
-        return [
+        let lineas = [
             tonalidad.nombre(en: notacion),
             "  \(traducir(.armadura)): " + armadura,
             "  \(traducir(.relativa)): " + tonalidad.relativa.nombre(en: notacion)
                 + " · \(traducir(.homonima)): " + tonalidad.homonima.nombre(en: notacion),
             "  \(traducir(.acordes)): " + acordes,
-        ].joined(separator: "\n")
+        ]
+        // Lo que dicen sus fuentes de su carácter: «carácter: inocente (Schubart (Steblin 1983))».
+        let caracter = tonalidad.caracter.map {
+            "  \(traducir(.caracter)): " + $0.descripcion(en: notacion) + " (" + $0.cita(en: notacion) + ")"
+        }
+        return (lineas + caracter).joined(separator: "\n")
     }
 
     static func analizar(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {

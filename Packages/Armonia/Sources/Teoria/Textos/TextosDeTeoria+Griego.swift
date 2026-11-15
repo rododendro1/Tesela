@@ -418,6 +418,10 @@ extension TextosDeTeoria {
         afectoEntusiasta: "ενθουσιαστικός",
         afectoDevoto: "ευλαβής",
         afectoContemplativo: "στοχαστικός",
+        afectoInocente: "αθώος",
+        afectoSombrio: "ζοφερός",
+        afectoDesesperado: "απελπισμένος",
+        afectoColerico: "οργισμένος",
         momentoMadrugada: "πριν την αυγή",
         momentoManana: "πρωί",
         momentoFinalDeLaManana: "τέλος του πρωινού",
@@ -451,6 +455,10 @@ extension TextosDeTeoria {
         testigoProblemas: "Προβλήματα (ψευδο-Αριστοτέλης)",
         testigoYueji: "Γιουέτζι",
         testigoCoton: "Ιωάννης Κόττων",
+        testigoSchubart: "Σούμπαρτ",
+        sonoridadClara: "φωτεινή",
+        sonoridadIntermedia: "ενδιάμεση",
+        sonoridadOscura: "σκοτεινή",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{1} στο {2}",
         enLaTonalidad: { tonalidad in "σε " + tonalidad }

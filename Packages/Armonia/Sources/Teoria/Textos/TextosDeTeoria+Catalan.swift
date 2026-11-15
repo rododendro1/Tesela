@@ -418,6 +418,10 @@ extension TextosDeTeoria {
         afectoEntusiasta: "entusiasta",
         afectoDevoto: "devot",
         afectoContemplativo: "contemplatiu",
+        afectoInocente: "innocent",
+        afectoSombrio: "ombrívol",
+        afectoDesesperado: "desesperat",
+        afectoColerico: "colèric",
         momentoMadrugada: "matinada",
         momentoManana: "matí",
         momentoFinalDeLaManana: "final del matí",
@@ -451,6 +455,10 @@ extension TextosDeTeoria {
         testigoProblemas: "Problemes (pseudo-Aristòtil)",
         testigoYueji: "Yueji",
         testigoCoton: "Cotó",
+        testigoSchubart: "Schubart",
+        sonoridadClara: "clara",
+        sonoridadIntermedia: "intermèdia",
+        sonoridadOscura: "fosca",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{2} {1}",
         enLaTonalidad: { tonalidad in "en " + tonalidad }

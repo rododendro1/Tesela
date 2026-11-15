@@ -418,6 +418,10 @@ extension TextosDeTeoria {
         afectoEntusiasta: "восторженный",
         afectoDevoto: "благоговейный",
         afectoContemplativo: "созерцательный",
+        afectoInocente: "невинный",
+        afectoSombrio: "мрачный",
+        afectoDesesperado: "отчаянный",
+        afectoColerico: "гневный",
         momentoMadrugada: "перед рассветом",
         momentoManana: "утро",
         momentoFinalDeLaManana: "конец утра",
@@ -451,6 +455,10 @@ extension TextosDeTeoria {
         testigoProblemas: "Проблемы (псевдо-Аристотель)",
         testigoYueji: "Юэцзи",
         testigoCoton: "Иоанн Коттон",
+        testigoSchubart: "Шубарт",
+        sonoridadClara: "светлое",
+        sonoridadIntermedia: "среднее",
+        sonoridadOscura: "тёмное",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{1} от {2}",
         enLaTonalidad: { tonalidad in "в " + (tonalidad.hasSuffix("мажор") || tonalidad.hasSuffix("минор") ? tonalidad + "е" : tonalidad) }

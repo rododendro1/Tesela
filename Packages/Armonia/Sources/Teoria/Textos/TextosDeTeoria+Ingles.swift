@@ -418,6 +418,10 @@ extension TextosDeTeoria {
         afectoEntusiasta: "enthusiastic",
         afectoDevoto: "devotional",
         afectoContemplativo: "contemplative",
+        afectoInocente: "innocent",
+        afectoSombrio: "gloomy",
+        afectoDesesperado: "despairing",
+        afectoColerico: "wrathful",
         momentoMadrugada: "before dawn",
         momentoManana: "morning",
         momentoFinalDeLaManana: "late morning",
@@ -451,6 +455,10 @@ extension TextosDeTeoria {
         testigoProblemas: "Problems (pseudo-Aristotle)",
         testigoYueji: "Yueji",
         testigoCoton: "John Cotton",
+        testigoSchubart: "Schubart",
+        sonoridadClara: "bright",
+        sonoridadIntermedia: "middle",
+        sonoridadOscura: "dark",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{2} {1}",
         enLaTonalidad: { tonalidad in "in " + tonalidad }

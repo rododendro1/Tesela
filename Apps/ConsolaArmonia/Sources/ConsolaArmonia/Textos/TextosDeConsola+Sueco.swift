@@ -364,6 +364,7 @@ extension TextosDeConsola {
         mensajeMicrotonos: "mikrotoner",
         mensajeReferencias: "referenser",
         mensajeCaracter: "karaktär",
+        mensajeSonoridad: "klang (beräknad)",
         mensajeEscalas: "skalor",
         mensajeHabituales: "vanliga",
         mensajeSinLugar: "utan plats",

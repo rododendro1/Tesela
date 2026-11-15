@@ -421,6 +421,10 @@ extension TextosDeTeoria {
         afectoEntusiasta: "entusiastisk",
         afectoDevoto: "andäktig",
         afectoContemplativo: "kontemplativ",
+        afectoInocente: "oskyldig",
+        afectoSombrio: "dyster",
+        afectoDesesperado: "förtvivlad",
+        afectoColerico: "vredgad",
         momentoMadrugada: "före gryningen",
         momentoManana: "morgon",
         momentoFinalDeLaManana: "sen förmiddag",
@@ -454,6 +458,10 @@ extension TextosDeTeoria {
         testigoProblemas: "Problemata (pseudo-Aristoteles)",
         testigoYueji: "Yueji",
         testigoCoton: "Johannes Cotto",
+        testigoSchubart: "Schubart",
+        sonoridadClara: "ljus",
+        sonoridadIntermedia: "mellan",
+        sonoridadOscura: "mörk",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{1} på {2}",
         enLaTonalidad: { tonalidad in "i " + tonalidad }

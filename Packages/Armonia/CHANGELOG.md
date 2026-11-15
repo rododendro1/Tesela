@@ -10,6 +10,15 @@
   dominante), que ya no cuenta como nota a evitar. Sus nombres, en los trece idiomas.
 - `Escala.esCompatible(con:)`: si la escala sirve para el acorde, es decir, si tiene todas sus notas, ninguna choca con
   él y, si es una bebop, también sirve su escala de siete notas sin la de paso.
+- `Tonalidad.caracter`: el carácter de las 24 tonalidades que describe Schubart (*Ideen zu einer Ästhetik der
+  Tonkunst*, 1806), en la traducción de Steblin (1983), con `TestigoDelCaracter.schubart` y la obra nueva
+  `Referencia.steblin1983`. Es del nombre: Re♭ mayor lo tiene y Do♯ mayor no. `armonia tonalidad` lo escribe.
+- Cuatro afectos más para Schubart (`Afecto.inocente`, `.sombrio`, `.desesperado` y `.colerico`), en los trece idiomas.
+- El carácter de Rāst, Bayātī, Sīkāh y Ṣabā, de Touma (1996: 43–44). Bayātī y los demás citan ahora a Touma con la
+  página, y esa cita ocupa en `referencias` el sitio de la obra entera.
+- `Sonoridad` y `TipoDeEscala.sonoridad`: lo clara, intermedia u oscura que suena una escala occidental, calculado con
+  su brillo por quintas, como ordena Persichetti (1961) los modos de la mayor. Va aparte del carácter, porque no lo
+  dice ninguna fuente. `armonia escala` la escribe como «sonoridad (calculada)».
 
 ### Correcciones
 

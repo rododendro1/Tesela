@@ -418,6 +418,10 @@ extension TextosDeTeoria {
         afectoEntusiasta: "lelkes",
         afectoDevoto: "áhítatos",
         afectoContemplativo: "elmélkedő",
+        afectoInocente: "ártatlan",
+        afectoSombrio: "komor",
+        afectoDesesperado: "kétségbeesett",
+        afectoColerico: "haragos",
         momentoMadrugada: "hajnal előtt",
         momentoManana: "reggel",
         momentoFinalDeLaManana: "délelőtt vége",
@@ -451,6 +455,10 @@ extension TextosDeTeoria {
         testigoProblemas: "Problémák (pszeudo-Arisztotelész)",
         testigoYueji: "Jüecsi",
         testigoCoton: "Johannes Cotto",
+        testigoSchubart: "Schubart",
+        sonoridadClara: "világos",
+        sonoridadIntermedia: "közepes",
+        sonoridadOscura: "sötét",
         // Gramática (Acorde.swift, Tonalidad.swift)
         acordeSobre: "{2} {1}",
         // Con el inesivo: «C-dúrban», «a-mollban» (dúr y moll piden -ban).

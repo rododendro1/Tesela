@@ -364,6 +364,7 @@ extension TextosDeConsola {
         mensajeMicrotonos: "μικροτόνια",
         mensajeReferencias: "βιβλιογραφία",
         mensajeCaracter: "ήθος",
+        mensajeSonoridad: "ηχόχρωμα (υπολογισμένο)",
         mensajeEscalas: "κλίμακες",
         mensajeHabituales: "συνήθεις",
         mensajeSinLugar: "χωρίς τόπο",
