@@ -185,9 +185,12 @@ import Testing
         #expect(encadenado.description == "V/V/V")
         // Lo que no se lee, en su carácter.
         #expect(throws: ErrorDeLectura.self) { try CifradoRomano(leyendo: "  ") }
-        let error = try #require(
-            #expect(throws: ErrorDeLecturaDeTeoria.self) { try CifradoRomano(leyendo: "V7/X") })
-        #expect(error.posicion == 3)
+        do {
+            _ = try CifradoRomano(leyendo: "V7/X")
+            Issue.record("«V7/X» no debería leerse")
+        } catch let error as ErrorDeLecturaDeTeoria {
+            #expect(error.posicion == 3)
+        }
         #expect(throws: ErrorDeLecturaDeTeoria.self) { try CifradoRomano(leyendo: "♭subV7") }
     }
 
