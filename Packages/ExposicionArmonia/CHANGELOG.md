@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.5.4 (2026-11-15)
 
 ### Cambia de nombre
 

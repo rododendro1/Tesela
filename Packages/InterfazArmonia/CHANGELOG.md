@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.5.4 (2026-11-15)
 
 - El paquete y el módulo `Interfaz` se llaman `InterfazArmonia` (`import InterfazArmonia`), y su carpeta es
   `Packages/InterfazArmonia`. Depende de `ExposicionArmonia`, el nuevo nombre de `Exposicion`.
