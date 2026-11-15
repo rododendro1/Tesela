@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--archivo n'est que pour « acordes » et « arpegios »",
         ventanaSinArchivo: "--ventana va avec --archivo",
         acordesConCifradosYAnalisis: "les accords ont toujours chiffrages et analyse",
-        tipoDePartituraDesconocido: "« {1} » : on exporte une « melodia », un « coral », des « acordes », leurs « arpegios » ou une « escala »",
+        tipoDePartituraDesconocido: "« {1} » : on exporte une « melodia », un « coral », des « acordes », leurs « arpegios », une « escala », un « bajo » ou un « fraseo »",
         faltaLoQueSeGraba: "il manque ce qu'on grave : {1}",
         motorDesconocido: "« {1} » : les moteurs sont lilypond, musescore, verovio, guido et propio",
         formatoDeGrabadoDesconocido: "« {1} » : on grave en « pdf », « svg » ou « png »",
@@ -426,6 +426,41 @@ extension TextosDeConsola {
         Toute l'aide, avec les options de chaque commande : armonia ayuda --todo.
         Pour toutes les commandes : --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras et --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Écrivez une commande par ligne, sans « armonia » (ayuda : les commandes ; salir : terminer)."
+        bienvenidaDeLaSesion: "armonia {1}. Écrivez une commande par ligne, sans « armonia » (ayuda : les commandes ; salir : terminer).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <tempérament> [--kbm]",
+        descripcionScalaTemperamento: "un tempérament du catalogue en fichier .scl de Scala, celui que lisent presque tous les synthétiseurs ; avec --kbm, sa table de clavier (.kbm), avec le do4 sur la touche 60",
+        sintaxisScalaEscala: "scala scale <gamme> [--temperament <tempérament>] [--kbm]",
+        descripcionScalaEscala: "une gamme en fichier .scl, depuis la tonique et avec ses micro-intervalles si elle en a ; avec --temperament, dans un tempérament qui accorde ses notes ; avec --kbm, la table qui met chaque degré sur sa touche et rend muettes les autres",
+        sintaxisScalaArchivo: "scala --file <fichier.scl> [--tolerance <cents>] [--limit <n>]",
+        descripcionScalaArchivo: "lit un fichier .scl, donne ses notes en cents et ce qui lui ressemble dans le catalogue : les tempéraments ayant autant de pas, quelle que soit la note de départ, et les gammes ayant autant de degrés ; --tolerance est l'écart maximal d'une note (10 cents par défaut) et --limit, combien il en donne (10)",
+        sclResumen: "{1} : {2} notes par période, de {3} cents",
+        sclParecidos: "Lui ressemble (l'écart maximal d'une note) :",
+        sclSinParecidos: "Rien dans le catalogue ne lui ressemble à moins de {1} cents.",
+        sclTemperamento: "tempérament",
+        sclEscala: "gamme",
+        sclDesdeElPaso: "depuis le pas {1}",
+        faltaLoQueSeEscribeEnScala: "scala prend temperament <tempérament>, scale <gamme> ou --file <fichier.scl>",
+        temperamentoSoloDeEscala: "--temperament va avec scala scale",
+        temperamentoQueNoAfina: "« {1} » n'accorde pas les douze notes : c'est le système des micro-intervalles de certaines gammes",
+        soloConArchivoDeScala: "{1} va avec scala --file",
+        toleranciaNoValida: "« {1} » n'est pas une tolérance en cents : un nombre à partir de 0",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bajo|fraseo <chiffrages> [options]",
+        descripcionMusicxmlLineas: "une ligne sur les accords, une mesure par accord : bajo, une walking bass en noires avec sa tablature ; fraseo, des croches dans la gamme de chaque accord, avec une note guide sur le premier temps et une note chromatique vers le suivant, dans la mesure de --time",
+        compasDeLaLinea: "la walking bass est en 4/4 : --time est pour fraseo",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <accords> [--summary]",
+        descripcionReticulo: "la progression sur le réseau de l'intonation juste (SVG) : quintes à l'horizontale, tierces à la verticale, chaque fondamentale au point le plus proche de la précédente, et la dérive du comma si elle revient à sa première fondamentale ; avec --summary, en texte, le rapport de chaque fondamentale et son écart au tempérament égal",
+        derivaDelReticulo: "dérive : {1} cents",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "le moteur comme serveur MCP (Model Context Protocol) sur l'entrée et la sortie standard, pour qu'un assistant l'utilise : chaque commande qui donne du JSON est un outil, qui reçoit ce qu'on écrirait après le nom de la commande",
+        argumentosDeLaHerramienta: "ce qui suit le nom de la commande, comme dans le terminal : « Sol7/Si », « Ré dorien --chords »",
+        mcpSoloComoServidor: "mcp s'exécute seul, comme serveur : armonia mcp"
     )
 }

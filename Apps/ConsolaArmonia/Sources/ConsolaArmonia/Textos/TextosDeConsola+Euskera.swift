@@ -312,7 +312,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--archivo «acordes» eta «arpegios»-etarako bakarrik da",
         ventanaSinArchivo: "--ventana --archivo-rekin doa",
         acordesConCifradosYAnalisis: "akordeek beti daramatzate zifratuak eta analisia",
-        tipoDePartituraDesconocido: "«{1}»: «melodia», «coral», «acordes», haien «arpegios» edo «escala» bat esportatzen da",
+        tipoDePartituraDesconocido: "«{1}»: «melodia», «coral», «acordes», haien «arpegios», «escala», «bajo» edo «fraseo» bat esportatzen da",
         faltaLoQueSeGraba: "grabatzekoa falta da: {1}",
         motorDesconocido: "«{1}»: motorrak lilypond, musescore, verovio, guido eta propio dira",
         formatoDeGrabadoDesconocido: "«{1}»: «pdf», «svg» edo «png» formatuan grabatzen da",
@@ -427,6 +427,41 @@ extension TextosDeConsola {
         Laguntza osoa, agindu bakoitzaren aukerekin: armonia ayuda --todo.
         Agindu guztietarako: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras eta --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Idatzi agindu bat lerro bakoitzeko, «armonia» gabe (ayuda: aginduak; salir: amaitu)."
+        bienvenidaDeLaSesion: "armonia {1}. Idatzi agindu bat lerro bakoitzeko, «armonia» gabe (ayuda: aginduak; salir: amaitu).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <tenperamentua> [--kbm]",
+        descripcionScalaTemperamento: "katalogoko tenperamentu bat Scala-ren .scl fitxategi gisa, ia sintetizadore guztiek irakurtzen dutena; --kbm-ekin, bere teklatu-mapa (.kbm), Do4 60. teklan",
+        sintaxisScalaEscala: "scala scale <eskala> [--temperament <tenperamentua>] [--kbm]",
+        descripcionScalaEscala: "eskala bat .scl fitxategi gisa, tonikatik eta bere mikrotonuekin baditu; --temperament-ekin, bere notak afinatzen dituen tenperamentu batean; --kbm-ekin, gradu bakoitza bere teklan jartzen duen eta besteak isilik uzten dituen mapa",
+        sintaxisScalaArchivo: "scala --file <fitxategia.scl> [--tolerance <zentimoak>] [--limit <n>]",
+        descripcionScalaArchivo: ".scl fitxategi bat irakurtzen du eta bere notak zentimotan ematen ditu, baita katalogoan antza duena ere: urrats kopuru bereko tenperamentuak, edozein notatan hasita, eta gradu kopuru bereko eskalak; --tolerance nota bat gehienez zenbat alden daitekeen da (10 zentimo, eman ezean) eta --limit, zenbat ematen dituen (10)",
+        sclResumen: "{1}: {2} nota aldiko, {3} zentimokoa",
+        sclParecidos: "Antza du (nota batek gehienez duen aldea):",
+        sclSinParecidos: "Katalogoko ezerk ez du antzik {1} zentimo baino gutxiagora.",
+        sclTemperamento: "tenperamentua",
+        sclEscala: "eskala",
+        sclDesdeElPaso: "{1}. urratsetik",
+        faltaLoQueSeEscribeEnScala: "scala-k temperament <tenperamentua>, scale <eskala> edo --file <fitxategia.scl> behar du",
+        temperamentoSoloDeEscala: "--temperament scala scale-rekin doa",
+        temperamentoQueNoAfina: "«{1}»-ek ez ditu hamabi notak afinatzen: eskala batzuen mikrotonuen sistema da",
+        soloConArchivoDeScala: "{1} scala --file-rekin doa",
+        toleranciaNoValida: "«{1}» ez da zentimotako tolerantzia bat: 0tik gorako zenbaki bat",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bajo|fraseo <zifratuak> [aukerak]",
+        descripcionMusicxmlLineas: "akordeen gaineko lerro bat, konpas bat akorde bakoitzeko: bajo, beltzetan dabilen baxu bat bere tablaturarekin; fraseo, kortxeak akorde bakoitzaren eskalan zehar, lehen denboran nota gida batekin eta hurrengorako nota kromatiko batekin, --time-ren konpasean",
+        compasDeLaLinea: "baxu ibiltaria 4/4-n doa: --time fraseo-rako da",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <akordeak> [--summary]",
+        descripcionReticulo: "progresioa intonazio justuaren sarean (SVG): bosgarrenak horizontalean, hirugarrenak bertikalean, oinarrizko bakoitza aurrekotik hurbilen dagoen puntuan, eta komaren desbiderapena lehen oinarrizkora itzultzen bada; --summary-rekin, testuan, oinarrizko bakoitzaren arrazoia eta tenperamentu berdinetik zenbat aldentzen den",
+        derivaDelReticulo: "desbiderapena: {1} zentimo",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "motorra MCP (Model Context Protocol) zerbitzari gisa sarrera eta irteera estandarretik, laguntzaile batek erabil dezan: JSONa ematen duen agindu bakoitza tresna bat da, eta aginduaren izenaren ondoren idatziko litzatekeena jasotzen du",
+        argumentosDeLaHerramienta: "aginduaren izenaren ondoren doana, terminalean bezala: «Sol7/Si», «Re doriar --chords»",
+        mcpSoloComoServidor: "mcp bakarrik exekutatzen da, zerbitzari gisa: armonia mcp"
     )
 }

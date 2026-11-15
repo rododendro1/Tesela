@@ -49,6 +49,6 @@ import Testing
             comprobar(TextosDePartituras.self), comprobar(TextosDePolifonia.self), comprobar(TextosDeFormatos.self),
             comprobar(TextosDeTrastes.self),
         ]
-        #expect(cuantas.reduce(0, +) == 61)
+        #expect(cuantas.reduce(0, +) == 65)
     }
 }

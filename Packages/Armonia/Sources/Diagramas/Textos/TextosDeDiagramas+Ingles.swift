@@ -46,6 +46,11 @@ extension TextosDeDiagramas {
         intervalosIncoherentes: "Inconsistent intervals: {1},{2},{3}. They must satisfy 0 < L ≤ D and G = L + D.",
         giroNoValido: "A rotation of {1}° is not a multiple of 30°.",
         afinacionNoSoportada: "Only 12-note keyboards can be drawn, not {1}-note ones.",
-        cizallaNoSoportada: "Shear S{1} is not supported."
+        cizallaNoSoportada: "Shear S{1} is not supported.",
+
+        // ReticuloJusto.swift
+        tituloConDeriva: "{1} · drift of {2} cents",
+        leyendaQuintasYTerceras: "fifths (3/2) across, thirds (5/4) up",
+        leyendaDeFundamentalEnFundamental: "from one root to the next"
     )
 }

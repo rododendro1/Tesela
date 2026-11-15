@@ -70,6 +70,13 @@ extension LineaDeComandos {
                 "armonia musicxml arpeggios C Am F G7 --pattern alberti --duration 2 > arpeggios.musicxml"),
             notas: TextosDeConsola.traduccion(\.notasMusicxmlArpegios),
             opciones: [.patronDePartitura, .figuraDePartitura, .duracion, .enlazar]),
+        // musicxml bajo|fraseo <cifrados> [opciones]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisMusicxmlLineas),
+            descripcion: TextosDeConsola.traduccion(\.descripcionMusicxmlLineas),
+            ejemplo: ejemplo(
+                "armonia midi fraseo Rem7 Sol7 Do7M > fraseo.mid", "armonia midi line Dm7 G7 Cmaj7 > line.mid"),
+            opciones: [.compas]),
         // musicxml escala <escala> [opciones]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisMusicxmlEscala),

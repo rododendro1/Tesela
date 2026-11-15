@@ -9,6 +9,9 @@ extension LineaDeComandos {
         Orden(nombres: ["teclado", "keyboard"], ayuda: ayudaDeTeclado) { try teclado($0, $1.notacion) },
         Orden(nombres: ["cuadricula", "grid"], ayuda: ayudaDeCuadricula) { try cuadricula($0, $1.notacion) },
         Orden(nombres: ["reloj", "clock"], ayuda: ayudaDeReloj) { try reloj($0, $1.notacion) },
+        Orden(
+            nombres: ["reticulo", "lattice"], ayuda: ayudaDeReticulo, json: { try reticuloJSON($0, $1.notacion) },
+            ejecutar: { try reticulo($0, $1.notacion) }),
         Orden(nombres: ["hoja", "sheet"], ayuda: ayudaDeHoja) { try hoja($0, $1.notacion) },
         Orden(nombres: ["pentagrama", "staff"], ayuda: ayudaDePentagrama) { try pentagrama($0, $1.notacion) },
     ]
@@ -57,6 +60,16 @@ extension LineaDeComandos {
                 "armonia hoja tonalidad Re mayor > re.svg",
                 "armonia sheet key D major > d.svg"),
             opciones: [.html]),
+    ]
+
+    static let ayudaDeReticulo: [EntradaDeAyuda] = [
+        // reticulo <acordes> [--resumen]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisReticulo),
+            descripcion: TextosDeConsola.traduccion(\.descripcionReticulo),
+            ejemplo: ejemplo(
+                "armonia reticulo Do Lam Rem Sol Do > coma.svg", "armonia lattice C Am Dm G C > comma.svg"),
+            opciones: [.resumen])
     ]
 
     static let ayudaDeReloj: [EntradaDeAyuda] = [

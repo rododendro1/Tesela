@@ -297,7 +297,8 @@ Sources/
 ├── Diagramas/
 │   ├── Color/         CorrespondenciaDeColores (colores)
 │   ├── Redes/         Tonnetz (la red de quintas y terceras, en SVG, con los recorridos y los ciclos
-│   │                  neorriemannianos), TablaArmonica (hexágonos de teclado isomórfico, en SVG), FormatoUIL
+│   │                  neorriemannianos), TablaArmonica (hexágonos de teclado isomórfico, en SVG), FormatoUIL,
+│   │                  ReticuloJusto (el retículo de la entonación justa, con la deriva de la coma)
 │   ├── Dibujo/        DibujoSVG (título, leyenda y colores comunes de los dibujos)
 │   └── Textos/        TextosDeDiagramas y un fichero por idioma
 ├── Partituras/
@@ -318,6 +319,7 @@ Sources/
 │   ├── MIDI/          ArchivoMIDI (ficheros MIDI estándar) y su lectura
 │   ├── LilyPond/      LilyPond
 │   ├── GUIDO/         GUIDO
+│   ├── Scala/         ArchivoScala y MapaDeTeclado (los ficheros .scl y .kbm de Scala), con ParecidoDeScala
 │   ├── Exportacion/   Exportacion y EscritorDeLineas, lo que comparten los formatos
 │   ├── Importacion/   Importacion (con ErrorDeLecturaDeFichero, las escalas, la partitura y las repeticiones)
 │   │                  y el lector de XML propio (LectorXML)

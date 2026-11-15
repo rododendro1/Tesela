@@ -46,6 +46,11 @@ extension TextosDeDiagramas {
         intervalosIncoherentes: "Ασυνεπή διαστήματα: {1},{2},{3}. Πρέπει να ισχύει 0 < L ≤ D και G = L + D.",
         giroNoValido: "Η περιστροφή των {1}° δεν είναι πολλαπλάσιο των 30°.",
         afinacionNoSoportada: "Σχεδιάζονται μόνο πληκτρολόγια 12 φθόγγων, όχι {1}.",
-        cizallaNoSoportada: "Η διάτμηση S{1} δεν υποστηρίζεται."
+        cizallaNoSoportada: "Η διάτμηση S{1} δεν υποστηρίζεται.",
+
+        // ReticuloJusto.swift
+        tituloConDeriva: "{1} · ολίσθηση {2} cents",
+        leyendaQuintasYTerceras: "πέμπτες (3/2) οριζόντια, τρίτες (5/4) κάθετα",
+        leyendaDeFundamentalEnFundamental: "από μια θεμέλιο στην επόμενη"
     )
 }

@@ -17,6 +17,13 @@ extension TextosDeFormatos {
         xmlDanado: "Le fichier XML est endommagé (ligne {1}).",
         noEsMusicXMLPorPartes: "Le XML n'est ni une partition MusicXML par parties (score-partwise) ni du MEI.",
         sinNotas: "Le fichier ne contient aucune note.",
-        sinAcordes: "Aucun accord ne sonne dans le fichier."
+        sinAcordes: "Aucun accord ne sonne dans le fichier.",
+
+        // ArchivoScala.swift
+        sclVacio: "Le fichier Scala est vide ou ne contient que des commentaires.",
+        sclSinCuenta: "Il manque au fichier Scala le nombre de pas, sur la ligne qui suit la description.",
+        sclCuentaNoValida: "Ligne {1} du fichier Scala : « {2} » n'est pas un nombre de pas de 1 à 10000.",
+        sclFaltanPasos: "Le fichier Scala annonce {1} pas mais n'en a que {2}.",
+        sclPasoNoValido: "Ligne {1} du fichier Scala : « {2} » n'est ni un pas en cents (avec un point) ni un rapport positif."
     )
 }

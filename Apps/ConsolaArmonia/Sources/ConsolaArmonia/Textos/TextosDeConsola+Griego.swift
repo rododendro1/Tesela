@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "το --file είναι μόνο για «chords» και «arpeggios»",
         ventanaSinArchivo: "το --window πάει με το --file",
         acordesConCifradosYAnalisis: "οι συγχορδίες έχουν πάντα σύμβολα και ανάλυση",
-        tipoDePartituraDesconocido: "«{1}»: εξάγεται «melody», «chorale», «chords», τα «arpeggios» τους ή «scale»",
+        tipoDePartituraDesconocido: "«{1}»: εξάγεται «melody», «chorale», «chords», τα «arpeggios» τους, «scale», «bass» ή «line»",
         faltaLoQueSeGraba: "λείπει τι θα χαραχθεί: {1}",
         motorDesconocido: "«{1}»: οι μηχανές είναι lilypond, musescore, verovio, guido και own",
         formatoDeGrabadoDesconocido: "«{1}»: η έξοδος είναι «pdf», «svg» ή «png»",
@@ -426,6 +426,41 @@ extension TextosDeConsola {
         Όλη η βοήθεια, με τις επιλογές κάθε εντολής: armonia help --all.
         Για όλες τις εντολές: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras και --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Γράψτε μία εντολή ανά γραμμή, χωρίς «armonia» (help: οι εντολές· exit: τέλος)."
+        bienvenidaDeLaSesion: "armonia {1}. Γράψτε μία εντολή ανά γραμμή, χωρίς «armonia» (help: οι εντολές· exit: τέλος).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <συγκερασμός> [--kbm]",
+        descripcionScalaTemperamento: "ένας συγκερασμός του καταλόγου ως αρχείο .scl του Scala, αυτό που διαβάζουν σχεδόν όλα τα συνθεσάιζερ· με --kbm, η αντιστοίχιση πλήκτρων του (.kbm), με το Ντο4 στο πλήκτρο 60",
+        sintaxisScalaEscala: "scala scale <κλίμακα> [--temperament <συγκερασμός>] [--kbm]",
+        descripcionScalaEscala: "μια κλίμακα ως αρχείο .scl, από την τονική και με τα μικροδιαστήματά της αν έχει· με --temperament, σε συγκερασμό που κουρδίζει τις νότες της· με --kbm, η αντιστοίχιση που βάζει κάθε βαθμίδα στο πλήκτρο της και αφήνει τα άλλα βουβά",
+        sintaxisScalaArchivo: "scala --file <αρχείο.scl> [--tolerance <cents>] [--limit <n>]",
+        descripcionScalaArchivo: "διαβάζει ένα αρχείο .scl, δίνει τις νότες του σε cents και ό,τι του μοιάζει στον κατάλογο: τους συγκερασμούς με ίδιο αριθμό βημάτων, από όποια νότα κι αν ξεκινά, και τις κλίμακες με ίδιο αριθμό βαθμίδων· --tolerance είναι η μέγιστη απόκλιση μιας νότας (10 cents αν δεν δοθεί) και --limit, πόσα δίνει (10)",
+        sclResumen: "{1}: {2} νότες ανά περίοδο, {3} cents",
+        sclParecidos: "Του μοιάζει (η μέγιστη απόκλιση μιας νότας):",
+        sclSinParecidos: "Τίποτα στον κατάλογο δεν του μοιάζει σε λιγότερο από {1} cents.",
+        sclTemperamento: "συγκερασμός",
+        sclEscala: "κλίμακα",
+        sclDesdeElPaso: "από το βήμα {1}",
+        faltaLoQueSeEscribeEnScala: "το scala θέλει temperament <συγκερασμός>, scale <κλίμακα> ή --file <αρχείο.scl>",
+        temperamentoSoloDeEscala: "το --temperament πάει με το scala scale",
+        temperamentoQueNoAfina: "το «{1}» δεν κουρδίζει τις δώδεκα νότες: είναι το σύστημα μικροδιαστημάτων κάποιων κλιμάκων",
+        soloConArchivoDeScala: "το {1} πάει με το scala --file",
+        toleranciaNoValida: "το «{1}» δεν είναι ανοχή σε cents: ένας αριθμός από 0 και πάνω",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bass|line <σύμβολα> [επιλογές]",
+        descripcionMusicxmlLineas: "μια γραμμή πάνω στις συγχορδίες, ένα μέτρο ανά συγχορδία: bass, ένα walking bass σε τέταρτα με την ταμπλατούρα του· line, όγδοα μέσα στην κλίμακα κάθε συγχορδίας, με μια νότα-οδηγό στον πρώτο χρόνο και μια χρωματική νότα προς την επόμενη, στο μέτρο του --time",
+        compasDeLaLinea: "το walking bass είναι σε 4/4: το --time είναι για το line",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <συγχορδίες> [--summary]",
+        descripcionReticulo: "η αλληλουχία στο πλέγμα του καθαρού κουρδίσματος (SVG): πέμπτες οριζόντια, τρίτες κάθετα, κάθε θεμέλιος στο σημείο που είναι πιο κοντά στον προηγούμενο, και η ολίσθηση του κόμματος αν επιστρέφει στον πρώτο θεμέλιο· με --summary, σε κείμενο, ο λόγος κάθε θεμελίου και η απόκλισή του από τον ίσο συγκερασμό",
+        derivaDelReticulo: "ολίσθηση: {1} cents",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "ο πυρήνας ως διακομιστής MCP (Model Context Protocol) μέσω της τυπικής εισόδου και εξόδου, ώστε να τον χρησιμοποιεί ένας βοηθός: κάθε εντολή που δίνει JSON είναι ένα εργαλείο, που δέχεται ό,τι θα γραφόταν μετά το όνομα της εντολής",
+        argumentosDeLaHerramienta: "ό,τι ακολουθεί το όνομα της εντολής, όπως στο τερματικό: «G7/B», «D dorian --chords»",
+        mcpSoloComoServidor: "το mcp εκτελείται μόνο του, ως διακομιστής: armonia mcp"
     )
 }

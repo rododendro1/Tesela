@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--archivo só é para «acordes» e «arpegios»",
         ventanaSinArchivo: "--ventana vai con --archivo",
         acordesConCifradosYAnalisis: "os acordes levan sempre cifrados e análise",
-        tipoDePartituraDesconocido: "«{1}»: expórtase unha «melodia», un «coral», uns «acordes», os seus «arpegios» ou unha «escala»",
+        tipoDePartituraDesconocido: "«{1}»: expórtase unha «melodia», un «coral», uns «acordes», os seus «arpegios», unha «escala», un «bajo» ou un «fraseo»",
         faltaLoQueSeGraba: "falta o que se grava: {1}",
         motorDesconocido: "«{1}»: os motores son lilypond, musescore, verovio, guido e propio",
         formatoDeGrabadoDesconocido: "«{1}»: grávase en «pdf», «svg» ou «png»",
@@ -426,6 +426,41 @@ extension TextosDeConsola {
         Toda a axuda, coas opcións de cada orde: armonia ayuda --todo.
         Para todas as ordes: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras e --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Escribe unha orde por liña, sen «armonia» (ayuda: as ordes; salir: rematar)."
+        bienvenidaDeLaSesion: "armonia {1}. Escribe unha orde por liña, sen «armonia» (ayuda: as ordes; salir: rematar).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <temperamento> [--kbm]",
+        descripcionScalaTemperamento: "un temperamento do catálogo como ficheiro .scl de Scala, o que len case todos os sintetizadores; con --kbm, o seu mapa de teclado (.kbm), co Do4 na tecla 60",
+        sintaxisScalaEscala: "scala scale <escala> [--temperament <temperamento>] [--kbm]",
+        descripcionScalaEscala: "unha escala como ficheiro .scl, desde a tónica e cos seus microtons se os ten; con --temperament, nun temperamento que afina as súas notas; con --kbm, o mapa que pon cada grao na súa tecla e deixa mudas as demais",
+        sintaxisScalaArchivo: "scala --file <ficheiro.scl> [--tolerance <cents>] [--limit <n>]",
+        descripcionScalaArchivo: "le un ficheiro .scl, dá as súas notas en cents e o que se lle parece no catálogo: os temperamentos con tantos pasos, empece na nota que empece, e as escalas con tantos graos; --tolerance é o máis que se pode apartar unha nota (10 cents, se non se dá) e --limit, cantos dá (10)",
+        sclResumen: "{1}: {2} notas por período, de {3} cents",
+        sclParecidos: "Parécese (o máximo que se aparta unha nota):",
+        sclSinParecidos: "Nada do catálogo se lle parece a menos de {1} cents.",
+        sclTemperamento: "temperamento",
+        sclEscala: "escala",
+        sclDesdeElPaso: "desde o paso {1}",
+        faltaLoQueSeEscribeEnScala: "scala leva temperament <temperamento>, scale <escala> ou --file <ficheiro.scl>",
+        temperamentoSoloDeEscala: "--temperament vai con scala scale",
+        temperamentoQueNoAfina: "«{1}» non afina as doce notas: é o sistema dos microtons dunhas escalas",
+        soloConArchivoDeScala: "{1} vai con scala --file",
+        toleranciaNoValida: "«{1}» non é unha tolerancia en cents: un número de 0 en diante",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bajo|fraseo <cifrados> [opcións]",
+        descripcionMusicxmlLineas: "unha liña sobre os acordes, un compás por acorde: bajo, un baixo camiñante en negras coa súa tablatura; fraseo, corcheas pola escala de cada acorde, cunha nota guía no primeiro tempo e unha nota cromática cara ao seguinte, no compás de --time",
+        compasDeLaLinea: "o baixo camiñante vai en 4/4: --time é para o fraseo",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <acordes> [--summary]",
+        descripcionReticulo: "a progresión no retículo da entoación xusta (SVG): quintas en horizontal, terceiras en vertical, cada fundamental no punto máis próximo á anterior, e a deriva da coma se volve á súa primeira fundamental; con --summary, en texto, a razón de cada fundamental e o que se aparta do temperamento igual",
+        derivaDelReticulo: "deriva: {1} cents",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "o motor como servidor MCP (Model Context Protocol) pola entrada e a saída estándar, para que un asistente o use: cada orde que dá JSON é unha ferramenta, que recibe o que se escribiría tras o nome da orde",
+        argumentosDeLaHerramienta: "o que vai detrás do nome da orde, como na terminal: «Sol7/Si», «Re dórico --chords»",
+        mcpSoloComoServidor: "mcp execútase só, como servidor: armonia mcp"
     )
 }

@@ -255,8 +255,9 @@ public enum LineaDeComandos {
     /// Las órdenes por grupos, como salen en el índice de la ayuda; los títulos están en
     /// `TextosDeConsola.gruposDeLaAyuda`, en el mismo orden.
     static let gruposDeOrdenes: [[Orden]] = [
-        ordenesDeConsultas, ordenesDeArmonizacion, ordenesDePartituras + ordenesDeGrabado, ordenesDeDibujos,
-        ordenesDeNeorriemann, ordenesDeTrastes, ordenesDeLaTerminal + ordenesDeAyuda,
+        ordenesDeConsultas, ordenesDeArmonizacion, ordenesDePartituras + ordenesDeGrabado + ordenesDeAfinacion,
+        ordenesDeDibujos,
+        ordenesDeNeorriemann, ordenesDeTrastes, ordenesDeLaTerminal + ordenesDelServidor + ordenesDeAyuda,
     ]
 
     /// Todas las órdenes, en el orden en que salen en la ayuda.

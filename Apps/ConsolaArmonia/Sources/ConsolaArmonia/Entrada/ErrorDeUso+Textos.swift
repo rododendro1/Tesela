@@ -272,6 +272,16 @@ extension ErrorDeUso {
             return Self.conEjemplo(
                 \.cicloSoloTriadas, "armonia \(orden) ciclo hexatonico Do", "armonia \(orden) cycle hexatonic C")
         case .opcionesDeCuadricula: return TextosDeConsola.traduccion(\.opcionesDeCuadricula)
+        case .faltanAcordesDelReticulo:
+            return Self.conEjemplo(\.faltanAcordes, "armonia reticulo Do Lam Rem Sol Do", "armonia lattice C Am Dm G C")
+        case .mcpSoloComoServidor: return TextosDeConsola.traduccion(\.mcpSoloComoServidor)
+        case .compasDeLaLinea: return TextosDeConsola.traduccion(\.compasDeLaLinea)
+        case .faltaLoQueSeEscribeEnScala: return TextosDeConsola.traduccion(\.faltaLoQueSeEscribeEnScala)
+        case .temperamentoSoloDeEscala: return TextosDeConsola.traduccion(\.temperamentoSoloDeEscala)
+        case .temperamentoQueNoAfina(let temperamento):
+            return TextosDeConsola.traduccion { $0.temperamentoQueNoAfina(temperamento) }
+        case .soloConArchivoDeScala(let opcion): return TextosDeConsola.traduccion { $0.soloConArchivoDeScala(opcion) }
+        case .toleranciaNoValida(let texto): return TextosDeConsola.traduccion { $0.toleranciaNoValida(texto) }
         }
     }
 }

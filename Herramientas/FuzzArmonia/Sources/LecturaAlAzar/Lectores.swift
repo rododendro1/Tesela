@@ -80,6 +80,12 @@ public enum LecturaAlAzar {
             let formato = try FormatoUIL(leyendo: texto)
             _ = try FormatoUIL(leyendo: formato.descripcion)
         },
+        texto("Scala") { texto in
+            // Las afinaciones `.scl` de `armonia scala`: se leen, se comparan y se vuelven a escribir.
+            let archivo = try ArchivoScala(leyendo: texto)
+            _ = archivo.parecidos()
+            _ = try ArchivoScala(leyendo: archivo.texto())
+        },
     ]
 
     /// Lee los datos con el lector que elige su primer byte.
@@ -146,6 +152,10 @@ public enum LecturaAlAzar {
                 "0 e 7 4 2 9 3 8 t 1 5 6", "0e742 938t156", "Fa Mi Do La Sol Re La♭ Re♭ Mi♭ Sol♭ Si♭ Si",
             ],
             "UIL": ["2,7,5;R30M", "1,4,3;R0", "2,7,5;R30;M"],
+            "Scala": [
+                "Prueba\n2\n700.0\n2/1", "! a.scl\nPentatónica\n 5\n!\n9/8\n5/4\n3/2\n5/3\n2/1",
+                "Cuartos\n2\n-50.0\n1200.0",
+            ],
         ]
         var semillas: [(nombre: String, datos: Data)] = []
         for (i, lector) in lectores.enumerated() {

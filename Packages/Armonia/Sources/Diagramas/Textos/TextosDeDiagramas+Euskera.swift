@@ -45,6 +45,11 @@ extension TextosDeDiagramas {
         intervalosIncoherentes: "Tarte koherentegabeak: {1},{2},{3}. 0 < L ≤ D eta G = L + D bete behar dituzte.",
         giroNoValido: "{1}°-ko biraketa ez da 30°-ren multiploa.",
         afinacionNoSoportada: "12 notako teklatuak bakarrik marrazten dira, ez {1} notakoak.",
-        cizallaNoSoportada: "S{1} ebakidura ez dago onartuta."
+        cizallaNoSoportada: "S{1} ebakidura ez dago onartuta.",
+
+        // ReticuloJusto.swift
+        tituloConDeriva: "{1} · {2} zentimoko desbiderapena",
+        leyendaQuintasYTerceras: "bosgarrenak (3/2) horizontalean, hirugarrenak (5/4) bertikalean",
+        leyendaDeFundamentalEnFundamental: "oinarrizko batetik hurrengora"
     )
 }

@@ -46,6 +46,11 @@ extension TextosDeDiagramas {
         intervalosIncoherentes: "Motstridiga intervall: {1},{2},{3}. Det måste gälla att 0 < L ≤ D och G = L + D.",
         giroNoValido: "En vridning på {1}° är ingen multipel av 30°.",
         afinacionNoSoportada: "Bara klaviaturer med 12 toner kan ritas, inte med {1}.",
-        cizallaNoSoportada: "Skjuvningen S{1} stöds inte."
+        cizallaNoSoportada: "Skjuvningen S{1} stöds inte.",
+
+        // ReticuloJusto.swift
+        tituloConDeriva: "{1} · drift på {2} cent",
+        leyendaQuintasYTerceras: "kvinter (3/2) vågrätt, terser (5/4) lodrätt",
+        leyendaDeFundamentalEnFundamental: "från en grundton till nästa"
     )
 }
