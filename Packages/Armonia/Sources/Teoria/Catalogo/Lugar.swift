@@ -1,6 +1,6 @@
 import Elementos
 
-// MARK: - La geografía de una escala
+// MARK: - La geografía del catálogo
 //
 // De dónde viene una escala, separado de qué música es (su `Tradicion`): un `Lugar` en tres niveles, el continente, el
 // país y la región o el pueblo (`RegionDeEscala`), cada uno dentro del anterior. Las escalas no los escriben: los

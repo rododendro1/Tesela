@@ -52,6 +52,8 @@
   anochecer` (`--time dusk`), las que se tocan a esa hora; y `armonia reloj ragas`, el reloj de los rāgas en SVG.
   `armonia tonalidad` y `armonia escala` escriben las palabras de la fuente, una línea si las fuentes no coinciden y,
   en los modos medidos, el afecto medido. El JSON de `escala` y de `tonalidad` lleva el carácter.
+- Por dentro, sin cambios de API: `Lugar.swift` (`Continente`, `Pais`, `Lugar`…) pasa de `Escalas/Clasificacion/` a
+  `Teoria/Catalogo/`, junto a `Epoca`, `Escuela` y `Estilo`.
 ### Correcciones
 
 - `Referencia.unicas(_:)` pone la primera cita con páginas de una obra en el puesto de la obra sin ellas, si va antes,

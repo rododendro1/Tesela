@@ -11,6 +11,7 @@
 - `PresentacionDelRelojDeLosRagas`: las veinticuatro horas con los rāgas de cada prahar, en SVG.
 - `PresentacionDeEstudioDeEscala.caracter(de:en:)`, de una escala o de una tonalidad: las filas del carácter para una
   lista de las apps. La pestaña de escalas de Ars Harmonica tiene una sección «Carácter» con ellas.
+- Por dentro, sin cambios de API: `RelacionesPresentadas.swift` pasa de `Relaciones/` a `Postonal/`, con sus pruebas.
 - Cinco textos más en los trece idiomas (`caracterDeLaFuente`, `fuentesQueNoCoinciden`, `afectoMedido`,
   `sonoridadCalculada` y `relojDeLosRagas`).
 - `EscalaSobreAcordePresentada.aEvitar` lleva también las notas que chocan con el acorde (`PapelEnLaEscala.choque`):
