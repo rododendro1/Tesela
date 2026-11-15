@@ -193,7 +193,7 @@ extension LineaDeComandos {
     }
 
     struct TransposicionJSON: Encodable {
-        let intervalo: IntervaloJSON
+        let intervalo: IntervaloPresentado
         /// `acordes` o `notas`: cómo se ha leído lo que se transporta.
         let contenido: String
         /// Lo transportado, como en el texto.
@@ -203,12 +203,8 @@ extension LineaDeComandos {
     /// `transponer 2M Do Fa Sol7 --json`.
     static func transponerJSON(_ textos: [String], _ notacion: Notacion) throws -> TransposicionJSON {
         let hecho = try transporte(textos, notacion)
-        let intervalo = hecho.intervalo
         return TransposicionJSON(
-            intervalo: IntervaloJSON(
-                nombre: intervalo.nombre(en: notacion), abreviatura: intervalo.texto(en: notacion),
-                semitonos: intervalo.semitonos, numero: intervalo.numero,
-                descendente: intervalo.sentido == .descendente),
+            intervalo: IntervaloPresentado(hecho.intervalo, en: notacion),
             contenido: hecho.contenido == .acordes ? "acordes" : "notas", texto: hecho.texto)
     }
 

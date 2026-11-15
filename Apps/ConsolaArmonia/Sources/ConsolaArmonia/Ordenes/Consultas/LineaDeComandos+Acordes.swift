@@ -276,20 +276,17 @@ extension LineaDeComandos {
 
     static func describir(arpegio: Arpegio, _ notacion: Notacion) -> String {
         let traducir = { (mensaje: Mensaje) in mensaje.texto(en: notacion) }
-        let notas = arpegio.alturas(octava: 4).map { $0.nombre(en: notacion) }.joined(separator: " ")
-        // El patrón, o el recorrido por grados si es propio: «Do (1-5-3-8)».
-        let recorrido =
-            arpegio.grados.isEmpty
-            ? arpegio.patron.nombre(en: notacion) : arpegio.grados.map(String.init).joined(separator: "-")
+        // Los datos de `--json` (`NotasDeArpegioPresentadas`), en texto: el patrón, o el recorrido por grados si es
+        // propio: «Do (1-5-3-8)».
+        let datos = NotasDeArpegioPresentadas(arpegio, en: notacion)
         var lineas = [
-            "\(arpegio.nombre(en: notacion)) (\(recorrido))",
-            "  \(traducir(.notas)): \(notas)",
+            "\(datos.nombre) (\(datos.recorrido))",
+            "  \(traducir(.notas)): " + datos.notas.joined(separator: " "),
         ]
         // Las escalas del acorde, de las que tienen menos notas a evitar a las que más; con ocho basta para orientarse.
-        let escalas = arpegio.acorde.escalasCompatibles()
-        if !escalas.isEmpty {
-            let nombres = escalas.prefix(8).map { $0.nombre(en: notacion) }.joined(separator: ", ")
-            lineas.append("  \(traducir(.escalas)): \(nombres)" + (escalas.count > 8 ? "…" : ""))
+        if !datos.escalas.isEmpty {
+            let nombres = datos.escalas.prefix(8).joined(separator: ", ")
+            lineas.append("  \(traducir(.escalas)): \(nombres)" + (datos.escalas.count > 8 ? "…" : ""))
         }
         return lineas.joined(separator: "\n")
     }

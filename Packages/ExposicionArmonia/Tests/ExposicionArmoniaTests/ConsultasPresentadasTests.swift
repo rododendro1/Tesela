@@ -34,6 +34,43 @@ import Testing
         #expect(datos.acordes?.first?.cifrado == "Rem7")
     }
 
+    @Test func unaTonalidadConSuArmaduraYSusAcordes() throws {
+        let datos = TonalidadPresentada(try Tonalidad(leyendo: "Fa mayor"), en: .compacta(.espanol))
+        #expect(datos.tonica == "Fa")
+        #expect(datos.modo == "mayor")
+        #expect(datos.armadura == -1)
+        #expect(datos.alteraciones == ["Si♭"])
+        #expect(datos.clases.first == 5)
+        #expect(datos.relativa == "Re menor")
+        #expect(datos.acordes.map(\.grado).count == 7)
+        #expect(datos.acordes.first?.cifrado == "Famaj7")
+        let menor = TonalidadPresentada(try Tonalidad(leyendo: "La menor"), en: .compacta(.espanol))
+        #expect(menor.modo == "menor")
+        #expect(menor.armadura == 0 && menor.alteraciones.isEmpty)
+    }
+
+    @Test func unIntervaloCompuestoYUnoDescendente() {
+        let decima = IntervaloPresentado(Altura(.mi, octava: 5) - Altura(.do, octava: 4), en: .compacta(.espanol))
+        #expect(decima.numero == 10)
+        #expect(decima.semitonos == 16)
+        #expect(!decima.descendente)
+        #expect(
+            IntervaloPresentado(Altura(.do, octava: 4) - Altura(.sol, octava: 4), en: .compacta(.espanol)).descendente)
+    }
+
+    @Test func unArpegioConSuPatronOSuRecorrido() {
+        let notacion = Notacion.compacta(.espanol)
+        let ascendente = NotasDeArpegioPresentadas(Arpegio(Acorde("Do"), patron: .ascendente), en: notacion)
+        #expect(ascendente.acorde == "Do")
+        #expect(ascendente.notas.first == "Do₄")
+        #expect(ascendente.midi.first == 60)
+        #expect(ascendente.notas.count == ascendente.midi.count)
+        #expect(ascendente.recorrido == Arpegio.Patron.ascendente.nombre(en: notacion))
+        #expect(!ascendente.escalas.isEmpty)
+        let propio = NotasDeArpegioPresentadas(Arpegio(Acorde("Do"), grados: [1, 5, 3, 8]), en: notacion)
+        #expect(propio.recorrido == "1-5-3-8")
+    }
+
     @Test func unConjunto() {
         let datos = ConjuntoPresentado(ConjuntoDeClasesDeAltura([0, 4, 7]), en: .compacta(.espanol))
         #expect(datos.forte == "3-11")

@@ -319,103 +319,27 @@ extension LineaDeComandos {
     }
 
     // MARK: Arpegios, intervalos y tonalidades
-
-    struct ArpegioJSON: Encodable {
-        /// «Do7 arpegiado», como en el texto.
-        let nombre: String
-        let acorde: String
-        /// El nombre del patrón, o los grados del recorrido propio («1-5-3-8»).
-        let recorrido: String
-        /// Desde la octava 4, con su octava: «Do4».
-        let notas: [String]
-        /// Las mismas, en números MIDI (60 = Do4).
-        let midi: [Int]
-        /// Las escalas que encajan con el acorde, de las que tienen menos notas a evitar a las que más.
-        let escalas: [String]
-    }
+    //
+    // Los datos son los mismos que da el texto (`NotasDeArpegioPresentadas`, `IntervaloPresentado`,
+    // `TonalidadPresentada`): sus nombres son las claves del JSON.
 
     /// `arpegio Do7 --patron alberti --json`: cada arpegio con sus notas, una lista aunque sea uno solo. Admite las
     /// mismas opciones que el texto.
-    static func arpegioJSON(_ textos: [String], _ notacion: Notacion) throws -> [ArpegioJSON] {
-        try arpegios(textos, en: notacion).map { arpegio in
-            let alturas = arpegio.alturas(octava: 4)
-            return ArpegioJSON(
-                nombre: arpegio.nombre(en: notacion),
-                acorde: arpegio.acorde.cifrado(en: notacion),
-                recorrido: arpegio.grados.isEmpty
-                    ? arpegio.patron.nombre(en: notacion) : arpegio.grados.map(String.init).joined(separator: "-"),
-                notas: alturas.map { $0.nombre(en: notacion) },
-                midi: alturas.map(\.midi),
-                escalas: arpegio.acorde.escalasCompatibles().map { $0.nombre(en: notacion) })
-        }
-    }
-
-    struct IntervaloJSON: Encodable {
-        let nombre: String
-        /// «3M», en la notación.
-        let abreviatura: String
-        let semitonos: Int
-        /// 3 en una tercera, 10 en una décima.
-        let numero: Int
-        let descendente: Bool
+    static func arpegioJSON(_ textos: [String], _ notacion: Notacion) throws -> [NotasDeArpegioPresentadas] {
+        try arpegios(textos, en: notacion).map { NotasDeArpegioPresentadas($0, en: notacion) }
     }
 
     /// `intervalo Do4 Mi5 --json`.
-    static func intervaloJSON(_ textos: [String], _ notacion: Notacion) throws -> IntervaloJSON {
+    static func intervaloJSON(_ textos: [String], _ notacion: Notacion) throws -> IntervaloPresentado {
         let escritas = try palabras(Argumentos(textos), siFaltan: .dosNotas)
         guard escritas.count == 2 else { throw ErrorDeUso.dosNotas }
-        let medido = try intervalo(escritas[0], escritas[1], en: notacion)
-        return IntervaloJSON(
-            nombre: medido.nombre(en: notacion), abreviatura: medido.texto(en: notacion),
-            semitonos: medido.semitonos, numero: medido.numero, descendente: medido.sentido == .descendente)
-    }
-
-    struct TonalidadJSON: Encodable {
-        let nombre: String
-        let tonica: String
-        /// «mayor» o «menor», siempre en español: es un dato, no un texto.
-        let modo: String
-        /// Las alteraciones de la armadura: positivas los sostenidos y negativas los bemoles.
-        let armadura: Int
-        let alteraciones: [String]
-        let notas: [String]
-        let clases: [Int]
-        let relativa: String
-        let homonima: String
-        /// Las cuatríadas de cada grado, con su cifrado romano.
-        let acordes: [AcordeDelGrado]
-        /// Lo que dicen sus fuentes de su carácter (Charpentier, Schubart); no sale si ninguna dice nada.
-        var caracter: [CaracterPresentado]? = nil
-        /// Los pares de fuentes que no coinciden en nada: «Charpentier · Schubart».
-        var discrepancias: [String]? = nil
-    }
-
-    /// Como `EscalaPresentada.AcordeDelGrado`: «ii» «Rem7».
-    struct AcordeDelGrado: Encodable {
-        let grado: String
-        let cifrado: String
+        return IntervaloPresentado(try intervalo(escritas[0], escritas[1], en: notacion), en: notacion)
     }
 
     /// `tonalidad La menor --json`.
-    static func tonalidadJSON(_ textos: [String], _ notacion: Notacion) throws -> TonalidadJSON {
+    static func tonalidadJSON(_ textos: [String], _ notacion: Notacion) throws -> TonalidadPresentada {
         let texto = try palabras(Argumentos(textos), siFaltan: .faltaTonalidad).joined(separator: " ")
-        let tonalidad = try Tonalidad(leyendo: texto, enLaOrden: notacion)
-        let notas = tonalidad.escala.notas
-        return TonalidadJSON(
-            nombre: tonalidad.nombre(en: notacion),
-            tonica: tonalidad.tonica.nombre(en: notacion),
-            modo: tonalidad.modo == .mayor ? "mayor" : "menor",
-            armadura: tonalidad.armadura,
-            alteraciones: tonalidad.notasDeLaArmadura.map { $0.nombre(en: notacion) },
-            notas: notas.map { $0.nombre(en: notacion) },
-            clases: notas.map(\.claseDeAltura),
-            relativa: tonalidad.relativa.nombre(en: notacion),
-            homonima: tonalidad.homonima.nombre(en: notacion),
-            acordes: zip(tonalidad.cifradosRomanos(cuatriadas: true), tonalidad.armonizar(cuatriadas: true)).map {
-                AcordeDelGrado(grado: $0, cifrado: $1.cifrado(en: notacion))
-            },
-            caracter: CaracterPresentado.de(tonalidad.caracter, en: notacion),
-            discrepancias: CaracterPresentado.discrepancias(tonalidad.caracter, en: notacion))
+        return TonalidadPresentada(try Tonalidad(leyendo: texto, enLaOrden: notacion), en: notacion)
     }
 
     // MARK: Tradiciones
