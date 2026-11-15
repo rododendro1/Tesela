@@ -31,7 +31,12 @@ import Testing
         let disminuida = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do, .disminuida), en: notacion)
         func valor(_ nombre: String) -> String? { disminuida.first { $0.nombre == nombre }?.valor }
         #expect(valor("Modo de transposición limitada (Messiaen)") == "2")
-        #expect(valor("Tríadas por grados") == nil)
+        // Por terceras también fuera de las heptatónicas: los ocho grados de la disminuida.
+        #expect(valor("Tríadas por grados")?.split(separator: " ").count == 8)
+        #expect(valor("Tríadas por grados")?.hasSuffix(" 8°") == true)
+        let tetracordo = PresentacionDeEstudioDeEscala.estadisticas(
+            de: Escala(.do, .tetracordoDiatonico), en: notacion)
+        #expect(!tetracordo.contains { $0.nombre == "Tríadas por grados" })
         #expect(valor("Propiedades")?.contains("equilibrada") == true)
         let cromatica = PresentacionDeEstudioDeEscala.estadisticas(de: Escala(.do, .cromatica), en: notacion)
         #expect(!cromatica.contains { $0.nombre == "Complemento (Forte)" })

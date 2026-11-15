@@ -85,19 +85,23 @@ import Testing
                 .semidisminuido,
             ])
         #expect(menorArmonica.tonal.triadas?[2] == .aumentado)
-        #expect(pentatonica.tonal.triadas == nil)
+        // Fuera de las heptatónicas también, por terceras de verdad: en la pentatónica mayor, solo Do y Lam.
+        #expect(pentatonica.tonal.triadas == [.mayor, nil, nil, nil, .menor])
+        #expect(Escala(.do, .tetracordoDiatonico).estadisticas.tonal.triadas == nil)
     }
 
-    /// Las tríadas y las cuatríadas por grados son las de `armonizar`, solo las conocidas.
+    /// Las tríadas y las cuatríadas por grados son las de `armonizar`, en todas las escalas que no son fragmentos.
     @Test func losAcordesPorGradosSonLosDeArmonizar() {
-        for tipo in TipoDeEscala.catalogo where tipo.intervalos.count == 7 {
+        for tipo in TipoDeEscala.catalogo {
             let escala = Escala(.do, tipo)
             let tonal = escala.estadisticas.tonal
-            #expect(tonal.triadas?.count == 7 && tonal.cuatriadas?.count == 7, Comment(rawValue: tipo.nombre))
-            for (grado, triada) in (tonal.triadas ?? []).enumerated() {
-                #expect(
-                    triada == nil || escala.acorde(grado: grado + 1)?.tipo == triada, Comment(rawValue: tipo.nombre))
+            if tipo.esFragmento {
+                #expect(tonal.triadas == nil && tonal.cuatriadas == nil, Comment(rawValue: tipo.nombre))
+                continue
             }
+            #expect(tonal.triadas == escala.armonizar().map { $0?.tipo }, Comment(rawValue: tipo.nombre))
+            #expect(
+                tonal.cuatriadas == escala.armonizar(cuatriadas: true).map { $0?.tipo }, Comment(rawValue: tipo.nombre))
         }
     }
 

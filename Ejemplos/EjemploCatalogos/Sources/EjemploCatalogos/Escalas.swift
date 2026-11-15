@@ -59,6 +59,11 @@ private func acordesDeLosGrados(_ acordes: [Acorde?]) -> String {
     acordes.map { $0?.cifrado ?? "?" }.joined(separator: " ")
 }
 
+/// Los acordes de los grados con su fundamental (los tipos de `EstadisticasTonalesDeEscala`, sobre cada grado).
+private func acordesDeLosGrados(_ tipos: [TipoDeAcorde?], de escala: Escala) -> String {
+    acordesDeLosGrados(tipos.enumerated().map { i, tipo in tipo.map { Acorde(escala.grado(i + 1), $0) } })
+}
+
 /// Las tensiones disponibles de cada grado (`Escala.armonizacionConTensiones`): las de un grado separadas por
 /// espacios, los grados por « · »; «?» en el que no tiene cuatríada y «—» en el que no tiene tensiones.
 private func tensionesPorGrados(de escala: Escala) -> String {
@@ -166,8 +171,8 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         siONo(medidas.conjunto.simplicidad),
         // Los acordes de cada grado sobre Do, con su fundamental: con el tipo solo, la tríada mayor no se vería (su
         // cifrado es «»).
-        tieneAcordes ? acordesDeLosGrados(sobreDo.armonizar(notas: 3)) : "",
-        tieneAcordes ? acordesDeLosGrados(sobreDo.armonizar(notas: 4)) : "",
+        medidas.tonal.triadas.map { acordesDeLosGrados($0, de: sobreDo) } ?? "",
+        medidas.tonal.cuatriadas.map { acordesDeLosGrados($0, de: sobreDo) } ?? "",
         tieneAcordes ? acordesDeLosGrados(sobreDo.armonizar(notas: 4, por: .cuartas)) : "",
         tieneAcordes ? tensionesPorGrados(de: sobreDo) : "",
         medidas.conjunto.combinatoriedad.map { c in

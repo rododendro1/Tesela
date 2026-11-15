@@ -1,5 +1,14 @@
 # Cambios
 
+## Sin publicar
+
+### Cambios
+
+- `EstadisticasTonalesDeEscala.triadas` y `cuatriadas` son los tipos de `Escala.armonizar(cuatriadas:)` en todas las
+  escalas que no son fragmentos, también las que no tienen siete notas (en la pentatónica mayor, Do y Lam), y con
+  cualquier tipo, no solo las cuatro tríadas y las nueve cuatríadas de antes: hay una sola forma de armonizar una
+  escala.
+
 ## 0.5.4 (2026-11-15)
 
 ### Novedades
