@@ -451,7 +451,7 @@ import Testing
         #expect(InstrumentoDePartitura.glockenspiel.sonido(de: Altura("Do5")) == Altura("Do7"))
         #expect(!InstrumentoDePartitura.piano.esTranspositor)
         #expect(InstrumentoDePartitura.trompetaEnSib.esTranspositor)
-        #expect(InstrumentoDePartitura.todos.count == 30)
+        #expect(Set(InstrumentoDePartitura.todos.map(\.nombre)).count == InstrumentoDePartitura.todos.count)
         #expect(InstrumentoDePartitura.viola.clave == .doEnTercera)
     }
 

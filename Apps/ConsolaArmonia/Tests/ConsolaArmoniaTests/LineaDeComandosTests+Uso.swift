@@ -364,7 +364,10 @@ extension LineaDeComandosTests {
         #expect(salida("progresiones andaluza --en La menor") == salida("progresiones andaluza --en La"))
         // El nombre exacto da solo esa; si no, todas las que lo contienen.
         #expect(salida("progressions ii-V-I --in Bb --ingles") == "ii–V–I: ii7 V7 Imaj7 · Cm7 F7 Bbmaj7\n")
-        #expect(salida("progresiones cadencia").split(separator: "\n").count == 12)
+        // Una línea por cada progresión cuyo nombre o alias contiene la palabra.
+        let cadencias = ProgresionConNombre.buscar(conteniendo: "cadencia")
+        #expect(cadencias.count > 1)
+        #expect(salida("progresiones cadencia").split(separator: "\n").count == cadencias.count)
         #expect(salida("progresiones Trugschluss --idioma de") == "Trugschluss: V7 vi · G7 Am\n")
         #expect(resultado("progresiones", "zzz").error.contains("no hay ninguna progresión así"))
         #expect(resultado("progresiones", "blues", "--en").error.contains("falta la tonalidad tras --en"))

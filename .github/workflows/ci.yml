@@ -55,6 +55,8 @@ jobs:
         run: python3 Scripts/comprobaciones/comprobar_modulos.py
       - name: Catálogo de escalas
         run: python3 Scripts/comprobaciones/comprobar_catalogo.py
+      - name: Catálogos con nombre (cada elemento en su lista, y las cifras de los documentos)
+        run: python3 Scripts/comprobaciones/comprobar_catalogos_con_nombre.py
       - name: Enlaces de la documentación (DocC)
         run: python3 Scripts/comprobaciones/comprobar_enlaces_docc.py
       - name: Símbolos de los comentarios

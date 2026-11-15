@@ -19,3 +19,6 @@ __pycache__/
 Herramientas/FuzzArmonia/corpus/
 Herramientas/FuzzArmonia/semillas/
 Herramientas/FuzzArmonia/fallos/
+
+# Perfiles de cobertura que deja `swift test --enable-code-coverage` fuera de .build.
+*.profraw

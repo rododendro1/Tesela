@@ -81,6 +81,7 @@ python3 Scripts/comprobaciones/comprobar_dependencias.py
 python3 Scripts/comprobaciones/comprobar_paquetes.py
 python3 Scripts/comprobaciones/comprobar_modulos.py
 python3 Scripts/comprobaciones/comprobar_catalogo.py
+python3 Scripts/comprobaciones/comprobar_catalogos_con_nombre.py
 python3 Scripts/comprobaciones/comprobar_enlaces_docc.py
 python3 Scripts/comprobaciones/comprobar_simbolos_en_comentarios.py
 python3 Scripts/comprobaciones/comprobar_arboles.py

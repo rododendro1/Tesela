@@ -7,7 +7,6 @@ import Testing
     /// Cada acorde del catálogo se lee por terceras y tiene un nombre que no se repite.
     @Test func catalogo() {
         let catalogo = AcordeConNombre.catalogo
-        #expect(AcordeConNombre.genericos.count == 46)
         #expect(catalogo == AcordeConNombre.genericos + AcordeConNombre.conNombrePropio)
         #expect(Set(catalogo.map(\.nombre)).count == catalogo.count)
         #expect(Set(catalogo).count == catalogo.count)

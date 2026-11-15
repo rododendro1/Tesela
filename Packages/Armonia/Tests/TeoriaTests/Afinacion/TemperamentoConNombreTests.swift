@@ -9,7 +9,6 @@ import Testing
     /// debajo de la octava, y una referencia.
     @Test func catalogo() {
         let catalogo = TemperamentoConNombre.catalogo
-        #expect(catalogo.count == 22)
         #expect(Set(catalogo.map(\.nombre)).count == catalogo.count)
         for temperamento in catalogo {
             let pasos = temperamento.pasos

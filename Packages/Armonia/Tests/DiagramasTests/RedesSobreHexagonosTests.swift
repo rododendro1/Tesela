@@ -229,8 +229,7 @@ import Testing
     }
 
     @Test func elCatalogoDeTecladosYSusNombres() {
-        #expect(TecladoIsomorfico.todos.count == 9)
-        #expect(Set(TecladoIsomorfico.todos.map(\.nombre)).count == 9)
+        #expect(Set(TecladoIsomorfico.todos.map(\.nombre)).count == TecladoIsomorfico.todos.count)
         #expect(TecladoIsomorfico.tablaArmonica.nombre(en: .ascii(.ingles)) == "Harmonic table")
         #expect(TecladoIsomorfico.acordeonB.nombre(en: .conPalabras(.aleman)) == "Akkordeon B-Griff")
         #expect(TecladoIsomorfico.wickiHaydenEspejo.nombre(en: .compacta(.espanol)) == "Wicki-Hayden (espejo)")
