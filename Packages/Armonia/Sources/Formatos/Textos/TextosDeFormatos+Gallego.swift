@@ -17,6 +17,13 @@ extension TextosDeFormatos {
         xmlDanado: "O ficheiro XML está danado (liña {1}).",
         noEsMusicXMLPorPartes: "O XML non é unha partitura MusicXML por partes (score-partwise) nin MEI.",
         sinNotas: "O ficheiro non ten ningunha nota.",
-        sinAcordes: "No ficheiro non soa ningún acorde."
+        sinAcordes: "No ficheiro non soa ningún acorde.",
+
+        // ArchivoScala.swift
+        sclVacio: "O ficheiro de Scala está baleiro ou só ten comentarios.",
+        sclSinCuenta: "Ao ficheiro de Scala fáltalle o número de pasos, na liña que segue á descrición.",
+        sclCuentaNoValida: "Liña {1} do ficheiro de Scala: «{2}» non é un número de pasos de 1 a 10000.",
+        sclFaltanPasos: "O ficheiro de Scala di {1} pasos e só ten {2}.",
+        sclPasoNoValido: "Liña {1} do ficheiro de Scala: «{2}» non é un paso en cents (con punto) nin unha razón positiva."
     )
 }

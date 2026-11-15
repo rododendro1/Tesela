@@ -17,6 +17,13 @@ extension TextosDeFormatos {
         xmlDanado: "The XML file is damaged (line {1}).",
         noEsMusicXMLPorPartes: "The XML is neither a partwise MusicXML score (score-partwise) nor MEI.",
         sinNotas: "The file has no notes.",
-        sinAcordes: "No chords sound in the file."
+        sinAcordes: "No chords sound in the file.",
+
+        // ArchivoScala.swift
+        sclVacio: "The Scala file is empty or has only comments.",
+        sclSinCuenta: "The Scala file lacks the number of steps on the line after the description.",
+        sclCuentaNoValida: "Line {1} of the Scala file: \"{2}\" is not a number of steps from 1 to 10000.",
+        sclFaltanPasos: "The Scala file says {1} steps but has only {2}.",
+        sclPasoNoValido: "Line {1} of the Scala file: \"{2}\" is neither a step in cents (with a dot) nor a positive ratio."
     )
 }

@@ -425,6 +425,25 @@ extension TextosDeConsola {
         Toda a ajuda, com as opções de cada ordem: armonia ayuda --todo.
         Para todas as ordens: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras e --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Escreve uma ordem por linha, sem «armonia» (ayuda: as ordens; salir: terminar)."
+        bienvenidaDeLaSesion: "armonia {1}. Escreve uma ordem por linha, sem «armonia» (ayuda: as ordens; salir: terminar).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <temperamento> [--kbm]",
+        descripcionScalaTemperamento: "um temperamento do catálogo como ficheiro .scl do Scala, o que quase todos os sintetizadores leem; com --kbm, o seu mapa de teclado (.kbm), com o Dó4 na tecla 60",
+        sintaxisScalaEscala: "scala scale <escala> [--temperament <temperamento>] [--kbm]",
+        descripcionScalaEscala: "uma escala como ficheiro .scl, desde a tónica e com os seus microtons se os tiver; com --temperament, num temperamento que afina as suas notas; com --kbm, o mapa que põe cada grau na sua tecla e deixa mudas as outras",
+        sintaxisScalaArchivo: "scala --file <ficheiro.scl> [--tolerance <cents>] [--limit <n>]",
+        descripcionScalaArchivo: "lê um ficheiro .scl, dá as suas notas em cents e o que se lhe parece no catálogo: os temperamentos com tantos passos, comece na nota que começar, e as escalas com tantos graus; --tolerance é o máximo que uma nota se pode afastar (10 cents, se não se der) e --limit, quantos dá (10)",
+        sclResumen: "{1}: {2} notas por período, de {3} cents",
+        sclParecidos: "Parece-se (o máximo que uma nota se afasta):",
+        sclSinParecidos: "Nada do catálogo se lhe parece a menos de {1} cents.",
+        sclTemperamento: "temperamento",
+        sclEscala: "escala",
+        sclDesdeElPaso: "desde o passo {1}",
+        faltaLoQueSeEscribeEnScala: "scala leva temperament <temperamento>, scale <escala> ou --file <ficheiro.scl>",
+        temperamentoSoloDeEscala: "--temperament vai com scala scale",
+        temperamentoQueNoAfina: "«{1}» não afina as doze notas: é o sistema dos microtons de umas escalas",
+        soloConArchivoDeScala: "{1} vai com scala --file",
+        toleranciaNoValida: "«{1}» não é uma tolerância em cents: um número de 0 para cima"
     )
 }

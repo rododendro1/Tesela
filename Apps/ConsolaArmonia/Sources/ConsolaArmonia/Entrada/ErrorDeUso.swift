@@ -188,4 +188,16 @@ enum ErrorDeUso: ErrorDeArmonia {
     case cicloSoloTriadas(orden: String)
     /// `cuadricula` con una opción sin valor o con uno que no se lee: unos ejes, una rejilla, una altura o un giro.
     case opcionesDeCuadricula
+
+    // Afinación (`scala`)
+    /// `scala` sin `temperamento <…>`, `escala <…>` ni `--archivo`.
+    case faltaLoQueSeEscribeEnScala
+    /// `scala temperamento … --temperamento …`.
+    case temperamentoSoloDeEscala
+    /// `scala escala … --temperamento` con uno que no afina las doce notas.
+    case temperamentoQueNoAfina(String)
+    /// `--tolerancia` o `--limite` sin `--archivo`.
+    case soloConArchivoDeScala(String)
+    /// `--tolerancia` con algo que no es un número de 0 en adelante.
+    case toleranciaNoValida(String)
 }

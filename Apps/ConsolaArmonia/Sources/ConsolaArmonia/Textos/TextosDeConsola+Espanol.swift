@@ -426,6 +426,25 @@ extension TextosDeConsola {
         Toda la ayuda, con las opciones de cada orden: armonia ayuda --todo.
         Para todas las órdenes: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras y --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Escribe una orden por línea, sin «armonia» (ayuda: las órdenes; salir: terminar)."
+        bienvenidaDeLaSesion: "armonia {1}. Escribe una orden por línea, sin «armonia» (ayuda: las órdenes; salir: terminar).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperamento <temperamento> [--kbm]",
+        descripcionScalaTemperamento: "un temperamento del catálogo como fichero .scl de Scala, el que leen casi todos los sintetizadores; con --kbm, su mapa de teclado (.kbm), con el Do4 en la tecla 60",
+        sintaxisScalaEscala: "scala escala <escala> [--temperamento <temperamento>] [--kbm]",
+        descripcionScalaEscala: "una escala como fichero .scl, desde la tónica y con sus microtonos si los tiene; con --temperamento, en un temperamento que afina sus notas; con --kbm, el mapa que pone cada grado en su tecla y deja mudas las demás",
+        sintaxisScalaArchivo: "scala --archivo <fichero.scl> [--tolerancia <cents>] [--limite <n>]",
+        descripcionScalaArchivo: "lee un fichero .scl, da sus notas en cents y lo que se le parece en el catálogo: los temperamentos con tantos pasos, empiece en la nota que empiece, y las escalas con tantos grados; --tolerancia es lo más que se puede apartar una nota (10 cents, si no se da) y --limite, cuántos da (10)",
+        sclResumen: "{1}: {2} notas por periodo, de {3} cents",
+        sclParecidos: "Se le parece (lo que más se aparta una nota):",
+        sclSinParecidos: "Nada del catálogo se le parece a menos de {1} cents.",
+        sclTemperamento: "temperamento",
+        sclEscala: "escala",
+        sclDesdeElPaso: "desde el paso {1}",
+        faltaLoQueSeEscribeEnScala: "scala lleva temperamento <temperamento>, escala <escala> o --archivo <fichero.scl>",
+        temperamentoSoloDeEscala: "--temperamento va con scala escala",
+        temperamentoQueNoAfina: "«{1}» no afina las doce notas: es el sistema de los microtonos de unas escalas",
+        soloConArchivoDeScala: "{1} va con scala --archivo",
+        toleranciaNoValida: "«{1}» no es una tolerancia en cents: un número de 0 en adelante"
     )
 }

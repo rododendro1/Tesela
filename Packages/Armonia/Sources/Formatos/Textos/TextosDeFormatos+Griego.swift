@@ -17,6 +17,13 @@ extension TextosDeFormatos {
         xmlDanado: "Το αρχείο XML είναι κατεστραμμένο (γραμμή {1}).",
         noEsMusicXMLPorPartes: "Το XML δεν είναι ούτε παρτιτούρα MusicXML ανά μέρη (score-partwise) ούτε MEI.",
         sinNotas: "Το αρχείο δεν έχει καμία νότα.",
-        sinAcordes: "Στο αρχείο δεν ακούγεται καμία συγχορδία."
+        sinAcordes: "Στο αρχείο δεν ακούγεται καμία συγχορδία.",
+
+        // ArchivoScala.swift
+        sclVacio: "Το αρχείο Scala είναι κενό ή έχει μόνο σχόλια.",
+        sclSinCuenta: "Στο αρχείο Scala λείπει ο αριθμός των βημάτων, στη γραμμή μετά την περιγραφή.",
+        sclCuentaNoValida: "Γραμμή {1} του αρχείου Scala: «{2}» δεν είναι αριθμός βημάτων από 1 έως 10000.",
+        sclFaltanPasos: "Το αρχείο Scala δηλώνει {1} βήματα αλλά έχει μόνο {2}.",
+        sclPasoNoValido: "Γραμμή {1} του αρχείου Scala: «{2}» δεν είναι ούτε βήμα σε cents (με τελεία) ούτε θετικός λόγος."
     )
 }

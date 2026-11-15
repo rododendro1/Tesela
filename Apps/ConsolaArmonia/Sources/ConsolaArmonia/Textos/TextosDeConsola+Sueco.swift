@@ -425,6 +425,25 @@ extension TextosDeConsola {
         Hela hjälpen, med varje kommandos alternativ: armonia help --all.
         För alla kommandon: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras och --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Ett kommando per rad, utan ”armonia” (help: kommandona; exit: avsluta)."
+        bienvenidaDeLaSesion: "armonia {1}. Ett kommando per rad, utan ”armonia” (help: kommandona; exit: avsluta).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <temperatur> [--kbm]",
+        descripcionScalaTemperamento: "en temperatur ur katalogen som Scala-fil .scl, den som nästan alla syntar läser; med --kbm dess tangentmappning (.kbm), med C4 på tangent 60",
+        sintaxisScalaEscala: "scala scale <skala> [--temperament <temperatur>] [--kbm]",
+        descripcionScalaEscala: "en skala som .scl-fil, från grundtonen och med sina mikrotoner om den har några; med --temperament i en temperatur som stämmer dess toner; med --kbm mappningen som lägger varje steg på sin tangent och tystar de övriga",
+        sintaxisScalaArchivo: "scala --file <fil.scl> [--tolerance <cent>] [--limit <n>]",
+        descripcionScalaArchivo: "läser en .scl-fil och ger dess toner i cent och det som liknar den i katalogen: temperaturerna med lika många steg, vilken ton den än börjar på, och skalorna med lika många steg; --tolerance är den största avvikelsen för en ton (10 cent som standard) och --limit, hur många den ger (10)",
+        sclResumen: "{1}: {2} toner per period, på {3} cent",
+        sclParecidos: "Liknar den (största avvikelsen för en ton):",
+        sclSinParecidos: "Inget i katalogen ligger inom {1} cent från den.",
+        sclTemperamento: "temperatur",
+        sclEscala: "skala",
+        sclDesdeElPaso: "från steg {1}",
+        faltaLoQueSeEscribeEnScala: "scala tar temperament <temperatur>, scale <skala> eller --file <fil.scl>",
+        temperamentoSoloDeEscala: "--temperament hör till scala scale",
+        temperamentoQueNoAfina: "”{1}” stämmer inte de tolv tonerna: det är vissa skalors mikrotonssystem",
+        soloConArchivoDeScala: "{1} hör till scala --file",
+        toleranciaNoValida: "”{1}” är ingen tolerans i cent: ett tal från 0 och uppåt"
     )
 }

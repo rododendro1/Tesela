@@ -17,6 +17,13 @@ extension TextosDeFormatos {
         xmlDanado: "Файл XML повреждён (строка {1}).",
         noEsMusicXMLPorPartes: "XML не является ни партитурой MusicXML по партиям (score-partwise), ни MEI.",
         sinNotas: "В файле нет ни одной ноты.",
-        sinAcordes: "В файле не звучит ни одного аккорда."
+        sinAcordes: "В файле не звучит ни одного аккорда.",
+
+        // ArchivoScala.swift
+        sclVacio: "Файл Scala пуст или содержит только комментарии.",
+        sclSinCuenta: "В файле Scala нет числа ступеней в строке после описания.",
+        sclCuentaNoValida: "Строка {1} файла Scala: «{2}» — не число ступеней от 1 до 10000.",
+        sclFaltanPasos: "В файле Scala заявлено {1} ступеней, а есть только {2}.",
+        sclPasoNoValido: "Строка {1} файла Scala: «{2}» — не ступень в центах (с точкой) и не положительное отношение."
     )
 }

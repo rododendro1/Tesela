@@ -425,6 +425,25 @@ extension TextosDeConsola {
         Όλη η βοήθεια, με τις επιλογές κάθε εντολής: armonia help --all.
         Για όλες τις εντολές: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras και --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Γράψτε μία εντολή ανά γραμμή, χωρίς «armonia» (help: οι εντολές· exit: τέλος)."
+        bienvenidaDeLaSesion: "armonia {1}. Γράψτε μία εντολή ανά γραμμή, χωρίς «armonia» (help: οι εντολές· exit: τέλος).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <συγκερασμός> [--kbm]",
+        descripcionScalaTemperamento: "ένας συγκερασμός του καταλόγου ως αρχείο .scl του Scala, αυτό που διαβάζουν σχεδόν όλα τα συνθεσάιζερ· με --kbm, η αντιστοίχιση πλήκτρων του (.kbm), με το Ντο4 στο πλήκτρο 60",
+        sintaxisScalaEscala: "scala scale <κλίμακα> [--temperament <συγκερασμός>] [--kbm]",
+        descripcionScalaEscala: "μια κλίμακα ως αρχείο .scl, από την τονική και με τα μικροδιαστήματά της αν έχει· με --temperament, σε συγκερασμό που κουρδίζει τις νότες της· με --kbm, η αντιστοίχιση που βάζει κάθε βαθμίδα στο πλήκτρο της και αφήνει τα άλλα βουβά",
+        sintaxisScalaArchivo: "scala --file <αρχείο.scl> [--tolerance <cents>] [--limit <n>]",
+        descripcionScalaArchivo: "διαβάζει ένα αρχείο .scl, δίνει τις νότες του σε cents και ό,τι του μοιάζει στον κατάλογο: τους συγκερασμούς με ίδιο αριθμό βημάτων, από όποια νότα κι αν ξεκινά, και τις κλίμακες με ίδιο αριθμό βαθμίδων· --tolerance είναι η μέγιστη απόκλιση μιας νότας (10 cents αν δεν δοθεί) και --limit, πόσα δίνει (10)",
+        sclResumen: "{1}: {2} νότες ανά περίοδο, {3} cents",
+        sclParecidos: "Του μοιάζει (η μέγιστη απόκλιση μιας νότας):",
+        sclSinParecidos: "Τίποτα στον κατάλογο δεν του μοιάζει σε λιγότερο από {1} cents.",
+        sclTemperamento: "συγκερασμός",
+        sclEscala: "κλίμακα",
+        sclDesdeElPaso: "από το βήμα {1}",
+        faltaLoQueSeEscribeEnScala: "το scala θέλει temperament <συγκερασμός>, scale <κλίμακα> ή --file <αρχείο.scl>",
+        temperamentoSoloDeEscala: "το --temperament πάει με το scala scale",
+        temperamentoQueNoAfina: "το «{1}» δεν κουρδίζει τις δώδεκα νότες: είναι το σύστημα μικροδιαστημάτων κάποιων κλιμάκων",
+        soloConArchivoDeScala: "το {1} πάει με το scala --file",
+        toleranciaNoValida: "το «{1}» δεν είναι ανοχή σε cents: ένας αριθμός από 0 και πάνω"
     )
 }

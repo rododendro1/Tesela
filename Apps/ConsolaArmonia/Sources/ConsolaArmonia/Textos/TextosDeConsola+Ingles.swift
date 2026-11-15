@@ -427,6 +427,25 @@ extension TextosDeConsola {
         All the help, with each command's options: armonia help --all.
         For every command: --ingles, --language, --texts, --writing, --system, --script, --subscripts, --digits and --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Type one command per line, without \"armonia\" (help: the commands; exit: quit)."
+        bienvenidaDeLaSesion: "armonia {1}. Type one command per line, without \"armonia\" (help: the commands; exit: quit).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <temperament> [--kbm]",
+        descripcionScalaTemperamento: "a temperament of the catalog as a Scala .scl file, the one most synthesizers read; with --kbm, its keyboard mapping (.kbm), with C4 on key 60",
+        sintaxisScalaEscala: "scala scale <scale> [--temperament <temperament>] [--kbm]",
+        descripcionScalaEscala: "a scale as a .scl file, from the tonic and with its microtones if it has them; with --temperament, in a temperament that tunes its notes; with --kbm, the mapping that puts each degree on its key and mutes the others",
+        sintaxisScalaArchivo: "scala --file <file.scl> [--tolerance <cents>] [--limit <n>]",
+        descripcionScalaArchivo: "reads a .scl file and gives its notes in cents and what resembles it in the catalog: the temperaments with as many steps, whichever note it starts on, and the scales with as many degrees; --tolerance is the most a note may deviate (10 cents by default) and --limit, how many it gives (10)",
+        sclResumen: "{1}: {2} notes per period, of {3} cents",
+        sclParecidos: "Resembles it (the largest deviation of a note):",
+        sclSinParecidos: "Nothing in the catalog is within {1} cents of it.",
+        sclTemperamento: "temperament",
+        sclEscala: "scale",
+        sclDesdeElPaso: "from step {1}",
+        faltaLoQueSeEscribeEnScala: "scala takes temperament <temperament>, scale <scale> or --file <file.scl>",
+        temperamentoSoloDeEscala: "--temperament goes with scala scale",
+        temperamentoQueNoAfina: "\"{1}\" does not tune the twelve notes: it is the microtone system of some scales",
+        soloConArchivoDeScala: "{1} goes with scala --file",
+        toleranciaNoValida: "\"{1}\" is not a tolerance in cents: a number from 0 up"
     )
 }

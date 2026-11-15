@@ -425,6 +425,25 @@ extension TextosDeConsola {
         Tota l'ajuda, amb les opcions de cada ordre: armonia ayuda --todo.
         Per a totes les ordres: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras i --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Escriu una ordre per línia, sense «armonia» (ayuda: les ordres; salir: acabar)."
+        bienvenidaDeLaSesion: "armonia {1}. Escriu una ordre per línia, sense «armonia» (ayuda: les ordres; salir: acabar).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <temperament> [--kbm]",
+        descripcionScalaTemperamento: "un temperament del catàleg com a fitxer .scl de Scala, el que llegeixen gairebé tots els sintetitzadors; amb --kbm, el seu mapa de teclat (.kbm), amb el Do4 a la tecla 60",
+        sintaxisScalaEscala: "scala scale <escala> [--temperament <temperament>] [--kbm]",
+        descripcionScalaEscala: "una escala com a fitxer .scl, des de la tònica i amb els seus microtons si en té; amb --temperament, en un temperament que afina les seves notes; amb --kbm, el mapa que posa cada grau a la seva tecla i deixa mudes les altres",
+        sintaxisScalaArchivo: "scala --file <fitxer.scl> [--tolerance <cents>] [--limit <n>]",
+        descripcionScalaArchivo: "llegeix un fitxer .scl, en dona les notes en cents i el que s'hi assembla al catàleg: els temperaments amb tants passos, comenci a la nota que comenci, i les escales amb tants graus; --tolerance és el màxim que es pot apartar una nota (10 cents, si no es dona) i --limit, quants en dona (10)",
+        sclResumen: "{1}: {2} notes per període, de {3} cents",
+        sclParecidos: "S'hi assembla (el màxim que s'aparta una nota):",
+        sclSinParecidos: "Res del catàleg s'hi assembla a menys de {1} cents.",
+        sclTemperamento: "temperament",
+        sclEscala: "escala",
+        sclDesdeElPaso: "des del pas {1}",
+        faltaLoQueSeEscribeEnScala: "scala porta temperament <temperament>, scale <escala> o --file <fitxer.scl>",
+        temperamentoSoloDeEscala: "--temperament va amb scala scale",
+        temperamentoQueNoAfina: "«{1}» no afina les dotze notes: és el sistema dels microtons d'unes escales",
+        soloConArchivoDeScala: "{1} va amb scala --file",
+        toleranciaNoValida: "«{1}» no és una tolerància en cents: un nombre de 0 en amunt"
     )
 }

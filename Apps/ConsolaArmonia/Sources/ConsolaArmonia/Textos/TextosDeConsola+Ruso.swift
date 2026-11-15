@@ -425,6 +425,25 @@ extension TextosDeConsola {
         Вся справка, с параметрами каждой команды: armonia help --all.
         Для всех команд: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras и --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Вводите по одной команде в строке, без «armonia» (help — команды; exit — выход)."
+        bienvenidaDeLaSesion: "armonia {1}. Вводите по одной команде в строке, без «armonia» (help — команды; exit — выход).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <темперация> [--kbm]",
+        descripcionScalaTemperamento: "темперация из каталога в виде файла Scala .scl, который читают почти все синтезаторы; с --kbm — её раскладка клавиатуры (.kbm), с до4 на клавише 60",
+        sintaxisScalaEscala: "scala scale <гамма> [--temperament <темперация>] [--kbm]",
+        descripcionScalaEscala: "гамма в виде файла .scl, от тоники и с её микротонами, если они есть; с --temperament — в темперации, которая настраивает её ноты; с --kbm — раскладка, ставящая каждую ступень на её клавишу и глушащая остальные",
+        sintaxisScalaArchivo: "scala --file <файл.scl> [--tolerance <центы>] [--limit <n>]",
+        descripcionScalaArchivo: "читает файл .scl, выдаёт его ноты в центах и то, что на него похоже в каталоге: темперации с тем же числом ступеней, с какой бы ноты он ни начинался, и гаммы с тем же числом ступеней; --tolerance — наибольшее отклонение ноты (по умолчанию 10 центов), --limit — сколько выдать (10)",
+        sclResumen: "{1}: {2} нот на период в {3} центов",
+        sclParecidos: "Похоже (наибольшее отклонение ноты):",
+        sclSinParecidos: "Ничто в каталоге не отличается от него меньше чем на {1} центов.",
+        sclTemperamento: "темперация",
+        sclEscala: "гамма",
+        sclDesdeElPaso: "с шага {1}",
+        faltaLoQueSeEscribeEnScala: "scala требует temperament <темперация>, scale <гамма> или --file <файл.scl>",
+        temperamentoSoloDeEscala: "--temperament используется со scala scale",
+        temperamentoQueNoAfina: "«{1}» не настраивает двенадцать нот: это система микротонов некоторых гамм",
+        soloConArchivoDeScala: "{1} используется со scala --file",
+        toleranciaNoValida: "«{1}» — не допуск в центах: число от 0 и выше"
     )
 }

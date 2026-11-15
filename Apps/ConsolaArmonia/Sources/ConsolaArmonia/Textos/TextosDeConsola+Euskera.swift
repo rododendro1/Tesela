@@ -426,6 +426,25 @@ extension TextosDeConsola {
         Laguntza osoa, agindu bakoitzaren aukerekin: armonia ayuda --todo.
         Agindu guztietarako: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras eta --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Idatzi agindu bat lerro bakoitzeko, «armonia» gabe (ayuda: aginduak; salir: amaitu)."
+        bienvenidaDeLaSesion: "armonia {1}. Idatzi agindu bat lerro bakoitzeko, «armonia» gabe (ayuda: aginduak; salir: amaitu).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <tenperamentua> [--kbm]",
+        descripcionScalaTemperamento: "katalogoko tenperamentu bat Scala-ren .scl fitxategi gisa, ia sintetizadore guztiek irakurtzen dutena; --kbm-ekin, bere teklatu-mapa (.kbm), Do4 60. teklan",
+        sintaxisScalaEscala: "scala scale <eskala> [--temperament <tenperamentua>] [--kbm]",
+        descripcionScalaEscala: "eskala bat .scl fitxategi gisa, tonikatik eta bere mikrotonuekin baditu; --temperament-ekin, bere notak afinatzen dituen tenperamentu batean; --kbm-ekin, gradu bakoitza bere teklan jartzen duen eta besteak isilik uzten dituen mapa",
+        sintaxisScalaArchivo: "scala --file <fitxategia.scl> [--tolerance <zentimoak>] [--limit <n>]",
+        descripcionScalaArchivo: ".scl fitxategi bat irakurtzen du eta bere notak zentimotan ematen ditu, baita katalogoan antza duena ere: urrats kopuru bereko tenperamentuak, edozein notatan hasita, eta gradu kopuru bereko eskalak; --tolerance nota bat gehienez zenbat alden daitekeen da (10 zentimo, eman ezean) eta --limit, zenbat ematen dituen (10)",
+        sclResumen: "{1}: {2} nota aldiko, {3} zentimokoa",
+        sclParecidos: "Antza du (nota batek gehienez duen aldea):",
+        sclSinParecidos: "Katalogoko ezerk ez du antzik {1} zentimo baino gutxiagora.",
+        sclTemperamento: "tenperamentua",
+        sclEscala: "eskala",
+        sclDesdeElPaso: "{1}. urratsetik",
+        faltaLoQueSeEscribeEnScala: "scala-k temperament <tenperamentua>, scale <eskala> edo --file <fitxategia.scl> behar du",
+        temperamentoSoloDeEscala: "--temperament scala scale-rekin doa",
+        temperamentoQueNoAfina: "«{1}»-ek ez ditu hamabi notak afinatzen: eskala batzuen mikrotonuen sistema da",
+        soloConArchivoDeScala: "{1} scala --file-rekin doa",
+        toleranciaNoValida: "«{1}» ez da zentimotako tolerantzia bat: 0tik gorako zenbaki bat"
     )
 }

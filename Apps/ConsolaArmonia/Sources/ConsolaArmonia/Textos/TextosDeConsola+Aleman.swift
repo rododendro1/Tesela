@@ -425,6 +425,25 @@ extension TextosDeConsola {
         Die ganze Hilfe, mit den Optionen jedes Befehls: armonia help --all.
         Für alle Befehle: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras und --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Ein Befehl pro Zeile, ohne „armonia“ (help: die Befehle; exit: beenden)."
+        bienvenidaDeLaSesion: "armonia {1}. Ein Befehl pro Zeile, ohne „armonia“ (help: die Befehle; exit: beenden).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <Temperatur> [--kbm]",
+        descripcionScalaTemperamento: "eine Temperatur des Katalogs als Scala-Datei .scl, die fast alle Synthesizer lesen; mit --kbm ihre Tastaturbelegung (.kbm), mit C4 auf Taste 60",
+        sintaxisScalaEscala: "scala scale <Tonleiter> [--temperament <Temperatur>] [--kbm]",
+        descripcionScalaEscala: "eine Tonleiter als .scl-Datei, ab dem Grundton und mit ihren Mikrotönen, falls sie welche hat; mit --temperament in einer Temperatur, die ihre Töne stimmt; mit --kbm die Belegung, die jede Stufe auf ihre Taste legt und die übrigen stumm lässt",
+        sintaxisScalaArchivo: "scala --file <Datei.scl> [--tolerance <Cent>] [--limit <n>]",
+        descripcionScalaArchivo: "liest eine .scl-Datei, gibt ihre Töne in Cent an und was ihr im Katalog ähnelt: die Temperaturen mit ebenso vielen Stufen, egal auf welchem Ton sie beginnt, und die Tonleitern mit ebenso vielen Stufen; --tolerance ist die größte Abweichung eines Tons (standardmäßig 10 Cent) und --limit, wie viele es gibt (10)",
+        sclResumen: "{1}: {2} Töne pro Periode von {3} Cent",
+        sclParecidos: "Ähnelt ihr (größte Abweichung eines Tons):",
+        sclSinParecidos: "Nichts im Katalog liegt innerhalb von {1} Cent.",
+        sclTemperamento: "Temperatur",
+        sclEscala: "Tonleiter",
+        sclDesdeElPaso: "ab Stufe {1}",
+        faltaLoQueSeEscribeEnScala: "scala braucht temperament <Temperatur>, scale <Tonleiter> oder --file <Datei.scl>",
+        temperamentoSoloDeEscala: "--temperament gehört zu scala scale",
+        temperamentoQueNoAfina: "„{1}“ stimmt nicht die zwölf Töne: Es ist das Mikrotonsystem einiger Tonleitern",
+        soloConArchivoDeScala: "{1} gehört zu scala --file",
+        toleranciaNoValida: "„{1}“ ist keine Toleranz in Cent: eine Zahl ab 0"
     )
 }

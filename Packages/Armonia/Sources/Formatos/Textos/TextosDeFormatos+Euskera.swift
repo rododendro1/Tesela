@@ -17,6 +17,13 @@ extension TextosDeFormatos {
         xmlDanado: "XML fitxategia hondatuta dago ({1}. lerroa).",
         noEsMusicXMLPorPartes: "XMLa ez da zatikako MusicXML partitura bat (score-partwise) ezta MEI ere.",
         sinNotas: "Fitxategiak ez du notarik.",
-        sinAcordes: "Fitxategian ez da akorderik entzuten."
+        sinAcordes: "Fitxategian ez da akorderik entzuten.",
+
+        // ArchivoScala.swift
+        sclVacio: "Scala fitxategia hutsik dago edo iruzkinak baino ez ditu.",
+        sclSinCuenta: "Scala fitxategiak ez du urrats kopurua, deskribapenaren ondorengo lerroan.",
+        sclCuentaNoValida: "Scala fitxategiko {1}. lerroa: «{2}» ez da 1etik 10000rako urrats kopuru bat.",
+        sclFaltanPasos: "Scala fitxategiak {1} urrats dituela dio, baina {2} baino ez ditu.",
+        sclPasoNoValido: "Scala fitxategiko {1}. lerroa: «{2}» ez da zentimotako urrats bat (puntuarekin) ez arrazoi positibo bat."
     )
 }

@@ -425,6 +425,25 @@ extension TextosDeConsola {
         A teljes súgó, minden parancs kapcsolóival: armonia help --all.
         Minden parancshoz: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras és --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Soronként egy parancs, „armonia” nélkül (help: a parancsok; exit: kilépés)."
+        bienvenidaDeLaSesion: "armonia {1}. Soronként egy parancs, „armonia” nélkül (help: a parancsok; exit: kilépés).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <temperálás> [--kbm]",
+        descripcionScalaTemperamento: "a katalógus egy temperálása Scala .scl fájlként, amelyet szinte minden szintetizátor beolvas; --kbm-mel a billentyűzet-kiosztása (.kbm), a C4-gyel a 60-as billentyűn",
+        sintaxisScalaEscala: "scala scale <skála> [--temperament <temperálás>] [--kbm]",
+        descripcionScalaEscala: "egy skála .scl fájlként, az alaphangtól és a mikrohangjaival, ha vannak; --temperament-tel egy hangjait hangoló temperálásban; --kbm-mel a kiosztás, amely minden fokot a saját billentyűjére tesz, a többit elnémítja",
+        sintaxisScalaArchivo: "scala --file <fájl.scl> [--tolerance <cent>] [--limit <n>]",
+        descripcionScalaArchivo: "beolvas egy .scl fájlt, megadja a hangjait centben, és azt, ami hasonlít rá a katalógusban: az ugyanannyi lépésű temperálásokat, bármelyik hangon kezdődik, és az ugyanannyi fokú skálákat; --tolerance egy hang legnagyobb eltérése (alapból 10 cent), --limit pedig, hányat ad (10)",
+        sclResumen: "{1}: {2} hang periódusonként, {3} cent",
+        sclParecidos: "Hasonlít rá (egy hang legnagyobb eltérése):",
+        sclSinParecidos: "A katalógusban semmi sem hasonlít rá {1} centen belül.",
+        sclTemperamento: "temperálás",
+        sclEscala: "skála",
+        sclDesdeElPaso: "a(z) {1}. lépéstől",
+        faltaLoQueSeEscribeEnScala: "a scala után temperament <temperálás>, scale <skála> vagy --file <fájl.scl> kell",
+        temperamentoSoloDeEscala: "a --temperament a scala scale-lel jár",
+        temperamentoQueNoAfina: "a(z) „{1}” nem hangolja a tizenkét hangot: egyes skálák mikrohangrendszere",
+        soloConArchivoDeScala: "a(z) {1} a scala --file-lal jár",
+        toleranciaNoValida: "a(z) „{1}” nem centben megadott tűrés: 0 vagy nagyobb szám"
     )
 }
