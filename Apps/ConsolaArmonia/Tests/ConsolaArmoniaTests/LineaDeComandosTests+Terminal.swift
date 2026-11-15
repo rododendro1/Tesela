@@ -89,6 +89,13 @@ extension LineaDeComandosTests {
         #expect(lugar.contains("reino-unido"))
     }
 
+    /// `--opcion=valor`, en una orden y en las opciones generales.
+    @Test func opcionesConIgual() {
+        #expect(salida("digitaciones Do --limite=2") == salida("digitaciones Do --limite 2"))
+        #expect(salida("acorde Sol7 --idioma=en") == salida("acorde Sol7 --idioma en"))
+        #expect(resultado("acorde Sol7 --json=1").codigo == 2)
+    }
+
     @Test func manual() {
         let roff = salida("manual")
         #expect(roff.hasPrefix(".TH ARMONIA 1"))

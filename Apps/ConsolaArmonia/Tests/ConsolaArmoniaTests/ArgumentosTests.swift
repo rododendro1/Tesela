@@ -14,6 +14,17 @@ import Testing
         #expect(!ausente)
     }
 
+    /// `--opcion=valor` es `--opcion valor`, solo con las opciones que llevan valor.
+    @Test func opcionConIgual() {
+        let conocidas: Set = ["--limite", "--en", "--patron"]
+        #expect(
+            Argumentos.conValoresSeparados(["Do", "--limite=3", "--en=Re mayor", "--json=1", "x=y"], conocidas: conocidas)
+                == ["Do", "--limite", "3", "--en", "Re", "mayor", "--json=1", "x=y"])
+        #expect(Argumentos.conValoresSeparados(["--patrón=alberti"], conocidas: conocidas) == ["--patrón", "alberti"])
+        #expect(LineaDeComandos.nombresDeLasOpciones.contains("--limit"))
+        #expect(!LineaDeComandos.nombresDeLasOpciones.contains("--json"))
+    }
+
     @Test func conTildesOSinEllas() {
         var argumentos = Argumentos(["Do", "--estadísticas", "--límite", "3", "--simetría"])
         let estadisticas = argumentos.quitarMarca(.estadisticas)

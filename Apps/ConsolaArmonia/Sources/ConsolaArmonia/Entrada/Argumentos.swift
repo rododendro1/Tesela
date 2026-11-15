@@ -18,6 +18,21 @@ struct Argumentos {
         restantes = argumentos
     }
 
+    /// Los argumentos con cada `--opcion=valor` partido en `--opcion` y `valor`, como se escribe en casi todas las
+    /// herramientas de la terminal: `--limite=3` es `--limite 3`, y `--en=Re mayor`, `--en "Re mayor"`. Solo se
+    /// parte si `--opcion` es una de las que se conocen (`conocidas`, sin tildes); lo demás se queda como está.
+    static func conValoresSeparados(_ argumentos: [String], conocidas: Set<String>) -> [String] {
+        argumentos.flatMap { argumento -> [String] in
+            guard argumento.hasPrefix("--"), let igual = argumento.firstIndex(of: "="),
+                conocidas.contains(sinTildes(String(argumento[..<igual])))
+            else { return [argumento] }
+            let nombre = String(argumento[..<igual])
+            let valor = argumento[argumento.index(after: igual)...]
+            // Un valor de varias palabras («--en=Re mayor») va como las palabras que lo forman.
+            return [nombre] + valor.split(separator: " ").map(String.init)
+        }
+    }
+
     /// El nombre de una opción o de una orden sin tildes ni diéresis (`--análisis` → `--analisis`), como se
     /// declaran. Solo se quitan los acentos de las vocales: la «ñ» se queda. Los errores dicen lo que se escribió.
     static func sinTildes(_ texto: String) -> String {
