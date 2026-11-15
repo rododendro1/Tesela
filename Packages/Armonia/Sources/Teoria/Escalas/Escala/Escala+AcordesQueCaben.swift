@@ -26,9 +26,13 @@ extension Escala {
     /// Los acordes que caben en la escala sobre un grado (contado desde 1): los de ``TipoDeAcorde/paraEscalas``
     /// con todas sus notas en la escala (aunque se escriban de otra forma), de los de menos notas a los de más.
     /// No solo los de terceras superpuestas: en Do mayor, sobre el 1.º, también Dosus2, Do6, Do6/9 y Do(add9).
-    public func acordesQueCaben(grado: Int) -> [Acorde] {
+    /// En una escala que cambia al bajar, solo con las notas de un sentido, la subida por defecto, para no mezclar
+    /// las dos formas: La menor melódica clásica no tiene Do7M(♯11), que pide el Fa♯ de subida y el Sol de bajada.
+    public func acordesQueCaben(grado: Int, sentido: SentidoDelIntervalo = .ascendente) -> [Acorde] {
         let raiz = self.grado(grado)
-        let acordes = TipoDeAcorde.paraEscalas.map { Acorde(raiz, $0) }.filter { contiene(acorde: $0) }
+        let acordes = TipoDeAcorde.paraEscalas.map { Acorde(raiz, $0) }.filter { acorde in
+            acorde.notasDesdeElBajo.allSatisfy { contieneEnarmonico($0, sentido: sentido) }
+        }
         return acordes.enumerated().sorted { a, b in
             let (x, y) = (a.element.notas.count, b.element.notas.count)
             return x != y ? x < y : a.offset < b.offset

@@ -47,6 +47,8 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
     /// Sus notas en quintas desde la tónica, sin repetir.
     let quintas: Set<Int>
     let conjuntoDeClases: ConjuntoDeClasesDeAltura
+    /// Las tríadas y las cuatríadas de `Escala.armonizar(cuatriadas:)`, si tiene siete notas.
+    let acordesPorGrados: [[TipoDeAcorde?]]?
 
     // MARK: Lo que dicen las teorías de escalas
 
@@ -63,7 +65,7 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
 
     /// Lo que dice de ella la armonía tonal (`EstadisticasTonalesDeEscala`): sus acordes por grados, el perfil de
     /// Krumhansl y Kessler, la sensible y los tetracordos.
-    public var tonal: EstadisticasTonalesDeEscala { EstadisticasTonalesDeEscala(clases) }
+    public var tonal: EstadisticasTonalesDeEscala { EstadisticasTonalesDeEscala(clases, acordes: acordesPorGrados) }
 
     /// Cómo se perciben sus intervalos (`PsicoacusticaDeEscala`): la entropía armónica y la rugosidad media.
     public var psicoacustica: PsicoacusticaDeEscala { PsicoacusticaDeEscala(clases) }
@@ -90,6 +92,9 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
         clases = desdeLaTonica
         self.quintas = Set(quintas)
         conjuntoDeClases = conjunto
+        acordesPorGrados =
+            tipo.intervalos.count == 7
+            ? [EstadisticasTonalesDeEscala.triadas(escala), EstadisticasTonalesDeEscala.cuatriadas(escala)] : nil
     }
 
     /// Para cada intervalo genérico `k`, los tamaños de los `k` pasos seguidos, desde cada nota, se separan a lo
@@ -163,11 +168,26 @@ public struct EstadisticasTonalesDeEscala: Hashable, Sendable {
     /// Se parte en dos tetracordos iguales separados por un tono, como la mayor.
     public let tetracordosIguales: Bool
 
-    /// Las de unas clases de altura desde la tónica.
-    init(_ clases: [Int]) {
-        let acordes = CalculosDeEscala.acordesPorGrados(clases)
-        triadas = acordes?.triadas
-        cuatriadas = acordes?.cuatriadas
+    /// Las cuatro tríadas que se cuentan: mayor, menor, disminuida y aumentada.
+    static let triadasConocidas: Set<TipoDeAcorde> = [.mayor, .menor, .disminuido, .aumentado]
+    /// Las nueve cuatríadas que se cuentan: 7M, 7, m7, ø7, °7, m(7M), +7M, +7 y 7(♭5).
+    static let cuatriadasConocidas: Set<TipoDeAcorde> = Set(
+        ["maj7", "7", "m7", "ø7", "°7", "m(maj7)", "+maj7", "+7", "7♭5"].compactMap { try? TipoDeAcorde(leyendo: $0) })
+
+    /// Las tríadas por terceras de cada grado (``Escala/armonizar(cuatriadas:)``), solo las cuatro conocidas.
+    static func triadas(_ escala: Escala) -> [TipoDeAcorde?] {
+        escala.armonizar().map { $0.flatMap { triadasConocidas.contains($0.tipo) ? $0.tipo : nil } }
+    }
+
+    /// Las cuatríadas por terceras de cada grado, solo las nueve conocidas.
+    static func cuatriadas(_ escala: Escala) -> [TipoDeAcorde?] {
+        escala.armonizar(cuatriadas: true).map { $0.flatMap { cuatriadasConocidas.contains($0.tipo) ? $0.tipo : nil } }
+    }
+
+    /// Las de unas clases de altura desde la tónica, con las tríadas y las cuatríadas de cada grado.
+    init(_ clases: [Int], acordes: [[TipoDeAcorde?]]?) {
+        triadas = acordes?[0]
+        cuatriadas = acordes?[1]
         perfilMayor = CalculosDeEscala.correlacion(clases, con: CalculosDeEscala.perfilMayor)
         perfilMenor = CalculosDeEscala.correlacion(clases, con: CalculosDeEscala.perfilMenor)
         conSensible = clases.contains(11)
