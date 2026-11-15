@@ -37,6 +37,9 @@ armonia                                           # in a terminal, a session: on
 armonia < exercises.txt                           # one command per line; exits with the worst code
 armonia midi chords C F G C -o cadence.mid         # -o: to a file, also in the session
 armonia chord H7 --language de                     # notes also in the chosen language
+armonia scala temperament Werckmeister III > w.scl # for a synthesizer (and --kbm, its keyboard mapping)
+armonia lattice C Am Dm G C > comma.svg            # the comma drift, on the just-intonation lattice
+armonia mcp                                        # the engine as an MCP server, for an assistant
 ```
 
 Commands and note names are accepted in Spanish or English (Do, C, Sib, Bb). `--ingles` answers in English notation

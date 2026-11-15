@@ -313,7 +313,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--file is only for \"chords\" and \"arpeggios\"",
         ventanaSinArchivo: "--window goes with --file",
         acordesConCifradosYAnalisis: "chords always come with chord symbols and analysis",
-        tipoDePartituraDesconocido: "\"{1}\": the export is a \"melody\", a \"chorale\", \"chords\", their \"arpeggios\" or a \"scale\"",
+        tipoDePartituraDesconocido: "\"{1}\": the export is a \"melody\", a \"chorale\", \"chords\", their \"arpeggios\", a \"scale\", a \"bass\" or a \"line\"",
         faltaLoQueSeGraba: "missing what to engrave: {1}",
         motorDesconocido: "\"{1}\": the engines are lilypond, musescore, verovio, guido and own",
         formatoDeGrabadoDesconocido: "\"{1}\": the output is \"pdf\", \"svg\" or \"png\"",
@@ -427,6 +427,41 @@ extension TextosDeConsola {
         All the help, with each command's options: armonia help --all.
         For every command: --ingles, --language, --texts, --writing, --system, --script, --subscripts, --digits and --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Type one command per line, without \"armonia\" (help: the commands; exit: quit)."
+        bienvenidaDeLaSesion: "armonia {1}. Type one command per line, without \"armonia\" (help: the commands; exit: quit).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <temperament> [--kbm]",
+        descripcionScalaTemperamento: "a temperament of the catalog as a Scala .scl file, the one most synthesizers read; with --kbm, its keyboard mapping (.kbm), with C4 on key 60",
+        sintaxisScalaEscala: "scala scale <scale> [--temperament <temperament>] [--kbm]",
+        descripcionScalaEscala: "a scale as a .scl file, from the tonic and with its microtones if it has them; with --temperament, in a temperament that tunes its notes; with --kbm, the mapping that puts each degree on its key and mutes the others",
+        sintaxisScalaArchivo: "scala --file <file.scl> [--tolerance <cents>] [--limit <n>]",
+        descripcionScalaArchivo: "reads a .scl file and gives its notes in cents and what resembles it in the catalog: the temperaments with as many steps, whichever note it starts on, and the scales with as many degrees; --tolerance is the most a note may deviate (10 cents by default) and --limit, how many it gives (10)",
+        sclResumen: "{1}: {2} notes per period, of {3} cents",
+        sclParecidos: "Resembles it (the largest deviation of a note):",
+        sclSinParecidos: "Nothing in the catalog is within {1} cents of it.",
+        sclTemperamento: "temperament",
+        sclEscala: "scale",
+        sclDesdeElPaso: "from step {1}",
+        faltaLoQueSeEscribeEnScala: "scala takes temperament <temperament>, scale <scale> or --file <file.scl>",
+        temperamentoSoloDeEscala: "--temperament goes with scala scale",
+        temperamentoQueNoAfina: "\"{1}\" does not tune the twelve notes: it is the microtone system of some scales",
+        soloConArchivoDeScala: "{1} goes with scala --file",
+        toleranciaNoValida: "\"{1}\" is not a tolerance in cents: a number from 0 up",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bass|line <symbols> [options]",
+        descripcionMusicxmlLineas: "a line over the chords, one bar per chord: bass, a walking bass in quarter notes with its tablature; line, eighth notes through each chord's scale, with a guide tone on the downbeat and a chromatic note into the next, in the meter of --time",
+        compasDeLaLinea: "the walking bass is in 4/4: --time is for the line",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <chords> [--summary]",
+        descripcionReticulo: "the progression on the just-intonation lattice (SVG): fifths across, thirds up, each root at the point nearest the previous one, and the comma drift if it returns to its first root; with --summary, as text, each root's ratio and how far it is from equal temperament",
+        derivaDelReticulo: "drift: {1} cents",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "the engine as an MCP (Model Context Protocol) server over standard input and output, so that an assistant can use it: each command that gives JSON is a tool, which takes what would be written after the command's name",
+        argumentosDeLaHerramienta: "what follows the command's name, as in the terminal: \"G7/B\", \"D dorian --chords\"",
+        mcpSoloComoServidor: "mcp runs on its own, as a server: armonia mcp"
     )
 }

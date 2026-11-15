@@ -46,6 +46,11 @@ extension TextosDeDiagramas {
         intervalosIncoherentes: "Widersprüchliche Intervalle: {1},{2},{3}. Es muss 0 < L ≤ D und G = L + D gelten.",
         giroNoValido: "Eine Drehung um {1}° ist kein Vielfaches von 30°.",
         afinacionNoSoportada: "Es lassen sich nur Tastaturen mit 12 Tönen zeichnen, nicht mit {1}.",
-        cizallaNoSoportada: "Die Scherung S{1} wird nicht unterstützt."
+        cizallaNoSoportada: "Die Scherung S{1} wird nicht unterstützt.",
+
+        // ReticuloJusto.swift
+        tituloConDeriva: "{1} · Drift von {2} Cent",
+        leyendaQuintasYTerceras: "Quinten (3/2) waagrecht, Terzen (5/4) senkrecht",
+        leyendaDeFundamentalEnFundamental: "von einem Grundton zum nächsten"
     )
 }

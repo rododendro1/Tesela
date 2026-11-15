@@ -17,6 +17,13 @@ extension TextosDeFormatos {
         xmlDanado: "El fitxer XML està malmès (línia {1}).",
         noEsMusicXMLPorPartes: "L'XML no és una partitura MusicXML per parts (score-partwise) ni MEI.",
         sinNotas: "El fitxer no té cap nota.",
-        sinAcordes: "Al fitxer no sona cap acord."
+        sinAcordes: "Al fitxer no sona cap acord.",
+
+        // ArchivoScala.swift
+        sclVacio: "El fitxer de Scala és buit o només té comentaris.",
+        sclSinCuenta: "Al fitxer de Scala li falta el nombre de passos, a la línia que segueix la descripció.",
+        sclCuentaNoValida: "Línia {1} del fitxer de Scala: «{2}» no és un nombre de passos de 1 a 10000.",
+        sclFaltanPasos: "El fitxer de Scala diu {1} passos i només en té {2}.",
+        sclPasoNoValido: "Línia {1} del fitxer de Scala: «{2}» no és un pas en cents (amb punt) ni una raó positiva."
     )
 }

@@ -17,6 +17,13 @@ extension TextosDeFormatos {
         xmlDanado: "XML-filen är skadad (rad {1}).",
         noEsMusicXMLPorPartes: "XML-filen är varken ett stämvis MusicXML-partitur (score-partwise) eller MEI.",
         sinNotas: "Filen innehåller inga noter.",
-        sinAcordes: "Inget ackord klingar i filen."
+        sinAcordes: "Inget ackord klingar i filen.",
+
+        // ArchivoScala.swift
+        sclVacio: "Scala-filen är tom eller innehåller bara kommentarer.",
+        sclSinCuenta: "Scala-filen saknar antalet steg på raden efter beskrivningen.",
+        sclCuentaNoValida: "Rad {1} i Scala-filen: ”{2}” är inte ett antal steg från 1 till 10000.",
+        sclFaltanPasos: "Scala-filen anger {1} steg men har bara {2}.",
+        sclPasoNoValido: "Rad {1} i Scala-filen: ”{2}” är varken ett steg i cent (med punkt) eller ett positivt förhållande."
     )
 }

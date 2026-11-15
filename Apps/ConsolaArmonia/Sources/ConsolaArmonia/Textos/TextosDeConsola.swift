@@ -421,6 +421,41 @@ struct TextosDeConsola: TextosTraducidos {
     /// La primera línea de la sesión (`armonia` sin argumentos en la terminal), con la versión.
     let bienvenidaDeLaSesion: Plantilla  // {1} versión
 
+    // MARK: Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+    let sintaxisScalaTemperamento: String
+    let descripcionScalaTemperamento: String
+    let sintaxisScalaEscala: String
+    let descripcionScalaEscala: String
+    let sintaxisScalaArchivo: String
+    let descripcionScalaArchivo: String
+    let sclResumen: Plantilla  // {1} descripcion, {2} notas, {3} periodo
+    let sclParecidos: String
+    let sclSinParecidos: Plantilla  // {1} tolerancia
+    let sclTemperamento: String
+    let sclEscala: String
+    let sclDesdeElPaso: Plantilla  // {1} paso
+    let faltaLoQueSeEscribeEnScala: String
+    let temperamentoSoloDeEscala: String
+    let temperamentoQueNoAfina: Plantilla  // {1} temperamento
+    let soloConArchivoDeScala: Plantilla  // {1} opcion
+    let toleranciaNoValida: Plantilla  // {1} tolerancia
+
+    // MARK: Ayuda+Partituras.swift: las líneas sobre una progresión
+    let sintaxisMusicxmlLineas: String
+    let descripcionMusicxmlLineas: String
+    let compasDeLaLinea: String
+
+    // MARK: LineaDeComandos+Reticulo.swift
+    let sintaxisReticulo: String
+    let descripcionReticulo: String
+    let derivaDelReticulo: Plantilla  // {1} cents
+
+    // MARK: ServidorMCP.swift
+    let sintaxisMCP: String
+    let descripcionMCP: String
+    let argumentosDeLaHerramienta: String
+    let mcpSoloComoServidor: String
+
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeConsola>(

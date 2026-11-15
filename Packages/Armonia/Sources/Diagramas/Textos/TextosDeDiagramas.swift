@@ -53,6 +53,11 @@ struct TextosDeDiagramas: TextosTraducidos {
     let afinacionNoSoportada: Plantilla  // {1} tonos
     let cizallaNoSoportada: Plantilla  // {1} cizalla
 
+    // MARK: ReticuloJusto.swift
+    let tituloConDeriva: Plantilla  // {1} progresion, {2} cents
+    let leyendaQuintasYTerceras: String
+    let leyendaDeFundamentalEnFundamental: String
+
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeDiagramas>(

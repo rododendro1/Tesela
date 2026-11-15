@@ -197,6 +197,12 @@ extension OpcionDeOrden {
     static let tonica = marca("--tonica", "--tonic")
     static let tradicion = valor("--tradicion", "--tradition")
     static let familia = valor("--familia", "--family")
+    /// `scala … --kbm`: el mapa de teclado en lugar de la escala.
+    static let kbm = marca("--kbm")
+    /// `scala escala … --temperamento Werckmeister III`: la escala en ese temperamento.
+    static let temperamento = valor("--temperamento", "--temperament")
+    /// `scala --archivo … --tolerancia 5`: lo más que se aparta una nota de lo que se le parece, en cents.
+    static let tolerancia = valor("--tolerancia", "--tolerance")
     static let traste = valor("--traste", "--fret")
     static let tresillos = marca("--tresillos", "--triplets")
     static let triadas = marca("--triadas", "--triads")

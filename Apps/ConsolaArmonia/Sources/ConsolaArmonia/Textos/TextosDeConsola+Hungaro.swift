@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "a --file csak a „chords” és az „arpeggios” számára van",
         ventanaSinArchivo: "a --window a --file mellé tartozik",
         acordesConCifradosYAnalisis: "az akkordok mindig akkordjelzéssel és elemzéssel jelennek meg",
-        tipoDePartituraDesconocido: "„{1}”: az export lehet „melody”, „chorale”, „chords”, ezek „arpeggios” változata vagy „scale”",
+        tipoDePartituraDesconocido: "„{1}”: az export lehet „melody”, „chorale”, „chords”, ezek „arpeggios” változata, „scale”, „bass” vagy „line”",
         faltaLoQueSeGraba: "hiányzik, mit kell szedni: {1}",
         motorDesconocido: "„{1}”: a motorok: lilypond, musescore, verovio, guido és own",
         formatoDeGrabadoDesconocido: "„{1}”: a kimenet „pdf”, „svg” vagy „png”",
@@ -425,6 +425,41 @@ extension TextosDeConsola {
         A teljes súgó, minden parancs kapcsolóival: armonia help --all.
         Minden parancshoz: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras és --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Soronként egy parancs, „armonia” nélkül (help: a parancsok; exit: kilépés)."
+        bienvenidaDeLaSesion: "armonia {1}. Soronként egy parancs, „armonia” nélkül (help: a parancsok; exit: kilépés).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <temperálás> [--kbm]",
+        descripcionScalaTemperamento: "a katalógus egy temperálása Scala .scl fájlként, amelyet szinte minden szintetizátor beolvas; --kbm-mel a billentyűzet-kiosztása (.kbm), a C4-gyel a 60-as billentyűn",
+        sintaxisScalaEscala: "scala scale <skála> [--temperament <temperálás>] [--kbm]",
+        descripcionScalaEscala: "egy skála .scl fájlként, az alaphangtól és a mikrohangjaival, ha vannak; --temperament-tel egy hangjait hangoló temperálásban; --kbm-mel a kiosztás, amely minden fokot a saját billentyűjére tesz, a többit elnémítja",
+        sintaxisScalaArchivo: "scala --file <fájl.scl> [--tolerance <cent>] [--limit <n>]",
+        descripcionScalaArchivo: "beolvas egy .scl fájlt, megadja a hangjait centben, és azt, ami hasonlít rá a katalógusban: az ugyanannyi lépésű temperálásokat, bármelyik hangon kezdődik, és az ugyanannyi fokú skálákat; --tolerance egy hang legnagyobb eltérése (alapból 10 cent), --limit pedig, hányat ad (10)",
+        sclResumen: "{1}: {2} hang periódusonként, {3} cent",
+        sclParecidos: "Hasonlít rá (egy hang legnagyobb eltérése):",
+        sclSinParecidos: "A katalógusban semmi sem hasonlít rá {1} centen belül.",
+        sclTemperamento: "temperálás",
+        sclEscala: "skála",
+        sclDesdeElPaso: "a(z) {1}. lépéstől",
+        faltaLoQueSeEscribeEnScala: "a scala után temperament <temperálás>, scale <skála> vagy --file <fájl.scl> kell",
+        temperamentoSoloDeEscala: "a --temperament a scala scale-lel jár",
+        temperamentoQueNoAfina: "a(z) „{1}” nem hangolja a tizenkét hangot: egyes skálák mikrohangrendszere",
+        soloConArchivoDeScala: "a(z) {1} a scala --file-lal jár",
+        toleranciaNoValida: "a(z) „{1}” nem centben megadott tűrés: 0 vagy nagyobb szám",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bass|line <jelzések> [opciók]",
+        descripcionMusicxmlLineas: "egy dallamvonal az akkordok fölött, akkordonként egy ütem: bass, negyedekben járó walking bass a tabulatúrájával; line, nyolcadok az egyes akkordok skáláján, az első ütésen vezérhanggal és kromatikus hanggal a következő felé, a --time ütemében",
+        compasDeLaLinea: "a walking bass 4/4-es: a --time a line-hoz való",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <akkordok> [--summary]",
+        descripcionReticulo: "az akkordmenet a tiszta hangolás rácsán (SVG): kvintek vízszintesen, tercek függőlegesen, minden alaphang az előzőhöz legközelebbi ponton, és a kommaelcsúszás, ha visszatér az első alaphangra; --summary-vel szövegként minden alaphang aránya és eltérése a kiegyenlített temperálástól",
+        derivaDelReticulo: "elcsúszás: {1} cent",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "a motor MCP-kiszolgálóként (Model Context Protocol) a szabványos bemeneten és kimeneten, hogy egy asszisztens használhassa: minden JSON-t adó parancs egy eszköz, amely azt kapja, amit a parancs neve után írnánk",
+        argumentosDeLaHerramienta: "ami a parancs neve után jön, mint a terminálban: „G7/B”, „D dorian --chords”",
+        mcpSoloComoServidor: "az mcp önállóan, kiszolgálóként fut: armonia mcp"
     )
 }

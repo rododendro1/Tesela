@@ -17,6 +17,13 @@ extension TextosDeFormatos {
         xmlDanado: "Az XML-fájl sérült ({1}. sor).",
         noEsMusicXMLPorPartes: "Az XML nem szólamonkénti MusicXML-partitúra (score-partwise), és nem is MEI.",
         sinNotas: "A fájlban nincsenek hangok.",
-        sinAcordes: "A fájlban nem szólnak akkordok."
+        sinAcordes: "A fájlban nem szólnak akkordok.",
+
+        // ArchivoScala.swift
+        sclVacio: "A Scala-fájl üres, vagy csak megjegyzéseket tartalmaz.",
+        sclSinCuenta: "A Scala-fájlból hiányzik a lépések száma a leírás utáni sorban.",
+        sclCuentaNoValida: "A Scala-fájl {1}. sora: „{2}” nem 1 és 10000 közötti lépésszám.",
+        sclFaltanPasos: "A Scala-fájl {1} lépést jelez, de csak {2} van benne.",
+        sclPasoNoValido: "A Scala-fájl {1}. sora: „{2}” nem centben megadott lépés (ponttal) és nem pozitív arány."
     )
 }

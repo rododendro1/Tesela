@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--file är bara för ”chords” och ”arpeggios”",
         ventanaSinArchivo: "--window hör till --file",
         acordesConCifradosYAnalisis: "ackord kommer alltid med ackordsymboler och analys",
-        tipoDePartituraDesconocido: "”{1}”: det som exporteras är en ”melody”, en ”chorale”, ”chords”, deras ”arpeggios” eller en ”scale”",
+        tipoDePartituraDesconocido: "”{1}”: det som exporteras är en ”melody”, en ”chorale”, ”chords”, deras ”arpeggios”, en ”scale”, en ”bass” eller en ”line”",
         faltaLoQueSeGraba: "det som ska sättas saknas: {1}",
         motorDesconocido: "”{1}”: motorerna är lilypond, musescore, verovio, guido och own",
         formatoDeGrabadoDesconocido: "”{1}”: utdata är ”pdf”, ”svg” eller ”png”",
@@ -425,6 +425,41 @@ extension TextosDeConsola {
         Hela hjälpen, med varje kommandos alternativ: armonia help --all.
         För alla kommandon: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras och --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Ett kommando per rad, utan ”armonia” (help: kommandona; exit: avsluta)."
+        bienvenidaDeLaSesion: "armonia {1}. Ett kommando per rad, utan ”armonia” (help: kommandona; exit: avsluta).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <temperatur> [--kbm]",
+        descripcionScalaTemperamento: "en temperatur ur katalogen som Scala-fil .scl, den som nästan alla syntar läser; med --kbm dess tangentmappning (.kbm), med C4 på tangent 60",
+        sintaxisScalaEscala: "scala scale <skala> [--temperament <temperatur>] [--kbm]",
+        descripcionScalaEscala: "en skala som .scl-fil, från grundtonen och med sina mikrotoner om den har några; med --temperament i en temperatur som stämmer dess toner; med --kbm mappningen som lägger varje steg på sin tangent och tystar de övriga",
+        sintaxisScalaArchivo: "scala --file <fil.scl> [--tolerance <cent>] [--limit <n>]",
+        descripcionScalaArchivo: "läser en .scl-fil och ger dess toner i cent och det som liknar den i katalogen: temperaturerna med lika många steg, vilken ton den än börjar på, och skalorna med lika många steg; --tolerance är den största avvikelsen för en ton (10 cent som standard) och --limit, hur många den ger (10)",
+        sclResumen: "{1}: {2} toner per period, på {3} cent",
+        sclParecidos: "Liknar den (största avvikelsen för en ton):",
+        sclSinParecidos: "Inget i katalogen ligger inom {1} cent från den.",
+        sclTemperamento: "temperatur",
+        sclEscala: "skala",
+        sclDesdeElPaso: "från steg {1}",
+        faltaLoQueSeEscribeEnScala: "scala tar temperament <temperatur>, scale <skala> eller --file <fil.scl>",
+        temperamentoSoloDeEscala: "--temperament hör till scala scale",
+        temperamentoQueNoAfina: "”{1}” stämmer inte de tolv tonerna: det är vissa skalors mikrotonssystem",
+        soloConArchivoDeScala: "{1} hör till scala --file",
+        toleranciaNoValida: "”{1}” är ingen tolerans i cent: ett tal från 0 och uppåt",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bass|line <symboler> [alternativ]",
+        descripcionMusicxmlLineas: "en linje över ackorden, en takt per ackord: bass, en walking bass i fjärdedelar med tabulatur; line, åttondelar genom varje ackords skala, med en ledton på ettan och en kromatisk ton in i nästa, i taktarten från --time",
+        compasDeLaLinea: "walking bass går i 4/4: --time är för line",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <ackord> [--summary]",
+        descripcionReticulo: "progressionen i den rena stämningens gitter (SVG): kvinter vågrätt, terser lodrätt, varje grundton i den punkt som ligger närmast den förra, och kommadriften om den återvänder till sin första grundton; med --summary som text varje grundtons förhållande och hur långt den ligger från liksvävande temperatur",
+        derivaDelReticulo: "drift: {1} cent",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "motorn som MCP-server (Model Context Protocol) över standard in och ut, så att en assistent kan använda den: varje kommando som ger JSON är ett verktyg, som tar emot det man skulle skriva efter kommandots namn",
+        argumentosDeLaHerramienta: "det som följer kommandots namn, som i terminalen: ”G7/B”, ”D dorian --chords”",
+        mcpSoloComoServidor: "mcp körs för sig, som server: armonia mcp"
     )
 }

@@ -311,7 +311,7 @@ extension TextosDeConsola {
         archivoSoloParaAcordes: "--file ist nur für „chords“ und „arpeggios“",
         ventanaSinArchivo: "--window gehört zu --file",
         acordesConCifradosYAnalisis: "Akkorde kommen immer mit Akkordsymbolen und Analyse",
-        tipoDePartituraDesconocido: "„{1}“: exportiert wird eine „melody“, ein „chorale“, „chords“, ihre „arpeggios“ oder eine „scale“",
+        tipoDePartituraDesconocido: "„{1}“: exportiert wird eine „melody“, ein „chorale“, „chords“, ihre „arpeggios“, eine „scale“, ein „bass“ oder eine „line“",
         faltaLoQueSeGraba: "es fehlt, was gesetzt werden soll: {1}",
         motorDesconocido: "„{1}“: die Engines sind lilypond, musescore, verovio, guido und own",
         formatoDeGrabadoDesconocido: "„{1}“: ausgegeben wird „pdf“, „svg“ oder „png“",
@@ -425,6 +425,41 @@ extension TextosDeConsola {
         Die ganze Hilfe, mit den Optionen jedes Befehls: armonia help --all.
         Für alle Befehle: --ingles, --idioma, --textos, --escritura, --sistema, --grafia, --subindices, --cifras und --json.
         """,
-        bienvenidaDeLaSesion: "armonia {1}. Ein Befehl pro Zeile, ohne „armonia“ (help: die Befehle; exit: beenden)."
+        bienvenidaDeLaSesion: "armonia {1}. Ein Befehl pro Zeile, ohne „armonia“ (help: die Befehle; exit: beenden).",
+
+        // Ayuda+Afinacion.swift y LineaDeComandos+Scala.swift
+        sintaxisScalaTemperamento: "scala temperament <Temperatur> [--kbm]",
+        descripcionScalaTemperamento: "eine Temperatur des Katalogs als Scala-Datei .scl, die fast alle Synthesizer lesen; mit --kbm ihre Tastaturbelegung (.kbm), mit C4 auf Taste 60",
+        sintaxisScalaEscala: "scala scale <Tonleiter> [--temperament <Temperatur>] [--kbm]",
+        descripcionScalaEscala: "eine Tonleiter als .scl-Datei, ab dem Grundton und mit ihren Mikrotönen, falls sie welche hat; mit --temperament in einer Temperatur, die ihre Töne stimmt; mit --kbm die Belegung, die jede Stufe auf ihre Taste legt und die übrigen stumm lässt",
+        sintaxisScalaArchivo: "scala --file <Datei.scl> [--tolerance <Cent>] [--limit <n>]",
+        descripcionScalaArchivo: "liest eine .scl-Datei, gibt ihre Töne in Cent an und was ihr im Katalog ähnelt: die Temperaturen mit ebenso vielen Stufen, egal auf welchem Ton sie beginnt, und die Tonleitern mit ebenso vielen Stufen; --tolerance ist die größte Abweichung eines Tons (standardmäßig 10 Cent) und --limit, wie viele es gibt (10)",
+        sclResumen: "{1}: {2} Töne pro Periode von {3} Cent",
+        sclParecidos: "Ähnelt ihr (größte Abweichung eines Tons):",
+        sclSinParecidos: "Nichts im Katalog liegt innerhalb von {1} Cent.",
+        sclTemperamento: "Temperatur",
+        sclEscala: "Tonleiter",
+        sclDesdeElPaso: "ab Stufe {1}",
+        faltaLoQueSeEscribeEnScala: "scala braucht temperament <Temperatur>, scale <Tonleiter> oder --file <Datei.scl>",
+        temperamentoSoloDeEscala: "--temperament gehört zu scala scale",
+        temperamentoQueNoAfina: "„{1}“ stimmt nicht die zwölf Töne: Es ist das Mikrotonsystem einiger Tonleitern",
+        soloConArchivoDeScala: "{1} gehört zu scala --file",
+        toleranciaNoValida: "„{1}“ ist keine Toleranz in Cent: eine Zahl ab 0",
+
+        // Ayuda+Partituras.swift: las líneas sobre una progresión
+        sintaxisMusicxmlLineas: "musicxml bass|line <Symbole> [Optionen]",
+        descripcionMusicxmlLineas: "eine Linie über den Akkorden, ein Takt pro Akkord: bass, ein Walking Bass in Vierteln mit Tabulatur; line, Achtel durch die Tonleiter jedes Akkords, mit einem Leitton auf der Eins und einem chromatischen Ton zum nächsten, in der Taktart von --time",
+        compasDeLaLinea: "der Walking Bass steht im 4/4-Takt: --time gilt für line",
+
+        // LineaDeComandos+Reticulo.swift
+        sintaxisReticulo: "lattice <Akkorde> [--summary]",
+        descripcionReticulo: "die Progression im Gitter der reinen Stimmung (SVG): Quinten waagrecht, Terzen senkrecht, jeder Grundton am Punkt, der dem vorigen am nächsten liegt, und die Kommadrift, wenn sie zum ersten Grundton zurückkehrt; mit --summary als Text das Verhältnis jedes Grundtons und seine Abweichung von der gleichstufigen Stimmung",
+        derivaDelReticulo: "Drift: {1} Cent",
+
+        // ServidorMCP.swift
+        sintaxisMCP: "mcp",
+        descripcionMCP: "die Engine als MCP-Server (Model Context Protocol) über Standardein- und -ausgabe, damit ein Assistent sie nutzen kann: Jeder Befehl mit JSON-Ausgabe ist ein Werkzeug, das erhält, was man nach dem Befehlsnamen schreiben würde",
+        argumentosDeLaHerramienta: "was auf den Befehlsnamen folgt, wie im Terminal: „G7/B“, „D dorian --chords“",
+        mcpSoloComoServidor: "mcp läuft eigenständig als Server: armonia mcp"
     )
 }

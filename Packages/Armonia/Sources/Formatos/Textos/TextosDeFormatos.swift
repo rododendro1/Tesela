@@ -23,6 +23,13 @@ struct TextosDeFormatos: TextosTraducidos {
     let sinNotas: String
     let sinAcordes: String
 
+    // MARK: ArchivoScala.swift
+    let sclVacio: String
+    let sclSinCuenta: String
+    let sclCuentaNoValida: Plantilla  // {1} linea, {2} texto
+    let sclFaltanPasos: Plantilla  // {1} esperados, {2} hallados
+    let sclPasoNoValido: Plantilla  // {1} linea, {2} texto
+
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDeFormatos>(
