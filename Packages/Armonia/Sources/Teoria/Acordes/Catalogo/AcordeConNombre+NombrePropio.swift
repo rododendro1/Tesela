@@ -102,11 +102,58 @@ extension AcordeConNombre {
         nombre: "tricordo vienés",
         intervalos: [.unisono, .segundaMenor, .quintaDisminuida],
         estilos: [.deCompositor], referencias: [Referencia.delone1975.paginas("348")])
+    /// El acorde de Kenny Barron, su disposición del menor con séptima y undécima: dos quintas en la mano izquierda y
+    /// dos en la derecha, a un semitono. Sobre Do, Do Sol Re | Mi♭ Si♭ Fa.
+    public static let kennyBarron = AcordeConNombre(
+        nombre: "acorde de Kenny Barron",
+        intervalos: [
+            .unisono, .quintaJusta, .novenaMayor, .terceraMenor + .octava, .septimaMenor + .octava,
+            .undecima + .octava,
+        ],
+        estilos: [.jazz], referencias: [.levine1989])
+    /// La estructura superior II: la tríada mayor de la novena sobre el tritono de una séptima de dominante, que
+    /// suena como 13(♯11). Sobre Do, Do Mi Si♭ | Re Fa♯ La.
+    public static let estructuraSuperiorII = AcordeConNombre(
+        nombre: "estructura superior II",
+        intervalos: [
+            .unisono, .terceraMayor, .septimaMenor, .novenaMayor, .undecimaAumentada, .decimoterceraMayor,
+        ],
+        alias: ["upper structure II"], estilos: [.jazz], referencias: [.levine1989, .levine1995])
+    /// La estructura superior VI: la tríada mayor de la decimotercera sobre una séptima de dominante, que suena como
+    /// 13(♭9). Sobre Do, Do Mi Si♭ | La Do♯ Mi.
+    public static let estructuraSuperiorVI = AcordeConNombre(
+        nombre: "estructura superior VI",
+        intervalos: [
+            .unisono, .terceraMayor, .septimaMenor, .decimoterceraMayor, .unisonoAumentado + .octava + .octava,
+        ],
+        alias: ["upper structure VI"], estilos: [.jazz], referencias: [.levine1989, .levine1995])
+    /// La estructura superior ♭VI: la tríada mayor de la decimotercera menor sobre una séptima de dominante, que
+    /// suena como 7(♯9, ♭13). Sobre Do, Do Mi Si♭ | La♭ Do Mi♭.
+    public static let estructuraSuperiorBemolVI = AcordeConNombre(
+        nombre: "estructura superior ♭VI",
+        intervalos: [
+            .unisono, .terceraMayor, .septimaMenor, .sextaMenor + .octava, .octava + .octava,
+            .terceraMenor + .octava + .octava,
+        ],
+        alias: ["estructura superior bemol VI", "upper structure bVI"], estilos: [.jazz],
+        referencias: [.levine1989, .levine1995])
+    /// El acorde por quintas justas: Do Sol Re La.
+    public static let porQuintas = AcordeConNombre(
+        nombre: "acorde por quintas",
+        intervalos: [.unisono, .quintaJusta, .novenaMayor, .sextaMayor + .octava],
+        alias: ["acorde quintal"], estilos: [.jazz, .deCompositor], referencias: [.persichetti1961])
+    /// El racimo cromático de tres notas, por semitonos: Do Re♭ Re. Se toca con la palma o el antebrazo si es más
+    /// grande.
+    public static let racimo = AcordeConNombre(
+        nombre: "racimo cromático",
+        intervalos: [.unisono, .segundaMenor, .segundaMayor],
+        alias: ["cluster", "racimo"], estilos: [.deCompositor], referencias: [.persichetti1961])
 
     /// Los de nombre propio, en su orden.
     public static let conNombrePropio: [AcordeConNombre] = [
         .tristan, .mistico, .petrushka, .farben, .soWhat, .hendrix, .mu, .porCuartas, .elektra, .augures, .salmos,
-        .alfa, .delSueno, .tricordoVienes,
+        .alfa, .delSueno, .tricordoVienes, .kennyBarron, .estructuraSuperiorII, .estructuraSuperiorVI,
+        .estructuraSuperiorBemolVI, .porQuintas, .racimo,
     ]
 
     /// Todos los acordes del catálogo: los genéricos (`genericos`) y después los de nombre propio (`conNombrePropio`).

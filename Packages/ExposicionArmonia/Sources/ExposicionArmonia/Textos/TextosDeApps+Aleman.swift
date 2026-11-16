@@ -410,6 +410,10 @@ extension TextosDeApps {
         trastesDelInstrumento: "Bünde",
         ordenesEnOctavas: "Chöre in Oktaven",
         pasosDelOrnamento: "Schritte",
-        suenaElOrnamento: "Klingt"
+        suenaElOrnamento: "Klingt",
+        familiaDelInstrumento: "Familie",
+        instrumentosDeCuerda: "Instrumente",
+        ornamentosConNombre: "Verzierungen",
+        fichaDelInstrumento: "Über das Instrument"
     )
 }

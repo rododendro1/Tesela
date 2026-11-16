@@ -410,6 +410,10 @@ extension TextosDeApps {
         trastesDelInstrumento: "Лады",
         ordenesEnOctavas: "Хоры в октаву",
         pasosDelOrnamento: "Шаги",
-        suenaElOrnamento: "Звучит"
+        suenaElOrnamento: "Звучит",
+        familiaDelInstrumento: "Семейство",
+        instrumentosDeCuerda: "Инструменты",
+        ornamentosConNombre: "Мелизмы",
+        fichaDelInstrumento: "Об инструменте"
     )
 }

@@ -43,6 +43,12 @@ extension TextosDeTrastes {
         contrabajo: "kontrabaxua",
         trastesCromaticos: "kromatikoak",
         trastesDiatonicos: "diatonikoak",
-        sinTrastes: "trasterik gabe"
+        sinTrastes: "trasterik gabe",
+        familiaGuitarras: "gitarrak",
+        familiaBajos: "baxuak",
+        familiaGuitarrasPequenas: "ukeleleak eta gitarra txikiak",
+        familiaLaudes: "laudeak eta mandolinak",
+        familiaBanjosYCitaras: "banjoak eta zitarak",
+        familiaCuerdaFrotada: "igurtzizko hariak"
     )
 }

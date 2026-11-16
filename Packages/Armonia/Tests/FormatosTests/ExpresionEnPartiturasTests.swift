@@ -79,6 +79,19 @@ import Testing
         #expect(picada.notas[1].duracion == .negra)
     }
 
+    /// En el MIDI, los ornamentos suenan en sus notas, en la escala de la tonalidad; si no se tocan, solo la escrita.
+    @Test func losOrnamentosSuenanEnElMIDI() throws {
+        let voz = try Voz(leyendo: "Re4:4{trino} Mi4:4{mordenteInferior}")
+        let tocada = try PiezaImportada(midi: voz.partitura().midi())
+        #expect(
+            tocada.notas.map(\.altura.description) == [
+                "Mi4", "Re4", "Mi4", "Re4", "Mi4", "Re4", "Mi4", "Re4", "Mi4", "Re4", "Mi4",
+            ])
+        #expect(tocada.notas.last?.duracion == Duracion(3, 16))
+        let escrita = try PiezaImportada(midi: voz.partitura().midi(tocandoLosOrnamentos: false))
+        #expect(escrita.notas.count == 2)
+    }
+
     @Test func sinMarcasNoCambiaNada() throws {
         let sencilla = try Voz(leyendo: "Do4:4 Re4:4 Mi4:2")
         #expect(

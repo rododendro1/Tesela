@@ -43,6 +43,12 @@ extension TextosDeTrastes {
         contrabajo: "contrabaixo",
         trastesCromaticos: "cromáticos",
         trastesDiatonicos: "diatónicos",
-        sinTrastes: "sem trastes"
+        sinTrastes: "sem trastes",
+        familiaGuitarras: "guitarras",
+        familiaBajos: "baixos",
+        familiaGuitarrasPequenas: "ukuleles e guitarras pequenas",
+        familiaLaudes: "alaúdes e bandolins",
+        familiaBanjosYCitaras: "banjos e cítaras",
+        familiaCuerdaFrotada: "cordas friccionadas"
     )
 }

@@ -311,7 +311,7 @@ struct VistaDeAcordes: View {
     private func digitaciones(de acorde: Acorde) -> some View {
         Section(notacion.texto(\.digitaciones)) {
             Picker(notacion.texto(\.instrumentoYAfinacion), selection: $modelo.encordado) {
-                ForEach(Encordado.todos, id: \.self) { Text($0.titulo(en: notacion)).tag($0) }
+                OpcionesDeEncordado()
             }
             // Los trastes se cuentan desde el capo, como los cuenta quien toca.
             Stepper(notacion.texto { $0.capoEnElTraste(modelo.capo) }, value: $modelo.capo, in: 0...9)

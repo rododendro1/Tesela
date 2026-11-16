@@ -64,5 +64,11 @@ extension NombresDeAcordes {
         .init(.alfa, "συγχορδία άλφα"),
         .init(.delSueno, "συγχορδία του ονείρου"),
         .init(.tricordoVienes, "βιεννέζικο τρίχορδο"),
+        .init(.kennyBarron, "συγχορδία του Kenny Barron"),
+        .init(.estructuraSuperiorII, "άνω δομή II"),
+        .init(.estructuraSuperiorVI, "άνω δομή VI"),
+        .init(.estructuraSuperiorBemolVI, "άνω δομή ♭VI"),
+        .init(.porQuintas, "συγχορδία πεμπτών"),
+        .init(.racimo, "χρωματικό σύμπλεγμα", alias: ["κλάστερ"]),
     ])
 }

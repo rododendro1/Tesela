@@ -410,6 +410,10 @@ extension TextosDeApps {
         trastesDelInstrumento: "Τάστα",
         ordenesEnOctavas: "Ομάδες σε οκτάβες",
         pasosDelOrnamento: "Βήματα",
-        suenaElOrnamento: "Ακούγεται"
+        suenaElOrnamento: "Ακούγεται",
+        familiaDelInstrumento: "Οικογένεια",
+        instrumentosDeCuerda: "Όργανα",
+        ornamentosConNombre: "Στολίδια",
+        fichaDelInstrumento: "Σχετικά με το όργανο"
     )
 }

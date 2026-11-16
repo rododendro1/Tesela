@@ -2,9 +2,9 @@ import Armonia
 import InterfazArmonia
 import SwiftUI
 
-/// Los catálogos con nombre: las progresiones, los acordes con nombre y los ritmos. Se buscan por su nombre en
-/// cualquier idioma; cada tarjeta dice lo que es, sus estilos y sus fuentes, se escucha y, si es una progresión o un
-/// acorde, se abre en Análisis o en Acordes.
+/// Los catálogos con nombre: las progresiones, los acordes con nombre, los ritmos, los ornamentos y los
+/// instrumentos. Se buscan por su nombre en cualquier idioma; cada tarjeta dice lo que es, sus estilos y sus fuentes,
+/// se escucha y, si es una progresión o un acorde, se abre en Análisis o en Acordes.
 struct VistaDelCatalogo: View {
     @Environment(\.notacion) private var notacion
     @EnvironmentObject private var navegacion: Navegacion
@@ -20,7 +20,7 @@ struct VistaDelCatalogo: View {
                 .pickerStyle(.segmented)
                 TextField(notacion.texto(\.buscarEnElCatalogo), text: $modelo.texto)
                     .autocorrectionDisabled()
-                if modelo.lista != .ritmos {
+                if modelo.lista.usaLaTonica {
                     Picker(notacion.texto(\.tonica), selection: $modelo.tonica) {
                         ForEach(EleccionDeEscala.tonicas, id: \.self) { Text($0.nombre(en: notacion)).tag($0) }
                     }

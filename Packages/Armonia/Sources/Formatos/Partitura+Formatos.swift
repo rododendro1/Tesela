@@ -30,11 +30,16 @@ extension Partitura {
     /// La partitura como fichero MIDI estándar (formato 1): una pista de control con el título, el tempo (negra =
     /// 120 si no se da), el compás y la armadura, y una por voz, de arriba abajo, con su nombre (o el de la parte),
     /// el instrumento y sus marcadores. Con `afinacion`, las notas suenan en ella
-    /// (`TemperamentoRegular.mesotonicoCuartoDeComa`, `TemperamentoConNombre.werckmeisterIII.afinacion()`…).
+    /// (`TemperamentoRegular.mesotonicoCuartoDeComa`, `TemperamentoConNombre.werckmeisterIII.afinacion()`…). Los
+    /// ornamentos suenan en sus notas (`conLosOrnamentosRealizados(en:)`); con `tocandoLosOrnamentos: false`, solo la
+    /// nota escrita.
     ///
     ///     let datos = try Voz(leyendo: "Do4:4 Re4:8 Mi4:8 Fa4:2").partitura().midi()
     ///     try datos.write(to: URL(fileURLWithPath: "escala.mid"))
-    public func midi(afinacion: (any SistemaDeAfinacion)? = nil) -> Data {
+    public func midi(afinacion: (any SistemaDeAfinacion)? = nil, tocandoLosOrnamentos: Bool = true) -> Data {
+        guard !tocandoLosOrnamentos else {
+            return conLosOrnamentosRealizados().midi(afinacion: afinacion, tocandoLosOrnamentos: false)
+        }
         var archivo = ArchivoMIDI(
             compas: compas, tonalidad: encabezado.tonalidad, tempo: encabezado.tempo,
             titulo: encabezado.titulo(en: notacion),

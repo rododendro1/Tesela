@@ -64,5 +64,11 @@ extension NombresDeAcordes {
         .init(.alfa, "alfa akordea"),
         .init(.delSueno, "ametsaren akordea"),
         .init(.tricordoVienes, "Vienako trikordioa"),
+        .init(.kennyBarron, "Kenny Barronen akordea"),
+        .init(.estructuraSuperiorII, "goiko egitura II"),
+        .init(.estructuraSuperiorVI, "goiko egitura VI"),
+        .init(.estructuraSuperiorBemolVI, "goiko egitura ♭VI"),
+        .init(.porQuintas, "bostenezko akordea"),
+        .init(.racimo, "mordo kromatikoa", alias: ["clusterra"]),
     ])
 }

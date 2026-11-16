@@ -48,6 +48,12 @@ struct TextosDeTrastes: TextosTraducidos {
     let trastesCromaticos: String
     let trastesDiatonicos: String
     let sinTrastes: String
+    let familiaGuitarras: String
+    let familiaBajos: String
+    let familiaGuitarrasPequenas: String
+    let familiaLaudes: String
+    let familiaBanjosYCitaras: String
+    let familiaCuerdaFrotada: String
 
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.

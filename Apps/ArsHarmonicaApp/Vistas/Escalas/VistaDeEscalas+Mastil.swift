@@ -26,8 +26,9 @@ struct SeccionDePosiciones: View {
             }
             .pickerStyle(.segmented)
             Picker(notacion.texto(\.instrumentoYAfinacion), selection: $encordado) {
-                ForEach(Encordado.todos, id: \.self) { Text($0.titulo(en: notacion)).tag($0) }
+                OpcionesDeEncordado()
             }
+            FichaDelEncordado(encordado: encordado)
             Stepper(
                 capo == 0 ? notacion.texto(\.sinCapo) : notacion.texto { $0.capo(capo) }, value: $capo, in: 0...12)
             ForEach(posiciones, id: \.self) { posicion in

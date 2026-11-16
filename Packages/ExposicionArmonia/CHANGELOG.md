@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- `EncordadoPresentado` tiene `familia` y `familiaId`, y su ficha empieza por la familia.
+- `TextosDeApps.familiaDelInstrumento`, `instrumentosDeCuerda`, `ornamentosConNombre` y `fichaDelInstrumento`, en
+  los trece idiomas.
 - `EncordadoPresentado` y `OrnamentoPresentado`: un instrumento de cuerda con su afinación, sus órdenes y cuerdas,
   sus órdenes en octavas y sus trastes, y un ornamento con sus pasos y lo que suena sobre una nota de una escala, cada
   uno con su ficha. `OrigenPresentado(anio:epoca:documentada:en:)` crea el origen de cualquier cosa con esos datos.

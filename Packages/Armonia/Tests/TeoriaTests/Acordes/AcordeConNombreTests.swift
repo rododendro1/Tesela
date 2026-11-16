@@ -14,10 +14,11 @@ import Testing
             #expect(acorde.intervalos.first == .unisono, "\(acorde.nombre)")
         }
         // Los genéricos se leen todos por terceras; de los de nombre propio, todos menos los de Petrushka, Elektra y
-        // el alfa, que llevan la tercera mayor y la menor.
+        // el alfa, que llevan la tercera mayor y la menor, y las estructuras superiores VI y ♭VI, con la novena
+        // escrita como unísono aumentado o la tercera menor sobre la mayor.
         for acorde in AcordeConNombre.genericos { #expect(acorde.tipo != nil, "\(acorde.nombre)") }
         let sinTipo = AcordeConNombre.conNombrePropio.filter { $0.tipo == nil }
-        #expect(sinTipo == [.petrushka, .elektra, .alfa])
+        #expect(sinTipo == [.petrushka, .elektra, .alfa, .estructuraSuperiorVI, .estructuraSuperiorBemolVI])
         // Los genéricos tienen notas distintas, para que cada uno nombre su tipo.
         #expect(Set(AcordeConNombre.genericos.map(\.pasosDeQuinta)).count == AcordeConNombre.genericos.count)
     }
@@ -175,6 +176,22 @@ import Testing
         // El ø9 es el del locrio ♮2, que lo tiene entero.
         let o9 = Acorde(.do, AcordeConNombre.semidisminuidoNovena.tipo!)
         #expect(o9.escalasCompatibles().first == Escala(.do, .locrioSegundaNatural))
+    }
+
+    /// Las disposiciones del jazz y los acordes del siglo XX: sus notas sobre Do y sus fuentes.
+    @Test func losDelJazzYDelSigloXX() {
+        func notas(_ acorde: AcordeConNombre) -> [String] { acorde.notas(sobre: .do).map(\.nombre) }
+        #expect(notas(.kennyBarron) == ["Do", "Sol", "Re", "Mi♭", "Si♭", "Fa"])
+        #expect(notas(.estructuraSuperiorII) == ["Do", "Mi", "Si♭", "Re", "Fa♯", "La"])
+        #expect(notas(.estructuraSuperiorVI) == ["Do", "Mi", "Si♭", "La", "Do♯"])
+        #expect(notas(.estructuraSuperiorBemolVI) == ["Do", "Mi", "Si♭", "La♭", "Do", "Mi♭"])
+        #expect(notas(.porQuintas) == ["Do", "Sol", "Re", "La"])
+        #expect(notas(.racimo) == ["Do", "Re♭", "Re"])
+        #expect(AcordeConNombre.kennyBarron.referencias == [.levine1989])
+        #expect(AcordeConNombre.racimo.referencias == [.persichetti1961])
+        #expect(AcordeConNombre.buscar(nombre: "upper structure bVI") == .estructuraSuperiorBemolVI)
+        #expect(AcordeConNombre.buscar(nombre: "tone cluster") == .racimo)
+        #expect(AcordeConNombre.buscar(conteniendo: "estructura superior").count == 3)
     }
 
     @Test func lasProgresionesNuevas() {

@@ -410,6 +410,10 @@ extension TextosDeApps {
         trastesDelInstrumento: "Trasteak",
         ordenesEnOctavas: "Zortzidunetako ordenak",
         pasosDelOrnamento: "Urratsak",
-        suenaElOrnamento: "Soinua"
+        suenaElOrnamento: "Soinua",
+        familiaDelInstrumento: "Familia",
+        instrumentosDeCuerda: "Instrumentuak",
+        ornamentosConNombre: "Apaingarriak",
+        fichaDelInstrumento: "Instrumentuari buruz"
     )
 }

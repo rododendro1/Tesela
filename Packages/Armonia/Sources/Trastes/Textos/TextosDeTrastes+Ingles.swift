@@ -43,6 +43,12 @@ extension TextosDeTrastes {
         contrabajo: "double bass",
         trastesCromaticos: "chromatic",
         trastesDiatonicos: "diatonic",
-        sinTrastes: "fretless"
+        sinTrastes: "fretless",
+        familiaGuitarras: "guitars",
+        familiaBajos: "basses",
+        familiaGuitarrasPequenas: "ukuleles and small guitars",
+        familiaLaudes: "lutes and mandolins",
+        familiaBanjosYCitaras: "banjos and zithers",
+        familiaCuerdaFrotada: "bowed strings"
     )
 }

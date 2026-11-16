@@ -410,6 +410,10 @@ extension TextosDeApps {
         trastesDelInstrumento: "Band",
         ordenesEnOctavas: "Körer i oktaver",
         pasosDelOrnamento: "Steg",
-        suenaElOrnamento: "Låter"
+        suenaElOrnamento: "Låter",
+        familiaDelInstrumento: "Familj",
+        instrumentosDeCuerda: "Instrument",
+        ornamentosConNombre: "Ornament",
+        fichaDelInstrumento: "Om instrumentet"
     )
 }

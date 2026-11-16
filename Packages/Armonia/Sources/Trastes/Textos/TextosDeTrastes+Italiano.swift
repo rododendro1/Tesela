@@ -43,6 +43,12 @@ extension TextosDeTrastes {
         contrabajo: "contrabbasso",
         trastesCromaticos: "cromatici",
         trastesDiatonicos: "diatonici",
-        sinTrastes: "senza tasti"
+        sinTrastes: "senza tasti",
+        familiaGuitarras: "chitarre",
+        familiaBajos: "bassi",
+        familiaGuitarrasPequenas: "ukulele e chitarre piccole",
+        familiaLaudes: "liuti e mandolini",
+        familiaBanjosYCitaras: "banjo e cetre",
+        familiaCuerdaFrotada: "archi"
     )
 }

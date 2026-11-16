@@ -24,7 +24,7 @@ extension LineaDeComandos {
 
     /// Los instrumentos que pide `instrumentos [<texto>] [--familia <trastes>] [--lugar <lugar>] [--agrupar <forma>]
     /// [--estadisticas]`, si se quiere su ficha y cómo se agrupan. Con un nombre exacto, solo ese; si no, los que lo
-    /// contienen en el nombre de la notación o en español (todos, sin texto).
+    /// contienen en el nombre en algún idioma (todos, sin texto).
     static func instrumentosPedidos(_ textos: [String], _ notacion: Notacion) throws -> (
         instrumentos: [Encordado], ficha: Bool, agrupacion: AgrupacionDeEscalas?
     ) {
@@ -42,17 +42,8 @@ extension LineaDeComandos {
         let ficha = argumentos.quitarMarca(.estadisticas)
         try argumentos.sinOpcionesDesconocidas()
         let texto = argumentos.unidos
-        let hallados: [Encordado]
-        if texto.isEmpty {
-            hallados = Encordado.todos
-        } else if let exacto = try? Encordado(leyendo: texto) {
-            hallados = [exacto]
-        } else {
-            let clave = claveDeBusqueda(texto)
-            hallados = Encordado.todos.filter { encordado in
-                [encordado.nombre, encordado.nombre(en: notacion)].contains { claveDeBusqueda($0).contains(clave) }
-            }
-        }
+        let exacto = texto.isEmpty ? nil : try? Encordado(leyendo: texto)
+        let hallados = exacto.map { [$0] } ?? Encordado.buscar(conteniendo: texto)
         let pedidos = hallados.filter { encordado in
             (familia == nil || encordado.trastes == familia) && lugar.cumple(encordado.lugaresDeOrigen)
         }

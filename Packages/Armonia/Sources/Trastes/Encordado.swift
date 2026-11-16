@@ -337,6 +337,18 @@ extension Encordado {
         self = encontrado
     }
 
+    /// Los de `todos` que tienen el texto en el nombre, en alguno de los trece idiomas, sin distinguir mayúsculas ni
+    /// tildes; todos, sin texto.
+    ///
+    ///     Encordado.buscar(conteniendo: "guitar").count   // las doce guitarras y la guitarra portuguesa
+    public static func buscar(conteniendo texto: String) -> [Encordado] {
+        let clave = texto.claveDeBusqueda
+        guard !clave.isEmpty else { return todos }
+        return todos.filter { encordado in
+            ([encordado.nombre] + (encordado.traduccion?.todos ?? [])).contains { $0.claveDeBusqueda.contains(clave) }
+        }
+    }
+
     /// Otras formas de nombrar los instrumentos de `todos` (los nombres de `todos` ya se aceptan).
     private static let alias: [String: Encordado] = [
         "guitar": .guitarra, "seven string guitar": .guitarraDeSieteCuerdas, "drop d guitar": .guitarraEnReGrave,

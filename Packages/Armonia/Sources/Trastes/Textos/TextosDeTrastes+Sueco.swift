@@ -43,6 +43,12 @@ extension TextosDeTrastes {
         contrabajo: "kontrabas",
         trastesCromaticos: "kromatiska",
         trastesDiatonicos: "diatoniska",
-        sinTrastes: "bandlös"
+        sinTrastes: "bandlös",
+        familiaGuitarras: "gitarrer",
+        familiaBajos: "basar",
+        familiaGuitarrasPequenas: "ukuleles och små gitarrer",
+        familiaLaudes: "lutor och mandoliner",
+        familiaBanjosYCitaras: "banjor och citror",
+        familiaCuerdaFrotada: "stråkinstrument"
     )
 }
