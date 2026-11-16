@@ -97,5 +97,5 @@ open Tesela.xcodeproj                                    # elige el esquema ArsH
 - [CONTRIBUTING.md](CONTRIBUTING.md) para contribuir y [SECURITY.md](.github/SECURITY.md) para avisar de un fallo de
   seguridad.
 
-El código se publica con licencia MIT ([LICENSE](LICENSE)). Los iconos de las apps muestran a Kokopelli en
-colores: en un desierto de noche en Ars Harmonica y sobre un mosaico hexagonal en Tonnetz.
+El código se publica con licencia MIT ([LICENSE](LICENSE)). Los iconos de las apps muestran a Apolo con
+la lira entre las musas: bajo el cielo en Ars Harmonica y sobre un mosaico hexagonal en Tonnetz.
