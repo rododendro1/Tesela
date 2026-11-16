@@ -5,7 +5,7 @@ import Armonia
 // teclados isomórficos y cuadrados, los modos gregorianos y los instrumentos de la partitura.
 
 let columnasDeRitmos: [String] =
-    columnasDeNombres + columnasDeAliasYVariantes(conVariantes: false) + [
+    columnasDeNombres + columnasDeAliasYVariantes + [
         "familia", "patron", "agrupacion", "unidad", "compas", "pulsos", "ataques", "fuertes", "intervalos",
         "vector_de_distancias", "euclideo", "profundo", "simetrias_por_rotacion", "uniformidad", "contratiempo",
         "sincopa",
@@ -13,7 +13,7 @@ let columnasDeRitmos: [String] =
 
 func filaDeRitmo(_ ritmo: RitmoConNombre) -> [String] {
     let estadisticas = ritmo.estadisticas
-    let otros: [String] = aliasYVariantes(de: ritmo, conVariantes: false)
+    let otros: [String] = aliasYVariantes(de: ritmo)
     let resto: [String] = [
         ritmo.familia.nombre, ritmo.patron,
         ritmo.agrupacion.map(String.init).joined(separator: "+"), String(ritmo.unidad), ritmo.compas.description,
@@ -35,7 +35,7 @@ let ritmos = Catalogo(
 let razonesJustas = ["3_2", "5_4", "6_5", "7_4", "11_8"]
 
 let columnasAntesDeLosErrores: [String] =
-    ["alias"] + columnasDeOtrosNombres(conVariantes: false) + [
+    columnasDeAliasYVariantes + [
         "familia", "autor", "pasos_por_octava", "quinta", "uniforme", "paso_menor", "paso_mayor",
     ]
 let columnasDeLosErrores: [String] = razonesJustas.map { "error_\($0)" }
@@ -49,7 +49,7 @@ let columnasDeTemperamentos: [String] =
 
 func filaDeTemperamento(_ temperamento: TemperamentoConNombre) -> [String] {
     let estadisticas = temperamento.estadisticas
-    let otros: [String] = aliasYVariantes(de: temperamento, conVariantes: false)
+    let otros: [String] = aliasYVariantes(de: temperamento)
     let ficha: [String] = [
         temperamento.familia.nombre, temperamento.autor ?? "", String(estadisticas.pasosPorOctava),
         numero(temperamento.quinta),
@@ -72,7 +72,7 @@ let temperamentos = Catalogo(
     obras: TemperamentoConNombre.catalogo.flatMap(\.referencias))
 
 let columnasDeNotas: [String] =
-    columnasDeNombres + columnasDeAliasYVariantes() + [
+    columnasDeNombres + columnasDeAliasYVariantes + [
         "familia", "altura", "desvio", "frecuencia", "frecuencia_del_la4", "midi",
     ] + columnasDeLaFecha + ["referencias"]
 
@@ -93,7 +93,7 @@ let notas = Catalogo(
     obras: NotaConNombre.catalogo.flatMap(\.referencias))
 
 let columnasDeFunciones: [String] =
-    columnasDeNombres + columnasDeAliasYVariantes() + ["familia", "intervalo", "cents", "desvio"] + columnasDeLaFecha
+    columnasDeNombres + columnasDeAliasYVariantes + ["familia", "intervalo", "cents", "desvio"] + columnasDeLaFecha
     + ["referencias"]
 
 /// Una función de nota: su familia y, si lo tiene, su intervalo desde la tónica.
@@ -147,13 +147,42 @@ let escalasMicrotonales = Catalogo(
     filas: AfinacionPropia.catalogo.map(filaDeEscala),
     obras: AfinacionPropia.catalogo.flatMap(\.referencias))
 
+/// Lo que cita cada obra, por su clave: «escala Re dórico», «acorde Tristán»…, en el orden de los catálogos, con las
+/// obras que dan su carácter y, al final, las del carácter de las tonalidades («tonalidad Re mayor»).
+private let citadaPor: [String: [String]] = {
+    func citas(_ elementos: [some ElementoConNombre], _ catalogo: String) -> [(String, String)] {
+        elementos.flatMap { elemento -> [(String, String)] in
+            let quien = catalogo + " " + elemento.nombre
+            return (elemento.referencias + elemento.caracter.map(\.referencia)).map { ($0.clave, quien) }
+        }
+    }
+    let microtonales: [(String, String)] = AfinacionPropia.catalogo.flatMap { afinacion in
+        afinacion.referencias.map { ($0.clave, "escala microtonal " + afinacion.temperada.nombre) }
+    }
+    let grupos: [[(String, String)]] = [
+        citas(TipoDeEscala.catalogo, "escala"), citas(AcordeConNombre.catalogo, "acorde"),
+        citas(ProgresionConNombre.catalogo, "progresión"), citas(RitmoConNombre.catalogo, "ritmo"),
+        citas(TemperamentoConNombre.catalogo, "temperamento"), citas(NotaConNombre.catalogo, "nota"),
+        citas(FuncionDeNota.catalogo, "función"), microtonales,
+        Tonalidad.conCaracter.flatMap { tonalidad in
+            tonalidad.caracter.map { ($0.referencia.clave, "tonalidad " + tonalidad.nombre) }
+        },
+    ]
+    var porClave: [String: [String]] = [:]
+    for (clave, quien) in grupos.joined() where porClave[clave]?.contains(quien) != true {
+        porClave[clave, default: []].append(quien)
+    }
+    return porClave
+}()
+
 let referencias = Catalogo(
     fichero: "referencias.tsv",
     columnas: [
         "clave", "clase", "autores", "titulo", "anio", "publicado_en", "editorial", "lugar", "volumen", "paginas",
-        "doi", "url", "cita",
+        "doi", "url", "cita", "citada_por",
     ],
-    filas: Referencia.catalogo.map(filaDeObra), obras: Referencia.catalogo)
+    filas: Referencia.catalogo.map { filaDeObra($0) + [(citadaPor[$0.clave] ?? []).joined(separator: " · ")] },
+    obras: Referencia.catalogo)
 
 let encordados = Catalogo(
     fichero: "encordados.tsv",

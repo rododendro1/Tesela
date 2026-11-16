@@ -53,7 +53,9 @@ let columnasDeGrados: [String] =
     [
         "modo", "cifrado", "categoria", "grado", "nombre_del_grado", "funcion", "acorde_sobre_do", "notas",
         "do_movil", "do_movil_con_do_en_menor",
-    ] + sistemasMoviles.map { "notas_en_\($0.rawValue)" } + ["se_reconoce", "escala_del_acorde", "motivo_de_la_escala"]
+    ] + sistemasMoviles.map { "notas_en_" + enSnakeCase($0.rawValue) } + [
+        "se_reconoce", "escala_del_acorde", "motivo_de_la_escala",
+    ]
 
 /// De dónde sale un acorde, con una palabra: «diatónico», «dominante secundaria»…
 private func categoria(_ categoria: AcordeAnalizado.Categoria) -> String {

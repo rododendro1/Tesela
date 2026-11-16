@@ -5,11 +5,12 @@ El CI ya ejecuta el ejemplo, pero eso solo dice que no se cae: una columna que s
 una fila con una celda de más o un catálogo que deja de escribirse pasarían sin que nadie lo viera. Este script mira:
 
   - Que están todos los ficheros que nombra el ejemplo (`fichero: "….tsv"` en sus fuentes), y ninguno más.
-  - Que cada uno tiene filas, una cabecera sin columnas repetidas y, en cada fila, tantas celdas como columnas.
+  - Que cada uno tiene filas, una cabecera en snake_case sin columnas repetidas y, en cada fila, tantas celdas como
+    columnas.
   - Que la primera celda (el nombre o la clave) no está vacía y que no hay dos filas iguales.
   - Que ninguna columna está vacía en todas las filas, salvo las de datos que un catálogo puede no tener aún en
-    ninguno de sus elementos: los alias y las variantes de un idioma, el carácter y la fecha de origen
-    (`COLUMNAS_QUE_PUEDEN_ESTAR_VACIAS`).
+    ninguno de sus elementos: los alias y las variantes de un idioma, el carácter, la fecha de origen y la obra
+    que documenta el nombre (`COLUMNAS_QUE_PUEDEN_ESTAR_VACIAS`).
   - Que ninguna celda empieza ni acaba con espacios: en una lista separada por espacios, es un elemento vacío (el
     cifrado de la tríada mayor, que es «»).
 
@@ -26,9 +27,10 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
 EJEMPLO = RAIZ / "Ejemplos" / "EjemploCatalogos"
+SNAKE_CASE = re.compile(r"^[a-z0-9]+(_[a-z0-9]+)*$")
 FICHERO = re.compile(r'fichero:\s*"([^"]+\.tsv)"')
 COLUMNAS_QUE_PUEDEN_ESTAR_VACIAS = re.compile(
-    r"^((alias|variantes)(_en_\w+)?|afectos|momentos|caracter|anio_de_origen|epoca_de_origen)$")
+    r"^((alias|variantes)(_en_\w+)?|afectos|momentos|caracter|anio_de_origen|epoca_de_origen|documentada_en)$")
 
 
 def ficheros_esperados():
@@ -45,6 +47,9 @@ def errores_de(fichero):
     repetidas = [c for c, n in Counter(cabecera).items() if n > 1]
     if repetidas:
         errores.append(f"{fichero.name}: columnas repetidas: {', '.join(repetidas)}")
+    otras = [c for c in cabecera if not SNAKE_CASE.match(c)]
+    if otras:
+        errores.append(f"{fichero.name}: columnas que no van en snake_case: {', '.join(otras)}")
     for i, fila in enumerate(cuerpo, start=2):
         if len(fila) != len(cabecera):
             errores.append(f"{fichero.name}:{i}: {len(fila)} celdas y {len(cabecera)} columnas")

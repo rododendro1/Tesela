@@ -4,8 +4,8 @@ import ExposicionArmonia
 // El catálogo de acordes (`AcordeConNombre.catalogo`: los genéricos y después los de nombre propio, en su orden), una
 // fila por acorde con lo que dice de él la API pública: nombres (y su traducción a los otros doce idiomas),
 // intervalos, notas sobre Do, el cifrado y el nombre de su tipo de acorde, lo que se mide de él, estilos y las obras
-// que lo citan. Las medidas son las de `MedidaDeAcorde.todas` que van al JSON, con su clave por columna y su valor en
-// texto plano (`ValorDeMedida.textoPlano`): una medida nueva sale aquí sin tocar este fichero.
+// que lo citan. Las medidas son las de `MedidaDeAcorde.todas` que van al JSON, con su clave en snake_case por columna
+// y su valor en texto plano (`ValorDeMedida.textoPlano`): una medida nueva sale aquí sin tocar este fichero.
 
 /// Las medidas, en el orden en que se leen.
 private let medidasDeAcordes = MedidaDeAcorde.todas.filter(\.vaAlJSON)
@@ -13,13 +13,13 @@ private let medidasDeAcordes = MedidaDeAcorde.todas.filter(\.vaAlJSON)
 /// Los nombres, como en la API: con ♭ y ♯ y en español.
 private let notacionDeAcordes = Notacion.compacta(.espanol)
 
-private let columnasDeLosNombresDeAcordes: [String] = columnasDeNombres + columnasDeAliasYVariantes()
+private let columnasDeLosNombresDeAcordes: [String] = columnasDeNombres + columnasDeAliasYVariantes
 private let columnasDeLaFichaDeAcordes: [String] = [
     "grupo", "intervalos", "semitonos", "notas_sobre_do", "cifrado", "nombre_del_tipo",
     "escala_del_cifrado", "escalas_compatibles",
 ]
 let columnasDeAcordes: [String] =
-    columnasDeLosNombresDeAcordes + columnasDeLaFichaDeAcordes + medidasDeAcordes.map(\.clave)
+    columnasDeLosNombresDeAcordes + columnasDeLaFichaDeAcordes + medidasDeAcordes.map { enSnakeCase($0.clave) }
     + columnasDeLaFecha + columnasDelCaracter + ["estilos", "referencias"]
 
 private let genericos = Set(AcordeConNombre.genericos)
@@ -41,7 +41,8 @@ func filaDeAcorde(_ acorde: AcordeConNombre) -> [String] {
         acorde.tipo.map { Acorde(.do, $0).escalasCompatibles().map(\.nombre).joined(separator: " · ") } ?? "",
     ]
     let antes: [String] = otros + ficha
-    // En `numeroDeNotas`, las notas distintas: el acorde de la Sinfonía de los salmos tiene cuatro voces y tres notas.
+    // En `numero_de_notas`, las notas distintas: el acorde de la Sinfonía de los salmos tiene cuatro voces y tres
+    // notas.
     let valores = medidasDeAcordes.map { $0.valor(de: estadisticas, en: notacionDeAcordes)?.textoPlano ?? "" }
     let despues = [
         acorde.estilos.map(\.nombre).joined(separator: " · "),

@@ -23,18 +23,10 @@ func citas(_ referencias: [Referencia]) -> String { referencias.map(\.cita).join
 let traducciones = Idioma.allCases.filter { $0 != .espanol }
 let columnasDeNombres = ["nombre"] + traducciones.map { "nombre_en_\($0.rawValue)" }
 
-/// Las columnas de los alias y, si los catálogos los tienen, de las variantes en los demás idiomas, idioma a idioma:
-/// «alias_en_ingles», «variantes_en_ingles», «alias_en_catalan»…
-func columnasDeOtrosNombres(conVariantes: Bool = true) -> [String] {
-    traducciones.flatMap { idioma in
-        ["alias_en_\(idioma.rawValue)"] + (conVariantes ? ["variantes_en_\(idioma.rawValue)"] : [])
-    }
-}
-
-/// Las columnas de los alias y las variantes en español y, después, en los demás idiomas.
-func columnasDeAliasYVariantes(conVariantes: Bool = true) -> [String] {
-    (conVariantes ? ["alias", "variantes"] : ["alias"]) + columnasDeOtrosNombres(conVariantes: conVariantes)
-}
+/// Las columnas de los alias y las variantes en español y, después, en los demás idiomas, idioma a idioma: «alias»,
+/// «variantes», «alias_en_ingles», «variantes_en_ingles», «alias_en_catalan»…
+let columnasDeAliasYVariantes: [String] =
+    ["alias", "variantes"] + traducciones.flatMap { ["alias_en_\($0.rawValue)", "variantes_en_\($0.rawValue)"] }
 
 /// El nombre de un elemento en español y en los demás idiomas, en el orden de `columnasDeNombres`.
 func nombres(de elemento: some ElementoConNombre) -> [String] {
@@ -42,21 +34,32 @@ func nombres(de elemento: some ElementoConNombre) -> [String] {
 }
 
 /// Los alias y las variantes de un elemento en español y en los demás idiomas, en el orden de
-/// `columnasDeAliasYVariantes`; sin `conVariantes`, solo los alias.
-func aliasYVariantes(de elemento: some ElementoConNombre, conVariantes: Bool = true) -> [String] {
+/// `columnasDeAliasYVariantes`.
+func aliasYVariantes(de elemento: some ElementoConNombre) -> [String] {
     ([Idioma.espanol] + traducciones).flatMap { idioma -> [String] in
         let notacion = Notacion.delIdioma(idioma)
-        let listas = [elemento.alias(en: notacion)] + (conVariantes ? [elemento.variantes(en: notacion)] : [])
-        return listas.map { $0.joined(separator: " · ") }
+        return [elemento.alias(en: notacion), elemento.variantes(en: notacion)].map { $0.joined(separator: " · ") }
     }
 }
 
-/// Las columnas de la fecha de un elemento: el año y la época en que aparece.
-let columnasDeLaFecha = ["anio_de_origen", "epoca_de_origen"]
+/// Las columnas de la fecha de un elemento: el año y la época en que aparece, y la obra que documenta su nombre.
+let columnasDeLaFecha = ["anio_de_origen", "epoca_de_origen", "documentada_en"]
 
-/// El año y la época en que aparece un elemento, en el orden de `columnasDeLaFecha`; vacíos si no se saben.
+/// El año y la época en que aparece un elemento y la cita de la obra que documenta su nombre (`documentada`), en el
+/// orden de `columnasDeLaFecha`; vacíos si no se saben.
 func fecha(de elemento: some ElementoConNombre) -> [String] {
-    [elemento.anioDeOrigen.map(String.init) ?? "", elemento.epocaDeOrigen?.nombre ?? ""]
+    [
+        elemento.anioDeOrigen.map(String.init) ?? "", elemento.epocaDeOrigen?.nombre ?? "",
+        elemento.documentada?.cita ?? "",
+    ]
+}
+
+/// Una clave en camelCase, como las del JSON, en snake_case, como las demás columnas: «numeroDeNotas» da
+/// «numero_de_notas».
+func enSnakeCase(_ clave: String) -> String {
+    clave.reduce(into: "") { texto, letra in
+        texto += letra.isUppercase ? "_" + letra.lowercased() : String(letra)
+    }
 }
 
 /// Las columnas del carácter de un elemento: sus afectos, sus momentos y lo que dice cada fuente, con su cita.

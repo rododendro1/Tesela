@@ -3,9 +3,9 @@ import Foundation
 
 // El catálogo de escalas (`TipoDeEscala.catalogo`: las occidentales y las de otras tradiciones, en su orden), una fila
 // por escala con lo que dice de ella la API pública: nombres, nombres en su escritura original, alias y variantes
-// (también en los otros doce idiomas), intervalos, tradición, estilos, regiones, lugares y épocas, categoría, fuente,
-// afinaciones, lo que se mide de sus notas (brillo, pasos, forma prima, simetría…), sus parientes en el catálogo y las
-// obras que la citan.
+// (también en los otros doce idiomas), intervalos, tradición, estilos, regiones, lugares, año y épocas, la obra que
+// documenta el nombre, categoría, fuente, afinaciones, lo que se mide de sus notas (brillo, pasos, forma prima,
+// simetría…), sus parientes en el catálogo y las obras que la citan.
 
 /// Los cents con un decimal como mucho y punto decimal, sea cual sea la configuración regional: «0 151 294.1».
 private func cents(_ valores: [Double]) -> String {
@@ -22,15 +22,23 @@ private func numeros(_ valores: [Int]) -> String { valores.map(String.init).join
 
 private func nombres(_ tipos: [TipoDeEscala]) -> String { tipos.map(\.nombre).joined(separator: " · ") }
 
-let columnasDeEscalas: [String] =
+/// Las columnas de los nombres, de la tradición y de los lugares, antes de la fecha.
+private let columnasDeEscalasAntesDeLaFecha: [String] =
     [
         "nombre", "nombre_completo", "nombres_originales", "nombres_originales_completos",
         "idiomas_de_los_nombres_originales",
     ]
-    + traducciones.map { "nombre_en_\($0.rawValue)" } + columnasDeAliasYVariantes() + [
+    + traducciones.map { "nombre_en_\($0.rawValue)" } + columnasDeAliasYVariantes + [
         "tradicion", "estilos", "regiones", "lugares_de_origen", "paises_de_origen",
-        "continentes_de_origen", "lugares_de_uso", "epoca_de_origen", "epocas_de_uso", "categoria", "clase", "fuente",
-        "numero_de_notas",
+        "continentes_de_origen", "lugares_de_uso",
+    ]
+
+let columnasDeEscalas: [String] = columnasDeEscalasAntesDeLaFecha + columnasDeLaFecha + columnasDeEscalasTrasLaFecha
+
+/// Las columnas de después de la fecha: la ficha, lo que se mide, el carácter y los parientes.
+private let columnasDeEscalasTrasLaFecha: [String] =
+    [
+        "epocas_de_uso", "categoria", "clase", "fuente", "numero_de_notas",
         "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
         // Los rāgas vakra, en el orden en que se tocan sobre Do, y las notas que no son de su mēḷa.
         "es_vakra", "recorrido", "recorrido_descendente", "notas_externas",
@@ -96,7 +104,7 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
             tipo.nombresOriginales.map(\.idioma.codigo).joined(separator: " · "),
         ] + traducciones.map { tipo.nombre(en: .delIdioma($0)) }
     let otros: [String] = aliasYVariantes(de: tipo)
-    let resto: [String] = [
+    let deDondeEs: [String] = [
         tipo.tradicion?.nombre ?? "",
         tipo.estilos.map(\.nombre).joined(separator: " · "),
         tipo.regiones.map(\.nombre).joined(separator: " · "),
@@ -104,7 +112,8 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         tipo.paisesDeOrigen.map(\.codigoISO).joined(separator: " "),
         tipo.continentesDeOrigen.map(\.nombre).joined(separator: " · "),
         tipo.lugaresDeUso.map(\.nombre).joined(separator: " · "),
-        tipo.epocaDeOrigen?.nombre ?? "",
+    ]
+    let resto: [String] = [
         tipo.epocasDeUso.map(\.nombre).joined(separator: " · "),
         tipo.categoria?.nombre ?? "",
         tipo.clase?.rawValue ?? "",
@@ -197,7 +206,7 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         nombres(tipo.derivadas),
         tipo.referencias.map(\.cita).joined(separator: " · "),
     ]
-    return comoSeLlama + otros + resto
+    return comoSeLlama + otros + deDondeEs + fecha(de: tipo) + resto
 }
 
 /// Las escalas del catálogo, o solo las de una tradición.
