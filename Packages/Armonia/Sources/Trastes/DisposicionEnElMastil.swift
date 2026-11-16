@@ -42,7 +42,7 @@ extension Mastil {
         for alturas in acorde.disposiciones(disposicion, en: ambito) {
             let forma = zip(alturas, alAire).map { $0.midi - $1 }
             let pisados = forma.filter { $0 > 0 }
-            guard forma.allSatisfy({ (0...numeroDeTrastes).contains($0) }),
+            guard zip(grupo, forma).allSatisfy({ tieneTraste($1, enCuerda: $0) }),
                 pisados.allSatisfy({ traste in pisados.allSatisfy { abs(traste - $0) < max(1, abertura) } })
             else { continue }
             var trastesDeLaForma = [Int?](repeating: nil, count: cuerdas.count)

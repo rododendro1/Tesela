@@ -162,6 +162,15 @@ public struct Encordado: Hashable, Sendable {
             Altura(.si, octava: 3), Altura(.mi, octava: 4),
         ])
 
+    /// Guitarra de doce cuerdas: seis órdenes dobles afinados como la guitarra (Mi2 La2 Re3 Sol3 Si3 Mi4), los cuatro
+    /// graves en octavas y los dos agudos al unísono (`alturasDelOrden(_:)`).
+    public static let guitarraDeDoceCuerdas = Encordado(
+        nombre: "guitarra de doce cuerdas",
+        afinacion: [
+            Altura(.mi, octava: 2), Altura(.la, octava: 2), Altura(.re, octava: 3), Altura(.sol, octava: 3),
+            Altura(.si, octava: 3), Altura(.mi, octava: 4),
+        ])
+
     /// Ukelele barítono: Re3 Sol3 Si3 Mi4, las cuatro cuerdas agudas de la guitarra.
     public static let ukeleleBariton = Encordado(
         nombre: "ukelele barítono",
@@ -298,6 +307,7 @@ public struct Encordado: Hashable, Sendable {
     public static let todos: [Encordado] = [
         .guitarra, .guitarraEnReGrave, .guitarraEnReAbierto, .guitarraEnSolAbierto, .guitarraDADGAD,
         .guitarraDeSieteCuerdas, .guitarraEnDoAbierto, .guitarraEnDoGrave, .guitarraEnMiAbierto, .guitarraNashville,
+        .guitarraDeDoceCuerdas,
         .bajoElectrico, .bajoDeCincoCuerdas, .ukelele,
         .ukeleleBariton, .mandolina, .mandola, .bandurria, .laud, .laudRenacentista, .vihuela, .ud, .buzuki, .charango,
         .cuatroVenezolano, .tresCubano, .guitarraPortuguesa, .balalaica, .banjo, .dulcemele, .pipa, .violin, .viola,
@@ -343,7 +353,8 @@ extension Encordado {
         "ukulele": .ukelele, "ukulele soprano": .ukelele, "ukelele soprano": .ukelele,
         "mandolin": .mandolina,
         "laud espanol": .laud, "laud arabe": .ud, "dulcimer": .dulcemele, "banjo": .banjo, "chelo": .violonchelo,
-        "baritone uke": .ukeleleBariton, "tres": .tresCubano, "cuatro": .cuatroVenezolano,
+        "baritone uke": .ukeleleBariton, "guitarra de 12 cuerdas": .guitarraDeDoceCuerdas,
+        "12 string guitar": .guitarraDeDoceCuerdas, "tres": .tresCubano, "cuatro": .cuatroVenezolano,
     ]
 }
 
@@ -397,6 +408,8 @@ extension Encordado: Nombrable {
             return TextosDeTrastes.traduccion(\.guitarraEnMiAbierto)
         case .guitarraNashville:
             return TextosDeTrastes.traduccion(\.guitarraNashville)
+        case .guitarraDeDoceCuerdas:
+            return TextosDeTrastes.traduccion(\.guitarraDeDoceCuerdas)
         case .ukeleleBariton:
             return TextosDeTrastes.traduccion(\.ukeleleBariton)
         case .mandola:

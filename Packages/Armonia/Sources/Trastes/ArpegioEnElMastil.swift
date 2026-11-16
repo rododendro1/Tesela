@@ -65,8 +65,10 @@ extension Mastil {
         let fundamental = acorde.fundamental.claseDeAltura
         var inicios: [Int] = []
         // Las dos cuerdas más graves, que no siempre son las primeras (el Sol agudo del ukelele).
-        for alAire in encordado.afinacion.sorted(by: { $0.midi < $1.midi }).prefix(2) {
-            for traste in 0...numeroDeTrastes where Mastil.clase(alAire.midi + traste) == fundamental {
+        let cuerdas = encordado.afinacion.indices.sorted { encordado.afinacion[$0].midi < encordado.afinacion[$1].midi }
+        for cuerda in cuerdas.prefix(2) {
+            let alAire = encordado.afinacion[cuerda]
+            for traste in trastes(deCuerda: cuerda) where Mastil.clase(alAire.midi + traste) == fundamental {
                 let inicio = max(0, min(traste - 1, numeroDeTrastes - (ancho - 1)))
                 if !inicios.contains(inicio) { inicios.append(inicio) }
             }
@@ -100,18 +102,23 @@ extension Mastil {
         let cuerdas = encordado.afinacion.map(\.midi)
         guard !clases.isEmpty, !encordado.esReentrante, let grave = cuerdas.first else { return [] }
         var resultado: [ArpegioEnElMastil] = []
-        for inicio in 0...numeroDeTrastes where clases.contains(Mastil.clase(grave + inicio)) {
+        for inicio in trastes(deCuerda: 0) where clases.contains(Mastil.clase(grave + inicio)) {
             var posiciones = [PosicionEnElMastil(cuerda: 0, traste: inicio)]
             var altura = grave + inicio
             for (cuerda, alAire) in cuerdas.enumerated().dropFirst() {
-                // La nota siguiente del acorde que se puede pisar en esta cuerda.
+                // La nota siguiente del acorde que se puede pisar en esta cuerda (en el dulcémele, en uno de sus
+                // trastes), sin pasar del último.
                 altura += 1
-                while !clases.contains(Mastil.clase(altura)) || altura < alAire { altura += 1 }
+                while altura - alAire <= numeroDeTrastes,
+                    !clases.contains(Mastil.clase(altura)) || !tieneTraste(altura - alAire, enCuerda: cuerda)
+                {
+                    altura += 1
+                }
                 posiciones.append(PosicionEnElMastil(cuerda: cuerda, traste: altura - alAire))
             }
             let usados = posiciones.map(\.traste)
             // La mano abarca de la nota pisada más baja a la más alta; las cuerdas al aire no cuentan.
-            guard let menor = usados.min(), let mayor = usados.max(), mayor <= numeroDeTrastes,
+            guard let menor = usados.min(), let mayor = usados.max(), posiciones.allSatisfy(contiene),
                 usados.allSatisfy({ $0 == 0 || mayor - $0 < max(1, alcance) })
             else { continue }
             resultado.append(

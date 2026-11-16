@@ -20,6 +20,7 @@ extension TextosDeTrastes {
         guitarraEnDoGrave: "κιθάρα σε drop C",
         guitarraEnMiAbierto: "κιθάρα σε open E",
         guitarraNashville: "κιθάρα Nashville",
+        guitarraDeDoceCuerdas: "δωδεκάχορδη κιθάρα",
         ukeleleBariton: "βαρύτονο γιουκαλίλι",
         mandola: "μαντόλα",
         bandurria: "μπαντούρια",
@@ -39,6 +40,9 @@ extension TextosDeTrastes {
         violin: "βιολί",
         viola: "βιόλα",
         violonchelo: "τσέλο",
-        contrabajo: "κοντραμπάσο"
+        contrabajo: "κοντραμπάσο",
+        trastesCromaticos: "χρωματικά",
+        trastesDiatonicos: "διατονικά",
+        sinTrastes: "χωρίς τάστα"
     )
 }

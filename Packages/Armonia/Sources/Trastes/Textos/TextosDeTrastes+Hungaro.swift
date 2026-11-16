@@ -20,6 +20,7 @@ extension TextosDeTrastes {
         guitarraEnDoGrave: "drop C gitár",
         guitarraEnMiAbierto: "open E gitár",
         guitarraNashville: "Nashville gitár",
+        guitarraDeDoceCuerdas: "tizenkét húros gitár",
         ukeleleBariton: "bariton ukulele",
         mandola: "mandola",
         bandurria: "bandurria",
@@ -39,6 +40,9 @@ extension TextosDeTrastes {
         violin: "hegedű",
         viola: "brácsa",
         violonchelo: "cselló",
-        contrabajo: "nagybőgő"
+        contrabajo: "nagybőgő",
+        trastesCromaticos: "kromatikus",
+        trastesDiatonicos: "diatonikus",
+        sinTrastes: "bund nélküli"
     )
 }

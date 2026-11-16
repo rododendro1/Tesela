@@ -44,6 +44,10 @@ extension ErrorDeUso {
         case .familiaDeFuncionDesconocida(let familia):
             return LineaDeComandos.propuesta(
                 para: familia, entre: LineaDeComandos.nombresDeLasFamiliasDeFuncion.flatMap { [$0.espanol, $0.ingles] })
+        case .familiaDeInstrumentoDesconocida(let familia):
+            return LineaDeComandos.propuesta(
+                para: familia,
+                entre: LineaDeComandos.nombresDeLasFamiliasDeInstrumento.flatMap { [$0.espanol, $0.ingles] })
         case .ritmoDesconocido(let ritmo):
             return LineaDeComandos.propuesta(para: ritmo, entre: RitmoConNombre.catalogo.map(\.nombre))
         case .familiaDeRitmoDesconocida(let familia):

@@ -404,6 +404,12 @@ extension TextosDeApps {
         partituraGUIDO: "GUIDO-partitur",
         partituraABC: "ABC-partitur",
         dibujoSVG: "SVG-bild",
-        paginaHTML: "HTML-sida"
+        paginaHTML: "HTML-sida",
+        cuerdasDelInstrumento: "Strängar",
+        ordenesYCuerdas: "{1} körer, {2} strängar",
+        trastesDelInstrumento: "Band",
+        ordenesEnOctavas: "Körer i oktaver",
+        pasosDelOrnamento: "Steg",
+        suenaElOrnamento: "Låter"
     )
 }

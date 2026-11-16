@@ -70,11 +70,7 @@ extension LineaDeComandos {
         (nombres(.categoria), CategoriaTradicional.allCases.map { conGuiones($0.rawValue) }),
         (
             nombres(.familia),
-            (LineaDeComandos.nombresDeLasFamiliasDeRitmo.flatMap { [$0.espanol, $0.ingles] }
-                + LineaDeComandos.nombresDeLasFamiliasDeTemperamento.flatMap { [$0.espanol, $0.ingles] }
-                + LineaDeComandos.nombresDeLasFamiliasDeNota.flatMap { [$0.espanol, $0.ingles] }
-                + LineaDeComandos.nombresDeLasFamiliasDeFuncion.flatMap { [$0.espanol, $0.ingles] })
-                .reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }
+            LineaDeComandos.nombresDeLasFamilias
         ),
         (nombres(.fuente), FuenteTeorica.allCases.map { conGuiones($0.rawValue) }),
         (

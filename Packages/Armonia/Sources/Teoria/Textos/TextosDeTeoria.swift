@@ -182,6 +182,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let nombreNoReconocido: Plantilla  // {1} nombre, {2} opciones
     let numeroFueraDeRango: Plantilla  // {1} texto, {2} desde, {3} hasta
     let trasteNoValido: Plantilla  // {1} traste, {2} ultimo
+    let trasteQueNoTiene: Plantilla  // {1} traste
     let cuerdasDistintas: Plantilla  // {1} esperadas, {2} leidas
 
     // MARK: ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)

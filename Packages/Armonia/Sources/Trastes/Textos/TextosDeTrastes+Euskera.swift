@@ -20,6 +20,7 @@ extension TextosDeTrastes {
         guitarraEnDoGrave: "gitarra do baxuan",
         guitarraEnMiAbierto: "gitarra mi irekian",
         guitarraNashville: "Nashville gitarra",
+        guitarraDeDoceCuerdas: "hamabi sokako gitarra",
         ukeleleBariton: "ukelele baritonoa",
         mandola: "mandola",
         bandurria: "bandurria",
@@ -39,6 +40,9 @@ extension TextosDeTrastes {
         violin: "biolina",
         viola: "biola",
         violonchelo: "biolontxeloa",
-        contrabajo: "kontrabaxua"
+        contrabajo: "kontrabaxua",
+        trastesCromaticos: "kromatikoak",
+        trastesDiatonicos: "diatonikoak",
+        sinTrastes: "trasterik gabe"
     )
 }

@@ -168,6 +168,7 @@ extension TextosDeTeoria {
         nombreNoReconocido: "« {1} » n'est aucun de ceux-ci : {2}",
         numeroFueraDeRango: "« {1} » n'est pas un nombre de {2} à {3}",
         trasteNoValido: "« {1} » n'est pas une case : il faut x (corde étouffée) ou un nombre de 0 à {2}",
+        trasteQueNoTiene: "« {1} » n'est pas une case de cette corde : l'instrument n'a que celles de sa gamme, ou la corde est courte",
         cuerdasDistintas: "il faut une case (ou x) pour chacune des {1} cordes, et il y en a {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
         cifradoRomanoNoValido: "« {1} » n'est pas un chiffrage romain : un chiffre de I à VII avec sa qualité et ses chiffres (V7, ii65, ♭VI, vii°7/V)",

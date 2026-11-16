@@ -20,6 +20,7 @@ extension TextosDeTrastes {
         guitarraEnDoGrave: "гитара со строем drop C",
         guitarraEnMiAbierto: "гитара со строем open E",
         guitarraNashville: "гитара со строем Nashville",
+        guitarraDeDoceCuerdas: "двенадцатиструнная гитара",
         ukeleleBariton: "укулеле-баритон",
         mandola: "мандола",
         bandurria: "бандуррия",
@@ -39,6 +40,9 @@ extension TextosDeTrastes {
         violin: "скрипка",
         viola: "альт",
         violonchelo: "виолончель",
-        contrabajo: "контрабас"
+        contrabajo: "контрабас",
+        trastesCromaticos: "хроматические",
+        trastesDiatonicos: "диатонические",
+        sinTrastes: "без ладов"
     )
 }

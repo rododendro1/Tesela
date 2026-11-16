@@ -171,6 +171,7 @@ extension TextosDeTeoria {
         nombreNoReconocido: "«{1}» ez da hauetako bat ere: {2}",
         numeroFueraDeRango: "«{1}» ez da {2} eta {3} arteko zenbaki bat",
         trasteNoValido: "«{1}» ez da traste bat: x (soka itzalia) edo 0 eta {2} arteko zenbaki bat izan behar du",
+        trasteQueNoTiene: "«{1}» ez da soka honetako traste bat: tresnak bere eskalakoak baino ez ditu, edo soka laburra da",
         cuerdasDistintas: "traste bat (edo x) behar da {1} soketako bakoitzeko, eta {2} daude",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
         cifradoRomanoNoValido: "«{1}» ez da zenbaki erromatar bat: I-etik VII-rako zenbakia, bere kalitatea eta zifrekin (V7, ii65, ♭VI, vii°7/V)",

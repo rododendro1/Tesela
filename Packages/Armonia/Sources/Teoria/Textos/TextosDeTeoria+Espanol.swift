@@ -168,6 +168,7 @@ extension TextosDeTeoria {
         nombreNoReconocido: "«{1}» no es ninguno de estos: {2}",
         numeroFueraDeRango: "«{1}» no es un número de {2} a {3}",
         trasteNoValido: "«{1}» no es un traste: tiene que ser x (cuerda apagada) o un número de 0 a {2}",
+        trasteQueNoTiene: "«{1}» no es un traste de esta cuerda: el instrumento solo tiene los de su escala, o la cuerda es corta",
         cuerdasDistintas: "hace falta un traste (o x) por cada una de las {1} cuerdas, y hay {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
         cifradoRomanoNoValido: "«{1}» no es un cifrado romano: un numeral del I al VII con su calidad y sus cifras (V7, ii65, ♭VI, vii°7/V)",

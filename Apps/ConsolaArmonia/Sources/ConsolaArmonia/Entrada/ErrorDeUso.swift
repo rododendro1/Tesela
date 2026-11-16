@@ -43,6 +43,9 @@ enum ErrorDeUso: ErrorDeArmonia {
     case familiaDeTemperamentoDesconocida(String)
     case familiaDeNotaDesconocida(String)
     case familiaDeFuncionDesconocida(String)
+    case familiaDeInstrumentoDesconocida(String)
+    /// `ornamentos --sobre` con una altura que no está en la escala de `--en`: la altura y la escala, escritas.
+    case alturaFueraDeLaEscala(String, String)
     case fuenteDesconocida(String)
     case estiloDesconocido(String)
     case lugarDesconocido(String)

@@ -44,6 +44,8 @@ public struct ErrorDeLecturaDeTeoria: ErrorAlLeer {
         // Digitaciones
         /// Un traste que no es `x` ni un número del mástil (de 0 a `ultimo`).
         case trasteNoValido(String, ultimo: Int)
+        /// Un traste que la cuerda no tiene: el 1 del dulcémele, que solo tiene los de su escala.
+        case trasteQueNoTiene(String)
         /// Una digitación sin un traste por cuerda.
         case cuerdasDistintas(esperadas: Int, leidas: Int)
         // Cifrado romano y bajo cifrado
@@ -145,6 +147,8 @@ extension ErrorDeLecturaDeTeoria.Motivo {
             return TextosDeTeoria.traduccion { $0.numeroFueraDeRango(texto, desde, hasta) }
         case .trasteNoValido(let traste, let ultimo):
             return TextosDeTeoria.traduccion { $0.trasteNoValido(traste, ultimo) }
+        case .trasteQueNoTiene(let traste):
+            return TextosDeTeoria.traduccion { $0.trasteQueNoTiene(traste) }
         case .cuerdasDistintas(let esperadas, let leidas):
             return TextosDeTeoria.traduccion { $0.cuerdasDistintas(esperadas, leidas) }
         case .cifradoRomanoNoValido(let cifrado):

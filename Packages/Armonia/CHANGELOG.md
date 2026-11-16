@@ -4,6 +4,17 @@
 
 ### Novedades
 
+- El mástil respeta los trastes del instrumento: el dulcémele solo tiene los de su escala diatónica (con el 6½), el
+  banjo de cinco cuerdas no tiene los cinco primeros trastes en la quinta cuerda, y `Mastil.tieneTraste(_:enCuerda:)`
+  y `trastes(deCuerda:)` lo dicen. Las digitaciones, las disposiciones, los arpegios y las escalas en el mástil solo
+  usan trastes que existen, y leer una digitación con un traste que el instrumento no tiene es el error
+  `trasteQueNoTiene`. Los órdenes en octavas (el buzuki, el charango, la guitarra portuguesa) tienen
+  `Encordado.alturasDelOrden(_:)` y `Mastil.alturasQueSuenan(en:)`, las alturas que suenan de verdad. Un instrumento
+  más, la guitarra de doce cuerdas (`Encordado.guitarraDeDoceCuerdas`), con sus cuatro órdenes graves en octavas.
+- En la consola, `instrumentos` y `ornamentos` (también en JSON y en el servidor MCP): los instrumentos de cuerda con
+  su afinación y sus cuerdas, con `--familia` por sus trastes (cromaticos, diatonicos, sin-trastes), `--lugar`,
+  `--agrupar` y la ficha con `--estadisticas`; los ornamentos con sus pasos y, con `--sobre Re4 --en Do mayor`, lo
+  que suenan.
 - Los ritmos y los temperamentos dicen de dónde vienen, como las escalas: `tradicion`, `lugaresDeOrigen`,
   `paisesDeOrigen` y `continentesDeOrigen` (Andalucía en la soleá, Cuba en las claves, la India en los tāla,
   Alemania en Werckmeister III), y los temperamentos, sus `estilos`. 17 países nuevos en `Pais`, de Alemania a

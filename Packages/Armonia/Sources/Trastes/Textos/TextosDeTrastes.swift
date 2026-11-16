@@ -24,6 +24,7 @@ struct TextosDeTrastes: TextosTraducidos {
     let guitarraEnDoGrave: String
     let guitarraEnMiAbierto: String
     let guitarraNashville: String
+    let guitarraDeDoceCuerdas: String
     let ukeleleBariton: String
     let mandola: String
     let bandurria: String
@@ -44,6 +45,9 @@ struct TextosDeTrastes: TextosTraducidos {
     let viola: String
     let violonchelo: String
     let contrabajo: String
+    let trastesCromaticos: String
+    let trastesDiatonicos: String
+    let sinTrastes: String
 
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.

@@ -21,10 +21,17 @@ public struct OrigenPresentado: Hashable, Sendable, Codable {
 
     /// El origen del elemento, o `nil` si no se sabe nada de él.
     public init?(_ elemento: some ElementoConNombre, en notacion: Notacion) {
-        anio = elemento.anioDeOrigen
-        epoca = elemento.epocaDeOrigen?.nombre(en: notacion)
-        epocaId = elemento.epocaDeOrigen?.rawValue
-        documentada = elemento.documentada?.cita
+        self.init(
+            anio: elemento.anioDeOrigen, epoca: elemento.epocaDeOrigen, documentada: elemento.documentada,
+            en: notacion)
+    }
+
+    /// El origen de algo que no es de un catálogo con nombre (un instrumento), o `nil` si no se sabe nada.
+    public init?(anio: Int?, epoca: Epoca?, documentada: Referencia?, en notacion: Notacion) {
+        self.anio = anio
+        self.epoca = epoca?.nombre(en: notacion)
+        epocaId = epoca?.rawValue
+        self.documentada = documentada?.cita
         if anio == nil, epoca == nil, documentada == nil { return nil }
     }
 

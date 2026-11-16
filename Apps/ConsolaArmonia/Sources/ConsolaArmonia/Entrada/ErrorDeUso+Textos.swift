@@ -74,6 +74,10 @@ extension ErrorDeUso {
             return TextosDeConsola.traduccion { $0.familiaDeNotaDesconocida(familia) }
         case .familiaDeFuncionDesconocida(let familia):
             return TextosDeConsola.traduccion { $0.familiaDeFuncionDesconocida(familia) }
+        case .familiaDeInstrumentoDesconocida(let familia):
+            return TextosDeConsola.traduccion { $0.familiaDeInstrumentoDesconocida(familia) }
+        case .alturaFueraDeLaEscala(let altura, let escala):
+            return TextosDeConsola.traduccion { $0.alturaFueraDeLaEscala(altura, escala) }
         case .ritmoDesconocido(let ritmo):
             return TextosDeConsola.traduccion { $0.ritmoDesconocido(ritmo) }
         case .familiaDeRitmoDesconocida(let familia):

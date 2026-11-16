@@ -41,14 +41,17 @@ public struct Digitacion: Hashable, Sendable, CustomStringConvertible {
     /// Una digitación con esos trastes, o `nil` si no hay uno por cada cuerda o alguno no está en el mástil.
     public init?(comprobando trastes: [Int?], en mastil: Mastil) {
         guard trastes.count == mastil.encordado.numeroDeCuerdas,
-            trastes.allSatisfy({ $0.map { (0...mastil.numeroDeTrastes).contains($0) } ?? true })
+            zip(trastes.indices, trastes).allSatisfy({ cuerda, traste in
+                traste.map { mastil.tieneTraste($0, enCuerda: cuerda) } ?? true
+            })
         else { return nil }
         self.init(mastil: mastil, trastes: trastes)
     }
 
     /// Lee la tablatura que escribe `tablatura`: «x32010», o con guiones si algún traste pasa de 9
     /// («x-10-12-12-11-10»). Lanza `ErrorDeLecturaDeTeoria` si un traste no se entiende o no está en el mástil
-    /// (`.trasteNoValido`, en su carácter) o si no hay uno por cuerda (`.cuerdasDistintas`).
+    /// (`.trasteNoValido`, en su carácter), si la cuerda no tiene ese traste (`.trasteQueNoTiene`: el 1 del
+    /// dulcémele) o si no hay uno por cuerda (`.cuerdasDistintas`).
     public init(leyendo tablatura: String, en mastil: Mastil) throws {
         let conGuiones = tablatura.contains("-")
         let partes =
@@ -63,6 +66,14 @@ public struct Digitacion: Hashable, Sendable, CustomStringConvertible {
             } else if !parte.isEmpty, parte.allSatisfy({ $0.isASCII && $0.isNumber }), let traste = Int(parte),
                 traste <= mastil.numeroDeTrastes
             {
+                // En el dulcémele, solo los trastes de su escala; en la quinta del banjo, los que tiene.
+                guard
+                    trastes.count >= mastil.encordado.numeroDeCuerdas
+                        || mastil.tieneTraste(traste, enCuerda: trastes.count)
+                else {
+                    throw ErrorDeLecturaDeTeoria(
+                        texto: tablatura, posicion: posicion, motivo: .trasteQueNoTiene(parte))
+                }
                 trastes.append(traste)
             } else {
                 throw ErrorDeLecturaDeTeoria(
@@ -237,7 +248,7 @@ extension Mastil {
             buscar(cuerda + 1, empezo: empezo, acabo: empezo, menor: menor, mayor: mayor, clasesTocadas: clasesTocadas)
             // Opción 2: suena, si no ha terminado ya.
             guard !acabo else { return }
-            for traste in 0...ultimoTraste {
+            for traste in 0...ultimoTraste where tieneTraste(traste, enCuerda: cuerda) {
                 let midi = cuerdas[cuerda].midi + traste
                 let clase = Mastil.clase(midi)
                 guard clases.contains(clase) else { continue }

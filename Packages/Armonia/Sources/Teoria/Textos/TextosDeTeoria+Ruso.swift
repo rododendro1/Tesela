@@ -168,6 +168,7 @@ extension TextosDeTeoria {
         nombreNoReconocido: "«{1}» — ни одно из этих: {2}",
         numeroFueraDeRango: "«{1}» — не число от {2} до {3}",
         trasteNoValido: "«{1}» — не лад: нужен x (заглушённая струна) или число от 0 до {2}",
+        trasteQueNoTiene: "«{1}» — не лад этой струны: у инструмента есть только лады его звукоряда, или струна короткая",
         cuerdasDistintas: "нужен один лад (или x) на каждую из {1} струн, а их {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
         cifradoRomanoNoValido: "«{1}» — не обозначение ступени: римская цифра от I до VII с её качеством и цифровкой (V7, ii65, ♭VI, vii°7/V)",

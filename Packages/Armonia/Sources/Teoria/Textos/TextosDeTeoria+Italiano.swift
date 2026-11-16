@@ -168,6 +168,7 @@ extension TextosDeTeoria {
         nombreNoReconocido: "«{1}» non è nessuno di questi: {2}",
         numeroFueraDeRango: "«{1}» non è un numero da {2} a {3}",
         trasteNoValido: "«{1}» non è un tasto: dev'essere x (corda smorzata) o un numero da 0 a {2}",
+        trasteQueNoTiene: "«{1}» non è un tasto di questa corda: lo strumento ha solo quelli della sua scala, o la corda è corta",
         cuerdasDistintas: "serve un tasto (o x) per ciascuna delle {1} corde, e ce ne sono {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
         cifradoRomanoNoValido: "«{1}» non è una sigla romana: un numerale da I a VII con la sua qualità e le sue cifre (V7, ii65, ♭VI, vii°7/V)",

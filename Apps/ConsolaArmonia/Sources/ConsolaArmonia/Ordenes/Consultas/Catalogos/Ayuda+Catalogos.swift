@@ -2,8 +2,8 @@ import Armonia
 
 extension LineaDeComandos {
     /// Las consultas de los catálogos: escalas, tradiciones, progresiones, ritmos, temperamentos, notas, funciones,
-    /// acordes con nombre y tonalidades con carácter. Salen en la ayuda entre `escala` y `tonalidad`, dentro de las
-    /// consultas.
+    /// instrumentos, ornamentos, acordes con nombre y tonalidades con carácter. Salen en la ayuda entre `escala` y
+    /// `tonalidad`, dentro de las consultas.
     static let ordenesDeCatalogos: [Orden] = [
         Orden(
             nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas, json: { try escalasJSON($0, $1.notacion) },
@@ -30,6 +30,12 @@ extension LineaDeComandos {
         Orden(
             nombres: ["funciones", "functions"], ayuda: ayudaDeFunciones,
             json: { try funcionesJSON($0, $1.notacion) }, ejecutar: { try funciones($0, $1.notacion) }),
+        Orden(
+            nombres: ["instrumentos", "instruments"], ayuda: ayudaDeInstrumentos,
+            json: { try instrumentosJSON($0, $1.notacion) }, ejecutar: { try instrumentos($0, $1.notacion) }),
+        Orden(
+            nombres: ["ornamentos", "ornaments"], ayuda: ayudaDeOrnamentos,
+            json: { try ornamentosJSON($0, $1.notacion) }, ejecutar: { try ornamentos($0, $1.notacion) }),
         Orden(
             nombres: ["acordes", "chords"], ayuda: ayudaDeAcordesConNombre,
             json: { try acordesConNombreJSON($0, $1.notacion) },
@@ -108,6 +114,29 @@ extension LineaDeComandos {
                 "armonia funciones --familia blues --estadisticas", "armonia functions --family blues --statistics"),
             notas: TextosDeConsola.traduccion(\.notasFunciones),
             opciones: [.familia, .estadisticas])
+    ]
+
+    static let ayudaDeInstrumentos: [EntradaDeAyuda] = [
+        // instrumentos [<texto>] [--familia <trastes>] [--lugar <lugar>] [--agrupar <forma>] [--estadisticas]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisInstrumentos),
+            descripcion: TextosDeConsola.traduccion(\.descripcionInstrumentos),
+            ejemplo: ejemplo(
+                "armonia instrumentos --familia diatonicos --estadisticas",
+                "armonia instruments --family diatonic --statistics"),
+            notas: TextosDeConsola.traduccion(\.notasInstrumentos),
+            opciones: [.familia, .lugar, .agrupar, .estadisticas])
+    ]
+
+    static let ayudaDeOrnamentos: [EntradaDeAyuda] = [
+        // ornamentos [<texto>] [--sobre <altura>] [--en <escala>] [--estadisticas]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisOrnamentos),
+            descripcion: TextosDeConsola.traduccion(\.descripcionOrnamentos),
+            ejemplo: ejemplo(
+                "armonia ornamentos grupeto --sobre Re4 --en Do mayor", "armonia ornaments turn --over D4 --in C major"),
+            notas: TextosDeConsola.traduccion(\.notasOrnamentos),
+            opciones: [.sobre, .en, .estadisticas])
     ]
 
     static let ayudaDeAcordesConNombre: [EntradaDeAyuda] = [

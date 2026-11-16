@@ -20,6 +20,7 @@ extension TextosDeTrastes {
         guitarraEnDoGrave: "drop C guitar",
         guitarraEnMiAbierto: "open E guitar",
         guitarraNashville: "Nashville-tuned guitar",
+        guitarraDeDoceCuerdas: "twelve-string guitar",
         ukeleleBariton: "baritone ukulele",
         mandola: "mandola",
         bandurria: "bandurria",
@@ -39,6 +40,9 @@ extension TextosDeTrastes {
         violin: "violin",
         viola: "viola",
         violonchelo: "cello",
-        contrabajo: "double bass"
+        contrabajo: "double bass",
+        trastesCromaticos: "chromatic",
+        trastesDiatonicos: "diatonic",
+        sinTrastes: "fretless"
     )
 }
