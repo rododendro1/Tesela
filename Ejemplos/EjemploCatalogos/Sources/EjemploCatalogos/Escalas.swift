@@ -22,7 +22,8 @@ private func numeros(_ valores: [Int]) -> String { valores.map(String.init).join
 
 private func nombres(_ tipos: [TipoDeEscala]) -> String { tipos.map(\.nombre).joined(separator: " · ") }
 
-let columnasDeEscalas: [String] =
+/// Las columnas de los nombres, de la tradición y de los lugares, antes de la fecha.
+private let columnasDeEscalasAntesDeLaFecha: [String] =
     [
         "nombre", "nombre_completo", "nombres_originales", "nombres_originales_completos",
         "idiomas_de_los_nombres_originales",
@@ -30,7 +31,13 @@ let columnasDeEscalas: [String] =
     + traducciones.map { "nombre_en_\($0.rawValue)" } + columnasDeAliasYVariantes + [
         "tradicion", "estilos", "regiones", "lugares_de_origen", "paises_de_origen",
         "continentes_de_origen", "lugares_de_uso",
-    ] + columnasDeLaFecha + [
+    ]
+
+let columnasDeEscalas: [String] = columnasDeEscalasAntesDeLaFecha + columnasDeLaFecha + columnasDeEscalasTrasLaFecha
+
+/// Las columnas de después de la fecha: la ficha, lo que se mide, el carácter y los parientes.
+private let columnasDeEscalasTrasLaFecha: [String] =
+    [
         "epocas_de_uso", "categoria", "clase", "fuente", "numero_de_notas",
         "intervalos", "semitonos", "intervalos_descendentes", "notas_sobre_do",
         // Los rāgas vakra, en el orden en que se tocan sobre Do, y las notas que no son de su mēḷa.
