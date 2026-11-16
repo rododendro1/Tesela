@@ -22,7 +22,7 @@ extension ErrorDeUso {
 
     /// La orden o la opción conocida que más se parece a la desconocida (Sugerencias.swift).
     /// Las opciones que se proponen son las de la orden en curso, si la hay.
-    private func propuesta(enCurso: LineaDeComandos.OrdenEnCurso?) -> String? {
+    func propuesta(enCurso: LineaDeComandos.OrdenEnCurso?) -> String? {
         switch self {
         case .ordenDesconocida(let orden):
             return LineaDeComandos.propuesta(para: orden, entre: LineaDeComandos.nombresDeLasOrdenes)

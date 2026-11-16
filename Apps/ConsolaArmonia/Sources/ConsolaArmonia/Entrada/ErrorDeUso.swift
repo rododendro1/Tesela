@@ -1,5 +1,6 @@
 import Armonia
 import ExposicionArmonia
+import Foundation
 
 // Los errores de uso de la herramienta, en los trece idiomas de los textos. Lo común a todos los
 // textos de la herramienta está explicado en Mensaje.swift.
@@ -207,4 +208,16 @@ enum ErrorDeUso: ErrorDeArmonia {
     case faltanAcordesDelReticulo
     /// `mcp` desde una sesión o un lote, cuya entrada ya es de las órdenes.
     case mcpSoloComoServidor
+}
+
+/// Para `ErrorEnJSON`: el JSON de un caso es un objeto con su nombre como única clave (`{"faltaCifrado": {}}`), que
+/// es lo que da su `tipo`, sin traducir.
+extension ErrorDeUso: Encodable {
+    /// El nombre del caso: `opcionDesconocida`, `faltaCifrado`…
+    var tipo: String {
+        guard let datos = try? JSONEncoder().encode(self),
+            let objeto = try? JSONSerialization.jsonObject(with: datos) as? [String: Any], let clave = objeto.keys.first
+        else { return "" }
+        return clave
+    }
 }

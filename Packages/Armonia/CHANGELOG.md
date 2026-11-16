@@ -2,6 +2,13 @@
 
 ## Sin publicar
 
+### Cambios incompatibles
+
+- En la consola, con `--json`, los errores salen en JSON en la salida de errores, en lugar de como texto, con el mismo
+  código de salida: `{"error": {"codigo", "tipo", "mensaje", "propuesta", "texto", "posicion"}}`. `tipo` es el caso
+  del error o del motivo de la lectura (`opcionDesconocida`, `notaNoReconocida`) y no cambia con el idioma. Sin
+  `--json`, el error sale como siempre. El servidor MCP devuelve también sus errores en JSON, con `isError`.
+
 ### Novedades
 
 - `CifradoRomano`: el cifrado romano por sus partes, con el numeral (un grado con su alteración, el sustituto
