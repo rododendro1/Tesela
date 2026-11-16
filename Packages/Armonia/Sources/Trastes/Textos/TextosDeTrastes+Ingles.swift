@@ -23,7 +23,7 @@ extension TextosDeTrastes {
         ukeleleBariton: "baritone ukulele",
         mandola: "mandola",
         bandurria: "bandurria",
-        laud: "Spanish laúd",
+        laud: "Spanish lute",
         laudRenacentista: "Renaissance lute",
         vihuela: "vihuela",
         ud: "oud",
