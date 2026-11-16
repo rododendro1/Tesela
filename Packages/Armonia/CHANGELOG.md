@@ -34,8 +34,20 @@
     1»), junto a `posicion`, que cuenta desde 0.
 - La documentación escribe la séptima mayor como la escribe el motor, `maj7` («Domaj7», «Imaj7»), y `Acordes.md` dice
   que «7M» y «Δ» se leen pero se escriben así.
+- Los TSV de `EjemploCatalogos` dicen más de lo que ya sabe el motor:
+  - Todos los catálogos con nombre tienen `documentada_en`, la cita de la obra que documenta el nombre
+    (`documentada`), junto al año y la época.
+  - El de escalas tiene también `anio_de_origen` (`TipoDeEscala.anioDeOrigen`), como los demás.
+  - Los de ritmos y temperamentos tienen las columnas de las variantes, en los trece idiomas, como los demás. Aún
+    están vacías: ningún ritmo ni temperamento tiene variantes.
+  - El de referencias tiene `citada_por`: qué escalas, acordes, progresiones, ritmos, temperamentos, notas,
+    funciones, escalas microtonales y tonalidades cita cada obra, también por su carácter.
 
 ### Cambios
+
+- Todas las columnas de los TSV de `EjemploCatalogos` van en snake_case, y `comprobar_tsv.py` lo comprueba. Cambian
+  las de las medidas de acordes (`numeroDeNotas` pasa a `numero_de_notas`, `formaPrima` a `forma_prima`…) y dos de
+  grados (`notas_en_tonic_sol_fa` y `notas_en_notas_de_forma`). El JSON no cambia.
 
 - Cuatro acordes de nombre propio citan ya una obra: el tricordo vienés, DeLone y otros (1975: 348); el de la
   «Sinfonía de los salmos», Austin (1966: 334); el de Hendrix, Shapiro y Glebbeek (1995: 144), y el mu, la

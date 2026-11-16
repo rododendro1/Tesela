@@ -6,7 +6,7 @@ import Armonia
 // sus propios acordes, estilos y las obras que la citan.
 
 let columnasDeProgresiones: [String] =
-    columnasDeNombres + columnasDeAliasYVariantes() + [
+    columnasDeNombres + columnasDeAliasYVariantes + [
         "modo", "numero_de_acordes", "cifrado", "acordes_sobre_do", "se_reconoce",
     ] + columnasDeLaFecha + columnasDelCaracter + [
         "estilos", "referencias",
