@@ -491,6 +491,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let testigoYueji: String
     let testigoCoton: String
     let testigoCharpentier: String
+    let testigoMattheson: String
     let testigoSchubart: String
     /// La sonoridad calculada de una escala por su brillo (`Sonoridad`).
     let sonoridadClara: String

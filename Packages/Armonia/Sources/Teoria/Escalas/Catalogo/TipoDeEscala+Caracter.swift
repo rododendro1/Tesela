@@ -124,6 +124,32 @@ extension TipoDeEscala {
         (.malkauns, bor(.medianoche, [.grave, .contemplativo])),
         (.bagesri, bor(.medianoche, [.nostalgico, .amoroso])),
         (.megh, bor(nil, [.grave], estacion: .lluvias)),
+        // Solo la hora y la estación, que son las de la tradición y las de The Raga Guide; sus afectos faltan por
+        // copiar. Kirvānī y Dhānī, que no tienen una hora fija, no entran.
+        (.kalyan, bor(.anochecer, [])),
+        (.puriya, bor(.anochecer, [])),
+        (.shri, bor(.anochecer, [])),
+        (.kedar, bor(.anochecer, [])),
+        (.kafi, bor(.noche, [])),
+        (.sivaranjani, bor(.noche, [])),
+        (.kalavati, bor(.noche, [])),
+        (.rageshri, bor(.noche, [])),
+        (.jog, bor(.noche, [])),
+        (.candrakauns, bor(.medianoche, [])),
+        (.sohini, bor(.madrugada, [])),
+        (.ahirBhairav, bor(.manana, [])),
+        (.bairagi, bor(.manana, [])),
+        (.natBhairav, bor(.manana, [])),
+        (.gunakri, bor(.manana, [])),
+        (.hindol, bor(.manana, [], estacion: .primavera)),
+        (.jaunpuri, bor(.finalDeLaManana, [])),
+        (.miyanKiTodi, bor(.finalDeLaManana, [])),
+        (.gujariTodi, bor(.finalDeLaManana, [])),
+        (.vrindavaniSarang, bor(.primeraHoraDeLaTarde, [])),
+        (.multani, bor(.tarde, [])),
+        (.patdip, bor(.tarde, [])),
+        (.madhuvanti, bor(.tarde, [])),
+        (.basant, bor(nil, [], estacion: .primavera)),
     ]
 
     // MARK: Java
@@ -179,8 +205,8 @@ extension TipoDeEscala {
     /// gregorianos, los rāgas, los pathet, los modos chinos y los maqāmāt. De ellas salen `escalas --afecto`,
     /// `escalas --momento` y el reloj de los rāgas.
     ///
-    ///     TipoDeEscala.conCaracter.filter { $0.momentos.contains(.anochecer) }.map(\.nombre)
-    ///     // ["Yaman", "Bhūpālī"]
+    ///     TipoDeEscala.conCaracter.filter { $0.momentos.contains(.madrugada) }.map(\.nombre)
+    ///     // ["Lalit", "Sohinī"]
     public static let conCaracter: [TipoDeEscala] = {
         var vistas = Set<IdentidadDeEscala>()
         return caracteres.map(\.tipo).filter { vistas.insert($0.identidad).inserted }

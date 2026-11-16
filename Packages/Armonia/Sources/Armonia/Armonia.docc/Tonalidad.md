@@ -427,21 +427,23 @@ ProgresionConNombre.chacona.ocasiones == [.danza]           // true
 RitmoConNombre.seguiriya.afectos.first == .lastimero        // true
 ```
 
-Las tonalidades también tienen `caracter` (``Tonalidad/caracter``), y por ahora de dos fuentes: la «énergie des
-modes» de Charpentier (*Règles de composition*, hacia 1690), en Cessac (1988), y Schubart (*Ideen zu einer Ästhetik der
-Tonkunst*, 1806), en la traducción de Steblin (1983). Cada una va resumida en el vocabulario de ``Afecto`` y con sus
-palabras en `texto`. Juntas enseñan cómo cambia una tonalidad en un siglo: Fa mayor es «furieux et emporté» en
-Charpentier y «complaisance & calm» en Schubart. Es del nombre: Re♭ mayor tiene el suyo y Do♯ mayor, que no describe
+Las tonalidades también tienen `caracter` (``Tonalidad/caracter``), de cuatro fuentes: la «énergie des modes» de
+Charpentier (*Règles de composition*, hacia 1690), en Cessac (1988); Mattheson (*Das neu-eröffnete Orchestre*, 1713),
+en Steblin (1983); Rameau (*Traité de l'harmonie*, 1722), que habla de grupos de tonalidades, y Schubart (*Ideen zu
+einer Ästhetik der Tonkunst*, 1806), en la traducción de Steblin. Cada una va resumida en el vocabulario de ``Afecto``
+y, menos la de Mattheson, con sus palabras en `texto`. Juntas enseñan cómo cambia una tonalidad en un siglo: Fa mayor es
+«furieux et emporté» en Charpentier, de «tempêtes» y «furies» en Rameau y «complaisance & calm» en Schubart. Es del nombre: Re♭ mayor tiene el suyo y Do♯ mayor, que no describe
 nadie, ninguno. `Tonalidad.conCaracter` son las 25 que describe alguna. `armonia tonalidad Fa mayor` lo escribe, con
 una línea si las fuentes no coinciden, y `armonia tonalidades --afecto sombrio` busca por afecto.
 
 ```swift
-Tonalidad(.do).caracter.map(\.testigo) == [.charpentier, .schubart]   // true
-Tonalidad(.do).caracter[0].texto                                      // "Gai et guerrier"
-Tonalidad(.do).caracter[1].afectos == [.inocente]                     // true
-Tonalidad(Nota(.do, .sostenido)).caracter.isEmpty                     // true
-Caracter.discrepancias(Tonalidad(.fa).caracter).count                 // 1
-Tonalidad.conCaracter.count                                           // 25
+Tonalidad(.do).caracter.map(\.testigo) == [.charpentier, nil, .schubart]   // true
+Tonalidad(.do).caracter[0].texto                                           // "Gai et guerrier"
+Tonalidad(.do).caracter[1].referencia == .rameau1722                       // true
+Tonalidad(.do).caracter[2].afectos == [.inocente]                          // true
+Tonalidad(Nota(.do, .sostenido)).caracter.isEmpty                          // true
+Caracter.discrepancias(Tonalidad(.fa).caracter).count                      // 5
+Tonalidad.conCaracter.count                                                // 25
 ```
 
 ## Bajo cifrado
