@@ -110,6 +110,8 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
     case ghana
     case nigeria
     case congo
+    case mexico
+    case sudafrica
 
     /// Su código ISO 3166-1 de dos letras: «ES», «ID», «IR».
     public var codigoISO: String {
@@ -185,6 +187,8 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
         case .ghana: "GH"
         case .nigeria: "NG"
         case .congo: "CD"
+        case .mexico: "MX"
+        case .sudafrica: "ZA"
         }
     }
 
@@ -202,9 +206,10 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
             .barein, .catar, .emiratos, .oman, .yemen:
             .asia
         case .uganda, .mozambique, .zimbabue, .mali, .senegal, .gambia, .guinea, .etiopia, .egipto, .marruecos,
-            .argelia, .tunez, .libia, .ghana, .nigeria, .congo:
+            .argelia, .tunez, .libia, .ghana, .nigeria, .congo, .sudafrica:
             .africa
-        case .brasil, .peru, .bolivia, .ecuador, .estadosUnidos, .cuba, .argentina, .venezuela, .colombia: .america
+        case .brasil, .peru, .bolivia, .ecuador, .estadosUnidos, .cuba, .argentina, .venezuela, .colombia, .mexico:
+            .america
         }
     }
 
@@ -287,6 +292,8 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
         case .ghana: TextosDeTeoria.traduccion(\.paisGhana)
         case .nigeria: TextosDeTeoria.traduccion(\.paisNigeria)
         case .congo: TextosDeTeoria.traduccion(\.paisCongo)
+        case .mexico: TextosDeTeoria.traduccion(\.paisMexico)
+        case .sudafrica: TextosDeTeoria.traduccion(\.paisSudafrica)
         }
     }
 }

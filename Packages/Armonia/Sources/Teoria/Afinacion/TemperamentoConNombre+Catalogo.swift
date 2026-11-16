@@ -55,6 +55,16 @@ extension TemperamentoConNombre {
         nombre: "Werckmeister III", construccion: .circular(.werckmeisterIII), familia: .circular,
         referencias: [.lindley2001, .barbour1951], documentada: .werckmeister1691, estilos: [.clasica],
         lugares: [.pais(.alemania)])
+    /// Do–Sol, Re–La, Mi–Si, Fa♯–Do♯ y Si♭–Fa, ⅓ de coma pitagórica más estrechas; Sol♯–Re♯ y Re♯–La♯, ⅓ más anchas.
+    public static let werckmeisterIV = TemperamentoConNombre(
+        nombre: "Werckmeister IV", construccion: .circular(.werckmeisterIV), familia: .circular,
+        referencias: [.lindley2001, .barbour1951], documentada: .werckmeister1691, estilos: [.clasica],
+        lugares: [.pais(.alemania)])
+    /// Sol–Re, Re–La, Si–Fa♯, Fa♯–Do♯ y Fa–Do, ¼ de coma pitagórica más estrechas; Sol♯–Re♯, ¼ más ancha.
+    public static let werckmeisterV = TemperamentoConNombre(
+        nombre: "Werckmeister V", construccion: .circular(.werckmeisterV), familia: .circular,
+        referencias: [.lindley2001, .barbour1951], documentada: .werckmeister1691, estilos: [.clasica],
+        lugares: [.pais(.alemania)])
     /// Re–La y La–Mi, ½ coma sintónica más estrechas, con Do–Mi pura; Fa♯–Do♯, un esquisma.
     public static let kirnbergerII = TemperamentoConNombre(
         nombre: "Kirnberger II", construccion: .circular(.kirnbergerII), familia: .circular,
@@ -73,6 +83,19 @@ extension TemperamentoConNombre {
     public static let young = TemperamentoConNombre(
         nombre: "Young", construccion: .circular(.young), familia: .circular, autor: "Thomas Young", anio: 1799,
         referencias: [.lindley2001, .barbour1951], estilos: [.clasica], lugares: [.pais(.reinoUnido)])
+    /// Una de las reconstrucciones del temperamento de Bach: cinco quintas, ⅕ de coma pitagórica más estrechas.
+    public static let kellner = TemperamentoConNombre(
+        nombre: "Kellner", construccion: .circular(.kellner), familia: .circular, alias: ["Bach-Kellner"],
+        documentada: .kellner1977, estilos: [.clasica], lugares: [.pais(.alemania)])
+    /// Otra, leída en las terceras del Clave bien temperado: seis quintas, ⅙ de coma pitagórica más estrechas.
+    public static let barnes = TemperamentoConNombre(
+        nombre: "Barnes", construccion: .circular(.barnes), familia: .circular, alias: ["Bach-Barnes"],
+        documentada: .barnes1979, estilos: [.clasica], lugares: [.pais(.reinoUnido)])
+    /// Otra, leída en el dibujo de la portada del Clave bien temperado: ⅙ de coma de Fa a Mi, puras de Mi a Do♯ y
+    /// ¹⁄₁₂ de Do♯ a Fa.
+    public static let lehman = TemperamentoConNombre(
+        nombre: "Lehman", construccion: .circular(.lehman), familia: .circular, alias: ["Bach-Lehman"],
+        documentada: .lehman2005, estilos: [.clasica], lugares: [.pais(.estadosUnidos)])
     // MARK: Justa
 
     /// La justa de 5 límites de Ptolomeo sobre Do: 1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8, y las demás teclas por quintas y
@@ -82,6 +105,18 @@ extension TemperamentoConNombre {
         referencias: [.barbour1951], lugares: [.historico(.greciaAntigua)])
     // MARK: Divisiones iguales
 
+    /// La octava en 5 partes: cerca del sléndro del gamelan, aunque el de cada gamelan se aparta de ella.
+    public static let divisiones5 = TemperamentoConNombre(
+        nombre: "5 divisiones iguales", construccion: .divisiones(5), familia: .divisionesIguales, alias: ["5-TET"],
+        referencias: [.sethares2005, .surjodiningrat1972], tradicion: .indonesia)
+    /// La octava en 7 partes: la de la música tailandesa, según se mide en sus instrumentos.
+    public static let divisiones7 = TemperamentoConNombre(
+        nombre: "7 divisiones iguales", construccion: .divisiones(7), familia: .divisionesIguales, alias: ["7-TET"],
+        referencias: [.sethares2005, .morton1976], tradicion: .sudesteAsiatico, lugares: [.pais(.tailandia)])
+    /// La octava en 17 partes: quintas casi pitagóricas, sin terceras justas.
+    public static let divisiones17 = TemperamentoConNombre(
+        nombre: "17 divisiones iguales", construccion: .divisiones(17), familia: .divisionesIguales,
+        alias: ["17-TET"], referencias: [.sethares2005])
     /// La octava en 19 partes: la quinta, casi la del mesotónico de ⅓ de coma; distingue Do♯ de Re♭.
     public static let divisiones19 = TemperamentoConNombre(
         nombre: "19 divisiones iguales", construccion: .divisiones(19), familia: .divisionesIguales,
@@ -98,6 +133,16 @@ extension TemperamentoConNombre {
     public static let divisiones41 = TemperamentoConNombre(
         nombre: "41 divisiones iguales", construccion: .divisiones(41), familia: .divisionesIguales, alias: ["41-TET"],
         referencias: [.sethares2005])
+    /// La octava en 43 merides de Sauveur: casi el mesotónico de ⅕ de coma.
+    public static let divisiones43 = TemperamentoConNombre(
+        nombre: "43 divisiones iguales", construccion: .divisiones(43), familia: .divisionesIguales,
+        alias: ["43-TET", "merides de Sauveur"], referencias: [.sethares2005], documentada: .sauveur1701,
+        lugares: [.pais(.francia)])
+    /// La octava en 96 partes, dieciseisavos de tono: el sonido 13 de Julián Carrillo.
+    public static let divisiones96 = TemperamentoConNombre(
+        nombre: "96 divisiones iguales", construccion: .divisiones(96), familia: .divisionesIguales,
+        autor: "Julián Carrillo", alias: ["96-TET", "sonido 13"], referencias: [.sethares2005],
+        lugares: [.pais(.mexico)])
     // MARK: De otras tradiciones
 
     /// Los 24 cuartos de tono de la teoría árabe moderna: Mi𝄳, medio bemol.
@@ -124,8 +169,10 @@ extension TemperamentoConNombre {
     /// Todo el catálogo, en el orden de este fichero.
     public static let catalogo: [TemperamentoConNombre] = [
         .temperamentoIgual, .pitagorico, .mesotonicoCuartoDeComa, .mesotonicoTercioDeComa, .mesotonicoDosSeptimosDeComa,
-        .mesotonicoQuintoDeComa, .mesotonicoSextoDeComa, .werckmeisterIII, .kirnbergerII, .kirnbergerIII, .vallotti,
-        .young, .afinacionJusta, .divisiones19, .divisiones22, .divisiones31, .divisiones41, .cuartosDeTono,
+        .mesotonicoQuintoDeComa, .mesotonicoSextoDeComa, .werckmeisterIII, .werckmeisterIV, .werckmeisterV,
+        .kirnbergerII, .kirnbergerIII, .vallotti, .young, .kellner, .barnes, .lehman, .afinacionJusta, .divisiones5,
+        .divisiones7, .divisiones17, .divisiones19, .divisiones22, .divisiones31, .divisiones41, .divisiones43,
+        .divisiones96, .cuartosDeTono,
         .koronYSori, .comas53, .moria72, .sruti22,
     ]
 }

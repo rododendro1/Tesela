@@ -7,8 +7,8 @@ import Testing
 /// Las referencias bibliográficas del catálogo (`Referencia`, `TipoDeEscala.referencias`).
 @Suite struct ReferenciasTests {
     /// Todas las obras citadas, por las escalas, sus listas, sus fuentes y sus afinaciones, por los acordes, por las
-    /// progresiones, por los ritmos, por los temperamentos, por las notas y por sus funciones, y por el carácter de las
-    /// tonalidades.
+    /// progresiones, por los ritmos, por los temperamentos, por las notas y por sus funciones, por los ornamentos y por
+    /// el carácter de las tonalidades.
     private var citadas: [Referencia] {
         let deLasTonalidades: [Referencia] = Tonalidad.caracteres.flatMap { $0.caracter.map(\.referencia) }
         return TipoDeEscala.catalogo.flatMap(\.referencias)
@@ -20,13 +20,18 @@ import Testing
             + TemperamentoConNombre.catalogo.flatMap(\.referencias)
             + NotaConNombre.catalogo.flatMap(\.referencias)
             + FuncionDeNota.catalogo.flatMap(\.referencias)
+            + OrnamentoConNombre.catalogo.flatMap(\.referencias)
             + deLasTonalidades
     }
+
+    /// Las obras que solo citan los encordados de `Trastes`, que este módulo no ve: lo comprueba
+    /// `EncordadoDelCatalogoTests`.
+    static let citadasPorLosEncordados: Set<String> = ["sadie1984", "milan1536"]
 
     @Test func cadaObraEstaUnaVezEnElCatalogoYSeCita() {
         let claves = Referencia.catalogo.map(\.clave)
         #expect(Set(claves).count == claves.count)
-        let usadas = Set(citadas.map(\.clave))
+        let usadas = Set(citadas.map(\.clave)).union(Self.citadasPorLosEncordados)
         for obra in Referencia.catalogo {
             #expect(usadas.contains(obra.clave), "nadie cita \(obra.clave)")
             #expect(obra.paginasCitadas == nil, Comment(rawValue: obra.clave))

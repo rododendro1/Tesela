@@ -56,6 +56,18 @@ extension RitmoConNombre {
         nombre: "bembé", patron: "x.x.xx.x.x.x", agrupacion: [3, 3, 3, 3], unidad: 8, familia: .lineaDeTiempo,
         alias: ["patrón estándar"], referencias: [.toussaint2013], tradicion: .africa,
         lugares: [.pais(.ghana), .pais(.nigeria), .pais(.cuba)])
+    /// Las palmas de los venda de Sudáfrica: E(5, 12), el ritmo euclídeo de cinco golpes en doce pulsos.
+    public static let palmasVenda = RitmoConNombre(
+        nombre: "palmas venda", patron: "x..x.x..x.x.", agrupacion: [3, 3, 3, 3], unidad: 8, familia: .lineaDeTiempo,
+        referencias: [.toussaint2005, .toussaint2013], tradicion: .africa, lugares: [.pais(.sudafrica)])
+    /// La línea de tiempo fume-fume de Ghana: cinco golpes del patrón estándar, E(5, 12) girado.
+    public static let fumeFume = RitmoConNombre(
+        nombre: "fume-fume", patron: "x.x.x..x.x..", agrupacion: [3, 3, 3, 3], unidad: 8, familia: .lineaDeTiempo,
+        referencias: [.toussaint2013], tradicion: .africa, lugares: [.pais(.ghana)])
+    /// El collar de la samba brasileña: E(7, 16), siete golpes en dieciséis pulsos.
+    public static let samba = RitmoConNombre(
+        nombre: "samba", patron: "x..x.x.x..x.x.x.", agrupacion: [4, 4, 4, 4], unidad: 16, familia: .lineaDeTiempo,
+        referencias: [.toussaint2005], lugares: [.pais(.brasil)])
     // MARK: Flamenco
 
     /// El compás de doce tiempos de la soleá, con los acentos en el 3, el 6, el 8, el 10 y el 12.
@@ -70,6 +82,22 @@ extension RitmoConNombre {
     public static let seguiriya = RitmoConNombre(
         nombre: "seguiriya", patron: "x.x.x..x..x.", agrupacion: [2, 2, 3, 3, 2], unidad: 8, familia: .flamenco,
         alias: ["siguiriya"], estilos: [.flamenco], referencias: [.fernandez2004], lugares: [.region(.andalucia)])
+    /// El compás de las alegrías, de la familia de las cantiñas: el de la soleá, más ligero.
+    public static let alegrias = RitmoConNombre(
+        nombre: "alegrías", patron: "ooxooxoxoxox", agrupacion: [3, 3, 2, 2, 2], unidad: 8, familia: .flamenco,
+        estilos: [.flamenco], referencias: [.fernandez2004], lugares: [.region(.andalucia)])
+    /// El compás de la guajira: el seis por ocho y el tres por cuatro alternados, contados desde el 12.
+    public static let guajira = RitmoConNombre(
+        nombre: "guajira", patron: "xooxooxoxoxo", agrupacion: [3, 3, 2, 2, 2], unidad: 8, familia: .flamenco,
+        estilos: [.flamenco], referencias: [.fernandez2004], lugares: [.region(.andalucia)])
+    /// El compás de la petenera: el de la guajira, más lento.
+    public static let petenera = RitmoConNombre(
+        nombre: "petenera", patron: "xooxooxoxoxo", agrupacion: [3, 3, 2, 2, 2], unidad: 8, familia: .flamenco,
+        alias: ["peteneras"], estilos: [.flamenco], referencias: [.fernandez2004], lugares: [.region(.andalucia)])
+    /// El compás ternario del fandango, el de Huelva y los demás de su familia.
+    public static let fandango = RitmoConNombre(
+        nombre: "fandango", patron: "xoo", agrupacion: [1, 1, 1], unidad: 4, familia: .flamenco, alias: ["fandangos"],
+        estilos: [.flamenco], referencias: [.fernandez2004], lugares: [.region(.andalucia)])
     // MARK: Tāla de la India
 
     /// El tāla de dieciséis mātrā en cuatro vibhāg: palmadas en el 1, el 5 y el 13, y la onda (khālī) en el 9.
@@ -100,6 +128,35 @@ extension RitmoConNombre {
     public static let adi = RitmoConNombre(
         nombre: "ādi tāla", patron: "xoooxoxo", agrupacion: [4, 2, 2], unidad: 4, familia: .tala, alias: ["adi tala"],
         referencias: [.viswanathan2004], tradicion: .india)
+    /// El primero de los siete tāla sūlādi carnáticos, en su jāti de cuatro (catusra): laghu, drutam, laghu y laghu,
+    /// catorce aksara.
+    public static let dhruvaTala = RitmoConNombre(
+        nombre: "dhruva tāla", patron: "xoooxoxoooxooo", agrupacion: [4, 2, 4, 4], unidad: 4, familia: .tala,
+        alias: ["dhruva tala"], referencias: [.viswanathan2004], tradicion: .india)
+    /// Laghu, drutam y laghu, en su jāti de cuatro: diez aksara.
+    public static let mathyaTala = RitmoConNombre(
+        nombre: "maṭhya tāla", patron: "xoooxoxooo", agrupacion: [4, 2, 4], unidad: 4, familia: .tala,
+        alias: ["matya tala", "mathya tala"], referencias: [.viswanathan2004], tradicion: .india)
+    /// Drutam y laghu, en su jāti de cuatro: seis aksara. No es el rūpak indostánico.
+    public static let rupakaTala = RitmoConNombre(
+        nombre: "rūpaka tāla", patron: "xoxooo", agrupacion: [2, 4], unidad: 4, familia: .tala, alias: ["rupaka tala"],
+        referencias: [.viswanathan2004], tradicion: .india)
+    /// Laghu, anudrutam y drutam, en su jāti de siete (miśra): diez aksara.
+    public static let jhampaTala = RitmoConNombre(
+        nombre: "jhampa tāla", patron: "xooooooxxo", agrupacion: [7, 1, 2], unidad: 4, familia: .tala,
+        alias: ["jhampa tala"], referencias: [.viswanathan2004], tradicion: .india)
+    /// Laghu, drutam y drutam, en su jāti de tres (tiśra): siete aksara. En la de cuatro es el ādi tāla.
+    public static let triputaTala = RitmoConNombre(
+        nombre: "tripuṭa tāla", patron: "xooxoxo", agrupacion: [3, 2, 2], unidad: 4, familia: .tala,
+        alias: ["triputa tala"], referencias: [.viswanathan2004], tradicion: .india)
+    /// Laghu, laghu, drutam y drutam, en su jāti de cinco (khaṇḍa): catorce aksara.
+    public static let ataTala = RitmoConNombre(
+        nombre: "aṭa tāla", patron: "xooooxooooxoxo", agrupacion: [5, 5, 2, 2], unidad: 4, familia: .tala,
+        alias: ["ata tala"], referencias: [.viswanathan2004], tradicion: .india)
+    /// Un solo laghu, en su jāti de cuatro: cuatro aksara.
+    public static let ekaTala = RitmoConNombre(
+        nombre: "eka tāla", patron: "xooo", unidad: 4, familia: .tala, alias: ["eka tala"],
+        referencias: [.viswanathan2004], tradicion: .india)
     // MARK: Iqa'at árabes
 
     /// El iqa' más común de la música árabe: dum tek · tek dum · tek ·.
@@ -118,6 +175,18 @@ extension RitmoConNombre {
     public static let malfuf = RitmoConNombre(
         nombre: "malfūf", patron: "x..o..o.", agrupacion: [2, 2, 2, 2], unidad: 8, familia: .iqa, alias: ["malfuf"],
         referencias: [.touma1996], tradicion: .mundoArabe)
+    /// El york-samai árabe de seis pulsos: E(5, 6), girado.
+    public static let yorkSamai = RitmoConNombre(
+        nombre: "york-samai", patron: "x.xxxx", unidad: 8, familia: .iqa, referencias: [.toussaint2005],
+        tradicion: .mundoArabe)
+    /// El nawakhat árabe de siete pulsos: E(5, 7).
+    public static let nawakhat = RitmoConNombre(
+        nombre: "nawakhat", patron: "x.xx.xx", unidad: 8, familia: .iqa, referencias: [.toussaint2005],
+        tradicion: .mundoArabe)
+    /// El khafif-e-ramal persa del siglo XIII: E(2, 5), dos golpes en cinco pulsos.
+    public static let khafifERamal = RitmoConNombre(
+        nombre: "khafif-e-ramal", patron: "x.x..", unidad: 8, familia: .iqa, referencias: [.toussaint2005],
+        tradicion: .persia)
     // MARK: Aksak y usul
 
     /// El aksak de cinco pulsos, 2 + 3, de la danza búlgara.
@@ -151,6 +220,10 @@ extension RitmoConNombre {
     public static let duyek = RitmoConNombre(
         nombre: "düyek", patron: "xo.ox.o.", agrupacion: [2, 2, 2, 2], unidad: 8, familia: .aksak,
         alias: ["duyek", "düyek usulü"], referencias: [.toussaint2013], tradicion: .turquia)
+    /// El agsag-samai árabe de nueve pulsos: E(5, 9), cinco golpes de dos en dos.
+    public static let agsagSamai = RitmoConNombre(
+        nombre: "agsag-samai", patron: "x.x.x.x.x", unidad: 8, familia: .aksak, referencias: [.toussaint2005],
+        tradicion: .mundoArabe)
     // MARK: Modos rítmicos
     //
     // Del año de «De mensurabili musica» de Johannes de Garlandia (hacia 1250), que los describe.
@@ -201,8 +274,10 @@ extension RitmoConNombre {
     /// Todo el catálogo, en el orden de este fichero.
     public static let catalogo: [RitmoConNombre] = [
         .tresillo, .cinquillo, .habanera, .claveDeSon, .claveDeSonDosTres, .claveDeRumba, .bossaNova, .soukous, .shiko,
-        .gahu, .bembe, .solea, .buleria, .seguiriya, .tintal, .ektal, .jhaptal, .rupak, .dadra, .kaharva, .adi, .maqsum,
-        .baladi, .saidi, .malfuf, .paidushko, .ruchenitsa, .lesnoto, .daichovo, .kopanitsa, .curcuna, .duyek,
+        .gahu, .bembe, .palmasVenda, .fumeFume, .samba, .solea, .buleria, .seguiriya, .alegrias, .guajira, .petenera,
+        .fandango, .tintal, .ektal, .jhaptal, .rupak, .dadra, .kaharva, .adi, .dhruvaTala, .mathyaTala, .rupakaTala,
+        .jhampaTala, .triputaTala, .ataTala, .ekaTala, .maqsum, .baladi, .saidi, .malfuf, .yorkSamai, .nawakhat,
+        .khafifERamal, .paidushko, .ruchenitsa, .lesnoto, .daichovo, .kopanitsa, .curcuna, .duyek, .agsagSamai,
         .primerModoRitmico, .segundoModoRitmico, .tercerModoRitmico, .cuartoModoRitmico, .quintoModoRitmico,
         .sextoModoRitmico, .vals, .polonesa, .siciliana, .charleston,
     ]

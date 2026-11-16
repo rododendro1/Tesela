@@ -53,6 +53,11 @@ extension ProgresionConNombre {
     public static let cicloHexatonico = ProgresionConNombre(
         nombre: "ciclo hexatónico", cifrado: "I i ♭VI ♭vi III iii", alias: ["ciclo de Cohn"], estilos: [.clasica],
         referencias: [.cohn1996])
+    /// El ciclo octatónico de Cohn: ocho tríadas que alternan P y R y vuelven a la primera, con las notas de una
+    /// escala octatónica. Do–Dom–Mi♭–Mi♭m–Sol♭–Sol♭m–La–Lam.
+    public static let cicloOctatonico = ProgresionConNombre(
+        nombre: "ciclo octatónico", cifrado: "I i ♭III ♭iii ♭V ♭v VI vi", estilos: [.clasica],
+        referencias: [.cohn1997])
     // MARK: Esquemas del barroco y del estilo galante, y bajos de danza
 
     /// La romanesca galante: baja una cuarta y sube una segunda, dos veces.
@@ -98,6 +103,16 @@ extension ProgresionConNombre {
     /// El paso atrás antes de la cadencia: el bajo baja del 4.º al 3.º, V42–I6.
     public static let passoIndietro = ProgresionConNombre(
         nombre: "passo indietro", cifrado: "V42 I6", estilos: [.clasica], referencias: [.gjerdingen2007])
+    /// La regla de la octava, subiendo: el acorde de cada grado de la escala en el bajo, de Campion (1716) y de los
+    /// partimenti napolitanos. Sobre el 2.º y el 6.º, 6/4/3 y 6; sobre el 4.º y el 7.º, 6/5.
+    public static let reglaDeLaOctava = ProgresionConNombre(
+        nombre: "regla de la octava ascendente", cifrado: "I V43 I6 ii65 V IV6 V65 I", alias: ["regla de la octava"],
+        estilos: [.clasica], referencias: [.christensen1992, .gjerdingen2007], documentada: .campion1716)
+    /// La regla de la octava, bajando: sobre el 6.º, la sexta aumentada que lleva a la dominante (V43/V), y sobre el
+    /// 4.º, la dominante con séptima en el bajo.
+    public static let reglaDeLaOctavaDescendente = ProgresionConNombre(
+        nombre: "regla de la octava descendente", cifrado: "I V6 V43/V V V42 I6 V43 I", estilos: [.clasica],
+        referencias: [.christensen1992, .gjerdingen2007], documentada: .campion1716)
     /// La folía: i–V–i–VII–III–VII–i–V, en menor.
     public static let folia = ProgresionConNombre(
         nombre: "folía", cifrado: "i V i VII III VII i V", modo: .menor, alias: ["follia", "folia de España"],
@@ -218,8 +233,10 @@ extension ProgresionConNombre {
     public static let catalogo: [ProgresionConNombre] = [
         .cadenciaPerfecta, .cadenciaPlagal, .cadenciaRota, .semicadencia, .cadenciaFrigia, .cadenciaNapolitana,
         .cadenciaConSextaAumentada, .picardia, .evitada, .cadenciaCompuesta, .quintasDescendentes, .cicloHexatonico,
+        .cicloOctatonico,
         .romanesca, .pachelbel, .monte, .fonte,
-        .ponte, .doReMi, .prinner, .fenaroli, .quiescenza, .meyer, .solFaMi, .indugio, .passoIndietro, .folia,
+        .ponte, .doReMi, .prinner, .fenaroli, .quiescenza, .meyer, .solFaMi, .indugio, .passoIndietro, .reglaDeLaOctava,
+        .reglaDeLaOctavaDescendente, .folia,
         .bajoDeLamento,
         .lamentoCromatico, .passamezzoAntico, .passamezzoModerno, .ruggiero, .bergamasca, .chacona, .passacaglia,
         .iiVI, .iiV, .iiVIMenor, .turnaround, .turnaroundConDominante, .turnaroundDesdeElIII, .ragtime, .backdoor,

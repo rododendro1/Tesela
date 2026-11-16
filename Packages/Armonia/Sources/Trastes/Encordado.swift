@@ -129,9 +129,179 @@ public struct Encordado: Hashable, Sendable {
         nombre: "mandolina",
         afinacion: [Altura(.sol, octava: 3), Altura(.re, octava: 4), Altura(.la, octava: 4), Altura(.mi, octava: 5)])
 
+    /// Guitarra en do abierto (open C): Do2 Sol2 Do3 Sol3 Do4 Mi4, un acorde de Do al aire.
+    public static let guitarraEnDoAbierto = Encordado(
+        nombre: "guitarra en do abierto",
+        afinacion: [
+            Altura(.do, octava: 2), Altura(.sol, octava: 2), Altura(.do, octava: 3), Altura(.sol, octava: 3),
+            Altura(.do, octava: 4), Altura(.mi, octava: 4),
+        ])
+
+    /// Guitarra en do grave (drop C): Do2 Sol2 Do3 Fa3 La3 Re4, la de re grave un tono más baja.
+    public static let guitarraEnDoGrave = Encordado(
+        nombre: "guitarra en do grave",
+        afinacion: [
+            Altura(.do, octava: 2), Altura(.sol, octava: 2), Altura(.do, octava: 3), Altura(.fa, octava: 3),
+            Altura(.la, octava: 3), Altura(.re, octava: 4),
+        ])
+
+    /// Guitarra en mi abierto (open E): Mi2 Si2 Mi3 Sol♯3 Si3 Mi4, un acorde de Mi al aire, la del blues con slide.
+    public static let guitarraEnMiAbierto = Encordado(
+        nombre: "guitarra en mi abierto",
+        afinacion: [
+            Altura(.mi, octava: 2), Altura(.si, octava: 2), Altura(.mi, octava: 3),
+            Altura(Nota(.sol, .sostenido), octava: 3), Altura(.si, octava: 3), Altura(.mi, octava: 4),
+        ])
+
+    /// Guitarra en afinación Nashville: las cuatro cuerdas graves, una octava más agudas (Mi3 La3 Re4 Sol4 Si3 Mi4),
+    /// como las cuerdas finas de la guitarra de doce cuerdas.
+    public static let guitarraNashville = Encordado(
+        nombre: "guitarra Nashville",
+        afinacion: [
+            Altura(.mi, octava: 3), Altura(.la, octava: 3), Altura(.re, octava: 4), Altura(.sol, octava: 4),
+            Altura(.si, octava: 3), Altura(.mi, octava: 4),
+        ])
+
+    /// Ukelele barítono: Re3 Sol3 Si3 Mi4, las cuatro cuerdas agudas de la guitarra.
+    public static let ukeleleBariton = Encordado(
+        nombre: "ukelele barítono",
+        afinacion: [Altura(.re, octava: 3), Altura(.sol, octava: 3), Altura(.si, octava: 3), Altura(.mi, octava: 4)])
+
+    /// Mandola: Do3 Sol3 Re4 La4, en quintas como la mandolina y una quinta más grave; cuatro órdenes dobles.
+    public static let mandola = Encordado(
+        nombre: "mandola",
+        afinacion: [Altura(.do, octava: 3), Altura(.sol, octava: 3), Altura(.re, octava: 4), Altura(.la, octava: 4)])
+
+    /// Bandurria: Sol♯3 Do♯4 Fa♯4 Si4 Mi5 La5, en cuartas; seis órdenes dobles.
+    public static let bandurria = Encordado(
+        nombre: "bandurria",
+        afinacion: [
+            Altura(Nota(.sol, .sostenido), octava: 3), Altura(Nota(.do, .sostenido), octava: 4),
+            Altura(Nota(.fa, .sostenido), octava: 4), Altura(.si, octava: 4), Altura(.mi, octava: 5),
+            Altura(.la, octava: 5),
+        ])
+
+    /// Laúd español: Sol♯2 Do♯3 Fa♯3 Si3 Mi4 La4, la bandurria una octava más grave; seis órdenes dobles.
+    public static let laud = Encordado(
+        nombre: "laúd",
+        afinacion: [
+            Altura(Nota(.sol, .sostenido), octava: 2), Altura(Nota(.do, .sostenido), octava: 3),
+            Altura(Nota(.fa, .sostenido), octava: 3), Altura(.si, octava: 3), Altura(.mi, octava: 4),
+            Altura(.la, octava: 4),
+        ])
+
+    /// Laúd renacentista de seis órdenes, en Sol: Sol2 Do3 Fa3 La3 Re4 Sol4; la prima, sencilla.
+    public static let laudRenacentista = Encordado(
+        nombre: "laúd renacentista",
+        afinacion: [
+            Altura(.sol, octava: 2), Altura(.do, octava: 3), Altura(.fa, octava: 3), Altura(.la, octava: 3),
+            Altura(.re, octava: 4), Altura(.sol, octava: 4),
+        ])
+
+    /// Vihuela de mano, en Sol como el laúd: Sol2 Do3 Fa3 La3 Re4 Sol4. De 1536 es «El Maestro» de Luis Milán, el
+    /// primer libro para vihuela.
+    public static let vihuela = Encordado(
+        nombre: "vihuela de mano",
+        afinacion: [
+            Altura(.sol, octava: 2), Altura(.do, octava: 3), Altura(.fa, octava: 3), Altura(.la, octava: 3),
+            Altura(.re, octava: 4), Altura(.sol, octava: 4),
+        ])
+
+    /// Ud árabe, sin trastes: Do2 Fa2 La2 Re3 Sol3 Do4, cinco órdenes dobles y el bordón sencillo.
+    public static let ud = Encordado(
+        nombre: "ud",
+        afinacion: [
+            Altura(.do, octava: 2), Altura(.fa, octava: 2), Altura(.la, octava: 2), Altura(.re, octava: 3),
+            Altura(.sol, octava: 3), Altura(.do, octava: 4),
+        ])
+
+    /// Buzuki griego de cuatro órdenes (tetrájordo): Do3 Fa3 La3 Re4.
+    public static let buzuki = Encordado(
+        nombre: "buzuki",
+        afinacion: [Altura(.do, octava: 3), Altura(.fa, octava: 3), Altura(.la, octava: 3), Altura(.re, octava: 4)])
+
+    /// Charango andino: Sol4 Do5 Mi5 La4 Mi5 (cuerda reentrante); cinco órdenes dobles.
+    public static let charango = Encordado(
+        nombre: "charango",
+        afinacion: [
+            Altura(.sol, octava: 4), Altura(.do, octava: 5), Altura(.mi, octava: 5), Altura(.la, octava: 4),
+            Altura(.mi, octava: 5),
+        ])
+
+    /// Cuatro venezolano: La3 Re4 Fa♯4 Si3 (cuerda reentrante).
+    public static let cuatroVenezolano = Encordado(
+        nombre: "cuatro venezolano",
+        afinacion: [
+            Altura(.la, octava: 3), Altura(.re, octava: 4), Altura(Nota(.fa, .sostenido), octava: 4),
+            Altura(.si, octava: 3),
+        ])
+
+    /// Tres cubano: Sol3 Do4 Mi4, tres órdenes dobles.
+    public static let tresCubano = Encordado(
+        nombre: "tres cubano",
+        afinacion: [Altura(.sol, octava: 3), Altura(.do, octava: 4), Altura(.mi, octava: 4)])
+
+    /// Guitarra portuguesa, en la afinación de Lisboa: Re3 La3 Si3 Mi4 La4 Si4; seis órdenes dobles.
+    public static let guitarraPortuguesa = Encordado(
+        nombre: "guitarra portuguesa",
+        afinacion: [
+            Altura(.re, octava: 3), Altura(.la, octava: 3), Altura(.si, octava: 3), Altura(.mi, octava: 4),
+            Altura(.la, octava: 4), Altura(.si, octava: 4),
+        ])
+
+    /// Balalaica prima: Mi4 Mi4 La4, dos cuerdas al unísono y una cuarta más arriba.
+    public static let balalaica = Encordado(
+        nombre: "balalaica",
+        afinacion: [Altura(.mi, octava: 4), Altura(.mi, octava: 4), Altura(.la, octava: 4)])
+
+    /// Banjo de cinco cuerdas en sol abierto: Sol4 Re3 Sol3 Si3 Re4; la quinta, corta y aguda (reentrante).
+    public static let banjo = Encordado(
+        nombre: "banjo de cinco cuerdas",
+        afinacion: [
+            Altura(.sol, octava: 4), Altura(.re, octava: 3), Altura(.sol, octava: 3), Altura(.si, octava: 3),
+            Altura(.re, octava: 4),
+        ])
+
+    /// Dulcémele de los Apalaches, de trastes diatónicos: Re3 La3 Re4.
+    public static let dulcemele = Encordado(
+        nombre: "dulcémele de los Apalaches",
+        afinacion: [Altura(.re, octava: 3), Altura(.la, octava: 3), Altura(.re, octava: 4)])
+
+    /// Pipa china: La2 Re3 Mi3 La3.
+    public static let pipa = Encordado(
+        nombre: "pipa",
+        afinacion: [Altura(.la, octava: 2), Altura(.re, octava: 3), Altura(.mi, octava: 3), Altura(.la, octava: 3)])
+
+    /// Violín, sin trastes y en quintas: Sol3 Re4 La4 Mi5.
+    public static let violin = Encordado(
+        nombre: "violín",
+        afinacion: [Altura(.sol, octava: 3), Altura(.re, octava: 4), Altura(.la, octava: 4), Altura(.mi, octava: 5)])
+
+    /// Viola, sin trastes y en quintas: Do3 Sol3 Re4 La4.
+    public static let viola = Encordado(
+        nombre: "viola",
+        afinacion: [Altura(.do, octava: 3), Altura(.sol, octava: 3), Altura(.re, octava: 4), Altura(.la, octava: 4)])
+
+    /// Violonchelo, sin trastes y en quintas: Do2 Sol2 Re3 La3, la viola una octava más grave.
+    public static let violonchelo = Encordado(
+        nombre: "violonchelo",
+        afinacion: [Altura(.do, octava: 2), Altura(.sol, octava: 2), Altura(.re, octava: 3), Altura(.la, octava: 3)])
+
+    /// Contrabajo, sin trastes y en cuartas: Mi1 La1 Re2 Sol2, las mismas alturas que el bajo.
+    public static let contrabajo = Encordado(
+        nombre: "contrabajo",
+        afinacion: [Altura(.mi, octava: 1), Altura(.la, octava: 1), Altura(.re, octava: 2), Altura(.sol, octava: 2)])
+
+    /// Todos los instrumentos del catálogo: las guitarras y sus afinaciones, los bajos, los ukeleles, las mandolinas,
+    /// los laúdes, los de otras tradiciones y la familia del violín. Su ficha (sus órdenes, sus trastes, de dónde
+    /// vienen y dónde se leen) está en `Encordado+Catalogo.swift`.
     public static let todos: [Encordado] = [
         .guitarra, .guitarraEnReGrave, .guitarraEnReAbierto, .guitarraEnSolAbierto, .guitarraDADGAD,
-        .guitarraDeSieteCuerdas, .bajoElectrico, .bajoDeCincoCuerdas, .ukelele, .mandolina,
+        .guitarraDeSieteCuerdas, .guitarraEnDoAbierto, .guitarraEnDoGrave, .guitarraEnMiAbierto, .guitarraNashville,
+        .bajoElectrico, .bajoDeCincoCuerdas, .ukelele,
+        .ukeleleBariton, .mandolina, .mandola, .bandurria, .laud, .laudRenacentista, .vihuela, .ud, .buzuki, .charango,
+        .cuatroVenezolano, .tresCubano, .guitarraPortuguesa, .balalaica, .banjo, .dulcemele, .pipa, .violin, .viola,
+        .violonchelo, .contrabajo,
     ]
 }
 
@@ -172,6 +342,8 @@ extension Encordado {
         "bajo de cinco": .bajoDeCincoCuerdas,
         "ukulele": .ukelele, "ukulele soprano": .ukelele, "ukelele soprano": .ukelele,
         "mandolin": .mandolina,
+        "laud espanol": .laud, "laud arabe": .ud, "dulcimer": .dulcemele, "banjo": .banjo, "chelo": .violonchelo,
+        "baritone uke": .ukeleleBariton, "tres": .tresCubano, "cuatro": .cuatroVenezolano,
     ]
 }
 
@@ -217,6 +389,54 @@ extension Encordado: Nombrable {
             return TextosDeTrastes.traduccion(\.ukelele)
         case .mandolina:
             return TextosDeTrastes.traduccion(\.mandolina)
+        case .guitarraEnDoAbierto:
+            return TextosDeTrastes.traduccion(\.guitarraEnDoAbierto)
+        case .guitarraEnDoGrave:
+            return TextosDeTrastes.traduccion(\.guitarraEnDoGrave)
+        case .guitarraEnMiAbierto:
+            return TextosDeTrastes.traduccion(\.guitarraEnMiAbierto)
+        case .guitarraNashville:
+            return TextosDeTrastes.traduccion(\.guitarraNashville)
+        case .ukeleleBariton:
+            return TextosDeTrastes.traduccion(\.ukeleleBariton)
+        case .mandola:
+            return TextosDeTrastes.traduccion(\.mandola)
+        case .bandurria:
+            return TextosDeTrastes.traduccion(\.bandurria)
+        case .laud:
+            return TextosDeTrastes.traduccion(\.laud)
+        case .laudRenacentista:
+            return TextosDeTrastes.traduccion(\.laudRenacentista)
+        case .vihuela:
+            return TextosDeTrastes.traduccion(\.vihuela)
+        case .ud:
+            return TextosDeTrastes.traduccion(\.ud)
+        case .buzuki:
+            return TextosDeTrastes.traduccion(\.buzuki)
+        case .charango:
+            return TextosDeTrastes.traduccion(\.charango)
+        case .cuatroVenezolano:
+            return TextosDeTrastes.traduccion(\.cuatroVenezolano)
+        case .tresCubano:
+            return TextosDeTrastes.traduccion(\.tresCubano)
+        case .guitarraPortuguesa:
+            return TextosDeTrastes.traduccion(\.guitarraPortuguesa)
+        case .balalaica:
+            return TextosDeTrastes.traduccion(\.balalaica)
+        case .banjo:
+            return TextosDeTrastes.traduccion(\.banjo)
+        case .dulcemele:
+            return TextosDeTrastes.traduccion(\.dulcemele)
+        case .pipa:
+            return TextosDeTrastes.traduccion(\.pipa)
+        case .violin:
+            return TextosDeTrastes.traduccion(\.violin)
+        case .viola:
+            return TextosDeTrastes.traduccion(\.viola)
+        case .violonchelo:
+            return TextosDeTrastes.traduccion(\.violonchelo)
+        case .contrabajo:
+            return TextosDeTrastes.traduccion(\.contrabajo)
         default:
             return nil
         }

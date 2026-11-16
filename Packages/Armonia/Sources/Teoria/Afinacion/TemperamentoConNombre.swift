@@ -196,7 +196,7 @@ public enum FamiliaDeTemperamento: String, Hashable, Sendable, Codable, CaseIter
     case circular
     /// Las razones de números pequeños: la afinación justa.
     case justa
-    /// La octava en partes iguales que no son doce: 19, 22, 31, 41.
+    /// La octava en partes iguales que no son doce: 5, 7, 17, 19, 22, 31, 41, 43, 96.
     case divisionesIguales
     /// Los sistemas de otras tradiciones: cuartos de tono, koron y sori, 53 comas, 72 moria, 22 śruti.
     case tradicional

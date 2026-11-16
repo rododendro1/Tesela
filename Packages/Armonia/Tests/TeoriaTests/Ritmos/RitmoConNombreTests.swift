@@ -51,6 +51,30 @@ import Testing
         #expect(RitmoConNombre.euclideo(ataques: 3, pulsos: 0) == "")
     }
 
+    /// Los ritmos que Toussaint da como euclídeos son una rotación del ritmo euclídeo de sus ataques y sus pulsos.
+    @Test func euclideosDeToussaint() {
+        let ritmos: [RitmoConNombre] = [.palmasVenda, .samba, .yorkSamai, .nawakhat, .khafifERamal, .agsagSamai]
+        for ritmo in ritmos {
+            let euclideo = RitmoConNombre.euclideo(ataques: ritmo.ataques.count, pulsos: ritmo.pulsos)
+            let rotaciones = (0..<ritmo.pulsos).map { String((euclideo + euclideo).dropFirst($0).prefix(ritmo.pulsos)) }
+            #expect(rotaciones.contains(ritmo.patron), "\(ritmo)")
+        }
+    }
+
+    /// De dónde viene cada ritmo: su tradición, sus lugares, sus países y sus continentes.
+    @Test func lugares() {
+        #expect(RitmoConNombre.solea.lugaresDeOrigen == [.region(.andalucia)])
+        #expect(RitmoConNombre.solea.paisesDeOrigen == [.espana])
+        #expect(RitmoConNombre.solea.continentesDeOrigen == [.europa])
+        #expect(RitmoConNombre.claveDeSon.paisesDeOrigen == [.cuba])
+        #expect(RitmoConNombre.palmasVenda.paisesDeOrigen == [.sudafrica])
+        #expect(RitmoConNombre.dhruvaTala.tradicion == .india)
+        #expect(RitmoConNombre.khafifERamal.tradicion == .persia)
+        #expect(TemperamentoConNombre.werckmeisterIII.paisesDeOrigen == [.alemania])
+        #expect(TemperamentoConNombre.divisiones96.paisesDeOrigen == [.mexico])
+        #expect(TemperamentoConNombre.comas53.tradicion == .turquia)
+    }
+
     /// Cada fichero de idioma da todos los ritmos del catálogo, una sola vez y sin repetir nombres.
     @Test func nombresEnTodosLosIdiomas() {
         let catalogo = RitmoConNombre.catalogo

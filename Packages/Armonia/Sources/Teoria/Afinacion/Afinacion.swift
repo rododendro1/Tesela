@@ -187,6 +187,37 @@ public struct TemperamentoCircular: SistemaDeAfinacion, Hashable {
     /// Young (1799): el de Vallotti, una quinta más arriba, de Do a Fa♯.
     public static let young = circulo(
         "Young", Dictionary(uniqueKeysWithValues: (0...5).map { ($0, comaPitagorica / 6) }))
+    /// Werckmeister IV (1691): Do–Sol, Re–La, Mi–Si, Fa♯–Do♯ y Si♭–Fa, ⅓ de coma pitagórica más estrechas, y
+    /// Sol♯–Re♯ y Re♯–La♯, ⅓ más anchas; las demás, puras.
+    public static let werckmeisterIV = circulo(
+        "Werckmeister IV",
+        [
+            0: comaPitagorica / 3, 2: comaPitagorica / 3, 4: comaPitagorica / 3, 6: comaPitagorica / 3,
+            10: comaPitagorica / 3, 8: -comaPitagorica / 3, 9: -comaPitagorica / 3,
+        ])
+    /// Werckmeister V (1691): Sol–Re, Re–La, Si–Fa♯, Fa♯–Do♯ y Fa–Do, ¼ de coma pitagórica más estrechas, y
+    /// Sol♯–Re♯, ¼ más ancha; las demás, puras.
+    public static let werckmeisterV = circulo(
+        "Werckmeister V",
+        [
+            1: comaPitagorica / 4, 2: comaPitagorica / 4, 5: comaPitagorica / 4, 6: comaPitagorica / 4,
+            11: comaPitagorica / 4, 8: -comaPitagorica / 4,
+        ])
+    /// Kellner (1977): Do–Sol, Sol–Re, Re–La, La–Mi y Si–Fa♯, ⅕ de coma pitagórica más estrechas; las demás, puras.
+    public static let kellner = circulo(
+        "Kellner", Dictionary(uniqueKeysWithValues: [0, 1, 2, 3, 5].map { ($0, comaPitagorica / 5) }))
+    /// Barnes (1979): de Fa a Mi, cinco quintas, y Si–Fa♯, ⅙ de coma pitagórica más estrechas; las demás, puras.
+    public static let barnes = circulo(
+        "Barnes", Dictionary(uniqueKeysWithValues: [11, 0, 1, 2, 3, 5].map { ($0, comaPitagorica / 6) }))
+    /// Lehman (2005): de Fa a Mi, cinco quintas ⅙ de coma pitagórica más estrechas; de Mi a Do♯, puras; de Do♯ a
+    /// La♯, tres ¹⁄₁₂ más estrechas, y La♯–Fa, ¹⁄₁₂ más ancha.
+    public static let lehman = circulo(
+        "Lehman",
+        [
+            11: comaPitagorica / 6, 0: comaPitagorica / 6, 1: comaPitagorica / 6, 2: comaPitagorica / 6,
+            3: comaPitagorica / 6, 7: comaPitagorica / 12, 8: comaPitagorica / 12, 9: comaPitagorica / 12,
+            10: -comaPitagorica / 12,
+        ])
 }
 
 // MARK: - Afinación justa

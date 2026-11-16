@@ -417,6 +417,8 @@ struct TextosDeTeoria: TextosTraducidos {
     let paisGhana: String
     let paisNigeria: String
     let paisCongo: String
+    let paisMexico: String
+    let paisSudafrica: String
     let zonaLevante: String
     let zonaGolfo: String
     let zonaMagreb: String

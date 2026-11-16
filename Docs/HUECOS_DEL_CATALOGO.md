@@ -243,7 +243,7 @@ Quedan fuera, por ahora:
 
 ## Progresiones que faltan
 
-El catálogo tiene 58 progresiones. Quedan fuera, hasta leer una obra que las dé:
+El catálogo tiene 61 progresiones. Quedan fuera, hasta leer una obra que las dé:
 
 - El line cliché (i–i(maj7)–i7–i6): falta una obra que lo nombre así.
 - La progresión Omnibus: Telesco, «Enharmonicism and the Omnibus Progression», *Music Theory Spectrum* (1998).

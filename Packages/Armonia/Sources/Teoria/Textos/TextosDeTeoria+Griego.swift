@@ -391,6 +391,8 @@ extension TextosDeTeoria {
         paisGhana: "Γκάνα",
         paisNigeria: "Νιγηρία",
         paisCongo: "Λαϊκή Δημοκρατία του Κονγκό",
+        paisMexico: "Μεξικό",
+        paisSudafrica: "Νότια Αφρική",
         zonaLevante: "Λεβάντε",
         zonaGolfo: "Περσικός Κόλπος",
         zonaMagreb: "Μαγκρέμπ",

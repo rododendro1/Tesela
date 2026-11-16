@@ -391,6 +391,8 @@ extension TextosDeTeoria {
         paisGhana: "Ghana",
         paisNigeria: "Nigeria",
         paisCongo: "République démocratique du Congo",
+        paisMexico: "Mexique",
+        paisSudafrica: "Afrique du Sud",
         zonaLevante: "Levant",
         zonaGolfo: "golfe Persique",
         zonaMagreb: "Maghreb",

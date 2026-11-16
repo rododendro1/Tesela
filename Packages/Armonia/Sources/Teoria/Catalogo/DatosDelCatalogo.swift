@@ -43,10 +43,10 @@ package struct DatosDelCatalogo: Sendable {
 
 extension DatosDelCatalogo {
     /// El año de la obra que lo documenta, si la tiene, o el que se da.
-    var anioDeOrigen: Int? { documentada?.anio ?? anio }
+    package var anioDeOrigen: Int? { documentada?.anio ?? anio }
 
     /// La de su año, o si no la más antigua de las de uso de sus estilos; `nil` si ninguna da nada.
-    var epocaDeOrigen: Epoca? {
+    package var epocaDeOrigen: Epoca? {
         if let anio = anioDeOrigen { return Epoca(anio: anio) }
         return estilos.flatMap(\.epocasDeUso).min()
     }
@@ -77,7 +77,7 @@ extension DatosDelCatalogo {
     /// 5. los continentes de su tradición.
     ///
     /// Vacío si no se sabe nada.
-    var lugaresDeOrigen: [Lugar] {
+    package var lugaresDeOrigen: [Lugar] {
         if !lugares.isEmpty { return lugares }
         if let historico = tradicion?.lugarHistorico { return [.historico(historico)] }
         if let zonas = tradicion?.zonas, !zonas.isEmpty { return zonas.map(Lugar.zona) }
@@ -90,13 +90,13 @@ extension DatosDelCatalogo {
     }
 
     /// Los países de donde viene, en el orden de `Pais.allCases`, con los que contienen sus lugares.
-    var paisesDeOrigen: [Pais] {
+    package var paisesDeOrigen: [Pais] {
         let lugares = Set(lugaresDeOrigen.flatMap(\.conLosQueLoContienen))
         return Pais.allCases.filter { lugares.contains(.pais($0)) }
     }
 
     /// Los continentes de donde viene, en el orden de `Continente.allCases`.
-    var continentesDeOrigen: [Continente] {
+    package var continentesDeOrigen: [Continente] {
         let lugares = Set(lugaresDeOrigen.flatMap(\.conLosQueLoContienen))
         return Continente.allCases.filter { lugares.contains(.continente($0)) }
     }
