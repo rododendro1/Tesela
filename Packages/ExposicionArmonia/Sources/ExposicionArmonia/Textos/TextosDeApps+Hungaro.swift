@@ -404,6 +404,12 @@ extension TextosDeApps {
         partituraGUIDO: "GUIDO-kotta",
         partituraABC: "ABC-kotta",
         dibujoSVG: "SVG-rajz",
-        paginaHTML: "HTML-oldal"
+        paginaHTML: "HTML-oldal",
+        cuerdasDelInstrumento: "Húrok",
+        ordenesYCuerdas: "{1} kórus, {2} húr",
+        trastesDelInstrumento: "Bundok",
+        ordenesEnOctavas: "Oktávos kórusok",
+        pasosDelOrnamento: "Lépések",
+        suenaElOrnamento: "Szól"
     )
 }

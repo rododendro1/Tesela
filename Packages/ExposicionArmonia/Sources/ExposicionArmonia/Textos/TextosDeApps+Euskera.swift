@@ -404,6 +404,12 @@ extension TextosDeApps {
         partituraGUIDO: "GUIDO partitura",
         partituraABC: "ABC partitura",
         dibujoSVG: "SVG marrazkia",
-        paginaHTML: "HTML orria"
+        paginaHTML: "HTML orria",
+        cuerdasDelInstrumento: "Sokak",
+        ordenesYCuerdas: "ordenak: {1}, sokak: {2}",
+        trastesDelInstrumento: "Trasteak",
+        ordenesEnOctavas: "Zortzidunetako ordenak",
+        pasosDelOrnamento: "Urratsak",
+        suenaElOrnamento: "Soinua"
     )
 }

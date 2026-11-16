@@ -168,6 +168,7 @@ extension TextosDeTeoria {
         nombreNoReconocido: "„{1}” egyik sem ezek közül: {2}",
         numeroFueraDeRango: "„{1}” nem {2} és {3} közötti szám",
         trasteNoValido: "„{1}” nem bund: x (tompított húr) vagy 0 és {2} közötti szám kell",
+        trasteQueNoTiene: "„{1}” nem bund ezen a húron: a hangszernek csak a skálája bundjai vannak meg, vagy a húr rövid",
         cuerdasDistintas: "mind a {1} húrhoz kell egy bund (vagy x), és {2} van",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
         cifradoRomanoNoValido: "„{1}” nem fokjelzés: egy római szám I-től VII-ig, a minőségével és a számaival (V7, ii65, ♭VI, vii°7/V)",

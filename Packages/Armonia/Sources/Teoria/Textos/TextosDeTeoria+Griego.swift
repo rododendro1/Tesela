@@ -168,6 +168,7 @@ extension TextosDeTeoria {
         nombreNoReconocido: "το «{1}» δεν είναι κανένα από αυτά: {2}",
         numeroFueraDeRango: "το «{1}» δεν είναι αριθμός από {2} έως {3}",
         trasteNoValido: "το «{1}» δεν είναι τάστο: πρέπει να είναι x (σβησμένη χορδή) ή αριθμός από 0 έως {2}",
+        trasteQueNoTiene: "το «{1}» δεν είναι τάστο αυτής της χορδής: το όργανο έχει μόνο τα τάστα της κλίμακάς του, ή η χορδή είναι κοντή",
         cuerdasDistintas: "χρειάζεται ένα τάστο (ή x) για καθεμία από τις {1} χορδές, και υπάρχουν {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
         cifradoRomanoNoValido: "το «{1}» δεν είναι ρωμαϊκό σύμβολο βαθμίδας: ένας αριθμός από το I έως το VII με την ποιότητα και τα ψηφία του (V7, ii65, ♭VI, vii°7/V)",

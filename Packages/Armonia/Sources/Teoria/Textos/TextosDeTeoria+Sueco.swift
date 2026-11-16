@@ -171,6 +171,7 @@ extension TextosDeTeoria {
         nombreNoReconocido: "”{1}” är inget av dessa: {2}",
         numeroFueraDeRango: "”{1}” är inget tal från {2} till {3}",
         trasteNoValido: "”{1}” är inget band: x (dämpad sträng) eller ett tal från 0 till {2} väntades",
+        trasteQueNoTiene: "”{1}” är inget band på den här strängen: instrumentet har bara sin skalas band, eller så är strängen kort",
         cuerdasDistintas: "var och en av de {1} strängarna behöver ett band (eller x), och det finns {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
         cifradoRomanoNoValido: "”{1}” är ingen stegbeteckning: en romersk siffra från I till VII med sin kvalitet och sina siffror (V7, ii65, ♭VI, vii°7/V)",

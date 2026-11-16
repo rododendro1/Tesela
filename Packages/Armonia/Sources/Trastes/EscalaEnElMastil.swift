@@ -87,7 +87,7 @@ extension Mastil {
                 }
             }
             let usados = posiciones.map(\.traste)
-            guard let menor = usados.min(), let mayor = usados.max(), menor >= 0, mayor <= numeroDeTrastes else {
+            guard let menor = usados.min(), let mayor = usados.max(), posiciones.allSatisfy(contiene) else {
                 continue
             }
             resultado.append(

@@ -3,9 +3,10 @@ import Armonia
 // MARK: - Lo que tienen en común los catálogos presentados
 
 /// Un elemento de uno de los catálogos con nombre (`ElementoConNombre`), escrito: `AcordeConNombrePresentado`,
-/// `ProgresionConNombrePresentada`, `RitmoPresentado`, `TemperamentoPresentado`, `NotaPresentada` y
-/// `FuncionDeNotaPresentada`. Todos llevan su nombre y sus alias en la notación, las citas de sus obras y su origen,
-/// para que la consola, la app y las hojas los escriban igual.
+/// `ProgresionConNombrePresentada`, `RitmoPresentado`, `TemperamentoPresentado`, `NotaPresentada`,
+/// `FuncionDeNotaPresentada`, `OrnamentoPresentado` y `EncordadoPresentado` (que no es de un catálogo con nombre).
+/// Todos llevan su nombre y sus alias en la notación, las citas de sus obras y su origen, para que la consola, la app y
+/// las hojas los escriban igual.
 ///
 ///     func titulo(_ elemento: some ElementoConNombrePresentado) -> String {
 ///         ([elemento.nombre] + elemento.alias).joined(separator: " · ")
@@ -47,3 +48,5 @@ extension FuncionDeNotaPresentada: ElementoConNombrePresentado {}
 extension RitmoPresentado: ElementoConNombrePresentado {}
 extension AcordeConNombrePresentado: ElementoConNombrePresentado {}
 extension ProgresionConNombrePresentada: ElementoConNombrePresentado {}
+extension EncordadoPresentado: ElementoConNombrePresentado {}
+extension OrnamentoPresentado: ElementoConNombrePresentado {}

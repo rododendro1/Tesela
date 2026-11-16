@@ -294,6 +294,6 @@ import Testing
                 #expect(!enEspanol.huecos.isEmpty, "TextosDeApps.\(nombre) no tiene huecos")
             }
         }
-        #expect(espanol.count == 31)
+        #expect(espanol.count == 32)
     }
 }

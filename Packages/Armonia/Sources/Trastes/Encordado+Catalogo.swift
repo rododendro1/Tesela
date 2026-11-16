@@ -16,6 +16,15 @@ public enum TrastesDeEncordado: String, Hashable, Sendable, Codable, CaseIterabl
     /// Ninguno: el ud y la familia del violín. En el mástil, las posiciones se cuentan en semitonos, como si los
     /// tuviera.
     case sinTrastes
+
+    /// «cromáticos», «diatónicos» o «sin trastes», en el idioma de la notación.
+    public func nombre(en notacion: Notacion) -> String {
+        switch self {
+        case .cromaticos: TextosDeTrastes.traduccion(\.trastesCromaticos).en(notacion)
+        case .diatonicos: TextosDeTrastes.traduccion(\.trastesDiatonicos).en(notacion)
+        case .sinTrastes: TextosDeTrastes.traduccion(\.sinTrastes).en(notacion)
+        }
+    }
 }
 
 /// La ficha de un instrumento del catálogo.
@@ -24,6 +33,15 @@ package struct FichaDeEncordado: Sendable {
     package let cuerdasPorOrden: [Int]
     package let trastes: TrastesDeEncordado
     package let datos: DatosDelCatalogo
+    /// Las octavas de cada cuerda de los órdenes que no van al unísono, por su índice en `afinacion`, contadas
+    /// desde la cuerda de `afinacion`: `[0, -1]` en el tercer orden del charango (Mi5 y Mi4).
+    package var octavas: [Int: [Int]] = [:]
+    /// Los trastes de una octava, en semitonos desde la cuerda al aire, si no son los doce: los de la escala
+    /// mixolidia del dulcémele, con el «6½».
+    package var trastesDeLaOctava: Set<Int>? = nil
+    /// Los trastes que les faltan a las cuerdas cortas, por su índice en `afinacion`: la quinta del banjo nace en el
+    /// 5.º traste del mástil y tiene cinco menos.
+    package var cuerdasCortas: [Int: Int] = [:]
 }
 
 extension Encordado {
@@ -59,6 +77,10 @@ extension Encordado {
         .guitarraNashville: FichaDeEncordado(
             cuerdasPorOrden: [1, 1, 1, 1, 1, 1], trastes: .cromaticos,
             datos: DatosDelCatalogo(referencias: [.sadie1984], lugares: [.pais(.estadosUnidos)])),
+        .guitarraDeDoceCuerdas: FichaDeEncordado(
+            cuerdasPorOrden: [2, 2, 2, 2, 2, 2], trastes: .cromaticos,
+            datos: DatosDelCatalogo(estilos: [.folclore, .popRock], referencias: [.sadie1984]),
+            octavas: [0: [0, 1], 1: [0, 1], 2: [0, 1], 3: [0, 1]]),
         .bajoElectrico: FichaDeEncordado(
             cuerdasPorOrden: [1, 1, 1, 1], trastes: .cromaticos,
             datos: DatosDelCatalogo(
@@ -98,10 +120,10 @@ extension Encordado {
             datos: DatosDelCatalogo(referencias: [.sadie1984], tradicion: .mundoArabe)),
         .buzuki: FichaDeEncordado(
             cuerdasPorOrden: [2, 2, 2, 2], trastes: .cromaticos,
-            datos: DatosDelCatalogo(referencias: [.sadie1984], tradicion: .grecia)),
+            datos: DatosDelCatalogo(referencias: [.sadie1984], tradicion: .grecia), octavas: [0: [0, 1], 1: [0, 1]]),
         .charango: FichaDeEncordado(
             cuerdasPorOrden: [2, 2, 2, 2, 2], trastes: .cromaticos,
-            datos: DatosDelCatalogo(referencias: [.sadie1984], tradicion: .andes)),
+            datos: DatosDelCatalogo(referencias: [.sadie1984], tradicion: .andes), octavas: [2: [0, -1]]),
         .cuatroVenezolano: FichaDeEncordado(
             cuerdasPorOrden: [1, 1, 1, 1], trastes: .cromaticos,
             datos: DatosDelCatalogo(referencias: [.sadie1984], lugares: [.pais(.venezuela)])),
@@ -110,17 +132,20 @@ extension Encordado {
             datos: DatosDelCatalogo(referencias: [.sadie1984], lugares: [.pais(.cuba)])),
         .guitarraPortuguesa: FichaDeEncordado(
             cuerdasPorOrden: [2, 2, 2, 2, 2, 2], trastes: .cromaticos,
-            datos: DatosDelCatalogo(referencias: [.sadie1984], lugares: [.pais(.portugal)])),
+            datos: DatosDelCatalogo(referencias: [.sadie1984], lugares: [.pais(.portugal)]),
+            octavas: [0: [0, 1], 1: [0, 1], 2: [0, 1]]),
         .balalaica: FichaDeEncordado(
             cuerdasPorOrden: [1, 1, 1], trastes: .cromaticos,
             datos: DatosDelCatalogo(referencias: [.sadie1984], tradicion: .europa, lugares: [.pais(.rusia)])),
         .banjo: FichaDeEncordado(
             cuerdasPorOrden: [1, 1, 1, 1, 1], trastes: .cromaticos,
             datos: DatosDelCatalogo(
-                estilos: [.folclore, .jazz], referencias: [.sadie1984], lugares: [.pais(.estadosUnidos)])),
+                estilos: [.folclore, .jazz], referencias: [.sadie1984], lugares: [.pais(.estadosUnidos)]),
+            cuerdasCortas: [0: 5]),
         .dulcemele: FichaDeEncordado(
             cuerdasPorOrden: [1, 1, 1], trastes: .diatonicos,
-            datos: DatosDelCatalogo(estilos: [.folclore], referencias: [.sadie1984], lugares: [.pais(.estadosUnidos)])),
+            datos: DatosDelCatalogo(estilos: [.folclore], referencias: [.sadie1984], lugares: [.pais(.estadosUnidos)]),
+            trastesDeLaOctava: [0, 2, 4, 5, 7, 9, 10, 11]),
         .pipa: FichaDeEncordado(
             cuerdasPorOrden: [1, 1, 1, 1], trastes: .cromaticos,
             datos: DatosDelCatalogo(referencias: [.sadie1984], tradicion: .china)),
@@ -148,6 +173,30 @@ extension Encordado {
 
     /// Cuántas cuerdas tiene de verdad, contando las de cada orden: 8 en la mandolina, 12 en la bandurria.
     public var cuerdasReales: Int { cuerdasPorOrden.reduce(0, +) }
+
+    /// Las alturas de las cuerdas de un orden al aire, por su índice en `afinacion`: dos Re4 en la mandolina; Mi5 y
+    /// Mi4 en el tercer orden del charango, que va en octavas. Vacío si no existe.
+    ///
+    ///     Encordado.guitarraDeDoceCuerdas.alturasDelOrden(0)   // Mi2 Mi3
+    public func alturasDelOrden(_ cuerda: Int) -> [Altura] {
+        guard afinacion.indices.contains(cuerda) else { return [] }
+        let alAire = afinacion[cuerda]
+        let octavas = ficha?.octavas[cuerda] ?? Array(repeating: 0, count: cuerdasPorOrden[cuerda])
+        return octavas.map { Altura(pasosDeQuinta: alAire.pasosDeQuinta, pasosDeOctava: alAire.pasosDeOctava + $0) }
+    }
+
+    /// Si los órdenes de alguna cuerda van en octavas, como en el buzuki o la guitarra de doce cuerdas.
+    public var tieneOrdenesEnOctavas: Bool { !(ficha?.octavas.isEmpty ?? true) }
+
+    /// Si una cuerda tiene ese traste, en semitonos desde la cuerda al aire (o desde el capo), en un mástil de
+    /// `numeroDeTrastes`: en el dulcémele, solo los de su escala (0, 2, 4, 5, 7, 9, 10, 11 y 12 en la primera
+    /// octava); en la quinta del banjo, cinco menos que en las demás.
+    public func tieneTraste(_ traste: Int, enCuerda cuerda: Int, de numeroDeTrastes: Int) -> Bool {
+        let faltan = ficha?.cuerdasCortas[cuerda] ?? 0
+        guard traste >= 0, traste <= numeroDeTrastes - faltan else { return false }
+        guard let deLaOctava = ficha?.trastesDeLaOctava else { return true }
+        return deLaOctava.contains((traste + capo) % 12)
+    }
 
     /// Sus trastes; cromáticos en los que no son del catálogo.
     public var trastes: TrastesDeEncordado { ficha?.trastes ?? .cromaticos }

@@ -168,6 +168,7 @@ extension TextosDeTeoria {
         nombreNoReconocido: "„{1}“ ist keiner von diesen: {2}",
         numeroFueraDeRango: "„{1}“ ist keine Zahl von {2} bis {3}",
         trasteNoValido: "„{1}“ ist kein Bund: erlaubt sind x (gedämpfte Saite) oder eine Zahl von 0 bis {2}",
+        trasteQueNoTiene: "„{1}“ ist kein Bund dieser Saite: das Instrument hat nur die Bünde seiner Tonleiter, oder die Saite ist kurz",
         cuerdasDistintas: "für jede der {1} Saiten braucht es einen Bund (oder x), und es sind {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
         cifradoRomanoNoValido: "„{1}“ ist keine Stufenbezeichnung: eine römische Zahl von I bis VII mit ihrer Qualität und ihren Ziffern (V7, ii65, ♭VI, vii°7/V)",

@@ -168,6 +168,7 @@ extension TextosDeTeoria {
         nombreNoReconocido: "\"{1}\" is none of these: {2}",
         numeroFueraDeRango: "\"{1}\" is not a number from {2} to {3}",
         trasteNoValido: "\"{1}\" is not a fret: it must be x (muted string) or a number from 0 to {2}",
+        trasteQueNoTiene: "\"{1}\" is not a fret on this string: the instrument only has the frets of its scale, or the string is short",
         cuerdasDistintas: "one fret (or x) is needed for each of the {1} strings, and there are {2}",
         // ErrorDeLecturaDeTeoria.swift (cifrado romano y bajo cifrado)
         cifradoRomanoNoValido: "\"{1}\" is not a roman numeral: a numeral from I to VII with its quality and figures (V7, ii65, bVI, vii°7/V)",

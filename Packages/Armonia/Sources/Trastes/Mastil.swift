@@ -40,9 +40,27 @@ public struct Mastil: Hashable, Sendable {
         self.numeroDeTrastes = max(0, numeroDeTrastes)
     }
 
-    /// ¿Existe esta posición en el mástil?
+    /// ¿Existe esta posición en el mástil? En un instrumento de trastes diatónicos (el dulcémele), solo las de
+    /// sus trastes; en la quinta cuerda del banjo, que es corta, solo las de sus trastes.
     public func contiene(_ posicion: PosicionEnElMastil) -> Bool {
-        encordado.afinacion.indices.contains(posicion.cuerda) && (0...numeroDeTrastes).contains(posicion.traste)
+        encordado.afinacion.indices.contains(posicion.cuerda) && tieneTraste(posicion.traste, enCuerda: posicion.cuerda)
+    }
+
+    /// Si una cuerda tiene ese traste en este mástil (`Encordado.tieneTraste(_:enCuerda:de:)`).
+    public func tieneTraste(_ traste: Int, enCuerda cuerda: Int) -> Bool {
+        encordado.tieneTraste(traste, enCuerda: cuerda, de: numeroDeTrastes)
+    }
+
+    /// Los trastes que tiene una cuerda, del 0 (al aire) al último.
+    public func trastes(deCuerda cuerda: Int) -> [Int] {
+        (0...numeroDeTrastes).filter { tieneTraste($0, enCuerda: cuerda) }
+    }
+
+    /// Las alturas que suenan en una posición, una por cuerda de su orden (dos en la mandolina, Mi3 y Mi4 en el
+    /// sexto orden de la guitarra de doce cuerdas), o `nil` si no está en el mástil.
+    public func alturasQueSuenan(en posicion: PosicionEnElMastil) -> [Altura]? {
+        guard contiene(posicion) else { return nil }
+        return encordado.alturasDelOrden(posicion.cuerda).map { Altura(midi: $0.midi + posicion.traste) }
     }
 
     /// Número MIDI de una posición, o `nil` si no está en el mástil.
@@ -88,7 +106,7 @@ public struct Mastil: Hashable, Sendable {
         var resultado: [PosicionEnElMastil] = []
         for (cuerda, alAire) in encordado.afinacion.enumerated() {
             let traste = altura.midi - alAire.midi
-            if (0...numeroDeTrastes).contains(traste) {
+            if tieneTraste(traste, enCuerda: cuerda) {
                 resultado.append(PosicionEnElMastil(cuerda: cuerda, traste: traste))
             }
         }
@@ -112,7 +130,7 @@ public struct Mastil: Hashable, Sendable {
     public func posiciones(deClases clases: Set<Int>) -> [PosicionEnElMastil] {
         var resultado: [PosicionEnElMastil] = []
         for (cuerda, alAire) in encordado.afinacion.enumerated() {
-            for traste in 0...numeroDeTrastes where clases.contains(Mastil.clase(alAire.midi + traste)) {
+            for traste in trastes(deCuerda: cuerda) where clases.contains(Mastil.clase(alAire.midi + traste)) {
                 resultado.append(PosicionEnElMastil(cuerda: cuerda, traste: traste))
             }
         }

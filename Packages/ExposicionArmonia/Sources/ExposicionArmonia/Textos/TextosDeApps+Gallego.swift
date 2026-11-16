@@ -404,6 +404,12 @@ extension TextosDeApps {
         partituraGUIDO: "Partitura GUIDO",
         partituraABC: "Partitura ABC",
         dibujoSVG: "Debuxo SVG",
-        paginaHTML: "Páxina HTML"
+        paginaHTML: "Páxina HTML",
+        cuerdasDelInstrumento: "Cordas",
+        ordenesYCuerdas: "{1} ordes, {2} cordas",
+        trastesDelInstrumento: "Trastes",
+        ordenesEnOctavas: "Ordes en oitavas",
+        pasosDelOrnamento: "Pasos",
+        suenaElOrnamento: "Soa"
     )
 }

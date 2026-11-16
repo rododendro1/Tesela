@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- `EncordadoPresentado` y `OrnamentoPresentado`: un instrumento de cuerda con su afinación, sus órdenes y cuerdas,
+  sus órdenes en octavas y sus trastes, y un ornamento con sus pasos y lo que suena sobre una nota de una escala, cada
+  uno con su ficha. `OrigenPresentado(anio:epoca:documentada:en:)` crea el origen de cualquier cosa con esos datos.
 - `RitmoPresentado` y `TemperamentoPresentado` tienen `tradicion` y `lugaresDeOrigen`, y sus fichas, la fila
   «Lugares de origen».
 - `Notacion.etiqueta(_:)` escribe un texto de las apps como etiqueta dentro de una línea, con la primera letra en

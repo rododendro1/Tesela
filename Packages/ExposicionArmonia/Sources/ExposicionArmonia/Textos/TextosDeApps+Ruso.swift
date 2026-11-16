@@ -404,6 +404,12 @@ extension TextosDeApps {
         partituraGUIDO: "Партитура GUIDO",
         partituraABC: "Партитура ABC",
         dibujoSVG: "Рисунок SVG",
-        paginaHTML: "Страница HTML"
+        paginaHTML: "Страница HTML",
+        cuerdasDelInstrumento: "Струны",
+        ordenesYCuerdas: "хоров: {1}, струн: {2}",
+        trastesDelInstrumento: "Лады",
+        ordenesEnOctavas: "Хоры в октаву",
+        pasosDelOrnamento: "Шаги",
+        suenaElOrnamento: "Звучит"
     )
 }

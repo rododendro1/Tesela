@@ -404,6 +404,12 @@ extension TextosDeApps {
         partituraGUIDO: "Παρτιτούρα GUIDO",
         partituraABC: "Παρτιτούρα ABC",
         dibujoSVG: "Σχέδιο SVG",
-        paginaHTML: "Σελίδα HTML"
+        paginaHTML: "Σελίδα HTML",
+        cuerdasDelInstrumento: "Χορδές",
+        ordenesYCuerdas: "ομάδες χορδών: {1}, χορδές: {2}",
+        trastesDelInstrumento: "Τάστα",
+        ordenesEnOctavas: "Ομάδες σε οκτάβες",
+        pasosDelOrnamento: "Βήματα",
+        suenaElOrnamento: "Ακούγεται"
     )
 }
