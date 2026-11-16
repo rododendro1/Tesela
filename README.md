@@ -98,4 +98,4 @@ open Tesela.xcodeproj                                    # elige el esquema ArsH
   seguridad.
 
 El código se publica con licencia MIT ([LICENSE](LICENSE)). Los iconos de las apps muestran a Kokopelli en
-colores: sobre blanco en Ars Harmonica y en un hexágono de turquesa a naranja en Tonnetz.
+colores: en un desierto de noche en Ars Harmonica y sobre un mosaico hexagonal en Tonnetz.
