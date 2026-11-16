@@ -325,6 +325,8 @@ extension LineaDeComandosTests {
         let lectura = try error("acorde", "Xyz", "--json")
         #expect(lectura["tipo"] as? String == "notaNoReconocida")
         #expect(lectura["texto"] as? String == "Xyz" && lectura["posicion"] as? Int == 0)
+        // El carácter, también contado desde 1, como en el mensaje.
+        #expect(lectura["caracter"] as? Int == 1 && (lectura["mensaje"] as? String)?.contains("carácter 1") == true)
         #expect((try error("acorde", "Xyz", "--json", "--ingles"))["tipo"] as? String == "notaNoReconocida")
         let opcion = try error("acorde", "Sol7", "--jsn", "--json")
         #expect(opcion["tipo"] as? String == "opcionDesconocida" && opcion["propuesta"] as? String == "--json")

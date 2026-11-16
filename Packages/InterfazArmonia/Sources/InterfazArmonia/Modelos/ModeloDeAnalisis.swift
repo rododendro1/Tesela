@@ -29,9 +29,18 @@ public struct ModeloDeAnalisis: Sendable {
     public static let figuras: [Figura] = [.negra, .corchea, .semicorchea]
 
     /// Un modelo con la progresión `texto` y lo demás como al abrir la app.
-    public init(texto: String = "Do Fa Sol7 Do Lam Re7 Sol") {
+    public init(texto: String = ModeloDeAnalisis.textoInicial) {
         self.texto = texto
     }
+
+    /// Un modelo con la última progresión que se escribió, si la memoria de las apps la recuerda, y lo demás como al
+    /// abrir la app.
+    public init(recordado memoria: MemoriaDeLasApps) {
+        self.init(texto: memoria.ultimo(en: .analisis) ?? Self.textoInicial)
+    }
+
+    /// La progresión con que se abre la app la primera vez.
+    public static let textoInicial = "Do Fa Sol7 Do Lam Re7 Sol"
 
     /// Lo abierto de un fichero, si el campo aún dice lo mismo.
     public var abierta: ProgresionImportada? {

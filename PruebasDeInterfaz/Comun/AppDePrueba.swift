@@ -6,10 +6,12 @@ import XCTest
 extension XCUIApplication {
     /// Abre la app con la notación española y el temperamento igual, sea cual sea el idioma del sistema o lo
     /// que se eligiera antes. Los argumentos `-clave valor` van a los ajustes (UserDefaults) solo mientras dura
-    /// la prueba, y `@AppStorage` los lee como si estuvieran guardados.
+    /// la prueba, y `@AppStorage` los lee como si estuvieran guardados. La memoria de las apps (lo último escrito,
+    /// el historial y los favoritos) empieza vacía, para que cada pestaña se abra como la primera vez.
     static func enEspanol() -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments += ["-notacionElegida", "espanolCompacto", "-temperamentoElegido", "igual"]
+        app.launchArguments += ["-memoriaDeLasApps", "{}"]
         #if os(macOS)
             // Sin el tamaño de ventana de la vez anterior: la del tamaño por omisión, que cabe en la pantalla.
             app.launchArguments += ["-ApplePersistenceIgnoreState", "YES"]

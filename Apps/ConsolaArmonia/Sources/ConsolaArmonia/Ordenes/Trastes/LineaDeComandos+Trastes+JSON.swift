@@ -71,14 +71,9 @@ extension LineaDeComandos {
     }
 
     /// `posiciones Sol mayor [--caged] [--instrumento bajo] [--capo 2] --json`: cada posición con sus notas, de grave a
-    /// agudo. `--arpegio`, `--formas` y `--secuencia` no dan JSON.
+    /// agudo. `--arpegio`, `--formas`, `--secuencia` y las demás de su `sinJSON` no dan JSON.
     static func posicionesJSON(_ textos: [String], _ notacion: Notacion) throws -> PosicionesJSON {
         var argumentos = Argumentos(textos)
-        for opcion in [OpcionDeOrden.arpegio, .formas, .bajando, .barrido, .idaYVuelta]
-        where argumentos.quitarMarca(opcion) {
-            throw ErrorDeUso.sinSalidaJSON("posiciones " + opcion.nombres[0])
-        }
-        if try argumentos.valor(.secuencia) != nil { throw ErrorDeUso.sinSalidaJSON("posiciones --secuencia") }
         let caged = argumentos.quitarMarca(.caged)
         let mastil = try mastilDeLasPosiciones(&argumentos)
         let escala = try Escala(

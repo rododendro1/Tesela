@@ -45,6 +45,8 @@ armonia reticulo Do Lam Rem Sol Do > coma.svg                # la deriva de la c
 armonia mcp                                                  # el motor como servidor MCP, para un asistente
 ```
 
+[La consola, paso a paso](Docs/LA_CONSOLA.md) la recorre de un acorde a un análisis, el JSON y el servidor MCP.
+
 Lee los nombres en español o en inglés (Do, C, Sib, Bb) y responde en el idioma de `--idioma`, o en el de
 `ARMONIA_IDIOMA` (`export ARMONIA_IDIOMA=eu`; con `sistema`, el de `LANG`). Con `--json`, las claves no
 cambian con el idioma, y un error sale también en JSON, en la salida de errores.
@@ -95,5 +97,5 @@ open Tesela.xcodeproj                                    # elige el esquema ArsH
 - [CONTRIBUTING.md](CONTRIBUTING.md) para contribuir y [SECURITY.md](.github/SECURITY.md) para avisar de un fallo de
   seguridad.
 
-El código se publica con licencia MIT ([LICENSE](LICENSE)). Los iconos de las apps muestran a Kokopelli: en negro
-sobre ámbar en Ars Harmonica y sobre un mosaico hexagonal en Tonnetz.
+El código se publica con licencia MIT ([LICENSE](LICENSE)). Los iconos de las apps muestran a Apolo con
+la lira entre las musas: en un medallón redondo en Ars Harmonica y en uno hexagonal en Tonnetz.

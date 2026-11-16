@@ -4,7 +4,7 @@ extension LineaDeComandos {
     /// Los ficheros de afinación de Scala, que salen en la ayuda con las partituras.
     static let ordenesDeAfinacion: [Orden] = [
         Orden(
-            nombres: ["scala"], ayuda: ayudaDeScala, json: { try scalaJSON($0, $1) },
+            nombres: ["scala"], ayuda: ayudaDeScala, json: { try scalaJSON($0, $1) }, sinJSON: [.kbm, .temperamento],
             ejecutar: { try scala($0, $1) })
     ]
 

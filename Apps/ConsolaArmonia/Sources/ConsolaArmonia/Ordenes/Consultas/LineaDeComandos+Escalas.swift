@@ -371,7 +371,7 @@ extension LineaDeComandos {
         }
         // De cuándo y de dónde es: «Época: Romanticismo (1859)», «Lugares de origen: Hungría · gitano».
         if let origen = datos.origen {
-            lineas += origen.datos(en: notacion).map { "  " + $0.nombre + ": " + $0.valor }
+            lineas += origen.datos(en: notacion).map { "  " + notacion.etiqueta($0.nombre) + ": " + $0.valor }
         }
         // Lo que dicen sus fuentes de su carácter, una línea por fuente: «carácter: banquete · blando (Platón 398e
         // (Monro 1894: 7–8))», y lo que mide un estudio con oyentes: «afecto medido: alegre: 83 % (Temperley & Tan
@@ -397,7 +397,7 @@ extension LineaDeComandos {
         }
         let grados = conTodosSusAcordes ? PresentacionDeEscalaYAcorde.acordesQueCaben(escala, en: notacion) : []
         if !grados.isEmpty {
-            lineas.append("  " + notacion.texto(\.acordesQueCaben) + ":")
+            lineas.append("  " + notacion.etiqueta(notacion.texto(\.acordesQueCaben)) + ":")
             lineas += grados.map { "    \($0.grado): \($0.cifrados)" }
         }
         return lineas.joined(separator: "\n")

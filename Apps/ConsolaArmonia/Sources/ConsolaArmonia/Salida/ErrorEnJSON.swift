@@ -7,11 +7,13 @@ import Foundation
 // programa no tenga que leer una frase traducida:
 //
 //     armonia acorde Xx --json
-//     {"error":{"codigo":1,"mensaje":"No se puede leer «Xx» (carácter 1): …","posicion":0,"texto":"Xx",
-//      "tipo":"notaNoReconocida"}}
+//     {"error":{"caracter":1,"codigo":1,"mensaje":"No se puede leer «Xx» (carácter 1): …","posicion":0,
+//      "texto":"Xx","tipo":"notaNoReconocida"}}
 //
 // `tipo` es el caso del error (`ErrorDeUso`) o del motivo de la lectura (`ErrorAlLeer.motivo`), que no cambia con el
-// idioma; `mensaje`, el texto que se escribiría sin `--json`, sin «armonia: » delante.
+// idioma; `mensaje`, el texto que se escribiría sin `--json`, sin «armonia: » delante. En un error de lectura,
+// `posicion` es el índice del carácter en `texto`, desde 0, para un programa, y `caracter`, el mismo contado desde 1,
+// como en el mensaje.
 
 /// Un error, como sale con `--json`.
 struct ErrorEnJSON: Encodable {
@@ -23,9 +25,11 @@ struct ErrorEnJSON: Encodable {
         let mensaje: String
         /// Lo que se quiso escribir, si se parece a una orden o una opción conocida.
         var propuesta: String? = nil
-        /// En los errores de lectura, lo que se leía y el carácter (desde 0) donde se paró, si es en uno.
+        /// En los errores de lectura, lo que se leía y el carácter donde se paró, si es en uno: desde 0 en `posicion`
+        /// (un índice de `texto`) y desde 1 en `caracter`, como lo cuenta el mensaje («carácter 1»).
         var texto: String? = nil
         var posicion: Int? = nil
+        var caracter: Int? = nil
     }
 
     let error: Detalle
@@ -57,7 +61,7 @@ struct ErrorEnJSON: Encodable {
         if let lectura = error as? any ErrorAlLeer {
             detalle = Detalle(
                 codigo: 1, tipo: Self.caso(lectura.motivo), mensaje: detalle.mensaje, texto: lectura.texto,
-                posicion: lectura.posicion)
+                posicion: lectura.posicion, caracter: lectura.posicion.map { $0 + 1 })
         }
         self.error = detalle
     }

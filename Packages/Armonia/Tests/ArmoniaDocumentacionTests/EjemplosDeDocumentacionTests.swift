@@ -2050,6 +2050,168 @@ import Hexagonos
         comprobar(partitura.contains("<text>V7/V</text>"), #"true"#, doc, 18)
     }
 
+    @Test func tutorialJazz01011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-01-01.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-01-01.swift"#, 1)
+        let dominante = Acorde("Sol7")
+        comprobar(dominante.escalasCompatibles().first, #"Sol mixolidio"#, doc, 3)
+        comprobar(dominante.escalas().first?.motivo == .delCifrado, #"true"#, doc, 4)
+    }
+
+    @Test func tutorialJazz01021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-01-02.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-01-02.swift"#, 1)
+        let dominante = Acorde("Sol7")
+        comprobar(dominante.escalasCompatibles().first, #"Sol mixolidio"#, doc, 3)
+        comprobar(dominante.escalas().first?.motivo == .delCifrado, #"true"#, doc, 4)
+        comprobar(Acorde("Sol7(#11)").escalasCompatibles().first, #"Sol lidio dominante"#, doc, 5)
+        comprobar(Acorde("Sol7(b9)").escalasCompatibles().first, #"Sol disminuida semitono-tono"#, doc, 6)
+    }
+
+    @Test func tutorialJazz02011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-02-01.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-02-01.swift"#, 1)
+        let analisis = Tonalidad(.do).analizar(["Rem7", "Sol7", "Do7M"])
+        comprobar(analisis.cifrados, #"["ii7", "V7", "Imaj7"]"#, doc, 3)
+        comprobar(analisis.escalas, #"[Re dórico, Sol mixolidio, Do mayor]"#, doc, 4)
+    }
+
+    @Test func tutorialJazz02021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-02-02.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-02-02.swift"#, 1)
+        let analisis = Tonalidad(.do).analizar(["Rem7", "Sol7", "Do7M"])
+        comprobar(analisis.cifrados, #"["ii7", "V7", "Imaj7"]"#, doc, 3)
+        comprobar(analisis.escalas, #"[Re dórico, Sol mixolidio, Do mayor]"#, doc, 4)
+        let conDominante = Tonalidad(.do).analizar(["Do", "La7", "Rem7", "Sol7"])
+        comprobar(conDominante.escalas[1], #"La frigio dominante"#, doc, 7)
+    }
+
+    @Test func tutorialJazz03011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-03-01.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-03-01.swift"#, 1)
+        let doMayor = Escala(.do, .mayor)
+        comprobar(doMayor.tensionesDisponibles(grado: 2).map(\.cifra), #"["9", "11", "13"]"#, doc, 3)
+        comprobar(doMayor.tensionesDisponibles(grado: 1).map(\.cifra), #"["9", "13"]"#, doc, 4)
+    }
+
+    @Test func tutorialJazz03021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-03-02.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-03-02.swift"#, 1)
+        let doMayor = Escala(.do, .mayor)
+        comprobar(doMayor.tensionesDisponibles(grado: 2).map(\.cifra), #"["9", "11", "13"]"#, doc, 3)
+        comprobar(doMayor.tensionesDisponibles(grado: 1).map(\.cifra), #"["9", "13"]"#, doc, 4)
+        comprobar(doMayor.notasAEvitar(sobre: Acorde("Do7M")), #"[Fa]"#, doc, 5)
+    }
+
+    @Test func tutorialJazz03031() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-03-03.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/jazz-03-03.swift"#, 1)
+        let doMayor = Escala(.do, .mayor)
+        comprobar(doMayor.tensionesDisponibles(grado: 2).map(\.cifra), #"["9", "11", "13"]"#, doc, 3)
+        comprobar(doMayor.tensionesDisponibles(grado: 1).map(\.cifra), #"["9", "13"]"#, doc, 4)
+        comprobar(doMayor.notasAEvitar(sobre: Acorde("Do7M")), #"[Fa]"#, doc, 5)
+        comprobar(Escala(.re, .dorico).notas(sobre: Acorde("Rem7")).map(\.cifra), #"["1", "9", "♭3", "11", "5", "13", "♭7"]"#, doc, 6)
+        comprobarIgual(Escala(.do, .mixolidio).notas(sobre: Acorde("Do7M"))[6].papel, .choque, doc, 7)
+    }
+
+    @Test func tutorialMundo01011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-01-01.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-01-01.swift"#, 1)
+        let yaman = Escala(.do, .yaman)
+        comprobar(yaman.notas, #"Do Re Mi Fa♯ Sol La Si"#, doc, 3)
+        comprobar(TipoDeEscala.yaman.madre == .kalyan, #"true"#, doc, 4)
+        comprobar(TipoDeEscala.yaman.momentos, #"[anochecer]"#, doc, 5)
+    }
+
+    @Test func tutorialMundo01021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-01-02.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-01-02.swift"#, 1)
+        let yaman = Escala(.do, .yaman)
+        comprobar(yaman.notas, #"Do Re Mi Fa♯ Sol La Si"#, doc, 3)
+        comprobar(TipoDeEscala.yaman.madre == .kalyan, #"true"#, doc, 4)
+        comprobar(TipoDeEscala.yaman.momentos, #"[anochecer]"#, doc, 5)
+        comprobarIgual(TipoDeEscala.yaman.intervalo(de: .vadi), .terceraMayor, doc, 6)
+        comprobar(TipoDeEscala.yaman.funciones(de: .septimaMayor).map(\.nombre), #"["saṃvādī"]"#, doc, 7)
+    }
+
+    @Test func tutorialMundo01031() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-01-03.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-01-03.swift"#, 1)
+        let yaman = Escala(.do, .yaman)
+        comprobar(yaman.notas, #"Do Re Mi Fa♯ Sol La Si"#, doc, 3)
+        comprobar(TipoDeEscala.yaman.madre == .kalyan, #"true"#, doc, 4)
+        comprobar(TipoDeEscala.yaman.momentos, #"[anochecer]"#, doc, 5)
+        comprobarIgual(TipoDeEscala.yaman.intervalo(de: .vadi), .terceraMayor, doc, 6)
+        comprobar(TipoDeEscala.yaman.funciones(de: .septimaMayor).map(\.nombre), #"["saṃvādī"]"#, doc, 7)
+        comprobar(TipoDeEscala.anandabhairavi.recorrido, #"[1, 3, 2, 3, 4, 5, 6, 5, 7]"#, doc, 9)
+        comprobar(TipoDeEscala.atana.recorrido, #"nil"#, doc, 10)
+        comprobar(TipoDeEscala.atana.recorridoDescendente, #"[8, 7, 6, 5, 4, 5, 3, 2, 1]"#, doc, 11)
+    }
+
+    @Test func tutorialMundo02011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-02-01.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-02-01.swift"#, 1)
+        let bayati = Escala(.re, .bayati)
+        comprobar(bayati.notas, #"Re Mi♭ Fa Sol La Si♭ Do"#, doc, 3)
+        comprobar(bayati.notasMicrotonales(), #"Re Mi𝄳 Fa Sol La Si♭ Do"#, doc, 4)
+    }
+
+    @Test func tutorialMundo02021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-02-02.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-02-02.swift"#, 1)
+        let bayati = Escala(.re, .bayati)
+        comprobar(bayati.notas, #"Re Mi♭ Fa Sol La Si♭ Do"#, doc, 3)
+        comprobar(bayati.notasMicrotonales(), #"Re Mi𝄳 Fa Sol La Si♭ Do"#, doc, 4)
+        comprobar(bayati.afinacion()!.desviacion(de: "Mib4"), #"50"#, doc, 5)
+    }
+
+    @Test func tutorialMundo02031() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-02-03.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-02-03.swift"#, 1)
+        let bayati = Escala(.re, .bayati)
+        comprobar(bayati.notas, #"Re Mi♭ Fa Sol La Si♭ Do"#, doc, 3)
+        comprobar(bayati.notasMicrotonales(), #"Re Mi𝄳 Fa Sol La Si♭ Do"#, doc, 4)
+        comprobar(bayati.afinacion()!.desviacion(de: "Mib4"), #"50"#, doc, 5)
+        comprobar(TipoDeEscala.bayati.ajnas.map(\.fragmento.nombre), #"["jins Bayātī", "jins Nahāwand"]"#, doc, 7)
+        comprobar(TipoDeEscala.bayati.ajnas.map(\.grado), #"[1, 4]"#, doc, 8)
+        comprobar(bayati.notas(de: TipoDeEscala.bayati.ajnas[1]), #"[Sol, La, Si♭, Do, Re]"#, doc, 9)
+        comprobarIgual(TipoDeEscala.bayati.intervalo(de: .ghammaz), .cuartaJusta, doc, 10)
+    }
+
+    @Test func tutorialMundo03011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-03-01.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-03-01.swift"#, 1)
+        let mayor = Escala(.do, .mayor)
+        let vecinas = mayor.vecinas()
+        comprobar(vecinas.count, #"10"#, doc, 4)
+        comprobar(vecinas[4].escala, #"Do lidio"#, doc, 5)
+    }
+
+    @Test func tutorialMundo03021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-03-02.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-03-02.swift"#, 1)
+        let mayor = Escala(.do, .mayor)
+        let vecinas = mayor.vecinas()
+        comprobar(vecinas.count, #"10"#, doc, 4)
+        comprobar(vecinas[4].escala, #"Do lidio"#, doc, 5)
+        comprobar(vecinas[4].desde, #"Fa"#, doc, 6)
+        comprobar(vecinas[4].hasta, #"Fa♯"#, doc, 7)
+    }
+
+    @Test func tutorialMundo03031() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-03-03.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/mundo-03-03.swift"#, 1)
+        let mayor = Escala(.do, .mayor)
+        let vecinas = mayor.vecinas()
+        comprobar(vecinas.count, #"10"#, doc, 4)
+        comprobar(vecinas[4].escala, #"Do lidio"#, doc, 5)
+        comprobar(vecinas[4].desde, #"Fa"#, doc, 6)
+        comprobar(vecinas[4].hasta, #"Fa♯"#, doc, 7)
+        let fuentes = TipoDeEscala.bayati.referencias.map(\.cita)
+        comprobar(fuentes.first, #""Maqam World""#, doc, 10)
+        comprobar(fuentes.count, #"4"#, doc, 11)
+    }
+
     @Test func tutorialNotas01011() throws {
         // Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-01-01.swift, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/notas-01-01.swift"#, 1)
@@ -2108,5 +2270,78 @@ import Hexagonos
         comprobar(Intervalo.terceraMayor.inversion, #"6ª menor"#, doc, 3)
         comprobar(Nota.re + "3M", #"Fa♯"#, doc, 4)
         comprobar(Altura("Do4") + "5J", #"Sol4"#, doc, 5)
+    }
+
+    @Test func tutorialPartitura01011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-01-01.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-01-01.swift"#, 1)
+        let laMenor = Tonalidad(.la, .menor)
+        comprobar(try laMenor.acordes(bajoCifrado: "La Fa:6 Mi:# La"), #"[Lam, Rem/Fa, Mi, Lam]"#, doc, 3)
+    }
+
+    @Test func tutorialPartitura01021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-01-02.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-01-02.swift"#, 1)
+        let laMenor = Tonalidad(.la, .menor)
+        comprobar(try laMenor.acordes(bajoCifrado: "La Fa:6 Mi:# La"), #"[Lam, Rem/Fa, Mi, Lam]"#, doc, 3)
+        let realizado = try Coral.realizar(bajoCifrado: "La Fa:6 Mi:# La", en: laMenor)!
+        comprobar(realizado.esCorrecta, #"true"#, doc, 5)
+        comprobar(realizado.voz(0).map(\.nota), #"[La, Fa, Mi, La]"#, doc, 6)
+    }
+
+    @Test func tutorialPartitura02011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-02-01.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-02-01.swift"#, 1)
+        let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+        comprobar(coral.esCorrecta, #"true"#, doc, 3)
+        comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 4)
+    }
+
+    @Test func tutorialPartitura02021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-02-02.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-02-02.swift"#, 1)
+        let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+        comprobar(coral.esCorrecta, #"true"#, doc, 3)
+        comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 4)
+        let conSoprano = Coral.realizar(["Do", "Fa", "Sol", "Do"], soprano: ["Mi4", "Fa4", "Re4", "Do4"])!
+        comprobar(conSoprano.voz(3), #"[Mi4, Fa4, Re4, Do4]"#, doc, 7)
+        comprobar(Coral.realizar(["Do", "Rem"], soprano: ["Sol4", "La4"]), #"nil"#, doc, 8)
+    }
+
+    @Test func tutorialPartitura03011() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-01.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-01.swift"#, 1)
+        let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+        comprobar(coral.esCorrecta, #"true"#, doc, 3)
+        comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 4)
+        let partitura = coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia"))
+        comprobar(partitura.musicXML().contains("<staves>2</staves>"), #"true"#, doc, 7)
+    }
+
+    @Test func tutorialPartitura03021() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-02.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-02.swift"#, 1)
+        let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+        comprobar(coral.esCorrecta, #"true"#, doc, 3)
+        comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 4)
+        let partitura = coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia"))
+        comprobar(partitura.musicXML().contains("<staves>2</staves>"), #"true"#, doc, 7)
+        let mesotonico = partitura.midi(afinacion: TemperamentoRegular.mesotonicoCuartoDeComa)
+        comprobar(mesotonico.starts(with: Array("MThd".utf8)), #"true"#, doc, 9)
+    }
+
+    @Test func tutorialPartitura03031() throws {
+        // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-03.swift, bloque 1
+        let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-03.swift"#, 1)
+        let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+        comprobar(coral.esCorrecta, #"true"#, doc, 3)
+        comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 4)
+        let partitura = coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia"))
+        comprobar(partitura.musicXML().contains("<staves>2</staves>"), #"true"#, doc, 7)
+        let mesotonico = partitura.midi(afinacion: TemperamentoRegular.mesotonicoCuartoDeComa)
+        comprobar(mesotonico.starts(with: Array("MThd".utf8)), #"true"#, doc, 9)
+        let cuartoDeComa = TemperamentoRegular.mesotonicoCuartoDeComa
+        comprobar(Altura("Sol#4").frecuencia(en: cuartoDeComa) < Altura("Lab4").frecuencia(en: cuartoDeComa), #"true"#, doc, 11)
+        comprobar(TemperamentoQueAfina.paraEscuchar.count, #"8"#, doc, 12)
     }
 }

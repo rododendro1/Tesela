@@ -21,6 +21,10 @@ import Testing
         #expect(jonico.modo == nil) // es la propia madre
         #expect(jonico.aEvitar == "Fa 11")
         #expect(jonico.resumen == "Tensiones: Re 9 · La 13 — A evitar: Fa 11")
+        // Detrás del nombre de la escala, en la consola, las etiquetas van en minúscula, salvo en alemán.
+        #expect(jonico.resumenEnLinea == "tensiones: Re 9 · La 13 — a evitar: Fa 11")
+        #expect(Notacion.compacta(.espanol).etiqueta("Época") == "época")
+        #expect(Notacion.ascii(.aleman).etiqueta("Epoche") == "Epoche")
         #expect(jonico.estructurasSuperiores == "Sol · Lam")
     }
 

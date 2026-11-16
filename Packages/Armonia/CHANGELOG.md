@@ -13,6 +13,37 @@
 - La hora y la estación de 23 rāgas más, de *The Raga Guide* (Bor 1999), sin afectos: Kalyāṇ, Pūriyā, Śrī, Kedār,
   Kāfī, Hindol, Basant (primavera)… `escalas --momento` y el reloj de los rāgas pasan de 19 a 42. Kirvānī y Dhānī,
   sin hora fija, se quedan fuera.
+- Tres tutoriales nuevos, en el capítulo «Más allá»: *Escalas de otras tradiciones* (un rāga con su vādī y su
+  recorrido vakra, Bayātī con sus ajnas y su Mi medio bemol, y las escalas vecinas), *La escala de cada acorde* (la
+  escala de un acorde y de cada acorde de un ii–V–I, las tensiones disponibles y las notas a evitar) y *De la teoría a
+  la partitura* (un bajo cifrado y un coral a cuatro voces, en MusicXML y en un MIDI mesotónico). Su código se prueba
+  como el de los demás. Y un artículo para la consola, `Docs/LA_CONSOLA.md`, de `armonia acorde Sol7` a `--json` y
+  `armonia mcp`.
+- En la consola, `armonia`:
+  - El servidor MCP da a cada herramienta una propiedad por opción, además de `argumentos`: una marca es un booleano
+    (`"vakra": true`) y una opción con valor, un texto (`"tradicion": "india"`), con los valores que propone el
+    autocompletado en `enum` y lo que dice de ella la ayuda como descripción. Se pueden mezclar con `argumentos`, y
+    una propiedad que no es de la orden es un error (`-32602`). No ofrece las opciones que solo dan texto
+    (`analizar --escalas`, `acorde --bebop`, `posiciones --formas`…), que cada orden declara en `sinJSON`; con
+    `--json`, esas opciones dicen que no dan salida en JSON en lugar de «opción desconocida».
+  - `--bajo-cifrado` sale en la ayuda de `realizar`, que es donde se lee, y no en la de `analizar`.
+  - Las etiquetas de una línea van en minúscula, como las demás de la consola: «época:», «estilos:», «acordes que
+    caben:» en `escala`, y «tensiones:», «a evitar:» y «estructuras superiores:» en `analizar --escalas` y `acorde
+    --escalas`. En alemán siguen con mayúscula.
+  - Un error de lectura en JSON lleva también `caracter`, el carácter contado desde 1 como en el mensaje («carácter
+    1»), junto a `posicion`, que cuenta desde 0.
+- La documentación escribe la séptima mayor como la escribe el motor, `maj7` («Domaj7», «Imaj7»), y `Acordes.md` dice
+  que «7M» y «Δ» se leen pero se escriben así.
+
+### Cambios
+
+- Cuatro acordes de nombre propio citan ya una obra: el tricordo vienés, DeLone y otros (1975: 348); el de la
+  «Sinfonía de los salmos», Austin (1966: 334); el de Hendrix, Shapiro y Glebbeek (1995: 144), y el mu, la
+  introducción de Becker y Fagen al cancionero de Steely Dan. Obras nuevas: `Referencia.delone1975`, `austin1966`,
+  `shapiro1995` y `beckerFagenMu`.
+- `RegionDeEscala` está en `Teoria/Catalogo/`, junto a `Lugar`, que la envuelve: no cambia nada por fuera.
+- En la consola, los errores de `--agrupar`, `--epoca`, `--momento`, `--escuela` y `--afinacion` nombran todos los
+  valores que se leen, de la misma tabla con la que se leen. `--agrupar` no decía `epoca`.
 
 ## 0.5.5 (2026-11-16)
 

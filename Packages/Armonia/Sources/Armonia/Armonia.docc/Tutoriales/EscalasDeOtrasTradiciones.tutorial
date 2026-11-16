@@ -1,0 +1,111 @@
+@Tutorial(time: 15) {
+    @Intro(title: "Escalas de otras tradiciones") {
+        Recorre un rāga indostánico y uno carnático, un maqām árabe con sus cuartos de tono y las escalas que
+        salen de otra moviendo una sola nota. Todo lo que el catálogo dice de ellas lleva su fuente.
+    }
+
+    @Section(title: "Un rāga") {
+        @ContentAndMedia {
+            Un rāga es más que sus notas: tiene un thāṭ del que sale, una hora del día, notas que mandan (el
+            vādī y el saṃvādī) y, a veces, un camino que no sube en línea recta.
+        }
+
+        @Steps {
+            @Step {
+                Yaman tiene las notas del modo lidio, sale del thāṭ Kalyāṇ y se canta al anochecer.
+
+                @Code(name: "main.swift", file: "mundo-01-01.swift")
+            }
+
+            @Step {
+                Su vādī está a una tercera mayor de la tónica, y la séptima mayor es su saṃvādī.
+
+                @Code(name: "main.swift", file: "mundo-01-02.swift")
+            }
+
+            @Step {
+                Un rāga carnático vakra sube y baja en zigzag: el recorrido da los grados en orden. Atana solo
+                tiene escrito el de bajada, así que el de subida es `nil`.
+
+                @Code(name: "main.swift", file: "mundo-01-03.swift")
+            }
+        }
+    }
+
+    @Section(title: "Un maqām") {
+        @ContentAndMedia {
+            Un maqām se escribe con notas temperadas, pero se canta con intervalos que no caben en el piano, y
+            se describe por los fragmentos (ajnas) de los que está hecho.
+        }
+
+        @Steps {
+            @Step {
+                Bayātī en Re: temperado parece Re frigio, pero su segundo grado es un Mi medio bemol.
+
+                @Code(name: "main.swift", file: "mundo-02-01.swift")
+            }
+
+            @Step {
+                Con su afinación, ese Mi está 50 cents por encima del Mi♭ temperado.
+
+                @Code(name: "main.swift", file: "mundo-02-02.swift")
+            }
+
+            @Step {
+                Bayātī es el jins Bayātī en la tónica y el Nahāwand en la cuarta, que es su ghammāz, la nota en
+                que se apoya la melodía.
+
+                @Code(name: "main.swift", file: "mundo-02-03.swift")
+            }
+        }
+    }
+
+    @Section(title: "Escalas vecinas") {
+        @ContentAndMedia {
+            Las escalas del catálogo se tocan unas con otras: moviendo una nota un semitono, Do mayor se
+            vuelve otra escala, casi siempre con la misma tónica.
+        }
+
+        @Steps {
+            @Step {
+                De Do mayor salen diez escalas vecinas.
+
+                @Code(name: "main.swift", file: "mundo-03-01.swift")
+            }
+
+            @Step {
+                Una es Do lidio, la escala de Yaman: el Fa sube a Fa♯.
+
+                @Code(name: "main.swift", file: "mundo-03-02.swift")
+            }
+
+            @Step {
+                Cada escala dice de dónde sale lo que el catálogo cuenta de ella.
+
+                @Code(name: "main.swift", file: "mundo-03-03.swift")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            ¿Qué da `Escala(.re, .bayati).notas` en el segundo grado?
+
+            @Choice(isCorrect: true) {
+                Mi♭, la nota temperada más cercana.
+
+                @Justification(reaction: "¡Correcto!") {
+                    `notas` es la escala temperada; el Mi medio bemol sale de `notasMicrotonales()`.
+                }
+            }
+
+            @Choice(isCorrect: false) {
+                Mi𝄳, medio bemol.
+
+                @Justification(reaction: "Vuelve a intentarlo") {
+                    Ese es el de `notasMicrotonales()`, que escribe los cuartos de tono.
+                }
+            }
+        }
+    }
+}

@@ -287,7 +287,7 @@ extension LineaDeComandosTests {
     /// `acorde --escalas`: las escalas para el acorde con su motivo, en la tonalidad de `--en` si se da.
     @Test func lasEscalasDeUnAcorde() {
         let do7 = salida("acorde Do7 --escalas")
-        #expect(do7.contains("Escalas compatibles:\n  Do mixolidio (del cifrado) — Tensiones: Re 9 · La 13"))
+        #expect(do7.contains("Escalas compatibles:\n  Do mixolidio (del cifrado) — tensiones: Re 9 · La 13"))
         #expect(salida("acorde Rem7 --escalas --en Do mayor").contains("Re dórico (de la tonalidad)"))
         #expect(salida("acorde Fa/Sol --escalas").contains("Sol mixolidio (del bajo)"))
         #expect(salida("chord C7 --scales --ingles").contains("C mixolydian (from the chord symbol)"))

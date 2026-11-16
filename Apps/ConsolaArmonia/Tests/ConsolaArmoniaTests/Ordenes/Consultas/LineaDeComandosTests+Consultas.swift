@@ -189,7 +189,28 @@ extension LineaDeComandosTests {
         let paises = salida("escalas --agrupar pais --lugar europa")
         #expect(paises.hasPrefix("España (1)\n  flamenca: "), Comment(rawValue: String(paises.prefix(200))))
         #expect(paises.contains("\n\nEuropa ("), Comment(rawValue: paises))
-        #expect(resultado("escalas", "--agrupar", "x").error.contains("continente"))
+        #expect(resultado("escalas", "--agrupar", "siglo").error.contains("(continente, pais, epoca)"))
+        #expect(resultado("escalas", "--group-by", "century", "--ingles").error.contains("(continent, country, era)"))
+    }
+
+    /// Los errores de `--agrupar`, `--epoca`, `--momento`, `--escuela` y `--afinacion` nombran, en los trece idiomas,
+    /// todos los valores que se leen: salen de la misma tabla, con los nombres españoles o con los ingleses.
+    @Test func losErroresNombranTodosLosValores() {
+        let tablas: [(ErrorDeUso, [(espanol: String, ingles: String)])] = [
+            (.agrupacionDesconocida("x"), LineaDeComandos.nombresDeLasAgrupaciones.map { ($0.espanol, $0.ingles) }),
+            (.epocaDesconocida("x"), LineaDeComandos.nombresDeLasEpocas.map { ($0.espanol, $0.ingles) }),
+            (.momentoDesconocido("x"), LineaDeComandos.nombresDeLosMomentos.map { ($0.espanol, $0.ingles) }),
+            (.escuelaDesconocida("x"), LineaDeComandos.nombresDeLasEscuelas.map { ($0.espanol, $0.ingles) }),
+            (.afinacionDesconocida("x"), LineaDeComandos.nombresDeLasAfinaciones.map { ($0.espanol, $0.ingles) }),
+        ]
+        for idioma in Idioma.allCases {
+            for (error, valores) in tablas {
+                let texto = error.descripcion(en: .delIdioma(idioma))
+                let espanoles = "(" + valores.map(\.espanol).joined(separator: ", ") + ")"
+                let ingleses = "(" + valores.map(\.ingles).joined(separator: ", ") + ")"
+                #expect(texto.contains(espanoles) || texto.contains(ingleses), Comment(rawValue: texto))
+            }
+        }
     }
 
     /// `escalas --epoca`: las de una época, de origen o de uso, por su clave en español o en inglés o por su nombre;
@@ -293,13 +314,13 @@ extension LineaDeComandosTests {
     /// `escala`: la época, los lugares, los estilos y, en las de otras tradiciones, el período y la escuela.
     @Test func elOrigenDeUnaEscala() {
         let hungara = salida("escala La menor húngara")
-        #expect(hungara.contains("\n  Época: Romanticismo (1859)\n"), Comment(rawValue: hungara))
-        #expect(hungara.contains("\n  Estilos: folclore\n"))
+        #expect(hungara.contains("\n  época: Romanticismo (1859)\n"), Comment(rawValue: hungara))
+        #expect(hungara.contains("\n  estilos: folclore\n"))
         let dorico = salida("escala Re dórico")
-        #expect(dorico.contains("\n  Épocas de uso: Barroco · Clasicismo"), Comment(rawValue: dorico))
+        #expect(dorico.contains("\n  épocas de uso: Barroco · Clasicismo"), Comment(rawValue: dorico))
         let rast = salida("escala Do Rast makamı")
-        #expect(rast.contains("\n  Período: período de Cantemir\n"), Comment(rawValue: rast))
-        #expect(salida("scale A hungarian minor --ingles").contains("\n  Era: Romantic period (1859)\n"))
+        #expect(rast.contains("\n  período: período de Cantemir\n"), Comment(rawValue: rast))
+        #expect(salida("scale A hungarian minor --ingles").contains("\n  era: Romantic period (1859)\n"))
     }
 
     /// `escalas --notas 5`: solo las de cinco notas, de las habituales y de las otras tradiciones.
@@ -557,13 +578,13 @@ extension LineaDeComandosTests {
 
     @Test func analizarConEscalas() {
         let analisis = salida("analizar Rem7 Sol7 Do7M --en Do mayor --escalas")
-        #expect(analisis.contains("\n    Re dórico — Tensiones: Mi 9 · Sol 11 · Si 13\n"))
-        #expect(analisis.contains("\n    Sol mixolidio — Tensiones: La 9 · Mi 13 — A evitar: Do 11\n"))
-        #expect(analisis.contains("\n    Do mayor — Tensiones: Re 9 · La 13 — A evitar: Fa 11\n"))
-        #expect(analisis.contains("\n      Estructuras superiores: Mim · Sol · Do · Lam\n"))
+        #expect(analisis.contains("\n    Re dórico — tensiones: Mi 9 · Sol 11 · Si 13\n"))
+        #expect(analisis.contains("\n    Sol mixolidio — tensiones: La 9 · Mi 13 — a evitar: Do 11\n"))
+        #expect(analisis.contains("\n    Do mayor — tensiones: Re 9 · La 13 — a evitar: Fa 11\n"))
+        #expect(analisis.contains("\n      estructuras superiores: Mim · Sol · Do · Lam\n"))
         // Sin --escalas, como siempre.
         #expect(!salida("analizar Rem7 Sol7 Do7M --en Do mayor").contains("dórico"))
-        #expect(salida("analyze Dm7 G7 Cmaj7 --in C major --scales --ingles").contains("    D dorian — Tensions:"))
+        #expect(salida("analyze Dm7 G7 Cmaj7 --in C major --scales --ingles").contains("    D dorian — tensions:"))
     }
 
     @Test func estudiarUnaEscala() {
@@ -678,10 +699,10 @@ extension LineaDeComandosTests {
 
     @Test func escalaConTodosSusAcordes() {
         let escala = salida("escala Do mayor --acordes")
-        #expect(escala.contains("\n  Acordes que caben:\n    1 · Do: Do · "), Comment(rawValue: escala))
+        #expect(escala.contains("\n  acordes que caben:\n    1 · Do: Do · "), Comment(rawValue: escala))
         #expect(escala.contains("\n    5 · Sol: "))
-        #expect(!salida("escala Do mayor").contains("Acordes que caben"))
-        #expect(salida("scale C major --chords --ingles").contains("\n  Chords that fit:\n    1 · C: C · "))
+        #expect(!salida("escala Do mayor").contains("acordes que caben"))
+        #expect(salida("scale C major --chords --ingles").contains("\n  chords that fit:\n    1 · C: C · "))
     }
 
     @Test func analizarUnArchivo() throws {

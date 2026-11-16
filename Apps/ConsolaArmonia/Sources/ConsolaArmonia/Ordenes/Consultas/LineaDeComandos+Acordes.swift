@@ -63,7 +63,7 @@ extension LineaDeComandos {
                     + (pedido.tonalidad.map { " (" + $0.nombre(en: notacion) + ")" } ?? "") + ":")
             lineas += escalas.prefix(10).map { presentada in
                 "  " + PresentacionDeEscalaYAcorde.nombreConMotivo(presentada)
-                    + (presentada.resumen.isEmpty ? "" : " — " + presentada.resumen)
+                    + (presentada.resumenEnLinea.isEmpty ? "" : " — " + presentada.resumenEnLinea)
             }
         }
         if pedido.disposiciones {

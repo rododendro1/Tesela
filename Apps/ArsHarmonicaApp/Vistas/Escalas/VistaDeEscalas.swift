@@ -10,8 +10,10 @@ import SwiftUI
 struct VistaDeEscalas: View {
     @Environment(\.notacion) private var notacion
     @EnvironmentObject private var navegacion: Navegacion
-    /// La tónica y el tipo elegidos, o la escala escrita.
-    @State private var eleccion = EleccionDeEscala()
+    /// La tónica y el tipo elegidos, o la escala escrita. Empieza por la última escala elegida.
+    @State private var eleccion =
+        MemoriaDeLasApps.cargar().ultimo(en: .escalas).map(EleccionDeEscala.recordada)
+        ?? EleccionDeEscala()
     /// Las posiciones en el mástil: las del sistema CAGED o las de tres (o dos) notas por cuerda.
     @State private var caged = true
     /// La secuencia de estudio, su sentido y cuántas octavas abarca.
@@ -107,9 +109,19 @@ struct VistaDeEscalas: View {
         .onAppear(perform: tomarLaEscalaPedida)
         .toolbar {
             ToolbarItem {
+                MenuDeRecuerdos(.escalas, texto: escalaRecordada)
+            }
+            ToolbarItem {
                 BotonDeExportar(ficheros(de: escala, pentagrama: pentagrama, secuencia: presentada))
             }
         }
+        .recordando(eleccion.paraRecordar, en: .escalas, valido: true)
+    }
+
+    /// La escala elegida como se recuerda («Re dórico», o sus notas si se escribió), para el menú de recientes y
+    /// favoritos: al elegir una de él, se vuelve a ella.
+    private var escalaRecordada: Binding<String> {
+        Binding(get: { eleccion.paraRecordar }, set: { eleccion = EleccionDeEscala.recordada($0) })
     }
 
     /// El nombre de la escala, de qué escala es modo, sus notas (y las microtonales), su recorrido si es vakra, sus

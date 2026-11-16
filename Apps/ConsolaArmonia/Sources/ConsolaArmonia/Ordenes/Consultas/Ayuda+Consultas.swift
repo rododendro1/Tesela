@@ -7,10 +7,11 @@ extension LineaDeComandos {
         [
             Orden(
                 nombres: ["acorde", "chord"], ayuda: ayudaDeAcorde, json: { try acordeJSON($0, $1.notacion) },
+                sinJSON: [.bebop, .disposiciones, .nombres, .pentatonicas, .sustituciones, .tonalidades],
                 ejecutar: { try acorde($0, $1.notacion) }),
             Orden(
                 nombres: ["identificar", "identify"], ayuda: ayudaDeIdentificar,
-                json: { try identificarJSON($0, $1.notacion) },
+                json: { try identificarJSON($0, $1.notacion) }, sinJSON: [.archivo, .escalas],
                 ejecutar: { try identificarConOpciones($0, $1) }),
             Orden(
                 nombres: ["arpegio", "arpeggio"], ayuda: ayudaDeArpegio, json: { try arpegioJSON($0, $1.notacion) },
@@ -21,10 +22,12 @@ extension LineaDeComandos {
                 ejecutar: { try consultarIntervalo($0, $1.notacion) }),
             Orden(
                 nombres: ["escala", "scale"], ayuda: ayudaDeEscala, json: { try escalaJSON($0, $1.notacion) },
+                sinJSON: [.bibtex],
                 ejecutar: { try escala($0, $1) }),
         ] + ordenesDeCatalogos + [
             Orden(
                 nombres: ["tonalidad", "key"], ayuda: ayudaDeTonalidad, json: { try tonalidadJSON($0, $1.notacion) },
+                sinJSON: [.modulaciones],
                 ejecutar: { try consultarTonalidad($0, $1.notacion) }),
             Orden(
                 nombres: ["conjunto", "set"], ayuda: ayudaDeConjunto, json: { try conjuntoJSON($0, $1.notacion) },

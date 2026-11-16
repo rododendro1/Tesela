@@ -10,8 +10,8 @@ import SwiftUI
 struct VistaDeAnalisis: View {
     @Environment(\.notacion) private var notacion
     @EnvironmentObject private var navegacion: Navegacion
-    /// Lo elegido y lo que sale de ello, que se prueba sin la vista.
-    @State private var modelo = ModeloDeAnalisis()
+    /// Lo elegido y lo que sale de ello, que se prueba sin la vista. Empieza por la última progresión escrita.
+    @State private var modelo = ModeloDeAnalisis(recordado: .cargar())
     /// El análisis de lo escrito o abierto, que se rehace al cambiar el texto, el fichero o la notación, no en cada
     /// redibujado.
     @State private var resultado: Result<AnalisisPresentado, Error>?
@@ -86,6 +86,9 @@ struct VistaDeAnalisis: View {
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
+                MenuDeRecuerdos(.analisis, texto: $modelo.texto)
+            }
+            ToolbarItem {
                 Button {
                     abriendo = true
                 } label: {
@@ -100,6 +103,7 @@ struct VistaDeAnalisis: View {
             }
         }
         .selectorDePartituras(isPresented: $abriendo) { modelo.abrir($0) }
+        .recordando(modelo.texto, en: .analisis, valido: (try? resultado?.get()) != nil)
         .task(id: modelo.claveDelAnalisis(en: notacion)) {
             resultado = modelo.analizar(en: notacion)
         }

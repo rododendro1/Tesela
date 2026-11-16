@@ -1,0 +1,98 @@
+@Tutorial(time: 15) {
+    @Intro(title: "La escala de cada acorde") {
+        Elige qué escala tocar sobre un acorde, sobre cada acorde de un ii–V–I, y qué tensiones suenan y qué
+        notas chocan con él.
+    }
+
+    @Section(title: "La escala de un acorde") {
+        @ContentAndMedia {
+            Un acorde solo, sin tonalidad, admite varias escalas: las que tienen todas sus notas y ninguna que
+            choque. La primera es la que pide el cifrado.
+        }
+
+        @Steps {
+            @Step {
+                Sol7 da Sol mixolidio, por su cifrado.
+
+                @Code(name: "main.swift", file: "jazz-01-01.swift")
+            }
+
+            @Step {
+                Las tensiones cambian la escala: con ♯11, lidio dominante; con ♭9, la disminuida semitono-tono.
+
+                @Code(name: "main.swift", file: "jazz-01-02.swift")
+            }
+        }
+    }
+
+    @Section(title: "En una progresión") {
+        @ContentAndMedia {
+            En una tonalidad, la escala depende de lo que hace el acorde: un acorde diatónico toma el modo de
+            la tonalidad, y una dominante secundaria, el de la escala de su destino.
+        }
+
+        @Steps {
+            @Step {
+                El ii–V–I de Do mayor: Re dórico, Sol mixolidio y Do mayor.
+
+                @Code(name: "main.swift", file: "jazz-02-01.swift")
+            }
+
+            @Step {
+                La7 va a Rem7, un acorde menor: su escala es La frigio dominante, con el Si♭ y el Fa de Re menor.
+
+                @Code(name: "main.swift", file: "jazz-02-02.swift")
+            }
+        }
+    }
+
+    @Section(title: "Tensiones y notas que chocan") {
+        @ContentAndMedia {
+            Sobre cada grado de una escala hay tensiones que se pueden añadir al acorde y notas que, tenidas,
+            chocan con él.
+        }
+
+        @Steps {
+            @Step {
+                En Do mayor, el ii7 admite 9, 11 y 13; el Imaj7, solo 9 y 13.
+
+                @Code(name: "main.swift", file: "jazz-03-01.swift")
+            }
+
+            @Step {
+                El Fa está a un semitono del Mi de Domaj7: es la nota a evitar.
+
+                @Code(name: "main.swift", file: "jazz-03-02.swift")
+            }
+
+            @Step {
+                Cada nota de la escala tiene su papel sobre el acorde: el Si♭ del mixolidio choca con el Si de
+                Domaj7.
+
+                @Code(name: "main.swift", file: "jazz-03-03.swift")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            ¿Por qué la 11 no es una tensión disponible sobre Domaj7 en Do mayor?
+
+            @Choice(isCorrect: true) {
+                Porque el Fa está un semitono por encima del Mi del acorde.
+
+                @Justification(reaction: "¡Correcto!") {
+                    Una novena menor sobre una nota del acorde suena como un choque, no como una tensión.
+                }
+            }
+
+            @Choice(isCorrect: false) {
+                Porque el Fa no es de la escala.
+
+                @Justification(reaction: "Vuelve a intentarlo") {
+                    El Fa sí es de Do mayor: por eso es una nota a evitar y no una nota fuera de la escala.
+                }
+            }
+        }
+    }
+}

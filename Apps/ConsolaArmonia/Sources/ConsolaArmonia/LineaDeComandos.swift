@@ -107,6 +107,10 @@ public enum LineaDeComandos {
             guard let salida = orden.json else {
                 return uso(.sinSalidaJSON(nombre), notacion, enCurso: enCurso, json: true)
             }
+            if let soloTexto = orden.sinJSON.first(where: { opcion in resto.contains(where: opcion.seEscribe) }) {
+                return uso(
+                    .sinSalidaJSON(nombre + " " + soloTexto.nombres[0]), notacion, enCurso: enCurso, json: true)
+            }
             let datos = try salida(resto, contexto)
             let texto = try textoJSON(datos, enUnaLinea: !salidaEsTerminal)
             let conFaltas = (datos as? any ConFaltas)?.hayFaltas ?? false
@@ -238,6 +242,9 @@ public enum LineaDeComandos {
         let opciones: [String]
         /// Lo que da con `--json`; `nil` si no lo admite.
         let json: SalidaJSON?
+        /// Las opciones que solo dan texto: con `--json` son un error (`sinSalidaJSON`), y el servidor MCP no las
+        /// ofrece (`conJSON`).
+        let sinJSON: [OpcionDeOrden]
         /// Si, sin argumentos y con la entrada estándar de un fichero o de otro programa, toma de ella sus palabras
         /// (`conLaEntrada`). Las que no leen nada (la ayuda, la versión, los motores, el completado y el manual) no
         /// la esperan.
@@ -246,7 +253,7 @@ public enum LineaDeComandos {
 
         init(
             nombres: [String], ayuda: [EntradaDeAyuda], opciones: [OpcionDeOrden]? = nil, json: SalidaJSON? = nil,
-            leeLaEntrada: Bool = true,
+            sinJSON: [OpcionDeOrden] = [], leeLaEntrada: Bool = true,
             ejecutar:
                 @escaping @Sendable (_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden
         ) {
@@ -259,9 +266,13 @@ public enum LineaDeComandos {
             for nombre in unicas.flatMap(\.nombres) where !visibles.contains(nombre) { visibles.append(nombre) }
             self.opciones = visibles
             self.json = json
+            self.sinJSON = sinJSON
             self.leeLaEntrada = leeLaEntrada
             self.ejecutar = ejecutar
         }
+
+        /// Las opciones declaradas que también dan JSON: todas menos las de `sinJSON`.
+        var conJSON: [OpcionDeOrden] { declaradas.filter { !sinJSON.contains($0) } }
     }
 
     /// Las órdenes por grupos, como salen en el índice de la ayuda; los títulos están en
