@@ -138,9 +138,9 @@ public struct Tonalidad: Hashable, Sendable {
         return base.acorde(grado: grado, notas: cuantas)
     }
 
-    /// La tríada o la cuatríada de un grado, sin opcional: siempre la hay en mayor y en menor.
-    package func acordeDelGrado(_ grado: Int, cuatriada: Bool = false) -> Acorde {
-        guard let acorde = acorde(grado: grado, notas: cuatriada ? 4 : 3) else {
+    /// La tríada (3 notas) o la cuatríada (4) de un grado, sin opcional: siempre la hay en mayor y en menor.
+    package func acordeDelGrado(_ grado: Int, notas cuantas: Int = 3) -> Acorde {
+        guard let acorde = acorde(grado: grado, notas: cuantas) else {
             preconditionFailure("El grado \(grado) de \(self) no forma una tríada o una cuatríada conocida")
         }
         return acorde
@@ -167,26 +167,6 @@ public struct Tonalidad: Hashable, Sendable {
     /// Los cifrados romanos de los siete grados (``romano(grado:notas:)``): con 3, en Do, I ii iii IV V vi vii°.
     public func romanos(notas cuantas: Int = 3) -> [CifradoRomano?] {
         (1...7).map { romano(grado: $0, notas: cuantas) }
-    }
-
-    /// Acorde de un grado según la práctica común, por terceras: tríada o cuatríada.
-    @available(*, deprecated, renamed: "acorde(grado:notas:)", message: "Usa acorde(grado:notas:), con 3 o 4 notas")
-    public func acorde(grado: Int, cuatriada: Bool) -> Acorde { acordeDelGrado(grado, cuatriada: cuatriada) }
-
-    /// Los acordes de los siete grados, en tríadas o, con `cuatriadas`, con séptima.
-    @available(*, deprecated, renamed: "armonizar(notas:)", message: "Usa armonizar(notas:), con 3 o 4 notas")
-    public func armonizar(cuatriadas: Bool) -> [Acorde] { (1...7).map { acordeDelGrado($0, cuatriada: cuatriadas) } }
-
-    /// Cifrado romano de un grado, en texto.
-    @available(*, deprecated, message: "Usa romano(grado:notas:), que da el cifrado por sus partes")
-    public func cifradoRomano(grado: Int, cuatriada: Bool = false) -> String {
-        romano(grado: grado, notas: cuatriada ? 4 : 3)?.description ?? ""
-    }
-
-    /// Los cifrados romanos de los siete grados, en texto.
-    @available(*, deprecated, message: "Usa romanos(notas:), que da los cifrados por sus partes")
-    public func cifradosRomanos(cuatriadas: Bool = false) -> [String] {
-        romanos(notas: cuatriadas ? 4 : 3).map { $0?.description ?? "" }
     }
 
     // MARK: Ortografía

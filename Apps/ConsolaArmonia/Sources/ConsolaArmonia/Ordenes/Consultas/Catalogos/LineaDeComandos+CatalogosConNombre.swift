@@ -165,16 +165,16 @@ extension LineaDeComandos {
         let texto = argumentos.unidos
         let hallados = AcordeConNombre.buscar(nombre: texto).map { [$0] } ?? AcordeConNombre.buscar(conteniendo: texto)
         let elegidos = hallados.filter { acorde in
-            let medidas = acorde.estadisticas
+            let delAcorde = acorde.estadisticas
             if !usos.isEmpty, !acorde.estilos.contains(where: usos.contains) { return false }
             if !epocas.isEmpty, !acorde.epocas.contains(where: epocas.contains) { return false }
             if let afecto, !acorde.afectos.contains(afecto) { return false }
-            if let numeroDeNotas, medidas.numeroDeNotas != numeroDeNotas { return false }
-            if porTerceras && !medidas.porTerceras { return false }
-            if noPorTerceras && medidas.porTerceras { return false }
-            if sinSemitonos && !medidas.anhemitonico { return false }
-            if let conIntervalo, medidas.vectorIntervalico[conIntervalo - 1] == 0 { return false }
-            if let sinIntervalo, medidas.vectorIntervalico[sinIntervalo - 1] > 0 { return false }
+            if let numeroDeNotas, delAcorde.numeroDeNotas != numeroDeNotas { return false }
+            if porTerceras && !delAcorde.porTerceras { return false }
+            if noPorTerceras && delAcorde.porTerceras { return false }
+            if sinSemitonos && !delAcorde.anhemitonico { return false }
+            if let conIntervalo, delAcorde.vectorIntervalico[conIntervalo - 1] == 0 { return false }
+            if let sinIntervalo, delAcorde.vectorIntervalico[sinIntervalo - 1] > 0 { return false }
             return true
         }
         // Con `--orden`, del más brillante al más oscuro (los que no tienen brillo, al final), de menos a más notas o
@@ -182,11 +182,11 @@ extension LineaDeComandos {
         var ordenados = elegidos
         if let orden {
             let claves = elegidos.map { acorde -> Double in
-                let medidas = acorde.estadisticas
+                let delAcorde = acorde.estadisticas
                 switch orden {
-                case .brillo: return -(medidas.brilloPorQuintas ?? -.infinity)
-                case .notas: return Double(medidas.numeroDeNotas)
-                case .consonancia: return -medidas.conjunto.consonanciaDiadica
+                case .brillo: return -(delAcorde.brilloPorQuintas ?? -.infinity)
+                case .notas: return Double(delAcorde.numeroDeNotas)
+                case .consonancia: return -delAcorde.conjunto.consonanciaDiadica
                 }
             }
             ordenados = elegidos.indices.sorted { (claves[$0], $0) < (claves[$1], $1) }.map { elegidos[$0] }

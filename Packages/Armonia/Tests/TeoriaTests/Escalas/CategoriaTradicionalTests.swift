@@ -176,7 +176,7 @@ import Testing
     }
 
     /// La madre de un janya es un mēḷa que contiene todas sus notas; Revati no tiene uno único.
-    @Test func elPadreDeUnJanyaEsUnMelakartaCompatible() {
+    @Test func laMadreDeUnJanyaEsUnMelakartaCompatible() {
         #expect(TipoDeEscala.mohanam.madre?.numeroDeMelakarta == 28)
         #expect(TipoDeEscala.hindolam.madre?.nombre == "Naṭabhairavī")
         #expect(TipoDeEscala.revati.madre == nil)
@@ -209,12 +209,12 @@ import Testing
             #expect(madre.tradicion == tipo.tradicion, Comment(rawValue: tipo.nombre))
             #expect(madre.derivadas.contains { $0.esIdentico(a: tipo) }, Comment(rawValue: tipo.nombre))
             let suyas = clases(tipo)
-            let delPadre = clases(madre)
+            let deLaMadre = clases(madre)
             #expect(
                 tipo.notasExternas.allSatisfy { !madre.intervalos.contains($0) }, "\(tipo.nombre): externa de la madre")
-            let modos = delPadre.map { tonica in Set(delPadre.map { ($0 - tonica + 12) % 12 }) }
+            let modos = deLaMadre.map { tonica in Set(deLaMadre.map { ($0 - tonica + 12) % 12 }) }
             #expect(modos.contains { suyas.isSubset(of: $0) }, "\(tipo.nombre) ↛ \(madre.nombre)")
-            if madre.categoria == .thaat { #expect(suyas.isSubset(of: delPadre), "\(tipo.nombre) ↛ \(madre.nombre)") }
+            if madre.categoria == .thaat { #expect(suyas.isSubset(of: deLaMadre), "\(tipo.nombre) ↛ \(madre.nombre)") }
         }
         #expect(conMadre == 65 + 22 + 14 + 3 + 3)
         #expect(TipoDeEscala.yaman.madre == .kalyan && TipoDeEscala.yaman.madre?.categoria == .thaat)

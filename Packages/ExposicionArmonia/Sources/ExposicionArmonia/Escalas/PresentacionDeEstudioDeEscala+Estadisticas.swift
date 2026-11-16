@@ -360,19 +360,19 @@ public struct EstadisticasDeEscalaPresentadas: Hashable, Sendable, Codable {
     public let teoria: MedidasDeEscalaPresentadas
 
     public init(_ escala: Escala, en notacion: Notacion) {
-        let medidas = escala.estadisticas
-        numeroDeNotas = medidas.numeroDeNotas
-        cardinal = medidas.cardinal?.nombre(en: notacion)
-        brillo = medidas.brillo
-        brilloPorQuintas = Redondeo.valor(medidas.brilloPorQuintas, decimales: 2)
-        pasos = medidas.pasos
-        vectorIntervalico = medidas.vectorIntervalico
-        anhemitonica = medidas.anhemitonica
-        cohemitonica = medidas.cohemitonica
-        transposicionesDistintas = medidas.transposicionesDistintas
-        numeroDeForte = medidas.numeroDeForte
-        maximamenteRegular = medidas.maximamenteRegular
-        aproximada = medidas.aproximada
-        teoria = MedidasDeEscalaPresentadas(medidas, en: notacion)
+        let estadisticas = escala.estadisticas
+        numeroDeNotas = estadisticas.numeroDeNotas
+        cardinal = estadisticas.cardinal?.nombre(en: notacion)
+        brillo = estadisticas.brillo
+        brilloPorQuintas = Redondeo.valor(estadisticas.brilloPorQuintas, decimales: 2)
+        pasos = estadisticas.pasos
+        vectorIntervalico = estadisticas.vectorIntervalico
+        anhemitonica = estadisticas.anhemitonica
+        cohemitonica = estadisticas.cohemitonica
+        transposicionesDistintas = estadisticas.transposicionesDistintas
+        numeroDeForte = estadisticas.numeroDeForte
+        maximamenteRegular = estadisticas.maximamenteRegular
+        aproximada = estadisticas.aproximada
+        teoria = MedidasDeEscalaPresentadas(estadisticas, en: notacion)
     }
 }

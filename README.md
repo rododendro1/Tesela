@@ -46,7 +46,8 @@ armonia mcp                                                  # el motor como ser
 ```
 
 Lee los nombres en español o en inglés (Do, C, Sib, Bb) y responde en el idioma de `--idioma`, o en el de
-`ARMONIA_IDIOMA` (`export ARMONIA_IDIOMA=eu`; con `sistema`, el de `LANG`).
+`ARMONIA_IDIOMA` (`export ARMONIA_IDIOMA=eu`; con `sistema`, el de `LANG`). Con `--json`, las claves no
+cambian con el idioma, y un error sale también en JSON, en la salida de errores.
 
 ## Usar los paquetes en otro proyecto
 
