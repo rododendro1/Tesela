@@ -60,9 +60,7 @@ extension LineaDeComandosTests {
                 a:
                     #"{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"acorde","arguments":{"argumentos":"Xyz"}}}"#
             ))
-        #expect(mal.contains(#""isError":true"#))
-        let fallo = try #require(try estructurado(mal)["error"] as? [String: Any])
-        #expect(fallo["tipo"] as? String == "notaNoReconocida")
+        #expect(mal.contains(#""isError":true"#) && !mal.contains("structuredContent"))
         let desconocida = try #require(
             servidor.responder(a: #"{"jsonrpc":"2.0","id":6,"method":"tools/call","params":{"name":"nada"}}"#))
         #expect(desconocida.contains(#""code":-32602"#))

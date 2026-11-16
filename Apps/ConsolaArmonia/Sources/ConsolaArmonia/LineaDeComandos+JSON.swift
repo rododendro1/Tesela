@@ -11,8 +11,8 @@ import Foundation
 //
 // Las claves son siempre las mismas, en español y sin tildes, sea cual sea el idioma, y cambiarlas rompe a quien las
 // lea. Los nombres de notas, acordes y escalas van en la notación elegida (`--ingles`, `--idioma`…), como en el
-// texto, y al lado van los datos que no dependen de ella: las clases de altura (0 = Do … 11 = Si). Los errores van
-// a la salida de errores, con el mismo código de salida, también en JSON (Salida/ErrorEnJSON.swift).
+// texto, y al lado van los datos que no dependen de ella: las clases de altura (0 = Do … 11 = Si). Los errores no
+// cambian: van en texto a la salida de errores, con el mismo código de salida.
 
 extension LineaDeComandos {
     /// Lo que hace una orden con `--json` (`Orden.json`): sus datos, a partir del resto de los argumentos.
