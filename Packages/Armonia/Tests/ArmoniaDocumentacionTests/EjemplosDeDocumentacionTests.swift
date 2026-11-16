@@ -1727,12 +1727,13 @@ import Hexagonos
     @Test func tonalidad24() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 24
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 24)
-        comprobar(Tonalidad(.do).caracter.map(\.testigo) == [.charpentier, .schubart], #"true"#, doc, 0)
+        comprobar(Tonalidad(.do).caracter.map(\.testigo) == [.charpentier, nil, .schubart], #"true"#, doc, 0)
         comprobar(Tonalidad(.do).caracter[0].texto, #""Gai et guerrier""#, doc, 1)
-        comprobar(Tonalidad(.do).caracter[1].afectos == [.inocente], #"true"#, doc, 2)
-        comprobar(Tonalidad(Nota(.do, .sostenido)).caracter.isEmpty, #"true"#, doc, 3)
-        comprobar(Caracter.discrepancias(Tonalidad(.fa).caracter).count, #"1"#, doc, 4)
-        comprobar(Tonalidad.conCaracter.count, #"25"#, doc, 5)
+        comprobar(Tonalidad(.do).caracter[1].referencia == .rameau1722, #"true"#, doc, 2)
+        comprobar(Tonalidad(.do).caracter[2].afectos == [.inocente], #"true"#, doc, 3)
+        comprobar(Tonalidad(Nota(.do, .sostenido)).caracter.isEmpty, #"true"#, doc, 4)
+        comprobar(Caracter.discrepancias(Tonalidad(.fa).caracter).count, #"5"#, doc, 5)
+        comprobar(Tonalidad.conCaracter.count, #"25"#, doc, 6)
     }
 
     @Test func tonalidad25() throws {

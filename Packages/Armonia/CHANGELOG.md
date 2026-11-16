@@ -4,6 +4,15 @@
 
 ### Novedades
 
+- El carácter de las tonalidades, de cuatro fuentes:
+  - Mattheson (*Das neu-eröffnete Orchestre*, 1713, en Steblin 1983), en catorce tonalidades. Es un testigo nuevo,
+    `TestigoDelCaracter.mattheson`, y va solo con los afectos.
+  - Rameau (*Traité de l'harmonie*, 1722), en catorce, con lo que dice de su grupo de tonalidades. Fa menor está en
+    dos grupos.
+  - Fa mayor se describe ahora como colérico (Charpentier y Rameau), noble y amoroso (Mattheson) y sereno (Schubart).
+- La hora y la estación de 23 rāgas más, de *The Raga Guide* (Bor 1999), sin afectos: Kalyāṇ, Pūriyā, Śrī, Kedār,
+  Kāfī, Hindol, Basant (primavera)… `escalas --momento` y el reloj de los rāgas pasan de 19 a 42. Kirvānī y Dhānī,
+  sin hora fija, se quedan fuera.
 - Tres tutoriales nuevos, en el capítulo «Más allá»: *Escalas de otras tradiciones* (un rāga con su vādī y su
   recorrido vakra, Bayātī con sus ajnas y su Mi medio bemol, y las escalas vecinas), *La escala de cada acorde* (la
   escala de un acorde y de cada acorde de un ii–V–I, las tensiones disponibles y las notas a evitar) y *De la teoría a

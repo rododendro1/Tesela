@@ -462,6 +462,7 @@ extension TextosDeTeoria {
         testigoYueji: "Yueji",
         testigoCoton: "Jean d'Afflighem",
         testigoCharpentier: "Charpentier",
+        testigoMattheson: "Mattheson",
         testigoSchubart: "Schubart",
         sonoridadClara: "claire",
         sonoridadIntermedia: "intermédiaire",

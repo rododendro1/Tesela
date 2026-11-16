@@ -7,14 +7,17 @@ import Elementos
 // y lo que no tiene fuente no tiene carácter. Va por el nombre: Re♭ mayor tiene el suyo y Do♯ mayor, que no describe
 // nadie, ninguno.
 //
-// Por ahora, dos: el de Charpentier (la «énergie des modes» de las Règles de composition, hacia 1690, en Cessac 1988)
-// y el de Schubart (Ideen zu einer Ästhetik der Tonkunst, 1806, en la traducción de Steblin 1983). Juntos enseñan cómo
-// cambia una tonalidad en un siglo: Fa mayor, «furieux et emporté» en Charpentier, es «complaisance & calm» en
-// Schubart. Cada uno va resumido en las palabras de `Afecto` que mejor lo dicen, y con sus palabras en `texto`.
+// Cuatro fuentes, en orden: Charpentier (la «énergie des modes» de las Règles de composition, hacia 1690, en Cessac
+// 1988), Mattheson (Das neu-eröffnete Orchestre, 1713, en Steblin 1983), Rameau (el Traité de l'harmonie, 1722, que
+// agrupa las tonalidades por lo que convienen) y Schubart (Ideen zu einer Ästhetik der Tonkunst, 1806, en la
+// traducción de Steblin 1983). Juntos enseñan cómo cambia una tonalidad en un siglo: Fa mayor, «furieux et emporté» en
+// Charpentier y propia de «tempêtes» y «furies» en Rameau, es «complaisance & calm» en Schubart. Cada uno va resumido
+// en las palabras de `Afecto` que mejor lo dicen y, si se ha copiado, con sus palabras en `texto`.
 
 extension Tonalidad {
-    /// Las tonalidades que describen Charpentier y Schubart, con lo que dice cada uno.
-    package static let caracteres: [(tonalidad: Tonalidad, caracter: [Caracter])] = deCharpentier + deSchubart
+    /// Las tonalidades que describen Charpentier, Mattheson, Rameau y Schubart, con lo que dice cada uno.
+    package static let caracteres: [(tonalidad: Tonalidad, caracter: [Caracter])] =
+        deCharpentier + deMattheson + deRameau + deSchubart
 
     /// Las veinticuatro de Schubart. Cada descripción es una frase larga; `texto` lleva un trozo, en la traducción de
     /// Steblin.
@@ -175,6 +178,65 @@ extension Tonalidad {
         (Tonalidad(armadura: 5), charpentier([.severo, .lastimero], "Dur et plaintif")),
         (Tonalidad(armadura: 2, modo: .menor), charpentier([.triste], "Solitaire et mélancolique")),
     ]
+
+    private static func mattheson(_ afectos: [Afecto], ocasion: Ocasion? = nil) -> [Caracter] {
+        [.init(afectos, ocasion: ocasion, testigo: .mattheson, referencia: .steblin1983)]
+    }
+
+    /// Las de Mattheson que se dejan resumir en un afecto, en Steblin 1983. Sin `texto`: falta copiarlo de la
+    /// traducción de Steblin. Do mayor («rude and bold») y Sol mayor («insinuating and persuasive») no entran.
+    private static let deMattheson: [(tonalidad: Tonalidad, caracter: [Caracter])] = [
+        (Tonalidad(armadura: 2), mattheson([.festivo, .energico], ocasion: .guerra)),
+        (Tonalidad(armadura: 4), mattheson([.desesperado, .triste])),
+        (Tonalidad(armadura: 3), mattheson([.lastimero])),
+        (Tonalidad(armadura: -1), mattheson([.noble, .amoroso])),
+        (Tonalidad(armadura: -2), mattheson([.festivo])),
+        (Tonalidad(armadura: -3), mattheson([.grave, .lastimero])),
+        (Tonalidad(armadura: -1, modo: .menor), mattheson([.devoto, .sereno, .majestuoso])),
+        (Tonalidad(armadura: -2, modo: .menor), mattheson([.grave, .tierno])),
+        (Tonalidad(armadura: 0, modo: .menor), mattheson([.lastimero, .noble, .sereno])),
+        (Tonalidad(armadura: 1, modo: .menor), mattheson([.contemplativo, .triste])),
+        (Tonalidad(armadura: 2, modo: .menor), mattheson([.triste])),
+        (Tonalidad(armadura: 3, modo: .menor), mattheson([.lastimero, .amoroso])),
+        (Tonalidad(armadura: -3, modo: .menor), mattheson([.tierno, .triste])),
+        (Tonalidad(armadura: -4, modo: .menor), mattheson([.sereno, .grave, .desesperado])),
+    ]
+
+    private static func rameau(_ afectos: [Afecto], _ texto: String) -> [Caracter] {
+        [.init(afectos, texto: texto, referencia: .rameau1722)]
+    }
+
+    /// Rameau no describe cada tonalidad, sino grupos: «Le mode majeur, pris dans l'octave des notes Ut, Ré ou La,
+    /// convient aux chants d'allégresse et de réjouissance…» (libro II). `texto` lleva lo que dice del grupo de cada
+    /// una, con la ortografía de hoy. Fa menor está en dos grupos: el de la ternura y las quejas, y el de lo lúgubre.
+    private static let deRameau: [(tonalidad: Tonalidad, caracter: [Caracter])] = {
+        let alegria = "Chants d'allégresse et de réjouissance"
+        let grandeza = "le grand et le magnifique"
+        let tiernos = "Chants tendres et gais"
+        let tempestades = "Tempêtes, furies et autres sujets de cette espèce"
+        let ternura = "La douceur et la tendresse"
+        let quejas = "La tendresse et les plaintes"
+        let lugubres = "Chants lugubres"
+        return [
+            (Tonalidad(armadura: 0), rameau([.alegre, .festivo], alegria)),
+            (Tonalidad(armadura: 2), rameau([.alegre, .festivo, .majestuoso], alegria + "; " + grandeza)),
+            (Tonalidad(armadura: 3), rameau([.alegre, .festivo, .majestuoso], alegria + "; " + grandeza)),
+            (Tonalidad(armadura: 1), rameau([.tierno, .alegre], tiernos)),
+            (Tonalidad(armadura: 4), rameau([.tierno, .alegre, .majestuoso], tiernos + "; " + grandeza)),
+            (Tonalidad(armadura: -1), rameau([.colerico, .inquieto], tempestades)),
+            (Tonalidad(armadura: -2), rameau([.colerico, .inquieto], tempestades)),
+            (Tonalidad(armadura: -1, modo: .menor), rameau([.tierno], ternura)),
+            (Tonalidad(armadura: -2, modo: .menor), rameau([.tierno], ternura)),
+            (Tonalidad(armadura: 2, modo: .menor), rameau([.tierno], ternura)),
+            (Tonalidad(armadura: 1, modo: .menor), rameau([.tierno], ternura)),
+            (Tonalidad(armadura: -3, modo: .menor), rameau([.tierno, .lastimero], quejas)),
+            (
+                Tonalidad(armadura: -4, modo: .menor),
+                rameau([.tierno, .lastimero], quejas) + rameau([.sombrio], lugubres)
+            ),
+            (Tonalidad(armadura: -5, modo: .menor), rameau([.sombrio], lugubres)),
+        ]
+    }()
 
     /// Tónica (por su nombre, no por su sonido) y modo → lo que dicen sus fuentes.
     private static let caracterPorTonalidad: [Tonalidad: [Caracter]] = {

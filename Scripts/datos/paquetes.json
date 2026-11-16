@@ -17,7 +17,7 @@
     },
     {
       "nombre": "ExposicionArmonia",
-      "descripcion": "Lo que enseñan las apps y la línea de comandos, sin SwiftUI (con las casillas de las redes, de Hexagonos).",
+      "descripcion": "Lo que enseñan las apps y la consola, sin SwiftUI (con las casillas de las redes, de Hexagonos).",
       "depende": ["Armonia", "Hexagonos"],
       "modulos": ["ExposicionArmonia"],
       "cobertura": {"funciones": 96.0, "lineas": 98.5}

@@ -462,6 +462,7 @@ extension TextosDeTeoria {
         testigoYueji: "Γιουέτζι",
         testigoCoton: "Ιωάννης Κόττων",
         testigoCharpentier: "Σαρπαντιέ",
+        testigoMattheson: "Μάτεζον",
         testigoSchubart: "Σούμπαρτ",
         sonoridadClara: "φωτεινή",
         sonoridadIntermedia: "ενδιάμεση",

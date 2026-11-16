@@ -220,13 +220,20 @@ extension LineaDeComandosTests {
         #expect(!salida("escala Do mayor").contains("vādī"))
     }
 
-    /// El carácter de una tonalidad, de Charpentier y de Schubart, con sus palabras, y la sonoridad calculada de una
-    /// escala occidental.
+    /// El carácter de una tonalidad, de Charpentier, Mattheson, Rameau y Schubart, con sus palabras si se han copiado,
+    /// la sonoridad calculada de una escala occidental.
     @Test func elCaracterDeLaTonalidadYLaSonoridad() {
         let re = salida("tonalidad Re mayor")
         #expect(re.contains("\n  carácter: alegre, valiente · “Joyeux et très guerrier” (Charpentier (Cessac 1988))\n"))
         #expect(re.contains("\n  carácter: festivo, majestuoso · “The key of triumph, of Hallelujahs, of war-cries,"))
-        #expect(re.hasSuffix("\n  las fuentes no coinciden: Charpentier · Schubart\n"), Comment(rawValue: re))
+        #expect(re.contains("\n  carácter: guerra · festivo, enérgico (Mattheson (Steblin 1983))\n"))
+        #expect(
+            re.contains(
+                "\n  carácter: alegre, festivo, majestuoso · “Chants d'allégresse et de réjouissance; le grand et le"
+                    + " magnifique” (Rameau 1722)\n"))
+        #expect(
+            re.hasSuffix("\n  las fuentes no coinciden: Charpentier · Mattheson; Charpentier · Schubart\n"),
+            Comment(rawValue: re))
         #expect(!salida("tonalidad Si♭ menor").contains("no coinciden"))
         #expect(!salida("tonalidad Do# mayor").contains("carácter"))
         #expect(salida("escala Do lidio").contains("\n  sonoridad (calculada): clara\n"))
@@ -241,17 +248,24 @@ extension LineaDeComandosTests {
     @Test func lasTonalidadesConCaracter() {
         let todas = salida("tonalidades")
         #expect(todas.split(separator: "\n").count == 25)
-        #expect(todas.contains("\nFa mayor: colérico (Charpentier) · sereno (Schubart)\n"))
+        #expect(
+            todas.contains(
+                "\nFa mayor: colérico (Charpentier) · noble, amoroso (Mattheson) · colérico, inquieto (Rameau 1722)"
+                    + " · sereno (Schubart)\n"))
         #expect(
             salida("tonalidades --afecto terrible")
-                == "Mi♭ menor: terrible (Charpentier)\nSi♭ menor: sombrío, terrible (Charpentier) · sombrío, colérico (Schubart)\n"
-        )
+                == "Mi♭ menor: terrible (Charpentier)\nSi♭ menor: sombrío, terrible (Charpentier) · sombrío (Rameau 1722)"
+                + " · sombrío, colérico (Schubart)\n")
         #expect(salida("keys --affect terrible --ingles").hasPrefix("Eb minor: terrible (Charpentier)\n"))
         #expect(resultado("tonalidades", "--afecto", "nada").codigo != 0)
         #expect(salida("tonalidades sol menor").hasPrefix("Sol menor: grave, majestuoso (Charpentier)"))
         let fa = try? JSONSerialization.jsonObject(with: Data(salida("tonalidades fa mayor --json").utf8))
         let primera = (fa as? [[String: Any]])?.first
-        #expect(primera?["discrepancias"] as? [String] == ["Charpentier · Schubart"])
+        #expect(
+            primera?["discrepancias"] as? [String] == [
+                "Charpentier · Mattheson", "Charpentier · Schubart", "Mattheson · Rameau 1722", "Mattheson · Schubart",
+                "Rameau 1722 · Schubart",
+            ])
         #expect((primera?["caracter"] as? [[String: Any]])?.first?["texto"] as? String == "Furieux et emporté")
     }
 
@@ -259,7 +273,9 @@ extension LineaDeComandosTests {
     @Test func elMomentoYElRelojDeLosRagas() {
         #expect(
             salida("escalas --momento anochecer")
-                == "India · rāga (2)\n  Bhūpālī: Do Re Mi Sol La\n  Yaman: Do Re Mi Fa♯ Sol La Si\n")
+                == "India · thāṭ (1)\n  Kalyāṇ: Do Re Mi Fa♯ Sol La Si\n\nIndia · rāga (5)\n  Bhūpālī: Do Re Mi Sol La\n"
+                + "  Yaman: Do Re Mi Fa♯ Sol La Si\n  Kedār: Do Mi Fa Sol La Si\n  Pūriyā: Do Re♭ Mi Fa♯ La Si\n"
+                + "  Śrī: Do Re♭ Fa♯ Sol Si\n")
         #expect(salida("scales --time dusk --ingles").contains("Yaman"))
         #expect(salida("escalas --momento noche").contains("pathet"))
         #expect(resultado("escalas", "--momento", "siesta").error.contains("no es un momento del día"))

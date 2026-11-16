@@ -14,7 +14,8 @@ import Testing
         #expect(fa.texto == "Furieux et emporté" && fa.cita == "Charpentier (Cessac 1988)" && fa.anio == 1690)
         #expect(fa.enUnaLinea == "colérico · “Furieux et emporté” (Charpentier (Cessac 1988))")
         #expect(CaracterPresentado.de([], en: espanol) == nil)
-        #expect(CaracterPresentado.discrepancias(Tonalidad(.fa).caracter, en: espanol) == ["Charpentier · Schubart"])
+        #expect(
+            CaracterPresentado.discrepancias(Tonalidad(.fa).caracter, en: espanol)?.first == "Charpentier · Mattheson")
         #expect(CaracterPresentado.discrepancias(Tonalidad(Nota(.si, .bemol), .menor).caracter, en: espanol) == nil)
     }
 
@@ -36,7 +37,7 @@ import Testing
         #expect(doria.first?.nombre == "Heraclides Póntico XIV 624–625 (Monro 1894: 9–11)")
         let mayor = PresentacionDeEstudioDeEscala.caracter(de: .mayor, en: espanol)
         #expect(mayor.map(\.nombre) == ["Afecto medido", "Sonoridad (calculada)"])
-        #expect(PresentacionDeEstudioDeEscala.caracter(de: Tonalidad(.do), en: espanol).count == 3)
+        #expect(PresentacionDeEstudioDeEscala.caracter(de: Tonalidad(.do), en: espanol).count == 4)
         #expect(PresentacionDeEstudioDeEscala.caracter(de: Tonalidad(Nota(.do, .sostenido)), en: espanol).isEmpty)
     }
 
@@ -55,8 +56,11 @@ import Testing
     @Test func elRelojDeLosRagas() {
         let prahar = PresentacionDelRelojDeLosRagas.ragasPorMomento(en: espanol)
         #expect(prahar.map(\.momento.horaDeInicio) == [0, 3, 6, 9, 12, 15, 18, 21])
-        #expect(prahar.first { $0.momento == .anochecer }?.ragas == ["Yaman", "Bhūpālī"])
-        #expect(prahar.flatMap(\.ragas).count == 19) // Megh no tiene hora, solo estación
+        #expect(
+            prahar.first { $0.momento == .anochecer }?.ragas == [
+                "Yaman", "Bhūpālī", "Kalyāṇ", "Pūriyā", "Śrī", "Kedār",
+            ])
+        #expect(prahar.flatMap(\.ragas).count == 42) // Megh y Basant no tienen hora, solo estación
         let svg = PresentacionDelRelojDeLosRagas.svg(en: .compacta(.ingles))
         #expect(svg.hasPrefix("<svg") && svg.contains(">Rāga clock<") && svg.contains(">Darbārī Kānaḍa<"))
     }

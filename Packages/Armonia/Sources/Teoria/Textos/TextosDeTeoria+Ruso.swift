@@ -462,6 +462,7 @@ extension TextosDeTeoria {
         testigoYueji: "Юэцзи",
         testigoCoton: "Иоанн Коттон",
         testigoCharpentier: "Шарпантье",
+        testigoMattheson: "Маттезон",
         testigoSchubart: "Шубарт",
         sonoridadClara: "светлое",
         sonoridadIntermedia: "среднее",

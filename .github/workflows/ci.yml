@@ -128,7 +128,8 @@ jobs:
             Packages/Armonia/.build
           key: ${{ steps.cache.outputs.clave }}
 
-  herramientas:
+  # Las apps, los ejemplos y las herramientas de SwiftPM (`swiftpm` en Scripts/datos/paquetes.json).
+  swiftpm:
     name: ${{ matrix.paquete.nombre }} · Linux · Swift ${{ matrix.swift }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -482,10 +483,10 @@ jobs:
   # o Hexagonos, de los que dependen, o el proyecto de Xcode pasa `interfaz`, que compila las dos apps en macOS y en
   # el simulador de iOS antes de probarlas: es lo que Linux no puede compilar, y un cambio en la API del motor
   # puede romperlas sin tocarlas. Uno que cambia un paquete o la consola pasa `macos-paquetes`, sus pruebas con la
-  # Foundation de Apple. Lo demás de macOS sigue en el job `macos`. `cambios-en-las-apps` corre en Linux y solo mira
+  # Foundation de Apple. Lo demás de macOS sigue en el job `macos`. `cambios` corre en Linux y solo mira
   # los ficheros, para no ocupar un runner de macOS en los demás.
-  cambios-en-las-apps:
-    name: ¿Toca las apps?
+  cambios:
+    name: ¿Toca las apps o los paquetes?
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -543,9 +544,11 @@ jobs:
       - name: Hexagonos
         run: swift test --parallel
         working-directory: Packages/Hexagonos
-      - name: Línea de comandos y ejemplos
+      - name: ConsolaArmonia
+        run: swift test --parallel
+        working-directory: Apps/ConsolaArmonia
+      - name: Ejemplos
         run: |
-          (cd Apps/ConsolaArmonia && swift test --parallel)
           (cd Ejemplos/EjemploArmonia && swift run EjemploArmonia > /dev/null)
           (cd Ejemplos/EjemploCatalogos && swift run EjemploCatalogos - > /dev/null)
           (cd Ejemplos/EjemploHexagonos && swift run EjemploHexagonos > /dev/null)
@@ -594,8 +597,8 @@ jobs:
   # que no prueban código distinto. Fuera de los pull requests ya lo hace `macos`.
   macos-paquetes:
     name: Paquetes · macOS
-    needs: cambios-en-las-apps
-    if: needs.cambios-en-las-apps.outputs.paquetes == 'true'
+    needs: cambios
+    if: needs.cambios.outputs.paquetes == 'true'
     runs-on: macos-15
     timeout-minutes: 45
     steps:
@@ -622,13 +625,13 @@ jobs:
   # Las pruebas de interfaz corren también en los pull requests que cambian las apps, para que una vista nueva o
   # cambiada no espere al lunes. `xcodebuild test` compila antes cada app (en macOS y para el simulador de iOS), así
   # que un fallo de compilación también lo da este job: no hace falta otra máquina de macOS solo para compilar. `!cancelled()` hace falta porque fuera de los pull
-  # requests `cambios-en-las-apps` no corre, y sin él este job se saltaría también a mano y los lunes.
+  # requests `cambios` no corre, y sin él este job se saltaría también a mano y los lunes.
   interfaz:
     name: Pruebas de interfaz · ${{ matrix.plataforma }}
-    needs: cambios-en-las-apps
+    needs: cambios
     if: >-
       !cancelled() && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
-      || needs.cambios-en-las-apps.outputs.apps == 'true')
+      || needs.cambios.outputs.apps == 'true')
     runs-on: macos-15
     timeout-minutes: 45
     # macOS e iOS en paralelo: una tras otra tardaban unos 21 minutos.

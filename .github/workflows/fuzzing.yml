@@ -1,6 +1,6 @@
 name: Fuzzing
 
-# Lo que el motor lee de fuera (MIDI, MusicXML, MXL, teclados UIL y los textos de las apps y de la línea de comandos),
+# Lo que el motor lee de fuera (MIDI, MusicXML, MXL, teclados UIL y los textos de las apps y de la consola),
 # con datos al azar que libFuzzer va cambiando para llegar a más código, compilado con AddressSanitizer
 # (`Herramientas/FuzzArmonia`). Corre los domingos, diez minutos, y a mano desde Actions con los segundos que se
 # quiera. Los casos que llegan a código nuevo se guardan en la caché para la semana siguiente, así que cada ejecución
