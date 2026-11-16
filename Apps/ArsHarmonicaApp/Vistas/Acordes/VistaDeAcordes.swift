@@ -7,8 +7,8 @@ import SwiftUI
 struct VistaDeAcordes: View {
     @Environment(\.notacion) private var notacion
     @EnvironmentObject private var navegacion: Navegacion
-    /// Lo elegido y lo que sale de ello, que se prueba sin la vista.
-    @State private var modelo = ModeloDeAcordes()
+    /// Lo elegido y lo que sale de ello, que se prueba sin la vista. Empieza por el último acorde escrito.
+    @State private var modelo = ModeloDeAcordes(recordado: .cargar())
     /// Lo que está sonando, para resaltar la nota en el pentagrama y en el mástil.
     @ObservedObject private var reproductor = Reproductor.compartido
     /// Las digitaciones y para qué texto e instrumento se calcularon. Mientras no coincidan con lo que hay
@@ -53,9 +53,13 @@ struct VistaDeAcordes: View {
         .selectorDeNotacionEnLaBarra()
         .toolbar {
             ToolbarItem {
+                MenuDeRecuerdos(.acordes, texto: $modelo.texto)
+            }
+            ToolbarItem {
                 BotonDeExportar(ficheros)
             }
         }
+        .recordando(modelo.texto, en: .acordes, valido: modelo.acorde != nil)
         // Un acorde pedido desde otra pestaña («Ver en Acordes»), ahora o si se pidió antes de abrir esta.
         .onChange(of: navegacion.acordePedido) { _ in tomarElAcordePedido() }
         .onAppear(perform: tomarElAcordePedido)

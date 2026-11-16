@@ -10,6 +10,8 @@ public enum AjustesDeLasApps {
     public static let claveDeOctavasEnSubindice = "octavasEnSubindice"
     /// El temperamento con que suena «Escuchar» (su ``claveDeTemperamento(_:)``), para `@AppStorage`.
     public static let claveDeTemperamento = "temperamentoElegido"
+    /// Lo último escrito en cada pestaña, el historial y los favoritos (`MemoriaDeLasApps`, en JSON).
+    public static let claveDeMemoria = "memoriaDeLasApps"
 
     /// Lo que se guarda de cada temperamento de `TemperamentoQueAfina.paraEscuchar`. Son las claves de siempre, así
     /// que lo que ya estaba guardado se sigue leyendo.

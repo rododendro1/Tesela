@@ -12,8 +12,8 @@ import SwiftUI
 /// siguen sus acordes en la red, paso a paso o mientras suenan, con las transformaciones P, L y R entre las tríadas.
 struct VistaDeTonnetz: View {
     @Environment(\.notacion) private var notacion
-    /// Lo elegido y lo que sale de ello, que se prueba sin la vista.
-    @State private var modelo = ModeloDelTonnetz()
+    /// Lo elegido y lo que sale de ello, que se prueba sin la vista. Empieza por lo que se escribió la última vez.
+    @State private var modelo = ModeloDelTonnetz(recordado: .cargar())
     @ObservedObject private var entradaMIDI = EntradaMIDI.compartida
     /// El último acorde tocado en el teclado MIDI y las teclas pulsadas la última vez que cambiaron.
     @State private var notasMIDI: [Int] = []
@@ -65,6 +65,11 @@ struct VistaDeTonnetz: View {
             }
         }
         .selectorDePartituras(isPresented: $abriendo) { modelo.abrir($0, en: notacion) }
+        .recordando(
+            modelo.textoInicial, en: .tonnetzRecorrido, valido: (try? Acorde(leyendo: modelo.textoInicial)) != nil
+        )
+        .recordando(modelo.textoAcorde, en: .tonnetzAcorde, valido: (try? Acorde(leyendo: modelo.textoAcorde)) != nil)
+        .recordando(modelo.textoEscala, en: .tonnetzEscala, valido: (try? Escala(leyendo: modelo.textoEscala)) != nil)
         .onChange(of: notacion.clave) { _ in modelo.cambiar(a: notacion) }
         .onAppear {
             abrirLaPartituraDePrueba()

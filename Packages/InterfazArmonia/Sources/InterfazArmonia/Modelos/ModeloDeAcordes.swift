@@ -58,10 +58,19 @@ public struct ModeloDeAcordes: Sendable {
     public static let trastesDeLasDigitaciones = 15
 
     /// Un modelo con el cifrado `texto` y lo demás como al abrir la app.
-    public init(texto: String = "Sol7/Si") {
+    public init(texto: String = ModeloDeAcordes.textoInicial) {
         self.texto = texto
         lectura = Self.leer(texto)
     }
+
+    /// Un modelo con el último cifrado que se escribió, si la memoria de las apps lo recuerda, y lo demás como al abrir
+    /// la app.
+    public init(recordado memoria: MemoriaDeLasApps) {
+        self.init(texto: memoria.ultimo(en: .acordes) ?? Self.textoInicial)
+    }
+
+    /// El cifrado con que se abre la app la primera vez.
+    public static let textoInicial = "Sol7/Si"
 
     /// El acorde leído, o `nil` si el texto no se lee.
     public var acorde: Acorde? { try? lectura.get() }

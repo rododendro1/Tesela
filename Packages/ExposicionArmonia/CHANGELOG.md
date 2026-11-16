@@ -1,5 +1,10 @@
 # Cambios
 
+## Sin publicar
+
+- `TextosDeApps.recientes`, `favoritos`, `anadirAFavoritos`, `quitarDeFavoritos` y `borrarElHistorial`, en los
+  trece idiomas, para el menú de lo reciente de las apps.
+
 ## 0.5.5 (2026-11-16)
 
 ### Cambios incompatibles

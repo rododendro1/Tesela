@@ -58,6 +58,15 @@ public struct ModeloDelTonnetz: Sendable {
         reiniciar()
     }
 
+    /// Un modelo con la tríada del recorrido, el acorde y la escala que se escribieron la última vez, si la memoria de
+    /// las apps los recuerda; el recorrido empieza en esa tríada.
+    public init(recordado memoria: MemoriaDeLasApps) {
+        textoInicial = memoria.ultimo(en: .tonnetzRecorrido) ?? textoInicial
+        textoAcorde = memoria.ultimo(en: .tonnetzAcorde) ?? textoAcorde
+        textoEscala = memoria.ultimo(en: .tonnetzEscala) ?? textoEscala
+        reiniciar()
+    }
+
     // MARK: El recorrido
 
     /// Vuelve a empezar el recorrido en la tríada escrita, o lo deja vacío si no se lee.

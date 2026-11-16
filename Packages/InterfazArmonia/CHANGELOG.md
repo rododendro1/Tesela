@@ -1,5 +1,15 @@
 # Cambios
 
+## Sin publicar
+
+- Las apps recuerdan: `MemoriaDeLasApps` guarda en los ajustes lo último escrito en cada pestaña (el acorde, la
+  escala y la progresión de Ars Harmonica; la tríada, el acorde y la escala de Tonnetz), un historial de veinte por
+  pestaña y los favoritos. `ModeloDeAcordes`, `ModeloDeAnalisis` y `ModeloDelTonnetz` tienen un
+  `init(recordado:)` que empieza por lo recordado, y `EleccionDeEscala.paraRecordar` y `recordada(_:)` guardan y
+  vuelven a la escala elegida. En las vistas, `recordando(_:en:valido:)` anota lo que se deja escrito un segundo, y
+  `MenuDeRecuerdos`, en la barra de Acordes, Escalas y Análisis, enseña los favoritos y lo reciente, marca o
+  desmarca un favorito y borra el historial.
+
 ## 0.5.4 (2026-11-15)
 
 - El paquete y el módulo `Interfaz` se llaman `InterfazArmonia` (`import InterfazArmonia`), y su carpeta es

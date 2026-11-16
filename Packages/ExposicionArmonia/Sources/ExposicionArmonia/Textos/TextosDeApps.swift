@@ -111,6 +111,12 @@ public struct TextosDeApps: TextosTraducidos {
     public let afinacionAlEscuchar: String
     public let exportar: String
     public let abrir: String
+    /// El menú de lo último visto en una pestaña (`MenuDeRecuerdos`): sus dos secciones y sus acciones.
+    public let recientes: String
+    public let favoritos: String
+    public let anadirAFavoritos: String
+    public let quitarDeFavoritos: String
+    public let borrarElHistorial: String
     public let rejillaHexagonal: String
     public let casillas: @Sendable (Int) -> String
     public let elegida: String
