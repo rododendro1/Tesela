@@ -71,6 +71,10 @@ public struct AcordeAnalizado: Hashable, Sendable, CustomStringConvertible, Coda
         case napolitana
         /// Sexta aumentada italiana, francesa o alemana: ♭6̂ y ♯4̂ con la tónica (It+6, Fr+6, Ger+6).
         case sextaAumentada
+        /// Séptima disminuida de nota común: una séptima disminuida que no es la sensible del acorde al que va, sino
+        /// que lo adorna con una nota en común, su fundamental: ♯ii°7 y ♯vi°7 en Do mayor, que van al I y al V
+        /// (Aldwell y Schachter 2011). El grado es el del acorde al que va.
+        case disminuidaDeNotaComun(de: Int)
         /// Prestado del modo homónimo: iv o ♭VI en mayor; I (tercera de picardía) en menor.
         case prestamo
         /// Ninguno de los anteriores.
@@ -216,6 +220,7 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
             return siguiente?.grado == destino ? 0.25 : 0.75
         case .cuartaYSextaCadencial: return 0
         case .napolitana, .sextaAumentada, .prestamo: return 0.5
+        case .disminuidaDeNotaComun(let destino): return siguiente?.grado == destino ? 0.25 : 0.75
         case .cromatico: return 1.5
         }
     }
@@ -283,6 +288,13 @@ extension Tonalidad {
             return analizado(secundaria.romano, .dominante, secundaria.categoria)
         }
 
+        // Séptima disminuida de nota común: adorna al acorde siguiente, mayor, con su fundamental en común.
+        if let siguiente, let destino = disminuidaDeNotaComun(acorde, siguiente: siguiente) {
+            return analizado(
+                delGrado(numeral(acorde, grado: grado)), FuncionTonal(grado: destino),
+                .disminuidaDeNotaComun(de: destino))
+        }
+
         // Sustituto tritonal: una séptima de dominante que baja medio tono a su destino.
         if let destino = sustitutoTritonalDe(acorde, siguiente: siguiente) {
             let romano = delGrado(.sustitutoTritonal, destino: destino == 1 ? nil : self.romano(grado: destino))
@@ -306,6 +318,18 @@ extension Tonalidad {
     }
 
     // MARK: Auxiliares
+
+    /// El grado del acorde al que adorna una séptima disminuida de nota común: el siguiente, si es mayor (también
+    /// con séptima) sobre la tónica o la dominante y su fundamental es una nota de la disminuida; `nil` si
+    /// no.
+    private func disminuidaDeNotaComun(_ acorde: Acorde, siguiente: Acorde) -> Int? {
+        guard acorde.tipo == .disminuidoSeptima, siguiente.tipo.esMayor,
+            acorde.notas.contains(where: { $0.esEnarmonica(de: siguiente.fundamental) })
+        else { return nil }
+        let destino = gradoDe(siguiente.fundamental)
+        guard [1, 5].contains(destino), notasPropias.contains(siguiente.fundamental) else { return nil }
+        return destino
+    }
 
     /// Grado de una nota por su nombre (1…7): en Do mayor, Si♭ y Si son el 7.º.
     package func gradoDe(_ nota: Nota) -> Int {

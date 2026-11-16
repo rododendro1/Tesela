@@ -149,6 +149,8 @@ extension Tonalidad {
             return [Escala(raiz, .lidio)]
         case .sextaAumentada:
             return [Escala(tonica + .sextaMenor, .lidioDominante)]
+        case .disminuidaDeNotaComun:
+            return [Escala(raiz, .disminuida)]
         case .prestamo:
             if esDominante { return [Escala(raiz, .lidioDominante)] }
             return Self.modos(sobre: raiz, de: madres(de: homonima))

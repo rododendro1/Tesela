@@ -194,7 +194,7 @@ extension PentagramaSVG {
         for (columna, pulsaciones) in porColumna where centros.indices.contains(columna) {
             for pulsacion in pulsaciones where (0..<tablatura.numeroDeCuerdas).contains(pulsacion.cuerda) {
                 let linea = pulsacion.linea(de: tablatura.numeroDeCuerdas)
-                let texto = String(pulsacion.traste)
+                let texto = pulsacion.rotulo ?? String(pulsacion.traste)
                 let mitad =
                     PentagramaSVG.anchoEstimado(
                         texto, cuerpoDeLetra: PentagramaSVG.letraDeLaTablatura,

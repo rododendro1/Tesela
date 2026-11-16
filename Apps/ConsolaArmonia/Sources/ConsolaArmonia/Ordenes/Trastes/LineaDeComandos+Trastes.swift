@@ -137,13 +137,15 @@ extension LineaDeComandos {
         return "(\(texto))"
     }
 
-    /// La digitación con una línea por cuerda: la más aguda arriba, con su traste (o «x»).
+    /// La digitación con una línea por cuerda: la más aguda arriba, con su traste (o «x») como lo numera quien toca
+    /// (`Mastil.rotulo(de:)`: «6½» en el dulcémele).
     static func diagrama(de forma: Digitacion, _ notacion: Notacion) -> [String] {
         let cuerdas = forma.mastil.encordado.afinacion
         let nombres = cuerdas.map { $0.nota.nombre(en: notacion) }
         let ancho = nombres.map(\.count).max() ?? 0
         return cuerdas.indices.reversed().map { i in
-            let traste = forma.trastes[i].map(String.init) ?? "x"
+            let traste =
+                forma.trastes[i].map { forma.mastil.rotulo(de: PosicionEnElMastil(cuerda: i, traste: $0)) } ?? "x"
             let relleno = String(repeating: " ", count: max(0, 2 - traste.count))
             return "      " + nombres[i].padding(hasta: ancho + 1) + "|-" + relleno + traste + "-"
         }

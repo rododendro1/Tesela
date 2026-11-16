@@ -67,6 +67,7 @@ private func categoria(_ categoria: AcordeAnalizado.Categoria) -> String {
     case .cuartaYSextaCadencial: return "cuarta y sexta cadencial"
     case .napolitana: return "napolitana"
     case .sextaAumentada: return "sexta aumentada"
+    case .disminuidaDeNotaComun: return "disminuida de nota común"
     case .prestamo: return "préstamo"
     case .cromatico: return "cromático"
     }

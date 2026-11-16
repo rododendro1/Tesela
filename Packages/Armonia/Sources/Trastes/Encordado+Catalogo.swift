@@ -42,6 +42,9 @@ package struct FichaDeEncordado: Sendable {
     /// Los trastes que les faltan a las cuerdas cortas, por su índice en `afinacion`: la quinta del banjo nace en el
     /// 5.º traste del mástil y tiene cinco menos.
     package var cuerdasCortas: [Int: Int] = [:]
+    /// Los trastes de `trastesDeLaOctava` que se añadieron entre dos de la escala y se numeran con «½»: el 6½ del
+    /// dulcémele, a un semitono de la octava.
+    package var mediosTrastes: Set<Int> = []
 }
 
 extension Encordado {
@@ -145,7 +148,7 @@ extension Encordado {
         .dulcemele: FichaDeEncordado(
             cuerdasPorOrden: [1, 1, 1], trastes: .diatonicos,
             datos: DatosDelCatalogo(estilos: [.folclore], referencias: [.sadie1984], lugares: [.pais(.estadosUnidos)]),
-            trastesDeLaOctava: [0, 2, 4, 5, 7, 9, 10, 11]),
+            trastesDeLaOctava: [0, 2, 4, 5, 7, 9, 10, 11], mediosTrastes: [11]),
         .pipa: FichaDeEncordado(
             cuerdasPorOrden: [1, 1, 1, 1], trastes: .cromaticos,
             datos: DatosDelCatalogo(referencias: [.sadie1984], tradicion: .china)),

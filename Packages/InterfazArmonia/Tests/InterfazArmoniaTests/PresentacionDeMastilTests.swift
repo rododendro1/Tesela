@@ -137,4 +137,35 @@ import Testing
         #expect(posicion(97, cuerdas: 1)?.cuerda == 0)
         #expect(posicion(60, cuerdas: 1) == nil)
     }
+
+    // MARK: Los mástiles que no son de guitarra
+
+    @Test func laQuintaCuerdaDelBanjoNaceEnElQuintoTraste() {
+        let banjo = Mastil(.banjo)
+        func posicion(_ x: Double) -> PosicionEnElMastil? {
+            PresentacionDeMastil.posicion(
+                enX: x, y: 108, ancho: 276, alto: 130, cuerdas: 5, rango: 0...12, conCanal: false, en: banjo)
+        }
+        #expect(posicion(78) == nil) // en el 3.º traste del mástil, la quinta cuerda aún no ha empezado
+        #expect(posicion(158) == PosicionEnElMastil(cuerda: 0, traste: 2)) // el 7.º del mástil
+        let digitacion = Digitacion(mastil: banjo, trastes: [2, 0, 0, 0, 0])
+        #expect(PresentacionDeMastil.rango(de: digitacion) == 6...9)
+    }
+
+    @Test func losTrastesQueSeDibujan() {
+        let guitarra = PresentacionDeMastil.trastes(de: Mastil(.guitarra), en: 0...3)
+        #expect(guitarra.map(\.linea) == [true, true, true, true])
+        #expect(guitarra.map(\.rotulo) == [nil, "1", "2", "3"])
+        #expect(guitarra.map(\.punto) == [false, false, false, true])
+        let violin = PresentacionDeMastil.trastes(de: Mastil(.violin), en: 0...3)
+        #expect(
+            violin.map(\.linea) == [true, false, false, false] && violin.allSatisfy { $0.rotulo == nil && !$0.punto })
+        let dulcemele = PresentacionDeMastil.trastes(de: Mastil(.dulcemele), en: 9...12)
+        #expect(dulcemele.map(\.linea) == [true, true, true, true])
+        #expect(dulcemele.map(\.rotulo) == ["5", "6", "6½", "7"])
+        #expect(
+            PresentacionDeMastil.trastes(de: Mastil(.dulcemele), en: 1...1) == [
+                .init(traste: 1, linea: false, rotulo: nil, punto: false)
+            ])
+    }
 }

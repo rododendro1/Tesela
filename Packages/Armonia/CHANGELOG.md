@@ -4,6 +4,16 @@
 
 ### Novedades
 
+- Los trastes, como los numera quien toca: `Mastil.rotulo(de:)` da el «6½» del dulcémele (sus trastes diatónicos,
+  contados uno tras otro) y el «7» de la quinta cuerda del banjo pisada dos trastes por encima de su cejilla, y la
+  tablatura los escribe así (`Tablatura.Pulsacion.rotulo`). `trasteDelMastil(_:)`,
+  `posicion(cuerda:enElTrasteDelMastil:)`, `trastesQueLeFaltan(aLaCuerda:)`, `rotulo(delTrasteDelMastil:)` y
+  `tieneLineaDeTraste(_:)` dicen dónde cae cada posición y qué trastes se dibujan; el diagrama del mástil de las apps
+  ya no dibuja trastes en los instrumentos sin trastes, solo los suyos en el dulcémele, y la quinta cuerda del banjo
+  desde el 5.º traste.
+- La séptima disminuida de nota común en el análisis (`AcordeAnalizado.Categoria.disminuidaDeNotaComun(de:)`): la
+  que adorna al I o al V con su fundamental en común, como ♯ii°7 en Do–Re♯°7–Do, y no es la sensible de nadie, con la
+  función del acorde al que va y la escala disminuida.
 - Dos ornamentos más con su signo: el Schleifer (`Articulacion.schleifer`, `{schleifer}`) y el trino con
   terminación de J. S. Bach (`.trinoConTerminacion`, `{prallmordent}`), con sus glifos de Bravura. El Schleifer va y
   vuelve por MusicXML (`<schleifer/>`) y el trino con terminación se escribe en LilyPond (`\prallmordent`); ABC,

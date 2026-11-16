@@ -6,7 +6,8 @@ import Teoria
 
 extension Tablatura {
     /// La tablatura de un mástil, con lo que se pulsa en cada nota (o acorde) por su índice: una línea por cuerda,
-    /// con las cuerdas contadas como en el mástil (0 es la más grave), y la afinación y el capo del instrumento.
+    /// con las cuerdas contadas como en el mástil (0 es la más grave), y la afinación y el capo del instrumento. Los
+    /// trastes se escriben como los numera quien toca (`Mastil.rotulo(de:)`): «6½» en el dulcémele.
     ///
     ///     let doDe5 = PosicionEnElMastil(cuerda: 1, traste: 3)   // el Do3, en la 5.ª cuerda
     ///     Tablatura(Mastil(.guitarra), posiciones: [0: [doDe5]]).pulsaciones[0]?.first?.cuerda   // 1
@@ -14,7 +15,14 @@ extension Tablatura {
         let encordado = mastil.encordado
         self.init(
             numeroDeCuerdas: encordado.numeroDeCuerdas,
-            pulsaciones: posiciones.mapValues { $0.map { Pulsacion(cuerda: $0.cuerda, traste: $0.traste) } },
+            pulsaciones: posiciones.mapValues {
+                $0.map { posicion in
+                    let rotulo = mastil.rotulo(de: posicion)
+                    return Pulsacion(
+                        cuerda: posicion.cuerda, traste: posicion.traste,
+                        rotulo: rotulo == String(posicion.traste) ? nil : rotulo)
+                }
+            },
             afinacion: encordado.sinCapo.afinacion, capo: encordado.capo > 0 ? encordado.capo : nil)
     }
 

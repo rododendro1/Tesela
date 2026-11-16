@@ -1,4 +1,5 @@
 import Foundation
+import Partituras
 import Testing
 
 @testable import Elementos
@@ -110,6 +111,38 @@ import Testing
         #expect(inventado.trastes == .cromaticos && inventado.referencias.isEmpty && inventado.estilos.isEmpty)
         #expect(inventado.lugaresDeOrigen.isEmpty && inventado.paisesDeOrigen.isEmpty)
         #expect(inventado.continentesDeOrigen.isEmpty)
+    }
+
+    /// Los trastes como los numera quien toca: los del dulcémele, uno tras otro y con el 6½; la quinta cuerda del
+    /// banjo, por los trastes del mástil.
+    @Test func losRotulosDeLosTrastes() throws {
+        let dulcemele = Mastil(.dulcemele)
+        let rotulos = dulcemele.trastes(deCuerda: 0).map {
+            dulcemele.rotulo(de: PosicionEnElMastil(cuerda: 0, traste: $0))
+        }
+        #expect(rotulos.prefix(10) == ["0", "1", "2", "3", "4", "5", "6", "6½", "7", "8"])
+        #expect(dulcemele.rotulo(delTrasteDelMastil: 23) == "13½" && dulcemele.rotulo(delTrasteDelMastil: 1) == nil)
+        #expect(dulcemele.tieneLineaDeTraste(0) && !dulcemele.tieneLineaDeTraste(3) && dulcemele.tieneLineaDeTraste(4))
+        // Con capo en el 2 (el traste 1), se cuenta desde él.
+        let conCapo = Mastil(Encordado.dulcemele.conCapo(2))
+        #expect(conCapo.rotulo(de: PosicionEnElMastil(cuerda: 0, traste: 2)) == "1")
+        #expect(conCapo.rotulo(delTrasteDelMastil: 9) == "5½")
+        let banjo = Mastil(.banjo)
+        #expect(banjo.trastesQueLeFaltan(aLaCuerda: 0) == 5 && banjo.trastesQueLeFaltan(aLaCuerda: 1) == 0)
+        #expect(banjo.rotulo(de: PosicionEnElMastil(cuerda: 0, traste: 2)) == "7")
+        #expect(banjo.rotulo(de: PosicionEnElMastil(cuerda: 0, traste: 0)) == "0")
+        #expect(banjo.rotulo(de: PosicionEnElMastil(cuerda: 1, traste: 2)) == "2")
+        #expect(banjo.posicion(cuerda: 0, enElTrasteDelMastil: 3) == nil)
+        #expect(banjo.posicion(cuerda: 0, enElTrasteDelMastil: 7) == PosicionEnElMastil(cuerda: 0, traste: 2))
+        #expect(Mastil(.violin).rotulo(delTrasteDelMastil: 3) == nil && !Mastil(.violin).tieneLineaDeTraste(3))
+        #expect(Mastil(.guitarra).rotulo(delTrasteDelMastil: 0) == nil)
+        // En la tablatura, con su rótulo.
+        let tablatura = Tablatura(dulcemele, posiciones: [0: [PosicionEnElMastil(cuerda: 2, traste: 11)]])
+        #expect(tablatura.pulsaciones[0]?.first?.rotulo == "6½")
+        let svg = try Digitacion(leyendo: "0-0-11", en: dulcemele).partitura().svg()
+        #expect(svg.contains(">6½<"))
+        let deGuitarra = Tablatura(Mastil(.guitarra), posiciones: [0: [PosicionEnElMastil(cuerda: 1, traste: 3)]])
+        #expect(deGuitarra.pulsaciones[0]?.first?.rotulo == nil)
     }
 
     /// Los trastes y la búsqueda, en los idiomas.

@@ -273,6 +273,11 @@ Lo que no ha entrado en los catálogos de ritmos, temperamentos, progresiones e 
   octava), y el mástil de `Trastes` cuenta en semitonos; con trastes cromáticos daría posiciones
   falsas. El koto no tiene mástil: trece cuerdas al aire sobre puentes móviles, que se afinan para cada pieza y se
   aprietan para subir la nota. Las afinaciones del koto ya están como escalas (Hirajōshi, Kumoijōshi…).
+- **Los trastes microtonales:** el mástil ya sabe de trastes que faltan (los del dulcémele, con su 6½) y de cuerdas
+  cortas (la quinta del banjo), pero sus posiciones siguen siendo semitonos enteros. Para el bağlama haría falta
+  contar las posiciones en cents y saber dónde está cada traste: en la práctica hay de 17 a 24 por octava, según el
+  instrumento y la escuela, y no se ha podido leer una tabla de sus distancias que sirva de fuente. Mientras no la
+  haya, el saz no entra en el catálogo.
 
 ## Carácter sin fuente
 
