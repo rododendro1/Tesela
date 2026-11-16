@@ -54,5 +54,10 @@ import Testing
         let json = try JSONEncoder().encode(sobreRe)
         #expect(try JSONDecoder().decode(OrnamentoPresentado.self, from: json) == sobreRe)
         #expect(OrnamentoPresentado(.schleifer, en: notacion).textoDeLosPasos == "−2 −1 0")
+        #expect(sobreRe.tocado == nil)
+        let tocado = OrnamentoPresentado(
+            .apoyaturaSuperior, sobre: Altura(.re, octava: 4), escala: Escala(.do), duracion: .negra, en: notacion)
+        #expect(tocado.tocado == ["Mi₄:8", "Re₄:8"])
+        #expect(tocado.ficha(en: notacion).contains(DatoPresentado(nombre: "Ritmo", valor: "Mi₄:8 Re₄:8")))
     }
 }

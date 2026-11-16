@@ -411,6 +411,7 @@ extension TextosDeApps {
         ordenesEnOctavas: "Oktávos kórusok",
         pasosDelOrnamento: "Lépések",
         suenaElOrnamento: "Szól",
+        ritmoDelOrnamento: "Ritmus",
         familiaDelInstrumento: "Család",
         instrumentosDeCuerda: "Hangszerek",
         ornamentosConNombre: "Díszítések",

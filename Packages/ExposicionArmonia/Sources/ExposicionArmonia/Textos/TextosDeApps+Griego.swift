@@ -411,6 +411,7 @@ extension TextosDeApps {
         ordenesEnOctavas: "Ομάδες σε οκτάβες",
         pasosDelOrnamento: "Βήματα",
         suenaElOrnamento: "Ακούγεται",
+        ritmoDelOrnamento: "Ρυθμός",
         familiaDelInstrumento: "Οικογένεια",
         instrumentosDeCuerda: "Όργανα",
         ornamentosConNombre: "Στολίδια",

@@ -83,6 +83,8 @@ extension PentagramaSVG {
         case .mordenteInferior: return GlifosSMuFL.mordenteInferior
         case .grupeto: return GlifosSMuFL.grupeto
         case .grupetoInvertido: return GlifosSMuFL.grupetoInvertido
+        case .schleifer: return GlifosSMuFL.schleifer
+        case .trinoConTerminacion: return GlifosSMuFL.trinoConTerminacion
         }
     }
 

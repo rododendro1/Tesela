@@ -411,6 +411,7 @@ extension TextosDeApps {
         ordenesEnOctavas: "Zortzidunetako ordenak",
         pasosDelOrnamento: "Urratsak",
         suenaElOrnamento: "Soinua",
+        ritmoDelOrnamento: "Erritmoa",
         familiaDelInstrumento: "Familia",
         instrumentosDeCuerda: "Instrumentuak",
         ornamentosConNombre: "Apaingarriak",

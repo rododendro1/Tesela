@@ -46,6 +46,10 @@ import Testing
         ] {
             #expect(veces(glifo, en: svg) == 1)
         }
+        // El Schleifer y el trino con terminación, con los suyos.
+        let barrocos = try Voz(leyendo: "Mi5:4{schleifer} Re5:4{trinoConTerminacion}").svgPentagrama(titulo: "Bach")
+        #expect(veces(GlifosSMuFL.schleifer, en: barrocos) == 1)
+        #expect(veces(GlifosSMuFL.trinoConTerminacion, en: barrocos) == 1)
         // Sin articulaciones, ninguno.
         let sin = try Voz(leyendo: "Do5:4 Re5:4").svgPentagrama(titulo: "Sin")
         #expect(veces(GlifosSMuFL.staccatoArriba, en: sin) == 0)

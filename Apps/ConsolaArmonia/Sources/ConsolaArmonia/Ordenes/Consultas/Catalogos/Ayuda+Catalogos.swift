@@ -129,14 +129,15 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeOrnamentos: [EntradaDeAyuda] = [
-        // ornamentos [<texto>] [--sobre <altura>] [--en <escala>] [--estadisticas]
+        // ornamentos [<texto>] [--sobre <altura>] [--en <escala>] [--duracion <figura>] [--estadisticas]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisOrnamentos),
             descripcion: TextosDeConsola.traduccion(\.descripcionOrnamentos),
             ejemplo: ejemplo(
-                "armonia ornamentos grupeto --sobre Re4 --en Do mayor", "armonia ornaments turn --over D4 --in C major"),
+                "armonia ornamentos grupeto --sobre Re4 --en Do mayor --duracion 4",
+                "armonia ornaments turn --over D4 --in C major --duration 4"),
             notas: TextosDeConsola.traduccion(\.notasOrnamentos),
-            opciones: [.sobre, .en, .estadisticas])
+            opciones: [.sobre, .en, .duracion, .estadisticas])
     ]
 
     static let ayudaDeAcordesConNombre: [EntradaDeAyuda] = [

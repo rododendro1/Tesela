@@ -65,6 +65,11 @@ extension LineaDeComandosTests {
         // Sin octava, en la cuarta; sin escala, en la mayor de la nota.
         #expect(salida("ornamentos mordente --sobre Mi") == "mordente: 0 −1 0 · Mi₄ Re♯₄ Mi₄\n")
         #expect(salida("ornaments turn --over D4 --in C major --ingles") == "turn: +1 0 −1 0 · E4 D4 C4 D4\n")
+        // Con --duracion, con la figura de cada nota; sin --sobre, sobre Do4.
+        #expect(
+            salida("ornamentos grupeto --sobre Re4 --en Do mayor --duracion 4")
+                == "grupeto: +1 0 −1 0 · Mi₄:16 Re₄:16 Do₄:16 Re₄:16\n")
+        #expect(salida("ornaments upper appoggiatura --duration 2 --ingles").hasSuffix("· D4:4 C4:4\n"))
         let ninguno = resultado("ornamentos", "zzz")
         #expect(ninguno.codigo == 1 && ninguno.error.contains("ningún ornamento"))
         let fuera = resultado("ornamentos", "trino", "--sobre", "Fa#4", "--en", "Do", "mayor")

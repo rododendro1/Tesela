@@ -4,6 +4,17 @@
 
 ### Novedades
 
+- Dos ornamentos más con su signo: el Schleifer (`Articulacion.schleifer`, `{schleifer}`) y el trino con
+  terminación de J. S. Bach (`.trinoConTerminacion`, `{prallmordent}`), con sus glifos de Bravura. El Schleifer va y
+  vuelve por MusicXML (`<schleifer/>`) y el trino con terminación se escribe en LilyPond (`\prallmordent`); ABC,
+  MEI y GUIDO no tienen signo para ellos y no los escriben.
+- `OrnamentoConNombre.tocado(sobre:en:duracion:)` toca cualquier ornamento del catálogo con su ritmo: las
+  apoyaturas se quedan con la mitad de la nota (dos tercios con puntillo), el trino con terminación acaba en la de
+  debajo y la principal, y el trino corto y el Schleifer van en fusas. `Evento.realizandoElOrnamento(en:)` y el MIDI
+  lo usan.
+- En la consola, `ornamentos … --duracion 4` da la figura de cada nota del ornamento (`Mi₄:16 Re₄:16 Do₄:16 Re₄:16`),
+  y `instrumentos --familia laudes --agrupar familia` filtra y agrupa los instrumentos por familias (guitarras,
+  bajos, guitarras-pequenas, laudes, banjos-y-citaras, cuerda-frotada), además de por sus trastes.
 - Los ornamentos suenan: `Evento.realizandoElOrnamento(en:)`, `Voz.conLosOrnamentosRealizados(en:)` y
   `Partitura.conLosOrnamentosRealizados(en:)` tocan el trino, los mordentes y los grupetos en sus notas, por los
   grados de la escala (la de la tonalidad de la partitura), con su ritmo: el trino en fusas todo lo que dura la nota,

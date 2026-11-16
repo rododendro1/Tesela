@@ -125,6 +125,7 @@ package struct EscritorGUIDO: EscritorDeTexto {
             case .mordenteInferior: etiqueta = "\\mord<inverted=\"true\">"
             case .grupeto: etiqueta = "\\turn"
             case .grupetoInvertido: etiqueta = "\\turn<inverted=\"true\">"
+            case .schleifer, .trinoConTerminacion: continue
             }
             texto = etiqueta + "(" + texto + ")"
         }
