@@ -9,10 +9,10 @@ nombran se quedaban atrás sin que nadie lo viera. Este script mira, sin compila
     manifiesto, y que los productos de cada paquete son sus módulos.
   - En `.github/workflows/ci.yml`:
       - la matriz de `paquetes` (todos menos el motor, que tiene su job);
-      - la de `herramientas`;
+      - la de `swiftpm`;
       - la de `cobertura`, con los mínimos del manifiesto;
       - que `macos`, `macos-paquetes` y `documentacion` pasan por cada paquete;
-      - que `cambios-en-las-apps` mira todos los paquetes;
+      - que `cambios` mira todos los paquetes;
       - que los filtros de pruebas del motor (`^(…)Tests`) y su bucle «Sin avisos» nombran todos sus módulos.
   - Que `documentacion.yml` construye la documentación de cada paquete y `.spi.yml` la de cada módulo.
   - Que `Scripts/compilacion/compilar_todo.sh` pasa por cada paquete, app, ejemplo y herramienta, y que sus
@@ -88,10 +88,10 @@ comparar(
     [p.strip() for p in paquetes.group(1).split(",")] if paquetes else [],
     [p["nombre"] for p in PAQUETES if p is not MOTOR],
 )
-herramientas = [ENTRADA.match(l) for l in ci["herramientas"].splitlines()]
+swiftpm = [ENTRADA.match(l) for l in ci["swiftpm"].splitlines()]
 comparar(
-    "ci.yml, matriz de `herramientas`",
-    [f"{m.group(1)} ({m.group(2)})" for m in herramientas if m],
+    "ci.yml, matriz de `swiftpm`",
+    [f"{m.group(1)} ({m.group(2)})" for m in swiftpm if m],
     [f"{a['nombre']} ({a['ruta']})" for a in SWIFTPM],
 )
 cobertura = [ENTRADA.match(l) for l in ci["cobertura"].splitlines()]
@@ -107,10 +107,10 @@ for job in ("macos", "macos-paquetes", "documentacion"):
     for paquete in PAQUETES:
         if f"working-directory: Packages/{paquete['nombre']}\n" not in ci.get(job, ""):
             errores.append(f"ci.yml, job `{job}`: no pasa por Packages/{paquete['nombre']}")
-cambios = re.search(r"grep -qE '(\^\(Apps/ArsHarmonicaApp/[^']*)'", ci["cambios-en-las-apps"])
+cambios = re.search(r"grep -qE '(\^\(Apps/ArsHarmonicaApp/[^']*)'", ci["cambios"])
 for paquete in PAQUETES:
     if not cambios or paquete["nombre"] not in cambios.group(1):
-        errores.append(f"ci.yml, `cambios-en-las-apps`: no mira Packages/{paquete['nombre']}")
+        errores.append(f"ci.yml, `cambios`: no mira Packages/{paquete['nombre']}")
 for job in ("motor", "cobertura", "macos", "macos-paquetes"):
     if not filtros_con_todos_los_modulos(f"ci.yml, job `{job}`", ci[job]):
         errores.append(f"ci.yml, job `{job}`: no tiene el filtro de las pruebas del motor")
