@@ -71,6 +71,11 @@ extension FuncionDeNota {
     public var caracter: [Caracter] { [] }
 }
 
+extension OrnamentoConNombre {
+    /// Ningún ornamento tiene carácter.
+    public var caracter: [Caracter] { [] }
+}
+
 extension Caracter {
     /// Nombre → lo que dicen sus fuentes, en orden cronológico (por `anio`; los que no lo tienen, al final).
     package static func tabla(_ filas: [(String, [Caracter])]) -> [String: [Caracter]] {

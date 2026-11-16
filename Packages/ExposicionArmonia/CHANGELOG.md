@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- `RitmoPresentado` y `TemperamentoPresentado` tienen `tradicion` y `lugaresDeOrigen`, y sus fichas, la fila
+  «Lugares de origen».
 - `Notacion.etiqueta(_:)` escribe un texto de las apps como etiqueta dentro de una línea, con la primera letra en
   minúscula salvo en alemán, y `EscalaSobreAcordePresentada.resumenEnLinea` es el resumen con las etiquetas así.
 - `TextosDeApps.recientes`, `favoritos`, `anadirAFavoritos`, `quitarDeFavoritos` y `borrarElHistorial`, en los

@@ -47,6 +47,19 @@ import Testing
             redondear(TemperamentoCircular.young.desviaciones) == [
                 0, -9.78, -3.91, -5.87, -7.82, -1.96, -11.73, -1.96, -7.82, -5.87, -3.91, -9.78,
             ])
+        // Los que estrechan unas quintas y ensanchan otras: cuántas de cada.
+        func quintas(_ temperamento: TemperamentoCircular) -> (estrechas: Int, anchas: Int) {
+            let pura = 1200 * log2(1.5)
+            return (
+                temperamento.quintas.filter { $0 < pura - 1e-9 }.count,
+                temperamento.quintas.filter { $0 > pura + 1e-9 }.count
+            )
+        }
+        #expect(quintas(.werckmeisterIV) == (5, 2) && quintas(.werckmeisterV) == (5, 1))
+        #expect(quintas(.kellner) == (5, 0) && quintas(.barnes) == (6, 0) && quintas(.lehman) == (8, 1))
+        // En Kellner, Do–Sol es ⅕ de coma pitagórica más estrecha.
+        let quintaDeKellner = TemperamentoCircular.kellner.quintas[0]
+        #expect(abs(quintaDeKellner - (1200 * log2(1.5) - RazonDeFrecuencias.comaPitagorica.cents / 5)) <= 1e-9)
         // En Kirnberger III la tercera Do–Mi es pura.
         let kirnberger = TemperamentoCircular.kirnbergerIII
         #expect(abs(kirnberger.cents(desde: "Do4", hasta: "Mi4") - (RazonDeFrecuencias(5, 4).cents)) <= 1e-9)

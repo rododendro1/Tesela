@@ -33,6 +33,12 @@ extension ElementoConNombrePresentado {
         }
         return datos + (origen?.datos(en: notacion) ?? [])
     }
+
+    /// La fila de los lugares de origen, si tiene alguno: «Lugares de origen: Andalucía».
+    public func datosDelLugar(_ lugares: [String], en notacion: Notacion) -> [DatoPresentado] {
+        guard !lugares.isEmpty else { return [] }
+        return [DatoPresentado(nombre: notacion.texto(\.lugaresDeOrigen), valor: lugares.joined(separator: " · "))]
+    }
 }
 
 extension TemperamentoPresentado: ElementoConNombrePresentado {}

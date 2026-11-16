@@ -402,6 +402,23 @@ struct TextosDeTeoria: TextosTraducidos {
     let paisArgelia: String
     let paisTunez: String
     let paisLibia: String
+    let paisAlemania: String
+    let paisFrancia: String
+    let paisItalia: String
+    let paisPaisesBajos: String
+    let paisPortugal: String
+    let paisBulgaria: String
+    let paisMacedoniaDelNorte: String
+    let paisRusia: String
+    let paisCuba: String
+    let paisArgentina: String
+    let paisVenezuela: String
+    let paisColombia: String
+    let paisGhana: String
+    let paisNigeria: String
+    let paisCongo: String
+    let paisMexico: String
+    let paisSudafrica: String
     let zonaLevante: String
     let zonaGolfo: String
     let zonaMagreb: String

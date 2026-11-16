@@ -628,6 +628,13 @@ extension Referencia {
     public static let apel1953 = Referencia(
         "apel1953", .libro, autores: ["Apel, Willi"], titulo: "The Notation of Polyphonic Music, 900–1600",
         anio: 1953, editorial: "The Mediaeval Academy of America", lugar: "Cambridge (Massachusetts)")
+    /// Toussaint, los ritmos euclídeos: el algoritmo de Euclides da las líneas de tiempo de muchas tradiciones (las
+    /// palmas venda, la samba, el york-samai, el nawakhat, el khafif-e-ramal).
+    public static let toussaint2005 = Referencia(
+        "toussaint2005", .articulo, autores: ["Toussaint, Godfried T."],
+        titulo: "The Euclidean Algorithm Generates Traditional Musical Rhythms", anio: 2005,
+        publicadoEn: "Proceedings of BRIDGES: Mathematical Connections in Art, Music and Science", lugar: "Banff",
+        paginas: "47–56")
     /// Fernández, la teoría del flamenco: el compás de doce tiempos de la soleá y la bulería, y el de la seguiriya.
     public static let fernandez2004 = Referencia(
         "fernandez2004", .libro, autores: ["Fernández, Lola"], titulo: "Teoría musical del flamenco", anio: 2004,
@@ -645,6 +652,28 @@ extension Referencia {
     public static let sethares2005 = Referencia(
         "sethares2005", .libro, autores: ["Sethares, William A."], titulo: "Tuning, Timbre, Spectrum, Scale",
         anio: 2005, editorial: "Springer", lugar: "Londres")
+
+    /// Sauveur, el sistema general de los intervalos: la octava en 43 merides iguales.
+    public static let sauveur1701 = Referencia(
+        "sauveur1701", .articulo, autores: ["Sauveur, Joseph"],
+        titulo:
+            "Système général des intervalles des sons, et son application à tous les systèmes et à tous les instruments de musique",
+        anio: 1701, publicadoEn: "Histoire de l'Académie royale des sciences", lugar: "París")
+    /// Kellner, su reconstrucción del temperamento de Bach: cinco quintas, ⅕ de coma pitagórica más estrechas.
+    public static let kellner1977 = Referencia(
+        "kellner1977", .articulo, autores: ["Kellner, Herbert Anton"],
+        titulo: "Eine Rekonstruktion der wohltemperierten Stimmung von Johann Sebastian Bach", anio: 1977,
+        publicadoEn: "Das Musikinstrument", volumen: "26")
+    /// Barnes, el temperamento de Bach leído en las terceras del Clave bien temperado.
+    public static let barnes1979 = Referencia(
+        "barnes1979", .articulo, autores: ["Barnes, John"],
+        titulo: "Bach's Keyboard Temperament: Internal Evidence from the Well-Tempered Clavier", anio: 1979,
+        publicadoEn: "Early Music", volumen: "7", paginas: "236–249")
+    /// Lehman, el temperamento de Bach leído en el dibujo de la portada del Clave bien temperado.
+    public static let lehman2005 = Referencia(
+        "lehman2005", .articulo, autores: ["Lehman, Bradley"],
+        titulo: "Bach's Extraordinary Temperament: Our Rosetta Stone", anio: 2005, publicadoEn: "Early Music",
+        volumen: "33", paginas: "3–23, 211–231")
 
     // MARK: Notas
 
@@ -689,6 +718,46 @@ extension Referencia {
         titulo: "Multiple Division of the Octave and the Tonal Resources of 19-Tone Temperament", anio: 1961,
         editorial: "Indiana University", lugar: "Bloomington")
 
+    // MARK: Instrumentos
+
+    /// El New Grove de los instrumentos: las cuerdas de cada uno, sus órdenes, sus trastes y sus afinaciones.
+    public static let sadie1984 = Referencia(
+        "sadie1984", .libro, autores: ["Sadie, Stanley"], titulo: "The New Grove Dictionary of Musical Instruments",
+        anio: 1984, editorial: "Macmillan", lugar: "Londres")
+    /// «El Maestro» de Luis Milán, el primer libro para vihuela, en cifra.
+    public static let milan1536 = Referencia(
+        "milan1536", .partitura, autores: ["Milán, Luis"],
+        titulo: "Libro de música de vihuela de mano intitulado El Maestro", anio: 1536, lugar: "Valencia")
+
+    // MARK: Bajo continuo y ciclos
+
+    /// Christensen, la regla de la octava en la teoría del bajo continuo: de Campion (1716) a Fenaroli.
+    public static let christensen1992 = Referencia(
+        "christensen1992", .articulo, autores: ["Christensen, Thomas"],
+        titulo: "The ‘Règle de l'Octave’ in Thorough-Bass Theory and Practice", anio: 1992,
+        publicadoEn: "Acta Musicologica", volumen: "64", paginas: "91–117")
+    /// El tratado de Campion, que da por primera vez la regla de la octava.
+    public static let campion1716 = Referencia(
+        "campion1716", .tratado, autores: ["Campion, François"],
+        titulo: "Traité d'accompagnement et de composition selon la règle des octaves de musique", anio: 1716,
+        lugar: "París")
+    /// Cohn, las operaciones neorriemannianas y sus ciclos: el octatónico, de P y R alternadas.
+    public static let cohn1997 = Referencia(
+        "cohn1997", .articulo, autores: ["Cohn, Richard"],
+        titulo: "Neo-Riemannian Operations, Parsimonious Trichords, and Their “Tonnetz” Representations", anio: 1997,
+        publicadoEn: "Journal of Music Theory", volumen: "41", paginas: "1–66")
+
+    // MARK: Ornamentos
+
+    /// La «Explication» del Clavier-Büchlein para Wilhelm Friedemann Bach: la tabla de ornamentos de J. S. Bach.
+    public static let bach1720 = Referencia(
+        "bach1720", .partitura, autores: ["Bach, Johann Sebastian"],
+        titulo: "Clavier-Büchlein vor Wilhelm Friedemann Bach: Explication unterschiedlicher Zeichen", anio: 1720)
+    /// El Versuch de C. P. E. Bach: el trino, el Pralltriller, el mordente, el grupeto y el Schleifer.
+    public static let bachCPE1753 = Referencia(
+        "bachCPE1753", .tratado, autores: ["Bach, Carl Philipp Emanuel"],
+        titulo: "Versuch über die wahre Art das Clavier zu spielen", anio: 1753, lugar: "Berlín")
+
     /// Todas las obras, en el orden de este fichero.
     public static let catalogo: [Referencia] = [
         .powers2001, .barbour1951, .jairazbhoy1971, .kaufmann1968, .kaufmann1976, .bor1999, .rowell1992, .touma1996,
@@ -723,7 +792,9 @@ extension Referencia {
         .ortiz1553, .riepel1755, .campbell2019, .cannon2002, .scherbaum2022,
         .bonifacic2001,
         .rechberger2008, .busoni1916, .toussaint2013, .clayton2000, .viswanathan2004, .brailoiu1951, .apel1953,
-        .fernandez2004, .lindley2001, .sethares2005, .haynes2002, .neumann1978, .aron1523, .zhu1584,
-        .werckmeister1691, .huygens1691, .kirnberger1771, .bosanquet1876, .mandelbaum1961,
+        .toussaint2005, .fernandez2004, .lindley2001, .sethares2005, .sauveur1701, .kellner1977,
+        .barnes1979, .lehman2005, .haynes2002, .neumann1978, .aron1523, .zhu1584,
+        .werckmeister1691, .huygens1691, .kirnberger1771, .bosanquet1876, .mandelbaum1961, .sadie1984, .milan1536,
+        .christensen1992, .campion1716, .cohn1997, .bach1720, .bachCPE1753,
     ]
 }

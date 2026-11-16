@@ -61,7 +61,7 @@ referencias y su nombre en los trece idiomas, y da los cents de cada paso de su 
 los de doce notas, la quinta del lobo y las terceras mayores:
 
 ```swift
-TemperamentoConNombre.catalogo.count                                     // 22
+TemperamentoConNombre.catalogo.count                                     // 32
 TemperamentoConNombre.buscar(nombre: "meantone") == .mesotonicoCuartoDeComa   // true
 TemperamentoConNombre.comas53.pasosPorOctava                             // 53
 TemperamentoConNombre.divisiones31.autor                                 // "Christiaan Huygens"

@@ -29,6 +29,18 @@ import Testing
         #expect(ProgresionConNombre.blues.grados.count == 12)
     }
 
+    /// La regla de la octava da un acorde por cada grado del bajo, subiendo y bajando, y el ciclo octatónico alterna
+    /// mayor y menor sobre las cuatro notas a distancia de tercera menor.
+    @Test func reglaDeLaOctavaYCicloOctatonico() {
+        #expect(ProgresionConNombre.reglaDeLaOctava.grados.count == 8)
+        #expect(ProgresionConNombre.reglaDeLaOctavaDescendente.grados.count == 8)
+        #expect(ProgresionConNombre.reglaDeLaOctava.anioDeOrigen == 1716)
+        #expect(ProgresionConNombre.buscar(nombre: "regla de la octava") == .reglaDeLaOctava)
+        #expect(
+            ProgresionConNombre.cicloOctatonico.acordes(sobre: .do)
+                == ["Do", "Dom", "Mib", "Mibm", "Solb", "Solbm", "La", "Lam"])
+    }
+
     /// Cada fichero de idioma da todas las progresiones del catálogo, una sola vez y sin repetir nombres.
     @Test func nombresEnTodosLosIdiomas() {
         let catalogo = ProgresionConNombre.catalogo

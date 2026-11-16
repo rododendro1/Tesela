@@ -4,6 +4,28 @@
 
 ### Novedades
 
+- Los ritmos y los temperamentos dicen de dónde vienen, como las escalas: `tradicion`, `lugaresDeOrigen`,
+  `paisesDeOrigen` y `continentesDeOrigen` (Andalucía en la soleá, Cuba en las claves, la India en los tāla,
+  Alemania en Werckmeister III), y los temperamentos, sus `estilos`. 17 países nuevos en `Pais`, de Alemania a
+  Sudáfrica. En la consola, `ritmos` y `temperamentos` tienen `--lugar` y `--agrupar`, y `temperamentos`, `--epoca`.
+- 24 instrumentos más en `Encordado.todos`, que pasa de 10 a 34: guitarras en afinaciones abiertas y Nashville,
+  ukelele barítono, mandola, bandurria, laúd, laúd renacentista, vihuela, ud, buzuki, charango, cuatro venezolano,
+  tres cubano, guitarra portuguesa, balalaica, banjo, dulcémele, pipa, violín, viola, violonchelo y contrabajo. Cada
+  uno tiene ficha: `cuerdasPorOrden` y `cuerdasReales` (las dobles de la mandolina), `trastes` (cromáticos,
+  diatónicos o ninguno), su origen, su año y sus referencias (el New Grove de los instrumentos, Sadie 1984).
+- 18 ritmos más, de 42 a 60: los siete tāla sūlādi carnáticos, las palmas venda, el fume-fume y la samba, la alegría,
+  la guajira, la petenera y el fandango, y el york-samai, el nawakhat, el khafif-e-ramal y el agsag-samai, que
+  Toussaint (2005) da como euclídeos.
+- 10 temperamentos más, de 22 a 32: Werckmeister IV y V, Kellner, Barnes y Lehman, que cierran el círculo, y las
+  divisiones en 5 (Indonesia), 7 (Tailandia), 17, 43 (Sauveur) y 96 (Julián Carrillo).
+- Tres progresiones más, de 58 a 61: la regla de la octava, subiendo y bajando (Campion 1716), y el ciclo octatónico
+  (Cohn 1997).
+- Un catálogo nuevo, `OrnamentoConNombre`: el trino, el trino con terminación, el trino corto (Pralltriller), los
+  mordentes, los grupetos, las apoyaturas y el Schleifer, como los dan las tablas de J. S. Bach (1720) y de C. P. E.
+  Bach (1753). `alturas(sobre:en:)` los realiza por los grados de una escala: el grupeto sobre Re4 en Do mayor es Mi4
+  Re4 Do4 Re4. Tiene sus nombres en los trece idiomas, y `EjemploCatalogos` escribe `ornamentos.tsv`.
+- `encordados.tsv` dice las cuerdas por orden, los trastes, el origen y las referencias de cada instrumento, y
+  `ritmos.tsv` y `temperamentos.tsv`, su tradición y sus lugares, países y continentes.
 - El carácter de las tonalidades, de cuatro fuentes:
   - Mattheson (*Das neu-eröffnete Orchestre*, 1713, en Steblin 1983), en catorce tonalidades. Es un testigo nuevo,
     `TestigoDelCaracter.mattheson`, y va solo con los afectos.

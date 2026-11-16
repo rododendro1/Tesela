@@ -9,7 +9,7 @@ import Elementos
 // sale de eso.
 
 /// Un elemento de uno de los catálogos con nombre: `TipoDeEscala`, `AcordeConNombre`, `ProgresionConNombre`,
-/// `RitmoConNombre`, `TemperamentoConNombre`, `NotaConNombre` y `FuncionDeNota`.
+/// `RitmoConNombre`, `TemperamentoConNombre`, `NotaConNombre`, `FuncionDeNota` y `OrnamentoConNombre`.
 ///
 ///     func fila(_ elemento: some ElementoConNombre, en notacion: Notacion) -> String {
 ///         elemento.nombres(en: notacion).joined(separator: ", ")
@@ -96,3 +96,4 @@ extension RitmoConNombre: ElementoConNombre, Identifiable { public typealias ID 
 extension TemperamentoConNombre: ElementoConNombre, Identifiable { public typealias ID = String }
 extension NotaConNombre: ElementoConNombre, Identifiable { public typealias ID = String }
 extension FuncionDeNota: ElementoConNombre, Identifiable { public typealias ID = String }
+extension OrnamentoConNombre: ElementoConNombre, Identifiable { public typealias ID = String }

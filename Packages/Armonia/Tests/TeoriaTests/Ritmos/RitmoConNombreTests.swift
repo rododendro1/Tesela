@@ -51,6 +51,53 @@ import Testing
         #expect(RitmoConNombre.euclideo(ataques: 3, pulsos: 0) == "")
     }
 
+    /// Los ritmos que Toussaint da como euclídeos son una rotación del ritmo euclídeo de sus ataques y sus pulsos.
+    @Test func euclideosDeToussaint() {
+        let ritmos: [RitmoConNombre] = [.palmasVenda, .samba, .yorkSamai, .nawakhat, .khafifERamal, .agsagSamai]
+        for ritmo in ritmos {
+            let euclideo = RitmoConNombre.euclideo(ataques: ritmo.ataques.count, pulsos: ritmo.pulsos)
+            let rotaciones = (0..<ritmo.pulsos).map { String((euclideo + euclideo).dropFirst($0).prefix(ritmo.pulsos)) }
+            #expect(rotaciones.contains(ritmo.patron), "\(ritmo)")
+        }
+    }
+
+    /// De dónde viene cada ritmo: su tradición, sus lugares, sus países y sus continentes.
+    @Test func lugares() {
+        #expect(RitmoConNombre.solea.lugaresDeOrigen == [.region(.andalucia)])
+        #expect(RitmoConNombre.solea.paisesDeOrigen == [.espana])
+        #expect(RitmoConNombre.solea.continentesDeOrigen == [.europa])
+        #expect(RitmoConNombre.claveDeSon.paisesDeOrigen == [.cuba])
+        #expect(RitmoConNombre.palmasVenda.paisesDeOrigen == [.sudafrica])
+        #expect(RitmoConNombre.dhruvaTala.tradicion == .india)
+        #expect(RitmoConNombre.khafifERamal.tradicion == .persia)
+        #expect(TemperamentoConNombre.werckmeisterIII.paisesDeOrigen == [.alemania])
+        #expect(TemperamentoConNombre.divisiones96.paisesDeOrigen == [.mexico])
+        #expect(TemperamentoConNombre.werckmeisterIII.lugaresDeOrigen == [.pais(.alemania)])
+        #expect(TemperamentoConNombre.werckmeisterIII.continentesDeOrigen == [.europa])
+        #expect(TemperamentoConNombre.werckmeisterIII.estilos == [.clasica])
+        #expect(RitmoConNombre.samba.continentesDeOrigen == [.america])
+        // Las épocas de uso van después de la de origen.
+        for ritmo in RitmoConNombre.catalogo {
+            if let origen = ritmo.epocaDeOrigen { #expect(ritmo.epocasDeUso.allSatisfy { $0 > origen }, "\(ritmo)") }
+        }
+        #expect(ProgresionConNombre.folia.epocas.first == .renacimiento)
+    }
+
+    /// Sin lugares, los de origen salen de la tradición (su lugar histórico, sus zonas, sus países o sus
+    /// continentes) o, sin tradición, de los países de sus estilos.
+    @Test func lugaresDeLaTradicionYDeLosEstilos() {
+        #expect(DatosDelCatalogo().lugaresDeOrigen.isEmpty)
+        for tradicion in Tradicion.allCases {
+            let datos = DatosDelCatalogo(tradicion: tradicion)
+            #expect(!datos.lugaresDeOrigen.isEmpty, "\(tradicion)")
+            #expect(!datos.continentesDeOrigen.isEmpty, "\(tradicion)")
+        }
+        let flamenco = DatosDelCatalogo(estilos: [.flamenco])
+        #expect(flamenco.paisesDeOrigen == [.espana], Comment(rawValue: "\(flamenco.lugaresDeOrigen)"))
+        #expect(DatosDelCatalogo(estilos: [.flamenco, .clasica]).lugaresDeOrigen.isEmpty)
+        #expect(RitmoConNombre.maqsum.lugaresDeOrigen == DatosDelCatalogo(tradicion: .mundoArabe).lugaresDeOrigen)
+    }
+
     /// Cada fichero de idioma da todos los ritmos del catálogo, una sola vez y sin repetir nombres.
     @Test func nombresEnTodosLosIdiomas() {
         let catalogo = RitmoConNombre.catalogo

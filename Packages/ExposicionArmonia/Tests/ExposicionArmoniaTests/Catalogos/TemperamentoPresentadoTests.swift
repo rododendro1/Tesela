@@ -12,7 +12,8 @@ import Testing
         #expect(meso.nombre == "mesotónico de 1/4 de coma")
         #expect(
             meso.ficha(en: notacion).map(\.valor) == [
-                "temperamentos regulares", "Pietro Aron", "mesotónico", "Renacimiento (1523)", "12", "696.578",
+                "temperamentos regulares", "Pietro Aron", "mesotónico", "Renacimiento (1523)", "Italia", "12",
+                "696.578",
             ])
         let datos = meso.datos(en: notacion)
         #expect(datos.contains(DatoPresentado(nombre: "Quinta del lobo", valor: "737.637")))
@@ -33,7 +34,9 @@ import Testing
         let datos = comas.datos(en: notacion)
         #expect(datos.first?.valor == "22.642 (equal steps)")
         #expect(datos.count == 2)
-        #expect(comas.ficha(en: notacion).count == 4) // con «53 comas» en otros nombres
+        // Con «53 comas» en otros nombres y Turquía, por su tradición, en los lugares de origen.
+        #expect(comas.ficha(en: notacion).count == 5)
+        #expect(comas.tradicion == "turquia" && comas.lugaresDeOrigen == ["Turkey"])
         let werckmeister = TemperamentoPresentado(.werckmeisterIII, en: notacion).datos(en: notacion)
         #expect(werckmeister.first?.valor == "90.225 · 107.82")
     }

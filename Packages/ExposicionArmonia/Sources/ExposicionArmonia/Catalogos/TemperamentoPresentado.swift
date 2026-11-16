@@ -25,6 +25,10 @@ public struct TemperamentoPresentado: Hashable, Sendable, Codable {
     public let autor: String?
     /// El año, la época y la obra que lo documenta (`OrigenPresentado`); `nil` si no se sabe ninguno.
     public let origen: OrigenPresentado?
+    /// La tradición, por su clave (`turquia`, `india`); `nil` en los de la occidental.
+    public let tradicion: String?
+    /// Los lugares de donde viene, por su nombre: «Alemania», «Turquía».
+    public let lugaresDeOrigen: [String]
     /// Las citas de las obras donde se lee.
     public let referencias: [String]
     public let pasosPorOctava: Int
@@ -51,6 +55,8 @@ public struct TemperamentoPresentado: Hashable, Sendable, Codable {
         familia = temperamento.familia.nombre(en: notacion)
         autor = temperamento.autor
         origen = OrigenPresentado(temperamento, en: notacion)
+        tradicion = temperamento.tradicion?.rawValue
+        lugaresDeOrigen = temperamento.lugaresDeOrigen.map { $0.nombre(en: notacion) }
         referencias = temperamento.referencias.map(\.cita)
         pasosPorOctava = estadisticas.pasosPorOctava
         pasos = temperamento.pasos
@@ -85,7 +91,7 @@ public struct TemperamentoPresentado: Hashable, Sendable, Codable {
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
         var datos = [DatoPresentado(nombre: notacion.texto(\.familiaDeTemperamento), valor: familia)]
         if let autor { datos.append(DatoPresentado(nombre: notacion.texto(\.autorDelTemperamento), valor: autor)) }
-        datos += datosDelCatalogo(en: notacion)
+        datos += datosDelCatalogo(en: notacion) + datosDelLugar(lugaresDeOrigen, en: notacion)
         datos.append(DatoPresentado(nombre: notacion.texto(\.pasosPorOctava), valor: "\(pasosPorOctava)"))
         if let quinta {
             datos.append(DatoPresentado(nombre: notacion.texto(\.quintaDelTemperamento), valor: Self.cents(quinta)))

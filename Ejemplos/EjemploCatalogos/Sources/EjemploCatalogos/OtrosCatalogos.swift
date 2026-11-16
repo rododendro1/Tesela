@@ -1,31 +1,43 @@
 import Armonia
 
 // Los demás catálogos del motor (con los alias, y las variantes si las tienen, en los trece idiomas): los ritmos, los
-// temperamentos, las notas con nombre y sus funciones, las escalas microtonales, las referencias, los encordados, los
-// teclados isomórficos y cuadrados, los modos gregorianos y los instrumentos de la partitura.
+// temperamentos, las notas con nombre y sus funciones, los ornamentos, las escalas microtonales, las referencias, los
+// encordados, los teclados isomórficos y cuadrados, los modos gregorianos y los instrumentos de la partitura.
 
 let columnasDeRitmos: [String] =
     columnasDeNombres + columnasDeAliasYVariantes + [
         "familia", "patron", "agrupacion", "unidad", "compas", "pulsos", "ataques", "fuertes", "intervalos",
         "vector_de_distancias", "euclideo", "profundo", "simetrias_por_rotacion", "uniformidad", "contratiempo",
-        "sincopa",
+        "sincopa", "tradicion", "lugares_de_origen", "paises_de_origen", "continentes_de_origen",
     ] + columnasDeLaFecha + columnasDelCaracter + ["estilos", "referencias"]
 
 func filaDeRitmo(_ ritmo: RitmoConNombre) -> [String] {
     let estadisticas = ritmo.estadisticas
     let otros: [String] = aliasYVariantes(de: ritmo)
-    let resto: [String] = [
-        ritmo.familia.nombre, ritmo.patron,
-        ritmo.agrupacion.map(String.init).joined(separator: "+"), String(ritmo.unidad), ritmo.compas.description,
-        String(estadisticas.pulsos), String(estadisticas.ataques), String(estadisticas.fuertes),
-        lista(estadisticas.intervalos),
-        lista(estadisticas.vectorDeDistancias), siONo(estadisticas.euclideo), siONo(estadisticas.profundo),
-        String(estadisticas.simetriasPorRotacion), numero(estadisticas.uniformidad), String(estadisticas.contratiempo),
-        numero(estadisticas.sincopa),
-    ]
+    let resto: [String] =
+        [
+            ritmo.familia.nombre, ritmo.patron,
+            ritmo.agrupacion.map(String.init).joined(separator: "+"), String(ritmo.unidad), ritmo.compas.description,
+            String(estadisticas.pulsos), String(estadisticas.ataques), String(estadisticas.fuertes),
+            lista(estadisticas.intervalos),
+            lista(estadisticas.vectorDeDistancias), siONo(estadisticas.euclideo), siONo(estadisticas.profundo),
+            String(estadisticas.simetriasPorRotacion), numero(estadisticas.uniformidad),
+            String(estadisticas.contratiempo),
+            numero(estadisticas.sincopa),
+        ] + lugares(ritmo.tradicion, ritmo.lugaresDeOrigen, ritmo.paisesDeOrigen, ritmo.continentesDeOrigen)
     let estilos = ritmo.estilos.map(\.nombre).joined(separator: " · ")
     let alFinal: [String] = fecha(de: ritmo) + caracter(de: ritmo) + [estilos, citas(ritmo.referencias)]
     return nombres(de: ritmo) + otros + resto + alFinal
+}
+
+/// La tradición, los lugares, los países (por su código ISO) y los continentes de origen, como en las escalas.
+func lugares(
+    _ tradicion: Tradicion?, _ lugares: [Lugar], _ paises: [Pais], _ continentes: [Continente]
+) -> [String] {
+    [
+        tradicion?.nombre ?? "", lugares.map(\.nombre).joined(separator: " · "),
+        paises.map(\.codigoISO).joined(separator: " "), continentes.map(\.nombre).joined(separator: " · "),
+    ]
 }
 
 let ritmos = Catalogo(
@@ -42,8 +54,9 @@ let columnasDeLosErrores: [String] = razonesJustas.map { "error_\($0)" }
 let columnasTrasLosErrores: [String] =
     [
         "quinta_del_lobo", "tercera_mas_pura", "tercera_mas_lejana", "desviaciones_del_igual", "pasos",
-        "para_escuchar", "sistema_microtonal",
-    ] + columnasDeLaFecha + ["referencias"]
+        "para_escuchar", "sistema_microtonal", "tradicion", "lugares_de_origen", "paises_de_origen",
+        "continentes_de_origen",
+    ] + columnasDeLaFecha + ["estilos", "referencias"]
 let columnasDeTemperamentos: [String] =
     columnasDeNombres + columnasAntesDeLosErrores + columnasDeLosErrores + columnasTrasLosErrores
 
@@ -62,7 +75,11 @@ func filaDeTemperamento(_ temperamento: TemperamentoConNombre) -> [String] {
         siONo(TemperamentoQueAfina.paraEscuchar.contains { $0.temperamento == temperamento }),
         temperamento.sistemaDeAlturas?.rawValue ?? "",
     ]
-    let alFinal: [String] = fecha(de: temperamento) + [citas(temperamento.referencias)]
+    let deDonde: [String] = lugares(
+        temperamento.tradicion, temperamento.lugaresDeOrigen, temperamento.paisesDeOrigen,
+        temperamento.continentesDeOrigen)
+    let estilos = temperamento.estilos.map(\.nombre).joined(separator: " · ")
+    let alFinal: [String] = deDonde + fecha(de: temperamento) + [estilos, citas(temperamento.referencias)]
     return nombres(de: temperamento) + otros + ficha + errores + resto + alFinal
 }
 
@@ -111,6 +128,26 @@ func filaDeFuncion(_ funcion: FuncionDeNota) -> [String] {
 let funciones = Catalogo(
     fichero: "funciones-de-nota.tsv", columnas: columnasDeFunciones, filas: FuncionDeNota.catalogo.map(filaDeFuncion),
     obras: FuncionDeNota.catalogo.flatMap(\.referencias))
+
+let columnasDeOrnamentos: [String] =
+    columnasDeNombres + columnasDeAliasYVariantes + ["pasos", "sobre_mi4_en_do_mayor"] + columnasDeLaFecha
+    + ["estilos", "referencias"]
+
+/// Un ornamento: sus pasos por grados desde la nota principal y cómo suena sobre Mi4 en Do mayor.
+func filaDeOrnamento(_ ornamento: OrnamentoConNombre) -> [String] {
+    let otros: [String] = aliasYVariantes(de: ornamento)
+    let alturas = ornamento.alturas(sobre: Altura(.mi, octava: 4), en: Escala(.do, .mayor)) ?? []
+    let resto: [String] = [
+        ornamento.pasos.map(String.init).joined(separator: " "), alturas.map(\.description).joined(separator: " "),
+    ]
+    let alFinal: [String] =
+        fecha(de: ornamento) + [ornamento.estilos.map(\.nombre).joined(separator: " · "), citas(ornamento.referencias)]
+    return nombres(de: ornamento) + otros + resto + alFinal
+}
+
+let ornamentos = Catalogo(
+    fichero: "ornamentos.tsv", columnas: columnasDeOrnamentos, filas: OrnamentoConNombre.catalogo.map(filaDeOrnamento),
+    obras: OrnamentoConNombre.catalogo.flatMap(\.referencias))
 
 /// Una escala microtonal: sus pasos, sus cents y lo que se apartan de la temperada.
 func filaDeEscala(_ escala: AfinacionPropia) -> [String] {
@@ -163,7 +200,9 @@ private let citadaPor: [String: [String]] = {
         citas(TipoDeEscala.catalogo, "escala"), citas(AcordeConNombre.catalogo, "acorde"),
         citas(ProgresionConNombre.catalogo, "progresión"), citas(RitmoConNombre.catalogo, "ritmo"),
         citas(TemperamentoConNombre.catalogo, "temperamento"), citas(NotaConNombre.catalogo, "nota"),
-        citas(FuncionDeNota.catalogo, "función"), microtonales,
+        citas(FuncionDeNota.catalogo, "función"), citas(OrnamentoConNombre.catalogo, "ornamento"), microtonales,
+        Encordado.todos.flatMap { encordado in encordado.referencias.map { ($0.clave, "encordado " + encordado.nombre) }
+        },
         Tonalidad.conCaracter.flatMap { tonalidad in
             tonalidad.caracter.map { ($0.referencia.clave, "tonalidad " + tonalidad.nombre) }
         },
@@ -186,14 +225,27 @@ let referencias = Catalogo(
 
 let encordados = Catalogo(
     fichero: "encordados.tsv",
-    columnas: ["nombre", "nombre_en_ingles", "cuerdas", "afinacion", "capo", "reentrante"],
+    columnas: columnasDeNombres + [
+        "cuerdas", "ordenes", "cuerdas_por_orden", "afinacion", "capo", "reentrante", "trastes", "tradicion",
+        "lugares_de_origen", "paises_de_origen", "continentes_de_origen", "anio_de_origen", "epoca_de_origen",
+        "estilos", "referencias",
+    ],
     filas: Encordado.todos.map { encordado in
-        [
-            encordado.nombre, encordado.nombre(en: .delIdioma(.ingles)), String(encordado.numeroDeCuerdas),
+        let nombres = Idioma.allCases.map { encordado.nombre(en: .delIdioma($0)) }
+        let ficha: [String] = [
+            String(encordado.cuerdasReales), String(encordado.numeroDeCuerdas), lista(encordado.cuerdasPorOrden),
             encordado.afinacion.map(\.description).joined(separator: " "), String(encordado.capo),
-            siONo(encordado.esReentrante),
+            siONo(encordado.esReentrante), encordado.trastes.rawValue,
         ]
-    })
+        let deDonde: [String] = lugares(
+            encordado.tradicion, encordado.lugaresDeOrigen, encordado.paisesDeOrigen, encordado.continentesDeOrigen)
+        let fecha: [String] = [
+            encordado.anioDeOrigen.map(String.init) ?? "", encordado.epocaDeOrigen?.nombre ?? "",
+            encordado.estilos.map(\.nombre).joined(separator: " · "), citas(encordado.referencias),
+        ]
+        return nombres + ficha + deDonde + fecha
+    },
+    obras: Encordado.todos.flatMap(\.referencias))
 
 let tecladosIsomorficos = Catalogo(
     fichero: "teclados-isomorficos.tsv",

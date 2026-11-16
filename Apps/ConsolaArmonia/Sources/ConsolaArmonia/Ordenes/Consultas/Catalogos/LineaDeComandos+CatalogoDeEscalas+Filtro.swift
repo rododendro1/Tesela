@@ -119,41 +119,14 @@ extension LineaDeComandos {
             return agrupados(grupos.flatMap(\.tipos), por: agrupacion, en: notacion)
         }
 
-        /// Con `--agrupar continente`, un grupo por continente de origen, en el orden de `Continente.allCases`; con
-        /// `--agrupar pais`, uno por país, y después uno por continente con las que no tienen país (la mayor, en
-        /// Europa). Una escala de varios sale en todos los suyos; las que no tienen lugar (las propias), al final. Con
-        /// `--agrupar epoca`, uno por época de origen, en orden, y al final las que no tienen.
+        /// Agrupadas como pide `--agrupar` (`LineaDeComandos.agrupados(_:por:en:epoca:paises:continentes:)`).
         func agrupados(
             _ tipos: [TipoDeEscala], por agrupacion: AgrupacionDeEscalas, en notacion: Notacion
         ) -> [GrupoDeEscalas] {
-            var grupos: [GrupoDeEscalas] = []
-            if agrupacion == .epoca {
-                // Por su época de origen, en orden, con sus años: «Barroco · 1600–1750».
-                for epoca in Epoca.allCases {
-                    let deLaEpoca = tipos.filter { $0.epocaDeOrigen == epoca }
-                    let titulo = epoca.nombre(en: notacion) + " · " + epoca.textoDeLosAnios
-                    if !deLaEpoca.isEmpty { grupos.append((titulo, deLaEpoca)) }
-                }
-                let sinEpoca = tipos.filter { $0.epocaDeOrigen == nil }
-                if !sinEpoca.isEmpty { grupos.append((Mensaje.sinEpoca.texto(en: notacion), sinEpoca)) }
-                return grupos
-            }
-            if agrupacion == .pais {
-                for pais in Pais.allCases {
-                    let delPais = tipos.filter { $0.paisesDeOrigen.contains(pais) }
-                    if !delPais.isEmpty { grupos.append((pais.nombre(en: notacion), delPais)) }
-                }
-            }
-            for continente in Continente.allCases {
-                let delContinente = tipos.filter {
-                    $0.continentesDeOrigen.contains(continente)
-                        && (agrupacion == .continente || $0.paisesDeOrigen.isEmpty)
-                }
-                if !delContinente.isEmpty { grupos.append((continente.nombre(en: notacion), delContinente)) }
-            }
-            let sinLugar = tipos.filter { $0.continentesDeOrigen.isEmpty }
-            if !sinLugar.isEmpty { grupos.append((Mensaje.sinLugar.texto(en: notacion), sinLugar)) }
-            return grupos
+            LineaDeComandos.agrupados(
+                tipos, por: agrupacion, en: notacion, epoca: \.epocaDeOrigen, paises: \.paisesDeOrigen,
+                continentes: \.continentesDeOrigen
+            ).map { ($0.titulo, $0.elementos) }
         }
 
         /// Con `--orden`, de la más brillante a la más oscura, o de menos a más notas; a igualdad, en el orden del
@@ -220,15 +193,7 @@ extension LineaDeComandos {
         }
         // `--afinacion microtonal`, `--tuning just`: por el carácter de su afinación.
         if let texto = try entrada.valor(.afinacion) { filtro.afinacion = try claveDeAfinacion(leyendo: texto) }
-        if let texto = try entrada.valor(.agrupar) {
-            let clave = claveDeBusqueda(texto)
-            guard
-                let encontrada = nombresDeLasAgrupaciones.first(where: {
-                    claveDeBusqueda($0.espanol) == clave || claveDeBusqueda($0.ingles) == clave
-                })
-            else { throw ErrorDeUso.agrupacionDesconocida(texto) }
-            filtro.agrupacion = encontrada.agrupacion
-        }
+        if let texto = try entrada.valor(.agrupar) { filtro.agrupacion = try agrupacion(leyendo: texto) }
         // `--notas 5`: solo las de cinco notas (las pentatónicas).
         filtro.numeroDeNotas = try numeroDeNotasPedido(&entrada)
         // `--orden brillo`, `--sin-semitonos`, `--regulares`: por lo que se mide de cada escala.

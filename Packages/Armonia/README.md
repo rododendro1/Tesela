@@ -285,6 +285,9 @@ Sources/
 │   ├── Funciones/         FuncionDeNota (grados, modo gregoriano, rāga, maqam, blue notes, adornos y notas extrañas)
 │   │   │                  y su catálogo
 │   │   └── Nombres/       NombresDeFunciones y un fichero por idioma (`NombresDeFunciones+Catalan.swift`…)
+│   ├── Ornamentos/        OrnamentoConNombre (trinos, mordentes, grupetos, apoyaturas y el Schleifer, con su
+│   │   │                  realización por los grados de una escala) y su catálogo
+│   │   └── Nombres/       NombresDeOrnamentos y un fichero por idioma (`NombresDeOrnamentos+Catalan.swift`…)
 │   └── Afinacion/         TemperamentoRegular, TemperamentoCircular y AfinacionJusta (las frecuencias),
 │       │                  TemperamentoQueAfina (los del catálogo que afinan las doce notas, con los del botón
 │       │                  «Escuchar»), AfinacionDeEscala (una escala con sus microtonos), BaseDeHewlett

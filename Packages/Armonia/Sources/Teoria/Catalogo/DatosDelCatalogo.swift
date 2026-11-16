@@ -22,10 +22,18 @@ package struct DatosDelCatalogo: Sendable {
     package let documentada: Referencia?
     /// El año en que aparece, si no lo da `documentada`: el de Werckmeister III (1691), el del La 440 (1939).
     package let anio: Int?
+    /// La tradición de la que es, si no es de la occidental de los estilos: la India en los tāla, el mundo árabe en
+    /// los iqāʿāt, Turquía en las 53 comas.
+    package let tradicion: Tradicion?
+    /// De dónde viene, si se sabe más que su tradición: Andalucía en la soleá, Alemania en Werckmeister III.
+    package let lugares: [Lugar]
 
     package init(
-        estilos: [Estilo] = [], referencias: [Referencia] = [], documentada: Referencia? = nil, anio: Int? = nil
+        estilos: [Estilo] = [], referencias: [Referencia] = [], documentada: Referencia? = nil, anio: Int? = nil,
+        tradicion: Tradicion? = nil, lugares: [Lugar] = []
     ) {
+        self.tradicion = tradicion
+        self.lugares = lugares.sorted { $0.orden < $1.orden }
         self.estilos = Estilo.sinRepetir(estilos)
         self.referencias = Referencia.unicas([documentada].compactMap { $0 } + referencias)
         self.documentada = documentada
@@ -35,10 +43,10 @@ package struct DatosDelCatalogo: Sendable {
 
 extension DatosDelCatalogo {
     /// El año de la obra que lo documenta, si la tiene, o el que se da.
-    var anioDeOrigen: Int? { documentada?.anio ?? anio }
+    package var anioDeOrigen: Int? { documentada?.anio ?? anio }
 
     /// La de su año, o si no la más antigua de las de uso de sus estilos; `nil` si ninguna da nada.
-    var epocaDeOrigen: Epoca? {
+    package var epocaDeOrigen: Epoca? {
         if let anio = anioDeOrigen { return Epoca(anio: anio) }
         return estilos.flatMap(\.epocasDeUso).min()
     }
@@ -54,4 +62,42 @@ extension DatosDelCatalogo {
 
     /// La de origen y las de uso, en orden.
     var epocas: [Epoca] { ([epocaDeOrigen].compactMap { $0 } + epocasDeUso).sorted() }
+}
+
+// MARK: De dónde viene
+
+extension DatosDelCatalogo {
+    /// Los lugares de donde viene, los más concretos que se saben, como en las escalas:
+    ///
+    /// 1. los suyos (la soleá, Andalucía; Werckmeister III, Alemania);
+    /// 2. el lugar histórico de su tradición (Bizancio, en los 72 moria);
+    /// 3. las zonas de su tradición (los iqāʿāt, el Levante, Egipto, Irak, el Golfo y el Magreb);
+    /// 4. los países de sus estilos, si todos son de uno (la bossa nova, del jazz, Estados Unidos), o los de su
+    ///    tradición (los tāla, la India);
+    /// 5. los continentes de su tradición.
+    ///
+    /// Vacío si no se sabe nada.
+    package var lugaresDeOrigen: [Lugar] {
+        if !lugares.isEmpty { return lugares }
+        if let historico = tradicion?.lugarHistorico { return [.historico(historico)] }
+        if let zonas = tradicion?.zonas, !zonas.isEmpty { return zonas.map(Lugar.zona) }
+        let deLosEstilos: [Pais] =
+            !estilos.isEmpty && estilos.allSatisfy({ !$0.paises.isEmpty })
+            ? Pais.allCases.filter { pais in estilos.contains { $0.paises.contains(pais) } } : []
+        let paises = tradicion == nil ? deLosEstilos : (tradicion?.paises ?? [])
+        if !paises.isEmpty { return Pais.allCases.filter(paises.contains).map(Lugar.pais) }
+        return (tradicion?.continentes ?? []).map(Lugar.continente)
+    }
+
+    /// Los países de donde viene, en el orden de `Pais.allCases`, con los que contienen sus lugares.
+    package var paisesDeOrigen: [Pais] {
+        let lugares = Set(lugaresDeOrigen.flatMap(\.conLosQueLoContienen))
+        return Pais.allCases.filter { lugares.contains(.pais($0)) }
+    }
+
+    /// Los continentes de donde viene, en el orden de `Continente.allCases`.
+    package var continentesDeOrigen: [Continente] {
+        let lugares = Set(lugaresDeOrigen.flatMap(\.conLosQueLoContienen))
+        return Continente.allCases.filter { lugares.contains(.continente($0)) }
+    }
 }

@@ -219,7 +219,7 @@ import Hexagonos
     @Test func afinacionYRepresentaciones4() throws {
         // Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md, bloque 4
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/AfinacionYRepresentaciones.md"#, 4)
-        comprobar(TemperamentoConNombre.catalogo.count, #"22"#, doc, 0)
+        comprobar(TemperamentoConNombre.catalogo.count, #"32"#, doc, 0)
         comprobar(TemperamentoConNombre.buscar(nombre: "meantone") == .mesotonicoCuartoDeComa, #"true"#, doc, 1)
         comprobar(TemperamentoConNombre.comas53.pasosPorOctava, #"53"#, doc, 2)
         comprobar(TemperamentoConNombre.divisiones31.autor, #""Christiaan Huygens""#, doc, 3)
