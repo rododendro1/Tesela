@@ -14,7 +14,10 @@
   - El servidor MCP da a cada herramienta una propiedad por opción, además de `argumentos`: una marca es un booleano
     (`"vakra": true`) y una opción con valor, un texto (`"tradicion": "india"`), con los valores que propone el
     autocompletado en `enum` y lo que dice de ella la ayuda como descripción. Se pueden mezclar con `argumentos`, y
-    una propiedad que no es de la orden es un error (`-32602`).
+    una propiedad que no es de la orden es un error (`-32602`). No ofrece las opciones que solo dan texto
+    (`analizar --escalas`, `acorde --bebop`, `posiciones --formas`…), que cada orden declara en `sinJSON`; con
+    `--json`, esas opciones dicen que no dan salida en JSON en lugar de «opción desconocida».
+  - `--bajo-cifrado` sale en la ayuda de `realizar`, que es donde se lee, y no en la de `analizar`.
 
 ### Cambios
 

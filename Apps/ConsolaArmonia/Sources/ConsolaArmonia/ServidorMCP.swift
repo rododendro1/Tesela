@@ -145,13 +145,13 @@ struct ServidorMCP {
 
     /// La opción de la orden que lleva esa propiedad; `nil` si no es ninguna.
     static func opcion(_ propiedad: String, de orden: LineaDeComandos.Orden) -> OpcionDeOrden? {
-        orden.declaradas.first { Self.propiedad($0) == propiedad }
+        orden.conJSON.first { Self.propiedad($0) == propiedad }
     }
 
-    /// Una propiedad por opción de la orden: un booleano si es una marca y un texto si lleva valor, con los valores
-    /// que propone el autocompletado (`LineaDeComandos.valores(de:en:)`) en `enum`, y lo que dice de ella su ayuda,
-    /// en el idioma de la notación, como descripción. Toda opción declarada sale en alguna parte de su ayuda: lo
-    /// comprueban las pruebas del servidor.
+    /// Una propiedad por opción de la orden que da JSON (`Orden.conJSON`): un booleano si es una marca y un texto si
+    /// lleva valor, con los valores que propone el autocompletado (`LineaDeComandos.valores(de:en:)`) en `enum`, y lo
+    /// que dice de ella su ayuda, en el idioma de la notación, como descripción. Toda opción declarada sale en alguna
+    /// parte de su ayuda: lo comprueban las pruebas del servidor.
     func propiedades(de orden: LineaDeComandos.Orden) -> [String: Any] {
         let (idioma, grafia) = (notacion.textos, notacion.grafiaDeLosTextos)
         // Primero las partes que explican opciones («--madre Kharaharapriyā … deja las que salen de esa escala»); si
@@ -166,7 +166,7 @@ struct ServidorMCP {
             $0.trimmingCharacters(in: .whitespaces)
         }
         var propiedades: [String: Any] = [:]
-        for opcion in orden.declaradas {
+        for opcion in orden.conJSON {
             var propiedad: [String: Any] = ["type": opcion.llevaValor ? "string" : "boolean"]
             if opcion.llevaValor, let valores = LineaDeComandos.valores(de: opcion, en: orden) {
                 propiedad["enum"] = valores
@@ -207,7 +207,7 @@ struct ServidorMCP {
         } else {
             palabras = LineaDeComandos.palabras(deLaLinea: argumentos["argumentos"] as? String ?? "")
         }
-        for opcion in orden.declaradas {
+        for opcion in orden.conJSON {
             guard let valor = argumentos[propiedad(opcion)] else { continue }
             if !opcion.llevaValor {
                 if valor as? Bool == true { palabras.append(opcion.nombres[0]) }

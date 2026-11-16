@@ -91,15 +91,18 @@ extension LineaDeComandosTests {
         #expect((propiedades["agrupar"]?["enum"] as? [String])?.contains("epoca") == true)
         let madre = try #require(propiedades["madre"]?["description"] as? String)
         #expect(madre.hasPrefix("--madre Kharaharapriyā"), Comment(rawValue: madre))
-        #expect(Set(propiedades.keys) == Set(escalas.declaradas.map(ServidorMCP.propiedad)).union(["argumentos"]))
-        // Toda orden con opciones las ofrece, y cada una con su explicación.
+        #expect(Set(propiedades.keys) == Set(escalas.conJSON.map(ServidorMCP.propiedad)).union(["argumentos"]))
+        // Toda orden con opciones ofrece las que dan JSON, y cada una con su explicación.
         for orden in ServidorMCP.herramientas {
             let suyas = try #require(
                 (servidor.descripcion(de: orden)["inputSchema"] as? [String: Any])?["properties"]
                     as? [String: [String: Any]])
-            for opcion in orden.declaradas {
+            for opcion in orden.conJSON {
                 let propiedad = ServidorMCP.propiedad(opcion)
                 #expect(suyas[propiedad]?["description"] != nil, "\(orden.nombres[0]) \(propiedad)")
+            }
+            for opcion in orden.sinJSON {
+                #expect(suyas[ServidorMCP.propiedad(opcion)] == nil, "\(orden.nombres[0]) \(opcion.nombres[0])")
             }
         }
         // Dar las opciones como propiedades es lo mismo que escribirlas detrás.
@@ -131,5 +134,31 @@ extension LineaDeComandosTests {
         #expect(escritas.count == 1)
         let sesion = resultado("mcp")
         #expect(sesion.codigo == 2 && sesion.error.contains("mcp se ejecuta solo"))
+    }
+
+    /// Las opciones que solo dan texto están declaradas en su orden, y con `--json` dan `sinSalidaJSON`, no «opción
+    /// desconocida»; las que no, se leen también con `--json`.
+    @Test func lasOpcionesSinJSON() {
+        for orden in LineaDeComandos.ordenes where orden.json != nil {
+            for opcion in orden.sinJSON {
+                let nombre = "\(orden.nombres[0]) \(opcion.nombres[0])"
+                #expect(orden.declaradas.contains(opcion), Comment(rawValue: nombre))
+                let palabras = [orden.nombres[0], opcion.nombres[0]] + (opcion.llevaValor ? ["Do"] : []) + ["--json"]
+                let resultado = LineaDeComandos.ejecutar(palabras)
+                #expect(resultado.codigo == 2 && resultado.error.contains("sinSalidaJSON"), Comment(rawValue: nombre))
+            }
+        }
+        #expect(resultado("analizar", "Do", "Fa", "Sol7", "Do", "--escalas", "--json").error.contains("sinSalidaJSON"))
+        #expect(resultado("analizar", "Do", "Fa", "Sol7", "Do", "--estadisticas", "--json").codigo == 0)
+        // --bajo-cifrado es de realizar, también en su ayuda.
+        let realizar = LineaDeComandos.ordenes.first { $0.nombres[0] == "realizar" }
+        let analizar = LineaDeComandos.ordenes.first { $0.nombres[0] == "analizar" }
+        #expect(realizar?.declaradas.contains(.bajoCifrado) == true)
+        #expect(analizar?.declaradas.contains(.bajoCifrado) == false)
+        #expect(salida("ayuda realizar").contains("--bajo-cifrado"))
+        #expect(!salida("ayuda analizar").contains("--bajo-cifrado"))
+        #expect(
+            resultado("realizar", "La", "Fa:6", "Mi:#", "La", "--bajo-cifrado", "--en", "La menor", "--json").codigo
+                == 0)
     }
 }

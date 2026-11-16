@@ -7,6 +7,7 @@ extension LineaDeComandos {
     static let ordenesDeCatalogos: [Orden] = [
         Orden(
             nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas, json: { try escalasJSON($0, $1.notacion) },
+            sinJSON: [.comparar, .escaleraDe, .mapa, .parecidasA, .vecinasDe],
             ejecutar: { try escalas($0, $1.notacion) }),
         Orden(
             nombres: ["tradiciones", "traditions"], ayuda: ayudaDeTradiciones,
@@ -21,7 +22,8 @@ extension LineaDeComandos {
             ejecutar: { try ritmos($0, $1.notacion) }),
         Orden(
             nombres: ["temperamentos", "temperaments"], ayuda: ayudaDeTemperamentos,
-            json: { try temperamentosJSON($0, $1.notacion) }, ejecutar: { try temperamentos($0, $1.notacion) }),
+            json: { try temperamentosJSON($0, $1.notacion) }, sinJSON: [.colores, .quintas, .reloj],
+            ejecutar: { try temperamentos($0, $1.notacion) }),
         Orden(
             nombres: ["notas", "notes"], ayuda: ayudaDeNotasConNombre, json: { try notasJSON($0, $1.notacion) },
             ejecutar: { try notas($0, $1.notacion) }),

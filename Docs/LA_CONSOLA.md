@@ -158,7 +158,9 @@ claude mcp add armonia -- armonia mcp
 ```
 
 Cada herramienta recibe en `argumentos` lo que se escribiría en la terminal tras el nombre de la orden, y cada opción
-es además una propiedad propia de su esquema, con su descripción y, si tiene pocos valores, su lista. Estas dos
+que da JSON es además una propiedad propia de su esquema, con su descripción y, si tiene pocos valores, su lista. Las
+que solo dan texto (`analizar --escalas`, `acorde --bebop`…) no se ofrecen: con `--json`, dicen que no dan salida en
+JSON. Estas dos
 llamadas a `escala` son la misma:
 
 ```json

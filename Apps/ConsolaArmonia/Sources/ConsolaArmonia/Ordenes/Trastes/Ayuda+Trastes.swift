@@ -11,6 +11,7 @@ extension LineaDeComandos {
         Orden(
             nombres: ["posiciones", "positions"], ayuda: ayudaDePosiciones,
             json: { try posicionesJSON($0, $1.notacion) },
+            sinJSON: [.arpegio, .formas, .bajando, .barrido, .idaYVuelta, .secuencia],
             ejecutar: { try posiciones($0, $1.notacion) }),
     ]
 

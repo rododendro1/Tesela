@@ -6,6 +6,7 @@ extension LineaDeComandos {
         Orden(
             nombres: ["analizar", "analyze", "analyse"], ayuda: ayudaDeAnalizar,
             json: { try analizarJSON($0, $1.notacion) },
+            sinJSON: [.archivo, .ventana, .escalas, .notasGuia, .conduccion, .comparar, .bajo],
             ejecutar: { try analizar($0, $1) }),
         Orden(
             nombres: ["armonizar", "harmonize", "harmonise"],
@@ -25,7 +26,7 @@ extension LineaDeComandos {
         Orden(
             nombres: ["transponer", "transportar", "transpose"],
             ayuda: ayudaDeTransponer,
-            json: { try transponerJSON($0, $1.notacion) },
+            json: { try transponerJSON($0, $1.notacion) }, sinJSON: [.archivo, .formato],
             ejecutar: { try transponer($0, $1) }),
         Orden(
             nombres: ["rearmonizar", "reharmonize", "reharmonise"],
@@ -51,13 +52,6 @@ extension LineaDeComandos {
                 "armonia analizar --archivo coral.mid",
                 "armonia analyze --file chorale.musicxml"),
             opciones: [.archivo, .ventana]),
-        // realizar <bajo cifrado> --bajo-cifrado [--en <tonalidad>]
-        EntradaDeAyuda(
-            sintaxis: TextosDeConsola.traduccion(\.sintaxisRealizarBajoCifrado),
-            descripcion: TextosDeConsola.traduccion(\.descripcionRealizarBajoCifrado),
-            ejemplo: ejemplo(
-                "armonia realizar Do La:6 Sol:7 Do --bajo-cifrado", "armonia realize C A:6 G:7 C --figured-bass"),
-            opciones: [.bajoCifrado, .en]),
     ]
 
     static let ayudaDeArmonizar: [EntradaDeAyuda] = [
@@ -86,6 +80,13 @@ extension LineaDeComandos {
                 "armonia realizar Do Fa Sol7 Do",
                 "armonia realize C F G7 C"),
             opciones: [.en]),
+        // realizar <bajo cifrado> --bajo-cifrado [--en <tonalidad>]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisRealizarBajoCifrado),
+            descripcion: TextosDeConsola.traduccion(\.descripcionRealizarBajoCifrado),
+            ejemplo: ejemplo(
+                "armonia realizar Do La:6 Sol:7 Do --bajo-cifrado", "armonia realize C A:6 G:7 C --figured-bass"),
+            opciones: [.bajoCifrado, .en]),
         // realizar --archivo <fichero> [--ventana 1]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisRealizarArchivo),
