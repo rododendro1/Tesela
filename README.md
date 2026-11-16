@@ -98,4 +98,4 @@ open Tesela.xcodeproj                                    # elige el esquema ArsH
   seguridad.
 
 El código se publica con licencia MIT ([LICENSE](LICENSE)). Los iconos de las apps muestran a Apolo con
-la lira entre las musas: bajo el cielo en Ars Harmonica y sobre un mosaico hexagonal en Tonnetz.
+la lira entre las musas: en un medallón redondo en Ars Harmonica y en uno hexagonal en Tonnetz.
