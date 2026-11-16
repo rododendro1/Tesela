@@ -1,5 +1,20 @@
 # Cambios
 
+## Sin publicar
+
+### Novedades
+
+- En la consola, `armonia`:
+  - El servidor MCP da a cada herramienta una propiedad por opción, además de `argumentos`: una marca es un booleano
+    (`"vakra": true`) y una opción con valor, un texto (`"tradicion": "india"`), con los valores que propone el
+    autocompletado en `enum` y lo que dice de ella la ayuda como descripción. Se pueden mezclar con `argumentos`, y
+    una propiedad que no es de la orden es un error (`-32602`).
+
+### Cambios
+
+- En la consola, los errores de `--agrupar`, `--epoca`, `--momento`, `--escuela` y `--afinacion` nombran todos los
+  valores que se leen, de la misma tabla con la que se leen. `--agrupar` no decía `epoca`.
+
 ## 0.5.5 (2026-11-16)
 
 ### Cambios incompatibles

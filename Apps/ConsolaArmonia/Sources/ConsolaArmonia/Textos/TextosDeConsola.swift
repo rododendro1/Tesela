@@ -237,13 +237,13 @@ struct TextosDeConsola: TextosTraducidos {
     let sinCirculoDeQuintas: Plantilla  // {1} temperamento
     let estiloDesconocido: Plantilla  // {1} estilo
     let lugarDesconocido: Plantilla  // {1} lugar
-    let agrupacionDesconocida: Plantilla  // {1} agrupacion
-    let epocaDesconocida: Plantilla  // {1} epoca
+    let agrupacionDesconocida: Plantilla  // {1} agrupacion, {2} las que hay
+    let epocaDesconocida: Plantilla  // {1} epoca, {2} las que hay
     let afectoDesconocido: Plantilla  // {1} afecto
-    let momentoDesconocido: Plantilla  // {1} momento
-    let escuelaDesconocida: Plantilla  // {1} escuela
+    let momentoDesconocido: Plantilla  // {1} momento, {2} los que hay
+    let escuelaDesconocida: Plantilla  // {1} escuela, {2} las que hay
     let madreDesconocida: Plantilla  // {1} escala
-    let afinacionDesconocida: Plantilla  // {1} afinación
+    let afinacionDesconocida: Plantilla  // {1} afinación, {2} las que hay
     let ordenDeEscalasDesconocido: Plantilla  // {1} orden
     let ordenDeAcordesDesconocido: Plantilla  // {1} orden
     let intervaloDeEscalasDesconocido: Plantilla  // {1} intervalo

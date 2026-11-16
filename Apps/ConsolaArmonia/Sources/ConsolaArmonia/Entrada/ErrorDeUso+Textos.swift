@@ -24,6 +24,19 @@ extension ErrorDeUso {
         })
     }
 
+    /// El texto de un error que acaba en la lista de los valores que acepta la opción (el hueco `{2}` del campo), de
+    /// la misma tabla con la que se leen: con los nombres españoles en unos idiomas y con los ingleses en otros, como
+    /// los ejemplos de la ayuda. Así la lista no se queda atrás cuando la opción acepta un valor nuevo.
+    private static func conValores(
+        _ campo: KeyPath<TextosDeConsola, Plantilla>, _ valor: String, _ valores: [(espanol: String, ingles: String)]
+    ) -> Traduccion {
+        let lista = LineaDeComandos.ejemplo(
+            valores.map(\.espanol).joined(separator: ", "), valores.map(\.ingles).joined(separator: ", "))
+        return Traduccion(cadaIdioma: { notacion in
+            TextosDeConsola.en(notacion) { $0[keyPath: campo](valor, lista.en(notacion)) }
+        })
+    }
+
     /// El texto de cada error, de los campos de `TextosDeConsola`. El `switch` no tiene `default`, así que un caso
     /// nuevo no compila hasta que tiene su texto.
     private var traduccion: Traduccion {
@@ -72,19 +85,26 @@ extension ErrorDeUso {
         case .lugarDesconocido(let lugar):
             return TextosDeConsola.traduccion { $0.lugarDesconocido(lugar) }
         case .agrupacionDesconocida(let agrupacion):
-            return TextosDeConsola.traduccion { $0.agrupacionDesconocida(agrupacion) }
+            return Self.conValores(
+                \.agrupacionDesconocida, agrupacion,
+                LineaDeComandos.nombresDeLasAgrupaciones.map { ($0.espanol, $0.ingles) })
         case .epocaDesconocida(let epoca):
-            return TextosDeConsola.traduccion { $0.epocaDesconocida(epoca) }
+            return Self.conValores(
+                \.epocaDesconocida, epoca, LineaDeComandos.nombresDeLasEpocas.map { ($0.espanol, $0.ingles) })
         case .afectoDesconocido(let afecto):
             return TextosDeConsola.traduccion { $0.afectoDesconocido(afecto) }
         case .momentoDesconocido(let momento):
-            return TextosDeConsola.traduccion { $0.momentoDesconocido(momento) }
+            return Self.conValores(
+                \.momentoDesconocido, momento, LineaDeComandos.nombresDeLosMomentos.map { ($0.espanol, $0.ingles) })
         case .escuelaDesconocida(let escuela):
-            return TextosDeConsola.traduccion { $0.escuelaDesconocida(escuela) }
+            return Self.conValores(
+                \.escuelaDesconocida, escuela, LineaDeComandos.nombresDeLasEscuelas.map { ($0.espanol, $0.ingles) })
         case .madreDesconocida(let madre):
             return TextosDeConsola.traduccion { $0.madreDesconocida(madre) }
         case .afinacionDesconocida(let afinacion):
-            return TextosDeConsola.traduccion { $0.afinacionDesconocida(afinacion) }
+            return Self.conValores(
+                \.afinacionDesconocida, afinacion,
+                LineaDeComandos.nombresDeLasAfinaciones.map { ($0.espanol, $0.ingles) })
         case .ordenDeEscalasDesconocido(let orden):
             return TextosDeConsola.traduccion { $0.ordenDeEscalasDesconocido(orden) }
         case .ordenDeAcordesDesconocido(let orden):

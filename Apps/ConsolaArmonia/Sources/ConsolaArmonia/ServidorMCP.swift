@@ -4,9 +4,13 @@ import Foundation
 // `armonia mcp`: el motor como servidor del Model Context Protocol (MCP), para que un asistente lo use como
 // herramienta en lugar de adivinar la teoría. Habla JSON-RPC 2.0 por la entrada y la salida estándar, un mensaje por
 // línea, y ofrece como herramienta cada orden que da JSON: `acorde`, `escala`, `analizar`, `identificar`… Cada
-// herramienta recibe lo que se escribiría detrás del nombre de la orden y responde con su JSON.
+// herramienta recibe lo que se escribiría detrás del nombre de la orden y responde con su JSON. Sus opciones van
+// también, si se quiere, cada una en su propiedad, con su nombre en español sin los guiones: una marca es un booleano
+// (`"acordes": true`) y una opción con valor, un texto, con sus valores en `enum` cuando se conocen
+// (`"tradicion": "india"`).
 //
 //     → {"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"acorde","arguments":{"argumentos":"Sol7/Si"}}}
+//     → {…"params":{"name":"escalas","arguments":{"tradicion":"india","vakra":true}}}
 //     ← {"jsonrpc":"2.0","id":1,"result":{"content":[{"type":"text","text":"[{…}]"}],"isError":false}}
 
 extension LineaDeComandos {
@@ -95,13 +99,19 @@ struct ServidorMCP {
                 return Self.error(id: id, codigo: -32602, "Unknown tool: \(parametros["name"] ?? "")")
             }
             let argumentos = parametros["arguments"] as? [String: Any] ?? [:]
-            return Self.resultado(id: id, llamar(orden, argumentos["argumentos"]))
+            if let ajena = argumentos.keys.sorted().first(where: {
+                Self.opcion($0, de: orden) == nil && $0 != "argumentos"
+            }) {
+                return Self.error(id: id, codigo: -32602, "Unknown argument: \(ajena)")
+            }
+            return Self.resultado(id: id, llamar(orden, argumentos))
         default:
             return Self.error(id: id, codigo: -32601, "Method not found: \(metodo)")
         }
     }
 
-    /// Una herramienta: el nombre de la orden, su ayuda y un solo argumento, lo que va detrás del nombre.
+    /// Una herramienta: el nombre de la orden, su ayuda, lo que va detrás del nombre (`argumentos`) y una propiedad
+    /// por cada una de sus opciones (`propiedades(de:)`).
     func descripcion(de orden: LineaDeComandos.Orden) -> [String: Any] {
         // Cada forma de escribirla, con lo que hace, su ejemplo y sus notas, sin las columnas de la terminal.
         let (idioma, grafia) = (notacion.textos, notacion.grafiaDeLosTextos)
@@ -116,34 +126,107 @@ struct ServidorMCP {
             if let notas = entrada.notas?.texto(en: idioma, grafia: grafia), !notas.isEmpty { partes.append(notas) }
             return partes.joined(separator: "\n")
         }.joined(separator: "\n\n")
+        var propiedades = propiedades(de: orden)
+        propiedades["argumentos"] = [
+            "type": "string",
+            "description": TextosDeConsola.en(notacion, \.argumentosDeLaHerramienta),
+        ]
         return [
             "name": orden.nombres[0],
             "description": ayuda,
-            "inputSchema": [
-                "type": "object",
-                "properties": [
-                    "argumentos": [
-                        "type": "string",
-                        "description": TextosDeConsola.en(notacion, \.argumentosDeLaHerramienta),
-                    ]
-                ],
-                "required": ["argumentos"],
-            ],
+            "inputSchema": ["type": "object", "properties": propiedades, "additionalProperties": false],
         ]
+    }
+
+    /// El nombre de la propiedad de una opción: el español, sin los guiones (`--limite` → `limite`).
+    static func propiedad(_ opcion: OpcionDeOrden) -> String {
+        String(opcion.nombres[0].drop(while: { $0 == "-" }))
+    }
+
+    /// La opción de la orden que lleva esa propiedad; `nil` si no es ninguna.
+    static func opcion(_ propiedad: String, de orden: LineaDeComandos.Orden) -> OpcionDeOrden? {
+        orden.declaradas.first { Self.propiedad($0) == propiedad }
+    }
+
+    /// Una propiedad por opción de la orden: un booleano si es una marca y un texto si lleva valor, con los valores
+    /// que propone el autocompletado (`LineaDeComandos.valores(de:en:)`) en `enum`, y lo que dice de ella su ayuda,
+    /// en el idioma de la notación, como descripción. Toda opción declarada sale en alguna parte de su ayuda: lo
+    /// comprueban las pruebas del servidor.
+    func propiedades(de orden: LineaDeComandos.Orden) -> [String: Any] {
+        let (idioma, grafia) = (notacion.textos, notacion.grafiaDeLosTextos)
+        // Primero las partes que explican opciones («--madre Kharaharapriyā … deja las que salen de esa escala»); si
+        // la opción solo sale en la prosa («con --afecto, las que tienen ese afecto»), la frase que la nombra, y si
+        // solo sale en la sintaxis («analizar --archivo <fichero> [--ventana <duración>]»), esa línea.
+        let partes = orden.ayuda.map { LineaDeComandos.partes(de: $0, en: idioma, grafia: grafia) }
+        let frases = partes.flatMap(\.prosa).flatMap { $0.components(separatedBy: "; ") }
+        let sintaxis = orden.ayuda.flatMap {
+            $0.sintaxis.texto(en: idioma, grafia: grafia).components(separatedBy: "\n")
+        }
+        let explicaciones = (partes.flatMap(\.opciones) + frases + sintaxis).map {
+            $0.trimmingCharacters(in: .whitespaces)
+        }
+        var propiedades: [String: Any] = [:]
+        for opcion in orden.declaradas {
+            var propiedad: [String: Any] = ["type": opcion.llevaValor ? "string" : "boolean"]
+            if opcion.llevaValor, let valores = LineaDeComandos.valores(de: opcion, en: orden) {
+                propiedad["enum"] = valores
+            }
+            if let explicacion = explicaciones.first(where: { Self.nombra($0, opcion) }) {
+                propiedad["description"] = explicacion
+            }
+            propiedades[Self.propiedad(opcion)] = propiedad
+        }
+        return propiedades
+    }
+
+    /// Si el texto nombra la opción por alguno de sus nombres, como palabra entera: «--escala» no está en
+    /// «--escalas».
+    static func nombra(_ texto: String, _ opcion: OpcionDeOrden) -> Bool {
+        opcion.nombres.contains { nombre in
+            var resto = texto[...]
+            while let rango = resto.range(of: nombre) {
+                let siguiente = resto[rango.upperBound...].first
+                let anterior = rango.lowerBound == texto.startIndex ? nil : texto[texto.index(before: rango.lowerBound)]
+                let aparte = { (caracter: Character?) in
+                    caracter.map { !$0.isLetter && !$0.isNumber && $0 != "-" } ?? true
+                }
+                if aparte(anterior), aparte(siguiente) { return true }
+                resto = resto[rango.upperBound...]
+            }
+            return false
+        }
+    }
+
+    /// Lo que se escribe tras el nombre de la orden: lo de `argumentos` (un texto, que se parte como en la terminal,
+    /// o una lista de palabras) y, detrás, cada opción de su propiedad. Una marca va si es `true`; una opción con
+    /// valor, con su valor, sea texto o número.
+    static func palabras(de orden: LineaDeComandos.Orden, _ argumentos: [String: Any]) -> [String] {
+        var palabras: [String]
+        if let lista = argumentos["argumentos"] as? [String] {
+            palabras = lista
+        } else {
+            palabras = LineaDeComandos.palabras(deLaLinea: argumentos["argumentos"] as? String ?? "")
+        }
+        for opcion in orden.declaradas {
+            guard let valor = argumentos[propiedad(opcion)] else { continue }
+            if !opcion.llevaValor {
+                if valor as? Bool == true { palabras.append(opcion.nombres[0]) }
+            } else if let texto = valor as? String {
+                palabras += [opcion.nombres[0], texto]
+            } else if let numero = valor as? NSNumber {
+                palabras += [opcion.nombres[0], numero.stringValue]
+            }
+        }
+        return palabras
     }
 
     /// Ejecuta la orden con `--json` y da su salida como texto y, como datos, en `structuredContent`; si falla, el
     /// error en JSON, marcado como error. `structuredContent` tiene que ser un objeto: lo que da una lista
     /// (`acorde`, que puede llevar varios cifrados) va en `{"resultados": […]}`.
-    func llamar(_ orden: LineaDeComandos.Orden, _ argumentos: Any?) -> [String: Any] {
-        let palabras: [String]
-        if let lista = argumentos as? [String] {
-            palabras = lista
-        } else {
-            palabras = LineaDeComandos.palabras(deLaLinea: argumentos as? String ?? "")
-        }
+    func llamar(_ orden: LineaDeComandos.Orden, _ argumentos: [String: Any]) -> [String: Any] {
         let resultado = LineaDeComandos.ejecutar(
-            [orden.nombres[0]] + palabras + opciones + ["--json"], salidaEsTerminal: false, entorno: entorno)
+            [orden.nombres[0]] + Self.palabras(de: orden, argumentos) + opciones + ["--json"], salidaEsTerminal: false,
+            entorno: entorno)
         let bien = resultado.codigo == 0 || resultado.codigo == 3
         let texto = (bien ? resultado.salida : resultado.error).trimmingCharacters(in: .newlines)
         var respuesta: [String: Any] = [

@@ -178,25 +178,7 @@ extension LineaDeComandos {
         let sangria = String(repeating: " ", count: columnaDeLaDescripcion)
         var lineas = entrada.sintaxis.texto(en: idioma, grafia: grafia).components(separatedBy: "\n")
             .map { String(repeating: " ", count: columnaDeLaSintaxis) + $0 }
-        var opciones: [String] = []
-        var titulo: String?
-        let parrafos =
-            entrada.descripcion.texto(en: idioma, grafia: grafia).components(separatedBy: "\n")
-            + (entrada.notas?.texto(en: idioma, grafia: grafia).components(separatedBy: "\n") ?? [])
-        var prosa: [String] = []
-        for parrafo in parrafos where !parrafo.isEmpty {
-            if let (palabra, resto) = parrafoDeOpciones(parrafo) {
-                titulo = titulo ?? palabra
-                // Lo que no nombra ninguna opción («un texto busca en los nombres») va con la descripción.
-                for parte in partesDeLasOpciones(resto) {
-                    if parte.contains("--") { opciones.append(parte) } else { prosa.append(parte) }
-                }
-            } else if parrafo.hasPrefix("--") {
-                opciones += partesDeLasOpciones(parrafo)
-            } else {
-                prosa.append(parrafo)
-            }
-        }
+        let (prosa, titulo, opciones) = partes(de: entrada, en: idioma, grafia: grafia)
         var descripcion = ajustar(prosa.joined(separator: "\n"), ancho: anchoDeLaAyudaDeUnaOrden)[...]
         // La primera línea de la descripción va junto a la sintaxis si queda al menos un espacio.
         if let primera = descripcion.first, let ultima = lineas.last, ultima.count < columnaDeLaDescripcion {
@@ -216,6 +198,34 @@ extension LineaDeComandos {
             lineas += partes.enumerated().map { sangria + ($0.offset == 0 ? "  " : "    ") + $0.element }
         }
         return lineas
+    }
+
+    /// Lo que dice una entrada de la ayuda, en su descripción y sus notas, separado en la prosa (un párrafo por
+    /// elemento), la palabra de las opciones si la trae («opciones:») y las partes que explican opciones, cada una
+    /// empezando por la suya («--cuartas (…)», «--escalas: …»). Lo usan la ayuda de una orden y el servidor MCP.
+    static func partes(de entrada: EntradaDeAyuda, en idioma: Idioma, grafia: Grafia = .original) -> (
+        prosa: [String], titulo: String?, opciones: [String]
+    ) {
+        var opciones: [String] = []
+        var titulo: String?
+        let parrafos =
+            entrada.descripcion.texto(en: idioma, grafia: grafia).components(separatedBy: "\n")
+            + (entrada.notas?.texto(en: idioma, grafia: grafia).components(separatedBy: "\n") ?? [])
+        var prosa: [String] = []
+        for parrafo in parrafos where !parrafo.isEmpty {
+            if let (palabra, resto) = parrafoDeOpciones(parrafo) {
+                titulo = titulo ?? palabra
+                // Lo que no nombra ninguna opción («un texto busca en los nombres») va con la descripción.
+                for parte in partesDeLasOpciones(resto) {
+                    if parte.contains("--") { opciones.append(parte) } else { prosa.append(parte) }
+                }
+            } else if parrafo.hasPrefix("--") {
+                opciones += partesDeLasOpciones(parrafo)
+            } else {
+                prosa.append(parrafo)
+            }
+        }
+        return (prosa, titulo, opciones)
     }
 
     /// Si el párrafo es de opciones («opciones: --cuartas…», «options : --tradition…»): la palabra con sus dos puntos,

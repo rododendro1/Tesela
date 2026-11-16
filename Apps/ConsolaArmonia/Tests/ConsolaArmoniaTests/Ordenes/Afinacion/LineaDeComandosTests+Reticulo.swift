@@ -79,6 +79,50 @@ extension LineaDeComandosTests {
                     #"{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"acorde","arguments":{"argumentos":"G7/B"}}}"#
             ))
         #expect(enIngles.contains(#"\"bajo\":\"B\""#), Comment(rawValue: enIngles))
+        // Las opciones, cada una en su propiedad: las marcas como booleanos y las de valor como texto, con sus
+        // valores en `enum` y su explicación de la ayuda.
+        let escalas = try #require(ServidorMCP.herramientas.first { $0.nombres[0] == "escalas" })
+        let esquema = try #require(servidor.descripcion(de: escalas)["inputSchema"] as? [String: Any])
+        #expect(esquema["additionalProperties"] as? Bool == false)
+        let propiedades = try #require(esquema["properties"] as? [String: [String: Any]])
+        #expect(propiedades["argumentos"]?["type"] as? String == "string")
+        #expect(propiedades["vakra"]?["type"] as? String == "boolean")
+        #expect(propiedades["tradicion"]?["type"] as? String == "string")
+        #expect((propiedades["agrupar"]?["enum"] as? [String])?.contains("epoca") == true)
+        let madre = try #require(propiedades["madre"]?["description"] as? String)
+        #expect(madre.hasPrefix("--madre Kharaharapriyā"), Comment(rawValue: madre))
+        #expect(Set(propiedades.keys) == Set(escalas.declaradas.map(ServidorMCP.propiedad)).union(["argumentos"]))
+        // Toda orden con opciones las ofrece, y cada una con su explicación.
+        for orden in ServidorMCP.herramientas {
+            let suyas = try #require(
+                (servidor.descripcion(de: orden)["inputSchema"] as? [String: Any])?["properties"]
+                    as? [String: [String: Any]])
+            for opcion in orden.declaradas {
+                let propiedad = ServidorMCP.propiedad(opcion)
+                #expect(suyas[propiedad]?["description"] != nil, "\(orden.nombres[0]) \(propiedad)")
+            }
+        }
+        // Dar las opciones como propiedades es lo mismo que escribirlas detrás.
+        func datos(_ argumentos: String) throws -> String {
+            let respuesta = try #require(
+                servidor.responder(
+                    a: #"{"jsonrpc":"2.0","id":10,"method":"tools/call","params":{"name":"escalas","arguments":"#
+                        + argumentos + "}}"))
+            #expect(respuesta.contains(#""isError":false"#), Comment(rawValue: respuesta))
+            return respuesta
+        }
+        #expect(
+            try datos(#"{"tradicion":"india","vakra":true,"notas":5}"#)
+                == datos(#"{"argumentos":"--tradicion india --vakra --notas 5"}"#))
+        #expect(
+            try datos(#"{"argumentos":"--tradicion india","vakra":false}"#)
+                == datos(#"{"argumentos":"--tradicion india"}"#))
+        let ajena = try #require(
+            servidor.responder(
+                a:
+                    #"{"jsonrpc":"2.0","id":11,"method":"tools/call","params":{"name":"escalas","arguments":{"nada":1}}}"#
+            ))
+        #expect(ajena.contains(#""code":-32602"#) && ajena.contains("nada"), Comment(rawValue: ajena))
         // El bucle: una respuesta por mensaje con id.
         var lineas = [#"{"jsonrpc":"2.0","id":1,"method":"ping"}"#, #"{"jsonrpc":"2.0","method":"x"}"#]
         var escritas: [String] = []

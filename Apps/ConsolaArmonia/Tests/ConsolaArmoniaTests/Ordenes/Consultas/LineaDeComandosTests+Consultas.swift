@@ -189,7 +189,28 @@ extension LineaDeComandosTests {
         let paises = salida("escalas --agrupar pais --lugar europa")
         #expect(paises.hasPrefix("España (1)\n  flamenca: "), Comment(rawValue: String(paises.prefix(200))))
         #expect(paises.contains("\n\nEuropa ("), Comment(rawValue: paises))
-        #expect(resultado("escalas", "--agrupar", "x").error.contains("continente"))
+        #expect(resultado("escalas", "--agrupar", "siglo").error.contains("(continente, pais, epoca)"))
+        #expect(resultado("escalas", "--group-by", "century", "--ingles").error.contains("(continent, country, era)"))
+    }
+
+    /// Los errores de `--agrupar`, `--epoca`, `--momento`, `--escuela` y `--afinacion` nombran, en los trece idiomas,
+    /// todos los valores que se leen: salen de la misma tabla, con los nombres españoles o con los ingleses.
+    @Test func losErroresNombranTodosLosValores() {
+        let tablas: [(ErrorDeUso, [(espanol: String, ingles: String)])] = [
+            (.agrupacionDesconocida("x"), LineaDeComandos.nombresDeLasAgrupaciones.map { ($0.espanol, $0.ingles) }),
+            (.epocaDesconocida("x"), LineaDeComandos.nombresDeLasEpocas.map { ($0.espanol, $0.ingles) }),
+            (.momentoDesconocido("x"), LineaDeComandos.nombresDeLosMomentos.map { ($0.espanol, $0.ingles) }),
+            (.escuelaDesconocida("x"), LineaDeComandos.nombresDeLasEscuelas.map { ($0.espanol, $0.ingles) }),
+            (.afinacionDesconocida("x"), LineaDeComandos.nombresDeLasAfinaciones.map { ($0.espanol, $0.ingles) }),
+        ]
+        for idioma in Idioma.allCases {
+            for (error, valores) in tablas {
+                let texto = error.descripcion(en: .delIdioma(idioma))
+                let espanoles = "(" + valores.map(\.espanol).joined(separator: ", ") + ")"
+                let ingleses = "(" + valores.map(\.ingles).joined(separator: ", ") + ")"
+                #expect(texto.contains(espanoles) || texto.contains(ingleses), Comment(rawValue: texto))
+            }
+        }
     }
 
     /// `escalas --epoca`: las de una época, de origen o de uso, por su clave en español o en inglés o por su nombre;
