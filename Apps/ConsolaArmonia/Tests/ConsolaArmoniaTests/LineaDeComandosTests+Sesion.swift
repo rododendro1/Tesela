@@ -42,6 +42,19 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.resumen("la escala en un reloj (SVG): el círculo") == "la escala en un reloj")
         #expect(LineaDeComandos.resumen("formas de tocar\nopciones: --instrumento") == "formas de tocar")
         #expect(LineaDeComandos.resumen("en GUIDO (.gmn), para verlo") == "en GUIDO, para verlo")
+        // Lo que nombra una opción se corta en la coma de antes, y no se queda colgando.
+        #expect(LineaDeComandos.resumen("sus notas sobre Do, o sobre la nota de --sobre") == "sus notas sobre Do")
+        #expect(LineaDeComandos.resumen("como fichero .scl de Scala") == "como fichero .scl de Scala")
+        #expect(LineaDeComandos.resumen("πόσες κλίμακες· με μία") == "πόσες κλίμακες")
+        // En ningún idioma el índice nombra una opción ni pega una extensión a la palabra de antes.
+        for idioma in Idioma.allCases {
+            let indice = LineaDeComandos.indiceDeAyuda(en: idioma).components(separatedBy: "\n")
+            for linea in indice where linea.hasPrefix("  ") {
+                let resumen = String(linea.dropFirst(LineaDeComandos.columnaDelResumen))
+                #expect(!resumen.contains("--"), Comment(rawValue: linea))
+                #expect(resumen.range(of: #"\p{L}\.scl"#, options: .regularExpression) == nil, Comment(rawValue: linea))
+            }
+        }
         #expect(LineaDeComandos.lineasDelIndice("camino-parsimonioso", "de un acorde a otro").count == 1)
         #expect(
             LineaDeComandos.lineasDelIndice("una-orden-con-un-nombre-largo", "algo") == [

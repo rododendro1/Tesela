@@ -24,11 +24,13 @@ extension LineaDeComandos {
     static let marcas: Set<String> = Set(
         (generales + ordenes.flatMap(\.declaradas)).filter { !$0.llevaValor }.flatMap(\.nombres))
 
-    /// Los nombres de unas opciones, para `valoresDeOpciones`.
-    private static func nombres(_ opciones: OpcionDeOrden...) -> [String] { opciones.flatMap(\.nombres) }
+    /// Las opciones de una entrada de `valoresDeOpciones`.
+    private static func nombres(_ opciones: OpcionDeOrden...) -> [OpcionDeOrden] { opciones }
 
-    /// Los valores que se proponen tras una opción.
-    static let valoresDeOpciones: [(opciones: [String], valores: [String])] = [
+    /// Los valores que se proponen tras una opción, con guiones y sin mayúsculas (`reino-unido`, que se lee igual
+    /// que `reinoUnido`). Una opción que comparte nombre con la de otra orden (`--time`, `--dedos`) solo los propone
+    /// en las órdenes que la declaran (`valores(de:en:)`).
+    static let valoresDeOpciones: [(opciones: [OpcionDeOrden], valores: [String])] = [
         (
             nombres(.idioma, .textos),
             ["es", "en", "ca", "gl", "eu", "pt", "fr", "it", "de", "el", "ru", "hu", "sv", "ru-latn", "el-latn"]
@@ -55,7 +57,7 @@ extension LineaDeComandos {
             ]
         ),
         (
-            nombres(.clave, .claveDePartitura),
+            nombres(.clave),
             ["sol", "fa", "do1", "do2", "do3", "do4", "sol8b", "sol8a", "fa3", "treble", "bass", "alto", "tenor"]
         ),
         (nombres(.ciclo), ["hexatonico", "octatonico"]),
@@ -65,7 +67,7 @@ extension LineaDeComandos {
                 if !$0.contains($1) { $0.append($1) }
             }
         ),
-        (nombres(.categoria), CategoriaTradicional.allCases.map(\.rawValue)),
+        (nombres(.categoria), CategoriaTradicional.allCases.map { conGuiones($0.rawValue) }),
         (
             nombres(.familia),
             (LineaDeComandos.nombresDeLasFamiliasDeRitmo.flatMap { [$0.espanol, $0.ingles] }
@@ -74,14 +76,17 @@ extension LineaDeComandos {
                 + LineaDeComandos.nombresDeLasFamiliasDeFuncion.flatMap { [$0.espanol, $0.ingles] })
                 .reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }
         ),
-        (nombres(.fuente), FuenteTeorica.allCases.map(\.rawValue)),
+        (nombres(.fuente), FuenteTeorica.allCases.map { conGuiones($0.rawValue) }),
         (
             nombres(.estilo),
             (LineaDeComandos.nombresDeLosEstilos.flatMap { [$0.espanol, $0.ingles] }
                 + LineaDeComandos.nombresDeLasCorrientes.flatMap { [$0.espanol, $0.ingles] })
                 .reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }
         ),
-        (nombres(.lugar), Lugar.todos.map(\.clave).reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }),
+        (
+            nombres(.lugar),
+            Lugar.todos.map { conGuiones($0.clave) }.reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }
+        ),
         (nombres(.agrupar), LineaDeComandos.nombresDeLasAgrupaciones.flatMap { [$0.espanol, $0.ingles] }),
         (nombres(.epoca), LineaDeComandos.nombresDeLasEpocas.flatMap { [$0.espanol, $0.ingles] }),
         (nombres(.afecto), Afecto.allCases.map(\.rawValue)),
@@ -97,6 +102,28 @@ extension LineaDeComandos {
             ]
         ),
     ]
+
+    /// `reinoUnido` → `reino-unido`, como se completan los valores.
+    static func conGuiones(_ clave: String) -> String {
+        var texto = ""
+        for letra in clave {
+            if letra.isUppercase, !texto.isEmpty { texto += "-" }
+            texto += letra.lowercased()
+        }
+        return texto
+    }
+
+    /// Los valores que se proponen tras una opción, en las opciones generales (`orden` es `nil`) o en las de una
+    /// orden; `nil` si no se propone ninguno.
+    static func valores(de opcion: OpcionDeOrden, en orden: Orden?) -> [String]? {
+        guard orden.map({ $0.declaradas.contains(opcion) }) ?? generales.contains(opcion) else { return nil }
+        return valoresDeOpciones.first { $0.opciones.contains(opcion) }?.valores
+    }
+
+    /// Las opciones de la orden (o las generales) que tienen valores que proponer, con ellos.
+    static func opcionesConValores(en orden: Orden?) -> [(opcion: OpcionDeOrden, valores: [String])] {
+        (orden?.declaradas ?? generales).compactMap { opcion in valores(de: opcion, en: orden).map { (opcion, $0) } }
+    }
 
     /// Lo que va tras el nombre de algunas órdenes.
     static func tipos(de orden: Orden) -> [String] {
@@ -196,15 +223,32 @@ extension LineaDeComandos {
             "            *) orden=\"${COMP_WORDS[i]}\"; break ;;",
             "        esac",
             "    done",
-            "    case \"$anterior\" in",
+            "    # Los valores tras una opción: los de la orden, que pueden ser otros que los de una opción que se llama",
+            "    # igual en otra orden (--time), y los de las opciones generales.",
+            "    local valores=\"\"",
+            "    case \"$orden\" in",
         ]
-        for (opciones, valores) in valoresDeOpciones {
-            lineas.append(
-                "        \(opciones.joined(separator: "|"))) COMPREPLY=($(compgen -W \"\(valores.joined(separator: " "))\" -- \"$actual\")); return ;;"
-            )
+        func casos(_ orden: Orden?, sangria: String) -> [String] {
+            opcionesConValores(en: orden).map { opcion, valores in
+                "\(sangria)\(opcion.leidos.joined(separator: "|"))) valores=\"\(valores.joined(separator: " "))\" ;;"
+            }
         }
+        for orden in ordenes {
+            let suyos = casos(orden, sangria: "                ")
+            guard !suyos.isEmpty else { continue }
+            lineas.append("        \(nombres(de: orden).joined(separator: "|")))")
+            lineas.append("            case \"$anterior\" in")
+            lineas += suyos
+            lineas += ["            esac ;;"]
+        }
+        lineas += ["    esac", "    if [[ -z \"$valores\" ]]; then", "        case \"$anterior\" in"]
+        lineas += casos(nil, sangria: "            ")
         lineas += [
-            "    esac",
+            "        esac",
+            "    fi",
+            "    if [[ -n \"$valores\" ]]; then COMPREPLY=($(compgen -W \"$valores\" -- \"$actual\")); return; fi",
+            "    # Tras una opción con un valor que no se propone (--titulo, --tempo), ni órdenes ni opciones.",
+            "    case \"$anterior\" in \(conValor.joined(separator: "|"))) return ;; esac",
             "    local palabras",
             "    case \"$orden\" in",
             "        \"\") palabras=\"\(ordenes.flatMap(nombres(de:)).joined(separator: " "))\" ;;",
@@ -235,18 +279,19 @@ extension LineaDeComandos {
         lineas.append(
             "complete -c armonia -n \"not __fish_seen_subcommand_from \(todas.joined(separator: " "))\" -a \"\(todas.joined(separator: " "))\""
         )
-        func opcion(_ nombre: String, _ condicion: String?) -> String {
+        func opcion(_ nombre: String, de orden: Orden?) -> String {
             var linea = "complete -c armonia"
-            if let condicion { linea += " -n \"__fish_seen_subcommand_from \(condicion)\"" }
+            if let orden { linea += " -n \"__fish_seen_subcommand_from \(nombres(de: orden).joined(separator: " "))\"" }
             linea += " -l \(nombre.dropFirst(2))"
-            if let valores = valoresDeOpciones.first(where: { $0.opciones.contains(nombre) })?.valores {
+            let declarada = (orden?.declaradas ?? generales).first { $0.nombres.contains(nombre) }
+            if let declarada, let valores = valores(de: declarada, en: orden) {
                 linea += " -x -a \"\(valores.joined(separator: " "))\""
-            } else if !marcas.contains(nombre) {
+            } else if declarada?.llevaValor ?? !marcas.contains(nombre) {
                 linea += " -r"
             }
             return linea
         }
-        for nombre in opcionesGenerales { lineas.append(opcion(nombre, nil)) }
+        for nombre in opcionesGenerales { lineas.append(opcion(nombre, de: nil)) }
         for orden in ordenes {
             let suyos = nombres(de: orden).joined(separator: " ")
             let tiposDeLaOrden = tipos(de: orden)
@@ -255,7 +300,7 @@ extension LineaDeComandos {
                     "complete -c armonia -n \"__fish_seen_subcommand_from \(suyos)\" -a \"\(tiposDeLaOrden.joined(separator: " "))\""
                 )
             }
-            for nombre in opciones(de: orden) { lineas.append(opcion(nombre, suyos)) }
+            for nombre in opciones(de: orden) { lineas.append(opcion(nombre, de: orden)) }
         }
         return lineas.joined(separator: "\n")
     }

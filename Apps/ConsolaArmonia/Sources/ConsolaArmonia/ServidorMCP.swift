@@ -132,7 +132,9 @@ struct ServidorMCP {
         ]
     }
 
-    /// Ejecuta la orden con `--json` y da su salida como texto; si falla, el error, marcado como error.
+    /// Ejecuta la orden con `--json` y da su salida como texto y, como datos, en `structuredContent`; si falla, el
+    /// error, marcado como error. `structuredContent` tiene que ser un objeto: lo que da una lista (`acorde`, que
+    /// puede llevar varios cifrados) va en `{"resultados": […]}`.
     func llamar(_ orden: LineaDeComandos.Orden, _ argumentos: Any?) -> [String: Any] {
         let palabras: [String]
         if let lista = argumentos as? [String] {
@@ -142,11 +144,22 @@ struct ServidorMCP {
         }
         let resultado = LineaDeComandos.ejecutar(
             [orden.nombres[0]] + palabras + opciones + ["--json"], salidaEsTerminal: false, entorno: entorno)
-        let texto = resultado.codigo == 0 || resultado.codigo == 3 ? resultado.salida : resultado.error
-        return [
-            "content": [["type": "text", "text": texto.trimmingCharacters(in: .newlines)]],
-            "isError": resultado.codigo != 0 && resultado.codigo != 3,
+        let bien = resultado.codigo == 0 || resultado.codigo == 3
+        let texto = (bien ? resultado.salida : resultado.error).trimmingCharacters(in: .newlines)
+        var respuesta: [String: Any] = [
+            "content": [["type": "text", "text": texto]],
+            "isError": !bien,
         ]
+        if bien, let datos = Self.datos(texto) { respuesta["structuredContent"] = datos }
+        return respuesta
+    }
+
+    /// El JSON de una orden como objeto, para `structuredContent`: una lista va en `resultados`.
+    static func datos(_ texto: String) -> [String: Any]? {
+        guard let leido = try? JSONSerialization.jsonObject(with: Data(texto.utf8), options: [.fragmentsAllowed])
+        else { return nil }
+        if let objeto = leido as? [String: Any] { return objeto }
+        return ["resultados": leido]
     }
 
     static func resultado(id: Any, _ valor: Any) -> String {

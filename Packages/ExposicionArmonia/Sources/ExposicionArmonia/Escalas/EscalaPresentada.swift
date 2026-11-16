@@ -38,6 +38,8 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
     public let clases: [Int]
     /// De qué escala es modo («Modo 2 de Do mayor»), si lo es de alguna conocida.
     public let modo: String?
+    /// Lo mismo sin traducir: el grado, la clave de la escala madre (`TipoDeEscala.clave`) y su tónica (0 = Do).
+    public let modoId: ModoDeEscalaPresentado?
     /// Las cuatríadas de cada grado, si la escala es heptatónica y todas forman un acorde conocido.
     public let acordes: [AcordeDelGrado]?
     /// De cuándo y de dónde es (`OrigenDeEscalaPresentado`), si se sabe algo.
@@ -54,6 +56,8 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
     public let medidas: [MedidaDelAfectoPresentada]?
     /// En las occidentales, la sonoridad que calcula Tesela por el brillo (`TipoDeEscala.sonoridad`): «clara».
     public let sonoridad: String?
+    /// La sonoridad sin traducir: `clara`, `intermedia`… (`Sonoridad`).
+    public let sonoridadId: String?
 
     /// Los datos de la escala, escritos en la notación.
     public init(_ escala: Escala, en notacion: Notacion) {
@@ -78,6 +82,7 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
         self.funciones = funciones.isEmpty ? nil : funciones
         clases = escala.notas.map(\.claseDeAltura)
         modo = PresentacionDeEscalaYAcorde.modo(de: escala, en: notacion)
+        modoId = modo == nil ? nil : escala.escalaMadre.map(ModoDeEscalaPresentado.init)
         let cuatriadas = escala.armonizar(notas: 4).compactMap { $0 }
         let romanos = escala.romanos(notas: 4).compactMap { $0?.description }
         if cuatriadas.count == escala.notas.count, romanos.count == cuatriadas.count {
@@ -93,6 +98,23 @@ public struct EscalaPresentada: Hashable, Sendable, Codable {
         let medidas = escala.tipo.medidasDelAfecto.map { MedidaDelAfectoPresentada($0, en: notacion) }
         self.medidas = medidas.isEmpty ? nil : medidas
         sonoridad = escala.tipo.sonoridad?.nombre(en: notacion)
+        sonoridadId = escala.tipo.sonoridad?.rawValue
+    }
+}
+
+/// De qué escala es modo, sin traducir: `{"escala": "mayor", "grado": 2, "tonica": 0}` en Re dórico.
+public struct ModoDeEscalaPresentado: Hashable, Sendable, Codable {
+    /// El grado de la madre en el que empieza (1 = la propia madre).
+    public let grado: Int
+    /// La clave de la escala madre (`TipoDeEscala.clave`), o `nil` si no es del catálogo.
+    public let escala: String?
+    /// La tónica de la madre, como clase de altura (0 = Do … 11 = Si).
+    public let tonica: Int
+
+    public init(_ modo: ModoDeEscala) {
+        grado = modo.grado
+        escala = modo.madre.tipo.clave
+        tonica = modo.madre.tonica.claseDeAltura
     }
 }
 

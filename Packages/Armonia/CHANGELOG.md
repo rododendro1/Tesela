@@ -13,6 +13,20 @@
   `romanos(notas:referencia:)`: los cifrados romanos de los grados, por sus partes.
 - `Escala.gradosArmonizados` y `GradoArmonizado`: la cuatríada de cada grado con su número y sus tensiones
   disponibles, en un tipo `Hashable` en lugar de una tupla.
+- En la consola, `armonia`:
+  - La ayuda de una orden (`armonia ayuda escalas`, `armonia escalas --help`) usa todo el ancho y pone cada opción
+    en su línea, bajo «opciones:». Los textos son los de siempre, en los trece idiomas; `ayuda --todo` no cambia.
+  - Las opciones con valor se pueden escribir como `--opcion=valor`: `--limite=3`, `--idioma=en`, `--en="Re mayor"`.
+  - El JSON lleva al lado de cada valor traducido el mismo valor sin traducir, en una clave que acaba en `Id`:
+    `papelId` en `acorde`; `funcionId` y `cadenciasId` (el tipo, el primer acorde y si es perfecta, frigia o
+    plagal menor) en `analizar`; `modoId`, `sonoridadId` y, en `origen`, `epocaId`, `epocasDeUsoId`,
+    `lugaresDeOrigenId`, `lugaresDeUsoId`, `estilosId`, `corrientesId`, `periodoId`, `periodosDeUsoId` y
+    `escuelasId` en `escala`. No se quita ninguna clave.
+  - El servidor MCP da también los datos en `structuredContent` (una lista, en `resultados`).
+  - El autocompletado propone los valores de cada orden: `--time` es la hora del día en `escalas` y el compás en las
+    partituras, y `--dedos`, el instrumento en `escala` y nada en `digitaciones`. Tras una opción con valor que no
+    se propone, no propone órdenes ni opciones. Los valores de `--lugar`, `--fuente` y `--categoria` se proponen con
+    guiones (`reino-unido`), como se leen.
 
 ### Obsoleto
 
@@ -31,6 +45,11 @@ Lo de antes sigue funcionando con un aviso, hasta la 0.6.0:
   un grado puede no formar un tipo conocido. Antes, `acorde(grado:cuatriada:)` daba una tríada mayor sin avisar si
   el grado no formaba acorde; en mayor y en menor no pasaba, y las pruebas lo comprueban en las veinticuatro
   tonalidades.
+
+- En la consola, `--momento` es `--time-of-day` en inglés; `--time` sigue valiendo en `escalas`.
+- El índice de la ayuda de la consola ya no deja frases a medias (`progresiones` y `acordes` acababan en «sobre la
+  tónica de») ni pega «.scl» a la palabra de antes, y en griego corta el resumen en «·». En francés, `--escalas` de
+  `analizar` va en su propio párrafo, como en los demás idiomas.
 
 - `EstadisticasTonalesDeEscala.triadas` y `cuatriadas` son los tipos de `Escala.armonizar(cuatriadas:)` en todas las
   escalas que no son fragmentos, también las que no tienen siete notas (en la pentatónica mayor, Do y Lam), y con

@@ -35,6 +35,67 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.tipos(de: musicXML).contains("coral"))
     }
 
+    /// Los valores se proponen según la orden: `--time` es la hora en `escalas` y el compás en las partituras.
+    @Test func losValoresSegunLaOrden() throws {
+        func orden(_ nombre: String) throws -> LineaDeComandos.Orden {
+            try #require(LineaDeComandos.ordenes.first { $0.nombres.contains(nombre) })
+        }
+        let (escalas, musicXML) = (try orden("escalas"), try orden("musicxml"))
+        let (escala, digitaciones) = (try orden("escala"), try orden("digitaciones"))
+        #expect(LineaDeComandos.valores(de: .momento, en: escalas)?.contains("anochecer") == true)
+        #expect(LineaDeComandos.valores(de: .momento, en: musicXML) == nil)
+        #expect(LineaDeComandos.valores(de: .compas, en: musicXML) == nil)
+        #expect(LineaDeComandos.valores(de: .piano, en: escala)?.contains("guitarra") == true)
+        #expect(LineaDeComandos.valores(de: .dedosDeLaDigitacion, en: digitaciones) == nil)
+        #expect(LineaDeComandos.valores(de: .idioma, en: nil)?.contains("eu") == true)
+        // Con guiones, como los demás valores, y sin repetir.
+        for (_, valores) in LineaDeComandos.opcionesConValores(en: escalas) {
+            for valor in valores { #expect(valor == valor.lowercased(), Comment(rawValue: valor)) }
+        }
+        #expect(LineaDeComandos.valores(de: .lugar, en: escalas)?.contains("reino-unido") == true)
+        #expect(LineaDeComandos.conGuiones("safiAlDin") == "safi-al-din")
+        #expect(OpcionDeOrden.momento.seEscribe("--time"))
+        #expect(!salida("completado bash").contains("--clave|--clef|--clave|--clef"))
+    }
+
+    /// El completado de bash, en bash: lo que propone tras unas palabras.
+    @Test(.enabled(if: FileManager.default.isExecutableFile(atPath: "/bin/bash")))
+    func elCompletadoEnBash() throws {
+        let guion = FileManager.default.temporaryDirectory.appendingPathComponent("armonia-completado-\(UUID()).sh")
+        defer { try? FileManager.default.removeItem(at: guion) }
+        try salida("completado bash").write(to: guion, atomically: true, encoding: .utf8)
+        func propuestas(_ palabras: String) throws -> String {
+            let proceso = Process()
+            proceso.executableURL = URL(fileURLWithPath: "/bin/bash")
+            proceso.arguments = [
+                "-c",
+                "source \"$0\"; COMP_WORDS=(armonia \(palabras) ''); COMP_CWORD=$((${#COMP_WORDS[@]}-1)); _armonia; "
+                    + "echo \"${COMPREPLY[*]}\"",
+                guion.path,
+            ]
+            let tuberia = Pipe()
+            proceso.standardOutput = tuberia
+            try proceso.run()
+            proceso.waitUntilExit()
+            return String(decoding: tuberia.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
+        }
+        let (hora, compas) = (try propuestas("escalas --time"), try propuestas("musicxml melodia Do --time"))
+        #expect(hora.contains("anochecer"))
+        #expect(compas == "\n")
+        let (dedos, idioma) = (try propuestas("escala Do mayor --dedos"), try propuestas("--idioma"))
+        #expect(dedos.contains("guitarra"))
+        #expect(idioma.contains("eu"))
+        let lugar = try propuestas("escalas --lugar")
+        #expect(lugar.contains("reino-unido"))
+    }
+
+    /// `--opcion=valor`, en una orden y en las opciones generales.
+    @Test func opcionesConIgual() {
+        #expect(salida("digitaciones Do --limite=2") == salida("digitaciones Do --limite 2"))
+        #expect(salida("acorde Sol7 --idioma=en") == salida("acorde Sol7 --idioma en"))
+        #expect(resultado("acorde Sol7 --json=1").codigo == 2)
+    }
+
     @Test func manual() {
         let roff = salida("manual")
         #expect(roff.hasPrefix(".TH ARMONIA 1"))

@@ -42,11 +42,31 @@ extension LineaDeComandosTests {
         // La ayuda de la ayuda y la de la versión.
         #expect(salida("ayuda ayuda").hasPrefix("  ayuda [<orden>]"))
         #expect(salida("ayuda --version").contains("la versión de armonia"))
-        // Cada entrada de la ayuda completa está en la de su orden.
-        let completa = salida("ayuda --todo")
-        for orden in LineaDeComandos.ordenes {
-            #expect(completa.contains(salida("ayuda " + orden.nombres[0])), Comment(rawValue: orden.nombres[0]))
+        // La ayuda de una orden nombra las mismas opciones que la completa, cada parte en su línea, y cabe en 80
+        // columnas en todos los idiomas.
+        func opciones(_ texto: String) -> Set<String> {
+            Set(texto.split(whereSeparator: { " ,;()·\n".contains($0) }).filter { $0.hasPrefix("--") }.map(String.init))
         }
+        for idioma in Idioma.allCases {
+            let notacion = Notacion.delIdioma(idioma)
+            for orden in LineaDeComandos.ordenes {
+                let suya = LineaDeComandos.ayuda(de: orden, en: notacion)
+                let enLaCompleta = orden.ayuda.flatMap { LineaDeComandos.lineas(de: $0, en: idioma) }.joined(
+                    separator: "\n")
+                let nombre = Comment(rawValue: "\(idioma) \(orden.nombres[0])")
+                #expect(opciones(suya) == opciones(enLaCompleta), nombre)
+                // Salvo la sintaxis, que es como en la ayuda completa.
+                for linea in suya.split(separator: "\n") where linea.count > 80 && linea.hasPrefix("   ") {
+                    // Solo una palabra o un ejemplo que no se pueden partir.
+                    #expect(
+                        !linea.trimmingCharacters(in: .whitespaces).contains(" ") || linea.contains("armonia "), nombre)
+                }
+            }
+        }
+        let escalas = salida("ayuda escalas")
+        #expect(escalas.contains("\n                               opciones:\n"))
+        #expect(escalas.contains("\n                                 --vakra deja solo"))
+        #expect(salida("ayuda escalas --idioma fr").contains("\n                               options :\n"))
         let desconocida = resultado("ayuda", "acrode")
         #expect(desconocida.codigo == 2)
         #expect(

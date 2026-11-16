@@ -41,7 +41,7 @@ public enum LineaDeComandos {
         _ argumentos: [String], entrada: (@Sendable () -> Data)? = nil, entradaEsTerminal: Bool = true,
         salidaEsTerminal: Bool = false, entorno: [String: String] = [:]
     ) -> ResultadoDeOrden {
-        var opciones = Argumentos(argumentos)
+        var opciones = Argumentos(Argumentos.conValoresSeparados(argumentos, conocidas: nombresDeLasOpciones))
         let generales: OpcionesGenerales
         do throws(ErrorEnUnaOpcionGeneral) {
             generales = try opcionesGenerales(&opciones, entorno: entorno)
@@ -137,6 +137,12 @@ public enum LineaDeComandos {
         let nombre = Argumentos.sinTildes(nombre)
         return ordenes.first { $0.nombres.contains(nombre) }
     }
+
+    /// Los nombres de las opciones que llevan un valor en alguna orden, o en todas, ocultos incluidos: las que se
+    /// pueden escribir como `--opcion=valor` (`Argumentos.conValoresSeparados(_:conocidas:)`). Una marca no lleva
+    /// nada detrás, y `--json=1` sigue siendo una opción desconocida.
+    static let nombresDeLasOpciones: Set<String> = Set(
+        (generales + ordenes.flatMap(\.declaradas)).filter(\.llevaValor).flatMap(\.leidos))
 
     /// Lo que pide toda la ayuda tras `ayuda`, en lugar del índice: `armonia ayuda --todo`.
     static let marcasDeToda: Set = ["--todo", "--all", "todo", "all"]

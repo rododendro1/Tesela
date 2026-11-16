@@ -53,7 +53,7 @@ extension OpcionDeOrden {
     /// `escalas --afecto lastimero`: las que tienen ese afecto en alguna de sus fuentes (`TipoDeEscala.afectos`).
     static let afecto = valor("--afecto", "--affect")
     /// `escalas --momento anochecer`: las que se tocan a esa hora en alguna de sus fuentes (`TipoDeEscala.momentos`).
-    static let momento = valor("--momento", "--time")
+    static let momento = valor("--momento", "--time-of-day", ocultos: ["--time"])
     /// `escalas --escuela carnatica`: las de una escuela de otra tradición.
     static let escuela = valor("--escuela", "--school")
     /// `escalas --afinacion microtonal`: por el carácter de su afinación (`CaracterDeLaAfinacion`).

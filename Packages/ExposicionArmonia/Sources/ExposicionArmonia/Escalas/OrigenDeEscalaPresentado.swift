@@ -24,6 +24,17 @@ public struct OrigenDeEscalaPresentado: Hashable, Sendable, Codable {
     public let estilos: [String]
     /// Sus escuelas: «Carnática».
     public let escuelas: [String]
+    /// Lo mismo sin traducir, en el mismo orden: los casos de `Epoca`, `PeriodoMusical`, `Estilo`, `Corriente` y
+    /// `Escuela` y las claves de `Lugar` (`reinoUnido`), las que leen los filtros de `armonia escalas`.
+    public let epocasDeUsoId: [String]
+    public let periodoId: String?
+    public let periodosDeUsoId: [String]
+    public let lugaresDeOrigenId: [String]
+    public let lugaresDeUsoId: [String]
+    public let estilosId: [String]
+    /// Las corrientes de sus estilos (`Corriente`), que en `estilos` van entre paréntesis.
+    public let corrientesId: [String]
+    public let escuelasId: [String]
 
     /// El origen de la escala, o `nil` si no se sabe nada de él (las propias).
     public init?(_ tipo: TipoDeEscala, en notacion: Notacion) {
@@ -39,6 +50,14 @@ public struct OrigenDeEscalaPresentado: Hashable, Sendable, Codable {
             return estilo.nombre(en: notacion) + (suyas.isEmpty ? "" : " (" + suyas.joined(separator: ", ") + ")")
         }
         escuelas = tipo.escuelas.map { $0.nombre(en: notacion) }
+        epocasDeUsoId = tipo.epocasDeUso.map(\.rawValue)
+        periodoId = tipo.periodo?.rawValue
+        periodosDeUsoId = tipo.periodosDeUso.map(\.rawValue)
+        lugaresDeOrigenId = tipo.lugaresDeOrigen.map(\.clave)
+        lugaresDeUsoId = tipo.lugaresDeUso.map(\.clave)
+        estilosId = tipo.estilos.map(\.rawValue)
+        corrientesId = corrientes.map(\.rawValue)
+        escuelasId = tipo.escuelas.map(\.rawValue)
         let listas = [epocasDeUso, periodosDeUso, lugaresDeOrigen, lugaresDeUso, estilos, escuelas]
         if origen == nil, periodo == nil, listas.allSatisfy(\.isEmpty) { return nil }
     }
