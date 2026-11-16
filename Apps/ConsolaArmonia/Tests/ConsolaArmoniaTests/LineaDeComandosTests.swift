@@ -194,7 +194,9 @@ import Testing
             "guitarra", "tríada", "Prueba", "falta",
         ]
         func comprobar(_ texto: String, _ orden: String, sourceLocation: SourceLocation = #_sourceLocation) {
-            for palabra in enEspanol where texto.contains(palabra) {
+            // Lo que va entre comillas son las palabras de una fuente, en su lengua («Chants d'allégresse», Rameau).
+            let sinCitas = texto.replacing(/“[^”]*”/, with: "")
+            for palabra in enEspanol where sinCitas.contains(palabra) {
                 Issue.record("«\(palabra)» en la salida de «\(orden)»:\n\(texto)", sourceLocation: sourceLocation)
             }
         }

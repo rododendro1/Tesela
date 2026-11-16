@@ -270,6 +270,8 @@ public enum TestigoDelCaracter: String, Sendable, Codable, CaseIterable, Nombrab
     /// Marc-Antoine Charpentier, las *Règles de composition* (hacia 1690): la «énergie des modes», el carácter de
     /// dieciocho tonalidades.
     case charpentier
+    /// Johann Mattheson, *Das neu-eröffnete Orchestre* (1713): el carácter de diecisiete tonalidades.
+    case mattheson
     /// Christian Friedrich Daniel Schubart, *Ideen zu einer Ästhetik der Tonkunst* (1806, escrito hacia 1784): el
     /// carácter de cada tonalidad.
     case schubart
@@ -285,6 +287,7 @@ public enum TestigoDelCaracter: String, Sendable, Codable, CaseIterable, Nombrab
         case .yueji: -100
         case .coton: 1100
         case .charpentier: 1690
+        case .mattheson: 1713
         case .schubart: 1806
         }
     }
@@ -301,6 +304,7 @@ public enum TestigoDelCaracter: String, Sendable, Codable, CaseIterable, Nombrab
         case .yueji: TextosDeTeoria.traduccion(\.testigoYueji)
         case .coton: TextosDeTeoria.traduccion(\.testigoCoton)
         case .charpentier: TextosDeTeoria.traduccion(\.testigoCharpentier)
+        case .mattheson: TextosDeTeoria.traduccion(\.testigoMattheson)
         case .schubart: TextosDeTeoria.traduccion(\.testigoSchubart)
         }
     }
