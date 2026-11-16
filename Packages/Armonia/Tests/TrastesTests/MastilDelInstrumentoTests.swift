@@ -88,4 +88,39 @@ import Testing
             }
         }
     }
+
+    /// Cada instrumento del catálogo está en una familia, y solo en una; uno inventado, en ninguna.
+    @Test func lasFamilias() {
+        let agrupados = Encordado.porFamilias.flatMap(\.encordados)
+        #expect(Set(agrupados) == Set(Encordado.todos) && agrupados.count == Encordado.todos.count)
+        #expect(Encordado.charango.familia == .guitarrasPequenas && Encordado.violin.familia == .cuerdaFrotada)
+        #expect(Encordado(nombre: "inventado", afinacion: [Altura(.do, octava: 3)]).familia == nil)
+        #expect(FamiliaDeEncordado.laudes.nombre(en: .compacta(.espanol)) == "laúdes y mandolinas")
+        #expect(FamiliaDeEncordado.cuerdaFrotada.nombre(en: .compacta(.ingles)) == "bowed strings")
+        for familia in FamiliaDeEncordado.allCases {
+            #expect(!familia.encordados.isEmpty)
+            #expect(Idioma.allCases.allSatisfy { !familia.nombre(en: .compacta($0)).isEmpty })
+        }
+    }
+
+    /// Un instrumento fuera del catálogo no tiene ficha: una cuerda por orden, trastes cromáticos y nada más.
+    @Test func sinFicha() {
+        let inventado = Encordado(nombre: "inventado", afinacion: [Altura(.do, octava: 3), Altura(.sol, octava: 3)])
+        #expect(inventado.cuerdasPorOrden == [1, 1] && !inventado.tieneOrdenesEnOctavas)
+        #expect(inventado.trastes == .cromaticos && inventado.referencias.isEmpty && inventado.estilos.isEmpty)
+        #expect(inventado.lugaresDeOrigen.isEmpty && inventado.paisesDeOrigen.isEmpty)
+        #expect(inventado.continentesDeOrigen.isEmpty)
+    }
+
+    /// Los trastes y la búsqueda, en los idiomas.
+    @Test func nombresDeLosTrastesYBusqueda() {
+        let espanol = Notacion.compacta(.espanol)
+        #expect(
+            TrastesDeEncordado.allCases.map { $0.nombre(en: espanol) } == ["cromáticos", "diatónicos", "sin trastes"])
+        #expect(TrastesDeEncordado.sinTrastes.nombre(en: .compacta(.ingles)) == "fretless")
+        #expect(Encordado.buscar(conteniendo: "").count == Encordado.todos.count)
+        #expect(Encordado.buscar(conteniendo: "MANDOL") == [.mandolina, .mandola])
+        #expect(Encordado.buscar(conteniendo: "ukulele").contains(.ukelele))
+        #expect(Encordado.buscar(conteniendo: "zzz").isEmpty)
+    }
 }

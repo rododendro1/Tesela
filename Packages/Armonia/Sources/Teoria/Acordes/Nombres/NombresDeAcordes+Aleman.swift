@@ -64,5 +64,11 @@ extension NombresDeAcordes {
         .init(.alfa, "Alpha-Akkord"),
         .init(.delSueno, "Traumakkord"),
         .init(.tricordoVienes, "Wiener Trichord"),
+        .init(.kennyBarron, "Kenny-Barron-Akkord"),
+        .init(.estructuraSuperiorII, "Upper Structure II"),
+        .init(.estructuraSuperiorVI, "Upper Structure VI"),
+        .init(.estructuraSuperiorBemolVI, "Upper Structure ♭VI"),
+        .init(.porQuintas, "Quintenakkord"),
+        .init(.racimo, "chromatischer Cluster", alias: ["Tontraube"]),
     ])
 }

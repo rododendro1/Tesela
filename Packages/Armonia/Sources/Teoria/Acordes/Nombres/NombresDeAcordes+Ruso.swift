@@ -64,5 +64,11 @@ extension NombresDeAcordes {
         .init(.alfa, "альфа-аккорд"),
         .init(.delSueno, "аккорд сна"),
         .init(.tricordoVienes, "венский трихорд"),
+        .init(.kennyBarron, "аккорд Кенни Бэррона"),
+        .init(.estructuraSuperiorII, "верхняя структура II"),
+        .init(.estructuraSuperiorVI, "верхняя структура VI"),
+        .init(.estructuraSuperiorBemolVI, "верхняя структура ♭VI"),
+        .init(.porQuintas, "квинтовый аккорд"),
+        .init(.racimo, "хроматический кластер"),
     ])
 }

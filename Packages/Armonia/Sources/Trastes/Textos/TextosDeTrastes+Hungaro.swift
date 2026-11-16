@@ -43,6 +43,12 @@ extension TextosDeTrastes {
         contrabajo: "nagybőgő",
         trastesCromaticos: "kromatikus",
         trastesDiatonicos: "diatonikus",
-        sinTrastes: "bund nélküli"
+        sinTrastes: "bund nélküli",
+        familiaGuitarras: "gitárok",
+        familiaBajos: "basszusgitárok",
+        familiaGuitarrasPequenas: "ukulelék és kis gitárok",
+        familiaLaudes: "lantok és mandolinok",
+        familiaBanjosYCitaras: "bendzsók és citerák",
+        familiaCuerdaFrotada: "vonós hangszerek"
     )
 }

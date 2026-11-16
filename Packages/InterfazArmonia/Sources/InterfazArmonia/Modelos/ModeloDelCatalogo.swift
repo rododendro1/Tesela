@@ -2,19 +2,21 @@ import Armonia
 import ExposicionArmonia
 
 /// Lo que se elige en la pestaña «Catálogo» de Ars Harmonica y lo que sale de ello: la lista (progresiones, acordes
-/// con nombre o ritmos), lo buscado y la tónica, y una tarjeta por elemento con su nombre en la notación, lo que es,
-/// sus referencias, cómo suena y a qué pestaña lleva. No usa SwiftUI, así que se prueba también en Linux; la vista lo
-/// guarda en un `@State` y solo lo dibuja.
+/// con nombre, ritmos, ornamentos o instrumentos), lo buscado y la tónica, y una tarjeta por elemento con su nombre
+/// en la notación, lo que es, sus referencias, cómo suena y a qué pestaña lleva. No usa SwiftUI, así que se prueba
+/// también en Linux; la vista lo guarda en un `@State` y solo lo dibuja.
 ///
 ///     var modelo = ModeloDelCatalogo()
 ///     modelo.texto = "andaluza"
 ///     modelo.tarjetas(en: .compacta(.espanol)).first?.nombre   // "cadencia andaluza"
 public struct ModeloDelCatalogo: Sendable {
-    /// Las tres listas del catálogo.
+    /// Las listas del catálogo.
     public enum Lista: CaseIterable, Identifiable, Hashable, Sendable {
         case progresiones
         case acordes
         case ritmos
+        case ornamentos
+        case instrumentos
         public var id: Self { self }
 
         /// Su nombre en el selector.
@@ -23,8 +25,13 @@ public struct ModeloDelCatalogo: Sendable {
             case .progresiones: return notacion.texto(\.progresionesConNombre)
             case .acordes: return notacion.texto(\.acordesConNombre)
             case .ritmos: return notacion.texto(\.ritmosConNombre)
+            case .ornamentos: return notacion.texto(\.ornamentosConNombre)
+            case .instrumentos: return notacion.texto(\.instrumentosDeCuerda)
             }
         }
+
+        /// Si sus tarjetas se escriben sobre la tónica elegida: las progresiones, los acordes y los ornamentos.
+        public var usaLaTonica: Bool { self != .ritmos && self != .instrumentos }
     }
 
     /// La pestaña a la que lleva una tarjeta: la progresión escrita, a Análisis; el acorde, a Acordes.
@@ -55,7 +62,7 @@ public struct ModeloDelCatalogo: Sendable {
     public var lista = Lista.progresiones
     /// Lo buscado, en cualquier idioma, sin mirar mayúsculas ni tildes; vacío, todo.
     public var texto = ""
-    /// La nota sobre la que se escriben y suenan las progresiones y los acordes.
+    /// La nota sobre la que se escriben y suenan las progresiones, los acordes y los ornamentos.
     public var tonica = Nota.do
 
     /// Un catálogo como al abrir la app: las progresiones sobre Do, sin buscar nada.
@@ -67,6 +74,8 @@ public struct ModeloDelCatalogo: Sendable {
         case .progresiones: return ProgresionConNombre.buscar(conteniendo: texto).map { tarjeta(de: $0, en: notacion) }
         case .acordes: return AcordeConNombre.buscar(conteniendo: texto).map { tarjeta(de: $0, en: notacion) }
         case .ritmos: return RitmoConNombre.buscar(conteniendo: texto).map { tarjeta(de: $0, en: notacion) }
+        case .ornamentos: return OrnamentoConNombre.buscar(conteniendo: texto).map { tarjeta(de: $0, en: notacion) }
+        case .instrumentos: return Encordado.buscar(conteniendo: texto).map { tarjeta(de: $0, en: notacion) }
         }
     }
 
@@ -108,6 +117,34 @@ public struct ModeloDelCatalogo: Sendable {
             id: ritmo.nombre, nombre: ritmo.nombre(en: notacion), detalle: ritmo.patron + " · " + agrupacion,
             estilos: Self.familiaYOrigen(ritmo, en: notacion), referencias: ritmo.referencias.map(\.cita),
             sonido: .ritmo(ritmo), destino: nil)
+    }
+
+    /// Un ornamento: sus pasos y lo que suena sobre la tónica (en la cuarta octava) en su escala mayor, que se oye
+    /// con su ritmo en una negra (`Voz.conLosOrnamentosRealizados(en:)`).
+    public func tarjeta(de ornamento: OrnamentoConNombre, en notacion: Notacion) -> Tarjeta {
+        let principal = Altura(tonica, octava: 4)
+        let escala = Escala(tonica)
+        let presentado = OrnamentoPresentado(ornamento, sobre: principal, escala: escala, en: notacion)
+        let alturas = ornamento.alturas(sobre: principal, en: escala) ?? [principal]
+        let notas = presentado.alturas?.joined(separator: " ") ?? ""
+        let estilos = presentado.estilos + [presentado.origen?.texto].compactMap { $0 }
+        return Tarjeta(
+            id: ornamento.nombre, nombre: presentado.nombre, detalle: presentado.textoDeLosPasos + " · " + notas,
+            estilos: estilos.joined(separator: " · "), referencias: presentado.referencias,
+            sonido: .voz(Voz(alturas.map { Evento($0, .semicorchea) } + [Evento(principal, .negra)])), destino: nil)
+    }
+
+    /// Un instrumento: su afinación y sus cuerdas, con su familia y sus trastes; suenan sus cuerdas al aire, de la
+    /// más grave a la más aguda, y no lleva a ninguna pestaña.
+    public func tarjeta(de encordado: Encordado, en notacion: Notacion) -> Tarjeta {
+        let presentado = EncordadoPresentado(encordado, en: notacion)
+        let estilos = [presentado.familia, presentado.trastes].compactMap { $0 } + presentado.estilos
+        let alturas = encordado.afinacion.sorted { $0.midi < $1.midi }
+        return Tarjeta(
+            id: encordado.nombre, nombre: presentado.nombre,
+            detalle: presentado.afinacion.joined(separator: " ") + " · " + presentado.cuerdas(en: notacion),
+            estilos: estilos.joined(separator: " · "), referencias: presentado.referencias,
+            sonido: .voz(Voz(alturas.map { Evento($0, .corchea) })), destino: nil)
     }
 
     /// La familia de un ritmo, sus estilos y su época con el año, los que tenga: «danza · jazz · Siglo XX (1923)».

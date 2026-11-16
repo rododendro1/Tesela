@@ -410,6 +410,10 @@ extension TextosDeApps {
         trastesDelInstrumento: "Frettes",
         ordenesEnOctavas: "Chœurs à l'octave",
         pasosDelOrnamento: "Pas",
-        suenaElOrnamento: "Sonne"
+        suenaElOrnamento: "Sonne",
+        familiaDelInstrumento: "Famille",
+        instrumentosDeCuerda: "Instruments",
+        ornamentosConNombre: "Ornements",
+        fichaDelInstrumento: "À propos de l'instrument"
     )
 }

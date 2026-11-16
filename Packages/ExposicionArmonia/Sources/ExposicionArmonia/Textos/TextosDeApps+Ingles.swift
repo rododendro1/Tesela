@@ -410,6 +410,10 @@ extension TextosDeApps {
         trastesDelInstrumento: "Frets",
         ordenesEnOctavas: "Courses in octaves",
         pasosDelOrnamento: "Steps",
-        suenaElOrnamento: "Sounds"
+        suenaElOrnamento: "Sounds",
+        familiaDelInstrumento: "Family",
+        instrumentosDeCuerda: "Instruments",
+        ornamentosConNombre: "Ornaments",
+        fichaDelInstrumento: "About the instrument"
     )
 }

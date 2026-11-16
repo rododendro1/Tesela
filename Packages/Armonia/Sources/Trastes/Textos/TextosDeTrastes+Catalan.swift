@@ -43,6 +43,12 @@ extension TextosDeTrastes {
         contrabajo: "contrabaix",
         trastesCromaticos: "cromàtics",
         trastesDiatonicos: "diatònics",
-        sinTrastes: "sense trasts"
+        sinTrastes: "sense trasts",
+        familiaGuitarras: "guitarres",
+        familiaBajos: "baixos",
+        familiaGuitarrasPequenas: "ukuleles i guitarres petites",
+        familiaLaudes: "llaüts i mandolines",
+        familiaBanjosYCitaras: "banjos i cítares",
+        familiaCuerdaFrotada: "corda fregada"
     )
 }

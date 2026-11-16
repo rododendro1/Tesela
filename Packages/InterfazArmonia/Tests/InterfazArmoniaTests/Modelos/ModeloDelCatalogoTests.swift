@@ -23,7 +23,8 @@ import Testing
     @Test func cadaListaTieneSuTituloYSuCatalogo() {
         var modelo = ModeloDelCatalogo()
         let titulos = ModeloDelCatalogo.Lista.allCases.map { $0.titulo(en: espanol) }
-        #expect(titulos == ["Progresiones", "Acordes con nombre", "Ritmos"])
+        #expect(titulos == ["Progresiones", "Acordes con nombre", "Ritmos", "Ornamentos", "Instrumentos"])
+        #expect(ModeloDelCatalogo.Lista.allCases.filter(\.usaLaTonica) == [.progresiones, .acordes, .ornamentos])
         modelo.lista = .acordes
         #expect(modelo.tarjetas(en: espanol).count == AcordeConNombre.catalogo.count)
         modelo.lista = .ritmos
@@ -76,5 +77,34 @@ import Testing
         #expect(clave.sonido == .ritmo(.claveDeSon))
         #expect(clave.destino == nil)
         #expect(!clave.referencias.isEmpty)
+    }
+
+    @Test func losOrnamentosSobreLaTonica() throws {
+        var modelo = ModeloDelCatalogo()
+        modelo.lista = .ornamentos
+        #expect(modelo.tarjetas(en: espanol).count == OrnamentoConNombre.catalogo.count)
+        modelo.texto = "grupeto invertido"
+        modelo.tonica = .re
+        let grupeto = try #require(modelo.tarjetas(en: espanol).first)
+        #expect(grupeto.nombre == "grupeto invertido")
+        #expect(grupeto.detalle == "−1 0 +1 0 · Do♯₄ Re₄ Mi₄ Re₄")
+        #expect(!grupeto.referencias.isEmpty && grupeto.destino == nil)
+        #expect(grupeto.sonido.notas.map(\.midi) == [61, 62, 64, 62, 62])
+    }
+
+    @Test func losInstrumentosConSuFamilia() throws {
+        var modelo = ModeloDelCatalogo()
+        modelo.lista = .instrumentos
+        #expect(modelo.tarjetas(en: espanol).count == Encordado.todos.count)
+        modelo.texto = "MANDOLINA"
+        let mandolina = try #require(modelo.tarjetas(en: espanol).first)
+        #expect(mandolina.detalle == "Sol₃ Re₄ La₄ Mi₅ · 4 órdenes, 8 cuerdas")
+        #expect(mandolina.estilos == "laúdes y mandolinas · cromáticos")
+        #expect(mandolina.sonido.notas.map(\.midi) == [55, 62, 69, 76] && mandolina.destino == nil)
+        // El ukelele suena de grave a agudo, aunque su cuerda de Sol vaya arriba.
+        modelo.texto = "ukelele barítono"
+        #expect(modelo.tarjetas(en: espanol).map(\.id) == ["ukelele barítono"])
+        modelo.texto = "ukulele"
+        #expect(modelo.tarjetas(en: .compacta(.ingles)).first?.sonido.notas.map(\.midi) == [60, 64, 67, 69])
     }
 }

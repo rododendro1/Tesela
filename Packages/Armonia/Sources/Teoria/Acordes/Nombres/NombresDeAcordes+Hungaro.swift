@@ -64,5 +64,11 @@ extension NombresDeAcordes {
         .init(.alfa, "alfa-akkord"),
         .init(.delSueno, "álomakkord"),
         .init(.tricordoVienes, "bécsi trichord"),
+        .init(.kennyBarron, "Kenny Barron-akkord"),
+        .init(.estructuraSuperiorII, "felső struktúra II"),
+        .init(.estructuraSuperiorVI, "felső struktúra VI"),
+        .init(.estructuraSuperiorBemolVI, "felső struktúra ♭VI"),
+        .init(.porQuintas, "kvintépítkezésű akkord"),
+        .init(.racimo, "kromatikus fürt", alias: ["klaszter"]),
     ])
 }

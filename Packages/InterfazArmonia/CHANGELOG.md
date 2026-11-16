@@ -2,6 +2,10 @@
 
 ## Sin publicar
 
+- `ModeloDelCatalogo` tiene dos listas más, `ornamentos` (sus pasos y lo que suenan sobre la tónica, que se oyen) e
+  `instrumentos` (su afinación, sus cuerdas, su familia y sus trastes, que suenan al aire), y `Lista.usaLaTonica`. En
+  Ars Harmonica, el selector de instrumento los agrupa por familias y la pestaña de escalas tiene la ficha del
+  instrumento.
 - Un artículo nuevo, *Hacer una vista*: una vista de un acorde con su pentagrama, «Escuchar», «Exportar», la
   notación elegida y lo último escrito, del modelo sin SwiftUI a la raíz de la app.
 - Las apps recuerdan: `MemoriaDeLasApps` guarda en los ajustes lo último escrito en cada pestaña (el acorde, la

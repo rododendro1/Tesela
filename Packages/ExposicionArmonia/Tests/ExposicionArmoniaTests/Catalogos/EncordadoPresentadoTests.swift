@@ -14,7 +14,9 @@ import Testing
         #expect(charango.ordenesEnOctavas == ["3": ["Mi₅", "Mi₄"]])
         #expect(charango.trastesId == "cromaticos" && charango.reentrante)
         #expect(charango.cuerdas(en: notacion) == "5 órdenes, 10 cuerdas")
+        #expect(charango.familia == "ukeleles y guitarras pequeñas" && charango.familiaId == "guitarrasPequenas")
         let ficha = charango.ficha(en: notacion)
+        #expect(ficha[0] == DatoPresentado(nombre: "Familia", valor: "ukeleles y guitarras pequeñas"))
         #expect(ficha.contains(DatoPresentado(nombre: "Órdenes en octavas", valor: "3: Mi₅ Mi₄")), "\(ficha)")
         #expect(ficha.contains(DatoPresentado(nombre: "Trastes", valor: "cromáticos")))
         let json = try JSONEncoder().encode(charango)
@@ -29,6 +31,8 @@ import Testing
         #expect(!guitarra.ficha(en: notacion).contains { $0.nombre == "Órdenes en octavas" })
         #expect(EncordadoPresentado(.dulcemele, en: notacion).trastes == "diatónicos")
         let ud = EncordadoPresentado(.ud, en: .compacta(.ingles))
+        let inventado = EncordadoPresentado(Encordado(nombre: "x", afinacion: [Altura(.do, octava: 3)]), en: notacion)
+        #expect(inventado.familia == nil && inventado.ficha(en: notacion)[0].nombre == "Afinación")
         #expect(ud.trastes == "fretless" && ud.cuerdas(en: .compacta(.ingles)) == "6 courses, 11 strings")
     }
 }

@@ -64,5 +64,11 @@ extension NombresDeAcordes {
         .init(.alfa, "acorde alfa"),
         .init(.delSueno, "acorde do sonho"),
         .init(.tricordoVienes, "tricorde vienense"),
+        .init(.kennyBarron, "acorde de Kenny Barron"),
+        .init(.estructuraSuperiorII, "estrutura superior II"),
+        .init(.estructuraSuperiorVI, "estrutura superior VI"),
+        .init(.estructuraSuperiorBemolVI, "estrutura superior ♭VI"),
+        .init(.porQuintas, "acorde quintal"),
+        .init(.racimo, "cluster cromático"),
     ])
 }

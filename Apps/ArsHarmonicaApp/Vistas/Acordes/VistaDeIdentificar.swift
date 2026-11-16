@@ -44,7 +44,7 @@ struct VistaDeIdentificar: View {
             }
             Section(notacion.texto(\.identificar)) {
                 Picker(notacion.texto(\.instrumentoYAfinacion), selection: $encordado) {
-                    ForEach(Encordado.todos, id: \.self) { Text($0.titulo(en: notacion)).tag($0) }
+                    OpcionesDeEncordado()
                 }
                 Text(notacion.texto(\.tocaElMastil))
                     .foregroundColor(.secondary)

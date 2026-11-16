@@ -43,6 +43,12 @@ extension TextosDeTrastes {
         contrabajo: "κοντραμπάσο",
         trastesCromaticos: "χρωματικά",
         trastesDiatonicos: "διατονικά",
-        sinTrastes: "χωρίς τάστα"
+        sinTrastes: "χωρίς τάστα",
+        familiaGuitarras: "κιθάρες",
+        familiaBajos: "μπάσα",
+        familiaGuitarrasPequenas: "γιουκαλίλι και μικρές κιθάρες",
+        familiaLaudes: "λαούτα και μαντολίνα",
+        familiaBanjosYCitaras: "μπάντζο και ζίθερ",
+        familiaCuerdaFrotada: "έγχορδα με δοξάρι"
     )
 }

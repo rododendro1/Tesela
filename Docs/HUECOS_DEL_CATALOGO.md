@@ -6,7 +6,7 @@ las fuentes de cuatro acordes de nombre propio.
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 13 escalas occidentales sin ninguna referencia y
-dos acordes sin fuente (m(add9) y el alfa de Lendvai). El catálogo tiene 539 escalas en 50 listas de tradición y 60 acordes, todos con nombre en
+dos acordes sin fuente (m(add9) y el alfa de Lendvai). El catálogo tiene 539 escalas en 50 listas de tradición y 66 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -208,7 +208,7 @@ de Hicazkâr y Suzinak no dicen ni eso. Sin una obra con su año no se les pone 
 
 ## Acordes que faltaban
 
-Hay 46 acordes genéricos y 14 de nombre propio. Los que faltaban ya están, pero algunos sin fuente:
+Hay 46 acordes genéricos y 20 de nombre propio. Los que faltaban ya están, pero algunos sin fuente:
 
 | Acorde | Notas | Fuente | Qué queda |
 | --- | --- | --- | --- |
@@ -220,6 +220,11 @@ Hay 46 acordes genéricos y 14 de nombre propio. Los que faltaban ya están, per
 | Acorde alfa de Lendvai | Do Mi♭ Fa♯ La + Do♯ Mi Sol Si♭ | Ninguna | Confirmar en Lendvai (1971) qué notas da |
 
 | Tricordo vienés | Do Re♭ Sol♭ (3-5 de Forte) | DeLone y otros (1975: 348) | Ver la página en el libro |
+
+Los seis últimos de nombre propio son disposiciones del jazz y acordes del siglo XX: el de Kenny Barron y las
+estructuras superiores II, VI y ♭VI citan a Levine (1989, y 1995 las estructuras superiores), y el acorde por quintas y
+el racimo cromático, a Persichetti (1961). Sus notas son las que se enseñan habitualmente; falta ver en los libros las
+páginas, y si Levine escribe las estructuras superiores con la séptima en el bajo o con el tritono.
 
 El de Hendrix cita a Shapiro y Glebbeek (1995: 144), y el mu, la introducción de Becker y Fagen al cancionero de
 Steely Dan, que se lee en The Steely Dan Archive. El acorde del sueño de La Monte Young (Sol Do Do♯ Re) cita a
@@ -250,6 +255,24 @@ El catálogo tiene 61 progresiones. Quedan fuera, hasta leer una obra que las d�
 - La cadenza doppia de Gjerdingen (2007): es un esquema de voces, no de acordes.
 - El ciclo octatónico (P y R): Cohn la trata en otro artículo (1997), que no está entre las referencias.
 - El ōdō shinkō del J-pop (IV–V–iii–vi) y el blues de 8 compases, que tiene muchas formas: sin una fuente académica.
+
+## Ritmos, temperamentos, piezas e instrumentos que faltan
+
+Lo que no ha entrado en los catálogos de ritmos, temperamentos, progresiones e instrumentos, y por qué:
+
+- **Los iqāʿāt que faltan** (ayyūb, waḥda, samāʿī thaqīl, dawr hindī…): Maqam World los lista con su compás, pero
+  su patrón de dum y tak solo está en una imagen, sin texto (la página de ayyūb, por ejemplo, dice solo que es
+  «rápido, corto y cíclico»). Hace falta Racy (2003), Marcus (2007) o Touma (1996), que ya da los cuatro que hay.
+- **Los usul turcos que faltan** (sofyan, semai, aksak semai, devr-i kebir…): hace falta Özkan, *Türk Mûsikîsi
+  Nazariyatı ve Usûlleri*, para los golpes (düm, tek, tekâ) de cada uno.
+- **Neidhardt:** sus temperamentos circulares (1724, 1732) tienen varias versiones, y sus fracciones de coma solo se
+  pueden dar con Lindley en el New Grove o con el tratado.
+- **Las piezas de Cork** (*The New Guide to Harmony with LEGO Bricks*): los acordes de cada pieza y sus nombres hay
+  que leerlos en el libro.
+- **El saz y el koto no caben en el mástil:** el bağlama tiene trastes de menos de un semitono (más de doce por
+  octava), y el mástil de `Trastes` cuenta en semitonos; con trastes cromáticos daría posiciones
+  falsas. El koto no tiene mástil: trece cuerdas al aire sobre puentes móviles, que se afinan para cada pieza y se
+  aprietan para subir la nota. Las afinaciones del koto ya están como escalas (Hirajōshi, Kumoijōshi…).
 
 ## Carácter sin fuente
 

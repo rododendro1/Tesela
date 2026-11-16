@@ -4,6 +4,17 @@
 
 ### Novedades
 
+- Los ornamentos suenan: `Evento.realizandoElOrnamento(en:)`, `Voz.conLosOrnamentosRealizados(en:)` y
+  `Partitura.conLosOrnamentosRealizados(en:)` tocan el trino, los mordentes y los grupetos en sus notas, por los
+  grados de la escala (la de la tonalidad de la partitura), con su ritmo: el trino en fusas todo lo que dura la nota,
+  los mordentes en fusas y los grupetos en semicorcheas, con la principal sostenida. `Articulacion.ornamento` da el
+  ornamento del catálogo de cada signo. El MIDI los toca así (`midi(tocandoLosOrnamentos: false)`, solo la nota
+  escrita).
+- Las familias de instrumentos: `FamiliaDeEncordado` (guitarras, bajos, ukeleles y guitarras pequeñas, laúdes y
+  mandolinas, banjos y cítaras, cuerda frotada), `Encordado.familia`, `Encordado.porFamilias` y
+  `Encordado.buscar(conteniendo:)`.
+- Seis acordes con nombre más: el de Kenny Barron, las estructuras superiores II, VI y ♭VI, el acorde por quintas y
+  el racimo cromático, en los trece idiomas.
 - El mástil respeta los trastes del instrumento: el dulcémele solo tiene los de su escala diatónica (con el 6½), el
   banjo de cinco cuerdas no tiene los cinco primeros trastes en la quinta cuerda, y `Mastil.tieneTraste(_:enCuerda:)`
   y `trastes(deCuerda:)` lo dicen. Las digitaciones, las disposiciones, los arpegios y las escalas en el mástil solo

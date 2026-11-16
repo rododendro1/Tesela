@@ -43,6 +43,12 @@ extension TextosDeTrastes {
         contrabajo: "контрабас",
         trastesCromaticos: "хроматические",
         trastesDiatonicos: "диатонические",
-        sinTrastes: "без ладов"
+        sinTrastes: "без ладов",
+        familiaGuitarras: "гитары",
+        familiaBajos: "бас-гитары",
+        familiaGuitarrasPequenas: "укулеле и малые гитары",
+        familiaLaudes: "лютни и мандолины",
+        familiaBanjosYCitaras: "банджо и цитры",
+        familiaCuerdaFrotada: "смычковые"
     )
 }

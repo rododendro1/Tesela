@@ -27,6 +27,10 @@ public struct EncordadoPresentado: Hashable, Sendable, Codable {
     public let trastes: String
     /// Los mismos, sin traducir: `cromaticos`, `diatonicos` o `sinTrastes` (`TrastesDeEncordado`).
     public let trastesId: String
+    /// Su familia, por su nombre: «guitarras», «laúdes y mandolinas»…; `nil` si no es del catálogo.
+    public let familia: String?
+    /// La misma, sin traducir (`FamiliaDeEncordado`): `guitarras`, `laudes`…
+    public let familiaId: String?
     /// Si una cuerda está más aguda que la siguiente (el Sol del ukelele).
     public let reentrante: Bool
     /// La tradición, por su clave (`andes`, `mundoArabe`); `nil` en los occidentales.
@@ -55,6 +59,8 @@ public struct EncordadoPresentado: Hashable, Sendable, Codable {
         ordenesEnOctavas = enOctavas
         trastes = encordado.trastes.nombre(en: notacion)
         trastesId = encordado.trastes.rawValue
+        familia = encordado.familia?.nombre(en: notacion)
+        familiaId = encordado.familia?.rawValue
         reentrante = encordado.esReentrante
         tradicion = encordado.tradicion?.rawValue
         lugaresDeOrigen = encordado.lugaresDeOrigen.map { $0.nombre(en: notacion) }
@@ -69,10 +75,11 @@ public struct EncordadoPresentado: Hashable, Sendable, Codable {
         ordenes == cuerdasReales ? "\(ordenes)" : notacion.texto { $0.ordenesYCuerdas(ordenes, cuerdasReales) }
     }
 
-    /// La ficha, un dato por fila: la afinación, las cuerdas, los órdenes en octavas, los trastes, los estilos, los
-    /// lugares y la época.
+    /// La ficha, un dato por fila: la familia, la afinación, las cuerdas, los órdenes en octavas, los trastes, los
+    /// estilos, los lugares y la época.
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
-        var datos = [
+        var datos = familia.map { [DatoPresentado(nombre: notacion.texto(\.familiaDelInstrumento), valor: $0)] } ?? []
+        datos += [
             DatoPresentado(nombre: notacion.texto(\.afinacion), valor: afinacion.joined(separator: " ")),
             DatoPresentado(nombre: notacion.texto(\.cuerdasDelInstrumento), valor: cuerdas(en: notacion)),
         ]

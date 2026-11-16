@@ -410,6 +410,10 @@ extension TextosDeApps {
         trastesDelInstrumento: "Bundok",
         ordenesEnOctavas: "Oktávos kórusok",
         pasosDelOrnamento: "Lépések",
-        suenaElOrnamento: "Szól"
+        suenaElOrnamento: "Szól",
+        familiaDelInstrumento: "Család",
+        instrumentosDeCuerda: "Hangszerek",
+        ornamentosConNombre: "Díszítések",
+        fichaDelInstrumento: "A hangszerről"
     )
 }
