@@ -3,16 +3,16 @@ import Elementos
 // MARK: - OrnamentoConNombre
 
 /// Un ornamento con nombre: el trino, el mordente, el grupeto, las apoyaturas, el Schleifer… Se escribe como los pasos
-/// por grados de la escala desde la nota principal (0), en el orden en que suenan, como los dan las tablas de J. S. Bach
-/// y de C. P. E. Bach.
+/// por grados de la escala desde la nota principal (0), en el orden en que suenan, como los dan las tablas de
+/// J. S. Bach y de C. P. E. Bach.
 ///
 ///     OrnamentoConNombre.mordente.pasos                                       // [0, -1, 0]
 ///     OrnamentoConNombre.grupeto.alturas(sobre: Altura(.re, octava: 4), en: Escala(.do, .mayor))
 ///                                                                             // Mi4 Re4 Do4 Re4
 ///     OrnamentoConNombre.buscar(nombre: "turn")                               // .grupeto
 ///
-/// Los nombres en los otros idiomas están en `Ornamentos/Nombres/`, un fichero por idioma. Dos ornamentos son iguales si
-/// se llaman igual.
+/// Los nombres en los otros idiomas están en `Ornamentos/Nombres/`, un fichero por idioma. Dos ornamentos son iguales
+/// si se llaman igual.
 public struct OrnamentoConNombre: Sendable {
     /// El nombre en español: «trino», «mordente», «grupeto».
     public let nombre: String
@@ -20,8 +20,8 @@ public struct OrnamentoConNombre: Sendable {
     public let alias: [String]
     /// Otras formas de escribir el nombre o uno de los alias, que no son otro nombre.
     public let variantes: [String]
-    /// Los pasos por grados de la escala desde la nota principal, en el orden en que suenan: 1 es la nota de arriba y −1
-    /// la de abajo.
+    /// Los pasos por grados de la escala desde la nota principal, en el orden en que suenan: 1 es la nota de arriba y
+    /// −1 la de abajo.
     public let pasos: [Int]
     /// Dónde se lee y la obra más antigua que lo da.
     package let datos: DatosDelCatalogo
