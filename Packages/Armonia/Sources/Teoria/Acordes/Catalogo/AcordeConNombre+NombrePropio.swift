@@ -47,12 +47,12 @@ extension AcordeConNombre {
     public static let hendrix = AcordeConNombre(
         nombre: "acorde de Hendrix",
         intervalos: [.unisono, .terceraMayor, .septimaMenor, .novenaAumentada],
-        estilos: [.popRock, .blues])
+        estilos: [.popRock, .blues], referencias: [Referencia.shapiro1995.paginas("144")])
     /// El acorde mu de Steely Dan: la tríada mayor con la segunda añadida junto a la tercera, Do Re Mi Sol.
     public static let mu = AcordeConNombre(
         nombre: "acorde mu",
         intervalos: [.unisono, .segundaMayor, .terceraMayor, .quintaJusta],
-        estilos: [.popRock])
+        estilos: [.popRock], referencias: [.beckerFagenMu])
     /// El acorde por cuartas justas: Do Fa Si♭ Mi♭.
     public static let porCuartas = AcordeConNombre(
         nombre: "acorde por cuartas",
@@ -80,7 +80,7 @@ extension AcordeConNombre {
     public static let salmos = AcordeConNombre(
         nombre: "acorde de la Sinfonía de los salmos",
         intervalos: [.unisono, .terceraMenor, .quintaJusta, .terceraMenor + .octava], estilos: [.deCompositor],
-        documentada: .stravinski1930)
+        referencias: [Referencia.austin1966.paginas("334")], documentada: .stravinski1930)
     /// El acorde alfa de Lendvai, en Bartók: dos séptimas disminuidas superpuestas, Do Mi♭ Fa♯ La Do♯ Mi Sol Si♭. Está
     /// por comprobar en Lendvai (1971) qué notas da.
     public static let alfa = AcordeConNombre(
@@ -101,7 +101,7 @@ extension AcordeConNombre {
     public static let tricordoVienes = AcordeConNombre(
         nombre: "tricordo vienés",
         intervalos: [.unisono, .segundaMenor, .quintaDisminuida],
-        estilos: [.deCompositor])
+        estilos: [.deCompositor], referencias: [Referencia.delone1975.paginas("348")])
 
     /// Los de nombre propio, en su orden.
     public static let conNombrePropio: [AcordeConNombre] = [

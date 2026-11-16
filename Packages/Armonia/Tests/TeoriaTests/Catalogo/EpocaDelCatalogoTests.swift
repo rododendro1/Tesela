@@ -13,7 +13,7 @@ import Testing
         #expect(AcordeConNombre.tristan.epocasDeUso.isEmpty) // la clásica no se usa después del Romanticismo
         #expect(AcordeConNombre.mistico.epocaDeOrigen == .sigloXX)
         #expect(AcordeConNombre.augures.anioDeOrigen == 1913)
-        #expect(AcordeConNombre.salmos.referencias == [.stravinski1930])
+        #expect(AcordeConNombre.salmos.referencias == [.stravinski1930, Referencia.austin1966.paginas("334")])
         // Sin obra, la de su estilo: el So What, del jazz, del siglo XX y usado también en el XXI.
         #expect(AcordeConNombre.soWhat.anioDeOrigen == nil)
         #expect(AcordeConNombre.soWhat.epocaDeOrigen == .sigloXX)

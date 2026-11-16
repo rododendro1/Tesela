@@ -1,11 +1,12 @@
 # Huecos del catálogo de escalas y acordes
 
-Estado a 14 de noviembre de 2026, tras las escalas sintéticas, los lugares, las épocas, los estilos y las corrientes.
+Estado a 16 de noviembre de 2026, tras las escalas sintéticas, los lugares, las épocas, los estilos, las corrientes y
+las fuentes de cuatro acordes de nombre propio.
 
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 13 escalas occidentales sin ninguna referencia y
-cinco acordes sin fuente. El catálogo tiene 539 escalas en 50 listas de tradición y 60 acordes, todos con nombre en
+dos acordes sin fuente (m(add9) y el alfa de Lendvai). El catálogo tiene 539 escalas en 50 listas de tradición y 60 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -176,14 +177,17 @@ Pentatonic», la menor ♭6 su «Blues Aeolian Pentatonic I» y la blues menor c
 | Cromáticas con alteraciones | con uno, dos, tres y cinco bemoles, con cinco sostenidos | 5 |
 | De ocho notas | bebop locrio, bebop lidio, bebop menor armónica | 3 |
 
-Las bebop locria, lidia y menor armónica no están, que sepamos, en Levine (1995): sus bebop son la de dominante, la
+Las bebop locria, lidia y menor armónica no están, que sepamos, en Levine (1995) ni en Kingstone (2006), que la
+Wikipedia en inglés («Bebop scale») cita para la mayor, la menor melódica y la séptima con quinta bemol; la bebop
+menor armónica sale en ese artículo, pero sin nota que diga de dónde: sus bebop son la de dominante, la
 mayor, la dórica y la menor melódica, que ya lo citan. La lista de Op de Coul tiene los pasos de la bebop locria y de
 la menor armónica, pero como «Phrygian/Locrian mixed» y «Maqam Nahawand»: no como bebop. Hace falta otra obra que
 las traiga.
 
 Las hexatónicas de dos tríadas no encajan en Cohn (1996), como se pensaba: sus sistemas hexatónicos juntan dos
 tríadas a una tercera mayor, que es la escala aumentada (y esa ya lo cita). Las del catálogo juntan dos tríadas a un
-tono, la técnica de los «triad pairs» del jazz, y necesitan una obra de improvisación que la explique.
+tono, la técnica de los «triad pairs» del jazz, y necesitan una obra de improvisación que la explique. La que se suele citar, Campbell (*Triad Pairs for Jazz*), no
+se puede leer desde aquí, y lo que se lee de ella en la red no dice a qué distancia van las dos tríadas.
 
 ## Escalas sin época
 
@@ -212,13 +216,20 @@ Hay 46 acordes genéricos y 14 de nombre propio. Los que faltaban ya están, per
 | m(add9) | Do Mi♭ Sol Re (sobre Do) | Ninguna | Buscar una obra que la traiga |
 | Acorde de Elektra | Do♯ Mi♯ Sol♯ + Mi Si | La partitura (Strauss, 1909) | Confirmar la ortografía en la partitura, Kramer (1993) o Abbate (1989) |
 | Acorde de los augures | Fa♭ La♭ Do♭ + Mi♭ Sol Si♭ Re♭ | Taruskin (1996) | Nada |
-| Acorde de la Sinfonía de los salmos | Mi Sol Si Sol | La partitura (Stravinski, 1930) | Citar a White (1979) |
+| Acorde de la Sinfonía de los salmos | Mi Sol Si Sol | La partitura (Stravinski, 1930) y Austin (1966: 334) | Nada |
 | Acorde alfa de Lendvai | Do Mi♭ Fa♯ La + Do♯ Mi Sol Si♭ | Ninguna | Confirmar en Lendvai (1971) qué notas da |
 
-| Tricordo vienés | Do Re♭ Sol♭ (3-5 de Forte) | Ninguna leída | Leer DeLone (1975: 348) o Martin (2000: 149), que cita la Wikipedia |
+| Tricordo vienés | Do Re♭ Sol♭ (3-5 de Forte) | DeLone y otros (1975: 348) | Ver la página en el libro |
 
-Los acordes de Hendrix y mu tampoco citan ninguna obra. El acorde del sueño de La Monte Young (Sol Do Do♯ Re) cita a
+El de Hendrix cita a Shapiro y Glebbeek (1995: 144), y el mu, la introducción de Becker y Fagen al cancionero de
+Steely Dan, que se lee en The Steely Dan Archive. El acorde del sueño de La Monte Young (Sol Do Do♯ Re) cita a
 Smith (1977), que da sus notas.
+
+Las cuatro fuentes nuevas (DeLone, Austin, Shapiro y Glebbeek, Becker y Fagen) se han tomado, con su página, de las
+notas de la Wikipedia en inglés («Viennese trichord», «Psalms chord», «Dominant seventh sharp ninth chord», «Mu
+chord»), y la de Becker y Fagen se ha leído además en su texto. Las páginas de los tres libros están sin comprobar en
+el libro. Austin dice del acorde de los salmos que es «a perverse spacing of the E minor triad, with the minor third
+doubled in four octaves»; DeLone define el tricordo vienés como una cuarta justa y un tritono.
 
 Quedan fuera, por ahora:
 

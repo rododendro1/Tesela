@@ -355,6 +355,25 @@ extension Referencia {
         titulo: "Twentieth-Century Harmony: Creative Aspects and Practice", anio: 1961, editorial: "W. W. Norton",
         lugar: "Nueva York")
 
+    /// DeLone y otros, los aspectos de la música del siglo XX: el tricordo vienés, una cuarta justa y un tritono.
+    public static let delone1975 = Referencia(
+        "delone1975", .libro, autores: ["DeLone, Richard", "Kliewer, Vernon", "Reisberg, Horace", "Wennerstrom, Mary"],
+        titulo: "Aspects of Twentieth-Century Music", anio: 1975, editorial: "Prentice-Hall",
+        lugar: "Englewood Cliffs")
+    /// Austin, la música del siglo XX: el acorde de la «Sinfonía de los salmos», un Mi menor con la tercera doblada.
+    public static let austin1966 = Referencia(
+        "austin1966", .libro, autores: ["Austin, William W."], titulo: "Music in the 20th Century", anio: 1966,
+        editorial: "Dent", lugar: "Londres")
+    /// Shapiro y Glebbeek, la biografía de Jimi Hendrix: el acorde de Hendrix, el de «Purple Haze».
+    public static let shapiro1995 = Referencia(
+        "shapiro1995", .libro, autores: ["Shapiro, Harry", "Glebbeek, Caesar"], titulo: "Jimi Hendrix: Electric Gypsy",
+        anio: 1995, editorial: "St. Martin's Press", lugar: "Nueva York")
+    /// Becker y Fagen, la introducción al cancionero de Steely Dan: el acorde mu.
+    public static let beckerFagenMu = Referencia(
+        "beckerFagenMu", .web, autores: ["Becker, Walter", "Fagen, Donald"],
+        titulo: "Intro to the Steely Dan Song Book",
+        anio: nil, publicadoEn: "The Steely Dan Archive", url: "https://sdarchive.com/songbook.html")
+
     // MARK: Escalas occidentales
 
     /// Aldwell, Schachter y Cadwallader (4.ª ed.), la armonía tonal: las escalas mayor y menores, y los acordes de la
@@ -691,7 +710,8 @@ extension Referencia {
         .berliner1978, .knight1973, .harcourt1925, .siqueira1981, .rothgeb1995, .samson1977, .taruskin1987,
         .taruskin1996,
         .burkhart1973,
-        .levine1989, .persichetti1961, .aldwell2011, .levine1995, .messiaen1944, .smith1977, .lendvai1971, .cohn1996,
+        .levine1989, .persichetti1961, .delone1975, .austin1966, .shapiro1995, .beckerFagenMu, .aldwell2011,
+        .levine1995, .messiaen1944, .smith1977, .lendvai1971, .cohn1996,
         .temperleyTan2013,
         .slonimsky1947, .slonimsky1968, .burke2015,
         .tymoczko2011, .manuel1989, .vanDerMerwe1989, .walser1993, .gjerdingen2007, .hudson1982, .hudsonPassacaglia1982,

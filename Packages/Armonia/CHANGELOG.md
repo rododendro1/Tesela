@@ -12,6 +12,11 @@
 
 ### Cambios
 
+- Cuatro acordes de nombre propio citan ya una obra: el tricordo vienés, DeLone y otros (1975: 348); el de la
+  «Sinfonía de los salmos», Austin (1966: 334); el de Hendrix, Shapiro y Glebbeek (1995: 144), y el mu, la
+  introducción de Becker y Fagen al cancionero de Steely Dan. Obras nuevas: `Referencia.delone1975`, `austin1966`,
+  `shapiro1995` y `beckerFagenMu`.
+- `RegionDeEscala` está en `Teoria/Catalogo/`, junto a `Lugar`, que la envuelve: no cambia nada por fuera.
 - En la consola, los errores de `--agrupar`, `--epoca`, `--momento`, `--escuela` y `--afinacion` nombran todos los
   valores que se leen, de la misma tabla con la que se leen. `--agrupar` no decía `epoca`.
 
