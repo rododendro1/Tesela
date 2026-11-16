@@ -30,6 +30,21 @@ extension LineaDeComandosTests {
         #expect(familia.error.contains("diatonicos"), Comment(rawValue: familia.error))
     }
 
+    /// `instrumentos --familia` con una familia, y `--agrupar familia`.
+    @Test func instrumentosPorFamilias() throws {
+        let frotada = salida("instruments --family bowed-strings --ingles")
+        #expect(
+            frotada
+                == "violin: G3 D4 A4 E5 · 4\nviola: C3 G3 D4 A4 · 4\ncello: C2 G2 D3 A3 · 4\ndouble bass: E1 A1 D2 G2 · 4\n"
+        )
+        let agrupados = salida("instrumentos --agrupar familia")
+        #expect(agrupados.hasPrefix("guitarras (12)\n  guitarra: "), Comment(rawValue: agrupados))
+        #expect(agrupados.contains("\ncuerda frotada (4)\n  violín: "))
+        #expect(salida("instrumentos --familia banjos-y-citaras --agrupar familia").hasPrefix("banjos y cítaras (2)\n"))
+        let datos = try #require(try json("instrumentos violín") as? [[String: Any]])
+        #expect(datos.first?["familiaId"] as? String == "cuerdaFrotada")
+    }
+
     /// `instrumentos … --estadisticas` y `--json`: la ficha, con los órdenes en octavas y los trastes.
     @Test func instrumentosDeCuerdaConFicha() throws {
         let charango = salida("instrumentos charango --estadisticas")

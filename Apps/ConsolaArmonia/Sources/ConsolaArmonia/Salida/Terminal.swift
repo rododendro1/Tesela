@@ -83,7 +83,11 @@ extension LineaDeComandos {
             nombres(.lugar),
             Lugar.todos.map { conGuiones($0.clave) }.reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }
         ),
-        (nombres(.agrupar), LineaDeComandos.nombresDeLasAgrupaciones.flatMap { [$0.espanol, $0.ingles] }),
+        (
+            nombres(.agrupar),
+            LineaDeComandos.nombresDeLasAgrupaciones.flatMap { [$0.espanol, $0.ingles] }
+                + LineaDeComandos.agruparPorFamilia
+        ),
         (nombres(.epoca), LineaDeComandos.nombresDeLasEpocas.flatMap { [$0.espanol, $0.ingles] }),
         (nombres(.afecto), Afecto.allCases.map(\.rawValue)),
         (nombres(.momento), LineaDeComandos.nombresDeLosMomentos.flatMap { [$0.espanol, $0.ingles] }),

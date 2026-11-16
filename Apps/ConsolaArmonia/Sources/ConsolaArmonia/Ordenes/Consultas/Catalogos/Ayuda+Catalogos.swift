@@ -122,8 +122,8 @@ extension LineaDeComandos {
             sintaxis: TextosDeConsola.traduccion(\.sintaxisInstrumentos),
             descripcion: TextosDeConsola.traduccion(\.descripcionInstrumentos),
             ejemplo: ejemplo(
-                "armonia instrumentos --familia diatonicos --estadisticas",
-                "armonia instruments --family diatonic --statistics"),
+                "armonia instrumentos --familia laudes --agrupar familia",
+                "armonia instruments --family lutes --group-by family"),
             notas: TextosDeConsola.traduccion(\.notasInstrumentos),
             opciones: [.familia, .lugar, .agrupar, .estadisticas])
     ]
