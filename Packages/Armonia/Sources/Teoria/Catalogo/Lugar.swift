@@ -95,6 +95,21 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
     case argelia
     case tunez
     case libia
+    case alemania
+    case francia
+    case italia
+    case paisesBajos
+    case portugal
+    case bulgaria
+    case macedoniaDelNorte
+    case rusia
+    case cuba
+    case argentina
+    case venezuela
+    case colombia
+    case ghana
+    case nigeria
+    case congo
 
     /// Su código ISO 3166-1 de dos letras: «ES», «ID», «IR».
     public var codigoISO: String {
@@ -155,6 +170,21 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
         case .argelia: "DZ"
         case .tunez: "TN"
         case .libia: "LY"
+        case .alemania: "DE"
+        case .francia: "FR"
+        case .italia: "IT"
+        case .paisesBajos: "NL"
+        case .portugal: "PT"
+        case .bulgaria: "BG"
+        case .macedoniaDelNorte: "MK"
+        case .rusia: "RU"
+        case .cuba: "CU"
+        case .argentina: "AR"
+        case .venezuela: "VE"
+        case .colombia: "CO"
+        case .ghana: "GH"
+        case .nigeria: "NG"
+        case .congo: "CD"
         }
     }
 
@@ -163,7 +193,8 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
     public var continente: Continente {
         switch self {
         case .espana, .reinoUnido, .suiza, .austria, .croacia, .eslovenia, .ucrania, .polonia, .hungria, .rumania,
-            .georgia, .grecia:
+            .georgia, .grecia, .alemania, .francia, .italia, .paisesBajos, .portugal, .bulgaria, .macedoniaDelNorte,
+            .rusia:
             .europa
         case .turquia, .azerbaiyan, .iran, .irak, .india, .china, .japon, .coreaDelSur, .coreaDelNorte, .vietnam,
             .indonesia, .tailandia, .camboya, .laos, .myanmar, .siria, .libano, .palestina, .jordania, .arabiaSaudi,
@@ -171,9 +202,9 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
             .barein, .catar, .emiratos, .oman, .yemen:
             .asia
         case .uganda, .mozambique, .zimbabue, .mali, .senegal, .gambia, .guinea, .etiopia, .egipto, .marruecos,
-            .argelia, .tunez, .libia:
+            .argelia, .tunez, .libia, .ghana, .nigeria, .congo:
             .africa
-        case .brasil, .peru, .bolivia, .ecuador, .estadosUnidos: .america
+        case .brasil, .peru, .bolivia, .ecuador, .estadosUnidos, .cuba, .argentina, .venezuela, .colombia: .america
         }
     }
 
@@ -241,6 +272,21 @@ public enum Pais: String, Sendable, Codable, CaseIterable {
         case .argelia: TextosDeTeoria.traduccion(\.paisArgelia)
         case .tunez: TextosDeTeoria.traduccion(\.paisTunez)
         case .libia: TextosDeTeoria.traduccion(\.paisLibia)
+        case .alemania: TextosDeTeoria.traduccion(\.paisAlemania)
+        case .francia: TextosDeTeoria.traduccion(\.paisFrancia)
+        case .italia: TextosDeTeoria.traduccion(\.paisItalia)
+        case .paisesBajos: TextosDeTeoria.traduccion(\.paisPaisesBajos)
+        case .portugal: TextosDeTeoria.traduccion(\.paisPortugal)
+        case .bulgaria: TextosDeTeoria.traduccion(\.paisBulgaria)
+        case .macedoniaDelNorte: TextosDeTeoria.traduccion(\.paisMacedoniaDelNorte)
+        case .rusia: TextosDeTeoria.traduccion(\.paisRusia)
+        case .cuba: TextosDeTeoria.traduccion(\.paisCuba)
+        case .argentina: TextosDeTeoria.traduccion(\.paisArgentina)
+        case .venezuela: TextosDeTeoria.traduccion(\.paisVenezuela)
+        case .colombia: TextosDeTeoria.traduccion(\.paisColombia)
+        case .ghana: TextosDeTeoria.traduccion(\.paisGhana)
+        case .nigeria: TextosDeTeoria.traduccion(\.paisNigeria)
+        case .congo: TextosDeTeoria.traduccion(\.paisCongo)
         }
     }
 }

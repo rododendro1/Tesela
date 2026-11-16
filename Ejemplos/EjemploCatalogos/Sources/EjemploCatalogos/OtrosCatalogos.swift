@@ -8,24 +8,36 @@ let columnasDeRitmos: [String] =
     columnasDeNombres + columnasDeAliasYVariantes + [
         "familia", "patron", "agrupacion", "unidad", "compas", "pulsos", "ataques", "fuertes", "intervalos",
         "vector_de_distancias", "euclideo", "profundo", "simetrias_por_rotacion", "uniformidad", "contratiempo",
-        "sincopa",
+        "sincopa", "tradicion", "lugares_de_origen", "paises_de_origen", "continentes_de_origen",
     ] + columnasDeLaFecha + columnasDelCaracter + ["estilos", "referencias"]
 
 func filaDeRitmo(_ ritmo: RitmoConNombre) -> [String] {
     let estadisticas = ritmo.estadisticas
     let otros: [String] = aliasYVariantes(de: ritmo)
-    let resto: [String] = [
-        ritmo.familia.nombre, ritmo.patron,
-        ritmo.agrupacion.map(String.init).joined(separator: "+"), String(ritmo.unidad), ritmo.compas.description,
-        String(estadisticas.pulsos), String(estadisticas.ataques), String(estadisticas.fuertes),
-        lista(estadisticas.intervalos),
-        lista(estadisticas.vectorDeDistancias), siONo(estadisticas.euclideo), siONo(estadisticas.profundo),
-        String(estadisticas.simetriasPorRotacion), numero(estadisticas.uniformidad), String(estadisticas.contratiempo),
-        numero(estadisticas.sincopa),
-    ]
+    let resto: [String] =
+        [
+            ritmo.familia.nombre, ritmo.patron,
+            ritmo.agrupacion.map(String.init).joined(separator: "+"), String(ritmo.unidad), ritmo.compas.description,
+            String(estadisticas.pulsos), String(estadisticas.ataques), String(estadisticas.fuertes),
+            lista(estadisticas.intervalos),
+            lista(estadisticas.vectorDeDistancias), siONo(estadisticas.euclideo), siONo(estadisticas.profundo),
+            String(estadisticas.simetriasPorRotacion), numero(estadisticas.uniformidad),
+            String(estadisticas.contratiempo),
+            numero(estadisticas.sincopa),
+        ] + lugares(ritmo.tradicion, ritmo.lugaresDeOrigen, ritmo.paisesDeOrigen, ritmo.continentesDeOrigen)
     let estilos = ritmo.estilos.map(\.nombre).joined(separator: " · ")
     let alFinal: [String] = fecha(de: ritmo) + caracter(de: ritmo) + [estilos, citas(ritmo.referencias)]
     return nombres(de: ritmo) + otros + resto + alFinal
+}
+
+/// La tradición, los lugares, los países (por su código ISO) y los continentes de origen, como en las escalas.
+func lugares(
+    _ tradicion: Tradicion?, _ lugares: [Lugar], _ paises: [Pais], _ continentes: [Continente]
+) -> [String] {
+    [
+        tradicion?.nombre ?? "", lugares.map(\.nombre).joined(separator: " · "),
+        paises.map(\.codigoISO).joined(separator: " "), continentes.map(\.nombre).joined(separator: " · "),
+    ]
 }
 
 let ritmos = Catalogo(
@@ -42,8 +54,9 @@ let columnasDeLosErrores: [String] = razonesJustas.map { "error_\($0)" }
 let columnasTrasLosErrores: [String] =
     [
         "quinta_del_lobo", "tercera_mas_pura", "tercera_mas_lejana", "desviaciones_del_igual", "pasos",
-        "para_escuchar", "sistema_microtonal",
-    ] + columnasDeLaFecha + ["referencias"]
+        "para_escuchar", "sistema_microtonal", "tradicion", "lugares_de_origen", "paises_de_origen",
+        "continentes_de_origen",
+    ] + columnasDeLaFecha + ["estilos", "referencias"]
 let columnasDeTemperamentos: [String] =
     columnasDeNombres + columnasAntesDeLosErrores + columnasDeLosErrores + columnasTrasLosErrores
 
@@ -62,7 +75,11 @@ func filaDeTemperamento(_ temperamento: TemperamentoConNombre) -> [String] {
         siONo(TemperamentoQueAfina.paraEscuchar.contains { $0.temperamento == temperamento }),
         temperamento.sistemaDeAlturas?.rawValue ?? "",
     ]
-    let alFinal: [String] = fecha(de: temperamento) + [citas(temperamento.referencias)]
+    let deDonde: [String] = lugares(
+        temperamento.tradicion, temperamento.lugaresDeOrigen, temperamento.paisesDeOrigen,
+        temperamento.continentesDeOrigen)
+    let estilos = temperamento.estilos.map(\.nombre).joined(separator: " · ")
+    let alFinal: [String] = deDonde + fecha(de: temperamento) + [estilos, citas(temperamento.referencias)]
     return nombres(de: temperamento) + otros + ficha + errores + resto + alFinal
 }
 

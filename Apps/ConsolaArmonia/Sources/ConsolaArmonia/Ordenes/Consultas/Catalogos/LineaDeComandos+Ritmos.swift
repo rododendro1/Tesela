@@ -16,12 +16,14 @@ extension LineaDeComandos {
         let ritmos: [RitmoConNombre]
         let estadisticas: Bool
         let comparado: RitmoConNombre?
+        /// La de `--agrupar`.
+        let agrupacion: AgrupacionDeEscalas?
     }
 
     /// Los ritmos que pide `ritmos [<texto>] [--familia <familia>] [--estilo <estilo>] [--epoca <época>]
-    /// [--estadisticas] [--comparar <ritmo>]`. Con un nombre exacto, solo ese; si no, los que lo contienen (todos, sin
-    /// texto), de la familia de `--familia`, de un estilo de `--estilo` y de una época de `--epoca` (de origen o de
-    /// uso), como en `acordes`.
+    /// [--lugar <lugar>] [--agrupar <forma>] [--estadisticas] [--comparar <ritmo>]`. Con un nombre exacto, solo ese; si
+    /// no, los que lo contienen (todos, sin texto), de la familia de `--familia`, de un estilo de `--estilo`, de una
+    /// época de `--epoca` (de origen o de uso), como en `acordes`, y de un lugar de origen de `--lugar`.
     static func ritmosPedidos(_ textos: [String], _ notacion: Notacion) throws -> PedidoDeRitmos {
         var argumentos = Argumentos(textos)
         var familia: FamiliaDeRitmo?
@@ -32,6 +34,7 @@ extension LineaDeComandos {
         if let texto = try argumentos.valor(.estilo) { usos = try estilos(leyendo: texto, notacion) }
         var epocas: [Epoca] = []
         if let texto = try argumentos.valor(.epoca) { epocas = try self.epocas(leyendo: texto, notacion) }
+        let lugar = try lugarDelCatalogo(&argumentos, notacion)
         var comparado: RitmoConNombre?
         if let texto = try argumentos.valorConPalabras(.comparar) {
             guard let ritmo = RitmoConNombre.buscar(nombre: texto) else { throw ErrorDeUso.ritmoDesconocido(texto) }
@@ -46,8 +49,9 @@ extension LineaDeComandos {
                 (familia == nil || ritmo.familia == familia)
                     && (usos.isEmpty || ritmo.estilos.contains(where: usos.contains))
                     && (epocas.isEmpty || ritmo.epocas.contains(where: epocas.contains))
+                    && lugar.cumple(ritmo.lugaresDeOrigen)
             }, estadisticas: estadisticas,
-            comparado: comparado)
+            comparado: comparado, agrupacion: lugar.agrupacion)
     }
 
     /// La familia de `--familia`: su clave en español o en inglés, o su nombre en la notación.
@@ -71,7 +75,10 @@ extension LineaDeComandos {
             return ResultadoDeOrden(
                 salida: "", error: "armonia: " + Mensaje.ningunRitmo.texto(en: notacion) + "\n", codigo: 1)
         }
-        let lineas = pedido.ritmos.flatMap { ritmo -> [String] in
+        let lineas = lineasAgrupadas(
+            de: pedido.ritmos, agrupadas: pedido.agrupacion, en: notacion, epoca: \.epocaDeOrigen,
+            paises: \.paisesDeOrigen, continentes: \.continentesDeOrigen
+        ) { ritmo -> [String] in
             let presentado = RitmoPresentado(ritmo, en: notacion)
             var lineas = ["\(presentado.nombre): \(presentado.patron) · \(presentado.compas)"]
             if pedido.estadisticas {

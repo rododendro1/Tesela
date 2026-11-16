@@ -12,11 +12,12 @@ extension LineaDeComandos {
             (.tradicional, "tradicional", "traditional"),
         ]
 
-    /// Los temperamentos que pide `temperamentos [<texto>] [--familia <familia>] [--estadisticas]` y si se quieren
-    /// sus medidas. Con un nombre exacto, solo ese; si no, los que lo contienen (todos, sin texto), de la familia de
-    /// `--familia`.
+    /// Los temperamentos que pide `temperamentos [<texto>] [--familia <familia>] [--epoca <época>] [--lugar <lugar>]
+    /// [--agrupar <forma>] [--estadisticas]`, si se quieren sus medidas y cómo se agrupan. Con un nombre exacto, solo
+    /// ese; si no, los que lo contienen (todos, sin texto), de la familia de `--familia`, de una época de origen de
+    /// `--epoca` y de un lugar de origen de `--lugar`.
     static func temperamentosPedidos(_ textos: [String], _ notacion: Notacion) throws -> (
-        temperamentos: [TemperamentoConNombre], estadisticas: Bool
+        temperamentos: [TemperamentoConNombre], estadisticas: Bool, agrupacion: AgrupacionDeEscalas?
     ) {
         var argumentos = Argumentos(textos)
         var familia: FamiliaDeTemperamento?
@@ -28,12 +29,20 @@ extension LineaDeComandos {
             guard let elegida = hallada?.familia else { throw ErrorDeUso.familiaDeTemperamentoDesconocida(texto) }
             familia = elegida
         }
+        var epocas: [Epoca] = []
+        if let texto = try argumentos.valor(.epoca) { epocas = try self.epocas(leyendo: texto, notacion) }
+        let lugar = try lugarDelCatalogo(&argumentos, notacion)
         let estadisticas = argumentos.quitarMarca(.estadisticas)
         try argumentos.sinOpcionesDesconocidas()
         let texto = argumentos.unidos
         let hallados =
             TemperamentoConNombre.buscar(nombre: texto).map { [$0] } ?? TemperamentoConNombre.buscar(conteniendo: texto)
-        return (hallados.filter { familia == nil || $0.familia == familia }, estadisticas)
+        let pedidos = hallados.filter { temperamento in
+            (familia == nil || temperamento.familia == familia)
+                && (epocas.isEmpty || temperamento.epocaDeOrigen.map(epocas.contains) == true)
+                && lugar.cumple(temperamento.lugaresDeOrigen)
+        }
+        return (pedidos, estadisticas, lugar.agrupacion)
     }
 
     /// `temperamentos [<texto>] [opciones]`: cada temperamento del catálogo, o los que tienen el texto en el nombre o
@@ -44,12 +53,15 @@ extension LineaDeComandos {
     static func temperamentos(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(textos)
         if argumentos.quitarMarca(.reloj) { return try relojDelTemperamento(&argumentos, notacion) }
-        let (hallados, estadisticas) = try temperamentosPedidos(textos, notacion)
+        let (hallados, estadisticas, agrupacion) = try temperamentosPedidos(textos, notacion)
         guard !hallados.isEmpty else {
             return ResultadoDeOrden(
                 salida: "", error: "armonia: " + Mensaje.ningunTemperamento.texto(en: notacion) + "\n", codigo: 1)
         }
-        let lineas = hallados.flatMap { temperamento -> [String] in
+        let lineas = lineasAgrupadas(
+            de: hallados, agrupadas: agrupacion, en: notacion, epoca: \.epocaDeOrigen, paises: \.paisesDeOrigen,
+            continentes: \.continentesDeOrigen
+        ) { temperamento -> [String] in
             let presentado = TemperamentoPresentado(temperamento, en: notacion)
             var linea = presentado.nombre + ": \(presentado.pasosPorOctava)"
             if let quinta = presentado.quinta {
@@ -71,7 +83,7 @@ extension LineaDeComandos {
     static func relojDelTemperamento(_ argumentos: inout Argumentos, _ notacion: Notacion) throws -> ResultadoDeOrden {
         let quintas = argumentos.quitarMarca(.quintas)
         let colores = argumentos.quitarMarca(.colores)
-        let (hallados, _) = try temperamentosPedidos(argumentos.restantes, notacion)
+        let (hallados, _, _) = try temperamentosPedidos(argumentos.restantes, notacion)
         guard let temperamento = hallados.first else {
             return ResultadoDeOrden(
                 salida: "", error: "armonia: " + Mensaje.ningunTemperamento.texto(en: notacion) + "\n", codigo: 1)

@@ -36,11 +36,12 @@ public struct RitmoConNombre: Sendable {
     /// Un ritmo con nombre, del catálogo o fuera de él. Sin agrupación, un solo grupo con todos los pulsos.
     /// `estilos` son los de la música occidental en que se usa, de más a menos importante; `documentada`, la obra más
     /// antigua que lo da, con su año, que va también entre sus referencias; `anio`, el año en que aparece, si no lo da
-    /// esa obra.
+    /// esa obra; `tradicion`, la suya si no es de los estilos occidentales, y `lugares`, de dónde viene si se sabe más
+    /// que su tradición.
     public init(
         nombre: String, patron: String, agrupacion: [Int]? = nil, unidad: Int = 16, familia: FamiliaDeRitmo,
         alias: [String] = [], variantes: [String] = [], estilos: [Estilo] = [], referencias: [Referencia] = [],
-        documentada: Referencia? = nil, anio: Int? = nil
+        documentada: Referencia? = nil, anio: Int? = nil, tradicion: Tradicion? = nil, lugares: [Lugar] = []
     ) {
         self.nombre = nombre
         self.patron = patron
@@ -49,7 +50,9 @@ public struct RitmoConNombre: Sendable {
         self.familia = familia
         self.alias = alias
         self.variantes = variantes
-        datos = DatosDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada, anio: anio)
+        datos = DatosDelCatalogo(
+            estilos: estilos, referencias: referencias, documentada: documentada, anio: anio, tradicion: tradicion,
+            lugares: lugares)
     }
 
     // MARK: Propiedades

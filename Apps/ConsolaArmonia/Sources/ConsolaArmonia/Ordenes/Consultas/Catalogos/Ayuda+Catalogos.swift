@@ -74,7 +74,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia ritmos clave de son --estadisticas", "armonia rhythms son clave --statistics"),
             notas: TextosDeConsola.traduccion(\.notasRitmos),
-            opciones: [.familia, .estilo, .epoca, .estadisticas, .comparar])
+            opciones: [.familia, .estilo, .epoca, .lugar, .agrupar, .estadisticas, .comparar])
     ]
 
     static let ayudaDeTemperamentos: [EntradaDeAyuda] = [
@@ -85,7 +85,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia temperamentos mesotonico --estadisticas", "armonia temperaments meantone --statistics"),
             notas: TextosDeConsola.traduccion(\.notasTemperamentos),
-            opciones: [.familia, .estadisticas, .reloj, .quintas, .colores])
+            opciones: [.familia, .epoca, .lugar, .agrupar, .estadisticas, .reloj, .quintas, .colores])
     ]
 
     static let ayudaDeNotasConNombre: [EntradaDeAyuda] = [

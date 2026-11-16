@@ -17,6 +17,10 @@ public struct RitmoPresentado: Hashable, Sendable, Codable {
     /// Sus estilos, de más a menos importante, y las épocas en que se usa, por su nombre.
     public let estilos: [String]
     public let epocasDeUso: [String]
+    /// La tradición, por su clave (`india`, `mundoArabe`); `nil` en los de los estilos occidentales.
+    public let tradicion: String?
+    /// Los lugares de donde viene, por su nombre: «Andalucía», «Cuba», «India».
+    public let lugaresDeOrigen: [String]
     /// Las citas de las obras donde se lee.
     public let referencias: [String]
     /// El año, la época y la obra que lo documenta (`OrigenPresentado`); `nil` si no se sabe ninguno.
@@ -45,6 +49,8 @@ public struct RitmoPresentado: Hashable, Sendable, Codable {
         familia = ritmo.familia.nombre(en: notacion)
         estilos = ritmo.estilos.map { $0.nombre(en: notacion) }
         epocasDeUso = ritmo.epocasDeUso.map { $0.nombre(en: notacion) }
+        tradicion = ritmo.tradicion?.rawValue
+        lugaresDeOrigen = ritmo.lugaresDeOrigen.map { $0.nombre(en: notacion) }
         referencias = ritmo.referencias.map(\.cita)
         origen = OrigenPresentado(ritmo, en: notacion)
         patron = ritmo.patron
@@ -64,15 +70,16 @@ public struct RitmoPresentado: Hashable, Sendable, Codable {
     }
 
     /// La ficha, un dato por fila: la familia, los otros nombres y la época (`datosDelCatalogo(en:)`), si los tiene,
-    /// el patrón, la agrupación y el compás.
+    /// los lugares de origen, el patrón, la agrupación y el compás.
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
-        [DatoPresentado(nombre: notacion.texto(\.familiaDeRitmo), valor: familia)] + datosDelCatalogo(en: notacion) + [
-            DatoPresentado(nombre: notacion.texto(\.patronDeRitmo), valor: patron),
-            DatoPresentado(
-                nombre: notacion.texto(\.agrupacionDeRitmo),
-                valor: agrupacion.map(String.init).joined(separator: " + ")),
-            DatoPresentado(nombre: notacion.texto(\.compasDeRitmo), valor: compas),
-        ]
+        [DatoPresentado(nombre: notacion.texto(\.familiaDeRitmo), valor: familia)] + datosDelCatalogo(en: notacion)
+            + datosDelLugar(lugaresDeOrigen, en: notacion) + [
+                DatoPresentado(nombre: notacion.texto(\.patronDeRitmo), valor: patron),
+                DatoPresentado(
+                    nombre: notacion.texto(\.agrupacionDeRitmo),
+                    valor: agrupacion.map(String.init).joined(separator: " + ")),
+                DatoPresentado(nombre: notacion.texto(\.compasDeRitmo), valor: compas),
+            ]
     }
 
     /// Lo que se mide, un dato por fila: los pulsos y los golpes, los intervalos, el vector de distancias, las

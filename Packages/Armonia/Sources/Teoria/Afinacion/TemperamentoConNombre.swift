@@ -35,7 +35,8 @@ public struct TemperamentoConNombre: Sendable {
     package init(
         nombre: String, construccion: ConstruccionDeTemperamento, familia: FamiliaDeTemperamento,
         autor: String? = nil, anio: Int? = nil, alias: [String] = [], variantes: [String] = [],
-        referencias: [Referencia] = [], documentada: Referencia? = nil
+        referencias: [Referencia] = [], documentada: Referencia? = nil, estilos: [Estilo] = [],
+        tradicion: Tradicion? = nil, lugares: [Lugar] = []
     ) {
         self.nombre = nombre
         self.construccion = construccion
@@ -43,7 +44,9 @@ public struct TemperamentoConNombre: Sendable {
         self.autor = autor ?? documentada?.autores.first.map(Self.nombreNatural)
         self.alias = alias
         self.variantes = variantes
-        datos = DatosDelCatalogo(referencias: referencias, documentada: documentada, anio: anio)
+        datos = DatosDelCatalogo(
+            estilos: estilos, referencias: referencias, documentada: documentada, anio: anio, tradicion: tradicion,
+            lugares: lugares)
     }
 
     /// «Werckmeister, Andreas» como «Andreas Werckmeister»; un nombre sin coma («Zhu Zaiyu»), tal cual.
