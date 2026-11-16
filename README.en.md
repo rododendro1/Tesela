@@ -45,13 +45,13 @@ armonia mcp                                        # the engine as an MCP server
 Commands and note names are accepted in Spanish or English (Do, C, Sib, Bb). `--ingles` answers in English notation
 and language; `--language` picks any of the thirteen languages, and so does the `ARMONIA_IDIOMA` variable
 (`export ARMONIA_IDIOMA=en`; `system` takes it from `LANG`). With `--json`, the keys are always the same (in
-Spanish) whatever the language.
+Spanish) whatever the language, and an error comes out as JSON too, on standard error.
 
 ## Using the packages
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/rododendro1/Tesela.git", from: "0.5.4"),
+    .package(url: "https://github.com/rododendro1/Tesela.git", from: "0.5.5"),
 ],
 targets: [
     .target(name: "MyApp", dependencies: [

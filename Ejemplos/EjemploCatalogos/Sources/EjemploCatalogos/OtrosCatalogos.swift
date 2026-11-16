@@ -12,15 +12,16 @@ let columnasDeRitmos: [String] =
     ] + columnasDeLaFecha + columnasDelCaracter + ["estilos", "referencias"]
 
 func filaDeRitmo(_ ritmo: RitmoConNombre) -> [String] {
-    let medidas = ritmo.estadisticas
+    let estadisticas = ritmo.estadisticas
     let otros: [String] = aliasYVariantes(de: ritmo, conVariantes: false)
     let resto: [String] = [
         ritmo.familia.nombre, ritmo.patron,
         ritmo.agrupacion.map(String.init).joined(separator: "+"), String(ritmo.unidad), ritmo.compas.description,
-        String(medidas.pulsos), String(medidas.ataques), String(medidas.fuertes), lista(medidas.intervalos),
-        lista(medidas.vectorDeDistancias), siONo(medidas.euclideo), siONo(medidas.profundo),
-        String(medidas.simetriasPorRotacion), numero(medidas.uniformidad), String(medidas.contratiempo),
-        numero(medidas.sincopa),
+        String(estadisticas.pulsos), String(estadisticas.ataques), String(estadisticas.fuertes),
+        lista(estadisticas.intervalos),
+        lista(estadisticas.vectorDeDistancias), siONo(estadisticas.euclideo), siONo(estadisticas.profundo),
+        String(estadisticas.simetriasPorRotacion), numero(estadisticas.uniformidad), String(estadisticas.contratiempo),
+        numero(estadisticas.sincopa),
     ]
     let estilos = ritmo.estilos.map(\.nombre).joined(separator: " · ")
     let alFinal: [String] = fecha(de: ritmo) + caracter(de: ritmo) + [estilos, citas(ritmo.referencias)]
@@ -47,17 +48,17 @@ let columnasDeTemperamentos: [String] =
     columnasDeNombres + columnasAntesDeLosErrores + columnasDeLosErrores + columnasTrasLosErrores
 
 func filaDeTemperamento(_ temperamento: TemperamentoConNombre) -> [String] {
-    let medidas = temperamento.estadisticas
+    let estadisticas = temperamento.estadisticas
     let otros: [String] = aliasYVariantes(de: temperamento, conVariantes: false)
     let ficha: [String] = [
-        temperamento.familia.nombre, temperamento.autor ?? "", String(medidas.pasosPorOctava),
+        temperamento.familia.nombre, temperamento.autor ?? "", String(estadisticas.pasosPorOctava),
         numero(temperamento.quinta),
-        siONo(medidas.uniforme), numero(medidas.pasoMenor), numero(medidas.pasoMayor),
+        siONo(estadisticas.uniforme), numero(estadisticas.pasoMenor), numero(estadisticas.pasoMayor),
     ]
-    let errores: [String] = medidas.aproximaciones.map { numero($0.error) }
+    let errores: [String] = estadisticas.aproximaciones.map { numero($0.error) }
     let resto: [String] = [
-        numero(medidas.quintaDelLobo), numero(medidas.terceraMasPura), numero(medidas.terceraMasLejana),
-        medidas.desviacionesDelIgual.map(lista) ?? "", lista(temperamento.pasos),
+        numero(estadisticas.quintaDelLobo), numero(estadisticas.terceraMasPura), numero(estadisticas.terceraMasLejana),
+        estadisticas.desviacionesDelIgual.map(lista) ?? "", lista(temperamento.pasos),
         siONo(TemperamentoQueAfina.paraEscuchar.contains { $0.temperamento == temperamento }),
         temperamento.sistemaDeAlturas?.rawValue ?? "",
     ]

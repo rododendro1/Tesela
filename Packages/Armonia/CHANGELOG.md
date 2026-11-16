@@ -1,9 +1,17 @@
 # Cambios
 
-## Sin publicar
+## 0.5.5 (2026-11-16)
 
 ### Cambios incompatibles
 
+- Se quitan, sin pasar por obsoletos, las llamadas que eligen entre tríada y cuatríada con un `Bool`. Hay una sola
+  llamada, con el número de notas (3 por defecto):
+  - `acorde(grado:cuatriada:)` y `armonizar(cuatriadas:)`, de `Tonalidad` y de `Escala`: `acorde(grado:notas:)` y
+    `armonizar(notas:)`. En `Tonalidad` dan un opcional, como en `Escala`.
+  - `arpegio(grado:cuatriada:…)` y `arpegios(cuatriadas:)`: `arpegio(grado:notas:…)` y `arpegios(notas:)`.
+  - `cifradoRomano(grado:cuatriada:)` y `cifradosRomanos(cuatriadas:)`, de `Tonalidad` y de `Escala`, que daban
+    texto: `romano(grado:notas:)` y `romanos(notas:)`, y su `description` si hace falta el texto.
+  - `Escala.armonizacionConTensiones`, la tupla: `gradosArmonizados`.
 - En la consola, con `--json`, los errores salen en JSON en la salida de errores, en lugar de como texto, con el mismo
   código de salida: `{"error": {"codigo", "tipo", "mensaje", "propuesta", "texto", "posicion"}}`. `tipo` es el caso
   del error o del motivo de la lectura (`opcionDesconocida`, `notaNoReconocida`) y no cambia con el idioma. Sin
@@ -35,30 +43,17 @@
     se propone, no propone órdenes ni opciones. Los valores de `--lugar`, `--fuente` y `--categoria` se proponen con
     guiones (`reino-unido`), como se leen.
 
-### Obsoleto
-
-Lo de antes sigue funcionando con un aviso, hasta la 0.6.0:
-
-- `acorde(grado:cuatriada:)`, `armonizar(cuatriadas:)`, `arpegio(grado:cuatriada:…)` y `arpegios(cuatriadas:)`:
-  hay una sola llamada, con el número de notas, `acorde(grado:notas:)` (3 por defecto), `armonizar(notas:)`,
-  `arpegio(grado:notas:…)` y `arpegios(notas:)`.
-- `Tonalidad.cifradoRomano(grado:cuatriada:)`, `cifradosRomanos(cuatriadas:)` y los de `Escala`, que daban texto: en
-  su lugar, `romano(grado:notas:)` y `romanos(notas:)`, y su `description` si hace falta el texto.
-- `Escala.armonizacionConTensiones`, la tupla: en su lugar, `gradosArmonizados`.
-
 ### Cambios
 
 - `Tonalidad.acorde(grado:notas:)` y `armonizar(notas:)` son opcionales, como los de `Escala`: con 5 notas o más,
   un grado puede no formar un tipo conocido. Antes, `acorde(grado:cuatriada:)` daba una tríada mayor sin avisar si
   el grado no formaba acorde; en mayor y en menor no pasaba, y las pruebas lo comprueban en las veinticuatro
   tonalidades.
-
 - En la consola, `--momento` es `--time-of-day` en inglés; `--time` sigue valiendo en `escalas`.
 - El índice de la ayuda de la consola ya no deja frases a medias (`progresiones` y `acordes` acababan en «sobre la
   tónica de») ni pega «.scl» a la palabra de antes, y en griego corta el resumen en «·». En francés, `--escalas` de
   `analizar` va en su propio párrafo, como en los demás idiomas.
-
-- `EstadisticasTonalesDeEscala.triadas` y `cuatriadas` son los tipos de `Escala.armonizar(cuatriadas:)` en todas las
+- `EstadisticasTonalesDeEscala.triadas` y `cuatriadas` son los tipos de `Escala.armonizar(notas:)` en todas las
   escalas que no son fragmentos, también las que no tienen siete notas (en la pentatónica mayor, Do y Lam), y con
   cualquier tipo, no solo las cuatro tríadas y las nueve cuatríadas de antes: hay una sola forma de armonizar una
   escala.

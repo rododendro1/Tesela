@@ -289,7 +289,7 @@ extension LineaDeComandos {
             }
             if pedido.conAcordes {
                 opciones.acordesEnLasDoceTonalidades = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
-                    escala, cuatriadas: !pedido.triadas, en: notacion)
+                    escala, notas: pedido.triadas ? 3 : 4, en: notacion)
             }
         }
         if let otra = pedido.otra {

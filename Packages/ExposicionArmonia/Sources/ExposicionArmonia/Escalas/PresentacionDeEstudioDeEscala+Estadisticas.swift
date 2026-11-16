@@ -250,7 +250,7 @@ extension PresentacionDeEstudioDeEscala {
 /// Lo que dicen de una escala las teorías (`EstadisticasDeEscala`), para `--json`: las propiedades de Myhill,
 /// Rothenberg y Balzano, los análisis de Hanson y de Forte, la armonización por grados, la afinación justa y el perfil
 /// tonal.
-public struct MedidasDeEscalaPresentadas: Hashable, Sendable, Codable {
+public struct TeoriasDeEscalaPresentadas: Hashable, Sendable, Codable {
     public let propiedadDeMyhill: Bool
     public let generador: Int?
     public let bienFormada: Bool
@@ -357,22 +357,22 @@ public struct EstadisticasDeEscalaPresentadas: Hashable, Sendable, Codable {
     public let maximamenteRegular: Bool
     public let aproximada: Bool
     /// Lo que dicen las teorías: Myhill, Rothenberg, Hanson, Messiaen, Balzano…
-    public let teoria: MedidasDeEscalaPresentadas
+    public let teoria: TeoriasDeEscalaPresentadas
 
     public init(_ escala: Escala, en notacion: Notacion) {
-        let medidas = escala.estadisticas
-        numeroDeNotas = medidas.numeroDeNotas
-        cardinal = medidas.cardinal?.nombre(en: notacion)
-        brillo = medidas.brillo
-        brilloPorQuintas = Redondeo.valor(medidas.brilloPorQuintas, decimales: 2)
-        pasos = medidas.pasos
-        vectorIntervalico = medidas.vectorIntervalico
-        anhemitonica = medidas.anhemitonica
-        cohemitonica = medidas.cohemitonica
-        transposicionesDistintas = medidas.transposicionesDistintas
-        numeroDeForte = medidas.numeroDeForte
-        maximamenteRegular = medidas.maximamenteRegular
-        aproximada = medidas.aproximada
-        teoria = MedidasDeEscalaPresentadas(medidas, en: notacion)
+        let estadisticas = escala.estadisticas
+        numeroDeNotas = estadisticas.numeroDeNotas
+        cardinal = estadisticas.cardinal?.nombre(en: notacion)
+        brillo = estadisticas.brillo
+        brilloPorQuintas = Redondeo.valor(estadisticas.brilloPorQuintas, decimales: 2)
+        pasos = estadisticas.pasos
+        vectorIntervalico = estadisticas.vectorIntervalico
+        anhemitonica = estadisticas.anhemitonica
+        cohemitonica = estadisticas.cohemitonica
+        transposicionesDistintas = estadisticas.transposicionesDistintas
+        numeroDeForte = estadisticas.numeroDeForte
+        maximamenteRegular = estadisticas.maximamenteRegular
+        aproximada = estadisticas.aproximada
+        teoria = TeoriasDeEscalaPresentadas(estadisticas, en: notacion)
     }
 }

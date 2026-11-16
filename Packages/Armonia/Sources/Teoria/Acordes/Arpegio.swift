@@ -290,15 +290,6 @@ extension Escala {
         }
     }
 
-    /// El arpegio de la tríada o la cuatríada de un grado.
-    @available(*, deprecated, renamed: "arpegio(grado:notas:patron:octavas:conOctava:)")
-    public func arpegio(
-        grado: Int = 1, cuatriada: Bool, patron: Arpegio.Patron = .ascendente, octavas: Int = 1,
-        conOctava: Bool = true
-    ) -> Arpegio? {
-        arpegio(grado: grado, notas: cuatriada ? 4 : 3, patron: patron, octavas: octavas, conOctava: conOctava)
-    }
-
     /// El arpegio con los grados que se indiquen, contados desde 1, y el primero como fundamental:
     /// `Escala("Do mayor").arpegio(grados: [1, 3, 5, 6])` es el de Do6. `nil` si hay menos de dos
     /// grados o las notas no forman un acorde conocido.
@@ -320,10 +311,6 @@ extension Escala {
     public func arpegios(notas cuantas: Int = 3) -> [Arpegio?] {
         (1...tipo.intervalos.count).map { arpegio(grado: $0, notas: cuantas) }
     }
-
-    /// Los arpegios de las tríadas o las cuatríadas de todos los grados.
-    @available(*, deprecated, renamed: "arpegios(notas:)")
-    public func arpegios(cuatriadas: Bool) -> [Arpegio?] { arpegios(notas: cuatriadas ? 4 : 3) }
 }
 
 extension Acorde {

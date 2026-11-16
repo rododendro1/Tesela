@@ -74,10 +74,10 @@ extension LineaDeComandos {
             if let momento, !tipo.momentos.contains(momento) { return false }
             if let escuela, !tipo.escuelas.contains(escuela) { return false }
             if conIntervalo != nil || sinIntervalo != nil || conPaso != nil {
-                let medidas = estadisticas(tipo)
-                if let conIntervalo, medidas.vectorIntervalico[conIntervalo - 1] == 0 { return false }
-                if let sinIntervalo, medidas.vectorIntervalico[sinIntervalo - 1] > 0 { return false }
-                if let conPaso, !medidas.pasos.contains(conPaso) { return false }
+                let delTipo = estadisticas(tipo)
+                if let conIntervalo, delTipo.vectorIntervalico[conIntervalo - 1] == 0 { return false }
+                if let sinIntervalo, delTipo.vectorIntervalico[sinIntervalo - 1] > 0 { return false }
+                if let conPaso, !delTipo.pasos.contains(conPaso) { return false }
             }
             return buscado.isEmpty || claveDeBusqueda(tipo.nombre(en: notacion)).contains(buscado)
                 || claveDeBusqueda(tipo.nombre).contains(buscado)

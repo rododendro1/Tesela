@@ -192,13 +192,14 @@ import Testing
     /// Todo el catálogo se mide sin detenerse, y los indeterminados no tienen fundamental.
     @Test func todoElCatalogo() {
         for acorde in AcordeConNombre.catalogo {
-            let medidas = acorde.estadisticas
+            let estadisticas = acorde.estadisticas
             #expect(
-                medidas.disposicionDeVoces.intervalosEntreVoces.allSatisfy { $0 > 0 }, Comment(rawValue: acorde.nombre))
+                estadisticas.disposicionDeVoces.intervalosEntreVoces.allSatisfy { $0 > 0 },
+                Comment(rawValue: acorde.nombre))
             #expect(
-                medidas.disposicionDeVoces.grupoDeHindemith.indeterminado
-                    == (medidas.disposicionDeVoces.fundamentalDeHindemith == nil))
-            #expect(medidas.afinacion.gradoDeSuavidad >= 1)
+                estadisticas.disposicionDeVoces.grupoDeHindemith.indeterminado
+                    == (estadisticas.disposicionDeVoces.fundamentalDeHindemith == nil))
+            #expect(estadisticas.afinacion.gradoDeSuavidad >= 1)
         }
     }
 

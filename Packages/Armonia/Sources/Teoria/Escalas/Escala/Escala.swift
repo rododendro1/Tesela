@@ -168,12 +168,6 @@ public struct Escala: Hashable, Sendable {
         var numero: Int { self == .terceras ? 3 : 4 }
     }
 
-    /// Acorde por terceras superpuestas sobre un grado (tríada o cuatríada).
-    @available(*, deprecated, renamed: "acorde(grado:notas:por:)", message: "Usa acorde(grado:notas:), con 3 o 4 notas")
-    public func acorde(grado: Int, cuatriada: Bool) -> Acorde? {
-        acorde(grado: grado, notas: cuatriada ? 4 : 3)
-    }
-
     /// El acorde de `notas` notas (de 2 a 7; 3 por defecto, la tríada) apiladas sobre un grado, por terceras o por
     /// cuartas. En una
     /// heptatónica, por terceras, un grado sí y otro no (con 5, 6 y 7 notas, los de 9.ª, 11.ª y 13.ª: Do7M(9) en
@@ -213,12 +207,6 @@ public struct Escala: Hashable, Sendable {
         return nombres
     }
 
-    /// Acordes de todos los grados, por terceras: `nil` si un grado no tiene la 3.ª o no forma un tipo conocido.
-    @available(*, deprecated, renamed: "armonizar(notas:por:)", message: "Usa armonizar(notas:), con 3 o 4 notas")
-    public func armonizar(cuatriadas: Bool) -> [Acorde?] {
-        armonizar(notas: cuatriadas ? 4 : 3)
-    }
-
     /// Los acordes de `notas` notas (3 por defecto) de todos los grados, por terceras o por cuartas
     /// (``acorde(grado:notas:por:)``): `nil` en los grados que no forman un tipo conocido.
     ///
@@ -247,12 +235,6 @@ public struct Escala: Hashable, Sendable {
         }
     }
 
-    /// La cuatríada de cada grado con sus tensiones disponibles, en una tupla.
-    @available(*, deprecated, renamed: "gradosArmonizados")
-    public var armonizacionConTensiones: [(acorde: Acorde?, tensiones: [NotaSobreElAcorde])] {
-        gradosArmonizados.map { ($0.acorde, $0.tensiones) }
-    }
-
     /// El cifrado romano del acorde de `notas` notas por terceras de un grado (``acorde(grado:notas:por:)``), en
     /// estado fundamental. Las alteraciones del numeral se miden respecto a la escala `referencia` sobre la misma
     /// tónica (mayor por defecto): La menor armónica → i, ii°, ♭III+, iv, V, ♭VI, vii°; con
@@ -277,18 +259,6 @@ public struct Escala: Hashable, Sendable {
     /// Los cifrados romanos de todos los grados (``romano(grado:notas:referencia:)``).
     public func romanos(notas cuantas: Int = 3, referencia: TipoDeEscala = .mayor) -> [CifradoRomano?] {
         (1...tipo.intervalos.count).map { romano(grado: $0, notas: cuantas, referencia: referencia) }
-    }
-
-    /// Cifrado romano del acorde de un grado, en texto.
-    @available(*, deprecated, message: "Usa romano(grado:notas:referencia:), que da el cifrado por sus partes")
-    public func cifradoRomano(grado: Int, cuatriada: Bool = false, referencia: TipoDeEscala = .mayor) -> String? {
-        romano(grado: grado, notas: cuatriada ? 4 : 3, referencia: referencia)?.description
-    }
-
-    /// Cifrados romanos de todos los grados, en texto.
-    @available(*, deprecated, message: "Usa romanos(notas:referencia:), que da los cifrados por sus partes")
-    public func cifradosRomanos(cuatriadas: Bool = false, referencia: TipoDeEscala = .mayor) -> [String?] {
-        romanos(notas: cuatriadas ? 4 : 3, referencia: referencia).map { $0?.description }
     }
 
     /// "Re dórico".
