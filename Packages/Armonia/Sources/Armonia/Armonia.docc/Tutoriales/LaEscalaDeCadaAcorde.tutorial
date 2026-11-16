@@ -54,7 +54,7 @@
 
         @Steps {
             @Step {
-                En Do mayor, el ii7 admite 9, 11 y 13; el I7M, solo 9 y 13.
+                En Do mayor, el ii7 admite 9, 11 y 13; el Imaj7, solo 9 y 13.
 
                 @Code(name: "main.swift", file: "jazz-03-01.swift")
             }
