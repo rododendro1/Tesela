@@ -1,6 +1,13 @@
 # Cambios
 
-## Sin publicar
+## 0.5.5 (2026-11-16)
+
+### Cambios incompatibles
+
+- `MedidasDeEscalaPresentadas` se llama `TeoriasDeEscalaPresentadas`: es lo que dicen las teorías de una escala, la
+  clave `teoria` del JSON de `armonia escala --estadisticas`, que no cambia.
+- `PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(_:notas:en:)` cuenta las notas (4 por defecto), como
+  `Escala.armonizar(notas:)`, en lugar de `cuatriadas: Bool`.
 
 ### Lo nuevo
 

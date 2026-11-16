@@ -51,7 +51,7 @@ Spanish) whatever the language, and an error comes out as JSON too, on standard 
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/rododendro1/Tesela.git", from: "0.5.4"),
+    .package(url: "https://github.com/rododendro1/Tesela.git", from: "0.5.5"),
 ],
 targets: [
     .target(name: "MyApp", dependencies: [

@@ -250,7 +250,7 @@ extension PresentacionDeEstudioDeEscala {
 /// Lo que dicen de una escala las teorías (`EstadisticasDeEscala`), para `--json`: las propiedades de Myhill,
 /// Rothenberg y Balzano, los análisis de Hanson y de Forte, la armonización por grados, la afinación justa y el perfil
 /// tonal.
-public struct MedidasDeEscalaPresentadas: Hashable, Sendable, Codable {
+public struct TeoriasDeEscalaPresentadas: Hashable, Sendable, Codable {
     public let propiedadDeMyhill: Bool
     public let generador: Int?
     public let bienFormada: Bool
@@ -357,7 +357,7 @@ public struct EstadisticasDeEscalaPresentadas: Hashable, Sendable, Codable {
     public let maximamenteRegular: Bool
     public let aproximada: Bool
     /// Lo que dicen las teorías: Myhill, Rothenberg, Hanson, Messiaen, Balzano…
-    public let teoria: MedidasDeEscalaPresentadas
+    public let teoria: TeoriasDeEscalaPresentadas
 
     public init(_ escala: Escala, en notacion: Notacion) {
         let estadisticas = escala.estadisticas
@@ -373,6 +373,6 @@ public struct EstadisticasDeEscalaPresentadas: Hashable, Sendable, Codable {
         numeroDeForte = estadisticas.numeroDeForte
         maximamenteRegular = estadisticas.maximamenteRegular
         aproximada = estadisticas.aproximada
-        teoria = MedidasDeEscalaPresentadas(estadisticas, en: notacion)
+        teoria = TeoriasDeEscalaPresentadas(estadisticas, en: notacion)
     }
 }

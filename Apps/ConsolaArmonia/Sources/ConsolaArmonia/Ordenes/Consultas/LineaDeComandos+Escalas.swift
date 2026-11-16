@@ -176,7 +176,7 @@ extension LineaDeComandos {
             // Con --acordes, también los acordes de cada grado en las doce, si la escala los forma.
             if pedido.conAcordes,
                 let tabla = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
-                    escala, cuatriadas: !pedido.triadas, en: notacion)
+                    escala, notas: pedido.triadas ? 3 : 4, en: notacion)
             {
                 lineas.append(tabla.titulo + ":")
                 lineas.append("  " + tabla.grados.joined(separator: " · "))

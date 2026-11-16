@@ -53,7 +53,7 @@ cambian con el idioma, y un error sale también en JSON, en la salida de errores
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/rododendro1/Tesela.git", from: "0.5.4"),
+    .package(url: "https://github.com/rododendro1/Tesela.git", from: "0.5.5"),
 ],
 targets: [
     .target(name: "MiApp", dependencies: [

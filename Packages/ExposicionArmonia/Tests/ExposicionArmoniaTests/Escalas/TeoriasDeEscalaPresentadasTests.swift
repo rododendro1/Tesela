@@ -4,7 +4,7 @@ import Testing
 @testable import ExposicionArmonia
 
 /// Lo que dicen las teorías de una escala, escrito: las filas, los nombres de Rothenberg, los grados y el JSON.
-@Suite struct MedidasDeEscalaPresentadasTests {
+@Suite struct TeoriasDeEscalaPresentadasTests {
     let notacion = Notacion.compacta(.espanol)
 
     @Test func propiedadesDeRothenberg() {
@@ -43,7 +43,7 @@ import Testing
     }
 
     @Test func json() {
-        let mayor = MedidasDeEscalaPresentadas(Escala(.do, .mayor).estadisticas, en: notacion)
+        let mayor = TeoriasDeEscalaPresentadas(Escala(.do, .mayor).estadisticas, en: notacion)
         #expect(mayor.propiedadDeMyhill)
         #expect(mayor.generador == 5)
         #expect(mayor.bienFormada)
