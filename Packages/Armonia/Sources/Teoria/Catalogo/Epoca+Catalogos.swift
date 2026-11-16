@@ -115,6 +115,7 @@ extension OrnamentoConNombre {
     /// El año en que aparece, el de la obra que lo documenta (`documentada`), si se sabe.
     public var anioDeOrigen: Int? { datos.anioDeOrigen }
 
-    /// La época en que aparece, la de su año (`anioDeOrigen`); `nil` si no se sabe.
+    /// La época en que aparece: la de su año (`anioDeOrigen`) o, si no se sabe, la más antigua de su estilo (el
+    /// Barroco en el mordente superior).
     public var epocaDeOrigen: Epoca? { datos.epocaDeOrigen }
 }

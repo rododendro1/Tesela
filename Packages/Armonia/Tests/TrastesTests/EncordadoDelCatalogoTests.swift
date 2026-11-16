@@ -38,6 +38,10 @@ import Testing
         #expect(Encordado.tresCubano.continentesDeOrigen == [.america])
         #expect(Encordado.vihuela.anioDeOrigen == 1536)
         #expect(Encordado.bajoElectrico.anioDeOrigen == 1951)
+        #expect(Encordado.bajoElectrico.epocaDeOrigen == .sigloXX)
+        #expect(Encordado.violin.estilos.first == .clasica)
+        #expect(Encordado.tresCubano.lugaresDeOrigen == [.pais(.cuba)])
+        #expect(Encordado.mandolina.conCapo(2).cuerdasReales == 8)
     }
 
     /// El violín y la viola van por quintas, el contrabajo por cuartas.

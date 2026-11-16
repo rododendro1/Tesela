@@ -38,6 +38,9 @@ import Testing
         #expect(OrnamentoConNombre.trino.anioDeOrigen == 1720)
         #expect(OrnamentoConNombre.schleifer.anioDeOrigen == 1753)
         #expect(OrnamentoConNombre.mordenteSuperior.documentada == nil)
+        #expect(OrnamentoConNombre.trino.epocaDeOrigen == .barroco)
+        #expect(OrnamentoConNombre.mordenteSuperior.epocaDeOrigen == .barroco) // La de su estilo.
+        #expect(OrnamentoConNombre.catalogo.allSatisfy { $0.estilos == [.clasica] })
     }
 
     /// Cada fichero de idioma da todos los ornamentos del catálogo, una sola vez y sin repetir nombres.
@@ -72,5 +75,8 @@ import Testing
         #expect(OrnamentoConNombre.buscar(nombre: "no es un ornamento") == nil)
         #expect(OrnamentoConNombre.buscar(conteniendo: "trino") == [.trino, .trinoConTerminacion, .trinoCorto])
         #expect(OrnamentoConNombre.trino.nombre(en: .conPalabras(.ingles)) == "trill")
+        #expect(OrnamentoConNombre.trinoCorto.alias(en: .conPalabras(.ingles)) == ["Pralltriller"])
+        #expect(OrnamentoConNombre.grupeto.alias(en: .conPalabras(.espanol)) == ["gruppetto"])
+        #expect(OrnamentoConNombre.trino.variantes(en: .conPalabras(.ingles)).isEmpty)
     }
 }
