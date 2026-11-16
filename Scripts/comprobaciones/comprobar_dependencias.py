@@ -70,7 +70,7 @@ for u in sorted(usados - {n for n, _ in declarados}):
     errores.append(f"project.yml: una app usa el paquete {u}, que no está declarado")
 
 # Las apps son de dos clases: las de Xcode (SwiftUI, en project.yml) y las de SwiftPM (con Package.swift:
-# la línea de comandos). Las de SwiftPM, los ejemplos de `Ejemplos/` y las herramientas de `Herramientas/`
+# la consola). Las de SwiftPM, los ejemplos de `Ejemplos/` y las herramientas de `Herramientas/`
 # pueden depender de cualquier paquete de Packages/.
 apps_swiftpm = []
 for app in sorted([*(RAIZ / "Apps").iterdir(), *(RAIZ / "Ejemplos").iterdir(), *(RAIZ / "Herramientas").iterdir()]):
