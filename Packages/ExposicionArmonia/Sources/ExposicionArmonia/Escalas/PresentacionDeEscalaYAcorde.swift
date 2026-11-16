@@ -19,6 +19,9 @@ public struct EscalaSobreAcordePresentada: Hashable, Sendable {
     public let aEvitar: String
     /// Lo que cabe en una línea: «Tensiones: Mi 9 · Sol 11 · Si 13 — A evitar: Si♭ ♭13».
     public let resumen: String
+    /// Lo mismo, para escribirlo detrás del nombre de la escala, con las etiquetas como en la consola (`etiqueta(_:)`):
+    /// «Re dórico — tensiones: Mi 9 · Sol 11 · Si 13».
+    public let resumenEnLinea: String
     /// Las tríadas de tensiones que se tocan sobre el acorde con esta escala: «Re · Sim · Sol · Lam» en Do lidio
     /// sobre Do7M; "" si no tiene.
     public let estructurasSuperiores: String
@@ -53,9 +56,9 @@ public enum PresentacionDeEscalaYAcorde {
         }
         let tensiones = lista([.tension])
         let aEvitar = lista([.aEvitar, .choque])
-        var partes: [String] = []
-        if !tensiones.isEmpty { partes.append(notacion.texto(\.tensiones) + ": " + tensiones) }
-        if !aEvitar.isEmpty { partes.append(notacion.texto(\.notasAEvitar) + ": " + aEvitar) }
+        var partes: [(etiqueta: String, valor: String)] = []
+        if !tensiones.isEmpty { partes.append((notacion.texto(\.tensiones), tensiones)) }
+        if !aEvitar.isEmpty { partes.append((notacion.texto(\.notasAEvitar), aEvitar)) }
         return EscalaSobreAcordePresentada(
             escala: escala,
             nombre: escala.nombre(en: notacion),
@@ -64,7 +67,8 @@ public enum PresentacionDeEscalaYAcorde {
             notas: lista(nil),
             tensiones: tensiones,
             aEvitar: aEvitar,
-            resumen: partes.joined(separator: " — "),
+            resumen: partes.map { $0.etiqueta + ": " + $0.valor }.joined(separator: " — "),
+            resumenEnLinea: partes.map { notacion.etiqueta($0.etiqueta) + ": " + $0.valor }.joined(separator: " — "),
             estructurasSuperiores: escala.estructurasSuperiores(sobre: acorde).map { $0.cifrado(en: notacion) }
                 .joined(separator: " · "))
     }

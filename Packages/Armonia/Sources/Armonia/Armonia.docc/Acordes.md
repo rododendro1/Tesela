@@ -21,7 +21,9 @@ Acorde("Do/Re").tieneBajoAjeno      // true
 Se aceptan, entre otros: `m min -`, `° dim o`, `ø`, `+ aug`, `maj M Δ 7M`, `5 6 7 9 11 13`,
 `6/9`, `sus sus2 sus4`, `add9 add♭13`, alteraciones `b9 #11 -5 +9` con o sin paréntesis,
 `alt`, `omit3 no5`. Cualquier cifrado generado se vuelve a leer igual (comprobado sobre
-miles de combinaciones).
+miles de combinaciones). Al escribirlo, la séptima mayor va como `maj7` salvo que el estilo diga otra cosa (el
+`.jazz` usa `Δ7`; ver «Estilos de cifrado»): «Do7M» y «CΔ» se leen, y se escriben «Domaj7» y «Cmaj7». Por eso la
+documentación los nombra así.
 
 La fundamental y el bajo también se pueden escribir con la alteración en palabras, separada de la nota
 por un espacio: `Acorde(leyendo: "Fa sostenido m7")`, `Acorde(leyendo: "B flat 7(b9)")` o

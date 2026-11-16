@@ -60,14 +60,14 @@
             }
 
             @Step {
-                El Fa está a un semitono del Mi de Do7M: es la nota a evitar.
+                El Fa está a un semitono del Mi de Domaj7: es la nota a evitar.
 
                 @Code(name: "main.swift", file: "jazz-03-02.swift")
             }
 
             @Step {
                 Cada nota de la escala tiene su papel sobre el acorde: el Si♭ del mixolidio choca con el Si de
-                Do7M.
+                Domaj7.
 
                 @Code(name: "main.swift", file: "jazz-03-03.swift")
             }
@@ -76,7 +76,7 @@
 
     @Assessments {
         @MultipleChoice {
-            ¿Por qué la 11 no es una tensión disponible sobre Do7M en Do mayor?
+            ¿Por qué la 11 no es una tensión disponible sobre Domaj7 en Do mayor?
 
             @Choice(isCorrect: true) {
                 Porque el Fa está un semitono por encima del Mi del acorde.

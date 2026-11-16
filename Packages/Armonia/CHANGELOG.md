@@ -18,6 +18,13 @@
     (`analizar --escalas`, `acorde --bebop`, `posiciones --formas`…), que cada orden declara en `sinJSON`; con
     `--json`, esas opciones dicen que no dan salida en JSON en lugar de «opción desconocida».
   - `--bajo-cifrado` sale en la ayuda de `realizar`, que es donde se lee, y no en la de `analizar`.
+  - Las etiquetas de una línea van en minúscula, como las demás de la consola: «época:», «estilos:», «acordes que
+    caben:» en `escala`, y «tensiones:», «a evitar:» y «estructuras superiores:» en `analizar --escalas` y `acorde
+    --escalas`. En alemán siguen con mayúscula.
+  - Un error de lectura en JSON lleva también `caracter`, el carácter contado desde 1 como en el mensaje («carácter
+    1»), junto a `posicion`, que cuenta desde 0.
+- La documentación escribe la séptima mayor como la escribe el motor, `maj7` («Domaj7», «Imaj7»), y `Acordes.md` dice
+  que «7M» y «Δ» se leen pero se escriben así.
 
 ### Cambios
 

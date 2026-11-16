@@ -155,10 +155,10 @@ extension LineaDeComandos {
                     "  " + fila.cifrado.padding(hasta: anchoDelCifrado) + fila.grado.padding(hasta: anchoDelGrado)
                         + funcion)
                 if conEscalas, let escala = fila.escala {
-                    let resumen = escala.resumen.isEmpty ? "" : " — " + escala.resumen
+                    let resumen = escala.resumenEnLinea.isEmpty ? "" : " — " + escala.resumenEnLinea
                     lineas.append("    " + escala.nombre + resumen)
                     if !escala.estructurasSuperiores.isEmpty {
-                        let etiqueta = notacion.texto(\.estructurasSuperiores)
+                        let etiqueta = notacion.etiqueta(notacion.texto(\.estructurasSuperiores))
                         lineas.append("      " + etiqueta + ": " + escala.estructurasSuperiores)
                     }
                     if cambios.indices.contains(indice) { lineas.append("      " + cambios[indice]) }

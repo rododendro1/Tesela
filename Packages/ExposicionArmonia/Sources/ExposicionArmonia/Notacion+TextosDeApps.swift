@@ -15,6 +15,16 @@ extension Notacion {
         TextosDeApps.en(self, campo)
     }
 
+    /// Un texto de las apps escrito como etiqueta dentro de una línea («época: Romanticismo», «tensiones: Re 9»): con
+    /// la primera letra en minúscula, como las etiquetas de la consola, salvo en alemán, que escribe los sustantivos
+    /// con mayúscula («Epoche: Romantik»).
+    ///
+    ///     Notacion.compacta(.espanol).etiqueta("Época")   // "época"
+    public func etiqueta(_ texto: String) -> String {
+        guard textos != .aleman, let primera = texto.first else { return texto }
+        return primera.lowercased() + texto.dropFirst()
+    }
+
     /// El texto de un campo de las apps, con sus ejemplos escritos en esta notación: «Cifrado, por ejemplo
     /// Sol7/Si» en español, «Chord symbol, for example G7/B» en inglés.
     public func campo(_ campo: CampoDeLasApps) -> String {

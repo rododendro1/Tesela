@@ -61,7 +61,7 @@ Re dórico
   …
   referencias: Powers et al. 2001; Levine 1995; Rechberger 2008; Temperley & Tan 2013: 248
   acordes: i7 Rem7 · ii7 Mim7 · ♭IIImaj7 Famaj7 · IV7 Sol7 · v7 Lam7 · viø7 Sim7(♭5) · ♭VIImaj7 Domaj7
-  Acordes que caben:
+  acordes que caben:
     1 · Re: Rem · Resus2 · Resus4 · Rem7 · Re7sus4 · Rem6 · Rem(add9) · Rem9 · Rem6/9 · Rem11
     …
 ```
@@ -90,11 +90,11 @@ Con `--escalas`, también la escala de cada acorde, con sus tensiones, las notas
 $ armonia analizar Rem7 Sol7 Do7M --en "Do mayor" --escalas
 ii7–V7–Imaj7 en Do mayor
   Rem7      ii7       subdominante
-    Re dórico — Tensiones: Mi 9 · Sol 11 · Si 13
-      Estructuras superiores: Mim · Sol · Do · Lam
+    Re dórico — tensiones: Mi 9 · Sol 11 · Si 13
+      estructuras superiores: Mim · Sol · Do · Lam
       notas guía: Fa, Do
   Sol7      V7        dominante
-    Sol mixolidio — Tensiones: La 9 · Mi 13 — A evitar: Do 11
+    Sol mixolidio — tensiones: La 9 · Mi 13 — a evitar: Do 11
   …
 ```
 
@@ -142,8 +142,10 @@ Un error sale también en JSON, en la salida de errores, y con un código distin
 
 ```console
 $ armonia acorde Xx --json
-{"error":{"codigo":1,"mensaje":"No se puede leer «Xx» (carácter 1): se esperaba un nombre de nota (Do, Re, Mi… o C, D, E…)","posicion":0,"texto":"Xx","tipo":"notaNoReconocida"}}
+{"error":{"caracter":1,"codigo":1,"mensaje":"No se puede leer «Xx» (carácter 1): se esperaba un nombre de nota (Do, Re, Mi… o C, D, E…)","posicion":0,"texto":"Xx","tipo":"notaNoReconocida"}}
 ```
+
+`caracter` cuenta desde 1, como el mensaje, y `posicion` es el mismo carácter contado desde 0, como índice de `texto`.
 
 Sin argumentos y en la terminal, `armonia` abre una sesión con una orden por línea. Lo mismo vale para un fichero por
 la entrada estándar (`armonia < ejercicios.txt`), que sale con el peor código de sus órdenes.

@@ -404,7 +404,7 @@ motor como Verovio.
 Alrededor de las notas se puede escribir lo que ayuda a estudiarlas:
 
 - **Cifrado de cada acorde.** Los `cifrados` de `Partitura(acordes:titulo:porEvento:)` (uno por columna:
-  `.init(cifrados: .enOrden(progresion))`) van encima de la columna de cada acorde (y, sin `titulo`, la partitura se titula con ellos, «Rem7 – Sol7 – Do7M», en la notación con que se
+  `.init(cifrados: .enOrden(progresion))`) van encima de la columna de cada acorde (y, sin `titulo`, la partitura se titula con ellos, «Rem7 – Sol7 – Domaj7», en la notación con que se
   dibuja o se exporta); los `cifrados` de una ``Partitura/Linea``, encima de la nota en que empieza cada acorde;
   `Arpegio.svgPentagrama(cifrado: true)`, encima de la primera nota.
 - **Intervalos** (`marcas.intervalosDeLasNotas`). Debajo de cada nota, su intervalo desde la tónica de la escala o desde la

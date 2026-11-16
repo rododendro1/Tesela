@@ -237,7 +237,7 @@ Quedan fuera, por ahora:
   (3 + 5 + 3) y ninguno por sus notas. Hay que leerlos en Lendvai (1971).
 - El acorde mayor-menor de Bartók (la 3.ª mayor y la menor a la vez): sin una obra leída que lo defina así. Candidato:
   Antokoletz, *The Music of Béla Bartók* (1984).
-- El disminuido con séptima mayor, °(7M): sin una obra que lo nombre.
+- El disminuido con séptima mayor, °(maj7): sin una obra que lo nombre.
 - El de *A Hard Day's Night*, el «acorde de Chopin» y el de la Décima de Mahler: no hay acuerdo sobre sus notas o no
   hay una fuente seria que los nombre así.
 
@@ -245,7 +245,7 @@ Quedan fuera, por ahora:
 
 El catálogo tiene 58 progresiones. Quedan fuera, hasta leer una obra que las dé:
 
-- El line cliché (i–i(7M)–i7–i6): falta una obra que lo nombre así.
+- El line cliché (i–i(maj7)–i7–i6): falta una obra que lo nombre así.
 - La progresión Omnibus: Telesco, «Enharmonicism and the Omnibus Progression», *Music Theory Spectrum* (1998).
 - La cadenza doppia de Gjerdingen (2007): es un esquema de voces, no de acordes.
 - El ciclo octatónico (P y R): Cohn la trata en otro artículo (1997), que no está entre las referencias.
