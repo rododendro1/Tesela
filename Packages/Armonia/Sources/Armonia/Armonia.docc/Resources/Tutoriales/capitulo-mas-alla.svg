@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280.0 280.0" width="280.0" height="280.0" font-family="sans-serif">
+  <rect width="280.0" height="280.0" fill="#ffffff"/>
+  <circle cx="140.0" cy="140.0" r="100.0" fill="none" stroke="#cccccc"/>
+  <line x1="140.0" y1="40.0" x2="140.0" y2="35.0" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="165.9" y1="43.4" x2="167.2" y2="38.6" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="190.0" y1="53.4" x2="192.5" y2="49.1" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="210.7" y1="69.3" x2="214.2" y2="65.8" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="226.6" y1="90.0" x2="230.9" y2="87.5" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="236.6" y1="114.1" x2="241.4" y2="112.8" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="240.0" y1="140.0" x2="245.0" y2="140.0" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="236.6" y1="165.9" x2="241.4" y2="167.2" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="226.6" y1="190.0" x2="230.9" y2="192.5" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="210.7" y1="210.7" x2="214.2" y2="214.2" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="190.0" y1="226.6" x2="192.5" y2="230.9" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="165.9" y1="236.6" x2="167.2" y2="241.4" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="140.0" y1="240.0" x2="140.0" y2="245.0" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="114.1" y1="236.6" x2="112.8" y2="241.4" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="90.0" y1="226.6" x2="87.5" y2="230.9" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="69.3" y1="210.7" x2="65.8" y2="214.2" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="53.4" y1="190.0" x2="49.1" y2="192.5" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="43.4" y1="165.9" x2="38.6" y2="167.2" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="40.0" y1="140.0" x2="35.0" y2="140.0" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="43.4" y1="114.1" x2="38.6" y2="112.8" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="53.4" y1="90.0" x2="49.1" y2="87.5" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="69.3" y1="69.3" x2="65.8" y2="65.8" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="90.0" y1="53.4" x2="87.5" y2="49.1" stroke="#bbbbbb" stroke-width="1.0"/>
+  <line x1="114.1" y1="43.4" x2="112.8" y2="38.6" stroke="#bbbbbb" stroke-width="1.0"/>
+  <circle cx="140.0" cy="40.0" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="140.0" y="56.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">Do</text>
+  <circle cx="190.0" cy="53.4" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="182.0" y="67.3" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">Do♯</text>
+  <circle cx="226.6" cy="90.0" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="212.7" y="98.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">Re</text>
+  <circle cx="240.0" cy="140.0" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="224.0" y="140.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">Re♯</text>
+  <circle cx="226.6" cy="190.0" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="212.7" y="182.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">Mi</text>
+  <circle cx="190.0" cy="226.6" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="182.0" y="212.7" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">Fa</text>
+  <circle cx="140.0" cy="240.0" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="140.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">Fa♯</text>
+  <circle cx="90.0" cy="226.6" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="98.0" y="212.7" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">Sol</text>
+  <circle cx="53.4" cy="190.0" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="67.3" y="182.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">Sol♯</text>
+  <circle cx="40.0" cy="140.0" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="56.0" y="140.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">La</text>
+  <circle cx="53.4" cy="90.0" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="67.3" y="98.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">La♯</text>
+  <circle cx="90.0" cy="53.4" r="3.0" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="98.0" y="67.3" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#999999">Si</text>
+  <polygon points="140.0,40.0 226.6,90.0 236.6,165.9 190.0,226.6 90.0,226.6 40.0,140.0 53.4,90.0" fill="#1f4e9c" fill-opacity="0.18" stroke="#1f4e9c" stroke-width="2.0"/>
+  <path d="M 249.0 140.0 A 109.0 109.0 0 0 1 245.3 168.2" fill="none" stroke="#c0392b" stroke-width="2.0" stroke-linecap="round"/>
+  <circle cx="226.6" cy="90.0" r="7.0" fill="#1f4e9c" stroke="#f39c12" stroke-width="3.0"/>
+  <text x="249.1" y="77.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Re</text>
+  <circle cx="236.6" cy="165.9" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="261.7" y="172.6" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Mi𝄳</text>
+  <circle cx="190.0" cy="226.6" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="203.0" y="249.1" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Fa</text>
+  <circle cx="90.0" cy="226.6" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="77.0" y="249.1" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Sol</text>
+  <circle cx="40.0" cy="140.0" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="14.0" y="140.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">La</text>
+  <circle cx="53.4" cy="90.0" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="30.9" y="77.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Si♭</text>
+  <circle cx="140.0" cy="40.0" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="140.0" y="14.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Do</text>
+</svg>

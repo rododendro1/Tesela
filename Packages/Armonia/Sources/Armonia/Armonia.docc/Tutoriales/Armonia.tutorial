@@ -21,4 +21,15 @@
 
         @TutorialReference(tutorial: "doc:AnalizarUnaProgresion")
     }
+
+    @Chapter(name: "Más allá") {
+        Las escalas de otras tradiciones, la escala que se toca sobre cada acorde de una progresión de jazz y
+        la realización a cuatro voces, escrita como partitura y afinada en un temperamento histórico.
+
+        @Image(source: "capitulo-mas-alla.svg", alt: "Re Bayātī en un reloj de alturas: el Mi medio bemol cae entre el Mi♭ y el Mi.")
+
+        @TutorialReference(tutorial: "doc:EscalasDeOtrasTradiciones")
+        @TutorialReference(tutorial: "doc:LaEscalaDeCadaAcorde")
+        @TutorialReference(tutorial: "doc:DeLaTeoriaALaPartitura")
+    }
 }

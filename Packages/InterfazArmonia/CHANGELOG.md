@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- Un artículo nuevo, *Hacer una vista*: una vista de un acorde con su pentagrama, «Escuchar», «Exportar», la
+  notación elegida y lo último escrito, del modelo sin SwiftUI a la raíz de la app.
 - Las apps recuerdan: `MemoriaDeLasApps` guarda en los ajustes lo último escrito en cada pestaña (el acorde, la
   escala y la progresión de Ars Harmonica; la tríada, el acorde y la escala de Tonnetz), un historial de veinte por
   pestaña y los favoritos. `ModeloDeAcordes`, `ModeloDeAnalisis` y `ModeloDelTonnetz` tienen un

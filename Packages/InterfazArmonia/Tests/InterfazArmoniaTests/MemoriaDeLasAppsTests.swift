@@ -94,6 +94,18 @@ import Testing
         #expect(ModeloDelTonnetz(recordado: MemoriaDeLasApps()).textoInicial == ModeloDelTonnetz().textoInicial)
     }
 
+    /// Lo que enseña, sin SwiftUI, el artículo «Hacer una vista» (InterfazArmonia.docc/HacerUnaVista.md).
+    @Test func elArticuloDeLaVista() {
+        var modelo = ModeloDeAcordes(texto: "Lam7")
+        #expect(modelo.acorde == Acorde("Lam7"))
+        modelo.texto = "Lam7("
+        #expect(modelo.acorde == nil)
+        let acorde = Acorde("Sol7/Si")
+        let pentagrama = PentagramaPresentado(acorde, en: .compacta(.espanol))
+        #expect(pentagrama.fichero.formato == .svg)
+        #expect(Escucha.acorde(acorde).notas.count == 4)
+    }
+
     /// La escala se recuerda por su nombre en español y vuelve a la misma tónica y el mismo tipo del catálogo; la
     /// escrita, por sus notas.
     @Test func laEscalaRecordada() {

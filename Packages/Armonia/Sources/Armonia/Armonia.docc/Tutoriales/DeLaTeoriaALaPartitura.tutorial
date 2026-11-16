@@ -1,0 +1,99 @@
+@Tutorial(time: 15) {
+    @Intro(title: "De la teoría a la partitura") {
+        Realiza un bajo cifrado y una progresión a cuatro voces, comprueba que siguen las reglas y escríbelos
+        como MusicXML o como un MIDI afinado en un temperamento histórico.
+    }
+
+    @Section(title: "Un bajo cifrado") {
+        @ContentAndMedia {
+            Un bajo cifrado se escribe nota a nota, con sus cifras detrás de dos puntos: `Fa:6` es un acorde de
+            sexta sobre Fa, y `Mi:#`, el acorde de Mi con la tercera elevada.
+        }
+
+        @Steps {
+            @Step {
+                En La menor, el bajo La Fa Mi La da Lam, Rem en primera inversión, Mi mayor y Lam.
+
+                @Code(name: "main.swift", file: "partitura-01-01.swift")
+            }
+
+            @Step {
+                El mismo bajo, realizado a cuatro voces sin errores de conducción.
+
+                @Code(name: "main.swift", file: "partitura-01-02.swift")
+            }
+        }
+    }
+
+    @Section(title: "Una progresión a cuatro voces") {
+        @ContentAndMedia {
+            ``Coral`` escribe unos acordes a cuatro voces, del bajo al soprano, y busca la realización sin
+            quintas ni octavas paralelas.
+        }
+
+        @Steps {
+            @Step {
+                I–IV–V7–I en Do: el bajo lleva las fundamentales.
+
+                @Code(name: "main.swift", file: "partitura-02-01.swift")
+            }
+
+            @Step {
+                Con un soprano dado, Armonia escribe las otras tres voces, o da `nil` si no hay forma de hacerlo
+                sin errores.
+
+                @Code(name: "main.swift", file: "partitura-02-02.swift")
+            }
+        }
+    }
+
+    @Section(title: "La partitura") {
+        @ContentAndMedia {
+            Del coral sale una partitura de dos pentagramas, que se escribe en MusicXML o en MIDI. El MIDI
+            puede sonar en un temperamento histórico.
+        }
+
+        @Steps {
+            @Step {
+                En blancas y en MusicXML, para abrirla en un editor de partituras.
+
+                @Code(name: "main.swift", file: "partitura-03-01.swift")
+            }
+
+            @Step {
+                En MIDI, afinado en el mesotónico de ¼ de coma, con las terceras mayores puras.
+
+                @Code(name: "main.swift", file: "partitura-03-02.swift")
+            }
+
+            @Step {
+                En el mesotónico, Sol♯ y La♭ son notas distintas: Sol♯ es más grave. Hay ocho temperamentos
+                para escuchar.
+
+                @Code(name: "main.swift", file: "partitura-03-03.swift")
+            }
+        }
+    }
+
+    @Assessments {
+        @MultipleChoice {
+            ¿Qué da `Coral.realizar(["Do", "Rem"], soprano: ["Sol4", "La4"])`?
+
+            @Choice(isCorrect: false) {
+                Un coral con quintas paralelas.
+
+                @Justification(reaction: "Vuelve a intentarlo") {
+                    Armonia no da realizaciones con errores de conducción.
+                }
+            }
+
+            @Choice(isCorrect: true) {
+                `nil`.
+
+                @Justification(reaction: "¡Correcto!") {
+                    Con ese soprano y los bajos Do y Re, la quinta entre bajo y soprano se repite.
+                }
+            }
+        }
+    }
+}

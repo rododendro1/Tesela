@@ -4,6 +4,12 @@
 
 ### Novedades
 
+- Tres tutoriales nuevos, en el capítulo «Más allá»: *Escalas de otras tradiciones* (un rāga con su vādī y su
+  recorrido vakra, Bayātī con sus ajnas y su Mi medio bemol, y las escalas vecinas), *La escala de cada acorde* (la
+  escala de un acorde y de cada acorde de un ii–V–I, las tensiones disponibles y las notas a evitar) y *De la teoría a
+  la partitura* (un bajo cifrado y un coral a cuatro voces, en MusicXML y en un MIDI mesotónico). Su código se prueba
+  como el de los demás. Y un artículo para la consola, `Docs/LA_CONSOLA.md`, de `armonia acorde Sol7` a `--json` y
+  `armonia mcp`.
 - En la consola, `armonia`:
   - El servidor MCP da a cada herramienta una propiedad por opción, además de `argumentos`: una marca es un booleano
     (`"vakra": true`) y una opción con valor, un texto (`"tradicion": "india"`), con los valores que propone el

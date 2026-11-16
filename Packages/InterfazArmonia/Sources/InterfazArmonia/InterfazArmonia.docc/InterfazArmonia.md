@@ -43,7 +43,13 @@ Las vistas más grandes de las apps guardan lo que se elige en un modelo de valo
 decide qué se dibuja, qué suena y qué se exporta, y la vista solo lo pinta, así que lo que hace cada vista se prueba
 también en Linux.
 
+Para hacer una vista paso a paso, del modelo a la raíz de la app, ver <doc:HacerUnaVista>.
+
 ## Topics
+
+### Artículos
+
+- <doc:HacerUnaVista>
 
 ### Modelos de las vistas
 
