@@ -25,7 +25,7 @@ extension Voz {
         fraseando acordes: [Acorde], tonalidad: Tonalidad? = nil, compas: Compas = .compasillo, octava: Int = 4
     ) {
         let guias = Acorde.lineaDeNotasGuia(acordes, desde: .tercera, octava: octava)
-        let tonalidad = tonalidad ?? AnalisisArmonico.analizar(acordes)?.tonalidad
+        let tonalidad = tonalidad ?? (try? AnalisisArmonico.analizar(acordes))?.tonalidad
         // Corcheas por compás: al menos dos (la nota guía y la de aproximación).
         let cociente = compas.duracion / .corchea
         let porCompas = max(2, cociente.numerador / cociente.denominador)

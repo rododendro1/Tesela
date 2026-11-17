@@ -36,7 +36,7 @@ extension Coral {
         if let soprano, soprano.count != acordes.count {
             throw ErrorDeRealizacion.sopranoDeOtraLongitud(notas: soprano.count, acordes: acordes.count)
         }
-        let tonalidad = tonalidad ?? AnalisisArmonico.analizar(acordes)?.tonalidad
+        let tonalidad = tonalidad ?? (try? AnalisisArmonico.analizar(acordes))?.tonalidad
         let sensible = tonalidad?.escalaDeReferencia.grado(7)
         let tonica = tonalidad?.tonica
         let dominantes = acordes.map { acorde in tonalidad.map { Cadencia.esDominante($0.analizar(acorde)) } ?? false }

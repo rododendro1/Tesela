@@ -203,6 +203,10 @@ import Testing
         #expect(
             ErrorDeRealizacion.notaAjena(acorde: 2).descripcion(en: .compacta(.espanol))
                 == "La nota del soprano no es del acorde 3.")
+        let ilegible = ErrorDeRealizacion.bajoCifradoIlegible(
+            ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio))
+        #expect(Set(errores + [ilegible, ilegible]).count == errores.count + 1)
+        #expect(ilegible != .sinNotas)
         for idioma in Idioma.allCases {
             let textos = errores.map { $0.descripcion(en: .compacta(idioma)) }
             #expect(Set(textos).count == errores.count, "\(idioma)")

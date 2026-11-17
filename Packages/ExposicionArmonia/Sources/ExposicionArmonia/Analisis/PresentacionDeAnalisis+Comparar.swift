@@ -40,7 +40,7 @@ extension PresentacionDeAnalisis {
         _ original: [Acorde], con nueva: [Acorde], en tonalidad: Tonalidad? = nil, notacion: Notacion
     ) -> ComparacionDeProgresionesPresentada? {
         guard let primero = original.first, !nueva.isEmpty else { return nil }
-        let clave = tonalidad ?? AnalisisArmonico.analizar(original)?.tonalidad ?? primero.tonalidadPropia
+        let clave = tonalidad ?? (try? AnalisisArmonico.analizar(original))?.tonalidad ?? primero.tonalidadPropia
         let gradosDeLaOriginal = clave.analizar(original).acordes.map(\.cifrado)
         let gradosDeLaNueva = clave.analizar(nueva).acordes.map(\.cifrado)
         var filas: [ComparacionDeProgresionesPresentada.PosicionComparada] = []

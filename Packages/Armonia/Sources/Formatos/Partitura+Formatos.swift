@@ -160,7 +160,7 @@ extension RitmoArmonico {
     ) -> Partitura {
         let acordes = self.acordes.map(\.acorde)
         // Sin acordes no hay tonalidad que los explique: el análisis, vacío, en Do mayor.
-        let suTonalidad = tonalidad ?? AnalisisArmonico.analizar(acordes)?.tonalidad ?? Tonalidad(.do)
+        let suTonalidad = tonalidad ?? (try? AnalisisArmonico.analizar(acordes))?.tonalidad ?? Tonalidad(.do)
         let analizado = suTonalidad.analizar(acordes)
         var cabecera = encabezado
         cabecera.tempo = encabezado.tempo ?? tempo

@@ -17,6 +17,12 @@ Los nombres de antes ya no están: no se llegaron a publicar.
   el soprano no tiene una nota por acorde, una nota del soprano no es del acorde o se sale de su tesitura, un acorde
   tiene más de cuatro notas obligatorias o ninguna disposición, una nota de la melodía no tiene acorde, los acordes no
   se enlazan sin faltas o el soprano no es la melodía armonizada.
+- `AnalisisArmonico.analizar(_:)` lanza `ErrorDeAnalisis.sinAcordes` (en los trece idiomas) en lugar de dar `nil`
+  cuando no hay acordes, como la realización (`ErrorDeRealizacion.sinNotas`) y la lectura de ficheros
+  (`ErrorDeLecturaDeFichero.sinNotas`): lo que da un resultado lanza el error de su dominio, y lo que da una lista la
+  da vacía.
+- `Coral(bajoCifrado:en:soprano:)` lanza solo `ErrorDeRealizacion`, como las demás realizaciones: un bajo cifrado
+  que no se lee es `.bajoCifradoIlegible`, con el error de la lectura dentro.
 
 ### Novedades
 
@@ -28,8 +34,10 @@ Los nombres de antes ya no están: no se llegaron a publicar.
   - A `--en` le basta la tónica, como en el cifrado: `--en Do` es Do mayor y `--en Lam`, La menor; también
     `tonalidad C`.
   - Un tipo de escala mal escrito propone el más parecido: `escala Do mayr` → «¿Querías decir «mayor»?».
+  - `ornamentos --en Do` también: donde `--en` es una escala, la tónica sola es la escala mayor, y «Lam», la menor.
   - Los catálogos tienen su grupo en la ayuda, y se consultan también tras `catalogo`: `armonia catalogo ritmos` es
     `armonia ritmos`.
+- `Tonalidad.identificar(clasesDeAltura:duraciones:)`, como la de `Acorde` y `Escala`.
 - `Coral(realizando:soprano:en:)`, `Armonizacion.coral(soprano:)` y `Tonalidad.armonizarACuatroVoces(melodia:)`
   lanzan solo `ErrorDeRealizacion` (`throws(ErrorDeRealizacion)`).
 

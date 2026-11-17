@@ -117,7 +117,7 @@ public enum PresentacionDeAnalisis {
         guard !acordes.isEmpty else { return nil }
         let ritmo = ritmo.flatMap { $0.acordes.map(\.acorde) == acordes ? $0 : nil }
         if let tonalidad { return presentar(tonalidad.analizar(acordes), recorrido: nil, ritmo: ritmo, notacion) }
-        guard let analisis = AnalisisArmonico.analizar(acordes), let recorrido = RecorridoTonal(acordes) else {
+        guard let analisis = try? AnalisisArmonico.analizar(acordes), let recorrido = RecorridoTonal(acordes) else {
             return nil
         }
         return presentar(analisis, recorrido: recorrido, ritmo: ritmo, notacion)

@@ -141,9 +141,9 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
 
     /// Analiza los acordes buscando antes la tonalidad: entre las más probables por sus notas,
     /// la que explica más acordes con la armonía de la tonalidad y, a igualdad, la que empieza o
-    /// termina en su tónica. `nil` si no hay acordes.
-    public static func analizar(_ acordes: [Acorde]) -> AnalisisArmonico? {
-        guard !acordes.isEmpty else { return nil }
+    /// termina en su tónica. Lanza ``ErrorDeAnalisis/sinAcordes`` si no hay acordes.
+    public static func analizar(_ acordes: [Acorde]) throws(ErrorDeAnalisis) -> AnalisisArmonico {
+        guard !acordes.isEmpty else { throw .sinAcordes }
         // La fundamental pesa el doble: es lo que más define la tonalidad de un acorde.
         let notas = acordes.flatMap { $0.notas + [$0.fundamental] }
         let posibles = Tonalidad.candidatos(notas: notas).prefix(6)
@@ -153,7 +153,9 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
             let coste = analisis.coste + 0.01 * Double(puesto)
             mejor.proponer(analisis, coste: coste)
         }
-        return mejor.valor
+        // Con acordes hay notas, y con notas, las 24 tonalidades candidatas: siempre hay una.
+        guard let valor = mejor.valor else { throw .sinAcordes }
+        return valor
     }
 
     /// Lee una progresión escrita como cifrados separados por espacios, comas o barras
@@ -163,10 +165,7 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
     public static func analizar(leyendo texto: String, en tonalidad: Tonalidad? = nil) throws -> AnalisisArmonico {
         let acordes = try leerAcordes(texto)
         // `leerAcordes` nunca devuelve una lista vacía, que es lo único que `analizar` no sabe analizar.
-        guard let analisis = tonalidad.map({ $0.analizar(acordes) }) ?? analizar(acordes) else {
-            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio)
-        }
-        return analisis
+        return try tonalidad.map { $0.analizar(acordes) } ?? analizar(acordes)
     }
 
     /// Los acordes de una progresión escrita como cifrados separados por espacios, comas o barras.

@@ -87,6 +87,7 @@ extension TextosDeTeoria {
         funcionTonica: "tonica",
         funcionSubdominante: "sottodominante",
         funcionDominante: "dominante",
+        analisisSinAcordes: "Non ci sono accordi da analizzare.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "accordi {1}",

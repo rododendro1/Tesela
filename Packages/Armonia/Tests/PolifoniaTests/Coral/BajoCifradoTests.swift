@@ -79,7 +79,25 @@ import Testing
         #expect(coral.voz(0).map(\.nota) == [.do, .fa, .sol, .do])
         let menor = try Coral(bajoCifrado: "La Fa:6 Mi:# La", en: laMenor)
         #expect(menor.voz(0).map(\.nota) == [.la, .fa, .mi, .la])
-        #expect(throws: ErrorDeLectura.self) { try Coral(bajoCifrado: "Do Xa", en: doMayor) }
+        // Lo que no se lee lanza el error de la lectura, dentro de `bajoCifradoIlegible`, con su mensaje.
+        for texto in ["Do Xa", "Do Fa:9x", ""] {
+            do {
+                _ = try doMayor.acordes(bajoCifrado: texto)
+                Issue.record("«\(texto)» se lee")
+            } catch let lectura as any ErrorAlLeer {
+                #expect(throws: ErrorDeRealizacion.bajoCifradoIlegible(lectura)) {
+                    try Coral(bajoCifrado: texto, en: doMayor)
+                }
+                #expect(
+                    ErrorDeRealizacion.bajoCifradoIlegible(lectura).descripcion(en: .compacta(.ingles))
+                        == lectura.descripcion(en: .compacta(.ingles)))
+            } catch {
+                Issue.record("\(error)")
+            }
+        }
+        #expect(throws: ErrorDeRealizacion.sopranoDeOtraLongitud(notas: 1, acordes: 2)) {
+            try Coral(bajoCifrado: "Do Sol", en: doMayor, soprano: ["Do5"])
+        }
     }
 }
 

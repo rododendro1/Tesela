@@ -133,8 +133,8 @@ import Testing
                 + [5, 1]
             let acordes = try grados.map { try #require(tonalidad.acorde(grado: $0)) }
             let i = Intervalo(pasosDeQuinta: Int.random(in: -3...3, using: &azar), pasosDeOctava: 0)
-            let analisis = try #require(AnalisisArmonico.analizar(acordes))
-            let transpuesto = try #require(AnalisisArmonico.analizar(acordes.map { $0.transponer(i) }))
+            let analisis = try AnalisisArmonico.analizar(acordes)
+            let transpuesto = try AnalisisArmonico.analizar(acordes.map { $0.transponer(i) })
             #expect(transpuesto.tonalidad == analisis.tonalidad.transponer(i), "\(acordes) y \(i)")
             #expect(transpuesto.cifrados == analisis.cifrados, "\(acordes) y \(i)")
         }

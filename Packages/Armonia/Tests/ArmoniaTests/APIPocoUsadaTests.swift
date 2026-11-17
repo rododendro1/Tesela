@@ -122,6 +122,10 @@ import Testing
         #expect(doMayor.lugar(en: .conPalabras(.griego)) == "σε ντο μείζονα")
         let notas = [Nota("Sol"), Nota("Si"), Nota("Re"), Nota("Fa#")]
         #expect(Tonalidad.identificar(notas: notas) == Tonalidad.candidatos(notas: notas).map(\.valor))
+        let clases = [7, 11, 2, 6]
+        #expect(
+            Tonalidad.identificar(clasesDeAltura: clases) == Tonalidad.candidatos(clasesDeAltura: clases).map(\.valor))
+        #expect(Tonalidad.identificar(clasesDeAltura: [0, 2, 4, 5, 7, 9, 11, 0, 7, 4]).first == Tonalidad(.do, .mayor))
     }
 
     @Test func unRecorridoQueModulaSinPivote() throws {

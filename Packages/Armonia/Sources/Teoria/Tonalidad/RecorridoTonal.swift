@@ -139,7 +139,7 @@ public struct RecorridoTonal: Hashable, Sendable, CustomStringConvertible {
 
     /// `nil` si no hay acordes.
     public init?(_ acordes: [Acorde]) {
-        guard let unico = AnalisisArmonico.analizar(acordes) else { return nil }
+        guard let unico = try? AnalisisArmonico.analizar(acordes) else { return nil }
         let particion = RecorridoTonal.particion(acordes)
         guard particion.count > 1 else {
             self.init(tramos: [TramoTonal(inicio: 0, analisis: unico)], modulaciones: [])

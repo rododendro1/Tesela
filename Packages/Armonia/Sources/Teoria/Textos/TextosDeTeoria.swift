@@ -90,6 +90,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let funcionTonica: String
     let funcionSubdominante: String
     let funcionDominante: String
+    let analisisSinAcordes: String
 
     // MARK: Cadencia.swift
     let cadenciaEnLosAcordes: Plantilla  // {1} pasos
