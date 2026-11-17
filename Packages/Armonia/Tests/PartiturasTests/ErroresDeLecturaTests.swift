@@ -48,13 +48,13 @@ import Testing
         comprobar(try Acorde(leyendo: "Do8"), .numeroDeAcordeNoValido(8), posicion: 2)
         comprobar(try Acorde(leyendo: "Doomit1"), .gradoNoOmitible(1), posicion: 2)
         comprobar(try Acorde(leyendo: "Doadd3"), .tensionNoValida("3"), posicion: 5)
-        comprobar(try Acorde(leyendo: "Hm7"), .notaNoReconocida, posicion: 0)
-        comprobar(try Acorde(leyendo: "   "), .textoVacio, posicion: 0)
+        comprobar(try Acorde(leyendo: "Hm7"), .elementos(.notaNoReconocida), posicion: 0)
+        comprobar(try Acorde(leyendo: "   "), .elementos(.textoVacio), posicion: 0)
         do {
             _ = try Acorde(leyendo: "Dodimø")
             Issue.record("Se esperaba un error")
         } catch {
-            guard case .calidadesIncompatibles = (error as? ErrorDeLecturaDeTeoria)?.motivo else {
+            guard case .calidadesIncompatibles = error.motivo else {
                 Issue.record("\(error)")
                 return
             }
@@ -64,7 +64,7 @@ import Testing
             _ = try Acorde(leyendo: "Dom5")
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLecturaDeTeoria)?.posicion == nil)
+            #expect(error.posicion == nil)
 
         }
     }
@@ -138,7 +138,7 @@ import Testing
             _ = try Acorde(leyendo: "Do7(b3)")
             Issue.record("Se esperaba un error")
         } catch {
-            let error = error as! ErrorDeLecturaDeTeoria
+            let error = error
             #expect(
                 error.descripcion(en: .ascii(.ingles))
                     == ("Cannot read \"Do7(b3)\" (character 5): \"b3\" is not a valid tension "
@@ -189,7 +189,7 @@ import Testing
             Issue.record("Se esperaba un error")
         } catch {
             #expect(
-                (error as! ErrorDeLecturaDeTeoria).explicacion(en: .ascii(.ingles))
+                error.explicacion(en: .ascii(.ingles))
                     == "the augmented unison has no role in a tertian chord")
 
         }
@@ -225,11 +225,32 @@ import Testing
             .numeroFueraDeRango("x", desde: 1, hasta: 22),
             .trasteNoValido("x", ultimo: 12), .cuerdasDistintas(esperadas: 6, leidas: 5),
             .cifradoRomanoNoValido("x"), .destinoNoTonicalizable("vii°"), .cifrasNoValidas("x"),
-            .cifrasSinAcorde("x"),
+            .cifrasSinAcorde("x"), .elementos(.notaNoReconocida),
         ]).map { ErrorDeLecturaDeTeoria(texto: "x", posicion: 0, motivo: $0) }
         + [ErrorDeLecturaDePartitura.Motivo]([
             .duracionNoValida("x"), .compasNoValido("x"), .contrapuntoDeOtraDuracion(redondas: 8),
+            .elementos(.notaNoReconocida), .teoria(.tensionNoValida("b3")),
         ]).map { ErrorDeLecturaDePartitura(texto: "x", posicion: 0, motivo: $0) }
+
+    /// Cada lectura lanza el error de su capa, con el motivo de la de debajo dentro y su mismo mensaje.
+    @Test func elErrorDeLaCapaDeDebajo() throws {
+        let nota = ErrorDeLectura(texto: "Hm7", posicion: 0, motivo: .notaNoReconocida)
+        let deTeoria = ErrorDeLecturaDeTeoria(nota)
+        #expect(deTeoria.motivo == .elementos(.notaNoReconocida))
+        #expect(deTeoria.posicion == 0 && deTeoria.texto == "Hm7")
+        for idioma in Idioma.allCases {
+            #expect(deTeoria.descripcion(en: .compacta(idioma)) == nota.descripcion(en: .compacta(idioma)))
+        }
+        // En Partituras, la nota de un cifrado sigue siendo de Elementos, y lo demás del cifrado, de Teoría.
+        #expect(ErrorDeLecturaDePartitura(deTeoria).motivo == .elementos(.notaNoReconocida))
+        let tension = ErrorDeLecturaDeTeoria(texto: "Do7(b3)", posicion: 4, motivo: .tensionNoValida("b3"))
+        let enPartitura = ErrorDeLecturaDePartitura(tension)
+        #expect(enPartitura.motivo == .teoria(.tensionNoValida("b3")))
+        #expect(enPartitura.description == tension.description)
+        #expect(throws: ErrorDeLecturaDePartitura(nota)) { try enPartituras(Altura(leyendo: "Hm7")) }
+        #expect(throws: ErrorDeLecturaDeTeoria(nota)) { try enTeoria(Nota(leyendo: "Hm7")) }
+        #expect(try enTeoria(Nota(leyendo: "Do")) == .do)
+    }
 
     /// Todos los motivos tienen explicación en inglés, y la inglesa no lleva texto en español.
     @Test func todosLosMotivosEnLosDosIdiomas() {
@@ -294,7 +315,7 @@ import Testing
             _ = try Acorde(leyendo: "Do7(b3)")
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLecturaDeTeoria)?.motivo == .tensionNoValida("b3"))
+            #expect(error.motivo == .tensionNoValida("b3"))
 
         }
     }

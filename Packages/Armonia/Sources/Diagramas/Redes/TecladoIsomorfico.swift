@@ -129,7 +129,8 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 
     /// El teclado que describe un texto UIL (`2,7,5;R30M`), con la casilla `(0, 0)` en `midiDelOrigen`.
     /// El nombre es el texto normalizado salvo que se dé otro.
-    public static func conUIL(_ texto: String, nombre: String? = nil, midiDelOrigen: Int = 60) throws
+    public static func conUIL(_ texto: String, nombre: String? = nil, midiDelOrigen: Int = 60)
+        throws(ErrorDeLecturaDeUIL)
         -> TecladoIsomorfico
     {
         try FormatoUIL(leyendo: texto).teclado(nombre: nombre, midiDelOrigen: midiDelOrigen)
@@ -160,7 +161,7 @@ public struct TecladoIsomorfico: Hashable, Sendable {
 
     /// El teclado girado esos grados en sentido horario. Lanza `ErrorDeLecturaDeUIL.rotacionNoValida` si no son un
     /// múltiplo de 30, como ``FormatoUIL/rotado(grados:)``.
-    public func rotado(grados: Int, nombre: String? = nil) throws -> TecladoIsomorfico {
+    public func rotado(grados: Int, nombre: String? = nil) throws(ErrorDeLecturaDeUIL) -> TecladoIsomorfico {
         guard grados % 30 == 0 else { throw ErrorDeLecturaDeUIL.rotacionNoValida(grados) }
         return rotado(doceavos: grados / 30, nombre: nombre)
     }

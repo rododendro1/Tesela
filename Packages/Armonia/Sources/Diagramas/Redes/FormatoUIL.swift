@@ -48,7 +48,7 @@ public struct FormatoUIL: Hashable, Sendable {
     /// El formato `L,G,D;R…` con esas medidas. Lanza `ErrorDeLecturaDeUIL` si los intervalos no cumplen `0 < L ≤ D` y
     /// `G = L + D` (salvo el caso cero, `0,1,1`), si el giro no es un múltiplo de 30 o si `tonos` no es positivo.
     public init(menor: Int, mayor: Int, diferencia: Int, rotacion: Int = 0, espejo: Bool = false, tonos: Int = 12)
-        throws
+        throws(ErrorDeLecturaDeUIL)
     {
         let esCero = menor == 0 && mayor == 1 && diferencia == 1
         // Un intervalo de más de un millón de pasos no es un teclado (y sumarlo podría desbordar).
@@ -105,7 +105,7 @@ public struct FormatoUIL: Hashable, Sendable {
 
     /// Lee un texto UIL: `2,7,5;R30M`, `1,4,3;R30M;T7`, `M2,P5,P4;R30M`… Los espacios y las mayúsculas del giro
     /// (`r30m`) no importan; el giro se puede omitir (0°).
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDeUIL) {
         let partes = texto.split(separator: ";", omittingEmptySubsequences: false)
             .map { $0.trimmingCharacters(in: .whitespaces) }
         guard let intervalos = partes.first, !intervalos.isEmpty else {
@@ -195,7 +195,7 @@ public struct FormatoUIL: Hashable, Sendable {
     /// El mismo formato con otro giro, sumado al actual: `rotado(grados: 30)`. Lanza
     /// `ErrorDeLecturaDeUIL.rotacionNoValida` si los grados no son un múltiplo de 30, como
     /// ``TecladoIsomorfico/rotado(grados:nombre:)``.
-    public func rotado(grados: Int) throws -> FormatoUIL {
+    public func rotado(grados: Int) throws(ErrorDeLecturaDeUIL) -> FormatoUIL {
         guard grados % 30 == 0 else { throw ErrorDeLecturaDeUIL.rotacionNoValida(grados) }
         return FormatoUIL(self, rotacion: rotacion + grados, espejo: espejo)
     }
@@ -205,7 +205,8 @@ public struct FormatoUIL: Hashable, Sendable {
 
     /// El teclado de 12 notas con este formato, con la casilla `(0, 0)` en `midiDelOrigen`.
     /// Falla con `afinacionNoSoportada` si `T` no es 12.
-    public func teclado(nombre: String? = nil, midiDelOrigen: Int = 60) throws -> TecladoIsomorfico {
+    public func teclado(nombre: String? = nil, midiDelOrigen: Int = 60) throws(ErrorDeLecturaDeUIL) -> TecladoIsomorfico
+    {
         guard tonos == 12 else { throw ErrorDeLecturaDeUIL.afinacionNoSoportada(tonos: tonos) }
         let orientacion = self.orientacion
         guard let enQ = semitonos(rumbo: DireccionHexagonal.qMasSMenos.rumbo(orientacion)),
@@ -302,7 +303,7 @@ public struct DisposicionConocida: Hashable, Sendable {
     public let formato: FormatoUIL
 
     /// El teclado con ese formato y nombre.
-    public func teclado(midiDelOrigen: Int = 60) throws -> TecladoIsomorfico {
+    public func teclado(midiDelOrigen: Int = 60) throws(ErrorDeLecturaDeUIL) -> TecladoIsomorfico {
         try formato.teclado(nombre: nombre, midiDelOrigen: midiDelOrigen)
     }
 }

@@ -484,9 +484,10 @@ bajo cifrado y el registro, y `armonia pentagrama melodia … --sobre <acordes>`
 Cada tipo tiene un inicializador `init(leyendo:)` que lanza un error con el texto, el carácter
 donde se detuvo y el motivo. Cada capa tiene el suyo: `ErrorDeLectura` para las notas, las alturas y
 los intervalos, `ErrorDeLecturaDeTeoria` para los cifrados, las escalas, las tonalidades y los corales,
-y `ErrorDeLecturaDePartitura` para las duraciones, los compases y el contrapunto. Leer un acorde puede
-lanzar los dos primeros (si falla la fundamental o si falla el cifrado); los tres cumplen
-`ErrorAlLeer`. Para tener `nil` en lugar del error basta `try?` (`try? Acorde(leyendo: …)`).
+y `ErrorDeLecturaDePartitura` para las duraciones, los compases y el contrapunto. Cada lectura dice en su firma
+el único que lanza: el de su capa, que lleva dentro el motivo de la de debajo cuando lo que falla es de ella (si
+falla la fundamental de un acorde, `.elementos(.notaNoReconocida)`). Los tres cumplen `ErrorAlLeer`. Para tener
+`nil` en lugar del error basta `try?` (`try? Acorde(leyendo: …)`).
 
 Todos los errores del motor, también `ErrorDeLecturaDeFichero` y `ErrorDeLecturaDeUIL`, cumplen `ErrorDeArmonia`:
 para mostrar cualquiera basta `catch let error as any ErrorDeArmonia` y `error.descripcion(en:)`.
@@ -500,7 +501,7 @@ nombres de intervalos.
 do {
     let acorde = try Acorde(leyendo: "Do7(b3)")
     print(acorde)                     // no se llega aquí: la línea anterior lanza el error
-} catch let error as ErrorDeLecturaDeTeoria {
+} catch {
     print(error)
     // No se puede leer «Do7(b3)» (carácter 5): «b3» no es una tensión válida
     // (se admiten ♭/♯ con 5, 9, 11 y 13, y add con 2, 4, 6, 9, 11 y 13)

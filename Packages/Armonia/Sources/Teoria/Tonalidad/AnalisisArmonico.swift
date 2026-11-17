@@ -162,25 +162,32 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
     /// ("Do Fa Sol7 Do", "Am | Dm | E7 | Am"; las comas entre paréntesis son del cifrado:
     /// "Do7(♭9,♯11)") y la analiza, en la tonalidad dada o en la que
     /// mejor la explique.
-    public static func analizar(leyendo texto: String, en tonalidad: Tonalidad? = nil) throws -> AnalisisArmonico {
+    public static func analizar(leyendo texto: String, en tonalidad: Tonalidad? = nil) throws(ErrorDeLecturaDeTeoria)
+        -> AnalisisArmonico
+    {
         let acordes = try leerAcordes(texto)
+        if let tonalidad { return tonalidad.analizar(acordes) }
         // `leerAcordes` nunca devuelve una lista vacía, que es lo único que `analizar` no sabe analizar.
-        return try tonalidad.map { $0.analizar(acordes) } ?? analizar(acordes)
+        do {
+            return try analizar(acordes)
+        } catch {
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
+        }
     }
 
     /// Los acordes de una progresión escrita como cifrados separados por espacios, comas o barras.
     /// Lanza un error si alguno no se puede leer o si no hay ninguno.
-    package static func leerAcordes(_ texto: String) throws -> [Acorde] {
+    package static func leerAcordes(_ texto: String) throws(ErrorDeLecturaDeTeoria) -> [Acorde] {
         var acordes: [Acorde] = []
         var posicion = 0
         var actual = ""
         var enParentesis = false
-        func cerrar() throws {
+        func cerrar() throws(ErrorDeLecturaDeTeoria) {
             defer { actual = "" }
             guard !actual.isEmpty else { return }
             do {
                 acordes.append(try Acorde(leyendo: actual))
-            } catch let error as any ErrorAlLeer {
+            } catch {
                 let inicio = posicion - actual.count
                 throw error.situado(en: texto, posicion: error.posicion.map { inicio + $0 } ?? inicio)
             }
@@ -195,7 +202,9 @@ public struct AnalisisArmonico: Hashable, Sendable, CustomStringConvertible {
             posicion += 1
         }
         try cerrar()
-        guard !acordes.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
+        guard !acordes.isEmpty else {
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
+        }
         return acordes
     }
 

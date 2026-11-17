@@ -31,14 +31,14 @@ import Testing
             _ = try ImportacionDeProgresion.progresion(de: melodia)
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLecturaDeFichero) == .sinAcordes)
+            #expect(error == .sinAcordes)
 
         }
         do {
             _ = try ImportacionDeProgresion.progresion(de: Data("hola".utf8))
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLecturaDeFichero) == .formatoDesconocido)
+            #expect(error == .formatoDesconocido)
 
         }
     }

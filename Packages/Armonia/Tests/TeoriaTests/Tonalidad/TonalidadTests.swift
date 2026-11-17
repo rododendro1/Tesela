@@ -127,7 +127,7 @@ import Testing
             _ = try Tonalidad(leyendo: "Re dórico")
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLecturaDeTeoria)?.motivo == .modoNoReconocido("dórico"))
+            #expect(error.motivo == .modoNoReconocido("dórico"))
 
         }
         for tonalidad in Tonalidad.circuloDeQuintas() + Tonalidad.circuloDeQuintas(.menor) {

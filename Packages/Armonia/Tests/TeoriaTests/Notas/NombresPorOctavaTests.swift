@@ -25,7 +25,7 @@ import Testing
         #expect(sikah.description == "Sīkāh (Mi𝄳4)")
         #expect(try arabe.leer("ʿUshayrān").altura == Altura(.la, octava: 3))
         #expect(try arabe.leer("راست").altura == Altura(.do, octava: 4))
-        #expect(throws: ErrorDeLectura.self) { try arabe.leer("Segâh") }
+        #expect(throws: ErrorDeLecturaDeTeoria.self) { try arabe.leer("Segâh") }
     }
 
     @Test func maqamRast() {

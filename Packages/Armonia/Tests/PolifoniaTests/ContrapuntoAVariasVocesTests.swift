@@ -71,7 +71,7 @@ import Testing
     @Test func sinVocesNoHayEjercicio() {
         #expect(throws: (any Error).self) { try ContrapuntoAVariasVoces(cantusFirmus: "Re4 Mi4", voces: []) }
         let cantus = [Altura("Re4"), Altura("Mi4")]
-        #expect(throws: ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio)) {
+        #expect(throws: ErrorDeLecturaDePartitura(texto: "", posicion: nil, motivo: .elementos(.textoVacio))) {
             try ContrapuntoAVariasVoces(cantusFirmus: cantus, voces: [])
         }
         let corta: [Evento] = [Evento(Altura("La4"), .redonda)]

@@ -457,6 +457,8 @@ public enum ErrorDeLecturaDeFichero: ErrorDeArmonia, Hashable {
     case sinNotas
     /// Tiene notas, pero no suena ningún acorde (una melodía sola, por ejemplo).
     case sinAcordes
+    /// Se lee como un coral, pero no suenan siempre las mismas voces (o suenan menos de dos).
+    case vocesDistintas
 
     /// La explicación en el idioma de los textos de la notación.
     public func descripcion(en notacion: Notacion) -> String {
@@ -470,6 +472,7 @@ public enum ErrorDeLecturaDeFichero: ErrorDeArmonia, Hashable {
         case .noEsMusicXMLPorPartes: return textos.map(\.noEsMusicXMLPorPartes).en(notacion)
         case .sinNotas: return textos.map(\.sinNotas).en(notacion)
         case .sinAcordes: return textos.map(\.sinAcordes).en(notacion)
+        case .vocesDistintas: return ErrorDeLecturaDeTeoria.Motivo.vocesDistintas.explicacion(en: notacion)
         }
     }
 }

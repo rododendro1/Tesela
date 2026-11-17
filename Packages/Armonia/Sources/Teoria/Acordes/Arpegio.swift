@@ -229,11 +229,11 @@ public struct Arpegio: Hashable, Sendable {
         return acorde.notasDesdeElBajo.firstIndex { acorde.fundamental.intervalo(hasta: $0).numeroSimple == simple }
     }
 
-    /// Lee un recorrido por grados: «1 5 3 8», «1-5-3-8» o «1, 5, 3, 8». Lanza `ErrorDeLectura` (`.textoVacio`) si
-    /// está vacío y `ErrorDeLecturaDeTeoria` (`.numeroFueraDeRango`, en su carácter) si algo no es un número de 1 a
+    /// Lee un recorrido por grados: «1 5 3 8», «1-5-3-8» o «1, 5, 3, 8». Lanza `ErrorDeLecturaDeTeoria`:
+    /// `.elementos(.textoVacio)` si está vacío y `.numeroFueraDeRango`, en su carácter, si algo no es un número de 1 a
     /// 22 (tres octavas).
-    public static func grados(leyendo texto: String) throws -> [Int] {
-        try numeros(leyendo: texto) { parte, posicion in
+    public static func grados(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) -> [Int] {
+        try numeros(leyendo: texto) { parte, posicion throws(ErrorDeLecturaDeTeoria) in
             guard let grado = Int(parte), (1...22).contains(grado) else {
                 throw ErrorDeLecturaDeTeoria(
                     texto: texto, posicion: posicion, motivo: .numeroFueraDeRango(parte, desde: 1, hasta: 22))
@@ -242,10 +242,10 @@ public struct Arpegio: Hashable, Sendable {
         }
     }
 
-    /// Lee las tensiones: «9», «9 13», «9,11,13». Lanza `ErrorDeLectura` (`.textoVacio`) si está vacío y
-    /// `ErrorDeLecturaDeTeoria` (`.nombreNoReconocido`, en su carácter) si algo no es 9, 11 o 13.
-    public static func tensiones(leyendo texto: String) throws -> [Int] {
-        try numeros(leyendo: texto) { parte, posicion in
+    /// Lee las tensiones: «9», «9 13», «9,11,13». Lanza `ErrorDeLecturaDeTeoria`:
+    /// `.elementos(.textoVacio)` si está vacío y `.nombreNoReconocido`, en su carácter, si algo no es 9, 11 o 13.
+    public static func tensiones(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) -> [Int] {
+        try numeros(leyendo: texto) { parte, posicion throws(ErrorDeLecturaDeTeoria) in
             guard let tension = Int(parte), [9, 11, 13].contains(tension) else {
                 throw ErrorDeLecturaDeTeoria(
                     texto: texto, posicion: posicion, motivo: .nombreNoReconocido(parte, opciones: ["9", "11", "13"]))
@@ -256,7 +256,9 @@ public struct Arpegio: Hashable, Sendable {
 
     /// Los números de un texto separados por espacios, comas o guiones, cada uno leído por `leer` con el carácter
     /// donde empieza.
-    private static func numeros(leyendo texto: String, _ leer: (String, Int) throws -> Int) throws -> [Int] {
+    private static func numeros(leyendo texto: String, _ leer: (String, Int) throws(ErrorDeLecturaDeTeoria) -> Int)
+        throws(ErrorDeLecturaDeTeoria) -> [Int]
+    {
         var numeros: [Int] = []
         var actual = ""
         var inicio = 0
@@ -270,7 +272,9 @@ public struct Arpegio: Hashable, Sendable {
             }
         }
         if !actual.isEmpty { numeros.append(try leer(actual, inicio)) }
-        guard !numeros.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
+        guard !numeros.isEmpty else {
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
+        }
         return numeros
     }
 }
@@ -353,7 +357,7 @@ extension Arpegio: Nombrable {
     /// Lee «arpegio Dom7», «Dom7 arpeggio», «Arpège de Do» o solo el cifrado: se quitan las palabras «arpegio»
     /// (en cualquier idioma) y las preposiciones que las acompañan, y el resto es un cifrado de acorde.
     /// El patrón es el ascendente, de una octava.
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) {
         let palabras: Set<String> = [
             "arpegio", "arpeggio", "arpegi", "arpexo", "arpexu", "arpechio", "arpegioa", "arpejo", "arpege",
             "αρπεζ", "арпеджио", "de", "di", "of", "d'",
@@ -371,7 +375,7 @@ extension Arpegio.Patron {
     /// (`ida-y-vuelta`), en inglés abreviado (`up`, `down`, `up-down`, `down-up`, `broken`) o como lo escribe
     /// cualquiera de los trece idiomas («bajo de Alberti», «aller-retour»), sin mirar mayúsculas ni tildes. Si no
     /// es ninguno, lanza `ErrorDeLecturaDeTeoria` con los que sí (`.nombreNoReconocido`).
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) {
         func clave(_ texto: String) -> String { texto.replacingOccurrences(of: "_", with: " ").claveDeBusqueda }
         let buscado = clave(texto)
         let abreviados: [String: Arpegio.Patron] = [
@@ -418,7 +422,7 @@ extension Arpegio.Aproximacion {
     /// Lee una aproximación por su nombre en el código (`desdeAbajo`, `desde-abajo`), abreviada (`abajo`,
     /// `arriba`, `below`, `above`, `enclosure`) o como la escribe cualquiera de los trece idiomas, sin mirar
     /// mayúsculas ni tildes. Si no es ninguna, lanza `ErrorDeLecturaDeTeoria` con las que sí (`.nombreNoReconocido`).
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) {
         func clave(_ texto: String) -> String {
             texto.replacingOccurrences(of: "_", with: " ").replacingOccurrences(of: "-", with: " ").claveDeBusqueda
         }

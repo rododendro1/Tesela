@@ -69,7 +69,7 @@ import Testing
     }
 
     @Test func cifradosQueNoSeLeen() throws {
-        #expect(throws: ErrorDeLectura(texto: " ", posicion: nil, motivo: .textoVacio)) {
+        #expect(throws: ErrorDeLecturaDeTeoria(texto: " ", posicion: nil, motivo: .elementos(.textoVacio))) {
             try doMayor.acorde(romano: " ")
         }
         #expect(throws: ErrorDeLecturaDeTeoria(texto: "X", posicion: 0, motivo: .cifradoRomanoNoValido("X"))) {
@@ -100,7 +100,7 @@ import Testing
         #expect(try doMayor.acordes(romanos: "I - IV - V7 - I") == ["Do", "Fa", "Sol7", "Do"])
         #expect(try doMayor.acordes(romanos: "I | V7/V | V7 | I") == ["Do", "Re7", "Sol7", "Do"])
         #expect(try laMenor.acordes(romanos: "i iv V7 i") == ["Lam", "Rem", "Mi7", "Lam"])
-        #expect(throws: ErrorDeLectura(texto: " | ", posicion: nil, motivo: .textoVacio)) {
+        #expect(throws: ErrorDeLecturaDeTeoria(texto: " | ", posicion: nil, motivo: .elementos(.textoVacio))) {
             try doMayor.acordes(romanos: " | ")
         }
         #expect(throws: ErrorDeLecturaDeTeoria(texto: "I X V", posicion: 2, motivo: .cifradoRomanoNoValido("X"))) {
@@ -184,11 +184,11 @@ import Testing
         #expect(encadenado.destino?.destino?.destino == nil)
         #expect(encadenado.description == "V/V/V")
         // Lo que no se lee, en su carácter.
-        #expect(throws: ErrorDeLectura.self) { try CifradoRomano(leyendo: "  ") }
+        #expect(throws: ErrorDeLecturaDeTeoria.self) { try CifradoRomano(leyendo: "  ") }
         do {
             _ = try CifradoRomano(leyendo: "V7/X")
             Issue.record("«V7/X» no debería leerse")
-        } catch let error as ErrorDeLecturaDeTeoria {
+        } catch let error {
             #expect(error.posicion == 3)
         }
         #expect(throws: ErrorDeLecturaDeTeoria.self) { try CifradoRomano(leyendo: "♭subV7") }

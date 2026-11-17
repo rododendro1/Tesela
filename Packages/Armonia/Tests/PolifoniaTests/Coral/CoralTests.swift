@@ -114,16 +114,15 @@ import Testing
             _ = try Coral(leyendo: "Do3 Mi4 | Sol2 H4")
             Issue.record("Se esperaba un error")
         } catch {
-            let error = error as? ErrorDeLectura
-            #expect(error?.posicion == 15)
-            #expect(error?.texto == "Do3 Mi4 | Sol2 H4")
+            #expect(error.posicion == 15)
+            #expect(error.texto == "Do3 Mi4 | Sol2 H4")
 
         }
         do {
             _ = try Coral(leyendo: "Do3 Mi4 | Sol2")
             Issue.record("Se esperaba un error")
         } catch {
-            guard case .vocesDistintas? = (error as? ErrorDeLecturaDeTeoria)?.motivo else {
+            guard case .vocesDistintas = error.motivo else {
                 Issue.record("\(error)")
                 return
             }
@@ -133,7 +132,7 @@ import Testing
             _ = try Coral(leyendo: " | ")
             Issue.record("Se esperaba un error")
         } catch {
-            guard case .textoVacio? = (error as? ErrorDeLectura)?.motivo else {
+            guard case .elementos(.textoVacio) = error.motivo else {
                 Issue.record("\(error)")
                 return
             }

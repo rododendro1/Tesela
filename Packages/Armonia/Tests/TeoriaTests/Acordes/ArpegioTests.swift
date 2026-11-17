@@ -70,7 +70,7 @@ import Testing
             throws: ErrorDeLecturaDeTeoria(
                 texto: "9 10", posicion: 2, motivo: .nombreNoReconocido("10", opciones: ["9", "11", "13"]))
         ) { try Arpegio.tensiones(leyendo: "9 10") }
-        #expect(throws: ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio)) {
+        #expect(throws: ErrorDeLecturaDeTeoria(texto: "", posicion: nil, motivo: .elementos(.textoVacio))) {
             try Arpegio.tensiones(leyendo: "")
         }
     }
@@ -96,7 +96,7 @@ import Testing
         #expect(throws: fuera("1-x", 2, "x")) { try Arpegio.grados(leyendo: "1-x") }
         #expect(throws: fuera("23", 0, "23")) { try Arpegio.grados(leyendo: "23") }
         #expect(fuera("23", 0, "23").explicacion == "«23» no es un número de 1 a 22")
-        #expect(throws: ErrorDeLectura(texto: ", ", posicion: nil, motivo: .textoVacio)) {
+        #expect(throws: ErrorDeLecturaDeTeoria(texto: ", ", posicion: nil, motivo: .elementos(.textoVacio))) {
             try Arpegio.grados(leyendo: ", ")
         }
     }

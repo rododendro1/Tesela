@@ -242,7 +242,8 @@ import Testing
             _ = try Evento(leyendo: "Do4+Xx4:4")
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLectura)?.posicion == 4)
+            #expect(error.posicion == 4)
+            #expect(error.motivo == .elementos(.notaNoReconocida))
 
         }
     }

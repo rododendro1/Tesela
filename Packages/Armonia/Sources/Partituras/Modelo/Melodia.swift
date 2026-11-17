@@ -177,13 +177,15 @@ public struct Voz: Hashable, Sendable {
 
     /// Lee eventos separados por espacios: "Do4:4 Re4:8 Mi4:8 -:4 Do4+Mi4:2~ Do4+Mi4:4", en 4/4 y sin anacrusa si
     /// el texto no los lleva delante ("3/4 (4) Sol4:4 …").
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDePartitura) {
         try self.init(leyendo: texto, compas: .compasillo, anacrusa: .cero)
     }
 
     /// Lee eventos separados por espacios en un compás y con una anacrusa; el compás y la anacrusa que lleve el
     /// texto delante ("3/4 (4) Sol4:4 …") cuentan más que los que se dan.
-    public init(leyendo texto: String, compas: Compas = .compasillo, anacrusa: Duracion = .cero) throws {
+    public init(leyendo texto: String, compas: Compas = .compasillo, anacrusa: Duracion = .cero)
+        throws(ErrorDeLecturaDePartitura)
+    {
         var eventos: [Evento] = []
         var (compas, anacrusa) = (compas, anacrusa)
         var (conCompas, conAnacrusa) = (false, false)
@@ -191,7 +193,7 @@ public struct Voz: Hashable, Sendable {
         for trozo in texto.split(separator: " ", omittingEmptySubsequences: false) {
             defer { inicio += trozo.count + 1 }
             guard !trozo.isEmpty else { continue }
-            do {
+            do throws(ErrorDeLecturaDePartitura) {
                 // Antes del primer evento (todos llevan «:»), el compás y la anacrusa, cada uno una vez.
                 if eventos.isEmpty, !trozo.contains(":") {
                     if !conAnacrusa, trozo.hasPrefix("("), trozo.hasSuffix(")"), trozo.count > 2 {
@@ -209,7 +211,7 @@ public struct Voz: Hashable, Sendable {
                     }
                 }
                 eventos.append(try Evento(leyendo: String(trozo)))
-            } catch let e as any ErrorAlLeer {
+            } catch let e {
                 throw e.situado(en: texto, posicion: inicio + (e.posicion ?? 0))
             }
         }

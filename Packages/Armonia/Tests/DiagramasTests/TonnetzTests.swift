@@ -166,7 +166,7 @@ import Testing
         #expect(throws: ErrorDeTransformacion.secuenciaIlegible(ilegible)) {
             try Acorde("Do").transformar(leyendo: "PX")
         }
-        let vacia = ErrorDeLectura(texto: " · ", posicion: nil, motivo: .textoVacio)
+        let vacia = ErrorDeLecturaDeTeoria(texto: " · ", posicion: nil, motivo: .elementos(.textoVacio))
         #expect(throws: ErrorDeTransformacion.secuenciaIlegible(vacia)) { try Acorde("Do").transformar(leyendo: " · ") }
         #expect(
             ErrorDeTransformacion.sinTriada.descripcion(en: .compacta(.ingles))

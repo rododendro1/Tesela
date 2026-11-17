@@ -41,23 +41,29 @@ public struct ContrapuntoAVariasVoces: Hashable, Sendable {
     public let voces: [Contrapunto]
 
     /// Lanza el error de `Contrapunto(cantusFirmus:contrapunto:especie:)` si alguna voz no dura una redonda por
-    /// cada nota del cantus, y `ErrorDeLectura` (`.textoVacio`) si no hay ninguna voz.
-    public init(cantusFirmus: [Altura], voces: [(eventos: [Evento], especie: Contrapunto.Especie)]) throws {
-        let leidas = try voces.map {
-            try Contrapunto(cantusFirmus: cantusFirmus, contrapunto: $0.eventos, especie: $0.especie)
+    /// cada nota del cantus, y `.elementos(.textoVacio)` si no hay ninguna voz.
+    public init(cantusFirmus: [Altura], voces: [(eventos: [Evento], especie: Contrapunto.Especie)])
+        throws(ErrorDeLecturaDePartitura)
+    {
+        let leidas = try voces.map { voz throws(ErrorDeLecturaDePartitura) in
+            try Contrapunto(cantusFirmus: cantusFirmus, contrapunto: voz.eventos, especie: voz.especie)
         }
-        guard !leidas.isEmpty else { throw ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio) }
+        guard !leidas.isEmpty else {
+            throw ErrorDeLecturaDePartitura(texto: "", posicion: nil, motivo: .elementos(.textoVacio))
+        }
         self.cantusFirmus = cantusFirmus
         self.voces = leidas
     }
 
     /// Lee el cantus y cada voz como `Contrapunto(cantusFirmus:contrapunto:especie:)`.
-    public init(cantusFirmus: String, voces: [(contrapunto: String, especie: Contrapunto.Especie)]) throws {
-        let leidas = try voces.map {
-            try Contrapunto(cantusFirmus: cantusFirmus, contrapunto: $0.contrapunto, especie: $0.especie)
+    public init(cantusFirmus: String, voces: [(contrapunto: String, especie: Contrapunto.Especie)])
+        throws(ErrorDeLecturaDePartitura)
+    {
+        let leidas = try voces.map { voz throws(ErrorDeLecturaDePartitura) in
+            try Contrapunto(cantusFirmus: cantusFirmus, contrapunto: voz.contrapunto, especie: voz.especie)
         }
         guard let primera = leidas.first else {
-            throw ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio)
+            throw ErrorDeLecturaDePartitura(texto: "", posicion: nil, motivo: .elementos(.textoVacio))
         }
         self.cantusFirmus = primera.cantusFirmus
         self.voces = leidas

@@ -28,7 +28,7 @@ extension PiezaImportada {
     /// que salga de ellas.
     ///
     /// Lanza `ErrorDeLecturaDeFichero.sinNotas` si no suena nada.
-    public func melodia() throws -> Voz {
+    public func melodia() throws(ErrorDeLecturaDeFichero) -> Voz {
         guard let aguda = lineas.last,
             let voz = PiezaImportada.voces(deUnPentagrama: aguda, compas: compas ?? .compasillo).first
         else {

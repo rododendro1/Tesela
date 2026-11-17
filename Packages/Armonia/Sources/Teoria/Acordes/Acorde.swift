@@ -28,26 +28,27 @@ public struct Acorde: Hashable, Sendable {
     /// "Rem11", "Sol13sus4", "Do7(omit5)", "Do/Re" (bajo ajeno) o "Faug" (letras). La fundamental y el
     /// bajo pueden llevar la alteración en palabras: "Fa sostenido m7", "B flat 7", "Sol7/Fa sostenido".
     /// Si no se puede leer, el error indica dónde y por qué.
-    public init(leyendo cifrado: String) throws {
+    public init(leyendo cifrado: String) throws(ErrorDeLecturaDeTeoria) {
         var inicio = Lector(cifrado)
-        try inicio.exigirContenido()
+        try enTeoria(inicio.exigirContenido())
         // Primero se lee la fundamental en español; si el resto no es un cifrado válido,
         // se prueba con letras ("Faug" es F aumentado, no Fa seguido de "ug").
-        var primerError: (any ErrorAlLeer)?
+        var primerError: ErrorDeLecturaDeTeoria?
         for espanol in [true, false] {
             var lector = inicio
             guard let (fundamental, idioma) = lector.leerNombreNotaConIdioma(espanol: espanol) else { continue }
             do {
                 self = try Acorde.leer(fundamental: fundamental, idioma: idioma, lector: lector)
                 return
-            } catch let error as any ErrorAlLeer {
+            } catch {
                 if primerError == nil { primerError = error }
             }
         }
-        throw primerError ?? inicio.error(.notaNoReconocida)
+        throw primerError ?? inicio.error(.elementos(.notaNoReconocida))
     }
 
-    private static func leer(fundamental: Nota, idioma: Idioma, lector: Lector) throws -> Acorde {
+    private static func leer(fundamental: Nota, idioma: Idioma, lector: Lector) throws(ErrorDeLecturaDeTeoria) -> Acorde
+    {
         let resto = lector.resto
         var simbolo = resto
         var bajo = fundamental

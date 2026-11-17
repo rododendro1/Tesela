@@ -4,12 +4,12 @@ import Elementos
 /// nombre (un patrón de arpegio, una aproximación, un ciclo neorriemanniano, un instrumento) o una digitación.
 ///
 /// Como `ErrorDeLectura`, indica el texto, el carácter donde se detuvo la lectura y el motivo, en los trece
-/// idiomas de los textos. Leer un acorde puede lanzar cualquiera de los dos: `ErrorDeLectura` si falla la
-/// fundamental y `ErrorDeLecturaDeTeoria` si falla el cifrado. Para tratarlos juntos, `any ErrorAlLeer`:
+/// idiomas de los textos. Es el único que lanzan las lecturas de Teoría: si lo que falla es una nota (la
+/// fundamental de un acorde, la tónica de una escala), su motivo es `.elementos` con el de `ErrorDeLectura`.
 ///
 ///     do {
 ///         let acorde = try Acorde(leyendo: "Do7(b3)")
-///     } catch let error as ErrorDeLecturaDeTeoria {
+///     } catch {
 ///         error.motivo   // .tensionNoValida("b3")
 ///         print(error)   // No se puede leer «Do7(b3)» (carácter 4): «b3» no es una tensión válida…
 ///     }
@@ -60,6 +60,10 @@ public struct ErrorDeLecturaDeTeoria: ErrorAlLeer {
         case cifrasNoValidas(String)
         /// Unas cifras que se leen, pero cuyas notas sobre el bajo no forman ningún acorde.
         case cifrasSinAcorde(String)
+        // Elementos
+        /// Lo que falla en una nota, una altura o un intervalo del texto («Do7/Hx»): el motivo de `ErrorDeLectura`,
+        /// para que toda lectura de Teoría lance un solo tipo de error.
+        case elementos(ErrorDeLectura.Motivo)
     }
 
     /// Símbolos de un cifrado que no pueden ir juntos.
@@ -91,6 +95,21 @@ public struct ErrorDeLecturaDeTeoria: ErrorAlLeer {
         self.posicion = posicion
         self.motivo = motivo
     }
+}
+
+extension ErrorDeLecturaDeTeoria {
+    /// El error de una nota, una altura o un intervalo de lo que se leía, como error de Teoría: el mismo texto, la
+    /// misma posición y el motivo dentro de `.elementos`.
+    public init(_ error: ErrorDeLectura) {
+        self.init(texto: error.texto, posicion: error.posicion, motivo: .elementos(error.motivo))
+    }
+}
+
+/// Lee con una lectura de Elementos y, si falla, lanza su error como error de Teoría (`init(_:)`).
+package func enTeoria<Valor>(
+    _ leer: @autoclosure () throws(ErrorDeLectura) -> Valor
+) throws(ErrorDeLecturaDeTeoria) -> Valor {
+    do { return try leer() } catch { throw ErrorDeLecturaDeTeoria(error) }
 }
 
 extension Lector {
@@ -157,6 +176,7 @@ extension ErrorDeLecturaDeTeoria.Motivo {
             return TextosDeTeoria.traduccion { $0.destinoNoTonicalizable(destino) }
         case .cifrasNoValidas(let cifras): return TextosDeTeoria.traduccion { $0.cifrasNoValidas(cifras) }
         case .cifrasSinAcorde(let cifras): return TextosDeTeoria.traduccion { $0.cifrasSinAcorde(cifras) }
+        case .elementos(let motivo): return motivo.explicacionTraducida(notacion)
         }
     }
 

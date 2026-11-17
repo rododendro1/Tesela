@@ -18,7 +18,8 @@ extension Contrapunto {
     ///     let propuesta = try Contrapunto.proponer(sobre: "Re4 Fa4 Mi4 Re4 Sol4 Fa4 La4 Sol4 Fa4 Mi4 Re4").first
     ///     propuesta?.esCorrecto   // true
     /// Lee el cantus como `Contrapunto(cantusFirmus:contrapunto:especie:)`.
-    public static func proponer(sobre cantusFirmus: String, arriba: Bool = true, propuestas: Int = 1) throws
+    public static func proponer(sobre cantusFirmus: String, arriba: Bool = true, propuestas: Int = 1)
+        throws(ErrorDeLectura)
         -> [Contrapunto]
     {
         proponer(sobre: try cantus(leyendo: cantusFirmus), arriba: arriba, propuestas: propuestas)

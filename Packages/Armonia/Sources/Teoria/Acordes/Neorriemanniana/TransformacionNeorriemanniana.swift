@@ -47,8 +47,10 @@ public enum TransformacionNeorriemanniana: String, CaseIterable, Hashable, Senda
 
     /// Lee una secuencia como "PLR", "P L R", "R·L·P" o "LP-R", que se aplica de izquierda a
     /// derecha; N, S y H se desarrollan en sus tres pasos. Lanza `ErrorDeLecturaDeTeoria` (`.nombreNoReconocido`,
-    /// en su carácter) si hay otra cosa, y `ErrorDeLectura` (`.textoVacio`) si no hay ninguna.
-    public static func secuencia(leyendo texto: String) throws -> [TransformacionNeorriemanniana] {
+    /// en su carácter) si hay otra cosa, y `.elementos(.textoVacio)` si no hay ninguna.
+    public static func secuencia(leyendo texto: String) throws(ErrorDeLecturaDeTeoria)
+        -> [TransformacionNeorriemanniana]
+    {
         var resultado: [TransformacionNeorriemanniana] = []
         for (posicion, original) in texto.enumerated() {
             switch original.uppercased() {
@@ -65,7 +67,9 @@ public enum TransformacionNeorriemanniana: String, CaseIterable, Hashable, Senda
                     motivo: .nombreNoReconocido(String(original), opciones: ["P", "L", "R", "N", "S", "H"]))
             }
         }
-        guard !resultado.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
+        guard !resultado.isEmpty else {
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
+        }
         return resultado
     }
 
@@ -112,11 +116,8 @@ extension Acorde {
         let leida: [TransformacionNeorriemanniana]
         do {
             leida = try TransformacionNeorriemanniana.secuencia(leyendo: secuencia)
-        } catch let error as any ErrorAlLeer {
-            throw .secuenciaIlegible(error)
         } catch {
-            // `secuencia(leyendo:)` solo lanza errores de lectura.
-            throw .secuenciaIlegible(ErrorDeLectura(texto: secuencia, posicion: nil, motivo: .textoVacio))
+            throw .secuenciaIlegible(error)
         }
         guard let acorde = transformar(leida) else { throw .sinTriada }
         return acorde

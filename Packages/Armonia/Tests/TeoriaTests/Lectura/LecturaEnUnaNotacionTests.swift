@@ -58,7 +58,7 @@ import Testing
     }
 
     @Test func losErrores() {
-        #expect(throws: ErrorDeLectura.self) { try Acorde(leyendo: "", en: .compacta(.aleman)) }
+        #expect(throws: ErrorDeLecturaDeTeoria.self) { try Acorde(leyendo: "", en: .compacta(.aleman)) }
         #expect(throws: (any Error).self) { try Acorde(leyendo: "Xm7", en: .compacta(.aleman)) }
         #expect(throws: ErrorDeLecturaDeTeoria.self) { try Escala(leyendo: "D blabla", en: .compacta(.aleman)) }
         #expect(throws: ErrorDeLecturaDeTeoria.self) { try Tonalidad(leyendo: "D-blabla", en: .compacta(.aleman)) }

@@ -165,11 +165,10 @@ import Testing
             _ = try AnalisisArmonico.analizar(leyendo: "Do Fa Hm Do")
             Issue.record("Se esperaba un error")
         } catch {
-            let error = error as? ErrorDeLectura
-            #expect(error?.texto == "Do Fa Hm Do")
-            #expect(error?.posicion == 6)
-            guard case .notaNoReconocida? = error?.motivo else {
-                Issue.record("\(String(describing: error))")
+            #expect(error.texto == "Do Fa Hm Do")
+            #expect(error.posicion == 6)
+            guard case .elementos(.notaNoReconocida) = error.motivo else {
+                Issue.record("\(error)")
                 return
             }
 
@@ -178,7 +177,7 @@ import Testing
             _ = try AnalisisArmonico.analizar(leyendo: "  | ")
             Issue.record("Se esperaba un error")
         } catch {
-            guard case .textoVacio? = (error as? ErrorDeLectura)?.motivo else {
+            guard case .elementos(.textoVacio) = error.motivo else {
                 Issue.record("\(error)")
                 return
             }

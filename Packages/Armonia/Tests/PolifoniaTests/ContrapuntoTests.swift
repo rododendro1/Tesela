@@ -110,7 +110,7 @@ import Testing
             _ = try Contrapunto(cantusFirmus: "Re4 Fa4", contrapunto: "La4", especie: .primera)
             Issue.record("Se esperaba un error")
         } catch {
-            guard case .contrapuntoDeOtraDuracion(redondas: 2)? = (error as? ErrorDeLecturaDePartitura)?.motivo else {
+            guard case .contrapuntoDeOtraDuracion(redondas: 2) = error.motivo else {
                 Issue.record("\(error)")
                 return
             }
@@ -120,7 +120,7 @@ import Testing
         #expect(throws: (any Error).self) {
             try Contrapunto(cantusFirmus: "Re4 Xx", contrapunto: "La4 La4", especie: .primera)
         }
-        #expect(throws: ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio)) {
+        #expect(throws: ErrorDeLecturaDePartitura(texto: "", posicion: nil, motivo: .elementos(.textoVacio))) {
             try Contrapunto(cantusFirmus: [], contrapunto: [], especie: .primera)
         }
         #expect(

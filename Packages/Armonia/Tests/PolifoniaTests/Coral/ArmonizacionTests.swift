@@ -204,7 +204,7 @@ import Testing
             ErrorDeRealizacion.notaAjena(acorde: 2).descripcion(en: .compacta(.espanol))
                 == "La nota del soprano no es del acorde 3.")
         let ilegible = ErrorDeRealizacion.bajoCifradoIlegible(
-            ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio))
+            ErrorDeLecturaDeTeoria(texto: "", posicion: nil, motivo: .elementos(.textoVacio)))
         #expect(Set(errores + [ilegible, ilegible]).count == errores.count + 1)
         #expect(ilegible != .sinNotas)
         for idioma in Idioma.allCases {
