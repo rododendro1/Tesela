@@ -138,11 +138,12 @@ final class LectorMusicXML: LectorDeElementosXML {
         var voz: Int?
     }
 
-    /// Las articulaciones de MusicXML (dentro de `<articulations>`).
-    private static let articulaciones: [String: Articulacion] = [
-        "staccato": .staccato, "staccatissimo": .staccatissimo, "spiccato": .staccatissimo, "tenuto": .tenuto,
-        "accent": .acento, "strong-accent": .marcato,
-    ]
+    /// Las articulaciones de MusicXML (dentro de `<articulations>`): las que escribe
+    /// `EscritorMusicXML.articulacion(_:)` y el `spiccato`, que se lee como staccatissimo.
+    private static let articulaciones: [String: Articulacion] = Dictionary(
+        Articulacion.allCases.compactMap { a in EscritorMusicXML.articulacion(a).map { ($0, a) } }
+            + [("spiccato", .staccatissimo)],
+        uniquingKeysWith: { primera, _ in primera })
 
     func abre(_ nombre: String, atributos: [String: String]) {
         if raiz == nil { raiz = nombre }

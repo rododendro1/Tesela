@@ -172,11 +172,11 @@ final class LectorMEI: LectorDeElementosXML {
     /// El `startid` del `<dynam>` que se está leyendo.
     private var inicioDeLaDinamica: String?
 
-    /// Los valores de `artic` de MEI.
-    private static let valoresDeArtic: [String: Articulacion] = [
-        "stacc": .staccato, "stacciss": .staccatissimo, "spicc": .staccatissimo, "ten": .tenuto, "acc": .acento,
-        "marc": .marcato,
-    ]
+    /// Los valores de `artic` de MEI: los que escribe `EscritorMEI.artic(_:)` y el `spicc`, que se lee como
+    /// staccatissimo.
+    private static let valoresDeArtic: [String: Articulacion] = Dictionary(
+        Articulacion.allCases.compactMap { a in EscritorMEI.artic(a).map { ($0, a) } } + [("spicc", .staccatissimo)],
+        uniquingKeysWith: { primera, _ in primera })
 
     /// Las articulaciones de los atributos `artic` (separadas por espacios) y `fermata` de un elemento.
     private static func articulaciones(_ atributos: [String: String]) -> [Articulacion] {
