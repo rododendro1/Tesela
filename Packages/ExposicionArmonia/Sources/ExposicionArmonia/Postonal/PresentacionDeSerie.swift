@@ -69,7 +69,7 @@ public enum PresentacionDeSerie {
     /// son las doce clases una vez cada una.
     public static func presentar(
         _ texto: String, forma: FormaDeSerie, en notacion: Notacion
-    ) throws -> MatrizDeSeriePresentada {
+    ) throws(ErrorDeLectura) -> MatrizDeSeriePresentada {
         let serie = try SerieDodecafonica(leyendo: texto)
         // Lo mismo que da `armonia serie` (y su `--json`), escrito para la vista.
         let enDatos = SeriePresentada(serie, en: notacion)

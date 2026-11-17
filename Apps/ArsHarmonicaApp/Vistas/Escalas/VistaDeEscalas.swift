@@ -209,11 +209,11 @@ struct VistaDeEscalas: View {
             ficheros.append(Estudio.ficheroDeLaComparacion(escala, con: otra, en: notacion))
             ficheros.append(Estudio.ficheroDeLaComparacionHTML(escala, con: otra, en: notacion))
         }
-        return ficheros + Estudio.enLasDoceTonalidades(escala, en: notacion).ficheros
+        return ficheros + HojaDeEstudioPresentada(escala, en: notacion).ficheros
     }
 
     private func secuenciaPresentada(de escala: Escala) -> SecuenciaPresentada {
-        PresentacionDeEstudioDeEscala.secuencia(
+        SecuenciaPresentada(
             escala, secuencia, octavas: octavas, sentido: bajando ? .descendente : .ascendente, en: notacion)
     }
 

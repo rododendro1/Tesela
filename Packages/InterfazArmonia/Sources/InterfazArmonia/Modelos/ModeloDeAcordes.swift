@@ -110,7 +110,7 @@ public struct ModeloDeAcordes: Sendable {
 
     /// El arpegio con la figura, el tempo y el swing elegidos.
     public func presentado(_ arpegio: Arpegio, en notacion: Notacion) -> ArpegioPresentado {
-        PresentacionDeArpegios.arpegio(
+        ArpegioPresentado(
             arpegio, figura: duracion, tempo: Tempo(Double(tempo)), swing: swing, en: notacion)
     }
 

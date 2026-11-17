@@ -12,13 +12,15 @@ public enum ImportacionDeProgresion {
 
     /// La progresión de un fichero, con un acorde por pulso (`ventana`, como en `PiezaImportada.acordes(ventana:)`).
     /// Lanza `ErrorDeLecturaDeFichero` si no se puede leer o no suena ningún acorde.
-    public static func progresion(de datos: Data, ventana: Duracion? = nil) throws -> String {
+    public static func progresion(de datos: Data, ventana: Duracion? = nil) throws(ErrorDeLecturaDeFichero) -> String {
         try leer(datos, ventana: ventana).texto
     }
 
     /// La progresión de un fichero con su ritmo armónico, su compás, su tempo y su título.
     /// Lanza `ErrorDeLecturaDeFichero` si no se puede leer o no suena ningún acorde.
-    public static func leer(_ datos: Data, ventana: Duracion? = nil) throws -> ProgresionImportada {
+    public static func leer(_ datos: Data, ventana: Duracion? = nil) throws(ErrorDeLecturaDeFichero)
+        -> ProgresionImportada
+    {
         let pieza = try PiezaImportada(leyendo: datos)
         let ritmo = pieza.ritmoArmonico(ventana: ventana)
         guard !ritmo.acordes.isEmpty else { throw ErrorDeLecturaDeFichero.sinAcordes }

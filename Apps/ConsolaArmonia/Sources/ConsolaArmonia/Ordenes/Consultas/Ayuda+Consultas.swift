@@ -22,7 +22,7 @@ extension LineaDeComandos {
                 ejecutar: { try consultarIntervalo($0, $1.notacion) }),
             Orden(
                 nombres: ["escala", "scale"], ayuda: ayudaDeEscala, json: { try escalaJSON($0, $1.notacion) },
-                sinJSON: [.bibtex],
+                sinJSON: [.formato],
                 ejecutar: { try escala($0, $1) }),
         ] + [
             Orden(
@@ -96,9 +96,9 @@ extension LineaDeComandos {
                 "armonia scale D dorian"),
             notas: TextosDeConsola.traduccion(\.notasEscala),
             opciones: [
-                .acordes, .cuartas, .tensionesDeLosGrados, .secuencia, .bajando, .octavas, .piano, .modos, .comparar,
+                .acordes, .cuartas, .tensionesDeLosGrados, .secuencia, .bajando, .octavas, .dedos, .modos, .comparar,
                 .simetria, .vecinas, .doce,
-                .triadas, .estadisticas, .escalera, .parecidas, .progresiones, .tetracordos, .bibtex,
+                .triadas, .estadisticas, .escalera, .parecidas, .progresiones, .tetracordos, .formato,
             ])
     ]
 

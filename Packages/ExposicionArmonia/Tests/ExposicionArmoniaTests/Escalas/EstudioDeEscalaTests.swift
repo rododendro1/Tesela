@@ -6,13 +6,13 @@ import Testing
 // La pestaña de escalas para estudiarlas y las escalas sobre un acorde de la de acordes.
 @Suite struct PresentacionDeEstudioDeEscalaTests {
     @Test func unaSecuencia() {
-        let terceras = PresentacionDeEstudioDeEscala.secuencia(Escala(.do), .terceras, en: .compacta(.espanol))
+        let terceras = SecuenciaPresentada(Escala(.do), .terceras, en: .compacta(.espanol))
         #expect(terceras.titulo == "Do mayor por terceras")
         #expect(terceras.notas.hasPrefix("Do₄ Mi₄ Re₄ Fa₄"))
         #expect(terceras.sonido.notas.count == 15)
         #expect(terceras.ficheros.count == 6)
         #expect(terceras.pentagrama.svg.contains("<svg"))
-        let bajando = PresentacionDeEstudioDeEscala.secuencia(
+        let bajando = SecuenciaPresentada(
             Escala(.do), .triadas, octavas: 2, sentido: .descendente, en: .ascii(.ingles))
         #expect(bajando.titulo == "C major in triads")
         #expect(bajando.sonido.notas.count == 43)
@@ -42,7 +42,7 @@ import Testing
     }
 
     @Test func dosEscalasComparadas() {
-        let lidio = PresentacionDeEstudioDeEscala.comparar(
+        let lidio = ComparacionDeEscalasPresentada(
             Escala(.do), con: Escala(.do, .lidio), en: .compacta(.espanol))
         #expect(lidio.cambios == ["4: Fa → Fa♯"])
         #expect(lidio.soloEnOrigen == "Solo en Do mayor: Fa")
@@ -50,11 +50,11 @@ import Testing
         #expect(lidio.distancia == "1 alteraciones de diferencia")
         #expect(lidio.comunes.hasPrefix("Do, Re, Mi"))
         #expect(lidio.sonido.notas.count == 16)
-        let lejos = PresentacionDeEstudioDeEscala.comparar(
+        let lejos = ComparacionDeEscalasPresentada(
             Escala(.do), con: Escala("Fa# pentatónica mayor"), en: .compacta(.espanol))
         #expect(lejos.comunes == "ninguna")
         #expect(lejos.distancia == nil)
-        let igual = PresentacionDeEstudioDeEscala.comparar(Escala(.do), con: Escala(.do), en: .compacta(.espanol))
+        let igual = ComparacionDeEscalasPresentada(Escala(.do), con: Escala(.do), en: .compacta(.espanol))
         #expect(igual.soloEnOrigen.isEmpty && igual.soloEnDestino.isEmpty)
     }
 

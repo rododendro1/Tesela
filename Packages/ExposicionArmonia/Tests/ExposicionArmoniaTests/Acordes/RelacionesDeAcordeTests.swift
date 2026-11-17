@@ -6,16 +6,16 @@ import Testing
 // Las relaciones de un acorde suelto y la comparación de dos, de la vista de acordes y de `armonia acorde`.
 @Suite struct PresentacionDeRelacionesDeAcordeTests {
     @Test func lasRelacionesDeUnAcorde() {
-        let do6 = PresentacionDeRelacionesDeAcorde.relaciones(de: Acorde("Do6"), notacion: .compacta(.espanol))
+        let do6 = RelacionesPresentadas(Acorde("Do6"), notacion: .compacta(.espanol))
         #expect(do6.otrosNombres.contains("Lam7/Do"))
-        let do7M = PresentacionDeRelacionesDeAcorde.relaciones(de: Acorde("Do7M"), notacion: .compacta(.espanol))
+        let do7M = RelacionesPresentadas(Acorde("Do7M"), notacion: .compacta(.espanol))
         #expect(do7M.sinFundamental == "Mim")
         #expect(do6.tonalidad == Tonalidad(.do))
 
-        let rem7 = PresentacionDeRelacionesDeAcorde.relaciones(de: Acorde("Rem7"), notacion: .compacta(.espanol))
+        let rem7 = RelacionesPresentadas(Acorde("Rem7"), notacion: .compacta(.espanol))
         #expect(rem7.tonalidades.first == "ii7 en Do mayor · subdominante")
 
-        let sol7 = PresentacionDeRelacionesDeAcorde.relaciones(de: Acorde("Sol7"), notacion: .compacta(.espanol))
+        let sol7 = RelacionesPresentadas(Acorde("Sol7"), notacion: .compacta(.espanol))
         let tritonal = Acorde("Reb7").cifrado(en: .compacta(.espanol))
         let disminuido = Acorde("Si°7").cifrado(en: .compacta(.espanol))
         #expect(sol7.sustituciones.contains { $0.texto == tritonal })
@@ -24,8 +24,8 @@ import Testing
     }
 
     @Test func enOtraTonalidad() {
-        let relaciones = PresentacionDeRelacionesDeAcorde.relaciones(
-            de: Acorde("Do"), en: Tonalidad(.sol), notacion: .ascii(.ingles))
+        let relaciones = RelacionesPresentadas(
+            Acorde("Do"), en: Tonalidad(.sol), notacion: .ascii(.ingles))
         #expect(relaciones.tonalidad == Tonalidad(.sol))
         #expect(relaciones.sustituciones.contains { $0.texto == "Am" })
         #expect(relaciones.sinFundamental == nil)

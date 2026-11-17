@@ -85,12 +85,13 @@ public struct CandidatoPresentado: Hashable, Sendable, Codable {
     ///     candidatos[0].cifrado   // "Do7"
     public static func identificar(
         _ textos: [String], limite: Int = 5, en notacion: Notacion
-    ) throws -> [CandidatoPresentado] {
+    ) throws(ErrorDeLectura) -> [CandidatoPresentado] {
         let candidatos: [Candidato<Acorde>]
         if let alturas = try? textos.map({ try Altura(leyendo: $0) }) {
             candidatos = Acorde.candidatos(alturas: alturas)
         } else {
-            candidatos = Acorde.candidatos(notas: try textos.map { try Nota(leyendo: $0) })
+            candidatos = Acorde.candidatos(
+                notas: try textos.map { texto throws(ErrorDeLectura) in try Nota(leyendo: texto) })
         }
         return candidatos.prefix(limite).map { CandidatoPresentado($0, en: notacion) }
     }

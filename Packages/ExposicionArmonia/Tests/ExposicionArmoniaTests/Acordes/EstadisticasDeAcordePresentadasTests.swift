@@ -97,7 +97,7 @@ import Testing
     }
 
     @Test func resumen() {
-        let resumen = PresentacionDeEstadisticasDeAcorde.resumen(
+        let resumen = ResumenDeAcordesPresentado(
             [.mayor, .menor, .dominanteSeptima, .petrushka], en: notacion)
         #expect(resumen.total == 4)
         #expect(resumen.porNumeroDeNotas.map(\.nombre) == ["3 (tríada)", "4 (tétrada)", "6 (héxada)"])
@@ -107,7 +107,7 @@ import Testing
         #expect(resumen.porEstilo.last?.nombre == "sin estilo")
         #expect(resumen.porEstilo.last?.acordes == 3)
         // Todo el catálogo suma lo que tiene.
-        let catalogo = PresentacionDeEstadisticasDeAcorde.resumen(AcordeConNombre.catalogo, en: notacion)
+        let catalogo = ResumenDeAcordesPresentado(AcordeConNombre.catalogo, en: notacion)
         #expect(catalogo.total == AcordeConNombre.catalogo.count)
         #expect(catalogo.porNumeroDeNotas.map(\.acordes).reduce(0, +) == catalogo.total)
         #expect(catalogo.porTerceras + catalogo.noPorTerceras == catalogo.total)

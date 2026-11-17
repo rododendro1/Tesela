@@ -39,13 +39,13 @@ public struct AcordesDelGrado: Hashable, Sendable {
 /// La relación escala-acorde en la vista de acordes, en la de escalas y en el análisis, y en `armonia analizar
 /// --escalas`. No usa SwiftUI, así que se prueba en Linux.
 ///
-///     let dorico = PresentacionDeEscalaYAcorde.presentar(
+///     let dorico = EscalaSobreAcordePresentada(
 ///         Escala(.re, .dorico), sobre: Acorde("Rem7"), en: .compacta(.espanol))
 ///     dorico.tensiones   // "Mi 9 · Sol 11 · Si 13"
 ///     dorico.modo        // "modo 2 de Do mayor"
 public enum PresentacionDeEscalaYAcorde {
-    /// La escala sobre el acorde, escrita en la notación: sus notas, las del acorde y las que evitar.
-    public static func presentar(
+    /// Lo que da ``EscalaSobreAcordePresentada/init(_:sobre:en:motivo:)``.
+    static func presentar(
         _ escala: Escala, sobre acorde: Acorde, en notacion: Notacion, motivo: String? = nil
     ) -> EscalaSobreAcordePresentada {
         let notas = escala.notas(sobre: acorde)
@@ -73,9 +73,8 @@ public enum PresentacionDeEscalaYAcorde {
                 .joined(separator: " · "))
     }
 
-    /// Una escala propuesta para el acorde (``Acorde/escalas(en:siguiente:entre:)``), con su motivo si no es solo
-    /// compatible.
-    public static func presentar(
+    /// Lo que da ``EscalaSobreAcordePresentada/init(_:sobre:en:)``.
+    static func presentar(
         _ propuesta: EscalaParaElAcorde, sobre acorde: Acorde, en notacion: Notacion
     ) -> EscalaSobreAcordePresentada {
         let motivo = propuesta.motivo == .compatible ? nil : propuesta.motivo.nombre(en: notacion)
@@ -119,5 +118,20 @@ public enum PresentacionDeEscalaYAcorde {
         de analizado: AcordeAnalizado, en tonalidad: Tonalidad, notacion: Notacion
     ) -> EscalaSobreAcordePresentada? {
         tonalidad.escalaDelAcorde(analizado).map { presentar($0, sobre: analizado.acorde, en: notacion) }
+    }
+}
+
+extension EscalaSobreAcordePresentada {
+    /// Una escala propuesta para el acorde (``Acorde/escalas(en:siguiente:entre:)``), con su motivo si no es solo
+    /// compatible.
+    public init(_ propuesta: EscalaParaElAcorde, sobre acorde: Acorde, en notacion: Notacion) {
+        self = PresentacionDeEscalaYAcorde.presentar(propuesta, sobre: acorde, en: notacion)
+    }
+}
+
+extension EscalaSobreAcordePresentada {
+    /// La escala sobre el acorde, escrita en la notación: sus notas, las del acorde y las que evitar.
+    public init(_ escala: Escala, sobre acorde: Acorde, en notacion: Notacion, motivo: String? = nil) {
+        self = PresentacionDeEscalaYAcorde.presentar(escala, sobre: acorde, en: notacion, motivo: motivo)
     }
 }

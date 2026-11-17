@@ -416,7 +416,7 @@ import Testing
     }
 
     @Test func enLasDoceTonalidades() {
-        let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(Escala(.do), en: notacion)
+        let hoja = HojaDeEstudioPresentada(Escala(.do), en: notacion)
         #expect(hoja.titulo == "Do mayor · En las doce tonalidades")
         #expect(hoja.tonalidades.count == 12)
         #expect(hoja.tonalidades.map(\.titulo).prefix(3) == ["Do mayor", "Sol mayor", "Re mayor"])
@@ -425,7 +425,7 @@ import Testing
         #expect(hoja.tonalidades[1].notas.hasPrefix("Sol₃ La₃"))
         #expect(hoja.sonido.notas.count == 12 * 8)
         #expect(hoja.ficheros.count == 6)
-        let terceras = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(
+        let terceras = HojaDeEstudioPresentada(
             Escala(.do), secuencia: .terceras, en: notacion)
         #expect(terceras.titulo == "Do mayor por terceras · En las doce tonalidades")
         #expect(terceras.tonalidades[0].notas.hasPrefix("Do₄ Mi₄ Re₄ Fa₄"))

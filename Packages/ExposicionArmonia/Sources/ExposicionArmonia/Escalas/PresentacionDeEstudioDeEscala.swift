@@ -71,11 +71,11 @@ public struct EscalaConDetallePresentada: Hashable, Sendable, Encodable {
 /// La parte de la pestaña de escalas para estudiarlas (secuencias, digitación de piano, modos, comparación) y las
 /// escalas sobre un acorde. No usa SwiftUI, así que se prueba en Linux.
 ///
-///     let terceras = PresentacionDeEstudioDeEscala.secuencia(Escala(.do), .terceras, en: .compacta(.espanol))
+///     let terceras = SecuenciaPresentada(Escala(.do), .terceras, en: .compacta(.espanol))
 ///     terceras.titulo   // "Do mayor por terceras"
 public enum PresentacionDeEstudioDeEscala {
-    /// La escala en una secuencia desde la octava 4, a lo largo de `octavas` octavas, subiendo o bajando.
-    public static func secuencia(
+    /// Lo que da ``SecuenciaPresentada/init(_:_:octavas:sentido:en:)``.
+    static func secuencia(
         _ escala: Escala, _ secuencia: SecuenciaDeEscala, octavas: Int = 1,
         sentido: SentidoDelIntervalo = .ascendente, en notacion: Notacion
     ) -> SecuenciaPresentada {
@@ -122,13 +122,8 @@ public enum PresentacionDeEstudioDeEscala {
             sonido: .escala(modo))
     }
 
-    /// Esta escala y otra: notas comunes, las que solo están en una, los grados que cambian y la distancia en el
-    /// círculo de quintas.
-    ///
-    ///     let lidio = PresentacionDeEstudioDeEscala.comparar(
-    ///         Escala(.do), con: Escala(.do, .lidio), en: .compacta(.espanol))
-    ///     lidio.cambios   // ["4: Fa → Fa♯"]
-    public static func comparar(
+    /// Lo que da ``ComparacionDeEscalasPresentada/init(_:con:en:)``.
+    static func comparar(
         _ escala: Escala, con otra: Escala, en notacion: Notacion
     ) -> ComparacionDeEscalasPresentada {
         let relacion = escala.relacion(con: otra)
@@ -194,5 +189,28 @@ extension AnalisisPresentado {
             if let escala { anterior = escala }
         }
         return resultado
+    }
+}
+
+extension SecuenciaPresentada {
+    /// La escala en una secuencia desde la octava 4, a lo largo de `octavas` octavas, subiendo o bajando.
+    public init(
+        _ escala: Escala, _ secuencia: SecuenciaDeEscala, octavas: Int = 1, sentido: SentidoDelIntervalo = .ascendente,
+        en notacion: Notacion
+    ) {
+        self = PresentacionDeEstudioDeEscala.secuencia(
+            escala, secuencia, octavas: octavas, sentido: sentido, en: notacion)
+    }
+}
+
+extension ComparacionDeEscalasPresentada {
+    /// Esta escala y otra: notas comunes, las que solo están en una, los grados que cambian y la distancia en el
+    /// círculo de quintas.
+    ///
+    ///     let lidio = ComparacionDeEscalasPresentada(
+    ///         Escala(.do), con: Escala(.do, .lidio), en: .compacta(.espanol))
+    ///     lidio.cambios   // ["4: Fa → Fa♯"]
+    public init(_ escala: Escala, con otra: Escala, en notacion: Notacion) {
+        self = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, en: notacion)
     }
 }

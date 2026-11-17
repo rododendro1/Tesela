@@ -146,7 +146,7 @@ extension LineaDeComandosTests {
         #expect(referencias[1]["cita"] == "Touma 1996: 43")
         #expect(referencias[1]["descripcion"]?.hasPrefix("Touma, Habib Hassan (1996). The Music of the Arabs.") == true)
         #expect(referencias[0]["url"] == "https://www.maqamworld.com")
-        #expect(resultado("escala", "Re", "bayati", "--bibtex", "--json").error.contains("--bibtex"))
+        #expect(resultado("escala", "Re", "bayati", "--formato", "bibtex", "--json").error.contains("--formato"))
     }
 
     /// Las opciones del texto valen también con `--json`, y cada una añade su clave.

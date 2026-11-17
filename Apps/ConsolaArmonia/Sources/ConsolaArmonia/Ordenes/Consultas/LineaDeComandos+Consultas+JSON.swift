@@ -201,7 +201,7 @@ extension LineaDeComandos {
     /// `escala Re dórico --json`, con las mismas opciones que el texto (`pedidoDeEscala`).
     static func escalaJSON(_ textos: [String], _ notacion: Notacion) throws -> EscalaJSON {
         let pedido = try pedidoDeEscala(textos, en: notacion)
-        if pedido.bibtex { throw ErrorDeUso.sinSalidaJSON("escala --bibtex") }
+        if pedido.bibtex { throw ErrorDeUso.sinSalidaJSON("escala --formato bibtex") }
         let escala = pedido.escala
         var opciones = EscalaJSON.Opciones()
         if escala.tipo.categoria == .melakarta {
@@ -282,7 +282,7 @@ extension LineaDeComandos {
             }
         }
         if pedido.doce {
-            let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(
+            let hoja = HojaDeEstudioPresentada(
                 escala, secuencia: pedido.secuencia, en: notacion)
             opciones.doceTonalidades = hoja.tonalidades.map {
                 EscalaJSON.Tonalidad(tonalidad: $0.titulo, notas: $0.notas)
@@ -293,7 +293,7 @@ extension LineaDeComandos {
             }
         }
         if let otra = pedido.otra {
-            let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, en: notacion)
+            let comparacion = ComparacionDeEscalasPresentada(escala, con: otra, en: notacion)
             opciones.comparacion = EscalaJSON.Comparacion(
                 con: otra.nombre(en: notacion), comunes: comparacion.comunes, soloEnOrigen: comparacion.soloEnOrigen,
                 soloEnDestino: comparacion.soloEnDestino, cambios: comparacion.cambios,

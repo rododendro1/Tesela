@@ -61,7 +61,7 @@ import Testing
     /// la tonalidad, si se da.
     @Test func laVozSeDibujaConSuRitmo() {
         let figura = Duracion.corchea.grupoIrregular(3, en: 2)
-        let arpegio = PresentacionDeArpegios.arpegio(
+        let arpegio = ArpegioPresentado(
             Arpegio(Acorde("Mi7")), figura: figura, en: .compacta(.espanol))
         let pentagrama = PentagramaPresentado(arpegio.voz, titulo: "Mi7", en: .compacta(.espanol), resaltada: 1)
         #expect(pentagrama.descripcion == "Mi7: Mi₄, Sol♯₄, Si₄, Re₅, Mi₅")

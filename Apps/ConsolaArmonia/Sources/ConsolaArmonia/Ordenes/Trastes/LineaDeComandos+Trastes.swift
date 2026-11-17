@@ -39,7 +39,7 @@ extension LineaDeComandos {
         // una guitarra. Con --completo se exigen todas las notas.
         let completo = argumentos.quitarMarca(.completo)
         // La primera forma de cada acorde como tablatura MusicXML, en lugar del texto.
-        let comoMusicXML = argumentos.quitarMarca(.musicxml)
+        let comoMusicXML = try argumentos.pideElFormato("musicxml")
 
         var encordado = Encordado.guitarra
         if let nombre = try argumentos.valor(.instrumento, siFalta: .faltaInstrumento) {
@@ -58,7 +58,7 @@ extension LineaDeComandos {
         }
 
         var maximoDeDedos = 4
-        if let texto = try argumentos.valor(.dedosDeLaDigitacion, siFalta: .faltanDedos) {
+        if let texto = try argumentos.valor(.maximoDeDedos, siFalta: .faltanDedos) {
             guard let n = Int(texto), (1...4).contains(n) else {
                 throw ErrorDeUso.dedosFueraDeRango
             }
