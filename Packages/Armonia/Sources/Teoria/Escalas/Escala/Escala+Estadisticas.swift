@@ -47,7 +47,7 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
     /// Sus notas en quintas desde la tónica, sin repetir.
     let quintas: Set<Int>
     let conjuntoDeClases: ConjuntoDeClasesDeAltura
-    /// Las tríadas y las cuatríadas de `Escala.acordesDeLosGrados(notas:por:)`, por terceras, si no es un fragmento.
+    /// Las tríadas y las cuatríadas de `Escala.acordesDeLosGrados(deNotas:por:)`, por terceras, si no es un fragmento.
     let acordesPorGrados: [[TipoDeAcorde?]]?
 
     // MARK: Lo que dicen las teorías de escalas
@@ -95,7 +95,7 @@ public struct EstadisticasDeEscala: Hashable, Sendable {
         acordesPorGrados =
             tipo.esFragmento
             ? nil
-            : [escala.acordesDeLosGrados().map { $0?.tipo }, escala.acordesDeLosGrados(notas: 4).map { $0?.tipo }]
+            : [escala.acordesDeLosGrados().map { $0?.tipo }, escala.acordesDeLosGrados(deNotas: 4).map { $0?.tipo }]
     }
 
     /// Para cada intervalo genérico `k`, los tamaños de los `k` pasos seguidos, desde cada nota, se separan a lo
@@ -154,7 +154,7 @@ public struct IntervalosGenericosDeEscala: Hashable, Sendable {
 /// Lo que dice de una escala la armonía tonal: sus tríadas y cuatríadas por grados, cuánto se parece a una tonalidad
 /// mayor o menor, si tiene sensible y si se parte en dos tetracordos iguales.
 public struct EstadisticasTonalesDeEscala: Hashable, Sendable {
-    /// El tipo de la tríada por terceras de cada grado, el de ``Escala/acordesDeLosGrados(notas:por:)``: `.mayor`,
+    /// El tipo de la tríada por terceras de cada grado, el de ``Escala/acordesDeLosGrados(deNotas:por:)``: `.mayor`,
     /// `.menor`, `.disminuido`… o `nil` si al grado le falta la 3.ª o la 5.ª (el 2.º de la pentatónica mayor). `nil`
     /// entera en los fragmentos, que no se repiten a la octava.
     public let triadas: [TipoDeAcorde?]?

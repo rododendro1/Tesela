@@ -58,7 +58,7 @@ extension Tonalidad {
             let inicio = posicion - actual.count
             let campos = actual.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: false)
             let bajo: Nota
-            do { bajo = try Nota(leyendo: String(campos[0])) } catch let error as any ErrorAlLeer {
+            do { bajo = try Nota(leyendo: String(campos[0])) } catch let error {
                 throw error.situado(en: texto, posicion: inicio + (error.posicion ?? 0))
             }
             let cifras = campos.count > 1 ? String(campos[1]) : ""

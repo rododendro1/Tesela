@@ -67,7 +67,7 @@ import Testing
         // En tono, solo con una escala.
         ajuste.enTono = true
         #expect(ajuste.teclado(de: .cuadriculaEnCuartas)?.esCromatico == true)
-        let enTono = try #require(ajuste.teclado(de: .cuadriculaEnCuartas, escala: Escala(.re, .dorico)))
+        let enTono = try #require(ajuste.teclado(de: .cuadriculaEnCuartas, en: Escala(.re, .dorico)))
         #expect(enTono.semitonosEnV == 3)
         #expect(enTono.midi(en: .origen) == 38) // Re2
     }

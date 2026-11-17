@@ -117,7 +117,7 @@ public struct Evento: Hashable, Sendable {
         let ligada = parteDuracion.hasSuffix("~")
         if ligada { parteDuracion.removeLast() }
         let duracion: Duracion
-        do { duracion = try Duracion(leyendo: parteDuracion) } catch let e as any ErrorAlLeer {
+        do { duracion = try Duracion(leyendo: parteDuracion) } catch let e {
             throw e.situado(en: texto, posicion: dosPuntos + 1)
         }
         let parteNotas = String(caracteres[..<dosPuntos])
@@ -155,7 +155,7 @@ public struct Evento: Hashable, Sendable {
             }
             do {
                 notas.append(NotaDelEvento(try Altura(leyendo: nota), desvio: desvio, sistema: sistema, ajuste: ajuste))
-            } catch let e as any ErrorAlLeer {
+            } catch let e {
                 throw e.situado(en: texto, posicion: inicio + (e.posicion ?? 0))
             }
             inicio += trozo.count + 1

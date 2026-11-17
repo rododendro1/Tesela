@@ -22,7 +22,7 @@ public struct Melodia: Hashable, Sendable, CustomStringConvertible {
 
     /// Melodía a partir de notas MIDI, escritas según la tonalidad dada o, si no se da,
     /// según la que estima `Tonalidad.candidatos(alturas:duraciones:)`.
-    public init(midi: [Int], tonalidad: Tonalidad? = nil) {
+    public init(midi: [Int], en tonalidad: Tonalidad? = nil) {
         guard let elegida = tonalidad ?? Tonalidad.identificar(midi: midi).first else {
             self.init(midi.map { Altura(midi: $0) })
             return
@@ -31,7 +31,7 @@ public struct Melodia: Hashable, Sendable, CustomStringConvertible {
     }
 
     /// Melodía a partir de notas MIDI, escritas según una escala cualquiera (un modo, por ejemplo).
-    public init(midi: [Int], escala: Escala) {
+    public init(midi: [Int], en escala: Escala) {
         self.init(escala.ortografiar(midi: midi))
     }
 
@@ -197,7 +197,7 @@ public struct Voz: Hashable, Sendable {
                     if !conAnacrusa, trozo.hasPrefix("("), trozo.hasSuffix(")"), trozo.count > 2 {
                         do {
                             anacrusa = try Duracion(leyendo: String(trozo.dropFirst().dropLast()))
-                        } catch let e as any ErrorAlLeer {
+                        } catch let e {
                             throw e.situado(en: String(trozo), posicion: 1 + (e.posicion ?? 0))
                         }
                         conAnacrusa = true

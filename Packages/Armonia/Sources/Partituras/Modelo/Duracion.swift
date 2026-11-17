@@ -85,7 +85,7 @@ public struct Duracion: Hashable, Sendable, Comparable {
 
     /// Lee una figura al estilo de LilyPond ("1" redonda, "4" negra, "8." corchea con puntillo,
     /// "2.." blanca con doble puntillo) o una fracción de redonda ("3/8", "1/12", "2/1").
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDePartitura) {
         let limpio = texto.trimmingEspacios()
         let error = ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .duracionNoValida(limpio))
         if let barra = limpio.firstIndex(of: "/") {

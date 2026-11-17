@@ -155,7 +155,7 @@ struct SeccionDeLosAcordesEnLasDoceTonalidades: View {
 
     var body: some View {
         if let tabla = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
-            escala, notas: conSeptima ? 4 : 3, en: notacion)
+            escala, deNotas: conSeptima ? 4 : 3, en: notacion)
         {
             Section(notacion.texto(\.acordesEnLasDoceTonalidades)) {
                 Toggle(notacion.texto(\.conSeptima), isOn: $conSeptima)

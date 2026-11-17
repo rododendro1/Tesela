@@ -20,7 +20,7 @@ Acorde("Sol7/Si").posicionCerrada(octava: 3)   // [Si3, Re4, Fa4, Sol4]
 Acorde.identificar(notas: [.mi, .sol, .do]).first         // Do/Mi
 
 let menor = Escala("La menor armónica")
-menor.romanos(notas: 4)
+menor.romanos(deNotas: 4)
 // i(maj7) iiø7 ♭III+maj7 iv7 V7 ♭VImaj7 vii°7
 Escala("Mib mayor").armadura              // -3
 Escala(.do).modo(grado: 2)                    // Re dórico

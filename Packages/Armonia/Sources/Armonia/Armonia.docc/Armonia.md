@@ -12,7 +12,7 @@ y reduce casi todas las operaciones a sumas de enteros.
 import Armonia
 
 Acorde("Sol7/Si").posicionCerrada(octava: 3)   // [Si3, Re4, Fa4, Sol4]
-Escala("La menor armónica").romanos(notas: 4)
+Escala("La menor armónica").romanos(deNotas: 4)
 Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first   // La menor
 ```
 

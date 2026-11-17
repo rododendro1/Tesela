@@ -30,7 +30,7 @@ public struct TablaDeAcordesPresentada: Hashable, Sendable, Encodable {
 }
 
 extension PresentacionDeEstudioDeEscala {
-    /// Los acordes de `notas` notas de cada grado de la escala (4 por defecto, las cuatríadas) en las doce
+    /// Los acordes de `deNotas` notas de cada grado de la escala (4 por defecto, las cuatríadas) en las doce
     /// tonalidades, de quinta en quinta desde la suya, cada uno en posición cerrada desde Do3. `nil` si algún grado no
     /// forma un acorde conocido (una pentatónica, por ejemplo).
     ///
@@ -39,11 +39,11 @@ extension PresentacionDeEstudioDeEscala {
     ///     tabla?.grados[4]              // "V7"
     ///     tabla?.filas[1].acordes[4]    // "Re7": el V7 de Sol mayor
     public static func acordesEnLasDoceTonalidades(
-        _ escala: Escala, notas cuantas: Int = 4, en notacion: Notacion
+        _ escala: Escala, deNotas cuantas: Int = 4, en notacion: Notacion
     ) -> TablaDeAcordesPresentada? {
-        let grados = escala.romanos(notas: cuantas).compactMap { $0?.description }
+        let grados = escala.romanos(deNotas: cuantas).compactMap { $0?.description }
         let tonalidades = escala.enLasDoceTonalidades.map { transportada in
-            (escala: transportada, acordes: transportada.acordesDeLosGrados(notas: cuantas).compactMap { $0 })
+            (escala: transportada, acordes: transportada.acordesDeLosGrados(deNotas: cuantas).compactMap { $0 })
         }
         let voces = tonalidades.flatMap { $0.acordes.map { Escucha.cerrada($0.notasDesdeElBajo, desde: 48) } }
         guard grados.count == escala.notas.count, tonalidades.allSatisfy({ $0.acordes.count == grados.count }),

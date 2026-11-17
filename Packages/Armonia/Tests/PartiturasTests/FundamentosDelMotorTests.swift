@@ -54,8 +54,8 @@ import Testing
             _ = try Alteracion(leyendo: "#?")
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLectura)?.motivo == .alteracionNoReconocida("?"))
-            #expect((error as? ErrorDeLectura)?.posicion == 1)
+            #expect(error.motivo == .alteracionNoReconocida("?"))
+            #expect(error.posicion == 1)
 
         }
         let literal: Alteracion = "bb"

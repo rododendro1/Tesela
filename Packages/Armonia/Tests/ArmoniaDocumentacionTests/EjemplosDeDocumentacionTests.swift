@@ -19,7 +19,7 @@ import Hexagonos
         comprobar(Acorde("Sol7/Si").posicionCerrada(octava: 3), #"[Si3, Re4, Fa4, Sol4]"#, doc, 8)
         comprobar(Acorde.identificar(notas: [.mi, .sol, .do]).first, #"Do/Mi"#, doc, 9)
         let menor = Escala("La menor armónica")
-        comprobar(menor.romanos(notas: 4), #"i(maj7) iiø7 ♭III+maj7 iv7 V7 ♭VImaj7 vii°7"#, doc, 12)
+        comprobar(menor.romanos(deNotas: 4), #"i(maj7) iiø7 ♭III+maj7 iv7 V7 ♭VImaj7 vii°7"#, doc, 12)
         comprobar(Escala("Mib mayor").armadura, #"-3"#, doc, 14)
         comprobar(Escala(.do).modo(grado: 2), #"Re dórico"#, doc, 15)
         _ = i
@@ -139,7 +139,7 @@ import Hexagonos
         comprobar(Acorde.identificar(midi: [60, 63, 66, 69]).first, #"Do°7"#, doc, 1)
         comprobar(Acorde.identificar(midi: [61, 65, 68]).first, #"Re♭"#, doc, 2)
         comprobar(Acorde.identificar(midi: [55, 59, 62, 65, 68]).first, #"Sol7(♭9)"#, doc, 3)
-        comprobar(Acorde.identificar(midi: [66, 70, 73], tonalidad: "Solb mayor").first, #"Sol♭"#, doc, 4)
+        comprobar(Acorde.identificar(midi: [66, 70, 73], en: "Solb mayor").first, #"Sol♭"#, doc, 4)
         comprobar(Acorde("Do+").ortografiar(midi: [60, 64, 68]), #"[Do4, Mi4, Sol♯4]"#, doc, 5)
     }
 
@@ -462,7 +462,7 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Armonia.md, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Armonia.md"#, 1)
         comprobar(Acorde("Sol7/Si").posicionCerrada(octava: 3), #"[Si3, Re4, Fa4, Sol4]"#, doc, 2)
-        _ = Escala("La menor armónica").romanos(notas: 4)
+        _ = Escala("La menor armónica").romanos(deNotas: 4)
         comprobar(Tonalidad.identificar(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first, #"La menor"#, doc, 4)
     }
 
@@ -524,7 +524,7 @@ import Hexagonos
         comprobar(Acorde("Sol7/Si").posicionCerrada(octava: 3), #"[Si3, Re4, Fa4, Sol4]"#, doc, 11)
         comprobar(Acorde.identificar(notas: [.mi, .sol, .do]).first, #"Do/Mi"#, doc, 12)
         let menor = Escala("La menor armónica")
-        comprobar(menor.romanos(notas: 4), #"i(maj7) iiø7 ♭III+maj7 iv7 V7 ♭VImaj7 vii°7"#, doc, 15)
+        comprobar(menor.romanos(deNotas: 4), #"i(maj7) iiø7 ♭III+maj7 iv7 V7 ♭VImaj7 vii°7"#, doc, 15)
         comprobar(Escala("Mib mayor").armadura, #"-3"#, doc, 17)
         comprobar(Escala(.do).modo(grado: 2), #"Re dórico"#, doc, 18)
         _ = i
@@ -720,7 +720,7 @@ import Hexagonos
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 19)
         comprobar(Arpegio(Acorde("Do7")).alturas(octava: 4).map(\.midi) == [60, 64, 67, 70, 72], #"true"#, doc, 0)
         comprobar(Arpegio(Acorde("Do"), patron: .alberti).alturas(octava: 3).map(\.midi) == [48, 55, 52, 55], #"true"#, doc, 1)
-        comprobar(Escala("Do mayor").arpegio(grado: 5, notas: 4)?.acorde == Acorde("Sol7"), #"true"#, doc, 2)
+        comprobar(Escala("Do mayor").arpegio(grado: 5, deNotas: 4)?.acorde == Acorde("Sol7"), #"true"#, doc, 2)
         comprobar(Escala("Do mayor").arpegios().count == 7, #"true"#, doc, 3)
         comprobar(try Arpegio(leyendo: "arpegio Dom7").acorde == Acorde("Dom7"), #"true"#, doc, 4)
         comprobar(Acorde("Do7").escalasCompatibles().contains(Escala(.do, .mixolidio)), #"true"#, doc, 5)
@@ -752,7 +752,7 @@ import Hexagonos
         // Sources/Armonia/Armonia.docc/Escalas.md, bloque 21
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Escalas.md"#, 21)
         comprobar(Escala(.do, .mayor).acordesQueCaben(grado: 1).contains(Acorde(.do, .mayorSexta)), #"true"#, doc, 0)
-        comprobar(Escala(.do, .blues).acorde(grado: 1, notas: 4) == Acorde("Dom7"), #"true"#, doc, 1)
+        comprobar(Escala(.do, .blues).acorde(grado: 1, deNotas: 4) == Acorde("Dom7"), #"true"#, doc, 1)
         comprobar(Escala(.do, .mayor).tensionesDisponibles(grado: 2).map(\.cifra) == ["9", "11", "13"], #"true"#, doc, 2)
         comprobar(Escala(.do, .lidio).estructurasSuperiores(sobre: Acorde("Do7M")).first == Acorde(.re, .mayor), #"true"#, doc, 3)
     }
@@ -1497,7 +1497,7 @@ import Hexagonos
         comprobar(laMenor.armadura, #"0"#, doc, 1)
         _ = (laMenor.relativa, laMenor.homonima)
         comprobar(laMenor.vecinas, #"[Do mayor, Sol mayor, Mi menor, Fa mayor, Re menor]"#, doc, 3)
-        comprobar(laMenor.acordesDeLosGrados(notas: 4), #"Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7"#, doc, 4)
+        comprobar(laMenor.acordesDeLosGrados(deNotas: 4), #"Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7"#, doc, 4)
         _ = laMenor.romanos()
         comprobarIgual(laMenor.nombreDeGrado(de: .sol), .subtonica, doc, 6)
         comprobar(Tonalidad.circuloDeQuintas(.menor), #"La♭ menor … La♯ menor"#, doc, 7)
@@ -1510,8 +1510,8 @@ import Hexagonos
         let melodia = [69, 71, 72, 74, 76, 77, 80, 81]
         comprobar(Escala(.do).ortografiar(midi: [60, 61, 62]), #"Do4 Do♯4 Re4"#, doc, 0)
         comprobar(Escala(.do).ortografiar(midi: [62, 61, 60]), #"Re4 Re♭4 Do4"#, doc, 1)
-        comprobar(Altura(midi: 70, escala: Escala(.fa)), #"Si♭4"#, doc, 2)
-        comprobar(Altura(midi: 68, tonalidad: "La menor"), #"Sol♯4"#, doc, 3)
+        comprobar(Altura(midi: 70, en: Escala(.fa)), #"Si♭4"#, doc, 2)
+        comprobar(Altura(midi: 68, en: Tonalidad(.la, .menor)), #"Sol♯4"#, doc, 3)
         comprobar(Escala("Fa# mayor").ortografiar(midi: [65, 60]), #"Mi♯4 Si♯3"#, doc, 4)
         comprobar(Tonalidad.candidatos(midi: melodia).first?.valor, #"La menor"#, doc, 5)
     }
@@ -1912,7 +1912,7 @@ import Hexagonos
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-03-02.swift"#, 1)
         let menor = Escala("La menor armónica")
         comprobar(menor.notas, #"[La, Si, Do, Re, Mi, Fa, Sol♯]"#, doc, 3)
-        comprobar(menor.romanos(notas: 4), #"i(maj7) iiø7 ♭III+maj7 iv7 V7 ♭VImaj7 vii°7"#, doc, 4)
+        comprobar(menor.romanos(deNotas: 4), #"i(maj7) iiø7 ♭III+maj7 iv7 V7 ♭VImaj7 vii°7"#, doc, 4)
     }
 
     @Test func tutorialAcordes03031() throws {
@@ -1920,9 +1920,9 @@ import Hexagonos
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/acordes-03-03.swift"#, 1)
         let menor = Escala("La menor armónica")
         comprobar(menor.notas, #"[La, Si, Do, Re, Mi, Fa, Sol♯]"#, doc, 3)
-        comprobar(menor.romanos(notas: 4), #"i(maj7) iiø7 ♭III+maj7 iv7 V7 ♭VImaj7 vii°7"#, doc, 4)
+        comprobar(menor.romanos(deNotas: 4), #"i(maj7) iiø7 ♭III+maj7 iv7 V7 ♭VImaj7 vii°7"#, doc, 4)
         let laMenor: Tonalidad = "La menor"
-        comprobar(laMenor.acordesDeLosGrados(notas: 4), #"Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7"#, doc, 8)
+        comprobar(laMenor.acordesDeLosGrados(deNotas: 4), #"Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7"#, doc, 8)
     }
 
     @Test func tutorialAnalisis01011() throws {
@@ -2253,7 +2253,7 @@ import Hexagonos
         comprobar(la.midi, #"69"#, doc, 3)
         comprobar(la.frecuencia(), #"440.0"#, doc, 4)
         comprobar(Altura(midi: 63, ventana: .bemoles), #"Mi♭4"#, doc, 5)
-        comprobar(Altura(midi: 68, tonalidad: "La menor"), #"Sol♯4"#, doc, 6)
+        comprobar(Altura(midi: 68, en: Tonalidad(.la, .menor)), #"Sol♯4"#, doc, 6)
     }
 
     @Test func tutorialNotas03011() throws {

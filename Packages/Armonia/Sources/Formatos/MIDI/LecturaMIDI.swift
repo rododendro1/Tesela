@@ -39,7 +39,7 @@ extension PiezaImportada {
         let notas = lector.notas.map { nota in
             let parte = partes[nota.parte] ?? partes.count
             partes[nota.parte] = parte
-            let altura = tonalidad.map { Altura(midi: nota.clave, tonalidad: $0) } ?? Altura(midi: nota.clave)
+            let altura = tonalidad.map { Altura(midi: nota.clave, en: $0) } ?? Altura(midi: nota.clave)
             return NotaDeLaPieza(
                 altura: altura, inicio: Duracion(nota.desde, redonda),
                 duracion: Duracion(nota.hasta - nota.desde, redonda), parte: parte, desvio: nota.desvio)

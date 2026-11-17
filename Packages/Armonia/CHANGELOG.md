@@ -1,13 +1,14 @@
 # Cambios
 
-## Sin publicar
+## 0.6.0 (2026-11-17)
 
 ### Cambios incompatibles
 
-Los nombres de antes ya no están: no se llegaron a publicar.
+Los nombres de antes ya no están, sin pasar por obsoletos: los de los tres primeros cambios no se llegaron a
+publicar, y los demás cambian con esta versión, que por eso sube a 0.6.
 
-- `Tonalidad.armonizar(notas:)` y `Escala.armonizar(notas:por:)` se llaman `acordesDeLosGrados(notas:)` y
-  `acordesDeLosGrados(notas:por:)`: dan el acorde de cada grado, y no se confunden con `armonizar(melodia:)`, que
+- `Tonalidad.armonizar(notas:)` y `Escala.armonizar(notas:por:)` se llaman `acordesDeLosGrados(deNotas:)` y
+  `acordesDeLosGrados(deNotas:por:)`: dan el acorde de cada grado, y no se confunden con `armonizar(melodia:)`, que
   armoniza una melodía.
 - `Tonalidad.armonizarACuatroVoces(_:)` lleva etiqueta, `armonizarACuatroVoces(melodia:)`, como `armonizar(melodia:)`.
 - La realización a cuatro voces dice por qué no se puede, con un `ErrorDeRealizacion` (en los trece idiomas) en lugar
@@ -21,11 +22,31 @@ Los nombres de antes ya no están: no se llegaron a publicar.
   cuando no hay acordes, como la realización (`ErrorDeRealizacion.sinNotas`) y la lectura de ficheros
   (`ErrorDeLecturaDeFichero.sinNotas`): lo que da un resultado lanza el error de su dominio, y lo que da una lista la
   da vacía.
+- La tonalidad o la escala que dan el contexto van siempre tras `en:`, como en `Coral(realizando:soprano:en:)` o
+  `relacion(con:en:)`: `Altura(midi:en:)`, `Melodia(midi:en:)`, `Acorde.candidatos(midi:en:)`,
+  `Acorde.candidatos(clasesDeAltura:en:)`, `Acorde.identificar(midi:en:)` y `Acorde.identificar(clasesDeAltura:en:)`,
+  con una `Tonalidad` o una `Escala`, en lugar de `tonalidad:` y `escala:`. Con un literal de texto, en `Altura` hay
+  que decir cuál es: `Altura(midi: 68, en: Tonalidad(.la, .menor))`.
+- El número de notas de un acorde se pasa con `deNotas:`, y `notas:` queda para las listas de notas
+  (`Acorde.identificar(notas:)`): `acorde(grado:deNotas:)`, `acordesDeLosGrados(deNotas:)`, `romano(grado:deNotas:)` y
+  `romanos(deNotas:)` de `Tonalidad` y de `Escala`, `notasApiladas(grado:deNotas:por:)`, `arpegio(grado:deNotas:)` y
+  `arpegios(deNotas:)`.
+- Las lecturas que solo pueden fallar de una manera lo dicen en su firma, con `throws(ErrorDeLectura)` en las de
+  Elementos (notas, alturas, intervalos, notaciones, clases y series), `throws(ErrorDeLecturaDePartitura)` en las
+  duraciones y los compases y `throws(ErrorDeLecturaDeTeoria)` en los tipos de escala, los modos gregorianos, los
+  nombres de los grados, los papeles en el acorde, los ciclos, los encordados y las digitaciones. Un `catch` ya no
+  necesita `as` para leer el motivo. Las que leen piezas de otra capa (acordes, escalas, tonalidades, melodías,
+  corales…) siguen lanzando cualquiera de los dos.
 - `Coral(bajoCifrado:en:soprano:)` lanza solo `ErrorDeRealizacion`, como las demás realizaciones: un bajo cifrado
   que no se lee es `.bajoCifradoIlegible`, con el error de la lectura dentro.
 
 ### Novedades
 
+- `TipoDeEscala`, `NombreDeGrado`, `PapelEnAcorde`, `CicloNeorriemanniano` y `Encordado` son
+  `RepresentableComoTexto`: su `texto(en:)` es su nombre y se vuelve a leer en cualquiera de los trece idiomas
+  («dorisch», «tonique», «ziklo hexatonikoa»), se escriben con un literal y, salvo `TipoDeEscala`, que guarda su
+  estructura, se codifican con su texto. La documentación de `Nombrable` explica cuándo se usa `texto(en:)`,
+  `nombre(en:)` y `descripcion(en:)`.
 - En la consola:
   - `realizar` y `armonizar` dicen por qué no hay coral a cuatro voces («El acorde 1 tiene más de cuatro notas que no
     pueden faltar», «La nota del soprano del acorde 1 está fuera de su tesitura»). `realizar` lo dice en la salida de

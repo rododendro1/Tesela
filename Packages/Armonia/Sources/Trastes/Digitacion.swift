@@ -52,7 +52,7 @@ public struct Digitacion: Hashable, Sendable, CustomStringConvertible {
     /// («x-10-12-12-11-10»). Lanza `ErrorDeLecturaDeTeoria` si un traste no se entiende o no está en el mástil
     /// (`.trasteNoValido`, en su carácter), si la cuerda no tiene ese traste (`.trasteQueNoTiene`: el 1 del
     /// dulcémele) o si no hay uno por cuerda (`.cuerdasDistintas`).
-    public init(leyendo tablatura: String, en mastil: Mastil) throws {
+    public init(leyendo tablatura: String, en mastil: Mastil) throws(ErrorDeLecturaDeTeoria) {
         let conGuiones = tablatura.contains("-")
         let partes =
             conGuiones

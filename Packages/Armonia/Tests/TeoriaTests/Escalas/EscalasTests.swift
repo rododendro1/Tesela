@@ -33,14 +33,14 @@ import Testing
         #expect(e.acordesDeLosGrados().map { $0?.cifrado } == ["Do", "Rem", "Mim", "Fa", "Sol", "Lam", "Si°"])
         #expect(e.romanos().map { $0?.description } == ["I", "ii", "iii", "IV", "V", "vi", "vii°"])
         #expect(
-            e.romanos(notas: 4).map { $0?.description } == ["Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "viiø7"])
+            e.romanos(deNotas: 4).map { $0?.description } == ["Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "viiø7"])
     }
 
     /// Fuera de las heptatónicas, por terceras de verdad: Do blues da Dom7 en el 1.º grado, y no Dosus4.
     @Test func armonizacionPorTercerasDeVerdad() {
         let blues = Escala(.do, .blues)
         #expect(blues.acorde(grado: 1)?.cifrado == "Dom")
-        #expect(blues.acorde(grado: 1, notas: 4)?.cifrado == "Dom7")
+        #expect(blues.acorde(grado: 1, deNotas: 4)?.cifrado == "Dom7")
         let pentatonica = Escala(.do, .pentatonicaMayor)
         #expect(pentatonica.acorde(grado: 1)?.cifrado == "Do")
         #expect(pentatonica.acorde(grado: 2) == nil) // Re no tiene Fa, ni Sol tiene Si para Mi
@@ -51,14 +51,14 @@ import Testing
         let armonica = Escala(.la, .menorArmonica)
         #expect(armonica.romanos().map { $0?.description } == ["i", "ii°", "♭III+", "iv", "V", "♭VI", "vii°"])
         #expect(
-            armonica.romanos(notas: 4).map { $0?.description } == [
+            armonica.romanos(deNotas: 4).map { $0?.description } == [
                 "i(maj7)", "iiø7", "♭III+maj7", "iv7", "V7", "♭VImaj7", "vii°7",
             ])
-        #expect(armonica.acorde(grado: 5, notas: 4)?.cifrado == "Mi7")
+        #expect(armonica.acorde(grado: 5, deNotas: 4)?.cifrado == "Mi7")
 
         let melodica = Escala(.la, .menorMelodica)
         #expect(
-            melodica.romanos(notas: 4).map { $0?.description } == [
+            melodica.romanos(deNotas: 4).map { $0?.description } == [
                 "i(maj7)", "ii7", "♭III+maj7", "IV7", "V7", "viø7", "viiø7",
             ])
     }
@@ -390,24 +390,24 @@ import Testing
 @Suite struct AcordesDeLosGradosTests {
     @Test func porCuartasYConMasNotas() throws {
         let dorico = Escala(.re, .dorico)
-        #expect(Set(dorico.acordesDeLosGrados(notas: 4, por: .cuartas)[1]?.notas ?? []) == [.mi, .la, .re, .sol])
-        #expect(dorico.acorde(grado: 1, notas: 4, por: .cuartas)?.notas.count == 4)
+        #expect(Set(dorico.acordesDeLosGrados(deNotas: 4, por: .cuartas)[1]?.notas ?? []) == [.mi, .la, .re, .sol])
+        #expect(dorico.acorde(grado: 1, deNotas: 4, por: .cuartas)?.notas.count == 4)
         let mayor = Escala(.do, .mayor)
-        #expect(mayor.acorde(grado: 1, notas: 5)?.notas == [.do, .mi, .sol, .si, .re])
-        #expect(mayor.acorde(grado: 5, notas: 5)?.cifrado == "Sol9")
-        #expect(mayor.acorde(grado: 1, notas: 8) == nil)
-        #expect(mayor.acordesDeLosGrados() == mayor.acordesDeLosGrados(notas: 3))
+        #expect(mayor.acorde(grado: 1, deNotas: 5)?.notas == [.do, .mi, .sol, .si, .re])
+        #expect(mayor.acorde(grado: 5, deNotas: 5)?.cifrado == "Sol9")
+        #expect(mayor.acorde(grado: 1, deNotas: 8) == nil)
+        #expect(mayor.acordesDeLosGrados() == mayor.acordesDeLosGrados(deNotas: 3))
         // En una pentatónica, por cuartas: Do–Fa no está en la mayor, pero Re–Sol–Do sí.
         #expect(
-            Set(Escala(.do, .pentatonicaMayor).acorde(grado: 2, notas: 3, por: .cuartas)?.notas ?? []) == [
+            Set(Escala(.do, .pentatonicaMayor).acorde(grado: 2, deNotas: 3, por: .cuartas)?.notas ?? []) == [
                 .re, .sol, .do,
             ])
         // Las notas apiladas, en su orden (el acorde las guarda en el canónico).
         let pentatonica = Escala(.do, .pentatonicaMayor)
-        #expect(pentatonica.notasApiladas(grado: 3, notas: 4, por: .cuartas) == [.mi, .la, .re, .sol])
-        #expect(pentatonica.notasApiladas(grado: 1, notas: 4, por: .cuartas) == nil)
-        #expect(dorico.notasApiladas(grado: 1, notas: 3, por: .cuartas) == [.re, .sol, .do])
-        #expect(dorico.notasApiladas(grado: 1, notas: 1) == nil)
+        #expect(pentatonica.notasApiladas(grado: 3, deNotas: 4, por: .cuartas) == [.mi, .la, .re, .sol])
+        #expect(pentatonica.notasApiladas(grado: 1, deNotas: 4, por: .cuartas) == nil)
+        #expect(dorico.notasApiladas(grado: 1, deNotas: 3, por: .cuartas) == [.re, .sol, .do])
+        #expect(dorico.notasApiladas(grado: 1, deNotas: 1) == nil)
     }
 
     /// La tabla de las tensiones de cada grado de la mayor.

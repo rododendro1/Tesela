@@ -101,7 +101,8 @@ import Testing
             }
             #expect(tonal.triadas == escala.acordesDeLosGrados().map { $0?.tipo }, Comment(rawValue: tipo.nombre))
             #expect(
-                tonal.cuatriadas == escala.acordesDeLosGrados(notas: 4).map { $0?.tipo }, Comment(rawValue: tipo.nombre)
+                tonal.cuatriadas == escala.acordesDeLosGrados(deNotas: 4).map { $0?.tipo },
+                Comment(rawValue: tipo.nombre)
             )
         }
     }

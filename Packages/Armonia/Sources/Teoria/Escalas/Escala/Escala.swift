@@ -168,15 +168,15 @@ public struct Escala: Hashable, Sendable {
         var numero: Int { self == .terceras ? 3 : 4 }
     }
 
-    /// El acorde de `notas` notas (de 2 a 7; 3 por defecto, la tríada) apiladas sobre un grado, por terceras o por
+    /// El acorde de `deNotas` notas (de 2 a 7; 3 por defecto, la tríada) apiladas sobre un grado, por terceras o por
     /// cuartas. En una
     /// heptatónica, por terceras, un grado sí y otro no (con 5, 6 y 7 notas, los de 9.ª, 11.ª y 13.ª: Do7M(9) en
     /// Do mayor); por cuartas, dos grados no y uno sí. En las demás, cada nota es la siguiente de la escala que
     /// está a una 3.ª (o a una 4.ª) de la anterior, por su nombre: en Do blues, Do–Mi♭–Sol–Si♭ (Dom7), y no
     /// Do–Fa–Sol. `nil` si falta ese intervalo (el 2.º grado de Do pentatónica mayor, Re, no tiene Fa) o si las
     /// notas no forman un tipo conocido.
-    public func acorde(grado: Int, notas cuantas: Int = 3, por apilamiento: Apilamiento = .terceras) -> Acorde? {
-        guard let nombres = notasApiladas(grado: grado, notas: cuantas, por: apilamiento) else { return nil }
+    public func acorde(grado: Int, deNotas cuantas: Int = 3, por apilamiento: Apilamiento = .terceras) -> Acorde? {
+        guard let nombres = notasApiladas(grado: grado, deNotas: cuantas, por: apilamiento) else { return nil }
         let raiz = nombres[0]
         guard let tipo = TipoDeAcorde(pasosDeQuinta: Set(nombres.map { $0.pasosDeQuinta - raiz.pasosDeQuinta })) else {
             return nil
@@ -184,11 +184,11 @@ public struct Escala: Hashable, Sendable {
         return Acorde(raiz, tipo)
     }
 
-    /// Las notas de ``acorde(grado:notas:por:)`` en el orden en que se apilan, desde el grado: el acorde las guarda
+    /// Las notas de ``acorde(grado:deNotas:por:)`` en el orden en que se apilan, desde el grado: el acorde las guarda
     /// en su orden canónico. `nil` si falta un intervalo, pero no si las notas no forman un tipo conocido.
     ///
-    ///     Escala(.do, .pentatonicaMayor).notasApiladas(grado: 3, notas: 4, por: .cuartas)   // Mi–La–Re–Sol
-    public func notasApiladas(grado: Int, notas cuantas: Int, por apilamiento: Apilamiento = .terceras) -> [Nota]? {
+    ///     Escala(.do, .pentatonicaMayor).notasApiladas(grado: 3, deNotas: 4, por: .cuartas)   // Mi–La–Re–Sol
+    public func notasApiladas(grado: Int, deNotas cuantas: Int, por apilamiento: Apilamiento = .terceras) -> [Nota]? {
         guard (2...7).contains(cuantas) else { return nil }
         if tipo.intervalos.count == 7 {
             return (0..<cuantas).map { self.grado(grado + (apilamiento.numero - 1) * $0) }
@@ -207,12 +207,12 @@ public struct Escala: Hashable, Sendable {
         return nombres
     }
 
-    /// Los acordes de `notas` notas (3 por defecto) de todos los grados, por terceras o por cuartas
-    /// (``acorde(grado:notas:por:)``): `nil` en los grados que no forman un tipo conocido.
+    /// Los acordes de `deNotas` notas (3 por defecto) de todos los grados, por terceras o por cuartas
+    /// (``acorde(grado:deNotas:por:)``): `nil` en los grados que no forman un tipo conocido.
     ///
-    ///     Escala(.re, .dorico).acordesDeLosGrados(notas: 4, por: .cuartas)[1]?.fundamental   // Mi (Mi–La–Re–Sol)
-    public func acordesDeLosGrados(notas cuantas: Int = 3, por apilamiento: Apilamiento = .terceras) -> [Acorde?] {
-        (1...tipo.intervalos.count).map { acorde(grado: $0, notas: cuantas, por: apilamiento) }
+    ///     Escala(.re, .dorico).acordesDeLosGrados(deNotas: 4, por: .cuartas)[1]?.fundamental   // Mi (Mi–La–Re–Sol)
+    public func acordesDeLosGrados(deNotas cuantas: Int = 3, por apilamiento: Apilamiento = .terceras) -> [Acorde?] {
+        (1...tipo.intervalos.count).map { acorde(grado: $0, deNotas: cuantas, por: apilamiento) }
     }
 
     /// Las tensiones disponibles sobre la cuatríada de un grado, con el modo de la escala que empieza en él: la
@@ -220,7 +220,7 @@ public struct Escala: Hashable, Sendable {
     /// 11; IV7M: 9, ♯11 y 13; V7: 9 y 13; vi7: 9 y 11; viiø7: 11 y ♭13. La 13 del ii7 cuenta como tensión, aunque
     /// forma un tritono con la 3.ª (hay quien la evita). Vacío si el grado no tiene cuatríada.
     public func tensionesDisponibles(grado: Int) -> [NotaSobreElAcorde] {
-        guard let acorde = acorde(grado: grado, notas: 4) else { return [] }
+        guard let acorde = acorde(grado: grado, deNotas: 4) else { return [] }
         return modo(grado: grado).notas(sobre: acorde).filter { $0.papel == .tension }
     }
 
@@ -231,20 +231,21 @@ public struct Escala: Hashable, Sendable {
     ///     Escala(.do).gradosArmonizados[1].tensiones   // Mi (9), Sol (11), Si (13)
     public var gradosArmonizados: [GradoArmonizado] {
         (1...tipo.intervalos.count).map {
-            GradoArmonizado(grado: $0, acorde: acorde(grado: $0, notas: 4), tensiones: tensionesDisponibles(grado: $0))
+            GradoArmonizado(
+                grado: $0, acorde: acorde(grado: $0, deNotas: 4), tensiones: tensionesDisponibles(grado: $0))
         }
     }
 
-    /// El cifrado romano del acorde de `notas` notas por terceras de un grado (``acorde(grado:notas:por:)``), en
+    /// El cifrado romano del acorde de `deNotas` notas por terceras de un grado (``acorde(grado:deNotas:por:)``), en
     /// estado fundamental. Las alteraciones del numeral se miden respecto a la escala `referencia` sobre la misma
     /// tónica (mayor por defecto): La menor armónica → i, ii°, ♭III+, iv, V, ♭VI, vii°; con
     /// `referencia: .menorNatural` → i, ii°, III+, iv, V, VI, ♯vii°. Solo para escalas heptatónicas; `nil` en las
     /// demás o si el grado no forma un acorde de tantas notas.
     ///
     ///     Escala(.la, .menorArmonica).romano(grado: 3)?.description   // "♭III+"
-    public func romano(grado: Int, notas cuantas: Int = 3, referencia: TipoDeEscala = .mayor) -> CifradoRomano? {
+    public func romano(grado: Int, deNotas cuantas: Int = 3, referencia: TipoDeEscala = .mayor) -> CifradoRomano? {
         guard tipo.intervalos.count == 7, referencia.intervalos.count == 7,
-            let acordeGrado = acorde(grado: grado, notas: cuantas)
+            let acordeGrado = acorde(grado: grado, deNotas: cuantas)
         else { return nil }
         let i = modulo(grado - 1, 7)
         let diferencia =
@@ -256,9 +257,9 @@ public struct Escala: Hashable, Sendable {
             calidad: acordeGrado.tipo.sufijoRomano)
     }
 
-    /// Los cifrados romanos de todos los grados (``romano(grado:notas:referencia:)``).
-    public func romanos(notas cuantas: Int = 3, referencia: TipoDeEscala = .mayor) -> [CifradoRomano?] {
-        (1...tipo.intervalos.count).map { romano(grado: $0, notas: cuantas, referencia: referencia) }
+    /// Los cifrados romanos de todos los grados (``romano(grado:deNotas:referencia:)``).
+    public func romanos(deNotas cuantas: Int = 3, referencia: TipoDeEscala = .mayor) -> [CifradoRomano?] {
+        (1...tipo.intervalos.count).map { romano(grado: $0, deNotas: cuantas, referencia: referencia) }
     }
 
     /// "Re dórico".

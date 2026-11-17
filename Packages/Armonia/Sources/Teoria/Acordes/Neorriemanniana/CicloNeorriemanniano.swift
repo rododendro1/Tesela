@@ -79,7 +79,7 @@ public enum CicloNeorriemanniano: String, CaseIterable, Hashable, Sendable, Cust
     /// Lee "hexatónico", "hexatonico", "hexatonic", "octatónico", "octatonic", "LR"… o el ciclo
     /// por sus transformaciones ("PL", "PR", "LR").
     /// Si no es ninguno, lanza `ErrorDeLecturaDeTeoria` con los que sí (`.nombreNoReconocido`).
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) {
         let limpio = texto.claveDeBusqueda
             .replacingOccurrences(of: "ciclo ", with: "").replacingOccurrences(of: " cycle", with: "")
             .trimmingCharacters(in: .whitespaces)
@@ -88,6 +88,14 @@ public enum CicloNeorriemanniano: String, CaseIterable, Hashable, Sendable, Cust
         case "octatonico", "octatonic", "pr", "rp": self = .octatonico
         case "lr", "rl": self = .lr
         default:
+            // Su nombre en cualquiera de los trece idiomas: «cicle hexatònic», «ziklo hexatonikoa».
+            let clave = texto.claveDeBusqueda
+            if let ciclo = Self.allCases.first(where: { c in
+                Notacion.allCases.contains { c.nombre(en: $0).claveDeBusqueda == clave }
+            }) {
+                self = ciclo
+                return
+            }
             let opciones = Self.allCases.map(\.rawValue)
             throw ErrorDeLecturaDeTeoria(
                 texto: texto, posicion: nil, motivo: .nombreNoReconocido(texto, opciones: opciones))
@@ -128,4 +136,9 @@ extension Acorde {
         }
         return self
     }
+}
+
+extension CicloNeorriemanniano: RepresentableComoTexto {
+    /// Su nombre, que se vuelve a leer en cualquiera de los trece idiomas: «ciclo hexatónico», «hexatonic cycle».
+    public func texto(en notacion: Notacion) -> String { nombre(en: notacion) }
 }

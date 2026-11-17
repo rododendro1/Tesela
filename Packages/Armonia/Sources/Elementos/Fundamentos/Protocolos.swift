@@ -16,6 +16,11 @@ import Foundation
 
 /// Un valor que se lee y se escribe como texto: `T(leyendo: x.texto(en: n)) == x` para cualquier notación `n`.
 ///
+/// Si un tipo se lee por su nombre, cumple este protocolo, y su `texto(en:)` es su `nombre(en:)` (``Nombrable``).
+/// `init(leyendo:)` lanza un solo tipo de error, el de su capa (`throws(ErrorDeLectura)` en Elementos), salvo cuando
+/// lee piezas de otra capa: un
+/// acorde lanza `ErrorDeLectura` si falla la fundamental y `ErrorDeLecturaDeTeoria` si falla el cifrado.
+///
 /// A cambio recibe el literal de texto (`let a: Acorde = "Sol7"`) y un `Codable` que guarda el texto. Un tipo que
 /// pueda perder algo al escribirse lo dice en su `texto(en:)` y se codifica con su estructura, con su propio
 /// `Codable`, como `Escala`: un modo sin nombre no se puede volver a leer de su texto.
@@ -67,6 +72,13 @@ extension Notacion {
 
 /// Un valor con nombre para personas, en la notación que se pida:
 /// `nombre(en: .compacta(.espanol))` → "Re dórico", `nombre(en: .ascii(.ingles))` → "D dorian".
+///
+/// Tres maneras de escribir un valor, cada una con su nombre:
+/// - `texto(en:)` (``RepresentableComoTexto``) es lo que `init(leyendo:)` vuelve a leer: «Sol7/Si».
+/// - `nombre(en:)` es el nombre para mostrar, que puede ser largo y no leerse: «Sol séptima de dominante, primera
+///   inversión». Cuando el nombre sí se lee, el tipo es también `RepresentableComoTexto` y los dos coinciden, como en
+///   `Nota`, `Tonalidad` o `TipoDeEscala`.
+/// - `descripcion(en:)` es una frase sobre un resultado o un error: «Cadencia auténtica V7–I (acordes 3 → 4)».
 public protocol Nombrable {
     func nombre(en notacion: Notacion) -> String
 }

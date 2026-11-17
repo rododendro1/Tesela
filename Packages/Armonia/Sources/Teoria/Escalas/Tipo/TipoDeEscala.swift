@@ -576,20 +576,21 @@ extension TipoDeEscala {
     /// `Escala.identificar(notas:tipos:)` busca solo en `occidentales`, salvo que se le pasen otros tipos.
     public static let catalogo: [TipoDeEscala] = occidentales + tradicionales
 
-    /// El tipo de un nombre en español o en inglés, sin distinguir mayúsculas ni guiones: "dórico", "dorico",
-    /// "Dorian", "harmonic minor", "whole-tone". También lee las escalas de `tradicionales`: "Kafi", "hitzaz",
-    /// "melakarta 15". Si no es ninguno, lanza `ErrorDeLecturaDeTeoria` (`.tipoDeEscalaNoReconocido`).
+    /// El tipo de un nombre, alias o variante en cualquiera de los trece idiomas, como ``buscar(nombre:)``, sin
+    /// distinguir mayúsculas ni guiones: "dórico", "dorico", "Dorian", "dorisch", "harmonic minor", "whole-tone".
+    /// También lee las escalas de `tradicionales`: "Kafi", "hitzaz", "melakarta 15". Si no es ninguno, lanza
+    /// `ErrorDeLecturaDeTeoria` (`.tipoDeEscalaNoReconocido`).
     ///
     ///     try TipoDeEscala(leyendo: "Dorian").nombre   // "dórico"
-    public init(leyendo nombre: String) throws {
-        guard let tipo = TipoDeEscala.buscar(nombre: nombre, aceptarIngles: true) else {
+    public init(leyendo nombre: String) throws(ErrorDeLecturaDeTeoria) {
+        guard let tipo = TipoDeEscala.buscar(nombre: nombre) else {
             throw ErrorDeLecturaDeTeoria(texto: nombre, posicion: nil, motivo: .tipoDeEscalaNoReconocido(nombre))
         }
         self = tipo
     }
 
     /// La del catálogo con ese nombre, alias o variante en cualquier idioma, sin mirar mayúsculas, tildes ni guiones:
-    /// «dórico», «Dorian», «dorisch», «дорийский», «Kafi». Primero el español y el inglés, como `init(leyendo:)`, y
+    /// «dórico», «Dorian», «dorisch», «дорийский», «Kafi». Primero el español y el inglés, y
     /// después los otros idiomas, en el orden de `Idioma.allCases`. `nil` si no es ninguna.
     ///
     ///     TipoDeEscala.buscar(nombre: "dorisch")   // .dorico
@@ -645,4 +646,10 @@ extension TipoDeEscala {
 
     /// El nombre como se busca en el catálogo, con un solo espacio entre palabras: `String.normalizadoParaBuscar()`.
     package static func normalizar(_ texto: String) -> String { texto.normalizadoParaBuscar() }
+}
+
+/// Se codifica con su estructura (su propio `Codable`), no con su texto: una escala sin nombre no se vuelve a leer.
+extension TipoDeEscala: RepresentableComoTexto {
+    /// Su nombre, que se vuelve a leer en cualquiera de los trece idiomas: «dórico», «Dorian», «dorisch».
+    public func texto(en notacion: Notacion) -> String { nombre(en: notacion) }
 }

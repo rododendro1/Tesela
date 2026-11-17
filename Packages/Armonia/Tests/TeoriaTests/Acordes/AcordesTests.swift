@@ -285,7 +285,7 @@ import Testing
 
 @Suite struct IdentificacionPorAlturaTests {
     private func primero(_ midi: [Int], tonalidad: Tonalidad? = nil) -> String? {
-        Acorde.identificar(midi: midi, tonalidad: tonalidad).first?.cifrado
+        Acorde.identificar(midi: midi, en: tonalidad).first?.cifrado
     }
 
     @Test func ortografiaSegunElAcorde() {

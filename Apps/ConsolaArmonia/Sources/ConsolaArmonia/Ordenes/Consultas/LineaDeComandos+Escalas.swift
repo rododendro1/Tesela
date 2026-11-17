@@ -38,7 +38,7 @@ extension LineaDeComandos {
         let tetracordos: Bool
         /// `--bibtex`: solo sus referencias, en BibTeX.
         let bibtex: Bool
-        /// `--cuartas`: los acordes de cada grado por cuartas (`Escala.acordesDeLosGrados(notas:por:)`).
+        /// `--cuartas`: los acordes de cada grado por cuartas (`Escala.acordesDeLosGrados(deNotas:por:)`).
         var cuartas = false
         /// `--tensiones-disponibles`: la cuatríada de cada grado con sus tensiones
         /// (`Escala.tensionesDisponibles(grado:)`).
@@ -176,7 +176,7 @@ extension LineaDeComandos {
             // Con --acordes, también los acordes de cada grado en las doce, si la escala los forma.
             if pedido.conAcordes,
                 let tabla = PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
-                    escala, notas: pedido.triadas ? 3 : 4, en: notacion)
+                    escala, deNotas: pedido.triadas ? 3 : 4, en: notacion)
             {
                 lineas.append(tabla.titulo + ":")
                 lineas.append("  " + tabla.grados.joined(separator: " · "))

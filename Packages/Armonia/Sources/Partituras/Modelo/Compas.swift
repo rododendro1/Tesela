@@ -74,7 +74,7 @@ public struct Compas: Hashable, Sendable, CustomStringConvertible {
 
     /// Lee "4/4", "6/8", "7/8", "2+2+3/8" (con la agrupación), "C" (compasillo) o "¢"/"C|"
     /// (compás partido).
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDePartitura) {
         let limpio = texto.trimmingEspacios()
         switch limpio {
         case "C":

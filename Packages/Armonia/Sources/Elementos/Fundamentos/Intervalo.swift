@@ -125,7 +125,7 @@ public struct Intervalo: Hashable, Sendable {
     /// Lee abreviaturas como "3M", "5J", "4A", "7m", "5d", "9M", "4AA" o "-3m" (descendente),
     /// y también en notación internacional: "M3", "P5", "A4", "m7", "-m3".
     /// Si no se puede leer, el error indica dónde y por qué.
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLectura) {
         var lector = Lector(texto)
         try lector.exigirContenido()
         let sentido: SentidoDelIntervalo = lector.consumir("-") ? .descendente : .ascendente
@@ -159,7 +159,7 @@ public struct Intervalo: Hashable, Sendable {
     private static func construir(
         numero: Int, letras: String, sentido: SentidoDelIntervalo,
         texto: String, posicionLetras: Int
-    ) throws -> Intervalo {
+    ) throws(ErrorDeLectura) -> Intervalo {
         let calidad: CalidadDeIntervalo
         if letras == "J" || letras == "P" {
             calidad = .justa

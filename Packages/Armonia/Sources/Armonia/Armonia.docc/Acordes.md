@@ -227,7 +227,7 @@ Acorde.identificar(midi: [60, 64, 68]).first          // Do+   (no La♭+/Do)
 Acorde.identificar(midi: [60, 63, 66, 69]).first      // Do°7  (no Si♯°7)
 Acorde.identificar(midi: [61, 65, 68]).first          // Re♭   (no Do♯)
 Acorde.identificar(midi: [55, 59, 62, 65, 68]).first  // Sol7(♭9)
-Acorde.identificar(midi: [66, 70, 73], tonalidad: "Solb mayor").first   // Sol♭
+Acorde.identificar(midi: [66, 70, 73], en: "Solb mayor").first   // Sol♭
 Acorde("Do+").ortografiar(midi: [60, 64, 68])        // [Do4, Mi4, Sol♯4]
 ```
 
