@@ -91,13 +91,30 @@ struct LectorABC {
     /// La dinámica y las articulaciones leídas que esperan a la nota siguiente.
     private var pendientes: (dinamica: Dinamica?, articulaciones: [Articulacion]) = (nil, [])
 
-    /// Las decoraciones que son articulaciones.
-    private static let decoraciones: [String: Articulacion] = [
-        "staccato": .staccato, "wedge": .staccatissimo, "tenuto": .tenuto, ">": .acento, "accent": .acento,
-        "emphasis": .acento, "marcato": .marcato, "fermata": .calderon, "trill": .trino,
-        "uppermordent": .mordenteSuperior, "pralltriller": .mordenteSuperior, "lowermordent": .mordenteInferior,
-        "mordent": .mordenteInferior, "turn": .grupeto, "invertedturn": .grupetoInvertido,
-    ]
+    /// Las decoraciones que son articulaciones: las que escribe `EscritorABC.decoracion(_:)`, sin los `!`, y otros
+    /// nombres de las mismas.
+    private static let decoraciones: [String: Articulacion] = Dictionary(
+        Articulacion.allCases.compactMap { articulacion in
+            let decoracion = EscritorABC.decoracion(articulacion)
+            guard decoracion.count > 2, decoracion.first == "!", decoracion.last == "!" else { return nil }
+            return (String(decoracion.dropFirst().dropLast()), articulacion)
+        }
+            + [
+                ("staccato", .staccato), ("accent", .acento), ("emphasis", .acento),
+                ("pralltriller", .mordenteSuperior),
+                ("mordent", .mordenteInferior),
+            ],
+        uniquingKeysWith: { primera, _ in primera })
+
+    /// Los textos de encima que son ornamentos sin decoración (`"^Schleifer"`), como los escribe
+    /// `EscritorABC.decoracion(_:)`, sin las comillas.
+    private static let anotaciones: [String: Articulacion] = Dictionary(
+        Articulacion.allCases.compactMap { articulacion in
+            let decoracion = EscritorABC.decoracion(articulacion)
+            guard decoracion.hasPrefix("\"^"), decoracion.count > 3 else { return nil }
+            return (String(decoracion.dropFirst().dropLast()), articulacion)
+        },
+        uniquingKeysWith: { primera, _ in primera })
 
     /// Una decoración (`!mf!`, `!fermata!`): si es una dinámica o una articulación, para la nota siguiente.
     private mutating func decoracion(_ nombre: String) {
@@ -119,11 +136,7 @@ struct LectorABC {
     /// Un texto entre comillas (`"^Do7"`, `"_V7"`): el de encima que nombra un ornamento sin decoración
     /// (`"^Schleifer"`), para la nota siguiente; los demás no se leen.
     private mutating func anotacion(_ texto: String) {
-        guard texto.first == "^" else { return }
-        let rotulo = texto.dropFirst()
-        if let ornamento = Articulacion.allCases.first(where: { $0.rotuloSinSigno.map { $0[...] } == rotulo }) {
-            pendientes.articulaciones.append(ornamento)
-        }
+        if let ornamento = LectorABC.anotaciones[texto] { pendientes.articulaciones.append(ornamento) }
     }
 
     mutating func leer(_ texto: String) {

@@ -48,6 +48,15 @@ import Testing
         #expect(Coral.notaComun(de: "Re#°7", a: "Do") == .do && Coral.notaComun(de: "Sol7", a: "Do") == nil)
     }
 
+    @Test func losPesos() {
+        let pesos = PesosDeArmonizacion.habituales
+        #expect(pesos.gradosEnMayor.count == 7 && pesos.gradosEnMenor.count == 7)
+        #expect(pesos.grado(1, enMayor: true) == 0 && pesos.grado(3, enMayor: false) == 0.6)
+        // La cadencia no cuesta; la retrogresión, más que cualquier otro paso entre funciones.
+        #expect(pesos.dominanteAlI == 0 && pesos.cadenciaAutentica == 0)
+        #expect(pesos.retrogresion > pesos.dominanteAOtraTonica && pesos.retrogresion > pesos.tonicaATonica)
+    }
+
     // MARK: Armonizar
 
     private func cifrados(_ tonalidad: Tonalidad, _ melodia: String) -> [String] {

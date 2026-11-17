@@ -69,7 +69,7 @@ extension Tonalidad {
             candidatos = homonima.inventarioDeArmonizacion.filter {
                 $0.acorde.notas.contains(nota) && $0.destino == nil
             }
-            .map { (acorde: $0.acorde, coste: $0.coste + 1, destino: nil as Int?) }
+            .map { (acorde: $0.acorde, coste: $0.coste + pesos.delModoHomonimo, destino: nil as Int?) }
         }
         return
             candidatos
@@ -96,6 +96,7 @@ extension Tonalidad {
         let opciones = melodia.map { acordes(para: $0) }
         guard opciones.allSatisfy({ !$0.isEmpty }) else { return [] }
         let lecturas = opciones.map { $0.map { analizar($0.valor) } }
+        let enContexto = lecturasEnContexto(opciones)
         let destinos = Dictionary(
             inventarioDeArmonizacion.map { ($0.acorde, $0.destino) }, uniquingKeysWith: { a, _ in a })
         let n = melodia.count
@@ -111,7 +112,7 @@ extension Tonalidad {
                 var llegadas: [Camino] = []
                 for (k, anteriores) in caminos.enumerated() {
                     let paso = costeDePaso(
-                        lecturas[i - 1][k], lecturas[i][j],
+                        enContexto[i - 1][k][j], lecturas[i][j],
                         destino: destinos[opciones[i - 1][k].valor] ?? nil,
                         melodia: (melodia[i - 1], melodia[i]))
                     for camino in anteriores {
@@ -126,7 +127,7 @@ extension Tonalidad {
         var finales: [Camino] = []
         for (j, terminados) in caminos.enumerated() {
             for camino in terminados {
-                let penultimo = n > 1 ? lecturas[n - 2][camino.indices[n - 2]] : nil
+                let penultimo = n > 1 ? enContexto[n - 2][camino.indices[n - 2]][j] : nil
                 let fin = costeDeFinal(
                     lecturas[n - 1][j], penultimo: penultimo,
                     destino: n > 1
@@ -166,12 +167,13 @@ extension Tonalidad {
         let notas = melodia.map(\.nota)
         let opciones = notas.map { acordes(para: $0) }
         let lecturas = opciones.map { $0.map { analizar($0.valor) } }
+        let enContexto = lecturasEnContexto(opciones)
         let destinos = Dictionary(
             inventarioDeArmonizacion.map { ($0.acorde, $0.destino) }, uniquingKeysWith: { a, _ in a })
         let sensible = escalaDeReferencia.grado(7)
         let n = melodia.count
         // Lo que pesan las voces frente a la armonía: un semitono de movimiento vale poco.
-        let pesoDeLasVoces = 0.15
+        let pesoDeLasVoces = pesos.pesoDeLasVoces
 
         // Los estados: un acorde de los posibles para la nota y una de sus disposiciones.
         let estados: [[(acorde: Int, alturas: [Altura], coste: Double)]] = (0..<n).map { i in
@@ -195,7 +197,7 @@ extension Tonalidad {
             for (b, siguiente) in estados[i].enumerated() {
                 let lectura = lecturas[i][siguiente.acorde]
                 for (a, actual) in estados[i - 1].enumerated() where costes[a] < .infinity {
-                    let anterior = lecturas[i - 1][actual.acorde]
+                    let anterior = enContexto[i - 1][actual.acorde][siguiente.acorde]
                     let destino = destinos[opciones[i - 1][actual.acorde].valor] ?? nil
                     guard
                         let voces = Coral.costeDePaso(
@@ -236,6 +238,19 @@ extension Tonalidad {
 
     // MARK: Auxiliares
 
+    /// Cómo se lee cada acorde posible de cada nota antes de cada uno de la nota siguiente
+    /// (`[nota][acorde][siguiente]`): una dominante secundaria lo es si va a su destino, y una séptima disminuida de
+    /// nota común, si adorna al acorde siguiente. Sin el siguiente, Re♯°7 se lee como la sensible del iii; antes del
+    /// Do, como la disminuida que lo adorna.
+    private func lecturasEnContexto(_ opciones: [[Candidato<Acorde>]]) -> [[[AcordeAnalizado]]] {
+        opciones.indices.dropLast().map { i in
+            opciones[i].map { acorde in opciones[i + 1].map { analizar(acorde.valor, siguiente: $0.valor) } }
+        }
+    }
+
+    /// Lo que pesa cada cosa (ver ``PesosDeArmonizacion``).
+    private var pesos: PesosDeArmonizacion { .habituales }
+
     /// Los acordes con los que se armoniza, con su coste y, en las dominantes secundarias, el
     /// grado al que tienen que ir.
     package var inventarioDeArmonizacion: [(acorde: Acorde, coste: Double, destino: Int?)] {
@@ -244,27 +259,29 @@ extension Tonalidad {
             guard !inventario.contains(where: { $0.acorde == acorde }) else { return }
             inventario.append((acorde, coste, destino))
         }
-        let costes: [Double] = modo == .mayor ? [0, 0.2, 0.9, 0, 0, 0.3, 0.8] : [0, 0.5, 0.6, 0, 0, 0.3, 0.8]
         for grado in 1...7 {
             let acorde = self.acordeDelGrado(grado)
             // vii° (y en menor ii°) en primera inversión.
             let disminuido = acorde.tipo.estructura.calidadDeTriada == .disminuida
-            anadir(disminuido ? acorde.cambiarInversion(1) : acorde, costes[grado - 1])
+            anadir(disminuido ? acorde.cambiarInversion(1) : acorde, pesos.grado(grado, enMayor: modo == .mayor))
         }
-        anadir(acordeDelGrado(5, notas: 4), 0.15)
-        if modo == .mayor { anadir(acordeDelGrado(2).cambiarInversion(1), 0.25) }
+        anadir(acordeDelGrado(5, notas: 4), pesos.septimaDeDominante)
+        if modo == .mayor { anadir(acordeDelGrado(2).cambiarInversion(1), pesos.iiEnPrimeraInversion) }
         // Dominantes secundarias.
         for destino in modo == .mayor ? [5, 6, 2, 4] : [4, 6] {
             let raiz = acordeDelGrado(destino).fundamental + .quintaJusta
-            anadir(Acorde(raiz, .mayor), destino == 5 ? 0.6 : 0.8, destino)
-            anadir(Acorde(raiz, .dominanteSeptima), destino == 5 ? 0.6 : 0.8, destino)
+            let coste = destino == 5 ? pesos.secundariaDelV : pesos.otraSecundaria
+            anadir(Acorde(raiz, .mayor), coste, destino)
+            anadir(Acorde(raiz, .dominanteSeptima), coste, destino)
         }
         // Séptimas disminuidas de nota común, del I y del V de una tonalidad mayor, sobre la nota común en el bajo,
         // como un pedal: Re♯°7/Do → Do.
         if modo == .mayor {
             for destino in [1, 5] {
                 let fundamental = acordeDelGrado(destino).fundamental
-                anadir(Acorde(fundamental + .segundaAumentada, .disminuidoSeptima).cambiarInversion(3), 1, destino)
+                anadir(
+                    Acorde(fundamental + .segundaAumentada, .disminuidoSeptima).cambiarInversion(3),
+                    pesos.disminuidaDeNotaComun, destino)
             }
         }
         return inventario
@@ -272,17 +289,18 @@ extension Tonalidad {
 
     /// Lo que cuesta que la nota sea una u otra del acorde: mejor la fundamental.
     private static func costeDePapel(_ nota: Nota, en acorde: Acorde) -> Double {
+        let pesos = PesosDeArmonizacion.habituales
         switch acorde.papel(de: nota) {
-        case .fundamental?: return 0
-        case .quinta?: return 0.15
-        case .tercera?: return 0.25
-        default: return 0.3
+        case .fundamental?: return pesos.notaFundamental
+        case .quinta?: return pesos.notaQuinta
+        case .tercera?: return pesos.notaTercera
+        default: return pesos.otraNota
         }
     }
 
     private func costeDeInicio(_ a: AcordeAnalizado) -> Double {
-        if a.grado == 1 && a.categoria == .diatonico { return 0 }
-        return a.grado == 5 && a.categoria == .diatonico ? 0.5 : 1
+        if a.grado == 1 && a.categoria == .diatonico { return pesos.inicioEnLaTonica }
+        return a.grado == 5 && a.categoria == .diatonico ? pesos.inicioEnLaDominante : pesos.otroInicio
     }
 
     /// Lo que cuesta ir de un acorde al siguiente, según sus funciones.
@@ -294,30 +312,37 @@ extension Tonalidad {
         // Una séptima en la melodía baja por grado conjunto.
         if a.acorde.papel(de: melodia.0) == .septima {
             let paso = modulo(melodia.0.claseDeAltura - melodia.1.claseDeAltura, 12)
-            if !(1...2).contains(paso) { coste += 2 }
+            if !(1...2).contains(paso) { coste += pesos.septimaDeLaMelodiaSinResolver }
         }
         if let destino {
-            return coste + (b.grado == destino && b.acorde.fundamental == acordeDelGrado(destino).fundamental ? 0 : 5)
+            let llega = b.grado == destino && b.acorde.fundamental == acordeDelGrado(destino).fundamental
+            return coste + (llega ? 0 : pesos.sinIrASuDestino)
         }
-        if a.acorde.notas == b.acorde.notas { return coste + (a.acorde == b.acorde ? 0.6 : 0.3) }
+        if a.acorde.notas == b.acorde.notas {
+            return coste + (a.acorde == b.acorde ? pesos.mismoAcorde : pesos.mismasNotas)
+        }
         // V7 → V: la séptima se queda sin resolver.
-        if a.acorde.septima != nil, b.acorde.fundamental == a.acorde.fundamental { return coste + 1 }
+        if a.acorde.septima != nil, b.acorde.fundamental == a.acorde.fundamental {
+            return coste + pesos.septimaQueNoResuelve
+        }
         switch (a.funcion, b.funcion) {
         case (.dominante?, .tonica?):
             switch b.grado {
-            case 1: return coste
-            case 6: return coste + 0.5
-            default: return coste + 1.2
+            case 1: return coste + pesos.dominanteAlI
+            case 6: return coste + pesos.cadenciaRota
+            default: return coste + pesos.dominanteAOtraTonica
             }
-        case (.dominante?, .subdominante?): return coste + 2
-        case (.dominante?, .dominante?): return coste + (a.grado == 5 && b.grado == 5 ? 0.1 : 0.6)
-        case (.subdominante?, .dominante?): return coste
-        case (.subdominante?, .subdominante?): return coste + (a.grado == 4 && b.grado == 2 ? 0.2 : 0.8)
-        case (.subdominante?, .tonica?): return coste + (b.grado == 1 ? 0.6 : 0.9)
+        case (.dominante?, .subdominante?): return coste + pesos.retrogresion
+        case (.dominante?, .dominante?):
+            return coste + (a.grado == 5 && b.grado == 5 ? pesos.delVAlV : pesos.dominanteADominante)
+        case (.subdominante?, .dominante?): return coste + pesos.subdominanteADominante
+        case (.subdominante?, .subdominante?):
+            return coste + (a.grado == 4 && b.grado == 2 ? pesos.delIVAlII : pesos.subdominanteASubdominante)
+        case (.subdominante?, .tonica?): return coste + (b.grado == 1 ? pesos.plagal : pesos.subdominanteAOtraTonica)
         case (.tonica?, .tonica?):
-            if a.grado == 1 { return coste + (b.grado == 6 ? 0.1 : 0.3) }
-            return coste + (a.grado == 3 && b.grado == 6 ? 0.2 : 0.8)
-        default: return coste + 0.1
+            if a.grado == 1 { return coste + (b.grado == 6 ? pesos.delIAlVI : pesos.delIAOtraTonica) }
+            return coste + (a.grado == 3 && b.grado == 6 ? pesos.delIIIAlVI : pesos.tonicaATonica)
+        default: return coste + pesos.otroPaso
         }
     }
 
@@ -327,15 +352,15 @@ extension Tonalidad {
         _ ultimo: AcordeAnalizado, penultimo: AcordeAnalizado?, destino: Int?,
         melodia: [Nota]
     ) -> Double {
-        if destino != nil { return 5 }
+        if destino != nil { return pesos.finalSinDestino }
         if Cadencia.esTonica(ultimo) && ultimo.acorde.inversion == 0 {
-            guard let penultimo else { return 0 }
-            return Cadencia.esDominante(penultimo) ? 0 : 1
+            guard let penultimo else { return pesos.cadenciaAutentica }
+            return Cadencia.esDominante(penultimo) ? pesos.cadenciaAutentica : pesos.finalEnElISinDominante
         }
         let iTieneLaNota = acordeDelGrado(1).notas.contains(melodia[melodia.count - 1])
         if ultimo.grado == 5 && ultimo.categoria == .diatonico && ultimo.acorde.tipo == .mayor {
-            return iTieneLaNota ? 2 : 0.5
+            return iTieneLaNota ? pesos.semicadenciaPudiendoIrAlI : pesos.semicadencia
         }
-        return 4
+        return pesos.otroFinal
     }
 }

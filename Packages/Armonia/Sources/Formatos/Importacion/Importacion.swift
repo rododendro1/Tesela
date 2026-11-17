@@ -27,7 +27,7 @@ import Teoria
 public struct NotaDeLaPieza: Hashable, Sendable {
     public let altura: Altura
     public let inicio: Duracion
-    public let duracion: Duracion
+    public private(set) var duracion: Duracion
     /// La parte de la pieza, contando desde 0: la pista y el canal en MIDI, la parte en MusicXML.
     public let parte: Int
     /// Cents sobre (o bajo) `altura`; 0 si es una nota temperada.
@@ -38,9 +38,9 @@ public struct NotaDeLaPieza: Hashable, Sendable {
     /// Los pasos de `sistema` que se aparta (``NotaDeLaAfinacion/ajuste``); 0 si no hay sistema.
     public let ajuste: Int
     /// La dinámica que se marca al empezar la nota, si se marca alguna.
-    public let dinamica: Dinamica?
+    public private(set) var dinamica: Dinamica?
     /// Sus articulaciones, sin repetir y en el orden de `Articulacion.allCases`.
-    public let articulaciones: [Articulacion]
+    public private(set) var articulaciones: [Articulacion]
     /// El pentagrama de la parte en que se escribe, contando desde 0 (`<staff>1</staff>` en MusicXML es el 0), si el
     /// fichero lo dice.
     public let pentagrama: Int?
@@ -64,30 +64,35 @@ public struct NotaDeLaPieza: Hashable, Sendable {
         self.sistema = nota.sistema
         self.ajuste = nota.ajuste
         self.dinamica = dinamica
-        self.articulaciones = Articulacion.allCases.filter(articulaciones.contains)
+        self.articulaciones = NotaDeLaPieza.ordenadas(articulaciones)
         self.pentagrama = pentagrama
         self.voz = voz
     }
 
+    /// Las articulaciones sin repetir y en el orden de `Articulacion.allCases`.
+    private static func ordenadas(_ articulaciones: [Articulacion]) -> [Articulacion] {
+        Articulacion.allCases.filter(articulaciones.contains)
+    }
+
     /// La misma nota con otra dinámica: la de una marca que se lee después de la nota (`<dynam>` en MEI).
     func con(dinamica: Dinamica?) -> NotaDeLaPieza {
-        NotaDeLaPieza(
-            altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: desvio, sistema: sistema,
-            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones, pentagrama: pentagrama, voz: voz)
+        var copia = self
+        copia.dinamica = dinamica
+        return copia
     }
 
     /// La misma nota con otras articulaciones: las de una marca que se lee después de la nota (`<ornam>` en MEI).
     func con(articulaciones: [Articulacion]) -> NotaDeLaPieza {
-        NotaDeLaPieza(
-            altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: desvio, sistema: sistema,
-            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones, pentagrama: pentagrama, voz: voz)
+        var copia = self
+        copia.articulaciones = NotaDeLaPieza.ordenadas(articulaciones)
+        return copia
     }
 
     /// La misma nota con otra duración: la de una nota ligada a la siguiente, que se alarga con ella.
     func con(duracion: Duracion) -> NotaDeLaPieza {
-        NotaDeLaPieza(
-            altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: desvio, sistema: sistema,
-            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones, pentagrama: pentagrama, voz: voz)
+        var copia = self
+        copia.duracion = duracion
+        return copia
     }
 
     /// Cuándo termina.

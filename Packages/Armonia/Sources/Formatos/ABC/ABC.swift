@@ -126,23 +126,26 @@ package struct EscritorABC: EscritorDeTexto {
     /// La dinámica y las articulaciones como decoraciones delante de la nota: `!mf!`, `.` (staccato), `!>!`
     /// (acento), `!fermata!`… y `"^Schleifer"`, como texto, los ornamentos que no tienen decoración.
     package static func decoraciones(_ evento: Evento) -> String {
-        let articulaciones = evento.articulaciones.map { articulacion -> String in
-            switch articulacion {
-            case .staccato: return "."
-            case .staccatissimo: return "!wedge!"
-            case .tenuto: return "!tenuto!"
-            case .acento: return "!>!"
-            case .marcato: return "!marcato!"
-            case .calderon: return "!fermata!"
-            case .trino: return "!trill!"
-            case .mordenteSuperior: return "!uppermordent!"
-            case .mordenteInferior: return "!lowermordent!"
-            case .grupeto: return "!turn!"
-            case .grupetoInvertido: return "!invertedturn!"
-            case .schleifer, .trinoConTerminacion: return "\"^\(articulacion.rotuloSinSigno!)\""
-            }
+        (evento.dinamica.map { "!\($0.rawValue)!" } ?? "") + evento.articulaciones.map(decoracion).joined()
+    }
+
+    /// La decoración de una articulación: `.`, `!tenuto!`, `!trill!`… o, la de un ornamento que ABC no tiene, el
+    /// texto de encima (`"^Schleifer"`). La lectura (`LecturaABC.swift`) la lee de aquí.
+    package static func decoracion(_ articulacion: Articulacion) -> String {
+        switch articulacion {
+        case .staccato: return "."
+        case .staccatissimo: return "!wedge!"
+        case .tenuto: return "!tenuto!"
+        case .acento: return "!>!"
+        case .marcato: return "!marcato!"
+        case .calderon: return "!fermata!"
+        case .trino: return "!trill!"
+        case .mordenteSuperior: return "!uppermordent!"
+        case .mordenteInferior: return "!lowermordent!"
+        case .grupeto: return "!turn!"
+        case .grupetoInvertido: return "!invertedturn!"
+        case .schleifer, .trinoConTerminacion: return "\"^\(articulacion.rotuloSinSigno!)\""
         }
-        return (evento.dinamica.map { "!\($0.rawValue)!" } ?? "") + articulaciones.joined()
     }
 
     package static func nombre(_ natural: NotaNatural, octava: Int) -> String {
