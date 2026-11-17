@@ -132,6 +132,10 @@
   «Sinfonía de los salmos», Austin (1966: 334); el de Hendrix, Shapiro y Glebbeek (1995: 144), y el mu, la
   introducción de Becker y Fagen al cancionero de Steely Dan. Obras nuevas: `Referencia.delone1975`, `austin1966`,
   `shapiro1995` y `beckerFagenMu`.
+- El armonizador lee cada acorde con el que lo sigue al puntuar el paso: una disminuida de nota común antes del I
+  ya no cuenta como dominante. Sus costes están juntos y con nombre en `PesosDeArmonizacion`.
+- La lectura de ABC, MusicXML y MEI saca de su escritor qué articulación es cada decoración, elemento o valor, en
+  lugar de repetir la tabla.
 - `RegionDeEscala` está en `Teoria/Catalogo/`, junto a `Lugar`, que la envuelve: no cambia nada por fuera.
 - En la consola, los errores de `--agrupar`, `--epoca`, `--momento`, `--escuela` y `--afinacion` nombran todos los
   valores que se leen, de la misma tabla con la que se leen. `--agrupar` no decía `epoca`.
