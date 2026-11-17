@@ -21,7 +21,7 @@ extension LineaDeComandos {
             }
         }
         var escala: Escala?
-        if let texto = try argumentos.valorConPalabras(.en) { escala = try Escala(leyendo: texto, enLaOrden: notacion) }
+        if let texto = try argumentos.valorConPalabras(.en) { escala = try LineaDeComandos.escala(texto, en: notacion) }
         let duracion = try argumentos.valor(.duracion).map { try Duracion(leyendo: $0) }
         let ficha = argumentos.quitarMarca(.estadisticas)
         try argumentos.sinOpcionesDesconocidas()

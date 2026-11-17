@@ -92,7 +92,7 @@ extension LineaDeComandos {
 
     /// Las cifras del bajo continuo de los acordes, en la tonalidad dada o en la que mejor los explica.
     private static func bajoCifrado(de acordes: [Acorde], en tonalidad: Tonalidad?) -> [[String]] {
-        guard let tonalidad = tonalidad ?? AnalisisArmonico.analizar(acordes)?.tonalidad else { return [] }
+        guard let tonalidad = tonalidad ?? (try? AnalisisArmonico.analizar(acordes))?.tonalidad else { return [] }
         return acordes.map { tonalidad.cifrasDeBajo(de: $0) }
     }
 
@@ -131,7 +131,7 @@ extension LineaDeComandos {
 
     /// Los grados de los acordes en números romanos, en la tonalidad dada o en la que mejor los explica.
     private static func gradosRomanos(de acordes: [Acorde], en tonalidad: Tonalidad?) -> [String] {
-        (tonalidad.map { $0.analizar(acordes) } ?? AnalisisArmonico.analizar(acordes))?.cifrados ?? []
+        (tonalidad.map { $0.analizar(acordes) } ?? (try? AnalisisArmonico.analizar(acordes)))?.cifrados ?? []
     }
 
     /// Lee el mástil de `--instrumento` (la guitarra, si no se da), o lanza el `ErrorDeUso` de lo que está mal escrito.

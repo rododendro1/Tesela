@@ -23,6 +23,10 @@ extension LineaDeComandosTests {
         #expect(salida("analizar Do Fa Sol7 Do --en Do").hasPrefix("I–IV–V7–I en Do mayor"))
         #expect(salida("analizar Lam Rem Mi Lam --en Lam").hasPrefix("i–iv–V–i en La menor"))
         #expect(salida("tonalidad C").hasPrefix("Do mayor"))
+        // Donde `--en` es una escala (`ornamentos`), la tónica sola es la escala de la tonalidad.
+        #expect(salida("ornamentos --sobre Mi4 --en Do") == salida("ornamentos --sobre Mi4 --en Do mayor"))
+        #expect(salida("ornamentos --sobre Mi4 --en Lam") == salida("ornamentos --sobre Mi4 --en La menor"))
+        #expect(throws: ErrorDeLecturaDeTeoria.self) { try LineaDeComandos.escala("Do7", en: .compacta(.espanol)) }
     }
 
     @Test func losCatalogosTrasCatalogo() {

@@ -184,7 +184,8 @@ import Testing
             }
 
         }
-        #expect(AnalisisArmonico.analizar([]) == nil)
+        #expect(throws: ErrorDeAnalisis.sinAcordes) { try AnalisisArmonico.analizar([]) }
+        #expect(ErrorDeAnalisis.sinAcordes.descripcion(en: .compacta(.ingles)) == "There are no chords to analyze.")
     }
 
     /// La progresión transportada se analiza igual en la tonalidad transportada.

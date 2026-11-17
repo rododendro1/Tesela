@@ -113,7 +113,7 @@ struct OpcionesDePartitura {
         if let leido {
             let acordes = leido.acordes.map(\.acorde)
             let enSuTonalidad = tonalidad.map { $0.analizar(acordes) }
-            guard let analisis = enSuTonalidad ?? AnalisisArmonico.analizar(acordes) else { return nil }
+            guard let analisis = enSuTonalidad ?? (try? AnalisisArmonico.analizar(acordes)) else { return nil }
             // `--duracion` manda sobre el ritmo del fichero.
             return (analisis, opciones["duracion"] == nil ? leido : nil)
         }

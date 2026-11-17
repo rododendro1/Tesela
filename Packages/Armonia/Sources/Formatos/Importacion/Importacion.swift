@@ -432,7 +432,7 @@ public struct PiezaImportada: Hashable, Sendable {
     public func analisis(en tonalidad: Tonalidad? = nil, ventana: Duracion? = nil) -> AnalisisArmonico? {
         let acordes = self.acordes(ventana: ventana)
         guard !acordes.isEmpty else { return nil }
-        return tonalidad.map { $0.analizar(acordes) } ?? AnalisisArmonico.analizar(acordes)
+        return tonalidad.map { $0.analizar(acordes) } ?? (try? AnalisisArmonico.analizar(acordes))
     }
 }
 

@@ -87,6 +87,7 @@ extension TextosDeTeoria {
         funcionTonica: "τονική",
         funcionSubdominante: "υποδεσπόζουσα",
         funcionDominante: "δεσπόζουσα",
+        analisisSinAcordes: "Δεν υπάρχουν συγχορδίες για ανάλυση.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "συγχορδίες {1}",

@@ -87,6 +87,7 @@ extension TextosDeTeoria {
         funcionTonica: "tonika",
         funcionSubdominante: "subdominantea",
         funcionDominante: "dominantea",
+        analisisSinAcordes: "Ez dago aztertzeko akorderik.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "{1} akordeak",

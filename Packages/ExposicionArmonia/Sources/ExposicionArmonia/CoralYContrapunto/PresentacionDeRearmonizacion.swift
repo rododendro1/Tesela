@@ -23,7 +23,7 @@ public enum PresentacionDeRearmonizacion {
     public static func proponer(
         _ acordes: [Acorde], en tonalidad: Tonalidad? = nil, notacion: Notacion
     ) -> (tonalidad: Tonalidad, propuestas: [PropuestaDeRearmonizacion])? {
-        guard let tonalidad = tonalidad ?? AnalisisArmonico.analizar(acordes)?.tonalidad else { return nil }
+        guard let tonalidad = tonalidad ?? (try? AnalisisArmonico.analizar(acordes))?.tonalidad else { return nil }
         let propuestas = tonalidad.rearmonizaciones(de: acordes).map { rearmonizacion in
             let nuevos = rearmonizacion.aplicar(a: acordes)
             // El pasaje: el acorde de antes, los nuevos y el de después.

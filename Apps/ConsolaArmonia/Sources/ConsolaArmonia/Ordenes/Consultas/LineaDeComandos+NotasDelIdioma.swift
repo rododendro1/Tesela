@@ -149,4 +149,16 @@ extension LineaDeComandos {
             }
         }
     }
+
+    /// Una escala como la escriben las órdenes (`Re dórico`) o, como en `tonalidad(_:en:)`, solo con la tónica: «Do»
+    /// es la escala de Do mayor, y «Lam», la de La menor. Así `--en Do` vale igual donde `--en` es una escala
+    /// (`ornamentos`) que donde es una tonalidad.
+    static func escala(_ texto: String, en notacion: Notacion) throws -> Escala {
+        do {
+            return try Escala(leyendo: texto, enLaOrden: notacion)
+        } catch {
+            guard let tonalidad = try? tonalidad(texto, en: notacion) else { throw error }
+            return tonalidad.escala
+        }
+    }
 }

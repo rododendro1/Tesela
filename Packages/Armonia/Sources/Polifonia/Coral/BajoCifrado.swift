@@ -200,10 +200,19 @@ extension Coral {
     ///     coral.voz(0).map(\.nota)   // [Do, La, Sol, Do]
     ///     coral.esCorrecta           // true
     ///
-    /// - Throws: lo que lanza ``Tonalidad/acordes(bajoCifrado:)`` si el bajo cifrado no se puede leer, y un
-    ///   ``ErrorDeRealizacion`` si se lee pero no hay realización sin faltas.
-    public init(bajoCifrado: String, en tonalidad: Tonalidad, soprano: [Altura]? = nil) throws {
-        let acordes = try tonalidad.acordes(bajoCifrado: bajoCifrado)
+    /// - Throws: ``ErrorDeRealizacion``: `bajoCifradoIlegible`, con el error de ``Tonalidad/acordes(bajoCifrado:)``,
+    ///   si el bajo cifrado no se puede leer, y los de ``init(realizando:soprano:en:)`` si se lee pero no hay
+    ///   realización sin faltas.
+    public init(bajoCifrado: String, en tonalidad: Tonalidad, soprano: [Altura]? = nil) throws(ErrorDeRealizacion) {
+        let acordes: [Acorde]
+        do {
+            acordes = try tonalidad.acordes(bajoCifrado: bajoCifrado)
+        } catch let error as any ErrorAlLeer {
+            throw .bajoCifradoIlegible(error)
+        } catch {
+            // `acordes(bajoCifrado:)` solo lanza errores de lectura.
+            throw .bajoCifradoIlegible(ErrorDeLectura(texto: bajoCifrado, posicion: nil, motivo: .textoVacio))
+        }
         try self.init(realizando: acordes, soprano: soprano, en: tonalidad)
     }
 }

@@ -92,7 +92,7 @@ extension Coral {
         let analizado: AnalisisArmonico? =
             analisis
             ? (tonalidad.map { $0.analizar(identificados.map(\.acorde)) }
-                ?? AnalisisArmonico.analizar(identificados.map(\.acorde)))
+                ?? (try? AnalisisArmonico.analizar(identificados.map(\.acorde))))
             : nil
         var resultado = AnotacionesDeAcordes()
         resultado.tonalidad =

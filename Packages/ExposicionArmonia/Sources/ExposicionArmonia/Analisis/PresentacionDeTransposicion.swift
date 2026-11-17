@@ -65,7 +65,7 @@ public enum PresentacionDeTransposicion {
         let palabras = texto.split(whereSeparator: { $0.isWhitespace || $0 == "," || $0 == "|" }).map(String.init)
         switch contenido {
         case .acordes:
-            return AnalisisArmonico.analizar(palabras.compactMap { try? Acorde(leyendo: $0) })?.tonalidad
+            return (try? AnalisisArmonico.analizar(palabras.compactMap { try? Acorde(leyendo: $0) }))?.tonalidad
         case .notas:
             let notas = palabras.flatMap { palabra -> [Nota] in
                 if let evento = try? Evento(leyendo: palabra) { return evento.alturas.map(\.nota) }

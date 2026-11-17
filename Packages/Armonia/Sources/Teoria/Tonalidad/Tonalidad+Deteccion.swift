@@ -50,6 +50,11 @@ extension Tonalidad {
         candidatos(notas: notas, duraciones: duraciones).map(\.valor)
     }
 
+    /// Igual, a partir de clases de altura (0 = Do … 11 = Si).
+    public static func identificar(clasesDeAltura: [Int], duraciones: [Double]? = nil) -> [Tonalidad] {
+        candidatos(clasesDeAltura: clasesDeAltura, duraciones: duraciones).map(\.valor)
+    }
+
     private static func estimar(clases: [Int], pesos: [Double]?, nombres: [Nota]?) -> [Candidato<Tonalidad>] {
         guard !clases.isEmpty else { return [] }
         var histograma = [Double](repeating: 0, count: 12)
