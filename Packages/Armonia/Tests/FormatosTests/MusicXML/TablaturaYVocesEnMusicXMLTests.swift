@@ -24,6 +24,20 @@ import Testing
         return Partitura(pentagramas: [pentagrama], encabezado: Encabezado(titulo: "Con capo"))
     }
 
+    /// Un traste con rótulo (el 6½ del dulcémele) se escribe como semitonos en `<fret>` y con su rótulo aparte.
+    @Test func elRotuloDelTraste() {
+        let voz = Voz([Evento(alturas: ["Do#5"], duracion: .redonda)])
+        let pulsaciones: [Duracion: [Tablatura.Pulsacion]] = [
+            .cero: [Tablatura.Pulsacion(cuerda: 2, traste: 11, rotulo: "6½")]
+        ]
+        let pentagrama = Partitura.Pentagrama(
+            voces: [Partitura.Linea(voz, pulsaciones: pulsaciones)], numeroDeCuerdas: 3,
+            afinacion: ["Re3", "La3", "Re4"])
+        let xml = Partitura(pentagramas: [pentagrama]).musicXML()
+        #expect(xml.contains("<fret>11</fret>\n            <other-technical>6½</other-technical>"))
+        #expect(!conTablatura.musicXML().contains("<other-technical>"))
+    }
+
     @Test func laTablaturaVaEnSuPentagrama() throws {
         let xml = conTablatura.musicXML()
         #expect(xml.contains("<staves>2</staves>"))

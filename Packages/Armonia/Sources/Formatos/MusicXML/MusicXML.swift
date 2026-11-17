@@ -176,7 +176,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
                         medidaCompleta: compasEntero, barra: haciaBarra[i], grupo: grupo,
                         ligadaDesde: ligadaDesde[l])
                     if let tablatura = linea.tablatura {
-                        nota.cuerdasYTrastes = pulsadas[l].map { (tablatura.cuerdas - $0.cuerda, $0.traste) }
+                        nota.cuerdasYTrastes = pulsadas[l].map { (tablatura.cuerdas - $0.cuerda, $0.traste, $0.rotulo) }
                     }
                     let anotacion = nuevo ? linea.anotaciones[posiciones[l]] : nil
                     if let armonia = anotacion?.armonia { xml += armonia }
@@ -294,7 +294,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
         package let ligadaDesde: [Altura]
         /// En un pentagrama de tablatura, la cuerda (la 1 es la más aguda, como en MusicXML) y el traste de cada
         /// nota del evento, en el orden de sus alturas.
-        package var cuerdasYTrastes: [(cuerda: Int, traste: Int)] = []
+        package var cuerdasYTrastes: [(cuerda: Int, traste: Int, rotulo: String?)] = []
 
         package func xml(letras: [String]) -> String {
             let duracion = ticks(evento.duracion, divisiones)
@@ -369,7 +369,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
 
         private func notaciones(
             ligadura: [String], grupo: [String] = [], articulaciones: [Articulacion] = [],
-            tecnica: (cuerda: Int, traste: Int)? = nil
+            tecnica: (cuerda: Int, traste: Int, rotulo: String?)? = nil
         ) -> String {
             guard !ligadura.isEmpty || !grupo.isEmpty || !articulaciones.isEmpty || tecnica != nil else { return "" }
             var xml = "        <notations>\n"
@@ -395,7 +395,11 @@ package struct EscritorMusicXML: EscritorDePartitura {
             if articulaciones.contains(.calderon) { xml += "          <fermata type=\"upright\"/>\n" }
             if let tecnica {
                 xml += "          <technical>\n            <string>\(tecnica.cuerda)</string>\n"
-                xml += "            <fret>\(tecnica.traste)</fret>\n          </technical>\n"
+                xml += "            <fret>\(tecnica.traste)</fret>\n"
+                // `<fret>` es un número de semitonos: el traste como lo numera quien toca («6½» en el dulcémele)
+                // va aparte, para quien lo lea.
+                if let rotulo = tecnica.rotulo { xml += "            <other-technical>\(rotulo)</other-technical>\n" }
+                xml += "          </technical>\n"
             }
             return xml + "        </notations>\n"
         }
