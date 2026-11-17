@@ -46,6 +46,14 @@ extension NombresDeAcordes {
         .init(.mayorSeptimaMayorDecimotercera, "großer Tredezimakkord"),
         .init(.menorSextaNovena, "Moll-Sext-Non-Akkord"),
         .init(.menorNovenaAnadida, "Moll mit hinzugefügter None"),
+        .init(.dominanteDecimoterceraMenor, "Dominantseptakkord mit kleiner Tredezime"),
+        .init(.dominanteNovenaMenorDecimoterceraMenor, "Dominantseptakkord mit kleiner None und kleiner Tredezime"),
+        .init(.dominanteQuintaAumentadaNovenaAumentada, "Dominantseptakkord mit übermäßiger Quinte und übermäßiger None"),
+        .init(.sus4SeptimaNovenaMenor, "Dominantseptakkord mit Quartvorhalt und kleiner None", alias: ["phrygischer Akkord"]),
+        .init(.sus4Sexta, "Sextakkord mit Quartvorhalt"),
+        .init(.mayorUndecimaAnadida, "Dur mit hinzugefügter Undezime"),
+        .init(.menorUndecimaAnadida, "Moll mit hinzugefügter Undezime"),
+        .init(.disminuidoSeptimaMayor, "verminderter Akkord mit großer Septime"),
         .init(.sextaAumentadaItaliana, "italienischer übermäßiger Sextakkord"),
         .init(.sextaAumentadaFrancesa, "französischer übermäßiger Sextakkord"),
         .init(.sextaAumentadaAlemana, "deutscher übermäßiger Sextakkord"),
@@ -70,5 +78,7 @@ extension NombresDeAcordes {
         .init(.estructuraSuperiorBemolVI, "Upper Structure ♭VI"),
         .init(.porQuintas, "Quintenakkord"),
         .init(.racimo, "chromatischer Cluster", alias: ["Tontraube"]),
+        .init(.todosLosIntervalosZ15, "Allintervall-Tetrachord 4-Z15"),
+        .init(.todosLosIntervalosZ29, "Allintervall-Tetrachord 4-Z29"),
     ])
 }

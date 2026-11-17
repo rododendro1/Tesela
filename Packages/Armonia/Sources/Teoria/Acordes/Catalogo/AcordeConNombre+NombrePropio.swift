@@ -150,10 +150,21 @@ extension AcordeConNombre {
         alias: ["cluster", "racimo"], estilos: [.deCompositor], referencias: [.persichetti1961])
 
     /// Los de nombre propio, en su orden.
+    /// Los dos tetracordos de todos los intervalos: cada clase de intervalo, del semitono al tritono, una vez entre
+    /// sus notas (su vector de intervalos es ⟨111111⟩). 4-Z15 sobre Do: Do Re♭ Mi Fa♯; 4-Z29: Do Re♭ Mi♭ Sol.
+    public static let todosLosIntervalosZ15 = AcordeConNombre(
+        nombre: "tetracordo de todos los intervalos 4-Z15",
+        intervalos: [.unisono, .segundaMenor, .terceraMayor, .cuartaAumentada], estilos: [.deCompositor],
+        referencias: [.forte1973])
+    public static let todosLosIntervalosZ29 = AcordeConNombre(
+        nombre: "tetracordo de todos los intervalos 4-Z29",
+        intervalos: [.unisono, .segundaMenor, .terceraMenor, .quintaJusta], estilos: [.deCompositor],
+        referencias: [.forte1973])
+
     public static let conNombrePropio: [AcordeConNombre] = [
         .tristan, .mistico, .petrushka, .farben, .soWhat, .hendrix, .mu, .porCuartas, .elektra, .augures, .salmos,
         .alfa, .delSueno, .tricordoVienes, .kennyBarron, .estructuraSuperiorII, .estructuraSuperiorVI,
-        .estructuraSuperiorBemolVI, .porQuintas, .racimo,
+        .estructuraSuperiorBemolVI, .porQuintas, .racimo, .todosLosIntervalosZ15, .todosLosIntervalosZ29,
     ]
 
     /// Todos los acordes del catálogo: los genéricos (`genericos`) y después los de nombre propio (`conNombrePropio`).

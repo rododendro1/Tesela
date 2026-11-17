@@ -137,6 +137,7 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "backdoor-dominant",
         rearmonizacionIIRelativo: "tillhörande II",
         rearmonizacionDisminuido: "förminskad substitution",
+        rearmonizacionDisminuidaDeNotaComun: "förminskat septimackord med gemensam ton",
         secuenciaTerceras: "i terser",
         secuenciaCuartas: "i kvarter",
         secuenciaGruposDeTres: "i grupper om tre",

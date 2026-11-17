@@ -16,6 +16,16 @@ import Testing
         #expect(escalas[0].notas == Escala(.do, .mixolidio).notas(sobre: Acorde("Do7")))
     }
 
+    /// Los cifrados de los acordes de jazz que se añadieron con su escala: el 7(♭9,♭13) va con el frigio dominante, el
+    /// 7sus4(♭9) con el frigio, el °(maj7) con la disminuida y el 7(♭13) con el mixolidio ♭6.
+    @Test func lasEscalasDeLosAcordesNuevos() {
+        #expect(Acorde("Do7(b9,b13)").escalas().first?.escala == Escala(.do, .frigioDominante))
+        #expect(Acorde("Do7sus4(b9)").escalas().first?.escala == Escala(.do, .frigio))
+        #expect(Acorde("Do°(maj7)").escalas().first?.escala == Escala(.do, .disminuida))
+        #expect(Acorde("Do7(b13)").escalas().first?.escala == Escala(.do, .mixolidioSextaMenor))
+        #expect(Acorde("Do°(maj7)").cifrado == "Do°(maj7)" && Acorde("Do°7M").cifrado == "Do°(maj7)")
+    }
+
     @Test func conTonalidadPrimeroLaQuePide() {
         let enDo = Tonalidad(.do, .mayor)
         let rem7 = Acorde("Rem7").escalas(en: enDo)

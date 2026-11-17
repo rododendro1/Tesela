@@ -119,19 +119,20 @@ public struct ModeloDelCatalogo: Sendable {
             sonido: .ritmo(ritmo), destino: nil)
     }
 
-    /// Un ornamento: sus pasos y lo que suena sobre la tónica (en la cuarta octava) en su escala mayor, que se oye
-    /// con su ritmo en una negra (`Voz.conLosOrnamentosRealizados(en:)`).
+    /// Un ornamento: sus pasos y lo que suena sobre la tónica (en la cuarta octava) en su escala mayor, cada nota con
+    /// su figura si la principal es una negra (`OrnamentoConNombre.tocado(sobre:en:duracion:)`), y así se oye.
     public func tarjeta(de ornamento: OrnamentoConNombre, en notacion: Notacion) -> Tarjeta {
         let principal = Altura(tonica, octava: 4)
         let escala = Escala(tonica)
-        let presentado = OrnamentoPresentado(ornamento, sobre: principal, escala: escala, en: notacion)
-        let alturas = ornamento.alturas(sobre: principal, en: escala) ?? [principal]
-        let notas = presentado.alturas?.joined(separator: " ") ?? ""
+        let presentado = OrnamentoPresentado(
+            ornamento, sobre: principal, escala: escala, duracion: .negra, en: notacion)
+        let tocado = ornamento.tocado(sobre: principal, en: escala, duracion: .negra) ?? [(principal, .negra)]
+        let notas = presentado.tocado?.joined(separator: " ") ?? ""
         let estilos = presentado.estilos + [presentado.origen?.texto].compactMap { $0 }
         return Tarjeta(
             id: ornamento.nombre, nombre: presentado.nombre, detalle: presentado.textoDeLosPasos + " · " + notas,
             estilos: estilos.joined(separator: " · "), referencias: presentado.referencias,
-            sonido: .voz(Voz(alturas.map { Evento($0, .semicorchea) } + [Evento(principal, .negra)])), destino: nil)
+            sonido: .voz(Voz(tocado.map { Evento($0.altura, $0.duracion) })), destino: nil)
     }
 
     /// Un instrumento: su afinación y sus cuerdas, con su familia y sus trastes; suenan sus cuerdas al aire, de la

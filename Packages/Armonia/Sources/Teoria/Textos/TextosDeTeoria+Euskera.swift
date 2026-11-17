@@ -137,6 +137,7 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "backdoor dominantea",
         rearmonizacionIIRelativo: "ii erlatiboa",
         rearmonizacionDisminuido: "ordezko txikitua",
+        rearmonizacionDisminuidaDeNotaComun: "nota komuneko zazpigarren gutxitua",
         secuenciaTerceras: "hirugarrenka",
         secuenciaCuartas: "laugarrenka",
         secuenciaGruposDeTres: "hiruko taldeka",

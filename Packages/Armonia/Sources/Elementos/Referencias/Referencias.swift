@@ -348,6 +348,11 @@ extension Referencia {
     public static let levine1989 = Referencia(
         "levine1989", .libro, autores: ["Levine, Mark"], titulo: "The Jazz Piano Book", anio: 1989,
         editorial: "Sher Music", lugar: "Petaluma")
+    /// Forte, la teoría de los conjuntos de clases de altura: los números de Forte (3-11, 4-Z15) y los dos tetracordos
+    /// de todos los intervalos.
+    public static let forte1973 = Referencia(
+        "forte1973", .libro, autores: ["Forte, Allen"], titulo: "The Structure of Atonal Music", anio: 1973,
+        editorial: "Yale University Press", lugar: "New Haven")
     /// Persichetti, la armonía del siglo XX: los acordes por cuartas y las escalas sintéticas con nombre (napolitanas,
     /// húngaras, enigmática…).
     public static let persichetti1961 = Referencia(
@@ -779,7 +784,7 @@ extension Referencia {
         .berliner1978, .knight1973, .harcourt1925, .siqueira1981, .rothgeb1995, .samson1977, .taruskin1987,
         .taruskin1996,
         .burkhart1973,
-        .levine1989, .persichetti1961, .delone1975, .austin1966, .shapiro1995, .beckerFagenMu, .aldwell2011,
+        .levine1989, .persichetti1961, .forte1973, .delone1975, .austin1966, .shapiro1995, .beckerFagenMu, .aldwell2011,
         .levine1995, .messiaen1944, .smith1977, .lendvai1971, .cohn1996,
         .temperleyTan2013,
         .slonimsky1947, .slonimsky1968, .burke2015,

@@ -46,6 +46,14 @@ extension NombresDeAcordes {
         .init(.mayorSeptimaMayorDecimotercera, "hamahirugarren handia"),
         .init(.menorSextaNovena, "minor seigarrena eta bederatzigarrena"),
         .init(.menorNovenaAnadida, "minorra bederatzigarren gehigarriarekin"),
+        .init(.dominanteDecimoterceraMenor, "zazpigarrena hamahirugarren txikiarekin"),
+        .init(.dominanteNovenaMenorDecimoterceraMenor, "zazpigarrena bederatzigarren eta hamahirugarren txikiekin"),
+        .init(.dominanteQuintaAumentadaNovenaAumentada, "zazpigarrena bosgarren eta bederatzigarren gehituekin"),
+        .init(.sus4SeptimaNovenaMenor, "zazpigarren esekia bederatzigarren txikiarekin", alias: ["akorde frigiarra"]),
+        .init(.sus4Sexta, "seigarren esekia"),
+        .init(.mayorUndecimaAnadida, "hamaikagarren gehigarria"),
+        .init(.menorUndecimaAnadida, "minorra hamaikagarren gehigarriarekin"),
+        .init(.disminuidoSeptimaMayor, "gutxitua zazpigarren handiarekin"),
         .init(.sextaAumentadaItaliana, "seigarren gehitu italiarra"),
         .init(.sextaAumentadaFrancesa, "seigarren gehitu frantsesa"),
         .init(.sextaAumentadaAlemana, "seigarren gehitu alemana"),
@@ -70,5 +78,7 @@ extension NombresDeAcordes {
         .init(.estructuraSuperiorBemolVI, "goiko egitura ♭VI"),
         .init(.porQuintas, "bostenezko akordea"),
         .init(.racimo, "mordo kromatikoa", alias: ["clusterra"]),
+        .init(.todosLosIntervalosZ15, "tarte guztien tetrakordea 4-Z15"),
+        .init(.todosLosIntervalosZ29, "tarte guztien tetrakordea 4-Z29"),
     ])
 }

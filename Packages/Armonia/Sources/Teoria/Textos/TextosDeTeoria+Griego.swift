@@ -134,6 +134,7 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "δεσπόζουσα backdoor",
         rearmonizacionIIRelativo: "σχετική ii",
         rearmonizacionDisminuido: "υποκατάσταση με ελαττωμένη",
+        rearmonizacionDisminuidaDeNotaComun: "ελαττωμένη έβδομη κοινού φθόγγου",
         secuenciaTerceras: "σε τρίτες",
         secuenciaCuartas: "σε τέταρτες",
         secuenciaGruposDeTres: "σε ομάδες των τριών",

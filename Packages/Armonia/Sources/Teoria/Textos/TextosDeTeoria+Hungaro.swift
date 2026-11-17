@@ -134,6 +134,7 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "backdoor domináns",
         rearmonizacionIIRelativo: "rokon ii",
         rearmonizacionDisminuido: "szűkített helyettesítés",
+        rearmonizacionDisminuidaDeNotaComun: "közös hangú szűkített szeptimakkord",
         secuenciaTerceras: "tercekben",
         secuenciaCuartas: "kvartokban",
         secuenciaGruposDeTres: "hármas csoportokban",

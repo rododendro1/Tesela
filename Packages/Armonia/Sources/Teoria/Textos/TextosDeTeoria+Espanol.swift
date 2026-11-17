@@ -134,6 +134,7 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "backdoor",
         rearmonizacionIIRelativo: "ii relativo",
         rearmonizacionDisminuido: "sustituto disminuido",
+        rearmonizacionDisminuidaDeNotaComun: "disminuida de nota común",
         secuenciaTerceras: "por terceras",
         secuenciaCuartas: "por cuartas",
         secuenciaGruposDeTres: "en grupos de tres",

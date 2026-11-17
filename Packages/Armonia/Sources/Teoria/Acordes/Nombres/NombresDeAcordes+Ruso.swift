@@ -46,6 +46,14 @@ extension NombresDeAcordes {
         .init(.mayorSeptimaMayorDecimotercera, "большой мажорный терцдецимаккорд"),
         .init(.menorSextaNovena, "минорный аккорд с секстой и ноной"),
         .init(.menorNovenaAnadida, "минорный аккорд с добавленной ноной"),
+        .init(.dominanteDecimoterceraMenor, "доминантсептаккорд с малой терцдецимой"),
+        .init(.dominanteNovenaMenorDecimoterceraMenor, "доминантсептаккорд с малой ноной и малой терцдецимой"),
+        .init(.dominanteQuintaAumentadaNovenaAumentada, "доминантсептаккорд с увеличенной квинтой и увеличенной ноной"),
+        .init(.sus4SeptimaNovenaMenor, "доминантсептаккорд с задержанием кварты и малой ноной", alias: ["фригийский аккорд"]),
+        .init(.sus4Sexta, "секстаккорд с задержанием кварты"),
+        .init(.mayorUndecimaAnadida, "мажорный аккорд с добавленной ундецимой"),
+        .init(.menorUndecimaAnadida, "минорный аккорд с добавленной ундецимой"),
+        .init(.disminuidoSeptimaMayor, "уменьшённый аккорд с большой септимой"),
         .init(.sextaAumentadaItaliana, "итальянский увеличенный секстаккорд"),
         .init(.sextaAumentadaFrancesa, "французский увеличенный секстаккорд"),
         .init(.sextaAumentadaAlemana, "немецкий увеличенный секстаккорд"),
@@ -70,5 +78,7 @@ extension NombresDeAcordes {
         .init(.estructuraSuperiorBemolVI, "верхняя структура ♭VI"),
         .init(.porQuintas, "квинтовый аккорд"),
         .init(.racimo, "хроматический кластер"),
+        .init(.todosLosIntervalosZ15, "всеинтервальный тетрахорд 4-Z15"),
+        .init(.todosLosIntervalosZ29, "всеинтервальный тетрахорд 4-Z29"),
     ])
 }

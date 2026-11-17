@@ -144,6 +144,7 @@ struct TextosDeTeoria: TextosTraducidos {
     let rearmonizacionBackdoor: String
     let rearmonizacionIIRelativo: String
     let rearmonizacionDisminuido: String
+    let rearmonizacionDisminuidaDeNotaComun: String
     let secuenciaTerceras: String
     let secuenciaCuartas: String
     let secuenciaGruposDeTres: String

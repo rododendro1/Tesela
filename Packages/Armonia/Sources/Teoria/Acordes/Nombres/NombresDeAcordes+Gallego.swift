@@ -46,6 +46,14 @@ extension NombresDeAcordes {
         .init(.mayorSeptimaMayorDecimotercera, "décimo terceira maior"),
         .init(.menorSextaNovena, "menor sexta e novena"),
         .init(.menorNovenaAnadida, "menor con novena engadida"),
+        .init(.dominanteDecimoterceraMenor, "sétima con decimoterceira menor"),
+        .init(.dominanteNovenaMenorDecimoterceraMenor, "sétima con novena e decimoterceira menores"),
+        .init(.dominanteQuintaAumentadaNovenaAumentada, "sétima con quinta e novena aumentadas"),
+        .init(.sus4SeptimaNovenaMenor, "sétima suspendida con novena menor", alias: ["acorde frixio"]),
+        .init(.sus4Sexta, "sexta suspendida"),
+        .init(.mayorUndecimaAnadida, "undécima engadida"),
+        .init(.menorUndecimaAnadida, "menor con undécima engadida"),
+        .init(.disminuidoSeptimaMayor, "diminuído con sétima maior"),
         .init(.sextaAumentadaItaliana, "sexta aumentada italiana"),
         .init(.sextaAumentadaFrancesa, "sexta aumentada francesa"),
         .init(.sextaAumentadaAlemana, "sexta aumentada alemá"),
@@ -70,5 +78,7 @@ extension NombresDeAcordes {
         .init(.estructuraSuperiorBemolVI, "estrutura superior ♭VI"),
         .init(.porQuintas, "acorde por quintas"),
         .init(.racimo, "acio cromático", alias: ["cluster"]),
+        .init(.todosLosIntervalosZ15, "tetracordo de todos os intervalos 4-Z15"),
+        .init(.todosLosIntervalosZ29, "tetracordo de todos os intervalos 4-Z29"),
     ])
 }

@@ -148,6 +148,37 @@ extension AcordeConNombre {
         intervalos: [.unisono, .terceraMenor, .quintaJusta, .sextaMayor, .novenaMayor], referencias: [.levine1995])
     public static let menorNovenaAnadida = AcordeConNombre(
         nombre: "menor con novena añadida", intervalos: [.unisono, .terceraMenor, .quintaJusta, .novenaMayor])
+    /// La dominante de la menor armónica y del mixolidio ♭6: la séptima con la decimotercera menor.
+    public static let dominanteDecimoterceraMenor = AcordeConNombre(
+        nombre: "séptima con decimotercera menor",
+        intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .decimoterceraMenor],
+        referencias: [.levine1995])
+    /// La dominante del frigio dominante (el 5.º modo de la menor armónica): la novena y la decimotercera menores.
+    public static let dominanteNovenaMenorDecimoterceraMenor = AcordeConNombre(
+        nombre: "séptima con novena y decimotercera menores",
+        intervalos: [.unisono, .terceraMayor, .quintaJusta, .septimaMenor, .novenaMenor, .decimoterceraMenor],
+        referencias: [.levine1995])
+    public static let dominanteQuintaAumentadaNovenaAumentada = AcordeConNombre(
+        nombre: "séptima con quinta y novena aumentadas",
+        intervalos: [.unisono, .terceraMayor, .quintaAumentada, .septimaMenor, .novenaAumentada],
+        referencias: [.levine1995])
+    /// El del frigio: la séptima suspendida con la novena menor.
+    public static let sus4SeptimaNovenaMenor = AcordeConNombre(
+        nombre: "séptima suspendida con novena menor",
+        intervalos: [.unisono, .cuartaJusta, .quintaJusta, .septimaMenor, .novenaMenor], alias: ["acorde frigio"],
+        referencias: [.levine1995])
+    public static let sus4Sexta = AcordeConNombre(
+        nombre: "sexta suspendida", intervalos: [.unisono, .cuartaJusta, .quintaJusta, .sextaMayor],
+        referencias: [.levine1995])
+    public static let mayorUndecimaAnadida = AcordeConNombre(
+        nombre: "undécima añadida", intervalos: [.unisono, .terceraMayor, .quintaJusta, .undecima])
+    public static let menorUndecimaAnadida = AcordeConNombre(
+        nombre: "menor con undécima añadida", intervalos: [.unisono, .terceraMenor, .quintaJusta, .undecima])
+    /// La séptima disminuida con la séptima mayor en vez de la disminuida, que se oye como un acorde de paso o como
+    /// la disminuida con una apoyatura.
+    public static let disminuidoSeptimaMayor = AcordeConNombre(
+        nombre: "disminuido con séptima mayor",
+        intervalos: [.unisono, .terceraMenor, .quintaDisminuida, .septimaMayor], referencias: [.levine1995])
     public static let sextaAumentadaItaliana = AcordeConNombre(
         nombre: "sexta aumentada italiana", intervalos: [.unisono, .terceraMayor, .sextaAumentada], estilos: [.clasica],
         referencias: [.aldwell2011])
@@ -177,7 +208,9 @@ extension AcordeConNombre {
         .dominanteNovenaAumentada, .dominanteUndecimaAumentada, .mayorSeptimaMayorUndecimaAumentada,
         .dominanteNovenaUndecimaAumentada, .dominanteDecimoterceraNovenaMenor, .semidisminuidoNovena, .sus4Novena,
         .sus4Decimotercera, .dominanteAlterado, .menorSeptimaMayorNovena, .mayorSeptimaMayorDecimotercera,
-        .menorSextaNovena, .menorNovenaAnadida, .sextaAumentadaItaliana,
+        .menorSextaNovena, .menorNovenaAnadida, .dominanteDecimoterceraMenor, .dominanteNovenaMenorDecimoterceraMenor,
+        .dominanteQuintaAumentadaNovenaAumentada, .sus4SeptimaNovenaMenor, .sus4Sexta, .mayorUndecimaAnadida,
+        .menorUndecimaAnadida, .disminuidoSeptimaMayor, .sextaAumentadaItaliana,
         .sextaAumentadaFrancesa, .sextaAumentadaAlemana, .sextaAumentadaSuiza,
     ]
 }
