@@ -31,7 +31,7 @@ extension Escala {
     ///     Escala(.re, .dorico).acordesCaracteristicos    // [Mim, Sol]
     public var acordesCaracteristicos: [Acorde] {
         guard let caracteristica = notaCaracteristica else { return [] }
-        return armonizar().dropFirst().compactMap { $0 }.filter { acorde in
+        return acordesDeLosGrados().dropFirst().compactMap { $0 }.filter { acorde in
             acorde.notas.contains(caracteristica) && acorde.tipo.estructura.calidadDeTriada != .disminuida
         }
     }

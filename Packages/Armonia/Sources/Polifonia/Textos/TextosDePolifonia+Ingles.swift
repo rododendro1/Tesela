@@ -45,6 +45,15 @@ extension TextosDePolifonia {
         especieConElContrapuntoDebajo: "Species {1}, counterpoint below the cantus firmus",
         contrapuntoAVariasVoces: "Counterpoint in {1} parts",
         vozDelContrapunto: "voice {1}",
-        sinFaltas: "No faults."
+        sinFaltas: "No faults.",
+        realizacionSinNotas: "There are no chords or notes to write.",
+        realizacionSopranoDeOtraLongitud: "The soprano must have one note per chord (notes: {1}; chords: {2}).",
+        realizacionNotaAjena: "The soprano note is not in chord {1}.",
+        realizacionSopranoFueraDeTesitura: "The soprano note of chord {1} is out of its range.",
+        realizacionDemasiadasNotas: "Chord {1} has more than four notes that cannot be left out.",
+        realizacionSinDisposicion: "Chord {1} cannot be written in four parts without errors.",
+        realizacionNotaSinAcorde: "No chord in the key contains note {1} of the melody.",
+        realizacionSinEnlaceSinFaltas: "The chords cannot be connected in four parts without errors.",
+        realizacionOtraMelodia: "The soprano is not the melody of the harmonization."
     )
 }

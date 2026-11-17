@@ -91,9 +91,9 @@ import Testing
         #expect(laMenor.nombreDeGrado(de: "Sib") == nil)
         #expect(Tonalidad(.do).nombreDeGrado(de: .si) == .sensible)
 
-        #expect(laMenor.armonizar().map { $0?.cifrado } == ["Lam", "Si°", "Do", "Rem", "Mi", "Fa", "Sol♯°"])
+        #expect(laMenor.acordesDeLosGrados().map { $0?.cifrado } == ["Lam", "Si°", "Do", "Rem", "Mi", "Fa", "Sol♯°"])
         #expect(
-            laMenor.armonizar(notas: 4).map { $0?.cifrado } == [
+            laMenor.acordesDeLosGrados(notas: 4).map { $0?.cifrado } == [
                 "Lam7", "Sim7(♭5)", "Domaj7", "Rem7", "Mi7", "Famaj7", "Sol♯°7",
             ])
         #expect(laMenor.romanos().map { $0?.description } == ["i", "ii°", "III", "iv", "V", "VI", "vii°"])

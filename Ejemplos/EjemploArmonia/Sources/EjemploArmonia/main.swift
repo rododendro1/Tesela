@@ -169,7 +169,7 @@ print("La menor melódica bajando:", lista(Escala(.la, .menorMelodica).alturas(o
 titulo("Armonización")
 for escala in [Escala(.do), Escala(.la, .menorArmonica), Escala(.la, .menorMelodica)] {
     print(escala)
-    print("  ", escala.armonizar(notas: 4).map { $0?.cifrado ?? "?" }.joined(separator: "  "))
+    print("  ", escala.acordesDeLosGrados(notas: 4).map { $0?.cifrado ?? "?" }.joined(separator: "  "))
     print("  ", escala.romanos(notas: 4).map { $0?.description ?? "?" }.joined(separator: "  "))
 }
 print(
@@ -192,7 +192,7 @@ print("  Otros nombres de la escala mayor:", TipoDeEscala.mayor.equivalentes.map
 titulo("Tonalidad")
 let laMenor: Tonalidad = "La menor"
 print("  \(laMenor): armadura \(laMenor.armadura), relativa \(laMenor.relativa), homónima \(laMenor.homonima)")
-print("  Armonía:", laMenor.armonizar(notas: 4).map { $0?.cifrado ?? "?" }.joined(separator: " "))
+print("  Armonía:", laMenor.acordesDeLosGrados(notas: 4).map { $0?.cifrado ?? "?" }.joined(separator: " "))
 print("  Cifrado romano:", laMenor.romanos(notas: 4).map { $0?.description ?? "?" }.joined(separator: " "))
 if let sol = laMenor.nombreDeGrado(de: .sol), let solSostenido = laMenor.nombreDeGrado(de: "Sol#") {
     print("  Sol y Sol♯:", sol, "/", solSostenido)

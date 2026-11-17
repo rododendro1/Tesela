@@ -38,7 +38,7 @@ extension LineaDeComandos {
         let tetracordos: Bool
         /// `--bibtex`: solo sus referencias, en BibTeX.
         let bibtex: Bool
-        /// `--cuartas`: los acordes de cada grado por cuartas (`Escala.armonizar(notas:por:)`).
+        /// `--cuartas`: los acordes de cada grado por cuartas (`Escala.acordesDeLosGrados(notas:por:)`).
         var cuartas = false
         /// `--tensiones-disponibles`: la cuatríada de cada grado con sus tensiones
         /// (`Escala.tensionesDisponibles(grado:)`).

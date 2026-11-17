@@ -149,7 +149,7 @@ public enum PresentacionDeCoral {
         var sonido = Escucha.silencio
         if !conOctavas {
             avisos.append(.faltanOctavas)
-        } else if let armonizada = tonalidad.armonizarACuatroVoces(alturas) {
+        } else if let armonizada = try? tonalidad.armonizarACuatroVoces(melodia: alturas) {
             filas = self.filas(armonizada.armonizacion.analisis, armonizada.coral, notacion)
             ficheros = self.ficheros(armonizada.coral, tonalidad, notacion, nombre: "Armonización")
             sonido =
@@ -175,7 +175,7 @@ public enum PresentacionDeCoral {
     /// voces, como `realizar(_:en:notacion:)`.
     public static func realizar(_ analisis: AnalisisArmonico, en notacion: Notacion) -> CoralPresentado {
         let titulo = analisis.tonalidad.nombre(en: notacion)
-        guard let voces = Coral.realizar(analisis.acordes.map(\.acorde), en: analisis.tonalidad) else {
+        guard let voces = try? Coral(realizando: analisis.acordes.map(\.acorde), en: analisis.tonalidad) else {
             return CoralPresentado(
                 titulo: titulo, propuestas: [], filas: [],
                 avisos: [.sinRealizacion],

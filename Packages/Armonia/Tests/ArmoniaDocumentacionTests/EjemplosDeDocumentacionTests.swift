@@ -1497,7 +1497,7 @@ import Hexagonos
         comprobar(laMenor.armadura, #"0"#, doc, 1)
         _ = (laMenor.relativa, laMenor.homonima)
         comprobar(laMenor.vecinas, #"[Do mayor, Sol mayor, Mi menor, Fa mayor, Re menor]"#, doc, 3)
-        comprobar(laMenor.armonizar(notas: 4), #"Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7"#, doc, 4)
+        comprobar(laMenor.acordesDeLosGrados(notas: 4), #"Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7"#, doc, 4)
         _ = laMenor.romanos()
         comprobarIgual(laMenor.nombreDeGrado(de: .sol), .subtonica, doc, 6)
         comprobar(Tonalidad.circuloDeQuintas(.menor), #"La♭ menor … La♯ menor"#, doc, 7)
@@ -1659,12 +1659,12 @@ import Hexagonos
     @Test func tonalidad17() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 17
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 17)
-        let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+        let coral = try Coral(realizando: ["Do", "Fa", "Sol7", "Do"])
         comprobar(coral.esCorrecta, #"true"#, doc, 1)
         comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 2)
-        let conSoprano = Coral.realizar(["Do", "Fa", "Sol", "Do"], soprano: ["Mi4", "Fa4", "Re4", "Do4"])!
+        let conSoprano = try Coral(realizando: ["Do", "Fa", "Sol", "Do"], soprano: ["Mi4", "Fa4", "Re4", "Do4"])
         comprobar(conSoprano.voz(3), #"[Mi4, Fa4, Re4, Do4]"#, doc, 5)
-        comprobar(Coral.realizar(["Do", "Rem"], soprano: ["Sol4", "La4"]), #"nil"#, doc, 6)
+        comprobar(try? Coral(realizando: ["Do", "Rem"], soprano: ["Sol4", "La4"]), #"nil"#, doc, 6)
     }
 
     @Test func tonalidad18() throws {
@@ -1680,7 +1680,7 @@ import Hexagonos
     @Test func tonalidad19() throws {
         // Sources/Armonia/Armonia.docc/Tonalidad.md, bloque 19
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Tonalidad.md"#, 19)
-        let armonizada = Tonalidad(.do).armonizarACuatroVoces(["Mi4", "Fa4", "Re4", "Do4"])!
+        let armonizada = try Tonalidad(.do).armonizarACuatroVoces(melodia: ["Mi4", "Fa4", "Re4", "Do4"])
         comprobar(armonizada.armonizacion.cifrados, #"["I", "IV", "V", "I"]"#, doc, 1)
         comprobar(armonizada.coral.voz(3), #"[Mi4, Fa4, Re4, Do4]"#, doc, 2)
         comprobar(armonizada.coral.esCorrecta, #"true"#, doc, 3)
@@ -1742,7 +1742,7 @@ import Hexagonos
         comprobar(try Tonalidad(.do).acorde(sobre: .si, cifras: "65"), #"Sol7/Si"#, doc, 0)
         comprobar(try Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#"), #"Mi"#, doc, 1)
         comprobar(try Tonalidad(.la, .menor).acordes(bajoCifrado: "La Fa:6 Mi:# La"), #"[Lam, Rem/Fa, Mi, Lam]"#, doc, 2)
-        let realizado = try Coral.realizar(bajoCifrado: "Do Fa Sol:7 Do", en: Tonalidad(.do))!
+        let realizado = try Coral(bajoCifrado: "Do Fa Sol:7 Do", en: Tonalidad(.do))
         comprobar(realizado.esCorrecta, #"true"#, doc, 4)
     }
 
@@ -1922,7 +1922,7 @@ import Hexagonos
         comprobar(menor.notas, #"[La, Si, Do, Re, Mi, Fa, Sol♯]"#, doc, 3)
         comprobar(menor.romanos(notas: 4), #"i(maj7) iiø7 ♭III+maj7 iv7 V7 ♭VImaj7 vii°7"#, doc, 4)
         let laMenor: Tonalidad = "La menor"
-        comprobar(laMenor.armonizar(notas: 4), #"Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7"#, doc, 8)
+        comprobar(laMenor.acordesDeLosGrados(notas: 4), #"Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7"#, doc, 8)
     }
 
     @Test func tutorialAnalisis01011() throws {
@@ -2284,7 +2284,7 @@ import Hexagonos
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-01-02.swift"#, 1)
         let laMenor = Tonalidad(.la, .menor)
         comprobar(try laMenor.acordes(bajoCifrado: "La Fa:6 Mi:# La"), #"[Lam, Rem/Fa, Mi, Lam]"#, doc, 3)
-        let realizado = try Coral.realizar(bajoCifrado: "La Fa:6 Mi:# La", en: laMenor)!
+        let realizado = try Coral(bajoCifrado: "La Fa:6 Mi:# La", en: laMenor)
         comprobar(realizado.esCorrecta, #"true"#, doc, 5)
         comprobar(realizado.voz(0).map(\.nota), #"[La, Fa, Mi, La]"#, doc, 6)
     }
@@ -2292,7 +2292,7 @@ import Hexagonos
     @Test func tutorialPartitura02011() throws {
         // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-02-01.swift, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-02-01.swift"#, 1)
-        let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+        let coral = try Coral(realizando: ["Do", "Fa", "Sol7", "Do"])
         comprobar(coral.esCorrecta, #"true"#, doc, 3)
         comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 4)
     }
@@ -2300,18 +2300,18 @@ import Hexagonos
     @Test func tutorialPartitura02021() throws {
         // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-02-02.swift, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-02-02.swift"#, 1)
-        let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+        let coral = try Coral(realizando: ["Do", "Fa", "Sol7", "Do"])
         comprobar(coral.esCorrecta, #"true"#, doc, 3)
         comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 4)
-        let conSoprano = Coral.realizar(["Do", "Fa", "Sol", "Do"], soprano: ["Mi4", "Fa4", "Re4", "Do4"])!
+        let conSoprano = try Coral(realizando: ["Do", "Fa", "Sol", "Do"], soprano: ["Mi4", "Fa4", "Re4", "Do4"])
         comprobar(conSoprano.voz(3), #"[Mi4, Fa4, Re4, Do4]"#, doc, 7)
-        comprobar(Coral.realizar(["Do", "Rem"], soprano: ["Sol4", "La4"]), #"nil"#, doc, 8)
+        comprobar(try? Coral(realizando: ["Do", "Rem"], soprano: ["Sol4", "La4"]), #"nil"#, doc, 8)
     }
 
     @Test func tutorialPartitura03011() throws {
         // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-01.swift, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-01.swift"#, 1)
-        let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+        let coral = try Coral(realizando: ["Do", "Fa", "Sol7", "Do"])
         comprobar(coral.esCorrecta, #"true"#, doc, 3)
         comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 4)
         let partitura = coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia"))
@@ -2321,7 +2321,7 @@ import Hexagonos
     @Test func tutorialPartitura03021() throws {
         // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-02.swift, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-02.swift"#, 1)
-        let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+        let coral = try Coral(realizando: ["Do", "Fa", "Sol7", "Do"])
         comprobar(coral.esCorrecta, #"true"#, doc, 3)
         comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 4)
         let partitura = coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia"))
@@ -2333,7 +2333,7 @@ import Hexagonos
     @Test func tutorialPartitura03031() throws {
         // Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-03.swift, bloque 1
         let doc = BloqueDeDocumentacion(#"Sources/Armonia/Armonia.docc/Resources/Tutoriales/partitura-03-03.swift"#, 1)
-        let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+        let coral = try Coral(realizando: ["Do", "Fa", "Sol7", "Do"])
         comprobar(coral.esCorrecta, #"true"#, doc, 3)
         comprobar(coral.voz(0).map(\.nota), #"[Do, Fa, Sol, Do]"#, doc, 4)
         let partitura = coral.partitura(duracion: .blanca, encabezado: Encabezado(titulo: "Cadencia"))

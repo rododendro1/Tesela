@@ -55,6 +55,17 @@ struct TextosDePolifonia: TextosTraducidos {
     let vozDelContrapunto: Plantilla  // {1} n
     let sinFaltas: String
 
+    // MARK: ErrorDeRealizacion.swift
+    let realizacionSinNotas: String
+    let realizacionSopranoDeOtraLongitud: Plantilla  // {1} notas, {2} acordes
+    let realizacionNotaAjena: Plantilla  // {1} acorde
+    let realizacionSopranoFueraDeTesitura: Plantilla  // {1} acorde
+    let realizacionDemasiadasNotas: Plantilla  // {1} acorde
+    let realizacionSinDisposicion: Plantilla  // {1} acorde
+    let realizacionNotaSinAcorde: Plantilla  // {1} nota
+    let realizacionSinEnlaceSinFaltas: String
+    let realizacionOtraMelodia: String
+
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.
     static let traducidos = Traducido<TextosDePolifonia>(

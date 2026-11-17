@@ -81,14 +81,14 @@ enum Casos {
             let alturas = repetir(melodia, hasta: n)
             casos.append(
                 Caso(grupo: "Armonizar a cuatro voces", nombre: "\(n) notas") {
-                    doMayor.armonizarACuatroVoces(alturas)?.coral.acordes.count ?? 0
+                    (try? doMayor.armonizarACuatroVoces(melodia: alturas))?.coral.acordes.count ?? 0
                 })
         }
         for n in longitudes {
             let sucesion = repetir(progresion, hasta: n).compactMap { try? Acorde(leyendo: $0) }
             casos.append(
                 Caso(grupo: "Realizar a cuatro voces", nombre: "\(n) acordes") {
-                    Coral.realizar(sucesion, en: doMayor)?.acordes.count ?? 0
+                    (try? Coral(realizando: sucesion, en: doMayor))?.acordes.count ?? 0
                 })
         }
 

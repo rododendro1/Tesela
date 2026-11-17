@@ -14,7 +14,7 @@ let laMenor: Tonalidad = "La menor"
 laMenor.armadura                      // 0
 laMenor.relativa, laMenor.homonima    // Do mayor, La mayor
 laMenor.vecinas                       // [Do mayor, Sol mayor, Mi menor, Fa mayor, Re menor]
-laMenor.armonizar(notas: 4)          // Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7
+laMenor.acordesDeLosGrados(notas: 4)          // Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7
 laMenor.romanos()                     // i ii° III iv V VI vii°
 laMenor.nombreDeGrado(de: .sol)             // .subtonica  (y Sol♯ es la sensible)
 Tonalidad.circuloDeQuintas(.menor)    // La♭ menor … La♯ menor
@@ -284,21 +284,22 @@ cierre.partitura(conCifrados: true, conAnalisis: true).mei().contains("<syl>V</s
 
 ## Realización a cuatro voces
 
-`Coral.realizar(_:soprano:en:)` escribe unos acordes a cuatro voces sin ninguna de
+`Coral(realizando:soprano:en:)` escribe unos acordes a cuatro voces sin ninguna de
 las faltas anteriores, con el bajo del cifrado y moviendo las voces lo menos posible (en
 semitonos, como `conduccionMinima(hasta:)`, pero con alturas). Duplica antes la fundamental que
 la quinta y esta antes que la tercera, nunca la sensible ni la séptima; puede omitir la quinta
 justa; hace subir la sensible a la tónica y bajar la séptima por grado conjunto. Con `soprano`,
-la melodía del soprano queda fijada:
+la melodía del soprano queda fijada. Si no se puede, lanza un `ErrorDeRealizacion` que dice por qué
+(una nota del soprano que no es del acorde, que se sale de su tesitura, acordes que no se enlazan sin faltas…):
 
 ```swift
-let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+let coral = try Coral(realizando: ["Do", "Fa", "Sol7", "Do"])
 coral.esCorrecta                      // true
 coral.voz(0).map(\.nota)              // [Do, Fa, Sol, Do]
 
-let conSoprano = Coral.realizar(["Do", "Fa", "Sol", "Do"], soprano: ["Mi4", "Fa4", "Re4", "Do4"])!
+let conSoprano = try Coral(realizando: ["Do", "Fa", "Sol", "Do"], soprano: ["Mi4", "Fa4", "Re4", "Do4"])
 conSoprano.voz(3)                     // [Mi4, Fa4, Re4, Do4]
-Coral.realizar(["Do", "Rem"], soprano: ["Sol4", "La4"])   // nil: quintas paralelas con el bajo
+try? Coral(realizando: ["Do", "Rem"], soprano: ["Sol4", "La4"])   // nil: quintas paralelas con el bajo
 ```
 
 ## Armonización de melodías
@@ -319,11 +320,11 @@ propuestas[0].valor.description      // "Do Fa Sol Do (I–IV–V–I)"
 Tonalidad(.do).armonizar(melodia: ["Mi", "Fa#", "Sol", "Do"])[0].valor.cifrados   // ["I", "V/V", "V", "I"]
 ```
 
-`armonizarACuatroVoces(_:)` elige a la vez los acordes y las disposiciones, con la melodía en el
+`armonizarACuatroVoces(melodia:)` elige a la vez los acordes y las disposiciones, con la melodía en el
 soprano: de las armonizaciones que se pueden realizar sin faltas, la de menos coste.
 
 ```swift
-let armonizada = Tonalidad(.do).armonizarACuatroVoces(["Mi4", "Fa4", "Re4", "Do4"])!
+let armonizada = try Tonalidad(.do).armonizarACuatroVoces(melodia: ["Mi4", "Fa4", "Re4", "Do4"])
 armonizada.armonizacion.cifrados      // ["I", "IV", "V", "I"]
 armonizada.coral.voz(3)               // [Mi4, Fa4, Re4, Do4]
 armonizada.coral.esCorrecta           // true
@@ -453,14 +454,14 @@ intervalos en la armadura de la tonalidad (en menor, la natural: la sensible se 
 alteración). Completa las abreviaturas (nada o «5» es la tríada, «6» y «64» sus inversiones,
 «7», «65», «43» y «42» la séptima y las suyas), y una alteración sola altera la tercera.
 `acordes(bajoCifrado:)` lee una línea entera, con cada nota del bajo y sus cifras tras dos
-puntos, y `Coral.realizar(bajoCifrado:en:soprano:)` la realiza a cuatro voces. Unas cifras que no
+puntos, y `Coral(bajoCifrado:en:soprano:)` la realiza a cuatro voces. Unas cifras que no
 se leen lanzan `.cifrasNoValidas`, y unas que no forman acorde, `.cifrasSinAcorde`.
 
 ```swift
 try Tonalidad(.do).acorde(sobre: .si, cifras: "65")                    // Sol7/Si
 try Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#")             // Mi
 try Tonalidad(.la, .menor).acordes(bajoCifrado: "La Fa:6 Mi:# La")     // [Lam, Rem/Fa, Mi, Lam]
-let realizado = try Coral.realizar(bajoCifrado: "Do Fa Sol:7 Do", en: Tonalidad(.do))!
+let realizado = try Coral(bajoCifrado: "Do Fa Sol:7 Do", en: Tonalidad(.do))
 realizado.esCorrecta                  // true
 ```
 

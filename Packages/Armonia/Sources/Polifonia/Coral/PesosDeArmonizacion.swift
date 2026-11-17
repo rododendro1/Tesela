@@ -1,5 +1,5 @@
 // Lo que pesa cada cosa al armonizar una melodía: los costes que suman ``Tonalidad/armonizar(melodia:propuestas:)``
-// y ``Tonalidad/armonizarACuatroVoces(_:)``. Cuanto más cuesta, menos se elige; 0 es lo natural.
+// y ``Tonalidad/armonizarACuatroVoces(melodia:)``. Cuanto más cuesta, menos se elige; 0 es lo natural.
 
 /// Los costes de la armonización, juntos y con nombre: los de cada acorde, los de empezar, los de cada paso de un
 /// acorde al siguiente según sus funciones y los de terminar.

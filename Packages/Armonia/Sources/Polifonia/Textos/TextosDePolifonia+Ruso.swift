@@ -45,6 +45,15 @@ extension TextosDePolifonia {
         especieConElContrapuntoDebajo: "Вид {1}, контрапункт под cantus firmus",
         contrapuntoAVariasVoces: "{1}-голосный контрапункт",
         vozDelContrapunto: "голос {1}",
-        sinFaltas: "Ошибок нет."
+        sinFaltas: "Ошибок нет.",
+        realizacionSinNotas: "Нет ни аккордов, ни нот для записи.",
+        realizacionSopranoDeOtraLongitud: "В сопрано должна быть одна нота на аккорд (нот: {1}; аккордов: {2}).",
+        realizacionNotaAjena: "Нота сопрано не входит в аккорд {1}.",
+        realizacionSopranoFueraDeTesitura: "Нота сопрано в аккорде {1} вне его диапазона.",
+        realizacionDemasiadasNotas: "В аккорде {1} больше четырёх звуков, которые нельзя пропустить.",
+        realizacionSinDisposicion: "Аккорд {1} нельзя записать на четыре голоса без ошибок.",
+        realizacionNotaSinAcorde: "Ни один аккорд тональности не содержит ноту {1} мелодии.",
+        realizacionSinEnlaceSinFaltas: "Аккорды нельзя соединить на четыре голоса без ошибок.",
+        realizacionOtraMelodia: "Сопрано не совпадает с мелодией гармонизации."
     )
 }

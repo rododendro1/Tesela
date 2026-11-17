@@ -210,9 +210,15 @@ public struct Escala: Hashable, Sendable {
     /// Los acordes de `notas` notas (3 por defecto) de todos los grados, por terceras o por cuartas
     /// (``acorde(grado:notas:por:)``): `nil` en los grados que no forman un tipo conocido.
     ///
-    ///     Escala(.re, .dorico).armonizar(notas: 4, por: .cuartas)[1]?.fundamental   // Mi (Mi–La–Re–Sol)
-    public func armonizar(notas cuantas: Int = 3, por apilamiento: Apilamiento = .terceras) -> [Acorde?] {
+    ///     Escala(.re, .dorico).acordesDeLosGrados(notas: 4, por: .cuartas)[1]?.fundamental   // Mi (Mi–La–Re–Sol)
+    public func acordesDeLosGrados(notas cuantas: Int = 3, por apilamiento: Apilamiento = .terceras) -> [Acorde?] {
         (1...tipo.intervalos.count).map { acorde(grado: $0, notas: cuantas, por: apilamiento) }
+    }
+
+    /// Los acordes de todos los grados: el nombre de antes de ``acordesDeLosGrados(notas:por:)``.
+    @available(*, deprecated, renamed: "acordesDeLosGrados(notas:por:)")
+    public func armonizar(notas cuantas: Int = 3, por apilamiento: Apilamiento = .terceras) -> [Acorde?] {
+        acordesDeLosGrados(notas: cuantas, por: apilamiento)
     }
 
     /// Las tensiones disponibles sobre la cuatríada de un grado, con el modo de la escala que empieza en él: la

@@ -99,9 +99,10 @@ import Testing
                 #expect(tonal.triadas == nil && tonal.cuatriadas == nil, Comment(rawValue: tipo.nombre))
                 continue
             }
-            #expect(tonal.triadas == escala.armonizar().map { $0?.tipo }, Comment(rawValue: tipo.nombre))
+            #expect(tonal.triadas == escala.acordesDeLosGrados().map { $0?.tipo }, Comment(rawValue: tipo.nombre))
             #expect(
-                tonal.cuatriadas == escala.armonizar(notas: 4).map { $0?.tipo }, Comment(rawValue: tipo.nombre))
+                tonal.cuatriadas == escala.acordesDeLosGrados(notas: 4).map { $0?.tipo }, Comment(rawValue: tipo.nombre)
+            )
         }
     }
 

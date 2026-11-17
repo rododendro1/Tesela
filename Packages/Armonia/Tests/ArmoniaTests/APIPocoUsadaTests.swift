@@ -137,10 +137,12 @@ import Testing
         #expect(Coral.nombreDeVoz(4, de: 5, en: .compacta(.espanol)) == "voz 5")
         let armonizacion = try #require(
             Tonalidad(.do, .mayor).armonizar(melodia: [Nota("Mi"), Nota("Re"), Nota("Do")]).first?.valor)
-        #expect(armonizacion.realizar(soprano: [Altura("Mi5"), Altura("Re5"), Altura("Do5")]) != nil)
-        #expect(armonizacion.realizar(soprano: [Altura("Mi5"), Altura("Mi5"), Altura("Do5")]) == nil)
+        #expect(try armonizacion.coral(soprano: [Altura("Mi5"), Altura("Re5"), Altura("Do5")]).esCorrecta)
+        #expect(throws: ErrorDeRealizacion.otraMelodia) {
+            try armonizacion.coral(soprano: [Altura("Mi5"), Altura("Mi5"), Altura("Do5")])
+        }
         // Una melodía de una sola nota.
-        #expect(Tonalidad(.do, .mayor).armonizarACuatroVoces([Altura("Do5")])?.coral.acordes.count == 1)
+        #expect(try Tonalidad(.do, .mayor).armonizarACuatroVoces(melodia: [Altura("Do5")]).coral.acordes.count == 1)
     }
 }
 

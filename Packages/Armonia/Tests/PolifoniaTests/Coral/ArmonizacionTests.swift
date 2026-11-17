@@ -31,7 +31,7 @@ import Testing
         let disminuida = Acorde("Re#°7").cambiarInversion(3)
         #expect(disminuida.bajo == .do)
         // El Re♯ de la melodía solo lo tiene ella, y va al I.
-        let armonizada = try #require(doMayor.armonizarACuatroVoces(["Mi5", "Re#5", "Mi5"]))
+        let armonizada = try doMayor.armonizarACuatroVoces(melodia: ["Mi5", "Re#5", "Mi5"])
         #expect(armonizada.armonizacion.acordes == ["Do", disminuida, "Do"])
         #expect(armonizada.armonizacion.cifrados[1].hasPrefix("♯ii°"))
         #expect(armonizada.coral.esCorrecta)
@@ -42,7 +42,7 @@ import Testing
             #expect(zip(voz, voz.dropFirst()).allSatisfy { abs($0.midi - $1.midi) <= 2 }, "\(voz)")
         }
         // Sin pedal, la nota común también se queda en su voz.
-        let coral = try #require(Coral.realizar(["Do", "Re#°7", "Do"], en: doMayor))
+        let coral = try Coral(realizando: ["Do", "Re#°7", "Do"], en: doMayor)
         let conElDo = try #require((0..<4).first { coral.voz($0)[1].nota == .do })
         #expect(coral.voz(conElDo)[2] == coral.voz(conElDo)[1])
         #expect(Coral.notaComun(de: "Re#°7", a: "Do") == .do && Coral.notaComun(de: "Sol7", a: "Do") == nil)
@@ -118,8 +118,11 @@ import Testing
         sourceLocation: SourceLocation = #_sourceLocation
     ) {
         let acordes = texto.split(separator: " ").map { try! Acorde(leyendo: String($0)) }
-        guard let coral = Coral.realizar(acordes, en: tonalidad) else {
-            Issue.record("«\(texto)» no se realiza", sourceLocation: sourceLocation)
+        let coral: Coral
+        do {
+            coral = try Coral(realizando: acordes, en: tonalidad)
+        } catch {
+            Issue.record("«\(texto)» no se realiza: \(error)", sourceLocation: sourceLocation)
             return
         }
         #expect(coral.faltas == [], Comment(rawValue: texto), sourceLocation: sourceLocation)
@@ -154,16 +157,18 @@ import Testing
 
     @Test func realizarConSoprano() throws {
         let soprano: [Altura] = ["Mi4", "Fa4", "Re4", "Do4"]
-        let coral = try #require(Coral.realizar(["Do", "Fa", "Sol", "Do"], soprano: soprano))
+        let coral = try Coral(realizando: ["Do", "Fa", "Sol", "Do"], soprano: soprano)
         #expect(coral.voz(3) == soprano)
         #expect(coral.esCorrecta)
         #expect(coral.voz(0).map(\.nota) == ["Do", "Fa", "Sol", "Do"])
         // Do–Rem con el soprano Sol4–La4 obliga a quintas paralelas con el bajo: no hay realización.
-        #expect(Coral.realizar(["Do", "Rem"], soprano: ["Sol4", "La4"]) == nil)
+        #expect(throws: ErrorDeRealizacion.sinEnlaceSinFaltas) {
+            try Coral(realizando: ["Do", "Rem"], soprano: ["Sol4", "La4"])
+        }
     }
 
     @Test func laSensibleSubeEnElSoprano() throws {
-        let coral = try #require(Coral.realizar(["Do", "Sol", "Do"], soprano: ["Mi4", "Si4", "Do5"]))
+        let coral = try Coral(realizando: ["Do", "Sol", "Do"], soprano: ["Mi4", "Si4", "Do5"])
         #expect(coral.esCorrecta)
         // Y no se duplica.
         for voces in coral.acordes {
@@ -172,13 +177,37 @@ import Testing
     }
 
     @Test func realizarImposible() {
-        #expect(Coral.realizar([]) == nil)
+        #expect(throws: ErrorDeRealizacion.sinNotas) { try Coral(realizando: []) }
         // El soprano no tiene tantas notas, o una no es del acorde, o está fuera de tesitura.
-        #expect(Coral.realizar(["Do", "Sol"], soprano: ["Do5"]) == nil)
-        #expect(Coral.realizar(["Do", "Sol"], soprano: ["Do5", "Do5"]) == nil)
-        #expect(Coral.realizar(["Do", "Sol"], soprano: ["Do6", "Si5"]) == nil)
+        #expect(throws: ErrorDeRealizacion.sopranoDeOtraLongitud(notas: 1, acordes: 2)) {
+            try Coral(realizando: ["Do", "Sol"], soprano: ["Do5"])
+        }
+        #expect(throws: ErrorDeRealizacion.notaAjena(acorde: 1)) {
+            try Coral(realizando: ["Do", "Sol"], soprano: ["Do5", "Do5"])
+        }
+        #expect(throws: ErrorDeRealizacion.sopranoFueraDeTesitura(acorde: 0)) {
+            try Coral(realizando: ["Do", "Sol"], soprano: ["Do6", "Si5"])
+        }
         // Más de cuatro notas obligatorias.
-        #expect(Coral.realizar(["Do7(9,13)"]) == nil)
+        #expect(throws: ErrorDeRealizacion.demasiadasNotas(acorde: 0)) { try Coral(realizando: ["Do7(9,13)"]) }
+        // Ninguna disposición sin faltas, aunque la nota es del acorde y está en su tesitura.
+        #expect(Coral.motivoSinDisposicion("Do", soprano: "Do5", acorde: 3) == .sinDisposicion(acorde: 3))
+    }
+
+    @Test func motivosDeLaRealizacion() {
+        let errores: [ErrorDeRealizacion] = [
+            .sinNotas, .sopranoDeOtraLongitud(notas: 1, acordes: 2), .notaAjena(acorde: 1),
+            .sopranoFueraDeTesitura(acorde: 0), .demasiadasNotas(acorde: 0), .sinDisposicion(acorde: 0),
+            .notaSinAcorde(nota: 1), .sinEnlaceSinFaltas, .otraMelodia,
+        ]
+        #expect(
+            ErrorDeRealizacion.notaAjena(acorde: 2).descripcion(en: .compacta(.espanol))
+                == "La nota del soprano no es del acorde 3.")
+        for idioma in Idioma.allCases {
+            let textos = errores.map { $0.descripcion(en: .compacta(idioma)) }
+            #expect(Set(textos).count == errores.count, "\(idioma)")
+            #expect(textos.allSatisfy { !$0.isEmpty && !$0.contains("{") }, "\(idioma)")
+        }
     }
 
     @Test func disposicionesSinFaltas() throws {
@@ -195,12 +224,18 @@ import Testing
 
     @Test func armonizarACuatroVoces() throws {
         let melodia: [Altura] = ["Do5", "Si4", "La4", "Sol4", "Fa4", "Mi4", "Re4", "Do4"]
-        let armonizada = try #require(Tonalidad(.do).armonizarACuatroVoces(melodia))
+        let armonizada = try Tonalidad(.do).armonizarACuatroVoces(melodia: melodia)
         #expect(armonizada.coral.voz(3) == melodia)
         #expect(armonizada.coral.esCorrecta)
         #expect(armonizada.armonizacion.melodia == melodia.map(\.nota))
         #expect(armonizada.armonizacion.cifrados.last == "I")
-        #expect(Tonalidad(.do).armonizarACuatroVoces(["Do6", "Si5", "Do6"]) == nil)
+        #expect(throws: ErrorDeRealizacion.sopranoFueraDeTesitura(acorde: 0)) {
+            try Tonalidad(.do).armonizarACuatroVoces(melodia: ["Do6", "Si5", "Do6"])
+        }
+        #expect(throws: ErrorDeRealizacion.sinNotas) { try Tonalidad(.do).armonizarACuatroVoces(melodia: []) }
+        #expect(throws: ErrorDeRealizacion.notaSinAcorde(nota: 1)) {
+            try Tonalidad(.do).armonizarACuatroVoces(melodia: ["Do5", "Reb5", "Do5"])
+        }
     }
 
     @Test func armonizarMelodiasAlAzar() {
@@ -224,7 +259,7 @@ import Testing
             }
             guard !saltos.contains(where: alterado) else { continue }
             probadas += 1
-            guard let armonizada = tonalidad.armonizarACuatroVoces(melodia) else { continue }
+            guard let armonizada = try? tonalidad.armonizarACuatroVoces(melodia: melodia) else { continue }
             realizadas += 1
             #expect(armonizada.coral.voz(3) == melodia)
             #expect(armonizada.coral.faltas == [], "\(melodia)")

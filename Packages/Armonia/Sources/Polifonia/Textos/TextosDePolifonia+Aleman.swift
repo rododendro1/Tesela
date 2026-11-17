@@ -45,6 +45,15 @@ extension TextosDePolifonia {
         especieConElContrapuntoDebajo: "Gattung {1}, Kontrapunkt unter dem Cantus firmus",
         contrapuntoAVariasVoces: "{1}-stimmiger Kontrapunkt",
         vozDelContrapunto: "Stimme {1}",
-        sinFaltas: "Keine Fehler."
+        sinFaltas: "Keine Fehler.",
+        realizacionSinNotas: "Es gibt keine Akkorde oder Noten zum Setzen.",
+        realizacionSopranoDeOtraLongitud: "Der Sopran muss eine Note pro Akkord haben (Noten: {1}; Akkorde: {2}).",
+        realizacionNotaAjena: "Die Soprannote gehört nicht zu Akkord {1}.",
+        realizacionSopranoFueraDeTesitura: "Die Soprannote von Akkord {1} liegt außerhalb seines Umfangs.",
+        realizacionDemasiadasNotas: "Akkord {1} hat mehr als vier Töne, die nicht fehlen dürfen.",
+        realizacionSinDisposicion: "Akkord {1} lässt sich nicht fehlerfrei vierstimmig setzen.",
+        realizacionNotaSinAcorde: "Kein Akkord der Tonart enthält Ton {1} der Melodie.",
+        realizacionSinEnlaceSinFaltas: "Die Akkorde lassen sich nicht fehlerfrei vierstimmig verbinden.",
+        realizacionOtraMelodia: "Der Sopran ist nicht die Melodie der Harmonisierung."
     )
 }

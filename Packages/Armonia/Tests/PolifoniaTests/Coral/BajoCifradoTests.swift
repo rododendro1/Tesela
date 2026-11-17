@@ -74,12 +74,12 @@ import Testing
     }
 
     @Test func realizacion() throws {
-        let coral = try #require(try Coral.realizar(bajoCifrado: "Do Fa Sol:7 Do", en: doMayor))
+        let coral = try Coral(bajoCifrado: "Do Fa Sol:7 Do", en: doMayor)
         #expect(coral.esCorrecta)
         #expect(coral.voz(0).map(\.nota) == [.do, .fa, .sol, .do])
-        let menor = try #require(try Coral.realizar(bajoCifrado: "La Fa:6 Mi:# La", en: laMenor))
+        let menor = try Coral(bajoCifrado: "La Fa:6 Mi:# La", en: laMenor)
         #expect(menor.voz(0).map(\.nota) == [.la, .fa, .mi, .la])
-        #expect(throws: ErrorDeLectura.self) { try Coral.realizar(bajoCifrado: "Do Xa", en: doMayor) }
+        #expect(throws: ErrorDeLectura.self) { try Coral(bajoCifrado: "Do Xa", en: doMayor) }
     }
 }
 
