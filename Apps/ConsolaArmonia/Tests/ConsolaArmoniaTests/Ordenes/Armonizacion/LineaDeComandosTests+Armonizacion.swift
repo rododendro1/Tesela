@@ -36,7 +36,14 @@ extension LineaDeComandosTests {
             voces.map { $0.split(separator: " ").last! } == ["Do₅", "Si₄", "La₄", "Sol₄", "Fa₄", "Mi₄", "Re₄", "Do₄"])
         #expect(salida("revisar " + voces.joined(separator: ", ")) == "Sin faltas de conducción.\n")
         // Fuera de la tesitura del soprano no hay coral.
-        #expect(salida("armonizar Do6 Si5 Do6").hasSuffix("No hay ninguna realización sin faltas de conducción.\n"))
+        #expect(
+            salida("armonizar Do6 Si5 Do6").hasSuffix(
+                """
+                A cuatro voces (bajo, tenor, contralto, soprano):
+                  No hay coral a cuatro voces sin faltas para esta melodía (el soprano va de Do₄ a Sol₅).
+                  La nota del soprano del acorde 1 está fuera de su tesitura.
+
+                """))
     }
 
     @Test func realizar() {
@@ -51,7 +58,19 @@ extension LineaDeComandosTests {
                 """)
         #expect(salida("realize C F G7 C --ingles").hasPrefix("C major\n  C         I         C3 E4 G4 C5"))
         #expect(salida("realizar Lam Rem Mi7 Lam --en La menor").contains("V7"))
-        #expect(salida("realizar Do7(9,13)") == "No hay ninguna realización sin faltas de conducción.\n")
+        // Sin coral, dice por qué en la salida de errores, con el código 1, también en JSON.
+        let imposible = LineaDeComandos.ejecutar(["realizar", "Do7(9,13)"])
+        #expect(imposible.codigo == 1)
+        #expect(imposible.salida == "")
+        #expect(
+            imposible.error == """
+                armonia: No hay ninguna realización sin faltas de conducción.
+                armonia: El acorde 1 tiene más de cuatro notas que no pueden faltar.
+
+                """)
+        let enJSON = LineaDeComandos.ejecutar(["realizar", "Do7(9,13)", "--json"])
+        #expect(enJSON.codigo == 1)
+        #expect(enJSON.salida.contains("más de cuatro notas"))
     }
 
     @Test func voces() {

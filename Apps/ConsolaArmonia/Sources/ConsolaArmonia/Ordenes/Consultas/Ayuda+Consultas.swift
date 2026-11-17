@@ -24,7 +24,7 @@ extension LineaDeComandos {
                 nombres: ["escala", "scale"], ayuda: ayudaDeEscala, json: { try escalaJSON($0, $1.notacion) },
                 sinJSON: [.bibtex],
                 ejecutar: { try escala($0, $1) }),
-        ] + ordenesDeCatalogos + [
+        ] + [
             Orden(
                 nombres: ["tonalidad", "key"], ayuda: ayudaDeTonalidad, json: { try tonalidadJSON($0, $1.notacion) },
                 sinJSON: [.modulaciones],

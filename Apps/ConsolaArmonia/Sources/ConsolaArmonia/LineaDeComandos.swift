@@ -51,11 +51,19 @@ public enum LineaDeComandos {
         let (notacion, movil, json, destino) = (generales.notacion, generales.movil, generales.json, generales.destino)
         let argumentos = opciones.restantes
 
-        guard let nombre = argumentos.first?.lowercased() else {
+        guard let llamada = argumentos.first?.lowercased() else {
             return bien(indiceDeAyuda(en: notacion.textos, grafia: notacion.grafiaDeLosTextos))
         }
-        guard let orden = orden(llamada: nombre) else { return uso(.ordenDesconocida(nombre), notacion, json: json) }
+        guard var orden = orden(llamada: llamada) else { return uso(.ordenDesconocida(llamada), notacion, json: json) }
         var resto = Array(argumentos.dropFirst())
+        var nombre = llamada
+        // `catalogo ritmos tango` es `ritmos tango`, con su ayuda, sus opciones y su JSON.
+        if orden.nombres == ordenDeCatalogo.nombres, let pedido = resto.first?.lowercased(),
+            let catalogo = catalogos.first(where: { $0.nombres.contains(Argumentos.sinTildes(pedido)) })
+        {
+            (orden, nombre) = (catalogo, pedido)
+            resto.removeFirst()
+        }
 
         // Toda la ayuda (`armonia ayuda --todo`) y la de una orden: `armonia ayuda acorde`, `armonia acorde --help`.
         if orden.nombres.contains("ayuda"), let pedida = resto.first?.lowercased() {
@@ -114,12 +122,18 @@ public enum LineaDeComandos {
             let datos = try salida(resto, contexto)
             let texto = try textoJSON(datos, enUnaLinea: !salidaEsTerminal)
             let conFaltas = (datos as? any ConFaltas)?.hayFaltas ?? false
-            return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: conFaltas ? 3 : 0)
+            let vacio = (datos as? any SinResultado)?.vacio ?? false
+            return ResultadoDeOrden(salida: texto + "\n", error: "", codigo: conFaltas ? 3 : vacio ? 1 : 0)
         } catch let error as ErrorDeUso {
             return uso(error, notacion, enCurso: enCurso, json: json)
         } catch let error as any ErrorDeArmonia {
-            let texto =
-                json ? ErrorEnJSON(error, en: notacion).texto : "armonia: " + error.descripcion(en: notacion) + "\n"
+            guard !json else {
+                return ResultadoDeOrden(salida: "", error: ErrorEnJSON(error, en: notacion).texto, codigo: 1)
+            }
+            var texto = "armonia: " + error.descripcion(en: notacion) + "\n"
+            if let propuesta = propuestaDeValor(para: error, en: notacion) {
+                texto += TextosDeConsola.traduccion { $0.quisoDecir(propuesta) }.en(notacion) + "\n"
+            }
             return ResultadoDeOrden(salida: "", error: texto, codigo: 1)
         } catch {
             let texto = json ? ErrorEnJSON(otro: error).texto : "armonia: \(error)\n"
@@ -278,7 +292,8 @@ public enum LineaDeComandos {
     /// Las órdenes por grupos, como salen en el índice de la ayuda; los títulos están en
     /// `TextosDeConsola.gruposDeLaAyuda`, en el mismo orden.
     static let gruposDeOrdenes: [[Orden]] = [
-        ordenesDeConsultas, ordenesDeArmonizacion, ordenesDePartituras + ordenesDeGrabado + ordenesDeAfinacion,
+        ordenesDeConsultas, ordenesDeCatalogos, ordenesDeArmonizacion,
+        ordenesDePartituras + ordenesDeGrabado + ordenesDeAfinacion,
         ordenesDeDibujos,
         ordenesDeNeorriemann, ordenesDeTrastes, ordenesDeLaTerminal + ordenesDelServidor + ordenesDeAyuda,
     ]

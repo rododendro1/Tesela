@@ -130,3 +130,23 @@ extension LineaDeComandos {
         var seLee: Bool { altura != nil || nota != nil || acorde != nil }
     }
 }
+
+extension LineaDeComandos {
+    /// Una tonalidad como la escriben las órdenes (`--en La menor`, `tonalidad Re dórico`), o con solo la tónica,
+    /// como un acorde: «Do» o «C» es Do mayor, y «Lam» o «Am», La menor. Si no se lee de ninguna de las dos formas,
+    /// lanza el error de la tonalidad.
+    static func tonalidad(_ texto: String, en notacion: Notacion) throws -> Tonalidad {
+        do {
+            return try Tonalidad(leyendo: texto, enLaOrden: notacion)
+        } catch {
+            guard !texto.contains(" "), let acorde = try? Acorde(leyendo: texto, enLaOrden: notacion),
+                acorde.inversion == 0
+            else { throw error }
+            switch acorde.tipo {
+            case .mayor: return Tonalidad(acorde.fundamental, .mayor)
+            case .menor: return Tonalidad(acorde.fundamental, .menor)
+            default: throw error
+            }
+        }
+    }
+}

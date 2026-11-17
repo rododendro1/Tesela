@@ -70,6 +70,8 @@ struct TextosDeConsola: TextosTraducidos {
     let descripcionProgresiones: String
     let sintaxisTonalidades: String
     let descripcionTonalidades: String
+    let sintaxisCatalogo: String
+    let descripcionCatalogo: String
     let sintaxisRitmos: String
     let descripcionRitmos: String
     let notasRitmos: String

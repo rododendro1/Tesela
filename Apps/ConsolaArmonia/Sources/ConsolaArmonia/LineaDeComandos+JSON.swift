@@ -34,6 +34,12 @@ extension LineaDeComandos {
         var hayFaltas: Bool { get }
     }
 
+    /// Un resultado en JSON que puede no tener nada que dar (`realizar` sin coral): entonces el código de salida es
+    /// 1, como en el texto.
+    protocol SinResultado {
+        var vacio: Bool { get }
+    }
+
     /// Las palabras de la orden, sin opciones: lanza el `ErrorDeUso` si queda alguna opción sin leer o si no hay
     /// ninguna palabra.
     static func palabras(_ argumentos: Argumentos, siFaltan error: ErrorDeUso) throws -> [String] {

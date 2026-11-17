@@ -36,6 +36,9 @@ public struct CoralPresentado: Hashable, Sendable {
         case sinCoralParaLaMelodia
         /// Los acordes no se pueden escribir a cuatro voces sin faltas.
         case sinRealizacion
+        /// Por qué no hay coral (tras `sinCoralParaLaMelodia` o `sinRealizacion`): una nota del soprano fuera de su
+        /// tesitura, un acorde con demasiadas notas, unos acordes que no se enlazan sin faltas…
+        case motivo(ErrorDeRealizacion)
         /// La revisión no ha encontrado faltas.
         case sinFaltasDeConduccion
         /// Una falta de conducción (quintas paralelas, cruzamiento…).
@@ -43,6 +46,7 @@ public struct CoralPresentado: Hashable, Sendable {
 
         public func texto(en notacion: Notacion) -> String {
             if case .falta(let problema) = self { return problema.descripcion(en: notacion) }
+            if case .motivo(let error) = self { return error.descripcion(en: notacion) }
             return traduccion(notacion)?.en(notacion) ?? ""
         }
 
@@ -60,7 +64,7 @@ public struct CoralPresentado: Hashable, Sendable {
                 return TextosDeApps.traduccion { $0.sinCoralParaLaMelodia(grave, agudo) }
             case .sinRealizacion:
                 return TextosDeApps.traduccion(\.sinRealizacion)
-            case .falta:
+            case .falta, .motivo:
                 return nil
             case .sinFaltasDeConduccion:
                 return TextosDeApps.traduccion(\.sinFaltasDeConduccion)
@@ -149,15 +153,18 @@ public enum PresentacionDeCoral {
         var sonido = Escucha.silencio
         if !conOctavas {
             avisos.append(.faltanOctavas)
-        } else if let armonizada = try? tonalidad.armonizarACuatroVoces(melodia: alturas) {
-            filas = self.filas(armonizada.armonizacion.analisis, armonizada.coral, notacion)
-            ficheros = self.ficheros(armonizada.coral, tonalidad, notacion, nombre: "Armonización")
-            sonido =
-                (voz.map { Escucha.coral(armonizada.coral.acordes, conElRitmoDe: $0) }
-                ?? Escucha.coral(armonizada.coral.acordes))
-                .conTonica(tonalidad.tonica)
         } else {
-            avisos.append(.sinCoralParaLaMelodia)
+            do {
+                let armonizada = try tonalidad.armonizarACuatroVoces(melodia: alturas)
+                filas = self.filas(armonizada.armonizacion.analisis, armonizada.coral, notacion)
+                ficheros = self.ficheros(armonizada.coral, tonalidad, notacion, nombre: "Armonización")
+                sonido =
+                    (voz.map { Escucha.coral(armonizada.coral.acordes, conElRitmoDe: $0) }
+                    ?? Escucha.coral(armonizada.coral.acordes))
+                    .conTonica(tonalidad.tonica)
+            } catch {
+                avisos += [.sinCoralParaLaMelodia, .motivo(error)]
+            }
         }
         return CoralPresentado(
             titulo: tonalidad.nombre(en: notacion),
@@ -175,11 +182,12 @@ public enum PresentacionDeCoral {
     /// voces, como `realizar(_:en:notacion:)`.
     public static func realizar(_ analisis: AnalisisArmonico, en notacion: Notacion) -> CoralPresentado {
         let titulo = analisis.tonalidad.nombre(en: notacion)
-        guard let voces = try? Coral(realizando: analisis.acordes.map(\.acorde), en: analisis.tonalidad) else {
+        let voces: Coral
+        do {
+            voces = try Coral(realizando: analisis.acordes.map(\.acorde), en: analisis.tonalidad)
+        } catch {
             return CoralPresentado(
-                titulo: titulo, propuestas: [], filas: [],
-                avisos: [.sinRealizacion],
-                ficheros: [])
+                titulo: titulo, propuestas: [], filas: [], avisos: [.sinRealizacion, .motivo(error)], ficheros: [])
         }
         return CoralPresentado(
             titulo: titulo, propuestas: [], filas: filas(analisis, voces, notacion), avisos: [],

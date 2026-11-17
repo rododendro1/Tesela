@@ -25,14 +25,10 @@ public struct Armonizacion: Hashable, Sendable, CustomStringConvertible {
     ///
     /// - Throws: ``ErrorDeRealizacion/otraMelodia`` si las notas del soprano no son las de la melodía, y lo que
     ///   lanza ``Coral/init(realizando:soprano:en:)`` si no hay realización sin faltas.
-    public func coral(soprano: [Altura]) throws -> Coral {
+    public func coral(soprano: [Altura]) throws(ErrorDeRealizacion) -> Coral {
         guard soprano.map(\.nota) == melodia else { throw ErrorDeRealizacion.otraMelodia }
         return try Coral(realizando: acordes, soprano: soprano, en: tonalidad)
     }
-
-    /// Lo mismo, con `nil` si no se puede: el nombre de antes de ``coral(soprano:)``, que dice por qué.
-    @available(*, deprecated, renamed: "coral(soprano:)")
-    public func realizar(soprano: [Altura]) -> Coral? { try? coral(soprano: soprano) }
 
     /// "Do Sol Do (I–V–I)".
     public var description: String { texto(en: .compacta(.espanol)) }
@@ -135,7 +131,7 @@ extension Tonalidad {
     ///   (`notaSinAcorde`), si se sale de la tesitura del soprano, Do4–Sol5 (`sopranoFueraDeTesitura`), si ningún
     ///   acorde de una nota se puede escribir con ella en el soprano (`sinDisposicion`) o si no hay manera de enlazar
     ///   los acordes sin faltas (`sinEnlaceSinFaltas`).
-    public func armonizarACuatroVoces(melodia: [Altura]) throws -> CoralArmonizado {
+    public func armonizarACuatroVoces(melodia: [Altura]) throws(ErrorDeRealizacion) -> CoralArmonizado {
         let notas = melodia.map(\.nota)
         guard !notas.isEmpty else { throw ErrorDeRealizacion.sinNotas }
         guard let problema = ProblemaDeArmonizacion(notas, en: self) else {
@@ -184,12 +180,6 @@ extension Tonalidad {
             armonizacion: Armonizacion(
                 tonalidad: self, melodia: notas, acordes: problema.acordes(elegidos.map(\.acorde))),
             coral: conduccion)
-    }
-
-    /// Lo mismo, con `nil` si no se puede: el nombre de antes de ``armonizarACuatroVoces(melodia:)``, que dice por qué.
-    @available(*, deprecated, renamed: "armonizarACuatroVoces(melodia:)")
-    public func armonizarACuatroVoces(_ melodia: [Altura]) -> CoralArmonizado? {
-        try? armonizarACuatroVoces(melodia: melodia)
     }
 
     // MARK: Auxiliares

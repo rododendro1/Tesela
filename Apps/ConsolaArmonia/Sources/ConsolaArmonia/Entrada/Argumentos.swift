@@ -198,7 +198,7 @@ struct Argumentos {
         guard let i = restantes.firstIndex(where: OpcionDeOrden.en.nombres.contains) else { return .some(nil) }
         let fin = restantes[(i + 1)...].firstIndex(where: Self.pareceUnaOpcion) ?? restantes.endIndex
         guard i + 1 < fin else { return nil }
-        let tonalidad = try Tonalidad(leyendo: restantes[(i + 1)..<fin].joined(separator: " "), enLaOrden: notacion)
+        let tonalidad = try LineaDeComandos.tonalidad(restantes[(i + 1)..<fin].joined(separator: " "), en: notacion)
         restantes.removeSubrange(i..<fin)
         return .some(tonalidad)
     }

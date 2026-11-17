@@ -66,6 +66,8 @@ extension TextosDeConsola {
         descripcionProgresiones: "katalogoko progresioak, beren zenbaki erromatarrekin eta Do-ren gaineko akordeekin, edo --en-en tonikaren gainekoekin; testu batekin, izenean daramatenak",
         sintaxisTonalidades: "tonalidades [--afecto <afektua>]",
         descripcionTonalidades: "iturriren batek deskribatzen dituen tonalitateak (Charpentier, Schubart), bakoitzak dioenarekin; --afecto-rekin, afektu hori dutenak",
+        sintaxisCatalogo: "catalogo <katalogoa> [<aukerak>]",
+        descripcionCatalogo: "katalogo bat, bere aukerekin: catalogo ritmos eta ritmos gauza bera dira",
         sintaxisRitmos: "rhythms [<testua>] [--family <familia>] [--style <estiloa>] [--epoca <garaia>] [--place <lekua>] [--group-by <modua>] [--statistics] [--compare <erritmoa>]",
         descripcionRitmos: "katalogoko erritmoak, beren ereduarekin (x indartsua, o ahula, . isilunea) eta konpasarekin; testu batekin, izenean daramatenak",
         notasRitmos: "aukerak: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) familia bateko erritmoak uzten ditu; --place spain (edo cuba, india, germany, andalusia…) jatorrizko leku batekoak uzten ditu, eta --group-by continent (edo country, era) jatorriko lekuaren edo garaiaren arabera taldekatzen ditu; --statistics fitxa eta Toussainten neurriak gehitzen ditu (distantzien bektorea, euklidearra, sakona, uniformetasuna, kontratenporea, sinkopa); --compare <erritmoa> pultsu berdinetako beste batekiko Hamming eta trukatze-distantziak ematen ditu",
@@ -219,6 +221,8 @@ extension TextosDeConsola {
         terminala ez bada, JSONa lerro bakarrean doa.
         --sistema-rekin, notak beste tradizio bateko izenekin ateratzen dira: bizantino (Ga♯), japones (ei He),
         lu (dàlǚ)…; mugikor batekin (sargam, jianpu…), escala-k bere graduak ematen ditu (Sā Re ga). --grafia original edo ascii.
+        --en aukerarekin tonika nahikoa da: --en Do Do maior da, eta --en Lam, La minor.
+        Ezer ematekorik ez badago (realizar koralik gabe), irteera-kodea 1 da.
         ARMONIA_IDIOMA=eu aldagaiak hizkuntza finkatzen du --idioma gabe; ARMONIA_IDIOMA=sistema
         bada, LANG aldagaiarena.
         Irteera-kodeak: 0 ondo, 1 irakurri ezin den testua, 2 gaizki idatzitako agindua eta 3 akatsak
@@ -440,7 +444,7 @@ extension TextosDeConsola {
         grabarUnaPartitura: "«armonia {1}» aginduak partitura idazten du jada; «grabar» aginduak PDF, SVG edo PNG formatuan ematen du: {2}",
 
         // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
-        gruposDeLaAyuda: ["Kontsultak", "Harmonia eta ahotsak", "Partiturak eta grabatua", "Marrazkiak (SVG)", "Neorriemanniarra", "Trasteak dituzten tresnak", "Terminala eta laguntza"],
+        gruposDeLaAyuda: ["Kontsultak", "Katalogoak (baita armonia catalogo <katalogoa>)", "Harmonia eta ahotsak", "Partiturak eta grabatua", "Marrazkiak (SVG)", "Neorriemanniarra", "Trasteak dituzten tresnak", "Terminala eta laguntza"],
         pieDelIndice: """
         Agindu baten laguntza: armonia ayuda <agindua> (edo armonia <agindua> --help).
         Laguntza osoa, agindu bakoitzaren aukerekin: armonia ayuda --todo.

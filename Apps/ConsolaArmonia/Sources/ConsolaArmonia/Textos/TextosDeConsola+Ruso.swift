@@ -66,6 +66,8 @@ extension TextosDeConsola {
         descripcionProgresiones: "последовательности каталога с римскими цифрами и аккордами от до или от тоники --in; с текстом — те, в названии которых он есть",
         sintaxisTonalidades: "keys [--affect <аффект>]",
         descripcionTonalidades: "тональности, которые описывает какой-либо источник (Charpentier, Schubart), с тем, что говорит каждый; с --affect — те, у которых есть этот аффект",
+        sintaxisCatalogo: "catalog <каталог> [<параметры>]",
+        descripcionCatalogo: "каталог с его параметрами: catalog rhythms — то же, что rhythms",
         sintaxisRitmos: "rhythms [<текст>] [--family <семейство>] [--style <стиль>] [--era <эпоха>] [--place <место>] [--group-by <способ>] [--statistics] [--compare <ритм>]",
         descripcionRitmos: "ритмы каталога с их рисунком (x сильная, o слабая, . пауза) и размером; с текстом — те, в чьём названии он есть",
         notasRitmos: "опции: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) оставляет ритмы одного семейства; --place spain (или cuba, india, germany, andalusia…) оставляет те, что происходят из одного места, а --group-by continent (или country, era) группирует их по месту или эпохе происхождения; --statistics добавляет карточку и меры Туссена (вектор расстояний, евклидов, глубокий, равномерность, затактовость, синкопированность); --compare <ритм> даёт расстояния Хэмминга и перестановок до другого ритма с тем же числом пульсов",
@@ -219,6 +221,8 @@ extension TextosDeConsola {
         терминал, JSON выводится одной строкой.
         С --sistema ноты выводятся с названиями другой традиции: bizantino (Ga♯), japones (ei He),
         lu (dàlǚ)…; с подвижной (sargam, jianpu…) scale даёт ступени (Sā Re ga). --grafia original или ascii.
+        Для --in достаточно тоники: --in C — до мажор, --in Am — ля минор.
+        Если выдать нечего (realize без хорала), код выхода — 1.
         ARMONIA_IDIOMA=eu задаёт язык без --idioma; ARMONIA_IDIOMA=system берёт язык из LANG.
         Коды выхода: 0 — успех, 1 — текст не читается, 2 — команда написана неверно, 3 — найдены ошибки
         (check, counterpoint).
@@ -439,7 +443,7 @@ extension TextosDeConsola {
         grabarUnaPartitura: "«armonia {1}» уже записывает партитуру; «engrave» набирает её в PDF, SVG или PNG: {2}",
 
         // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
-        gruposDeLaAyuda: ["Справки", "Гармония и голоса", "Партитуры и нотный набор", "Рисунки (SVG)", "Неоримановская теория", "Ладовые инструменты", "Терминал и справка"],
+        gruposDeLaAyuda: ["Справки", "Каталоги (также armonia catalog <каталог>)", "Гармония и голоса", "Партитуры и нотный набор", "Рисунки (SVG)", "Неоримановская теория", "Ладовые инструменты", "Терминал и справка"],
         pieDelIndice: """
         Справка по команде: armonia help <команда> (или armonia <команда> --help).
         Вся справка, с параметрами каждой команды: armonia help --all.

@@ -66,6 +66,8 @@ extension TextosDeConsola {
         descripcionProgresiones: "die Progressionen des Katalogs mit ihren Stufen und ihren Akkorden auf C oder auf dem Grundton von --in; mit einem Text, die, deren Name ihn enthält",
         sintaxisTonalidades: "keys [--affect <Affekt>]",
         descripcionTonalidades: "die Tonarten, die eine Quelle beschreibt (Charpentier, Schubart), mit dem, was jede sagt; mit --affect die mit diesem Affekt",
+        sintaxisCatalogo: "catalog <Katalog> [<Optionen>]",
+        descripcionCatalogo: "ein Katalog mit seinen Optionen: catalog rhythms ist dasselbe wie rhythms",
         sintaxisRitmos: "rhythms [<Text>] [--family <Familie>] [--style <Stil>] [--era <Epoche>] [--place <Ort>] [--group-by <Art>] [--statistics] [--compare <Rhythmus>]",
         descripcionRitmos: "die Rhythmen des Katalogs mit ihrem Muster (x betont, o unbetont, . Pause) und ihrer Taktart; mit einem Text, die, deren Name ihn enthält",
         notasRitmos: "Optionen: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) lässt die einer Familie; --place spain (oder cuba, india, germany, andalusia…) behält die eines Herkunftsortes, und --group-by continent (oder country, era) gruppiert sie nach Herkunftsort oder -epoche; --statistics fügt ihr Datenblatt und Toussaints Maße hinzu (Abstandsvektor, euklidisch, tief, Gleichmäßigkeit, Off-Beat-Anteil, Synkopierung); --compare <Rhythmus> gibt den Hamming- und den Tauschabstand zu einem anderen mit gleich vielen Pulsen",
@@ -219,6 +221,8 @@ extension TextosDeConsola {
         Terminal, steht das JSON in einer einzigen Zeile.
         Mit --sistema stehen die Noten mit den Namen einer anderen Tradition: bizantino (Ga♯), japones (ei He),
         lu (dàlǚ)…; mit einem beweglichen (sargam, jianpu…) gibt scale die Stufen (Sā Re ga). --grafia original oder ascii.
+        Bei --in genügt der Grundton: --in C ist C-Dur und --in Am a-Moll.
+        Gibt es nichts auszugeben (realize ohne Choral), ist der Exit-Code 1.
         ARMONIA_IDIOMA=eu legt die Sprache ohne --idioma fest; ARMONIA_IDIOMA=system nimmt die von LANG.
         Exit-Codes: 0 gut, 1 unlesbarer Text, 2 falsch geschriebener Befehl und 3 Fehler gefunden (check,
         counterpoint).
@@ -439,7 +443,7 @@ extension TextosDeConsola {
         grabarUnaPartitura: "„armonia {1}“ schreibt die Partitur schon; „engrave“ setzt sie als PDF, SVG oder PNG: {2}",
 
         // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
-        gruposDeLaAyuda: ["Abfragen", "Harmonik und Stimmen", "Partituren und Notensatz", "Zeichnungen (SVG)", "Neo-Riemann-Theorie", "Bundinstrumente", "Terminal und Hilfe"],
+        gruposDeLaAyuda: ["Abfragen", "Kataloge (auch armonia catalog <Katalog>)", "Harmonik und Stimmen", "Partituren und Notensatz", "Zeichnungen (SVG)", "Neo-Riemann-Theorie", "Bundinstrumente", "Terminal und Hilfe"],
         pieDelIndice: """
         Die Hilfe zu einem Befehl: armonia help <Befehl> (oder armonia <Befehl> --help).
         Die ganze Hilfe, mit den Optionen jedes Befehls: armonia help --all.

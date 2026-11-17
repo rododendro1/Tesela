@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- `CoralPresentado.Aviso.motivo(_:)`: por qué no hay coral, tras `sinCoralParaLaMelodia` o `sinRealizacion`, con el
+  texto de `ErrorDeRealizacion`.
 - `OrnamentoPresentado(_:sobre:escala:duracion:en:)` tiene `tocado`, las notas del ornamento con su figura, y su
   ficha, la fila «Ritmo» (`TextosDeApps.ritmoDelOrnamento`, en los trece idiomas).
 - `EncordadoPresentado` tiene `familia` y `familiaId`, y su ficha empieza por la familia.

@@ -107,10 +107,10 @@ import Testing
         let conJSON = L.ordenes.filter { $0.json != nil }.map { $0.nombres[0] }
         #expect(
             conJSON == [
-                "acorde", "identificar", "arpegio", "intervalo", "escala", "escalas", "tradiciones", "progresiones",
-                "ritmos", "temperamentos", "notas", "funciones", "instrumentos", "ornamentos",
-                "acordes", "tonalidades", "tonalidad",
-                "conjunto", "serie", "analizar", "armonizar", "realizar", "revisar", "contrapunto", "transponer",
+                "acorde", "identificar", "arpegio", "intervalo", "escala", "tonalidad", "conjunto", "serie",
+                "escalas", "tradiciones", "progresiones", "ritmos", "temperamentos", "notas", "funciones",
+                "instrumentos", "ornamentos", "acordes", "tonalidades", "analizar", "armonizar", "realizar", "revisar",
+                "contrapunto", "transponer",
                 "rearmonizar", "motores", "scala", "reticulo", "vecinos", "camino-parsimonioso", "conduccion-minima",
                 "plr",
                 "digitaciones", "posiciones",

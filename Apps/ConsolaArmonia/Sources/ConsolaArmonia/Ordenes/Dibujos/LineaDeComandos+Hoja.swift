@@ -66,7 +66,7 @@ extension LineaDeComandos {
         if let texto = try argumentos.valorConPalabras(.tonalidad, siFalta: .faltaTonalidad) {
             try argumentos.sinOpcionesDesconocidas()
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
-            let tonalidad = try Tonalidad(leyendo: texto, enLaOrden: notacion)
+            let tonalidad = try LineaDeComandos.tonalidad(texto, en: notacion)
             return bien(
                 html
                     ? PresentacionDeTonalidad.hojaDeEstudioHTML(de: tonalidad, en: notacion)

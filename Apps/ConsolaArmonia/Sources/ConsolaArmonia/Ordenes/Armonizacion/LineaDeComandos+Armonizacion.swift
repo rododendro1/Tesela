@@ -21,7 +21,8 @@ extension LineaDeComandos {
         if !coral.avisos.contains(.faltanOctavas) {
             lineas.append(Mensaje.aCuatroVoces.texto(en: notacion))
             if coral.filas.isEmpty {
-                lineas.append("  " + CoralPresentado.Aviso.sinRealizacion.texto(en: notacion))
+                // Por qué no hay coral: la melodía fuera de la tesitura del soprano, una nota sin disposición…
+                lineas += coral.avisos.map { "  " + $0.texto(en: notacion) }
             } else {
                 lineas += describir(coral.filas)
             }
@@ -52,12 +53,14 @@ extension LineaDeComandos {
             argumentos.unidos, en: dada, propuestas: propuestas, notacion: notacion)
     }
 
-    /// `realizar Do Fa Sol7 Do`: los acordes escritos a cuatro voces, sin faltas.
+    /// `realizar Do Fa Sol7 Do`: los acordes escritos a cuatro voces, sin faltas. Si no se puede, dice por qué en la
+    /// salida de errores, con el código 1.
     static func realizar(_ argumentos: [String], _ contexto: ContextoDeOrden) throws -> ResultadoDeOrden {
         let notacion = contexto.notacion
         let coral = try coralRealizado(argumentos, contexto)
         guard !coral.avisos.contains(.sinRealizacion) else {
-            return bien(CoralPresentado.Aviso.sinRealizacion.texto(en: notacion))
+            let texto = coral.avisos.map { "armonia: " + $0.texto(en: notacion) + "\n" }.joined()
+            return ResultadoDeOrden(salida: "", error: texto, codigo: 1)
         }
         return bien(([coral.titulo] + describir(coral.filas)).joined(separator: "\n"))
     }

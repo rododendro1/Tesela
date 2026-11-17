@@ -206,17 +206,4 @@ extension Coral {
         let acordes = try tonalidad.acordes(bajoCifrado: bajoCifrado)
         try self.init(realizando: acordes, soprano: soprano, en: tonalidad)
     }
-
-    /// Lo mismo, con `nil` si no hay realización sin faltas: el nombre de antes de
-    /// ``init(bajoCifrado:en:soprano:)``, que dice por qué.
-    @available(*, deprecated, renamed: "init(bajoCifrado:en:soprano:)")
-    public static func realizar(bajoCifrado: String, en tonalidad: Tonalidad, soprano: [Altura]? = nil) throws
-        -> Coral?
-    {
-        do {
-            return try Coral(bajoCifrado: bajoCifrado, en: tonalidad, soprano: soprano)
-        } catch is ErrorDeRealizacion {
-            return nil
-        }
-    }
 }

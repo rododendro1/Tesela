@@ -66,6 +66,8 @@ extension TextosDeConsola {
         descripcionProgresiones: "οι διαδοχές του καταλόγου με το ρωμαϊκό τους συμβολισμό και τις συγχορδίες τους πάνω στο Ντο ή στην τονική του --in· με ένα κείμενο, όσες το έχουν στο όνομα",
         sintaxisTonalidades: "keys [--affect <συναίσθημα>]",
         descripcionTonalidades: "οι τονικότητες που περιγράφει κάποια πηγή (Charpentier, Schubart), με ό,τι λέει η καθεμία· με --affect, όσες έχουν αυτό το συναίσθημα",
+        sintaxisCatalogo: "catalog <κατάλογος> [<επιλογές>]",
+        descripcionCatalogo: "ένας κατάλογος, με τις επιλογές του: το catalog rhythms είναι το ίδιο με το rhythms",
         sintaxisRitmos: "rhythms [<κείμενο>] [--family <οικογένεια>] [--style <ύφος>] [--era <εποχή>] [--place <τόπος>] [--group-by <τρόπος>] [--statistics] [--compare <ρυθμός>]",
         descripcionRitmos: "οι ρυθμοί του καταλόγου με το μοτίβο τους (x ισχυρό, o ασθενές, . παύση) και το μέτρο τους· με κείμενο, όσοι το έχουν στο όνομα",
         notasRitmos: "επιλογές: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) αφήνει όσους είναι μιας οικογένειας· --place spain (ή cuba, india, germany, andalusia…) αφήνει όσους προέρχονται από έναν τόπο, και --group-by continent (ή country, era) τους ομαδοποιεί κατά τόπο ή εποχή προέλευσης· --statistics προσθέτει το δελτίο τους και τα μέτρα του Toussaint (διάνυσμα αποστάσεων, ευκλείδειος, βαθύς, ομοιομορφία, αντιχρονισμός, συγκοπή)· --compare <ρυθμός> δίνει τις αποστάσεις Hamming και ανταλλαγής από άλλον με ίδιους παλμούς",
@@ -219,6 +221,8 @@ extension TextosDeConsola {
         είναι τερματικό, το JSON γράφεται σε μία γραμμή.
         Με --sistema, οι νότες βγαίνουν με τα ονόματα άλλης παράδοσης: bizantino (Ga♯), japones (ei He),
         lu (dàlǚ)…· με ένα κινητό (sargam, jianpu…), το scale δίνει τις βαθμίδες (Sā Re ga). --grafia original ή ascii.
+        Με το --in αρκεί η τονική: --in C είναι Ντο μείζονα και --in Am, Λα ελάσσονα.
+        Όταν δεν υπάρχει τίποτα να δοθεί (realize χωρίς χορικό), ο κωδικός εξόδου είναι 1.
         Το ARMONIA_IDIOMA=eu ορίζει τη γλώσσα χωρίς --idioma· το ARMONIA_IDIOMA=system παίρνει αυτήν του LANG.
         Κωδικοί εξόδου: 0 εντάξει, 1 κείμενο που δεν διαβάζεται, 2 λάθος εντολή και 3 σφάλματα (check,
         counterpoint).
@@ -439,7 +443,7 @@ extension TextosDeConsola {
         grabarUnaPartitura: "η «armonia {1}» γράφει ήδη την παρτιτούρα· η «engrave» τη χαράσσει σε PDF, SVG ή PNG: {2}",
 
         // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
-        gruposDeLaAyuda: ["Ερωτήματα", "Αρμονία και φωνές", "Παρτιτούρες και χάραξη", "Σχέδια (SVG)", "Νεο-ριμανική θεωρία", "Όργανα με τάστα", "Τερματικό και βοήθεια"],
+        gruposDeLaAyuda: ["Ερωτήματα", "Κατάλογοι (και armonia catalog <κατάλογος>)", "Αρμονία και φωνές", "Παρτιτούρες και χάραξη", "Σχέδια (SVG)", "Νεο-ριμανική θεωρία", "Όργανα με τάστα", "Τερματικό και βοήθεια"],
         pieDelIndice: """
         Η βοήθεια μιας εντολής: armonia help <εντολή> (ή armonia <εντολή> --help).
         Όλη η βοήθεια, με τις επιλογές κάθε εντολής: armonia help --all.
