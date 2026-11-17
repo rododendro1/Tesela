@@ -109,13 +109,20 @@ public enum PresentacionDeCoral {
     public static func presentar(
         _ tarea: Tarea, _ texto: String, tonalidad: String = "", propuestas: Int = 3,
         en notacion: Notacion
-    ) throws -> CoralPresentado {
+    ) throws(ErrorDeLecturaDePartitura) -> CoralPresentado {
         let dada = tonalidad.trimmingCharacters(in: .whitespaces)
-        let leida: Tonalidad? = try dada.isEmpty ? nil : Tonalidad(leyendo: dada)
+        let leida: Tonalidad?
+        do { leida = dada.isEmpty ? nil : try Tonalidad(leyendo: dada) } catch {
+            throw ErrorDeLecturaDePartitura(error)
+        }
         switch tarea {
         case .armonizar: return try armonizar(texto, en: leida, propuestas: propuestas, notacion: notacion)
-        case .realizar: return try realizar(texto, en: leida, notacion: notacion)
-        case .revisar: return try revisar(texto, en: notacion)
+        case .realizar:
+            do { return try realizar(texto, en: leida, notacion: notacion) } catch {
+                throw ErrorDeLecturaDePartitura(error)
+            }
+        case .revisar:
+            do { return try revisar(texto, en: notacion) } catch { throw ErrorDeLecturaDePartitura(error) }
         }
     }
 
@@ -124,12 +131,15 @@ public enum PresentacionDeCoral {
     public static func armonizar(
         _ texto: String, en tonalidad: Tonalidad?, propuestas: Int = 3,
         notacion: Notacion
-    ) throws -> CoralPresentado {
+    ) throws(ErrorDeLecturaDePartitura) -> CoralPresentado {
         let partes = texto.split(whereSeparator: \.isWhitespace).map(String.init)
-        guard !partes.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
+        guard !partes.isEmpty else {
+            throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
+        }
         // Con ritmo («Mi4:4 Re4:8»), la voz: se armonizan sus notas (la más aguda si una es un acorde) y el
         // coral suena con su ritmo.
-        let voz = try partes.contains { $0.contains(":") } ? Voz(leyendo: partes.joined(separator: " ")) : nil
+        var voz: Voz?
+        if partes.contains(where: { $0.contains(":") }) { voz = try Voz(leyendo: partes.joined(separator: " ")) }
         let alturas =
             voz.map { voz in
                 Escucha.notas(de: voz, tempo: Escucha.tempo).compactMap { nota in
@@ -137,12 +147,19 @@ public enum PresentacionDeCoral {
                 }
             } ?? partes.compactMap { try? Altura(leyendo: $0) }
         guard !alturas.isEmpty || voz == nil else {
-            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio)
+            throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
         }
         let conOctavas = voz != nil || alturas.count == partes.count
-        let notas = try conOctavas ? alturas.map(\.nota) : partes.map { try Nota(leyendo: $0) }
+        let notas: [Nota]
+        if conOctavas {
+            notas = alturas.map(\.nota)
+        } else {
+            do { notas = try partes.map { parte throws(ErrorDeLectura) in try Nota(leyendo: parte) } } catch {
+                throw ErrorDeLecturaDePartitura(error)
+            }
+        }
         guard let tonalidad = tonalidad ?? Tonalidad.candidatos(notas: notas).first?.valor else {
-            throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio)
+            throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
         }
         let candidatos = tonalidad.armonizar(melodia: notas, propuestas: propuestas)
         var avisos: [CoralPresentado.Aviso] = []
@@ -173,7 +190,8 @@ public enum PresentacionDeCoral {
     }
 
     /// Los acordes escritos a cuatro voces, sin faltas de conducción.
-    public static func realizar(_ texto: String, en tonalidad: Tonalidad?, notacion: Notacion) throws -> CoralPresentado
+    public static func realizar(_ texto: String, en tonalidad: Tonalidad?, notacion: Notacion)
+        throws(ErrorDeLecturaDeTeoria) -> CoralPresentado
     {
         realizar(try AnalisisArmonico.analizar(leyendo: texto, en: tonalidad), en: notacion)
     }
@@ -196,7 +214,8 @@ public enum PresentacionDeCoral {
     }
 
     /// Las faltas de conducción (quintas y octavas paralelas, cruzamientos…) de unas voces escritas a mano.
-    public static func revisar(_ texto: String, en notacion: Notacion) throws -> CoralPresentado {
+    public static func revisar(_ texto: String, en notacion: Notacion) throws(ErrorDeLecturaDeTeoria) -> CoralPresentado
+    {
         revisar(try Coral(leyendo: texto), en: notacion)
     }
 

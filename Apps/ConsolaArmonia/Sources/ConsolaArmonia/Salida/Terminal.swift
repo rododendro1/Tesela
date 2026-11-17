@@ -123,6 +123,12 @@ extension LineaDeComandos {
     /// Los valores de `--formato`, que cambian con la orden: el único que dan `hoja`, `digitaciones` y `escala` aparte
     /// del de siempre, los de partitura en `transponer` y los de `grabar`.
     static func formatos(de orden: Orden) -> [String] {
+        let json = orden.json == nil ? [] : ["json"]
+        return formatosPropios(de: orden) + json
+    }
+
+    /// Los formatos de la orden aparte de JSON.
+    private static func formatosPropios(de orden: Orden) -> [String] {
         if orden.nombres.contains("hoja") { return ["html"] }
         if orden.nombres.contains("digitaciones") { return ["musicxml"] }
         if orden.nombres.contains("escala") { return ["bibtex"] }

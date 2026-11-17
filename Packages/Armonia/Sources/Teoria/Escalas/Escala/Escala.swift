@@ -23,17 +23,19 @@ public struct Escala: Hashable, Sendable {
     /// el tipo va en esa lengua (los más comunes) o en inglés: "ре дорийский", "λα αρμονική ελάσσονα",
     /// "до lydian dominant". Y escalas propias, por sus notas ("Do Re Mi♭ Fa♯ Sol La Si") o por su tónica y sus
     /// pasos en semitonos ("Do 2-1-3-1-2-2-1"): ``Escala/propia(_:)``.
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) {
         self = try Escala.leer(texto)
     }
 
-    private static func leer(_ texto: String) throws -> Escala {
+    private static func leer(_ texto: String) throws(ErrorDeLecturaDeTeoria) -> Escala {
         var lector = Lector(texto)
-        try lector.exigirContenido()
-        do {
+        try enTeoria(lector.exigirContenido())
+        do throws(ErrorDeLecturaDeTeoria) {
             // Con la tónica en español ("Re"), el tipo también va en español ("dórico");
             // con letra ("D"), se acepta en inglés ("dorian") o en español.
-            guard let (tonica, idioma) = lector.leerNombreNotaConIdioma() else { throw lector.error(.notaNoReconocida) }
+            guard let (tonica, idioma) = lector.leerNombreNotaConIdioma() else {
+                throw lector.error(.elementos(.notaNoReconocida))
+            }
             lector.saltarEspacios()
             let nombre = lector.restoSinEspacios
             guard let tipo = TipoDeEscala.buscar(nombre: nombre, aceptarIngles: idioma == .ingles) else {

@@ -195,11 +195,11 @@ extension Tonalidad: RepresentableComoTexto, Nombrable, Transponible, ConClasesD
     ///
     /// También lee las demás notaciones: "Fis-Dur", "fis-Moll", "B-Dur" (Si♭ mayor),
     /// "ré bémol majeur", "fa diesis minore".
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) {
         let escala: Escala
         do {
             escala = try Escala(leyendo: texto)
-        } catch let error as any ErrorAlLeer {
+        } catch {
             guard let otra = Tonalidad.leerEnOtrasNotaciones(texto) else { throw error }
             self = otra
             return

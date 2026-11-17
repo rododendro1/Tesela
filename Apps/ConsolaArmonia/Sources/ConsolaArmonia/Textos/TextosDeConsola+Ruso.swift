@@ -214,7 +214,7 @@ extension TextosDeConsola {
         fa dièse или Fa♯, F Kreuz или Fis.
         В компактных написаниях октава пишется нижним индексом (La₄), в остальных — цифрами (La4);
         --subindices или --cifras задают её (читаются обе формы).
-        С --json команды chord, identify, arpeggio, interval, scale, key, analyze, set, row,
+        С --json (--format json) команды chord, identify, arpeggio, interval, scale, key, analyze, set, row,
         fingerings и traditions выводят данные в JSON.
         С --json также harmonize, realize, check, counterpoint, transpose, scales,
         reharmonize, neighbors, plr, smooth-path, minimal-voice-leading, positions и engines. Если вывод идёт не в

@@ -49,8 +49,8 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.valores(de: .maximoDeDedos, en: digitaciones) == nil)
         #expect(LineaDeComandos.valores(de: .idioma, en: nil)?.contains("eu") == true)
         // `--formato` propone los formatos de cada orden.
-        #expect(LineaDeComandos.valores(de: .formato, en: digitaciones) == ["musicxml"])
-        #expect(LineaDeComandos.valores(de: .formato, en: escala) == ["bibtex"])
+        #expect(LineaDeComandos.valores(de: .formato, en: digitaciones) == ["musicxml", "json"])
+        #expect(LineaDeComandos.valores(de: .formato, en: escala) == ["bibtex", "json"])
         #expect(LineaDeComandos.valores(de: .formato, en: try orden("hoja")) == ["html"])
         #expect(LineaDeComandos.valores(de: .formato, en: try orden("transponer"))?.contains("mei") == true)
         #expect(LineaDeComandos.valores(de: .formato, en: try orden("grabar")) == ["pdf", "svg", "png"])

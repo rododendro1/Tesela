@@ -47,14 +47,19 @@ struct LecturaDeCifrado {
     // MARK: Leer
 
     /// Lee todo el texto, una parte tras otra.
-    mutating func leer() throws {
+    mutating func leer() throws(ErrorDeLecturaDeTeoria) {
         while !resto.isEmpty {
             let inicio = resto
             let previoMaj = despuesDeMaj
             despuesDeMaj = false
-            let leida =
-                try leerSignos(previoMaj: previoMaj) || leerAnadidasYOmitidas() || leerSus() || leerCalidad()
-                || leerTensionAlterada() || leerSignoDeCalidad() || leerNumero(previoMaj: previoMaj)
+            // Una tras otra, hasta la primera que lee algo (`||` no deja lanzar un error con tipo).
+            var leida = try leerSignos(previoMaj: previoMaj)
+            if !leida { leida = try leerAnadidasYOmitidas() }
+            if !leida { leida = leerSus() }
+            if !leida { leida = leerCalidad() }
+            if !leida { leida = try leerTensionAlterada() }
+            if !leida { leida = leerSignoDeCalidad() }
+            if !leida { leida = try leerNumero(previoMaj: previoMaj) }
             if !leida { throw fallo(.simboloNoReconocido(inicio.fragmentoParaError), en: inicio) }
         }
         // Un paréntesis sin cerrar ("Do7(b9") no se da por bueno.
@@ -64,7 +69,7 @@ struct LecturaDeCifrado {
     }
 
     /// Los espacios, las comas y los paréntesis, que no cambian lo que viene detrás de maj.
-    private mutating func leerSignos(previoMaj: Bool) throws -> Bool {
+    private mutating func leerSignos(previoMaj: Bool) throws(ErrorDeLecturaDeTeoria) -> Bool {
         let inicio = resto
         if consumir(" ") || consumir(",") {
             despuesDeMaj = previoMaj
@@ -87,7 +92,7 @@ struct LecturaDeCifrado {
     }
 
     /// `add9`, `add♭13`; `omit5`, `no3`.
-    private mutating func leerAnadidasYOmitidas() throws -> Bool {
+    private mutating func leerAnadidasYOmitidas() throws(ErrorDeLecturaDeTeoria) -> Bool {
         let inicio = resto
         if consumir("omit") || consumir("no") {
             guard let numeroLeido = leerCifras() else {
@@ -152,7 +157,7 @@ struct LecturaDeCifrado {
     }
 
     /// Una tensión o una quinta alterada: `♭9`, `♯11`, `-5`, `+5`.
-    private mutating func leerTensionAlterada() throws -> Bool {
+    private mutating func leerTensionAlterada() throws(ErrorDeLecturaDeTeoria) -> Bool {
         guard let alterada = try leerAlterada() else { return false }
         explicitas.append(alterada)
         return true
@@ -171,7 +176,7 @@ struct LecturaDeCifrado {
     }
 
     /// El número del acorde (`7`, `9`, `13`) o, entre paréntesis y no detrás de maj, una tensión natural: `7(9)`.
-    private mutating func leerNumero(previoMaj: Bool) throws -> Bool {
+    private mutating func leerNumero(previoMaj: Bool) throws(ErrorDeLecturaDeTeoria) -> Bool {
         let inicio = resto
         guard let numeroLeido = leerCifras() else { return false }
         if enParentesis && !previoMaj && numeroLeido != 6 && numeroLeido != 7 {
@@ -209,7 +214,7 @@ struct LecturaDeCifrado {
     /// Tensión con alteración obligatoria: b9, ♯11, -5, +5…
     /// Con b/♭/#/♯, un grado que no existe es un error; con -/+ (que también
     /// significan menor y aumentado) simplemente no se reconoce.
-    private mutating func leerAlterada() throws -> Int? {
+    private mutating func leerAlterada() throws(ErrorDeLecturaDeTeoria) -> Int? {
         // La cuarta doble aumentada de la sexta suiza: 𝄪11, ##11 o ♯♯11.
         for doble in ["𝄪", "##", "♯♯", "#♯", "♯#"] where resto.hasPrefix(doble) {
             let tras = resto.dropFirst(doble.count)
@@ -240,7 +245,7 @@ struct LecturaDeCifrado {
     }
 
     /// Tensión con alteración opcional: 9, b9, #11, 13…
-    private mutating func leerTension(desde inicio: Substring) throws -> Int {
+    private mutating func leerTension(desde inicio: Substring) throws(ErrorDeLecturaDeTeoria) -> Int {
         if let alterada = try leerAlterada() { return alterada }
         guard let numeroLeido = leerCifras(), let base = ClasificacionDeAcorde.gradoNatural[numeroLeido] else {
             throw fallo(.tensionNoValida(inicio.fragmentoParaError), en: inicio)
@@ -270,7 +275,7 @@ struct LecturaDeCifrado {
     }
 
     /// El conjunto de quintas de lo leído: la calidad y el número, y después las tensiones, `sus` y `omit`.
-    func conjunto() throws -> Set<Int> {
+    func conjunto() throws(ErrorDeLecturaDeTeoria) -> Set<Int> {
         if disminuido && semidisminuido {
             throw fallo(.calidadesIncompatibles(.disminuidoYSemidisminuido), en: nil)
         }
@@ -285,7 +290,7 @@ struct LecturaDeCifrado {
     }
 
     /// La tríada de la calidad, con lo que añade el número (la séptima y las tensiones que implica), `6/9` y `alt`.
-    private func notasDelNumero() throws -> Notas {
+    private func notasDelNumero() throws(ErrorDeLecturaDeTeoria) -> Notas {
         var notas = Notas(
             tercera: (menor || disminuido || semidisminuido) ? -3 : 4,
             quintas: (disminuido || semidisminuido) ? [-6] : (aumentado ? [8] : [1]))

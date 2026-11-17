@@ -24,11 +24,11 @@ public struct TipoDeAcorde: Sendable {
     }
 
     /// Igual que `init?(pasosDeQuinta:)`, pero explica el motivo si el conjunto no es válido.
-    public init(comprobandoPasosDeQuinta pasosDeQuinta: Set<Int>) throws {
+    public init(comprobandoPasosDeQuinta pasosDeQuinta: Set<Int>) throws(ErrorDeLecturaDeTeoria) {
         try self.init(comprobandoPasosDeQuinta: pasosDeQuinta, texto: "")
     }
 
-    package init(comprobandoPasosDeQuinta pasosDeQuinta: Set<Int>, texto: String) throws {
+    package init(comprobandoPasosDeQuinta pasosDeQuinta: Set<Int>, texto: String) throws(ErrorDeLecturaDeTeoria) {
         guard let clasificacion = ClasificacionDeAcorde(pasosDeQuinta) else {
             let rechazo = ClasificacionDeAcorde.motivoDeRechazo(pasosDeQuinta) ?? .noEsPorTerceras
             throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .acordeNoInterpretable(rechazo))
@@ -45,12 +45,12 @@ public struct TipoDeAcorde: Sendable {
     /// Lee un cifrado sin fundamental: "", "m", "7", "maj9", "m7(♭5)", "7(b9,#11)",
     /// "13sus4", "6/9", "(add9)", "7alt", "m11", "5", "°7", "ø", "Δ", "7(omit5)"…
     /// Si no se puede leer, el error indica dónde y por qué.
-    public init(leyendo cifrado: String) throws {
+    public init(leyendo cifrado: String) throws(ErrorDeLecturaDeTeoria) {
         try self.init(lector: Lector(cifrado))
     }
 
     /// Lee el cifrado que queda en el lector (las posiciones de error se cuentan en su texto completo).
-    package init(lector: Lector) throws {
+    package init(lector: Lector) throws(ErrorDeLecturaDeTeoria) {
         let conjunto = try ClasificacionDeAcorde.conjunto(desde: lector)
         try self.init(comprobandoPasosDeQuinta: conjunto, texto: lector.texto)
     }

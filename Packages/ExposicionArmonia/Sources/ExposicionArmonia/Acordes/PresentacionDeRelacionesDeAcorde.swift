@@ -35,26 +35,6 @@ public struct ComparacionPresentada: Hashable, Sendable {
 ///     let relaciones = RelacionesPresentadas(Acorde("Do6"), notacion: .compacta(.espanol))
 ///     relaciones.otrosNombres.contains("Lam7/Do")   // true
 public enum PresentacionDeRelacionesDeAcorde {
-    /// Lo que da ``RelacionesPresentadas/init(_:en:notacion:)``.
-    static func relaciones(
-        de acorde: Acorde, en tonalidad: Tonalidad? = nil, notacion: Notacion
-    ) -> RelacionesPresentadas {
-        let tonalidad = tonalidad ?? acorde.tonalidadPropia
-        let tonalidades = acorde.tonalidades.map { analisis in
-            [analisis.nombre(en: notacion), analisis.acordes[0].funcion?.nombre(en: notacion)]
-                .compactMap { $0 }.joined(separator: " · ")
-        }
-        let sustituciones = acorde.sustituciones(en: tonalidad).map { rearmonizacion in
-            PropuestaDeRearmonizacion(
-                rearmonizacion: rearmonizacion, descripcion: rearmonizacion.descripcion(en: notacion),
-                texto: PresentacionDeTransposicion.texto(de: rearmonizacion.acordes, en: notacion),
-                sonido: Escucha.acordes([acorde] + rearmonizacion.acordes).conTonica(tonalidad.tonica))
-        }
-        return RelacionesPresentadas(
-            otrosNombres: acorde.otrosNombres.map { $0.cifrado(en: notacion) },
-            sinFundamental: acorde.sinFundamental.map { $0.cifrado(en: notacion) },
-            tonalidades: tonalidades, tonalidad: tonalidad, sustituciones: sustituciones)
-    }
 
     /// Un acorde y otro con la conducción de menor movimiento en la disposición dada. `nil` si alguno no se puede
     /// disponer así.
@@ -86,6 +66,20 @@ extension RelacionesPresentadas {
     /// Los otros nombres, el acorde sin la fundamental, las tonalidades y las sustituciones en la tonalidad dada o,
     /// si no, en la del acorde (``Acorde/tonalidadPropia``).
     public init(_ acorde: Acorde, en tonalidad: Tonalidad? = nil, notacion: Notacion) {
-        self = PresentacionDeRelacionesDeAcorde.relaciones(de: acorde, en: tonalidad, notacion: notacion)
+        let tonalidad = tonalidad ?? acorde.tonalidadPropia
+        let tonalidades = acorde.tonalidades.map { analisis in
+            [analisis.nombre(en: notacion), analisis.acordes[0].funcion?.nombre(en: notacion)]
+                .compactMap { $0 }.joined(separator: " · ")
+        }
+        let sustituciones = acorde.sustituciones(en: tonalidad).map { rearmonizacion in
+            PropuestaDeRearmonizacion(
+                rearmonizacion: rearmonizacion, descripcion: rearmonizacion.descripcion(en: notacion),
+                texto: PresentacionDeTransposicion.texto(de: rearmonizacion.acordes, en: notacion),
+                sonido: Escucha.acordes([acorde] + rearmonizacion.acordes).conTonica(tonalidad.tonica))
+        }
+        self.init(
+            otrosNombres: acorde.otrosNombres.map { $0.cifrado(en: notacion) },
+            sinFundamental: acorde.sinFundamental.map { $0.cifrado(en: notacion) },
+            tonalidades: tonalidades, tonalidad: tonalidad, sustituciones: sustituciones)
     }
 }

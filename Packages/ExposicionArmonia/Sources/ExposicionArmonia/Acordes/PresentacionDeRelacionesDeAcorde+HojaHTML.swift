@@ -12,7 +12,7 @@ extension PresentacionDeRelacionesDeAcorde {
     ///     hoja.contains("<h1>Sol7</h1>")   // true
     public static func hojaDeEstudioHTML(de acorde: Acorde, en notacion: Notacion) -> String {
         typealias Hoja = PresentacionDeEstudioDeEscala
-        let datos = relaciones(de: acorde, notacion: notacion)
+        let datos = RelacionesPresentadas(acorde, notacion: notacion)
         let cifrado = acorde.cifrado(en: notacion)
         let notas = acorde.notasDesdeElBajo.map { $0.nombre(en: notacion) }.joined(separator: " ")
         var cuerpo = [Hoja.encabezadoHTML(cifrado, [notas])]

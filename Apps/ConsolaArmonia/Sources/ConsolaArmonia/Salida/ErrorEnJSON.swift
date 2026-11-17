@@ -10,10 +10,10 @@ import Foundation
 //     {"error":{"caracter":1,"codigo":1,"mensaje":"No se puede leer «Xx» (carácter 1): …","posicion":0,
 //      "texto":"Xx","tipo":"notaNoReconocida"}}
 //
-// `tipo` es el caso del error (`ErrorDeUso`) o del motivo de la lectura (`ErrorAlLeer.motivo`), que no cambia con el
-// idioma; `mensaje`, el texto que se escribiría sin `--json`, sin «armonia: » delante. En un error de lectura,
-// `posicion` es el índice del carácter en `texto`, desde 0, para un programa, y `caracter`, el mismo contado desde 1,
-// como en el mensaje.
+// `tipo` es el caso del error (`ErrorDeUso`) o del motivo de la lectura (`ErrorAlLeer.motivo`, el de dentro si lleva el
+// de otra capa), que no cambia con el idioma; `mensaje`, el texto que se escribiría sin `--json`, sin «armonia: »
+// delante. En un error de lectura, `posicion` es el índice del carácter en `texto`, desde 0, para un programa, y
+// `caracter`, el mismo contado desde 1, como en el mensaje.
 
 /// Un error, como sale con `--json`.
 struct ErrorEnJSON: Encodable {
@@ -47,6 +47,15 @@ struct ErrorEnJSON: Encodable {
         return String(texto.prefix { $0 != "(" })
     }
 
+    /// El motivo que lleva dentro el de una capa cuando lo que falla es de la de debajo: el de
+    /// `.elementos(.notaNoReconocida)` es `notaNoReconocida`, como si se hubiera leído solo la nota.
+    static func motivoDeDentro(_ motivo: any MotivoDeLectura) -> any MotivoDeLectura {
+        guard let dentro = Mirror(reflecting: motivo).children.first?.value as? any MotivoDeLectura else {
+            return motivo
+        }
+        return motivoDeDentro(dentro)
+    }
+
     /// Un error de uso, con lo que se quiso escribir.
     init(_ error: ErrorDeUso, en notacion: Notacion, enCurso: LineaDeComandos.OrdenEnCurso?) {
         self.error = Detalle(
@@ -60,7 +69,8 @@ struct ErrorEnJSON: Encodable {
             codigo: 1, tipo: Self.caso(type(of: error)), mensaje: error.descripcion(en: notacion))
         if let lectura = error as? any ErrorAlLeer {
             detalle = Detalle(
-                codigo: 1, tipo: Self.caso(lectura.motivo), mensaje: detalle.mensaje, texto: lectura.texto,
+                codigo: 1, tipo: Self.caso(Self.motivoDeDentro(lectura.motivo)), mensaje: detalle.mensaje,
+                texto: lectura.texto,
                 posicion: lectura.posicion, caracter: lectura.posicion.map { $0 + 1 })
         }
         self.error = detalle

@@ -14,18 +14,18 @@ extension Acorde {
     /// .compacta(.frances))`, `Acorde(leyendo: "Фа♯m7(♭5)", en: .compacta(.ruso))`. La fundamental y el bajo se leen
     /// como en `Nota(leyendo:en:)`; el resto, como en `init(leyendo:)`. En español e inglés, igual que
     /// `init(leyendo:)`.
-    public init(leyendo cifrado: String, en notacion: Notacion) throws {
+    public init(leyendo cifrado: String, en notacion: Notacion) throws(ErrorDeLecturaDeTeoria) {
         let idioma = notacion.idiomaDeLasNotas
         guard idioma != .espanol && idioma != .ingles else {
             try self.init(leyendo: cifrado)
             return
         }
         var inicio = Lector(cifrado)
-        try inicio.exigirContenido()
+        try enTeoria(inicio.exigirContenido())
         let texto = cifrado
         // La fundamental es el nombre de nota más largo del principio que deja detrás un cifrado: «As» y «us4» no lo
         // dejan, «A» y «sus4» sí.
-        var primerError: (any ErrorAlLeer)?
+        var primerError: ErrorDeLecturaDeTeoria?
         for largo in stride(from: min(texto.count, 20), through: 1, by: -1) {
             let corte = texto.index(texto.startIndex, offsetBy: largo)
             let nombre = String(texto[..<corte]).trimmingEspacios()
@@ -45,11 +45,11 @@ extension Acorde {
                 let tipo = try TipoDeAcorde(lector: Lector(texto: texto, fragmento: simbolo))
                 self.init(fundamental, tipo, bajo: bajo)
                 return
-            } catch let error as any ErrorAlLeer {
+            } catch {
                 if primerError == nil { primerError = error }
             }
         }
-        throw primerError ?? inicio.error(.notaNoReconocida)
+        throw primerError ?? inicio.error(.elementos(.notaNoReconocida))
     }
 }
 
@@ -59,14 +59,14 @@ extension Escala {
     /// `Escala(leyendo: "фа-диез гармонический минор", en: .conPalabras(.ruso))`. La tónica se lee como en
     /// `Nota(leyendo:en:)` y el tipo, en el idioma de los textos de la notación (o con su nombre en español, el de
     /// las escalas que no tienen otro). En español e inglés, igual que `init(leyendo:)`.
-    public init(leyendo texto: String, en notacion: Notacion) throws {
+    public init(leyendo texto: String, en notacion: Notacion) throws(ErrorDeLecturaDeTeoria) {
         let idioma = notacion.idiomaDeLasNotas
         guard idioma != .espanol && idioma != .ingles else {
             try self.init(leyendo: texto)
             return
         }
         var lector = Lector(texto)
-        try lector.exigirContenido()
+        try enTeoria(lector.exigirContenido())
         // La tónica puede ocupar varias palabras («si bemol bikoitza», «F Kreuz»); se prueba de más a menos.
         let palabras = texto.split(separator: " ").map(String.init)
         var tipoSinLeer: String?
@@ -80,7 +80,7 @@ extension Escala {
             }
             if tipoSinLeer == nil { tipoSinLeer = tipo }
         }
-        guard let tipo = tipoSinLeer else { throw lector.error(.notaNoReconocida) }
+        guard let tipo = tipoSinLeer else { throw lector.error(.elementos(.notaNoReconocida)) }
         throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .tipoDeEscalaNoReconocido(tipo))
     }
 
@@ -101,21 +101,21 @@ extension Tonalidad {
     /// "B-Dur", en: .compacta(.aleman))` es Si♭ mayor, `Tonalidad(leyendo: "H bé-dúr", en: .conPalabras(.hungaro))`,
     /// `Tonalidad(leyendo: "фа-диез минор", en: .conPalabras(.ruso))`. La tónica se lee como en `Nota(leyendo:en:)`.
     /// En español e inglés, igual que `init(leyendo:)`.
-    public init(leyendo texto: String, en notacion: Notacion) throws {
+    public init(leyendo texto: String, en notacion: Notacion) throws(ErrorDeLecturaDeTeoria) {
         let idioma = notacion.idiomaDeLasNotas
         guard idioma != .espanol && idioma != .ingles else {
             try self.init(leyendo: texto)
             return
         }
         var lector = Lector(texto)
-        try lector.exigirContenido()
+        try enTeoria(lector.exigirContenido())
         let limpio = texto.trimmingEspacios()
         let separador = idioma.reglas.separadorDelModo
         for modo in [Modo.mayor, .menor] {
             let palabra = modo.nombre(en: notacion)
             guard limpio.claveDeBusqueda.hasSuffix((separador + palabra).claveDeBusqueda) else { continue }
             let tonica = String(limpio.dropLast(separador.count + palabra.count)).trimmingEspacios()
-            self.init(try Nota(leyendo: tonica, en: notacion), modo)
+            self.init(try enTeoria(Nota(leyendo: tonica, en: notacion)), modo)
             return
         }
         throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .modoNoReconocido(limpio))

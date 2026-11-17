@@ -70,14 +70,16 @@ public enum NombresPorOctava: String, Hashable, Sendable, CaseIterable, Codable 
 
     /// Lee un nombre en cualquiera de sus grafías, sin importar las mayúsculas, los diacríticos, los espacios ni los
     /// guiones: «Rāst», «rast», «راست»; «Hüseynî Aşîrân», «huseyni asiran»; «ὑπάτη μέσων», «hypate meson».
-    public func leer(_ texto: String) throws -> AlturaConNombre {
+    public func leer(_ texto: String) throws(ErrorDeLecturaDeTeoria) -> AlturaConNombre {
         let clave = NombresPorOctava.plegar(texto)
-        guard !clave.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
+        guard !clave.isEmpty else {
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
+        }
         let encontrada = alturas.first { altura in
             Grafia.allCases.contains { NombresPorOctava.plegar(altura.nombre(en: $0)) == clave }
         }
         guard let altura = encontrada else {
-            throw ErrorDeLectura(texto: texto, posicion: 0, motivo: .notaNoReconocida)
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: 0, motivo: .elementos(.notaNoReconocida))
         }
         return altura
     }

@@ -28,7 +28,7 @@ extension PresentacionDeRelacionesDeAcorde {
         }
 
         // El cifrado, sus notas y sus otros nombres; a la derecha, el pentagrama.
-        let datos = relaciones(de: acorde, notacion: notacion)
+        let datos = RelacionesPresentadas(acorde, notacion: notacion)
         let arriba = y
         y += 22
         cuerpo.append(Hoja.texto(acorde.cifrado(en: notacion), x: margen, y: y, tamano: 24, negrita: true))

@@ -1,4 +1,5 @@
 import Elementos
+import Teoria
 
 /// Por qué no se puede escribir una sucesión de acordes a cuatro voces, o armonizar una melodía: lo que lanzan
 /// ``Coral/init(realizando:soprano:en:)``, ``Coral/init(bajoCifrado:en:soprano:)``, ``Armonizacion/coral(soprano:)`` y
@@ -11,9 +12,9 @@ import Elementos
 ///         error   // .notaAjena(acorde: 2): «La nota del soprano no es del acorde 3.»
 ///     }
 public enum ErrorDeRealizacion: ErrorDeArmonia, Hashable {
-    /// El bajo cifrado de ``Coral/init(bajoCifrado:en:soprano:)`` no se puede leer: el error de la lectura, que es un
-    /// `ErrorDeLectura` si falla una nota del bajo o un `ErrorDeLecturaDeTeoria` si fallan unas cifras.
-    case bajoCifradoIlegible(any ErrorAlLeer)
+    /// El bajo cifrado de ``Coral/init(bajoCifrado:en:soprano:)`` no se puede leer: el error de la lectura (con
+    /// `.elementos` si falla una nota del bajo).
+    case bajoCifradoIlegible(ErrorDeLecturaDeTeoria)
     /// No hay acordes, o la melodía está vacía.
     case sinNotas
     /// El soprano no tiene una nota por acorde.
@@ -49,27 +50,6 @@ public enum ErrorDeRealizacion: ErrorDeArmonia, Hashable {
         case .notaSinAcorde(let nota): return TextosDePolifonia.en(notacion) { $0.realizacionNotaSinAcorde(nota + 1) }
         case .sinEnlaceSinFaltas: return TextosDePolifonia.en(notacion, \.realizacionSinEnlaceSinFaltas)
         case .otraMelodia: return TextosDePolifonia.en(notacion, \.realizacionOtraMelodia)
-        }
-    }
-
-    // El error de la lectura no es `Hashable` por sí mismo (`any ErrorAlLeer`): se compara con `AnyHashable`.
-
-    public static func == (a: Self, b: Self) -> Bool { a.clave == b.clave }
-
-    public func hash(into hasher: inout Hasher) { hasher.combine(clave) }
-
-    private var clave: [AnyHashable] {
-        switch self {
-        case .bajoCifradoIlegible(let error): return ["bajoCifradoIlegible", AnyHashable(error)]
-        case .sinNotas: return ["sinNotas"]
-        case .sopranoDeOtraLongitud(let notas, let acordes): return ["sopranoDeOtraLongitud", notas, acordes]
-        case .notaAjena(let acorde): return ["notaAjena", acorde]
-        case .sopranoFueraDeTesitura(let acorde): return ["sopranoFueraDeTesitura", acorde]
-        case .demasiadasNotas(let acorde): return ["demasiadasNotas", acorde]
-        case .sinDisposicion(let acorde): return ["sinDisposicion", acorde]
-        case .notaSinAcorde(let nota): return ["notaSinAcorde", nota]
-        case .sinEnlaceSinFaltas: return ["sinEnlaceSinFaltas"]
-        case .otraMelodia: return ["otraMelodia"]
         }
     }
 }

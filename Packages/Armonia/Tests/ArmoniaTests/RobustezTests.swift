@@ -127,11 +127,11 @@ import Testing
             _ = try Acorde(leyendo: "Sol7/B")
             Issue.record("Se esperaba un error")
         } catch {
-            guard case .idiomasMezclados("B")? = (error as? ErrorDeLecturaDeTeoria)?.motivo else {
+            guard case .idiomasMezclados("B") = error.motivo else {
                 Issue.record("\(error)")
                 return
             }
-            #expect((error as? any ErrorAlLeer)?.posicion == 5)
+            #expect(error.posicion == 5)
 
         }
     }

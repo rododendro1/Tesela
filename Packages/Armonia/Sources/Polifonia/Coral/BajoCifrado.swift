@@ -22,7 +22,7 @@ extension Tonalidad {
     ///     try Tonalidad(.do).acorde(sobre: .si, cifras: "65")             // Sol7/Si
     ///     try Tonalidad(.la, .menor).acorde(sobre: .mi, cifras: "#")      // Mi
     ///     try Tonalidad(.la, .menor).acorde(sobre: .fa, cifras: "6")      // Rem/Fa
-    public func acorde(sobre bajo: Nota, cifras: String) throws -> Acorde {
+    public func acorde(sobre bajo: Nota, cifras: String) throws(ErrorDeLecturaDeTeoria) -> Acorde {
         let leidas = try Tonalidad.leerCifras(cifras)
         let numeros = Tonalidad.completarCifras(Set(leidas.map(\.numero)))
         let notas = numeros.sorted().map { numero in
@@ -42,27 +42,27 @@ extension Tonalidad {
     }
 
     /// Los acordes de un bajo cifrado escrito como notas del bajo separadas por espacios, cada una con sus cifras
-    /// detrás de dos puntos: «Do Fa:6 Sol:7 Do», «La Re:6 Mi:# La». Lanza `ErrorDeLectura` (`.textoVacio`) si no
-    /// hay nada que leer, el error de la nota si una no se lee y el de ``acorde(sobre:cifras:)`` si unas cifras no se
-    /// leen o no forman acorde, en su carácter del texto entero.
+    /// detrás de dos puntos: «Do Fa:6 Sol:7 Do», «La Re:6 Mi:# La». Lanza `ErrorDeLecturaDeTeoria`:
+    /// `.elementos(.textoVacio)` si no hay nada que leer, `.elementos` con el motivo de la nota si una no se lee y el
+    /// de ``acorde(sobre:cifras:)`` si unas cifras no se leen o no forman acorde, en su carácter del texto entero.
     ///
     ///     try Tonalidad(.do).acordes(bajoCifrado: "Do Fa Sol:7 Do")         // [Do, Fa, Sol7, Do]
     ///     try Tonalidad(.do).acordes(bajoCifrado: "Do Re:43 Mi:6 Fa Sol")   // [Do, Sol7/Re, Do/Mi, Fa, Sol]
-    public func acordes(bajoCifrado texto: String) throws -> [Acorde] {
+    public func acordes(bajoCifrado texto: String) throws(ErrorDeLecturaDeTeoria) -> [Acorde] {
         var acordes: [Acorde] = []
         var actual = ""
         var posicion = 0
-        func cerrar() throws {
+        func cerrar() throws(ErrorDeLecturaDeTeoria) {
             defer { actual = "" }
             guard !actual.isEmpty else { return }
             let inicio = posicion - actual.count
             let campos = actual.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: false)
             let bajo: Nota
             do { bajo = try Nota(leyendo: String(campos[0])) } catch let error {
-                throw error.situado(en: texto, posicion: inicio + (error.posicion ?? 0))
+                throw ErrorDeLecturaDeTeoria(error.situado(en: texto, posicion: inicio + (error.posicion ?? 0)))
             }
             let cifras = campos.count > 1 ? String(campos[1]) : ""
-            do { acordes.append(try acorde(sobre: bajo, cifras: cifras)) } catch let error as any ErrorAlLeer {
+            do { acordes.append(try acorde(sobre: bajo, cifras: cifras)) } catch let error {
                 let inicioDeLasCifras = inicio + campos[0].count + 1
                 throw error.situado(en: texto, posicion: inicioDeLasCifras + (error.posicion ?? 0))
             }
@@ -76,7 +76,9 @@ extension Tonalidad {
             posicion += 1
         }
         try cerrar()
-        guard !acordes.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
+        guard !acordes.isEmpty else {
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
+        }
         return acordes
     }
 
@@ -140,7 +142,7 @@ extension Tonalidad {
 
     /// Las cifras de un texto como «64», «6/4», «#6», «6+» o «b». Una alteración sola es la de la tercera. Lanza
     /// `.cifrasNoValidas` en el carácter que no es una cifra, o en la segunda de dos alteraciones seguidas.
-    private static func leerCifras(_ texto: String) throws -> [Cifra] {
+    private static func leerCifras(_ texto: String) throws(ErrorDeLecturaDeTeoria) -> [Cifra] {
         var cifras: [Cifra] = []
         var pendiente: Int?
         var anteriorSinAlterar = false
@@ -207,11 +209,8 @@ extension Coral {
         let acordes: [Acorde]
         do {
             acordes = try tonalidad.acordes(bajoCifrado: bajoCifrado)
-        } catch let error as any ErrorAlLeer {
-            throw .bajoCifradoIlegible(error)
         } catch {
-            // `acordes(bajoCifrado:)` solo lanza errores de lectura.
-            throw .bajoCifradoIlegible(ErrorDeLectura(texto: bajoCifrado, posicion: nil, motivo: .textoVacio))
+            throw .bajoCifradoIlegible(error)
         }
         try self.init(realizando: acordes, soprano: soprano, en: tonalidad)
     }

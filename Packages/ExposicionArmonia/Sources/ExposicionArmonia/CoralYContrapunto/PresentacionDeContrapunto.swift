@@ -89,7 +89,7 @@ public enum PresentacionDeContrapunto {
     /// no se leen, o si el contrapunto no dura una redonda por nota del cantus.
     public static func presentar(
         cantus: String, contrapunto: String, especie: Contrapunto.Especie, en notacion: Notacion
-    ) throws -> ContrapuntoPresentado {
+    ) throws(ErrorDeLecturaDePartitura) -> ContrapuntoPresentado {
         let ejercicio = try Contrapunto(cantusFirmus: cantus, contrapunto: contrapunto, especie: especie)
         let faltas = ejercicio.faltas
         let lineas = ejercicio.informe(en: notacion).split(separator: "\n").map(String.init)

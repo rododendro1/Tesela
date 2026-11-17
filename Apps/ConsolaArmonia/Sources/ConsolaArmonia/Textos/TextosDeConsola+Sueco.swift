@@ -214,7 +214,7 @@ extension TextosDeConsola {
         fa dièse eller Fa♯, F kors eller Fiss.
         I de kompakta skrivsätten står oktaven som index (La₄), annars som siffra (La4);
         --subindices eller --cifras bestämmer det (båda läses).
-        Med --json ger chord, identify, arpeggio, interval, scale, key, analyze, set, row,
+        Med --json (--format json) ger chord, identify, arpeggio, interval, scale, key, analyze, set, row,
         fingerings och traditions sina data som JSON.
         Med --json även harmonize, realize, check, counterpoint, transpose, scales,
         reharmonize, neighbors, plr, smooth-path, minimal-voice-leading, positions och engines. Är utdata ingen

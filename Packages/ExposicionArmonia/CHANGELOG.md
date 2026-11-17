@@ -17,7 +17,8 @@
 - Las lecturas dicen en su firma el error que lanzan: `ImportacionDeProgresion.leer(_:ventana:)`,
   `progresion(de:ventana:)` y `RecorridoDePartitura.leer(_:en:)`, `ErrorDeLecturaDeFichero`;
   `PresentacionDeSerie.presentar(_:forma:en:)` y `CandidatoPresentado.identificar(_:limite:en:)`, `ErrorDeLectura`.
-  Las que leen acordes, corales o contrapuntos siguen sin tipo, porque lanzan errores de más de un tipo.
+  Las que leen acordes, corales o contrapuntos lanzan también uno solo, el de Armonia (`ErrorDeLecturaDeTeoria` o
+  `ErrorDeLecturaDePartitura`).
 
 ## 0.6.0 (2026-11-17)
 

@@ -316,7 +316,7 @@ extension PresentacionDeEstudioDeEscala {
     ///         Escala(.do), con: Escala(.do, .dorico), en: .compacta(.espanol))
     ///     hoja.contains("<h1>Do mayor → Do dórico</h1>")   // true
     public static func comparacionNotaANotaHTML(_ escala: Escala, con otra: Escala, en notacion: Notacion) -> String {
-        let datos = comparar(escala, con: otra, en: notacion)
+        let datos = ComparacionDeEscalasPresentada(escala, con: otra, en: notacion)
         let comparacion = datos.relacion
         let titulo = escala.nombre(en: notacion) + " → " + otra.nombre(en: notacion)
         var cuerpo = [encabezadoHTML(titulo, [datos.distancia ?? ""])]

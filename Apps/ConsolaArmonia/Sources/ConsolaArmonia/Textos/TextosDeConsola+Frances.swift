@@ -214,7 +214,7 @@ extension TextosDeConsola {
         fa dièse ou Fa♯, F Kreuz ou Fis.
         Dans les écritures compactes, l'octave s'écrit en indice (La₄), et dans les autres en chiffres (La4) ;
         --subindices ou --cifras la fixent (les deux se lisent).
-        Avec --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
+        Avec --json (--formato json), acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones et tradiciones donnent leurs données en JSON.
         Avec --json aussi armonizar, realizar, revisar, contrapunto, transponer, escalas,
         rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones et motores. Si la sortie n'est

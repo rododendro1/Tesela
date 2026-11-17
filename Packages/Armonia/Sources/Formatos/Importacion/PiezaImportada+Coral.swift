@@ -19,9 +19,9 @@ extension PiezaImportada {
     ///     let coral = try pieza.coral()
     ///     coral.faltas.map(\.description)   // ["Quintas paralelas entre el bajo y el tenor (acordes 3 → 4)"]
     ///
-    /// Lanza `ErrorDeLecturaDeFichero.sinNotas` si no suena nada, y `ErrorDeLecturaDeTeoria.Motivo.vocesDistintas` si
-    /// no suenan siempre las mismas voces.
-    public func coral() throws -> Coral {
+    /// Lanza `ErrorDeLecturaDeFichero.sinNotas` si no suena nada, y `.vocesDistintas` si no suenan siempre las
+    /// mismas voces.
+    public func coral() throws(ErrorDeLecturaDeFichero) -> Coral {
         let comienzos = Array(Set(notas.map(\.inicio))).sorted()
         var acordes: [[Altura]] = []
         func anadir(_ acorde: [Altura]) {
@@ -40,7 +40,7 @@ extension PiezaImportada {
             }
         }
         guard !acordes.isEmpty else { throw ErrorDeLecturaDeFichero.sinNotas }
-        return try Coral(acordes)
+        do { return try Coral(acordes) } catch { throw .vocesDistintas }
     }
 
     /// Las voces del fichero, de la más grave a la más aguda por su altura media, si son al menos dos y en ninguna

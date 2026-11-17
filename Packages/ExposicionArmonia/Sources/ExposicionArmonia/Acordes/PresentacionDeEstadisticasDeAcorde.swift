@@ -85,25 +85,6 @@ public enum PresentacionDeEstadisticasDeAcorde {
         "grupoDeHindemith", "rasgos",
     ]
 
-    /// Lo que da ``ResumenDeAcordesPresentado/init(_:en:)``.
-    static func resumen(_ acordes: [AcordeConNombre], en notacion: Notacion) -> ResumenDeAcordesPresentado {
-        let numeros = Dictionary(grouping: acordes, by: \.numeroDeNotas)
-        let porNumero = numeros.keys.sorted().map { n in
-            let cardinal = CardinalDeAcorde(numeroDeNotas: n).map { " (" + $0.nombre(en: notacion) + ")" } ?? ""
-            return ResumenDeAcordesPresentado.Recuento(nombre: "\(n)" + cardinal, acordes: numeros[n]?.count ?? 0)
-        }
-        var porEstilo = Estilo.allCases.compactMap { estilo -> ResumenDeAcordesPresentado.Recuento? in
-            let cuantos = acordes.filter { $0.estilos.contains(estilo) }.count
-            return cuantos == 0 ? nil : .init(nombre: estilo.nombre(en: notacion), acordes: cuantos)
-        }
-        let sinEstilo = acordes.filter(\.estilos.isEmpty).count
-        if sinEstilo > 0 { porEstilo.append(.init(nombre: notacion.texto(\.sinEstilo), acordes: sinEstilo)) }
-        let porTerceras = acordes.filter { $0.tipo != nil }.count
-        return ResumenDeAcordesPresentado(
-            total: acordes.count, porNumeroDeNotas: porNumero, porEstilo: porEstilo, porTerceras: porTerceras,
-            noPorTerceras: acordes.count - porTerceras)
-    }
-
 }
 
 /// Lo que se mide de un acorde, para `--json`: el valor de cada medida de `MedidaDeAcorde.todas` que va al JSON, con
@@ -161,6 +142,20 @@ extension ResumenDeAcordesPresentado {
     ///     resumen.porNumeroDeNotas.map(\.nombre) // ["3 (tríada)", "4 (tétrada)", "6 (héxada)"]
     ///     resumen.noPorTerceras                  // 1
     public init(_ acordes: [AcordeConNombre], en notacion: Notacion) {
-        self = PresentacionDeEstadisticasDeAcorde.resumen(acordes, en: notacion)
+        let numeros = Dictionary(grouping: acordes, by: \.numeroDeNotas)
+        let porNumero = numeros.keys.sorted().map { n in
+            let cardinal = CardinalDeAcorde(numeroDeNotas: n).map { " (" + $0.nombre(en: notacion) + ")" } ?? ""
+            return Recuento(nombre: "\(n)" + cardinal, acordes: numeros[n]?.count ?? 0)
+        }
+        var porEstilo = Estilo.allCases.compactMap { estilo -> Recuento? in
+            let cuantos = acordes.filter { $0.estilos.contains(estilo) }.count
+            return cuantos == 0 ? nil : .init(nombre: estilo.nombre(en: notacion), acordes: cuantos)
+        }
+        let sinEstilo = acordes.filter(\.estilos.isEmpty).count
+        if sinEstilo > 0 { porEstilo.append(.init(nombre: notacion.texto(\.sinEstilo), acordes: sinEstilo)) }
+        let porTerceras = acordes.filter { $0.tipo != nil }.count
+        self.init(
+            total: acordes.count, porNumeroDeNotas: porNumero, porEstilo: porEstilo, porTerceras: porTerceras,
+            noPorTerceras: acordes.count - porTerceras)
     }
 }

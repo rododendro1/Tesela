@@ -1428,7 +1428,7 @@ import Hexagonos
         do {
             let acorde = try Acorde(leyendo: "Do7(b3)")
             print(acorde)
-        } catch let error as ErrorDeLecturaDeTeoria {
+        } catch {
             print(error)
             comprobarIgual(error.motivo, .tensionNoValida("b3"), doc, 7)
             comprobar(error.posicion, #"4"#, doc, 8)

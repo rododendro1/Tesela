@@ -74,21 +74,6 @@ public struct EscalaConDetallePresentada: Hashable, Sendable, Encodable {
 ///     let terceras = SecuenciaPresentada(Escala(.do), .terceras, en: .compacta(.espanol))
 ///     terceras.titulo   // "Do mayor por terceras"
 public enum PresentacionDeEstudioDeEscala {
-    /// Lo que da ``SecuenciaPresentada/init(_:_:octavas:sentido:en:)``.
-    static func secuencia(
-        _ escala: Escala, _ secuencia: SecuenciaDeEscala, octavas: Int = 1,
-        sentido: SentidoDelIntervalo = .ascendente, en notacion: Notacion
-    ) -> SecuenciaPresentada {
-        let alturas = escala.secuencia(secuencia, octavas: octavas, sentido: sentido)
-        let titulo = escala.nombre(en: notacion) + " " + secuencia.nombre(en: notacion)
-        let presentado = PresentacionDeArpegios.presentar(
-            Voz(alturas.map { Evento($0, .corchea) }), nombre: titulo, tonalidad: nil, tempo: nil, swing: false,
-            tonica: escala.tonica)
-        return SecuenciaPresentada(
-            titulo: titulo, notas: PresentacionDeCoral.voces(alturas, notacion), sonido: presentado.sonido,
-            pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: titulo, en: notacion),
-            ficheros: presentado.ficheros)
-    }
 
     /// La digitación de piano de las dos manos, la derecha primero.
     public static func digitaciones(
@@ -122,27 +107,7 @@ public enum PresentacionDeEstudioDeEscala {
             sonido: .escala(modo))
     }
 
-    /// Lo que da ``ComparacionDeEscalasPresentada/init(_:con:en:)``.
-    static func comparar(
-        _ escala: Escala, con otra: Escala, en notacion: Notacion
-    ) -> ComparacionDeEscalasPresentada {
-        let relacion = escala.relacion(con: otra)
-        func lista(_ notas: [Nota]) -> String { notas.map { $0.nombre(en: notacion) }.joined(separator: ", ") }
-        func solo(_ en: Escala, _ notas: [Nota]) -> String {
-            notas.isEmpty ? "" : notacion.texto { $0.soloEn(en.nombre(en: notacion)) } + ": " + lista(notas)
-        }
-        let ambas = (escala.alturas(octava: 4) + otra.alturas(octava: 4)).map { Evento($0, .corchea) }
-        return ComparacionDeEscalasPresentada(
-            relacion: relacion,
-            comunes: relacion.comunes.isEmpty ? notacion.texto(\.ningunaNotaComun) : lista(relacion.comunes),
-            soloEnOrigen: solo(escala, relacion.soloEnOrigen),
-            soloEnDestino: solo(otra, relacion.soloEnDestino),
-            cambios: cambios(relacion, notacion),
-            distancia: escala.distancia(hasta: otra).map { n in notacion.texto { $0.alteracionesDeDiferencia(n) } },
-            sonido: Escucha.voz(Voz(ambas)))
-    }
-
-    private static func cambios(_ relacion: RelacionEntreEscalas, _ notacion: Notacion) -> [String] {
+    static func cambios(_ relacion: RelacionEntreEscalas, _ notacion: Notacion) -> [String] {
         relacion.cambios.map {
             "\($0.grado): " + $0.desde.nombre(en: notacion) + " → " + $0.hasta.nombre(en: notacion)
         }
@@ -198,8 +163,15 @@ extension SecuenciaPresentada {
         _ escala: Escala, _ secuencia: SecuenciaDeEscala, octavas: Int = 1, sentido: SentidoDelIntervalo = .ascendente,
         en notacion: Notacion
     ) {
-        self = PresentacionDeEstudioDeEscala.secuencia(
-            escala, secuencia, octavas: octavas, sentido: sentido, en: notacion)
+        let alturas = escala.secuencia(secuencia, octavas: octavas, sentido: sentido)
+        let titulo = escala.nombre(en: notacion) + " " + secuencia.nombre(en: notacion)
+        let presentado = PresentacionDeArpegios.presentar(
+            Voz(alturas.map { Evento($0, .corchea) }), nombre: titulo, tonalidad: nil, tempo: nil, swing: false,
+            tonica: escala.tonica)
+        self.init(
+            titulo: titulo, notas: PresentacionDeCoral.voces(alturas, notacion), sonido: presentado.sonido,
+            pentagrama: PentagramaPresentado(alturas.map { [$0] }, titulo: titulo, en: notacion),
+            ficheros: presentado.ficheros)
     }
 }
 
@@ -211,6 +183,19 @@ extension ComparacionDeEscalasPresentada {
     ///         Escala(.do), con: Escala(.do, .lidio), en: .compacta(.espanol))
     ///     lidio.cambios   // ["4: Fa → Fa♯"]
     public init(_ escala: Escala, con otra: Escala, en notacion: Notacion) {
-        self = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, en: notacion)
+        let relacion = escala.relacion(con: otra)
+        func lista(_ notas: [Nota]) -> String { notas.map { $0.nombre(en: notacion) }.joined(separator: ", ") }
+        func solo(_ en: Escala, _ notas: [Nota]) -> String {
+            notas.isEmpty ? "" : notacion.texto { $0.soloEn(en.nombre(en: notacion)) } + ": " + lista(notas)
+        }
+        let ambas = (escala.alturas(octava: 4) + otra.alturas(octava: 4)).map { Evento($0, .corchea) }
+        self.init(
+            relacion: relacion,
+            comunes: relacion.comunes.isEmpty ? notacion.texto(\.ningunaNotaComun) : lista(relacion.comunes),
+            soloEnOrigen: solo(escala, relacion.soloEnOrigen),
+            soloEnDestino: solo(otra, relacion.soloEnDestino),
+            cambios: PresentacionDeEstudioDeEscala.cambios(relacion, notacion),
+            distancia: escala.distancia(hasta: otra).map { n in notacion.texto { $0.alteracionesDeDiferencia(n) } },
+            sonido: Escucha.voz(Voz(ambas)))
     }
 }

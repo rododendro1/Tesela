@@ -48,7 +48,7 @@ import Testing
             do {
                 _ = try FormatoUIL(leyendo: texto)
                 return nil
-            } catch { return error as? ErrorDeLecturaDeUIL }
+            } catch { return error }
         }
         #expect(fallo("") == .formatoNoValido(""))
         #expect(fallo("2,7") == .formatoNoValido("2,7"))
@@ -243,7 +243,7 @@ import Testing
             _ = try sieteNotas.teclado()
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLecturaDeUIL) == .afinacionNoSoportada(tonos: 7))
+            #expect(error == .afinacionNoSoportada(tonos: 7))
 
         }
     }

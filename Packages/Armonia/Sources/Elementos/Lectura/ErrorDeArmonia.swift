@@ -34,8 +34,8 @@ public protocol MotivoDeLectura: Hashable, Sendable {
 ///
 /// Cada capa tiene el suyo, con sus motivos: `ErrorDeLectura` (notas, alturas e intervalos),
 /// `ErrorDeLecturaDeTeoria` (cifrados, escalas, tonalidades y corales) y `ErrorDeLecturaDePartitura` (duraciones,
-/// compases y contrapunto). Leer un acorde puede lanzar los dos primeros: el de Elementos si falla la nota y el de
-/// Teoría si falla el cifrado.
+/// compases y contrapunto). Cada lectura lanza solo el de su capa, que lleva dentro el motivo de la de debajo:
+/// si falla la fundamental de un acorde, `ErrorDeLecturaDeTeoria` con `.elementos(.notaNoReconocida)`.
 ///
 /// `ErrorDeLecturaDeUIL` y `ErrorDeLecturaDeFichero` no lo son, aunque también son de lectura: dicen qué está mal
 /// en todo un texto UIL o en todo un fichero, sin un carácter donde se detuviera la lectura, y por eso son

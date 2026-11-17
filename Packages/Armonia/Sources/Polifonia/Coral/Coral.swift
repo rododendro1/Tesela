@@ -106,7 +106,7 @@ public struct Coral: Hashable, Sendable {
 
     /// Lanza `ErrorDeLecturaDeTeoria` (`.vocesDistintas`) si no hay acordes, si hay menos de dos voces o si no
     /// todos tienen las mismas.
-    public init(_ acordes: [[Altura]]) throws {
+    public init(_ acordes: [[Altura]]) throws(ErrorDeLecturaDeTeoria) {
         guard let voces = acordes.first?.count, voces >= 2,
             acordes.allSatisfy({ $0.count == voces })
         else { throw ErrorDeLecturaDeTeoria(texto: "", posicion: nil, motivo: .vocesDistintas) }
@@ -116,7 +116,7 @@ public struct Coral: Hashable, Sendable {
     /// Las mismas alturas dadas voz por voz, de grave a agudo: `[bajo, tenor, contralto, soprano]`,
     /// cada una con sus notas en orden. Lanza `ErrorDeLecturaDeTeoria` si las voces no tienen todas el mismo número
     /// de notas (`.vocesDeDistintaLongitud`) o si no hay al menos dos con alguna nota (`.vocesDistintas`).
-    public init(voces: [[Altura]]) throws {
+    public init(voces: [[Altura]]) throws(ErrorDeLecturaDeTeoria) {
         let longitud = voces.first?.count ?? 0
         guard voces.allSatisfy({ $0.count == longitud }) else {
             throw ErrorDeLecturaDeTeoria(texto: "", posicion: nil, motivo: .vocesDeDistintaLongitud)
@@ -126,7 +126,7 @@ public struct Coral: Hashable, Sendable {
 
     /// Lee los acordes separados por barras o comas, y en cada uno las alturas de grave a agudo:
     /// "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4".
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) {
         var acordes: [[Altura]] = [[]]
         var actual = ""
         var posicion = 0
@@ -142,19 +142,21 @@ public struct Coral: Hashable, Sendable {
         }
         for caracter in texto {
             if caracter == "|" || caracter == "," {
-                try cerrarAltura()
+                try enTeoria(cerrarAltura())
                 acordes.append([])
             } else if caracter.isWhitespace {
-                try cerrarAltura()
+                try enTeoria(cerrarAltura())
             } else {
                 actual.append(caracter)
             }
             posicion += 1
         }
-        try cerrarAltura()
+        try enTeoria(cerrarAltura())
         acordes.removeAll { $0.isEmpty }
-        guard !acordes.isEmpty else { throw ErrorDeLectura(texto: texto, posicion: nil, motivo: .textoVacio) }
-        do { self = try Coral(acordes) } catch let error as ErrorDeLecturaDeTeoria {
+        guard !acordes.isEmpty else {
+            throw ErrorDeLecturaDeTeoria(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
+        }
+        do { self = try Coral(acordes) } catch let error {
             throw error.situado(en: texto, posicion: nil)
         }
     }

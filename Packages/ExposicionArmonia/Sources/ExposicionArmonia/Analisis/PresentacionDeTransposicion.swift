@@ -30,10 +30,10 @@ public enum PresentacionDeTransposicion {
     /// cual. Lanza el error de lectura de la primera palabra que no se entiende.
     public static func transponer(
         _ texto: String, _ intervalo: Intervalo, contenido: Contenido = .acordes, en notacion: Notacion
-    ) throws -> String {
+    ) throws(ErrorDeLecturaDePartitura) -> String {
         var resultado = ""
         var palabra = ""
-        func cerrar() throws {
+        func cerrar() throws(ErrorDeLecturaDePartitura) {
             guard !palabra.isEmpty else { return }
             resultado += try transponer(palabra: palabra, intervalo, contenido: contenido, notacion: notacion)
             palabra = ""
@@ -54,7 +54,7 @@ public enum PresentacionDeTransposicion {
     public static func transponer(
         _ texto: String, de origen: Tonalidad, a destino: Tonalidad, contenido: Contenido = .acordes,
         en notacion: Notacion
-    ) throws -> String {
+    ) throws(ErrorDeLecturaDePartitura) -> String {
         let intervalo = origen.tonica.intervaloMasCorto(hasta: destino.tonica)
         return try transponer(texto, intervalo, contenido: contenido, en: notacion)
     }
@@ -90,11 +90,12 @@ public enum PresentacionDeTransposicion {
     /// altura (Do4) o una nota sin octava (Mi). Un guion o una tilde sueltos se dejan.
     static func transponer(
         palabra: String, _ intervalo: Intervalo, contenido: Contenido, notacion: Notacion
-    ) throws -> String {
+    ) throws(ErrorDeLecturaDePartitura) -> String {
         if palabra.allSatisfy({ "-~".contains($0) }) { return palabra }
         switch contenido {
         case .acordes:
-            let acorde = try Acorde(leyendo: palabra)
+            let acorde: Acorde
+            do { acorde = try Acorde(leyendo: palabra) } catch { throw ErrorDeLecturaDePartitura(error) }
             return escribir(acorde.transponer(intervalo), notacion)
         case .notas:
             if palabra.contains(":") {
@@ -102,7 +103,8 @@ public enum PresentacionDeTransposicion {
                 return escribir(evento.transponer(intervalo), notacion)
             }
             if let altura = try? Altura(leyendo: palabra) { return escribir(altura.transponer(intervalo), notacion) }
-            let nota = try Nota(leyendo: palabra)
+            let nota: Nota
+            do { nota = try Nota(leyendo: palabra) } catch { throw ErrorDeLecturaDePartitura(error) }
             return escribir(nota.transponer(intervalo), notacion)
         }
     }

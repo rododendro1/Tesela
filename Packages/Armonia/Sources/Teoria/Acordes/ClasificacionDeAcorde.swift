@@ -134,7 +134,7 @@ extension ClasificacionDeAcorde {
     /// Convierte un cifrado sin fundamental ("m7(♭5)", "7(b9,#11)", "13sus4", "6/9",
     /// "(add9)", "7alt", "maj9(omit5)"…) en un conjunto de quintas, con ``LecturaDeCifrado``.
     /// Lee lo que queda en `lector`; las posiciones de error se cuentan en su texto completo.
-    package static func conjunto(desde lector: Lector) throws -> Set<Int> {
+    package static func conjunto(desde lector: Lector) throws(ErrorDeLecturaDeTeoria) -> Set<Int> {
         var lectura = LecturaDeCifrado(lector)
         try lectura.leer()
         return try lectura.conjunto()

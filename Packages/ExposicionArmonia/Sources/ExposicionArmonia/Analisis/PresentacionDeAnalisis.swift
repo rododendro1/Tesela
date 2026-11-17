@@ -99,7 +99,7 @@ public enum PresentacionDeAnalisis {
     public static func analizar(
         _ texto: String, en tonalidad: Tonalidad? = nil,
         notacion: Notacion
-    ) throws -> AnalisisPresentado {
+    ) throws(ErrorDeLecturaDeTeoria) -> AnalisisPresentado {
         if let tonalidad {
             return presentar(try AnalisisArmonico.analizar(leyendo: texto, en: tonalidad), recorrido: nil, notacion)
         }

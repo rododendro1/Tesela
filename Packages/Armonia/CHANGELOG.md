@@ -19,7 +19,20 @@
   en lugar de dar `nil`.
 - Las lecturas de ficheros dicen en su firma que lanzan `ErrorDeLecturaDeFichero`: `PiezaImportada(leyendo:)`,
   `init(midi:)`, `init(mxl:)`, `init(musicXML:)`, `init(mei:)` e `init(abc:)`.
+- Cada lectura dice en su firma el único error que lanza, el de su capa: `ErrorDeLecturaDeTeoria` en los cifrados,
+  las escalas, las tonalidades, los cifrados romanos, los arpegios, el bajo cifrado y los corales
+  (`Acorde(leyendo:)`, `Escala(leyendo:)`, `Tonalidad(leyendo:)`, `Coral(leyendo:)`…), `ErrorDeLecturaDePartitura`
+  en los eventos, las melodías y el contrapunto, `ErrorDeLecturaDeUIL` en los teclados isomórficos y
+  `ErrorDeLecturaDeFichero` en `PiezaImportada.coral()` y `melodia()`. Lo que falla en la capa de debajo va en el
+  motivo, con el mismo texto, posición y mensaje: `.elementos(.notaNoReconocida)` si no se lee la fundamental de un
+  acorde, en lugar de un `ErrorDeLectura`, y `.teoria(…)` si falla un cifrado en una partitura. Quien atrapaba
+  `ErrorDeLectura` al leer un acorde mira ahora `error.motivo`.
+- `ErrorDeTransformacion.secuenciaIlegible` y `ErrorDeRealizacion.bajoCifradoIlegible` llevan un
+  `ErrorDeLecturaDeTeoria` en lugar de `any ErrorAlLeer`, y `ErrorDeLecturaDeFichero` tiene `vocesDistintas` (un
+  fichero que no es un coral).
 - En la consola:
+  - `--formato json` es `--json` en todas las órdenes, y el completado lo propone en las que dan JSON. El `tipo` de
+    un error de lectura en JSON sigue siendo el del motivo de dentro (`notaNoReconocida`).
   - `--dedos` es siempre la digitación (en `escala`, la del piano; en `pentagrama` y `teclado`, con el instrumento o
     la mano detrás). Cuántos dedos se pueden usar en `digitaciones` va tras `--maximo-de-dedos` (`--max-fingers`).
   - El formato de la salida se elige con `--formato`, como en `grabar` y `transponer --archivo`:

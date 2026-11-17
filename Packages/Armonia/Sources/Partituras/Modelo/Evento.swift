@@ -89,7 +89,7 @@ public struct Evento: Hashable, Sendable {
     /// cents entre paréntesis: "Mi♭4(50¢):4", "Si4(-22.64c):4"; y, si se sabe, su sistema y los pasos que se aparta en
     /// él (`Evento.NotaDelEvento.sistema`): "Mi♭4(50¢,persa,1):4". La dinámica y las articulaciones van al final, entre
     /// llaves: "Do4:4{mf}", "Re4:2~{acento,tenuto}" (`Expresion.swift`).
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDePartitura) {
         let caracteres = Array(texto)
         guard let dosPuntos = caracteres.lastIndex(of: ":") else {
             throw ErrorDeLecturaDePartitura(
@@ -108,8 +108,9 @@ public struct Evento: Hashable, Sendable {
                 } else if let leida = Articulacion(clave: clave) {
                     articulaciones.append(leida)
                 } else {
-                    throw ErrorDeLectura(
-                        texto: texto, posicion: posicionDeLaLlave, motivo: .caracteresSobrantes(String(marca)))
+                    throw ErrorDeLecturaDePartitura(
+                        texto: texto, posicion: posicionDeLaLlave,
+                        motivo: .elementos(.caracteresSobrantes(String(marca))))
                 }
             }
             parteDuracion = String(parteDuracion[..<llave]).trimmingEspacios()
@@ -144,9 +145,9 @@ public struct Evento: Hashable, Sendable {
                 guard let cents = Double(cifra.trimmingEspacios()), cents.isFinite, abs(cents) <= 100,
                     dentro.count == 1 || (leidos.0 != nil && leidos.1 != nil)
                 else {
-                    throw ErrorDeLectura(
+                    throw ErrorDeLecturaDePartitura(
                         texto: texto, posicion: inicio + nota.distance(from: nota.startIndex, to: parentesis),
-                        motivo: .caracteresSobrantes(String(nota[parentesis...])))
+                        motivo: .elementos(.caracteresSobrantes(String(nota[parentesis...]))))
                 }
                 desvio = cents
                 sistema = leidos.0
@@ -156,7 +157,7 @@ public struct Evento: Hashable, Sendable {
             do {
                 notas.append(NotaDelEvento(try Altura(leyendo: nota), desvio: desvio, sistema: sistema, ajuste: ajuste))
             } catch let e {
-                throw e.situado(en: texto, posicion: inicio + (e.posicion ?? 0))
+                throw ErrorDeLecturaDePartitura(e.situado(en: texto, posicion: inicio + (e.posicion ?? 0)))
             }
             inicio += trozo.count + 1
         }

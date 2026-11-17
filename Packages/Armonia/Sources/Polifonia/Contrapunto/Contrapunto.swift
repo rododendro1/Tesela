@@ -108,10 +108,12 @@ public struct Contrapunto: Hashable, Sendable {
     public let contrapunto: Voz
     public let especie: Especie
 
-    /// Lanza `ErrorDeLectura` (`.textoVacio`) si el cantus está vacío y `ErrorDeLecturaDePartitura`
-    /// (`.contrapuntoDeOtraDuracion`) si el contrapunto no dura una redonda por cada nota del cantus.
-    public init(cantusFirmus: [Altura], contrapunto: [Evento], especie: Especie) throws {
-        guard !cantusFirmus.isEmpty else { throw ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio) }
+    /// Lanza `ErrorDeLecturaDePartitura`: `.elementos(.textoVacio)` si el cantus está vacío y
+    /// `.contrapuntoDeOtraDuracion` si el contrapunto no dura una redonda por cada nota del cantus.
+    public init(cantusFirmus: [Altura], contrapunto: [Evento], especie: Especie) throws(ErrorDeLecturaDePartitura) {
+        guard !cantusFirmus.isEmpty else {
+            throw ErrorDeLecturaDePartitura(texto: "", posicion: nil, motivo: .elementos(.textoVacio))
+        }
         guard contrapunto.map(\.duracion).total == Duracion(cantusFirmus.count) else {
             throw ErrorDeLecturaDePartitura(
                 texto: "", posicion: nil, motivo: .contrapuntoDeOtraDuracion(redondas: cantusFirmus.count))
@@ -124,8 +126,8 @@ public struct Contrapunto: Hashable, Sendable {
     /// Lee el cantus como alturas separadas por espacios ("Re4 Fa4 Mi4") y el contrapunto como los
     /// eventos de una voz ("-:2 La4:2 Do5:2"), donde una altura sin duración lleva la figura de la
     /// especie: "La4 Do5 Si4" en la segunda especie son tres blancas.
-    public init(cantusFirmus: String, contrapunto: String, especie: Especie) throws {
-        let cantus = try Self.cantus(leyendo: cantusFirmus)
+    public init(cantusFirmus: String, contrapunto: String, especie: Especie) throws(ErrorDeLecturaDePartitura) {
+        let cantus = try enPartituras(Self.cantus(leyendo: cantusFirmus))
         let figura = especie.figura == .redonda ? "1" : (especie.figura == .blanca ? "2" : "4")
         let eventos = contrapunto.split(separator: " ").map {
             $0.contains(":") ? String($0) : String($0) + ":" + figura
@@ -133,7 +135,7 @@ public struct Contrapunto: Hashable, Sendable {
         let voz = try Voz(leyendo: eventos.joined(separator: " "))
         do {
             self = try Contrapunto(cantusFirmus: cantus, contrapunto: voz.eventos, especie: especie)
-        } catch let error as ErrorDeLecturaDePartitura {
+        } catch let error {
             throw error.situado(en: contrapunto, posicion: nil)
         }
     }
@@ -443,7 +445,7 @@ extension Contrapunto: Codable {
         let leido: Contrapunto
         do {
             leido = try Contrapunto(cantusFirmus: cantus, contrapunto: eventos, especie: especie)
-        } catch let error as any ErrorAlLeer {
+        } catch {
             throw DecodingError.dataCorruptedError(
                 forKey: .contrapunto, in: contenedor, debugDescription: error.description)
         }
@@ -460,7 +462,7 @@ extension Contrapunto: Codable {
 
 extension Contrapunto {
     /// Las notas de un cantus firmus escrito («Re4 Fa4 Mi4 Re4»); los errores señalan el sitio del texto.
-    static func cantus(leyendo texto: String) throws -> [Altura] {
+    static func cantus(leyendo texto: String) throws(ErrorDeLectura) -> [Altura] {
         var cantus: [Altura] = []
         var inicio = 0
         for trozo in texto.split(separator: " ", omittingEmptySubsequences: false) {

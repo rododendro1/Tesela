@@ -214,7 +214,7 @@ extension TextosDeConsola {
         fa dièse o Fa♯, F Kreuz o Fis.
         Nelle scritture compatte l'ottava va in pedice (La₄) e nelle altre in cifre (La4);
         --subindices o --cifras la fissano (si leggono entrambe le forme).
-        Con --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
+        Con --json (--formato json), acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones e tradiciones danno i loro dati in JSON.
         Con --json anche armonizar, realizar, revisar, contrapunto, transponer, escalas,
         rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones e motores. Se l'uscita non è

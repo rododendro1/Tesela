@@ -55,7 +55,7 @@ public struct ProgresionConNombre: Sendable {
         nombre: String, leyendo cifrado: String, modo: Tonalidad.Modo = .mayor, alias: [String] = [],
         variantes: [String] = [], estilos: [Estilo] = [], referencias: [Referencia] = [],
         documentada: Referencia? = nil
-    ) throws {
+    ) throws(ErrorDeLecturaDeTeoria) {
         _ = try Tonalidad(.do, modo).acordes(romanos: cifrado)
         self.init(
             nombre: nombre, cifrado: cifrado, modo: modo, alias: alias, variantes: variantes, estilos: estilos,

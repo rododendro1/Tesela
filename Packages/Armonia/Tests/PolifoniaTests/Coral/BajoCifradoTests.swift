@@ -63,10 +63,10 @@ import Testing
         #expect(try doMayor.acordes(bajoCifrado: "Do Fa Sol:7 Do") == ["Do", "Fa", "Sol7", "Do"])
         #expect(try doMayor.acordes(bajoCifrado: "Do Re:43 Mi:6 Fa Sol") == ["Do", "Sol7/Re", "Do/Mi", "Fa", "Sol"])
         #expect(try laMenor.acordes(bajoCifrado: "La Fa:6 Mi:# La") == ["Lam", "Rem/Fa", "Mi", "Lam"])
-        #expect(throws: ErrorDeLectura(texto: "", posicion: nil, motivo: .textoVacio)) {
+        #expect(throws: ErrorDeLecturaDeTeoria(texto: "", posicion: nil, motivo: .elementos(.textoVacio))) {
             try doMayor.acordes(bajoCifrado: "")
         }
-        #expect(throws: ErrorDeLectura.self) { try doMayor.acordes(bajoCifrado: "Do Xa") }
+        #expect(throws: ErrorDeLecturaDeTeoria.self) { try doMayor.acordes(bajoCifrado: "Do Xa") }
         // El error de las cifras, en su carácter de la línea entera.
         #expect(throws: ErrorDeLecturaDeTeoria(texto: "Do Sol:z", posicion: 7, motivo: .cifrasNoValidas("z"))) {
             try doMayor.acordes(bajoCifrado: "Do Sol:z")
@@ -84,15 +84,13 @@ import Testing
             do {
                 _ = try doMayor.acordes(bajoCifrado: texto)
                 Issue.record("«\(texto)» se lee")
-            } catch let lectura as any ErrorAlLeer {
+            } catch let lectura {
                 #expect(throws: ErrorDeRealizacion.bajoCifradoIlegible(lectura)) {
                     try Coral(bajoCifrado: texto, en: doMayor)
                 }
                 #expect(
                     ErrorDeRealizacion.bajoCifradoIlegible(lectura).descripcion(en: .compacta(.ingles))
                         == lectura.descripcion(en: .compacta(.ingles)))
-            } catch {
-                Issue.record("\(error)")
             }
         }
         #expect(throws: ErrorDeRealizacion.sopranoDeOtraLongitud(notas: 1, acordes: 2)) {

@@ -62,7 +62,7 @@ extension ErrorDeLectura.Motivo {
 
     /// La explicación en los trece idiomas de los textos. La notación solo hace falta para los
     /// nombres de calidades e intervalos en inglés, que siguen su vocabulario.
-    private func explicacionTraducida(_ notacion: Notacion) -> Traduccion {
+    package func explicacionTraducida(_ notacion: Notacion) -> Traduccion {
         typealias TextosDeNotas = ErrorDeLectura.TextosDeNotas
         switch self {
         case .textoVacio:
