@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.6.0 (2026-11-17)
 
 - Como en Armonia, `AjusteCuadrado.teclado(de:en:)` lleva la escala tras `en:`, y
   `PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(_:deNotas:en:)`, el número de notas tras `deNotas:`.

@@ -1,10 +1,11 @@
 # Cambios
 
-## Sin publicar
+## 0.6.0 (2026-11-17)
 
 ### Cambios incompatibles
 
-Los nombres de antes ya no están: no se llegaron a publicar.
+Los nombres de antes ya no están, sin pasar por obsoletos: los de los tres primeros cambios no se llegaron a
+publicar, y los demás cambian con esta versión, que por eso sube a 0.6.
 
 - `Tonalidad.armonizar(notas:)` y `Escala.armonizar(notas:por:)` se llaman `acordesDeLosGrados(deNotas:)` y
   `acordesDeLosGrados(deNotas:por:)`: dan el acorde de cada grado, y no se confunden con `armonizar(melodia:)`, que

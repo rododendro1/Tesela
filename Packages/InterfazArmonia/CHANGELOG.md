@@ -1,6 +1,6 @@
 # Cambios
 
-## Sin publicar
+## 0.6.0 (2026-11-17)
 
 - La tarjeta de un ornamento del catálogo da cada nota con su figura sobre una negra y suena con ese ritmo
   (`OrnamentoConNombre.tocado(sobre:en:duracion:)`): la apoyatura, con la mitad de la nota.
