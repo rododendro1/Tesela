@@ -85,7 +85,6 @@ public enum PresentacionDeEstadisticasDeAcorde {
         "grupoDeHindemith", "rasgos",
     ]
 
-
 }
 
 /// Lo que se mide de un acorde, para `--json`: el valor de cada medida de `MedidaDeAcorde.todas` que va al JSON, con

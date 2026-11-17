@@ -214,7 +214,7 @@ extension TextosDeConsola {
         fa dièse o Fa♯, F Kreuz o Fis.
         En les escriptures compactes l'octava va en subíndex (La₄) i en les altres, amb xifres (La4);
         --subindices o --cifras la fixen (es llegeixen totes dues maneres).
-        Amb --json, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
+        Amb --json (--formato json), acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar, conjunto,
         serie, digitaciones i tradiciones donen les dades en JSON.
         Amb --json també armonizar, realizar, revisar, contrapunto, transponer, escalas,
         rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones i motores. Si la sortida no és

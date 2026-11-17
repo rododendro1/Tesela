@@ -99,6 +99,17 @@ struct Argumentos {
         try Self.leer(quitarOpcion(opcion.leidos), siFalta: siFalta)
     }
 
+    /// Quita `--formato json`, que es `--json` en todas las órdenes, y dice si estaba. Otro formato se queda, para la
+    /// orden.
+    mutating func quitarFormatoJSON() -> Bool {
+        guard
+            let i = restantes.firstIndex(where: { OpcionDeOrden.formato.seEscribe($0) }),
+            restantes.indices.contains(i + 1), restantes[i + 1].lowercased() == "json"
+        else { return false }
+        restantes.removeSubrange(i...(i + 1))
+        return true
+    }
+
     /// Quita `--formato` y dice si pide `admitido`, el único formato que da la orden aparte del de siempre (`hoja …
     /// --formato html`); con otro, lanza `formatoDeSalidaDesconocido`.
     mutating func pideElFormato(_ admitido: String) throws -> Bool {

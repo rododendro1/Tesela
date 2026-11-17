@@ -150,7 +150,8 @@ armonia grabar coral Do3 Mi4 Sol4 Do5 > coral.pdf     # con LilyPond instalado
 
 ## Para un script: JSON
 
-Con `--json`, cada orden da sus datos en JSON, con las mismas claves en todos los idiomas:
+Con `--json` (o `--formato json`, como los demás formatos de salida), cada orden da sus datos en JSON, con las
+mismas claves en todos los idiomas:
 
 ```console
 $ armonia acorde Sol7 --json | jq -c '.[0].notas'

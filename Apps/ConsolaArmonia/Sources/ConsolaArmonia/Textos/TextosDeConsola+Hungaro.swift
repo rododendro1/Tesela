@@ -214,7 +214,7 @@ extension TextosDeConsola {
         fa dièse vagy Fa♯, F Kreuz vagy Fis.
         A tömör írásmódokban az oktáv alsó indexbe kerül (La₄), a többiben számjeggyel (La4);
         a --subindices vagy a --cifras rögzíti (mindkettőt olvassa).
-        A --json kapcsolóval a chord, identify, arpeggio, interval, scale, key, analyze, set, row,
+        A --json (--format json) kapcsolóval a chord, identify, arpeggio, interval, scale, key, analyze, set, row,
         fingerings és traditions JSON-ban adja az adatait.
         A --json kapcsolóval a harmonize, realize, check, counterpoint, transpose, scales,
         reharmonize, neighbors, plr, smooth-path, minimal-voice-leading, positions és engines is. Ha a kimenet

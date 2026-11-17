@@ -138,6 +138,14 @@ extension LineaDeComandosTests {
     }
 
     /// Una escala de otra tradición lleva sus referencias, con su clave, su cita y la referencia completa.
+    /// `--formato json` es `--json` en todas las órdenes; en las que no dan JSON, lo dicen igual.
+    @Test func elFormatoJSONEsElAtajo() {
+        #expect(salida("acorde Sol7 --formato json") == salida("acorde Sol7 --json"))
+        #expect(salida("digitaciones Mim --limite 1 --format JSON") == salida("digitaciones Mim --limite 1 --json"))
+        #expect(resultado("grabar", "hoja", "Re", "dórico", "--formato", "json").codigo == 2)
+        #expect(salida("hoja Re dórico --formato html").hasPrefix("<!doctype html>"))
+    }
+
     @Test func referenciasEnJSON() throws {
         let bayati = try #require(try json("escala Re bayati") as? [String: Any])
         let referencias = try #require(bayati["referencias"] as? [[String: String]])

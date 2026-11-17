@@ -45,7 +45,6 @@ public struct AcordesDelGrado: Hashable, Sendable {
 ///     dorico.modo        // "modo 2 de Do mayor"
 public enum PresentacionDeEscalaYAcorde {
 
-
     /// Las escalas para el acorde, en la tonalidad si se da, presentadas con su motivo: las de la hoja del acorde,
     /// de la vista de acordes y de `armonia acorde --escalas`.
     public static func escalas(
@@ -80,7 +79,9 @@ public enum PresentacionDeEscalaYAcorde {
     public static func escala(
         de analizado: AcordeAnalizado, en tonalidad: Tonalidad, notacion: Notacion
     ) -> EscalaSobreAcordePresentada? {
-        tonalidad.escalaDelAcorde(analizado).map { EscalaSobreAcordePresentada($0, sobre: analizado.acorde, en: notacion) }
+        tonalidad.escalaDelAcorde(analizado).map {
+            EscalaSobreAcordePresentada($0, sobre: analizado.acorde, en: notacion)
+        }
     }
 }
 

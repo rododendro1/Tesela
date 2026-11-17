@@ -216,7 +216,7 @@ extension TextosDeConsola {
         fa dièse or Fa♯, F Kreuz or Fis.
         In compact writings the octave is a subscript (A₄) and in the others, digits (A4);
         --subscripts or --digits choose one (both forms are read).
-        With --json, chord, identify, arpeggio, interval, scale, key, analyze, set, row, fingerings and traditions
+        With --json (--format json), chord, identify, arpeggio, interval, scale, key, analyze, set, row, fingerings and traditions
         give their data as JSON.
         With --json also harmonize, realize, check, counterpoint, transpose, scales,
         reharmonize, neighbors, plr, smooth-path, minimal-voice-leading, positions and engines. When the output is not

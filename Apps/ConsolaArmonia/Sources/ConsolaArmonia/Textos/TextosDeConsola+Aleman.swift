@@ -214,7 +214,7 @@ extension TextosDeConsola {
         fa dièse oder Fa♯, F Kreuz oder Fis.
         In den kompakten Schreibweisen steht die Oktave als Index (La₄), sonst als Ziffer (La4);
         --subindices oder --cifras legen sie fest (gelesen wird beides).
-        Mit --json geben chord, identify, arpeggio, interval, scale, key, analyze, set, row,
+        Mit --json (--format json) geben chord, identify, arpeggio, interval, scale, key, analyze, set, row,
         fingerings und traditions ihre Daten als JSON aus.
         Mit --json auch harmonize, realize, check, counterpoint, transpose, scales,
         reharmonize, neighbors, plr, smooth-path, minimal-voice-leading, positions und engines. Ist die Ausgabe kein

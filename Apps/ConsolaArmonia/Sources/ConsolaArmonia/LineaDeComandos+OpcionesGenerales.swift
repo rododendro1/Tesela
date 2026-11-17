@@ -8,8 +8,8 @@ struct OpcionesGenerales {
     var notacion: Notacion
     /// Un sistema de nombres móvil (sargam, jianpu), que solo entiende `escala`.
     var movil: SistemaMovil?
-    /// Con `--json`, las órdenes que lo admiten dan sus datos en JSON (LineaDeComandos+JSON.swift y
-    /// Ordenes/*/+JSON).
+    /// Con `--json` (o `--formato json`), las órdenes que lo admiten dan sus datos en JSON
+    /// (LineaDeComandos+JSON.swift y Ordenes/*/+JSON).
     var json: Bool
     /// Con `-o`, el fichero al que va lo que da la orden (`-o -`, la salida estándar, aunque sea un fichero binario).
     var destino: String?
@@ -48,7 +48,8 @@ extension LineaDeComandos {
             notacion = notacion.conOctavas(.cifras)
         }
         if let grafiaElegida, notacion.sistemaDeNombres == nil { notacion = notacion.conGrafia(grafiaElegida) }
-        let json = opciones.quitarMarca(.json)
+        // `--formato json` es `--json`; los demás formatos son de cada orden.
+        let json = opciones.quitarMarca(.json) || opciones.quitarFormatoJSON()
         // «-o» a secas se nombra con su nombre largo.
         let destino = try valor(.salida, &opciones, notacion, sinNombre: "salida")
         return OpcionesGenerales(notacion: notacion, movil: movil, json: json, destino: destino)

@@ -214,7 +214,7 @@ extension TextosDeConsola {
         fa dièse ή Fa♯, F Kreuz ή Fis.
         Στις συμπαγείς γραφές η οκτάβα γράφεται ως δείκτης (La₄) και στις άλλες με ψηφία (La4)·
         το --subindices ή το --cifras την ορίζει (διαβάζονται και τα δύο).
-        Με --json, οι chord, identify, arpeggio, interval, scale, key, analyze, set, row,
+        Με --json (--format json), οι chord, identify, arpeggio, interval, scale, key, analyze, set, row,
         fingerings και traditions δίνουν τα δεδομένα τους σε JSON.
         Με --json επίσης οι harmonize, realize, check, counterpoint, transpose, scales,
         reharmonize, neighbors, plr, smooth-path, minimal-voice-leading, positions και engines. Αν η έξοδος δεν

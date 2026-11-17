@@ -214,7 +214,7 @@ extension TextosDeConsola {
         fa dièse edo Fa♯, F Kreuz edo Fis.
         Idazkera trinkoetan zortziduna azpiindize gisa doa (La₄), eta besteetan zenbakiz (La4);
         --subindices edo --cifras erabiliz finkatzen da (biak irakurtzen dira).
-        --json aukerarekin, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar,
+        --json (--formato json) aukerarekin, acorde, identificar, arpegio, intervalo, escala, tonalidad, analizar,
         conjunto, serie, digitaciones eta tradiciones aginduek JSONez ematen dituzte datuak.
         --json aukerarekin, armonizar, realizar, revisar, contrapunto, transponer, escalas,
         rearmonizar, vecinos, plr, camino-parsimonioso, conduccion-minima, posiciones eta motores ere bai. Irteera

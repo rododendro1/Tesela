@@ -107,7 +107,6 @@ public enum PresentacionDeEstudioDeEscala {
             sonido: .escala(modo))
     }
 
-
     static func cambios(_ relacion: RelacionEntreEscalas, _ notacion: Notacion) -> [String] {
         relacion.cambios.map {
             "\($0.grado): " + $0.desde.nombre(en: notacion) + " → " + $0.hasta.nombre(en: notacion)
