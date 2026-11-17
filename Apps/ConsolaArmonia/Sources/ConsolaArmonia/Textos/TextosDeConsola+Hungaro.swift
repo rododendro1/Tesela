@@ -66,6 +66,8 @@ extension TextosDeConsola {
         descripcionProgresiones: "a katalógus harmóniamenetei római számokkal és akkordjaikkal C-ről vagy a --in alaphangjáról; szöveggel: azok, amelyek nevében benne van",
         sintaxisTonalidades: "keys [--affect <affektus>]",
         descripcionTonalidades: "a hangnemek, amelyeket valamelyik forrás leír (Charpentier, Schubart), azzal, amit mindegyik mond; --affect mellett az ilyen affektusúak",
+        sintaxisCatalogo: "catalog <katalógus> [<beállítások>]",
+        descripcionCatalogo: "egy katalógus a beállításaival: a catalog rhythms ugyanaz, mint a rhythms",
         sintaxisRitmos: "rhythms [<szöveg>] [--family <család>] [--style <stílus>] [--era <korszak>] [--place <hely>] [--group-by <mód>] [--statistics] [--compare <ritmus>]",
         descripcionRitmos: "a katalógus ritmusai a mintájukkal (x erős, o gyenge, . szünet) és az ütemmutatójukkal; szöveggel azok, amelyek nevében szerepel",
         notasRitmos: "opciók: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) egy család ritmusait hagyja meg; --place spain (vagy cuba, india, germany, andalusia…) egy származási hely elemeit hagyja meg, a --group-by continent (vagy country, era) pedig származási helyük vagy korszakuk szerint csoportosítja őket; --statistics hozzáadja az adatlapjukat és Toussaint mértékeit (távolságvektor, euklideszi, mély, egyenletesség, ütemen kívüliség, szinkópa); --compare <ritmus> megadja a Hamming- és a cseretávolságot egy azonos pulzusszámú másiktól",
@@ -219,6 +221,8 @@ extension TextosDeConsola {
         nem terminál, a JSON egyetlen sorban jelenik meg.
         A --sistema kapcsolóval a hangok egy másik hagyomány neveivel jelennek meg: bizantino (Ga♯), japones (ei He),
         lu (dàlǚ)…; mozgóval (sargam, jianpu…) a scale a fokokat adja (Sā Re ga). --grafia original vagy ascii.
+        A --in után elég az alaphang: --in C a C-dúr, --in Am az a-moll.
+        Ha nincs mit kiadni (realize korál nélkül), a kilépési kód 1.
         Az ARMONIA_IDIOMA=eu --idioma nélkül állítja be a nyelvet; az ARMONIA_IDIOMA=system a LANG-ét veszi.
         Kilépési kódok: 0 rendben, 1 olvashatatlan szöveg, 2 hibásan írt parancs és 3 hibák (check,
         counterpoint).
@@ -439,7 +443,7 @@ extension TextosDeConsola {
         grabarUnaPartitura: "az „armonia {1}” már megírja a kottát; az „engrave” PDF-be, SVG-be vagy PNG-be szedi: {2}",
 
         // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
-        gruposDeLaAyuda: ["Lekérdezések", "Harmónia és szólamok", "Kották és kottaszedés", "Rajzok (SVG)", "Neo-riemanni elmélet", "Bundozott hangszerek", "Terminál és súgó"],
+        gruposDeLaAyuda: ["Lekérdezések", "Katalógusok (armonia catalog <katalógus> is)", "Harmónia és szólamok", "Kották és kottaszedés", "Rajzok (SVG)", "Neo-riemanni elmélet", "Bundozott hangszerek", "Terminál és súgó"],
         pieDelIndice: """
         Egy parancs súgója: armonia help <parancs> (vagy armonia <parancs> --help).
         A teljes súgó, minden parancs kapcsolóival: armonia help --all.

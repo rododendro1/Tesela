@@ -29,7 +29,9 @@ extension Coral {
     /// - Throws: ``ErrorDeRealizacion``: si no hay acordes (`sinNotas`), si el soprano no tiene una nota por
     ///   acorde, si una de sus notas no es del acorde o se sale de su tesitura, si un acorde tiene más de cuatro
     ///   notas obligatorias o ninguna disposición sin faltas, o si no hay manera de enlazarlos sin faltas.
-    public init(realizando acordes: [Acorde], soprano: [Altura]? = nil, en tonalidad: Tonalidad? = nil) throws {
+    public init(realizando acordes: [Acorde], soprano: [Altura]? = nil, en tonalidad: Tonalidad? = nil)
+        throws(ErrorDeRealizacion)
+    {
         guard !acordes.isEmpty else { throw ErrorDeRealizacion.sinNotas }
         if let soprano, soprano.count != acordes.count {
             throw ErrorDeRealizacion.sopranoDeOtraLongitud(notas: soprano.count, acordes: acordes.count)
@@ -61,14 +63,6 @@ extension Coral {
             let coral = try? Coral(camino.estados.enumerated().map { opciones[$0.offset][$0.element].alturas })
         else { throw ErrorDeRealizacion.sinEnlaceSinFaltas }
         self = coral
-    }
-
-    /// Los acordes a cuatro voces, o `nil` si no se puede: el nombre de antes de ``init(realizando:soprano:en:)``,
-    /// que dice por qué.
-    @available(*, deprecated, renamed: "init(realizando:soprano:en:)")
-    public static func realizar(_ acordes: [Acorde], soprano: [Altura]? = nil, en tonalidad: Tonalidad? = nil) -> Coral?
-    {
-        try? Coral(realizando: acordes, soprano: soprano, en: tonalidad)
     }
 
     /// Por qué un acorde no tiene ninguna disposición a cuatro voces (``disposiciones(de:soprano:sensible:)`` vacía).

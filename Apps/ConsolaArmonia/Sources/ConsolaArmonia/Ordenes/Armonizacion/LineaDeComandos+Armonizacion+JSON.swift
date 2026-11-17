@@ -76,10 +76,13 @@ extension LineaDeComandos {
             avisos: coral.avisos.filter { $0 != .faltanOctavas }.map { $0.texto(en: notacion) })
     }
 
-    struct RealizacionJSON: Encodable {
+    struct RealizacionJSON: Encodable, SinResultado {
         let titulo: String
         let coral: [AcordeDelCoral]
+        /// Por qué no hay coral, si no lo hay: «No hay ninguna realización…» y el motivo.
         let avisos: [String]
+
+        var vacio: Bool { coral.isEmpty }
     }
 
     /// `realizar Do Fa Sol7 Do --json`.

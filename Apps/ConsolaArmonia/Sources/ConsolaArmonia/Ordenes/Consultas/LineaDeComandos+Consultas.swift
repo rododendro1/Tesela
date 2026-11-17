@@ -18,14 +18,14 @@ extension LineaDeComandos {
         let modulaciones = argumentos.quitarOpcionConPalabras(.modulaciones)
         try argumentos.sinOpcionesDesconocidas()
         guard !argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
-        let tonalidad = try Tonalidad(leyendo: argumentos.unidos, enLaOrden: notacion)
+        let tonalidad = try LineaDeComandos.tonalidad(argumentos.unidos, en: notacion)
         var lineas = [describir(tonalidad: tonalidad, notacion)]
         // `--modulaciones [Sol mayor]`: a los tonos vecinos o, si se da, a esa tonalidad de todas las maneras.
         var destino: Tonalidad?
         switch modulaciones {
         case .ausente: return bien(lineas[0])
         case .sinValor: destino = nil
-        case .valor(let texto): destino = try Tonalidad(leyendo: texto, enLaOrden: notacion)
+        case .valor(let texto): destino = try LineaDeComandos.tonalidad(texto, en: notacion)
         }
         lineas.append(notacion.texto(\.modulaciones) + ":")
         lineas += PresentacionDeModulaciones.modulaciones(desde: tonalidad, hasta: destino, en: notacion).map {

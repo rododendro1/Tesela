@@ -1,3 +1,5 @@
+import Armonia
+
 // MARK: - Lo que se quiso escribir
 //
 // Ante una orden o una opción desconocida, la conocida que más se le parece: `armonia acordee Do` propone «acorde» y
@@ -62,5 +64,23 @@ extension LineaDeComandos {
             }
         }
         return d[a.count][b.count]
+    }
+}
+
+extension LineaDeComandos {
+    /// Lo que se quiso escribir en un valor que no se lee, si se parece a uno conocido: «mayr» en `escala Do mayr` →
+    /// «mayor». Los tipos de escala se buscan entre los nombres en español, en inglés y en el idioma de la orden.
+    static func propuestaDeValor(para error: any ErrorDeArmonia, en notacion: Notacion) -> String? {
+        guard let error = error as? ErrorDeLecturaDeTeoria,
+            case .tipoDeEscalaNoReconocido(let nombre) = error.motivo, !nombre.isEmpty
+        else { return nil }
+        let notaciones = [Notacion.compacta(.espanol), .compacta(.ingles), notacion]
+        var nombres: [String] = []
+        for tipo in TipoDeEscala.occidentales {
+            for nombre in notaciones.map({ tipo.nombre(en: $0).lowercased() }) where !nombres.contains(nombre) {
+                nombres.append(nombre)
+            }
+        }
+        return propuesta(para: nombre, entre: nombres)
     }
 }

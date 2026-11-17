@@ -66,6 +66,8 @@ extension TextosDeConsola {
         descripcionProgresiones: "katalogens progressioner med sina romerska siffror och sina ackord på C eller på grundtonen i --in; med en text, de vars namn innehåller den",
         sintaxisTonalidades: "keys [--affect <affekt>]",
         descripcionTonalidades: "tonarterna som någon källa beskriver (Charpentier, Schubart), med vad var och en säger; med --affect de med den affekten",
+        sintaxisCatalogo: "catalog <katalog> [<alternativ>]",
+        descripcionCatalogo: "en katalog med sina alternativ: catalog rhythms är detsamma som rhythms",
         sintaxisRitmos: "rhythms [<text>] [--family <familj>] [--style <stil>] [--era <epok>] [--place <plats>] [--group-by <sätt>] [--statistics] [--compare <rytm>]",
         descripcionRitmos: "katalogens rytmer med sitt mönster (x starkt, o svagt, . paus) och sin taktart; med en text, de vars namn innehåller den",
         notasRitmos: "alternativ: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) behåller de i en familj; --place spain (eller cuba, india, germany, andalusia…) behåller dem från en ursprungsplats, och --group-by continent (eller country, era) grupperar dem efter ursprungsplats eller -epok; --statistics lägger till deras faktablad och Toussaints mått (avståndsvektor, euklidisk, djup, jämnhet, offbeat-grad, synkopering); --compare <rytm> ger Hamming- och bytesavståndet till en annan med lika många pulser",
@@ -219,6 +221,8 @@ extension TextosDeConsola {
         terminal står JSON på en enda rad.
         Med --sistema står tonerna med namnen från en annan tradition: bizantino (Ga♯), japones (ei He),
         lu (dàlǚ)…; med ett rörligt (sargam, jianpu…) ger scale stegen (Sā Re ga). --grafia original eller ascii.
+        Med --in räcker grundtonen: --in C är C-dur och --in Am a-moll.
+        Finns det inget att ge (realize utan koral) är slutkoden 1.
         ARMONIA_IDIOMA=eu bestämmer språket utan --idioma; ARMONIA_IDIOMA=system tar det från LANG.
         Slutkoder: 0 bra, 1 oläslig text, 2 felskrivet kommando och 3 fel hittade (check,
         counterpoint).
@@ -439,7 +443,7 @@ extension TextosDeConsola {
         grabarUnaPartitura: "”armonia {1}” skriver redan partituret; ”engrave” sätter det som PDF, SVG eller PNG: {2}",
 
         // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
-        gruposDeLaAyuda: ["Frågor", "Harmonik och stämmor", "Partitur och notsättning", "Bilder (SVG)", "Neoriemannsk teori", "Bandinstrument", "Terminal och hjälp"],
+        gruposDeLaAyuda: ["Frågor", "Kataloger (även armonia catalog <katalog>)", "Harmonik och stämmor", "Partitur och notsättning", "Bilder (SVG)", "Neoriemannsk teori", "Bandinstrument", "Terminal och hjälp"],
         pieDelIndice: """
         Hjälpen för ett kommando: armonia help <kommando> (eller armonia <kommando> --help).
         Hela hjälpen, med varje kommandos alternativ: armonia help --all.

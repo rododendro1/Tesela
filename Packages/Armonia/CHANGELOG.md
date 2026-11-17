@@ -4,7 +4,7 @@
 
 ### Cambios incompatibles
 
-Los nombres de antes siguen una versión más, marcados como obsoletos.
+Los nombres de antes ya no están: no se llegaron a publicar.
 
 - `Tonalidad.armonizar(notas:)` y `Escala.armonizar(notas:por:)` se llaman `acordesDeLosGrados(notas:)` y
   `acordesDeLosGrados(notas:por:)`: dan el acorde de cada grado, y no se confunden con `armonizar(melodia:)`, que
@@ -19,6 +19,19 @@ Los nombres de antes siguen una versión más, marcados como obsoletos.
   se enlazan sin faltas o el soprano no es la melodía armonizada.
 
 ### Novedades
+
+- En la consola:
+  - `realizar` y `armonizar` dicen por qué no hay coral a cuatro voces («El acorde 1 tiene más de cuatro notas que no
+    pueden faltar», «La nota del soprano del acorde 1 está fuera de su tesitura»). `realizar` lo dice en la salida de
+    errores y sale con código 1, también con `--json`. En las apps, el motivo es un aviso más
+    (`CoralPresentado.Aviso.motivo`).
+  - A `--en` le basta la tónica, como en el cifrado: `--en Do` es Do mayor y `--en Lam`, La menor; también
+    `tonalidad C`.
+  - Un tipo de escala mal escrito propone el más parecido: `escala Do mayr` → «¿Querías decir «mayor»?».
+  - Los catálogos tienen su grupo en la ayuda, y se consultan también tras `catalogo`: `armonia catalogo ritmos` es
+    `armonia ritmos`.
+- `Coral(realizando:soprano:en:)`, `Armonizacion.coral(soprano:)` y `Tonalidad.armonizarACuatroVoces(melodia:)`
+  lanzan solo `ErrorDeRealizacion` (`throws(ErrorDeRealizacion)`).
 
 - Diez acordes con nombre más: los de jazz que faltaban como tipos con nombre (séptima con decimotercera menor,
   con novena y decimotercera menores, con quinta y novena aumentadas, la séptima suspendida con novena menor o

@@ -66,6 +66,8 @@ extension TextosDeConsola {
         descripcionProgresiones: "les progressions du catalogue avec leur chiffrage romain et leurs accords sur Do, ou sur la tonique de --en ; avec un texte, celles qui l'ont dans leur nom",
         sintaxisTonalidades: "tonalidades [--afecto <affect>]",
         descripcionTonalidades: "les tonalités que décrit une source (Charpentier, Schubart), avec ce qu'en dit chacune ; avec --afecto, celles qui ont cet affect",
+        sintaxisCatalogo: "catalogo <catalogue> [<options>]",
+        descripcionCatalogo: "un catalogue, avec ses options : catalogo ritmos revient à ritmos",
         sintaxisRitmos: "rhythms [<texte>] [--family <famille>] [--style <style>] [--epoca <époque>] [--place <lieu>] [--group-by <forme>] [--statistics] [--compare <rythme>]",
         descripcionRitmos: "les rythmes du catalogue avec leur motif (x fort, o faible, . silence) et leur mesure ; avec un texte, ceux dont le nom le contient",
         notasRitmos: "options : --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) garde ceux d'une famille ; --place spain (ou cuba, india, germany, andalusia…) garde ceux d'un lieu d'origine, et --group-by continent (ou country, era) les regroupe par leur lieu ou leur époque d'origine; --statistics ajoute leur fiche et les mesures de Toussaint (vecteur de distances, euclidien, profond, régularité, contretemps, syncope) ; --compare <rythme> donne les distances de Hamming et d'échange avec un autre de mêmes pulsations",
@@ -219,6 +221,8 @@ extension TextosDeConsola {
         pas le terminal, le JSON tient sur une seule ligne.
         Avec --sistema, les notes sortent avec les noms d'une autre tradition : bizantino (Ga♯), japones (ei He),
         lu (dàlǚ)… ; avec un système mobile (sargam, jianpu…), escala donne ses degrés (Sā Re ga). --grafia original ou ascii.
+        Avec --en, la tonique suffit : --en Do est do majeur et --en Lam, la mineur.
+        S'il n'y a rien à donner (realizar sans choral), le code de sortie est 1.
         ARMONIA_IDIOMA=eu fixe la langue sans --idioma ; avec ARMONIA_IDIOMA=sistema, celle de LANG.
         Codes de sortie : 0 bien, 1 texte illisible, 2 commande mal écrite et 3 fautes (revisar,
         contrapunto).
@@ -439,7 +443,7 @@ extension TextosDeConsola {
         grabarUnaPartitura: "« armonia {1} » écrit déjà la partition ; « grabar » la donne en PDF, SVG ou PNG : {2}",
 
         // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
-        gruposDeLaAyuda: ["Consultations", "Harmonie et voix", "Partitions et gravure", "Dessins (SVG)", "Néo-riemannienne", "Instruments à frettes", "Le terminal et l'aide"],
+        gruposDeLaAyuda: ["Consultations", "Catalogues (aussi armonia catalogo <catalogue>)", "Harmonie et voix", "Partitions et gravure", "Dessins (SVG)", "Néo-riemannienne", "Instruments à frettes", "Le terminal et l'aide"],
         pieDelIndice: """
         L'aide d'une commande : armonia ayuda <commande> (ou armonia <commande> --help).
         Toute l'aide, avec les options de chaque commande : armonia ayuda --todo.

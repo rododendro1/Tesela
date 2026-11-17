@@ -67,7 +67,7 @@ struct OpcionesDePartitura {
         }
         compas = try opciones["compas"].map { try Compas(leyendo: $0) } ?? .compasillo
         let notacion = contexto.notacion
-        tonalidad = try opciones["en"].map { try Tonalidad(leyendo: $0, enLaOrden: notacion) }
+        tonalidad = try opciones["en"].map { try LineaDeComandos.tonalidad($0, en: notacion) }
         if let texto = opciones["tempo"] {
             let partes = texto.split(separator: " ").map(String.init)
             guard let bpm = Double(partes[0].replacingComa()), bpm > 0, partes.count <= 2 else {

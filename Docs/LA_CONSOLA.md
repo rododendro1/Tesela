@@ -67,7 +67,17 @@ Re dórico
 ```
 
 `armonia escalas` es el catálogo entero, y `armonia ayuda escala`, las demás opciones: `--vecinas`, `--modos`,
-`--tensiones-disponibles`, `--estadisticas`…
+`--tensiones-disponibles`, `--estadisticas`… Los demás catálogos (ritmos, temperamentos, ornamentos, instrumentos,
+progresiones, tonalidades…) tienen su grupo en la ayuda, y se consultan con su nombre o tras `catalogo`:
+`armonia catalogo ritmos` es lo mismo que `armonia ritmos`.
+
+Un nombre mal escrito propone el más parecido:
+
+```console
+$ armonia escala Do mayr
+armonia: No se puede leer «Do mayr» (carácter 4): «mayr» no es un tipo de escala conocido
+¿Querías decir «mayor»?
+```
 
 ## Un análisis
 
@@ -84,10 +94,11 @@ I–vi–V7/V–V7–I en Do mayor
 Cadencia auténtica V7–I (acordes 4 → 5)
 ```
 
-Con `--escalas`, también la escala de cada acorde, con sus tensiones, las notas a evitar y las notas guía:
+Con `--escalas`, también la escala de cada acorde, con sus tensiones, las notas a evitar y las notas guía. A `--en`
+le basta la tónica, como en el cifrado: `--en Do` es Do mayor y `--en Lam`, La menor.
 
 ```console
-$ armonia analizar Rem7 Sol7 Do7M --en "Do mayor" --escalas
+$ armonia analizar Rem7 Sol7 Do7M --en Do --escalas
 ii7–V7–Imaj7 en Do mayor
   Rem7      ii7       subdominante
     Re dórico — tensiones: Mi 9 · Sol 11 · Si 13
@@ -110,6 +121,14 @@ La menor
   Rem/Fa    iv6       Fa₂ La₃ Re₄ La₄
   Mi        V         Mi₂ Si₃ Mi₄ Sol♯₄
   Lam       i         La₂ Do₄ Mi₄ La₄
+```
+
+Si no se puede, dice por qué en la salida de errores y sale con código 1:
+
+```console
+$ armonia realizar "Do7(9,13)"
+armonia: No hay ninguna realización sin faltas de conducción.
+armonia: El acorde 1 tiene más de cuatro notas que no pueden faltar.
 ```
 
 `revisar` busca las faltas de un coral escrito a mano, voz a voz y con los acordes separados por comas. Si las hay,

@@ -66,6 +66,8 @@ extension TextosDeConsola {
         descripcionProgresiones: "the catalog's progressions with their Roman numerals and their chords on C, or on the tonic of --in; with a text, those whose name contains it",
         sintaxisTonalidades: "keys [--affect <affect>]",
         descripcionTonalidades: "the keys some source describes (Charpentier, Schubart), with what each one says; with --affect, those with that affect",
+        sintaxisCatalogo: "catalog <catalog> [<options>]",
+        descripcionCatalogo: "a catalog, with its options: catalog rhythms is the same as rhythms",
         sintaxisRitmos: "rhythms [<text>] [--family <family>] [--style <style>] [--era <era>] [--place <place>] [--group-by <form>] [--statistics] [--compare <rhythm>]",
         descripcionRitmos: "the catalog's rhythms with their pattern (x strong, o weak, . rest) and their time signature; with a text, those whose name contains it",
         notasRitmos: "options: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) keeps those of one family; --place spain (or cuba, india, germany, andalusia…) keeps those from a place of origin, and --group-by continent (or country, era) groups them by their place or era of origin; --statistics adds their card and Toussaint's measures (distance vector, Euclidean, deep, evenness, off-beatness, syncopation); --compare <rhythm> gives the Hamming and swap distances to another with the same pulses",
@@ -221,6 +223,8 @@ extension TextosDeConsola {
         a terminal, the JSON goes on a single line.
         With --system, notes come out with the names of another tradition: byzantine (Ga♯), japanese (ei He),
         lu (dàlǚ)…; with a movable one (sargam, jianpu…), scale gives its degrees (Sā Re ga). --script original or ascii.
+        With --in the tonic is enough: --in C is C major and --in Am, A minor.
+        When there is nothing to give (realize without a chorale), the exit code is 1.
         ARMONIA_IDIOMA=eu sets the language without --language; ARMONIA_IDIOMA=system takes it from LANG.
         Exit codes: 0 fine, 1 unreadable text, 2 badly written command and 3 mistakes found (check,
         counterpoint).
@@ -441,7 +445,7 @@ extension TextosDeConsola {
         grabarUnaPartitura: "\"armonia {1}\" already writes the score; \"engrave\" gives it as PDF, SVG or PNG: {2}",
 
         // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
-        gruposDeLaAyuda: ["Lookups", "Harmony and voices", "Scores and engraving", "Drawings (SVG)", "Neo-Riemannian", "Fretted instruments", "Terminal and help"],
+        gruposDeLaAyuda: ["Lookups", "Catalogs (also armonia catalog <catalog>)", "Harmony and voices", "Scores and engraving", "Drawings (SVG)", "Neo-Riemannian", "Fretted instruments", "Terminal and help"],
         pieDelIndice: """
         The help for one command: armonia help <command> (or armonia <command> --help).
         All the help, with each command's options: armonia help --all.

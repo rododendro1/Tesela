@@ -326,17 +326,20 @@ import Testing
         // Notas que no son de Do mayor: no hay armonización ni coral.
         let fuera = try PresentacionDeCoral.armonizar(
             "Do#4 Reb4 Fa4 Sol#4", en: Tonalidad(.do, .mayor), notacion: .compacta(.espanol))
-        #expect(fuera.avisos == [.sinArmonizacion, .sinCoralParaLaMelodia])
+        #expect(fuera.avisos == [.sinArmonizacion, .sinCoralParaLaMelodia, .motivo(.notaSinAcorde(nota: 1))])
         #expect(fuera.propuestas == [])
         #expect(fuera.sonido == .silencio)
         // Una melodía que no cabe en las voces se armoniza, pero sin coral.
         #expect(
             try (PresentacionDeCoral.armonizar("Do1 Do8", en: nil, notacion: .compacta(.espanol)).avisos) == [
-                .sinCoralParaLaMelodia
+                .sinCoralParaLaMelodia, .motivo(.sopranoFueraDeTesitura(acorde: 0)),
             ])
         let sinRealizacion = try PresentacionDeCoral.realizar(
             "Do7(b9,#9,#11,b13)", en: nil, notacion: .compacta(.espanol))
-        #expect(sinRealizacion.avisos == [.sinRealizacion])
+        #expect(sinRealizacion.avisos == [.sinRealizacion, .motivo(.demasiadasNotas(acorde: 0))])
+        #expect(
+            sinRealizacion.avisos[1].texto(en: .compacta(.espanol))
+                == "El acorde 1 tiene más de cuatro notas que no pueden faltar.")
         #expect(sinRealizacion.filas == [])
         #expect(sinRealizacion.sonido == .silencio)
     }

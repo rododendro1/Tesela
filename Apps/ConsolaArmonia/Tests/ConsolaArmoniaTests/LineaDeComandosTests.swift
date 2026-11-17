@@ -128,7 +128,7 @@ import Testing
         #expect(Set(nombres).count == nombres.count)
         for nombre in nombres { #expect(nombre == nombre.lowercased(), Comment(rawValue: nombre)) }
         for orden in LineaDeComandos.ordenes { #expect(!orden.ayuda.isEmpty, Comment(rawValue: orden.nombres[0])) }
-        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 86)
+        #expect(LineaDeComandos.ordenesDeLaAyuda.count == 87)
         // Los nombres no distinguen mayúsculas.
         #expect(salida("ACORDE Do") == salida("acorde Do"))
     }
@@ -204,7 +204,6 @@ import Testing
             "help", "acorde C/E", "acorde G7/B", "identificar C E Bb", "intervalo C4 E5", "escala Re dórico",
             "tonalidad Re mayor", "tonalidad Mib mayor", "tonalidad Do mayor", "analizar C Am D7 G7 C",
             "analizar C F G7 C Am D7 G", "armonizar E4 F4 D4 C4", "armonizar C6 B5 C6", "realizar C F G7 C",
-            "realizar C7(9,13)",
             "revisar C3 E4 G4 C5, G2 D4 G4 B4", "plr C PLR", "plr shortest C C", "plr cycle hexatonico C",
             "camino-parsimonioso G7 Dm7", "vecinos G7", "digitaciones F --diagrama",
             "digitaciones C --instrumento ukelele",
@@ -230,6 +229,10 @@ import Testing
             #expect(resultado.codigo == 0 || resultado.codigo == 3, "\(orden): \(resultado.error)")
             comprobar(resultado.salida, orden)
         }
+        // Sin coral: el motivo, también en inglés, en la salida de errores.
+        let sinCoral = LineaDeComandos.ejecutar(["realizar", "C7(9,13)", "--ingles"])
+        #expect(sinCoral.codigo == 1)
+        comprobar(sinCoral.error, "realizar C7(9,13)")
         for orden in Self.ordenesMalEscritas {
             let resultado = LineaDeComandos.ejecutar((orden + " --ingles").split(separator: " ").map(String.init))
             #expect(resultado.codigo == 2, Comment(rawValue: orden))

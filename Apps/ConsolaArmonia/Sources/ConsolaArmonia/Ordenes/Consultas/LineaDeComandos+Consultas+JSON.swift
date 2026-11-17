@@ -324,7 +324,7 @@ extension LineaDeComandos {
     /// `tonalidad La menor --json`.
     static func tonalidadJSON(_ textos: [String], _ notacion: Notacion) throws -> TonalidadPresentada {
         let texto = try palabras(Argumentos(textos), siFaltan: .faltaTonalidad).joined(separator: " ")
-        return TonalidadPresentada(try Tonalidad(leyendo: texto, enLaOrden: notacion), en: notacion)
+        return TonalidadPresentada(try LineaDeComandos.tonalidad(texto, en: notacion), en: notacion)
     }
 
     // MARK: Tradiciones

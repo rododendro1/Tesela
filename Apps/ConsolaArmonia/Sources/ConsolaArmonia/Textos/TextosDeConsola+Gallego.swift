@@ -66,6 +66,8 @@ extension TextosDeConsola {
         descripcionProgresiones: "as progresións do catálogo co seu cifrado romano e os seus acordes sobre Do, ou sobre a tónica de --en; cun texto, as que o teñen no nome",
         sintaxisTonalidades: "tonalidades [--afecto <afecto>]",
         descripcionTonalidades: "as tonalidades que describe algunha fonte (Charpentier, Schubart), co que di cada unha; con --afecto, as que teñen ese afecto",
+        sintaxisCatalogo: "catalogo <catálogo> [<opcións>]",
+        descripcionCatalogo: "un catálogo, coas súas opcións: catalogo ritmos é o mesmo que ritmos",
         sintaxisRitmos: "rhythms [<texto>] [--family <familia>] [--style <estilo>] [--epoca <época>] [--place <lugar>] [--group-by <forma>] [--statistics] [--compare <ritmo>]",
         descripcionRitmos: "os ritmos do catálogo co seu patrón (x forte, o débil, . silencio) e o seu compás; cun texto, os que o teñen no nome",
         notasRitmos: "opcións: --family (timeline, flamenco, tala, iqa, aksak, rhythmic-mode, dance) deixa os dunha familia; --place spain (ou cuba, india, germany, andalusia…) deixa os dun lugar de orixe, e --group-by continent (ou country, era) agrúpaos polo seu lugar ou a súa época de orixe; --statistics engade a súa ficha e as medidas de Toussaint (vector de distancias, euclidiano, profundo, uniformidade, contratempo, síncope); --compare <ritmo> dá as distancias de Hamming e de intercambio con outro dos mesmos pulsos",
@@ -219,6 +221,8 @@ extension TextosDeConsola {
         o terminal, o JSON vai nunha soa liña.
         Con --sistema, as notas saen cos nomes doutra tradición: bizantino (Ga♯), japones (ei He),
         lu (dàlǚ)…; cun móbil (sargam, jianpu…), escala dá os seus graos (Sā Re ga). --grafia original ou ascii.
+        Con --en abonda a tónica: --en Do é Do maior e --en Lam, La menor.
+        Se non hai nada que dar (realizar sen coral), o código de saída é 1.
         ARMONIA_IDIOMA=eu fixa o idioma sen --idioma; con ARMONIA_IDIOMA=sistema, o de LANG.
         Códigos de saída: 0 ben, 1 texto que non se le, 2 orde mal escrita e 3 faltas (revisar,
         contrapunto).
@@ -439,7 +443,7 @@ extension TextosDeConsola {
         grabarUnaPartitura: "«armonia {1}» xa escribe a partitura; «grabar» dáa en PDF, SVG ou PNG: {2}",
 
         // Ayuda.swift (índice) y LineaDeComandos+Sesion.swift
-        gruposDeLaAyuda: ["Consultas", "Harmonía e voces", "Partituras e gravado", "Debuxos (SVG)", "Neorriemanniana", "Instrumentos de trastes", "O terminal e a axuda"],
+        gruposDeLaAyuda: ["Consultas", "Catálogos (tamén armonia catalogo <catálogo>)", "Harmonía e voces", "Partituras e gravado", "Debuxos (SVG)", "Neorriemanniana", "Instrumentos de trastes", "O terminal e a axuda"],
         pieDelIndice: """
         A axuda dunha orde: armonia ayuda <orde> (ou armonia <orde> --help).
         Toda a axuda, coas opcións de cada orde: armonia ayuda --todo.

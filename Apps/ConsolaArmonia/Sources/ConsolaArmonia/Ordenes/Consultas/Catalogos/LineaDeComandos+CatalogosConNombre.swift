@@ -18,7 +18,7 @@ extension LineaDeComandos {
         if let texto = try argumentos.valorConPalabras(.en, siFalta: .faltaTonalidadTrasEn) {
             tonica =
                 try (try? Nota(leyendo: texto, enLaOrden: notacion))
-                ?? Tonalidad(leyendo: texto, enLaOrden: notacion).tonica
+                ?? LineaDeComandos.tonalidad(texto, en: notacion).tonica
         }
         // `--epoca barroco`: las de una época, de origen o de uso, como en `escalas`.
         var epocas: [Epoca] = []

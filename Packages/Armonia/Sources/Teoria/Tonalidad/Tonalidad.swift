@@ -152,10 +152,6 @@ public struct Tonalidad: Hashable, Sendable {
         (1...7).map { acorde(grado: $0, notas: cuantas) }
     }
 
-    /// Los acordes de los siete grados: el nombre de antes de ``acordesDeLosGrados(notas:)``.
-    @available(*, deprecated, renamed: "acordesDeLosGrados(notas:)")
-    public func armonizar(notas cuantas: Int = 3) -> [Acorde?] { acordesDeLosGrados(notas: cuantas) }
-
     /// El cifrado romano del acorde de un grado (``acorde(grado:notas:)``) según la práctica común, en estado
     /// fundamental y sin alteraciones delante (en menor, el VII es la sensible, vii°): Do mayor → I ii iii IV V vi
     /// vii°; La menor → i ii° III iv V VI vii°. `nil` si el grado no forma un acorde de tantas notas.

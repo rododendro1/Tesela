@@ -4,7 +4,30 @@ extension LineaDeComandos {
     /// Las consultas de los catálogos: escalas, tradiciones, progresiones, ritmos, temperamentos, notas, funciones,
     /// instrumentos, ornamentos, acordes con nombre y tonalidades con carácter. Salen en la ayuda entre `escala` y
     /// `tonalidad`, dentro de las consultas.
-    static let ordenesDeCatalogos: [Orden] = [
+    static let ordenesDeCatalogos: [Orden] = [ordenDeCatalogo] + catalogos
+
+    /// `catalogo ritmos`: cualquiera de los catálogos con la palabra delante, que agrupa en la ayuda lo que se
+    /// consulta en ellos. `ejecutar(_:entrada:…)` pasa directamente a la orden del catálogo, así que esta solo se
+    /// ejecuta sin catálogo detrás (da su ayuda) o con uno que no existe.
+    static let ordenDeCatalogo: Orden = Orden(
+        nombres: ["catalogo", "catalog"], ayuda: ayudaDeCatalogo, leeLaEntrada: false,
+        ejecutar: { argumentos, contexto in
+            guard let nombre = argumentos.first else {
+                return bien(ayuda(de: ordenDeCatalogo, en: contexto.notacion))
+            }
+            throw ErrorDeUso.ordenDesconocida(nombre)
+        })
+
+    static let ayudaDeCatalogo: [EntradaDeAyuda] = [
+        // catalogo <catálogo> [<opciones>]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisCatalogo),
+            descripcion: TextosDeConsola.traduccion(\.descripcionCatalogo),
+            ejemplo: ejemplo("armonia catalogo ornamentos", "armonia catalog ornaments"))
+    ]
+
+    /// Los catálogos que se consultan con su nombre (`ritmos`) o tras `catalogo`.
+    static let catalogos: [Orden] = [
         Orden(
             nombres: ["escalas", "scales"], ayuda: ayudaDeEscalas, json: { try escalasJSON($0, $1.notacion) },
             sinJSON: [.comparar, .escaleraDe, .mapa, .parecidasA, .vecinasDe],

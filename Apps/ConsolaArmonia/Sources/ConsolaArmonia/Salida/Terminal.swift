@@ -138,6 +138,7 @@ extension LineaDeComandos {
             return tipos(de: ordenesDePartituras[0]) + ordenesDeDibujos.flatMap(nombres(de:))
         }
         if orden.nombres.contains("completado") { return ["bash", "zsh", "fish"] }
+        if orden.nombres.contains("catalogo") { return LineaDeComandos.catalogos.flatMap(\.nombres) }
         // Las subórdenes de los dibujos: `tonnetz acorde Sol7`, `hoja tonalidad Re mayor`.
         if ["tonnetz", "tabla", "cuadricula"].contains(where: orden.nombres.contains) {
             return LineaDeComandos.subordenesDeLosDibujos.flatMap(\.nombres).map { String($0.dropFirst(2)) }

@@ -215,12 +215,6 @@ public struct Escala: Hashable, Sendable {
         (1...tipo.intervalos.count).map { acorde(grado: $0, notas: cuantas, por: apilamiento) }
     }
 
-    /// Los acordes de todos los grados: el nombre de antes de ``acordesDeLosGrados(notas:por:)``.
-    @available(*, deprecated, renamed: "acordesDeLosGrados(notas:por:)")
-    public func armonizar(notas cuantas: Int = 3, por apilamiento: Apilamiento = .terceras) -> [Acorde?] {
-        acordesDeLosGrados(notas: cuantas, por: apilamiento)
-    }
-
     /// Las tensiones disponibles sobre la cuatríada de un grado, con el modo de la escala que empieza en él: la
     /// tabla de la teoría acorde-escala que se enseña en Berklee. En Do mayor, I7M: 9 y 13; ii7: 9, 11 y 13; iii7:
     /// 11; IV7M: 9, ♯11 y 13; V7: 9 y 13; vi7: 9 y 11; viiø7: 11 y ♭13. La 13 del ii7 cuenta como tensión, aunque
