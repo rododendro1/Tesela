@@ -14,7 +14,7 @@ import Foundation
 ///     Arpegio(Acorde("Do"), inicio: 1).alturas(octava: 4)              // [Mi4, Sol4, Do5, Mi5]
 ///     Arpegio(Acorde("Do7"), tensiones: [9]).alturas(octava: 4)        // [Do4, Mi4, Sol4, Si♭4, Re5, Do6]
 ///     Arpegio(Acorde("Do"), grados: [1, 5, 3, 8]).alturas(octava: 4)   // [Do4, Sol4, Mi4, Do5]
-///     Escala("Re dórico").arpegio(grado: 1, notas: 4)                // el arpegio de Rem7
+///     Escala("Re dórico").arpegio(grado: 1, deNotas: 4)                // el arpegio de Rem7
 public struct Arpegio: Hashable, Sendable {
     /// El orden en que se recorren las notas.
     public enum Patron: String, CaseIterable, Hashable, Sendable, Codable {
@@ -278,14 +278,14 @@ public struct Arpegio: Hashable, Sendable {
 // MARK: - Desde escalas y acordes
 
 extension Escala {
-    /// El arpegio del acorde de `notas` notas por terceras sobre un grado (``acorde(grado:notas:por:)``: 3, la
+    /// El arpegio del acorde de `notas` notas por terceras sobre un grado (``acorde(grado:deNotas:por:)``: 3, la
     /// tríada; 4, la cuatríada), o `nil` si no forma un acorde conocido. `Escala("Do mayor").arpegio(grado: 5,
     /// notas: 4)` es el de Sol7.
     public func arpegio(
-        grado: Int = 1, notas cuantas: Int = 3, patron: Arpegio.Patron = .ascendente,
+        grado: Int = 1, deNotas cuantas: Int = 3, patron: Arpegio.Patron = .ascendente,
         octavas: Int = 1, conOctava: Bool = true
     ) -> Arpegio? {
-        acorde(grado: grado, notas: cuantas).map {
+        acorde(grado: grado, deNotas: cuantas).map {
             Arpegio($0, patron: patron, octavas: octavas, conOctava: conOctava)
         }
     }
@@ -308,8 +308,8 @@ extension Escala {
 
     /// Los arpegios de `notas` notas (3 por defecto) de todos los grados (`nil` si un grado no forma un acorde
     /// conocido).
-    public func arpegios(notas cuantas: Int = 3) -> [Arpegio?] {
-        (1...tipo.intervalos.count).map { arpegio(grado: $0, notas: cuantas) }
+    public func arpegios(deNotas cuantas: Int = 3) -> [Arpegio?] {
+        (1...tipo.intervalos.count).map { arpegio(grado: $0, deNotas: cuantas) }
     }
 }
 

@@ -39,7 +39,7 @@ public struct ModoGregoriano: Hashable, Sendable, CustomStringConvertible {
 
     /// Lee "modo 2", "protus plagal", "hipodórico" o "hipodorico". Si no es ninguno, lanza `ErrorDeLecturaDeTeoria`
     /// con sus nombres (`.nombreNoReconocido`).
-    public init(leyendo nombre: String) throws {
+    public init(leyendo nombre: String) throws(ErrorDeLecturaDeTeoria) {
         let texto = TipoDeEscala.normalizar(nombre)
         guard
             let modo = ModoGregoriano.todos.first(where: { modo in

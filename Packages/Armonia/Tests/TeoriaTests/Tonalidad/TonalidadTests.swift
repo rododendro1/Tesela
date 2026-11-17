@@ -30,7 +30,7 @@ import Testing
         #expect(escrito(Escala(.la, .menorNatural), [68]) == ["Sol♯"])
         #expect(escrito(Escala(.la, .menorArmonica), [68]) == ["Sol♯"])
         #expect(escrito(Escala("Fa# mayor"), [65, 60]) == ["Mi♯", "Si♯"])
-        #expect(Altura(midi: 70, escala: Escala(.fa)).description == "Si♭4")
+        #expect(Altura(midi: 70, en: Escala(.fa)).description == "Si♭4")
         #expect(Escala(.do).ortografiar(midi: [60, 61, 62]).map(\.midi) == [60, 61, 62])
     }
 
@@ -93,12 +93,12 @@ import Testing
 
         #expect(laMenor.acordesDeLosGrados().map { $0?.cifrado } == ["Lam", "Si°", "Do", "Rem", "Mi", "Fa", "Sol♯°"])
         #expect(
-            laMenor.acordesDeLosGrados(notas: 4).map { $0?.cifrado } == [
+            laMenor.acordesDeLosGrados(deNotas: 4).map { $0?.cifrado } == [
                 "Lam7", "Sim7(♭5)", "Domaj7", "Rem7", "Mi7", "Famaj7", "Sol♯°7",
             ])
         #expect(laMenor.romanos().map { $0?.description } == ["i", "ii°", "III", "iv", "V", "VI", "vii°"])
         #expect(
-            laMenor.romanos(notas: 4).map { $0?.description } == [
+            laMenor.romanos(deNotas: 4).map { $0?.description } == [
                 "i7", "iiø7", "IIImaj7", "iv7", "V7", "VImaj7", "vii°7",
             ])
         #expect(Tonalidad(.do).romanos().map { $0?.description } == ["I", "ii", "iii", "IV", "V", "vi", "vii°"])
@@ -110,9 +110,9 @@ import Testing
             laMenor.ortografiar(midi: [76, 77, 78, 80, 81]).map(\.description) == [
                 "Mi5", "Fa5", "Fa♯5", "Sol♯5", "La5",
             ])
-        #expect(Altura(midi: 68, tonalidad: laMenor).description == "Sol♯4")
-        #expect(Acorde.identificar(midi: [60, 64, 68], tonalidad: laMenor).first?.cifrado == "Do+")
-        #expect(Acorde.identificar(midi: [66, 70, 73], escala: Escala("Solb mayor")).first?.cifrado == "Sol♭")
+        #expect(Altura(midi: 68, en: laMenor).description == "Sol♯4")
+        #expect(Acorde.identificar(midi: [60, 64, 68], en: laMenor).first?.cifrado == "Do+")
+        #expect(Acorde.identificar(midi: [66, 70, 73], en: Escala("Solb mayor")).first?.cifrado == "Sol♭")
         #expect(Tonalidad.candidatos(midi: [69, 71, 72, 74, 76, 77, 80, 81]).first?.valor == laMenor)
     }
 

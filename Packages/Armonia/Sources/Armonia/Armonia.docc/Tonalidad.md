@@ -14,7 +14,7 @@ let laMenor: Tonalidad = "La menor"
 laMenor.armadura                      // 0
 laMenor.relativa, laMenor.homonima    // Do mayor, La mayor
 laMenor.vecinas                       // [Do mayor, Sol mayor, Mi menor, Fa mayor, Re menor]
-laMenor.acordesDeLosGrados(notas: 4)          // Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7
+laMenor.acordesDeLosGrados(deNotas: 4)          // Lam7 Sim7(♭5) Domaj7 Rem7 Mi7 Famaj7 Sol♯°7
 laMenor.romanos()                     // i ii° III iv V VI vii°
 laMenor.nombreDeGrado(de: .sol)             // .subtonica  (y Sol♯ es la sensible)
 Tonalidad.circuloDeQuintas(.menor)    // La♭ menor … La♯ menor
@@ -26,8 +26,8 @@ Tonalidad(Escala(.re, .dorico))       // nil: un modo no es una tonalidad
 ```swift
 Escala(.do).ortografiar(midi: [60, 61, 62])        // Do4 Do♯4 Re4   (sube con sostenido)
 Escala(.do).ortografiar(midi: [62, 61, 60])        // Re4 Re♭4 Do4   (baja con bemol)
-Altura(midi: 70, escala: Escala(.fa))           // Si♭4
-Altura(midi: 68, tonalidad: "La menor")              // Sol♯4
+Altura(midi: 70, en: Escala(.fa))           // Si♭4
+Altura(midi: 68, en: Tonalidad(.la, .menor))              // Sol♯4
 Escala("Fa# mayor").ortografiar(midi: [65, 60])   // Mi♯4 Si♯3
 Tonalidad.candidatos(midi: melodia).first?.valor   // La menor  (la de mayor correlación)
 ```

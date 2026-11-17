@@ -109,7 +109,7 @@ import Testing
         #expect(!(TipoDeAcorde("m").tieneSeptima))
         #expect(Acorde("Do7").estructura.tieneSeptima)
         #expect(Acorde("Do7").estructura.intervalos(conPapel: .tercera) == [.terceraMayor])
-        #expect(Acorde.identificar(clasesDeAltura: [2, 5, 9], escala: Escala(.do, .mayor)).first?.cifrado == "Rem")
+        #expect(Acorde.identificar(clasesDeAltura: [2, 5, 9], en: Escala(.do, .mayor)).first?.cifrado == "Rem")
         #expect(Arpegio(Acorde("Do")).notas == [Nota("Do"), Nota("Mi"), Nota("Sol"), Nota("Do")])
     }
 

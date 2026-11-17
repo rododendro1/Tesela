@@ -65,15 +65,15 @@ extension Escala {
 }
 
 extension Altura {
-    /// Altura MIDI escrita según una escala: `Altura(midi: 70, escala: Escala(.fa))` → Si♭4.
-    public init(midi: Int, escala: Escala) {
+    /// Altura MIDI escrita según una escala: `Altura(midi: 70, en: Escala(.fa))` → Si♭4.
+    public init(midi: Int, en escala: Escala) {
         let nombre = escala.nombre(claseDeAltura: midi)
         self = Altura(nombre, midi: midi) ?? Altura(midi: midi)
     }
 
     /// Altura MIDI escrita según una tonalidad (en menor, con la sensible):
-    /// `Altura(midi: 68, tonalidad: "La menor")` → Sol♯4.
-    public init(midi: Int, tonalidad: Tonalidad) {
-        self.init(midi: midi, escala: tonalidad.escalaDeReferencia)
+    /// `Altura(midi: 68, en: Tonalidad(.la, .menor))` → Sol♯4.
+    public init(midi: Int, en tonalidad: Tonalidad) {
+        self.init(midi: midi, en: tonalidad.escalaDeReferencia)
     }
 }

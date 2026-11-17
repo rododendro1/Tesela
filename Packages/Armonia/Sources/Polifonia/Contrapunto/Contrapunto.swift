@@ -466,7 +466,7 @@ extension Contrapunto {
         for trozo in texto.split(separator: " ", omittingEmptySubsequences: false) {
             defer { inicio += trozo.count + 1 }
             guard !trozo.isEmpty else { continue }
-            do { cantus.append(try Altura(leyendo: String(trozo))) } catch let e as any ErrorAlLeer {
+            do { cantus.append(try Altura(leyendo: String(trozo))) } catch let e {
                 throw e.situado(en: texto, posicion: inicio + (e.posicion ?? 0))
             }
         }

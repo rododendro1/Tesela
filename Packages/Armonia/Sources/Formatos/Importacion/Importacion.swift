@@ -401,7 +401,7 @@ public struct PiezaImportada: Hashable, Sendable {
             // Quitar una nota que suena toda la ventana cuesta 0,8, más que una tensión (0,5): una corchea
             // de paso en una ventana de negra (0,4) se quita, una novena que dura todo el pulso se queda.
             let penalizacion = resto.suffix(quitadas).map { 0.8 * min(1, pesos[$0, default: 0]) }.reduce(0, +)
-            guard let candidato = Acorde.candidatos(clasesDeAltura: [bajo] + quedan, tonalidad: tonalidad).first else {
+            guard let candidato = Acorde.candidatos(clasesDeAltura: [bajo] + quedan, en: tonalidad).first else {
                 continue
             }
             let coste = candidato.coste + penalizacion

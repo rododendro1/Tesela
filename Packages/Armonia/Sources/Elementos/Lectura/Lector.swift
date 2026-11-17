@@ -61,7 +61,7 @@ package struct Lector {
     }
 
     /// Salta los espacios iniciales y lanza `.textoVacio` si no queda nada.
-    package mutating func exigirContenido() throws {
+    package mutating func exigirContenido() throws(ErrorDeLectura) {
         saltarEspacios()
         guard !haTerminado else { throw error(.textoVacio, posicion: 0) }
     }

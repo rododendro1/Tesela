@@ -55,7 +55,7 @@ public struct Alteracion: Hashable, Sendable, Comparable, ExpressibleByIntegerLi
 
     /// Lee "#", "♯", "x", "𝄪", "b", "♭", "𝄫", "♮", "n" o "" (natural) y sus combinaciones
     /// ("##", "bb", "#x"), y también los nombres: "sostenido", "doble bemol", "sharp"…
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLectura) {
         let limpio = texto.trimmingEspacios()
         if let porNombre = Alteracion.porNombre[limpio.claveDeBusqueda] {
             self = porNombre
@@ -207,7 +207,7 @@ public struct Nota: Hashable, Sendable {
     /// portugués, griego y ruso ("re bemoll", "fa sostido", "si bemol bikoitza", "fá sustenido", "фа-диез", "σι ύφεση",
     /// "fa sosteniu", "fa sosteníu"),
     /// que no se confunden con los anteriores. Si no se puede leer, el error indica dónde y por qué.
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLectura) {
         var lector = Lector(texto)
         try lector.exigirContenido()
         let enOtraLengua = Nota.leerEnLenguasPeninsulares(texto)
@@ -259,7 +259,7 @@ public struct Nota: Hashable, Sendable {
     /// `Nota(leyendo: "B", en: .compacta(.aleman))` → Si♭, `Nota(leyendo: "ré bémol", en: .conPalabras(.frances))`.
     /// No distingue mayúsculas ni tildes. En español e inglés, igual que `init(leyendo:)`; en los demás idiomas se
     /// leen las dos formas, con palabras y compacta: «F Kreuz» y «Fis», «ré bémol» y «Ré♭».
-    public init(leyendo texto: String, en notacion: Notacion) throws {
+    public init(leyendo texto: String, en notacion: Notacion) throws(ErrorDeLectura) {
         // En el alfabeto latino se lee lo mismo: las tablas del ruso y del griego tienen también los nombres
         // transliterados (solʹ, fa-diez; fa díesi).
         let notacion = notacion.notacionDeLasNotas.conGrafia(.original)

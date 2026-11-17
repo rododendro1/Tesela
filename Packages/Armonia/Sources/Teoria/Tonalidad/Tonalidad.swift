@@ -131,42 +131,42 @@ public struct Tonalidad: Hashable, Sendable {
     /// natural salvo el V y el vii, que usan la sensible (Mi7 y Sol♯°7 en La menor). `nil` si las notas no forman un
     /// tipo conocido o no son de 2 a 7; las tríadas y las cuatríadas de los siete grados siempre lo forman.
     ///
-    ///     Tonalidad(.la, .menor).acorde(grado: 5, notas: 4)   // Mi7
-    public func acorde(grado: Int, notas cuantas: Int = 3) -> Acorde? {
+    ///     Tonalidad(.la, .menor).acorde(grado: 5, deNotas: 4)   // Mi7
+    public func acorde(grado: Int, deNotas cuantas: Int = 3) -> Acorde? {
         let i = modulo(grado - 1, 7)
         let base = modo == .menor && (i == 4 || i == 6) ? escalaDeReferencia : escala
-        return base.acorde(grado: grado, notas: cuantas)
+        return base.acorde(grado: grado, deNotas: cuantas)
     }
 
     /// La tríada (3 notas) o la cuatríada (4) de un grado, sin opcional: siempre la hay en mayor y en menor.
-    package func acordeDelGrado(_ grado: Int, notas cuantas: Int = 3) -> Acorde {
-        guard let acorde = acorde(grado: grado, notas: cuantas) else {
+    package func acordeDelGrado(_ grado: Int, deNotas cuantas: Int = 3) -> Acorde {
+        guard let acorde = acorde(grado: grado, deNotas: cuantas) else {
             preconditionFailure("El grado \(grado) de \(self) no forma una tríada o una cuatríada conocida")
         }
         return acorde
     }
 
-    /// Los acordes de `notas` notas de los siete grados (``acorde(grado:notas:)``): con 3, en Do, Do Rem Mim Fa
+    /// Los acordes de `notas` notas de los siete grados (``acorde(grado:deNotas:)``): con 3, en Do, Do Rem Mim Fa
     /// Sol Lam Si°. Para armonizar una melodía, ``armonizar(melodia:propuestas:)``.
-    public func acordesDeLosGrados(notas cuantas: Int = 3) -> [Acorde?] {
-        (1...7).map { acorde(grado: $0, notas: cuantas) }
+    public func acordesDeLosGrados(deNotas cuantas: Int = 3) -> [Acorde?] {
+        (1...7).map { acorde(grado: $0, deNotas: cuantas) }
     }
 
-    /// El cifrado romano del acorde de un grado (``acorde(grado:notas:)``) según la práctica común, en estado
+    /// El cifrado romano del acorde de un grado (``acorde(grado:deNotas:)``) según la práctica común, en estado
     /// fundamental y sin alteraciones delante (en menor, el VII es la sensible, vii°): Do mayor → I ii iii IV V vi
     /// vii°; La menor → i ii° III iv V VI vii°. `nil` si el grado no forma un acorde de tantas notas.
     ///
-    ///     Tonalidad(.do).romano(grado: 7, notas: 4)?.description   // "viiø7"
-    public func romano(grado: Int, notas cuantas: Int = 3) -> CifradoRomano? {
-        guard let delGrado = acorde(grado: grado, notas: cuantas) else { return nil }
+    ///     Tonalidad(.do).romano(grado: 7, deNotas: 4)?.description   // "viiø7"
+    public func romano(grado: Int, deNotas cuantas: Int = 3) -> CifradoRomano? {
+        guard let delGrado = acorde(grado: grado, deNotas: cuantas) else { return nil }
         return CifradoRomano(
             .grado(modulo(grado - 1, 7) + 1, alteracion: 0, mayuscula: !delGrado.tipo.esMenor),
             calidad: delGrado.tipo.sufijoRomano)
     }
 
-    /// Los cifrados romanos de los siete grados (``romano(grado:notas:)``): con 3, en Do, I ii iii IV V vi vii°.
-    public func romanos(notas cuantas: Int = 3) -> [CifradoRomano?] {
-        (1...7).map { romano(grado: $0, notas: cuantas) }
+    /// Los cifrados romanos de los siete grados (``romano(grado:deNotas:)``): con 3, en Do, I ii iii IV V vi vii°.
+    public func romanos(deNotas cuantas: Int = 3) -> [CifradoRomano?] {
+        (1...7).map { romano(grado: $0, deNotas: cuantas) }
     }
 
     // MARK: Ortografía

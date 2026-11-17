@@ -147,7 +147,7 @@ public struct AjusteCuadrado: Hashable, Sendable {
 
     /// El teclado de una red de cuadrícula con este ajuste: girado, reflejado, con su nota de origen y, si se pide y
     /// hay escala, en tono. `nil` si la red no es de cuadrícula o si los ejes del personalizado no se pueden leer.
-    public func teclado(de red: RedDeNotas, escala: Escala? = nil) -> TecladoCuadrado? {
+    public func teclado(de red: RedDeNotas, en escala: Escala? = nil) -> TecladoCuadrado? {
         let elegido =
             red == .cuadriculaPersonalizada ? TecladoCuadrado.conEjes(texto, nombre: red.rawValue) : red.tecladoCuadrado
         guard let base = elegido else { return nil }
@@ -308,7 +308,7 @@ public enum PresentacionDeRedes {
     static func svgDeCuadricula(
         _ contenido: ContenidoDeRed, en red: RedDeNotas, notacion: Notacion, cuadrado: AjusteCuadrado
     ) -> String? {
-        guard let teclado = cuadrado.teclado(de: red, escala: contenido.escala) else { return nil }
+        guard let teclado = cuadrado.teclado(de: red, en: contenido.escala) else { return nil }
         return svg(contenido, en: teclado, casillas: cuadrado.rejilla.casillas, notacion: notacion)
     }
 
@@ -362,7 +362,7 @@ public enum PresentacionDeRedes {
             return (0...127).contains(midi) ? midi : nil
         }
         if red.esCuadricula {
-            guard let teclado = cuadrado.teclado(de: red, escala: contenido.escala) else { return nil }
+            guard let teclado = cuadrado.teclado(de: red, en: contenido.escala) else { return nil }
             let casilla = TecladoCuadrado.casilla(en: punto, lado: ladoDelTecladoCuadrado)
             guard cuadrado.rejilla.casillas.contains(casilla) else { return nil }
             let midi = teclado.midi(en: casilla)

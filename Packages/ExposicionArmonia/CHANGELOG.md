@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- Como en Armonia, `AjusteCuadrado.teclado(de:en:)` lleva la escala tras `en:`, y
+  `PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(_:deNotas:en:)`, el número de notas tras `deNotas:`.
 - `CoralPresentado.Aviso.motivo(_:)`: por qué no hay coral, tras `sinCoralParaLaMelodia` o `sinRealizacion`, con el
   texto de `ErrorDeRealizacion`.
 - `OrnamentoPresentado(_:sobre:escala:duracion:en:)` tiene `tocado`, las notas del ornamento con su figura, y su

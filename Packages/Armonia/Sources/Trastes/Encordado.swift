@@ -322,7 +322,7 @@ extension Encordado {
     /// los nombres de `todos`.
     ///
     ///     try Encordado(leyendo: "ukulele") == .ukelele   // true
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) {
         let clave = texto.claveDeBusqueda
         guard
             let encontrado = Encordado.alias[clave]
@@ -466,4 +466,9 @@ extension Encordado: Nombrable {
             return nil
         }
     }
+}
+
+extension Encordado: RepresentableComoTexto {
+    /// Su nombre, que se vuelve a leer en cualquiera de los trece idiomas.
+    public func texto(en notacion: Notacion) -> String { nombre(en: notacion) }
 }

@@ -279,7 +279,7 @@ extension SistemaDeNombres {
     /// En el sargam cuentan las mayúsculas, porque separan el grado natural del komal (Re, re) y el ma del Ma tivra; no
     /// cuentan las tildes («Sa» y «Sā»). En los demás no cuentan las mayúsculas, las tildes, los espacios ni los
     /// guiones («νή», «NI», «Ei-he», «huangzhong»). Si no se puede leer, lanza `ErrorDeLectura` (`.notaNoReconocida`).
-    public func leer(_ texto: String, tonica: Nota = Nota(.do)) throws -> Nota {
+    public func leer(_ texto: String, tonica: Nota = Nota(.do)) throws(ErrorDeLectura) -> Nota {
         let escalares = Array(normalizar(texto).unicodeScalars)
         // Un prefijo (o ninguno) y, tras él, el nombre más largo que empiece el texto: «Dha» antes que «D…», «नि» antes
         // que «न». Si con un prefijo no hay nombre detrás, se prueba sin él: «naerim» en coreano, «Na» y «ei» en

@@ -13,10 +13,10 @@ public enum NombreDeGrado: Hashable, Sendable, CustomStringConvertible {
 
     public var description: String { nombre }
 
-    /// Lee el nombre de una función en español o en inglés, sin distinguir mayúsculas ni tildes:
+    /// Lee el nombre de una función en cualquiera de los trece idiomas, sin distinguir mayúsculas ni tildes:
     /// "Dominante", "superdominante", "submediante", "sensible", "leading tone"… Si no es ninguna, lanza
     /// `ErrorDeLecturaDeTeoria` con sus nombres (`.nombreNoReconocido`).
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) {
         let clave = texto.claveDeBusqueda
         let alias: [String: NombreDeGrado] = [
             "submediante": .superdominante, "sub mediante": .superdominante,
@@ -32,7 +32,7 @@ public enum NombreDeGrado: Hashable, Sendable, CustomStringConvertible {
         ]
         guard
             let funcion = todas.first(where: { f in
-                f.nombre.claveDeBusqueda == clave || f.nombre(en: .ascii(.ingles)).claveDeBusqueda == clave
+                Notacion.allCases.contains { f.nombre(en: $0).claveDeBusqueda == clave }
             })
         else {
             throw ErrorDeLecturaDeTeoria(
@@ -87,4 +87,9 @@ extension NombreDeGrado {
         case .subtonica: return TextosDeTeoria.traduccion(\.gradoSubtonica)
         }
     }
+}
+
+extension NombreDeGrado: RepresentableComoTexto {
+    /// Su nombre, que se vuelve a leer en cualquiera de los trece idiomas: «dominante», «leading tone», «sensible».
+    public func texto(en notacion: Notacion) -> String { nombre(en: notacion) }
 }

@@ -182,7 +182,7 @@ func filaDeTipoDeEscala(_ tipo: TipoDeEscala) -> [String] {
         // cifrado es «»).
         estadisticas.tonal.triadas.map { acordesDeLosGrados($0, de: sobreDo) } ?? "",
         estadisticas.tonal.cuatriadas.map { acordesDeLosGrados($0, de: sobreDo) } ?? "",
-        tieneAcordes ? acordesDeLosGrados(sobreDo.acordesDeLosGrados(notas: 4, por: .cuartas)) : "",
+        tieneAcordes ? acordesDeLosGrados(sobreDo.acordesDeLosGrados(deNotas: 4, por: .cuartas)) : "",
         tieneAcordes ? tensionesPorGrados(de: sobreDo) : "",
         estadisticas.conjunto.combinatoriedad.map { c in
             (c.transposiciones.map { "T\($0)" } + c.inversiones.map { "I\($0)" }).joined(separator: " ")

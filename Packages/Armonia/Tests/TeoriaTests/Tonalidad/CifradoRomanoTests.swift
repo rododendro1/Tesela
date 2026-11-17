@@ -217,16 +217,17 @@ import Testing
                 let tonalidad = Tonalidad(tonica, modo)
                 for notas in [3, 4] {
                     for grado in 1...7 {
-                        let acorde = try #require(tonalidad.acorde(grado: grado, notas: notas), "\(tonalidad) \(grado)")
-                        let romano = try #require(tonalidad.romano(grado: grado, notas: notas))
+                        let acorde = try #require(
+                            tonalidad.acorde(grado: grado, deNotas: notas), "\(tonalidad) \(grado)")
+                        let romano = try #require(tonalidad.romano(grado: grado, deNotas: notas))
                         #expect(romano.grado == grado)
                         #expect(try tonalidad.acorde(romano) == acorde, "\(tonalidad) \(romano)")
                     }
                 }
             }
         }
-        #expect(Tonalidad(.do).acorde(grado: 1, notas: 8) == nil)
-        #expect(Tonalidad(.do).romano(grado: 7, notas: 4)?.description == "viiø7")
-        #expect(Tonalidad(.la, .menor).acorde(grado: 5, notas: 4) == Acorde("Mi7"))
+        #expect(Tonalidad(.do).acorde(grado: 1, deNotas: 8) == nil)
+        #expect(Tonalidad(.do).romano(grado: 7, deNotas: 4)?.description == "viiø7")
+        #expect(Tonalidad(.la, .menor).acorde(grado: 5, deNotas: 4) == Acorde("Mi7"))
     }
 }

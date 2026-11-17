@@ -125,12 +125,13 @@ extension Acorde {
     ///
     ///     Acorde.identificar(clasesDeAltura: [0, 3, 6, 9]).first   // Do°7
     ///     Acorde.identificar(clasesDeAltura: [1, 5, 8]).first      // Re♭
-    public static func candidatos(clasesDeAltura alturas: [Int], tonalidad: Tonalidad? = nil) -> [Candidato<Acorde>] {
+    public static func candidatos(clasesDeAltura alturas: [Int], en tonalidad: Tonalidad? = nil) -> [Candidato<Acorde>]
+    {
         candidatos(clasesDeAltura: alturas, preferidas: tonalidad.map { Set($0.notasPropias.map(\.pasosDeQuinta)) })
     }
 
     /// Igual, prefiriendo las ortografías de las notas de una escala cualquiera.
-    public static func candidatos(clasesDeAltura alturas: [Int], escala: Escala) -> [Candidato<Acorde>] {
+    public static func candidatos(clasesDeAltura alturas: [Int], en escala: Escala) -> [Candidato<Acorde>] {
         candidatos(clasesDeAltura: alturas, preferidas: Set(escala.notas.map(\.pasosDeQuinta)))
     }
 
@@ -227,34 +228,34 @@ extension Acorde {
     /// Lecturas de notas MIDI (el bajo es la más grave).
     ///
     ///     Acorde.identificar(midi: [55, 59, 62, 65, 68]).first   // Sol7(♭9)
-    public static func candidatos(midi: [Int], tonalidad: Tonalidad? = nil) -> [Candidato<Acorde>] {
-        candidatos(clasesDeAltura: midi.sorted(), tonalidad: tonalidad)
+    public static func candidatos(midi: [Int], en tonalidad: Tonalidad? = nil) -> [Candidato<Acorde>] {
+        candidatos(clasesDeAltura: midi.sorted(), en: tonalidad)
     }
 
-    public static func candidatos(midi: [Int], escala: Escala) -> [Candidato<Acorde>] {
-        candidatos(clasesDeAltura: midi.sorted(), escala: escala)
+    public static func candidatos(midi: [Int], en escala: Escala) -> [Candidato<Acorde>] {
+        candidatos(clasesDeAltura: midi.sorted(), en: escala)
     }
 
     /// Los acordes que pueden formar esas clases de altura, de más a menos probable, escritos en la tonalidad si se da.
-    public static func identificar(clasesDeAltura alturas: [Int], tonalidad: Tonalidad? = nil) -> [Acorde] {
-        candidatos(clasesDeAltura: alturas, tonalidad: tonalidad).map(\.valor)
+    public static func identificar(clasesDeAltura alturas: [Int], en tonalidad: Tonalidad? = nil) -> [Acorde] {
+        candidatos(clasesDeAltura: alturas, en: tonalidad).map(\.valor)
     }
 
     /// Los acordes que pueden formar esas clases de altura, de más a menos probable, escritos en la escala.
-    public static func identificar(clasesDeAltura alturas: [Int], escala: Escala) -> [Acorde] {
-        candidatos(clasesDeAltura: alturas, escala: escala).map(\.valor)
+    public static func identificar(clasesDeAltura alturas: [Int], en escala: Escala) -> [Acorde] {
+        candidatos(clasesDeAltura: alturas, en: escala).map(\.valor)
     }
 
     /// Los acordes que pueden formar esas notas MIDI (el bajo es la más grave), de más a menos probable, escritos en la
     /// tonalidad si se da.
-    public static func identificar(midi: [Int], tonalidad: Tonalidad? = nil) -> [Acorde] {
-        candidatos(midi: midi, tonalidad: tonalidad).map(\.valor)
+    public static func identificar(midi: [Int], en tonalidad: Tonalidad? = nil) -> [Acorde] {
+        candidatos(midi: midi, en: tonalidad).map(\.valor)
     }
 
     /// Los acordes que pueden formar esas notas MIDI (el bajo es la más grave), de más a menos probable, escritos en la
     /// escala.
-    public static func identificar(midi: [Int], escala: Escala) -> [Acorde] {
-        candidatos(midi: midi, escala: escala).map(\.valor)
+    public static func identificar(midi: [Int], en escala: Escala) -> [Acorde] {
+        candidatos(midi: midi, en: escala).map(\.valor)
     }
 
     /// Las doce quintas seguidas que contienen sus notas y el bajo, lo más centradas posible en ellas (ver

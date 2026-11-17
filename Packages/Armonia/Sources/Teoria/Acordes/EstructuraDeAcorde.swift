@@ -95,11 +95,11 @@ public enum PapelEnAcorde: Hashable, Sendable, CustomStringConvertible {
 
     public var description: String { nombre }
 
-    /// Lee el nombre de un papel en español o en inglés, sin distinguir mayúsculas ni tildes.
+    /// Lee el nombre de un papel en cualquiera de los trece idiomas, sin distinguir mayúsculas ni tildes.
     /// Acepta también los nombres de la armonía moderna para las tensiones:
     /// "undécima" u "oncena", "decimotercera" o "trecena", "eleventh", "9ª"… Si no es ninguno, lanza
     /// `ErrorDeLecturaDeTeoria` con sus nombres (`.nombreNoReconocido`).
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) {
         let clave = texto.claveDeBusqueda
         let alias: [String: PapelEnAcorde] = [
             "oncena": .tension(11), "trecena": .tension(13),
@@ -116,7 +116,7 @@ public enum PapelEnAcorde: Hashable, Sendable, CustomStringConvertible {
         ]
         guard
             let papel = todos.first(where: { p in
-                p.nombre.claveDeBusqueda == clave || p.nombre(en: .ascii(.ingles)).claveDeBusqueda == clave
+                Notacion.allCases.contains { p.nombre(en: $0).claveDeBusqueda == clave }
             })
         else {
             throw ErrorDeLecturaDeTeoria(
@@ -196,4 +196,9 @@ extension CalidadDeTriada {
             return TextosDeTeoria.traduccion(\.triadaSinTercera)
         }
     }
+}
+
+extension PapelEnAcorde: RepresentableComoTexto {
+    /// Su nombre, que se vuelve a leer en cualquiera de los trece idiomas: «tercera», «third», «Terz».
+    public func texto(en notacion: Notacion) -> String { nombre(en: notacion) }
 }

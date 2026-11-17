@@ -45,9 +45,9 @@ public struct PlanDeModulacion: Hashable, Sendable, CustomStringConvertible {
 extension Tonalidad {
     /// Maneras de modular de esta tonalidad a otra, de la más suave a la más brusca:
     ///
-    /// 1. Por cada **acorde común** a las dos tonalidades (las tríadas de ``acordesDeLosGrados(notas:)``), primero los
-    ///    que en la nueva son ii o IV (preparan su dominante), luego vi y iii. No sirven la tónica de la partida, ni la
-    ///    tónica o la dominante de la llegada, ni las tríadas disminuidas.
+    /// 1. Por cada **acorde común** a las dos tonalidades (las tríadas de ``acordesDeLosGrados(deNotas:)``), primero
+    ///    los que en la nueva son ii o IV (preparan su dominante), luego vi y iii. No sirven la tónica de la partida,
+    ///    ni la tónica o la dominante de la llegada, ni las tríadas disminuidas.
     /// 2. Por una **séptima disminuida enarmónica**: el vii°7 de la tonalidad de partida o de uno de sus grados
     ///    (vii°7/ii, vii°7/V…) que suena igual que el vii°7 de la nueva, escrito de otra forma.
     /// 3. La modulación **directa**: el ii–V7–I de la nueva sin puente, que siempre se puede.
@@ -58,9 +58,9 @@ extension Tonalidad {
     ///     Tonalidad(.do).modulaciones(hasta: Tonalidad(Nota.la.bemol))[0].tecnica  // .disminuidaEnarmonica
     public func modulaciones(hasta destino: Tonalidad) -> [PlanDeModulacion] {
         guard destino != self else { return [] }
-        let partida = [acordeDelGrado(1), acordeDelGrado(4), acordeDelGrado(5, notas: 4), acordeDelGrado(1)]
+        let partida = [acordeDelGrado(1), acordeDelGrado(4), acordeDelGrado(5, deNotas: 4), acordeDelGrado(1)]
         let tonicaNueva = destino.acordeDelGrado(1)
-        let dominanteNueva = destino.acordeDelGrado(5, notas: 4)
+        let dominanteNueva = destino.acordeDelGrado(5, deNotas: 4)
         var planes: [PlanDeModulacion] = []
 
         func plan(_ tecnica: PlanDeModulacion.Tecnica, _ puente: (Acorde, Acorde)?, _ llegada: [Acorde])
@@ -106,7 +106,7 @@ extension Tonalidad {
         }
 
         // 3. Directa.
-        let segundo = destino.acordeDelGrado(2, notas: 4)
+        let segundo = destino.acordeDelGrado(2, deNotas: 4)
         planes.append(plan(.directa, nil, [segundo, dominanteNueva, tonicaNueva]))
         return planes
     }

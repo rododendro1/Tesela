@@ -115,10 +115,8 @@ import Testing
         do {
             _ = try SerieDodecafonica(leyendo: "0 1 1 3 4 5 6 7 8 9 t")
             Issue.record("Se ha leído una serie sin el 2 ni el 11")
-        } catch let error as ErrorDeLectura {
-            #expect(error.motivo == .serieNoDodecafonica(faltan: [2, 11], repetidas: [1]))
         } catch {
-            Issue.record("\(error)")
+            #expect(error.motivo == .serieNoDodecafonica(faltan: [2, 11], repetidas: [1]))
         }
         #expect(throws: ErrorDeLectura.self) { try SerieDodecafonica(leyendo: "0 1 x") }
     }

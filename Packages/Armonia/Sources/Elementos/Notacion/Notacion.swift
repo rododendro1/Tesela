@@ -418,7 +418,7 @@ extension Idioma {
     /// doce, lanza `ErrorDeLectura` (`.idiomaNoReconocido`) con sus códigos.
     ///
     ///     try Idioma(leyendo: "euskara")   // .euskera
-    public init(leyendo nombre: String) throws {
+    public init(leyendo nombre: String) throws(ErrorDeLectura) {
         if let idioma = Idioma(codigo: nombre) {
             self = idioma
             return

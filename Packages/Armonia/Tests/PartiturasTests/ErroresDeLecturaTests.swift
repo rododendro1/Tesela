@@ -180,7 +180,7 @@ import Testing
             Issue.record("Se esperaba un error")
         } catch {
             #expect(
-                (error as! ErrorDeLectura).explicacion(en: .ascii(.ingles))
+                error.explicacion(en: .ascii(.ingles))
                     == "there is no major 5th: unisons, 4ths, 5ths and octaves are perfect, augmented or diminished")
 
         }

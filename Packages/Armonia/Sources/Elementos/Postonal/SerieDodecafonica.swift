@@ -74,7 +74,7 @@ public struct SerieDodecafonica: Hashable, Sendable, CustomStringConvertible {
     ///
     /// Lanza `ErrorDeLectura`; si las clases se leen pero no son las doce, con
     /// `ErrorDeLectura/Motivo/serieNoDodecafonica(faltan:repetidas:)`.
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLectura) {
         let leidas = try LecturaDeClases.leer(texto).map { modulo($0, 12) }
         if let (faltan, repetidas) = SerieDodecafonica.faltanYRepetidas(leidas) {
             throw ErrorDeLectura(

@@ -36,11 +36,11 @@ public struct Altura: Hashable, Sendable {
     /// También acepta los nombres en catalán, gallego, euskera, portugués, griego y
     /// ruso:
     /// "re bemoll 4", "fa sostido 3", "fá sustenido 3", "фа-диез 3", "σι ύφεση 4".
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLectura) {
         var lector = Lector(texto)
         try lector.exigirContenido()
         let leida: Altura
-        do {
+        do throws(ErrorDeLectura) {
             guard let nombre = lector.leerNombreNota() else { throw lector.error(.notaNoReconocida) }
             lector.saltarEspacios()
             let textoOctava = lector.restoSinEspacios
@@ -60,7 +60,7 @@ public struct Altura: Hashable, Sendable {
     /// Lee una nota escrita en una notación concreta: `Altura(leyendo: "Fis4", en: .compacta(.aleman))`,
     /// `Altura(leyendo: "ré bémol 3", en: .conPalabras(.frances))`. La octava es la científica (Do4 = do central), con
     /// cifras o en subíndice ("ré bémol ₃").
-    public init(leyendo texto: String, en notacion: Notacion) throws {
+    public init(leyendo texto: String, en notacion: Notacion) throws(ErrorDeLectura) {
         let notacion = notacion.notacionDeLasNotas
         // En español e inglés con signos, el lector de siempre («Fa#4»). En los demás casos, el nombre y la octava por
         // separado: «Fa sostenido 4» (también «Fa#4», que lee `Nota(leyendo:en:)`), «Fis₄», «Ré♭₃».
@@ -77,7 +77,7 @@ public struct Altura: Hashable, Sendable {
             }
             do {
                 self.init(try Nota(leyendo: parteNombre, en: notacion), octava: octava)
-            } catch let error as ErrorDeLectura {
+            } catch {
                 throw ErrorDeLectura(texto: texto, posicion: 0, motivo: error.motivo)
             }
         case true:

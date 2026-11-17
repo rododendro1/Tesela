@@ -12,7 +12,7 @@
 
 package enum LecturaDeClases {
     /// Las clases de altura escritas en `texto`, en su orden y con sus repeticiones.
-    package static func leer(_ texto: String) throws -> [Int] {
+    package static func leer(_ texto: String) throws(ErrorDeLectura) -> [Int] {
         var lector = Lector(texto)
         try lector.exigirContenido()
         let aperturas: [Character: Character] = ["[": "]", "{": "}", "(": ")"]
@@ -103,7 +103,7 @@ extension ConjuntoDeClasesDeAltura {
     ///     try ConjuntoDeClasesDeAltura(leyendo: "4-Z15")       // [0, 1, 4, 6]
     ///
     /// Lanza `ErrorDeLectura` con el carácter donde no se pudo seguir.
-    public init(leyendo texto: String) throws {
+    public init(leyendo texto: String) throws(ErrorDeLectura) {
         let limpio = texto.trimmingEspacios()
         if let forte = ConjuntoDeClasesDeAltura.numeroConFormaDeForte(limpio) {
             guard let prima = ConjuntoDeClasesDeAltura.primasPorNumeroDeForte[forte] else {

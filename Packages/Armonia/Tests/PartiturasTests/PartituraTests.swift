@@ -47,7 +47,7 @@ import Testing
     @Test func desdeMidiYCodable() throws {
         let melodia = Melodia(midi: [69, 71, 72, 74, 76, 77, 80, 81])
         #expect(melodia.description == "La4 Si4 Do5 Re5 Mi5 Fa5 Sol♯5 La5")
-        #expect(Melodia(midi: [70], escala: Escala(.fa)).description == "Si♭4")
+        #expect(Melodia(midi: [70], en: Escala(.fa)).description == "Si♭4")
         #expect(melodia.candidatosDeTonalidad.first?.valor == Tonalidad(.la, .menor))
 
         let datos = try JSONEncoder().encode(arpegio)
@@ -114,7 +114,7 @@ import Testing
             _ = try Duracion(leyendo: "3")
             Issue.record("Se esperaba un error")
         } catch {
-            #expect((error as? ErrorDeLecturaDePartitura)?.motivo == .duracionNoValida("3"))
+            #expect(error.motivo == .duracionNoValida("3"))
 
         }
     }

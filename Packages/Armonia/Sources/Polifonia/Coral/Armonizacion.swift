@@ -201,7 +201,7 @@ extension Tonalidad {
             let disminuido = acorde.tipo.estructura.calidadDeTriada == .disminuida
             anadir(disminuido ? acorde.cambiarInversion(1) : acorde, pesos.grado(grado, enMayor: modo == .mayor))
         }
-        anadir(acordeDelGrado(5, notas: 4), pesos.septimaDeDominante)
+        anadir(acordeDelGrado(5, deNotas: 4), pesos.septimaDeDominante)
         if modo == .mayor { anadir(acordeDelGrado(2).cambiarInversion(1), pesos.iiEnPrimeraInversion) }
         // Dominantes secundarias.
         for destino in modo == .mayor ? [5, 6, 2, 4] : [4, 6] {

@@ -130,12 +130,12 @@ public struct Coral: Hashable, Sendable {
         var acordes: [[Altura]] = [[]]
         var actual = ""
         var posicion = 0
-        func cerrarAltura() throws {
+        func cerrarAltura() throws(ErrorDeLectura) {
             defer { actual = "" }
             guard !actual.isEmpty else { return }
             do {
                 acordes[acordes.count - 1].append(try Altura(leyendo: actual))
-            } catch let error as any ErrorAlLeer {
+            } catch let error {
                 let inicio = posicion - actual.count
                 throw error.situado(en: texto, posicion: error.posicion.map { inicio + $0 } ?? inicio)
             }
