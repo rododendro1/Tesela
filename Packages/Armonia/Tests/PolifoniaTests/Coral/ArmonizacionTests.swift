@@ -20,7 +20,32 @@ import Testing
         #expect(doMayor.acordes(para: "Fa#").map(\.valor).contains("Re7"))
         // Ninguno de la tonalidad tiene La♭: los del modo homónimo (iv y ♭VI).
         #expect(doMayor.acordes(para: "Lab").prefix(2).map(\.valor) == ["Fam", "Lab"])
-        #expect(doMayor.acordes(para: "Do#").map(\.valor) == ["La", "La7"])
+        // El Do♯ también está en La♯°7/Sol, la disminuida de nota común del V.
+        #expect(doMayor.acordes(para: "Do#").map(\.valor) == ["La", "La7", Acorde("La#°7").cambiarInversion(3)])
+    }
+
+    /// La séptima disminuida de nota común: sobre la nota común en el bajo, que se queda, y las demás voces por
+    /// semitono o por grado hasta el acorde al que adorna.
+    @Test func laDisminuidaDeNotaComun() throws {
+        let doMayor = Tonalidad(.do)
+        let disminuida = Acorde("Re#°7").cambiarInversion(3)
+        #expect(disminuida.bajo == .do)
+        // El Re♯ de la melodía solo lo tiene ella, y va al I.
+        let armonizada = try #require(doMayor.armonizarACuatroVoces(["Mi5", "Re#5", "Mi5"]))
+        #expect(armonizada.armonizacion.acordes == ["Do", disminuida, "Do"])
+        #expect(armonizada.armonizacion.cifrados[1].hasPrefix("♯ii°"))
+        #expect(armonizada.coral.esCorrecta)
+        let voces = (0..<4).map { armonizada.coral.voz($0) }
+        // El bajo se queda en el Do, y ninguna voz salta más de un tono para ir y volver.
+        #expect(voces[0].map(\.nota) == [.do, .do, .do])
+        for voz in voces {
+            #expect(zip(voz, voz.dropFirst()).allSatisfy { abs($0.midi - $1.midi) <= 2 }, "\(voz)")
+        }
+        // Sin pedal, la nota común también se queda en su voz.
+        let coral = try #require(Coral.realizar(["Do", "Re#°7", "Do"], en: doMayor))
+        let conElDo = try #require((0..<4).first { coral.voz($0)[1].nota == .do })
+        #expect(coral.voz(conElDo)[2] == coral.voz(conElDo)[1])
+        #expect(Coral.notaComun(de: "Re#°7", a: "Do") == .do && Coral.notaComun(de: "Sol7", a: "Do") == nil)
     }
 
     // MARK: Armonizar

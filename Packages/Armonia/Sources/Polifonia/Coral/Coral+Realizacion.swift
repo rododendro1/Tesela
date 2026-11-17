@@ -19,6 +19,7 @@ extension Coral {
     ///   fundamental). Se duplica antes la fundamental que la quinta, y esta antes que la tercera
     ///   (en las tríadas disminuidas, la tercera). Nunca la sensible ni la séptima.
     /// - La sensible sube a la tónica, sobre todo en el soprano, y la séptima baja por grado conjunto.
+    /// - La nota común de una séptima disminuida de nota común (el Do de Re♯°7 → Do) se queda en su voz.
     /// - Sin soprano dado, el soprano se queda cerca del centro de su tesitura.
     ///
     /// - Parameters:
@@ -52,7 +53,8 @@ extension Coral {
                     guard
                         let paso = costeDePaso(
                             de: actual.alturas, a: siguiente.alturas, septima: acordes[i - 1].septima,
-                            sensible: dominantes[i - 1] ? sensible : nil, tonica: tonica)
+                            sensible: dominantes[i - 1] ? sensible : nil, tonica: tonica,
+                            notaComun: notaComun(de: acordes[i - 1], a: acordes[i]))
                     else { continue }
                     let total = costes[a] + paso + siguiente.coste
                     if total < nuevos[b] {
@@ -142,10 +144,19 @@ extension Coral {
         return resultado
     }
 
+    /// La nota que una séptima disminuida de nota común comparte con el acorde mayor al que va, y que se queda en su
+    /// voz: el Do de Re♯°7 → Do; `nil` si el paso no es ese.
+    package static func notaComun(de acorde: Acorde, a siguiente: Acorde) -> Nota? {
+        guard acorde.tipo == .disminuidoSeptima, siguiente.tipo.esMayor else { return nil }
+        return acorde.notas.first { $0.esEnarmonica(de: siguiente.fundamental) }
+    }
+
     /// Lo que cuesta pasar de una disposición a otra, o `nil` si el paso tiene alguna falta.
-    /// `septima` es la del primer acorde, si la tiene; `sensible`, solo si el primero es de dominante.
+    /// `septima` es la del primer acorde, si la tiene; `sensible`, solo si el primero es de dominante;
+    /// `notaComun`, la que se queda quieta (ver ``notaComun(de:a:)``).
     package static func costeDePaso(
-        de anterior: [Altura], a siguiente: [Altura], septima: Nota?, sensible: Nota?, tonica: Nota?
+        de anterior: [Altura], a siguiente: [Altura], septima: Nota?, sensible: Nota?, tonica: Nota?,
+        notaComun: Nota? = nil
     ) -> Double? {
         var falta = false
         faltas(de: anterior, a: siguiente) { _, _ in falta = true }
@@ -164,6 +175,8 @@ extension Coral {
             if let septima, anterior[v].nota == septima, !(-2...0).contains(movimiento) {
                 coste += 3
             }
+            // La nota común se queda.
+            if let notaComun, anterior[v].nota == notaComun, movimiento != 0 { coste += 3 }
         }
         return coste
     }

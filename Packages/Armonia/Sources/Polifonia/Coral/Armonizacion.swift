@@ -60,8 +60,9 @@ extension Tonalidad {
     ///     Tonalidad(.do).acordes(para: .sol).prefix(3).map(\.valor)   // [Sol, Do, Sol7]
     ///
     /// Son las tríadas de los siete grados (el vii° en primera inversión, como se usa casi siempre;
-    /// en menor, también el ii°), el V7, el ii6 y las dominantes secundarias del V, el vi, el ii y
-    /// el IV (en menor, del iv y del VI). Si ninguno tiene la nota, los del modo homónimo.
+    /// en menor, también el ii°), el V7, el ii6, las dominantes secundarias del V, el vi, el ii y
+    /// el IV (en menor, del iv y del VI) y, en mayor, las séptimas disminuidas de nota común del I y
+    /// del V, sobre la nota común en el bajo (Re♯°7/Do). Si ninguno tiene la nota, los del modo homónimo.
     public func acordes(para nota: Nota) -> [Candidato<Acorde>] {
         var candidatos = inventarioDeArmonizacion.filter { $0.acorde.notas.contains(nota) }
         if candidatos.isEmpty {
@@ -199,7 +200,8 @@ extension Tonalidad {
                     guard
                         let voces = Coral.costeDePaso(
                             de: actual.alturas, a: siguiente.alturas, septima: anterior.acorde.septima,
-                            sensible: Cadencia.esDominante(anterior) ? sensible : nil, tonica: tonica)
+                            sensible: Cadencia.esDominante(anterior) ? sensible : nil, tonica: tonica,
+                            notaComun: Coral.notaComun(de: anterior.acorde, a: lectura.acorde))
                     else { continue }
                     var total =
                         costes[a] + siguiente.coste + pesoDeLasVoces * voces
@@ -256,6 +258,14 @@ extension Tonalidad {
             let raiz = acordeDelGrado(destino).fundamental + .quintaJusta
             anadir(Acorde(raiz, .mayor), destino == 5 ? 0.6 : 0.8, destino)
             anadir(Acorde(raiz, .dominanteSeptima), destino == 5 ? 0.6 : 0.8, destino)
+        }
+        // Séptimas disminuidas de nota común, del I y del V de una tonalidad mayor, sobre la nota común en el bajo,
+        // como un pedal: Re♯°7/Do → Do.
+        if modo == .mayor {
+            for destino in [1, 5] {
+                let fundamental = acordeDelGrado(destino).fundamental
+                anadir(Acorde(fundamental + .segundaAumentada, .disminuidoSeptima).cambiarInversion(3), 1, destino)
+            }
         }
         return inventario
     }

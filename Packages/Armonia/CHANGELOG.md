@@ -12,6 +12,9 @@
   el °(maj7) con la disminuida.
 - La rearmonización propone la séptima disminuida de nota común delante del I y del V mayores de una tonalidad mayor
   (`Rearmonizacion.Recurso.disminuidaDeNotaComun`: Do → Re♯°7 Do).
+- El armonizador del coral (`Tonalidad.armonizarACuatroVoces(_:)`) usa también la séptima disminuida de nota común
+  del I y del V en mayor, sobre la nota común en el bajo (Re♯°7/Do → Do), y `Coral.realizar` deja la nota común
+  quieta en su voz.
 - MusicXML escribe el traste como lo numera quien toca («6½» en el dulcémele) en `<other-technical>`, junto al
   `<fret>` en semitonos.
 - Los trastes, como los numera quien toca: `Mastil.rotulo(de:)` da el «6½» del dulcémele (sus trastes diatónicos,
@@ -25,9 +28,10 @@
   que adorna al I o al V con su fundamental en común, como ♯ii°7 en Do–Re♯°7–Do, y no es la sensible de nadie, con la
   función del acorde al que va y la escala disminuida.
 - Dos ornamentos más con su signo: el Schleifer (`Articulacion.schleifer`, `{schleifer}`) y el trino con
-  terminación de J. S. Bach (`.trinoConTerminacion`, `{prallmordent}`), con sus glifos de Bravura. El Schleifer va y
-  vuelve por MusicXML (`<schleifer/>`) y el trino con terminación se escribe en LilyPond (`\prallmordent`); ABC,
-  MEI y GUIDO no tienen signo para ellos y no los escriben.
+  terminación de J. S. Bach (`.trinoConTerminacion`, `{prallmordent}`), con sus glifos de Bravura. Van y vuelven
+  por MusicXML (`<schleifer/>` y un `<other-ornament>` con el nombre del glifo de SMuFL), por MEI (un `<ornam>` con
+  el glifo) y por ABC (como texto encima de la nota, `"^Schleifer"`); LilyPond escribe `\prallmordent` y el
+  Schleifer como texto, y GUIDO los dos como texto (`\text<"Schleifer">`).
 - `OrnamentoConNombre.tocado(sobre:en:duracion:)` toca cualquier ornamento del catálogo con su ritmo: las
   apoyaturas se quedan con la mitad de la nota (dos tercios con puntillo), el trino con terminación acaba en la de
   debajo y la principal, y el trino corto y el Schleifer van en fusas. `Evento.realizandoElOrnamento(en:)` y el MIDI
