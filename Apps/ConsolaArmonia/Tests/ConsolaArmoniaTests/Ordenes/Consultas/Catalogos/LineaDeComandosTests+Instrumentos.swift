@@ -30,6 +30,21 @@ extension LineaDeComandosTests {
         #expect(familia.error.contains("diatonicos"), Comment(rawValue: familia.error))
     }
 
+    /// `instrumentos --familia` con una familia, y `--agrupar familia`.
+    @Test func instrumentosPorFamilias() throws {
+        let frotada = salida("instruments --family bowed-strings --ingles")
+        #expect(
+            frotada
+                == "violin: G3 D4 A4 E5 · 4\nviola: C3 G3 D4 A4 · 4\ncello: C2 G2 D3 A3 · 4\ndouble bass: E1 A1 D2 G2 · 4\n"
+        )
+        let agrupados = salida("instrumentos --agrupar familia")
+        #expect(agrupados.hasPrefix("guitarras (12)\n  guitarra: "), Comment(rawValue: agrupados))
+        #expect(agrupados.contains("\ncuerda frotada (4)\n  violín: "))
+        #expect(salida("instrumentos --familia banjos-y-citaras --agrupar familia").hasPrefix("banjos y cítaras (2)\n"))
+        let datos = try #require(try json("instrumentos violín") as? [[String: Any]])
+        #expect(datos.first?["familiaId"] as? String == "cuerdaFrotada")
+    }
+
     /// `instrumentos … --estadisticas` y `--json`: la ficha, con los órdenes en octavas y los trastes.
     @Test func instrumentosDeCuerdaConFicha() throws {
         let charango = salida("instrumentos charango --estadisticas")
@@ -50,6 +65,11 @@ extension LineaDeComandosTests {
         // Sin octava, en la cuarta; sin escala, en la mayor de la nota.
         #expect(salida("ornamentos mordente --sobre Mi") == "mordente: 0 −1 0 · Mi₄ Re♯₄ Mi₄\n")
         #expect(salida("ornaments turn --over D4 --in C major --ingles") == "turn: +1 0 −1 0 · E4 D4 C4 D4\n")
+        // Con --duracion, con la figura de cada nota; sin --sobre, sobre Do4.
+        #expect(
+            salida("ornamentos grupeto --sobre Re4 --en Do mayor --duracion 4")
+                == "grupeto: +1 0 −1 0 · Mi₄:16 Re₄:16 Do₄:16 Re₄:16\n")
+        #expect(salida("ornaments upper appoggiatura --duration 2 --ingles").hasSuffix("· D4:4 C4:4\n"))
         let ninguno = resultado("ornamentos", "zzz")
         #expect(ninguno.codigo == 1 && ninguno.error.contains("ningún ornamento"))
         let fuera = resultado("ornamentos", "trino", "--sobre", "Fa#4", "--en", "Do", "mayor")

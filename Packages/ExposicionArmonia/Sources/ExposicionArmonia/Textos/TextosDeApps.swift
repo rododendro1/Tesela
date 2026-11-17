@@ -453,6 +453,8 @@ public struct TextosDeApps: TextosTraducidos {
     public let ordenesEnOctavas: String
     public let pasosDelOrnamento: String
     public let suenaElOrnamento: String
+    /// «Ritmo»: las notas del ornamento con su figura, en su ficha.
+    public let ritmoDelOrnamento: String
     public let familiaDelInstrumento: String
     public let instrumentosDeCuerda: String
     public let ornamentosConNombre: String

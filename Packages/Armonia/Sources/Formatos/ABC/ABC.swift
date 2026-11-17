@@ -138,6 +138,7 @@ package struct EscritorABC: EscritorDeTexto {
             case .mordenteInferior: return "!lowermordent!"
             case .grupeto: return "!turn!"
             case .grupetoInvertido: return "!invertedturn!"
+            case .schleifer, .trinoConTerminacion: return ""
             }
         }
         return (evento.dinamica.map { "!\($0.rawValue)!" } ?? "") + articulaciones.joined()

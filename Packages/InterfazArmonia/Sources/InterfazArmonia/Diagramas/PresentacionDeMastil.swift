@@ -8,13 +8,14 @@ enum PresentacionDeMastil {
     /// Cuántos trastes se enseñan como mínimo cuando la mano está lejos de la cejilla.
     static let trastesMinimosEnVentana = 4
 
-    /// Los trastes que se dibujan para una digitación.
+    /// Los trastes que se dibujan para una digitación, contados en el mástil (la quinta cuerda del banjo, desde la
+    /// cejilla de las otras).
     ///
     /// Con la mano cerca de la cejilla (hasta el traste 4) se ve desde la cejilla hasta el 5. Más arriba,
     /// una ventana con un traste de margen por cada lado. En una ventana que no incluye el 0 las cuerdas
     /// al aire se dibujan en un canal a la izquierda, no se pierden.
     static func rango(de digitacion: Digitacion) -> ClosedRange<Int> {
-        let pisados = digitacion.trastesPisados
+        let pisados = digitacion.posiciones.filter { $0.traste > 0 }.map(digitacion.mastil.trasteDelMastil)
         guard let menor = pisados.min(), let mayor = pisados.max(), mayor > 4 else { return 0...5 }
         let desde = max(0, menor - 1)
         let hasta = max(mayor + 1, desde + trastesMinimosEnVentana - 1)
@@ -29,10 +30,11 @@ enum PresentacionDeMastil {
 
     /// La posición que se toca en un dibujo de `ancho` por `alto`: el traste es la columna del toque, y la cuerda,
     /// la más cercana (la 0, la grave, abajo). `nil` en los márgenes, en el canal de las cuerdas al aire
-    /// (`conCanal`) o lejos de cualquier cuerda.
+    /// (`conCanal`) o lejos de cualquier cuerda. Con el mástil, la posición es la de la cuerda (en una cuerda corta,
+    /// desde su cejilla), y `nil` donde no tiene traste.
     static func posicion(
         enX x: Double, y: Double, ancho: Double, alto: Double, cuerdas: Int,
-        rango: ClosedRange<Int>, conCanal: Bool
+        rango: ClosedRange<Int>, conCanal: Bool, en mastil: Mastil? = nil
     ) -> PosicionEnElMastil? {
         guard cuerdas > 0 else { return nil }
         let anchoCasilla = (ancho - 2 * margenX) / Double(rango.count + (conCanal ? 1 : 0))
@@ -46,8 +48,34 @@ enum PresentacionDeMastil {
         guard (0..<cuerdas).contains(cuerda) else { return nil }
         // Con una sola cuerda, hasta 12 puntos por encima o por debajo.
         guard abs(yMaximo - Double(cuerda) * separacion - y) <= max(separacion / 2, 12) else { return nil }
-        return PosicionEnElMastil(cuerda: cuerda, traste: traste)
+        guard let mastil else { return PosicionEnElMastil(cuerda: cuerda, traste: traste) }
+        guard let posicion = mastil.posicion(cuerda: cuerda, enElTrasteDelMastil: traste), mastil.contiene(posicion)
+        else { return nil }
+        return posicion
     }
+
+    /// Un traste de la regla del dibujo: si se dibuja su línea, cómo se numera debajo y si lleva punto.
+    struct TrasteDibujado: Equatable {
+        let traste: Int
+        let linea: Bool
+        let rotulo: String?
+        let punto: Bool
+    }
+
+    /// Los trastes de un rango como se dibujan en el mástil: sin líneas ni números en los instrumentos sin trastes
+    /// (la cejilla, sí), solo los suyos en el dulcémele, numerados como él («6½»), y con los puntos de la guitarra en
+    /// los de trastes cromáticos.
+    static func trastes(de mastil: Mastil, en rango: ClosedRange<Int>) -> [TrasteDibujado] {
+        rango.map { traste in
+            TrasteDibujado(
+                traste: traste, linea: mastil.tieneLineaDeTraste(traste),
+                rotulo: mastil.rotulo(delTrasteDelMastil: traste),
+                punto: mastil.encordado.trastes == .cromaticos && trastesConPunto.contains(traste))
+        }
+    }
+
+    /// Los trastes con puntos de referencia en un mástil de guitarra.
+    static let trastesConPunto: Set<Int> = [3, 5, 7, 9, 12, 15, 17, 19, 21, 24]
 
     /// Las cuerdas (índices desde 0) que no suenan en la digitación.
     static func apagadas(de digitacion: Digitacion) -> Set<Int> {

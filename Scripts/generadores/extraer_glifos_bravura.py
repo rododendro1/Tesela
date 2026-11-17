@@ -77,7 +77,8 @@ GLIFOS = {
     "calderonArriba": (0xE4C0, "fermataAbove"), "calderonAbajo": (0xE4C1, "fermataBelow"),
     "trino": (0xE566, "ornamentTrill"), "mordenteSuperior": (0xE56C, "ornamentShortTrill"),
     "mordenteInferior": (0xE56D, "ornamentMordent"), "grupeto": (0xE567, "ornamentTurn"),
-    "grupetoInvertido": (0xE568, "ornamentTurnInverted"),
+    "grupetoInvertido": (0xE568, "ornamentTurnInverted"), "schleifer": (0xE587, "ornamentSchleifer"),
+    "trinoConTerminacion": (0xE5BD, "ornamentPrecompTrillWithMordent"),
     # Las cifras de los grupos irregulares (cinquillo, seisillo…).
     **{f"cifraDeGrupo{i}": (0xE880 + i, f"tuplet{i}") for i in range(10)},
 }

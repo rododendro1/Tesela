@@ -20,6 +20,8 @@ import Testing
         #expect(Articulacion.mordenteInferior.ornamento == .mordente)
         #expect(Articulacion.grupeto.ornamento == .grupeto)
         #expect(Articulacion.grupetoInvertido.ornamento == .grupetoInvertido)
+        #expect(Articulacion.schleifer.ornamento == .schleifer)
+        #expect(Articulacion.trinoConTerminacion.ornamento == .trinoConTerminacion)
         #expect(Articulacion.allCases.filter { $0.ornamento != nil } == Articulacion.allCases.filter(\.esOrnamento))
     }
 
@@ -44,6 +46,34 @@ import Testing
         #expect(largo.map(\.alturas[0].description) == ["Do4", "Re4", "Mi4", "Re4"])
         #expect(largo.map(\.duracion) == [.semicorchea, .semicorchea, .semicorchea, Duracion(5, 16)])
         #expect(try tocado("Re4:16{grupeto}") == "Mi4:64 Re4:64 Do4:64 Re4:64")
+    }
+
+    /// El trino con terminación acaba en la de debajo y la principal; el Schleifer sube en fusas desde la tercera.
+    @Test func elTrinoConTerminacionYElSchleifer() throws {
+        #expect(try tocado("Re4:4{trinoConTerminacion}") == "Mi4:32 Re4:32 Mi4:32 Re4:32 Mi4:32 Re4:32 Do4:32 Re4:32")
+        #expect(try tocado("Re4:8{prallmordent}") == "Mi4:32 Re4:32 Do4:32 Re4:32")
+        #expect(try tocado("Mi4:4{schleifer}") == "Do4:32 Re4:32 Mi4:8.")
+    }
+
+    /// Los que no tienen signo, desde el catálogo: las apoyaturas se quedan con la mitad de la nota (dos tercios con
+    /// puntillo), y el trino corto va en fusas.
+    @Test func losDelCatalogoSinSigno() throws {
+        let re4 = Altura(.re, octava: 4)
+        func tocado(_ ornamento: OrnamentoConNombre, _ duracion: Duracion) -> String? {
+            ornamento.tocado(sobre: re4, en: doMayor, duracion: duracion)?
+                .map { Evento($0.altura, $0.duracion).description }
+                .joined(separator: " ")
+        }
+        #expect(tocado(.apoyaturaSuperior, .negra) == "Mi4:8 Re4:8")
+        #expect(tocado(.apoyaturaInferior, Duracion(3, 8)) == "Do4:4 Re4:8")
+        #expect(tocado(.trinoCorto, .corchea) == "Mi4:32 Re4:32 Mi4:32 Re4:32")
+        let faSostenido = try Altura(leyendo: "Fa♯4")
+        #expect(OrnamentoConNombre.grupeto.tocado(sobre: faSostenido, en: doMayor, duracion: .negra) == nil)
+        // Cada uno suma lo que dura la nota.
+        for ornamento in OrnamentoConNombre.catalogo {
+            let partes = ornamento.tocado(sobre: re4, en: doMayor, duracion: Duracion(3, 16))
+            #expect(partes?.map(\.duracion).reduce(.cero, +) == Duracion(3, 16), "\(ornamento.nombre)")
+        }
     }
 
     /// La dinámica y las demás articulaciones van en la primera nota, y la ligadura, en la última.

@@ -411,6 +411,7 @@ extension TextosDeApps {
         ordenesEnOctavas: "Chöre in Oktaven",
         pasosDelOrnamento: "Schritte",
         suenaElOrnamento: "Klingt",
+        ritmoDelOrnamento: "Rhythmus",
         familiaDelInstrumento: "Familie",
         instrumentosDeCuerda: "Instrumente",
         ornamentosConNombre: "Verzierungen",

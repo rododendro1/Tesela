@@ -134,6 +134,19 @@ import Testing
         #expect(marcas(try PiezaImportada(abc: abc)) == ornamentos)
     }
 
+    /// El Schleifer va y vuelve por MusicXML; el trino con terminación solo tiene signo en LilyPond, y los demás
+    /// formatos los dejan sin escribir.
+    @Test func elSchleiferYElTrinoConTerminacion() throws {
+        let barroca = try Voz(leyendo: "Mi5:4{schleifer} Re5:4{trinoConTerminacion}").partitura()
+        let xml = barroca.musicXML()
+        #expect(xml.contains("<schleifer/>"))
+        #expect(marcas(try PiezaImportada(musicXML: Data(xml.utf8))) == ["Mi5 - schleifer", "Re5 -"])
+        #expect(barroca.lilyPond().contains("\\prallmordent") && !barroca.lilyPond().contains("\\trill"))
+        #expect(!barroca.abc().contains("!trill!"))
+        #expect(!barroca.guido().contains("\\trill("))
+        #expect(!barroca.mei().contains("ornam="))
+    }
+
     @Test func ornamentosEnLilyPondYGUIDO() {
         let ly = adornada.partitura().lilyPond()
         #expect(ly.contains("\\trill") && ly.contains("\\prall") && ly.contains("\\mordent"))

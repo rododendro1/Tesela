@@ -4,11 +4,40 @@ import ExposicionArmonia
 // MARK: - Consultas: el catálogo de instrumentos de cuerda
 
 extension LineaDeComandos {
-    /// Los valores de `instrumentos --familia`, por sus trastes, en español y en inglés.
-    static let nombresDeLasFamiliasDeInstrumento: [(familia: TrastesDeEncordado, espanol: String, ingles: String)] = [
-        (.cromaticos, "cromaticos", "chromatic"), (.diatonicos, "diatonicos", "diatonic"),
-        (.sinTrastes, "sin-trastes", "fretless"),
+    /// Lo que deja `instrumentos --familia`: los de una familia o los de unos trastes.
+    enum FamiliaDeInstrumento: Hashable {
+        case familia(FamiliaDeEncordado)
+        case trastes(TrastesDeEncordado)
+
+        /// Si el instrumento es de esta familia o tiene estos trastes.
+        func cumple(_ encordado: Encordado) -> Bool {
+            switch self {
+            case .familia(let familia): return encordado.familia == familia
+            case .trastes(let trastes): return encordado.trastes == trastes
+            }
+        }
+
+        /// Su nombre en la notación: «guitarras», «sin trastes».
+        func nombre(en notacion: Notacion) -> String {
+            switch self {
+            case .familia(let familia): return familia.nombre(en: notacion)
+            case .trastes(let trastes): return trastes.nombre(en: notacion)
+            }
+        }
+    }
+
+    /// Los valores de `instrumentos --familia`, en español y en inglés: las familias y después los trastes.
+    static let nombresDeLasFamiliasDeInstrumento: [(familia: FamiliaDeInstrumento, espanol: String, ingles: String)] = [
+        (.familia(.guitarras), "guitarras", "guitars"), (.familia(.bajos), "bajos", "basses"),
+        (.familia(.guitarrasPequenas), "guitarras-pequenas", "small-guitars"),
+        (.familia(.laudes), "laudes", "lutes"), (.familia(.banjosYCitaras), "banjos-y-citaras", "banjos-and-zithers"),
+        (.familia(.cuerdaFrotada), "cuerda-frotada", "bowed-strings"),
+        (.trastes(.cromaticos), "cromaticos", "chromatic"), (.trastes(.diatonicos), "diatonicos", "diatonic"),
+        (.trastes(.sinTrastes), "sin-trastes", "fretless"),
     ]
+
+    /// Los valores de `instrumentos --agrupar` que no son los de `escalas`: por su familia.
+    static let agruparPorFamilia = ["familia", "family"]
 
     /// Los valores de `--familia` de todas las órdenes que la tienen, sin repetir, para completar en la terminal.
     static let nombresDeLasFamilias: [String] = {
@@ -22,14 +51,15 @@ extension LineaDeComandos {
         return grupos.joined().reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }
     }()
 
-    /// Los instrumentos que pide `instrumentos [<texto>] [--familia <trastes>] [--lugar <lugar>] [--agrupar <forma>]
-    /// [--estadisticas]`, si se quiere su ficha y cómo se agrupan. Con un nombre exacto, solo ese; si no, los que lo
+    /// Los instrumentos que pide `instrumentos [<texto>] [--familia <familia|trastes>] [--lugar <lugar>]
+    /// [--agrupar <forma>] [--estadisticas]`, si se quiere su ficha y cómo se agrupan (`porFamilia` con
+    /// `--agrupar familia`). Con un nombre exacto, solo ese; si no, los que lo
     /// contienen en el nombre en algún idioma (todos, sin texto).
     static func instrumentosPedidos(_ textos: [String], _ notacion: Notacion) throws -> (
-        instrumentos: [Encordado], ficha: Bool, agrupacion: AgrupacionDeEscalas?
+        instrumentos: [Encordado], ficha: Bool, agrupacion: AgrupacionDeEscalas?, porFamilia: Bool
     ) {
         var argumentos = Argumentos(textos)
-        var familia: TrastesDeEncordado?
+        var familia: FamiliaDeInstrumento?
         if let texto = try argumentos.valorConPalabras(.familia) {
             let clave = claveDeBusqueda(texto)
             let hallada = nombresDeLasFamiliasDeInstrumento.first { fila in
@@ -38,16 +68,25 @@ extension LineaDeComandos {
             guard let elegida = hallada?.familia else { throw ErrorDeUso.familiaDeInstrumentoDesconocida(texto) }
             familia = elegida
         }
-        let lugar = try lugarDelCatalogo(&argumentos, notacion)
+        var lugar = LugarDelCatalogo()
+        if let texto = try argumentos.valor(.lugar) { lugar.lugares = try lugares(leyendo: texto, notacion) }
+        var porFamilia = false
+        if let texto = try argumentos.valor(.agrupar) {
+            if agruparPorFamilia.contains(claveDeBusqueda(texto)) {
+                porFamilia = true
+            } else {
+                lugar.agrupacion = try agrupacion(leyendo: texto)
+            }
+        }
         let ficha = argumentos.quitarMarca(.estadisticas)
         try argumentos.sinOpcionesDesconocidas()
         let texto = argumentos.unidos
         let exacto = texto.isEmpty ? nil : try? Encordado(leyendo: texto)
         let hallados = exacto.map { [$0] } ?? Encordado.buscar(conteniendo: texto)
         let pedidos = hallados.filter { encordado in
-            (familia == nil || encordado.trastes == familia) && lugar.cumple(encordado.lugaresDeOrigen)
+            familia?.cumple(encordado) != false && lugar.cumple(encordado.lugaresDeOrigen)
         }
-        return (pedidos, ficha, lugar.agrupacion)
+        return (pedidos, ficha, lugar.agrupacion, porFamilia)
     }
 
     /// `instrumentos [<texto>] [opciones]`: cada instrumento de cuerda del catálogo, o los que tienen el texto en el
@@ -55,15 +94,12 @@ extension LineaDeComandos {
     ///
     ///     mandolina: Sol3 Re4 La4 Mi5 · 4 órdenes, 8 cuerdas
     static func instrumentos(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
-        let (hallados, ficha, agrupacion) = try instrumentosPedidos(textos, notacion)
+        let (hallados, ficha, agrupacion, porFamilia) = try instrumentosPedidos(textos, notacion)
         guard !hallados.isEmpty else {
             return ResultadoDeOrden(
                 salida: "", error: "armonia: " + Mensaje.ningunInstrumento.texto(en: notacion) + "\n", codigo: 1)
         }
-        let lineas = lineasAgrupadas(
-            de: hallados, agrupadas: agrupacion, en: notacion, epoca: \.epocaDeOrigen, paises: \.paisesDeOrigen,
-            continentes: \.continentesDeOrigen
-        ) { encordado -> [String] in
+        func lineas(_ encordado: Encordado) -> [String] {
             let presentado = EncordadoPresentado(encordado, en: notacion)
             let linea =
                 presentado.nombre + ": " + presentado.afinacion.joined(separator: " ") + " · "
@@ -71,7 +107,19 @@ extension LineaDeComandos {
             guard ficha else { return [linea] }
             return [linea] + presentado.ficha(en: notacion).map { "  " + $0.nombre + ": " + $0.valor }
         }
-        return bien(lineas.joined(separator: "\n"))
+        guard !porFamilia else {
+            // Por familia, en el orden de `FamiliaDeEncordado`: «guitarras (12)» y sus instrumentos sangrados.
+            let grupos = FamiliaDeEncordado.allCases.compactMap { familia -> [String]? in
+                let suyos = hallados.filter { $0.familia == familia }
+                guard !suyos.isEmpty else { return nil }
+                return ["\(familia.nombre(en: notacion)) (\(suyos.count))"] + suyos.flatMap(lineas).map { "  " + $0 }
+            }
+            return bien(grupos.joined().joined(separator: "\n"))
+        }
+        let todas = lineasAgrupadas(
+            de: hallados, agrupadas: agrupacion, en: notacion, epoca: \.epocaDeOrigen, paises: \.paisesDeOrigen,
+            continentes: \.continentesDeOrigen, lineas: lineas)
+        return bien(todas.joined(separator: "\n"))
     }
 
     /// `instrumentos [<texto>] [opciones] --json`: los mismos instrumentos, con toda su ficha.

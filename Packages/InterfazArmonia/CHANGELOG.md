@@ -2,6 +2,9 @@
 
 ## Sin publicar
 
+- El diagrama del mástil dibuja cada instrumento como es: sin trastes en los que no los tienen, solo los suyos en el
+  dulcémele (numerados como él, con el 6½) y la quinta cuerda del banjo desde el 5.º traste; al tocarlo, la posición
+  es la de la cuerda. `PresentacionDeMastil.trastes(de:en:)` dice qué se dibuja.
 - `ModeloDelCatalogo` tiene dos listas más, `ornamentos` (sus pasos y lo que suenan sobre la tónica, que se oyen) e
   `instrumentos` (su afinación, sus cuerdas, su familia y sus trastes, que suenan al aire), y `Lista.usaLaTonica`. En
   Ars Harmonica, el selector de instrumento los agrupa por familias y la pestaña de escalas tiene la ficha del

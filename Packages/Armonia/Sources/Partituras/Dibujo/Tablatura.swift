@@ -20,11 +20,15 @@ public struct Tablatura: Hashable, Sendable, Codable {
         /// La cuerda, desde la más grave: 0 es la 6.ª de la guitarra.
         public let cuerda: Int
         public let traste: Int
+        /// Cómo se escribe el traste si no es su número: «6½» en el dulcémele, «7» en la quinta cuerda del banjo
+        /// (`Mastil.rotulo(de:)`); `nil`, el número.
+        public let rotulo: String?
 
-        /// Una nota en esa cuerda (0 es la más grave) y en ese traste (0 al aire).
-        public init(cuerda: Int, traste: Int) {
+        /// Una nota en esa cuerda (0 es la más grave) y en ese traste (0 al aire), escrito con `rotulo` si se da.
+        public init(cuerda: Int, traste: Int, rotulo: String? = nil) {
             self.cuerda = cuerda
             self.traste = traste
+            self.rotulo = rotulo
         }
 
         /// La línea en que se dibuja en una tablatura de `cuerdas` cuerdas, desde arriba: la cuerda más aguda es la 0.

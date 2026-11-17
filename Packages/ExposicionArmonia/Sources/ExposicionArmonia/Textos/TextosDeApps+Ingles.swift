@@ -411,6 +411,7 @@ extension TextosDeApps {
         ordenesEnOctavas: "Courses in octaves",
         pasosDelOrnamento: "Steps",
         suenaElOrnamento: "Sounds",
+        ritmoDelOrnamento: "Rhythm",
         familiaDelInstrumento: "Family",
         instrumentosDeCuerda: "Instruments",
         ornamentosConNombre: "Ornaments",

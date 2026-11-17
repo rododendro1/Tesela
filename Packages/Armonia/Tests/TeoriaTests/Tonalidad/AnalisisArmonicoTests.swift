@@ -71,6 +71,23 @@ import Testing
         #expect(analisis.acordes[1].categoria == .sensibleSecundaria(de: 5))
     }
 
+    /// La séptima disminuida de nota común adorna al I o al V con su fundamental, y no es la sensible de nadie.
+    @Test func disminuidasDeNotaComun() {
+        #expect(cifrados("Do Re#°7 Do Sol7 Do", en: Tonalidad(.do)) == ["I", "♯ii°7", "I", "V7", "I"])
+        #expect(cifrados("Sol Do#°7 Sol7 Do", en: Tonalidad(.do)) == ["V", "♯i°7", "V7", "I"])
+        let analisis = try! AnalisisArmonico.analizar(leyendo: "Do Re#°7 Do", en: Tonalidad(.do))
+        #expect(analisis.acordes[1].categoria == .disminuidaDeNotaComun(de: 1))
+        #expect(analisis.acordes[1].funcion == .tonica)
+        #expect(Tonalidad(.do).escalaDelAcorde(analisis.acordes[1])?.tipo == .disminuida)
+        // Cuando resuelve como sensible, es la sensible; y sin acorde siguiente, la lectura de siempre.
+        #expect(cifrados("Do Fa#°7 Sol Do", en: Tonalidad(.do)) == ["I", "vii°7/V", "V", "I"])
+        #expect(Tonalidad(.do).analizar(Acorde("Re#°7")).categoria == .sensibleSecundaria(de: 3))
+        // A un acorde menor, no.
+        #expect(
+            Tonalidad(.do).analizar(Acorde("Re#°7"), siguiente: Acorde("Lam")).categoria
+                != .disminuidaDeNotaComun(de: 6))
+    }
+
     @Test func napolitanaYPrestamos() {
         #expect(cifrados("Do Reb/Fa Sol7 Do") == ["I", "♭II6", "V7", "I"])
         #expect(cifrados("Lam Sib/Re Mi7 Lam") == ["i", "♭II6", "V7", "i"])

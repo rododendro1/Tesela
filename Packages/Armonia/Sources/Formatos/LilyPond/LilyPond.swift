@@ -115,6 +115,8 @@ package struct EscritorLilyPond: EscritorDeTexto {
             case .mordenteInferior: return "\\mordent"
             case .grupeto: return "\\turn"
             case .grupetoInvertido: return "\\reverseturn"
+            case .schleifer: return ""
+            case .trinoConTerminacion: return "\\prallmordent"
             }
         }
         return articulaciones.joined() + (evento.dinamica.map { "\\" + $0.rawValue } ?? "")

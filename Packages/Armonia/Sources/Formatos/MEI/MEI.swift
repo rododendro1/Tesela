@@ -248,7 +248,9 @@ package struct EscritorMEI: EscritorDeLineas {
         case .tenuto: return "ten"
         case .acento: return "acc"
         case .marcato: return "marc"
-        case .calderon, .trino, .mordenteSuperior, .mordenteInferior, .grupeto, .grupetoInvertido: return nil
+        case .calderon, .trino, .mordenteSuperior, .mordenteInferior, .grupeto, .grupetoInvertido, .schleifer,
+            .trinoConTerminacion:
+            return nil
         }
     }
 

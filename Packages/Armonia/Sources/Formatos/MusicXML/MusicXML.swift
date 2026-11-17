@@ -411,7 +411,9 @@ package struct EscritorMusicXML: EscritorDePartitura {
         case .tenuto: return "tenuto"
         case .acento: return "accent"
         case .marcato: return "strong-accent"
-        case .calderon, .trino, .mordenteSuperior, .mordenteInferior, .grupeto, .grupetoInvertido: return nil
+        case .calderon, .trino, .mordenteSuperior, .mordenteInferior, .grupeto, .grupetoInvertido, .schleifer,
+            .trinoConTerminacion:
+            return nil
         }
     }
 
@@ -423,6 +425,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
         case .mordenteInferior: return "mordent"
         case .grupeto: return "turn"
         case .grupetoInvertido: return "inverted-turn"
+        case .schleifer: return "schleifer"
         default: return nil
         }
     }

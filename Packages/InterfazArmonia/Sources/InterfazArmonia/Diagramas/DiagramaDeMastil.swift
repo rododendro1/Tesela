@@ -105,9 +105,6 @@
             return copia
         }
 
-        /// Los trastes con puntos de referencia en un mástil de guitarra.
-        static let trastesConPunto: Set<Int> = [3, 5, 7, 9, 12, 15, 17, 19, 21, 24]
-
         /// Las cuerdas al aire que se marcan.
         private var alAire: Set<Int> {
             Set(marcas.filter { $0.traste == 0 && mastil.contiene($0) }.map(\.cuerda))
@@ -142,7 +139,7 @@
         ///
         ///     DiagramaDeMastil(mastil: mastil, marcas: elegidas, en: notacion).alTocar { posicion in … }
         public func alTocar(_ accion: @escaping (PosicionEnElMastil) -> Void) -> some View {
-            let (cuerdas, trastes, canal) = (mastil.encordado.numeroDeCuerdas, self.rango, hayCanal)
+            let (cuerdas, trastes, canal, elMastil) = (mastil.encordado.numeroDeCuerdas, self.rango, hayCanal, mastil)
             return overlay(
                 GeometryReader { geometria in
                     Color.clear
@@ -151,7 +148,7 @@
                             if let posicion = PresentacionDeMastil.posicion(
                                 enX: Double(toque.x), y: Double(toque.y),
                                 ancho: Double(geometria.size.width), alto: Double(geometria.size.height),
-                                cuerdas: cuerdas, rango: trastes, conCanal: canal)
+                                cuerdas: cuerdas, rango: trastes, conCanal: canal, en: elMastil)
                             {
                                 accion(posicion)
                             }
@@ -193,33 +190,38 @@
                 height: yMaximo - yMinimo + 8)
             contexto.fill(Path(roundedRect: tabla, cornerRadius: 4), with: .color(TemaDeLasApps.madera.opacity(0.45)))
 
-            // Trastes y cejilla.
-            for traste in rango {
-                let xBorde = inicioX + CGFloat(traste - rango.lowerBound + 1) * anchoCasilla
-                var linea = Path()
-                linea.move(to: CGPoint(x: xBorde, y: yMinimo - 4))
-                linea.addLine(to: CGPoint(x: xBorde, y: yMaximo + 4))
-                let esCejilla = traste == 0
-                contexto.stroke(
-                    linea, with: .color(esCejilla ? TemaDeLasApps.maderaOscura : .gray),
-                    lineWidth: esCejilla ? 4 : 1)
+            // Trastes y cejilla: sin trastes, solo la cejilla; en el dulcémele, solo los suyos.
+            for dibujado in PresentacionDeMastil.trastes(de: mastil, en: rango) {
+                let traste = dibujado.traste
+                if dibujado.linea {
+                    let xBorde = inicioX + CGFloat(traste - rango.lowerBound + 1) * anchoCasilla
+                    var linea = Path()
+                    linea.move(to: CGPoint(x: xBorde, y: yMinimo - 4))
+                    linea.addLine(to: CGPoint(x: xBorde, y: yMaximo + 4))
+                    let esCejilla = traste == 0
+                    contexto.stroke(
+                        linea, with: .color(esCejilla ? TemaDeLasApps.maderaOscura : .gray),
+                        lineWidth: esCejilla ? 4 : 1)
+                }
                 // Números de traste y puntos de referencia.
-                if traste > 0 {
+                if let rotulo = dibujado.rotulo {
                     contexto.draw(
-                        Text("\(traste)").font(.caption2).foregroundColor(.secondary),
+                        Text(rotulo).font(.caption2).foregroundColor(.secondary),
                         at: CGPoint(x: x(centroDe: traste), y: tamano.height - 8))
-                    if DiagramaDeMastil.trastesConPunto.contains(traste) {
-                        let centro = CGPoint(x: x(centroDe: traste), y: (yMinimo + yMaximo) / 2)
-                        let punto = CGRect(x: centro.x - 3, y: centro.y - 3, width: 6, height: 6)
-                        contexto.fill(Path(ellipseIn: punto), with: .color(.gray.opacity(0.5)))
-                    }
+                }
+                if dibujado.punto {
+                    let centro = CGPoint(x: x(centroDe: traste), y: (yMinimo + yMaximo) / 2)
+                    let punto = CGRect(x: centro.x - 3, y: centro.y - 3, width: 6, height: 6)
+                    contexto.fill(Path(ellipseIn: punto), with: .color(.gray.opacity(0.5)))
                 }
             }
 
-            // Cuerdas.
+            // Cuerdas; las cortas (la quinta del banjo), desde su cejilla.
             for cuerda in 0..<cuerdas {
+                let desde = mastil.trastesQueLeFaltan(aLaCuerda: cuerda)
                 var linea = Path()
-                linea.move(to: CGPoint(x: inicioX, y: y(de: cuerda)))
+                let xDeSuCejilla = desde > 0 ? min(max(x(centroDe: desde), inicioX), tamano.width - margenX) : inicioX
+                linea.move(to: CGPoint(x: xDeSuCejilla, y: y(de: cuerda)))
                 linea.addLine(to: CGPoint(x: tamano.width - margenX, y: y(de: cuerda)))
                 contexto.stroke(linea, with: .color(.gray), lineWidth: 1 + CGFloat(cuerdas - 1 - cuerda) * 0.12)
             }
@@ -239,8 +241,8 @@
             }
 
             // Marcas.
-            for posicion in marcas where mastil.contiene(posicion) && rango.contains(posicion.traste) {
-                let centro = CGPoint(x: x(centroDe: posicion.traste), y: y(de: posicion.cuerda))
+            for posicion in marcas where mastil.contiene(posicion) && rango.contains(mastil.trasteDelMastil(posicion)) {
+                let centro = CGPoint(x: x(centroDe: mastil.trasteDelMastil(posicion)), y: y(de: posicion.cuerda))
                 let circulo = CGRect(x: centro.x - radio, y: centro.y - radio, width: 2 * radio, height: 2 * radio)
                 let color = posicion == resaltada ? TemaDeLasApps.resaltado : TemaDeLasApps.acento
                 contexto.fill(Path(ellipseIn: circulo), with: .color(color))

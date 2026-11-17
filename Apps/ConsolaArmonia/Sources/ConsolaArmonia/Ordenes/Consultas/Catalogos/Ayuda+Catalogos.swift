@@ -122,21 +122,22 @@ extension LineaDeComandos {
             sintaxis: TextosDeConsola.traduccion(\.sintaxisInstrumentos),
             descripcion: TextosDeConsola.traduccion(\.descripcionInstrumentos),
             ejemplo: ejemplo(
-                "armonia instrumentos --familia diatonicos --estadisticas",
-                "armonia instruments --family diatonic --statistics"),
+                "armonia instrumentos --familia laudes --agrupar familia",
+                "armonia instruments --family lutes --group-by family"),
             notas: TextosDeConsola.traduccion(\.notasInstrumentos),
             opciones: [.familia, .lugar, .agrupar, .estadisticas])
     ]
 
     static let ayudaDeOrnamentos: [EntradaDeAyuda] = [
-        // ornamentos [<texto>] [--sobre <altura>] [--en <escala>] [--estadisticas]
+        // ornamentos [<texto>] [--sobre <altura>] [--en <escala>] [--duracion <figura>] [--estadisticas]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisOrnamentos),
             descripcion: TextosDeConsola.traduccion(\.descripcionOrnamentos),
             ejemplo: ejemplo(
-                "armonia ornamentos grupeto --sobre Re4 --en Do mayor", "armonia ornaments turn --over D4 --in C major"),
+                "armonia ornamentos grupeto --sobre Re4 --en Do mayor --duracion 4",
+                "armonia ornaments turn --over D4 --in C major --duration 4"),
             notas: TextosDeConsola.traduccion(\.notasOrnamentos),
-            opciones: [.sobre, .en, .estadisticas])
+            opciones: [.sobre, .en, .duracion, .estadisticas])
     ]
 
     static let ayudaDeAcordesConNombre: [EntradaDeAyuda] = [

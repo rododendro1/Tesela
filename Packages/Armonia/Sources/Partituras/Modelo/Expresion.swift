@@ -67,11 +67,17 @@ public enum Articulacion: String, CaseIterable, Hashable, Sendable, Codable {
     case grupeto
     /// Grupeto invertido: la de debajo, la nota, la de encima y la nota.
     case grupetoInvertido
+    /// Schleifer: dos notas por grados desde la tercera de debajo hasta la nota, deslizándose.
+    case schleifer
+    /// Trino con terminación (el «Trillo und Mordant» de J. S. Bach): el trino, que acaba en la de debajo y la nota.
+    case trinoConTerminacion
 
-    /// Si es un ornamento (trino, mordentes, grupetos), que se escribe encima de la nota con su signo.
+    /// Si es un ornamento (trinos, mordentes, grupetos, Schleifer), que se escribe encima de la nota con su signo.
     public var esOrnamento: Bool {
         switch self {
-        case .trino, .mordenteSuperior, .mordenteInferior, .grupeto, .grupetoInvertido: return true
+        case .trino, .mordenteSuperior, .mordenteInferior, .grupeto, .grupetoInvertido, .schleifer,
+            .trinoConTerminacion:
+            return true
         default: return false
         }
     }
@@ -90,6 +96,7 @@ public enum Articulacion: String, CaseIterable, Hashable, Sendable, Codable {
         "accent": .acento, "fermata": .calderon, "ten": .tenuto, "stacc": .staccato, "marc": .marcato,
         "trill": .trino, "tr": .trino, "prall": .mordenteSuperior, "mordent": .mordenteInferior,
         "turn": .grupeto, "reverseturn": .grupetoInvertido, "invertedturn": .grupetoInvertido,
+        "slide": .schleifer, "prallmordent": .trinoConTerminacion, "trillmordent": .trinoConTerminacion,
     ]
 
     /// La articulación de una clave de búsqueda (en minúsculas y sin tildes): su nombre o uno de sus alias.

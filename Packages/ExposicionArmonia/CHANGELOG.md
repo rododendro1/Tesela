@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- `OrnamentoPresentado(_:sobre:escala:duracion:en:)` tiene `tocado`, las notas del ornamento con su figura, y su
+  ficha, la fila «Ritmo» (`TextosDeApps.ritmoDelOrnamento`, en los trece idiomas).
 - `EncordadoPresentado` tiene `familia` y `familiaId`, y su ficha empieza por la familia.
 - `TextosDeApps.familiaDelInstrumento`, `instrumentosDeCuerda`, `ornamentosConNombre` y `fichaDelInstrumento`, en
   los trece idiomas.

@@ -112,6 +112,8 @@ public struct OrnamentoPresentado: Hashable, Sendable, Codable {
     public let pasos: [Int]
     /// Las alturas que suenan, si se ha dado una nota principal de la escala; `nil` si no.
     public let alturas: [String]?
+    /// Las mismas, cada una con su figura (`Mi4:16`), si se ha dado también la duración de la nota; `nil` si no.
+    public let tocado: [String]?
     /// Los estilos en que se usa, por su nombre.
     public let estilos: [String]
     /// Las citas de las obras donde se lee.
@@ -120,10 +122,11 @@ public struct OrnamentoPresentado: Hashable, Sendable, Codable {
     public let origen: OrigenPresentado?
 
     /// El ornamento y, con `principal` y `escala`, lo que suena sobre esa nota
-    /// (`OrnamentoConNombre.alturas(sobre:en:)`).
+    /// (`OrnamentoConNombre.alturas(sobre:en:)`); con `duracion`, también con qué figura suena cada una
+    /// (`OrnamentoConNombre.tocado(sobre:en:duracion:)`).
     public init(
         _ ornamento: OrnamentoConNombre, sobre principal: Altura? = nil, escala: Escala? = nil,
-        en notacion: Notacion
+        duracion: Duracion? = nil, en notacion: Notacion
     ) {
         nombre = ornamento.nombre(en: notacion)
         alias = ornamento.alias(en: notacion)
@@ -132,6 +135,13 @@ public struct OrnamentoPresentado: Hashable, Sendable, Codable {
             alturas = ornamento.alturas(sobre: principal, en: escala)?.map { $0.nombre(en: notacion) }
         } else {
             alturas = nil
+        }
+        if let principal, let escala, let duracion {
+            tocado = ornamento.tocado(sobre: principal, en: escala, duracion: duracion)?.map {
+                Evento($0.altura, $0.duracion).texto(en: notacion)
+            }
+        } else {
+            tocado = nil
         }
         estilos = ornamento.estilos.map { $0.nombre(en: notacion) }
         referencias = ornamento.referencias.map(\.cita)
@@ -143,12 +153,17 @@ public struct OrnamentoPresentado: Hashable, Sendable, Codable {
         pasos.map { $0 > 0 ? "+\($0)" : $0 < 0 ? "−\(-$0)" : "0" }.joined(separator: " ")
     }
 
-    /// La ficha, un dato por fila: los pasos, lo que suena (si se ha pedido), los otros nombres y la época.
+    /// La ficha, un dato por fila: los pasos, lo que suena y con qué figuras (si se ha pedido), los otros nombres y la
+    /// época.
     public func ficha(en notacion: Notacion) -> [DatoPresentado] {
         var datos = [DatoPresentado(nombre: notacion.texto(\.pasosDelOrnamento), valor: textoDeLosPasos)]
         if let alturas {
             datos.append(
                 DatoPresentado(nombre: notacion.texto(\.suenaElOrnamento), valor: alturas.joined(separator: " ")))
+        }
+        if let tocado {
+            datos.append(
+                DatoPresentado(nombre: notacion.texto(\.ritmoDelOrnamento), valor: tocado.joined(separator: " ")))
         }
         return datos + datosDelCatalogo(en: notacion)
     }

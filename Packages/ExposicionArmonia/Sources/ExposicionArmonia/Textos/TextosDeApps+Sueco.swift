@@ -411,6 +411,7 @@ extension TextosDeApps {
         ordenesEnOctavas: "Körer i oktaver",
         pasosDelOrnamento: "Steg",
         suenaElOrnamento: "Låter",
+        ritmoDelOrnamento: "Rytm",
         familiaDelInstrumento: "Familj",
         instrumentosDeCuerda: "Instrument",
         ornamentosConNombre: "Ornament",
