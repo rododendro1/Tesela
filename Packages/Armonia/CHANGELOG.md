@@ -134,6 +134,10 @@
   `shapiro1995` y `beckerFagenMu`.
 - El armonizador lee cada acorde con el que lo sigue al puntuar el paso: una disminuida de nota común antes del I
   ya no cuenta como dominante. Sus costes están juntos y con nombre en `PesosDeArmonizacion`.
+- El armonizador y la realización del coral buscan su mejor camino con una sola función (`MejoresCaminos`, el
+  algoritmo de Viterbi con los k mejores de cada estado), y las dos armonizaciones comparten lo que preparan antes de
+  buscar. El coste de terminar se suma ya antes de quedarse con las mejores sucesiones de cada acorde.
+- La lectura de ABC trocea primero cada línea en sus signos (`SignoABC`) y luego decide qué significa cada uno.
 - La lectura de ABC, MusicXML y MEI saca de su escritor qué articulación es cada decoración, elemento o valor, en
   lugar de repetir la tabla.
 - `RegionDeEscala` está en `Teoria/Catalogo/`, junto a `Lugar`, que la envuelve: no cambia nada por fuera.

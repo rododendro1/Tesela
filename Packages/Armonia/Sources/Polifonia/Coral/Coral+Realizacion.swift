@@ -42,38 +42,19 @@ extension Coral {
         }
         guard opciones.allSatisfy({ !$0.isEmpty }) else { return nil }
 
-        // Viterbi: el menor coste de llegar a cada disposición de cada acorde.
-        var costes = opciones[0].map(\.coste)
-        var previos: [[Int]] = [opciones[0].map { _ in -1 }]
-        for i in 1..<max(1, acordes.count) {
-            var nuevos = [Double](repeating: .infinity, count: opciones[i].count)
-            var desde = [Int](repeating: -1, count: opciones[i].count)
-            for (b, siguiente) in opciones[i].enumerated() {
-                for (a, actual) in opciones[i - 1].enumerated() where costes[a] < .infinity {
-                    guard
-                        let paso = costeDePaso(
-                            de: actual.alturas, a: siguiente.alturas, septima: acordes[i - 1].septima,
-                            sensible: dominantes[i - 1] ? sensible : nil, tonica: tonica,
-                            notaComun: notaComun(de: acordes[i - 1], a: acordes[i]))
-                    else { continue }
-                    let total = costes[a] + paso + siguiente.coste
-                    if total < nuevos[b] {
-                        nuevos[b] = total
-                        desde[b] = a
-                    }
-                }
+        // El camino de disposiciones de menor coste.
+        let mejor = MejoresCaminos.buscar(
+            estados: opciones.map(\.count), inicio: { opciones[0][$0].coste },
+            paso: { i, a, b in
+                costeDePaso(
+                    de: opciones[i - 1][a].alturas, a: opciones[i][b].alturas, septima: acordes[i - 1].septima,
+                    sensible: dominantes[i - 1] ? sensible : nil, tonica: tonica,
+                    notaComun: notaComun(de: acordes[i - 1], a: acordes[i])
+                ).map { $0 + opciones[i][b].coste }
             }
-            costes = nuevos
-            previos.append(desde)
-        }
-        guard var indice = costes.indices.min(by: { costes[$0] < costes[$1] }), costes[indice] < .infinity else {
-            return nil
-        }
-        var resultado: [[Altura]] = []
-        for i in stride(from: acordes.count - 1, through: 0, by: -1) {
-            resultado.insert(opciones[i][indice].alturas, at: 0)
-            indice = previos[i][indice]
-        }
+        ).first
+        guard let camino = mejor else { return nil }
+        let resultado = camino.estados.enumerated().map { opciones[$0.offset][$0.element].alturas }
         return try? Coral(resultado)
     }
 
