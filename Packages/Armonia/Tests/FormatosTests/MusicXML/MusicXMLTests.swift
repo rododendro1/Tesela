@@ -370,8 +370,8 @@ import Testing
     @Test func coralConAnalisis() throws {
         let coral = try Coral(
             leyendo: "Do3 Mi4 Sol4 Do5 | Fa3 Fa4 La4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Reb4 Re4 Mib4 | Do3 Mi4 Sol4 Do5")
-        #expect(leer(coral.partitura().musicXML()).buscar("harmony").isEmpty)
-        let raiz = leer(coral.partitura(conCifrados: true, conAnalisis: true).musicXML())
+        #expect(leer(coral.partitura(conCifrados: false, conAnalisis: false).musicXML()).buscar("harmony").isEmpty)
+        let raiz = leer(coral.partitura().musicXML())
         // Do Re♭ Re Mi♭ no es un acorde conocido: se queda sin cifrar.
         let armonias = raiz.buscar("harmony")
         #expect(armonias.map { $0["root"]?["root-step"]?.texto } == ["C", "F", "G", "C"])
