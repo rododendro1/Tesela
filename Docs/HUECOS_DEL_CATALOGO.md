@@ -217,9 +217,16 @@ Hay 54 acordes genéricos y 22 de nombre propio. Los que faltaban ya están, per
 | Acorde de Elektra | Do♯ Mi♯ Sol♯ + Mi Si | La partitura (Strauss, 1909) | Confirmar la ortografía en la partitura, Kramer (1993) o Abbate (1989) |
 | Acorde de los augures | Fa♭ La♭ Do♭ + Mi♭ Sol Si♭ Re♭ | Taruskin (1996) | Nada |
 | Acorde de la Sinfonía de los salmos | Mi Sol Si Sol | La partitura (Stravinski, 1930) y Austin (1966: 334) | Nada |
-| Acorde alfa de Lendvai | Do Mi♭ Fa♯ La + Do♯ Mi Sol Si♭ | Ninguna | Confirmar en Lendvai (1971) qué notas da |
+| Acorde alfa de Lendvai | Do Mi♭ Fa♯ La + Do♯ Mi Sol Si♭ | Ninguna | Citar una edición: la forma ya se ha visto en Lendvai (ver debajo) |
 
 | Tricordo vienés | Do Re♭ Sol♭ (3-5 de Forte) | DeLone y otros (1975: 348) | Ver la página en el libro |
+
+La forma del alfa se ha podido leer en noviembre de 2026 en «Symmetries of Music», un texto de Lendvai que publican
+en la red la revista VisMath (mi.sanu.ac.rs/vismath/lend) y symmetry-us.com, sin decir de qué edición sale: el alfa
+tiene dos capas, y en el alfa de dominante de la «Música de reclutamiento» de Kodály la de arriba es Si–Sol♯–Fa–Re y
+la de abajo la disminuida Do–Re♯–Fa♯–La. Son dos séptimas disminuidas a un semitono, la de la fundamental y la de
+encima, como el acorde del catálogo (sobre Si: Si Re Fa Sol♯ + Do Re♯ Fa♯ La). Las notas de su ejemplo general
+(el ej. 12) son una imagen que no se puede abrir desde aquí. Falta una edición con año y páginas para citarla.
 
 Los seis últimos de nombre propio son disposiciones del jazz y acordes del siglo XX: el de Kenny Barron y las
 estructuras superiores II, VI y ♭VI citan a Levine (1989, y 1995 las estructuras superiores), y el acorde por quintas y
