@@ -92,53 +92,18 @@ extension Tonalidad {
     /// - Parameter propuestas: cuántas armonizaciones distintas devolver como mucho.
     /// - Returns: vacío si la melodía está vacía o alguna nota no tiene acorde.
     public func armonizar(melodia: [Nota], propuestas: Int = 5) -> [Candidato<Armonizacion>] {
-        guard !melodia.isEmpty, propuestas > 0 else { return [] }
-        let opciones = melodia.map { acordes(para: $0) }
-        guard opciones.allSatisfy({ !$0.isEmpty }) else { return [] }
-        let lecturas = opciones.map { $0.map { analizar($0.valor) } }
-        let enContexto = lecturasEnContexto(opciones)
-        let destinos = Dictionary(
-            inventarioDeArmonizacion.map { ($0.acorde, $0.destino) }, uniquingKeysWith: { a, _ in a })
-        let n = melodia.count
-
+        guard propuestas > 0, let problema = ProblemaDeArmonizacion(melodia, en: self) else { return [] }
+        let opciones = problema.opciones
         // Para cada nota y cada acorde posible, las mejores sucesiones que terminan en él.
-        typealias Camino = (coste: Double, indices: [Int])
-        var caminos: [[Camino]] = opciones[0].indices.map { j in
-            [(opciones[0][j].coste + costeDeInicio(lecturas[0][j]), [j])]
-        }
-        for i in 1..<max(1, n) {
-            var nuevos: [[Camino]] = []
-            for (j, opcion) in opciones[i].enumerated() {
-                var llegadas: [Camino] = []
-                for (k, anteriores) in caminos.enumerated() {
-                    let paso = costeDePaso(
-                        enContexto[i - 1][k][j], lecturas[i][j],
-                        destino: destinos[opciones[i - 1][k].valor] ?? nil,
-                        melodia: (melodia[i - 1], melodia[i]))
-                    for camino in anteriores {
-                        llegadas.append((camino.coste + paso + opcion.coste, camino.indices + [j]))
-                    }
-                }
-                nuevos.append(Array(llegadas.sorted { $0.coste < $1.coste }.prefix(propuestas)))
-            }
-            caminos = nuevos
-        }
-        // El final: la cadencia.
-        var finales: [Camino] = []
-        for (j, terminados) in caminos.enumerated() {
-            for camino in terminados {
-                let penultimo = n > 1 ? enContexto[n - 2][camino.indices[n - 2]][j] : nil
-                let fin = costeDeFinal(
-                    lecturas[n - 1][j], penultimo: penultimo,
-                    destino: n > 1
-                        ? (destinos[opciones[n - 2][camino.indices[n - 2]].valor] ?? nil) : nil, melodia: melodia)
-                finales.append((camino.coste + fin, camino.indices))
-            }
-        }
+        let caminos = MejoresCaminos.buscar(
+            estados: opciones.map(\.count), mejores: propuestas,
+            inicio: { opciones[0][$0].coste + problema.costeDeInicio($0) },
+            paso: { i, k, j in problema.costeDePaso(i, desde: k, hasta: j) + opciones[i][j].coste },
+            final: problema.costeDeFinal)
         var vistas: Set<[Acorde]> = []
         var resultado: [Candidato<Armonizacion>] = []
-        for camino in finales.sorted(by: { $0.coste < $1.coste }) {
-            let acordes = camino.indices.enumerated().map { opciones[$0.offset][$0.element].valor }
+        for camino in caminos {
+            let acordes = problema.acordes(camino.estados)
             guard vistas.insert(acordes).inserted else { continue }
             resultado.append(
                 Candidato(
@@ -163,90 +128,50 @@ extension Tonalidad {
     ///
     /// `nil` si no hay ninguna (por ejemplo, si la melodía se sale de la tesitura del soprano, Do4–Sol5).
     public func armonizarACuatroVoces(_ melodia: [Altura]) -> CoralArmonizado? {
-        guard !melodia.isEmpty else { return nil }
         let notas = melodia.map(\.nota)
-        let opciones = notas.map { acordes(para: $0) }
-        let lecturas = opciones.map { $0.map { analizar($0.valor) } }
-        let enContexto = lecturasEnContexto(opciones)
-        let destinos = Dictionary(
-            inventarioDeArmonizacion.map { ($0.acorde, $0.destino) }, uniquingKeysWith: { a, _ in a })
+        guard let problema = ProblemaDeArmonizacion(notas, en: self) else { return nil }
+        let opciones = problema.opciones
         let sensible = escalaDeReferencia.grado(7)
-        let n = melodia.count
         // Lo que pesan las voces frente a la armonía: un semitono de movimiento vale poco.
         let pesoDeLasVoces = pesos.pesoDeLasVoces
 
         // Los estados: un acorde de los posibles para la nota y una de sus disposiciones.
-        let estados: [[(acorde: Int, alturas: [Altura], coste: Double)]] = (0..<n).map { i in
+        let estados: [[(acorde: Int, alturas: [Altura], coste: Double)]] = melodia.indices.map { i in
             opciones[i].indices.flatMap { j in
                 Coral.disposiciones(de: opciones[i][j].valor, soprano: melodia[i], sensible: sensible)
                     .map { (j, $0.alturas, opciones[i][j].coste + pesoDeLasVoces * $0.coste) }
             }
         }
-        guard estados.allSatisfy({ !$0.isEmpty }) else { return nil }
-
-        var costes = estados[0].map { $0.coste + costeDeInicio(lecturas[0][$0.acorde]) }
-        if n == 1 {
-            costes = zip(costes, estados[0]).map {
-                $0 + costeDeFinal(lecturas[0][$1.acorde], penultimo: nil, destino: nil, melodia: notas)
+        let mejor = MejoresCaminos.buscar(
+            estados: estados.map(\.count),
+            inicio: { estados[0][$0].coste + problema.costeDeInicio(estados[0][$0].acorde) },
+            paso: { i, a, b in
+                let (actual, siguiente) = (estados[i - 1][a], estados[i][b])
+                let anterior = problema.enContexto[i - 1][actual.acorde][siguiente.acorde]
+                guard
+                    let voces = Coral.costeDePaso(
+                        de: actual.alturas, a: siguiente.alturas, septima: anterior.acorde.septima,
+                        sensible: Cadencia.esDominante(anterior) ? sensible : nil, tonica: self.tonica,
+                        notaComun: Coral.notaComun(de: anterior.acorde, a: opciones[i][siguiente.acorde].valor))
+                else { return nil }
+                return siguiente.coste + pesoDeLasVoces * voces
+                    + problema.costeDePaso(i, desde: actual.acorde, hasta: siguiente.acorde)
+            },
+            final: { a, b in
+                problema.costeDeFinal(
+                    a.map { estados[melodia.count - 2][$0].acorde }, estados[melodia.count - 1][b].acorde)
             }
-        }
-        var previos: [[Int]] = [estados[0].map { _ in -1 }]
-        for i in 1..<max(1, n) {
-            var nuevos = [Double](repeating: .infinity, count: estados[i].count)
-            var desde = [Int](repeating: -1, count: estados[i].count)
-            for (b, siguiente) in estados[i].enumerated() {
-                let lectura = lecturas[i][siguiente.acorde]
-                for (a, actual) in estados[i - 1].enumerated() where costes[a] < .infinity {
-                    let anterior = enContexto[i - 1][actual.acorde][siguiente.acorde]
-                    let destino = destinos[opciones[i - 1][actual.acorde].valor] ?? nil
-                    guard
-                        let voces = Coral.costeDePaso(
-                            de: actual.alturas, a: siguiente.alturas, septima: anterior.acorde.septima,
-                            sensible: Cadencia.esDominante(anterior) ? sensible : nil, tonica: tonica,
-                            notaComun: Coral.notaComun(de: anterior.acorde, a: lectura.acorde))
-                    else { continue }
-                    var total =
-                        costes[a] + siguiente.coste + pesoDeLasVoces * voces
-                        + costeDePaso(anterior, lectura, destino: destino, melodia: (notas[i - 1], notas[i]))
-                    if i == n - 1 {
-                        total += costeDeFinal(lectura, penultimo: anterior, destino: destino, melodia: notas)
-                    }
-                    if total < nuevos[b] {
-                        nuevos[b] = total
-                        desde[b] = a
-                    }
-                }
-            }
-            costes = nuevos
-            previos.append(desde)
-        }
-        guard var indice = costes.indices.min(by: { costes[$0] < costes[$1] }), costes[indice] < .infinity else {
-            return nil
-        }
-        var elegidos: [Acorde] = []
-        var voces: [[Altura]] = []
-        for i in stride(from: n - 1, through: 0, by: -1) {
-            let estado = estados[i][indice]
-            elegidos.insert(opciones[i][estado.acorde].valor, at: 0)
-            voces.insert(estado.alturas, at: 0)
-            indice = previos[i][indice]
-        }
-        guard let conduccion = try? Coral(voces) else { return nil }
+        ).first
+        guard let camino = mejor else { return nil }
+        let elegidos = camino.estados.enumerated().map { estados[$0.offset][$0.element] }
+        guard let conduccion = try? Coral(elegidos.map(\.alturas)) else { return nil }
         return CoralArmonizado(
-            armonizacion: Armonizacion(tonalidad: self, melodia: notas, acordes: elegidos), coral: conduccion)
+            armonizacion: Armonizacion(
+                tonalidad: self, melodia: notas, acordes: problema.acordes(elegidos.map(\.acorde))),
+            coral: conduccion)
     }
 
     // MARK: Auxiliares
-
-    /// Cómo se lee cada acorde posible de cada nota antes de cada uno de la nota siguiente
-    /// (`[nota][acorde][siguiente]`): una dominante secundaria lo es si va a su destino, y una séptima disminuida de
-    /// nota común, si adorna al acorde siguiente. Sin el siguiente, Re♯°7 se lee como la sensible del iii; antes del
-    /// Do, como la disminuida que lo adorna.
-    private func lecturasEnContexto(_ opciones: [[Candidato<Acorde>]]) -> [[[AcordeAnalizado]]] {
-        opciones.indices.dropLast().map { i in
-            opciones[i].map { acorde in opciones[i + 1].map { analizar(acorde.valor, siguiente: $0.valor) } }
-        }
-    }
 
     /// Lo que pesa cada cosa (ver ``PesosDeArmonizacion``).
     private var pesos: PesosDeArmonizacion { .habituales }
@@ -298,13 +223,13 @@ extension Tonalidad {
         }
     }
 
-    private func costeDeInicio(_ a: AcordeAnalizado) -> Double {
+    fileprivate func costeDeInicio(_ a: AcordeAnalizado) -> Double {
         if a.grado == 1 && a.categoria == .diatonico { return pesos.inicioEnLaTonica }
         return a.grado == 5 && a.categoria == .diatonico ? pesos.inicioEnLaDominante : pesos.otroInicio
     }
 
     /// Lo que cuesta ir de un acorde al siguiente, según sus funciones.
-    private func costeDePaso(
+    fileprivate func costeDePaso(
         _ a: AcordeAnalizado, _ b: AcordeAnalizado, destino: Int?,
         melodia: (Nota, Nota)
     ) -> Double {
@@ -348,7 +273,7 @@ extension Tonalidad {
 
     /// Lo que cuesta terminar así: lo mejor, una cadencia auténtica; si la última nota no es del
     /// I, una semicadencia.
-    private func costeDeFinal(
+    fileprivate func costeDeFinal(
         _ ultimo: AcordeAnalizado, penultimo: AcordeAnalizado?, destino: Int?,
         melodia: [Nota]
     ) -> Double {
@@ -362,5 +287,66 @@ extension Tonalidad {
             return iTieneLaNota ? pesos.semicadenciaPudiendoIrAlI : pesos.semicadencia
         }
         return pesos.otroFinal
+    }
+}
+
+// MARK: - El problema
+
+/// Lo que comparten las dos armonizaciones antes de buscar: los acordes posibles de cada nota, cómo se lee cada uno
+/// solo y antes de cada acorde de la nota siguiente, y el destino de las dominantes secundarias; y los costes
+/// armónicos de empezar, de cada paso y de terminar, por los índices de esos acordes.
+private struct ProblemaDeArmonizacion {
+    let tonalidad: Tonalidad
+    let melodia: [Nota]
+    /// Los acordes posibles de cada nota, con su coste (``Tonalidad/acordes(para:)``).
+    let opciones: [[Candidato<Acorde>]]
+    /// Cada acorde posible leído solo.
+    let lecturas: [[AcordeAnalizado]]
+    /// Cómo se lee cada acorde posible de cada nota antes de cada uno de la nota siguiente
+    /// (`[nota][acorde][siguiente]`): una dominante secundaria lo es si va a su destino, y una séptima disminuida de
+    /// nota común, si adorna al acorde siguiente. Sin el siguiente, Re♯°7 se lee como la sensible del iii; antes del
+    /// Do, como la disminuida que lo adorna.
+    let enContexto: [[[AcordeAnalizado]]]
+    /// El grado al que tiene que ir cada acorde posible de cada nota, si es una dominante secundaria.
+    let destinos: [[Int?]]
+
+    /// `nil` si la melodía está vacía o alguna nota no tiene acorde.
+    init?(_ melodia: [Nota], en tonalidad: Tonalidad) {
+        let opciones = melodia.map { tonalidad.acordes(para: $0) }
+        guard !melodia.isEmpty, opciones.allSatisfy({ !$0.isEmpty }) else { return nil }
+        let porAcorde = Dictionary(
+            tonalidad.inventarioDeArmonizacion.map { ($0.acorde, $0.destino) }, uniquingKeysWith: { a, _ in a })
+        self.tonalidad = tonalidad
+        self.melodia = melodia
+        self.opciones = opciones
+        lecturas = opciones.map { $0.map { tonalidad.analizar($0.valor) } }
+        enContexto = opciones.indices.dropLast().map { i in
+            opciones[i].map { acorde in opciones[i + 1].map { tonalidad.analizar(acorde.valor, siguiente: $0.valor) } }
+        }
+        destinos = opciones.map { $0.map { porAcorde[$0.valor] ?? nil } }
+    }
+
+    /// Los acordes de unos índices, uno por nota.
+    func acordes(_ indices: [Int]) -> [Acorde] {
+        indices.enumerated().map { opciones[$0.offset][$0.element].valor }
+    }
+
+    /// Lo que cuesta empezar con el acorde `j` de la primera nota.
+    func costeDeInicio(_ j: Int) -> Double { tonalidad.costeDeInicio(lecturas[0][j]) }
+
+    /// Lo que cuesta ir del acorde `k` de la nota `i - 1` al `j` de la nota `i`, según sus funciones.
+    func costeDePaso(_ i: Int, desde k: Int, hasta j: Int) -> Double {
+        tonalidad.costeDePaso(
+            enContexto[i - 1][k][j], lecturas[i][j], destino: destinos[i - 1][k], melodia: (melodia[i - 1], melodia[i]))
+    }
+
+    /// Lo que cuesta terminar en el acorde `j` de la última nota, viniendo del `k` de la penúltima (`nil` si solo hay
+    /// una).
+    func costeDeFinal(_ k: Int?, _ j: Int) -> Double {
+        let n = melodia.count
+        return tonalidad.costeDeFinal(
+            lecturas[n - 1][j], penultimo: k.map { enContexto[n - 2][$0][j] },
+            destino: k.flatMap { destinos[n - 2][$0] },
+            melodia: melodia)
     }
 }
