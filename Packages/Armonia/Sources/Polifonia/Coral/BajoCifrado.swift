@@ -43,8 +43,8 @@ extension Tonalidad {
 
     /// Los acordes de un bajo cifrado escrito como notas del bajo separadas por espacios, cada una con sus cifras
     /// detrás de dos puntos: «Do Fa:6 Sol:7 Do», «La Re:6 Mi:# La». Lanza `ErrorDeLecturaDeTeoria`:
-    /// `.elementos(.textoVacio)` si no hay nada que leer, `.elementos` con el motivo de la nota si una no se lee y el de ``acorde(sobre:cifras:)`` si unas cifras no se
-    /// leen o no forman acorde, en su carácter del texto entero.
+    /// `.elementos(.textoVacio)` si no hay nada que leer, `.elementos` con el motivo de la nota si una no se lee y el
+    /// de ``acorde(sobre:cifras:)`` si unas cifras no se leen o no forman acorde, en su carácter del texto entero.
     ///
     ///     try Tonalidad(.do).acordes(bajoCifrado: "Do Fa Sol:7 Do")         // [Do, Fa, Sol7, Do]
     ///     try Tonalidad(.do).acordes(bajoCifrado: "Do Re:43 Mi:6 Fa Sol")   // [Do, Sol7/Re, Do/Mi, Fa, Sol]
