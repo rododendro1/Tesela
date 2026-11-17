@@ -45,6 +45,15 @@ extension TextosDePolifonia {
         especieConElContrapuntoDebajo: "Art {1}, kontrapunkt under cantus firmus",
         contrapuntoAVariasVoces: "{1}-stämmig kontrapunkt",
         vozDelContrapunto: "stämma {1}",
-        sinFaltas: "Inga fel."
+        sinFaltas: "Inga fel.",
+        realizacionSinNotas: "Det finns inga ackord eller toner att skriva.",
+        realizacionSopranoDeOtraLongitud: "Sopranen ska ha en ton per ackord (toner: {1}; ackord: {2}).",
+        realizacionNotaAjena: "Sopranens ton hör inte till ackord {1}.",
+        realizacionSopranoFueraDeTesitura: "Sopranens ton i ackord {1} ligger utanför dess omfång.",
+        realizacionDemasiadasNotas: "Ackord {1} har fler än fyra toner som inte kan utelämnas.",
+        realizacionSinDisposicion: "Ackord {1} kan inte skrivas fyrstämmigt utan fel.",
+        realizacionNotaSinAcorde: "Inget ackord i tonarten innehåller ton {1} i melodin.",
+        realizacionSinEnlaceSinFaltas: "Ackorden kan inte förbindas fyrstämmigt utan fel.",
+        realizacionOtraMelodia: "Sopranen är inte harmoniseringens melodi."
     )
 }

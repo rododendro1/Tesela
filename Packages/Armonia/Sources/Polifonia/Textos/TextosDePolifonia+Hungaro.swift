@@ -45,6 +45,15 @@ extension TextosDePolifonia {
         especieConElContrapuntoDebajo: "{1}. fajta, ellenpont a cantus firmus alatt",
         contrapuntoAVariasVoces: "{1} szólamú ellenpont",
         vozDelContrapunto: "{1}. szólam",
-        sinFaltas: "Nincs hiba."
+        sinFaltas: "Nincs hiba.",
+        realizacionSinNotas: "Nincsenek leírandó akkordok vagy hangok.",
+        realizacionSopranoDeOtraLongitud: "A szopránnak akkordonként egy hangja kell legyen (hangok: {1}; akkordok: {2}).",
+        realizacionNotaAjena: "A szoprán hangja nem tartozik a(z) {1}. akkordhoz.",
+        realizacionSopranoFueraDeTesitura: "A(z) {1}. akkord szopránhangja kívül esik a hangterjedelmén.",
+        realizacionDemasiadasNotas: "A(z) {1}. akkordnak négynél több elhagyhatatlan hangja van.",
+        realizacionSinDisposicion: "A(z) {1}. akkord nem írható le hibátlanul négy szólamban.",
+        realizacionNotaSinAcorde: "A hangnem egyik akkordja sem tartalmazza a dallam {1}. hangját.",
+        realizacionSinEnlaceSinFaltas: "Az akkordok nem köthetők össze hibátlanul négy szólamban.",
+        realizacionOtraMelodia: "A szoprán nem a harmonizálás dallama."
     )
 }

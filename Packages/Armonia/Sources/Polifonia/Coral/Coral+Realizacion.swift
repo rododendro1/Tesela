@@ -8,7 +8,7 @@ extension Coral {
     /// Escribe los acordes a cuatro voces, con el bajo del cifrado (Sol7/Si lleva Si en el bajo) y
     /// sin ninguna falta de las que comprueba ``faltas``: el resultado siempre ``esCorrecta``.
     ///
-    ///     let coral = Coral.realizar(["Do", "Fa", "Sol7", "Do"])!
+    ///     let coral = try Coral(realizando: ["Do", "Fa", "Sol7", "Do"])
     ///     coral.esCorrecta                // true
     ///     coral.voz(0).map(\.nota)        // [Do, Fa, Sol, Do]
     ///
@@ -26,36 +26,60 @@ extension Coral {
     ///   - soprano: la melodía del soprano, una altura por acorde, si está fijada. Cada nota tiene
     ///     que ser del acorde y estar en la tesitura del soprano (Do4–Sol5).
     ///   - tonalidad: para saber cuál es la sensible; si no se da, la que mejor explique los acordes.
-    /// - Returns: `nil` si no hay acordes, si el soprano no encaja (otro número de notas, una nota
-    ///   ajena al acorde o fuera de tesitura), si un acorde tiene más de cuatro notas obligatorias o si
-    ///   no hay ninguna realización sin faltas.
-    public static func realizar(_ acordes: [Acorde], soprano: [Altura]? = nil, en tonalidad: Tonalidad? = nil) -> Coral?
-    {
-        guard !acordes.isEmpty, soprano.map({ $0.count == acordes.count }) ?? true else { return nil }
+    /// - Throws: ``ErrorDeRealizacion``: si no hay acordes (`sinNotas`), si el soprano no tiene una nota por
+    ///   acorde, si una de sus notas no es del acorde o se sale de su tesitura, si un acorde tiene más de cuatro
+    ///   notas obligatorias o ninguna disposición sin faltas, o si no hay manera de enlazarlos sin faltas.
+    public init(realizando acordes: [Acorde], soprano: [Altura]? = nil, en tonalidad: Tonalidad? = nil) throws {
+        guard !acordes.isEmpty else { throw ErrorDeRealizacion.sinNotas }
+        if let soprano, soprano.count != acordes.count {
+            throw ErrorDeRealizacion.sopranoDeOtraLongitud(notas: soprano.count, acordes: acordes.count)
+        }
         let tonalidad = tonalidad ?? AnalisisArmonico.analizar(acordes)?.tonalidad
         let sensible = tonalidad?.escalaDeReferencia.grado(7)
         let tonica = tonalidad?.tonica
         let dominantes = acordes.map { acorde in tonalidad.map { Cadencia.esDominante($0.analizar(acorde)) } ?? false }
 
         let opciones = acordes.indices.map { i in
-            disposiciones(de: acordes[i], soprano: soprano?[i], sensible: sensible)
+            Coral.disposiciones(de: acordes[i], soprano: soprano?[i], sensible: sensible)
         }
-        guard opciones.allSatisfy({ !$0.isEmpty }) else { return nil }
+        if let i = opciones.firstIndex(where: \.isEmpty) {
+            throw Coral.motivoSinDisposicion(acordes[i], soprano: soprano?[i], acorde: i)
+        }
 
         // El camino de disposiciones de menor coste.
         let mejor = MejoresCaminos.buscar(
             estados: opciones.map(\.count), inicio: { opciones[0][$0].coste },
             paso: { i, a, b in
-                costeDePaso(
+                Coral.costeDePaso(
                     de: opciones[i - 1][a].alturas, a: opciones[i][b].alturas, septima: acordes[i - 1].septima,
                     sensible: dominantes[i - 1] ? sensible : nil, tonica: tonica,
-                    notaComun: notaComun(de: acordes[i - 1], a: acordes[i])
+                    notaComun: Coral.notaComun(de: acordes[i - 1], a: acordes[i])
                 ).map { $0 + opciones[i][b].coste }
             }
         ).first
-        guard let camino = mejor else { return nil }
-        let resultado = camino.estados.enumerated().map { opciones[$0.offset][$0.element].alturas }
-        return try? Coral(resultado)
+        guard let camino = mejor,
+            let coral = try? Coral(camino.estados.enumerated().map { opciones[$0.offset][$0.element].alturas })
+        else { throw ErrorDeRealizacion.sinEnlaceSinFaltas }
+        self = coral
+    }
+
+    /// Los acordes a cuatro voces, o `nil` si no se puede: el nombre de antes de ``init(realizando:soprano:en:)``,
+    /// que dice por qué.
+    @available(*, deprecated, renamed: "init(realizando:soprano:en:)")
+    public static func realizar(_ acordes: [Acorde], soprano: [Altura]? = nil, en tonalidad: Tonalidad? = nil) -> Coral?
+    {
+        try? Coral(realizando: acordes, soprano: soprano, en: tonalidad)
+    }
+
+    /// Por qué un acorde no tiene ninguna disposición a cuatro voces (``disposiciones(de:soprano:sensible:)`` vacía).
+    package static func motivoSinDisposicion(_ acorde: Acorde, soprano: Altura?, acorde i: Int) -> ErrorDeRealizacion {
+        var notas = acorde.notas
+        if !notas.contains(acorde.bajo) { notas.append(acorde.bajo) }
+        let quinta = acorde.quinta.flatMap { $0 == acorde.fundamental + .quintaJusta ? $0 : nil }
+        if notas.filter({ $0 != quinta }).count > 4 { return .demasiadasNotas(acorde: i) }
+        if let soprano, !notas.contains(soprano.nota) { return .notaAjena(acorde: i) }
+        if let soprano, !tesituras[3].contains(soprano.midi) { return .sopranoFueraDeTesitura(acorde: i) }
+        return .sinDisposicion(acorde: i)
     }
 
     // MARK: Auxiliares

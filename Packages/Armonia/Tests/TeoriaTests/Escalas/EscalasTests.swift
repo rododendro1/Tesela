@@ -30,7 +30,7 @@ import Testing
 
     @Test func armonizacionMayor() {
         let e = Escala(.do)
-        #expect(e.armonizar().map { $0?.cifrado } == ["Do", "Rem", "Mim", "Fa", "Sol", "Lam", "Si°"])
+        #expect(e.acordesDeLosGrados().map { $0?.cifrado } == ["Do", "Rem", "Mim", "Fa", "Sol", "Lam", "Si°"])
         #expect(e.romanos().map { $0?.description } == ["I", "ii", "iii", "IV", "V", "vi", "vii°"])
         #expect(
             e.romanos(notas: 4).map { $0?.description } == ["Imaj7", "ii7", "iii7", "IVmaj7", "V7", "vi7", "viiø7"])
@@ -44,7 +44,7 @@ import Testing
         let pentatonica = Escala(.do, .pentatonicaMayor)
         #expect(pentatonica.acorde(grado: 1)?.cifrado == "Do")
         #expect(pentatonica.acorde(grado: 2) == nil) // Re no tiene Fa, ni Sol tiene Si para Mi
-        #expect(pentatonica.armonizar().map { $0?.cifrado } == ["Do", nil, nil, nil, "Lam"])
+        #expect(pentatonica.acordesDeLosGrados().map { $0?.cifrado } == ["Do", nil, nil, nil, "Lam"])
     }
 
     @Test func armonizacionMenor() {
@@ -390,13 +390,13 @@ import Testing
 @Suite struct AcordesDeLosGradosTests {
     @Test func porCuartasYConMasNotas() throws {
         let dorico = Escala(.re, .dorico)
-        #expect(Set(dorico.armonizar(notas: 4, por: .cuartas)[1]?.notas ?? []) == [.mi, .la, .re, .sol])
+        #expect(Set(dorico.acordesDeLosGrados(notas: 4, por: .cuartas)[1]?.notas ?? []) == [.mi, .la, .re, .sol])
         #expect(dorico.acorde(grado: 1, notas: 4, por: .cuartas)?.notas.count == 4)
         let mayor = Escala(.do, .mayor)
         #expect(mayor.acorde(grado: 1, notas: 5)?.notas == [.do, .mi, .sol, .si, .re])
         #expect(mayor.acorde(grado: 5, notas: 5)?.cifrado == "Sol9")
         #expect(mayor.acorde(grado: 1, notas: 8) == nil)
-        #expect(mayor.armonizar() == mayor.armonizar(notas: 3))
+        #expect(mayor.acordesDeLosGrados() == mayor.acordesDeLosGrados(notas: 3))
         // En una pentatónica, por cuartas: Do–Fa no está en la mayor, pero Re–Sol–Do sí.
         #expect(
             Set(Escala(.do, .pentatonicaMayor).acorde(grado: 2, notas: 3, por: .cuartas)?.notas ?? []) == [

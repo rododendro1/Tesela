@@ -39,7 +39,7 @@ public struct TonalidadPresentada: Hashable, Sendable, Codable {
         clases = escala.map(\.claseDeAltura)
         relativa = tonalidad.relativa.nombre(en: notacion)
         homonima = tonalidad.homonima.nombre(en: notacion)
-        acordes = zip(tonalidad.romanos(notas: 4), tonalidad.armonizar(notas: 4)).compactMap {
+        acordes = zip(tonalidad.romanos(notas: 4), tonalidad.acordesDeLosGrados(notas: 4)).compactMap {
             guard let romano = $0, let acorde = $1 else { return nil }
             return EscalaPresentada.AcordeDelGrado(grado: romano.description, cifrado: acorde.cifrado(en: notacion))
         }

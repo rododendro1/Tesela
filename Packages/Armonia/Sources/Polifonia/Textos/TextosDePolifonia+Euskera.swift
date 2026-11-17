@@ -45,6 +45,15 @@ extension TextosDePolifonia {
         especieConElContrapuntoDebajo: "{1}. espeziea, kontrapuntua cantus firmusaren azpian",
         contrapuntoAVariasVoces: "{1} ahotseko kontrapuntua",
         vozDelContrapunto: "{1}. ahotsa",
-        sinFaltas: "Akatsik gabe."
+        sinFaltas: "Akatsik gabe.",
+        realizacionSinNotas: "Ez dago idazteko akorderik ez notarik.",
+        realizacionSopranoDeOtraLongitud: "Sopranoak nota bat izan behar du akorde bakoitzeko (notak: {1}; akordeak: {2}).",
+        realizacionNotaAjena: "Sopranoaren nota ez da {1}. akordekoa.",
+        realizacionSopranoFueraDeTesitura: "{1}. akordeko sopranoaren nota bere tesituratik kanpo dago.",
+        realizacionDemasiadasNotas: "{1}. akordeak falta ezin diren lau nota baino gehiago ditu.",
+        realizacionSinDisposicion: "{1}. akordea ezin da lau ahotsetara akatsik gabe idatzi.",
+        realizacionNotaSinAcorde: "Tonalitateko akorde batek ere ez du melodiaren {1}. nota.",
+        realizacionSinEnlaceSinFaltas: "Akordeak ezin dira lau ahotsetara akatsik gabe lotu.",
+        realizacionOtraMelodia: "Sopranoa ez da harmonizazioaren melodia."
     )
 }

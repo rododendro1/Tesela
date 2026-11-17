@@ -2,6 +2,22 @@
 
 ## Sin publicar
 
+### Cambios incompatibles
+
+Los nombres de antes siguen una versión más, marcados como obsoletos.
+
+- `Tonalidad.armonizar(notas:)` y `Escala.armonizar(notas:por:)` se llaman `acordesDeLosGrados(notas:)` y
+  `acordesDeLosGrados(notas:por:)`: dan el acorde de cada grado, y no se confunden con `armonizar(melodia:)`, que
+  armoniza una melodía.
+- `Tonalidad.armonizarACuatroVoces(_:)` lleva etiqueta, `armonizarACuatroVoces(melodia:)`, como `armonizar(melodia:)`.
+- La realización a cuatro voces dice por qué no se puede, con un `ErrorDeRealizacion` (en los trece idiomas) en lugar
+  de `nil`: `Coral.realizar(_:soprano:en:)` es `Coral(realizando:soprano:en:)`,
+  `Coral.realizar(bajoCifrado:en:soprano:)` es `Coral(bajoCifrado:en:soprano:)`, `Armonizacion.realizar(soprano:)`
+  es `Armonizacion.coral(soprano:)` y `armonizarACuatroVoces(melodia:)` también lanza. Los motivos: no hay acordes,
+  el soprano no tiene una nota por acorde, una nota del soprano no es del acorde o se sale de su tesitura, un acorde
+  tiene más de cuatro notas obligatorias o ninguna disposición, una nota de la melodía no tiene acorde, los acordes no
+  se enlazan sin faltas o el soprano no es la melodía armonizada.
+
 ### Novedades
 
 - Diez acordes con nombre más: los de jazz que faltaban como tipos con nombre (séptima con decimotercera menor,
@@ -12,8 +28,8 @@
   el °(maj7) con la disminuida.
 - La rearmonización propone la séptima disminuida de nota común delante del I y del V mayores de una tonalidad mayor
   (`Rearmonizacion.Recurso.disminuidaDeNotaComun`: Do → Re♯°7 Do).
-- El armonizador del coral (`Tonalidad.armonizarACuatroVoces(_:)`) usa también la séptima disminuida de nota común
-  del I y del V en mayor, sobre la nota común en el bajo (Re♯°7/Do → Do), y `Coral.realizar` deja la nota común
+- El armonizador del coral (`Tonalidad.armonizarACuatroVoces(melodia:)`) usa también la séptima disminuida de nota común
+  del I y del V en mayor, sobre la nota común en el bajo (Re♯°7/Do → Do), y `Coral(realizando:soprano:en:)` deja la nota común
   quieta en su voz.
 - MusicXML escribe el traste como lo numera quien toca («6½» en el dulcémele) en `<other-technical>`, junto al
   `<fret>` en semitonos.

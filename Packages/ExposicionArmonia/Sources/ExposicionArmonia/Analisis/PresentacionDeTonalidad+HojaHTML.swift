@@ -24,7 +24,7 @@ extension PresentacionDeTonalidad {
         if let caracter = Hoja.caracterHTML(tonalidad.caracter, en: notacion) { cuerpo.append(caracter) }
 
         // Los acordes de cada grado: el cifrado romano, el acorde y su función.
-        let acordes = tonalidad.armonizar(notas: 4).compactMap { $0 }
+        let acordes = tonalidad.acordesDeLosGrados(notas: 4).compactMap { $0 }
         let analizados = tonalidad.analizar(acordes).acordes
         let grados = acordes.enumerated().map { i, acorde in
             let funcion = i < analizados.count ? analizados[i].funcion?.nombre(en: notacion) ?? "" : ""

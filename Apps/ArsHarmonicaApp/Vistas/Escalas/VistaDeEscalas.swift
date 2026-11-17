@@ -56,7 +56,7 @@ struct VistaDeEscalas: View {
                     .accessibilityLabel(Text(notacion.texto(\.escalaPropia)))
             }
             notas(de: escala, sonido: sonido)
-            let acordes = escala.armonizar().compactMap { $0 }
+            let acordes = escala.acordesDeLosGrados().compactMap { $0 }
             if !acordes.isEmpty {
                 Section(notacion.texto(\.acordesDeLaEscala)) {
                     Text(acordes.map { $0.cifrado(en: notacion) }.joined(separator: "   "))

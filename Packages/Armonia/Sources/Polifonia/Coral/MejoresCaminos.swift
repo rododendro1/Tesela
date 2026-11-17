@@ -1,6 +1,6 @@
 // La búsqueda de los caminos de menor coste por una sucesión de pasos (el algoritmo de Viterbi, con los k mejores de
 // cada estado): la usan el armonizador (``Tonalidad/armonizar(melodia:propuestas:)`` y
-// ``Tonalidad/armonizarACuatroVoces(_:)``) y la realización del coral (``Coral/realizar(_:soprano:en:)``).
+// ``Tonalidad/armonizarACuatroVoces(melodia:)``) y la realización del coral (``Coral/init(realizando:soprano:en:)``).
 
 /// Los caminos de menor coste que pasan por un estado de cada paso.
 ///

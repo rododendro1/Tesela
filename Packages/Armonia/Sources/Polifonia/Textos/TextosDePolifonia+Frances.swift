@@ -45,6 +45,15 @@ extension TextosDePolifonia {
         especieConElContrapuntoDebajo: "Espèce {1}, contrepoint au-dessous du cantus firmus",
         contrapuntoAVariasVoces: "Contrepoint à {1} voix",
         vozDelContrapunto: "voix {1}",
-        sinFaltas: "Aucune faute."
+        sinFaltas: "Aucune faute.",
+        realizacionSinNotas: "Il n’y a ni accords ni notes à écrire.",
+        realizacionSopranoDeOtraLongitud: "Le soprano doit avoir une note par accord (notes : {1} ; accords : {2}).",
+        realizacionNotaAjena: "La note du soprano n’appartient pas à l’accord {1}.",
+        realizacionSopranoFueraDeTesitura: "La note du soprano de l’accord {1} est hors de sa tessiture.",
+        realizacionDemasiadasNotas: "L’accord {1} a plus de quatre notes qui ne peuvent pas manquer.",
+        realizacionSinDisposicion: "L’accord {1} ne peut pas s’écrire à quatre voix sans fautes.",
+        realizacionNotaSinAcorde: "Aucun accord de la tonalité ne contient la note {1} de la mélodie.",
+        realizacionSinEnlaceSinFaltas: "Les accords ne peuvent pas s’enchaîner à quatre voix sans fautes.",
+        realizacionOtraMelodia: "Le soprano n’est pas la mélodie de l’harmonisation."
     )
 }

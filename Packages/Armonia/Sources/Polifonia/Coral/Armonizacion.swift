@@ -21,13 +21,18 @@ public struct Armonizacion: Hashable, Sendable, CustomStringConvertible {
     /// "I", "V7/V", "vii°6"…
     public var cifrados: [String] { analisis.cifrados }
 
-    /// La armonización a cuatro voces con la melodía en el soprano (ver
-    /// ``Coral/realizar(_:soprano:en:)``). `nil` si la melodía no tiene tantas notas como
-    /// acordes, si sus notas no son las de la propuesta o si no hay realización sin faltas.
-    public func realizar(soprano: [Altura]) -> Coral? {
-        guard soprano.map(\.nota) == melodia else { return nil }
-        return Coral.realizar(acordes, soprano: soprano, en: tonalidad)
+    /// La armonización a cuatro voces con la melodía en el soprano (ver ``Coral/init(realizando:soprano:en:)``).
+    ///
+    /// - Throws: ``ErrorDeRealizacion/otraMelodia`` si las notas del soprano no son las de la melodía, y lo que
+    ///   lanza ``Coral/init(realizando:soprano:en:)`` si no hay realización sin faltas.
+    public func coral(soprano: [Altura]) throws -> Coral {
+        guard soprano.map(\.nota) == melodia else { throw ErrorDeRealizacion.otraMelodia }
+        return try Coral(realizando: acordes, soprano: soprano, en: tonalidad)
     }
+
+    /// Lo mismo, con `nil` si no se puede: el nombre de antes de ``coral(soprano:)``, que dice por qué.
+    @available(*, deprecated, renamed: "coral(soprano:)")
+    public func realizar(soprano: [Altura]) -> Coral? { try? coral(soprano: soprano) }
 
     /// "Do Sol Do (I–V–I)".
     public var description: String { texto(en: .compacta(.espanol)) }
@@ -39,7 +44,7 @@ public struct Armonizacion: Hashable, Sendable, CustomStringConvertible {
 
 // MARK: - Armonizar
 
-/// Una melodía armonizada y escrita a cuatro voces: lo que da ``Tonalidad/armonizarACuatroVoces(_:)``.
+/// Una melodía armonizada y escrita a cuatro voces: lo que da ``Tonalidad/armonizarACuatroVoces(melodia:)``.
 public struct CoralArmonizado: Hashable, Sendable {
     /// Los acordes elegidos para cada nota.
     public let armonizacion: Armonizacion
@@ -116,20 +121,26 @@ extension Tonalidad {
 
     /// Armoniza una melodía y la escribe a cuatro voces, con la melodía en el soprano.
     ///
-    ///     let armonizada = Tonalidad(.do).armonizarACuatroVoces(["Mi4", "Re4", "Do4"])!
+    ///     let armonizada = try Tonalidad(.do).armonizarACuatroVoces(melodia: ["Mi4", "Re4", "Do4"])
     ///     armonizada.armonizacion.cifrados   // ["I", "V", "I"]
     ///     armonizada.coral.esCorrecta        // true
     ///
     /// Elige a la vez los acordes y las disposiciones: entre todas las armonizaciones que se pueden
-    /// realizar sin faltas (con las reglas de ``Coral/realizar(_:soprano:en:)``), la que
+    /// realizar sin faltas (con las reglas de ``Coral/init(realizando:soprano:en:)``), la que
     /// suma menos coste armónico, como en ``armonizar(melodia:propuestas:)``, y, a igualdad, la que
     /// mueve menos las voces. Por eso no siempre es la primera de `armonizar`: si la mejor sucesión
     /// de acordes obliga a una falta con esa melodía, se queda con otra.
     ///
-    /// `nil` si no hay ninguna (por ejemplo, si la melodía se sale de la tesitura del soprano, Do4–Sol5).
-    public func armonizarACuatroVoces(_ melodia: [Altura]) -> CoralArmonizado? {
+    /// - Throws: ``ErrorDeRealizacion``: si la melodía está vacía (`sinNotas`), si una nota no tiene acorde
+    ///   (`notaSinAcorde`), si se sale de la tesitura del soprano, Do4–Sol5 (`sopranoFueraDeTesitura`), si ningún
+    ///   acorde de una nota se puede escribir con ella en el soprano (`sinDisposicion`) o si no hay manera de enlazar
+    ///   los acordes sin faltas (`sinEnlaceSinFaltas`).
+    public func armonizarACuatroVoces(melodia: [Altura]) throws -> CoralArmonizado {
         let notas = melodia.map(\.nota)
-        guard let problema = ProblemaDeArmonizacion(notas, en: self) else { return nil }
+        guard !notas.isEmpty else { throw ErrorDeRealizacion.sinNotas }
+        guard let problema = ProblemaDeArmonizacion(notas, en: self) else {
+            throw ErrorDeRealizacion.notaSinAcorde(nota: notas.firstIndex { acordes(para: $0).isEmpty } ?? 0)
+        }
         let opciones = problema.opciones
         let sensible = escalaDeReferencia.grado(7)
         // Lo que pesan las voces frente a la armonía: un semitono de movimiento vale poco.
@@ -141,6 +152,10 @@ extension Tonalidad {
                 Coral.disposiciones(de: opciones[i][j].valor, soprano: melodia[i], sensible: sensible)
                     .map { (j, $0.alturas, opciones[i][j].coste + pesoDeLasVoces * $0.coste) }
             }
+        }
+        if let i = estados.firstIndex(where: \.isEmpty) {
+            throw Coral.tesituras[3].contains(melodia[i].midi)
+                ? ErrorDeRealizacion.sinDisposicion(acorde: i) : ErrorDeRealizacion.sopranoFueraDeTesitura(acorde: i)
         }
         let mejor = MejoresCaminos.buscar(
             estados: estados.map(\.count),
@@ -162,13 +177,19 @@ extension Tonalidad {
                     a.map { estados[melodia.count - 2][$0].acorde }, estados[melodia.count - 1][b].acorde)
             }
         ).first
-        guard let camino = mejor else { return nil }
+        guard let camino = mejor else { throw ErrorDeRealizacion.sinEnlaceSinFaltas }
         let elegidos = camino.estados.enumerated().map { estados[$0.offset][$0.element] }
-        guard let conduccion = try? Coral(elegidos.map(\.alturas)) else { return nil }
+        guard let conduccion = try? Coral(elegidos.map(\.alturas)) else { throw ErrorDeRealizacion.sinEnlaceSinFaltas }
         return CoralArmonizado(
             armonizacion: Armonizacion(
                 tonalidad: self, melodia: notas, acordes: problema.acordes(elegidos.map(\.acorde))),
             coral: conduccion)
+    }
+
+    /// Lo mismo, con `nil` si no se puede: el nombre de antes de ``armonizarACuatroVoces(melodia:)``, que dice por qué.
+    @available(*, deprecated, renamed: "armonizarACuatroVoces(melodia:)")
+    public func armonizarACuatroVoces(_ melodia: [Altura]) -> CoralArmonizado? {
+        try? armonizarACuatroVoces(melodia: melodia)
     }
 
     // MARK: Auxiliares

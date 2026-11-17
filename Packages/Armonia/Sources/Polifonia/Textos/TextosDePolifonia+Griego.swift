@@ -45,6 +45,15 @@ extension TextosDePolifonia {
         especieConElContrapuntoDebajo: "Είδος {1}, αντίστιξη κάτω από το cantus firmus",
         contrapuntoAVariasVoces: "Αντίστιξη {1} φωνών",
         vozDelContrapunto: "φωνή {1}",
-        sinFaltas: "Χωρίς λάθη."
+        sinFaltas: "Χωρίς λάθη.",
+        realizacionSinNotas: "Δεν υπάρχουν συγχορδίες ούτε νότες για γράψιμο.",
+        realizacionSopranoDeOtraLongitud: "Η σοπράνο πρέπει να έχει μία νότα ανά συγχορδία (νότες: {1}· συγχορδίες: {2}).",
+        realizacionNotaAjena: "Η νότα της σοπράνο δεν ανήκει στη συγχορδία {1}.",
+        realizacionSopranoFueraDeTesitura: "Η νότα της σοπράνο στη συγχορδία {1} είναι εκτός της έκτασής της.",
+        realizacionDemasiadasNotas: "Η συγχορδία {1} έχει περισσότερες από τέσσερις νότες που δεν μπορούν να λείπουν.",
+        realizacionSinDisposicion: "Η συγχορδία {1} δεν γράφεται σε τέσσερις φωνές χωρίς λάθη.",
+        realizacionNotaSinAcorde: "Καμία συγχορδία της τονικότητας δεν περιέχει τη νότα {1} της μελωδίας.",
+        realizacionSinEnlaceSinFaltas: "Οι συγχορδίες δεν συνδέονται σε τέσσερις φωνές χωρίς λάθη.",
+        realizacionOtraMelodia: "Η σοπράνο δεν είναι η μελωδία της εναρμόνισης."
     )
 }

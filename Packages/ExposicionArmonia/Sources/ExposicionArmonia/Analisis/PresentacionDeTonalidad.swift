@@ -80,7 +80,7 @@ public enum PresentacionDeTonalidad {
             y += 32
         }
         seccion(notacion.texto(\.acordesDeLaEscala))
-        let acordes = tonalidad.armonizar(notas: 4).compactMap { $0 }
+        let acordes = tonalidad.acordesDeLosGrados(notas: 4).compactMap { $0 }
         let analizados = tonalidad.analizar(acordes).acordes
         let columna = util / Double(max(acordes.count, 1))
         for (i, acorde) in acordes.enumerated() {

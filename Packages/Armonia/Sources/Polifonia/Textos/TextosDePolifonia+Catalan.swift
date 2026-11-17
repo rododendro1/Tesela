@@ -45,6 +45,15 @@ extension TextosDePolifonia {
         especieConElContrapuntoDebajo: "Espècie {1}, amb el contrapunt sota el cantus firmus",
         contrapuntoAVariasVoces: "Contrapunt a {1} veus",
         vozDelContrapunto: "veu {1}",
-        sinFaltas: "Sense faltes."
+        sinFaltas: "Sense faltes.",
+        realizacionSinNotas: "No hi ha acords ni notes per escriure.",
+        realizacionSopranoDeOtraLongitud: "El soprano ha de tenir una nota per acord (notes: {1}; acords: {2}).",
+        realizacionNotaAjena: "La nota del soprano no és de l’acord {1}.",
+        realizacionSopranoFueraDeTesitura: "La nota del soprano de l’acord {1} és fora de la seva tessitura.",
+        realizacionDemasiadasNotas: "L’acord {1} té més de quatre notes que no poden faltar.",
+        realizacionSinDisposicion: "L’acord {1} no es pot escriure a quatre veus sense errors.",
+        realizacionNotaSinAcorde: "Cap acord de la tonalitat no té la nota {1} de la melodia.",
+        realizacionSinEnlaceSinFaltas: "Els acords no es poden enllaçar a quatre veus sense errors.",
+        realizacionOtraMelodia: "El soprano no és la melodia de l’harmonització."
     )
 }

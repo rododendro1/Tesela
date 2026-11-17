@@ -194,17 +194,29 @@ extension Tonalidad {
 
 extension Coral {
     /// Realiza un bajo cifrado a cuatro voces (ver ``Tonalidad/acordes(bajoCifrado:)`` y
-    /// ``realizar(_:soprano:en:)``): el bajo lleva las notas dadas, en la octava que mejor conduzca las voces.
-    /// Lanza como ``Tonalidad/acordes(bajoCifrado:)`` si el bajo cifrado no se puede leer, y da `nil` si se lee pero
-    /// no hay realización sin faltas.
+    /// ``init(realizando:soprano:en:)``): el bajo lleva las notas dadas, en la octava que mejor conduzca las voces.
     ///
-    ///     let coral = try Coral.realizar(bajoCifrado: "Do La:6 Sol:7 Do", en: Tonalidad(.do))!
+    ///     let coral = try Coral(bajoCifrado: "Do La:6 Sol:7 Do", en: Tonalidad(.do))
     ///     coral.voz(0).map(\.nota)   // [Do, La, Sol, Do]
     ///     coral.esCorrecta           // true
+    ///
+    /// - Throws: lo que lanza ``Tonalidad/acordes(bajoCifrado:)`` si el bajo cifrado no se puede leer, y un
+    ///   ``ErrorDeRealizacion`` si se lee pero no hay realización sin faltas.
+    public init(bajoCifrado: String, en tonalidad: Tonalidad, soprano: [Altura]? = nil) throws {
+        let acordes = try tonalidad.acordes(bajoCifrado: bajoCifrado)
+        try self.init(realizando: acordes, soprano: soprano, en: tonalidad)
+    }
+
+    /// Lo mismo, con `nil` si no hay realización sin faltas: el nombre de antes de
+    /// ``init(bajoCifrado:en:soprano:)``, que dice por qué.
+    @available(*, deprecated, renamed: "init(bajoCifrado:en:soprano:)")
     public static func realizar(bajoCifrado: String, en tonalidad: Tonalidad, soprano: [Altura]? = nil) throws
         -> Coral?
     {
-        let acordes = try tonalidad.acordes(bajoCifrado: bajoCifrado)
-        return realizar(acordes, soprano: soprano, en: tonalidad)
+        do {
+            return try Coral(bajoCifrado: bajoCifrado, en: tonalidad, soprano: soprano)
+        } catch is ErrorDeRealizacion {
+            return nil
+        }
     }
 }

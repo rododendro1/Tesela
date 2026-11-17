@@ -555,7 +555,7 @@ de más tensiones. Sobre Domaj7 en lidio, Re mayor: la 9, la ♯11 y la 13.
 En una escala que cambia al bajar, ``Escala/acordesQueCaben(grado:sentido:)`` mira solo un sentido, la subida por
 defecto: La menor melódica clásica no tiene Domaj7(♯11).
 
-``Escala/armonizar(notas:por:)`` apila de 2 a 7 notas sobre cada grado, por terceras (los de 9.ª, 11.ª y 13.ª) o por
+``Escala/acordesDeLosGrados(notas:por:)`` apila de 2 a 7 notas sobre cada grado, por terceras (los de 9.ª, 11.ª y 13.ª) o por
 cuartas (``Escala/Apilamiento``: Mi–La–Re–Sol en Re dórico, la base del acorde de *So What*). Fuera de las
 heptatónicas, cada nota es la siguiente de la escala que está a una 3.ª (o a una 4.ª) de la anterior, por su nombre,
 así que Do blues da Dom7 en el 1.º grado y no Dosus4, y un grado sin esa 3.ª no da acorde.

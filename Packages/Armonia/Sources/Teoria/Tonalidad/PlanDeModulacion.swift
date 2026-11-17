@@ -45,8 +45,8 @@ public struct PlanDeModulacion: Hashable, Sendable, CustomStringConvertible {
 extension Tonalidad {
     /// Maneras de modular de esta tonalidad a otra, de la más suave a la más brusca:
     ///
-    /// 1. Por cada **acorde común** a las dos tonalidades (las tríadas de ``armonizar(notas:)``), primero los que
-    ///    en la nueva son ii o IV (preparan su dominante), luego vi y iii. No sirven la tónica de la partida, ni la
+    /// 1. Por cada **acorde común** a las dos tonalidades (las tríadas de ``acordesDeLosGrados(notas:)``), primero los
+    ///    que en la nueva son ii o IV (preparan su dominante), luego vi y iii. No sirven la tónica de la partida, ni la
     ///    tónica o la dominante de la llegada, ni las tríadas disminuidas.
     /// 2. Por una **séptima disminuida enarmónica**: el vii°7 de la tonalidad de partida o de uno de sus grados
     ///    (vii°7/ii, vii°7/V…) que suena igual que el vii°7 de la nueva, escrito de otra forma.

@@ -13,8 +13,8 @@ public struct TensionesDelGradoPresentadas: Hashable, Sendable, Codable {
     public let tensiones: [String]
 }
 
-/// El acorde por cuartas de un grado (`Escala.armonizar(notas:por:)`): sus notas en el orden en que se apilan y su
-/// cifrado, si forman un tipo conocido.
+/// El acorde por cuartas de un grado (`Escala.acordesDeLosGrados(notas:por:)`): sus notas en el orden en que se apilan
+/// y su cifrado, si forman un tipo conocido.
 public struct AcordePorCuartasPresentado: Hashable, Sendable, Codable {
     /// Del 1 en adelante.
     public let grado: Int
@@ -61,7 +61,7 @@ extension PresentacionDeEstudioDeEscala {
     ///         de: Escala(.re, .dorico), en: .compacta(.espanol))
     ///     grados[1].notas   // ["Mi", "La", "Re", "Sol"]
     public static func acordesPorCuartas(de escala: Escala, en notacion: Notacion) -> [AcordePorCuartasPresentado] {
-        escala.armonizar(notas: 4, por: .cuartas).enumerated().map { i, acorde in
+        escala.acordesDeLosGrados(notas: 4, por: .cuartas).enumerated().map { i, acorde in
             AcordePorCuartasPresentado(
                 grado: i + 1,
                 notas: (escala.notasApiladas(grado: i + 1, notas: 4, por: .cuartas) ?? []).map {
