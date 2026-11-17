@@ -31,28 +31,24 @@ public enum PresentacionDeModulaciones {
         let planes =
             destino.map { tonalidad.modulaciones(hasta: $0) }
             ?? tonalidad.vecinas.compactMap { tonalidad.modulaciones(hasta: $0).first }
-        return planes.map { presentar($0, en: notacion) }
+        return planes.map { ModulacionPresentada($0, en: notacion) }
     }
 
-    /// Lo que da ``ModulacionPresentada/init(_:en:)``.
-    static func presentar(_ plan: PlanDeModulacion, en notacion: Notacion) -> ModulacionPresentada {
+}
+
+extension ModulacionPresentada {
+    /// Un plan de modulación, escrito en la notación.
+    public init(_ plan: PlanDeModulacion, en notacion: Notacion) {
         let tecnica =
             switch plan.tecnica {
             case .acordeComun: notacion.texto(\.modulacionPorAcordeComun)
             case .disminuidaEnarmonica: notacion.texto(\.modulacionPorDisminuida)
             case .directa: notacion.texto(\.modulacionDirecta)
             }
-        return ModulacionPresentada(
+        self.init(
             plan: plan, destino: plan.hasta.nombre(en: notacion), tecnica: tecnica,
             pivote: plan.pivote?.descripcion(en: notacion),
             acordes: plan.acordes.map { $0.cifrado(en: notacion) }.joined(separator: " "),
             sonido: Escucha.acordes(plan.acordes).conTonica(plan.desde.tonica))
-    }
-}
-
-extension ModulacionPresentada {
-    /// Un plan de modulación, escrito en la notación.
-    public init(_ plan: PlanDeModulacion, en notacion: Notacion) {
-        self = PresentacionDeModulaciones.presentar(plan, en: notacion)
     }
 }

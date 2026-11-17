@@ -10,16 +10,6 @@ public struct ArpegioPresentado: Hashable, Sendable {
 
 /// La parte de los arpegios de las apps que no es dibujo. No usa SwiftUI, así que se prueba en Linux.
 public enum PresentacionDeArpegios {
-    /// Lo que da ``ArpegioPresentado/init(_:figura:tempo:swing:en:)``.
-    static func arpegio(
-        _ arpegio: Arpegio, figura: Duracion = .corchea, tempo: Tempo? = nil, swing: Bool = false,
-        en notacion: Notacion
-    ) -> ArpegioPresentado {
-        let voz = Voz(arpegio, figura: figura, octava: 4)
-        return presentar(
-            voz, nombre: arpegio.nombre(en: notacion), tonalidad: nil, tempo: tempo, swing: swing,
-            tonica: arpegio.acorde.fundamental)
-    }
 
     /// Una progresión arpegiada en corcheas (o en la figura que se diga): cada acorde dura una blanca o, si se da
     /// su ritmo armónico (el de una pieza importada, con estos mismos acordes), lo que dice; el patrón se repite
@@ -74,6 +64,9 @@ extension ArpegioPresentado {
     public init(
         _ arpegio: Arpegio, figura: Duracion = .corchea, tempo: Tempo? = nil, swing: Bool = false, en notacion: Notacion
     ) {
-        self = PresentacionDeArpegios.arpegio(arpegio, figura: figura, tempo: tempo, swing: swing, en: notacion)
+        let voz = Voz(arpegio, figura: figura, octava: 4)
+        self = PresentacionDeArpegios.presentar(
+            voz, nombre: arpegio.nombre(en: notacion), tonalidad: nil, tempo: tempo, swing: swing,
+            tonica: arpegio.acorde.fundamental)
     }
 }

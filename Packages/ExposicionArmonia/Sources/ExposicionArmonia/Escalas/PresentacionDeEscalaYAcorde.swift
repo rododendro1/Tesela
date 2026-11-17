@@ -44,51 +44,14 @@ public struct AcordesDelGrado: Hashable, Sendable {
 ///     dorico.tensiones   // "Mi 9 · Sol 11 · Si 13"
 ///     dorico.modo        // "modo 2 de Do mayor"
 public enum PresentacionDeEscalaYAcorde {
-    /// Lo que da ``EscalaSobreAcordePresentada/init(_:sobre:en:motivo:)``.
-    static func presentar(
-        _ escala: Escala, sobre acorde: Acorde, en notacion: Notacion, motivo: String? = nil
-    ) -> EscalaSobreAcordePresentada {
-        let notas = escala.notas(sobre: acorde)
-        func lista(_ papeles: Set<PapelEnLaEscala>?) -> String {
-            notas.filter { papeles?.contains($0.papel) ?? true }
-                .map { "\($0.nota.nombre(en: notacion)) \($0.cifra)" }
-                .joined(separator: " · ")
-        }
-        let tensiones = lista([.tension])
-        let aEvitar = lista([.aEvitar, .choque])
-        var partes: [(etiqueta: String, valor: String)] = []
-        if !tensiones.isEmpty { partes.append((notacion.texto(\.tensiones), tensiones)) }
-        if !aEvitar.isEmpty { partes.append((notacion.texto(\.notasAEvitar), aEvitar)) }
-        return EscalaSobreAcordePresentada(
-            escala: escala,
-            nombre: escala.nombre(en: notacion),
-            motivo: motivo,
-            modo: modo(de: escala, en: notacion),
-            notas: lista(nil),
-            tensiones: tensiones,
-            aEvitar: aEvitar,
-            resumen: partes.map { $0.etiqueta + ": " + $0.valor }.joined(separator: " — "),
-            resumenEnLinea: partes.map { notacion.etiqueta($0.etiqueta) + ": " + $0.valor }.joined(separator: " — "),
-            estructurasSuperiores: escala.estructurasSuperiores(sobre: acorde).map { $0.cifrado(en: notacion) }
-                .joined(separator: " · "))
-    }
 
-    /// Lo que da ``EscalaSobreAcordePresentada/init(_:sobre:en:)``.
-    static func presentar(
-        _ propuesta: EscalaParaElAcorde, sobre acorde: Acorde, en notacion: Notacion
-    ) -> EscalaSobreAcordePresentada {
-        let motivo = propuesta.motivo == .compatible ? nil : propuesta.motivo.nombre(en: notacion)
-        // Las del bajo se leen sobre el acorde que forma el bajo.
-        let sobre = propuesta.motivo == .delBajo ? acorde.acordeSobreElBajo ?? acorde : acorde
-        return presentar(propuesta.escala, sobre: sobre, en: notacion, motivo: motivo)
-    }
 
     /// Las escalas para el acorde, en la tonalidad si se da, presentadas con su motivo: las de la hoja del acorde,
     /// de la vista de acordes y de `armonia acorde --escalas`.
     public static func escalas(
         de acorde: Acorde, en tonalidad: Tonalidad? = nil, notacion: Notacion
     ) -> [EscalaSobreAcordePresentada] {
-        acorde.escalas(en: tonalidad).map { presentar($0, sobre: acorde, en: notacion) }
+        acorde.escalas(en: tonalidad).map { EscalaSobreAcordePresentada($0, sobre: acorde, en: notacion) }
     }
 
     /// El nombre con su motivo: «Do mixolidio (del cifrado)».
@@ -117,7 +80,7 @@ public enum PresentacionDeEscalaYAcorde {
     public static func escala(
         de analizado: AcordeAnalizado, en tonalidad: Tonalidad, notacion: Notacion
     ) -> EscalaSobreAcordePresentada? {
-        tonalidad.escalaDelAcorde(analizado).map { presentar($0, sobre: analizado.acorde, en: notacion) }
+        tonalidad.escalaDelAcorde(analizado).map { EscalaSobreAcordePresentada($0, sobre: analizado.acorde, en: notacion) }
     }
 }
 
@@ -125,13 +88,38 @@ extension EscalaSobreAcordePresentada {
     /// Una escala propuesta para el acorde (``Acorde/escalas(en:siguiente:entre:)``), con su motivo si no es solo
     /// compatible.
     public init(_ propuesta: EscalaParaElAcorde, sobre acorde: Acorde, en notacion: Notacion) {
-        self = PresentacionDeEscalaYAcorde.presentar(propuesta, sobre: acorde, en: notacion)
+        let motivo = propuesta.motivo == .compatible ? nil : propuesta.motivo.nombre(en: notacion)
+        // Las del bajo se leen sobre el acorde que forma el bajo.
+        let sobre = propuesta.motivo == .delBajo ? acorde.acordeSobreElBajo ?? acorde : acorde
+        self.init(propuesta.escala, sobre: sobre, en: notacion, motivo: motivo)
     }
 }
 
 extension EscalaSobreAcordePresentada {
     /// La escala sobre el acorde, escrita en la notación: sus notas, las del acorde y las que evitar.
     public init(_ escala: Escala, sobre acorde: Acorde, en notacion: Notacion, motivo: String? = nil) {
-        self = PresentacionDeEscalaYAcorde.presentar(escala, sobre: acorde, en: notacion, motivo: motivo)
+        let notas = escala.notas(sobre: acorde)
+        func lista(_ papeles: Set<PapelEnLaEscala>?) -> String {
+            notas.filter { papeles?.contains($0.papel) ?? true }
+                .map { "\($0.nota.nombre(en: notacion)) \($0.cifra)" }
+                .joined(separator: " · ")
+        }
+        let tensiones = lista([.tension])
+        let aEvitar = lista([.aEvitar, .choque])
+        var partes: [(etiqueta: String, valor: String)] = []
+        if !tensiones.isEmpty { partes.append((notacion.texto(\.tensiones), tensiones)) }
+        if !aEvitar.isEmpty { partes.append((notacion.texto(\.notasAEvitar), aEvitar)) }
+        self.init(
+            escala: escala,
+            nombre: escala.nombre(en: notacion),
+            motivo: motivo,
+            modo: PresentacionDeEscalaYAcorde.modo(de: escala, en: notacion),
+            notas: lista(nil),
+            tensiones: tensiones,
+            aEvitar: aEvitar,
+            resumen: partes.map { $0.etiqueta + ": " + $0.valor }.joined(separator: " — "),
+            resumenEnLinea: partes.map { notacion.etiqueta($0.etiqueta) + ": " + $0.valor }.joined(separator: " — "),
+            estructurasSuperiores: escala.estructurasSuperiores(sobre: acorde).map { $0.cifrado(en: notacion) }
+                .joined(separator: " · "))
     }
 }

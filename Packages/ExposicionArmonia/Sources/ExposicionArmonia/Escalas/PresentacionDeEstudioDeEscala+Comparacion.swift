@@ -24,7 +24,7 @@ extension PresentacionDeEstudioDeEscala {
         let ancho = anchoDeLaHoja
         let margen = margenDeLaHoja
         let util = ancho - 2 * margen
-        let datos = comparar(escala, con: otra, en: notacion)
+        let datos = ComparacionDeEscalasPresentada(escala, con: otra, en: notacion)
         let comparacion = datos.relacion
         let nombre = escala.nombre(en: notacion)
         let nombreDeLaOtra = otra.nombre(en: notacion)

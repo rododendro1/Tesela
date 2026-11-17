@@ -81,10 +81,12 @@ extension PresentacionDeEstudioDeEscala {
 
     // MARK: Las doce tonalidades
 
-    /// Lo que da ``HojaDeEstudioPresentada/init(_:secuencia:en:)``.
-    static func enLasDoceTonalidades(
-        _ escala: Escala, secuencia: SecuenciaDeEscala? = nil, en notacion: Notacion
-    ) -> HojaDeEstudioPresentada {
+}
+
+extension HojaDeEstudioPresentada {
+    /// La escala (o una secuencia de ella) en las doce tonalidades, de quinta en quinta desde la suya, en corcheas:
+    /// las que empiezan de Do a Fa♯ desde la octava 4; las demás, desde la 3, para no subir demasiado.
+    public init(_ escala: Escala, secuencia: SecuenciaDeEscala? = nil, en notacion: Notacion) {
         var titulo = escala.nombre(en: notacion)
         if let secuencia { titulo += " " + secuencia.nombre(en: notacion) }
         titulo += " · " + notacion.texto(\.enLasDoceTonalidades)
@@ -104,15 +106,7 @@ extension PresentacionDeEstudioDeEscala {
         let presentado = PresentacionDeArpegios.presentar(
             Voz(todas.map { Evento($0, .corchea) }), nombre: titulo, tonalidad: nil, tempo: nil, swing: false,
             tonica: escala.tonica)
-        return HojaDeEstudioPresentada(
+        self.init(
             titulo: titulo, tonalidades: tonalidades, sonido: presentado.sonido, ficheros: presentado.ficheros)
-    }
-}
-
-extension HojaDeEstudioPresentada {
-    /// La escala (o una secuencia de ella) en las doce tonalidades, de quinta en quinta desde la suya, en corcheas:
-    /// las que empiezan de Do a Fa♯ desde la octava 4; las demás, desde la 3, para no subir demasiado.
-    public init(_ escala: Escala, secuencia: SecuenciaDeEscala? = nil, en notacion: Notacion) {
-        self = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(escala, secuencia: secuencia, en: notacion)
     }
 }
