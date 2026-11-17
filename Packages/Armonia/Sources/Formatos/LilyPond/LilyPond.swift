@@ -100,7 +100,8 @@ package struct EscritorLilyPond: EscritorDeTexto {
         }
     }
 
-    /// Las articulaciones y la dinámica detrás de la nota: `-.` (staccato), `->` (acento), `\fermata`, `\mf`…
+    /// Las articulaciones y la dinámica detrás de la nota: `-.` (staccato), `->` (acento), `\fermata`, `\mf`… El
+    /// Schleifer, que LilyPond no tiene, va como texto encima (`^"Schleifer"`).
     package static func expresion(_ evento: Evento) -> String {
         let articulaciones = evento.articulaciones.map { articulacion -> String in
             switch articulacion {
@@ -115,7 +116,7 @@ package struct EscritorLilyPond: EscritorDeTexto {
             case .mordenteInferior: return "\\mordent"
             case .grupeto: return "\\turn"
             case .grupetoInvertido: return "\\reverseturn"
-            case .schleifer: return ""
+            case .schleifer: return "^\"\(articulacion.rotuloSinSigno!)\""
             case .trinoConTerminacion: return "\\prallmordent"
             }
         }

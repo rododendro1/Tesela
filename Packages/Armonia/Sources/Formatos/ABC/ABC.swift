@@ -10,7 +10,8 @@ import Teoria
 // así que se calculan las que hay que escribir. Las notas unidas por barras van juntas, sin espacios.
 //
 // Los cifrados van como texto encima de la nota en que empieza cada acorde (`"^Do7"`) y el análisis, debajo
-// (`"_V7"`): como texto, y no como acordes de ABC, para que se escriban en cualquier notación.
+// (`"_V7"`): como texto, y no como acordes de ABC, para que se escriban en cualquier notación. El Schleifer y el
+// trino con terminación, que ABC no tiene, también van como texto encima de su nota (`"^Schleifer"`).
 
 // MARK: - Escritor ABC
 
@@ -123,7 +124,7 @@ package struct EscritorABC: EscritorDeTexto {
 
     /// La nota en la octava: Do4 → `C`, Do5 → `c`, Do6 → `c'`, Do3 → `C,`.
     /// La dinámica y las articulaciones como decoraciones delante de la nota: `!mf!`, `.` (staccato), `!>!`
-    /// (acento), `!fermata!`…
+    /// (acento), `!fermata!`… y `"^Schleifer"`, como texto, los ornamentos que no tienen decoración.
     package static func decoraciones(_ evento: Evento) -> String {
         let articulaciones = evento.articulaciones.map { articulacion -> String in
             switch articulacion {
@@ -138,7 +139,7 @@ package struct EscritorABC: EscritorDeTexto {
             case .mordenteInferior: return "!lowermordent!"
             case .grupeto: return "!turn!"
             case .grupetoInvertido: return "!invertedturn!"
-            case .schleifer, .trinoConTerminacion: return ""
+            case .schleifer, .trinoConTerminacion: return "\"^\(articulacion.rotuloSinSigno!)\""
             }
         }
         return (evento.dinamica.map { "!\($0.rawValue)!" } ?? "") + articulaciones.joined()

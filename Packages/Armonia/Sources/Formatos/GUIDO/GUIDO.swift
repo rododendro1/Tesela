@@ -108,7 +108,8 @@ package struct EscritorGUIDO: EscritorDeTexto {
     }
 
     /// Un evento con sus articulaciones, cada una una etiqueta que lo envuelve (`\stacc(c1/4)`), y su dinámica
-    /// delante (`\intens<"mf"> c1/4`).
+    /// delante (`\intens<"mf"> c1/4`). El Schleifer y el trino con terminación, que GUIDO no tiene, van como texto
+    /// encima (`\text<"Schleifer">(c1/4)`).
     package static func conExpresion(_ texto: String, _ evento: Evento) -> String {
         var texto = texto
         for articulacion in evento.articulaciones {
@@ -125,7 +126,7 @@ package struct EscritorGUIDO: EscritorDeTexto {
             case .mordenteInferior: etiqueta = "\\mord<inverted=\"true\">"
             case .grupeto: etiqueta = "\\turn"
             case .grupetoInvertido: etiqueta = "\\turn<inverted=\"true\">"
-            case .schleifer, .trinoConTerminacion: continue
+            case .schleifer, .trinoConTerminacion: etiqueta = "\\text<\"\(articulacion.rotuloSinSigno!)\">"
             }
             texto = etiqueta + "(" + texto + ")"
         }

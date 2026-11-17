@@ -17,8 +17,8 @@ import Teoria
 // como suenan. Las notas de adorno (`grace`) van aparte, sin duración. Las repeticiones (`left` y `right` de
 // `<measure>`: `rptstart`, `rptend`, `rptboth`), las casillas (`<ending>`) y los saltos (`<repeatMark>` y los textos
 // de `<dir>`: «D.C.», «D.S.», «Fine», «To Coda») se despliegan. Del principio: el título, la armadura, el compás y el
-// tempo (`midi.bpm`). De cada nota o acorde, sus articulaciones (`artic`, `<artic>`, `fermata`) y su dinámica
-// (`<dynam>` con `startid`).
+// tempo (`midi.bpm`). De cada nota o acorde, sus articulaciones (`artic`, `<artic>`, `fermata`, `ornam` y los
+// `<ornam>` con un glifo de SMuFL) y su dinámica (`<dynam>` con `startid`).
 
 extension PiezaImportada {
     /// Lee una partitura MEI.
@@ -231,6 +231,18 @@ final class LectorMEI: LectorDeElementosXML {
                 acorde?.articulaciones += suyas
             } else if padre == "note" {
                 if acorde != nil { nota.articulaciones += suyas } else { evento.articulaciones += suyas }
+            }
+        case "ornam":
+            // Un ornamento por su glifo de SMuFL (el Schleifer, el trino con terminación), para las notas de su
+            // `startid`, que ya se han leído.
+            let inicio = atributos["startid"].map { $0.hasPrefix("#") ? String($0.dropFirst()) : $0 } ?? ""
+            if let ornamento = Articulacion.allCases.first(where: { articulacion in
+                guard let glifo = articulacion.glifoSMuFL else { return false }
+                return atributos["glyph.name"] == glifo.nombre || atributos["glyph.num"] == glifo.codigo
+            }) {
+                for i in notasPorId[inicio] ?? [] {
+                    notas[i] = notas[i].con(articulaciones: notas[i].articulaciones + [ornamento])
+                }
             }
         case "dynam":
             inicioDeLaDinamica = atributos["startid"].map { $0.hasPrefix("#") ? String($0.dropFirst()) : $0 }

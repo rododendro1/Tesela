@@ -325,7 +325,7 @@ import Testing
     @Test func losAvisosDeLoQueNoSeArmonizaNiSeRealiza() throws {
         // Notas que no son de Do mayor: no hay armonización ni coral.
         let fuera = try PresentacionDeCoral.armonizar(
-            "Do#4 Re#4 Fa4 Sol#4", en: Tonalidad(.do, .mayor), notacion: .compacta(.espanol))
+            "Do#4 Reb4 Fa4 Sol#4", en: Tonalidad(.do, .mayor), notacion: .compacta(.espanol))
         #expect(fuera.avisos == [.sinArmonizacion, .sinCoralParaLaMelodia])
         #expect(fuera.propuestas == [])
         #expect(fuera.sonido == .silencio)

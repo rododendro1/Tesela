@@ -13,7 +13,8 @@ import Teoria
 // (`accid.ges`) cuando no se escribe ninguna.
 //
 // Los cifrados van en `<harm>` encima del pentagrama; el análisis, como letra (`<verse>`) debajo
-// del bajo, y la tonalidad del análisis, en un `<dir>` al principio.
+// del bajo, y la tonalidad del análisis, en un `<dir>` al principio. Los ornamentos que `@ornam` no
+// tiene (el Schleifer y el trino con terminación) van en un `<ornam>` con su glifo de SMuFL.
 
 // MARK: - Escritor MEI
 
@@ -122,6 +123,10 @@ package struct EscritorMEI: EscritorDeLineas {
                             let donde = "staff=\"\(pentagrama)\" place=\"below\" startid=\"#\(id)\""
                             control.append("<dynam \(donde)>\(dinamica.rawValue)</dynam>")
                         }
+                        // Los ornamentos que `@ornam` no tiene, con su glifo de SMuFL.
+                        for glifo in evento.articulaciones.compactMap(\.glifoSMuFL) where !evento.esSilencio {
+                            control.append(EscritorMEI.ornamento(glifo, pentagrama: pentagrama, id: id))
+                        }
                         if c == 0 && i == 0 {
                             if let tempo, l == 0 {
                                 control.append(EscritorMEI.indicacion(tempo, pentagrama: pentagrama, id: id))
@@ -201,8 +206,8 @@ package struct EscritorMEI: EscritorDeLineas {
         duracion += " dur.ppq=\"\(Int(((evento.duracion / .negra).enRedondas * Double(ppq)).rounded()))\""
         let plica = plicaArriba.map { " stem.dir=\"\($0 ? "up" : "down")\"" } ?? ""
         let fuera = sangria(nivel)
-        // El calderón es un atributo de la nota, el acorde o el silencio, y los ornamentos van en `@ornam`; las
-        // demás articulaciones, en `<artic>`.
+        // El calderón es un atributo de la nota, el acorde o el silencio, y los ornamentos van en `@ornam` (salvo
+        // los que van en un `<ornam>` aparte); las demás articulaciones, en `<artic>`.
         let ornamentos = articulaciones.compactMap(ornam).joined()
         let calderon =
             (articulaciones.contains(.calderon) ? " fermata=\"above\"" : "")
@@ -264,6 +269,13 @@ package struct EscritorMEI: EscritorDeLineas {
         case .grupetoInvertido: return "s"
         default: return nil
         }
+    }
+
+    /// Un `<ornam>` con el glifo de SMuFL de un ornamento que `@ornam` no nombra (el Schleifer y el trino con
+    /// terminación), encima de su nota.
+    package static func ornamento(_ glifo: (nombre: String, codigo: String), pentagrama: Int, id: String) -> String {
+        "<ornam staff=\"\(pentagrama)\" place=\"above\" startid=\"#\(id)\" glyph.auth=\"smufl\" "
+            + "glyph.name=\"\(glifo.nombre)\" glyph.num=\"\(glifo.codigo)\"/>"
     }
 
     /// La alteración que se escribe y la que suena sin escribirse, en los valores de MEI.

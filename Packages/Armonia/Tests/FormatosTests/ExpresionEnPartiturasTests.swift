@@ -134,17 +134,36 @@ import Testing
         #expect(marcas(try PiezaImportada(abc: abc)) == ornamentos)
     }
 
-    /// El Schleifer va y vuelve por MusicXML; el trino con terminación solo tiene signo en LilyPond, y los demás
-    /// formatos los dejan sin escribir.
+    /// El Schleifer y el trino con terminación van y vuelven por MusicXML (`<schleifer/>` y un `<other-ornament>` con
+    /// su glifo de SMuFL), por MEI (`<ornam>` con el glifo) y por ABC (como texto encima). LilyPond tiene
+    /// `\prallmordent` y escribe el Schleifer como texto, y GUIDO los dos.
     @Test func elSchleiferYElTrinoConTerminacion() throws {
         let barroca = try Voz(leyendo: "Mi5:4{schleifer} Re5:4{trinoConTerminacion}").partitura()
+        let barrocas = ["Mi5 - schleifer", "Re5 - trinoConTerminacion"]
         let xml = barroca.musicXML()
         #expect(xml.contains("<schleifer/>"))
-        #expect(marcas(try PiezaImportada(musicXML: Data(xml.utf8))) == ["Mi5 - schleifer", "Re5 -"])
-        #expect(barroca.lilyPond().contains("\\prallmordent") && !barroca.lilyPond().contains("\\trill"))
-        #expect(!barroca.abc().contains("!trill!"))
-        #expect(!barroca.guido().contains("\\trill("))
-        #expect(!barroca.mei().contains("ornam="))
+        #expect(xml.contains("<other-ornament smufl=\"ornamentPrecompTrillWithMordent\"/>"))
+        #expect(marcas(try PiezaImportada(musicXML: Data(xml.utf8))) == barrocas)
+        let mei = barroca.mei()
+        #expect(!mei.contains("ornam=\""))
+        #expect(mei.contains("glyph.auth=\"smufl\" glyph.name=\"ornamentSchleifer\" glyph.num=\"U+E587\"/>"))
+        #expect(mei.contains("glyph.name=\"ornamentPrecompTrillWithMordent\" glyph.num=\"U+E5BD\""))
+        #expect(marcas(try PiezaImportada(mei: Data(mei.utf8))) == barrocas)
+        // Un `<ornam>` con solo el punto de código también vale.
+        let soloElCodigo = mei.replacingOccurrences(of: "glyph.name=\"ornamentSchleifer\" ", with: "")
+        #expect(marcas(try PiezaImportada(mei: Data(soloElCodigo.utf8))) == barrocas)
+        let abc = barroca.abc()
+        #expect(abc.contains("\"^Schleifer\"") && abc.contains("\"^Trillo und Mordant\"") && !abc.contains("!trill!"))
+        #expect(marcas(try PiezaImportada(abc: abc)) == barrocas)
+        // Los demás textos de encima, como los cifrados, no son ornamentos.
+        #expect(
+            marcas(try PiezaImportada(abc: "X:1\nL:1/4\nK:C\n\"^Do7\"c \"_V\"d [\"^Schleifer\"ce]|\n"))
+                .filter { $0.hasSuffix(" schleifer") }.count == 2)
+        let ly = barroca.lilyPond()
+        #expect(ly.contains("\\prallmordent") && ly.contains("^\"Schleifer\"") && !ly.contains("\\trill"))
+        let gmn = barroca.guido()
+        #expect(gmn.contains("\\text<\"Schleifer\">(") && gmn.contains("\\text<\"Trillo und Mordant\">("))
+        #expect(!gmn.contains("\\trill("))
     }
 
     @Test func ornamentosEnLilyPondYGUIDO() {
