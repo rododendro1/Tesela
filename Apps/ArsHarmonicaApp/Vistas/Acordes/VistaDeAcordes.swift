@@ -136,7 +136,7 @@ struct VistaDeAcordes: View {
     /// la comparación con otro acorde: notas comunes y cómo va cada voz.
     @ViewBuilder
     private func relaciones(de acorde: Acorde) -> some View {
-        let relaciones = PresentacionDeRelacionesDeAcorde.relaciones(de: acorde, notacion: notacion)
+        let relaciones = RelacionesPresentadas(acorde, notacion: notacion)
         Section(notacion.texto(\.otrosNombres)) {
             if !relaciones.otrosNombres.isEmpty {
                 Text(relaciones.otrosNombres.joined(separator: " · "))

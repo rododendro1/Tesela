@@ -35,7 +35,7 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.tipos(de: musicXML).contains("coral"))
     }
 
-    /// Los valores se proponen según la orden: `--time` es la hora en `escalas` y el compás en las partituras.
+    /// Los valores se proponen según la orden: `--formato` da los de cada una, y `--momento`, solo en `escalas`.
     @Test func losValoresSegunLaOrden() throws {
         func orden(_ nombre: String) throws -> LineaDeComandos.Orden {
             try #require(LineaDeComandos.ordenes.first { $0.nombres.contains(nombre) })
@@ -45,16 +45,22 @@ extension LineaDeComandosTests {
         #expect(LineaDeComandos.valores(de: .momento, en: escalas)?.contains("anochecer") == true)
         #expect(LineaDeComandos.valores(de: .momento, en: musicXML) == nil)
         #expect(LineaDeComandos.valores(de: .compas, en: musicXML) == nil)
-        #expect(LineaDeComandos.valores(de: .piano, en: escala)?.contains("guitarra") == true)
-        #expect(LineaDeComandos.valores(de: .dedosDeLaDigitacion, en: digitaciones) == nil)
+        #expect(LineaDeComandos.valores(de: .dedos, en: escala)?.contains("guitarra") == true)
+        #expect(LineaDeComandos.valores(de: .maximoDeDedos, en: digitaciones) == nil)
         #expect(LineaDeComandos.valores(de: .idioma, en: nil)?.contains("eu") == true)
+        // `--formato` propone los formatos de cada orden.
+        #expect(LineaDeComandos.valores(de: .formato, en: digitaciones) == ["musicxml"])
+        #expect(LineaDeComandos.valores(de: .formato, en: escala) == ["bibtex"])
+        #expect(LineaDeComandos.valores(de: .formato, en: try orden("hoja")) == ["html"])
+        #expect(LineaDeComandos.valores(de: .formato, en: try orden("transponer"))?.contains("mei") == true)
+        #expect(LineaDeComandos.valores(de: .formato, en: try orden("grabar")) == ["pdf", "svg", "png"])
         // Con guiones, como los demás valores, y sin repetir.
         for (_, valores) in LineaDeComandos.opcionesConValores(en: escalas) {
             for valor in valores { #expect(valor == valor.lowercased(), Comment(rawValue: valor)) }
         }
         #expect(LineaDeComandos.valores(de: .lugar, en: escalas)?.contains("reino-unido") == true)
         #expect(LineaDeComandos.conGuiones("safiAlDin") == "safi-al-din")
-        #expect(OpcionDeOrden.momento.seEscribe("--time"))
+        #expect(!OpcionDeOrden.momento.seEscribe("--time") && OpcionDeOrden.compas.seEscribe("--time"))
         #expect(!salida("completado bash").contains("--clave|--clef|--clave|--clef"))
     }
 
@@ -79,7 +85,7 @@ extension LineaDeComandosTests {
             proceso.waitUntilExit()
             return String(decoding: tuberia.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
         }
-        let (hora, compas) = (try propuestas("escalas --time"), try propuestas("musicxml melodia Do --time"))
+        let (hora, compas) = (try propuestas("escalas --momento"), try propuestas("musicxml melodia Do --time"))
         #expect(hora.contains("anochecer"))
         #expect(compas == "\n")
         let (dedos, idioma) = (try propuestas("escala Do mayor --dedos"), try propuestas("--idioma"))

@@ -131,7 +131,7 @@ struct SeccionDeLasDoceTonalidades: View {
     @Environment(\.notacion) private var notacion
 
     var body: some View {
-        let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(escala, en: notacion)
+        let hoja = HojaDeEstudioPresentada(escala, en: notacion)
         Section(notacion.texto(\.enLasDoceTonalidades)) {
             BotonDeEscuchar(hoja.sonido)
             ForEach(hoja.tonalidades, id: \.titulo) { tonalidad in
@@ -234,7 +234,7 @@ struct SeccionDeLaComparacion: View {
             TextField(notacion.campo(.escala), text: $otraEscala)
                 .comoCampoDeCifrado()
             if let otra = try? Escala(leyendo: otraEscala) {
-                let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, en: notacion)
+                let comparacion = ComparacionDeEscalasPresentada(escala, con: otra, en: notacion)
                 LabeledContent(notacion.texto(\.notasComunes), value: comparacion.comunes)
                 ForEach([comparacion.soloEnOrigen, comparacion.soloEnDestino].filter { !$0.isEmpty }, id: \.self) {
                     Text($0)

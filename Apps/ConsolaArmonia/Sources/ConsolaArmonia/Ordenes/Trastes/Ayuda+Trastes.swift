@@ -23,7 +23,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia digitaciones Sol7/Si --instrumento ukelele",
                 "armonia fingerings G7/B --instrument ukulele"),
-            opciones: [.instrumento, .limite, .traste, .dedosDeLaDigitacion, .completo, .diagrama, .capo, .musicxml])
+            opciones: [.instrumento, .limite, .traste, .maximoDeDedos, .completo, .diagrama, .capo, .formato])
     ]
 
     static let ayudaDePosiciones: [EntradaDeAyuda] = [

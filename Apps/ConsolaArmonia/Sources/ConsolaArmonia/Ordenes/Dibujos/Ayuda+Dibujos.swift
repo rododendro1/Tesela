@@ -35,7 +35,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia hoja Re dórico > dorico.svg",
                 "armonia sheet D dorian > dorian.svg"),
-            opciones: [.comparar, .html]),
+            opciones: [.comparar, .formato]),
         // hoja acorde <cifrado> [--html]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHojaDeAcorde),
@@ -43,7 +43,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia hoja acorde Sol7 > sol7.svg",
                 "armonia sheet chord G7 > g7.svg"),
-            opciones: [.html]),
+            opciones: [.formato]),
         // hoja acordes <acordes> [--en <tonalidad>] [--doce] [--comparar <acordes>] [--html]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHojaDeAcordes),
@@ -51,7 +51,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia hoja acordes Rem7 Sol7 Do7M --en Do mayor > ii-V-I.svg",
                 "armonia sheet chords Dm7 G7 Cmaj7 --in C major > ii-V-I.svg"),
-            opciones: [.en, .doce, .comparar, .html]),
+            opciones: [.en, .doce, .comparar, .formato]),
         // hoja tonalidad <tonalidad> [--html]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHojaDeTonalidad),
@@ -59,7 +59,7 @@ extension LineaDeComandos {
             ejemplo: ejemplo(
                 "armonia hoja tonalidad Re mayor > re.svg",
                 "armonia sheet key D major > d.svg"),
-            opciones: [.html]),
+            opciones: [.formato]),
     ]
 
     static let ayudaDeReticulo: [EntradaDeAyuda] = [

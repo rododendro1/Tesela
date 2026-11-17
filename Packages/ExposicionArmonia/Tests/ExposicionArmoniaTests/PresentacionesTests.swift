@@ -106,7 +106,7 @@ import Testing
     }
 
     @Test func unArpegioSeExporta() {
-        let arpegio = PresentacionDeArpegios.arpegio(
+        let arpegio = ArpegioPresentado(
             Arpegio(Acorde("Sol7"), patron: .idaYVuelta), en: .compacta(.espanol))
         #expect(arpegio.voz.eventos.count == 9)
         #expect(arpegio.ficheros.map(\.formato) == [.musicXML, .mei, .lilyPond, .guido, .abc, .midi])
@@ -114,7 +114,7 @@ import Testing
     }
 
     @Test func otrasFigurasYOctavas() throws {
-        let semicorcheas = PresentacionDeArpegios.arpegio(
+        let semicorcheas = ArpegioPresentado(
             Arpegio(Acorde("Do"), patron: .quebrado, octavas: 2, conOctava: false), figura: .semicorchea,
             en: .compacta(.espanol))
         #expect(semicorcheas.voz.eventos.allSatisfy { $0.duracion == .semicorchea })
@@ -129,15 +129,15 @@ import Testing
 
     @Test func tresillosTempoSwingYEnlace() throws {
         let tresillo = Duracion.corchea.grupoIrregular(3, en: 2)
-        let arpegio = PresentacionDeArpegios.arpegio(
+        let arpegio = ArpegioPresentado(
             Arpegio(Acorde("Do"), conOctava: false), figura: tresillo, tempo: Tempo(120), en: .compacta(.espanol))
         #expect(arpegio.voz.eventos.allSatisfy { $0.duracion == tresillo })
         // A 120, cada negra dura medio segundo y cada corchea de tresillo, un sexto.
         #expect(arpegio.sonido.inicios.map { ($0 * 6).rounded() } == [0, 1, 2])
         #expect(String(decoding: arpegio.ficheros[0].datos, as: UTF8.self).contains("<per-minute>120"))
-        let conSwing = PresentacionDeArpegios.arpegio(
+        let conSwing = ArpegioPresentado(
             Arpegio(Acorde("Do")), swing: true, en: .compacta(.espanol))
-        let recta = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do")), en: .compacta(.espanol))
+        let recta = ArpegioPresentado(Arpegio(Acorde("Do")), en: .compacta(.espanol))
         #expect(conSwing.sonido != recta.sonido)
         #expect(conSwing.ficheros == recta.ficheros)
         // Enlazados, el Fa empieza por el Do, la nota más cercana al último Do del primero.
@@ -155,7 +155,7 @@ import Testing
     }
 
     @Test func losFicherosDelArpegioSeLeenConLasMismasNotas() throws {
-        let arpegio = PresentacionDeArpegios.arpegio(
+        let arpegio = ArpegioPresentado(
             Arpegio(Acorde("Fa#m7"), patron: .alberti), en: .compacta(.espanol))
         let sonido = arpegio.sonido.notas
         for fichero in arpegio.ficheros where [.musicXML, .midi].contains(fichero.formato) {

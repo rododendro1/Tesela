@@ -85,14 +85,8 @@ public enum PresentacionDeEstadisticasDeAcorde {
         "grupoDeHindemith", "rasgos",
     ]
 
-    /// Cuántos acordes hay de cada número de notas, de cada estilo y por terceras o no.
-    ///
-    ///     let resumen = PresentacionDeEstadisticasDeAcorde.resumen(
-    ///         [.mayor, .menor, .dominanteSeptima, .petrushka], en: .compacta(.espanol))
-    ///     resumen.total                          // 4
-    ///     resumen.porNumeroDeNotas.map(\.nombre) // ["3 (tríada)", "4 (tétrada)", "6 (héxada)"]
-    ///     resumen.noPorTerceras                  // 1
-    public static func resumen(_ acordes: [AcordeConNombre], en notacion: Notacion) -> ResumenDeAcordesPresentado {
+    /// Lo que da ``ResumenDeAcordesPresentado/init(_:en:)``.
+    static func resumen(_ acordes: [AcordeConNombre], en notacion: Notacion) -> ResumenDeAcordesPresentado {
         let numeros = Dictionary(grouping: acordes, by: \.numeroDeNotas)
         let porNumero = numeros.keys.sorted().map { n in
             let cardinal = CardinalDeAcorde(numeroDeNotas: n).map { " (" + $0.nombre(en: notacion) + ")" } ?? ""
@@ -139,7 +133,7 @@ public struct EstadisticasDeAcordePresentadas: Hashable, Sendable, Encodable {
     }
 }
 
-/// El resumen de unos acordes del catálogo (`PresentacionDeEstadisticasDeAcorde.resumen(_:en:)`): cuántos hay, de
+/// El resumen de unos acordes del catálogo (`ResumenDeAcordesPresentado(_:en:)`): cuántos hay, de
 /// cada número de notas, de cada estilo y por terceras o no.
 public struct ResumenDeAcordesPresentado: Hashable, Sendable, Codable {
     /// Un grupo y cuántos acordes tiene: «4 (tétrada)», 20.
@@ -156,4 +150,17 @@ public struct ResumenDeAcordesPresentado: Hashable, Sendable, Codable {
     public let porEstilo: [Recuento]
     public let porTerceras: Int
     public let noPorTerceras: Int
+}
+
+extension ResumenDeAcordesPresentado {
+    /// Cuántos acordes hay de cada número de notas, de cada estilo y por terceras o no.
+    ///
+    ///     let resumen = ResumenDeAcordesPresentado(
+    ///         [.mayor, .menor, .dominanteSeptima, .petrushka], en: .compacta(.espanol))
+    ///     resumen.total                          // 4
+    ///     resumen.porNumeroDeNotas.map(\.nombre) // ["3 (tríada)", "4 (tétrada)", "6 (héxada)"]
+    ///     resumen.noPorTerceras                  // 1
+    public init(_ acordes: [AcordeConNombre], en notacion: Notacion) {
+        self = PresentacionDeEstadisticasDeAcorde.resumen(acordes, en: notacion)
+    }
 }

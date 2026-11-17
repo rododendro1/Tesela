@@ -10,16 +10,8 @@ public struct ArpegioPresentado: Hashable, Sendable {
 
 /// La parte de los arpegios de las apps que no es dibujo. No usa SwiftUI, así que se prueba en Linux.
 public enum PresentacionDeArpegios {
-    /// Un arpegio desde la octava 4, en corcheas o en la figura que se diga, como en el pentagrama de la pestaña
-    /// de acordes.
-    ///
-    ///     let arpegio = PresentacionDeArpegios.arpegio(Arpegio(Acorde("Do"), patron: .alberti),
-    ///                                                 en: .compacta(.espanol))
-    ///     arpegio.ficheros.map(\.formato)   // [.musicXML, .mei, .lilyPond, .abc, .midi]
-    ///
-    /// La figura puede ser de tresillo (`Duracion.corchea.grupoIrregular(3, en: 2)`), que las partituras escriben
-    /// como tal. El tempo, si se da, va también en las partituras; el swing solo cambia cómo suena.
-    public static func arpegio(
+    /// Lo que da ``ArpegioPresentado/init(_:figura:tempo:swing:en:)``.
+    static func arpegio(
         _ arpegio: Arpegio, figura: Duracion = .corchea, tempo: Tempo? = nil, swing: Bool = false,
         en notacion: Notacion
     ) -> ArpegioPresentado {
@@ -66,5 +58,22 @@ public enum PresentacionDeArpegios {
                 voz.partitura(encabezado: Encabezado(titulo: nombre, tonalidad: tonalidad, tempo: tempo)).exportar(
                     como: formato)
             })
+    }
+}
+
+extension ArpegioPresentado {
+    /// Un arpegio desde la octava 4, en corcheas o en la figura que se diga, como en el pentagrama de la pestaña
+    /// de acordes.
+    ///
+    ///     let arpegio = ArpegioPresentado(Arpegio(Acorde("Do"), patron: .alberti),
+    ///                                   en: .compacta(.espanol))
+    ///     arpegio.ficheros.map(\.formato)   // [.musicXML, .mei, .lilyPond, .abc, .midi]
+    ///
+    /// La figura puede ser de tresillo (`Duracion.corchea.grupoIrregular(3, en: 2)`), que las partituras escriben
+    /// como tal. El tempo, si se da, va también en las partituras; el swing solo cambia cómo suena.
+    public init(
+        _ arpegio: Arpegio, figura: Duracion = .corchea, tempo: Tempo? = nil, swing: Bool = false, en notacion: Notacion
+    ) {
+        self = PresentacionDeArpegios.arpegio(arpegio, figura: figura, tempo: tempo, swing: swing, en: notacion)
     }
 }

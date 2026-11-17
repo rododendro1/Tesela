@@ -86,8 +86,8 @@ extension LineaDeComandos {
                 "  " + $0.nombre + ": " + $0.detalle
             }
         }
-        let relaciones = PresentacionDeRelacionesDeAcorde.relaciones(
-            de: acorde, en: pedido.tonalidad, notacion: notacion)
+        let relaciones = RelacionesPresentadas(
+            acorde, en: pedido.tonalidad, notacion: notacion)
         if pedido.nombres {
             lineas.append(notacion.texto(\.otrosNombres) + ": " + relaciones.otrosNombres.joined(separator: ", "))
             if let sinFundamental = relaciones.sinFundamental {

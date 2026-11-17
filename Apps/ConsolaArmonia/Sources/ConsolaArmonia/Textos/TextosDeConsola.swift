@@ -313,6 +313,7 @@ struct TextosDeConsola: TextosTraducidos {
     let motorDesconocido: Plantilla  // {1} motor
     let formatoDeGrabadoDesconocido: Plantilla  // {1} formato
     let formatoDePartituraDesconocido: Plantilla  // {1} formato
+    let formatoDeSalidaDesconocido: Plantilla  // {1} formato, {2} el que se admite
     let nadaQueGrabar: Plantilla  // {1} orden
 
     // MARK: LineaDeComandos+Grabado.swift

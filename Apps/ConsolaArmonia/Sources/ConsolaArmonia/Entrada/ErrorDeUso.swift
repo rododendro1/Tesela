@@ -87,6 +87,9 @@ enum ErrorDeUso: ErrorDeArmonia {
     case sinContrapuntoPosible
     /// `transponer --archivo … --formato` con un formato que no es de partitura.
     case formatoDePartituraDesconocido(String)
+    /// `--formato` con otro formato que el único que admite la orden, fuera del de siempre (`hoja … --formato
+    /// html`, `digitaciones … --formato musicxml`, `escala … --formato bibtex`).
+    case formatoDeSalidaDesconocido(String, admitido: String)
 
     // Digitaciones
     case faltaInstrumento

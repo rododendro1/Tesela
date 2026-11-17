@@ -213,7 +213,7 @@ struct VistaDeEscalas: View {
     }
 
     private func secuenciaPresentada(de escala: Escala) -> SecuenciaPresentada {
-        PresentacionDeEstudioDeEscala.secuencia(
+        SecuenciaPresentada(
             escala, secuencia, octavas: octavas, sentido: bajando ? .descendente : .ascendente, en: notacion)
     }
 

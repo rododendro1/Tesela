@@ -230,7 +230,7 @@ extension LineaDeComandos {
         guard !pedido.acordes.isEmpty else { return ninguno(.ningunAcorde, notacion) }
         if pedido.resumen {
             return bien(
-                describir(resumen: PresentacionDeEstadisticasDeAcorde.resumen(pedido.acordes, en: notacion), notacion))
+                describir(resumen: ResumenDeAcordesPresentado(pedido.acordes, en: notacion), notacion))
         }
         if pedido.estadisticas {
             let tabla = PresentacionDeEstadisticasDeAcorde.tablaDeEstadisticas(pedido.acordes, en: notacion)
@@ -275,7 +275,7 @@ extension LineaDeComandos {
     /// mide de cada uno; con `--resumen`, el resumen (`ResumenDeAcordesPresentado`).
     static func acordesConNombreJSON(_ textos: [String], _ notacion: Notacion) throws -> any Encodable {
         let pedido = try acordesPedidos(textos, notacion)
-        if pedido.resumen { return PresentacionDeEstadisticasDeAcorde.resumen(pedido.acordes, en: notacion) }
+        if pedido.resumen { return ResumenDeAcordesPresentado(pedido.acordes, en: notacion) }
         return pedido.acordes.map {
             AcordeConNombrePresentado($0, sobre: pedido.sobre, conEstadisticas: pedido.estadisticas, en: notacion)
         }

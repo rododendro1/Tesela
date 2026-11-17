@@ -32,12 +32,11 @@ public struct ComparacionPresentada: Hashable, Sendable {
 /// Las relaciones de un acorde y la comparación de dos de la vista de acordes y de `armonia acorde`. No usa SwiftUI,
 /// así que se prueba en Linux.
 ///
-///     let relaciones = PresentacionDeRelacionesDeAcorde.relaciones(de: Acorde("Do6"), notacion: .compacta(.espanol))
+///     let relaciones = RelacionesPresentadas(Acorde("Do6"), notacion: .compacta(.espanol))
 ///     relaciones.otrosNombres.contains("Lam7/Do")   // true
 public enum PresentacionDeRelacionesDeAcorde {
-    /// Los otros nombres, el acorde sin la fundamental, las tonalidades y las sustituciones en la tonalidad dada o,
-    /// si no, en la del acorde (``Acorde/tonalidadPropia``).
-    public static func relaciones(
+    /// Lo que da ``RelacionesPresentadas/init(_:en:notacion:)``.
+    static func relaciones(
         de acorde: Acorde, en tonalidad: Tonalidad? = nil, notacion: Notacion
     ) -> RelacionesPresentadas {
         let tonalidad = tonalidad ?? acorde.tonalidadPropia
@@ -80,5 +79,13 @@ public enum PresentacionDeRelacionesDeAcorde {
             comunes: comunes.isEmpty ? notacion.texto(\.ningunaNotaComun) : comunes.joined(separator: ", "),
             voces: voces, movimiento: notacion.texto { $0.movimientoTotal(total) },
             sonido: .coral([disposiciones.desde, disposiciones.hasta], duracion: 1.5))
+    }
+}
+
+extension RelacionesPresentadas {
+    /// Los otros nombres, el acorde sin la fundamental, las tonalidades y las sustituciones en la tonalidad dada o,
+    /// si no, en la del acorde (``Acorde/tonalidadPropia``).
+    public init(_ acorde: Acorde, en tonalidad: Tonalidad? = nil, notacion: Notacion) {
+        self = PresentacionDeRelacionesDeAcorde.relaciones(de: acorde, en: tonalidad, notacion: notacion)
     }
 }

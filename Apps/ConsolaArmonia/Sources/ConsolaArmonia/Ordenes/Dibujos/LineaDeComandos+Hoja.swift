@@ -8,13 +8,13 @@ extension LineaDeComandos {
     /// `hoja Re dórico` (o `hoja escala Re dórico`): la escala en una hoja de estudio para imprimir, en SVG, y, con
     /// `--comparar Do dórico`, comparada nota a nota con otra; `hoja acorde Sol7`, la de un acorde; `hoja tonalidad Do
     /// mayor`, la de una tonalidad, y `hoja acordes Rem7 Sol7 Do7M [--en Do mayor] [--doce] [--comparar …]`, la de una
-    /// progresión, en las doce tonalidades o comparada con otra. Con `--html`, cualquiera de ellas como página HTML.
-    /// `grabar hoja …` la pasa a PDF.
+    /// progresión, en las doce tonalidades o comparada con otra. Con `--formato html`, cualquiera de ellas como página
+    /// HTML. `grabar hoja …` la pasa a PDF.
     static func hoja(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
         var argumentos = Argumentos(
             try conLaSuborden(argumentos, entre: [.acorde, .acordes, .tonalidad], sinNada: ["escala", "scale"]))
-        // Con --html, cualquiera de ellas como página HTML.
-        let html = argumentos.quitarMarca(.html)
+        // Con --formato html, cualquiera de ellas como página HTML.
+        let html = try argumentos.pideElFormato("html")
         if let cifrado = try argumentos.valor(.acorde, siFalta: .faltaElAcordeDeLaHoja) {
             try argumentos.sinOpcionesDesconocidas()
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaElAcordeDeLaHoja }

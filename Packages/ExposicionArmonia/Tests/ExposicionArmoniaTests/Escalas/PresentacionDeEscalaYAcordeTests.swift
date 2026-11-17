@@ -6,7 +6,7 @@ import Testing
 // La relación escala-acorde de las vistas de acordes, escalas y análisis, y de `armonia analizar --escalas`.
 @Suite struct PresentacionDeEscalaYAcordeTests {
     @Test func unaEscalaSobreUnAcorde() {
-        let dorico = PresentacionDeEscalaYAcorde.presentar(
+        let dorico = EscalaSobreAcordePresentada(
             Escala(.re, .dorico), sobre: Acorde("Rem7"), en: .compacta(.espanol))
         #expect(dorico.nombre == "Re dórico")
         #expect(dorico.modo == "modo 2 de Do mayor")
@@ -16,7 +16,7 @@ import Testing
         #expect(dorico.resumen == "Tensiones: Mi 9 · Sol 11 · Si 13")
         #expect(dorico.estructurasSuperiores == "Mim · Sol · Do · Lam")
 
-        let jonico = PresentacionDeEscalaYAcorde.presentar(
+        let jonico = EscalaSobreAcordePresentada(
             Escala(.do, .mayor), sobre: Acorde("Do7M"), en: .compacta(.espanol))
         #expect(jonico.modo == nil) // es la propia madre
         #expect(jonico.aEvitar == "Fa 11")
@@ -43,7 +43,7 @@ import Testing
     }
 
     @Test func enOtroIdioma() {
-        let mixolidio = PresentacionDeEscalaYAcorde.presentar(
+        let mixolidio = EscalaSobreAcordePresentada(
             Escala(.sol, .mixolidio), sobre: Acorde("Sol7"), en: .ascii(.ingles))
         #expect(mixolidio.modo == "mode 5 of C major")
         #expect(mixolidio.resumen.hasPrefix("Tensions: A 9 · E 13"))

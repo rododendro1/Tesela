@@ -43,7 +43,7 @@ import Testing
         var argumentos = Argumentos(["Sol7", "--instrument", "ukelele", "--limite"])
         #expect(argumentos.quitarOpcion(.instrumento) == .valor("ukelele"))
         #expect(argumentos.quitarOpcion(.limite) == .sinValor(nombre: "limite"))
-        #expect(argumentos.quitarOpcion(.dedosDeLaDigitacion) == .ausente)
+        #expect(argumentos.quitarOpcion(.maximoDeDedos) == .ausente)
         #expect(argumentos.restantes == ["Sol7"])
         // Otra opción no es un valor.
         var seguidas = Argumentos(["--language", "--textos", "es"])
@@ -54,7 +54,7 @@ import Testing
     @Test func valores() throws {
         var argumentos = Argumentos(["Sol7", "--instrument", "ukelele", "--comparar", "Do", "lidio", "--limite"])
         #expect(try argumentos.valor(.instrumento) == "ukelele")
-        #expect(try argumentos.valor(.dedosDeLaDigitacion) == nil)
+        #expect(try argumentos.valor(.maximoDeDedos) == nil)
         #expect(try argumentos.valorConPalabras(.comparar) == "Do lidio")
         #expect(argumentos.restantes == ["Sol7", "--limite"])
         // Sin valor, `faltaValor` con el nombre que se escribió, o el error que se pida.

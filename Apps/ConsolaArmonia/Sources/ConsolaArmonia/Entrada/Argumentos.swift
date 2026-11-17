@@ -99,6 +99,16 @@ struct Argumentos {
         try Self.leer(quitarOpcion(opcion.leidos), siFalta: siFalta)
     }
 
+    /// Quita `--formato` y dice si pide `admitido`, el único formato que da la orden aparte del de siempre (`hoja …
+    /// --formato html`); con otro, lanza `formatoDeSalidaDesconocido`.
+    mutating func pideElFormato(_ admitido: String) throws -> Bool {
+        guard let texto = try valor(.formato) else { return false }
+        guard texto.lowercased() == admitido else {
+            throw ErrorDeUso.formatoDeSalidaDesconocido(texto, admitido: admitido)
+        }
+        return true
+    }
+
     /// Como `valor(_:siFalta:)`, con todas las palabras que siguen a la opción (`quitarOpcionConPalabras`).
     mutating func valorConPalabras(_ opcion: OpcionDeOrden, siFalta: ErrorDeUso? = nil) throws -> String? {
         try Self.leer(quitarOpcionConPalabras(opcion.leidos), siFalta: siFalta)

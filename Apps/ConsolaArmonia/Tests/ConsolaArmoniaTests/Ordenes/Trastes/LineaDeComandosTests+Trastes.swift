@@ -11,7 +11,7 @@ extension LineaDeComandosTests {
         let conCapo = salida("digitaciones Re --capo 2 --limite 1")
         #expect(conCapo.contains("Capo en el traste 2"), Comment(rawValue: conCapo))
         #expect(conCapo.contains("x32010"), Comment(rawValue: conCapo))
-        let tablatura = salida("digitaciones Re La --capo 2 --musicxml")
+        let tablatura = salida("digitaciones Re La --capo 2 --formato musicxml")
         #expect(tablatura.hasPrefix("<?xml"), Comment(rawValue: tablatura))
         #expect(tablatura.contains("<capo>2</capo>"))
         #expect(tablatura.contains("<sign>TAB</sign>"))
@@ -143,14 +143,16 @@ extension LineaDeComandosTests {
     }
 
     @Test func elLimiteDeDedos() {
-        let texto = salida("digitaciones Mim --dedos 1 --limite 50")
+        let texto = salida("digitaciones Mim --maximo-de-dedos 1 --limite 50")
         let formas = texto.split(separator: "\n").dropFirst()
         #expect(!formas.isEmpty)
         #expect(formas.allSatisfy { $0.contains("(1 dedo") }, Comment(rawValue: texto))
         for malo in ["0", "5", "muchos"] {
-            #expect(resultado("digitaciones", "Mim", "--dedos", malo).codigo == 2, Comment(rawValue: malo))
+            #expect(resultado("digitaciones", "Mim", "--maximo-de-dedos", malo).codigo == 2, Comment(rawValue: malo))
         }
-        #expect(resultado("digitaciones", "Mim", "--dedos").codigo == 2)
+        #expect(resultado("digitaciones", "Mim", "--maximo-de-dedos").codigo == 2)
+        // `--dedos` es la digitación de `escala`, `pentagrama` y `teclado`; aquí no se admite.
+        #expect(resultado("digitaciones", "Mim", "--dedos", "1").codigo == 2)
     }
 
     @Test func laAyudaHablaDeLasDigitaciones() {

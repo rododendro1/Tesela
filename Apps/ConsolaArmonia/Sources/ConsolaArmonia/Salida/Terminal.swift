@@ -28,8 +28,8 @@ extension LineaDeComandos {
     private static func nombres(_ opciones: OpcionDeOrden...) -> [OpcionDeOrden] { opciones }
 
     /// Los valores que se proponen tras una opción, con guiones y sin mayúsculas (`reino-unido`, que se lee igual
-    /// que `reinoUnido`). Una opción que comparte nombre con la de otra orden (`--time`, `--dedos`) solo los propone
-    /// en las órdenes que la declaran (`valores(de:en:)`).
+    /// que `reinoUnido`). Solo se proponen en las órdenes que declaran la opción, y los de `--formato` cambian con la
+    /// orden (`valores(de:en:)`).
     static let valoresDeOpciones: [(opciones: [OpcionDeOrden], valores: [String])] = [
         (
             nombres(.idioma, .textos),
@@ -46,7 +46,6 @@ extension LineaDeComandos {
             ]
         ),
         (nombres(.motor), ["lilypond", "musescore", "verovio", "guido", "propio", "own"]),
-        (nombres(.formato), ["pdf", "svg", "png"]),
         (nombres(.aproximacion), ["abajo", "arriba", "encierro", "below", "above", "enclosure"]),
         (nombres(.dedos), ["piano", "guitarra", "derecha", "izquierda", "guitar", "right", "left"]),
         (
@@ -117,7 +116,18 @@ extension LineaDeComandos {
     /// orden; `nil` si no se propone ninguno.
     static func valores(de opcion: OpcionDeOrden, en orden: Orden?) -> [String]? {
         guard orden.map({ $0.declaradas.contains(opcion) }) ?? generales.contains(opcion) else { return nil }
+        if opcion == .formato, let orden { return formatos(de: orden) }
         return valoresDeOpciones.first { $0.opciones.contains(opcion) }?.valores
+    }
+
+    /// Los valores de `--formato`, que cambian con la orden: el único que dan `hoja`, `digitaciones` y `escala` aparte
+    /// del de siempre, los de partitura en `transponer` y los de `grabar`.
+    static func formatos(de orden: Orden) -> [String] {
+        if orden.nombres.contains("hoja") { return ["html"] }
+        if orden.nombres.contains("digitaciones") { return ["musicxml"] }
+        if orden.nombres.contains("escala") { return ["bibtex"] }
+        if orden.nombres.contains("transponer") { return FormatoDePartitura.allCases.map(\.rawValue) }
+        return LineaDeComandos.FormatoDeGrabado.allCases.map(\.rawValue)
     }
 
     /// Las opciones de la orden (o las generales) que tienen valores que proponer, con ellos.

@@ -1,5 +1,24 @@
 # Cambios
 
+## Sin publicar
+
+### Cambios incompatibles
+
+- Lo que presenta un valor sin hacer más trabajo es un `init` de lo presentado, como en los demás `…Presentado`:
+  `ArpegioPresentado(_:figura:tempo:swing:en:)`, `RelacionesPresentadas(_:en:notacion:)`,
+  `ModulacionPresentada(_:en:)`, `EscalaSobreAcordePresentada(_:sobre:en:motivo:)` y `(_:sobre:en:)`,
+  `SecuenciaPresentada(_:_:octavas:sentido:en:)`, `ComparacionDeEscalasPresentada(_:con:en:)`,
+  `ResumenDeAcordesPresentado(_:en:)` y `HojaDeEstudioPresentada(_:secuencia:en:)`, en lugar de
+  `PresentacionDeArpegios.arpegio`, `PresentacionDeRelacionesDeAcorde.relaciones(de:…)`,
+  `PresentacionDeModulaciones.presentar`, `PresentacionDeEscalaYAcorde.presentar`,
+  `PresentacionDeEstudioDeEscala.secuencia`, `.comparar` y `.enLasDoceTonalidades`, y
+  `PresentacionDeEstadisticasDeAcorde.resumen`. Las funciones de `PresentacionDe…` quedan para lo que lee un texto,
+  analiza, realiza o busca (y puede no dar nada).
+- Las lecturas dicen en su firma el error que lanzan: `ImportacionDeProgresion.leer(_:ventana:)`,
+  `progresion(de:ventana:)` y `RecorridoDePartitura.leer(_:en:)`, `ErrorDeLecturaDeFichero`;
+  `PresentacionDeSerie.presentar(_:forma:en:)` y `CandidatoPresentado.identificar(_:limite:en:)`, `ErrorDeLectura`.
+  Las que leen acordes, corales o contrapuntos siguen sin tipo, porque lanzan errores de más de un tipo.
+
 ## 0.6.0 (2026-11-17)
 
 - Como en Armonia, `AjusteCuadrado.teclado(de:en:)` lleva la escala tras `en:`, y

@@ -53,7 +53,7 @@ extension OpcionDeOrden {
     /// `escalas --afecto lastimero`: las que tienen ese afecto en alguna de sus fuentes (`TipoDeEscala.afectos`).
     static let afecto = valor("--afecto", "--affect")
     /// `escalas --momento anochecer`: las que se tocan a esa hora en alguna de sus fuentes (`TipoDeEscala.momentos`).
-    static let momento = valor("--momento", "--time-of-day", ocultos: ["--time"])
+    static let momento = valor("--momento", "--time-of-day")
     /// `escalas --escuela carnatica`: las de una escuela de otra tradición.
     static let escuela = valor("--escuela", "--school")
     /// `escalas --afinacion microtonal`: por el carácter de su afinación (`CaracterDeLaAfinacion`).
@@ -99,7 +99,6 @@ extension OpcionDeOrden {
     static let bajando = marca("--bajando", "--descending")
     static let bajo = marca("--bajo", "--walking-bass")
     static let bajoCifrado = marca("--bajo-cifrado", "--figured-bass")
-    static let bibtex = marca("--bibtex")
     static let barrido = marca("--barrido", "--sweep")
     static let bebop = marca("--bebop")
     static let caged = marca("--caged")
@@ -114,8 +113,10 @@ extension OpcionDeOrden {
     static let conduccion = marca("--conduccion", "--voice-leading")
     static let cuartas = marca("--cuartas", "--fourths")
     static let debajo = marca("--debajo", "--below")
+    /// La digitación: en `escala`, la del piano; en `pentagrama` y `teclado`, el instrumento o la mano que la sigue.
     static let dedos = marca("--dedos", "--fingers")
-    static let dedosDeLaDigitacion = valor("--dedos", "--fingers")
+    /// En `digitaciones`, cuántos dedos se pueden usar.
+    static let maximoDeDedos = valor("--maximo-de-dedos", "--max-fingers")
     static let desde = valor("--desde", "--from")
     static let diagrama = marca("--diagrama", "--diagram")
     static let disposiciones = marca("--disposiciones", "--voicings")
@@ -131,14 +132,14 @@ extension OpcionDeOrden {
     static let estadisticas = marca("--estadisticas", "--statistics")
     static let figura = valor("--figura", "--figure")
     static let formas = marca("--formas", "--shapes")
+    /// El formato de la salida: en `grabar`, pdf, svg o png; en `transponer --archivo`, el de la partitura; en
+    /// `hoja`, `digitaciones` y `escala`, el único que dan aparte del de siempre (html, musicxml y bibtex).
     static let formato = valor("--formato", "--format")
     static let giro = valor("--giro", "--rotate")
     static let grados = valor("--grados", "--degrees")
     static let idaYVuelta = marca("--ida-y-vuelta", "--up-and-down")
     static let instrumento = valor("--instrumento", "--instrument")
     static let intervalos = marca("--intervalos", "--intervals")
-    /// `hoja … --html`: la hoja de estudio como página HTML.
-    static let html = marca("--html")
     static let limite = valor("--limite", "--limit")
     static let mano = valor("--mano", "--hand")
     static let mapa = marca("--mapa", "--map")
@@ -148,7 +149,6 @@ extension OpcionDeOrden {
     static let modos = marca("--modos", "--modes")
     static let modulaciones = valor("--modulaciones", "--modulations")
     static let motor = valor("--motor", "--engine")
-    static let musicxml = marca("--musicxml")
     static let nombres = marca("--nombres", "--names")
     static let notas = valor("--notas", "--notes")
     static let notasGuia = marca("--notas-guia", "--guide-tones")
@@ -162,8 +162,6 @@ extension OpcionDeOrden {
     static let parecidas = marca("--parecidas", "--closest")
     static let patron = valor("--patron", "--pattern")
     static let pentatonicas = marca("--pentatonicas", "--pentatonics")
-    /// La digitación de piano de `escala`.
-    static let piano = marca("--dedos", "--fingers")
     static let progresiones = marca("--progresiones", "--progressions")
     static let proponer = marca("--proponer", "--propose")
     static let propuestas = valor("--propuestas", "--proposals")

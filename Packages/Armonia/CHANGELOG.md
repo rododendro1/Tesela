@@ -19,6 +19,14 @@
   en lugar de dar `nil`.
 - Las lecturas de ficheros dicen en su firma que lanzan `ErrorDeLecturaDeFichero`: `PiezaImportada(leyendo:)`,
   `init(midi:)`, `init(mxl:)`, `init(musicXML:)`, `init(mei:)` e `init(abc:)`.
+- En la consola:
+  - `--dedos` es siempre la digitación (en `escala`, la del piano; en `pentagrama` y `teclado`, con el instrumento o
+    la mano detrás). Cuántos dedos se pueden usar en `digitaciones` va tras `--maximo-de-dedos` (`--max-fingers`).
+  - El formato de la salida se elige con `--formato`, como en `grabar` y `transponer --archivo`:
+    `digitaciones … --formato musicxml`, `hoja … --formato html` y `escala … --formato bibtex`, en lugar de
+    `--musicxml`, `--html` y `--bibtex`. Otro formato lo rechaza y dice el que se admite, y el completado propone los
+    de cada orden.
+  - `--time` es solo el compás (`--compas`); la hora de `escalas --momento` es `--time-of-day`.
 
 ### Novedades
 

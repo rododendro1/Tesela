@@ -165,8 +165,8 @@ extension LineaDeComandosTests {
     }
 
     /// `escalas` busca por el nombre: con unas notas, remite a `identificar --escalas`. `escala` da la línea de las
-    /// referencias de una escala, y `--bibtex`, solo sus obras en BibTeX; una sintética de siete notas tiene a Busoni,
-    /// y una hexatónica alterada, ninguna.
+    /// referencias de una escala, y `--formato bibtex`, solo sus obras en BibTeX; una sintética de siete notas tiene a
+    /// Busoni, y una hexatónica alterada, ninguna.
     /// Un rāga vakra lleva, debajo de sus notas, el orden en que se toca al subir y al bajar; en JSON, `recorrido`.
     @Test func elRecorridoDeUnVakra() throws {
         let texto = salida("escala Do surutti")
@@ -276,7 +276,7 @@ extension LineaDeComandosTests {
                 == "India · thāṭ (1)\n  Kalyāṇ: Do Re Mi Fa♯ Sol La Si\n\nIndia · rāga (5)\n  Bhūpālī: Do Re Mi Sol La\n"
                 + "  Yaman: Do Re Mi Fa♯ Sol La Si\n  Kedār: Do Mi Fa Sol La Si\n  Pūriyā: Do Re♭ Mi Fa♯ La Si\n"
                 + "  Śrī: Do Re♭ Fa♯ Sol Si\n")
-        #expect(salida("scales --time dusk --ingles").contains("Yaman"))
+        #expect(salida("scales --time-of-day dusk --ingles").contains("Yaman"))
         #expect(salida("escalas --momento noche").contains("pathet"))
         #expect(resultado("escalas", "--momento", "siesta").error.contains("no es un momento del día"))
         let reloj = salida("reloj ragas")
@@ -331,13 +331,14 @@ extension LineaDeComandosTests {
                 "\n  referencias: Powers et al. 2001; Levine 1995; Rechberger 2008; Temperley & Tan 2013: 248\n"))
         #expect(salida("escala Re lidio ♯2").contains("\n  referencias: Busoni 1916\n"))
         #expect(!salida("escala Re hexatónica de armónicos").contains("referencias"))
-        let bib = salida("escala Re bayati --bibtex")
+        let bib = salida("escala Re bayati --formato bibtex")
         #expect(bib.hasPrefix("@online{maqamWorld,\n"))
         #expect(bib.contains("@book{touma1996,\n  author = {Touma, Habib Hassan},"))
-        #expect(salida("escala Re dórico --bibtex").hasPrefix("@incollection{powers2001,\n"))
-        #expect(salida("escala Re lidio ♯2 --bibtex").hasPrefix("@book{busoni1916,\n"))
+        #expect(salida("escala Re dórico --formato bibtex").hasPrefix("@incollection{powers2001,\n"))
+        #expect(salida("escala Re lidio ♯2 --formato bibtex").hasPrefix("@book{busoni1916,\n"))
         #expect(
-            salida("escala Re hexatónica de armónicos --bibtex").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            salida("escala Re hexatónica de armónicos --formato bibtex").trimmingCharacters(in: .whitespacesAndNewlines)
+                .isEmpty
         )
     }
 

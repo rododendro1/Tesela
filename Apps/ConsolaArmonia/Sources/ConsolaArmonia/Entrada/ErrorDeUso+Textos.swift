@@ -156,6 +156,8 @@ extension ErrorDeUso {
         case .sinContrapuntoPosible: return TextosDeConsola.traduccion(\.sinContrapuntoPosible)
         case .formatoDePartituraDesconocido(let formato):
             return TextosDeConsola.traduccion { $0.formatoDePartituraDesconocido(formato) }
+        case .formatoDeSalidaDesconocido(let formato, let admitido):
+            return TextosDeConsola.traduccion { $0.formatoDeSalidaDesconocido(formato, admitido) }
         case .faltanAcordesDeLaRealizacion:
             return Self.conEjemplo(\.faltanAcordes, "armonia realizar Do Fa Sol7 Do", "armonia realize C F G7 C")
         case .faltaInstrumento: return Self.conEjemplo(\.faltaInstrumento, Self.digitaciones.0, Self.digitaciones.1)

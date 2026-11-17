@@ -51,7 +51,7 @@ extension LineaDeComandos {
     static func pedidoDeEscala(_ textos: [String], en notacion: Notacion) throws -> PedidoDeEscala {
         // `--dedos piano` es `--dedos`, la digitación de piano.
         var textos = textos
-        if let i = textos.firstIndex(where: OpcionDeOrden.piano.seEscribe), textos.indices.contains(i + 1),
+        if let i = textos.firstIndex(where: OpcionDeOrden.dedos.seEscribe), textos.indices.contains(i + 1),
             instrumentosDeLosDedos.piano.contains(textos[i + 1].lowercased())
         {
             textos.remove(at: i + 1)
@@ -59,14 +59,14 @@ extension LineaDeComandos {
         var argumentos = Argumentos(textos)
         let conAcordes = argumentos.quitarMarca(.acordes)
         let bajando = argumentos.quitarMarca(.bajando)
-        let piano = argumentos.quitarMarca(.piano)
+        let piano = argumentos.quitarMarca(.dedos)
         let modos = argumentos.quitarMarca(.modos)
         let simetria = argumentos.quitarMarca(.simetria)
         let vecinas = argumentos.quitarMarca(.vecinas)
         let parecidas = argumentos.quitarMarca(.parecidas)
         let progresiones = argumentos.quitarMarca(.progresiones)
         let tetracordos = argumentos.quitarMarca(.tetracordos)
-        let bibtex = argumentos.quitarMarca(.bibtex)
+        let bibtex = try argumentos.pideElFormato("bibtex")
         let cuartas = argumentos.quitarMarca(.cuartas)
         let tensionesDeLosGrados = argumentos.quitarMarca(.tensionesDeLosGrados)
         let estadisticas = argumentos.quitarMarca(.estadisticas)
@@ -111,7 +111,7 @@ extension LineaDeComandos {
         if pedido.bibtex { return bien(Referencia.bibtex(escala.tipo.referencias)) }
         var lineas = [describir(escala: escala, conTodosSusAcordes: pedido.conAcordes, movil: contexto.movil, notacion)]
         if let secuencia = pedido.secuencia {
-            let presentada = PresentacionDeEstudioDeEscala.secuencia(
+            let presentada = SecuenciaPresentada(
                 escala, secuencia, octavas: pedido.octavas, sentido: pedido.sentido, en: notacion)
             lineas.append(notacion.texto(\.secuencia) + " " + secuencia.nombre(en: notacion) + ":")
             lineas.append("  " + presentada.notas)
@@ -169,7 +169,7 @@ extension LineaDeComandos {
         }
         if pedido.escalera { lineas += escalasQueSalen(de: escala, .escalera, notacion) }
         if pedido.doce {
-            let hoja = PresentacionDeEstudioDeEscala.enLasDoceTonalidades(
+            let hoja = HojaDeEstudioPresentada(
                 escala, secuencia: pedido.secuencia, en: notacion)
             lineas.append(hoja.titulo + ":")
             lineas += hoja.tonalidades.map { "  " + $0.titulo + ": " + $0.notas }
@@ -184,7 +184,7 @@ extension LineaDeComandos {
             }
         }
         if let otra = pedido.otra {
-            let comparacion = PresentacionDeEstudioDeEscala.comparar(escala, con: otra, en: notacion)
+            let comparacion = ComparacionDeEscalasPresentada(escala, con: otra, en: notacion)
             lineas.append(notacion.texto(\.compararCon) + " " + otra.nombre(en: notacion) + ":")
             lineas.append("  " + notacion.texto(\.notasComunes) + ": " + comparacion.comunes)
             let resto = [comparacion.soloEnOrigen, comparacion.soloEnDestino] + comparacion.cambios
