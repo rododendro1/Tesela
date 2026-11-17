@@ -100,7 +100,7 @@ import Testing
                 _ = try PiezaImportada(leyendo: datos)
                 return nil
             } catch {
-                return error as? ErrorDeLecturaDeFichero
+                return error
             }
         }
         #expect(error(ImportacionMXLTests.zip([("hola.txt", [UInt8]("hola".utf8))])) == .comprimido)

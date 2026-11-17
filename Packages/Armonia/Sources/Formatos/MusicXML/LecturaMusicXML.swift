@@ -21,7 +21,7 @@ extension PiezaImportada {
     ///
     ///     let xml = coral.partitura(duracion: .blanca).musicXML()
     ///     let pieza = try PiezaImportada(musicXML: Data(xml.utf8))
-    public init(musicXML datos: Data) throws {
+    public init(musicXML datos: Data) throws(ErrorDeLecturaDeFichero) {
         let lector = LectorMusicXML()
         try LectorXML.leer(datos, con: lector)
         guard lector.raiz == "score-partwise" else { throw ErrorDeLecturaDeFichero.noEsMusicXMLPorPartes }

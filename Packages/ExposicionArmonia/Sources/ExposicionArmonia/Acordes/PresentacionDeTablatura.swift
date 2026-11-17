@@ -26,7 +26,8 @@ public enum PresentacionDeTablatura {
         }
         let acordes = digitaciones.indices.map { i in i < acordes.count ? acordes[i] : nil }
         var partitura = Digitacion.partitura(
-            digitaciones.map { Digitacion(mastil: $0.mastil, trastes: $0.trastes) }, acordes: [], titulo: titulo)
+            digitaciones.map { Digitacion(mastil: $0.mastil, trastes: $0.trastes) }, acordes: [],
+            encabezado: Encabezado(titulo: titulo))
         // Los cifrados que se dan, y la ortografía de cada uno; las digitaciones sin acorde, como salen.
         var linea = partitura.pentagramas[0].voces[0]
         var porEvento = linea.porEvento

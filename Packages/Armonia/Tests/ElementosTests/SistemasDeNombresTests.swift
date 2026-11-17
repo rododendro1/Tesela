@@ -8,18 +8,18 @@ import Testing
     @Test func familias() {
         #expect(SistemaDeNombres.bizantino.familia == .fija)
         #expect(SistemaDeNombres.sargam.familia == .movil)
-        #expect(SistemaDeNombres(nombre: "Bizantino") == .bizantino)
-        #expect(SistemaDeNombres(nombre: "byzantine") == .bizantino)
-        #expect(SistemaDeNombres(nombre: "SARGAM") == .sargam)
-        #expect(SistemaDeNombres(nombre: "solfeo") == nil)
-        #expect(SistemaDeNombres(nombre: "Jūni-ritsu") == .luJaponeses)
-        #expect(SistemaDeNombres(nombre: "luChinos") == .luChinos)
-        #expect(SistemaDeNombres(nombre: "iroha") == .japones)
+        #expect(SistemaDeNombres.buscar(nombre: "Bizantino") == .bizantino)
+        #expect(SistemaDeNombres.buscar(nombre: "byzantine") == .bizantino)
+        #expect(SistemaDeNombres.buscar(nombre: "SARGAM") == .sargam)
+        #expect(SistemaDeNombres.buscar(nombre: "solfeo") == nil)
+        #expect(SistemaDeNombres.buscar(nombre: "Jūni-ritsu") == .luJaponeses)
+        #expect(SistemaDeNombres.buscar(nombre: "luChinos") == .luChinos)
+        #expect(SistemaDeNombres.buscar(nombre: "iroha") == .japones)
         #expect(
             SistemaDeNombres.allCases.filter { $0.familia == .movil }
                 == [.sargam, .jianpu, .gongche, .wusheng, .carnatico, .tonicSolFa, .notasDeForma])
-        #expect(SistemaDeNombres(nombre: "shape notes") == .notasDeForma)
-        #expect(SistemaDeNombres(nombre: "Tonic sol-fa") == .tonicSolFa)
+        #expect(SistemaDeNombres.buscar(nombre: "shape notes") == .notasDeForma)
+        #expect(SistemaDeNombres.buscar(nombre: "Tonic sol-fa") == .tonicSolFa)
     }
 
     @Test func japones() throws {
@@ -268,7 +268,7 @@ import Testing
         #expect(try arabe.leer("صول") == Nota("Sol"))
         #expect(try hebreo.leer("פה#") == Nota("Fa#"))
         #expect(arabe.familia == .fija)
-        #expect(SistemaDeNombres(nombre: "Solfeo hebreo") == .solfeoHebreo)
+        #expect(SistemaDeNombres.buscar(nombre: "Solfeo hebreo") == .solfeoHebreo)
     }
 
     @Test func idaYVuelta() throws {

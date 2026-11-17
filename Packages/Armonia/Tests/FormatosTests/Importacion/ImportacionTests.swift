@@ -248,7 +248,7 @@ import Testing
             _ = try PiezaImportada(leyendo: datos)
             return nil
         } catch {
-            return error as? ErrorDeLecturaDeFichero
+            return error
         }
     }
 

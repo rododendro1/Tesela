@@ -145,7 +145,7 @@ public struct PiezaImportada: Hashable, Sendable {
 
     /// Lee un fichero MIDI estándar, MusicXML (comprimido o no), MEI o ABC, según lo que contenga (no según su
     /// extensión). Lanza `ErrorDeLecturaDeFichero` si no es ninguno de ellos, está dañado o no tiene notas.
-    public init(leyendo datos: Data) throws {
+    public init(leyendo datos: Data) throws(ErrorDeLecturaDeFichero) {
         let inicio = [UInt8](datos.prefix(4))
         if inicio == Array("MThd".utf8) {
             try self.init(midi: datos)

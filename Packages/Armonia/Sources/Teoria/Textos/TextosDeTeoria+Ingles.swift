@@ -88,6 +88,7 @@ extension TextosDeTeoria {
         funcionSubdominante: "subdominant",
         funcionDominante: "dominant",
         analisisSinAcordes: "There are no chords to analyze.",
+        transformacionSinTriada: "The chord is not a major or minor triad: neo-Riemannian transformations only apply to those.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "chords {1}",

@@ -1410,7 +1410,7 @@ import Hexagonos
         let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
         let grados = Tonalidad(.do).analizar(progresion).cifrados
-        comprobar(Partitura(acordes: voces, titulo: "ii–V–I", porEvento: .init(grados: .enOrden(grados))).svg().contains(">V7</text>"), #"true"#, doc, 3)
+        comprobar(Partitura(acordes: voces, encabezado: Encabezado(titulo: "ii–V–I"), porEvento: .init(grados: .enOrden(grados))).svg().contains(">V7</text>"), #"true"#, doc, 3)
         comprobar(Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>"), #"true"#, doc, 4)
         comprobar(Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras"), #"true"#, doc, 5)
     }

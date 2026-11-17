@@ -14,7 +14,7 @@ extension PiezaImportada {
     /// Lee una partitura MusicXML comprimida (.mxl).
     ///
     ///     let pieza = try PiezaImportada(mxl: Data(contentsOf: URL(fileURLWithPath: "coral.mxl")))
-    public init(mxl datos: Data) throws {
+    public init(mxl datos: Data) throws(ErrorDeLecturaDeFichero) {
         let zip = try ArchivoZip(bytes: [UInt8](datos))
         guard let partitura = try zip.partitura() else { throw ErrorDeLecturaDeFichero.comprimido }
         try self.init(musicXML: Data(partitura))
@@ -38,7 +38,7 @@ struct ArchivoZip {
     /// malicioso que crece sin fin no agota la memoria.
     static let maximo = 64 << 20
 
-    init(bytes: [UInt8]) throws {
+    init(bytes: [UInt8]) throws(ErrorDeLecturaDeFichero) {
         self.bytes = bytes
         // El final del directorio central: 22 bytes y un comentario de hasta 65 535 al final del fichero.
         guard bytes.count >= 22 else { throw ErrorDeLecturaDeFichero.comprimido }
@@ -71,7 +71,7 @@ struct ArchivoZip {
 
     /// La partitura: la que nombra `META-INF/container.xml` o, si no lo hay, el primer .musicxml o .xml que no
     /// esté en `META-INF`. `nil` si no hay ninguna.
-    func partitura() throws -> [UInt8]? {
+    func partitura() throws(ErrorDeLecturaDeFichero) -> [UInt8]? {
         var ruta: String?
         if let contenedor = try contenido(de: "META-INF/container.xml") {
             ruta = ArchivoZip.rutaDeLaPartitura(String(decoding: contenedor, as: UTF8.self))
@@ -86,7 +86,7 @@ struct ArchivoZip {
     }
 
     /// Lo que contiene un fichero del zip, descomprimido; `nil` si no está.
-    func contenido(de nombre: String) throws -> [UInt8]? {
+    func contenido(de nombre: String) throws(ErrorDeLecturaDeFichero) -> [UInt8]? {
         guard let entrada = entradas.first(where: { $0.nombre == nombre }) else { return nil }
         // Los tamaños de 32 bits llenos son de ZIP64, que no se lee.
         guard entrada.comprimido != 0xFFFF_FFFF, entrada.descomprimido <= ArchivoZip.maximo,
@@ -191,7 +191,7 @@ struct Inflado {
             + [Int](repeating: 7, count: 24) + [Int](repeating: 8, count: 8))
     private static let distanciasFijas = Huffman(longitudes: [Int](repeating: 5, count: 30))
 
-    mutating func descomprimir() throws {
+    mutating func descomprimir() throws(ErrorDeLecturaDeFichero) {
         var final = 0
         repeat {
             final = try leer(1)
@@ -204,7 +204,7 @@ struct Inflado {
         } while final == 0
     }
 
-    private mutating func leer(_ n: Int) throws -> Int {
+    private mutating func leer(_ n: Int) throws(ErrorDeLecturaDeFichero) -> Int {
         while cuantos < n {
             guard posicion < entrada.count else { throw ErrorDeLecturaDeFichero.comprimido }
             bits |= Int(entrada[posicion]) << cuantos
@@ -217,7 +217,7 @@ struct Inflado {
         return valor
     }
 
-    private mutating func simbolo(_ codigo: Huffman) throws -> Int {
+    private mutating func simbolo(_ codigo: Huffman) throws(ErrorDeLecturaDeFichero) -> Int {
         var valor = 0
         var primero = 0
         var indice = 0
@@ -233,7 +233,7 @@ struct Inflado {
     }
 
     /// Un bloque sin comprimir: empieza en el byte siguiente, con su largo y su complemento.
-    private mutating func guardado() throws {
+    private mutating func guardado() throws(ErrorDeLecturaDeFichero) {
         bits = 0
         cuantos = 0
         guard posicion + 4 <= entrada.count else { throw ErrorDeLecturaDeFichero.comprimido }
@@ -247,7 +247,7 @@ struct Inflado {
     }
 
     /// Un bloque con sus propios códigos, que vienen al principio, comprimidos a su vez.
-    private mutating func dinamico() throws {
+    private mutating func dinamico() throws(ErrorDeLecturaDeFichero) {
         let literales = try leer(5) + 257
         let distancias = try leer(5) + 1
         let delCodigo = try leer(4) + 4
@@ -278,7 +278,7 @@ struct Inflado {
     }
 
     /// Los símbolos de un bloque comprimido: literales y copias de lo ya escrito, hasta el fin de bloque (256).
-    private mutating func codigos(_ literales: Huffman, _ distancias: Huffman) throws {
+    private mutating func codigos(_ literales: Huffman, _ distancias: Huffman) throws(ErrorDeLecturaDeFichero) {
         while true {
             var leido = try simbolo(literales)
             if leido < 256 {

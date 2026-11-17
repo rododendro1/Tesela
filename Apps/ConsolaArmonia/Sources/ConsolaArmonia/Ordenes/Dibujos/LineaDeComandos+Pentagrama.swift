@@ -66,7 +66,7 @@ extension LineaDeComandos {
             let cifras = conBajoCifrado ? bajoCifrado(de: acordes, en: tonalidad) : []
             let porEvento = Partitura.AnotacionesPorEvento(
                 cifrados: .enOrden(acordes), grados: .enOrden(grados), bajoCifrado: .enOrden(cifras))
-            let partitura = Partitura(acordes: voces, titulo: titulo, porEvento: porEvento)
+            let partitura = Partitura(acordes: voces, encabezado: Encabezado(titulo: titulo), porEvento: porEvento)
             svg = partitura.svg(opciones: opciones)
         case "melodia":
             return try pentagramaDeMelodia(&argumentos, opciones, notacion)

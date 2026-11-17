@@ -56,6 +56,10 @@
 /// La octava de las alturas se escribe con cifras (La4) o como subíndice (La₄). Las notaciones compactas
 /// (`.compacta(.espanol)`, `.compacta(.aleman)`, `.compacta(.frances)`…) la escriben como subíndice y las demás con
 /// cifras; `conOctavas(_:)` la cambia.
+///
+/// En las firmas, la notación va tras `en:` («el nombre en español»: `nombre(en:)`, `texto(en:)`). Cuando `en:` ya
+/// es el contexto en que se lee algo (una tonalidad o una escala: `RelacionesPresentadas(_:en:notacion:)`) o una
+/// tradición (`PeriodoMusical.nombreConAnios(en:notacion:)`), la notación va tras `notacion:`.
 public struct Notacion: Hashable, Sendable, CaseIterable, Codable {
     /// Cómo se escriben los nombres de nota.
     public let escritura: EscrituraDeNotas

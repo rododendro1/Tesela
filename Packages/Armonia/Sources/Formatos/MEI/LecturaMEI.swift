@@ -25,7 +25,7 @@ extension PiezaImportada {
     ///
     ///     let mei = coral.partitura(duracion: .blanca).mei()
     ///     let pieza = try PiezaImportada(mei: Data(mei.utf8))
-    public init(mei datos: Data) throws {
+    public init(mei datos: Data) throws(ErrorDeLecturaDeFichero) {
         let lector = LectorMEI()
         try LectorXML.leer(datos, con: lector)
         guard lector.raiz == "mei" else { throw ErrorDeLecturaDeFichero.noEsMusicXMLPorPartes }

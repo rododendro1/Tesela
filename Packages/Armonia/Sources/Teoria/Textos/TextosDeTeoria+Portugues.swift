@@ -88,6 +88,7 @@ extension TextosDeTeoria {
         funcionSubdominante: "subdominante",
         funcionDominante: "dominante",
         analisisSinAcordes: "Não há acordes para analisar.",
+        transformacionSinTriada: "O acorde não é uma tríade maior nem menor: as transformações neorriemannianas só se aplicam a elas.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "acordes {1}",

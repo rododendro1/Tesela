@@ -88,6 +88,7 @@ extension TextosDeTeoria {
         funcionSubdominante: "sous-dominante",
         funcionDominante: "dominante",
         analisisSinAcordes: "Il n’y a aucun accord à analyser.",
+        transformacionSinTriada: "L'accord n'est pas un accord parfait majeur ou mineur : les transformations néo-riemanniennes ne s'appliquent qu'à eux.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "accords {1}",

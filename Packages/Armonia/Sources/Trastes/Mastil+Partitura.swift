@@ -35,20 +35,20 @@ extension Tablatura {
 extension Digitacion {
     /// La digitación en una partitura: el acorde que suena, en una redonda, con su tablatura debajo. Con el acorde
     /// (`acorde` o, si no se da, ``acorde``), escrito con sus notas (Si♭, no La♯, en Do7), con el cifrado encima y,
-    /// sin `titulo`, titulado con él.
+    /// si el `encabezado` no trae título, titulado con él.
     ///
     ///     let mastil = Mastil(.guitarra)
     ///     mastil.digitaciones(de: Acorde("Do"))[0].partitura().musicXML()   // en Formatos
-    public func partitura(de acorde: Acorde? = nil, titulo: String? = nil) -> Partitura {
-        Digitacion.partitura([self], acordes: [acorde ?? self.acorde].compactMap { $0 }, titulo: titulo)
+    public func partitura(de acorde: Acorde? = nil, encabezado: Encabezado = Encabezado()) -> Partitura {
+        Digitacion.partitura([self], acordes: [acorde ?? self.acorde].compactMap { $0 }, encabezado: encabezado)
     }
 
     /// Unas digitaciones, una detrás de otra (una redonda cada una), con la tablatura debajo. Cada una se escribe con
     /// la ortografía de su acorde: el de `acordes` (uno por digitación, en orden) o, si no se da, el suyo
-    /// (``acorde``). Si se saben los de todas, los cifrados van encima y, sin `titulo`, la partitura se titula con
-    /// ellos.
+    /// (``acorde``). Si se saben los de todas, los cifrados van encima y, si el `encabezado` no trae título, la
+    /// partitura se titula con ellos.
     public static func partitura(
-        _ digitaciones: [Digitacion], acordes: [Acorde] = [], titulo: String? = nil
+        _ digitaciones: [Digitacion], acordes: [Acorde] = [], encabezado: Encabezado = Encabezado()
     ) -> Partitura {
         let suyos = digitaciones.indices.map { i in i < acordes.count ? acordes[i] : digitaciones[i].acorde }
         let columnas = zip(digitaciones, suyos).map { digitacion, acorde in
@@ -62,46 +62,46 @@ extension Digitacion {
         // Los cifrados, solo si se saben todos.
         let todos = cifrados.count == suyos.count
         let porEvento = Partitura.AnotacionesPorEvento(cifrados: todos ? .enOrden(cifrados) : [:])
-        return Partitura(acordes: columnas, titulo: titulo, porEvento: porEvento, tablatura: tablatura)
+        return Partitura(acordes: columnas, encabezado: encabezado, porEvento: porEvento, tablatura: tablatura)
     }
 }
 
 extension EscalaEnElMastil {
     /// La posición en una partitura: sus notas en el orden en que se tocan, con la tablatura debajo. Con la escala
     /// (`escala` o, si no se da, ``escala``), escritas con su ortografía y su armadura
-    /// (`Escala.partitura(tocadaEn:titulo:ritmo:porEvento:tablatura:)`); sin ella, como las da el mástil. Con
+    /// (`Escala.partitura(tocadaEn:encabezado:ritmo:porEvento:tablatura:)`); sin ella, como las da el mástil. Con
     /// `ritmo: .uniforme(…)`, con ritmo.
     ///
     ///     let posiciones = Mastil(.guitarra).posicionesCAGED(de: Escala("Sol mayor"))
     ///     posiciones[0].partitura(ritmo: .uniforme(.corchea)).musicXML()   // en Formatos
     public func partitura(
-        de escala: Escala? = nil, titulo: String? = nil, ritmo: Partitura.Ritmo = .libre
+        de escala: Escala? = nil, encabezado: Encabezado = Encabezado(), ritmo: Partitura.Ritmo = .libre
     ) -> Partitura {
         let tablatura = Tablatura(mastil, unaPorNota: posiciones)
         guard let escala = escala ?? self.escala else {
-            return Partitura.tocadaEnElMastil(alturas, titulo: titulo, ritmo: ritmo, tablatura: tablatura)
+            return Partitura.tocadaEnElMastil(alturas, encabezado: encabezado, ritmo: ritmo, tablatura: tablatura)
         }
-        return escala.partitura(tocadaEn: alturas, titulo: titulo, ritmo: ritmo, tablatura: tablatura)
+        return escala.partitura(tocadaEn: alturas, encabezado: encabezado, ritmo: ritmo, tablatura: tablatura)
     }
 }
 
 extension ArpegioEnElMastil {
     /// El arpegio en una partitura: sus notas en el orden en que se tocan, con los dedos (``dedos``) encima y la
     /// tablatura debajo. Con el acorde (`acorde` o, si no se da, ``acorde``), escritas con su ortografía y con el
-    /// cifrado encima (`Acorde.partitura(arpegiadoEn:titulo:ritmo:porEvento:tablatura:)`); sin él, como las da el
+    /// cifrado encima (`Acorde.partitura(arpegiadoEn:encabezado:ritmo:porEvento:tablatura:)`); sin él, como las da el
     /// mástil. Con `ritmo: .uniforme(…)`, con ritmo.
     public func partitura(
-        de acorde: Acorde? = nil, titulo: String? = nil, ritmo: Partitura.Ritmo = .libre
+        de acorde: Acorde? = nil, encabezado: Encabezado = Encabezado(), ritmo: Partitura.Ritmo = .libre
     ) -> Partitura {
         var porEvento = Partitura.AnotacionesPorEvento()
         for (i, dedo) in dedos.enumerated() where dedo > 0 { porEvento.dedos[i] = [dedo] }
         let tablatura = Tablatura(mastil, unaPorNota: posiciones)
         guard let acorde = acorde ?? self.acorde else {
             return Partitura.tocadaEnElMastil(
-                alturas, titulo: titulo, ritmo: ritmo, porEvento: porEvento, tablatura: tablatura)
+                alturas, encabezado: encabezado, ritmo: ritmo, porEvento: porEvento, tablatura: tablatura)
         }
         return acorde.partitura(
-            arpegiadoEn: alturas, titulo: titulo, ritmo: ritmo, porEvento: porEvento, tablatura: tablatura)
+            arpegiadoEn: alturas, encabezado: encabezado, ritmo: ritmo, porEvento: porEvento, tablatura: tablatura)
     }
 }
 
@@ -109,7 +109,8 @@ extension Partitura {
     /// Unas alturas del mástil, una tras otra, sin escala ni acorde que las escriba: con lo que se anota en cada una y
     /// la tablatura (sus pulsaciones, si `porEvento` no trae las suyas).
     fileprivate static func tocadaEnElMastil(
-        _ alturas: [Altura], titulo: String?, ritmo: Ritmo, porEvento: AnotacionesPorEvento = AnotacionesPorEvento(),
+        _ alturas: [Altura], encabezado: Encabezado, ritmo: Ritmo,
+        porEvento: AnotacionesPorEvento = AnotacionesPorEvento(),
         tablatura: Tablatura
     ) -> Partitura {
         let eventos = alturas.indices.map {
@@ -120,7 +121,7 @@ extension Partitura {
         if anotaciones.pulsaciones.isEmpty { anotaciones.pulsaciones = tablatura.pulsaciones }
         let linea = Linea(voz, porEvento: anotaciones)
         return Partitura(
-            pentagramas: [Pentagrama(voces: [linea], tablatura: tablatura)], encabezado: Encabezado(titulo: titulo),
+            pentagramas: [Pentagrama(voces: [linea], tablatura: tablatura)], encabezado: encabezado,
             dibujaElRitmo: ritmo != .libre)
     }
 }

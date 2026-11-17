@@ -88,6 +88,7 @@ extension TextosDeTeoria {
         funcionSubdominante: "Subdominante",
         funcionDominante: "Dominante",
         analisisSinAcordes: "Es gibt keine Akkorde zu analysieren.",
+        transformacionSinTriada: "Der Akkord ist kein Dur- oder Molldreiklang: Neoriemannsche Transformationen gelten nur für diese.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "Akkorde {1}",
