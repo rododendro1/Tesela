@@ -54,6 +54,25 @@ import Testing
         #expect(ajeno.allSatisfy { $0.recurso == .dominanteSecundaria })
     }
 
+    /// La disminuida de nota común, delante del I y del V mayores de una tonalidad mayor, y que el análisis lee como
+    /// tal.
+    @Test func laDisminuidaDeNotaComun() {
+        #expect(propuestas(.disminuidaDeNotaComun, en: 0) == [[Acorde("Re#°7"), Acorde("Do")]])
+        #expect(propuestas(.disminuidaDeNotaComun, en: 3) == [[Acorde("La#°7"), Acorde("Sol7")]])
+        #expect(propuestas(.disminuidaDeNotaComun, en: 1) == [])
+        // Si ya la tiene delante, no; y en menor, tampoco.
+        let yaEsta = Tonalidad(.do).rearmonizaciones(de: Acorde("Do"), en: 1, anterior: Acorde("Re#°7"))
+        #expect(!yaEsta.contains { $0.recurso == .disminuidaDeNotaComun })
+        let enMenor = Tonalidad(.la, .menor).rearmonizaciones(de: Acorde("Mi7"))
+        #expect(!enMenor.contains { $0.recurso == .disminuidaDeNotaComun })
+        let cambio = propuestas(.disminuidaDeNotaComun, en: 0)[0]
+        let analisis = Tonalidad(.do).analizar(cambio)
+        #expect(analisis.acordes[0].categoria == .disminuidaDeNotaComun(de: 1))
+        #expect(
+            Rearmonizacion.Recurso.disminuidaDeNotaComun.nombre(en: .conPalabras(.ingles))
+                == "common-tone diminished seventh")
+    }
+
     @Test func elIIVYElBackdoor() {
         // El Lam (vi) y el Rem7 (ii), menores, con su ii–V menor.
         #expect(propuestas(.iiV, en: 1) == [[Acorde(.si, .semidisminuido), Acorde("Mi7"), Acorde("Lam")]])

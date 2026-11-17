@@ -134,6 +134,7 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "доминанта «бэкдор»",
         rearmonizacionIIRelativo: "родственная ii",
         rearmonizacionDisminuido: "уменьшённая замена",
+        rearmonizacionDisminuidaDeNotaComun: "уменьшённый септаккорд с общим тоном",
         secuenciaTerceras: "терциями",
         secuenciaCuartas: "квартами",
         secuenciaGruposDeTres: "группами по три",

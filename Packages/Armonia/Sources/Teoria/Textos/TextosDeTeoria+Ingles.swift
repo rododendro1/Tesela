@@ -134,6 +134,7 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "backdoor",
         rearmonizacionIIRelativo: "related ii",
         rearmonizacionDisminuido: "diminished substitution",
+        rearmonizacionDisminuidaDeNotaComun: "common-tone diminished seventh",
         secuenciaTerceras: "in thirds",
         secuenciaCuartas: "in fourths",
         secuenciaGruposDeTres: "in groups of three",

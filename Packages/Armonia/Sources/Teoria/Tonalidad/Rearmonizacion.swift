@@ -35,6 +35,9 @@ public struct Rearmonizacion: Hashable, Sendable {
         /// Una dominante por el acorde disminuido sobre su tercera: es ella sin la fundamental y con la novena menor
         /// (Sol7 → Si°7). Solo para un acorde suelto (``Acorde/sustituciones(en:)``).
         case disminuido
+        /// El I o el V de una tonalidad mayor, adornado por la séptima disminuida de nota común: la que tiene su
+        /// fundamental y va a él sin ser su sensible (Do → Re♯°7 Do; Sol → La♯°7 Sol).
+        case disminuidaDeNotaComun
     }
 
     public let recurso: Recurso
@@ -134,6 +137,13 @@ extension Tonalidad {
                     .backdoor,
                     [Acorde(tonica + .cuartaJusta, .menorSeptima), Acorde(tonica + .septimaMenor, .dominanteSeptima)])
             }
+
+            // La séptima disminuida de nota común, delante del I o del V mayores de una tonalidad mayor: sobre la
+            // segunda aumentada de su fundamental (Re♯°7 delante de Do), si no la tiene ya delante.
+            if modo == .mayor, grado == 1 || grado == 5, acorde.tipo.esMayor {
+                let disminuida = Acorde(acorde.fundamental + .segundaAumentada, .disminuidoSeptima)
+                if anterior != disminuida { proponer(.disminuidaDeNotaComun, [disminuida, acorde]) }
+            }
         }
         return propuestas
     }
@@ -179,6 +189,8 @@ extension Rearmonizacion.Recurso: Nombrable {
             return TextosDeTeoria.traduccion(\.rearmonizacionIIRelativo)
         case .disminuido:
             return TextosDeTeoria.traduccion(\.rearmonizacionDisminuido)
+        case .disminuidaDeNotaComun:
+            return TextosDeTeoria.traduccion(\.rearmonizacionDisminuidaDeNotaComun)
         }
     }
 }

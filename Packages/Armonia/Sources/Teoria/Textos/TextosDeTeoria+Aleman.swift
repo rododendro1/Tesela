@@ -134,6 +134,7 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "Backdoor-Dominante",
         rearmonizacionIIRelativo: "zugehörige II",
         rearmonizacionDisminuido: "verminderte Substitution",
+        rearmonizacionDisminuidaDeNotaComun: "verminderter Septakkord mit Liegeton",
         secuenciaTerceras: "in Terzen",
         secuenciaCuartas: "in Quarten",
         secuenciaGruposDeTres: "in Dreiergruppen",

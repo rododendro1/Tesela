@@ -134,6 +134,7 @@ extension TextosDeTeoria {
         rearmonizacionBackdoor: "dominante backdoor",
         rearmonizacionIIRelativo: "ii relativo",
         rearmonizacionDisminuido: "substituto diminuto",
+        rearmonizacionDisminuidaDeNotaComun: "diminuta de nota comum",
         secuenciaTerceras: "em terças",
         secuenciaCuartas: "em quartas",
         secuenciaGruposDeTres: "em grupos de três",
