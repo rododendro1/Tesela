@@ -87,9 +87,13 @@ import Testing
         modelo.tonica = .re
         let grupeto = try #require(modelo.tarjetas(en: espanol).first)
         #expect(grupeto.nombre == "grupeto invertido")
-        #expect(grupeto.detalle == "−1 0 +1 0 · Do♯₄ Re₄ Mi₄ Re₄")
+        #expect(grupeto.detalle == "−1 0 +1 0 · Do♯₄:16 Re₄:16 Mi₄:16 Re₄:16")
         #expect(!grupeto.referencias.isEmpty && grupeto.destino == nil)
-        #expect(grupeto.sonido.notas.map(\.midi) == [61, 62, 64, 62, 62])
+        #expect(grupeto.sonido.notas.map(\.midi) == [61, 62, 64, 62])
+        // La apoyatura, con la mitad de la negra.
+        modelo.texto = "apoyatura superior"
+        let apoyatura = try #require(modelo.tarjetas(en: espanol).first)
+        #expect(apoyatura.detalle.hasSuffix("Mi₄:8 Re₄:8"))
     }
 
     @Test func losInstrumentosConSuFamilia() throws {

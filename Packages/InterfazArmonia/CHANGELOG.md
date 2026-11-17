@@ -2,6 +2,8 @@
 
 ## Sin publicar
 
+- La tarjeta de un ornamento del catálogo da cada nota con su figura sobre una negra y suena con ese ritmo
+  (`OrnamentoConNombre.tocado(sobre:en:duracion:)`): la apoyatura, con la mitad de la nota.
 - El diagrama del mástil dibuja cada instrumento como es: sin trastes en los que no los tienen, solo los suyos en el
   dulcémele (numerados como él, con el 6½) y la quinta cuerda del banjo desde el 5.º traste; al tocarlo, la posición
   es la de la cuerda. `PresentacionDeMastil.trastes(de:en:)` dice qué se dibuja.

@@ -4,6 +4,16 @@
 
 ### Novedades
 
+- Diez acordes con nombre más: los de jazz que faltaban como tipos con nombre (séptima con decimotercera menor,
+  con novena y decimotercera menores, con quinta y novena aumentadas, la séptima suspendida con novena menor o
+  «acorde frigio», la sexta suspendida, la undécima añadida y la menor con undécima añadida), el disminuido con
+  séptima mayor, que se escribe `°(maj7)`, y los dos tetracordos de todos los intervalos de Forte (4-Z15 y 4-Z29),
+  con la referencia `forte1973`. Sus escalas: el 7(♭9,♭13) va con el frigio dominante, el 7sus4(♭9) con el frigio y
+  el °(maj7) con la disminuida.
+- La rearmonización propone la séptima disminuida de nota común delante del I y del V mayores de una tonalidad mayor
+  (`Rearmonizacion.Recurso.disminuidaDeNotaComun`: Do → Re♯°7 Do).
+- MusicXML escribe el traste como lo numera quien toca («6½» en el dulcémele) en `<other-technical>`, junto al
+  `<fret>` en semitonos.
 - Los trastes, como los numera quien toca: `Mastil.rotulo(de:)` da el «6½» del dulcémele (sus trastes diatónicos,
   contados uno tras otro) y el «7» de la quinta cuerda del banjo pisada dos trastes por encima de su cejilla, y la
   tablatura los escribe así (`Tablatura.Pulsacion.rotulo`). `trasteDelMastil(_:)`,

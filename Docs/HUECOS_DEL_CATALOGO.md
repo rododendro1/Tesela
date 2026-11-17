@@ -6,7 +6,7 @@ las fuentes de cuatro acordes de nombre propio.
 ## Resumen
 
 Todas las escalas de otras tradiciones citan ya alguna obra. Quedan 13 escalas occidentales sin ninguna referencia y
-dos acordes sin fuente (m(add9) y el alfa de Lendvai). El catálogo tiene 539 escalas en 50 listas de tradición y 66 acordes, todos con nombre en
+cuatro acordes sin fuente (m(add9), add11, m(add11) y el alfa de Lendvai). El catálogo tiene 539 escalas en 50 listas de tradición y 76 acordes, todos con nombre en
 los trece idiomas. Las cifras de escalas y de listas las comprueba `comprobar_catalogo.py` con las del catálogo: si
 cambian, hay que cambiarlas aquí. Las siete europeas y las danzas (passamezzo, ruggiero, bergamasca, chacona y pasacalle) ya citan una
 obra cada una.
@@ -208,7 +208,7 @@ de Hicazkâr y Suzinak no dicen ni eso. Sin una obra con su año no se les pone 
 
 ## Acordes que faltaban
 
-Hay 46 acordes genéricos y 20 de nombre propio. Los que faltaban ya están, pero algunos sin fuente:
+Hay 54 acordes genéricos y 22 de nombre propio. Los que faltaban ya están, pero algunos sin fuente:
 
 | Acorde | Notas | Fuente | Qué queda |
 | --- | --- | --- | --- |
@@ -225,6 +225,11 @@ Los seis últimos de nombre propio son disposiciones del jazz y acordes del sigl
 estructuras superiores II, VI y ♭VI citan a Levine (1989, y 1995 las estructuras superiores), y el acorde por quintas y
 el racimo cromático, a Persichetti (1961). Sus notas son las que se enseñan habitualmente; falta ver en los libros las
 páginas, y si Levine escribe las estructuras superiores con la séptima en el bajo o con el tritono.
+
+Los dos últimos son los tetracordos de todos los intervalos, 4-Z15 (Do Re♭ Mi Fa♯) y 4-Z29 (Do Re♭ Mi♭ Sol), que
+citan a Forte (1973); que cada uno tenga cada clase de intervalo una vez lo comprueban las pruebas. Entre los
+genéricos, seis de los que se añadieron (7(♭13), 7(♭9,♭13), 7(♯5,♯9), 7sus4(♭9), 6sus4 y el °(maj7)) citan a
+Levine (1995) sin página; add11 y m(add11), como m(add9), no tienen fuente.
 
 El de Hendrix cita a Shapiro y Glebbeek (1995: 144), y el mu, la introducción de Becker y Fagen al cancionero de
 Steely Dan, que se lee en The Steely Dan Archive. El acorde del sueño de La Monte Young (Sol Do Do♯ Re) cita a
@@ -273,6 +278,9 @@ Lo que no ha entrado en los catálogos de ritmos, temperamentos, progresiones e 
   octava), y el mástil de `Trastes` cuenta en semitonos; con trastes cromáticos daría posiciones
   falsas. El koto no tiene mástil: trece cuerdas al aire sobre puentes móviles, que se afinan para cada pieza y se
   aprietan para subir la nota. Las afinaciones del koto ya están como escalas (Hirajōshi, Kumoijōshi…).
+- **Los acordes de Messiaen:** *Technique de mon langage musical* (1944) los define en el capítulo XIV, «L'accord
+  sur dominante» y «L'accord de la résonance» (p. 50, según el índice), pero no se ha podido leer ese capítulo, y sin
+  él no se sabe qué notas lleva cada uno. Entrarán cuando se pueda leer.
 - **Los trastes microtonales:** el mástil ya sabe de trastes que faltan (los del dulcémele, con su 6½) y de cuerdas
   cortas (la quinta del banjo), pero sus posiciones siguen siendo semitonos enteros. Para el bağlama haría falta
   contar las posiciones en cents y saber dónde está cada traste: en la práctica hay de 17 a 24 por octava, según el
