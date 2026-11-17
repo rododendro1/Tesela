@@ -46,6 +46,14 @@ extension NombresDeAcordes {
         .init(.mayorSeptimaMayorDecimotercera, "major thirteenth"),
         .init(.menorSextaNovena, "minor six-nine"),
         .init(.menorNovenaAnadida, "minor added ninth"),
+        .init(.dominanteDecimoterceraMenor, "dominant seventh flat thirteen"),
+        .init(.dominanteNovenaMenorDecimoterceraMenor, "dominant seventh flat nine flat thirteen"),
+        .init(.dominanteQuintaAumentadaNovenaAumentada, "dominant seventh sharp five sharp nine"),
+        .init(.sus4SeptimaNovenaMenor, "suspended flat nine", alias: ["Phrygian chord"]),
+        .init(.sus4Sexta, "six suspended fourth"),
+        .init(.mayorUndecimaAnadida, "added eleventh"),
+        .init(.menorUndecimaAnadida, "minor added eleventh"),
+        .init(.disminuidoSeptimaMayor, "diminished major seventh"),
         .init(.sextaAumentadaItaliana, "Italian augmented sixth"),
         .init(.sextaAumentadaFrancesa, "French augmented sixth"),
         .init(.sextaAumentadaAlemana, "German augmented sixth"),
@@ -70,5 +78,7 @@ extension NombresDeAcordes {
         .init(.estructuraSuperiorBemolVI, "upper structure ♭VI", alias: ["upper structure bVI"]),
         .init(.porQuintas, "quintal chord"),
         .init(.racimo, "chromatic cluster", alias: ["tone cluster", "cluster"]),
+        .init(.todosLosIntervalosZ15, "all-interval tetrachord 4-Z15"),
+        .init(.todosLosIntervalosZ29, "all-interval tetrachord 4-Z29"),
     ])
 }

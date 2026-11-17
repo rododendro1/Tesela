@@ -46,6 +46,14 @@ extension NombresDeAcordes {
         .init(.mayorSeptimaMayorDecimotercera, "stort tredecimackord"),
         .init(.menorSextaNovena, "moll-sext-nonackord"),
         .init(.menorNovenaAnadida, "moll med tillagd nona"),
+        .init(.dominanteDecimoterceraMenor, "dominantseptimackord med liten tredecima"),
+        .init(.dominanteNovenaMenorDecimoterceraMenor, "dominantseptimackord med liten nona och liten tredecima"),
+        .init(.dominanteQuintaAumentadaNovenaAumentada, "dominantseptimackord med överstigande kvint och överstigande nona"),
+        .init(.sus4SeptimaNovenaMenor, "dominantseptimackord med kvartförhållning och liten nona", alias: ["frygiskt ackord"]),
+        .init(.sus4Sexta, "sextackord med kvartförhållning"),
+        .init(.mayorUndecimaAnadida, "dur med tillagd undecima"),
+        .init(.menorUndecimaAnadida, "moll med tillagd undecima"),
+        .init(.disminuidoSeptimaMayor, "förminskat ackord med stor septima"),
         .init(.sextaAumentadaItaliana, "italienskt överstigande sextackord"),
         .init(.sextaAumentadaFrancesa, "franskt överstigande sextackord"),
         .init(.sextaAumentadaAlemana, "tyskt överstigande sextackord"),
@@ -70,5 +78,7 @@ extension NombresDeAcordes {
         .init(.estructuraSuperiorBemolVI, "övre struktur ♭VI"),
         .init(.porQuintas, "kvintackord"),
         .init(.racimo, "kromatiskt kluster"),
+        .init(.todosLosIntervalosZ15, "allintervalltetrakord 4-Z15"),
+        .init(.todosLosIntervalosZ29, "allintervalltetrakord 4-Z29"),
     ])
 }

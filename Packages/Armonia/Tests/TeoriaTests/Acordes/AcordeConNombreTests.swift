@@ -194,6 +194,33 @@ import Testing
         #expect(AcordeConNombre.buscar(conteniendo: "estructura superior").count == 3)
     }
 
+    /// Los de la armonía de jazz que faltaban, como tipos con nombre, y los dos tetracordos de todos los intervalos.
+    @Test func lasDominantesYLosAnadidos() throws {
+        func notas(_ acorde: AcordeConNombre) -> [String] { acorde.notas(sobre: .do).map(\.nombre) }
+        #expect(notas(.dominanteDecimoterceraMenor) == ["Do", "Mi", "Sol", "Si♭", "La♭"])
+        #expect(notas(.dominanteNovenaMenorDecimoterceraMenor) == ["Do", "Mi", "Sol", "Si♭", "Re♭", "La♭"])
+        #expect(notas(.dominanteQuintaAumentadaNovenaAumentada) == ["Do", "Mi", "Sol♯", "Si♭", "Re♯"])
+        #expect(notas(.sus4SeptimaNovenaMenor) == ["Do", "Fa", "Sol", "Si♭", "Re♭"])
+        #expect(notas(.sus4Sexta) == ["Do", "Fa", "Sol", "La"])
+        #expect(notas(.mayorUndecimaAnadida) == ["Do", "Mi", "Sol", "Fa"])
+        #expect(notas(.menorUndecimaAnadida) == ["Do", "Mi♭", "Sol", "Fa"])
+        #expect(notas(.disminuidoSeptimaMayor) == ["Do", "Mi♭", "Sol♭", "Si"])
+        #expect(AcordeConNombre.buscar(nombre: "acorde frigio") == .sus4SeptimaNovenaMenor)
+        #expect(AcordeConNombre.buscar(nombre: "Phrygian chord") == .sus4SeptimaNovenaMenor)
+        // Cada uno da nombre a su tipo.
+        #expect(
+            Acorde(.do, AcordeConNombre.disminuidoSeptimaMayor.tipo!).tipo.acordeConNombre == .disminuidoSeptimaMayor)
+        // En cada tetracordo, cada clase de intervalo una vez.
+        for acorde in [AcordeConNombre.todosLosIntervalosZ15, .todosLosIntervalosZ29] {
+            let clases = acorde.intervalos.map { modulo($0.semitonos, 12) }
+            #expect(ConjuntoDeClasesDeAltura(clases).vectorIntervalico == [1, 1, 1, 1, 1, 1], "\(acorde.nombre)")
+            #expect(acorde.referencias == [.forte1973])
+        }
+        #expect(notas(.todosLosIntervalosZ15) == ["Do", "Re♭", "Mi", "Fa♯"])
+        #expect(notas(.todosLosIntervalosZ29) == ["Do", "Re♭", "Mi♭", "Sol"])
+        #expect(AcordeConNombre.buscar(conteniendo: "all-interval").count == 2)
+    }
+
     @Test func lasProgresionesNuevas() {
         #expect(
             ProgresionConNombre.cicloHexatonico.acordes(sobre: .do).map(\.cifrado) == [

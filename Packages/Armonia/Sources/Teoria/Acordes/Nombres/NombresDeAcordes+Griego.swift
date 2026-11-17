@@ -46,6 +46,14 @@ extension NombresDeAcordes {
         .init(.mayorSeptimaMayorDecimotercera, "μείζονα συγχορδία μεγάλης δέκατης τρίτης"),
         .init(.menorSextaNovena, "ελάσσονα συγχορδία έκτης και ένατης"),
         .init(.menorNovenaAnadida, "ελάσσονα συγχορδία με προστιθέμενη ένατη"),
+        .init(.dominanteDecimoterceraMenor, "συγχορδία έβδομης δεσπόζουσας με μικρή δέκατη τρίτη"),
+        .init(.dominanteNovenaMenorDecimoterceraMenor, "συγχορδία έβδομης δεσπόζουσας με μικρή ένατη και μικρή δέκατη τρίτη"),
+        .init(.dominanteQuintaAumentadaNovenaAumentada, "συγχορδία έβδομης δεσπόζουσας με αυξημένη πέμπτη και αυξημένη ένατη"),
+        .init(.sus4SeptimaNovenaMenor, "συγχορδία έβδομης με καθυστέρηση τέταρτης και μικρή ένατη", alias: ["φρύγια συγχορδία"]),
+        .init(.sus4Sexta, "συγχορδία έκτης με καθυστέρηση τέταρτης"),
+        .init(.mayorUndecimaAnadida, "μείζονα συγχορδία με προστιθέμενη ενδέκατη"),
+        .init(.menorUndecimaAnadida, "ελάσσονα συγχορδία με προστιθέμενη ενδέκατη"),
+        .init(.disminuidoSeptimaMayor, "ελαττωμένη συγχορδία με μεγάλη έβδομη"),
         .init(.sextaAumentadaItaliana, "ιταλική συγχορδία αυξημένης έκτης"),
         .init(.sextaAumentadaFrancesa, "γαλλική συγχορδία αυξημένης έκτης"),
         .init(.sextaAumentadaAlemana, "γερμανική συγχορδία αυξημένης έκτης"),
@@ -70,5 +78,7 @@ extension NombresDeAcordes {
         .init(.estructuraSuperiorBemolVI, "άνω δομή ♭VI"),
         .init(.porQuintas, "συγχορδία πεμπτών"),
         .init(.racimo, "χρωματικό σύμπλεγμα", alias: ["κλάστερ"]),
+        .init(.todosLosIntervalosZ15, "τετράχορδο όλων των διαστημάτων 4-Z15"),
+        .init(.todosLosIntervalosZ29, "τετράχορδο όλων των διαστημάτων 4-Z29"),
     ])
 }

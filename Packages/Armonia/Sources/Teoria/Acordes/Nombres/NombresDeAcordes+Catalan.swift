@@ -46,6 +46,14 @@ extension NombresDeAcordes {
         .init(.mayorSeptimaMayorDecimotercera, "tretzena major"),
         .init(.menorSextaNovena, "menor sisena i novena", variantes: ["menor sexta i novena"]),
         .init(.menorNovenaAnadida, "menor amb novena afegida"),
+        .init(.dominanteDecimoterceraMenor, "setena amb tretzena menor"),
+        .init(.dominanteNovenaMenorDecimoterceraMenor, "setena amb novena i tretzena menors"),
+        .init(.dominanteQuintaAumentadaNovenaAumentada, "setena amb quinta i novena augmentades"),
+        .init(.sus4SeptimaNovenaMenor, "setena suspesa amb novena menor", alias: ["acord frigi"]),
+        .init(.sus4Sexta, "sisena suspesa"),
+        .init(.mayorUndecimaAnadida, "onzena afegida"),
+        .init(.menorUndecimaAnadida, "menor amb onzena afegida"),
+        .init(.disminuidoSeptimaMayor, "disminuït amb setena major"),
         .init(.sextaAumentadaItaliana, "sisena augmentada italiana", variantes: ["sexta augmentada italiana"]),
         .init(.sextaAumentadaFrancesa, "sisena augmentada francesa", variantes: ["sexta augmentada francesa"]),
         .init(.sextaAumentadaAlemana, "sisena augmentada alemanya", variantes: ["sexta augmentada alemanya"]),
@@ -70,5 +78,7 @@ extension NombresDeAcordes {
         .init(.estructuraSuperiorBemolVI, "estructura superior ♭VI"),
         .init(.porQuintas, "acord per quintes"),
         .init(.racimo, "raïm cromàtic", alias: ["clúster"]),
+        .init(.todosLosIntervalosZ15, "tetracord de tots els intervals 4-Z15"),
+        .init(.todosLosIntervalosZ29, "tetracord de tots els intervals 4-Z29"),
     ])
 }

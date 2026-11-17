@@ -173,6 +173,10 @@ extension ClasificacionDeAcorde {
             prefijo = estilo.disminuido.rawValue
             alteradasQuinta = []
             if septima == -9 { numero = "7" }
+        } else if disminuido && septima == 5 {
+            // El disminuido con séptima mayor: °(maj7), como m(maj7).
+            prefijo = estilo.disminuido.rawValue
+            alteradasQuinta = []
         } else if disminuido && septima == -2 && estilo.semidisminuido == .barrado {
             prefijo = "ø"
             alteradasQuinta = []
@@ -210,7 +214,8 @@ extension ClasificacionDeAcorde {
             }
             if septima == 5 {
                 let textoMaj = estilo.septimaMayor.rawValue
-                numero = prefijo == textoMenor ? "(\(textoMaj)\(numeroDelAcorde))" : "\(textoMaj)\(numeroDelAcorde)"
+                let entreParentesis = prefijo == textoMenor || prefijo == estilo.disminuido.rawValue
+                numero = entreParentesis ? "(\(textoMaj)\(numeroDelAcorde))" : "\(textoMaj)\(numeroDelAcorde)"
             } else {
                 numero = "\(numeroDelAcorde)"
             }

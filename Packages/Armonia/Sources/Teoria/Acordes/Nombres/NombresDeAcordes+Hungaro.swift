@@ -46,6 +46,14 @@ extension NombresDeAcordes {
         .init(.mayorSeptimaMayorDecimotercera, "nagy tercdecimakkord"),
         .init(.menorSextaNovena, "moll hozzáadott szexttel és nónával"),
         .init(.menorNovenaAnadida, "moll hozzáadott nónával"),
+        .init(.dominanteDecimoterceraMenor, "domináns szeptimakkord kis tercdecimával"),
+        .init(.dominanteNovenaMenorDecimoterceraMenor, "domináns szeptimakkord kis nónával és kis tercdecimával"),
+        .init(.dominanteQuintaAumentadaNovenaAumentada, "domináns szeptimakkord bővített kvinttel és bővített nónával"),
+        .init(.sus4SeptimaNovenaMenor, "domináns szeptimakkord felfüggesztett kvarttal és kis nónával", alias: ["fríg akkord"]),
+        .init(.sus4Sexta, "szextakkord felfüggesztett kvarttal"),
+        .init(.mayorUndecimaAnadida, "dúr hozzáadott undecimával"),
+        .init(.menorUndecimaAnadida, "moll hozzáadott undecimával"),
+        .init(.disminuidoSeptimaMayor, "szűkített akkord nagy szeptimmel"),
         .init(.sextaAumentadaItaliana, "olasz bővített szextakkord"),
         .init(.sextaAumentadaFrancesa, "francia bővített szextakkord"),
         .init(.sextaAumentadaAlemana, "német bővített szextakkord"),
@@ -70,5 +78,7 @@ extension NombresDeAcordes {
         .init(.estructuraSuperiorBemolVI, "felső struktúra ♭VI"),
         .init(.porQuintas, "kvintépítkezésű akkord"),
         .init(.racimo, "kromatikus fürt", alias: ["klaszter"]),
+        .init(.todosLosIntervalosZ15, "minden hangközt tartalmazó tetrachord 4-Z15"),
+        .init(.todosLosIntervalosZ29, "minden hangközt tartalmazó tetrachord 4-Z29"),
     ])
 }

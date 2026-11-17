@@ -23,10 +23,11 @@ extension TipoDeEscala {
 
     /// La escala que pide el cifrado de un acorde, sin tonalidad, como en la teoría acorde-escala del jazz
     /// (Levine 1995): 7M, 6, 6/9 y la tríada mayor → jónico; 7M(♯11) → lidio; 7, 9, 13 y 7sus4 → mixolidio;
-    /// 7(♯11) → lidio dominante; 7(♭13) → mixolidio ♭6; 7alt → alterada; 7(♭9) y 7(♯9) → disminuida
-    /// semitono-tono (la alterada no tiene la 5.ª justa); +7 → tonos enteros; m, m7, m9 y m11 → dórico; m6 y
-    /// m(7M) → menor melódica; ø7 → locrio ♮2; °7 → disminuida tono-semitono; + y +7M → lidio aumentado. `nil`
-    /// si el cifrado no pide ninguna (una tríada disminuida, un sus4 sin 7.ª, una quinta sola).
+    /// 7sus4(♭9) → frigio; 7(♯11) → lidio dominante; 7(♭13) → mixolidio ♭6; 7(♭9,♭13) → frigio dominante;
+    /// 7alt → alterada; 7(♭9) y 7(♯9) → disminuida semitono-tono (la alterada no tiene la 5.ª justa); +7 → tonos
+    /// enteros; m, m7, m9 y m11 → dórico; m6 y m(7M) → menor melódica; ø7 → locrio ♮2; °7 y °(7M) → disminuida
+    /// tono-semitono; + y +7M → lidio aumentado. `nil` si el cifrado no pide ninguna (una tríada disminuida, un sus4
+    /// sin 7.ª, una quinta sola).
     public static func delCifrado(_ estructura: EstructuraDeAcorde) -> TipoDeEscala? {
         let tercera = estructura.tercera?.semitonos
         let quintas = Set(estructura.quintasDelAcorde.map(\.semitonos))
@@ -39,7 +40,9 @@ extension TipoDeEscala {
             // La alterada no tiene la 5.ª justa: con ella, la ♯9 sola pide la disminuida semitono-tono.
             if tensiones.contains(3) && quintas == [7] && !tensiones.contains(8) { return .disminuidaSemitonoTono }
             if tensiones.contains(3) || quintas.contains(8) && quintas.contains(6) { return .alterada }
-            if tensiones.contains(1) { return tensiones.contains(8) ? .alterada : .disminuidaSemitonoTono }
+            // La ♭9 con la ♭13 y la 5.ª justa es la del frigio dominante; sin la 5.ª justa, la alterada.
+            if tensiones.contains(1) && tensiones.contains(8) { return quintas == [7] ? .frigioDominante : .alterada }
+            if tensiones.contains(1) { return .disminuidaSemitonoTono }
             if tensiones.contains(6) || quintas == [6] { return .lidioDominante }
             if tensiones.contains(8) { return .mixolidioSextaMenor }
             return .mixolidio
@@ -47,8 +50,8 @@ extension TipoDeEscala {
             if quintas.contains(8) { return .lidioAumentado }
             return tensiones.contains(6) ? .lidio : .mayor
         case (nil, 10?) where sus4:
-            return .mixolidio
-        case (3?, 9?) where quintas == [6]:
+            return tensiones.contains(1) ? .frigio : .mixolidio
+        case (3?, 9?) where quintas == [6], (3?, 11?) where quintas == [6]:
             return .disminuida
         case (3?, 10?) where quintas == [6]:
             return .locrioSegundaNatural
