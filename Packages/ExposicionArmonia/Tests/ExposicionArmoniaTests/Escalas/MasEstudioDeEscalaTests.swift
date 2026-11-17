@@ -446,7 +446,7 @@ import Testing
         #expect(tabla.ficheros.count == 6)
         let triadas = try #require(
             PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(
-                Escala(.la, .menorArmonica), notas: 3, en: notacion))
+                Escala(.la, .menorArmonica), deNotas: 3, en: notacion))
         #expect(triadas.grados.count == 7)
         #expect(triadas.sonido.notas.count == 12 * 7 * 3)
         #expect(triadas.filas[0].acordes[4] == "Mi")

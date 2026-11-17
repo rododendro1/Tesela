@@ -278,9 +278,9 @@ public struct Arpegio: Hashable, Sendable {
 // MARK: - Desde escalas y acordes
 
 extension Escala {
-    /// El arpegio del acorde de `notas` notas por terceras sobre un grado (``acorde(grado:deNotas:por:)``: 3, la
+    /// El arpegio del acorde de `deNotas` notas por terceras sobre un grado (``acorde(grado:deNotas:por:)``: 3, la
     /// tríada; 4, la cuatríada), o `nil` si no forma un acorde conocido. `Escala("Do mayor").arpegio(grado: 5,
-    /// notas: 4)` es el de Sol7.
+    /// deNotas: 4)` es el de Sol7.
     public func arpegio(
         grado: Int = 1, deNotas cuantas: Int = 3, patron: Arpegio.Patron = .ascendente,
         octavas: Int = 1, conOctava: Bool = true
@@ -306,7 +306,7 @@ extension Escala {
         return Arpegio(Acorde(raiz, tipo), patron: patron, octavas: octavas, conOctava: conOctava)
     }
 
-    /// Los arpegios de `notas` notas (3 por defecto) de todos los grados (`nil` si un grado no forma un acorde
+    /// Los arpegios de `deNotas` notas (3 por defecto) de todos los grados (`nil` si un grado no forma un acorde
     /// conocido).
     public func arpegios(deNotas cuantas: Int = 3) -> [Arpegio?] {
         (1...tipo.intervalos.count).map { arpegio(grado: $0, deNotas: cuantas) }

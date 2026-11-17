@@ -13,28 +13,28 @@ struct LecturaPorElNombreTests {
         }
     }
 
-    @Test func papelesEnElAcorde() {
+    @Test func papelesEnElAcorde() throws {
         idaYVuelta(
             [.fundamental, .tercera, .suspension, .quinta, .sexta, .septima, .tension(9), .tension(11)]
                 as [PapelEnAcorde])
         #expect(try PapelEnAcorde(leyendo: "Terz") == .tercera)
     }
 
-    @Test func nombresDeLosGrados() {
+    @Test func nombresDeLosGrados() throws {
         idaYVuelta(
             [.tonica, .supertonica, .mediante, .subdominante, .dominante, .superdominante, .sensible, .subtonica]
                 as [NombreDeGrado])
         #expect(try NombreDeGrado(leyendo: "tonique") == .tonica)
     }
 
-    @Test func ciclosNeorriemannianos() {
+    @Test func ciclosNeorriemannianos() throws {
         idaYVuelta(CicloNeorriemanniano.allCases)
         #expect(try CicloNeorriemanniano(leyendo: "ziklo hexatonikoa") == .hexatonico)
     }
 
     @Test func encordados() { idaYVuelta(Encordado.todos) }
 
-    @Test func tiposDeEscala() {
+    @Test func tiposDeEscala() throws {
         idaYVuelta(TipoDeEscala.catalogo)
         #expect(try TipoDeEscala(leyendo: "dorisch") == .dorico)
         let literal: TipoDeEscala = "Dorian"

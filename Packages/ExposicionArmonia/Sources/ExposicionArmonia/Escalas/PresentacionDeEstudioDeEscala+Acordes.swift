@@ -30,7 +30,7 @@ public struct TablaDeAcordesPresentada: Hashable, Sendable, Encodable {
 }
 
 extension PresentacionDeEstudioDeEscala {
-    /// Los acordes de `notas` notas de cada grado de la escala (4 por defecto, las cuatríadas) en las doce
+    /// Los acordes de `deNotas` notas de cada grado de la escala (4 por defecto, las cuatríadas) en las doce
     /// tonalidades, de quinta en quinta desde la suya, cada uno en posición cerrada desde Do3. `nil` si algún grado no
     /// forma un acorde conocido (una pentatónica, por ejemplo).
     ///

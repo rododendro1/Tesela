@@ -27,7 +27,7 @@ import Testing
 
     @Test func losAcordesEnLasDoceTonalidades() throws {
         let tabla = try #require(
-            PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(Escala(.do), notas: 4, en: notacion))
+            PresentacionDeEstudioDeEscala.acordesEnLasDoceTonalidades(Escala(.do), deNotas: 4, en: notacion))
         #expect(try claves(tabla) == ["grados", "filas"])
         #expect(try claves(try #require(tabla.filas.first)) == ["tonalidad", "acordes"])
     }

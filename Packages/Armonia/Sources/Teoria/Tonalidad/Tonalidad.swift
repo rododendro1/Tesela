@@ -126,7 +126,7 @@ public struct Tonalidad: Hashable, Sendable {
         return escala.nombreDeGrado(indice + 1)
     }
 
-    /// El acorde de `notas` notas por terceras sobre un grado según la práctica común (3, la tríada; 4, la
+    /// El acorde de `deNotas` notas por terceras sobre un grado según la práctica común (3, la tríada; 4, la
     /// cuatríada; de 5 a 7, los de 9.ª, 11.ª y 13.ª): en mayor, el de la escala mayor; en menor, los de la menor
     /// natural salvo el V y el vii, que usan la sensible (Mi7 y Sol♯°7 en La menor). `nil` si las notas no forman un
     /// tipo conocido o no son de 2 a 7; las tríadas y las cuatríadas de los siete grados siempre lo forman.
@@ -146,7 +146,7 @@ public struct Tonalidad: Hashable, Sendable {
         return acorde
     }
 
-    /// Los acordes de `notas` notas de los siete grados (``acorde(grado:deNotas:)``): con 3, en Do, Do Rem Mim Fa
+    /// Los acordes de `deNotas` notas de los siete grados (``acorde(grado:deNotas:)``): con 3, en Do, Do Rem Mim Fa
     /// Sol Lam Si°. Para armonizar una melodía, ``armonizar(melodia:propuestas:)``.
     public func acordesDeLosGrados(deNotas cuantas: Int = 3) -> [Acorde?] {
         (1...7).map { acorde(grado: $0, deNotas: cuantas) }

@@ -168,7 +168,7 @@ public struct Escala: Hashable, Sendable {
         var numero: Int { self == .terceras ? 3 : 4 }
     }
 
-    /// El acorde de `notas` notas (de 2 a 7; 3 por defecto, la tríada) apiladas sobre un grado, por terceras o por
+    /// El acorde de `deNotas` notas (de 2 a 7; 3 por defecto, la tríada) apiladas sobre un grado, por terceras o por
     /// cuartas. En una
     /// heptatónica, por terceras, un grado sí y otro no (con 5, 6 y 7 notas, los de 9.ª, 11.ª y 13.ª: Do7M(9) en
     /// Do mayor); por cuartas, dos grados no y uno sí. En las demás, cada nota es la siguiente de la escala que
@@ -207,7 +207,7 @@ public struct Escala: Hashable, Sendable {
         return nombres
     }
 
-    /// Los acordes de `notas` notas (3 por defecto) de todos los grados, por terceras o por cuartas
+    /// Los acordes de `deNotas` notas (3 por defecto) de todos los grados, por terceras o por cuartas
     /// (``acorde(grado:deNotas:por:)``): `nil` en los grados que no forman un tipo conocido.
     ///
     ///     Escala(.re, .dorico).acordesDeLosGrados(deNotas: 4, por: .cuartas)[1]?.fundamental   // Mi (Mi–La–Re–Sol)
@@ -236,7 +236,7 @@ public struct Escala: Hashable, Sendable {
         }
     }
 
-    /// El cifrado romano del acorde de `notas` notas por terceras de un grado (``acorde(grado:deNotas:por:)``), en
+    /// El cifrado romano del acorde de `deNotas` notas por terceras de un grado (``acorde(grado:deNotas:por:)``), en
     /// estado fundamental. Las alteraciones del numeral se miden respecto a la escala `referencia` sobre la misma
     /// tónica (mayor por defecto): La menor armónica → i, ii°, ♭III+, iv, V, ♭VI, vii°; con
     /// `referencia: .menorNatural` → i, ii°, III+, iv, V, VI, ♯vii°. Solo para escalas heptatónicas; `nil` en las

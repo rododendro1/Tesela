@@ -58,7 +58,7 @@ public enum RedDeNotas: String, CaseIterable, Identifiable, Hashable, Sendable {
 
     /// El teclado de cuadrícula de la red, el de `TecladoCuadrado.todos` que se llama como ella; `nil` en las demás y
     /// en `.cuadriculaPersonalizada`, cuyo teclado depende del ``AjusteCuadrado`` (ver
-    /// ``AjusteCuadrado/teclado(de:escala:)``).
+    /// ``AjusteCuadrado/teclado(de:en:)``).
     public var tecladoCuadrado: TecladoCuadrado? {
         TecladoCuadrado.todos.first { $0.nombre == rawValue }
     }

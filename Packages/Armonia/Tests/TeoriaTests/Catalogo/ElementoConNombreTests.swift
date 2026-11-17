@@ -37,12 +37,12 @@ import Testing
     }
 
     /// `TipoDeEscala.buscar(nombre:)` lee los trece idiomas, y no solo el español y el inglés como `init(leyendo:)`.
-    @Test func lasEscalasSeBuscanEnLosTreceIdiomas() {
+    @Test func lasEscalasSeBuscanEnLosTreceIdiomas() throws {
         #expect(TipoDeEscala.buscar(nombre: "dórico") == .dorico)
         #expect(TipoDeEscala.buscar(nombre: "Dorian") == .dorico)
         #expect(TipoDeEscala.buscar(nombre: "dorisch") == .dorico)
         #expect(TipoDeEscala.buscar(nombre: "doble armonica") == .dobleArmonica)
-        #expect(throws: (any Error).self) { try TipoDeEscala(leyendo: "dorisch") }
+        #expect(try TipoDeEscala(leyendo: "dorisch") == .dorico)
         for idioma in Idioma.allCases {
             let notacion = Notacion.compacta(.espanol).conTextos(en: idioma)
             for tipo in TipoDeEscala.occidentales {
