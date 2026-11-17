@@ -115,14 +115,13 @@ public enum SistemaDeNombres: String, Hashable, Sendable, CaseIterable, Codable 
     }
 
     /// El sistema de uno de sus `nombres` o de su `rawValue`, sin importar las mayúsculas, las tildes, los espacios
-    /// ni los guiones («Jūni-ritsu», «luChinos»); `nil` si no es ninguno.
-    public init?(nombre: String) {
+    /// ni los guiones («Jūni-ritsu», «luChinos»); `nil` si no es ninguno. Como `buscar(nombre:)` en los catálogos con
+    /// nombre.
+    public static func buscar(nombre: String) -> SistemaDeNombres? {
         let clave = SistemaDeNombres.plegar(nombre)
-        let sistema = SistemaDeNombres.allCases.first { sistema in
+        return SistemaDeNombres.allCases.first { sistema in
             ([sistema.rawValue] + sistema.nombres).contains { SistemaDeNombres.plegar($0) == clave }
         }
-        guard let encontrado = sistema else { return nil }
-        self = encontrado
     }
 
     /// Los nombres de las siete notas naturales, de Do a Si (en los móviles, de los siete grados naturales desde la

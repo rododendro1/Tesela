@@ -88,6 +88,7 @@ extension TextosDeTeoria {
         funcionSubdominante: "υποδεσπόζουσα",
         funcionDominante: "δεσπόζουσα",
         analisisSinAcordes: "Δεν υπάρχουν συγχορδίες για ανάλυση.",
+        transformacionSinTriada: "Η συγχορδία δεν είναι μείζονα ή ελάσσονα τριφωνία: οι νεο-ριμανικοί μετασχηματισμοί εφαρμόζονται μόνο σε αυτές.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "συγχορδίες {1}",

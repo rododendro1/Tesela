@@ -77,7 +77,8 @@ import Testing
         let digitaciones = [
             try Digitacion(leyendo: "x32010", en: guitarra), try Digitacion(leyendo: "320003", en: guitarra),
         ]
-        let partitura = Digitacion.partitura(digitaciones, acordes: [Acorde("Do"), Acorde("Sol")], titulo: "I–V")
+        let partitura = Digitacion.partitura(
+            digitaciones, acordes: [Acorde("Do"), Acorde("Sol")], encabezado: Encabezado(titulo: "I–V"))
         let linea = partitura.pentagramas[0].voces[0]
         #expect(linea.voz.eventos.count == 2 && linea.pulsaciones.count == 2)
         #expect(linea.cifrados.count == 2 && partitura.encabezado.titulo == "I–V")

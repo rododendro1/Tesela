@@ -73,6 +73,14 @@ public struct Encabezado: Hashable, Sendable {
     ///     let encabezado = Encabezado(tema: .escala(Escala("Re dórico")))
     ///     encabezado.titulo(en: .compacta(.espanol))   // "Re dórico"; en otra notación, en esa
     public func titulo(en notacion: Notacion) -> String? { titulo ?? tema?.nombre(en: notacion) }
+
+    /// El mismo encabezado con ese tema, si no tiene uno: el de la escala, el acorde o el arpegio de quien hace la
+    /// partitura.
+    package func conTema(_ tema: Tema) -> Encabezado {
+        var encabezado = self
+        if encabezado.tema == nil { encabezado.tema = tema }
+        return encabezado
+    }
 }
 
 // MARK: - Partitura
@@ -232,7 +240,7 @@ public struct Partitura: Hashable, Sendable, Codable {
     ///
     ///     let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
     ///     let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
-    ///     let svg = Partitura(acordes: voces, titulo: "ii–V–I", porEvento: .init(cifrados: .enOrden(progresion))).svg()
+    ///     let svg = Partitura(acordes: voces, encabezado: Encabezado(titulo: "ii–V–I"), porEvento: .init(cifrados: .enOrden(progresion))).svg()
     ///
     /// Sin `titulo`, el de la partitura son los cifrados («Rem7 – Sol7 – Do7M»: el tema
     /// ``Encabezado/Tema/progresion(_:)``), en orden de columna y en la notación con que se dibuja o se exporta; sin
@@ -245,7 +253,8 @@ public struct Partitura: Hashable, Sendable, Codable {
     /// `tablatura`, la cuerda y el traste debajo (sus pulsaciones, si `porEvento` no trae las suyas). Con `bajoCifrado`
     /// (como los de `Tonalidad.cifrasDeBajo(de:)`), las cifras del bajo continuo debajo de todo, una encima de otra.
     public init(
-        acordes: [[Altura]], titulo: String? = nil, porEvento: AnotacionesPorEvento = AnotacionesPorEvento(),
+        acordes: [[Altura]], encabezado: Encabezado = Encabezado(),
+        porEvento: AnotacionesPorEvento = AnotacionesPorEvento(),
         tablatura: Tablatura? = nil
     ) {
         let voz = Voz(acordes.map { Evento(alturas: $0, duracion: .redonda) })
@@ -254,7 +263,7 @@ public struct Partitura: Hashable, Sendable, Codable {
         let cifrados = anotaciones.cifrados.keys.sorted().compactMap { anotaciones.cifrados[$0] }
         self.init(
             pentagramas: [Pentagrama(voces: [Linea(voz, porEvento: anotaciones)], tablatura: tablatura)],
-            encabezado: Encabezado(titulo: titulo, tema: cifrados.isEmpty ? nil : .progresion(cifrados)),
+            encabezado: cifrados.isEmpty ? encabezado : encabezado.conTema(.progresion(cifrados)),
             dibujaElRitmo: false)
     }
 
@@ -334,12 +343,13 @@ extension Partitura {
     /// Unas notas tocadas una tras otra (con sus microtonos, si los tienen), con lo que se anota en cada una (por su
     /// índice), con su ``Ritmo``. Es lo que hacen `Escala.partitura(tocadaEn:…)` y `Acorde.partitura(arpegiadoEn:…)`.
     static func tocada(
-        _ notas: [Evento.NotaDelEvento], titulo: String? = nil, tema: Encabezado.Tema, ritmo: Ritmo = .libre,
+        _ notas: [Evento.NotaDelEvento], encabezado: Encabezado = Encabezado(), tema: Encabezado.Tema,
+        ritmo: Ritmo = .libre,
         porEvento: AnotacionesPorEvento = AnotacionesPorEvento(), tablatura: Tablatura? = nil, acorde: Acorde?,
         tonica: Nota?, armadura: [Nota]?
     ) -> Partitura {
         tocada(
-            juntas: notas.map { [$0] }, titulo: titulo, tema: tema, ritmo: ritmo, porEvento: porEvento,
+            juntas: notas.map { [$0] }, encabezado: encabezado, tema: tema, ritmo: ritmo, porEvento: porEvento,
             tablatura: tablatura, acorde: acorde, tonica: tonica, armadura: armadura)
     }
 
@@ -347,7 +357,8 @@ extension Partitura {
     /// va en la primera nota, si `porEvento` no le da otro, y las pulsaciones de `tablatura`, si `porEvento` no trae
     /// las suyas.
     static func tocada(
-        juntas notas: [[Evento.NotaDelEvento]], titulo: String? = nil, tema: Encabezado.Tema, ritmo: Ritmo = .libre,
+        juntas notas: [[Evento.NotaDelEvento]], encabezado: Encabezado = Encabezado(), tema: Encabezado.Tema,
+        ritmo: Ritmo = .libre,
         porEvento anotaciones: AnotacionesPorEvento = AnotacionesPorEvento(), tablatura: Tablatura? = nil,
         acorde: Acorde?, tonica: Nota?, armadura: [Nota]?
     ) -> Partitura {
@@ -359,6 +370,6 @@ extension Partitura {
         let linea = Linea(voz, porEvento: porEvento, tonica: tonica)
         return Partitura(
             pentagramas: [Pentagrama(voces: [linea], tablatura: tablatura, armadura: armadura)],
-            encabezado: Encabezado(titulo: titulo, tema: tema), dibujaElRitmo: ritmo != .libre)
+            encabezado: encabezado.conTema(tema), dibujaElRitmo: ritmo != .libre)
     }
 }

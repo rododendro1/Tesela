@@ -88,6 +88,7 @@ extension TextosDeTeoria {
         funcionSubdominante: "szubdomináns",
         funcionDominante: "domináns",
         analisisSinAcordes: "Nincs elemzendő akkord.",
+        transformacionSinTriada: "Az akkord nem dúr vagy moll hármashangzat: a neoriemanni transzformációk csak ezekre alkalmazhatók.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "akkordok: {1}",

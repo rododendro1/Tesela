@@ -109,7 +109,7 @@ extension LineaDeComandos {
         }
         var movil: SistemaMovil?
         if let texto = try valor(.sistema, &opciones, notacion) {
-            guard let sistema = SistemaDeNombres(nombre: texto) else {
+            guard let sistema = SistemaDeNombres.buscar(nombre: texto) else {
                 throw ErrorEnUnaOpcionGeneral(error: .sistemaDesconocido(texto), notacion: notacion)
             }
             if let conSistema = Notacion.sistema(

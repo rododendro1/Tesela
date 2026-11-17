@@ -88,6 +88,7 @@ extension TextosDeTeoria {
         funcionSubdominante: "subdominant",
         funcionDominante: "dominant",
         analisisSinAcordes: "Det finns inga ackord att analysera.",
+        transformacionSinTriada: "Ackordet är inte ett dur- eller mollackord: neoriemannska transformationer gäller bara dem.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "ackord {1}",

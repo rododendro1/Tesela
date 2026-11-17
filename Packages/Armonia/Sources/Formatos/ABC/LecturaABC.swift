@@ -23,7 +23,7 @@ extension PiezaImportada {
     ///
     ///     let abc = voz.partitura(encabezado: Encabezado(titulo: "Escala")).abc()
     ///     let pieza = try PiezaImportada(abc: abc)
-    public init(abc texto: String) throws {
+    public init(abc texto: String) throws(ErrorDeLecturaDeFichero) {
         var lector = LectorABC()
         lector.leer(texto)
         guard !lector.notas.isEmpty else { throw ErrorDeLecturaDeFichero.sinNotas }

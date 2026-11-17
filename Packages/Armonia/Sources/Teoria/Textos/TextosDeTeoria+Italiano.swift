@@ -88,6 +88,7 @@ extension TextosDeTeoria {
         funcionSubdominante: "sottodominante",
         funcionDominante: "dominante",
         analisisSinAcordes: "Non ci sono accordi da analizzare.",
+        transformacionSinTriada: "L'accordo non è una triade maggiore né minore: le trasformazioni neo-riemanniane si applicano solo a queste.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "accordi {1}",

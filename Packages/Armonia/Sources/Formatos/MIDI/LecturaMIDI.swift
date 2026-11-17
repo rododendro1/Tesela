@@ -23,7 +23,7 @@ extension PiezaImportada {
     ///     let datos = coral.partitura().midi()
     ///     let pieza = try PiezaImportada(midi: datos)
     ///     pieza.notas.count   // las mismas notas que el coral
-    public init(midi datos: Data) throws {
+    public init(midi datos: Data) throws(ErrorDeLecturaDeFichero) {
         var lector = LectorMIDI(bytes: [UInt8](datos))
         try lector.leer()
         guard !lector.notas.isEmpty else { throw ErrorDeLecturaDeFichero.sinNotas }
@@ -68,7 +68,7 @@ struct LectorMIDI {
 
     init(bytes: [UInt8]) { self.bytes = bytes }
 
-    mutating func leer() throws {
+    mutating func leer() throws(ErrorDeLecturaDeFichero) {
         guard try etiqueta() == "MThd" else { throw ErrorDeLecturaDeFichero.midiDanado }
         let largo = try entero(4)
         guard largo >= 6 else { throw ErrorDeLecturaDeFichero.midiDanado }
@@ -94,7 +94,7 @@ struct LectorMIDI {
         }
     }
 
-    private mutating func leerPista(hasta fin: Int, numero: Int) throws {
+    private mutating func leerPista(hasta fin: Int, numero: Int) throws(ErrorDeLecturaDeFichero) {
         var ahora = 0
         var estado: UInt8 = 0 // el estado en curso (running status)
         // canal * 128 + tecla → cuándo empezó cada nota abierta, con qué inflexión y de qué parte es.
@@ -205,28 +205,28 @@ struct LectorMIDI {
 
     // MARK: Bytes
 
-    private mutating func byte() throws -> UInt8 {
+    private mutating func byte() throws(ErrorDeLecturaDeFichero) -> UInt8 {
         guard posicion < bytes.count else { throw ErrorDeLecturaDeFichero.midiDanado }
         defer { posicion += 1 }
         return bytes[posicion]
     }
 
-    private mutating func trozo(_ largo: Int) throws -> [UInt8] {
+    private mutating func trozo(_ largo: Int) throws(ErrorDeLecturaDeFichero) -> [UInt8] {
         guard largo >= 0, largo <= bytes.count - posicion else { throw ErrorDeLecturaDeFichero.midiDanado }
         defer { posicion += largo }
         return Array(bytes[posicion..<posicion + largo])
     }
 
-    private mutating func entero(_ n: Int) throws -> Int {
+    private mutating func entero(_ n: Int) throws(ErrorDeLecturaDeFichero) -> Int {
         try trozo(n).reduce(0) { $0 << 8 | Int($1) }
     }
 
-    private mutating func etiqueta() throws -> String {
+    private mutating func etiqueta() throws(ErrorDeLecturaDeFichero) -> String {
         String(decoding: try trozo(4), as: UTF8.self)
     }
 
     /// Cantidad de longitud variable: 7 bits por byte, como mucho 4 bytes.
-    private mutating func cantidadVariable() throws -> Int {
+    private mutating func cantidadVariable() throws(ErrorDeLecturaDeFichero) -> Int {
         var valor = 0
         for _ in 0..<4 {
             let x = try byte()

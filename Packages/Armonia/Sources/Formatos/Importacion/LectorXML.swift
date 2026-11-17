@@ -19,7 +19,7 @@ protocol LectorDeElementosXML: AnyObject {
 
 enum LectorXML {
     /// Recorre el documento. Lanza `ErrorDeLecturaDeFichero.xmlDanado` con la línea del primer error.
-    static func leer(_ datos: Data, con lector: LectorDeElementosXML) throws {
+    static func leer(_ datos: Data, con lector: LectorDeElementosXML) throws(ErrorDeLecturaDeFichero) {
         let bytes = try utf8(datos)
         var analizador = Analizador(bytes: bytes, lector: lector)
         try analizador.documento()
@@ -44,7 +44,7 @@ enum LectorXML {
 
     /// Los bytes en UTF-8: los de un documento en UTF-16 (con su marca) o en una codificación de un byte por carácter
     /// que declare (ISO-8859-1, Windows-1252…), convertidos; los de uno en UTF-8, comprobados.
-    private static func utf8(_ datos: Data) throws -> [UInt8] {
+    private static func utf8(_ datos: Data) throws(ErrorDeLecturaDeFichero) -> [UInt8] {
         var bytes = [UInt8](datos)
         if bytes.starts(with: [0xFE, 0xFF]) || bytes.starts(with: [0xFF, 0xFE]) {
             let codificacion: String.Encoding = bytes[0] == 0xFE ? .utf16BigEndian : .utf16LittleEndian
@@ -97,16 +97,16 @@ enum LectorXML {
             self.soloLaRaiz = soloLaRaiz
         }
 
-        mutating func documento() throws {
+        mutating func documento() throws(ErrorDeLecturaDeFichero) {
             do {
                 try recorrer()
-            } catch let fallo as Fallo {
+            } catch let fallo {
                 let hasta = min(fallo.posicion, bytes.count)
                 throw ErrorDeLecturaDeFichero.xmlDanado(linea: 1 + bytes[..<hasta].lazy.filter { $0 == 0x0A }.count)
             }
         }
 
-        private mutating func recorrer() throws {
+        private mutating func recorrer() throws(Fallo) {
             while i < bytes.count {
                 if bytes[i] == UInt8(ascii: "<") {
                     if empieza("<?") {
@@ -149,7 +149,7 @@ enum LectorXML {
         }
 
         /// Avanza hasta justo después de `fin`.
-        private mutating func saltar(hasta fin: StaticString) throws {
+        private mutating func saltar(hasta fin: StaticString) throws(Fallo) {
             let desde = i
             while i < bytes.count {
                 if empieza(fin) {
@@ -162,7 +162,7 @@ enum LectorXML {
         }
 
         /// `<!DOCTYPE raiz SYSTEM "…" [ … ]>`: se salta, con su subconjunto interno, sin definir nada.
-        private mutating func declaracionDeTipo() throws {
+        private mutating func declaracionDeTipo() throws(Fallo) {
             guard !hayRaiz else { throw Fallo(posicion: i) }
             let desde = i
             var corchetes = 0
@@ -190,7 +190,7 @@ enum LectorXML {
             throw Fallo(posicion: desde)
         }
 
-        private mutating func apertura() throws {
+        private mutating func apertura() throws(Fallo) {
             let desde = i
             i += 1
             let nombre = try leerNombre()
@@ -237,7 +237,7 @@ enum LectorXML {
             }
         }
 
-        private mutating func cierre() throws {
+        private mutating func cierre() throws(Fallo) {
             let desde = i
             i += 2
             let nombre = try leerNombre()
@@ -251,7 +251,7 @@ enum LectorXML {
         }
 
         /// Un nombre de elemento o de atributo: hasta un espacio, `=`, `/` o `>`.
-        private mutating func leerNombre() throws -> ArraySlice<UInt8> {
+        private mutating func leerNombre() throws(Fallo) -> ArraySlice<UInt8> {
             let desde = i
             while i < bytes.count {
                 let b = bytes[i]
@@ -284,7 +284,7 @@ enum LectorXML {
         }
 
         /// El texto con las entidades sustituidas: las cinco de XML y las de carácter. Las demás quedan tal cual.
-        static func sinEntidades(_ trozo: ArraySlice<UInt8>, desde: Int) throws -> String {
+        static func sinEntidades(_ trozo: ArraySlice<UInt8>, desde: Int) throws(Fallo) -> String {
             guard trozo.contains(UInt8(ascii: "&")) else { return String(decoding: trozo, as: UTF8.self) }
             var salida: [UInt8] = []
             salida.reserveCapacity(trozo.count)

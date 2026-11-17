@@ -31,9 +31,11 @@ import Testing
     @Test func lasDisposicionesLlevanSuCifrado() {
         let acordes = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
         let voces = DisposicionDeAcorde.drop2.conducir(acordes) ?? []
-        let svg = Partitura(acordes: voces, titulo: "ii–V–I", porEvento: .init(cifrados: .enOrden(acordes))).svg()
+        let svg = Partitura(
+            acordes: voces, encabezado: Encabezado(titulo: "ii–V–I"), porEvento: .init(cifrados: .enOrden(acordes))
+        ).svg()
         #expect(["Rem7", "Sol7", "Domaj7"].allSatisfy { svg.contains(">\($0)</text>") })
-        let sinCifrados = Partitura(acordes: voces, titulo: "ii–V–I").svg()
+        let sinCifrados = Partitura(acordes: voces, encabezado: Encabezado(titulo: "ii–V–I")).svg()
         #expect(!sinCifrados.contains(">Rem7</text>"))
     }
 
@@ -42,7 +44,8 @@ import Testing
     @Test func losAcordesSonUnaPartituraSinRitmo() {
         let acordes = [Acorde("Do"), Acorde("Sol7")]
         let voces = DisposicionDeAcorde.cerrada.conducir(acordes) ?? []
-        let partitura = Partitura(acordes: voces, titulo: "I–V7", porEvento: .init(cifrados: .enOrden(acordes)))
+        let partitura = Partitura(
+            acordes: voces, encabezado: Encabezado(titulo: "I–V7"), porEvento: .init(cifrados: .enOrden(acordes)))
         #expect(!partitura.dibujaElRitmo)
         let voz = partitura.pentagramas[0].voces[0]
         #expect(voz.voz.eventos.map(\.alturas) == voces)
@@ -119,7 +122,8 @@ import Testing
         let grados = Tonalidad(.do).analizar(acordes).cifrados
         #expect(grados == ["ii7", "V7", "Imaj7"])
         let svg = Partitura(
-            acordes: voces, titulo: "ii–V–I", porEvento: .init(cifrados: .enOrden(acordes), grados: .enOrden(grados))
+            acordes: voces, encabezado: Encabezado(titulo: "ii–V–I"),
+            porEvento: .init(cifrados: .enOrden(acordes), grados: .enOrden(grados))
         ).svg()
         #expect(grados.allSatisfy { svg.contains(">\($0)</text>") })
         let voz = Voz(arpegiando: [Acorde("Do"), Acorde("Sol")])
@@ -335,7 +339,9 @@ import Testing
         let acordes = [Acorde("Do"), Acorde("Sol7/Si"), Acorde("Do")]
         let voces = DisposicionDeAcorde.cerrada.conducir(acordes) ?? []
         let cifras: [[String]] = [[], ["6", "5"], []]
-        let svg = Partitura(acordes: voces, titulo: "I–V65–I", porEvento: .init(bajoCifrado: .enOrden(cifras))).svg()
+        let svg = Partitura(
+            acordes: voces, encabezado: Encabezado(titulo: "I–V65–I"), porEvento: .init(bajoCifrado: .enOrden(cifras))
+        ).svg()
         let seis = svg.range(of: ">6</text>")
         let cinco = svg.range(of: ">5</text>")
         #expect(seis != nil && cinco != nil)
@@ -346,7 +352,7 @@ import Testing
             return Double(antes[inicio.upperBound...].prefix { $0 != "\"" })
         }
         #expect((y(seis) ?? 0) < (y(cinco) ?? 0))
-        #expect(!Partitura(acordes: voces, titulo: "I–V–I").svg().contains(">6</text>"))
+        #expect(!Partitura(acordes: voces, encabezado: Encabezado(titulo: "I–V–I")).svg().contains(">6</text>"))
     }
 
     /// Do mayor en tres octavas desde Do2, en un solo pentagrama: empieza en clave de fa y pasa a la de sol, más
@@ -468,7 +474,8 @@ import Testing
             #expect(progresion.svg(opciones: .init(notacion: notacion)).contains(">\(titulo)</title>"))
         }
         // Con título, el suyo; sin título ni cifrados, ninguno (el de la parte).
-        let titulada = Partitura(acordes: voces, titulo: "ii–V–I", porEvento: .init(cifrados: .enOrden(acordes)))
+        let titulada = Partitura(
+            acordes: voces, encabezado: Encabezado(titulo: "ii–V–I"), porEvento: .init(cifrados: .enOrden(acordes)))
         #expect(titulada.encabezado.titulo(en: .ascii(.ingles)) == "ii–V–I")
         #expect(Partitura(acordes: voces).encabezado.titulo(en: .compacta(.espanol)) == nil)
         // Los temas se guardan con lo que nombran.

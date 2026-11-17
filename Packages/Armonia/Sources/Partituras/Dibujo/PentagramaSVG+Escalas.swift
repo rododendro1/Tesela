@@ -77,7 +77,8 @@ extension Escala {
         secuencia: SecuenciaDeEscala, octava: Int = 4, octavas: Int = 1, sentido: SentidoDelIntervalo = .ascendente
     ) -> Partitura {
         partitura(
-            tocadaEn: self.secuencia(secuencia, octava: octava, octavas: octavas, sentido: sentido), titulo: nil,
+            tocadaEn: self.secuencia(secuencia, octava: octava, octavas: octavas, sentido: sentido),
+            encabezado: Encabezado(),
             tema: .secuencia(secuencia, de: self), ritmo: .uniforme(Escala.figura(deGruposDe: secuencia.pasos.count)),
             porEvento: Partitura.AnotacionesPorEvento(), tablatura: nil, sentido: sentido)
     }
@@ -87,32 +88,32 @@ extension Escala {
     /// (``Partitura/Pentagrama/armadura``) y los intervalos contados desde su tónica (``Partitura/Linea/tonica``). Con
     /// `ritmo: .uniforme(…)`, con ritmo (``Partitura/Ritmo``); sin él, en redondas y sin ritmo
     /// (``Partitura/dibujaElRitmo``). Lo que se anota en cada nota va en `porEvento`, por su índice desde 0 (los dedos,
-    /// los grados, los cifrados…), y las pulsaciones son las de `tablatura` si `porEvento` no trae las suyas. Si no se
-    /// da `titulo`, el de la partitura es el nombre de la escala (``Encabezado/tema``), en la notación con que se
-    /// dibuja o se exporta. Las notas de una escala microtonal llevan su microtono, con su sistema
+    /// los grados, los cifrados…), y las pulsaciones son las de `tablatura` si `porEvento` no trae las suyas. Si el
+    /// `encabezado` no trae título, el de la partitura es el nombre de la escala (``Encabezado/tema``), en la notación
+    /// con que se dibuja o se exporta. Las notas de una escala microtonal llevan su microtono, con su sistema
     /// (``Evento/NotaDelEvento/sistema``): el de la subida y, las que solo están al bajar, el de la bajada.
     ///
     ///     let posicion = [Altura("La2"), Altura("Do3"), Altura("Re3"), Altura("Mi3")]
     ///     Escala(.la, .pentatonicaMenor).partitura(tocadaEn: posicion, ritmo: .uniforme(.corchea)).musicXML()
     ///     Escala(.do).partitura(tocadaEn: ["Do4", "Re4"], porEvento: .init(dedos: [0: [1], 1: [3]])).svg()
     public func partitura(
-        tocadaEn alturas: [Altura], titulo: String? = nil, ritmo: Partitura.Ritmo = .libre,
+        tocadaEn alturas: [Altura], encabezado: Encabezado = Encabezado(), ritmo: Partitura.Ritmo = .libre,
         porEvento: Partitura.AnotacionesPorEvento = Partitura.AnotacionesPorEvento(), tablatura: Tablatura? = nil
     ) -> Partitura {
         partitura(
-            tocadaEn: alturas, titulo: titulo, tema: .escala(self), ritmo: ritmo, porEvento: porEvento,
+            tocadaEn: alturas, encabezado: encabezado, tema: .escala(self), ritmo: ritmo, porEvento: porEvento,
             tablatura: tablatura, sentido: nil)
     }
 
     /// Como `partitura(tocadaEn:…)`, con los microtonos de la subida o de la bajada, según `sentido`; si es `nil`,
     /// los de la subida y, los de las notas que solo están al bajar, los de la bajada.
     private func partitura(
-        tocadaEn alturas: [Altura], titulo: String?, tema: Encabezado.Tema, ritmo: Partitura.Ritmo,
+        tocadaEn alturas: [Altura], encabezado: Encabezado, tema: Encabezado.Tema, ritmo: Partitura.Ritmo,
         porEvento: Partitura.AnotacionesPorEvento, tablatura: Tablatura?, sentido: SentidoDelIntervalo?
     ) -> Partitura {
         Partitura.tocada(
             notasTocadas(en: Altura.reescritas(alturas, con: notas), sentido: sentido),
-            titulo: titulo, tema: tema, ritmo: ritmo, porEvento: porEvento, tablatura: tablatura, acorde: nil,
+            encabezado: encabezado, tema: tema, ritmo: ritmo, porEvento: porEvento, tablatura: tablatura, acorde: nil,
             tonica: tonica, armadura: notasDeLaArmadura)
     }
 
@@ -125,8 +126,11 @@ extension Escala {
         porEvento: Partitura.AnotacionesPorEvento = Partitura.AnotacionesPorEvento(), tablatura: Tablatura? = nil,
         opciones: OpcionesDePentagrama = OpcionesDePentagrama()
     ) -> String {
-        partitura(tocadaEn: alturas, titulo: titulo, ritmo: ritmo, porEvento: porEvento, tablatura: tablatura)
-            .svg(opciones: opciones)
+        partitura(
+            tocadaEn: alturas, encabezado: Encabezado(titulo: titulo), ritmo: ritmo, porEvento: porEvento,
+            tablatura: tablatura
+        )
+        .svg(opciones: opciones)
     }
 
     /// Cada altura como nota de la escala: con el microtono y el sistema que tiene esa nota en la escala, si lo
@@ -228,18 +232,19 @@ extension Acorde {
     /// sus notas (Si♭, no La♯, en Do7) y con el cifrado encima de la primera, si `porEvento` no le da otro. Con `ritmo:
     /// .uniforme(…)`, con ritmo (``Partitura/Ritmo``); sin él, en redondas y sin ritmo (``Partitura/dibujaElRitmo``).
     /// Lo que se anota en cada nota va en `porEvento`, por su índice desde 0, y las pulsaciones son las de `tablatura`
-    /// si `porEvento` no trae las suyas. Si no se da `titulo`, el de la partitura es el cifrado (``Encabezado/tema``),
+    /// si `porEvento` no trae las suyas. Si el `encabezado` no trae título, el de la partitura es el cifrado
+    /// (``Encabezado/tema``),
     /// en la notación con que se dibuja o se exporta.
     ///
     ///     let porEvento = Partitura.AnotacionesPorEvento(dedos: [0: [2], 1: [1], 2: [3]])
     ///     Acorde("Do").partitura(arpegiadoEn: ["Do3", "Mi3", "Sol3"], porEvento: porEvento).svg()
     public func partitura(
-        arpegiadoEn alturas: [Altura], titulo: String? = nil, ritmo: Partitura.Ritmo = .libre,
+        arpegiadoEn alturas: [Altura], encabezado: Encabezado = Encabezado(), ritmo: Partitura.Ritmo = .libre,
         porEvento: Partitura.AnotacionesPorEvento = Partitura.AnotacionesPorEvento(), tablatura: Tablatura? = nil
     ) -> Partitura {
         Partitura.tocada(
             Altura.reescritas(alturas, con: notas).map { Evento.NotaDelEvento($0) },
-            titulo: titulo, tema: .acorde(self), ritmo: ritmo, porEvento: porEvento, tablatura: tablatura,
+            encabezado: encabezado, tema: .acorde(self), ritmo: ritmo, porEvento: porEvento, tablatura: tablatura,
             acorde: self,
             tonica: nil, armadura: nil)
     }

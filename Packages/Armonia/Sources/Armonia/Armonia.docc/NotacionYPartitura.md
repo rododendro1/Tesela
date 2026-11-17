@@ -453,7 +453,7 @@ Escala("Re dórico").svgPentagrama(octavas: 2, opciones: opciones).contains("<ti
 let progresion = [Acorde("Rem7"), Acorde("Sol7"), Acorde("Do7M")]
 let voces = DisposicionDeAcorde.drop2.conducir(progresion) ?? []
 let grados = Tonalidad(.do).analizar(progresion).cifrados
-Partitura(acordes: voces, titulo: "ii–V–I", porEvento: .init(grados: .enOrden(grados))).svg().contains(">V7</text>")   // true
+Partitura(acordes: voces, encabezado: Encabezado(titulo: "ii–V–I"), porEvento: .init(grados: .enOrden(grados))).svg().contains(">V7</text>")   // true
 Escala("Re mayor").svgPentagrama(digitacion: .derecha).contains(">5</text>")   // true
 Escala("Do mayor").svgPentagrama(secuencia: .terceras).contains("por terceras")   // true
 ```

@@ -88,6 +88,7 @@ extension TextosDeTeoria {
         funcionSubdominante: "subdominantea",
         funcionDominante: "dominantea",
         analisisSinAcordes: "Ez dago aztertzeko akorderik.",
+        transformacionSinTriada: "Akordea ez da hirukote maiorra edo minorra: eraldaketa neorriemanndarrak haiei bakarrik aplikatzen zaizkie.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "{1} akordeak",

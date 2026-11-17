@@ -1,5 +1,32 @@
 # Cambios
 
+## Sin publicar
+
+### Cambios incompatibles
+
+- Las partituras de lo que se toca llevan un `encabezado:`, como las de un coral, una progresión o un contrapunto, en
+  lugar de `titulo:`: `Partitura(acordes:encabezado:porEvento:tablatura:)`,
+  `Escala.partitura(tocadaEn:encabezado:ritmo:porEvento:tablatura:)`,
+  `Acorde.partitura(arpegiadoEn:encabezado:ritmo:porEvento:tablatura:)`, `Digitacion.partitura(de:encabezado:)`,
+  `Digitacion.partitura(_:acordes:encabezado:)`, `EscalaEnElMastil.partitura(de:encabezado:ritmo:)` y
+  `ArpegioEnElMastil.partitura(de:encabezado:ritmo:)`. Sin título en el encabezado, el de la partitura sigue siendo
+  el nombre de lo que se toca.
+- `Coral.partitura(…)` lleva los cifrados y el análisis por defecto, como la de un análisis (`conCifrados` y
+  `conAnalisis` valen `true`).
+- `SistemaDeNombres(nombre:)` es `SistemaDeNombres.buscar(nombre:)`, como en los catálogos con nombre.
+- `Acorde.transformar(leyendo:)` da la tríada o lanza un `ErrorDeTransformacion` (en los trece idiomas):
+  `.secuenciaIlegible`, con el error de la lectura dentro, o `.sinTriada` si el acorde no es una tríada mayor o menor,
+  en lugar de dar `nil`.
+- Las lecturas de ficheros dicen en su firma que lanzan `ErrorDeLecturaDeFichero`: `PiezaImportada(leyendo:)`,
+  `init(midi:)`, `init(mxl:)`, `init(musicXML:)`, `init(mei:)` e `init(abc:)`.
+
+### Novedades
+
+- `Encordado.buscar(nombre:)`, como en los catálogos con nombre: lo que se busca por su nombre tiene
+  `buscar(nombre:)`, que da un opcional, y si además se lee como texto, `init(leyendo:)`.
+- La documentación de `Notacion` explica que la notación va tras `en:` salvo cuando `en:` es el contexto (una
+  tonalidad, una escala o una tradición), y entonces va tras `notacion:`.
+
 ## 0.6.0 (2026-11-17)
 
 ### Cambios incompatibles
@@ -1476,7 +1503,7 @@ Cambios incompatibles en `Notacion`, todos en esta versión. Lo guardado con `Co
   con la grafía de su cadena de quintas (los chinos, con los sostenidos de `TipoDeEscala.shierLu`: zhònglǚ es Mi♯). Se
   leen también los lü chinos en caracteres tradicionales y con la ü como v (dalv), y los coreanos en hanja, enteros
   (黃鍾) o con la sílaba del jeongganbo (黃).
-- `SistemaDeNombres(nombre:)` no tiene en cuenta los espacios ni los guiones: «Jūni-ritsu», «lu chinos».
+- `SistemaDeNombres.buscar(nombre:)` no tiene en cuenta los espacios ni los guiones: «Jūni-ritsu», «lu chinos».
 
 ### Nombres de nota de otras tradiciones: bizantino y sargam
 
@@ -2159,7 +2186,7 @@ comparación en texto y la exporta con la barra (`PresentacionDeEstudioDeEscala.
   ya no existe. En su lugar, `Partitura(acordes:titulo:porEvento:tablatura:)` hace la partitura de esos acordes, una
   redonda por columna, y `svg(opciones:)` la dibuja igual que antes. Donde se escribía
   `DisposicionDeAcorde.svgPentagrama(voces, titulo: "ii–V–I", cifrados: progresion, opciones: opciones)`, ahora
-  `Partitura(acordes: voces, titulo: "ii–V–I", porEvento: .init(cifrados: .enOrden(progresion))).svg(opciones: opciones)`.
+  `Partitura(acordes: voces, encabezado: Encabezado(titulo: "ii–V–I"), porEvento: .init(cifrados: .enOrden(progresion))).svg(opciones: opciones)`.
   Así lo que se anota en un pentagrama (cifrados, grados, bajo cifrado, dedos y tablatura) pasa siempre por una `Partitura`, y la
   misma progresión se escribe también en MusicXML, MEI, LilyPond, ABC o MIDI.
 - `Partitura.dibujaElRitmo` (nuevo, `true` por omisión): con `false`, un pentagrama de una voz se dibuja con cada evento en

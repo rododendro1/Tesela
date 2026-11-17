@@ -88,6 +88,7 @@ extension TextosDeTeoria {
         funcionSubdominante: "субдоминанта",
         funcionDominante: "доминанта",
         analisisSinAcordes: "Нет аккордов для анализа.",
+        transformacionSinTriada: "Аккорд не является мажорным или минорным трезвучием: неоримановы преобразования применяются только к ним.",
 
         // Cadencia.swift
         cadenciaEnLosAcordes: "аккорды {1}",

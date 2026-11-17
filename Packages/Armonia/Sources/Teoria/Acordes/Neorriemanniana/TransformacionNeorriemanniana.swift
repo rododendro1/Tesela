@@ -104,11 +104,22 @@ extension Acorde {
         secuencia.reduce(Optional(self)) { $0?.transformar($1) }
     }
 
-    /// La tríada tras una secuencia escrita: `transformar(leyendo: "PLR")`, `transformar(leyendo: "N")`. Lanza el
-    /// error de `TransformacionNeorriemanniana.secuencia(leyendo:)` si la secuencia no se lee, y da `nil` si el
-    /// acorde no es una tríada mayor o menor.
-    public func transformar(leyendo secuencia: String) throws -> Acorde? {
-        transformar(try TransformacionNeorriemanniana.secuencia(leyendo: secuencia))
+    /// La tríada tras una secuencia escrita: `transformar(leyendo: "PLR")`, `transformar(leyendo: "N")`. Lanza un
+    /// ``ErrorDeTransformacion``: `.secuenciaIlegible`, con el error de
+    /// `TransformacionNeorriemanniana.secuencia(leyendo:)`, si la secuencia no se lee, y `.sinTriada` si el acorde no
+    /// es una tríada mayor o menor.
+    public func transformar(leyendo secuencia: String) throws(ErrorDeTransformacion) -> Acorde {
+        let leida: [TransformacionNeorriemanniana]
+        do {
+            leida = try TransformacionNeorriemanniana.secuencia(leyendo: secuencia)
+        } catch let error as any ErrorAlLeer {
+            throw .secuenciaIlegible(error)
+        } catch {
+            // `secuencia(leyendo:)` solo lanza errores de lectura.
+            throw .secuenciaIlegible(ErrorDeLectura(texto: secuencia, posicion: nil, motivo: .textoVacio))
+        }
+        guard let acorde = transformar(leida) else { throw .sinTriada }
+        return acorde
     }
 
     /// La secuencia más corta de P, L y R que lleva de esta tríada a otra (vacía si son la

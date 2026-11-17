@@ -57,7 +57,8 @@ import Testing
             notacion: .ascii(.ingles).conTextos(en: .catalan), llave: true)
         #expect(try idaYVuelta(partitura) == partitura)
         let tablatura = Tablatura(numeroDeCuerdas: 6, pulsaciones: [0: [.init(cuerda: 1, traste: 3)]])
-        let acordes = Partitura(acordes: [[Altura("Do3"), Altura("Mi3")]], titulo: "Do", tablatura: tablatura)
+        let acordes = Partitura(
+            acordes: [[Altura("Do3"), Altura("Mi3")]], encabezado: Encabezado(titulo: "Do"), tablatura: tablatura)
         let leida = try idaYVuelta(acordes)
         #expect(leida == acordes)
         #expect(!leida.dibujaElRitmo)

@@ -8,18 +8,19 @@ import Teoria
 extension Coral {
     /// El coral en dos pentagramas, cada acorde de `duracion` y el último alargado hasta la barra: las voces agudas
     /// (soprano y contralto) en clave de sol y las graves (tenor y bajo) en clave de fa, con las plicas de la de
-    /// arriba hacia arriba y las de la de abajo hacia abajo, y cada una con su nombre (su pista en MIDI). Con
-    /// `cifrados`, cada acorde lleva su cifrado americano encima del soprano; con `analisis`, su cifrado romano y su
-    /// función debajo del bajo, y la tonalidad al principio. Los acordes se identifican por sus notas (con el bajo)
-    /// entre los tipos de `TipoDeAcorde.todos`; los que no forman ninguno se quedan sin cifrar. Si el encabezado no
-    /// da tonalidad, se estima (a partir de los acordes si se analiza; si no, de las notas); la parte se llama
-    /// «Coro» si no le da nombre, y suena con el coro (52) si no da instrumento.
+    /// arriba hacia arriba y las de la de abajo hacia abajo, y cada una con su nombre (su pista en MIDI). Como la de
+    /// un análisis, con `conCifrados` (por defecto) cada acorde lleva su cifrado americano encima del soprano, y con
+    /// `conAnalisis` (por defecto), su cifrado romano y su función debajo del bajo, y la tonalidad al principio. Los
+    /// acordes se identifican por sus notas (con el bajo) entre los tipos de `TipoDeAcorde.todos`; los que no forman
+    /// ninguno se quedan sin cifrar. Si el encabezado no da tonalidad, se estima (a partir de los acordes si se
+    /// analiza; si no, de las notas); la parte se llama «Coro» si no le da nombre, y suena con el coro (52) si no da
+    /// instrumento.
     ///
     ///     let coral = try Coral(leyendo: "Do3 Mi4 Sol4 Do5 | Sol2 Re4 Sol4 Si4 | Do3 Mi4 Sol4 Do5")
-    ///     let xml = coral.partitura(duracion: .blanca, compas: "3/2", conAnalisis: true).musicXML()
+    ///     let xml = coral.partitura(duracion: .blanca, compas: "3/2", conCifrados: false).musicXML()
     public func partitura(
         duracion: Duracion = .negra, compas: Compas = .compasillo, encabezado: Encabezado = Encabezado(),
-        conCifrados: Bool = false, conAnalisis: Bool = false, notacion: Notacion = .compacta(.espanol)
+        conCifrados: Bool = true, conAnalisis: Bool = true, notacion: Notacion = .compacta(.espanol)
     ) -> Partitura {
         let anotado = Coral.anotaciones(
             de: self, duracion: duracion, tonalidad: encabezado.tonalidad, cifrados: conCifrados,

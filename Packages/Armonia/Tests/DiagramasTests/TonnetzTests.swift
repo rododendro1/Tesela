@@ -160,14 +160,19 @@ import Testing
         #expect(Acorde("Do").transformar(TransformacionNeorriemanniana.h) == Acorde("Sol#m"))
         #expect(try Acorde("Do").transformar(leyendo: "P L R") == Acorde("Fam"))
         #expect(try Acorde("Do").transformar(leyendo: "n") == Acorde("Fam"))
-        #expect(try Acorde("Sol7").transformar(leyendo: "P") == nil)
-        #expect(
-            throws: ErrorDeLecturaDeTeoria(
-                texto: "PX", posicion: 1, motivo: .nombreNoReconocido("X", opciones: ["P", "L", "R", "N", "S", "H"]))
-        ) { try Acorde("Do").transformar(leyendo: "PX") }
-        #expect(throws: ErrorDeLectura(texto: " · ", posicion: nil, motivo: .textoVacio)) {
-            try Acorde("Do").transformar(leyendo: " · ")
+        #expect(throws: ErrorDeTransformacion.sinTriada) { try Acorde("Sol7").transformar(leyendo: "P") }
+        let ilegible = ErrorDeLecturaDeTeoria(
+            texto: "PX", posicion: 1, motivo: .nombreNoReconocido("X", opciones: ["P", "L", "R", "N", "S", "H"]))
+        #expect(throws: ErrorDeTransformacion.secuenciaIlegible(ilegible)) {
+            try Acorde("Do").transformar(leyendo: "PX")
         }
+        let vacia = ErrorDeLectura(texto: " · ", posicion: nil, motivo: .textoVacio)
+        #expect(throws: ErrorDeTransformacion.secuenciaIlegible(vacia)) { try Acorde("Do").transformar(leyendo: " · ") }
+        #expect(
+            ErrorDeTransformacion.sinTriada.descripcion(en: .compacta(.ingles))
+                == "The chord is not a major or minor triad: neo-Riemannian transformations only apply to those.")
+        #expect(
+            ErrorDeTransformacion.secuenciaIlegible(vacia).descripcion(en: .compacta(.espanol)) == vacia.description)
         // Solo tríadas mayores y menores; la inversión se ignora.
         #expect(Acorde("Sol7").transformar(.p) == nil)
         #expect(Acorde("Sidim").transformar(.r) == nil)

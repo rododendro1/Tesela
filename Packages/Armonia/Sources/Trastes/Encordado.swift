@@ -323,18 +323,24 @@ extension Encordado {
     ///
     ///     try Encordado(leyendo: "ukulele") == .ukelele   // true
     public init(leyendo texto: String) throws(ErrorDeLecturaDeTeoria) {
-        let clave = texto.claveDeBusqueda
-        guard
-            let encontrado = Encordado.alias[clave]
-                ?? Encordado.todos.first(where: { encordado in
-                    ([encordado.nombre] + (encordado.traduccion?.todos ?? [])).contains { $0.claveDeBusqueda == clave }
-                })
-        else {
+        guard let encontrado = Encordado.buscar(nombre: texto) else {
             let opciones = Encordado.todos.map(\.nombre)
             throw ErrorDeLecturaDeTeoria(
                 texto: texto, posicion: nil, motivo: .nombreNoReconocido(texto, opciones: opciones))
         }
         self = encontrado
+    }
+
+    /// El de `todos` con ese nombre, como `init(leyendo:)`, y como `buscar(nombre:)` en los catálogos con nombre;
+    /// `nil` si no es ninguno.
+    ///
+    ///     Encordado.buscar(nombre: "ukulele") == .ukelele   // true
+    public static func buscar(nombre texto: String) -> Encordado? {
+        let clave = texto.claveDeBusqueda
+        return Encordado.alias[clave]
+            ?? Encordado.todos.first(where: { encordado in
+                ([encordado.nombre] + (encordado.traduccion?.todos ?? [])).contains { $0.claveDeBusqueda == clave }
+            })
     }
 
     /// Los de `todos` que tienen el texto en el nombre, en alguno de los trece idiomas, sin distinguir mayúsculas ni
