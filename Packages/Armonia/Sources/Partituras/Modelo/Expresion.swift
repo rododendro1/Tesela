@@ -82,6 +82,27 @@ public enum Articulacion: String, CaseIterable, Hashable, Sendable, Codable {
         }
     }
 
+    /// El glifo de SMuFL de los ornamentos que los formatos de intercambio no nombran todos (el Schleifer y el trino
+    /// con terminación): su nombre y su punto de código. MusicXML escribe el trino con terminación en
+    /// `<other-ornament smufl>` y MEI los dos en `<ornam>`.
+    package var glifoSMuFL: (nombre: String, codigo: String)? {
+        switch self {
+        case .schleifer: return ("ornamentSchleifer", "U+E587")
+        case .trinoConTerminacion: return ("ornamentPrecompTrillWithMordent", "U+E5BD")
+        default: return nil
+        }
+    }
+
+    /// El texto que los escribe encima de la nota en los formatos que no tienen signo para ellos (ABC, GUIDO y, el
+    /// Schleifer, LilyPond), para que no se pierdan al exportar; `nil` para los demás.
+    package var rotuloSinSigno: String? {
+        switch self {
+        case .schleifer: return "Schleifer"
+        case .trinoConTerminacion: return "Trillo und Mordant"
+        default: return nil
+        }
+    }
+
     /// Lo que suena de su duración escrita en MIDI: la mitad el staccato y un cuarto el staccatissimo.
     public var proporcionQueSuena: Duracion {
         switch self {

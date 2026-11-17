@@ -421,7 +421,8 @@ package struct EscritorMusicXML: EscritorDePartitura {
         }
     }
 
-    /// El elemento de `<ornaments>` de un ornamento; `nil` para lo demás.
+    /// El elemento de `<ornaments>` de un ornamento, con sus atributos; `nil` para lo demás. El trino con
+    /// terminación, que MusicXML no nombra, es un `<other-ornament>` con el nombre de su glifo de SMuFL.
     package static func ornamento(_ articulacion: Articulacion) -> String? {
         switch articulacion {
         case .trino: return "trill-mark"
@@ -430,6 +431,7 @@ package struct EscritorMusicXML: EscritorDePartitura {
         case .grupeto: return "turn"
         case .grupetoInvertido: return "inverted-turn"
         case .schleifer: return "schleifer"
+        case .trinoConTerminacion: return "other-ornament smufl=\"\(articulacion.glifoSMuFL!.nombre)\""
         default: return nil
         }
     }

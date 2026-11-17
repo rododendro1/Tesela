@@ -12,10 +12,11 @@ import Teoria
 // acordes (`[CEG]`), los silencios (`z`, `x`, `Z`), las ligaduras (`-`), el ritmo con puntillo (`>`, `<`), los grupos
 // irregulares (`(3`, `(p:q:r`) y cada voz (`V:`) como una parte. Los cambios en medio (`[K:…]`, `[M:…]`, `[L:…]`)
 // valen desde ahí. De las decoraciones, la dinámica (`!mf!`) y las articulaciones (`.`, `!tenuto!`, `!>!`,
-// `!fermata!`…) van con la nota siguiente. Las notas de adorno (`{…}`) van aparte, sin duración. Las repeticiones
-// (`|:`, `:|`, `::`), las casillas (`|1`, `:|2`, `[1`) y los saltos (`!D.C.!`, `!D.S.!`, `!fine!`, `!segno!`,
-// `!coda!`, `!dacoda!`) de la primera voz se despliegan. No cuentan los adornos (`!trill!`, `~`), los cifrados y los
-// textos entre comillas ni la letra (`w:`).
+// `!fermata!`, `!trill!`…) van con la nota siguiente, y también los textos de encima que nombran un ornamento sin
+// decoración (`"^Schleifer"`). Las notas de adorno (`{…}`) van aparte, sin duración. Las repeticiones (`|:`, `:|`,
+// `::`), las casillas (`|1`, `:|2`, `[1`) y los saltos (`!D.C.!`, `!D.S.!`, `!fine!`, `!segno!`, `!coda!`,
+// `!dacoda!`) de la primera voz se despliegan. No cuentan el `~`, los cifrados y los demás textos entre comillas ni
+// la letra (`w:`).
 
 extension PiezaImportada {
     /// Lee la primera melodía de un texto en ABC.
@@ -112,6 +113,16 @@ struct LectorABC {
             pendientes.dinamica = dinamica
         } else if let articulacion = LectorABC.decoraciones[nombre] {
             pendientes.articulaciones.append(articulacion)
+        }
+    }
+
+    /// Un texto entre comillas (`"^Do7"`, `"_V7"`): el de encima que nombra un ornamento sin decoración
+    /// (`"^Schleifer"`), para la nota siguiente; los demás no se leen.
+    private mutating func anotacion(_ texto: String) {
+        guard texto.first == "^" else { return }
+        let rotulo = texto.dropFirst()
+        if let ornamento = Articulacion.allCases.first(where: { $0.rotuloSinSigno.map { $0[...] } == rotulo }) {
+            pendientes.articulaciones.append(ornamento)
         }
     }
 
@@ -301,7 +312,7 @@ struct LectorABC {
             case "%":
                 return
             case "\"":
-                LectorABC.saltar(hasta: "\"", c, &i)
+                anotacion(LectorABC.entre("\"", c, &i))
             case "!", "+":
                 decoracion(LectorABC.entre(ch, c, &i))
             case ".":
@@ -442,7 +453,7 @@ struct LectorABC {
                 ligadasDentro = true
                 i += 1
             } else if c[i] == "\"" {
-                LectorABC.saltar(hasta: "\"", c, &i)
+                anotacion(LectorABC.entre("\"", c, &i))
             } else if c[i] == "!" {
                 decoracion(LectorABC.entre("!", c, &i))
             } else {

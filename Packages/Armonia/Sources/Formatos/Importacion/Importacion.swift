@@ -76,6 +76,13 @@ public struct NotaDeLaPieza: Hashable, Sendable {
             ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones, pentagrama: pentagrama, voz: voz)
     }
 
+    /// La misma nota con otras articulaciones: las de una marca que se lee después de la nota (`<ornam>` en MEI).
+    func con(articulaciones: [Articulacion]) -> NotaDeLaPieza {
+        NotaDeLaPieza(
+            altura: altura, inicio: inicio, duracion: duracion, parte: parte, desvio: desvio, sistema: sistema,
+            ajuste: ajuste, dinamica: dinamica, articulaciones: articulaciones, pentagrama: pentagrama, voz: voz)
+    }
+
     /// La misma nota con otra duración: la de una nota ligada a la siguiente, que se alarga con ella.
     func con(duracion: Duracion) -> NotaDeLaPieza {
         NotaDeLaPieza(
