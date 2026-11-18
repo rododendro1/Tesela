@@ -11,7 +11,8 @@ import Foundation
 //      "texto":"Xx","tipo":"notaNoReconocida"}}
 //
 // `tipo` es el caso del error (`ErrorDeUso`) o del motivo de la lectura (`ErrorAlLeer.motivo`, o su
-// `motivoOriginal` si lleva el de otra capa), que no cambia con el idioma; `mensaje`, el texto que se escribiría sin
+// `motivoOriginal` si lleva el de otra capa; su `identificador`) o, en los demás, el nombre del tipo del error
+// (`ErrorDeLecturaDeFichero`), que no cambia con el idioma; `mensaje`, el texto que se escribiría sin
 // `--json`, sin «armonia: » delante. En un error de lectura, `posicion` es el índice del carácter en `texto`, desde 0,
 // para un programa, y `caracter`, el mismo contado desde 1, como en el mensaje.
 
@@ -20,7 +21,7 @@ struct ErrorEnJSON: Encodable {
     struct Detalle: Encodable {
         /// El código de salida: 1 si no se puede leer o no hay nada que dar, 2 si la orden está mal escrita.
         let codigo: Int32
-        /// Qué error es, sin traducir: `opcionDesconocida`, `notaNoReconocida`…
+        /// Qué error es, sin traducir: `opcionDesconocida`, `notaNoReconocida`… o el tipo del error.
         let tipo: String
         let mensaje: String
         /// Lo que se quiso escribir, si se parece a una orden o una opción conocida.
@@ -38,14 +39,11 @@ struct ErrorEnJSON: Encodable {
 
     /// Cualquier otro error, con su texto.
     init(otro error: any Error) {
-        self.error = Detalle(codigo: 1, tipo: Self.caso(type(of: error)), mensaje: "\(error)")
+        self.error = Detalle(codigo: 1, tipo: Self.tipo(de: error), mensaje: "\(error)")
     }
 
-    /// El nombre del caso de un `enum`, sin lo que lleva: `opcionDesconocida("--jsn")` → `opcionDesconocida`.
-    static func caso(_ valor: Any) -> String {
-        let texto = String(describing: valor)
-        return String(texto.prefix { $0 != "(" })
-    }
+    /// El nombre del tipo de un error que no es de uso ni de lectura: `ErrorDeLecturaDeFichero`.
+    static func tipo(de error: any Error) -> String { String(describing: type(of: error)) }
 
     /// Un error de uso, con lo que se quiso escribir.
     init(_ error: ErrorDeUso, en notacion: Notacion, enCurso: LineaDeComandos.OrdenEnCurso?) {
@@ -57,7 +55,7 @@ struct ErrorEnJSON: Encodable {
     /// Un error del motor o de lectura: con lo que se leía, si es de lectura.
     init(_ error: any ErrorDeArmonia, en notacion: Notacion) {
         var detalle = Detalle(
-            codigo: 1, tipo: Self.caso(type(of: error)), mensaje: error.descripcion(en: notacion))
+            codigo: 1, tipo: Self.tipo(de: error), mensaje: error.descripcion(en: notacion))
         if let lectura = error as? any ErrorAlLeer {
             detalle = Detalle(
                 codigo: 1, tipo: lectura.motivo.motivoOriginal.identificador, mensaje: detalle.mensaje,

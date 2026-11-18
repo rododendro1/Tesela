@@ -3,7 +3,7 @@ import Armonia
 // El catálogo de progresiones (`ProgresionConNombre.catalogo`: las cadencias, el barroco, el galante y las danzas, el
 // jazz y el blues, y el pop, en su orden), una fila por progresión con lo que dice de ella la API pública: nombres (y
 // su traducción a los otros doce idiomas), modo, cifrado romano, acordes sobre Do, si `EsquemaArmonico` la reconoce en
-// sus propios acordes, estilos y las obras que la citan.
+// sus propios acordes, de dónde viene y sus épocas, estilos y las obras que la citan.
 
 // Por partes: en una sola expresión, Swift 6.0 no termina de comprobar los tipos.
 private let columnasDeLaFichaDeProgresiones: [String] =

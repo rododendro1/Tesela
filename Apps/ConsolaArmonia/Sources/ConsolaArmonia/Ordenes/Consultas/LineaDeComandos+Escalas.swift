@@ -36,7 +36,7 @@ extension LineaDeComandos {
         let progresiones: Bool
         /// `--tetracordos`: sus divisiones en dos tetracordos.
         let tetracordos: Bool
-        /// `--bibtex`: solo sus referencias, en BibTeX.
+        /// `--formato bibtex`: solo sus referencias, en BibTeX.
         let bibtex: Bool
         /// `--cuartas`: los acordes de cada grado por cuartas (`Escala.acordesDeLosGrados(deNotas:por:)`).
         var cuartas = false
@@ -107,7 +107,7 @@ extension LineaDeComandos {
         let notacion = contexto.notacion
         let pedido = try pedidoDeEscala(textos, en: notacion)
         let escala = pedido.escala
-        // `--bibtex`: solo las referencias de la escala, que se pueden guardar en un .bib.
+        // `--formato bibtex`: solo las referencias de la escala, que se pueden guardar en un .bib.
         if pedido.bibtex { return bien(Referencia.bibtex(escala.tipo.referencias)) }
         var lineas = [describir(escala: escala, conTodosSusAcordes: pedido.conAcordes, movil: contexto.movil, notacion)]
         if let secuencia = pedido.secuencia {

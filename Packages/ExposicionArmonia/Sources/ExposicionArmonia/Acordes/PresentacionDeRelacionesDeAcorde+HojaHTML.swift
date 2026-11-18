@@ -6,7 +6,7 @@ extension PresentacionDeRelacionesDeAcorde {
     /// La hoja de estudio del acorde como página HTML: lo mismo que `hojaDeEstudio(de:en:)` (el cifrado, sus notas y
     /// sus otros nombres, el pentagrama, las disposiciones, las digitaciones de guitarra, las escalas compatibles y
     /// las sustituciones), con los textos en HTML y los dibujos como SVG dentro. Se adapta a la pantalla, sigue el
-    /// modo oscuro y se imprime en A4. `armonia hoja acorde Sol7 --html` la escribe.
+    /// modo oscuro y se imprime en A4. `armonia hoja acorde Sol7 --formato html` la escribe.
     ///
     ///     let hoja = PresentacionDeRelacionesDeAcorde.hojaDeEstudioHTML(de: Acorde("Sol7"), en: .compacta(.espanol))
     ///     hoja.contains("<h1>Sol7</h1>")   // true

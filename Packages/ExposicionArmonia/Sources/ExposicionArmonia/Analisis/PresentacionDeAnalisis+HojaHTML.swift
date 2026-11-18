@@ -6,7 +6,7 @@ extension PresentacionDeAnalisis {
     /// La hoja de estudio de la progresión como página HTML: lo mismo que `hojaDeEstudio(_:disposicion:en:)` (los
     /// acordes y su tonalidad, el pentagrama, el análisis en una tabla, la conducción de las voces, las cadencias y
     /// las líneas de notas guía), con los textos en HTML y los dibujos como SVG dentro. Se adapta a la pantalla,
-    /// sigue el modo oscuro y se imprime en A4. `armonia hoja acordes Rem7 Sol7 Do7M --html` la escribe.
+    /// sigue el modo oscuro y se imprime en A4. `armonia hoja acordes Rem7 Sol7 Do7M --formato html` la escribe.
     ///
     ///     let analisis = try PresentacionDeAnalisis.analizar("Rem7 Sol7 Do7M", notacion: .compacta(.espanol))
     ///     let hoja = PresentacionDeAnalisis.hojaDeEstudioHTML(analisis, en: .compacta(.espanol))

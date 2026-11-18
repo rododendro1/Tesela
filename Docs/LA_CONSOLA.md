@@ -165,7 +165,9 @@ $ armonia acorde Xx --json
 {"error":{"caracter":1,"codigo":1,"mensaje":"No se puede leer «Xx» (carácter 1): se esperaba un nombre de nota (Do, Re, Mi… o C, D, E…)","posicion":0,"texto":"Xx","tipo":"notaNoReconocida"}}
 ```
 
-`caracter` cuenta desde 1, como el mensaje, y `posicion` es el mismo carácter contado desde 0, como índice de `texto`.
+`caracter` cuenta desde 1, como el mensaje, y `posicion` es el mismo carácter contado desde 0, como índice de `texto`. `tipo` es el motivo, sin traducir: el de la nota si lo que falla es la nota de un acorde (`acorde Xm7` da
+`notaNoReconocida`); en una orden mal escrita, qué está mal (`opcionDesconocida`), y en los demás errores, su nombre
+(`ErrorDeLecturaDeFichero`).
 
 Sin argumentos y en la terminal, `armonia` abre una sesión con una orden por línea. Lo mismo vale para un fichero por
 la entrada estándar (`armonia < ejercicios.txt`), que sale con el peor código de sus órdenes.
