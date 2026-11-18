@@ -118,4 +118,11 @@ extension OrnamentoConNombre {
     /// La época en que aparece: la de su año (`anioDeOrigen`) o, si no se sabe, la más antigua de su estilo (el
     /// Barroco en el mordente superior).
     public var epocaDeOrigen: Epoca? { datos.epocaDeOrigen }
+
+    /// Las épocas en que se usa por sus estilos, en orden, después de la de origen: del Barroco, el Clasicismo, el
+    /// Romanticismo…
+    public var epocasDeUso: [Epoca] { datos.epocasDeUso }
+
+    /// La de origen y las de uso, en orden.
+    public var epocas: [Epoca] { datos.epocas }
 }

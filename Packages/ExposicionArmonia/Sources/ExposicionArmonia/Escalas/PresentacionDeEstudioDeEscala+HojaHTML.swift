@@ -8,7 +8,7 @@ extension PresentacionDeEstudioDeEscala {
     /// grados y la escalera de brillo en listas) y los dibujos (el pentagrama, el reloj, el círculo de su afinación y
     /// los teclados) como SVG dentro. Se adapta al ancho de la pantalla (en una estrecha, las columnas se apilan),
     /// sigue el modo oscuro del sistema y se imprime en A4. Una sola página, sin nada de fuera. `armonia hoja Do mayor
-    /// --html` la escribe.
+    /// --formato html` la escribe.
     ///
     ///     let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
     ///         de: Escala(.re, .dorico), en: .compacta(.espanol))
@@ -310,7 +310,7 @@ extension PresentacionDeEstudioDeEscala {
     /// Dos escalas comparadas nota a nota como página HTML: lo mismo que `comparacionNotaANota(_:con:en:)` (los dos
     /// pentagramas, la tabla grado a grado con los que cambian resaltados, el reloj con las dos escalas encima y la
     /// leyenda), con los textos en HTML. Lo común va en azul; lo que solo está en la primera, en verde; lo de la
-    /// segunda, en rojo. `armonia hoja Do mayor --comparar Do dórico --html` la escribe.
+    /// segunda, en rojo. `armonia hoja Do mayor --comparar Do dórico --formato html` la escribe.
     ///
     ///     let hoja = PresentacionDeEstudioDeEscala.comparacionNotaANotaHTML(
     ///         Escala(.do), con: Escala(.do, .dorico), en: .compacta(.espanol))

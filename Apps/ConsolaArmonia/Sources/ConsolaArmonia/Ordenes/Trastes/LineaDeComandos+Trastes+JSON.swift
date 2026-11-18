@@ -28,7 +28,7 @@ extension LineaDeComandos {
     }
 
     /// `digitaciones Sol7/Si --instrumento ukelele --json`: las formas de cada acorde, una lista aunque sea uno solo.
-    /// Admite las mismas opciones que el texto, salvo `--diagrama` y `--musicxml`, que no cambian nada.
+    /// Admite las mismas opciones que el texto, salvo `--diagrama` y `--formato musicxml`, que no cambian nada.
     static func digitacionesJSON(_ textos: [String], _ notacion: Notacion) throws -> [DigitacionesJSON] {
         let pedido = try pedidoDeDigitaciones(textos)
         let instrumento = Mensaje.instrumento(pedido.encordado).texto(en: notacion)

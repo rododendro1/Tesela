@@ -196,6 +196,10 @@ public struct TecladoIsomorfico: Hashable, Sendable {
         semitonosEnQ * direccion.paso.q + semitonosEnR * direccion.paso.r
     }
 
+    /// Los semitonos de un paso en cada una de las seis direcciones, en su orden (`DireccionHexagonal.allCases`, en
+    /// sentido antihorario): la tabla armónica da `[-3, 4, 7, 3, -4, -7]`.
+    public var semitonosEnLasSeisDirecciones: [Int] { DireccionHexagonal.allCases.map(semitonos(hacia:)) }
+
     /// Las casillas de `region` que suenan a ese número MIDI.
     public func casillas(de midi: Int, en region: some Sequence<CoordenadaAxial>) -> [CoordenadaAxial] {
         region.filter { self.midi(en: $0) == midi }

@@ -3,14 +3,17 @@ import Armonia
 // El catálogo de progresiones (`ProgresionConNombre.catalogo`: las cadencias, el barroco, el galante y las danzas, el
 // jazz y el blues, y el pop, en su orden), una fila por progresión con lo que dice de ella la API pública: nombres (y
 // su traducción a los otros doce idiomas), modo, cifrado romano, acordes sobre Do, si `EsquemaArmonico` la reconoce en
-// sus propios acordes, estilos y las obras que la citan.
+// sus propios acordes, de dónde viene y sus épocas, estilos y las obras que la citan.
 
-let columnasDeProgresiones: [String] =
+// Por partes: en una sola expresión, Swift 6.0 no termina de comprobar los tipos.
+private let columnasDeLaFichaDeProgresiones: [String] =
     columnasDeNombres + columnasDeAliasYVariantes + [
         "modo", "numero_de_acordes", "cifrado", "acordes_sobre_do", "se_reconoce",
-    ] + columnasDeLaFecha + columnasDelCaracter + [
-        "estilos", "referencias",
     ]
+private let columnasDelOrigenDeProgresiones: [String] = columnasDeLugaresSinTradicion + columnasDeLaFecha
+let columnasDeProgresiones: [String] =
+    columnasDeLaFichaDeProgresiones + columnasDelOrigenDeProgresiones + ["epocas_de_uso"] + columnasDelCaracter
+    + ["estilos", "referencias"]
 
 /// La fila de una progresión, en el orden de `columnasDeProgresiones`.
 func filaDeProgresion(_ progresion: ProgresionConNombre) -> [String] {
@@ -29,7 +32,12 @@ func filaDeProgresion(_ progresion: ProgresionConNombre) -> [String] {
         progresion.estilos.map(\.nombre).joined(separator: " · "),
         progresion.referencias.map(\.cita).joined(separator: " · "),
     ]
-    return comoSeLlama + otros + resto + fecha(de: progresion) + caracter(de: progresion) + alFinal
+    let deDonde = lugares(
+        nil, progresion.lugaresDeOrigen, progresion.paisesDeOrigen, progresion.continentesDeOrigen
+    ).dropFirst()
+    let epocas = progresion.epocasDeUso.map(\.nombre).joined(separator: " · ")
+    return comoSeLlama + otros + resto + Array(deDonde) + fecha(de: progresion) + [epocas] + caracter(de: progresion)
+        + alFinal
 }
 
 let progresiones = Catalogo(

@@ -28,7 +28,7 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeHoja: [EntradaDeAyuda] = [
-        // hoja <escala> [--comparar <escala>] [--html]
+        // hoja <escala> [--comparar <escala>] [--formato html]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHoja),
             descripcion: TextosDeConsola.traduccion(\.descripcionHoja),
@@ -36,7 +36,7 @@ extension LineaDeComandos {
                 "armonia hoja Re dórico > dorico.svg",
                 "armonia sheet D dorian > dorian.svg"),
             opciones: [.comparar, .formato]),
-        // hoja acorde <cifrado> [--html]
+        // hoja acorde <cifrado> [--formato html]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHojaDeAcorde),
             descripcion: TextosDeConsola.traduccion(\.descripcionHojaDeAcorde),
@@ -44,7 +44,7 @@ extension LineaDeComandos {
                 "armonia hoja acorde Sol7 > sol7.svg",
                 "armonia sheet chord G7 > g7.svg"),
             opciones: [.formato]),
-        // hoja acordes <acordes> [--en <tonalidad>] [--doce] [--comparar <acordes>] [--html]
+        // hoja acordes <acordes> [--en <tonalidad>] [--doce] [--comparar <acordes>] [--formato html]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHojaDeAcordes),
             descripcion: TextosDeConsola.traduccion(\.descripcionHojaDeAcordes),
@@ -52,7 +52,7 @@ extension LineaDeComandos {
                 "armonia hoja acordes Rem7 Sol7 Do7M --en Do mayor > ii-V-I.svg",
                 "armonia sheet chords Dm7 G7 Cmaj7 --in C major > ii-V-I.svg"),
             opciones: [.en, .doce, .comparar, .formato]),
-        // hoja tonalidad <tonalidad> [--html]
+        // hoja tonalidad <tonalidad> [--formato html]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHojaDeTonalidad),
             descripcion: TextosDeConsola.traduccion(\.descripcionHojaDeTonalidad),

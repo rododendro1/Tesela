@@ -6,8 +6,8 @@ extension PresentacionDeTonalidad {
     /// La hoja de estudio de la tonalidad como página HTML: lo mismo que `hojaDeEstudio(de:en:)` (la armadura y las
     /// relativas, el pentagrama de su escala, los acordes de cada grado con su función, las cadencias típicas y las
     /// modulaciones a los tonos vecinos), y además lo que dicen las fuentes de su carácter, con los textos en HTML y
-    /// el pentagrama como SVG dentro. Se adapta a la
-    /// pantalla, sigue el modo oscuro y se imprime en A4. `armonia hoja tonalidad Re mayor --html` la escribe.
+    /// el pentagrama como SVG dentro. Se adapta a la pantalla, sigue el modo oscuro y se imprime en A4. `armonia hoja
+    /// tonalidad Re mayor --formato html` la escribe.
     ///
     ///     let hoja = PresentacionDeTonalidad.hojaDeEstudioHTML(de: Tonalidad(.re), en: .compacta(.espanol))
     ///     hoja.contains("<h1>Re mayor</h1>")   // true

@@ -3,9 +3,10 @@ import ExposicionArmonia
 
 // El catálogo de acordes (`AcordeConNombre.catalogo`: los genéricos y después los de nombre propio, en su orden), una
 // fila por acorde con lo que dice de él la API pública: nombres (y su traducción a los otros doce idiomas),
-// intervalos, notas sobre Do, el cifrado y el nombre de su tipo de acorde, lo que se mide de él, estilos y las obras
-// que lo citan. Las medidas son las de `MedidaDeAcorde.todas` que van al JSON, con su clave en snake_case por columna
-// y su valor en texto plano (`ValorDeMedida.textoPlano`): una medida nueva sale aquí sin tocar este fichero.
+// intervalos, notas sobre Do, el cifrado y el nombre de su tipo de acorde, lo que se mide de él, de dónde viene y sus
+// épocas, estilos y las obras que lo citan. Las medidas son las de `MedidaDeAcorde.todas` que van al JSON, con su
+// clave en snake_case por columna y su valor en texto plano (`ValorDeMedida.textoPlano`): una medida nueva sale aquí
+// sin tocar este fichero.
 
 /// Las medidas, en el orden en que se leen.
 private let medidasDeAcordes = MedidaDeAcorde.todas.filter(\.vaAlJSON)
@@ -18,9 +19,12 @@ private let columnasDeLaFichaDeAcordes: [String] = [
     "grupo", "intervalos", "semitonos", "notas_sobre_do", "cifrado", "nombre_del_tipo",
     "escala_del_cifrado", "escalas_compatibles",
 ]
+// Por partes: en una sola expresión, Swift 6.0 no termina de comprobar los tipos.
+private let columnasDeLasMedidasDeAcordes: [String] = medidasDeAcordes.map { enSnakeCase($0.clave) }
+private let columnasDelOrigenDeAcordes: [String] = columnasDeLugaresSinTradicion + columnasDeLaFecha
 let columnasDeAcordes: [String] =
-    columnasDeLosNombresDeAcordes + columnasDeLaFichaDeAcordes + medidasDeAcordes.map { enSnakeCase($0.clave) }
-    + columnasDeLaFecha + columnasDelCaracter + ["estilos", "referencias"]
+    columnasDeLosNombresDeAcordes + columnasDeLaFichaDeAcordes + columnasDeLasMedidasDeAcordes
+    + columnasDelOrigenDeAcordes + ["epocas_de_uso"] + columnasDelCaracter + ["estilos", "referencias"]
 
 private let genericos = Set(AcordeConNombre.genericos)
 
@@ -48,7 +52,10 @@ func filaDeAcorde(_ acorde: AcordeConNombre) -> [String] {
         acorde.estilos.map(\.nombre).joined(separator: " · "),
         acorde.referencias.map(\.cita).joined(separator: " · "),
     ]
-    return comoSeLlama + antes + valores + fecha(de: acorde) + caracter(de: acorde) + despues
+    let deDonde = lugares(nil, acorde.lugaresDeOrigen, acorde.paisesDeOrigen, acorde.continentesDeOrigen).dropFirst()
+    let epocas = acorde.epocasDeUso.map(\.nombre).joined(separator: " · ")
+    return comoSeLlama + antes + valores + Array(deDonde) + fecha(de: acorde) + [epocas] + caracter(de: acorde)
+        + despues
 }
 
 let acordes = Catalogo(

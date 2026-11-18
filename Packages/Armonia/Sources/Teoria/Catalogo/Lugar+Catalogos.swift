@@ -1,8 +1,8 @@
 import Elementos
 
-// MARK: - De dónde vienen los ritmos y los temperamentos
+// MARK: - De dónde vienen los ritmos, los temperamentos, los acordes y las progresiones
 //
-// Lo que las escalas saben de su lugar (TipoDeEscala+Lugar.swift), en los ritmos y los temperamentos: su tradición y
+// Lo que las escalas saben de su lugar (TipoDeEscala+Lugar.swift), en los demás catálogos con ficha: su tradición y
 // sus lugares de origen, de sus datos (`DatosDelCatalogo.lugaresDeOrigen`).
 
 extension RitmoConNombre {
@@ -37,4 +37,30 @@ extension TemperamentoConNombre {
 
     /// En qué estilos se usa, de más a menos importante: la música clásica en los del Barroco.
     public var estilos: [Estilo] { datos.estilos }
+}
+
+extension AcordeConNombre {
+    /// Los lugares de donde viene, los más concretos que se saben, como en los ritmos (todos son de la tradición
+    /// occidental, sin `tradicion`): los países de sus estilos si todos son de uno
+    /// (Estados Unidos en los del jazz); vacío si no se sabe.
+    public var lugaresDeOrigen: [Lugar] { datos.lugaresDeOrigen }
+
+    /// Los países de donde viene, con los que contienen sus lugares.
+    public var paisesDeOrigen: [Pais] { datos.paisesDeOrigen }
+
+    /// Los continentes de donde viene.
+    public var continentesDeOrigen: [Continente] { datos.continentesDeOrigen }
+}
+
+extension ProgresionConNombre {
+    /// Los lugares de donde viene, los más concretos que se saben, como en los ritmos (todas son de la tradición
+    /// occidental, sin `tradicion`): Andalucía en la cadencia andaluza, Portugal y
+    /// España en la folía, Italia en el passamezzo, o los países de sus estilos (Estados Unidos en el blues).
+    public var lugaresDeOrigen: [Lugar] { datos.lugaresDeOrigen }
+
+    /// Los países de donde viene, con los que contienen sus lugares: España en la cadencia andaluza, por Andalucía.
+    public var paisesDeOrigen: [Pais] { datos.paisesDeOrigen }
+
+    /// Los continentes de donde viene.
+    public var continentesDeOrigen: [Continente] { datos.continentesDeOrigen }
 }
