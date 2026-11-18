@@ -64,6 +64,7 @@ extension TextosDePartituras {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: "« {1} » n'est pas une durée : une figure était attendue (1, 2, 4, 8, 16…, pointée : 4.) ou une fraction de ronde (3/8, 1/12)",
         compasNoValido: "« {1} » n'est pas une mesure : numérateur/dénominateur attendu, avec un dénominateur puissance de 2 (4/4, 6/8, 7/8), C ou ¢",
-        contrapuntoDeOtraDuracion: "le contrepoint doit durer autant que le cantus firmus : {1} rondes, une par note"
+        contrapuntoDeOtraDuracion: "le contrepoint doit durer autant que le cantus firmus : {1} rondes, une par note",
+        melodiaSinNotas: "la mélodie n'a aucune note : seulement des silences"
     )
 }

@@ -64,6 +64,7 @@ extension TextosDePartituras {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: "«{1}» non è una durata: si aspettava una figura (1, 2, 4, 8, 16…, puntata: 4.) o una frazione di semibreve (3/8, 1/12)",
         compasNoValido: "«{1}» non è un tempo: si aspettava numeratore/denominatore con il denominatore potenza di 2 (4/4, 6/8, 7/8), C o ¢",
-        contrapuntoDeOtraDuracion: "il contrappunto deve durare quanto il cantus firmus: {1} semibrevi, una per nota"
+        contrapuntoDeOtraDuracion: "il contrappunto deve durare quanto il cantus firmus: {1} semibrevi, una per nota",
+        melodiaSinNotas: "la melodia non ha nessuna nota: solo pause"
     )
 }

@@ -64,6 +64,7 @@ extension TextosDePartituras {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: "«{1}» ez da iraupen bat: figura bat espero zen (1, 2, 4, 8, 16…, puntuekin: 4.) edo biribilaren zatiki bat (3/8, 1/12)",
         compasNoValido: "«{1}» ez da konpas bat: zenbakitzailea/izendatzailea espero zen, izendatzailea 2ren berretura izanik (4/4, 6/8, 7/8), C edo ¢",
-        contrapuntoDeOtraDuracion: "kontrapuntuak cantus firmusak beste iraun behar du: {1} biribil, nota bakoitzeko bat"
+        contrapuntoDeOtraDuracion: "kontrapuntuak cantus firmusak beste iraun behar du: {1} biribil, nota bakoitzeko bat",
+        melodiaSinNotas: "melodiak ez du notarik: isiluneak baino ez"
     )
 }

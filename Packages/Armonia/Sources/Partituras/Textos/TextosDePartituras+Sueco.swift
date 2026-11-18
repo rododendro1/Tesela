@@ -64,6 +64,7 @@ extension TextosDePartituras {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: "”{1}” är inget notvärde: ett notvärde (1, 2, 4, 8, 16…, punkterat: 4.) eller en del av en helnot (3/8, 1/12) väntades",
         compasNoValido: "”{1}” är ingen taktart: täljare/nämnare med en tvåpotens som nämnare (4/4, 6/8, 7/8), C eller ¢ väntades",
-        contrapuntoDeOtraDuracion: "kontrapunkten måste vara lika lång som cantus firmus: {1} helnoter, en per ton"
+        contrapuntoDeOtraDuracion: "kontrapunkten måste vara lika lång som cantus firmus: {1} helnoter, en per ton",
+        melodiaSinNotas: "melodin har inga toner, bara pauser"
     )
 }

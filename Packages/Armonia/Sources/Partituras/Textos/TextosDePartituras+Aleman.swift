@@ -64,6 +64,7 @@ extension TextosDePartituras {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: "„{1}“ ist keine Dauer: erwartet wurde ein Notenwert (1, 2, 4, 8, 16…, punktiert: 4.) oder ein Bruchteil der Ganzen (3/8, 1/12)",
         compasNoValido: "„{1}“ ist keine Taktart: erwartet wurde Zähler/Nenner mit einer Zweierpotenz als Nenner (4/4, 6/8, 7/8), C oder ¢",
-        contrapuntoDeOtraDuracion: "der Kontrapunkt muss so lange dauern wie der Cantus firmus: {1} ganze Noten, eine pro Note"
+        contrapuntoDeOtraDuracion: "der Kontrapunkt muss so lange dauern wie der Cantus firmus: {1} ganze Noten, eine pro Note",
+        melodiaSinNotas: "die Melodie hat keine Noten, nur Pausen"
     )
 }

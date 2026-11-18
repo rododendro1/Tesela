@@ -31,6 +31,8 @@ public protocol MotivoDeLectura: Hashable, Sendable {
     /// El motivo de la capa de debajo que lleva dentro, si lo que falla es de esa capa: el de
     /// `.elementos(.notaNoReconocida)` es `.notaNoReconocida`. `nil` si el motivo es de su propia capa.
     var motivoDeDebajo: (any MotivoDeLectura)? { get }
+    /// El nombre del caso, sin traducir y sin lo que lleva: `notaNoReconocida`, `tensionNoValida`…
+    var identificador: String { get }
 }
 
 extension MotivoDeLectura {

@@ -28,8 +28,11 @@
   acorde, en lugar de un `ErrorDeLectura`, y `.teoria(…)` si falla un cifrado en una partitura. Quien atrapaba
   `ErrorDeLectura` al leer un acorde mira ahora `error.motivo`.
 - `ErrorDeTransformacion.secuenciaIlegible` y `ErrorDeRealizacion.bajoCifradoIlegible` llevan un
-  `ErrorDeLecturaDeTeoria` en lugar de `any ErrorAlLeer`, y `ErrorDeLecturaDeFichero` tiene `vocesDistintas` (un
-  fichero que no es un coral).
+  `ErrorDeLecturaDeTeoria` en lugar de `any ErrorAlLeer`, y `ErrorDeLecturaDeFichero` tiene `coral(_:)`, con el
+  motivo de Teoría, para un fichero que no es un coral (`.coral(.vocesDistintas)`).
+- `MotivoDeLectura` pide `identificador`, el nombre de cada caso (`notaNoReconocida`), que no cambia con el idioma:
+  un motivo propio tiene que darlo. La consola lo da como `tipo` de los errores en JSON en lugar de sacarlo de la
+  descripción del caso.
 - En la consola:
   - `--formato json` es `--json` en todas las órdenes, y el completado lo propone en las que dan JSON. El `tipo` de
     un error de lectura en JSON sigue siendo el del motivo de dentro (`notaNoReconocida`).
@@ -43,6 +46,8 @@
 
 ### Novedades
 
+- `ErrorDeLecturaDePartitura.Motivo.melodiaSinNotas`, en los trece idiomas: una melodía o una voz que solo tiene
+  silencios.
 - `enTeoria(_:)`, `enPartituras(_:)` y `enPartituras(deTeoria:)` son públicos: leen con la lectura de una capa de
   debajo y lanzan su error como el de la capa de encima, sin un `do`/`catch` en cada lectura.
 - `MotivoDeLectura.motivoDeDebajo` da el motivo de la capa de debajo que lleva un motivo (el de `.elementos(…)` o

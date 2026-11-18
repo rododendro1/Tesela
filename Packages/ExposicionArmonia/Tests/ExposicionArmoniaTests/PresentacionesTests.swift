@@ -345,11 +345,11 @@ import Testing
     }
 
     @Test func unaMelodiaConRitmo() throws {
-        // En un acorde se armoniza la nota más aguda; una voz con solo silencios es un texto vacío.
+        // En un acorde se armoniza la nota más aguda; una voz con solo silencios no tiene nada que armonizar.
         let coral = try PresentacionDeCoral.armonizar("Do4+Mi4:4 Re4:4 Do4:2", en: nil, notacion: .compacta(.espanol))
         #expect(coral.avisos == [])
         #expect(!coral.propuestas.isEmpty)
-        #expect(throws: (any Error).self) {
+        #expect(throws: ErrorDeLecturaDePartitura(texto: "-:4 -:4", posicion: nil, motivo: .melodiaSinNotas)) {
             try PresentacionDeCoral.armonizar("-:4 -:4", en: nil, notacion: .compacta(.espanol))
         }
     }

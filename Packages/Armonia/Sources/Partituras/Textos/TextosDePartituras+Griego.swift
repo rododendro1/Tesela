@@ -64,6 +64,7 @@ extension TextosDePartituras {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: "το «{1}» δεν είναι διάρκεια: αναμενόταν αξία νότας (1, 2, 4, 8, 16…, με τελεία: 4.) ή κλάσμα ολόκληρου (3/8, 1/12)",
         compasNoValido: "το «{1}» δεν είναι μέτρο: αναμενόταν αριθμητής/παρονομαστής με παρονομαστή δύναμη του 2 (4/4, 6/8, 7/8), C ή ¢",
-        contrapuntoDeOtraDuracion: "η αντίστιξη πρέπει να διαρκεί όσο το cantus firmus: {1} ολόκληρα, ένα ανά νότα"
+        contrapuntoDeOtraDuracion: "η αντίστιξη πρέπει να διαρκεί όσο το cantus firmus: {1} ολόκληρα, ένα ανά νότα",
+        melodiaSinNotas: "η μελωδία δεν έχει καμία νότα: μόνο παύσεις"
     )
 }

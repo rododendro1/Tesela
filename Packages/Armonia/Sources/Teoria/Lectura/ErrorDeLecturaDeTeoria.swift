@@ -136,6 +136,38 @@ extension ErrorDeLecturaDeTeoria.Motivo {
     }
 }
 
+extension ErrorDeLecturaDeTeoria.Motivo {
+    /// El nombre del caso, que no cambia con el idioma ni con lo que lleva: `simboloNoReconocido`. Es el `tipo` de los
+    /// errores en JSON de la consola.
+    public var identificador: String {
+        switch self {
+        case .simboloNoReconocido: return "simboloNoReconocido"
+        case .tensionNoValida: return "tensionNoValida"
+        case .numeroDeAcordeNoValido: return "numeroDeAcordeNoValido"
+        case .numeroRepetido: return "numeroRepetido"
+        case .calidadesIncompatibles: return "calidadesIncompatibles"
+        case .gradoNoOmitible: return "gradoNoOmitible"
+        case .acordeNoInterpretable: return "acordeNoInterpretable"
+        case .bajoNoValido: return "bajoNoValido"
+        case .idiomasMezclados: return "idiomasMezclados"
+        case .tipoDeEscalaNoReconocido: return "tipoDeEscalaNoReconocido"
+        case .modoNoReconocido: return "modoNoReconocido"
+        case .vocesDistintas: return "vocesDistintas"
+        case .vocesDeDistintaLongitud: return "vocesDeDistintaLongitud"
+        case .nombreNoReconocido: return "nombreNoReconocido"
+        case .numeroFueraDeRango: return "numeroFueraDeRango"
+        case .trasteNoValido: return "trasteNoValido"
+        case .trasteQueNoTiene: return "trasteQueNoTiene"
+        case .cuerdasDistintas: return "cuerdasDistintas"
+        case .cifradoRomanoNoValido: return "cifradoRomanoNoValido"
+        case .destinoNoTonicalizable: return "destinoNoTonicalizable"
+        case .cifrasNoValidas: return "cifrasNoValidas"
+        case .cifrasSinAcorde: return "cifrasSinAcorde"
+        case .elementos: return "elementos"
+        }
+    }
+}
+
 // MARK: - Idiomas
 //
 // Los mensajes en los trece idiomas de los textos, una función por motivo, para que un motivo nuevo no compile

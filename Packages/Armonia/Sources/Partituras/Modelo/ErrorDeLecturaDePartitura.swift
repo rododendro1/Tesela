@@ -19,6 +19,8 @@ public struct ErrorDeLecturaDePartitura: ErrorAlLeer {
         case compasNoValido(String)
         /// El contrapunto no dura lo mismo que el cantus firmus: una redonda por cada nota.
         case contrapuntoDeOtraDuracion(redondas: Int)
+        /// La melodía o la voz solo tiene silencios: no hay ninguna nota que armonizar.
+        case melodiaSinNotas
         /// Lo que falla en una nota o una altura del texto: el motivo de `ErrorDeLectura`.
         case elementos(ErrorDeLectura.Motivo)
         /// Lo que falla en un cifrado del texto: el motivo de `ErrorDeLecturaDeTeoria`.
@@ -48,6 +50,21 @@ extension ErrorDeLecturaDePartitura.Motivo {
     }
 }
 
+extension ErrorDeLecturaDePartitura.Motivo {
+    /// El nombre del caso, que no cambia con el idioma ni con lo que lleva: `duracionNoValida`. Es el `tipo` de los
+    /// errores en JSON de la consola.
+    public var identificador: String {
+        switch self {
+        case .duracionNoValida: return "duracionNoValida"
+        case .compasNoValido: return "compasNoValido"
+        case .contrapuntoDeOtraDuracion: return "contrapuntoDeOtraDuracion"
+        case .melodiaSinNotas: return "melodiaSinNotas"
+        case .elementos: return "elementos"
+        case .teoria: return "teoria"
+        }
+    }
+}
+
 // MARK: - Idiomas
 //
 // Los mensajes en los trece idiomas de los textos, que están en `TextosDePartituras`.
@@ -59,6 +76,7 @@ extension ErrorDeLecturaDePartitura.Motivo {
         case .compasNoValido(let texto): return TextosDePartituras.en(notacion) { $0.compasNoValido(texto) }
         case .contrapuntoDeOtraDuracion(let redondas):
             return TextosDePartituras.en(notacion) { $0.contrapuntoDeOtraDuracion(redondas) }
+        case .melodiaSinNotas: return TextosDePartituras.en(notacion, \.melodiaSinNotas)
         case .elementos(let motivo): return motivo.explicacion(en: notacion)
         case .teoria(let motivo): return motivo.explicacion(en: notacion)
         }

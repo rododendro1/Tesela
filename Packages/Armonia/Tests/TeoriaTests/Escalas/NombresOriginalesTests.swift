@@ -184,7 +184,7 @@ import Testing
     }
 
     /// Los mēḷa en telugu y en canarés salen del devanagari con las tres reglas de `nombresDeMelakartaEnTelugu`.
-    @Test func losMelaYLosJanyaEnTeluguYEnCanaresSalenDelDevanagari() {
+    @Test func losMelaYLosJanyaEnTeluguYEnCanaresSalenDelDevanagari() throws {
         let virama: UInt32 = 0x94D
         // Cada nasal y las consonantes de su grupo (ङ: क…ङ; ञ: च…ञ; ण: ट…ण; न: त…न; म: प…म).
         let grupos: [UInt32: ClosedRange<UInt32>] = [
@@ -229,21 +229,19 @@ import Testing
         // Los janya, igual: el telugu y el canarés salen del sánscrito.
         for janya in TipoDeEscala.janyas {
             let textos = Dictionary(janya.nombresOriginales.map { ($0.idioma, $0.texto) }) { a, _ in a }
-            let sanscrito = try? #require(textos[.sanscrito], Comment(rawValue: janya.nombre))
-            #expect(
-                textos[.telugu] == sanscrito.map { pasar($0, desplazamiento: 0x300) }, Comment(rawValue: janya.nombre))
-            #expect(
-                textos[.canares] == sanscrito.map { pasar($0, desplazamiento: 0x380) }, Comment(rawValue: janya.nombre))
+            let sanscrito = try #require(textos[.sanscrito], Comment(rawValue: janya.nombre))
+            #expect(textos[.telugu] == pasar(sanscrito, desplazamiento: 0x300), Comment(rawValue: janya.nombre))
+            #expect(textos[.canares] == pasar(sanscrito, desplazamiento: 0x380), Comment(rawValue: janya.nombre))
         }
         #expect(TipoDeEscala.suddhaSaveri.nombresOriginales[1].texto == "శుద్ధ సావేరి")
         let conTamil = TipoDeEscala.janyas.filter { $0.nombresOriginales.contains { $0.idioma == .tamil } }
         #expect(conTamil.count == 40)
         #expect(TipoDeEscala.buscar(nombre: "ஹம்சத்வனி")?.esIdentico(a: .hamsadhvani) == true)
-        let kanakangi = try? #require(TipoDeEscala.melakarta(1))
-        #expect(kanakangi?.nombresOriginales.map(\.texto) == ["कनकाङ्गी", "కనకాంగి", "ಕನಕಾಂಗಿ", "கனகாங்கி"])
-        #expect(kanakangi?.nombreOriginal?.idioma == .sanscrito)
+        let kanakangi = try #require(TipoDeEscala.melakarta(1))
+        #expect(kanakangi.nombresOriginales.map(\.texto) == ["कनकाङ्गी", "కనకాంగి", "ಕನಕಾಂಗಿ", "கனகாங்கி"])
+        #expect(kanakangi.nombreOriginal?.idioma == .sanscrito)
         #expect(
-            kanakangi?.nombresOriginalesCompletos.map(\.texto) == [
+            kanakangi.nombresOriginalesCompletos.map(\.texto) == [
                 "मेळ कनकाङ्गी", "మేళ కనకాంగి", "ಮೇಳ ಕನಕಾಂಗಿ", "கனகாங்கி",
             ])
         #expect(TipoDeEscala.melakarta(29)?.nombresOriginales[1].texto == "ధీరశంకరాభరణం")

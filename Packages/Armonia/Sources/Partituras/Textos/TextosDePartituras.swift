@@ -72,6 +72,7 @@ struct TextosDePartituras: TextosTraducidos {
     let duracionNoValida: Plantilla  // {1} texto
     let compasNoValido: Plantilla  // {1} texto
     let contrapuntoDeOtraDuracion: Plantilla  // {1} redondas
+    let melodiaSinNotas: String
 
     /// Los textos en los trece idiomas: `en(notacion, \.campo)` es un texto en un idioma y `traduccion(\.campo)`, su
     /// `Traduccion`.

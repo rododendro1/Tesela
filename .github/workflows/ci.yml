@@ -121,6 +121,11 @@ jobs:
           for objetivo in Elementos Teoria Diagramas Partituras Polifonia Formatos Trastes Armonia; do
             swift build --scratch-path .build/sin-avisos --target "$objetivo" -Xswiftc -warnings-as-errors
           done
+      # Las pruebas también: un aviso en ellas (un `#require` que sobra, una conversión que siempre sale) suele ser una
+      # comprobación que no comprueba nada.
+      - name: Sin avisos (pruebas)
+        if: matrix.swift == '6.2'
+        run: swift build --scratch-path .build/sin-avisos --build-tests -Xswiftc -warnings-as-errors
       - uses: actions/cache/save@v6
         if: github.event_name != 'pull_request'
         with:
@@ -173,7 +178,7 @@ jobs:
           python3 "$GITHUB_WORKSPACE/Scripts/comprobaciones/comprobar_tsv.py" "$RUNNER_TEMP/catalogos"
       - name: Sin avisos
         if: matrix.swift == '6.2'
-        run: swift build --scratch-path .build/sin-avisos -Xswiftc -warnings-as-errors
+        run: swift build --scratch-path .build/sin-avisos --build-tests -Xswiftc -warnings-as-errors
       - uses: actions/cache/save@v6
         if: github.event_name != 'pull_request'
         with:
@@ -353,7 +358,7 @@ jobs:
         run: swift test --parallel
       - name: Sin avisos
         if: matrix.swift == '6.2'
-        run: swift build --scratch-path .build/sin-avisos --target ${{ matrix.paquete }} -Xswiftc -warnings-as-errors
+        run: swift build --scratch-path .build/sin-avisos --build-tests -Xswiftc -warnings-as-errors
       - uses: actions/cache/save@v6
         if: github.event_name != 'pull_request'
         with:

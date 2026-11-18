@@ -64,6 +64,7 @@ extension TextosDePartituras {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: "„{1}” nem időtartam: hangérték (1, 2, 4, 8, 16…, pontozva: 4.) vagy az egész hang törtrésze (3/8, 1/12) várható",
         compasNoValido: "„{1}” nem ütemmutató: számláló/nevező várható, a nevező kettő hatványa (4/4, 6/8, 7/8), vagy C, illetve ¢",
-        contrapuntoDeOtraDuracion: "az ellenpontnak ugyanolyan hosszúnak kell lennie, mint a cantus firmusnak: {1} egész hang, hangonként egy"
+        contrapuntoDeOtraDuracion: "az ellenpontnak ugyanolyan hosszúnak kell lennie, mint a cantus firmusnak: {1} egész hang, hangonként egy",
+        melodiaSinNotas: "a dallamban nincs egyetlen hang sem, csak szünetek"
     )
 }
