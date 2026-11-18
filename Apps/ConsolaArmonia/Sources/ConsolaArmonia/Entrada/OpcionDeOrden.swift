@@ -179,13 +179,19 @@ extension OpcionDeOrden {
     static let reloj = marca("--reloj", "--clock")
     /// El reloj con cada nota del color de sus cents.
     static let colores = marca("--colores", "--colors")
+    /// En `hoja`, la hoja de una progresión del catálogo: `hoja progresion folía`.
+    static let progresion = valor("--progresion", "--progression")
     static let resumen = marca("--resumen", "--summary")
     static let rejilla = valor("--rejilla", "--grid")
+    /// En `hoja`, la hoja de un ritmo del catálogo: `hoja ritmo tresillo`.
+    static let ritmo = valor("--ritmo", "--rhythm")
     static let romanos = marca("--romanos", "--roman")
     /// En `hoja`, las partes de la hoja de una escala: `--secciones pentagrama,teclados`.
     static let secciones = valor("--secciones", "--sections")
     static let secuencia = valor("--secuencia", "--sequence")
     static let semitonos = marca("--semitonos", "--semitones")
+    /// En `hoja`, la hoja de una serie dodecafónica: `hoja serie 0 1 2 …`.
+    static let serie = valor("--serie", "--row")
     static let simetria = marca("--simetria", "--symmetry")
     static let sinIntervalo = valor("--sin-intervalo", "--without-interval")
     static let sinOctava = marca("--sin-octava", "--no-octave")

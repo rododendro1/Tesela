@@ -44,6 +44,7 @@ el selector de notación cambia la app entera.
 - ``PresentacionDeAnalisis``
 - ``AnalisisPresentado``
 - ``TramoPresentado``
+- ``AcordeDeFueraPresentado``
 
 ### Abrir ficheros
 
@@ -98,6 +99,7 @@ el selector de notación cambia la app entera.
 - ``EscalaEncontrada``
 - ``SimetriaPresentada``
 - ``HojaDeEstudioPresentada``
+- ``HojaDeEstudio``
 - ``TablaDeAcordesPresentada``
 - ``ArpegioEnElMastilPresentado``
 - ``FormasDeArpegio``

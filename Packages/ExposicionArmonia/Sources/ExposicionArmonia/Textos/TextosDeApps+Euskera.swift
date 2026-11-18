@@ -388,6 +388,7 @@ extension TextosDeApps {
         progresionesConNombre: "Progresioak",
         acordesConNombre: "Izendun akordeak",
         ritmosConNombre: "Erritmoak",
+        ritmosParecidos: "Antzeko erritmoak",
         buscarEnElCatalogo: "Bilatu",
         fuentes: "Iturriak",
         verEnAnalisis: "Ikusi Analisian",

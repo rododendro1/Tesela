@@ -50,6 +50,8 @@ extension ErrorDeUso {
                 entre: LineaDeComandos.nombresDeLasFamiliasDeInstrumento.flatMap { [$0.espanol, $0.ingles] })
         case .ritmoDesconocido(let ritmo):
             return LineaDeComandos.propuesta(para: ritmo, entre: RitmoConNombre.catalogo.map(\.nombre))
+        case .progresionDesconocida(let progresion):
+            return LineaDeComandos.propuesta(para: progresion, entre: ProgresionConNombre.catalogo.map(\.nombre))
         case .familiaDeRitmoDesconocida(let familia):
             return LineaDeComandos.propuesta(
                 para: familia, entre: LineaDeComandos.nombresDeLasFamiliasDeRitmo.flatMap { [$0.espanol, $0.ingles] })

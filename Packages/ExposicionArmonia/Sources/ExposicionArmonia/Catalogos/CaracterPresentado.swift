@@ -100,7 +100,7 @@ extension PresentacionDeEstudioDeEscala {
         filasDelCaracter(tonalidad.caracter, en: notacion)
     }
 
-    private static func filasDelCaracter(
+    static func filasDelCaracter(
         _ caracter: [Caracter], medidas: [MedidaDelAfecto] = [], sonoridad: Sonoridad? = nil, en notacion: Notacion
     ) -> [DatoPresentado] {
         var filas = caracter.map { fuente in

@@ -388,6 +388,7 @@ extension TextosDeApps {
         progresionesConNombre: "Ackordföljder",
         acordesConNombre: "Namngivna ackord",
         ritmosConNombre: "Rytmer",
+        ritmosParecidos: "Liknande rytmer",
         buscarEnElCatalogo: "Sök",
         fuentes: "Källor",
         verEnAnalisis: "Visa i Analys",

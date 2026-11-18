@@ -35,7 +35,14 @@
 - La hoja de una tonalidad lleva las dominantes secundarias y los acordes prestados del modo homónimo
   (`PresentacionDeTonalidad.dominantesSecundarias(de:en:)` y `acordesPrestados(de:en:)`, en
   `AcordeDeFueraPresentado`), y la de SVG, también su carácter.
-- `TextosDeApps.secuencias`, en los trece idiomas.
+- `HojaDeEstudio`: más hojas de estudio, en SVG o en HTML (`Formato`). `ritmo(_:en:formato:)`, la de un ritmo del
+  catálogo, con su collar, su rejilla, su ficha, sus medidas, su carácter y los ritmos parecidos;
+  `progresion(_:sobre:en:formato:)`, la de una progresión con nombre, con el pentagrama, la ficha, el carácter, el
+  coral y las doce tonalidades; `serie(_:en:formato:)`, la de una serie dodecafónica, con la matriz y el pentagrama;
+  `arpegio(_:mastil:en:formato:)`, la de un arpegio, en el pentagrama, el teclado y el mástil, y
+  `instrumento(_:en:formato:)`, la de un instrumento de cuerda, con la afinación, el mástil con todas las notas y los
+  acordes básicos.
+- `TextosDeApps.secuencias` y `ritmosParecidos`, en los trece idiomas.
 
 ## 0.6.0 (2026-11-17)
 

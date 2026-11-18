@@ -427,6 +427,8 @@ public struct TextosDeApps: TextosTraducidos {
     public let progresionesConNombre: String
     public let acordesConNombre: String
     public let ritmosConNombre: String
+    /// En la hoja de un ritmo, los del catálogo con los mismos pulsos y golpes, por su distancia de intercambio.
+    public let ritmosParecidos: String
     public let buscarEnElCatalogo: String
     /// Las obras donde se lee una entrada del catálogo.
     public let fuentes: String

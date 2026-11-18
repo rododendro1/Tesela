@@ -80,6 +80,8 @@ extension ErrorDeUso {
             return TextosDeConsola.traduccion { $0.alturaFueraDeLaEscala(altura, escala) }
         case .ritmoDesconocido(let ritmo):
             return TextosDeConsola.traduccion { $0.ritmoDesconocido(ritmo) }
+        case .progresionDesconocida(let progresion):
+            return TextosDeConsola.traduccion { $0.progresionDesconocida(progresion) }
         case .familiaDeRitmoDesconocida(let familia):
             return TextosDeConsola.traduccion { $0.familiaDeRitmoDesconocida(familia) }
         case .fuenteDesconocida(let fuente):
