@@ -18,11 +18,12 @@ private let columnasDeLaFichaDeAcordes: [String] = [
     "grupo", "intervalos", "semitonos", "notas_sobre_do", "cifrado", "nombre_del_tipo",
     "escala_del_cifrado", "escalas_compatibles",
 ]
+// Por partes: en una sola expresión, Swift 6.0 no termina de comprobar los tipos.
+private let columnasDeLasMedidasDeAcordes: [String] = medidasDeAcordes.map { enSnakeCase($0.clave) }
+private let columnasDelOrigenDeAcordes: [String] = columnasDeLugaresSinTradicion + columnasDeLaFecha
 let columnasDeAcordes: [String] =
-    columnasDeLosNombresDeAcordes + columnasDeLaFichaDeAcordes + medidasDeAcordes.map { enSnakeCase($0.clave) }
-    + columnasDeLugaresSinTradicion + columnasDeLaFecha + ["epocas_de_uso"] + columnasDelCaracter + [
-        "estilos", "referencias",
-    ]
+    columnasDeLosNombresDeAcordes + columnasDeLaFichaDeAcordes + columnasDeLasMedidasDeAcordes
+    + columnasDelOrigenDeAcordes + ["epocas_de_uso"] + columnasDelCaracter + ["estilos", "referencias"]
 
 private let genericos = Set(AcordeConNombre.genericos)
 

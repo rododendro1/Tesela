@@ -5,12 +5,15 @@ import Armonia
 // su traducción a los otros doce idiomas), modo, cifrado romano, acordes sobre Do, si `EsquemaArmonico` la reconoce en
 // sus propios acordes, estilos y las obras que la citan.
 
-let columnasDeProgresiones: [String] =
+// Por partes: en una sola expresión, Swift 6.0 no termina de comprobar los tipos.
+private let columnasDeLaFichaDeProgresiones: [String] =
     columnasDeNombres + columnasDeAliasYVariantes + [
         "modo", "numero_de_acordes", "cifrado", "acordes_sobre_do", "se_reconoce",
-    ] + columnasDeLugaresSinTradicion + columnasDeLaFecha + ["epocas_de_uso"] + columnasDelCaracter + [
-        "estilos", "referencias",
     ]
+private let columnasDelOrigenDeProgresiones: [String] = columnasDeLugaresSinTradicion + columnasDeLaFecha
+let columnasDeProgresiones: [String] =
+    columnasDeLaFichaDeProgresiones + columnasDelOrigenDeProgresiones + ["epocas_de_uso"] + columnasDelCaracter
+    + ["estilos", "referencias"]
 
 /// La fila de una progresión, en el orden de `columnasDeProgresiones`.
 func filaDeProgresion(_ progresion: ProgresionConNombre) -> [String] {
