@@ -64,6 +64,7 @@ extension TextosDePartituras {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: "«{1}» — не длительность: ожидалась нота (1, 2, 4, 8, 16…, с точкой: 4.) или доля целой (3/8, 1/12)",
         compasNoValido: "«{1}» — не размер: ожидалось числитель/знаменатель, где знаменатель — степень двойки (4/4, 6/8, 7/8), C или ¢",
-        contrapuntoDeOtraDuracion: "контрапункт должен длиться столько же, сколько cantus firmus: {1} целых, по одной на ноту"
+        contrapuntoDeOtraDuracion: "контрапункт должен длиться столько же, сколько cantus firmus: {1} целых, по одной на ноту",
+        melodiaSinNotas: "в мелодии нет ни одной ноты: только паузы"
     )
 }

@@ -60,7 +60,7 @@ struct ErrorEnJSON: Encodable {
             codigo: 1, tipo: Self.caso(type(of: error)), mensaje: error.descripcion(en: notacion))
         if let lectura = error as? any ErrorAlLeer {
             detalle = Detalle(
-                codigo: 1, tipo: Self.caso(lectura.motivo.motivoOriginal), mensaje: detalle.mensaje,
+                codigo: 1, tipo: lectura.motivo.motivoOriginal.identificador, mensaje: detalle.mensaje,
                 texto: lectura.texto,
                 posicion: lectura.posicion, caracter: lectura.posicion.map { $0 + 1 })
         }

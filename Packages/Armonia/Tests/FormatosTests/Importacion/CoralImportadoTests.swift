@@ -35,14 +35,15 @@ import Testing
         #expect(leido.faltas == coral.faltas)
     }
 
-    /// Una melodía sola no es un coral: lanza `.vocesDistintas`, con el texto de Teoría en cada idioma.
+    /// Una melodía sola no es un coral: lanza `.coral(.vocesDistintas)`, con el texto de Teoría en cada
+    /// idioma.
     @Test func unaMelodiaSolaNoEsUnCoral() throws {
         let pieza = PiezaImportada(notas: [try nota("Do4", 0, parte: 0), try nota("Re4", 1, parte: 0)])
-        #expect(throws: ErrorDeLecturaDeFichero.vocesDistintas) { try pieza.coral() }
+        #expect(throws: ErrorDeLecturaDeFichero.coral(.vocesDistintas)) { try pieza.coral() }
         #expect(throws: ErrorDeLecturaDeFichero.sinNotas) { try PiezaImportada(notas: []).coral() }
         for idioma in Idioma.allCases {
             #expect(
-                ErrorDeLecturaDeFichero.vocesDistintas.descripcion(en: .compacta(idioma))
+                ErrorDeLecturaDeFichero.coral(.vocesDistintas).descripcion(en: .compacta(idioma))
                     == ErrorDeLecturaDeTeoria.Motivo.vocesDistintas.explicacion(en: .compacta(idioma)))
         }
     }

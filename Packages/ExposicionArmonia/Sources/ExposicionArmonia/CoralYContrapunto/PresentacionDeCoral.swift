@@ -140,7 +140,7 @@ public enum PresentacionDeCoral {
                 }
             } ?? partes.compactMap { try? Altura(leyendo: $0) }
         guard !alturas.isEmpty || voz == nil else {
-            throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
+            throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .melodiaSinNotas)
         }
         let conOctavas = voz != nil || alturas.count == partes.count
         let notas: [Nota]
@@ -149,8 +149,9 @@ public enum PresentacionDeCoral {
         } else {
             notas = try enPartituras(partes.map { parte throws(ErrorDeLectura) in try Nota(leyendo: parte) })
         }
+        // Sin tonalidad dada, la de las notas: siempre hay una si hay alguna nota.
         guard let tonalidad = tonalidad ?? Tonalidad.candidatos(notas: notas).first?.valor else {
-            throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))
+            throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .melodiaSinNotas)
         }
         let candidatos = tonalidad.armonizar(melodia: notas, propuestas: propuestas)
         var avisos: [CoralPresentado.Aviso] = []

@@ -224,7 +224,7 @@ import Testing
         .tipoDeEscalaNoReconocido(""), .tipoDeEscalaNoReconocido("x"), .modoNoReconocido("dórico"),
         .vocesDistintas, .vocesDeDistintaLongitud, .nombreNoReconocido("x", opciones: ["up", "down"]),
         .numeroFueraDeRango("x", desde: 1, hasta: 22),
-        .trasteNoValido("x", ultimo: 12), .cuerdasDistintas(esperadas: 6, leidas: 5),
+        .trasteNoValido("x", ultimo: 12), .trasteQueNoTiene("x"), .cuerdasDistintas(esperadas: 6, leidas: 5),
         .cifradoRomanoNoValido("x"), .destinoNoTonicalizable("vii°"), .cifrasNoValidas("x"),
         .cifrasSinAcorde("x"),
     ]
@@ -236,7 +236,7 @@ import Testing
             ErrorDeLecturaDeTeoria(texto: "x", posicion: 0, motivo: $0)
         }
         + [ErrorDeLecturaDePartitura.Motivo]([
-            .duracionNoValida("x"), .compasNoValido("x"), .contrapuntoDeOtraDuracion(redondas: 8),
+            .duracionNoValida("x"), .compasNoValido("x"), .contrapuntoDeOtraDuracion(redondas: 8), .melodiaSinNotas,
             .elementos(.notaNoReconocida), .teoria(.tensionNoValida("b3")),
         ]).map { ErrorDeLecturaDePartitura(texto: "x", posicion: 0, motivo: $0) }
 
@@ -260,6 +260,29 @@ import Testing
         #expect(try enTeoria(Nota(leyendo: "Do")) == .do)
         #expect(throws: enPartitura) { try enPartituras(deTeoria: Acorde(leyendo: "Do7(b3)")) }
         #expect(try enPartituras(deTeoria: Acorde(leyendo: "Do")).cifrado == "Do")
+    }
+
+    /// Cada motivo tiene su identificador, el nombre de su caso, sin repetirse en su capa.
+    @Test func cadaMotivoConSuIdentificador() {
+        func comprobar(_ motivos: [some MotivoDeLectura]) {
+            for motivo in motivos {
+                #expect(String(describing: motivo).hasPrefix(motivo.identificador), "\(motivo)")
+            }
+            let identificadores = motivos.map(\.identificador)
+            #expect(
+                Set(identificadores).count == Set(motivos.map { String(describing: $0).prefix { $0 != "(" } }).count)
+        }
+        comprobar(Self.motivosDeElementos)
+        comprobar(Self.motivosDeTeoria + [.elementos(.textoVacio)])
+        comprobar([
+            ErrorDeLecturaDePartitura.Motivo.duracionNoValida("x"), .compasNoValido("x"),
+            .contrapuntoDeOtraDuracion(redondas: 8), .melodiaSinNotas, .elementos(.textoVacio),
+            .teoria(.vocesDistintas),
+        ])
+        #expect(ErrorDeLecturaDePartitura.Motivo.teoria(.elementos(.notaNoReconocida)).identificador == "teoria")
+        #expect(
+            ErrorDeLecturaDePartitura.Motivo.teoria(.elementos(.notaNoReconocida)).motivoOriginal.identificador
+                == "notaNoReconocida")
     }
 
     /// Cada motivo de una capa, dentro del de la capa de encima, se explica igual en los trece idiomas, y su

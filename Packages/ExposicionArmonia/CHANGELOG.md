@@ -19,6 +19,8 @@
   `PresentacionDeSerie.presentar(_:forma:en:)` y `CandidatoPresentado.identificar(_:limite:en:)`, `ErrorDeLectura`.
   Las que leen acordes, corales o contrapuntos lanzan también uno solo, el de Armonia (`ErrorDeLecturaDeTeoria` o
   `ErrorDeLecturaDePartitura`).
+- `PresentacionDeCoral.armonizar` lanza `.melodiaSinNotas` (de `ErrorDeLecturaDePartitura`) con una voz que solo
+  tiene silencios, en lugar de `.elementos(.textoVacio)`, que decía que el texto estaba vacío.
 
 ## 0.6.0 (2026-11-17)
 

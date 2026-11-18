@@ -64,6 +64,7 @@ extension TextosDePartituras {
         // ErrorDeLecturaDePartitura.swift
         duracionNoValida: "\"{1}\" is not a duration: expected a note value (1, 2, 4, 8, 16…, dotted: 4.) or a fraction of a whole note (3/8, 1/12)",
         compasNoValido: "\"{1}\" is not a time signature: expected numerator/denominator with a power-of-2 denominator (4/4, 6/8, 7/8), C or ¢",
-        contrapuntoDeOtraDuracion: "the counterpoint must last as long as the cantus firmus: {1} whole notes, one per note"
+        contrapuntoDeOtraDuracion: "the counterpoint must last as long as the cantus firmus: {1} whole notes, one per note",
+        melodiaSinNotas: "the melody has no notes: only rests"
     )
 }

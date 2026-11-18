@@ -48,6 +48,28 @@ public struct ErrorDeLectura: ErrorAlLeer {
     }
 }
 
+extension ErrorDeLectura.Motivo {
+    /// El nombre del caso, que no cambia con el idioma ni con lo que lleva: `textoVacio`. Es el `tipo` de los
+    /// errores en JSON de la consola.
+    public var identificador: String {
+        switch self {
+        case .textoVacio: return "textoVacio"
+        case .notaNoReconocida: return "notaNoReconocida"
+        case .caracteresSobrantes: return "caracteresSobrantes"
+        case .octavaNoValida: return "octavaNoValida"
+        case .numeroDeIntervaloNoValido: return "numeroDeIntervaloNoValido"
+        case .calidadNoValida: return "calidadNoValida"
+        case .intervaloInexistente: return "intervaloInexistente"
+        case .alteracionNoReconocida: return "alteracionNoReconocida"
+        case .claseDeAlturaNoValida: return "claseDeAlturaNoValida"
+        case .numeroDeForteDesconocido: return "numeroDeForteDesconocido"
+        case .faltaElCierre: return "faltaElCierre"
+        case .serieNoDodecafonica: return "serieNoDodecafonica"
+        case .idiomaNoReconocido: return "idiomaNoReconocido"
+        }
+    }
+}
+
 // MARK: - Idiomas
 //
 // Los mensajes de `ErrorDeLectura` en los trece idiomas de los textos (`Traduccion`): los generales (texto vacío,
