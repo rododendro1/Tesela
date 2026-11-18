@@ -182,6 +182,8 @@ public struct TextosDeApps: TextosTraducidos {
     public let ningunaNotaComun: String
     public let movimientoTotal: Plantilla  // {1} semitonos
     public let secuencia: String
+    /// El título de las secuencias de estudio de la hoja de una escala (terceras, grupos de cuatro…).
+    public let secuencias: String
     public let bajando: String
     public let digitacionDePiano: String
     public let manoDerecha: String

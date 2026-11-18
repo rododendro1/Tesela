@@ -6,12 +6,15 @@ extension PresentacionDeRelacionesDeAcorde {
 
     /// Una hoja de estudio del acorde, para imprimir: un SVG del ancho de un A4 con el cifrado, sus notas y sus otros
     /// nombres, el pentagrama, sus disposiciones (cerrada, drop 2 y fundamental, tercera y séptima, las que tenga),
-    /// las digitaciones de guitarra más cómodas, las escalas compatibles con sus tensiones y las sustituciones. El
-    /// alto es el que ocupa. `armonia grabar hoja acorde Sol7` la pasa a PDF.
+    /// el acorde en el teclado, las digitaciones más cómodas en el mástil de `mastil` (la guitarra, si no se da), las
+    /// escalas compatibles con sus tensiones y las sustituciones. El alto es el que ocupa. `armonia grabar hoja acorde
+    /// Sol7` la pasa a PDF.
     ///
     ///     let hoja = PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: Acorde("Sol7"), en: .compacta(.espanol))
     ///     hoja.hasPrefix("<svg")   // true
-    public static func hojaDeEstudio(de acorde: Acorde, en notacion: Notacion) -> String {
+    public static func hojaDeEstudio(
+        de acorde: Acorde, mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 12), en notacion: Notacion
+    ) -> String {
         typealias Hoja = PresentacionDeEstudioDeEscala
         let ancho = Hoja.anchoDeLaHoja
         let margen = Hoja.margenDeLaHoja
@@ -60,11 +63,14 @@ extension PresentacionDeRelacionesDeAcorde {
             y += 4
         }
 
-        // Las digitaciones de guitarra más cómodas, una al lado de otra.
-        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
+        // El acorde en el teclado, en posición cerrada desde el bajo.
+        titulo(notacion.texto(\.teclado))
+        y += Hoja.incrustar(teclado(de: acorde, en: notacion), x: margen, y: y - 8, ancho: util / 2, en: &cuerpo) + 4
+
+        // Las digitaciones más cómodas en el instrumento, una al lado de otra.
         let formas = mastil.digitaciones(de: acorde, exigirQuinta: false, limite: 5)
         if !formas.isEmpty {
-            titulo(notacion.texto(\.digitaciones))
+            titulo(notacion.texto(\.digitaciones) + " · " + mastil.encordado.nombre(en: notacion))
             var altoDeLasFormas = 0.0
             for (i, forma) in formas.enumerated() {
                 let x = margen + Double(i) * (util / 5)
@@ -146,5 +152,27 @@ extension PresentacionDeRelacionesDeAcorde {
         let abajo = arriba + Double(filas) * entreTrastes + 14
         cuerpo.append(Hoja.texto(forma.tablatura, x: izquierda - 4, y: abajo, tamano: 10, color: "#555555"))
         return abajo + 4 - y
+    }
+
+    /// El acorde en un teclado de piano (SVG), en posición cerrada desde el bajo en la octava 4, con el nombre de cada
+    /// nota; la fundamental, con el borde naranja.
+    ///
+    ///     let svg = PresentacionDeRelacionesDeAcorde.teclado(de: Acorde("Sol7"), en: .compacta(.espanol))
+    public static func teclado(de acorde: Acorde, en notacion: Notacion) -> String {
+        var alturas: [Altura] = []
+        for nota in acorde.notasDesdeElBajo {
+            var altura = Altura(nota, octava: 4)
+            while let anterior = alturas.last, altura.midi <= anterior.midi {
+                altura = Altura(nota, octava: altura.octava + 1)
+            }
+            alturas.append(altura)
+        }
+        var rotulos: [Int: String] = [:]
+        for altura in alturas { rotulos[altura.midi] = altura.nota.nombre(en: notacion) }
+        let fundamental = acorde.fundamental.claseDeAltura
+        let primeras = Set(alturas.map(\.midi).filter { (($0 % 12) + 12) % 12 == fundamental })
+        return TecladoDePiano(cubriendo: alturas).svg(
+            marcadas: MarcasDeDiagrama(rotulos: rotulos), primeras: primeras,
+            opciones: .init(titulo: acorde.cifrado(en: notacion)))
     }
 }

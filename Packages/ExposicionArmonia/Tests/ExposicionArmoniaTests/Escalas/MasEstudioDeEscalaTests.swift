@@ -119,8 +119,9 @@ import Testing
         #expect(hoja.contains(">Estadísticas</text>"))
         #expect(hoja.contains(">Escalera de brillo</text>"))
         #expect(hoja.contains(">Brillo por quintas: 0</text>"))
-        // El pentagrama, el reloj y los dos teclados, dentro, cada uno con su viewBox.
-        #expect(hoja.components(separatedBy: "<svg x=").count - 1 == 4)
+        // El pentagrama, el reloj, los dos teclados, el mástil entero y sus cinco posiciones CAGED y las dos
+        // secuencias, dentro, cada uno con su viewBox.
+        #expect(hoja.components(separatedBy: "<svg x=").count - 1 == 12)
         #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
         // Sin acordes de los grados si la escala no los forma.
         let cromatica = PresentacionDeEstudioDeEscala.hojaDeEstudio(de: Escala(.do, .cromatica), en: notacion)
@@ -171,8 +172,9 @@ import Testing
         #expect(hoja.contains("<dt>Brillo por quintas</dt><dd>0</dd>"))
         #expect(hoja.contains("<h2>Escalera de brillo</h2>") && hoja.contains("<li aria-current=\"true\">"))
         #expect(hoja.contains("prefers-color-scheme:dark") && hoja.contains("@media print"))
-        // El pentagrama, el reloj y los dos teclados, cada uno en su figura, sin declaración XML.
-        #expect(hoja.components(separatedBy: "<figure").count - 1 == 4)
+        // El pentagrama, el reloj, los dos teclados, los seis mástiles y las dos secuencias, cada uno en su figura, sin
+        // declaración XML.
+        #expect(hoja.components(separatedBy: "<figure").count - 1 == 12)
         #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
         #expect(!hoja.contains("<?xml"))
         // Con secciones: solo las pedidas; con microtonos, el reloj lleva también el círculo de su afinación.
@@ -205,7 +207,8 @@ import Testing
                 && hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count
         }
         let acorde = PresentacionDeRelacionesDeAcorde.hojaDeEstudioHTML(de: Acorde("Sol7"), en: notacion)
-        #expect(esPagina(acorde) && acorde.contains("<h1>Sol7</h1>") && acorde.contains("<h2>Digitaciones</h2>"))
+        #expect(
+            esPagina(acorde) && acorde.contains("<h1>Sol7</h1>") && acorde.contains("<h2>Digitaciones · guitarra</h2>"))
         // Cinco diagramas de guitarra, cada uno en su figura, con la tablatura.
         #expect(acorde.components(separatedBy: "<figure class=\"diagrama\"").count - 1 == 5)
         #expect(acorde.contains(">320001</text>"))
@@ -276,8 +279,8 @@ import Testing
         #expect(hoja.contains(">Análisis</text>"))
         #expect(hoja.contains(">Líneas de notas guía</text>"))
         #expect(hoja.contains(">V7</text>"))
-        // El pentagrama de los acordes y uno por cada línea de notas guía.
-        #expect(hoja.components(separatedBy: "<svg x=").count - 1 == 3)
+        // El pentagrama de los acordes, el del coral y uno por cada línea de notas guía.
+        #expect(hoja.components(separatedBy: "<svg x=").count - 1 == 4)
         #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
     }
 
@@ -290,7 +293,7 @@ import Testing
         #expect(hoja.contains(">Sol7</text>"), Comment(rawValue: String(hoja.prefix(800))))
         #expect(hoja.contains(">Sol Si Re Fa</text>"))
         #expect(hoja.contains(">Disposición</text>"))
-        #expect(hoja.contains(">Digitaciones</text>"))
+        #expect(hoja.contains(">Digitaciones · guitarra</text>"))
         #expect(hoja.contains(">Escalas compatibles</text>"))
         #expect(hoja.contains(">Sustituciones · "))
         // Un punto por nota pisada en los diagramas, y al menos uno.

@@ -6,8 +6,9 @@ extension PresentacionDeAnalisis {
 
     /// Una hoja de estudio de la progresión, para imprimir: un SVG del ancho de un A4 con los acordes y su
     /// tonalidad, el pentagrama con una disposición de cada uno (la `disposicion`, o cerrada si no se puede), el
-    /// análisis (grado, función y escala de cada acorde, con las modulaciones), la conducción de las voces, las
-    /// cadencias y las líneas de notas guía con su pentagrama. El alto es el que ocupa. `armonia grabar hoja
+    /// análisis (grado, función y escala de cada acorde, con las modulaciones), la conducción de las voces, el coral a
+    /// cuatro voces (el de `armonia realizar`, con su pentagrama y sus faltas), las cadencias y las líneas de notas
+    /// guía con su pentagrama. El alto es el que ocupa. `armonia grabar hoja
     /// --acordes …` la pasa a PDF.
     ///
     ///     let analisis = try PresentacionDeAnalisis.analizar("Rem7 Sol7 Do7M", notacion: .compacta(.espanol))
@@ -74,6 +75,25 @@ extension PresentacionDeAnalisis {
             y += 24
         }
 
+        // El coral a cuatro voces (lo de `armonia realizar`): un acorde por fila, el pentagrama y las faltas.
+        let coral = coralDeLaHoja(analisis, en: notacion)
+        cuerpo.append(Hoja.texto(notacion.texto(\.coral), x: margen, y: y + 12, tamano: 14, negrita: true))
+        y += 32
+        for fila in coral.filas {
+            for (x, celda) in zip(columnas, [fila.cifrado, fila.grado, fila.voces]) where !celda.isEmpty {
+                cuerpo.append(Hoja.texto(celda, x: x, y: y, tamano: 11))
+            }
+            y += 16
+        }
+        if let pentagrama = coral.pentagrama {
+            y += Hoja.incrustar(pentagrama.svg, x: margen, y: y, ancho: util, en: &cuerpo) + 6
+        }
+        for aviso in coral.avisos {
+            cuerpo.append(Hoja.texto(aviso, x: margen, y: y + 4, tamano: 11, color: "#555555"))
+            y += 16
+        }
+        y += 12
+
         // Las cadencias, si las hay.
         if !analisis.cadencias.isEmpty {
             cuerpo.append(Hoja.texto(notacion.texto(\.cadencias), x: margen, y: y + 12, tamano: 14, negrita: true))
@@ -100,5 +120,36 @@ extension PresentacionDeAnalisis {
         }
         let alto = (y + margen).rounded(.up)
         return Hoja.hojaSVG(ancho: ancho, alto: alto, cuerpo)
+    }
+
+    /// El coral de la hoja: los acordes a cuatro voces (`Coral(realizando:en:)`), con el pentagrama y lo que dice
+    /// la revisión (sus faltas o que no las tiene), o, si no se pueden escribir, por qué.
+    struct CoralDeLaHoja {
+        let filas: [CoralPresentado.AcordeDelCoral]
+        let pentagrama: PentagramaPresentado?
+        let avisos: [String]
+    }
+
+    /// Los acordes del análisis a cuatro voces, para las hojas en SVG y en HTML.
+    static func coralDeLaHoja(_ analisis: AnalisisPresentado, en notacion: Notacion) -> CoralDeLaHoja {
+        let coral: Coral
+        do {
+            coral = try Coral(realizando: analisis.acordes, en: analisis.tonalidad)
+        } catch {
+            let avisos: [CoralPresentado.Aviso] = [.sinRealizacion, .motivo(error)]
+            return CoralDeLaHoja(filas: [], pentagrama: nil, avisos: avisos.map { $0.texto(en: notacion) })
+        }
+        let grados = analisis.tramos.flatMap(\.filas).map(\.grado)
+        let filas = coral.acordes.indices.map { i in
+            CoralPresentado.AcordeDelCoral(
+                cifrado: analisis.acordes[i].cifrado(en: notacion),
+                grado: grados.count == coral.acordes.count ? grados[i] : "",
+                voces: PresentacionDeCoral.voces(coral.acordes[i], notacion))
+        }
+        let revision = PresentacionDeCoral.revisar(coral, en: notacion).avisos.map { $0.texto(en: notacion) }
+        return CoralDeLaHoja(
+            filas: filas,
+            pentagrama: PentagramaPresentado(coral.acordes, titulo: notacion.texto(\.coral), en: notacion),
+            avisos: revision)
     }
 }

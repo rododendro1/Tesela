@@ -5,16 +5,17 @@ import Armonia
 extension PresentacionDeEstudioDeEscala {
     /// La hoja de estudio de la escala como página HTML: lo mismo que `hojaDeEstudio(de:en:secciones:)`, pero con los
     /// textos en HTML (el nombre, las notas, el origen y las estadísticas en listas de definiciones, los acordes de los
-    /// grados y la escalera de brillo en listas) y los dibujos (el pentagrama, el reloj, el círculo de su afinación y
-    /// los teclados) como SVG dentro. Se adapta al ancho de la pantalla (en una estrecha, las columnas se apilan),
-    /// sigue el modo oscuro del sistema y se imprime en A4. Una sola página, sin nada de fuera. `armonia hoja Do mayor
-    /// --formato html` la escribe.
+    /// grados y la escalera de brillo en listas) y los dibujos (el pentagrama, el reloj, el círculo de su afinación,
+    /// los teclados, el mástil y las secuencias) como SVG dentro. Se adapta al ancho de la pantalla (en una estrecha,
+    /// las columnas se apilan), sigue el modo oscuro del sistema y se imprime en A4. Una sola página, sin nada de
+    /// fuera. `armonia hoja Do mayor --formato html` la escribe.
     ///
     ///     let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
     ///         de: Escala(.re, .dorico), en: .compacta(.espanol))
     ///     hoja.hasPrefix("<!doctype html>")   // true
     public static func hojaDeEstudioHTML(
-        de escala: Escala, en notacion: Notacion, secciones: Set<SeccionDeLaHoja> = Set(SeccionDeLaHoja.allCases)
+        de escala: Escala, en notacion: Notacion, secciones: Set<SeccionDeLaHoja> = Set(SeccionDeLaHoja.allCases),
+        mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 15)
     ) -> String {
         let nombre = escala.nombre(en: notacion)
         var cuerpo: [String] = []
@@ -80,6 +81,24 @@ extension PresentacionDeEstudioDeEscala {
             let teclados = Mano.allCases.map { figura(teclado(de: escala, mano: $0, en: notacion), clase: "teclado") }
             cuerpo.append(
                 seccion(.teclados, en: notacion, "<div class=\"teclados\">" + teclados.joined() + "</div>"))
+        }
+
+        // El mástil entero y cada posición, con su título.
+        if secciones.contains(.mastil) {
+            let dibujos = mastilDeLaHoja(de: escala, mastil: mastil, en: notacion).map {
+                "<h3>" + html($0.titulo) + "</h3>" + figura($0.svg, clase: "ancha")
+            }
+            cuerpo.append(seccion(.mastil, en: notacion, dibujos.joined()))
+        }
+
+        // Las secuencias de estudio, cada una con sus notas y su pentagrama.
+        if secciones.contains(.secuencias) {
+            let secuencias = secuenciasDeLaHoja(de: escala, en: notacion)
+            let contenido = secuencias.map {
+                "<h3>" + html($0.titulo) + "</h3><p>" + html($0.notas) + "</p>"
+                    + figura($0.pentagrama.svg, clase: "ancha")
+            }
+            cuerpo.append(seccion(.secuencias, en: notacion, contenido.joined()))
         }
 
         // Los acordes de cada grado, si los forma.

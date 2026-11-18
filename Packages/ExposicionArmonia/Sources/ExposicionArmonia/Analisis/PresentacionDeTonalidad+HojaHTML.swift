@@ -4,10 +4,10 @@ extension PresentacionDeTonalidad {
     // MARK: La hoja de estudio de una tonalidad en HTML
 
     /// La hoja de estudio de la tonalidad como página HTML: lo mismo que `hojaDeEstudio(de:en:)` (la armadura y las
-    /// relativas, el pentagrama de su escala, los acordes de cada grado con su función, las cadencias típicas y las
-    /// modulaciones a los tonos vecinos), y además lo que dicen las fuentes de su carácter, con los textos en HTML y
-    /// el pentagrama como SVG dentro. Se adapta a la pantalla, sigue el modo oscuro y se imprime en A4. `armonia hoja
-    /// tonalidad Re mayor --formato html` la escribe.
+    /// relativas, el pentagrama de su escala, los acordes de cada grado con su función, las cadencias típicas, las
+    /// modulaciones a los tonos vecinos, las dominantes secundarias y los acordes prestados), y además lo que dicen las
+    /// fuentes de su carácter, con los textos en HTML y el pentagrama como SVG dentro. Se adapta a la pantalla, sigue
+    /// el modo oscuro y se imprime en A4. `armonia hoja tonalidad Re mayor --formato html` la escribe.
     ///
     ///     let hoja = PresentacionDeTonalidad.hojaDeEstudioHTML(de: Tonalidad(.re), en: .compacta(.espanol))
     ///     hoja.contains("<h1>Re mayor</h1>")   // true
@@ -50,6 +50,12 @@ extension PresentacionDeTonalidad {
                 + (modulacion.pivote.map { "<p class=\"sub\">" + Hoja.html($0) + "</p>" } ?? "")
         }
         cuerpo.append(Hoja.seccionHTML(notacion.texto(\.modulaciones), modulaciones.joined()))
+
+        // Las dominantes secundarias, cada una con el acorde al que va, y los acordes prestados del modo homónimo.
+        for (titulo, deFuera) in acordesDeFuera(de: tonalidad, en: notacion) where !deFuera.isEmpty {
+            let filas = deFuera.map { (celdas: [$0.grados, $0.acordes], clase: String?.none) }
+            cuerpo.append(Hoja.seccionHTML(titulo, Hoja.tablaHTML(filas)))
+        }
         return Hoja.paginaHTML(
             titulo: notacion.texto(\.hojaDeEstudio) + " · " + nombre, idioma: notacion.textos.codigo, cuerpo)
     }

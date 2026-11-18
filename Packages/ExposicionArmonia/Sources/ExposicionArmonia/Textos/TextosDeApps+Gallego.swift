@@ -168,6 +168,7 @@ extension TextosDeApps {
         ningunaNotaComun: "ningunha",
         movimientoTotal: "Movemento total: {1} semitóns",
         secuencia: "Secuencia",
+        secuencias: "Secuencias",
         bajando: "Baixando",
         digitacionDePiano: "Dixitación de piano",
         manoDerecha: "Man dereita",

@@ -168,6 +168,7 @@ extension TextosDeApps {
         ningunaNotaComun: "нет",
         movimientoTotal: "Общее движение в полутонах: {1}",
         secuencia: "Секвенция",
+        secuencias: "Секвенции",
         bajando: "Вниз",
         digitacionDePiano: "Аппликатура для фортепиано",
         manoDerecha: "Правая рука",

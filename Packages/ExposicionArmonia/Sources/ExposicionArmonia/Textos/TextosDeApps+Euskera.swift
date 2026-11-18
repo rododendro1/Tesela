@@ -168,6 +168,7 @@ extension TextosDeApps {
         ningunaNotaComun: "bat ere ez",
         movimientoTotal: "Mugimendu osoa: {1} tonuerdi",
         secuencia: "Sekuentzia",
+        secuencias: "Sekuentziak",
         bajando: "Jaitsiz",
         digitacionDePiano: "Pianoko hatzkatzea",
         manoDerecha: "Eskuin eskua",

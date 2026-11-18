@@ -182,6 +182,8 @@ extension OpcionDeOrden {
     static let resumen = marca("--resumen", "--summary")
     static let rejilla = valor("--rejilla", "--grid")
     static let romanos = marca("--romanos", "--roman")
+    /// En `hoja`, las partes de la hoja de una escala: `--secciones pentagrama,teclados`.
+    static let secciones = valor("--secciones", "--sections")
     static let secuencia = valor("--secuencia", "--sequence")
     static let semitonos = marca("--semitonos", "--semitones")
     static let simetria = marca("--simetria", "--symmetry")

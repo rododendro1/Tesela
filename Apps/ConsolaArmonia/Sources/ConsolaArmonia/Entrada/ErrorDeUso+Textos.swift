@@ -187,6 +187,8 @@ extension ErrorDeUso {
             return TextosDeConsola.traduccion { $0.aproximacionDesconocida(nombre) }
         case .secuenciaDesconocida(let nombre):
             return TextosDeConsola.traduccion { $0.secuenciaDesconocida(nombre) }
+        case .seccionDesconocida(let nombre):
+            return TextosDeConsola.traduccion { $0.seccionDesconocida(nombre) }
         case .faltaEscalaDelTeclado:
             return Self.conEjemplo(\.faltaEscala, "armonia teclado Re mayor", "armonia keyboard D major")
         case .manoDesconocida(let mano): return TextosDeConsola.traduccion { $0.manoDesconocida(mano) }
