@@ -388,6 +388,7 @@ extension TextosDeApps {
         progresionesConNombre: "Akkordmenetek",
         acordesConNombre: "Névvel bíró akkordok",
         ritmosConNombre: "Ritmusok",
+        ritmosParecidos: "Hasonló ritmusok",
         buscarEnElCatalogo: "Keresés",
         fuentes: "Források",
         verEnAnalisis: "Megnyitás az Elemzésben",

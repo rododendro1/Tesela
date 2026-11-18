@@ -388,6 +388,7 @@ extension TextosDeApps {
         progresionesConNombre: "Progressioni",
         acordesConNombre: "Accordi con nome",
         ritmosConNombre: "Ritmi",
+        ritmosParecidos: "Ritmi simili",
         buscarEnElCatalogo: "Cerca",
         fuentes: "Fonti",
         verEnAnalisis: "Mostra in Analisi",

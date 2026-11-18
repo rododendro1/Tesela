@@ -9,13 +9,23 @@ extension LineaDeComandos {
     /// `--secciones pentagrama,mastil`, solo esas partes, y con `--instrumento ukelele`, en su mástil) y, con
     /// `--comparar Do dórico`, comparada nota a nota con otra; `hoja acorde Sol7 [--instrumento bajo]`, la de un
     /// acorde; `hoja tonalidad Do mayor`, la de una tonalidad, y `hoja acordes Rem7 Sol7 Do7M [--en Do mayor] [--doce]
-    /// [--comparar …]`, la de una progresión, en las doce tonalidades o comparada con otra. Con `--formato html`,
+    /// [--comparar …]`, la de una progresión, en las doce tonalidades o comparada con otra. Y las de `otraHoja` (un
+    /// ritmo, una progresión con nombre, una serie, un arpegio) y `hoja instrumento laúd`. Con `--formato html`,
     /// cualquiera de ellas como página HTML. `grabar hoja …` la pasa a PDF.
     static func hoja(_ argumentos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        // `hoja instrumento laúd`: no pasa por `conLaSuborden`, porque `--instrumento` es también una opción de las
+        // demás.
+        if let primera = argumentos.first?.lowercased(), ["instrumento", "instrument"].contains(primera) {
+            return try hojaDeUnInstrumento(Array(argumentos.dropFirst()), notacion)
+        }
         var argumentos = Argumentos(
-            try conLaSuborden(argumentos, entre: [.acorde, .acordes, .tonalidad], sinNada: ["escala", "scale"]))
+            try conLaSuborden(
+                argumentos, entre: [.acorde, .acordes, .tonalidad, .ritmo, .progresion, .serie, .arpegio],
+                sinNada: ["escala", "scale"]))
         // Con --formato html, cualquiera de ellas como página HTML.
         let html = try argumentos.pideElFormato("html")
+        let formato: HojaDeEstudio.Formato = html ? .html : .svg
+        if let hoja = try otraHoja(&argumentos, formato: formato, notacion) { return bien(hoja) }
         if let cifrado = try argumentos.valor(.acorde, siFalta: .faltaElAcordeDeLaHoja) {
             // Con --instrumento, las digitaciones en ese mástil (en la guitarra, si no).
             let mastil = Mastil(try encordadoDeLaHoja(&argumentos), numeroDeTrastes: 12)
@@ -96,6 +106,53 @@ extension LineaDeComandos {
                     de: escala, en: notacion, secciones: secciones, mastil: mastil)
                 : PresentacionDeEstudioDeEscala.hojaDeEstudio(
                     de: escala, en: notacion, secciones: secciones, mastil: mastil))
+    }
+
+    /// Las hojas de `HojaDeEstudio`: `hoja ritmo tresillo`, `hoja progresion folía [--en La]`, `hoja serie 0 1 2 …` y
+    /// `hoja arpegio Sol7 [--instrumento bajo]`; `nil` si no se pide ninguna de ellas.
+    static func otraHoja(
+        _ argumentos: inout Argumentos, formato: HojaDeEstudio.Formato, _ notacion: Notacion
+    ) throws -> String? {
+        if let nombre = try argumentos.valorConPalabras(.ritmo) {
+            try argumentos.sinOpcionesDesconocidas()
+            // Por su nombre o, si no, el primero que lo lleva en el nombre: «andaluza» es la cadencia andaluza.
+            guard let ritmo = RitmoConNombre.buscar(nombre: nombre) ?? RitmoConNombre.buscar(conteniendo: nombre).first
+            else { throw ErrorDeUso.ritmoDesconocido(nombre) }
+            return HojaDeEstudio.ritmo(ritmo, en: notacion, formato: formato)
+        }
+        if let nombre = try argumentos.valorConPalabras(.progresion) {
+            // Con --en, sobre esa tónica (Do, si no).
+            let tonica = try argumentos.valor(.en).map { try Nota(leyendo: $0, enLaOrden: notacion) } ?? .do
+            try argumentos.sinOpcionesDesconocidas()
+            guard
+                let progresion = ProgresionConNombre.buscar(nombre: nombre)
+                    ?? ProgresionConNombre.buscar(conteniendo: nombre).first
+            else { throw ErrorDeUso.progresionDesconocida(nombre) }
+            return HojaDeEstudio.progresion(progresion, sobre: tonica, en: notacion, formato: formato)
+        }
+        if let texto = try argumentos.valorConPalabras(.serie) {
+            try argumentos.sinOpcionesDesconocidas()
+            return HojaDeEstudio.serie(try SerieDodecafonica(leyendo: texto), en: notacion, formato: formato)
+        }
+        if argumentos.quitarMarca(.arpegio) {
+            let mastil = Mastil(try encordadoDeLaHoja(&argumentos), numeroDeTrastes: 15)
+            try argumentos.sinOpcionesDesconocidas()
+            guard argumentos.restantes.count == 1 else { throw ErrorDeUso.faltaElAcordeDeLaHoja }
+            let acorde = try Acorde(leyendo: argumentos.restantes[0], enLaOrden: notacion)
+            return HojaDeEstudio.arpegio(acorde, mastil: mastil, en: notacion, formato: formato)
+        }
+        return nil
+    }
+
+    /// `hoja instrumento laúd [--formato html]`: la hoja de un instrumento de cuerda.
+    static func hojaDeUnInstrumento(_ textos: [String], _ notacion: Notacion) throws -> ResultadoDeOrden {
+        var argumentos = Argumentos(textos)
+        let formato: HojaDeEstudio.Formato = try argumentos.pideElFormato("html") ? .html : .svg
+        try argumentos.sinOpcionesDesconocidas()
+        let nombre = argumentos.unidos
+        guard !nombre.isEmpty else { throw ErrorDeUso.faltaInstrumento }
+        guard let encordado = Encordado.buscar(nombre: nombre) else { throw ErrorDeUso.instrumentoDesconocido(nombre) }
+        return bien(HojaDeEstudio.instrumento(encordado, en: notacion, formato: formato))
     }
 
     /// El instrumento de `--instrumento` (la guitarra, si no se da), o `ErrorDeUso.instrumentoDesconocido`.

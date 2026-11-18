@@ -188,6 +188,8 @@ struct TextosDeConsola: TextosTraducidos {
     let descripcionHojaDeAcordes: String
     let sintaxisHojaDeTonalidad: String
     let descripcionHojaDeTonalidad: String
+    let sintaxisOtrasHojas: String
+    let descripcionOtrasHojas: String
     let sintaxisPentagrama: String
     let descripcionPentagrama: String
     let sintaxisPentagramaEstudio: String
@@ -236,6 +238,7 @@ struct TextosDeConsola: TextosTraducidos {
     let tradicionDesconocida: Plantilla  // {1} tradicion
     let familiaDeRitmoDesconocida: Plantilla  // {1} familia
     let ritmoDesconocido: Plantilla  // {1} ritmo
+    let progresionDesconocida: Plantilla  // {1} progresión
     let familiaDeTemperamentoDesconocida: Plantilla  // {1} familia
     let familiaDeNotaDesconocida: Plantilla  // {1} familia
     let familiaDeFuncionDesconocida: Plantilla  // {1} familia

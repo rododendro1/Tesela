@@ -40,6 +40,8 @@ enum ErrorDeUso: ErrorDeArmonia {
     case familiaDeRitmoDesconocida(String)
     /// `ritmos --comparar` con un ritmo que no está en el catálogo.
     case ritmoDesconocido(String)
+    /// `hoja progresion` con un nombre que no es de una progresión del catálogo.
+    case progresionDesconocida(String)
     case familiaDeTemperamentoDesconocida(String)
     case familiaDeNotaDesconocida(String)
     case familiaDeFuncionDesconocida(String)

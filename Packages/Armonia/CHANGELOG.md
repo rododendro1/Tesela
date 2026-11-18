@@ -72,6 +72,9 @@
   modo homónimo y su carácter. `--secciones pentagrama,mastil` (`--sections staff,fretboard`) elige las partes de la
   hoja de una escala, e `--instrumento ukelele` (`--instrument`), el mástil de la escala o las digitaciones del
   acorde.
+- `armonia hoja` tiene cinco hojas más: `hoja ritmo tresillo`, `hoja progresion folía [--en Re]`, `hoja serie 5 4 0
+  9 …` (la matriz de la serie), `hoja arpegio Sol7 [--instrumento bajo]` y `hoja instrumento laúd` (`sheet rhythm`,
+  `progression`, `row`, `arpeggio` e `instrument`), en SVG o con `--formato html`.
 - La documentación de `Notacion` explica que la notación va tras `en:` salvo cuando `en:` es el contexto (una
   tonalidad, una escala o una tradición), y entonces va tras `notacion:`.
 

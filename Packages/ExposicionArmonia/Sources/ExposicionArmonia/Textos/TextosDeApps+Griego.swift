@@ -388,6 +388,7 @@ extension TextosDeApps {
         progresionesConNombre: "Αλληλουχίες",
         acordesConNombre: "Συγχορδίες με όνομα",
         ritmosConNombre: "Ρυθμοί",
+        ritmosParecidos: "Παρόμοιοι ρυθμοί",
         buscarEnElCatalogo: "Αναζήτηση",
         fuentes: "Πηγές",
         verEnAnalisis: "Προβολή στην Ανάλυση",

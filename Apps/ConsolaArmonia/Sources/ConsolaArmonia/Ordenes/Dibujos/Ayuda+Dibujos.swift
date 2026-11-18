@@ -60,6 +60,15 @@ extension LineaDeComandos {
                 "armonia hoja tonalidad Re mayor > re.svg",
                 "armonia sheet key D major > d.svg"),
             opciones: [.formato]),
+        // hoja ritmo|progresion|serie|arpegio|instrumento <nombre> [--en <tónica>] [--instrumento <instrumento>]
+        // [--formato html]
+        EntradaDeAyuda(
+            sintaxis: TextosDeConsola.traduccion(\.sintaxisOtrasHojas),
+            descripcion: TextosDeConsola.traduccion(\.descripcionOtrasHojas),
+            ejemplo: ejemplo(
+                "armonia hoja ritmo tresillo > tresillo.svg",
+                "armonia sheet rhythm tresillo > tresillo.svg"),
+            opciones: [.instrumento, .en, .formato]),
     ]
 
     static let ayudaDeReticulo: [EntradaDeAyuda] = [

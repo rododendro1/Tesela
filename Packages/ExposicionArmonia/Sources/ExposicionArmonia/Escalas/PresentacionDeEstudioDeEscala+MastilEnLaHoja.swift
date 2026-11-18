@@ -58,6 +58,16 @@ extension PresentacionDeEstudioDeEscala {
         _ notas: [PosicionEnElMastil], en mastil: Mastil, trastes: ClosedRange<Int>, escala: Escala,
         notacion: Notacion
     ) -> String {
+        mastilSVG(
+            notas, en: mastil, trastes: trastes, ortografia: escala.notas, tonica: escala.tonica, notacion: notacion)
+    }
+
+    /// El trozo del mástil con las notas escritas como en `ortografia` (la escala, el acorde) y `tonica` en naranja;
+    /// sin tónica, todas iguales.
+    static func mastilSVG(
+        _ notas: [PosicionEnElMastil], en mastil: Mastil, trastes: ClosedRange<Int>, ortografia: [Nota], tonica: Nota?,
+        notacion: Notacion
+    ) -> String {
         let cuerdas = mastil.encordado.numeroDeCuerdas
         let entreCuerdas = 16.0
         let anchoDelTraste = 34.0
@@ -96,14 +106,14 @@ extension PresentacionDeEstudioDeEscala {
             cuerpo.append(texto(alAire, x: 4, y: y + 3.5, tamano: 9, color: "#555555"))
         }
         // Las notas: un punto con su nombre, como se escribe en la escala.
-        let tonica = escala.tonica.claseDeAltura
+        let tonica = tonica?.claseDeAltura
         for nota in notas where trastes.contains(nota.traste) && (0..<cuerdas).contains(nota.cuerda) {
             let x =
                 nota.traste == 0
                 ? izquierda + alAire / 2 : inicio + (Double(nota.traste - primero) + 0.5) * anchoDelTraste
             let altura = mastil.altura(en: nota)
             let clase = altura.nota.claseDeAltura
-            let escrita = escala.notas.first { $0.claseDeAltura == clase } ?? altura.nota
+            let escrita = ortografia.first { $0.claseDeAltura == clase } ?? altura.nota
             let color = clase == tonica ? DibujoDeLaHoja.tonica : DibujoDeLaHoja.nota
             cuerpo.append(
                 "<circle cx=\"\(numero(x))\" cy=\"\(numero(fila(nota.cuerda)))\" r=\"7\" fill=\"\(color)\"/>")
