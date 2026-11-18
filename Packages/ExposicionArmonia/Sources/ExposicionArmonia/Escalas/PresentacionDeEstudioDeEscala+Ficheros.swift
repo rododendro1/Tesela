@@ -35,16 +35,16 @@ extension PresentacionDeEstudioDeEscala {
         de escala: Escala, secciones: Set<SeccionDeLaHoja> = Set(SeccionDeLaHoja.allCases), en notacion: Notacion
     ) -> FicheroParaExportar {
         FicheroParaExportar.svg(
-            hojaDeEstudio(de: escala, en: notacion, secciones: secciones),
+            HojaDeEstudio.escala(escala, secciones: secciones, en: notacion),
             nombre: notacion.texto(\.hojaDeEstudio) + " " + escala.nombre(en: notacion))
     }
 
-    /// La misma hoja de estudio como página HTML (`hojaDeEstudioHTML(de:en:secciones:)`), para abrirla en el navegador.
+    /// La misma hoja de estudio como página HTML, para abrirla en el navegador.
     public static func ficheroDeLaHojaHTML(
         de escala: Escala, secciones: Set<SeccionDeLaHoja> = Set(SeccionDeLaHoja.allCases), en notacion: Notacion
     ) -> FicheroParaExportar {
         FicheroParaExportar.html(
-            hojaDeEstudioHTML(de: escala, en: notacion, secciones: secciones),
+            HojaDeEstudio.escala(escala, secciones: secciones, en: notacion, formato: .html),
             nombre: notacion.texto(\.hojaDeEstudio) + " " + escala.nombre(en: notacion))
     }
 
@@ -65,16 +65,16 @@ extension PresentacionDeEstudioDeEscala {
         _ escala: Escala, con otra: Escala, en notacion: Notacion
     ) -> FicheroParaExportar {
         FicheroParaExportar.svg(
-            comparacionNotaANota(escala, con: otra, en: notacion),
+            HojaDeEstudio.comparacion(escala, con: otra, en: notacion),
             nombre: escala.nombre(en: notacion) + " · " + otra.nombre(en: notacion))
     }
 
-    /// La misma comparación como página HTML (`comparacionNotaANotaHTML(_:con:en:)`).
+    /// La misma comparación como página HTML.
     public static func ficheroDeLaComparacionHTML(
         _ escala: Escala, con otra: Escala, en notacion: Notacion
     ) -> FicheroParaExportar {
         FicheroParaExportar.html(
-            comparacionNotaANotaHTML(escala, con: otra, en: notacion),
+            HojaDeEstudio.comparacion(escala, con: otra, en: notacion, formato: .html),
             nombre: escala.nombre(en: notacion) + " · " + otra.nombre(en: notacion))
     }
 }

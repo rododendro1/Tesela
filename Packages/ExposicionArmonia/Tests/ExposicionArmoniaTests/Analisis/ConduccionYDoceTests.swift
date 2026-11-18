@@ -39,15 +39,14 @@ import Testing
     }
 
     @Test func hojas() throws {
-        let doce = PresentacionDeAnalisis.hojaEnLasDoceTonalidades(
-            progresion, tonalidad: Tonalidad(.do), en: notacion)
+        let doce = HojaDeEstudio.enLasDoceTonalidades(progresion, tonalidad: Tonalidad(.do), en: notacion)
         #expect(doce.hasPrefix("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"595\""))
         #expect(doce.hasSuffix("</svg>"))
         #expect(doce.contains(">Sol mayor</text>"), Comment(rawValue: String(doce.prefix(800))))
         #expect(doce.contains(">Lam7 Re7 Solmaj7</text>"))
         #expect(doce.components(separatedBy: "<svg").count == doce.components(separatedBy: "</svg>").count)
         let analisis = try PresentacionDeAnalisis.analizar("Rem7 Sol7 Domaj7", notacion: notacion)
-        let hoja = PresentacionDeAnalisis.hojaDeEstudio(analisis, en: notacion)
+        let hoja = HojaDeEstudio.analisis(analisis, en: notacion)
         #expect(hoja.contains(">Conducción de voces · Drop 2</text>"))
         #expect(hoja.contains(">Rem7 → Sol7 · Notas comunes: Re, Fa</text>"))
     }

@@ -84,8 +84,8 @@ extension PresentacionDeEstudioDeEscala {
         func fila(_ cuerda: Int) -> Double { arriba + Double(cuerdas - 1 - cuerda) * entreCuerdas }
         func linea(_ x1: Double, _ y1: Double, _ x2: Double, _ y2: Double, _ color: String, _ grosor: Double) -> String
         {
-            "<line x1=\"\(numero(x1))\" y1=\"\(numero(y1))\" x2=\"\(numero(x2))\" y2=\"\(numero(y2))\" "
-                + "stroke=\"\(color)\" stroke-width=\"\(numero(grosor))\"/>"
+            "<line x1=\"\(Hoja.numero(x1))\" y1=\"\(Hoja.numero(y1))\" x2=\"\(Hoja.numero(x2))\" y2=\"\(Hoja.numero(y2))\" "
+                + "stroke=\"\(color)\" stroke-width=\"\(Hoja.numero(grosor))\"/>"
         }
         var cuerpo: [String] = []
         // Los trastes, con el número debajo; la cejuela, gruesa.
@@ -95,7 +95,7 @@ extension PresentacionDeEstudioDeEscala {
             cuerpo.append(linea(x, arriba, x, fondo, cejuela ? "#222222" : "#999999", cejuela ? 3 : 1))
             if traste >= primero {
                 let centro = x - anchoDelTraste / 2
-                cuerpo.append(texto("\(traste)", x: centro - 3, y: fondo + 18, tamano: 9, color: "#777777"))
+                cuerpo.append(Hoja.texto("\(traste)", x: centro - 3, y: fondo + 18, tamano: 9, color: "#777777"))
             }
         }
         // Las cuerdas, con su nota al aire.
@@ -103,7 +103,7 @@ extension PresentacionDeEstudioDeEscala {
             let y = fila(cuerda)
             cuerpo.append(linea(izquierda, y, ancho - 10, y, "#555555", 1))
             let alAire = mastil.encordado.afinacion[cuerda].nota.nombre(en: notacion)
-            cuerpo.append(texto(alAire, x: 4, y: y + 3.5, tamano: 9, color: "#555555"))
+            cuerpo.append(Hoja.texto(alAire, x: 4, y: y + 3.5, tamano: 9, color: "#555555"))
         }
         // Las notas: un punto con su nombre, como se escribe en la escala.
         let tonica = tonica?.claseDeAltura
@@ -116,12 +116,12 @@ extension PresentacionDeEstudioDeEscala {
             let escrita = ortografia.first { $0.claseDeAltura == clase } ?? altura.nota
             let color = clase == tonica ? DibujoDeLaHoja.tonica : DibujoDeLaHoja.nota
             cuerpo.append(
-                "<circle cx=\"\(numero(x))\" cy=\"\(numero(fila(nota.cuerda)))\" r=\"7\" fill=\"\(color)\"/>")
+                "<circle cx=\"\(Hoja.numero(x))\" cy=\"\(Hoja.numero(fila(nota.cuerda)))\" r=\"7\" fill=\"\(color)\"/>")
             cuerpo.append(
-                "<text x=\"\(numero(x))\" y=\"\(numero(fila(nota.cuerda) + 3))\" font-size=\"7.5\" fill=\"#ffffff\" "
+                "<text x=\"\(Hoja.numero(x))\" y=\"\(Hoja.numero(fila(nota.cuerda) + 3))\" font-size=\"7.5\" fill=\"#ffffff\" "
                     + "text-anchor=\"middle\">" + EscrituraXML.escapar(escrita.nombre(en: notacion)) + "</text>")
         }
-        return "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 \(numero(ancho)) \(numero(alto))\" "
+        return "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 \(Hoja.numero(ancho)) \(Hoja.numero(alto))\" "
             + "font-family=\"Helvetica, Arial, sans-serif\">" + cuerpo.joined() + "</svg>"
     }
 }

@@ -74,35 +74,34 @@ extension PresentacionDeAnalisis {
             sonido: Escucha.acordes(original + nueva).conTonica(clave.tonica))
     }
 
-    /// Las dos progresiones en una hoja (SVG del ancho de un A4): el pentagrama de cada una, con una disposición de
-    /// cada acorde, y la tabla posición a posición, con lo que cambia en rojo.
-    public static func hojaDeLaComparacion(
+    /// Las dos progresiones en una hoja SVG, para `HojaDeEstudio.comparacion(_:con:en:disposicion:notacion:formato:)`:
+    /// el pentagrama de cada una, con una disposición de cada acorde, y la tabla posición a posición, con lo que cambia
+    /// en rojo.
+    static func comparacionSVG(
         _ original: [Acorde], con nueva: [Acorde], en tonalidad: Tonalidad? = nil,
         disposicion: DisposicionDeAcorde = .drop2, notacion: Notacion
     ) -> String? {
         guard let comparacion = comparar(original, con: nueva, en: tonalidad, notacion: notacion) else { return nil }
-        typealias Hoja = PresentacionDeEstudioDeEscala
-        let ancho = Hoja.anchoDeLaHoja
-        let margen = Hoja.margenDeLaHoja
+        let ancho = Hoja.ancho
+        let margen = Hoja.margen
         let util = ancho - 2 * margen
         let rojo = "#c0392b"
         var cuerpo: [String] = []
         var y = margen + 22
-        let titulo = { (acordes: [Acorde]) in acordes.map { $0.cifrado(en: notacion) }.joined(separator: " – ") }
-        cuerpo.append(Hoja.texto(titulo(original), x: margen, y: y, tamano: 18, negrita: true))
+        cuerpo.append(
+            Hoja.texto(HojaDeEstudio.cifrados(original, en: notacion), x: margen, y: y, tamano: 18, negrita: true))
         y += 22
-        cuerpo.append(Hoja.texto(titulo(nueva), x: margen, y: y, tamano: 18, negrita: true, color: rojo))
+        cuerpo.append(
+            Hoja.texto(
+                HojaDeEstudio.cifrados(nueva, en: notacion), x: margen, y: y, tamano: 18, negrita: true, color: rojo))
         y += 20
         cuerpo.append(Hoja.texto(comparacion.tonalidad, x: margen, y: y, tamano: 13, color: "#555555"))
         y += 10
 
         // El pentagrama de cada una.
         for acordes in [original, nueva] {
-            let dispuesta =
-                PresentacionDeDisposiciones.progresion(acordes, disposicion, en: notacion)
-                ?? PresentacionDeDisposiciones.progresion(acordes, .cerrada, en: notacion)
-            if let dispuesta {
-                y += Hoja.incrustar(dispuesta.pentagrama.svg, x: margen, y: y, ancho: util, en: &cuerpo) + 6
+            if let svg = pentagrama(acordes, disposicion, en: notacion) {
+                y += Hoja.incrustar(svg, x: margen, y: y, ancho: util, en: &cuerpo) + 6
             }
         }
 
@@ -125,5 +124,45 @@ extension PresentacionDeAnalisis {
 
         let alto = (y + margen).rounded(.up)
         return Hoja.hojaSVG(ancho: ancho, alto: alto, cuerpo)
+    }
+
+    /// Las dos progresiones comparadas como página HTML: lo mismo que `comparacionSVG`, con lo que cambia
+    /// resaltado. `nil` si alguna está vacía.
+    static func comparacionHTML(
+        _ original: [Acorde], con nueva: [Acorde], en tonalidad: Tonalidad? = nil,
+        disposicion: DisposicionDeAcorde = .drop2, notacion: Notacion
+    ) -> String? {
+        guard let comparacion = comparar(original, con: nueva, en: tonalidad, notacion: notacion) else { return nil }
+        let antes = HojaDeEstudio.cifrados(original, en: notacion)
+        let despues = HojaDeEstudio.cifrados(nueva, en: notacion)
+        var cuerpo = [
+            "<header><h1>" + Hoja.html(antes) + "</h1><h1 class=\"destino\">" + Hoja.html(despues) + "</h1>"
+                + "<p class=\"sub\">" + Hoja.html(comparacion.tonalidad) + "</p></header>"
+        ]
+        for acordes in [original, nueva] {
+            if let svg = pentagrama(acordes, disposicion, en: notacion) {
+                cuerpo.append(Hoja.figura(svg, clase: "pentagrama"))
+            }
+        }
+        let filas = comparacion.filas.map { fila in
+            let acordes = fila.cambia ? fila.original + " → " + fila.nueva : fila.original
+            return (
+                celdas: [String(fila.posicion), acordes, fila.grados, fila.comunes], clase: fila.cambia ? "cambia" : nil
+            )
+        }
+        cuerpo.append(Hoja.tablaHTML(filas))
+        cuerpo.append("<p><strong>" + Hoja.html(comparacion.resumen) + "</strong></p>")
+        let titulo = notacion.texto(\.hojaDeEstudio) + " · " + antes + " → " + despues
+        return Hoja.paginaHTML(titulo: titulo, idioma: notacion.textos.codigo, cuerpo)
+    }
+
+    /// El pentagrama de los acordes con una disposición de cada uno: la pedida o, si no se puede, cerrada.
+    private static func pentagrama(
+        _ acordes: [Acorde], _ disposicion: DisposicionDeAcorde, en notacion: Notacion
+    ) -> String? {
+        let dispuesta =
+            PresentacionDeDisposiciones.progresion(acordes, disposicion, en: notacion)
+            ?? PresentacionDeDisposiciones.progresion(acordes, .cerrada, en: notacion)
+        return dispuesta?.pentagrama.svg
     }
 }

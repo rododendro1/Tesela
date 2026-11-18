@@ -91,15 +91,19 @@ extension PresentacionDeEstudioDeEscala {
     ///     let filas = PresentacionDeEstudioDeEscala.caracter(de: .saba, en: .compacta(.espanol))
     ///     filas[0].valor   // "triste, lastimero · “sadness and pain”"
     public static func caracter(de tipo: TipoDeEscala, en notacion: Notacion) -> [DatoPresentado] {
-        filasDelCaracter(
+        Hoja.filasDelCaracter(
             tipo.caracter, medidas: tipo.medidasDelAfecto, sonoridad: tipo.sonoridad, en: notacion)
     }
 
     /// Las filas del carácter de una tonalidad: las de Charpentier y Schubart, y si no coinciden.
     public static func caracter(de tonalidad: Tonalidad, en notacion: Notacion) -> [DatoPresentado] {
-        filasDelCaracter(tonalidad.caracter, en: notacion)
+        Hoja.filasDelCaracter(tonalidad.caracter, en: notacion)
     }
+}
 
+extension Hoja {
+    /// Las filas del carácter, para las hojas en SVG y las listas de las apps: una por fuente (su cita, y lo que dice
+    /// con sus palabras), las fuentes que no coinciden, lo que mide un estudio y la sonoridad calculada.
     static func filasDelCaracter(
         _ caracter: [Caracter], medidas: [MedidaDelAfecto] = [], sonoridad: Sonoridad? = nil, en notacion: Notacion
     ) -> [DatoPresentado] {

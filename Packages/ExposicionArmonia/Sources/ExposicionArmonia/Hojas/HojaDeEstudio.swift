@@ -3,11 +3,11 @@ import Foundation
 
 // MARK: - Más hojas de estudio
 
-/// Las hojas de estudio de lo que no es una escala, un acorde, una progresión analizada o una tonalidad (esas están
-/// en `PresentacionDeEstudioDeEscala`, `PresentacionDeRelacionesDeAcorde`, `PresentacionDeAnalisis` y
-/// `PresentacionDeTonalidad`): un ritmo, una progresión con nombre, una serie dodecafónica, un arpegio y un
-/// instrumento. Cada una se da en SVG, del ancho de un A4 para imprimir, o como página HTML. `armonia hoja ritmo
-/// tresillo`, `hoja progresion folía`, `hoja serie …`, `hoja arpegio Sol7` y `hoja instrumento laúd` las escriben.
+/// Las hojas de estudio: la de una escala, un acorde, una progresión analizada (también en las doce tonalidades), una
+/// tonalidad, un ritmo, una progresión con nombre, una serie dodecafónica, un arpegio y un instrumento, y la
+/// comparación de dos escalas o dos progresiones. Cada una se da en SVG, del ancho de un A4 para imprimir, o como
+/// página HTML, que se adapta a la pantalla, sigue el modo oscuro y se imprime en A4. `armonia hoja …` las escribe y
+/// `armonia grabar hoja …` las pasa a PDF.
 ///
 ///     let hoja = HojaDeEstudio.ritmo(.tresillo, en: .compacta(.espanol))
 ///     hoja.hasPrefix("<svg")   // true
@@ -20,10 +20,9 @@ public enum HojaDeEstudio {
         case html
     }
 
-    private typealias Hoja = PresentacionDeEstudioDeEscala
-
-    private static func escribir(_ hoja: HojaCompuesta, _ formato: Formato, _ notacion: Notacion) -> String {
-        formato == .svg ? hoja.svg() : hoja.html(en: notacion)
+    /// La hoja en el formato pedido.
+    static func escribir(_ hoja: HojaCompuesta, _ formato: Formato, _ notacion: Notacion) -> String {
+        formato == .svg ? hoja.svg(en: notacion) : hoja.html(en: notacion)
     }
 
     // MARK: Un ritmo
@@ -52,7 +51,7 @@ public enum HojaDeEstudio {
                 .init(titulo: notacion.texto(\.estadisticas), piezas: [.datos(presentado.datos(en: notacion))]),
                 .init(
                     titulo: notacion.texto(\.caracterDeLaFuente),
-                    piezas: [.datos(Hoja.filasDelCaracter(ritmo.caracter, en: notacion))]),
+                    piezas: [.caracter(ritmo.caracter, medidas: [], sonoridad: nil)]),
                 .init(
                     titulo: notacion.texto(\.ritmosParecidos),
                     piezas: [
@@ -142,11 +141,6 @@ public enum HojaDeEstudio {
         let presentada = ProgresionConNombrePresentada(progresion, sobre: tonica, en: notacion)
         let acordes = progresion.acordes(sobre: tonica)
         let tonalidad = progresion.tonalidad(sobre: tonica)
-        var piezas: [HojaCompuesta.Pieza] = []
-        let dispuesta =
-            PresentacionDeDisposiciones.progresion(acordes, .drop2, en: notacion)
-            ?? PresentacionDeDisposiciones.progresion(acordes, .cerrada, en: notacion)
-        if let dispuesta { piezas.append(.dibujo(dispuesta.pentagrama.svg, fraccion: 1)) }
         var ficha = presentada.datosDelCatalogo(en: notacion)
         ficha += presentada.datosDelLugar(progresion.lugaresDeOrigen.map { $0.nombre(en: notacion) }, en: notacion)
         if !presentada.epocasDeUso.isEmpty {
@@ -164,7 +158,7 @@ public enum HojaDeEstudio {
             let realizado = PresentacionDeAnalisis.coralDeLaHoja(analisis, en: notacion)
             coral.append(.tabla(realizado.filas.map { [$0.cifrado, $0.grado, $0.voces] }))
             if let pentagrama = realizado.pentagrama { coral.append(.dibujo(pentagrama.svg, fraccion: 1)) }
-            coral.append(.lineas(realizado.avisos))
+            coral.append(.apartes(realizado.avisos))
         }
         let doce = ConjuntoDeClasesDeAltura(0..<12).notas().map { nota in
             [Tonalidad(nota, progresion.modo).nombre(en: notacion)]
@@ -177,11 +171,11 @@ public enum HojaDeEstudio {
                 tonalidad.nombre(en: notacion),
             ],
             secciones: [
-                .init(titulo: notacion.texto(\.pentagrama), piezas: piezas),
+                .init(titulo: notacion.texto(\.pentagrama), piezas: pentagrama(acordes, .drop2, en: notacion)),
                 .init(titulo: notacion.texto(\.informacion), piezas: [.datos(ficha)]),
                 .init(
                     titulo: notacion.texto(\.caracterDeLaFuente),
-                    piezas: [.datos(Hoja.filasDelCaracter(progresion.caracter, en: notacion))]),
+                    piezas: [.caracter(progresion.caracter, medidas: [], sonoridad: nil)]),
                 .init(titulo: notacion.texto(\.coral), piezas: coral),
                 .init(titulo: notacion.texto(\.enLasDoceTonalidades), piezas: [.tabla(doce)]),
                 .init(titulo: notacion.texto(\.fuentes), piezas: [.lineas(presentada.referencias)]),
@@ -285,7 +279,7 @@ public enum HojaDeEstudio {
         var dibujos = [
             (
                 "",
-                Hoja.mastilSVG(
+                PresentacionDeEstudioDeEscala.mastilSVG(
                     mastil.posiciones(de: acorde, en: 0...hasta), en: mastil, trastes: 0...hasta,
                     ortografia: acorde.notas,
                     tonica: acorde.fundamental, notacion: notacion)
@@ -296,7 +290,7 @@ public enum HojaDeEstudio {
             dibujos.append(
                 (
                     posicion.titulo,
-                    Hoja.mastilSVG(
+                    PresentacionDeEstudioDeEscala.mastilSVG(
                         posicion.notas, en: mastil, trastes: posicion.arpegio.rangoDeTrastes,
                         ortografia: acorde.notas, tonica: acorde.fundamental, notacion: notacion)
                 ))
@@ -343,7 +337,7 @@ public enum HojaDeEstudio {
                 PosicionEnElMastil(cuerda: cuerda, traste: $0)
             }
         }
-        let todoElMastil = Hoja.mastilSVG(
+        let todoElMastil = PresentacionDeEstudioDeEscala.mastilSVG(
             todas, en: mastil, trastes: 0...hasta, ortografia: cromatica.notas, tonica: nil, notacion: notacion)
         let afinacion = PentagramaPresentado(
             encordado.afinacion.map { [$0] }, titulo: notacion.texto(\.afinacion), en: notacion)
@@ -351,10 +345,7 @@ public enum HojaDeEstudio {
             guard let acorde = try? Acorde(leyendo: cifrado),
                 let forma = mastil.digitaciones(de: acorde, exigirQuinta: false, limite: 1).first
             else { return nil }
-            var dibujo: [String] = []
-            let alto = PresentacionDeRelacionesDeAcorde.diagrama(de: forma, x: 4, y: 4, en: &dibujo) + 8
-            let ancho = 30 + Double(max(encordado.numeroDeCuerdas - 1, 1)) * 11
-            return (acorde.cifrado(en: notacion), Hoja.dibujoSVG(ancho: max(ancho, 70), alto: alto, dibujo))
+            return (acorde.cifrado(en: notacion), PresentacionDeRelacionesDeAcorde.diagramaSVG(de: forma))
         }
         let hoja = HojaCompuesta(
             titulo: presentado.nombre, subtitulos: [presentado.afinacion.joined(separator: " ")],
