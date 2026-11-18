@@ -28,22 +28,22 @@ extension LineaDeComandos {
     ]
 
     static let ayudaDeHoja: [EntradaDeAyuda] = [
-        // hoja <escala> [--comparar <escala>] [--formato html]
+        // hoja <escala> [--secciones <partes>] [--instrumento <instrumento>] [--comparar <escala>] [--formato html]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHoja),
             descripcion: TextosDeConsola.traduccion(\.descripcionHoja),
             ejemplo: ejemplo(
                 "armonia hoja Re dórico > dorico.svg",
                 "armonia sheet D dorian > dorian.svg"),
-            opciones: [.comparar, .formato]),
-        // hoja acorde <cifrado> [--formato html]
+            opciones: [.secciones, .instrumento, .comparar, .formato]),
+        // hoja acorde <cifrado> [--instrumento <instrumento>] [--formato html]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHojaDeAcorde),
             descripcion: TextosDeConsola.traduccion(\.descripcionHojaDeAcorde),
             ejemplo: ejemplo(
                 "armonia hoja acorde Sol7 > sol7.svg",
                 "armonia sheet chord G7 > g7.svg"),
-            opciones: [.formato]),
+            opciones: [.instrumento, .formato]),
         // hoja acordes <acordes> [--en <tonalidad>] [--doce] [--comparar <acordes>] [--formato html]
         EntradaDeAyuda(
             sintaxis: TextosDeConsola.traduccion(\.sintaxisHojaDeAcordes),

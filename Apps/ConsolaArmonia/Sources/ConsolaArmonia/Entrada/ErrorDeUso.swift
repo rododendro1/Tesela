@@ -119,6 +119,8 @@ enum ErrorDeUso: ErrorDeArmonia {
     /// `arpegio --aproximacion` con un nombre que no se conoce.
     case aproximacionDesconocida(String)
     case secuenciaDesconocida(String)
+    /// `hoja --secciones` con una sección que no se conoce.
+    case seccionDesconocida(String)
     /// `teclado` sin escala.
     case faltaEscalaDelTeclado
     /// `teclado … --mano` con una mano que no es derecha ni izquierda.

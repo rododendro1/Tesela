@@ -3,7 +3,7 @@ import Foundation
 
 /// Una parte de la hoja de estudio de una escala, para elegir cuáles lleva: el nombre y las notas van siempre.
 public enum SeccionDeLaHoja: String, CaseIterable, Hashable, Sendable {
-    case pentagrama, estadisticas, reloj, teclados, acordes, escalera
+    case pentagrama, estadisticas, reloj, teclados, mastil, secuencias, acordes, escalera
 
     /// Su título, en la notación: «Pentagrama», «Reloj de la escala», «Digitación de piano»…
     public func nombre(en notacion: Notacion) -> String {
@@ -12,6 +12,8 @@ public enum SeccionDeLaHoja: String, CaseIterable, Hashable, Sendable {
         case .estadisticas: notacion.texto(\.estadisticas)
         case .reloj: notacion.texto(\.relojDeLaEscala)
         case .teclados: notacion.texto(\.digitacionDePiano)
+        case .mastil: notacion.texto(\.posicionesEnElMastil)
+        case .secuencias: notacion.texto(\.secuencias)
         case .acordes: notacion.texto(\.acordesDeLaEscala)
         case .escalera: notacion.texto(\.escaleraDeBrillo)
         }
@@ -26,15 +28,18 @@ extension PresentacionDeEstudioDeEscala {
     static let margenDeLaHoja = 40.0
 
     /// Una hoja de estudio de la escala, para imprimir: un SVG del ancho de un A4 con el nombre y las notas, el
-    /// pentagrama, el teclado de piano con los dedos de cada mano, el reloj (y, si la escala tiene microtonos, su
-    /// círculo de su afinación), las estadísticas, los acordes de sus grados y la escalera de brillo, o solo las
-    /// `secciones` que se pidan. El alto es el que ocupa. `armonia grabar hoja Do mayor` la pasa a PDF.
+    /// pentagrama, su origen y su carácter, el teclado de piano con los dedos de cada mano, el reloj (y, si la escala
+    /// tiene microtonos, el círculo de su afinación), las estadísticas, la escala en el mástil de `mastil` (entero y
+    /// por posiciones), las secuencias de estudio, los acordes de sus grados y la escalera de brillo, o solo las
+    /// `secciones` que se pidan (el origen y el carácter van con las estadísticas). El alto es el que ocupa. `armonia
+    /// grabar hoja Do mayor` la pasa a PDF.
     ///
     ///     let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudio(
     ///         de: Escala(.re, .dorico), en: .compacta(.espanol))
     ///     hoja.hasPrefix("<svg")   // true
     public static func hojaDeEstudio(
-        de escala: Escala, en notacion: Notacion, secciones: Set<SeccionDeLaHoja> = Set(SeccionDeLaHoja.allCases)
+        de escala: Escala, en notacion: Notacion, secciones: Set<SeccionDeLaHoja> = Set(SeccionDeLaHoja.allCases),
+        mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 15)
     ) -> String {
         let ancho = anchoDeLaHoja
         let margen = margenDeLaHoja
@@ -49,11 +54,29 @@ extension PresentacionDeEstudioDeEscala {
         let notas = escala.notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
         cuerpo.append(texto(notas, x: margen, y: y, tamano: 13, color: "#555555"))
         y += 16
+        // Sus nombres originales, con su lectura: 陽音階 (Yō onkai).
+        if let originales = EscalaPresentada(escala, en: notacion).nombresOriginales {
+            let escritos = originales.map { $0.texto + ($0.lectura.map { " (" + $0 + ")" } ?? "") }
+            y += 2
+            cuerpo.append(texto(escritos.joined(separator: " · "), x: margen, y: y, tamano: 12, color: "#555555"))
+            y += 16
+        }
 
         // El pentagrama, de lado a lado.
         if secciones.contains(.pentagrama) {
             let pentagrama = PentagramaPresentado(escala, en: notacion).svg
             y += incrustar(pentagrama, x: margen, y: y, ancho: util, en: &cuerpo) + 12
+        }
+
+        // De cuándo y de dónde es, y lo que dicen sus fuentes de su carácter, como en la hoja en HTML.
+        if secciones.contains(.estadisticas) {
+            if let origen = OrigenDeEscalaPresentado(escala.tipo, en: notacion) {
+                seccionDeDatos(
+                    notacion.texto(\.origen), origen.datos(en: notacion), x: margen, ancho: util, y: &y, en: &cuerpo)
+            }
+            seccionDeDatos(
+                notacion.texto(\.caracterDeLaFuente), caracter(de: escala.tipo, en: notacion), x: margen, ancho: util,
+                y: &y, en: &cuerpo)
         }
 
         // Las estadísticas, a la izquierda, y el reloj, a la derecha (o solo uno de los dos).
@@ -64,9 +87,13 @@ extension PresentacionDeEstudioDeEscala {
             if secciones.contains(.estadisticas) {
                 cuerpo.append(texto(notacion.texto(\.estadisticas), x: margen, y: y + 12, tamano: 14, negrita: true))
                 lineas += 32
+                // Partidas para que no se metan en el reloj, a la derecha.
+                let caben = caracteresPorLinea(secciones.contains(.reloj) ? util - ladoDelReloj - 10 : util)
                 for dato in estadisticas(de: escala, en: notacion) {
-                    cuerpo.append(texto(dato.nombre + ": " + dato.valor, x: margen, y: lineas, tamano: 11))
-                    lineas += 16
+                    for (i, linea) in partir(dato.nombre + ": " + dato.valor, caracteres: caben).enumerated() {
+                        cuerpo.append(texto(linea, x: margen + (i == 0 ? 0 : 12), y: lineas, tamano: 11))
+                        lineas += 16
+                    }
                 }
             }
             var altoDelReloj = 0.0
@@ -96,6 +123,48 @@ extension PresentacionDeEstudioDeEscala {
                 altoDeLosTeclados = max(altoDeLosTeclados, alto)
             }
             y += altoDeLosTeclados + 16
+        }
+
+        // El mástil entero, de lado a lado, y debajo cada posición, de dos en dos.
+        if secciones.contains(.mastil) {
+            let dibujos = mastilDeLaHoja(de: escala, mastil: mastil, en: notacion)
+            cuerpo.append(
+                texto(SeccionDeLaHoja.mastil.nombre(en: notacion), x: margen, y: y + 12, tamano: 14, negrita: true))
+            y += 26
+            let separacion = 15.0
+            let mitad = (util - separacion) / 2
+            var altoDeLaFila = 0.0
+            for (i, dibujo) in dibujos.enumerated() {
+                let entero = i == 0
+                let columna = entero ? 0 : (i - 1) % 2
+                let x = margen + Double(columna) * (mitad + separacion)
+                cuerpo.append(texto(dibujo.titulo, x: x, y: y + 10, tamano: 10, color: "#555555"))
+                let alto = incrustar(dibujo.svg, x: x, y: y + 14, ancho: entero ? util : mitad, en: &cuerpo) + 20
+                altoDeLaFila = max(altoDeLaFila, alto)
+                // Una fila acaba con el mástil entero, con la segunda posición de cada par o con la última.
+                if entero || columna == 1 || i == dibujos.count - 1 {
+                    y += altoDeLaFila
+                    altoDeLaFila = 0
+                }
+            }
+            y += 8
+        }
+
+        // Las secuencias de estudio, cada una con sus notas y su pentagrama.
+        if secciones.contains(.secuencias) {
+            let secuencias = secuenciasDeLaHoja(de: escala, en: notacion)
+            cuerpo.append(
+                texto(SeccionDeLaHoja.secuencias.nombre(en: notacion), x: margen, y: y + 12, tamano: 14, negrita: true))
+            y += 32
+            for secuencia in secuencias {
+                cuerpo.append(texto(secuencia.titulo, x: margen, y: y, tamano: 11, negrita: true))
+                y += 15
+                for linea in partir(secuencia.notas, caracteres: caracteresPorLinea(util)) {
+                    cuerpo.append(texto(linea, x: margen, y: y, tamano: 10, color: "#555555"))
+                    y += 14
+                }
+                y += incrustar(secuencia.pentagrama.svg, x: margen, y: y, ancho: util, en: &cuerpo) + 10
+            }
         }
 
         // Los acordes de cada grado, si los forma.
@@ -129,6 +198,50 @@ extension PresentacionDeEstudioDeEscala {
         stride(from: 0, to: elementos.count, by: porFila).map {
             elementos[$0..<min($0 + porFila, elementos.count)].joined(separator: " · ")
         }
+    }
+
+    /// Una sección de datos: su título y una línea por dato («nombre: valor»), partida en varias si no cabe en
+    /// `ancho`. Nada si no hay datos.
+    static func seccionDeDatos(
+        _ titulo: String, _ datos: [DatoPresentado], x: Double, ancho: Double, y: inout Double,
+        en cuerpo: inout [String]
+    ) {
+        guard !datos.isEmpty else { return }
+        cuerpo.append(texto(titulo, x: x, y: y + 12, tamano: 14, negrita: true))
+        y += 32
+        for dato in datos {
+            for (i, linea) in partir(dato.nombre + ": " + dato.valor, caracteres: caracteresPorLinea(ancho))
+                .enumerated()
+            {
+                // Las líneas que siguen a la primera, un poco metidas, para que se vea dónde empieza cada dato.
+                cuerpo.append(texto(linea, x: x + (i == 0 ? 0 : 12), y: y, tamano: 11))
+                y += 16
+            }
+        }
+        y += 8
+    }
+
+    /// Cuántos caracteres de 11 puntos caben en una línea de ese ancho, por lo que ocupa uno de media en Helvetica.
+    static func caracteresPorLinea(_ ancho: Double) -> Int { max(20, Int(ancho / 5.6)) }
+
+    /// El texto en líneas de `caracteres` como mucho, partido entre palabras (una palabra más larga va sola).
+    ///
+    ///     PresentacionDeEstudioDeEscala.partir("Re Mi Fa Sol", caracteres: 6)   // ["Re Mi", "Fa Sol"]
+    static func partir(_ contenido: String, caracteres: Int) -> [String] {
+        var lineas: [String] = []
+        var actual = ""
+        for palabra in contenido.split(separator: " ") {
+            if actual.isEmpty {
+                actual = String(palabra)
+            } else if actual.count + 1 + palabra.count <= caracteres {
+                actual += " " + palabra
+            } else {
+                lineas.append(actual)
+                actual = String(palabra)
+            }
+        }
+        if !actual.isEmpty { lineas.append(actual) }
+        return lineas
     }
 
     static func texto(

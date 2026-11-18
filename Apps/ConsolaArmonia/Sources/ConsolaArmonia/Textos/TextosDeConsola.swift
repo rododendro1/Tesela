@@ -349,6 +349,7 @@ struct TextosDeConsola: TextosTraducidos {
     let gradosMalEscritos: String
     let aproximacionDesconocida: Plantilla  // {1} aproximacion
     let secuenciaDesconocida: Plantilla  // {1} secuencia
+    let seccionDesconocida: Plantilla  // {1} sección
 
     // MARK: ErrorDeUso+Textos.swift (comunes)
     let pruebaLaAyuda: String

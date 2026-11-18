@@ -168,6 +168,7 @@ extension TextosDeApps {
         ningunaNotaComun: "keine",
         movimientoTotal: "Gesamtbewegung: {1} Halbtöne",
         secuencia: "Sequenz",
+        secuencias: "Sequenzen",
         bajando: "Abwärts",
         digitacionDePiano: "Klavierfingersatz",
         manoDerecha: "Rechte Hand",

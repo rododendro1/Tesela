@@ -168,6 +168,7 @@ extension TextosDeApps {
         ningunaNotaComun: "καμία",
         movimientoTotal: "Συνολική κίνηση: {1} ημιτόνια",
         secuencia: "Ακολουθία",
+        secuencias: "Ακολουθίες",
         bajando: "Κατιούσα",
         digitacionDePiano: "Δακτυλισμός πιάνου",
         manoDerecha: "Δεξί χέρι",

@@ -168,6 +168,7 @@ extension TextosDeApps {
         ningunaNotaComun: "inga",
         movimientoTotal: "Total rörelse: {1} halvtoner",
         secuencia: "Sekvens",
+        secuencias: "Sekvenser",
         bajando: "Nedåt",
         digitacionDePiano: "Pianofingersättning",
         manoDerecha: "Höger hand",

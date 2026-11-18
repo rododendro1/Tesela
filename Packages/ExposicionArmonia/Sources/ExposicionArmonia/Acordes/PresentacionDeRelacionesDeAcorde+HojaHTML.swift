@@ -3,14 +3,16 @@ import Armonia
 extension PresentacionDeRelacionesDeAcorde {
     // MARK: La hoja de estudio de un acorde en HTML
 
-    /// La hoja de estudio del acorde como página HTML: lo mismo que `hojaDeEstudio(de:en:)` (el cifrado, sus notas y
-    /// sus otros nombres, el pentagrama, las disposiciones, las digitaciones de guitarra, las escalas compatibles y
-    /// las sustituciones), con los textos en HTML y los dibujos como SVG dentro. Se adapta a la pantalla, sigue el
-    /// modo oscuro y se imprime en A4. `armonia hoja acorde Sol7 --formato html` la escribe.
+    /// La hoja de estudio del acorde como página HTML: lo mismo que `hojaDeEstudio(de:mastil:en:)` (el cifrado, sus
+    /// notas y sus otros nombres, el pentagrama, las disposiciones, el teclado, las digitaciones en el mástil, las
+    /// escalas compatibles y las sustituciones), con los textos en HTML y los dibujos como SVG dentro. Se adapta a la
+    /// pantalla, sigue el modo oscuro y se imprime en A4. `armonia hoja acorde Sol7 --formato html` la escribe.
     ///
     ///     let hoja = PresentacionDeRelacionesDeAcorde.hojaDeEstudioHTML(de: Acorde("Sol7"), en: .compacta(.espanol))
     ///     hoja.contains("<h1>Sol7</h1>")   // true
-    public static func hojaDeEstudioHTML(de acorde: Acorde, en notacion: Notacion) -> String {
+    public static func hojaDeEstudioHTML(
+        de acorde: Acorde, mastil: Mastil = Mastil(.guitarra, numeroDeTrastes: 12), en notacion: Notacion
+    ) -> String {
         typealias Hoja = PresentacionDeEstudioDeEscala
         let datos = RelacionesPresentadas(acorde, notacion: notacion)
         let cifrado = acorde.cifrado(en: notacion)
@@ -39,8 +41,12 @@ extension PresentacionDeRelacionesDeAcorde {
             cuerpo.append(Hoja.seccionHTML(notacion.texto(\.disposicion), figuras.joined()))
         }
 
-        // Las digitaciones de guitarra más cómodas, cada una en su diagrama.
-        let mastil = Mastil(.guitarra, numeroDeTrastes: 12)
+        // El acorde en el teclado, en posición cerrada desde el bajo.
+        cuerpo.append(
+            Hoja.seccionHTML(
+                notacion.texto(\.teclado), Hoja.figura(teclado(de: acorde, en: notacion), clase: "teclado")))
+
+        // Las digitaciones más cómodas en el instrumento, cada una en su diagrama.
         let formas = mastil.digitaciones(de: acorde, exigirQuinta: false, limite: 5)
         if !formas.isEmpty {
             let diagramas = formas.map { forma in
@@ -50,7 +56,8 @@ extension PresentacionDeRelacionesDeAcorde {
             }
             cuerpo.append(
                 Hoja.seccionHTML(
-                    notacion.texto(\.digitaciones), "<div class=\"digitaciones\">" + diagramas.joined() + "</div>"))
+                    notacion.texto(\.digitaciones) + " · " + mastil.encordado.nombre(en: notacion),
+                    "<div class=\"digitaciones\">" + diagramas.joined() + "</div>"))
         }
 
         // Las escalas compatibles, con sus tensiones y las notas a evitar.

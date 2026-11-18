@@ -65,6 +65,13 @@
   `.teoria(…)`), y `motivoOriginal`, el de dentro del todo. La consola lo usa para el `tipo` de los errores en JSON.
 - `Encordado.buscar(nombre:)`, como en los catálogos con nombre: lo que se busca por su nombre tiene
   `buscar(nombre:)`, que da un opcional, y si además se lee como texto, `init(leyendo:)`.
+- Las hojas de estudio de `armonia hoja` llevan más: la de una escala, su origen, su carácter y sus nombres
+  originales también en SVG, el mástil entero y por posiciones (CAGED, formas pentatónicas o tres notas por cuerda) y
+  las secuencias por terceras y en grupos de cuatro; la de un acorde, el teclado; la de una progresión, el coral a
+  cuatro voces de `armonia realizar`, y la de una tonalidad, las dominantes secundarias, los acordes prestados del
+  modo homónimo y su carácter. `--secciones pentagrama,mastil` (`--sections staff,fretboard`) elige las partes de la
+  hoja de una escala, e `--instrumento ukelele` (`--instrument`), el mástil de la escala o las digitaciones del
+  acorde.
 - La documentación de `Notacion` explica que la notación va tras `en:` salvo cuando `en:` es el contexto (una
   tonalidad, una escala o una tradición), y entonces va tras `notacion:`.
 

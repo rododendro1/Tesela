@@ -168,6 +168,7 @@ extension TextosDeApps {
         ningunaNotaComun: "nincs",
         movimientoTotal: "Teljes mozgás: {1} félhang",
         secuencia: "Szekvencia",
+        secuencias: "Szekvenciák",
         bajando: "Lefelé",
         digitacionDePiano: "Zongoraujjrend",
         manoDerecha: "Jobb kéz",

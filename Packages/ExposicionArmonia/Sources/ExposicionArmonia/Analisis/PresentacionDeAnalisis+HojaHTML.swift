@@ -4,9 +4,10 @@ extension PresentacionDeAnalisis {
     // MARK: Las hojas de una progresión en HTML
 
     /// La hoja de estudio de la progresión como página HTML: lo mismo que `hojaDeEstudio(_:disposicion:en:)` (los
-    /// acordes y su tonalidad, el pentagrama, el análisis en una tabla, la conducción de las voces, las cadencias y
-    /// las líneas de notas guía), con los textos en HTML y los dibujos como SVG dentro. Se adapta a la pantalla,
-    /// sigue el modo oscuro y se imprime en A4. `armonia hoja acordes Rem7 Sol7 Do7M --formato html` la escribe.
+    /// acordes y su tonalidad, el pentagrama, el análisis en una tabla, la conducción de las voces, el coral a cuatro
+    /// voces, las cadencias y las líneas de notas guía), con los textos en HTML y los dibujos como SVG dentro. Se
+    /// adapta a la pantalla, sigue el modo oscuro y se imprime en A4. `armonia hoja acordes Rem7 Sol7 Do7M --formato
+    /// html` la escribe.
     ///
     ///     let analisis = try PresentacionDeAnalisis.analizar("Rem7 Sol7 Do7M", notacion: .compacta(.espanol))
     ///     let hoja = PresentacionDeAnalisis.hojaDeEstudioHTML(analisis, en: .compacta(.espanol))
@@ -42,6 +43,15 @@ extension PresentacionDeAnalisis {
                 Hoja.seccionHTML(
                     notacion.texto(\.conduccionDeVoces) + " · " + voces.disposicion, pasos.joined() + total))
         }
+
+        // El coral a cuatro voces (lo de `armonia realizar`): un acorde por fila, el pentagrama y las faltas.
+        let coral = coralDeLaHoja(analisis, en: notacion)
+        let filasDelCoral = coral.filas.map { (celdas: [$0.cifrado, $0.grado, $0.voces], clase: String?.none) }
+        let contenidoDelCoral =
+            (filasDelCoral.isEmpty ? "" : Hoja.tablaHTML(filasDelCoral))
+            + (coral.pentagrama.map { Hoja.figura($0.svg, clase: "pentagrama") } ?? "")
+            + coral.avisos.map { "<p class=\"sub\">" + Hoja.html($0) + "</p>" }.joined()
+        cuerpo.append(Hoja.seccionHTML(notacion.texto(\.coral), contenidoDelCoral))
 
         // Las cadencias, si las hay.
         if !analisis.cadencias.isEmpty {

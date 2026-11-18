@@ -21,6 +21,21 @@
   `ErrorDeLecturaDePartitura`).
 - `PresentacionDeCoral.armonizar` lanza `.melodiaSinNotas` (de `ErrorDeLecturaDePartitura`) con una voz que solo
   tiene silencios, en lugar de `.elementos(.textoVacio)`, que decía que el texto estaba vacío.
+- `SeccionDeLaHoja` tiene dos casos más, `mastil` y `secuencias`: un `switch` sobre ella necesita sus ramas.
+
+### Novedades
+
+- La hoja de estudio de una escala en SVG lleva, como la de HTML, sus nombres originales, su origen y su carácter
+  (con las estadísticas), y las dos, el mástil (`mastilDeLaHoja(de:mastil:en:)`: entero y por posiciones) y las
+  secuencias de estudio (`secuenciasDeLaHoja(de:en:)`), con las secciones `.mastil` y `.secuencias` y el mástil de
+  `hojaDeEstudio(de:en:secciones:mastil:)`. Las estadísticas largas se parten en varias líneas.
+- La hoja de un acorde lleva el acorde en el teclado (`PresentacionDeRelacionesDeAcorde.teclado(de:en:)`) y las
+  digitaciones en el mástil que se le da (`hojaDeEstudio(de:mastil:en:)` y `hojaDeEstudioHTML(de:mastil:en:)`).
+- La hoja de una progresión lleva el coral a cuatro voces, con su pentagrama y la revisión de sus faltas.
+- La hoja de una tonalidad lleva las dominantes secundarias y los acordes prestados del modo homónimo
+  (`PresentacionDeTonalidad.dominantesSecundarias(de:en:)` y `acordesPrestados(de:en:)`, en
+  `AcordeDeFueraPresentado`), y la de SVG, también su carácter.
+- `TextosDeApps.secuencias`, en los trece idiomas.
 
 ## 0.6.0 (2026-11-17)
 
