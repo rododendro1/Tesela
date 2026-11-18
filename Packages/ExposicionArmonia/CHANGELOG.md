@@ -1,5 +1,28 @@
 # Cambios
 
+## Sin publicar
+
+### Obsoleto
+
+- Las hojas de una escala, un acorde, una progresión y una tonalidad, y las comparaciones, están en `HojaDeEstudio`
+  con su `formato`, como las demás: `escala(_:secciones:mastil:en:formato:)`, `acorde(_:mastil:en:formato:)`,
+  `analisis(_:disposicion:en:formato:)`, `enLasDoceTonalidades(_:tonalidad:disposicion:en:formato:)`,
+  `tonalidad(_:en:formato:)`, `comparacion(_:con:en:formato:)` (de dos escalas) y
+  `comparacion(_:con:en:disposicion:notacion:formato:)` (de dos progresiones), y `tamano(deUnSVG:)`. Las funciones de
+  antes (`PresentacionDeEstudioDeEscala.hojaDeEstudio`, `hojaDeEstudioHTML`, `comparacionNotaANota`,
+  `comparacionNotaANotaHTML` y `tamano(deUnSVG:)`; `PresentacionDeRelacionesDeAcorde.hojaDeEstudio` y
+  `hojaDeEstudioHTML`; `PresentacionDeAnalisis.hojaDeEstudio`, `hojaDeEstudioHTML`, `hojaEnLasDoceTonalidades`,
+  `hojaEnLasDoceTonalidadesHTML`, `hojaDeLaComparacion` y `hojaDeLaComparacionHTML`, y
+  `PresentacionDeTonalidad.hojaDeEstudio` y `hojaDeEstudioHTML`) siguen, marcadas como obsoletas.
+
+### Mejoras
+
+- Todas las hojas de estudio salen de una sola descripción de sus secciones, que se escribe en SVG y en HTML: las dos
+  llevan lo mismo y en el mismo orden. La de una tonalidad en SVG lleva el carácter detrás del pentagrama, como en
+  HTML; la de una escala, el reloj al lado de las estadísticas también en HTML, y el carácter de un ritmo o una
+  progresión con nombre, en HTML, con las palabras de cada fuente entre comillas. Un pentagrama corto no ocupa en el
+  SVG más del doble de su ancho, como en HTML.
+
 ## 0.6.1 (2026-11-18)
 
 ### Cambios incompatibles

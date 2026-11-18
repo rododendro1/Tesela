@@ -112,37 +112,38 @@ public struct ModeloDeAnalisis: Sendable {
             analisis.acordes, tonalidad: analisis.tonalidad, en: notacion
         ).flatMap(\.ficheros)
         let hoja = FicheroParaExportar.svg(
-            PresentacionDeAnalisis.hojaDeEstudio(analisis, disposicion: disposicion, en: notacion),
+            HojaDeEstudio.analisis(analisis, disposicion: disposicion, en: notacion),
             nombre: notacion.texto(\.hojaDeEstudio))
         let hojaHTML = FicheroParaExportar.html(
-            PresentacionDeAnalisis.hojaDeEstudioHTML(analisis, disposicion: disposicion, en: notacion),
+            HojaDeEstudio.analisis(analisis, disposicion: disposicion, en: notacion, formato: .html),
             nombre: notacion.texto(\.hojaDeEstudio))
         var todos: [FicheroParaExportar] = analisis.ficheros + [hoja, hojaHTML]
         if let tonalidad = Self.tonalidadDeLasDoce(analisis) {
-            let svg = PresentacionDeAnalisis.hojaEnLasDoceTonalidades(
+            let svg = HojaDeEstudio.enLasDoceTonalidades(
                 analisis.acordes, tonalidad: tonalidad, disposicion: disposicion, en: notacion)
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.enLasDoceTonalidades)
             todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
-            let html = PresentacionDeAnalisis.hojaEnLasDoceTonalidadesHTML(
-                analisis.acordes, tonalidad: tonalidad, disposicion: disposicion, en: notacion)
+            let html = HojaDeEstudio.enLasDoceTonalidades(
+                analisis.acordes, tonalidad: tonalidad, disposicion: disposicion, en: notacion, formato: .html)
             todos.append(FicheroParaExportar.html(html, nombre: nombre))
         }
         if let tonalidad = analisis.tonalidad {
-            let svg = PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, en: notacion)
+            let svg = HojaDeEstudio.tonalidad(tonalidad, en: notacion)
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + tonalidad.nombre(en: notacion)
             todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
             todos.append(
                 FicheroParaExportar.html(
-                    PresentacionDeTonalidad.hojaDeEstudioHTML(de: tonalidad, en: notacion), nombre: nombre))
+                    HojaDeEstudio.tonalidad(tonalidad, en: notacion, formato: .html), nombre: nombre))
         }
-        if let svg = PresentacionDeAnalisis.hojaDeLaComparacion(
+        if let svg = HojaDeEstudio.comparacion(
             analisis.acordes, con: otraVersion, en: analisis.tonalidad, disposicion: disposicion, notacion: notacion)
         {
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.compararCon)
             todos.append(FicheroParaExportar.svg(svg, nombre: nombre))
         }
-        if let html = PresentacionDeAnalisis.hojaDeLaComparacionHTML(
-            analisis.acordes, con: otraVersion, en: analisis.tonalidad, disposicion: disposicion, notacion: notacion)
+        if let html = HojaDeEstudio.comparacion(
+            analisis.acordes, con: otraVersion, en: analisis.tonalidad, disposicion: disposicion, notacion: notacion,
+            formato: .html)
         {
             let nombre = notacion.texto(\.hojaDeEstudio) + " · " + notacion.texto(\.compararCon)
             todos.append(FicheroParaExportar.html(html, nombre: nombre))

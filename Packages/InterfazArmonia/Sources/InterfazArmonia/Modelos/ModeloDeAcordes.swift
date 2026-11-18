@@ -138,10 +138,10 @@ public struct ModeloDeAcordes: Sendable {
             PentagramaPresentado(acorde, en: notacion).fichero,
             pentagrama(de: arpegio, en: notacion).fichero,
             FicheroParaExportar.svg(
-                PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, en: notacion),
+                HojaDeEstudio.acorde(acorde, en: notacion),
                 nombre: notacion.texto(\.hojaDeEstudio) + " " + acorde.cifrado(en: notacion)),
             FicheroParaExportar.html(
-                PresentacionDeRelacionesDeAcorde.hojaDeEstudioHTML(de: acorde, en: notacion),
+                HojaDeEstudio.acorde(acorde, en: notacion, formato: .html),
                 nombre: notacion.texto(\.hojaDeEstudio) + " " + acorde.cifrado(en: notacion)),
         ]
         if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, en: notacion) {

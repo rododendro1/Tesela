@@ -10,33 +10,32 @@ import Testing
     let notacion = Notacion.compacta(.espanol)
 
     @Test func partirEnLineas() {
-        let partir = PresentacionDeEstudioDeEscala.partir
+        let partir = Hoja.partir
         #expect(partir("Re Mi Fa Sol", 6) == ["Re Mi", "Fa Sol"])
         #expect(partir("Supercalifragilístico y más", 5) == ["Supercalifragilístico", "y más"])
         #expect(partir("", 10).isEmpty)
-        #expect(PresentacionDeEstudioDeEscala.caracteresPorLinea(56) == 20)
-        #expect(PresentacionDeEstudioDeEscala.caracteresPorLinea(560) == 100)
+        #expect(Hoja.caracteresPorLinea(56) == 20)
+        #expect(Hoja.caracteresPorLinea(560) == 100)
     }
 
     @Test func origenCaracterYNombresOriginalesDeLaEscala() {
-        let saba = PresentacionDeEstudioDeEscala.hojaDeEstudio(de: Escala(.re, .saba), en: notacion)
+        let saba = HojaDeEstudio.escala(Escala(.re, .saba), en: notacion)
         #expect(saba.contains(">صبا</text>"))
         #expect(saba.contains(">Origen</text>"))
         #expect(saba.contains(">Carácter</text>"))
         #expect(saba.contains("triste"))
         // Sin estadísticas, tampoco el origen ni el carácter.
-        let corta = PresentacionDeEstudioDeEscala.hojaDeEstudio(
-            de: Escala(.re, .saba), en: notacion, secciones: [.pentagrama])
+        let corta = HojaDeEstudio.escala(Escala(.re, .saba), secciones: [.pentagrama], en: notacion)
         #expect(!corta.contains(">Origen</text>") && !corta.contains(">Carácter</text>"))
-        // Los datos largos se parten, con las líneas que siguen metidas.
-        var cuerpo: [String] = []
-        var y = 0.0
+        // Los datos largos se parten, con las líneas que siguen metidas; una sección sin datos no se escribe.
         let largo = DatoPresentado(nombre: "Dato", valor: String(repeating: "palabra ", count: 30))
-        PresentacionDeEstudioDeEscala.seccionDeDatos("Título", [largo], x: 40, ancho: 200, y: &y, en: &cuerpo)
-        #expect(cuerpo.count > 3 && cuerpo.contains { $0.contains("x=\"52\"") })
-        cuerpo = []
-        PresentacionDeEstudioDeEscala.seccionDeDatos("Título", [], x: 40, ancho: 200, y: &y, en: &cuerpo)
-        #expect(cuerpo.isEmpty)
+        let hoja = HojaCompuesta(
+            titulo: "Hoja",
+            secciones: [
+                .init(titulo: "Título", piezas: [.datos([largo])]), .init(titulo: "Vacía", piezas: [.datos([])]),
+            ]
+        ).svg(en: notacion)
+        #expect(hoja.contains("x=\"52\"") && hoja.contains(">Título</text>") && !hoja.contains(">Vacía</text>"))
     }
 
     @Test func elMastilYLasSecuencias() {
@@ -66,12 +65,10 @@ import Testing
         let secuencias = PresentacionDeEstudioDeEscala.secuenciasDeLaHoja(de: Escala(.do), en: notacion)
         #expect(secuencias.map(\.titulo) == ["Do mayor por terceras", "Do mayor en grupos de cuatro"])
 
-        let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudio(
-            de: Escala(.sol), en: notacion, secciones: [.mastil, .secuencias])
+        let hoja = HojaDeEstudio.escala(Escala(.sol), secciones: [.mastil, .secuencias], en: notacion)
         #expect(hoja.contains(">Posiciones en el mástil</text>") && hoja.contains(">Secuencias</text>"))
         #expect(!hoja.contains(">Estadísticas</text>"))
-        let html = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
-            de: Escala(.sol), en: notacion, secciones: [.mastil, .secuencias])
+        let html = HojaDeEstudio.escala(Escala(.sol), secciones: [.mastil, .secuencias], en: notacion, formato: .html)
         #expect(html.contains("<h2>Posiciones en el mástil</h2>") && html.contains("<h2>Secuencias</h2>"))
         #expect(html.contains("<h3>Forma G · Trastes 0–4</h3>"))
         #expect(SeccionDeLaHoja.mastil.nombre(en: notacion) == "Posiciones en el mástil")
@@ -81,10 +78,9 @@ import Testing
     @Test func elTecladoYOtroInstrumentoEnLaHojaDelAcorde() {
         let teclado = PresentacionDeRelacionesDeAcorde.teclado(de: Acorde("Sol7"), en: notacion)
         #expect(teclado.contains(">Sol7</text>") && teclado.contains(">Fa</text>"))
-        let hoja = PresentacionDeRelacionesDeAcorde.hojaDeEstudio(
-            de: Acorde("Sol7"), mastil: Mastil(.ukelele, numeroDeTrastes: 12), en: notacion)
+        let hoja = HojaDeEstudio.acorde(Acorde("Sol7"), mastil: Mastil(.ukelele, numeroDeTrastes: 12), en: notacion)
         #expect(hoja.contains(">Teclado</text>") && hoja.contains(">Digitaciones · ukelele</text>"))
-        let html = PresentacionDeRelacionesDeAcorde.hojaDeEstudioHTML(de: Acorde("Sol7"), en: notacion)
+        let html = HojaDeEstudio.acorde(Acorde("Sol7"), en: notacion, formato: .html)
         #expect(html.contains("<h2>Teclado</h2>") && html.contains("<h2>Digitaciones · guitarra</h2>"))
     }
 
@@ -93,9 +89,9 @@ import Testing
         let coral = PresentacionDeAnalisis.coralDeLaHoja(analisis, en: notacion)
         #expect(coral.filas.map(\.grado) == ["I", "IV", "V7", "I"])
         #expect(coral.pentagrama != nil && coral.avisos == ["Sin faltas de conducción."])
-        let hoja = PresentacionDeAnalisis.hojaDeEstudio(analisis, en: notacion)
+        let hoja = HojaDeEstudio.analisis(analisis, en: notacion)
         #expect(hoja.contains(">Coral</text>") && hoja.contains(">Sin faltas de conducción.</text>"))
-        let html = PresentacionDeAnalisis.hojaDeEstudioHTML(analisis, en: notacion)
+        let html = HojaDeEstudio.analisis(analisis, en: notacion, formato: .html)
         #expect(html.contains("<h2>Coral</h2>"))
         // Si no se puede escribir a cuatro voces, por qué.
         let imposible = try PresentacionDeAnalisis.analizar("Do13(♯11)", notacion: notacion)
@@ -112,10 +108,10 @@ import Testing
         #expect(prestados.last?.acordes == "Si♭7")
         let enMenor = PresentacionDeTonalidad.acordesPrestados(de: Tonalidad(.la, .menor), en: notacion)
         #expect(enMenor.map(\.acordes).contains("Remaj7"))
-        let hoja = PresentacionDeTonalidad.hojaDeEstudio(de: Tonalidad(.do), en: notacion)
+        let hoja = HojaDeEstudio.tonalidad(Tonalidad(.do), en: notacion)
         #expect(hoja.contains(">Dominante secundaria</text>") && hoja.contains(">Préstamo modal</text>"))
         #expect(hoja.contains(">La♭maj7</text>"))
-        let html = PresentacionDeTonalidad.hojaDeEstudioHTML(de: Tonalidad(.do), en: notacion)
+        let html = HojaDeEstudio.tonalidad(Tonalidad(.do), en: notacion, formato: .html)
         #expect(html.contains("<h2>Dominante secundaria</h2>") && html.contains("V7/vi"))
     }
 }

@@ -29,7 +29,7 @@ import Testing
     }
 
     @Test func hojaDeUnaTonalidad() {
-        let hoja = PresentacionDeTonalidad.hojaDeEstudio(de: Tonalidad(.re), en: notacion)
+        let hoja = HojaDeEstudio.tonalidad(Tonalidad(.re), en: notacion)
         #expect(hoja.hasPrefix("<svg "))
         #expect(hoja.hasSuffix("</svg>"))
         #expect(hoja.contains(">Re mayor</text>"))
@@ -37,7 +37,7 @@ import Testing
         #expect(hoja.contains(">Cadencias típicas</text>"))
         #expect(hoja.contains(">Modulaciones</text>"))
         #expect(hoja.contains(">La7 – Re</text>"))
-        let menor = PresentacionDeTonalidad.hojaDeEstudio(de: Tonalidad(.la, .menor), en: notacion)
+        let menor = HojaDeEstudio.tonalidad(Tonalidad(.la, .menor), en: notacion)
         #expect(menor.contains(">La menor</text>"))
     }
 
@@ -70,12 +70,12 @@ import Testing
     @Test func hojaDeLaComparacion() throws {
         let original = [Acorde("Do"), Acorde("Lam"), Acorde("Rem"), Acorde("Sol7")]
         let nueva = [Acorde("Do"), Acorde("La7"), Acorde("Rem7"), Acorde("Sol7")]
-        let hoja = try #require(PresentacionDeAnalisis.hojaDeLaComparacion(original, con: nueva, notacion: notacion))
+        let hoja = try #require(HojaDeEstudio.comparacion(original, con: nueva, notacion: notacion))
         #expect(hoja.hasPrefix("<svg "))
         #expect(hoja.contains(">Do – Lam – Rem – Sol7</text>"))
         #expect(hoja.contains(">Do – La7 – Rem7 – Sol7</text>"))
         #expect(hoja.contains(">Lam → La7</text>"), Comment(rawValue: hoja))
         #expect(hoja.contains(">Cambian 2 de 4 acordes</text>"))
-        #expect(PresentacionDeAnalisis.hojaDeLaComparacion([], con: nueva, notacion: notacion) == nil)
+        #expect(HojaDeEstudio.comparacion([], con: nueva, notacion: notacion) == nil)
     }
 }

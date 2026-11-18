@@ -43,12 +43,12 @@ import Testing
 
     /// Las hojas HTML llevan la sección del carácter si hay algo que decir.
     @Test func enLasHojas() {
-        let fa = PresentacionDeTonalidad.hojaDeEstudioHTML(de: Tonalidad(.fa), en: espanol)
+        let fa = HojaDeEstudio.tonalidad(Tonalidad(.fa), en: espanol, formato: .html)
         #expect(fa.contains("<h2>Carácter</h2>") && fa.contains("<q>Furieux et emporté</q>"))
         #expect(fa.contains("Las fuentes no coinciden"))
-        let doSostenido = PresentacionDeTonalidad.hojaDeEstudioHTML(de: Tonalidad(Nota(.do, .sostenido)), en: espanol)
+        let doSostenido = HojaDeEstudio.tonalidad(Tonalidad(Nota(.do, .sostenido)), en: espanol, formato: .html)
         #expect(!doSostenido.contains("Carácter"))
-        let saba = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(de: Escala(.re, .saba), en: espanol)
+        let saba = HojaDeEstudio.escala(Escala(.re, .saba), en: espanol, formato: .html)
         #expect(saba.contains("<q>sadness and pain</q>"))
     }
 

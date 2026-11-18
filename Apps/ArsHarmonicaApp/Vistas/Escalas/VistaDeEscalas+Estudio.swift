@@ -143,7 +143,7 @@ struct SeccionDelMapaDeBrillo: View {
 
     var body: some View {
         let svg = PresentacionDeEstudioDeEscala.mapaDeBrillo(de: escala, en: notacion)
-        if let tamano = PresentacionDeEstudioDeEscala.tamano(deUnSVG: svg), tamano.alto > 120 {
+        if let tamano = HojaDeEstudio.tamano(deUnSVG: svg), tamano.alto > 120 {
             Section(notacion.texto(\.mapaDeBrillo)) {
                 ScrollView(.horizontal) {
                     VistaSVG(svg: svg)
@@ -271,8 +271,8 @@ struct SeccionDeLaHojaDeEstudio: View {
     @Environment(\.notacion) private var notacion
 
     var body: some View {
-        let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudio(de: escala, en: notacion, secciones: secciones)
-        let tamano = PresentacionDeEstudioDeEscala.tamano(deUnSVG: hoja) ?? (ancho: 595, alto: 842)
+        let hoja = HojaDeEstudio.escala(escala, secciones: secciones, en: notacion)
+        let tamano = HojaDeEstudio.tamano(deUnSVG: hoja) ?? (ancho: 595, alto: 842)
         Section(notacion.texto(\.hojaDeEstudio)) {
             DisclosureGroup(notacion.texto(\.hojaDeEstudio) + " (\(secciones.count))") {
                 ForEach(SeccionDeLaHoja.allCases, id: \.self) { seccion in

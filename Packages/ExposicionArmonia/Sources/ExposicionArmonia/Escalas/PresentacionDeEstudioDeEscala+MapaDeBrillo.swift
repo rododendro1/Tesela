@@ -42,10 +42,11 @@ extension PresentacionDeEstudioDeEscala {
 
         var cuerpo: [String] = []
         let titulo = notacion.texto(\.mapaDeBrillo) + " · " + tonica.nombre(en: notacion)
-        cuerpo.append(texto(titulo, x: margen, y: margen + 18, tamano: 18, negrita: true))
+        cuerpo.append(Hoja.texto(titulo, x: margen, y: margen + 18, tamano: 18, negrita: true))
         for (i, brillo) in columnas.enumerated() {
             let x = margen + Double(i) * (anchoDeCaja + entreColumnas)
-            cuerpo.append(texto(conSigno(brillo), x: x, y: arriba - 12, tamano: 13, negrita: true, color: "#555555"))
+            cuerpo.append(
+                Hoja.texto(conSigno(brillo), x: x, y: arriba - 12, tamano: 13, negrita: true, color: "#555555"))
         }
         // Las líneas, debajo de las cajas: de la derecha de la oscura a la izquierda de la brillante.
         for enlace in mapa.enlaces {
@@ -53,8 +54,8 @@ extension PresentacionDeEstudioDeEscala {
             let hasta = cajas[enlace.brillante]
             let cambio = enlace.desde.nombre(en: notacion) + " → " + enlace.hasta.nombre(en: notacion)
             cuerpo.append(
-                "<line x1=\"\(numero(desde.x + anchoDeCaja))\" y1=\"\(numero(desde.y + altoDeCaja / 2))\" "
-                    + "x2=\"\(numero(hasta.x))\" y2=\"\(numero(hasta.y + altoDeCaja / 2))\" stroke=\"#9aa5b1\" "
+                "<line x1=\"\(Hoja.numero(desde.x + anchoDeCaja))\" y1=\"\(Hoja.numero(desde.y + altoDeCaja / 2))\" "
+                    + "x2=\"\(Hoja.numero(hasta.x))\" y2=\"\(Hoja.numero(hasta.y + altoDeCaja / 2))\" stroke=\"#9aa5b1\" "
                     + "stroke-width=\"1\"><title>\(EscrituraXML.escapar(cambio))</title></line>")
         }
         let notasResaltadas = resaltada.map { Set($0.notas.map(\.claseDeAltura)) }
@@ -65,10 +66,10 @@ extension PresentacionDeEstudioDeEscala {
             let notas = escala.notas.map { $0.nombre(en: notacion) }.joined(separator: " ")
             cuerpo.append(
                 "<g><title>\(EscrituraXML.escapar(escala.nombre(en: notacion) + ": " + notas))</title>"
-                    + "<rect x=\"\(numero(caja.x))\" y=\"\(numero(caja.y))\" width=\"\(numero(anchoDeCaja))\" "
-                    + "height=\"\(numero(altoDeCaja))\" rx=\"4\" fill=\"\(relleno)\" stroke=\"\(borde)\"/>"
-                    + texto(escala.tipo.nombre(en: notacion), x: caja.x + 8, y: caja.y + 15, tamano: 11) + "</g>")
+                    + "<rect x=\"\(Hoja.numero(caja.x))\" y=\"\(Hoja.numero(caja.y))\" width=\"\(Hoja.numero(anchoDeCaja))\" "
+                    + "height=\"\(Hoja.numero(altoDeCaja))\" rx=\"4\" fill=\"\(relleno)\" stroke=\"\(borde)\"/>"
+                    + Hoja.texto(escala.tipo.nombre(en: notacion), x: caja.x + 8, y: caja.y + 15, tamano: 11) + "</g>")
         }
-        return hojaSVG(ancho: ancho, alto: alto, cuerpo)
+        return Hoja.hojaSVG(ancho: ancho, alto: alto, cuerpo)
     }
 }

@@ -58,11 +58,11 @@ import Testing
 
     /// La hoja de estudio en HTML lleva el origen con las estadísticas, y no sin ellas.
     @Test func enLaHojaDeEstudio() {
-        let hoja = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(de: Escala(.la, .menorHungara), en: notacion)
+        let hoja = HojaDeEstudio.escala(Escala(.la, .menorHungara), en: notacion, formato: .html)
         #expect(hoja.contains("<section class=\"seccion-origen\"><h2>Origen</h2>"))
         #expect(hoja.contains("<dt>Época</dt><dd>Romanticismo (1859)</dd>"))
-        let sinEstadisticas = PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
-            de: Escala(.la, .menorHungara), en: notacion, secciones: [.reloj])
+        let sinEstadisticas = HojaDeEstudio.escala(
+            Escala(.la, .menorHungara), secciones: [.reloj], en: notacion, formato: .html)
         #expect(!sinEstadisticas.contains("seccion-origen"))
     }
 

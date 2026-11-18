@@ -249,8 +249,8 @@ struct SeccionDeLaComparacion: View {
                 }
                 .buttonStyle(.borderless)
                 // Nota a nota: los dos pentagramas, la tabla grado a grado y el reloj con las dos encima.
-                let hoja = PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: otra, en: notacion)
-                let tamano = PresentacionDeEstudioDeEscala.tamano(deUnSVG: hoja) ?? (ancho: 595, alto: 842)
+                let hoja = HojaDeEstudio.comparacion(escala, con: otra, en: notacion)
+                let tamano = HojaDeEstudio.tamano(deUnSVG: hoja) ?? (ancho: 595, alto: 842)
                 VistaSVG(svg: hoja)
                     .aspectRatio(CGSize(width: tamano.ancho, height: tamano.alto), contentMode: .fit)
                     .accessibilityLabel(Text(escala.nombre(en: notacion) + " → " + otra.nombre(en: notacion)))

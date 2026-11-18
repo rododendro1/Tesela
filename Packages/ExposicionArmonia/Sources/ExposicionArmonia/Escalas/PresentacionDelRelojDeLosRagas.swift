@@ -29,7 +29,7 @@ public enum PresentacionDelRelojDeLosRagas {
         let ancho = 560.0
         let centro = (x: ancho / 2, y: ancho / 2 + 20)
         let radio = 220.0
-        let html = PresentacionDeEstudioDeEscala.html
+        let html = Hoja.html
         // El ángulo de una hora, en radianes, con la medianoche arriba y en el sentido de las agujas del reloj.
         func punto(hora: Double, radio r: Double) -> (x: Double, y: Double) {
             let angulo = hora / 24 * 2 * Double.pi

@@ -106,37 +106,4 @@ extension PresentacionDeAnalisis {
                 sonido: Escucha.acordes(llevados).conTonica(destino.tonica))
         }
     }
-
-    /// La hoja para practicar la progresión en las doce tonalidades (SVG del ancho de un A4): en cada una, su nombre,
-    /// los cifrados y el pentagrama con una disposición de cada acorde (la `disposicion`, o cerrada si no se puede).
-    public static func hojaEnLasDoceTonalidades(
-        _ acordes: [Acorde], tonalidad: Tonalidad, disposicion: DisposicionDeAcorde = .drop2, en notacion: Notacion
-    ) -> String {
-        typealias Hoja = PresentacionDeEstudioDeEscala
-        let ancho = Hoja.anchoDeLaHoja
-        let margen = Hoja.margenDeLaHoja
-        let util = ancho - 2 * margen
-        var cuerpo: [String] = []
-        var y = margen + 22
-        let original = acordes.map { $0.cifrado(en: notacion) }.joined(separator: " – ")
-        cuerpo.append(Hoja.texto(original, x: margen, y: y, tamano: 20, negrita: true))
-        y += 20
-        cuerpo.append(Hoja.texto(notacion.texto(\.enLasDoceTonalidades), x: margen, y: y, tamano: 13, color: "#555555"))
-        y += 16
-        for progresion in enLasDoceTonalidades(acordes, tonalidad: tonalidad, en: notacion) {
-            y += 18
-            cuerpo.append(Hoja.texto(progresion.titulo, x: margen, y: y, tamano: 13, negrita: true))
-            cuerpo.append(Hoja.texto(progresion.cifrados, x: margen + 130, y: y, tamano: 13))
-            y += 4
-            let dispuesta =
-                PresentacionDeDisposiciones.progresion(progresion.acordes, disposicion, en: notacion)
-                ?? PresentacionDeDisposiciones.progresion(progresion.acordes, .cerrada, en: notacion)
-            if let dispuesta {
-                y += Hoja.incrustar(dispuesta.pentagrama.svg, x: margen, y: y, ancho: util, en: &cuerpo)
-            }
-            y += 6
-        }
-        let alto = (y + margen).rounded(.up)
-        return Hoja.hojaSVG(ancho: ancho, alto: alto, cuerpo)
-    }
 }

@@ -23,8 +23,7 @@ extension LineaDeComandos {
                 argumentos, entre: [.acorde, .acordes, .tonalidad, .ritmo, .progresion, .serie, .arpegio],
                 sinNada: ["escala", "scale"]))
         // Con --formato html, cualquiera de ellas como página HTML.
-        let html = try argumentos.pideElFormato("html")
-        let formato: HojaDeEstudio.Formato = html ? .html : .svg
+        let formato: HojaDeEstudio.Formato = try argumentos.pideElFormato("html") ? .html : .svg
         if let hoja = try otraHoja(&argumentos, formato: formato, notacion) { return bien(hoja) }
         if let cifrado = try argumentos.valor(.acorde, siFalta: .faltaElAcordeDeLaHoja) {
             // Con --instrumento, las digitaciones en ese mástil (en la guitarra, si no).
@@ -32,10 +31,7 @@ extension LineaDeComandos {
             try argumentos.sinOpcionesDesconocidas()
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaElAcordeDeLaHoja }
             let acorde = try Acorde(leyendo: cifrado, enLaOrden: notacion)
-            return bien(
-                html
-                    ? PresentacionDeRelacionesDeAcorde.hojaDeEstudioHTML(de: acorde, mastil: mastil, en: notacion)
-                    : PresentacionDeRelacionesDeAcorde.hojaDeEstudio(de: acorde, mastil: mastil, en: notacion))
+            return bien(HojaDeEstudio.acorde(acorde, mastil: mastil, en: notacion, formato: formato))
         }
         // Los acordes antes que la tonalidad: en `hoja acordes … --en Do mayor`, es la de los acordes.
         if argumentos.quitarMarca(.acordes) {
@@ -52,38 +48,25 @@ extension LineaDeComandos {
             // Con --comparar, las dos progresiones comparadas acorde a acorde.
             if let contra {
                 let otra = try contra.split(separator: " ").map { try Acorde(leyendo: String($0), enLaOrden: notacion) }
-                let hoja =
-                    html
-                    ? PresentacionDeAnalisis.hojaDeLaComparacionHTML(
-                        analisis.acordes, con: otra, en: tonalidad, notacion: notacion)
-                    : PresentacionDeAnalisis.hojaDeLaComparacion(
-                        analisis.acordes, con: otra, en: tonalidad, notacion: notacion)
-                if let hoja {
+                if let hoja = HojaDeEstudio.comparacion(
+                    analisis.acordes, con: otra, en: tonalidad, notacion: notacion, formato: formato)
+                {
                     return bien(hoja)
                 }
             }
             // Con --doce, la progresión en las doce tonalidades, desde la dada o la del análisis.
             if doce, let propia = tonalidad ?? analisis.tonalidad ?? analisis.acordes.first?.tonalidadPropia {
                 return bien(
-                    html
-                        ? PresentacionDeAnalisis.hojaEnLasDoceTonalidadesHTML(
-                            analisis.acordes, tonalidad: propia, en: notacion)
-                        : PresentacionDeAnalisis.hojaEnLasDoceTonalidades(
-                            analisis.acordes, tonalidad: propia, en: notacion))
+                    HojaDeEstudio.enLasDoceTonalidades(
+                        analisis.acordes, tonalidad: propia, en: notacion, formato: formato))
             }
-            return bien(
-                html
-                    ? PresentacionDeAnalisis.hojaDeEstudioHTML(analisis, en: notacion)
-                    : PresentacionDeAnalisis.hojaDeEstudio(analisis, en: notacion))
+            return bien(HojaDeEstudio.analisis(analisis, en: notacion, formato: formato))
         }
         if let texto = try argumentos.valorConPalabras(.tonalidad, siFalta: .faltaTonalidad) {
             try argumentos.sinOpcionesDesconocidas()
             guard argumentos.restantes.isEmpty else { throw ErrorDeUso.faltaTonalidad }
             let tonalidad = try LineaDeComandos.tonalidad(texto, en: notacion)
-            return bien(
-                html
-                    ? PresentacionDeTonalidad.hojaDeEstudioHTML(de: tonalidad, en: notacion)
-                    : PresentacionDeTonalidad.hojaDeEstudio(de: tonalidad, en: notacion))
+            return bien(HojaDeEstudio.tonalidad(tonalidad, en: notacion, formato: formato))
         }
         // `hoja Do mayor --comparar Do dórico`: las dos escalas nota a nota, en el pentagrama y en el reloj.
         let otra = try argumentos.valorConPalabras(.comparar)
@@ -95,17 +78,9 @@ extension LineaDeComandos {
         let escala = try Escala(leyendo: argumentos.unidos, enLaOrden: notacion)
         if let otra {
             let otra = try Escala(leyendo: otra, enLaOrden: notacion)
-            return bien(
-                html
-                    ? PresentacionDeEstudioDeEscala.comparacionNotaANotaHTML(escala, con: otra, en: notacion)
-                    : PresentacionDeEstudioDeEscala.comparacionNotaANota(escala, con: otra, en: notacion))
+            return bien(HojaDeEstudio.comparacion(escala, con: otra, en: notacion, formato: formato))
         }
-        return bien(
-            html
-                ? PresentacionDeEstudioDeEscala.hojaDeEstudioHTML(
-                    de: escala, en: notacion, secciones: secciones, mastil: mastil)
-                : PresentacionDeEstudioDeEscala.hojaDeEstudio(
-                    de: escala, en: notacion, secciones: secciones, mastil: mastil))
+        return bien(HojaDeEstudio.escala(escala, secciones: secciones, mastil: mastil, en: notacion, formato: formato))
     }
 
     /// Las hojas de `HojaDeEstudio`: `hoja ritmo tresillo`, `hoja progresion folía [--en La]`, `hoja serie 0 1 2 …` y
