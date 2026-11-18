@@ -111,18 +111,11 @@ public enum PresentacionDeCoral {
         en notacion: Notacion
     ) throws(ErrorDeLecturaDePartitura) -> CoralPresentado {
         let dada = tonalidad.trimmingCharacters(in: .whitespaces)
-        let leida: Tonalidad?
-        do { leida = dada.isEmpty ? nil : try Tonalidad(leyendo: dada) } catch {
-            throw ErrorDeLecturaDePartitura(error)
-        }
+        let leida = dada.isEmpty ? nil : try enPartituras(deTeoria: Tonalidad(leyendo: dada))
         switch tarea {
         case .armonizar: return try armonizar(texto, en: leida, propuestas: propuestas, notacion: notacion)
-        case .realizar:
-            do { return try realizar(texto, en: leida, notacion: notacion) } catch {
-                throw ErrorDeLecturaDePartitura(error)
-            }
-        case .revisar:
-            do { return try revisar(texto, en: notacion) } catch { throw ErrorDeLecturaDePartitura(error) }
+        case .realizar: return try enPartituras(deTeoria: realizar(texto, en: leida, notacion: notacion))
+        case .revisar: return try enPartituras(deTeoria: revisar(texto, en: notacion))
         }
     }
 
@@ -154,9 +147,7 @@ public enum PresentacionDeCoral {
         if conOctavas {
             notas = alturas.map(\.nota)
         } else {
-            do { notas = try partes.map { parte throws(ErrorDeLectura) in try Nota(leyendo: parte) } } catch {
-                throw ErrorDeLecturaDePartitura(error)
-            }
+            notas = try enPartituras(partes.map { parte throws(ErrorDeLectura) in try Nota(leyendo: parte) })
         }
         guard let tonalidad = tonalidad ?? Tonalidad.candidatos(notas: notas).first?.valor else {
             throw ErrorDeLecturaDePartitura(texto: texto, posicion: nil, motivo: .elementos(.textoVacio))

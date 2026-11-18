@@ -202,31 +202,39 @@ import Testing
             ])
     }
 
+    /// Un motivo de cada caso de Elementos.
+    private static let motivosDeElementos: [ErrorDeLectura.Motivo] = [
+        .textoVacio, .notaNoReconocida, .caracteresSobrantes("x"), .octavaNoValida(""), .octavaNoValida("x"),
+        .numeroDeIntervaloNoValido(""), .numeroDeIntervaloNoValido("x"), .calidadNoValida(""),
+        .calidadNoValida("X"), .intervaloInexistente(numero: 1, calidad: .disminuida(1)),
+        .intervaloInexistente(numero: 3, calidad: .justa), .alteracionNoReconocida("?"),
+        .claseDeAlturaNoValida("x"), .numeroDeForteDesconocido("3-13"), .faltaElCierre("]"),
+        .serieNoDodecafonica(faltan: [2], repetidas: [1]), .serieNoDodecafonica(faltan: [], repetidas: []),
+        .idiomaNoReconocido("x", opciones: ["es", "en"]),
+    ]
+
+    /// Un motivo de cada caso de Teoría que es de la propia capa (sin `.elementos`).
+    private static let motivosDeTeoria: [ErrorDeLecturaDeTeoria.Motivo] = [
+        .simboloNoReconocido("x"), .tensionNoValida("b3"), .numeroDeAcordeNoValido(8), .numeroRepetido(9),
+        .calidadesIncompatibles(.disminuidoYSemidisminuido), .calidadesIncompatibles(.quintaConCalidad),
+        .gradoNoOmitible(1), .gradoNoOmitible(2), .acordeNoInterpretable(.faltaLaFundamental),
+        .acordeNoInterpretable(.intervaloSinPapel(.unisonoAumentado)), .acordeNoInterpretable(.terceraMayorYMenor),
+        .acordeNoInterpretable(.variasSeptimas), .acordeNoInterpretable(.septimaDisminuidaFueraDelDisminuido),
+        .acordeNoInterpretable(.noEsPorTerceras), .bajoNoValido("x"), .idiomasMezclados("B"),
+        .tipoDeEscalaNoReconocido(""), .tipoDeEscalaNoReconocido("x"), .modoNoReconocido("dórico"),
+        .vocesDistintas, .vocesDeDistintaLongitud, .nombreNoReconocido("x", opciones: ["up", "down"]),
+        .numeroFueraDeRango("x", desde: 1, hasta: 22),
+        .trasteNoValido("x", ultimo: 12), .cuerdasDistintas(esperadas: 6, leidas: 5),
+        .cifradoRomanoNoValido("x"), .destinoNoTonicalizable("vii°"), .cifrasNoValidas("x"),
+        .cifrasSinAcorde("x"),
+    ]
+
     /// Un error de cada motivo, de las tres capas.
     private static let errores: [any ErrorAlLeer] =
-        [ErrorDeLectura.Motivo]([
-            .textoVacio, .notaNoReconocida, .caracteresSobrantes("x"), .octavaNoValida(""), .octavaNoValida("x"),
-            .numeroDeIntervaloNoValido(""), .numeroDeIntervaloNoValido("x"), .calidadNoValida(""),
-            .calidadNoValida("X"), .intervaloInexistente(numero: 1, calidad: .disminuida(1)),
-            .intervaloInexistente(numero: 3, calidad: .justa), .alteracionNoReconocida("?"),
-            .claseDeAlturaNoValida("x"), .numeroDeForteDesconocido("3-13"), .faltaElCierre("]"),
-            .serieNoDodecafonica(faltan: [2], repetidas: [1]), .serieNoDodecafonica(faltan: [], repetidas: []),
-            .idiomaNoReconocido("x", opciones: ["es", "en"]),
-        ]).map { ErrorDeLectura(texto: "x", posicion: 0, motivo: $0) }
-        + [ErrorDeLecturaDeTeoria.Motivo]([
-            .simboloNoReconocido("x"), .tensionNoValida("b3"), .numeroDeAcordeNoValido(8), .numeroRepetido(9),
-            .calidadesIncompatibles(.disminuidoYSemidisminuido), .calidadesIncompatibles(.quintaConCalidad),
-            .gradoNoOmitible(1), .gradoNoOmitible(2), .acordeNoInterpretable(.faltaLaFundamental),
-            .acordeNoInterpretable(.intervaloSinPapel(.unisonoAumentado)), .acordeNoInterpretable(.terceraMayorYMenor),
-            .acordeNoInterpretable(.variasSeptimas), .acordeNoInterpretable(.septimaDisminuidaFueraDelDisminuido),
-            .acordeNoInterpretable(.noEsPorTerceras), .bajoNoValido("x"), .idiomasMezclados("B"),
-            .tipoDeEscalaNoReconocido(""), .tipoDeEscalaNoReconocido("x"), .modoNoReconocido("dórico"),
-            .vocesDistintas, .vocesDeDistintaLongitud, .nombreNoReconocido("x", opciones: ["up", "down"]),
-            .numeroFueraDeRango("x", desde: 1, hasta: 22),
-            .trasteNoValido("x", ultimo: 12), .cuerdasDistintas(esperadas: 6, leidas: 5),
-            .cifradoRomanoNoValido("x"), .destinoNoTonicalizable("vii°"), .cifrasNoValidas("x"),
-            .cifrasSinAcorde("x"), .elementos(.notaNoReconocida),
-        ]).map { ErrorDeLecturaDeTeoria(texto: "x", posicion: 0, motivo: $0) }
+        motivosDeElementos.map { ErrorDeLectura(texto: "x", posicion: 0, motivo: $0) }
+        + (motivosDeTeoria + [.elementos(.notaNoReconocida)]).map {
+            ErrorDeLecturaDeTeoria(texto: "x", posicion: 0, motivo: $0)
+        }
         + [ErrorDeLecturaDePartitura.Motivo]([
             .duracionNoValida("x"), .compasNoValido("x"), .contrapuntoDeOtraDuracion(redondas: 8),
             .elementos(.notaNoReconocida), .teoria(.tensionNoValida("b3")),
@@ -250,6 +258,32 @@ import Testing
         #expect(throws: ErrorDeLecturaDePartitura(nota)) { try enPartituras(Altura(leyendo: "Hm7")) }
         #expect(throws: ErrorDeLecturaDeTeoria(nota)) { try enTeoria(Nota(leyendo: "Hm7")) }
         #expect(try enTeoria(Nota(leyendo: "Do")) == .do)
+        #expect(throws: enPartitura) { try enPartituras(deTeoria: Acorde(leyendo: "Do7(b3)")) }
+        #expect(try enPartituras(deTeoria: Acorde(leyendo: "Do")).cifrado == "Do")
+    }
+
+    /// Cada motivo de una capa, dentro del de la capa de encima, se explica igual en los trece idiomas, y su
+    /// `motivoOriginal` es él.
+    @Test func cadaMotivoDeDebajoSeExplicaIgualEnCadaIdioma() {
+        func igual<Dentro: MotivoDeLectura>(_ fuera: some MotivoDeLectura, _ dentro: Dentro) {
+            #expect(fuera.motivoOriginal as? Dentro == dentro, "\(fuera)")
+            for idioma in Idioma.allCases {
+                for notacion in [Notacion.compacta(idioma), .conPalabras(idioma), .ascii(idioma)] {
+                    #expect(fuera.explicacion(en: notacion) == dentro.explicacion(en: notacion), "\(fuera)")
+                }
+            }
+        }
+        for motivo in Self.motivosDeElementos {
+            #expect(motivo.motivoDeDebajo == nil)
+            igual(ErrorDeLecturaDeTeoria.Motivo.elementos(motivo), motivo)
+            igual(ErrorDeLecturaDePartitura.Motivo.elementos(motivo), motivo)
+            igual(ErrorDeLecturaDePartitura.Motivo.teoria(.elementos(motivo)), motivo)
+        }
+        for motivo in Self.motivosDeTeoria {
+            #expect(motivo.motivoDeDebajo == nil && motivo.motivoOriginal as? ErrorDeLecturaDeTeoria.Motivo == motivo)
+            igual(ErrorDeLecturaDePartitura.Motivo.teoria(motivo), motivo)
+        }
+        #expect(ErrorDeLecturaDePartitura.Motivo.duracionNoValida("x").motivoDeDebajo == nil)
     }
 
     /// Todos los motivos tienen explicación en inglés, y la inglesa no lleva texto en español.

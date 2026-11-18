@@ -43,6 +43,10 @@
 
 ### Novedades
 
+- `enTeoria(_:)`, `enPartituras(_:)` y `enPartituras(deTeoria:)` son públicos: leen con la lectura de una capa de
+  debajo y lanzan su error como el de la capa de encima, sin un `do`/`catch` en cada lectura.
+- `MotivoDeLectura.motivoDeDebajo` da el motivo de la capa de debajo que lleva un motivo (el de `.elementos(…)` o
+  `.teoria(…)`), y `motivoOriginal`, el de dentro del todo. La consola lo usa para el `tipo` de los errores en JSON.
 - `Encordado.buscar(nombre:)`, como en los catálogos con nombre: lo que se busca por su nombre tiene
   `buscar(nombre:)`, que da un opcional, y si además se lee como texto, `init(leyendo:)`.
 - La documentación de `Notacion` explica que la notación va tras `en:` salvo cuando `en:` es el contexto (una
