@@ -25,6 +25,15 @@ import Testing
     }
 
     /// Las cuerdas reales, los trastes y el origen de algunos.
+    /// Los otros nombres con los que se busca, que encuentran el instrumento.
+    @Test func otrosNombres() {
+        #expect(Encordado.ukelele.otrosNombres == ["ukelele soprano", "ukulele", "ukulele soprano"])
+        #expect(Encordado.guitarraDeSieteCuerdas.otrosNombres.contains("seven string guitar"))
+        for encordado in Encordado.todos {
+            #expect(encordado.otrosNombres.allSatisfy { Encordado.buscar(nombre: $0) == encordado }, "\(encordado)")
+        }
+    }
+
     @Test func fichas() {
         #expect(Encordado.guitarra.cuerdasReales == 6 && Encordado.guitarra.trastes == .cromaticos)
         #expect(Encordado.mandolina.cuerdasReales == 8)

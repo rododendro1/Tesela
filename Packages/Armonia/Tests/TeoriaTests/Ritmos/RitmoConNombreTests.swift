@@ -83,6 +83,29 @@ import Testing
         #expect(ProgresionConNombre.folia.epocas.first == .renacimiento)
     }
 
+    /// Los acordes y las progresiones, como los ritmos: sus lugares, o los países de sus estilos.
+    @Test func lugaresDeLosAcordesYLasProgresiones() {
+        #expect(ProgresionConNombre.andaluza.lugaresDeOrigen == [.region(.andalucia)])
+        #expect(ProgresionConNombre.andaluza.paisesDeOrigen == [.espana])
+        #expect(ProgresionConNombre.folia.paisesDeOrigen == [.espana, .portugal])
+        #expect(ProgresionConNombre.passamezzoAntico.paisesDeOrigen == [.italia])
+        #expect(ProgresionConNombre.blues.paisesDeOrigen == [.estadosUnidos])
+        #expect(ProgresionConNombre.blues.continentesDeOrigen == [.america])
+        #expect(ProgresionConNombre.cadenciaPerfecta.lugaresDeOrigen.isEmpty)
+        #expect(AcordeConNombre.mayor.lugaresDeOrigen.isEmpty)
+        #expect(
+            AcordeConNombre.catalogo.contains {
+                $0.paisesDeOrigen == [.estadosUnidos] && $0.continentesDeOrigen == [.america]
+            })
+        // Los ornamentos, de la música clásica: sus épocas de uso van después de la de origen.
+        #expect(OrnamentoConNombre.trino.epocas == [.barroco, .clasicismo, .romanticismo])
+        for ornamento in OrnamentoConNombre.catalogo {
+            if let origen = ornamento.epocaDeOrigen {
+                #expect(ornamento.epocasDeUso.allSatisfy { $0 > origen }, "\(ornamento)")
+            }
+        }
+    }
+
     /// Sin lugares, los de origen salen de la tradición (su lugar histórico, sus zonas, sus países o sus
     /// continentes) o, sin tradición, de los países de sus estilos.
     @Test func lugaresDeLaTradicionYDeLosEstilos() {

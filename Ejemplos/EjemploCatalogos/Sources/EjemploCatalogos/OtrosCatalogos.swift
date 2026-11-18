@@ -30,6 +30,10 @@ func filaDeRitmo(_ ritmo: RitmoConNombre) -> [String] {
     return nombres(de: ritmo) + otros + resto + alFinal
 }
 
+/// Las columnas de los lugares de origen sin la tradición, en los catálogos que son todos de la occidental (los
+/// acordes y las progresiones), con `lugares(_:_:_:_:)` sin su primera.
+let columnasDeLugaresSinTradicion = ["lugares_de_origen", "paises_de_origen", "continentes_de_origen"]
+
 /// La tradición, los lugares, los países (por su código ISO) y los continentes de origen, como en las escalas.
 func lugares(
     _ tradicion: Tradicion?, _ lugares: [Lugar], _ paises: [Pais], _ continentes: [Continente]
@@ -131,7 +135,7 @@ let funciones = Catalogo(
 
 let columnasDeOrnamentos: [String] =
     columnasDeNombres + columnasDeAliasYVariantes + ["pasos", "sobre_mi4_en_do_mayor"] + columnasDeLaFecha
-    + ["estilos", "referencias"]
+    + ["epocas_de_uso", "estilos", "referencias"]
 
 /// Un ornamento: sus pasos por grados desde la nota principal y cómo suena sobre Mi4 en Do mayor.
 func filaDeOrnamento(_ ornamento: OrnamentoConNombre) -> [String] {
@@ -141,7 +145,10 @@ func filaDeOrnamento(_ ornamento: OrnamentoConNombre) -> [String] {
         ornamento.pasos.map(String.init).joined(separator: " "), alturas.map(\.description).joined(separator: " "),
     ]
     let alFinal: [String] =
-        fecha(de: ornamento) + [ornamento.estilos.map(\.nombre).joined(separator: " · "), citas(ornamento.referencias)]
+        fecha(de: ornamento) + [
+            ornamento.epocasDeUso.map(\.nombre).joined(separator: " · "),
+            ornamento.estilos.map(\.nombre).joined(separator: " · "), citas(ornamento.referencias),
+        ]
     return nombres(de: ornamento) + otros + resto + alFinal
 }
 
@@ -226,15 +233,24 @@ let referencias = Catalogo(
 let encordados = Catalogo(
     fichero: "encordados.tsv",
     columnas: columnasDeNombres + [
-        "cuerdas", "ordenes", "cuerdas_por_orden", "afinacion", "capo", "reentrante", "trastes", "tradicion",
+        "otros_nombres", "cuerdas", "ordenes", "cuerdas_por_orden", "afinacion", "ambito_al_aire", "capo",
+        "reentrante", "trastes", "tradicion",
         "lugares_de_origen", "paises_de_origen", "continentes_de_origen", "anio_de_origen", "epoca_de_origen",
         "estilos", "referencias",
     ],
     filas: Encordado.todos.map { encordado in
         let nombres = Idioma.allCases.map { encordado.nombre(en: .delIdioma($0)) }
+        // De la cuerda al aire más grave a la más aguda, que no son la primera y la última si es reentrante.
+        var ambito = ""
+        if let grave = encordado.afinacion.min(by: { $0.midi < $1.midi }),
+            let aguda = encordado.afinacion.max(by: { $0.midi < $1.midi })
+        {
+            ambito = "\(grave)–\(aguda)"
+        }
         let ficha: [String] = [
+            encordado.otrosNombres.joined(separator: " · "),
             String(encordado.cuerdasReales), String(encordado.numeroDeCuerdas), lista(encordado.cuerdasPorOrden),
-            encordado.afinacion.map(\.description).joined(separator: " "), String(encordado.capo),
+            encordado.afinacion.map(\.description).joined(separator: " "), ambito, String(encordado.capo),
             siONo(encordado.esReentrante), encordado.trastes.rawValue,
         ]
         let deDonde: [String] = lugares(
@@ -247,43 +263,63 @@ let encordados = Catalogo(
     },
     obras: Encordado.todos.flatMap(\.referencias))
 
+/// El nombre en español y en los demás idiomas, en el orden de `columnasDeNombres`, de lo que se nombra sin ser un
+/// elemento del catálogo (un teclado, un instrumento).
+func nombres(_ nombre: String, _ enIdioma: (Notacion) -> String) -> [String] {
+    [nombre] + traducciones.map { enIdioma(.delIdioma($0)) }
+}
+
 let tecladosIsomorficos = Catalogo(
     fichero: "teclados-isomorficos.tsv",
-    columnas: ["nombre", "nombre_en_ingles", "orientacion", "semitonos_en_q", "semitonos_en_r", "midi_del_origen"],
+    columnas: columnasDeNombres + [
+        "orientacion", "semitonos_en_q", "semitonos_en_r", "semitonos_en_las_seis_direcciones", "midi_del_origen",
+        "formato_uil",
+    ],
     filas: TecladoIsomorfico.todos.map { teclado in
-        [
-            teclado.nombre, teclado.nombre(en: .delIdioma(.ingles)), "\(teclado.orientacion)",
-            String(teclado.semitonosEnQ), String(teclado.semitonosEnR), String(teclado.midiDelOrigen),
+        nombres(teclado.nombre, teclado.nombre(en:)) + [
+            "\(teclado.orientacion)", String(teclado.semitonosEnQ), String(teclado.semitonosEnR),
+            lista(teclado.semitonosEnLasSeisDirecciones), String(teclado.midiDelOrigen),
+            teclado.uil?.description ?? "",
         ]
     })
 
 let tecladosCuadrados = Catalogo(
     fichero: "teclados-cuadrados.tsv",
-    columnas: ["nombre", "semitonos_en_h", "semitonos_en_v", "midi_del_origen", "grados", "cromatico", "completo"],
+    columnas: columnasDeNombres + [
+        "semitonos_en_h", "semitonos_en_v", "semitonos_en_la_diagonal", "semitonos_en_la_antidiagonal",
+        "midi_del_origen", "grados", "cromatico", "completo",
+    ],
     filas: TecladoCuadrado.todos.map { teclado in
-        [
-            teclado.nombre, String(teclado.semitonosEnH), String(teclado.semitonosEnV), String(teclado.midiDelOrigen),
-            lista(teclado.grados), siONo(teclado.esCromatico), siONo(teclado.esCompleto),
+        nombres(teclado.nombre, teclado.nombre(en:)) + [
+            String(teclado.semitonosEnH), String(teclado.semitonosEnV), String(teclado.semitonosEnDiagonal),
+            String(teclado.semitonosEnAntidiagonal), String(teclado.midiDelOrigen), lista(teclado.grados),
+            siONo(teclado.esCromatico), siONo(teclado.esCompleto),
         ]
     })
 
 let modosGregorianos = Catalogo(
     fichero: "modos-gregorianos.tsv",
-    columnas: ["numero", "nombre", "nombre_griego", "autentico", "finalis", "tenor", "ambito", "escala"],
+    columnas: [
+        "numero", "nombre", "nombre_griego", "maneria", "autentico", "pareja", "finalis", "tenor", "ambito", "escala",
+        "tipo_de_escala",
+    ],
     filas: ModoGregoriano.todos.map { modo in
-        [
-            String(modo.numero), modo.nombre, modo.nombreGriego, siONo(modo.esAutentico), modo.finalis.description,
-            modo.tenor.description, "\(modo.grave)–\(modo.agudo)",
-            modo.escala.notas.map(\.description).joined(separator: " "),
+        // El auténtico y su plagal van seguidos: el 1 con el 2, el 3 con el 4…
+        let pareja = ModoGregoriano.todos.first { $0.numero == (modo.esAutentico ? modo.numero + 1 : modo.numero - 1) }
+        return [
+            String(modo.numero), modo.nombre, modo.nombreGriego, "\(modo.maneria)", siONo(modo.esAutentico),
+            pareja?.nombre ?? "", modo.finalis.description, modo.tenor.description, "\(modo.grave)–\(modo.agudo)",
+            modo.escala.notas.map(\.description).joined(separator: " "), modo.tipoDeEscala.nombre,
         ]
     })
 
 let instrumentos = Catalogo(
     fichero: "instrumentos.tsv",
-    columnas: ["nombre", "transposicion", "clave", "transpositor"],
+    columnas: columnasDeNombres + ["transposicion", "clave", "primera_linea", "transpositor", "suena_el_do4_como"],
     filas: InstrumentoDePartitura.todos.map { instrumento in
-        [
-            instrumento.nombre, instrumento.transposicion.description, "\(instrumento.clave)",
-            siONo(instrumento.esTranspositor),
+        nombres(instrumento.nombre, instrumento.nombre(en:)) + [
+            instrumento.transposicion.description, "\(instrumento.clave)",
+            instrumento.clave.alturaDeLaPrimeraLinea.description, siONo(instrumento.esTranspositor),
+            instrumento.sonido(de: Altura(.do, octava: 4)).description,
         ]
     })

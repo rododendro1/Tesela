@@ -46,6 +46,17 @@
 
 ### Novedades
 
+- `AcordeConNombre` y `ProgresionConNombre` tienen `lugaresDeOrigen`, `paisesDeOrigen` y `continentesDeOrigen`,
+  como los ritmos: Andalucía en la cadencia andaluza, Portugal y España en la folía, Italia en el passamezzo y la
+  bergamasca, o los países de sus estilos (Estados Unidos en el jazz y el blues). `OrnamentoConNombre` tiene
+  `epocasDeUso` y `epocas`.
+- `TecladoIsomorfico.semitonosEnLasSeisDirecciones` y `Encordado.otrosNombres`, los nombres que acepta
+  `buscar(nombre:)` además del suyo.
+- Los TSV de EjemploCatalogos tienen columnas nuevas: los nombres en los trece idiomas de los instrumentos y de los
+  teclados isomórficos y cuadrados; la primera línea de la clave y cómo suena el Do4 escrito en los instrumentos; las
+  seis direcciones y el formato UIL en los teclados isomórficos; las diagonales en los cuadrados; la maneria, la
+  pareja y el tipo de escala en los modos gregorianos; los otros nombres y el ámbito al aire en los encordados; los
+  lugares de origen y las épocas de uso en los acordes y las progresiones, y las épocas de uso en los ornamentos.
 - `ErrorDeLecturaDePartitura.Motivo.melodiaSinNotas`, en los trece idiomas: una melodía o una voz que solo tiene
   silencios.
 - `enTeoria(_:)`, `enPartituras(_:)` y `enPartituras(deTeoria:)` son públicos: leen con la lectura de una capa de

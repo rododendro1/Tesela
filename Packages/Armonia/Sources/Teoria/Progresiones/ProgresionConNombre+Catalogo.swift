@@ -116,7 +116,8 @@ extension ProgresionConNombre {
     /// La folía: i–V–i–VII–III–VII–i–V, en menor.
     public static let folia = ProgresionConNombre(
         nombre: "folía", cifrado: "i V i VII III VII i V", modo: .menor, alias: ["follia", "folia de España"],
-        estilos: [.clasica], referencias: [.hudson1982], documentada: .ortiz1553)
+        estilos: [.clasica], referencias: [.hudson1982], documentada: .ortiz1553,
+        lugares: [.pais(.portugal), .pais(.espana)])
     /// El bajo que baja por grados de la tónica a la dominante: i–v6–iv6–V.
     public static let bajoDeLamento = ProgresionConNombre(
         nombre: "bajo de lamento", cifrado: "i v6 iv6 V", modo: .menor, alias: ["tetracordo descendente"],
@@ -128,17 +129,17 @@ extension ProgresionConNombre {
     /// El bajo de danza del Renacimiento en menor: i–♭VII–i–V–III–♭VII–i–V–i.
     public static let passamezzoAntico = ProgresionConNombre(
         nombre: "passamezzo antico", cifrado: "i VII i V III VII i V i", modo: .menor, estilos: [.clasica],
-        referencias: [.gerbino2001], documentada: .ortiz1553)
+        referencias: [.gerbino2001], documentada: .ortiz1553, lugares: [.pais(.italia)])
     /// El bajo de danza del Renacimiento en mayor: I–IV–I–V–I–IV–I–V–I.
     public static let passamezzoModerno = ProgresionConNombre(
         nombre: "passamezzo moderno", cifrado: "I IV I V I IV I V I", estilos: [.clasica],
-        referencias: [.gerbino2001], documentada: .ortiz1553)
+        referencias: [.gerbino2001], documentada: .ortiz1553, lugares: [.pais(.italia)])
     /// El bajo de danza 1–4–2–5, 1–4–5–1.
     public static let ruggiero = ProgresionConNombre(
         nombre: "ruggiero", cifrado: "I IV ii V I IV V I", estilos: [.clasica], referencias: [.staiti2023])
     public static let bergamasca = ProgresionConNombre(
         nombre: "bergamasca", cifrado: "I IV V I", estilos: [.clasica],
-        referencias: [.sheinberg2016.paginas("19")])
+        referencias: [.sheinberg2016.paginas("19")], lugares: [.pais(.italia)])
     /// El bajo de la chacona barroca en mayor: I–V–vi–V.
     public static let chacona = ProgresionConNombre(
         nombre: "chacona", cifrado: "I V vi V", estilos: [.clasica], referencias: [.hudsonChaconne1982])
@@ -218,7 +219,7 @@ extension ProgresionConNombre {
         referencias: [.doll2017])
     public static let andaluza = ProgresionConNombre(
         nombre: "cadencia andaluza", cifrado: "i VII VI V", modo: .menor, alias: ["tetracordo andaluz"],
-        estilos: [.flamenco, .popRock], referencias: [.manuel1989])
+        estilos: [.flamenco, .popRock], referencias: [.manuel1989], lugares: [.region(.andalucia)])
     public static let mixolidia = ProgresionConNombre(
         nombre: "I–♭VII–IV", cifrado: "I ♭VII IV", alias: ["progresión mixolidia"], estilos: [.popRock])
     public static let eolicaRock = ProgresionConNombre(

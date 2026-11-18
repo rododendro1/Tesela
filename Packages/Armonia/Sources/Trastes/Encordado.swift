@@ -355,6 +355,12 @@ extension Encordado {
         }
     }
 
+    /// Los otros nombres con los que lo encuentra `buscar(nombre:)`, además del suyo en los trece idiomas, como se
+    /// buscan (en minúscula y sin tildes): «ukulele» y «ukelele soprano» en el ukelele. Vacío si no tiene.
+    public var otrosNombres: [String] {
+        Encordado.alias.filter { $0.value == self }.map(\.key).sorted()
+    }
+
     /// Otras formas de nombrar los instrumentos de `todos` (los nombres de `todos` ya se aceptan).
     private static let alias: [String: Encordado] = [
         "guitar": .guitarra, "seven string guitar": .guitarraDeSieteCuerdas, "drop d guitar": .guitarraEnReGrave,

@@ -34,14 +34,15 @@ public struct ProgresionConNombre: Sendable {
     /// `init(nombre:leyendo:modo:alias:variantes:estilos:referencias:documentada:)`, que lanza un error si no se lee.
     package init(
         nombre: String, cifrado: String, modo: Tonalidad.Modo = .mayor, alias: [String] = [], variantes: [String] = [],
-        estilos: [Estilo] = [], referencias: [Referencia] = [], documentada: Referencia? = nil
+        estilos: [Estilo] = [], referencias: [Referencia] = [], documentada: Referencia? = nil, lugares: [Lugar] = []
     ) {
         self.nombre = nombre
         self.cifrado = cifrado
         self.modo = modo
         self.alias = alias
         self.variantes = variantes
-        self.datos = DatosDelCatalogo(estilos: estilos, referencias: referencias, documentada: documentada)
+        self.datos = DatosDelCatalogo(
+            estilos: estilos, referencias: referencias, documentada: documentada, lugares: lugares)
         assert((try? Tonalidad(.do, modo).acordes(romanos: cifrado)) != nil, "El cifrado de «\(nombre)» no se lee")
     }
 

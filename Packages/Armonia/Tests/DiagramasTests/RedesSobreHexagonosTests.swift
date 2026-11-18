@@ -14,6 +14,16 @@ import Testing
 
     // MARK: Tonnetz
 
+    /// Los semitonos de un paso en las seis direcciones: las tres de q, r y s, y sus contrarias.
+    @Test func lasSeisDirecciones() {
+        #expect(TecladoIsomorfico.tablaArmonica.semitonosEnLasSeisDirecciones == [-3, 4, 7, 3, -4, -7])
+        for teclado in TecladoIsomorfico.todos {
+            let pasos = teclado.semitonosEnLasSeisDirecciones
+            #expect(pasos.count == 6)
+            #expect((0..<3).allSatisfy { pasos[$0] == -pasos[$0 + 3] }, "\(teclado)")
+        }
+    }
+
     @Test func unPuntoEsUnaCasilla() {
         #expect(punto(2, -1).coordenada == CoordenadaAxial(q: 2, r: -1))
         #expect(PuntoDeLaRed(CoordenadaAxial(q: 0, r: 1)).nota == Nota.mi)
