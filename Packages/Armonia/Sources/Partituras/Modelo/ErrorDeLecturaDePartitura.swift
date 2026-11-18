@@ -37,6 +37,17 @@ public struct ErrorDeLecturaDePartitura: ErrorAlLeer {
     }
 }
 
+extension ErrorDeLecturaDePartitura.Motivo {
+    /// El de `.elementos` (o `.teoria`), el de la capa de debajo; `nil` en los demás.
+    public var motivoDeDebajo: (any MotivoDeLectura)? {
+        switch self {
+        case .elementos(let motivo): return motivo
+        case .teoria(let motivo): return motivo
+        default: return nil
+        }
+    }
+}
+
 // MARK: - Idiomas
 //
 // Los mensajes en los trece idiomas de los textos, que están en `TextosDePartituras`.
@@ -73,8 +84,24 @@ extension ErrorDeLecturaDePartitura {
 }
 
 /// Lee con una lectura de Elementos y, si falla, lanza su error como error de Partituras (`init(_:)`).
-package func enPartituras<Valor>(
+///
+///     func nota(_ texto: String) throws(ErrorDeLecturaDePartitura) -> Nota {
+///         try enPartituras(Nota(leyendo: texto))
+///     }
+public func enPartituras<Valor>(
     _ leer: @autoclosure () throws(ErrorDeLectura) -> Valor
+) throws(ErrorDeLecturaDePartitura) -> Valor {
+    do { return try leer() } catch { throw ErrorDeLecturaDePartitura(error) }
+}
+
+/// Lee con una lectura de Teoría (un acorde, una tonalidad) y, si falla, lanza su error como error de Partituras
+/// (`init(_:)`).
+///
+///     func acorde(_ texto: String) throws(ErrorDeLecturaDePartitura) -> Acorde {
+///         try enPartituras(deTeoria: Acorde(leyendo: texto))
+///     }
+public func enPartituras<Valor>(
+    deTeoria leer: @autoclosure () throws(ErrorDeLecturaDeTeoria) -> Valor
 ) throws(ErrorDeLecturaDePartitura) -> Valor {
     do { return try leer() } catch { throw ErrorDeLecturaDePartitura(error) }
 }

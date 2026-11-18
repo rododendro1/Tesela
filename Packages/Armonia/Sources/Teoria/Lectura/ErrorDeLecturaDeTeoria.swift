@@ -106,7 +106,11 @@ extension ErrorDeLecturaDeTeoria {
 }
 
 /// Lee con una lectura de Elementos y, si falla, lanza su error como error de Teoría (`init(_:)`).
-package func enTeoria<Valor>(
+///
+///     func intervalo(_ texto: String) throws(ErrorDeLecturaDeTeoria) -> Intervalo {
+///         try enTeoria(Intervalo(leyendo: texto))
+///     }
+public func enTeoria<Valor>(
     _ leer: @autoclosure () throws(ErrorDeLectura) -> Valor
 ) throws(ErrorDeLecturaDeTeoria) -> Valor {
     do { return try leer() } catch { throw ErrorDeLecturaDeTeoria(error) }
@@ -121,6 +125,14 @@ extension Lector {
     /// Error de Teoría en una posición concreta (`nil` si el problema no está en un punto del texto).
     package func error(_ motivo: ErrorDeLecturaDeTeoria.Motivo, posicion: Int?) -> ErrorDeLecturaDeTeoria {
         ErrorDeLecturaDeTeoria(texto: texto, posicion: posicion, motivo: motivo)
+    }
+}
+
+extension ErrorDeLecturaDeTeoria.Motivo {
+    /// El de `.elementos` (o `.teoria`), el de la capa de debajo; `nil` en los demás.
+    public var motivoDeDebajo: (any MotivoDeLectura)? {
+        if case .elementos(let motivo) = self { return motivo }
+        return nil
     }
 }
 

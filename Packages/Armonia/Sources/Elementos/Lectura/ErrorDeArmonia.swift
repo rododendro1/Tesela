@@ -28,6 +28,18 @@ extension ErrorDeArmonia {
 public protocol MotivoDeLectura: Hashable, Sendable {
     /// Por qué no se pudo leer, en el idioma de los textos de la notación: «"b3" no es una tensión válida…».
     func explicacion(en notacion: Notacion) -> String
+    /// El motivo de la capa de debajo que lleva dentro, si lo que falla es de esa capa: el de
+    /// `.elementos(.notaNoReconocida)` es `.notaNoReconocida`. `nil` si el motivo es de su propia capa.
+    var motivoDeDebajo: (any MotivoDeLectura)? { get }
+}
+
+extension MotivoDeLectura {
+    public var motivoDeDebajo: (any MotivoDeLectura)? { nil }
+
+    /// El motivo de la capa donde está lo que falla: el de dentro del todo si lleva el de otra capa, y si no, él
+    /// mismo. El de `.teoria(.elementos(.notaNoReconocida))` es `.notaNoReconocida`, como si se hubiera leído solo
+    /// la nota.
+    public var motivoOriginal: any MotivoDeLectura { motivoDeDebajo?.motivoOriginal ?? self }
 }
 
 /// Un error al leer un texto: el texto, el carácter donde se detuvo la lectura y el motivo.

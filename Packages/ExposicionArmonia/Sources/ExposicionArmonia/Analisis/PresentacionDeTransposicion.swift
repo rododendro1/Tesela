@@ -94,8 +94,7 @@ public enum PresentacionDeTransposicion {
         if palabra.allSatisfy({ "-~".contains($0) }) { return palabra }
         switch contenido {
         case .acordes:
-            let acorde: Acorde
-            do { acorde = try Acorde(leyendo: palabra) } catch { throw ErrorDeLecturaDePartitura(error) }
+            let acorde = try enPartituras(deTeoria: Acorde(leyendo: palabra))
             return escribir(acorde.transponer(intervalo), notacion)
         case .notas:
             if palabra.contains(":") {
@@ -103,8 +102,7 @@ public enum PresentacionDeTransposicion {
                 return escribir(evento.transponer(intervalo), notacion)
             }
             if let altura = try? Altura(leyendo: palabra) { return escribir(altura.transponer(intervalo), notacion) }
-            let nota: Nota
-            do { nota = try Nota(leyendo: palabra) } catch { throw ErrorDeLecturaDePartitura(error) }
+            let nota = try enPartituras(Nota(leyendo: palabra))
             return escribir(nota.transponer(intervalo), notacion)
         }
     }
