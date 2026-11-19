@@ -195,8 +195,8 @@ extension LineaDeComandos {
     }
 
     /// El texto de la fuente convertido por los programas del motor, uno tras otro, en una carpeta temporal que se
-    /// borra al terminar. Lo que deja cada uno es la entrada del siguiente. Una hoja de estudio de varias páginas
-    /// sale en PDF con una página por cada una.
+    /// borra al terminar. Lo que deja cada uno es la entrada del siguiente. Una hoja de estudio sale en PDF con una
+    /// página A4 por cada una suya.
     private static func grabado(
         _ texto: String, con motor: MotorDeGrabado, formato: FormatoDeGrabado, _ notacion: Notacion
     ) throws -> ResultadoDeOrden {
@@ -221,10 +221,11 @@ extension LineaDeComandos {
         for (paso, ruta) in zip(pasos, rutas) {
             try datos.write(to: carpeta.appendingPathComponent("grabado." + paso.entrada))
             var argumentos = paso.argumentos
-            // Una hoja de estudio de varias páginas, a un PDF de varias páginas: `rsvg-convert` pone cada SVG en una.
+            // Una hoja de estudio, a un PDF de páginas A4: `rsvg-convert` pone cada SVG en una.
             if paso.entrada == "svg" && formato == .pdf {
-                let paginas = HojaDeEstudio.paginas(deUnSVG: String(decoding: datos, as: UTF8.self))
-                if paginas.count > 1 {
+                let svg = String(decoding: datos, as: UTF8.self)
+                let paginas = HojaDeEstudio.paginas(deUnSVG: svg)
+                if paginas != [svg] {
                     let nombres = paginas.indices.map { "grabado-pagina-\($0 + 1).svg" }
                     for (nombre, pagina) in zip(nombres, paginas) {
                         try Data(pagina.utf8).write(to: carpeta.appendingPathComponent(nombre))

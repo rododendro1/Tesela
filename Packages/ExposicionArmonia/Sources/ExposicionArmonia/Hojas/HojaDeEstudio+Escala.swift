@@ -147,16 +147,17 @@ extension HojaDeEstudio {
 
     // MARK: Las páginas de una hoja
 
-    /// Las páginas A4 de una hoja en SVG, cada una como un SVG suelto: la misma hoja, recortada con su `viewBox`, para
-    /// pasarlas a un PDF de varias páginas. Un SVG de una página, o sin `data-paginas`, es su única página.
+    /// Las páginas A4 de una hoja en SVG, cada una como un SVG suelto de 595 × 842 puntos (`pt`, para que un PDF salga
+    /// del tamaño de un A4): la misma hoja, recortada con su `viewBox`. Un SVG sin `data-paginas`, que no es una hoja,
+    /// sale tal cual.
     ///
     ///     let hoja = HojaDeEstudio.escala(Escala(.re, .dorico), en: .compacta(.espanol))
     ///     HojaDeEstudio.paginas(deUnSVG: hoja).count   // 4
-    ///     HojaDeEstudio.paginas(deUnSVG: "<svg viewBox=\"0 0 10 10\"></svg>").count   // 1
+    ///     HojaDeEstudio.paginas(deUnSVG: "<svg viewBox=\"0 0 10 10\"></svg>")   // ["<svg viewBox=\"0 0 10 10\"></svg>"]
     public static func paginas(deUnSVG svg: String) -> [String] {
         guard let atributo = svg.range(of: " data-paginas=\""),
             let fin = svg[atributo.upperBound...].firstIndex(of: "\""),
-            let paginas = Int(svg[atributo.upperBound..<fin]), paginas > 1,
+            let paginas = Int(svg[atributo.upperBound..<fin]), paginas > 0,
             let caja = Hoja.cajaDeVision(svg), let raiz = svg.range(of: "<svg"),
             let cierre = svg[raiz.upperBound...].firstIndex(of: ">")
         else { return [svg] }
@@ -164,7 +165,10 @@ extension HojaDeEstudio {
         let etiqueta = String(svg[raiz.lowerBound...cierre])
             .replacingOccurrences(of: String(svg[atributo.lowerBound...fin]), with: "")
             .replacingOccurrences(
-                of: " height=\"" + Hoja.numero(caja.alto) + "\"", with: " height=\"" + Hoja.numero(alto) + "\"")
+                of: " width=\"" + Hoja.numero(caja.ancho) + "\"", with: " width=\"" + Hoja.numero(caja.ancho) + "pt\""
+            )
+            .replacingOccurrences(
+                of: " height=\"" + Hoja.numero(caja.alto) + "\"", with: " height=\"" + Hoja.numero(alto) + "pt\"")
         let resto = svg[svg.index(after: cierre)...]
         return (0..<paginas).map { i in
             let vista =

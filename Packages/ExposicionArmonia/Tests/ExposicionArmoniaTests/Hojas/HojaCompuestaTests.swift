@@ -94,7 +94,9 @@ import Testing
         #expect(paginas.count == 5)
         #expect(svg.contains("data-paginas=\"5\"") && svg.contains("height=\"4210\""))
         #expect(svg.contains(">1 / 5</text>") && svg.contains(">5 / 5</text>"))
-        #expect(paginas[1].contains("viewBox=\"0 842 595 842\"") && paginas[1].contains(" height=\"842\""))
+        #expect(
+            paginas[1].contains("viewBox=\"0 842 595 842\"") && paginas[1].contains(" width=\"595pt\" height=\"842pt\"")
+        )
         #expect(!paginas[1].contains("data-paginas") && paginas[1].hasSuffix("</svg>"))
         // La segunda sección, de menos de media página, no cabe entera debajo de la primera: empieza en la segunda
         // página. La larga sí se parte.
@@ -106,10 +108,12 @@ import Testing
         #expect(try dondeEmpieza("Segunda") == 842 + Hoja.margen)
         // La cabecera de un tramo no se queda sola al final de una página.
         #expect(try dondeEmpieza("Tramo") == dondeEmpieza("a"))
-        // Una hoja corta es una página, sin número.
+        // Una hoja corta es una página, sin número; un SVG que no es una hoja sale tal cual.
         let corta = HojaCompuesta(titulo: "Corta", secciones: []).svg(en: notacion)
         #expect(corta.contains("data-paginas=\"1\"") && !corta.contains(" / 1<"))
-        #expect(HojaDeEstudio.paginas(deUnSVG: corta) == [corta])
+        let sola = try #require(HojaDeEstudio.paginas(deUnSVG: corta).first)
+        #expect(HojaDeEstudio.paginas(deUnSVG: corta).count == 1 && sola.contains("viewBox=\"0 0 595 842\""))
+        #expect(HojaDeEstudio.paginas(deUnSVG: "<svg viewBox=\"0 0 10 10\"/>") == ["<svg viewBox=\"0 0 10 10\"/>"])
     }
 
     @Test func losNombresDeAntes() throws {
