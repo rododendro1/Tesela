@@ -6,17 +6,14 @@ import Armonia
 // listas.
 
 extension Hoja {
-    /// La cabecera de una hoja: el título y, debajo, cada subtítulo en un párrafo más suave.
-    static func encabezadoHTML(_ titulo: String, _ subtitulos: [String] = []) -> String {
-        "<header><h1>" + html(titulo) + "</h1>"
-            + subtitulos.filter { !$0.isEmpty }.map { "<p class=\"sub\">" + html($0) + "</p>" }.joined()
-            + "</header>"
-    }
-
-    /// Una sección con su título (sin escapar; sin título, si está vacío) y su contenido (ya en HTML).
-    static func seccionHTML(_ titulo: String, _ contenido: String, clase: String? = nil) -> String {
+    /// Una sección con su título (sin escapar; sin título, si está vacío), del color de su `tono` si lo lleva (la
+    /// clase `origen`, `destino`…), y su contenido (ya en HTML).
+    static func seccionHTML(_ titulo: String, _ contenido: String, clase: String? = nil, tono: String? = nil) -> String
+    {
         "<section" + (clase.map { " class=\"" + $0 + "\"" } ?? "") + ">"
-            + (titulo.isEmpty ? "" : "<h2>" + html(titulo) + "</h2>") + contenido + "</section>"
+            + (titulo.isEmpty
+                ? "" : "<h2" + (tono.map { " class=\"" + $0 + "\"" } ?? "") + ">" + html(titulo) + "</h2>")
+            + contenido + "</section>"
     }
 
     /// El carácter: una línea por fuente, con sus palabras entre comillas y su cita; las fuentes que no coinciden, lo
@@ -42,12 +39,6 @@ extension Hoja {
         if let sonoridad { filas.append(fila(notacion.texto(\.sonoridadCalculada), sonoridad.nombre(en: notacion))) }
         let lista = fuentes.isEmpty ? "" : "<ul class=\"caracter\">" + fuentes.joined() + "</ul>"
         return lista + (filas.isEmpty ? "" : "<dl>" + filas.joined() + "</dl>")
-    }
-
-    /// Una lista de textos, cada uno escapado.
-    static func listaHTML(_ elementos: [String], clase: String? = nil) -> String {
-        "<ul" + (clase.map { " class=\"" + $0 + "\"" } ?? "") + ">"
-            + elementos.map { "<li>" + html($0) + "</li>" }.joined() + "</ul>"
     }
 
     /// Una tabla: una fila por elemento, con sus celdas escapadas, y la clase de la fila si la lleva (`cambia`…). Una
@@ -151,7 +142,6 @@ extension Hoja {
         figure svg{display:block;width:100%;height:auto}\
         .columnas{display:grid;grid-template-columns:1fr 170pt;gap:0 24px}\
         .columnas>section:only-child{grid-column:1/-1}\
-        .reloj{max-width:220pt;margin:0 auto 8px}\
         .pequena{max-width:240pt}\
         dl{margin:0}\
         dl div{display:flex;gap:.5em;padding:3px 0;border-bottom:1px solid var(--linea)}\
@@ -173,12 +163,10 @@ extension Hoja {
         color:var(--suave);min-width:2.5em}.acordes .etiqueta{min-width:4.5em}\
         .escalera li{padding:2px 6px;border-radius:4px}\
         .escalera li[aria-current]{background:var(--resalte)}\
-        .grados-comparados td{text-align:center}.grados-comparados td:first-child{text-align:left}\
-        .grados-comparados .propia{font-weight:bold}.grados-comparados .cambio{background:var(--resalte)}\
-        .comparacion{display:grid;grid-template-columns:220pt 1fr;gap:16px;align-items:start}\
+        td.negrita{font-weight:bold}td.resaltada{background:var(--resalte)}\
         .leyenda li{display:flex;gap:.5em;align-items:baseline}\
         .punto{display:inline-block;width:10px;height:10px;border-radius:50%;flex:none;background:currentColor}\
-        @media (max-width:560px){.columnas,.teclados,.comparacion{grid-template-columns:1fr}}\
+        @media (max-width:560px){.columnas,.teclados{grid-template-columns:1fr!important}}\
         @media print{@page{size:A4;margin:40pt}:root{--texto:#222;--suave:#555;--fondo:#fff;--linea:#ddd;\
         --resalte:#fff4cc;--origen:#1e8449;--destino:#c0392b;--comun:#1f4e9c}main{max-width:none;padding:0}\
         section{break-inside:avoid}}

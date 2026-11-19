@@ -1,4 +1,5 @@
 import Armonia
+import ExposicionArmonia
 import Foundation
 
 // `armonia grabar`: la partitura o el dibujo en PDF, SVG o PNG, con un programa externo. Tesela escribe lo que ya
@@ -194,7 +195,8 @@ extension LineaDeComandos {
     }
 
     /// El texto de la fuente convertido por los programas del motor, uno tras otro, en una carpeta temporal que se
-    /// borra al terminar. Lo que deja cada uno es la entrada del siguiente.
+    /// borra al terminar. Lo que deja cada uno es la entrada del siguiente. Una hoja de estudio de varias páginas
+    /// sale en PDF con una página por cada una.
     private static func grabado(
         _ texto: String, con motor: MotorDeGrabado, formato: FormatoDeGrabado, _ notacion: Notacion
     ) throws -> ResultadoDeOrden {
@@ -218,8 +220,20 @@ extension LineaDeComandos {
         var datos = Data(texto.utf8)
         for (paso, ruta) in zip(pasos, rutas) {
             try datos.write(to: carpeta.appendingPathComponent("grabado." + paso.entrada))
+            var argumentos = paso.argumentos
+            // Una hoja de estudio de varias páginas, a un PDF de varias páginas: `rsvg-convert` pone cada SVG en una.
+            if paso.entrada == "svg" && formato == .pdf {
+                let paginas = HojaDeEstudio.paginas(deUnSVG: String(decoding: datos, as: UTF8.self))
+                if paginas.count > 1 {
+                    let nombres = paginas.indices.map { "grabado-pagina-\($0 + 1).svg" }
+                    for (nombre, pagina) in zip(nombres, paginas) {
+                        try Data(pagina.utf8).write(to: carpeta.appendingPathComponent(nombre))
+                    }
+                    argumentos = argumentos.flatMap { $0 == "grabado.svg" ? nombres : [$0] }
+                }
+            }
             let programa = URL(fileURLWithPath: ruta).lastPathComponent
-            let resultado = try ejecutor.ejecutar(ruta, paso.argumentos, en: carpeta, limite: 120)
+            let resultado = try ejecutor.ejecutar(ruta, argumentos, en: carpeta, limite: 120)
             if resultado.agotado {
                 return fallo(TextosDeConsola.en(notacion) { $0.motorSinTerminar(programa) })
             }

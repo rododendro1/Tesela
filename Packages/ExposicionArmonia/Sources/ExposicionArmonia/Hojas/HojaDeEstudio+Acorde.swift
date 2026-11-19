@@ -24,9 +24,14 @@ extension HojaDeEstudio {
         if let sinFundamental = datos.sinFundamental {
             nombres.append(notacion.texto(\.sinLaFundamental) + ": " + sinFundamental)
         }
-        // Las disposiciones: cada una con todas sus inversiones en un pentagrama.
-        let disposiciones = [DisposicionDeAcorde.cerrada, .drop2, .shell].compactMap {
-            PresentacionDeDisposiciones.acorde(acorde, $0, en: notacion)
+        // Las disposiciones: cada una con su nombre y todas sus inversiones en un pentagrama.
+        let disposiciones = [DisposicionDeAcorde.cerrada, .drop2, .shell].flatMap { disposicion in
+            PresentacionDeDisposiciones.acorde(acorde, disposicion, en: notacion).map {
+                [
+                    HojaCompuesta.Pieza.subtitulo(disposicion.nombre(en: notacion)),
+                    .dibujo($0.pentagrama.svg, fraccion: 1),
+                ]
+            } ?? []
         }
         let formas = mastil.digitaciones(de: acorde, exigirQuinta: false, limite: 5)
         let escalas = PresentacionDeEscalaYAcorde.escalas(de: acorde, notacion: notacion).prefix(6).map {
@@ -40,7 +45,7 @@ extension HojaDeEstudio {
                 .init(titulo: "", piezas: [.lineas(nombres)]),
                 .init(
                     titulo: notacion.texto(\.disposicion),
-                    piezas: disposiciones.map { .dibujo($0.pentagrama.svg, fraccion: 1) }),
+                    piezas: disposiciones),
                 .init(
                     titulo: notacion.texto(\.teclado),
                     piezas: [.dibujo(Relaciones.teclado(de: acorde, en: notacion), fraccion: 0.5)]),

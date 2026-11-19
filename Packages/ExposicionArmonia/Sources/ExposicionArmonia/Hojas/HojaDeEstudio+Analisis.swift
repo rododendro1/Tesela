@@ -85,7 +85,7 @@ extension HojaDeEstudio {
     // MARK: Dos progresiones comparadas
 
     /// Dos progresiones comparadas: el pentagrama de cada una, con una disposición de cada acorde, y la tabla
-    /// posición a posición, con lo que cambia en rojo (en HTML, resaltado). `nil` si alguna está vacía. `armonia hoja
+    /// posición a posición, con lo que cambia en rojo y resaltado. `nil` si alguna está vacía. `armonia hoja
     /// acordes … --comparar …` la escribe.
     ///
     ///     let hoja = HojaDeEstudio.comparacion(
@@ -96,11 +96,9 @@ extension HojaDeEstudio {
         _ original: [Acorde], con nueva: [Acorde], en tonalidad: Tonalidad? = nil,
         disposicion: DisposicionDeAcorde = .drop2, notacion: Notacion, formato: Formato = .svg
     ) -> String? {
-        formato == .svg
-            ? PresentacionDeAnalisis.comparacionSVG(
-                original, con: nueva, en: tonalidad, disposicion: disposicion, notacion: notacion)
-            : PresentacionDeAnalisis.comparacionHTML(
-                original, con: nueva, en: tonalidad, disposicion: disposicion, notacion: notacion)
+        PresentacionDeAnalisis.hojaDeLaComparacion(
+            original, con: nueva, en: tonalidad, disposicion: disposicion, notacion: notacion
+        ).map { escribir($0, formato, notacion) }
     }
 
     /// «Rem7 – Sol7 – Do7M».

@@ -1,0 +1,461 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595" height="3368" viewBox="0 0 595 3368" font-family="Helvetica, Arial, sans-serif" data-paginas="4">
+<rect width="595" height="3368" fill="#ffffff"/>
+<g transform="translate(0,40)">
+<text x="40" y="22" font-size="22" fill="#222222" font-weight="bold">Re dórico</text>
+<text x="40" y="45" font-size="13" fill="#555555">Re Mi Fa Sol La Si Do</text>
+</g>
+<g transform="translate(0,97)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Pentagrama</text>
+</g>
+<g transform="translate(0,97)">
+<svg x="40" y="26" width="515" height="165.4" viewBox="0 -1.792 30.588 9.824">
+<title id="titulo">Re dórico</title>
+<desc id="descripcion">Re₄, Mi₄, Fa₄, Sol₄, La₄, Si₄, Do₅, Re₅</desc>
+<g stroke="currentColor" fill="none">
+<line x1="0" y1="0" x2="29.988" y2="0" stroke-width="0.13"/>
+<line x1="0" y1="1" x2="29.988" y2="1" stroke-width="0.13"/>
+<line x1="0" y1="2" x2="29.988" y2="2" stroke-width="0.13"/>
+<line x1="0" y1="3" x2="29.988" y2="3" stroke-width="0.13"/>
+<line x1="0" y1="4" x2="29.988" y2="4" stroke-width="0.13"/>
+<line x1="0" y1="0" x2="0" y2="4" stroke-width="0.16"/>
+<line x1="29.988" y1="0" x2="29.988" y2="4" stroke-width="0.16"/>
+</g>
+<g fill="currentColor" stroke="none">
+
+<path transform="translate(0.6 3)" d="M1.504 -1.66C1.496 -1.708 1.504 -1.712 1.528 -1.736C1.592 -1.796 1.676 -1.88 1.752 -1.964C2.088 -2.332 2.288 -2.808 2.288 -3.26C2.288 -3.608 2.192 -3.952 2.028 -4.192C1.968 -4.28 1.864 -4.392 1.82 -4.392C1.764 -4.392 1.64 -4.288 1.56 -4.2C1.264 -3.872 1.168 -3.372 1.168 -2.956C1.168 -2.724 1.196 -2.464 1.224 -2.3C1.232 -2.252 1.236 -2.244 1.188 -2.204C0.932 -1.992 0.656 -1.748 0.448 -1.492C0.172 -1.148 0 -0.776 0 -0.348C0 0.348 0.476 1.008 1.456 1.008C1.548 1.008 1.652 1 1.732 0.984C1.776 0.976 1.784 0.972 1.792 1.02C1.84 1.288 1.9 1.636 1.9 1.824C1.9 2.416 1.5 2.488 1.264 2.488C1.048 2.488 0.944 2.424 0.944 2.372C0.944 2.344 0.98 2.332 1.072 2.304C1.196 2.268 1.34 2.16 1.34 1.928C1.34 1.708 1.2 1.52 0.956 1.52C0.688 1.52 0.528 1.732 0.528 1.98C0.528 2.24 0.684 2.632 1.288 2.632C1.556 2.632 2.076 2.512 2.076 1.832C2.076 1.604 2.004 1.224 1.96 0.976C1.952 0.928 1.956 0.932 2.012 0.908C2.416 0.748 2.684 0.408 2.684 -0.044C2.684 -0.556 2.308 -1.008 1.72 -1.008C1.616 -1.008 1.616 -1.008 1.604 -1.08ZM1.88 -3.772C2.012 -3.772 2.12 -3.664 2.12 -3.444C2.12 -3.168 1.988 -2.912 1.676 -2.6C1.612 -2.536 1.516 -2.444 1.424 -2.364C1.396 -2.34 1.38 -2.344 1.372 -2.396C1.356 -2.5 1.348 -2.636 1.348 -2.764C1.348 -3.388 1.636 -3.772 1.88 -3.772ZM1.444 -1.048C1.456 -0.972 1.456 -0.976 1.384 -0.952C1.032 -0.832 0.804 -0.516 0.804 -0.176C0.804 0.184 0.992 0.44 1.264 0.532C1.296 0.544 1.344 0.556 1.372 0.556C1.404 0.556 1.42 0.536 1.42 0.512C1.42 0.484 1.388 0.472 1.36 0.46C1.192 0.388 1.072 0.216 1.072 0.032C1.072 -0.196 1.228 -0.368 1.472 -0.436C1.536 -0.452 1.544 -0.448 1.552 -0.404L1.752 0.788C1.76 0.832 1.756 0.832 1.696 0.844C1.632 0.856 1.552 0.864 1.472 0.864C0.772 0.864 0.32 0.476 0.32 -0.08C0.32 -0.316 0.36 -0.632 0.692 -1.008C0.932 -1.276 1.116 -1.424 1.304 -1.576C1.344 -1.608 1.352 -1.604 1.36 -1.56ZM1.72 -0.412C1.712 -0.46 1.716 -0.472 1.764 -0.468C2.088 -0.44 2.356 -0.168 2.356 0.184C2.356 0.436 2.204 0.64 1.98 0.752C1.932 0.776 1.924 0.776 1.916 0.728Z"/>
+</g>
+<g transform="translate(0 0)">
+<g stroke="currentColor" fill="none">
+
+</g>
+<g stroke="currentColor" fill="none" stroke-width="0.12">
+
+</g>
+<g fill="currentColor" stroke="none">
+<g><title>Re₄</title><path transform="translate(5.084 4.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Mi₄</title><path transform="translate(8.272 4)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Fa₄</title><path transform="translate(11.46 3.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Sol₄</title><path transform="translate(14.648 3)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>La₄</title><path transform="translate(17.836 2.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Si₄</title><path transform="translate(21.024 2)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Do₅</title><path transform="translate(24.212 1.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Re₅</title><path transform="translate(27.4 1)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<text x="5.928" y="7.232" text-anchor="middle" font-size="1.2" lengthAdjust="spacingAndGlyphs" textLength="2.194" font-family="sans-serif">Re₄</text>
+<text x="9.116" y="7.232" text-anchor="middle" font-size="1.2" lengthAdjust="spacingAndGlyphs" textLength="1.926" font-family="sans-serif">Mi₄</text>
+<text x="12.304" y="7.232" text-anchor="middle" font-size="1.2" lengthAdjust="spacingAndGlyphs" textLength="2.06" font-family="sans-serif">Fa₄</text>
+<text x="15.492" y="7.232" text-anchor="middle" font-size="1.2" lengthAdjust="spacingAndGlyphs" textLength="2.394" font-family="sans-serif">Sol₄</text>
+<text x="18.68" y="7.232" text-anchor="middle" font-size="1.2" lengthAdjust="spacingAndGlyphs" textLength="1.994" font-family="sans-serif">La₄</text>
+<text x="21.868" y="7.232" text-anchor="middle" font-size="1.2" lengthAdjust="spacingAndGlyphs" textLength="1.727" font-family="sans-serif">Si₄</text>
+<text x="25.056" y="7.232" text-anchor="middle" font-size="1.2" lengthAdjust="spacingAndGlyphs" textLength="2.194" font-family="sans-serif">Do₅</text>
+<text x="28.244" y="7.232" text-anchor="middle" font-size="1.2" lengthAdjust="spacingAndGlyphs" textLength="2.194" font-family="sans-serif">Re₅</text>
+</g>
+</g>
+</svg>
+</g>
+<g transform="translate(0,296.4)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Origen</text>
+</g>
+<g transform="translate(0,296.4)">
+<text x="40" y="32" font-size="11" fill="#222222">Época: Edad Media</text>
+</g>
+<g transform="translate(0,296.4)">
+<text x="40" y="48" font-size="11" fill="#222222">Épocas de uso: Barroco · Clasicismo · Romanticismo · siglo XX · siglo XXI</text>
+</g>
+<g transform="translate(0,296.4)">
+<text x="40" y="64" font-size="11" fill="#222222">Lugares de origen: Europa</text>
+</g>
+<g transform="translate(0,296.4)">
+<text x="40" y="80" font-size="11" fill="#222222">Lugares de uso: Estados Unidos</text>
+</g>
+<g transform="translate(0,296.4)">
+<text x="40" y="96" font-size="11" fill="#222222">Estilos: jazz (jazz modal) · clásica</text>
+</g>
+<g transform="translate(0,406.4)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Carácter</text>
+</g>
+<g transform="translate(0,406.4)">
+<text x="40" y="32" font-size="11" fill="#222222">Afecto medido: alegre: 40 % (Temperley &amp; Tan 2013: 248)</text>
+</g>
+<g transform="translate(0,406.4)">
+<text x="40" y="48" font-size="11" fill="#222222">Sonoridad (calculada): intermedia</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Estadísticas</text>
+<g transform="translate(0,0)">
+<text x="385" y="12" font-size="14" fill="#222222" font-weight="bold">Reloj de la escala</text>
+</g>
+<g transform="translate(0,0)">
+<svg x="385" y="26" width="170" height="185.7" viewBox="0 0 260.0 284.0">
+  <title>Re dórico · Círculo cromático</title>
+  <rect width="260.0" height="284.0" fill="#ffffff"/>
+  <text x="8.0" y="12.0" dominant-baseline="central" font-size="14.0" font-weight="600" fill="#222222">Re dórico · Círculo cromático</text>
+  <circle cx="130.0" cy="154.0" r="92.0" fill="none" stroke="#cccccc"/>
+  <polygon points="130.0,62.0 209.7,108.0 209.7,200.0 176.0,233.7 84.0,233.7 38.0,154.0 84.0,74.3" fill="#1f4e9c" fill-opacity="0.18" stroke="#1f4e9c" stroke-width="2.0"/>
+  <circle cx="130.0" cy="62.0" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="130.0" y="40.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Do</text>
+  <circle cx="176.0" cy="74.3" r="3.5" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="187.0" y="55.3" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="400" fill="#999999">Do♯</text>
+  <circle cx="209.7" cy="108.0" r="7.0" fill="#1f4e9c" stroke="#f39c12" stroke-width="3.0"/>
+  <text x="228.7" y="97.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Re</text>
+  <circle cx="222.0" cy="154.0" r="3.5" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="244.0" y="154.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="400" fill="#999999">Mi♭</text>
+  <circle cx="209.7" cy="200.0" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="228.7" y="211.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Mi</text>
+  <circle cx="176.0" cy="233.7" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="187.0" y="252.7" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Fa</text>
+  <circle cx="130.0" cy="246.0" r="3.5" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="130.0" y="268.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="400" fill="#999999">Fa♯</text>
+  <circle cx="84.0" cy="233.7" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="73.0" y="252.7" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Sol</text>
+  <circle cx="50.3" cy="200.0" r="3.5" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="31.3" y="211.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="400" fill="#999999">La♭</text>
+  <circle cx="38.0" cy="154.0" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="16.0" y="154.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">La</text>
+  <circle cx="50.3" cy="108.0" r="3.5" fill="#bbbbbb" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="31.3" y="97.0" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="400" fill="#999999">Si♭</text>
+  <circle cx="84.0" cy="74.3" r="7.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="73.0" y="55.3" text-anchor="middle" dominant-baseline="central" font-size="12.0" font-weight="600" fill="#222222">Si</text>
+</svg>
+</g>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="32" font-size="11" fill="#222222">Número de notas: 7 (heptatónica)</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="48" font-size="11" fill="#222222">Brillo: -2</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="64" font-size="11" fill="#222222">Brillo por quintas: 0</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="80" font-size="11" fill="#222222">Pasos en semitonos: 2 1 2 2 2 1 2</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="96" font-size="11" fill="#222222">Vector interválico: [2, 5, 4, 3, 6, 1]</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="112" font-size="11" fill="#222222">Número de Forte: 7-35</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="128" font-size="11" fill="#222222">Transposiciones distintas: 12</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="144" font-size="11" fill="#222222">Rasgos: máximamente regular</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="160" font-size="11" fill="#222222">Consonancia diádica (Huron): 4.755</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="176" font-size="11" fill="#222222">Generador (semitonos): 5</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="192" font-size="11" fill="#222222">Propiedad de Rothenberg: propia</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="208" font-size="11" fill="#222222">Ambigüedades y contradicciones (Rothenberg): 1 · 0</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="224" font-size="11" fill="#222222">Estabilidad (Rothenberg): 0.952</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="240" font-size="11" fill="#222222">Cociente de igualdad (Carey): 0.999</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="256" font-size="11" fill="#222222">Anchura del espectro (semitonos): 1</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="272" font-size="11" fill="#222222">Análisis de Hanson: p⁶m³n⁴s⁵d²t</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="288" font-size="11" fill="#222222">Complemento (Forte): 5-35</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="304" font-size="11" fill="#222222">Imperfecciones (Zeitler): 1</text>
+</g>
+<g transform="translate(0,468.4)">
+<text x="40" y="320" font-size="11" fill="#222222">Tríadas por grados: i ii III IV v vi° VII</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="336" font-size="11" fill="#222222">Cuatríadas por grados: i7 ii7 IIImaj7 IV7 v7 viø7 VIImaj7</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="352" font-size="11" fill="#222222">Coeficientes de Fourier (|f1|…|f6|): 0.268 · 1 · 1 · 1 · 3.732 · 1</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="368" font-size="11" fill="#222222">Distancia a la uniformidad (Tymoczko): 0.756</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="384" font-size="11" fill="#222222">Tríadas contenidas: M 3 · m 3 · ° 1 · + 0</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="400" font-size="11" fill="#222222">Entropía interválica (bits): 2.398</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="416" font-size="11" fill="#222222">Parsimonia (Tymoczko): 2</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="432" font-size="11" fill="#222222">Gradus suavitatis (Euler): 17</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="448" font-size="11" fill="#222222">Altura de Tenney: 6.234</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="464" font-size="11" fill="#222222">Límite impar (Partch): 81</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="480" font-size="11" fill="#222222">Entropía armónica (Erlich, bits): 6.449</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="496" font-size="11" fill="#222222">Rugosidad media (Sethares): 0.398</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="512" font-size="11" fill="#222222">Perfil tonal (Krumhansl y Kessler): M 0.403 · m 0.523</text>
+</g>
+<g transform="translate(0,558)">
+<text x="40" y="528" font-size="11" fill="#222222">Propiedades: propiedad de Myhill · bien formada (MOS) ·</text>
+<text x="52" y="544" font-size="11" fill="#222222">profunda (Gamer) · simétrica por inversión · unicidad (Balzano) ·</text>
+<text x="52" y="560" font-size="11" fill="#222222">simplicidad (Balzano) · tetracordos iguales</text>
+</g>
+<g transform="translate(0,1132)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Digitación de piano</text>
+</g>
+<g transform="translate(0,1132)">
+<text x="40" y="33" font-size="10" fill="#555555">Mano derecha</text>
+<svg x="40" y="38" width="251.5" height="140.3" viewBox="0 0 208.0 116.0">
+  <rect width="208.0" height="116.0" fill="#ffffff"/>
+  <rect x="8.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="20.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#f39c12" stroke-width="2.5"/>
+  <text x="20.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">1</text>
+  <rect x="32.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="44.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="44.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">2</text>
+  <rect x="56.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="68.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="68.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">3</text>
+  <rect x="80.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="92.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="92.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">1</text>
+  <rect x="104.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="116.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="116.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">2</text>
+  <rect x="128.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="140.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="140.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">3</text>
+  <rect x="152.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="164.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="164.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">4</text>
+  <rect x="176.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="188.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#f39c12" stroke-width="2.5"/>
+  <text x="188.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">5</text>
+  <rect x="25.0" y="8.0" width="14.0" height="62.0" fill="#222222" stroke="#444444"/>
+  <rect x="73.0" y="8.0" width="14.0" height="62.0" fill="#222222" stroke="#444444"/>
+  <rect x="97.0" y="8.0" width="14.0" height="62.0" fill="#222222" stroke="#444444"/>
+  <rect x="121.0" y="8.0" width="14.0" height="62.0" fill="#222222" stroke="#444444"/>
+  <rect x="169.0" y="8.0" width="14.0" height="62.0" fill="#222222" stroke="#444444"/>
+</svg>
+<text x="303.5" y="33" font-size="10" fill="#555555">Mano izquierda</text>
+<svg x="303.5" y="38" width="251.5" height="140.3" viewBox="0 0 208.0 116.0">
+  <rect width="208.0" height="116.0" fill="#ffffff"/>
+  <rect x="8.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="20.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#f39c12" stroke-width="2.5"/>
+  <text x="20.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">5</text>
+  <rect x="32.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="44.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="44.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">4</text>
+  <rect x="56.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="68.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="68.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">3</text>
+  <rect x="80.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="92.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="92.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">2</text>
+  <rect x="104.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="116.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="116.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">1</text>
+  <rect x="128.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="140.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="140.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">3</text>
+  <rect x="152.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="164.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#ffffff" stroke-width="1.0"/>
+  <text x="164.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">2</text>
+  <rect x="176.0" y="8.0" width="24.0" height="100.0" fill="#ffffff" stroke="#444444"/>
+  <circle cx="188.0" cy="94.0" r="9.0" fill="#1f4e9c" stroke="#f39c12" stroke-width="2.5"/>
+  <text x="188.0" y="94.0" text-anchor="middle" dominant-baseline="central" font-size="10.0" fill="#ffffff">1</text>
+  <rect x="25.0" y="8.0" width="14.0" height="62.0" fill="#222222" stroke="#444444"/>
+  <rect x="73.0" y="8.0" width="14.0" height="62.0" fill="#222222" stroke="#444444"/>
+  <rect x="97.0" y="8.0" width="14.0" height="62.0" fill="#222222" stroke="#444444"/>
+  <rect x="121.0" y="8.0" width="14.0" height="62.0" fill="#222222" stroke="#444444"/>
+  <rect x="169.0" y="8.0" width="14.0" height="62.0" fill="#222222" stroke="#444444"/>
+</svg>
+</g>
+<g transform="translate(0,1324.3)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Posiciones en el mástil</text>
+</g>
+<g transform="translate(0,1324.3)">
+<text x="40" y="33" font-size="10" fill="#555555">Mástil de guitarra, trastes 0 a 12</text>
+<svg x="40" y="38" width="515" height="128.8" viewBox="0 0 471.8 118"><line x1="53.8" y1="12" x2="53.8" y2="92" stroke="#222222" stroke-width="3"/><line x1="87.8" y1="12" x2="87.8" y2="92" stroke="#999999" stroke-width="1"/><text x="67.8" y="110" font-size="9" fill="#777777">1</text><line x1="121.8" y1="12" x2="121.8" y2="92" stroke="#999999" stroke-width="1"/><text x="101.8" y="110" font-size="9" fill="#777777">2</text><line x1="155.8" y1="12" x2="155.8" y2="92" stroke="#999999" stroke-width="1"/><text x="135.8" y="110" font-size="9" fill="#777777">3</text><line x1="189.8" y1="12" x2="189.8" y2="92" stroke="#999999" stroke-width="1"/><text x="169.8" y="110" font-size="9" fill="#777777">4</text><line x1="223.8" y1="12" x2="223.8" y2="92" stroke="#999999" stroke-width="1"/><text x="203.8" y="110" font-size="9" fill="#777777">5</text><line x1="257.8" y1="12" x2="257.8" y2="92" stroke="#999999" stroke-width="1"/><text x="237.8" y="110" font-size="9" fill="#777777">6</text><line x1="291.8" y1="12" x2="291.8" y2="92" stroke="#999999" stroke-width="1"/><text x="271.8" y="110" font-size="9" fill="#777777">7</text><line x1="325.8" y1="12" x2="325.8" y2="92" stroke="#999999" stroke-width="1"/><text x="305.8" y="110" font-size="9" fill="#777777">8</text><line x1="359.8" y1="12" x2="359.8" y2="92" stroke="#999999" stroke-width="1"/><text x="339.8" y="110" font-size="9" fill="#777777">9</text><line x1="393.8" y1="12" x2="393.8" y2="92" stroke="#999999" stroke-width="1"/><text x="373.8" y="110" font-size="9" fill="#777777">10</text><line x1="427.8" y1="12" x2="427.8" y2="92" stroke="#999999" stroke-width="1"/><text x="407.8" y="110" font-size="9" fill="#777777">11</text><line x1="461.8" y1="12" x2="461.8" y2="92" stroke="#999999" stroke-width="1"/><text x="441.8" y="110" font-size="9" fill="#777777">12</text><line x1="30" y1="92" x2="461.8" y2="92" stroke="#555555" stroke-width="1"/><text x="4" y="95.5" font-size="9" fill="#555555">Mi</text><line x1="30" y1="76" x2="461.8" y2="76" stroke="#555555" stroke-width="1"/><text x="4" y="79.5" font-size="9" fill="#555555">La</text><line x1="30" y1="60" x2="461.8" y2="60" stroke="#555555" stroke-width="1"/><text x="4" y="63.5" font-size="9" fill="#555555">Re</text><line x1="30" y1="44" x2="461.8" y2="44" stroke="#555555" stroke-width="1"/><text x="4" y="47.5" font-size="9" fill="#555555">Sol</text><line x1="30" y1="28" x2="461.8" y2="28" stroke="#555555" stroke-width="1"/><text x="4" y="31.5" font-size="9" fill="#555555">Si</text><line x1="30" y1="12" x2="461.8" y2="12" stroke="#555555" stroke-width="1"/><text x="4" y="15.5" font-size="9" fill="#555555">Mi</text><circle cx="41.9" cy="92" r="7" fill="#1f4e9c"/><text x="41.9" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="41.9" cy="76" r="7" fill="#1f4e9c"/><text x="41.9" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="41.9" cy="60" r="7" fill="#f39c12"/><text x="41.9" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="41.9" cy="44" r="7" fill="#1f4e9c"/><text x="41.9" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="41.9" cy="28" r="7" fill="#1f4e9c"/><text x="41.9" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="41.9" cy="12" r="7" fill="#1f4e9c"/><text x="41.9" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="70.8" cy="92" r="7" fill="#1f4e9c"/><text x="70.8" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="70.8" cy="28" r="7" fill="#1f4e9c"/><text x="70.8" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="70.8" cy="12" r="7" fill="#1f4e9c"/><text x="70.8" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="104.8" cy="76" r="7" fill="#1f4e9c"/><text x="104.8" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="104.8" cy="60" r="7" fill="#1f4e9c"/><text x="104.8" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="104.8" cy="44" r="7" fill="#1f4e9c"/><text x="104.8" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="138.8" cy="92" r="7" fill="#1f4e9c"/><text x="138.8" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="138.8" cy="76" r="7" fill="#1f4e9c"/><text x="138.8" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="138.8" cy="60" r="7" fill="#1f4e9c"/><text x="138.8" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="138.8" cy="28" r="7" fill="#f39c12"/><text x="138.8" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="138.8" cy="12" r="7" fill="#1f4e9c"/><text x="138.8" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="172.8" cy="44" r="7" fill="#1f4e9c"/><text x="172.8" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="206.8" cy="92" r="7" fill="#1f4e9c"/><text x="206.8" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="206.8" cy="76" r="7" fill="#f39c12"/><text x="206.8" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="206.8" cy="60" r="7" fill="#1f4e9c"/><text x="206.8" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="206.8" cy="44" r="7" fill="#1f4e9c"/><text x="206.8" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="206.8" cy="28" r="7" fill="#1f4e9c"/><text x="206.8" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="206.8" cy="12" r="7" fill="#1f4e9c"/><text x="206.8" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="240.8" cy="28" r="7" fill="#1f4e9c"/><text x="240.8" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="274.8" cy="92" r="7" fill="#1f4e9c"/><text x="274.8" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="274.8" cy="76" r="7" fill="#1f4e9c"/><text x="274.8" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="274.8" cy="60" r="7" fill="#1f4e9c"/><text x="274.8" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="274.8" cy="44" r="7" fill="#f39c12"/><text x="274.8" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="274.8" cy="12" r="7" fill="#1f4e9c"/><text x="274.8" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="308.8" cy="92" r="7" fill="#1f4e9c"/><text x="308.8" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="308.8" cy="76" r="7" fill="#1f4e9c"/><text x="308.8" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="308.8" cy="28" r="7" fill="#1f4e9c"/><text x="308.8" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="308.8" cy="12" r="7" fill="#1f4e9c"/><text x="308.8" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="342.8" cy="60" r="7" fill="#1f4e9c"/><text x="342.8" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="342.8" cy="44" r="7" fill="#1f4e9c"/><text x="342.8" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="376.8" cy="92" r="7" fill="#f39c12"/><text x="376.8" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="376.8" cy="76" r="7" fill="#1f4e9c"/><text x="376.8" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="376.8" cy="60" r="7" fill="#1f4e9c"/><text x="376.8" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="376.8" cy="44" r="7" fill="#1f4e9c"/><text x="376.8" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="376.8" cy="28" r="7" fill="#1f4e9c"/><text x="376.8" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="376.8" cy="12" r="7" fill="#f39c12"/><text x="376.8" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="444.8" cy="92" r="7" fill="#1f4e9c"/><text x="444.8" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="444.8" cy="76" r="7" fill="#1f4e9c"/><text x="444.8" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="444.8" cy="60" r="7" fill="#f39c12"/><text x="444.8" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="444.8" cy="44" r="7" fill="#1f4e9c"/><text x="444.8" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="444.8" cy="28" r="7" fill="#1f4e9c"/><text x="444.8" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="444.8" cy="12" r="7" fill="#1f4e9c"/><text x="444.8" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text></svg>
+</g>
+<g transform="translate(0,1553.2)">
+<text x="40" y="183.8" font-size="10" fill="#555555">Forma C · Trastes 2–6</text>
+<svg x="40" y="188.8" width="251.5" height="141.3" viewBox="0 0 210 118"><line x1="30" y1="12" x2="30" y2="92" stroke="#999999" stroke-width="1"/><line x1="64" y1="12" x2="64" y2="92" stroke="#999999" stroke-width="1"/><text x="44" y="110" font-size="9" fill="#777777">2</text><line x1="98" y1="12" x2="98" y2="92" stroke="#999999" stroke-width="1"/><text x="78" y="110" font-size="9" fill="#777777">3</text><line x1="132" y1="12" x2="132" y2="92" stroke="#999999" stroke-width="1"/><text x="112" y="110" font-size="9" fill="#777777">4</text><line x1="166" y1="12" x2="166" y2="92" stroke="#999999" stroke-width="1"/><text x="146" y="110" font-size="9" fill="#777777">5</text><line x1="200" y1="12" x2="200" y2="92" stroke="#999999" stroke-width="1"/><text x="180" y="110" font-size="9" fill="#777777">6</text><line x1="30" y1="92" x2="200" y2="92" stroke="#555555" stroke-width="1"/><text x="4" y="95.5" font-size="9" fill="#555555">Mi</text><line x1="30" y1="76" x2="200" y2="76" stroke="#555555" stroke-width="1"/><text x="4" y="79.5" font-size="9" fill="#555555">La</text><line x1="30" y1="60" x2="200" y2="60" stroke="#555555" stroke-width="1"/><text x="4" y="63.5" font-size="9" fill="#555555">Re</text><line x1="30" y1="44" x2="200" y2="44" stroke="#555555" stroke-width="1"/><text x="4" y="47.5" font-size="9" fill="#555555">Sol</text><line x1="30" y1="28" x2="200" y2="28" stroke="#555555" stroke-width="1"/><text x="4" y="31.5" font-size="9" fill="#555555">Si</text><line x1="30" y1="12" x2="200" y2="12" stroke="#555555" stroke-width="1"/><text x="4" y="15.5" font-size="9" fill="#555555">Mi</text><circle cx="81" cy="92" r="7" fill="#1f4e9c"/><text x="81" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="149" cy="92" r="7" fill="#1f4e9c"/><text x="149" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="47" cy="76" r="7" fill="#1f4e9c"/><text x="47" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="81" cy="76" r="7" fill="#1f4e9c"/><text x="81" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="149" cy="76" r="7" fill="#f39c12"/><text x="149" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="47" cy="60" r="7" fill="#1f4e9c"/><text x="47" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="81" cy="60" r="7" fill="#1f4e9c"/><text x="81" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="149" cy="60" r="7" fill="#1f4e9c"/><text x="149" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="47" cy="44" r="7" fill="#1f4e9c"/><text x="47" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="115" cy="44" r="7" fill="#1f4e9c"/><text x="115" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="149" cy="44" r="7" fill="#1f4e9c"/><text x="149" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="81" cy="28" r="7" fill="#f39c12"/><text x="81" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="149" cy="28" r="7" fill="#1f4e9c"/><text x="149" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="183" cy="28" r="7" fill="#1f4e9c"/><text x="183" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="81" cy="12" r="7" fill="#1f4e9c"/><text x="81" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="149" cy="12" r="7" fill="#1f4e9c"/><text x="149" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text></svg>
+<text x="303.5" y="183.8" font-size="10" fill="#555555">Forma A · Trastes 4–8</text>
+<svg x="303.5" y="188.8" width="251.5" height="141.3" viewBox="0 0 210 118"><line x1="30" y1="12" x2="30" y2="92" stroke="#999999" stroke-width="1"/><line x1="64" y1="12" x2="64" y2="92" stroke="#999999" stroke-width="1"/><text x="44" y="110" font-size="9" fill="#777777">4</text><line x1="98" y1="12" x2="98" y2="92" stroke="#999999" stroke-width="1"/><text x="78" y="110" font-size="9" fill="#777777">5</text><line x1="132" y1="12" x2="132" y2="92" stroke="#999999" stroke-width="1"/><text x="112" y="110" font-size="9" fill="#777777">6</text><line x1="166" y1="12" x2="166" y2="92" stroke="#999999" stroke-width="1"/><text x="146" y="110" font-size="9" fill="#777777">7</text><line x1="200" y1="12" x2="200" y2="92" stroke="#999999" stroke-width="1"/><text x="180" y="110" font-size="9" fill="#777777">8</text><line x1="30" y1="92" x2="200" y2="92" stroke="#555555" stroke-width="1"/><text x="4" y="95.5" font-size="9" fill="#555555">Mi</text><line x1="30" y1="76" x2="200" y2="76" stroke="#555555" stroke-width="1"/><text x="4" y="79.5" font-size="9" fill="#555555">La</text><line x1="30" y1="60" x2="200" y2="60" stroke="#555555" stroke-width="1"/><text x="4" y="63.5" font-size="9" fill="#555555">Re</text><line x1="30" y1="44" x2="200" y2="44" stroke="#555555" stroke-width="1"/><text x="4" y="47.5" font-size="9" fill="#555555">Sol</text><line x1="30" y1="28" x2="200" y2="28" stroke="#555555" stroke-width="1"/><text x="4" y="31.5" font-size="9" fill="#555555">Si</text><line x1="30" y1="12" x2="200" y2="12" stroke="#555555" stroke-width="1"/><text x="4" y="15.5" font-size="9" fill="#555555">Mi</text><circle cx="81" cy="92" r="7" fill="#1f4e9c"/><text x="81" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="149" cy="92" r="7" fill="#1f4e9c"/><text x="149" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="183" cy="92" r="7" fill="#1f4e9c"/><text x="183" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="81" cy="76" r="7" fill="#f39c12"/><text x="81" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="149" cy="76" r="7" fill="#1f4e9c"/><text x="149" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="183" cy="76" r="7" fill="#1f4e9c"/><text x="183" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="81" cy="60" r="7" fill="#1f4e9c"/><text x="81" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="149" cy="60" r="7" fill="#1f4e9c"/><text x="149" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="47" cy="44" r="7" fill="#1f4e9c"/><text x="47" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="81" cy="44" r="7" fill="#1f4e9c"/><text x="81" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="149" cy="44" r="7" fill="#f39c12"/><text x="149" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="81" cy="28" r="7" fill="#1f4e9c"/><text x="81" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="115" cy="28" r="7" fill="#1f4e9c"/><text x="115" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="183" cy="28" r="7" fill="#1f4e9c"/><text x="183" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="81" cy="12" r="7" fill="#1f4e9c"/><text x="81" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="149" cy="12" r="7" fill="#1f4e9c"/><text x="149" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="183" cy="12" r="7" fill="#1f4e9c"/><text x="183" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text></svg>
+</g>
+<g transform="translate(0,1553.2)">
+<text x="40" y="347.1" font-size="10" fill="#555555">Forma G · Trastes 7–11</text>
+<svg x="40" y="352.1" width="251.5" height="141.3" viewBox="0 0 210 118"><line x1="30" y1="12" x2="30" y2="92" stroke="#999999" stroke-width="1"/><line x1="64" y1="12" x2="64" y2="92" stroke="#999999" stroke-width="1"/><text x="44" y="110" font-size="9" fill="#777777">7</text><line x1="98" y1="12" x2="98" y2="92" stroke="#999999" stroke-width="1"/><text x="78" y="110" font-size="9" fill="#777777">8</text><line x1="132" y1="12" x2="132" y2="92" stroke="#999999" stroke-width="1"/><text x="112" y="110" font-size="9" fill="#777777">9</text><line x1="166" y1="12" x2="166" y2="92" stroke="#999999" stroke-width="1"/><text x="146" y="110" font-size="9" fill="#777777">10</text><line x1="200" y1="12" x2="200" y2="92" stroke="#999999" stroke-width="1"/><text x="180" y="110" font-size="9" fill="#777777">11</text><line x1="30" y1="92" x2="200" y2="92" stroke="#555555" stroke-width="1"/><text x="4" y="95.5" font-size="9" fill="#555555">Mi</text><line x1="30" y1="76" x2="200" y2="76" stroke="#555555" stroke-width="1"/><text x="4" y="79.5" font-size="9" fill="#555555">La</text><line x1="30" y1="60" x2="200" y2="60" stroke="#555555" stroke-width="1"/><text x="4" y="63.5" font-size="9" fill="#555555">Re</text><line x1="30" y1="44" x2="200" y2="44" stroke="#555555" stroke-width="1"/><text x="4" y="47.5" font-size="9" fill="#555555">Sol</text><line x1="30" y1="28" x2="200" y2="28" stroke="#555555" stroke-width="1"/><text x="4" y="31.5" font-size="9" fill="#555555">Si</text><line x1="30" y1="12" x2="200" y2="12" stroke="#555555" stroke-width="1"/><text x="4" y="15.5" font-size="9" fill="#555555">Mi</text><circle cx="47" cy="92" r="7" fill="#1f4e9c"/><text x="47" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="81" cy="92" r="7" fill="#1f4e9c"/><text x="81" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="149" cy="92" r="7" fill="#f39c12"/><text x="149" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="47" cy="76" r="7" fill="#1f4e9c"/><text x="47" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="81" cy="76" r="7" fill="#1f4e9c"/><text x="81" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="149" cy="76" r="7" fill="#1f4e9c"/><text x="149" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="47" cy="60" r="7" fill="#1f4e9c"/><text x="47" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="115" cy="60" r="7" fill="#1f4e9c"/><text x="115" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="149" cy="60" r="7" fill="#1f4e9c"/><text x="149" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="47" cy="44" r="7" fill="#f39c12"/><text x="47" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="115" cy="44" r="7" fill="#1f4e9c"/><text x="115" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="149" cy="44" r="7" fill="#1f4e9c"/><text x="149" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="81" cy="28" r="7" fill="#1f4e9c"/><text x="81" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="149" cy="28" r="7" fill="#1f4e9c"/><text x="149" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="47" cy="12" r="7" fill="#1f4e9c"/><text x="47" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="81" cy="12" r="7" fill="#1f4e9c"/><text x="81" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="149" cy="12" r="7" fill="#f39c12"/><text x="149" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text></svg>
+<text x="303.5" y="347.1" font-size="10" fill="#555555">Forma E · Trastes 9–13</text>
+<svg x="303.5" y="352.1" width="251.5" height="141.3" viewBox="0 0 210 118"><line x1="30" y1="12" x2="30" y2="92" stroke="#999999" stroke-width="1"/><line x1="64" y1="12" x2="64" y2="92" stroke="#999999" stroke-width="1"/><text x="44" y="110" font-size="9" fill="#777777">9</text><line x1="98" y1="12" x2="98" y2="92" stroke="#999999" stroke-width="1"/><text x="78" y="110" font-size="9" fill="#777777">10</text><line x1="132" y1="12" x2="132" y2="92" stroke="#999999" stroke-width="1"/><text x="112" y="110" font-size="9" fill="#777777">11</text><line x1="166" y1="12" x2="166" y2="92" stroke="#999999" stroke-width="1"/><text x="146" y="110" font-size="9" fill="#777777">12</text><line x1="200" y1="12" x2="200" y2="92" stroke="#999999" stroke-width="1"/><text x="180" y="110" font-size="9" fill="#777777">13</text><line x1="30" y1="92" x2="200" y2="92" stroke="#555555" stroke-width="1"/><text x="4" y="95.5" font-size="9" fill="#555555">Mi</text><line x1="30" y1="76" x2="200" y2="76" stroke="#555555" stroke-width="1"/><text x="4" y="79.5" font-size="9" fill="#555555">La</text><line x1="30" y1="60" x2="200" y2="60" stroke="#555555" stroke-width="1"/><text x="4" y="63.5" font-size="9" fill="#555555">Re</text><line x1="30" y1="44" x2="200" y2="44" stroke="#555555" stroke-width="1"/><text x="4" y="47.5" font-size="9" fill="#555555">Sol</text><line x1="30" y1="28" x2="200" y2="28" stroke="#555555" stroke-width="1"/><text x="4" y="31.5" font-size="9" fill="#555555">Si</text><line x1="30" y1="12" x2="200" y2="12" stroke="#555555" stroke-width="1"/><text x="4" y="15.5" font-size="9" fill="#555555">Mi</text><circle cx="81" cy="92" r="7" fill="#f39c12"/><text x="81" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="149" cy="92" r="7" fill="#1f4e9c"/><text x="149" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="183" cy="92" r="7" fill="#1f4e9c"/><text x="183" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="81" cy="76" r="7" fill="#1f4e9c"/><text x="81" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="149" cy="76" r="7" fill="#1f4e9c"/><text x="149" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="47" cy="60" r="7" fill="#1f4e9c"/><text x="47" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="81" cy="60" r="7" fill="#1f4e9c"/><text x="81" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="149" cy="60" r="7" fill="#f39c12"/><text x="149" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="47" cy="44" r="7" fill="#1f4e9c"/><text x="47" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="81" cy="44" r="7" fill="#1f4e9c"/><text x="81" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="149" cy="44" r="7" fill="#1f4e9c"/><text x="149" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="81" cy="28" r="7" fill="#1f4e9c"/><text x="81" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="149" cy="28" r="7" fill="#1f4e9c"/><text x="149" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="183" cy="28" r="7" fill="#1f4e9c"/><text x="183" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="81" cy="12" r="7" fill="#f39c12"/><text x="81" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="149" cy="12" r="7" fill="#1f4e9c"/><text x="149" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="183" cy="12" r="7" fill="#1f4e9c"/><text x="183" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text></svg>
+</g>
+<g transform="translate(0,1553.2)">
+<text x="40" y="510.4" font-size="10" fill="#555555">Forma D · Trastes 11–15</text>
+<svg x="40" y="515.4" width="251.5" height="141.3" viewBox="0 0 210 118"><line x1="30" y1="12" x2="30" y2="92" stroke="#999999" stroke-width="1"/><line x1="64" y1="12" x2="64" y2="92" stroke="#999999" stroke-width="1"/><text x="44" y="110" font-size="9" fill="#777777">11</text><line x1="98" y1="12" x2="98" y2="92" stroke="#999999" stroke-width="1"/><text x="78" y="110" font-size="9" fill="#777777">12</text><line x1="132" y1="12" x2="132" y2="92" stroke="#999999" stroke-width="1"/><text x="112" y="110" font-size="9" fill="#777777">13</text><line x1="166" y1="12" x2="166" y2="92" stroke="#999999" stroke-width="1"/><text x="146" y="110" font-size="9" fill="#777777">14</text><line x1="200" y1="12" x2="200" y2="92" stroke="#999999" stroke-width="1"/><text x="180" y="110" font-size="9" fill="#777777">15</text><line x1="30" y1="92" x2="200" y2="92" stroke="#555555" stroke-width="1"/><text x="4" y="95.5" font-size="9" fill="#555555">Mi</text><line x1="30" y1="76" x2="200" y2="76" stroke="#555555" stroke-width="1"/><text x="4" y="79.5" font-size="9" fill="#555555">La</text><line x1="30" y1="60" x2="200" y2="60" stroke="#555555" stroke-width="1"/><text x="4" y="63.5" font-size="9" fill="#555555">Re</text><line x1="30" y1="44" x2="200" y2="44" stroke="#555555" stroke-width="1"/><text x="4" y="47.5" font-size="9" fill="#555555">Sol</text><line x1="30" y1="28" x2="200" y2="28" stroke="#555555" stroke-width="1"/><text x="4" y="31.5" font-size="9" fill="#555555">Si</text><line x1="30" y1="12" x2="200" y2="12" stroke="#555555" stroke-width="1"/><text x="4" y="15.5" font-size="9" fill="#555555">Mi</text><circle cx="81" cy="92" r="7" fill="#1f4e9c"/><text x="81" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="115" cy="92" r="7" fill="#1f4e9c"/><text x="115" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="183" cy="92" r="7" fill="#1f4e9c"/><text x="183" y="95" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="81" cy="76" r="7" fill="#1f4e9c"/><text x="81" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="149" cy="76" r="7" fill="#1f4e9c"/><text x="149" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="183" cy="76" r="7" fill="#1f4e9c"/><text x="183" y="79" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="81" cy="60" r="7" fill="#f39c12"/><text x="81" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="149" cy="60" r="7" fill="#1f4e9c"/><text x="149" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="183" cy="60" r="7" fill="#1f4e9c"/><text x="183" y="63" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="81" cy="44" r="7" fill="#1f4e9c"/><text x="81" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text><circle cx="149" cy="44" r="7" fill="#1f4e9c"/><text x="149" y="47" font-size="7.5" fill="#ffffff" text-anchor="middle">La</text><circle cx="81" cy="28" r="7" fill="#1f4e9c"/><text x="81" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Si</text><circle cx="115" cy="28" r="7" fill="#1f4e9c"/><text x="115" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Do</text><circle cx="183" cy="28" r="7" fill="#f39c12"/><text x="183" y="31" font-size="7.5" fill="#ffffff" text-anchor="middle">Re</text><circle cx="81" cy="12" r="7" fill="#1f4e9c"/><text x="81" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Mi</text><circle cx="115" cy="12" r="7" fill="#1f4e9c"/><text x="115" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Fa</text><circle cx="183" cy="12" r="7" fill="#1f4e9c"/><text x="183" y="15" font-size="7.5" fill="#ffffff" text-anchor="middle">Sol</text></svg>
+</g>
+<g transform="translate(0,2224)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Secuencias</text>
+</g>
+<g transform="translate(0,2224)">
+<text x="40" y="36" font-size="11" fill="#222222" font-weight="bold">Re dórico por terceras</text>
+</g>
+<g transform="translate(0,2224)">
+<text x="40" y="51" font-size="11" fill="#555555">Re₄ Fa₄ Mi₄ Sol₄ Fa₄ La₄ Sol₄ Si₄ La₄ Do₅ Si₄ Re₅ Do₅ Mi₅ Re₅</text>
+</g>
+<g transform="translate(0,2224)">
+<svg x="40" y="61" width="515" height="76.2" viewBox="0 -1.792 52.904 7.824">
+<title id="titulo">Re dórico por terceras</title>
+<desc id="descripcion">Re₄, Fa₄, Mi₄, Sol₄, Fa₄, La₄, Sol₄, Si₄, La₄, Do₅, Si₄, Re₅, Do₅, Mi₅, Re₅</desc>
+<g stroke="currentColor" fill="none">
+<line x1="0" y1="0" x2="52.304" y2="0" stroke-width="0.13"/>
+<line x1="0" y1="1" x2="52.304" y2="1" stroke-width="0.13"/>
+<line x1="0" y1="2" x2="52.304" y2="2" stroke-width="0.13"/>
+<line x1="0" y1="3" x2="52.304" y2="3" stroke-width="0.13"/>
+<line x1="0" y1="4" x2="52.304" y2="4" stroke-width="0.13"/>
+<line x1="0" y1="0" x2="0" y2="4" stroke-width="0.16"/>
+<line x1="52.304" y1="0" x2="52.304" y2="4" stroke-width="0.16"/>
+</g>
+<g fill="currentColor" stroke="none">
+
+<path transform="translate(0.6 3)" d="M1.504 -1.66C1.496 -1.708 1.504 -1.712 1.528 -1.736C1.592 -1.796 1.676 -1.88 1.752 -1.964C2.088 -2.332 2.288 -2.808 2.288 -3.26C2.288 -3.608 2.192 -3.952 2.028 -4.192C1.968 -4.28 1.864 -4.392 1.82 -4.392C1.764 -4.392 1.64 -4.288 1.56 -4.2C1.264 -3.872 1.168 -3.372 1.168 -2.956C1.168 -2.724 1.196 -2.464 1.224 -2.3C1.232 -2.252 1.236 -2.244 1.188 -2.204C0.932 -1.992 0.656 -1.748 0.448 -1.492C0.172 -1.148 0 -0.776 0 -0.348C0 0.348 0.476 1.008 1.456 1.008C1.548 1.008 1.652 1 1.732 0.984C1.776 0.976 1.784 0.972 1.792 1.02C1.84 1.288 1.9 1.636 1.9 1.824C1.9 2.416 1.5 2.488 1.264 2.488C1.048 2.488 0.944 2.424 0.944 2.372C0.944 2.344 0.98 2.332 1.072 2.304C1.196 2.268 1.34 2.16 1.34 1.928C1.34 1.708 1.2 1.52 0.956 1.52C0.688 1.52 0.528 1.732 0.528 1.98C0.528 2.24 0.684 2.632 1.288 2.632C1.556 2.632 2.076 2.512 2.076 1.832C2.076 1.604 2.004 1.224 1.96 0.976C1.952 0.928 1.956 0.932 2.012 0.908C2.416 0.748 2.684 0.408 2.684 -0.044C2.684 -0.556 2.308 -1.008 1.72 -1.008C1.616 -1.008 1.616 -1.008 1.604 -1.08ZM1.88 -3.772C2.012 -3.772 2.12 -3.664 2.12 -3.444C2.12 -3.168 1.988 -2.912 1.676 -2.6C1.612 -2.536 1.516 -2.444 1.424 -2.364C1.396 -2.34 1.38 -2.344 1.372 -2.396C1.356 -2.5 1.348 -2.636 1.348 -2.764C1.348 -3.388 1.636 -3.772 1.88 -3.772ZM1.444 -1.048C1.456 -0.972 1.456 -0.976 1.384 -0.952C1.032 -0.832 0.804 -0.516 0.804 -0.176C0.804 0.184 0.992 0.44 1.264 0.532C1.296 0.544 1.344 0.556 1.372 0.556C1.404 0.556 1.42 0.536 1.42 0.512C1.42 0.484 1.388 0.472 1.36 0.46C1.192 0.388 1.072 0.216 1.072 0.032C1.072 -0.196 1.228 -0.368 1.472 -0.436C1.536 -0.452 1.544 -0.448 1.552 -0.404L1.752 0.788C1.76 0.832 1.756 0.832 1.696 0.844C1.632 0.856 1.552 0.864 1.472 0.864C0.772 0.864 0.32 0.476 0.32 -0.08C0.32 -0.316 0.36 -0.632 0.692 -1.008C0.932 -1.276 1.116 -1.424 1.304 -1.576C1.344 -1.608 1.352 -1.604 1.36 -1.56ZM1.72 -0.412C1.712 -0.46 1.716 -0.472 1.764 -0.468C2.088 -0.44 2.356 -0.168 2.356 0.184C2.356 0.436 2.204 0.64 1.98 0.752C1.932 0.776 1.924 0.776 1.916 0.728Z"/>
+</g>
+<g transform="translate(0 0)">
+<g stroke="currentColor" fill="none">
+
+</g>
+<g stroke="currentColor" fill="none" stroke-width="0.12">
+
+</g>
+<g fill="currentColor" stroke="none">
+<g><title>Re₄</title><path transform="translate(5.084 4.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Fa₄</title><path transform="translate(8.272 3.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Mi₄</title><path transform="translate(11.46 4)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Sol₄</title><path transform="translate(14.648 3)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Fa₄</title><path transform="translate(17.836 3.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>La₄</title><path transform="translate(21.024 2.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Sol₄</title><path transform="translate(24.212 3)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Si₄</title><path transform="translate(27.4 2)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>La₄</title><path transform="translate(30.588 2.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Do₅</title><path transform="translate(33.776 1.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Si₄</title><path transform="translate(36.964 2)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Re₅</title><path transform="translate(40.152 1)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Do₅</title><path transform="translate(43.34 1.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Mi₅</title><path transform="translate(46.528 0.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Re₅</title><path transform="translate(49.716 1)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+
+</g>
+</g>
+</svg>
+</g>
+<g transform="translate(0,2224)">
+<text x="40" y="151.2" font-size="11" fill="#222222" font-weight="bold">Re dórico en grupos de cuatro</text>
+</g>
+<g transform="translate(0,2224)">
+<text x="40" y="166.2" font-size="11" fill="#555555">Re₄ Mi₄ Fa₄ Sol₄ Mi₄ Fa₄ Sol₄ La₄ Fa₄ Sol₄ La₄ Si₄ Sol₄ La₄ Si₄ Do₅ La₄ Si₄ Do₅ Re₅ Si₄ Do₅ Re₅ Mi₅ Do₅</text>
+<text x="40" y="182.2" font-size="11" fill="#555555">Re₅ Mi₅ Fa₅ Re₅</text>
+</g>
+<g transform="translate(0,2224)">
+<svg x="40" y="192.2" width="515" height="41.3" viewBox="0 -1.792 97.536 7.824">
+<title id="titulo">Re dórico en grupos de cuatro</title>
+<desc id="descripcion">Re₄, Mi₄, Fa₄, Sol₄, Mi₄, Fa₄, Sol₄, La₄, Fa₄, Sol₄, La₄, Si₄, Sol₄, La₄, Si₄, Do₅, La₄, Si₄, Do₅, Re₅, Si₄, Do₅, Re₅, Mi₅, Do₅, Re₅, Mi₅, Fa₅, Re₅</desc>
+<g stroke="currentColor" fill="none">
+<line x1="0" y1="0" x2="96.936" y2="0" stroke-width="0.13"/>
+<line x1="0" y1="1" x2="96.936" y2="1" stroke-width="0.13"/>
+<line x1="0" y1="2" x2="96.936" y2="2" stroke-width="0.13"/>
+<line x1="0" y1="3" x2="96.936" y2="3" stroke-width="0.13"/>
+<line x1="0" y1="4" x2="96.936" y2="4" stroke-width="0.13"/>
+<line x1="0" y1="0" x2="0" y2="4" stroke-width="0.16"/>
+<line x1="96.936" y1="0" x2="96.936" y2="4" stroke-width="0.16"/>
+</g>
+<g fill="currentColor" stroke="none">
+
+<path transform="translate(0.6 3)" d="M1.504 -1.66C1.496 -1.708 1.504 -1.712 1.528 -1.736C1.592 -1.796 1.676 -1.88 1.752 -1.964C2.088 -2.332 2.288 -2.808 2.288 -3.26C2.288 -3.608 2.192 -3.952 2.028 -4.192C1.968 -4.28 1.864 -4.392 1.82 -4.392C1.764 -4.392 1.64 -4.288 1.56 -4.2C1.264 -3.872 1.168 -3.372 1.168 -2.956C1.168 -2.724 1.196 -2.464 1.224 -2.3C1.232 -2.252 1.236 -2.244 1.188 -2.204C0.932 -1.992 0.656 -1.748 0.448 -1.492C0.172 -1.148 0 -0.776 0 -0.348C0 0.348 0.476 1.008 1.456 1.008C1.548 1.008 1.652 1 1.732 0.984C1.776 0.976 1.784 0.972 1.792 1.02C1.84 1.288 1.9 1.636 1.9 1.824C1.9 2.416 1.5 2.488 1.264 2.488C1.048 2.488 0.944 2.424 0.944 2.372C0.944 2.344 0.98 2.332 1.072 2.304C1.196 2.268 1.34 2.16 1.34 1.928C1.34 1.708 1.2 1.52 0.956 1.52C0.688 1.52 0.528 1.732 0.528 1.98C0.528 2.24 0.684 2.632 1.288 2.632C1.556 2.632 2.076 2.512 2.076 1.832C2.076 1.604 2.004 1.224 1.96 0.976C1.952 0.928 1.956 0.932 2.012 0.908C2.416 0.748 2.684 0.408 2.684 -0.044C2.684 -0.556 2.308 -1.008 1.72 -1.008C1.616 -1.008 1.616 -1.008 1.604 -1.08ZM1.88 -3.772C2.012 -3.772 2.12 -3.664 2.12 -3.444C2.12 -3.168 1.988 -2.912 1.676 -2.6C1.612 -2.536 1.516 -2.444 1.424 -2.364C1.396 -2.34 1.38 -2.344 1.372 -2.396C1.356 -2.5 1.348 -2.636 1.348 -2.764C1.348 -3.388 1.636 -3.772 1.88 -3.772ZM1.444 -1.048C1.456 -0.972 1.456 -0.976 1.384 -0.952C1.032 -0.832 0.804 -0.516 0.804 -0.176C0.804 0.184 0.992 0.44 1.264 0.532C1.296 0.544 1.344 0.556 1.372 0.556C1.404 0.556 1.42 0.536 1.42 0.512C1.42 0.484 1.388 0.472 1.36 0.46C1.192 0.388 1.072 0.216 1.072 0.032C1.072 -0.196 1.228 -0.368 1.472 -0.436C1.536 -0.452 1.544 -0.448 1.552 -0.404L1.752 0.788C1.76 0.832 1.756 0.832 1.696 0.844C1.632 0.856 1.552 0.864 1.472 0.864C0.772 0.864 0.32 0.476 0.32 -0.08C0.32 -0.316 0.36 -0.632 0.692 -1.008C0.932 -1.276 1.116 -1.424 1.304 -1.576C1.344 -1.608 1.352 -1.604 1.36 -1.56ZM1.72 -0.412C1.712 -0.46 1.716 -0.472 1.764 -0.468C2.088 -0.44 2.356 -0.168 2.356 0.184C2.356 0.436 2.204 0.64 1.98 0.752C1.932 0.776 1.924 0.776 1.916 0.728Z"/>
+</g>
+<g transform="translate(0 0)">
+<g stroke="currentColor" fill="none">
+
+</g>
+<g stroke="currentColor" fill="none" stroke-width="0.12">
+
+</g>
+<g fill="currentColor" stroke="none">
+<g><title>Re₄</title><path transform="translate(5.084 4.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Mi₄</title><path transform="translate(8.272 4)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Fa₄</title><path transform="translate(11.46 3.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Sol₄</title><path transform="translate(14.648 3)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Mi₄</title><path transform="translate(17.836 4)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Fa₄</title><path transform="translate(21.024 3.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Sol₄</title><path transform="translate(24.212 3)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>La₄</title><path transform="translate(27.4 2.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Fa₄</title><path transform="translate(30.588 3.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Sol₄</title><path transform="translate(33.776 3)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>La₄</title><path transform="translate(36.964 2.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Si₄</title><path transform="translate(40.152 2)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Sol₄</title><path transform="translate(43.34 3)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>La₄</title><path transform="translate(46.528 2.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Si₄</title><path transform="translate(49.716 2)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Do₅</title><path transform="translate(52.904 1.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>La₄</title><path transform="translate(56.092 2.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Si₄</title><path transform="translate(59.28 2)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Do₅</title><path transform="translate(62.468 1.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Re₅</title><path transform="translate(65.656 1)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Si₄</title><path transform="translate(68.844 2)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Do₅</title><path transform="translate(72.032 1.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Re₅</title><path transform="translate(75.22 1)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Mi₅</title><path transform="translate(78.408 0.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Do₅</title><path transform="translate(81.596 1.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Re₅</title><path transform="translate(84.784 1)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Mi₅</title><path transform="translate(87.972 0.5)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Fa₅</title><path transform="translate(91.16 0)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+<g><title>Re₅</title><path transform="translate(94.348 1)" d="M0.864 -0.5C0.332 -0.5 0 -0.28 0 -0.008C0 0.26 0.228 0.5 0.824 0.5C1.48 0.5 1.688 0.272 1.688 -0.008C1.688 -0.292 1.236 -0.5 0.864 -0.5ZM0.444 -0.252C0.488 -0.392 0.636 -0.412 0.76 -0.412C1.036 -0.412 1.256 -0.116 1.256 0.124C1.256 0.152 1.252 0.176 1.248 0.2C1.228 0.3 1.172 0.368 1.072 0.392C1.032 0.404 0.988 0.408 0.948 0.408C0.912 0.408 0.88 0.404 0.844 0.392C0.776 0.372 0.712 0.336 0.656 0.288C0.624 0.26 0.596 0.232 0.572 0.2C0.492 0.108 0.432 -0.028 0.432 -0.156C0.432 -0.188 0.436 -0.22 0.444 -0.252Z"/></g>
+
+</g>
+</g>
+</svg>
+</g>
+<g transform="translate(0,2566)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Acordes de la escala</text>
+</g>
+<g transform="translate(0,2566)">
+<text x="40" y="32" font-size="11" fill="#222222">i7 Rem7 · ii7 Mim7 · ♭IIImaj7 Famaj7 · IV7 Sol7</text>
+</g>
+<g transform="translate(0,2566)">
+<text x="40" y="48" font-size="11" fill="#222222">v7 Lam7 · viø7 Sim7(♭5) · ♭VIImaj7 Domaj7</text>
+</g>
+<g transform="translate(0,2628)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Escalera de brillo</text>
+</g>
+<g transform="translate(0,2628)">
+<text x="40" y="32" font-size="11" fill="#222222">-6 Re ultralocrio ♭♭3 · -5 Re ultralocrio · -4 Re alterada</text>
+</g>
+<g transform="translate(0,2628)">
+<text x="40" y="48" font-size="11" fill="#222222">-3 Re locrio · -2 Re frigio · -1 Re menor natural</text>
+</g>
+<g transform="translate(0,2628)">
+<text x="40" y="64" font-size="11" fill="#222222">▸ 0 Re dórico · +1 Re mixolidio · +2 Re mayor</text>
+</g>
+<g transform="translate(0,2628)">
+<text x="40" y="80" font-size="11" fill="#222222">+3 Re lidio · +4 Re lidio ♯2 · +5 Re lidio aumentado ♯2</text>
+</g>
+<text x="297.5" y="822" font-size="9" fill="#777777" text-anchor="middle">1 / 4</text>
+<text x="297.5" y="1664" font-size="9" fill="#777777" text-anchor="middle">2 / 4</text>
+<text x="297.5" y="2506" font-size="9" fill="#777777" text-anchor="middle">3 / 4</text>
+<text x="297.5" y="3348" font-size="9" fill="#777777" text-anchor="middle">4 / 4</text>
+</svg>

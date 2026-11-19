@@ -235,8 +235,8 @@ import Testing
         let escalas = HojaDeEstudio.comparacion(Escala(.do), con: Escala(.do, .dorico), en: notacion, formato: .html)
         #expect(esPagina(escalas) && escalas.contains("<h1>Do mayor → Do dórico</h1>"))
         // Mi y Si cambian: resaltados en las dos filas, en el color de cada escala.
-        #expect(escalas.contains("<td class=\"origen propia cambio\">Mi</td>"))
-        #expect(escalas.contains("<td class=\"destino propia cambio\">Mi♭</td>"))
+        #expect(escalas.contains("<td class=\"origen negrita resaltada\">Mi</td>"))
+        #expect(escalas.contains("<td class=\"destino negrita resaltada\">Mi♭</td>"))
         #expect(escalas.contains("<td class=\"comun\">Re</td>"))
         let fichero = PresentacionDeEstudioDeEscala.ficheroDeLaComparacionHTML(
             Escala(.do), con: Escala(.do, .dorico), en: notacion)
@@ -303,10 +303,11 @@ import Testing
         #expect(hoja.contains(">7: Si → Si♭</text>"))
         #expect(hoja.contains(">Solo en Do mayor: Mi, Si</text>"))
         #expect(hoja.contains(">Solo en Do dórico: Mi♭, Si♭</text>"))
-        // Los dos pentagramas dentro; sombreados los grados 3 y 7, y el reloj con un polígono por escala.
+        // Los dos pentagramas dentro; sombreados los grados 3 y 7 (el número y las dos notas), y el reloj con un
+        // polígono por escala.
         #expect(hoja.components(separatedBy: "<svg").count >= 4)
         #expect(hoja.components(separatedBy: "<svg").count == hoja.components(separatedBy: "</svg>").count)
-        #expect(hoja.components(separatedBy: "fill=\"#fdecea\"").count == 3)
+        #expect(hoja.components(separatedBy: "fill=\"#fdecea\"").count == 7)
         #expect(hoja.contains("stroke-dasharray=\"5 3\""))
         // Con tónicas distintas no cambia ningún grado, pero se ven las notas que no comparten.
         let lejos = HojaDeEstudio.comparacion(Escala(.do), con: Escala(.fa), en: notacion)

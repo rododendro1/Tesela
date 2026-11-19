@@ -10,12 +10,29 @@ import Testing
     let notacion = Notacion.compacta(.espanol)
 
     @Test func partirEnLineas() {
-        let partir = Hoja.partir
-        #expect(partir("Re Mi Fa Sol", 6) == ["Re Mi", "Fa Sol"])
-        #expect(partir("Supercalifragilístico y más", 5) == ["Supercalifragilístico", "y más"])
-        #expect(partir("", 10).isEmpty)
-        #expect(Hoja.caracteresPorLinea(56) == 20)
-        #expect(Hoja.caracteresPorLinea(560) == 100)
+        #expect(Hoja.partir("Re Mi Fa Sol", ancho: 30, tamano: 10) == ["Re Mi", "Fa Sol"])
+        #expect(
+            Hoja.partir("Supercalifragilístico y más", ancho: 30, tamano: 10) == ["Supercalifragilístico", "y más"])
+        #expect(Hoja.partir("", ancho: 100, tamano: 10).isEmpty)
+        // En negrita ocupa un poco más: lo que cabe justo deja de caber.
+        #expect(Hoja.partir("Re Mi", ancho: 26.2, tamano: 10) == ["Re Mi"])
+        #expect(Hoja.partir("Re Mi", ancho: 26.2, tamano: 10, negrita: true) == ["Re", "Mi"])
+    }
+
+    @Test func anchoDelTexto() {
+        #expect(Hoja.anchoDelTexto("Re", tamano: 10) == 12.78)
+        // Una «i» ocupa menos que una «m»; una acentuada, como la suya sin acento.
+        #expect(Hoja.anchoDelTexto("i", tamano: 10) < Hoja.anchoDelTexto("m", tamano: 10))
+        #expect(Hoja.anchoDelTexto("é", tamano: 10) == Hoja.anchoDelTexto("e", tamano: 10))
+        #expect(Hoja.anchoDelTexto("e\u{301}", tamano: 10) == Hoja.anchoDelTexto("e", tamano: 10))
+        // Las alteraciones, las rayas, las flechas, los índices de octava y la escritura de Asia oriental.
+        #expect(Hoja.anchoDelTexto("♭♯𝄪", tamano: 10) == 18)
+        #expect(Hoja.anchoDelTexto("·•", tamano: 10) == 5.56)
+        #expect(Hoja.anchoDelTexto("–—", tamano: 10) == 15.56)
+        #expect(Hoja.anchoDelTexto("→…", tamano: 10) == 20)
+        #expect(Hoja.anchoDelTexto("₄", tamano: 10) == 4)
+        #expect(Hoja.anchoDelTexto("陽音", tamano: 10) == 20)
+        #expect(Hoja.anchoDelTexto("ص", tamano: 10) == 5.56)
     }
 
     @Test func origenCaracterYNombresOriginalesDeLaEscala() {

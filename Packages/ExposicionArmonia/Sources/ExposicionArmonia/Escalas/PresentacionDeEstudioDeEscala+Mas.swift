@@ -203,12 +203,13 @@ extension PresentacionDeEstudioDeEscala {
     // MARK: El teclado de piano
 
     /// La escala dibujada en un teclado de piano (SVG), desde la octava 4: con los dedos de la mano dada o, sin
-    /// mano, con el nombre de cada nota. La tónica lleva el borde naranja.
+    /// mano, con el nombre de cada nota. La tónica lleva el borde naranja. Encima va el nombre de la escala, y el de
+    /// la mano, salvo con `conTitulo: false` (en la hoja de estudio, la mano va fuera del dibujo).
     ///
     ///     let svg = PresentacionDeEstudioDeEscala.teclado(de: Escala(.re), mano: .derecha,
     ///         en: .compacta(.espanol))
     public static func teclado(
-        de escala: Escala, mano: Mano? = nil, octavas: Int = 1, en notacion: Notacion
+        de escala: Escala, mano: Mano? = nil, octavas: Int = 1, conTitulo: Bool = true, en notacion: Notacion
     ) -> String {
         let alturas: [Altura]
         var rotulos: [Int: String] = [:]
@@ -226,6 +227,7 @@ extension PresentacionDeEstudioDeEscala {
         let tonica = escala.tonica.claseDeAltura
         let primeras = Set(alturas.map(\.midi).filter { (($0 % 12) + 12) % 12 == tonica })
         return TecladoDePiano(cubriendo: alturas).svg(
-            marcadas: MarcasDeDiagrama(rotulos: rotulos), primeras: primeras, opciones: .init(titulo: titulo))
+            marcadas: MarcasDeDiagrama(rotulos: rotulos), primeras: primeras,
+            opciones: .init(titulo: conTitulo ? titulo : nil))
     }
 }

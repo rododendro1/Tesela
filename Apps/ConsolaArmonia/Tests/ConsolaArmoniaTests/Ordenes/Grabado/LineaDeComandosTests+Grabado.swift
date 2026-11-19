@@ -116,6 +116,26 @@ extension LineaDeComandosTests {
         // Con `--motor propio` dicho, y en PDF, que es lo que sale si no se dice otro formato.
         let pdf = grabado("grabar pentagrama acorde Sol7 --motor propio", con: falso)
         #expect(pdf.datos == Data("GRABADO".utf8))
+        #expect(falso.llamadas.last?.argumentos.last == "grabado.svg")
+    }
+
+    @Test func grabarUnaHojaDeVariasPaginas() throws {
+        let falso = EjecutorFalso()
+        // En PDF, cada página de la hoja en su SVG, y rsvg-convert los junta en un PDF de varias páginas.
+        let pdf = grabado("grabar hoja Re dórico", con: falso)
+        #expect(pdf.datos == Data("GRABADO".utf8), Comment(rawValue: pdf.error))
+        let llamada = try #require(falso.llamadas.last)
+        let paginas = llamada.argumentos.drop { $0 != "grabado-pagina-1.svg" }
+        #expect(paginas.count > 1)
+        #expect(paginas == ArraySlice((1...paginas.count).map { "grabado-pagina-\($0).svg" }))
+        #expect(llamada.argumentos.prefix(4) == ["--format", "pdf", "--output", "grabado.pdf"])
+        // La última, recortada de la hoja entera.
+        let desde = 842 * (paginas.count - 1)
+        #expect(llamada.fuente.contains("viewBox=\"0 \(desde) 595 842\"") && !llamada.fuente.contains("data-paginas"))
+        // En PNG, la hoja entera, de una pieza.
+        let png = grabado("grabar hoja Re dórico --formato png", con: falso)
+        #expect(png.datos == Data("GRABADO".utf8))
+        #expect(falso.llamadas.last?.argumentos.last == "grabado.svg")
     }
 
     @Test func grabarSinElPrograma() {

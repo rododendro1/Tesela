@@ -5,16 +5,16 @@ import Foundation
 
 /// Las hojas de estudio: la de una escala, un acorde, una progresión analizada (también en las doce tonalidades), una
 /// tonalidad, un ritmo, una progresión con nombre, una serie dodecafónica, un arpegio y un instrumento, y la
-/// comparación de dos escalas o dos progresiones. Cada una se da en SVG, del ancho de un A4 para imprimir, o como
-/// página HTML, que se adapta a la pantalla, sigue el modo oscuro y se imprime en A4. `armonia hoja …` las escribe y
-/// `armonia grabar hoja …` las pasa a PDF.
+/// comparación de dos escalas o dos progresiones. Cada una se da en SVG, en páginas A4 numeradas para imprimir, o
+/// como página HTML, que se adapta a la pantalla, sigue el modo oscuro y se imprime en A4. `armonia hoja …` las
+/// escribe y `armonia grabar hoja …` las pasa a un PDF de una página por cada una.
 ///
 ///     let hoja = HojaDeEstudio.ritmo(.tresillo, en: .compacta(.espanol))
 ///     hoja.hasPrefix("<svg")   // true
 public enum HojaDeEstudio {
     /// Cómo se escribe la hoja.
     public enum Formato: Hashable, Sendable {
-        /// Un SVG del ancho de un A4, para imprimir o pasar a PDF.
+        /// Un SVG de páginas A4, una debajo de otra, para imprimir o pasar a PDF (`paginas(deUnSVG:)` las separa).
         case svg
         /// Una página HTML que se adapta a la pantalla, sigue el modo oscuro y se imprime en A4.
         case html
