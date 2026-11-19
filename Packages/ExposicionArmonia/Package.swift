@@ -23,12 +23,14 @@ let package = Package(
                 .product(name: "Armonia", package: "Armonia"),
                 .product(name: "Hexagonos", package: "Hexagonos"),
             ]),
+        // Las hojas guardadas en `Hojas/Referencias`, con que se comparan las de ahora (ReferenciasDeHojasTests).
         .testTarget(
             name: "ExposicionArmoniaTests",
             dependencies: [
                 "ExposicionArmonia",
                 .product(name: "Armonia", package: "Armonia"),
                 .product(name: "Hexagonos", package: "Hexagonos"),
-            ]),
+            ],
+            exclude: ["Hojas/Referencias"]),
     ]
 )

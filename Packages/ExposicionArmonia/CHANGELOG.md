@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### Lo nuevo
+
+- Las hojas de estudio en SVG van en páginas A4, numeradas si hay más de una: una sección de hasta media página que
+  no cabe en lo que queda de una pasa entera a la siguiente, y una más larga se parte entre línea y línea, sin dejar
+  un título solo al final. `HojaDeEstudio.paginas(deUnSVG:)` da cada página como un SVG suelto, y `armonia grabar
+  hoja …` las junta en un PDF de varias páginas.
+- `PresentacionDeEstudioDeEscala.teclado(de:mano:octavas:conTitulo:en:)`: con `conTitulo: false`, el teclado sin el
+  nombre de la escala y la mano encima.
+
 ### Obsoleto
 
 - Las hojas de una escala, un acorde, una progresión y una tonalidad, y las comparaciones, están en `HojaDeEstudio`
@@ -22,6 +31,13 @@
   HTML; la de una escala, el reloj al lado de las estadísticas también en HTML, y el carácter de un ritmo o una
   progresión con nombre, en HTML, con las palabras de cada fuente entre comillas. Un pentagrama corto no ocupa en el
   SVG más del doble de su ancho, como en HTML.
+- Las comparaciones de dos escalas y de dos progresiones son hojas como las demás: lo de cada una en su color, las
+  celdas que cambian resaltadas y la leyenda de los colores, igual en SVG que en HTML.
+- El texto de las hojas en SVG se mide con el ancho de cada letra en Helvetica, así que se parte donde de verdad deja
+  de caber, y las celdas de una tabla que no cabe se parten en varias líneas en lugar de salirse.
+- En la hoja de una escala, el nombre de cada mano va encima de su teclado, sin hueco debajo del título; en la de un
+  acorde, cada disposición lleva su nombre (cerrada, drop 2, fundamental, tercera y séptima).
+- Pruebas de referencia de las hojas: una de cada tipo, guardada, para ver en el diff cualquier cambio de maquetación.
 
 ## 0.6.1 (2026-11-18)
 

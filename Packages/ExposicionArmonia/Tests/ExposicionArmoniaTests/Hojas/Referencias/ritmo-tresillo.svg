@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595" height="842" viewBox="0 0 595 842" font-family="Helvetica, Arial, sans-serif" data-paginas="1">
+<rect width="595" height="842" fill="#ffffff"/>
+<g transform="translate(0,40)">
+<text x="40" y="22" font-size="22" fill="#222222" font-weight="bold">tresillo</text>
+<text x="40" y="45" font-size="13" fill="#555555">4/4 · x..x..x.</text>
+</g>
+<g transform="translate(0,97)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Ritmo</text>
+</g>
+<g transform="translate(0,97)">
+<text x="40" y="33" font-size="10" fill="#555555">Ritmo</text>
+<svg x="40" y="38" width="251.5" height="251.5" viewBox="0 0 200 200"><circle cx="100" cy="100" r="78" fill="none" stroke="#bbbbbb" stroke-width="1"/><polygon points="100,22 155.2,155.2 22,100" fill="#dbe4f3" stroke="#1f4e9c" stroke-width="1.5"/><circle cx="100" cy="22" r="7" fill="#f39c12"/><circle cx="155.2" cy="44.8" r="2.5" fill="#999999"/><circle cx="178" cy="100" r="2.5" fill="#999999"/><circle cx="155.2" cy="155.2" r="7" fill="#1f4e9c"/><circle cx="100" cy="178" r="2.5" fill="#999999"/><circle cx="44.8" cy="155.2" r="2.5" fill="#999999"/><circle cx="22" cy="100" r="7" fill="#1f4e9c"/><circle cx="44.8" cy="44.8" r="2.5" fill="#999999"/></svg>
+<text x="303.5" y="33" font-size="10" fill="#555555">Rejilla</text>
+<svg x="303.5" y="38" width="251.5" height="68.8" viewBox="0 0 212 58"><rect x="10" y="10" width="24" height="24" fill="#1f4e9c" stroke="#555555" stroke-width="1"/><line x1="10" y1="6" x2="10" y2="38" stroke="#222222" stroke-width="2.5"/><text x="19" y="48" font-size="8" fill="#777777">1</text><rect x="34" y="10" width="24" height="24" fill="#ffffff" stroke="#555555" stroke-width="1"/><text x="43" y="48" font-size="8" fill="#777777">2</text><rect x="58" y="10" width="24" height="24" fill="#ffffff" stroke="#555555" stroke-width="1"/><line x1="58" y1="6" x2="58" y2="38" stroke="#222222" stroke-width="2.5"/><text x="67" y="48" font-size="8" fill="#777777">3</text><rect x="82" y="10" width="24" height="24" fill="#1f4e9c" stroke="#555555" stroke-width="1"/><text x="91" y="48" font-size="8" fill="#777777">4</text><rect x="106" y="10" width="24" height="24" fill="#ffffff" stroke="#555555" stroke-width="1"/><line x1="106" y1="6" x2="106" y2="38" stroke="#222222" stroke-width="2.5"/><text x="115" y="48" font-size="8" fill="#777777">5</text><rect x="130" y="10" width="24" height="24" fill="#ffffff" stroke="#555555" stroke-width="1"/><text x="139" y="48" font-size="8" fill="#777777">6</text><rect x="154" y="10" width="24" height="24" fill="#1f4e9c" stroke="#555555" stroke-width="1"/><line x1="154" y1="6" x2="154" y2="38" stroke="#222222" stroke-width="2.5"/><text x="163" y="48" font-size="8" fill="#777777">7</text><rect x="178" y="10" width="24" height="24" fill="#ffffff" stroke="#555555" stroke-width="1"/><text x="187" y="48" font-size="8" fill="#777777">8</text></svg>
+</g>
+<g transform="translate(0,400.5)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Información</text>
+</g>
+<g transform="translate(0,400.5)">
+<text x="40" y="32" font-size="11" fill="#222222">Familia: líneas de tiempo</text>
+</g>
+<g transform="translate(0,400.5)">
+<text x="40" y="48" font-size="11" fill="#222222">Lugares de origen: Cuba</text>
+</g>
+<g transform="translate(0,400.5)">
+<text x="40" y="64" font-size="11" fill="#222222">Patrón: x..x..x.</text>
+</g>
+<g transform="translate(0,400.5)">
+<text x="40" y="80" font-size="11" fill="#222222">Agrupación: 2 + 2 + 2 + 2</text>
+</g>
+<g transform="translate(0,400.5)">
+<text x="40" y="96" font-size="11" fill="#222222">Compás: 4/4</text>
+</g>
+<g transform="translate(0,510.5)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Estadísticas</text>
+</g>
+<g transform="translate(0,510.5)">
+<text x="40" y="32" font-size="11" fill="#222222">Pulsos · golpes · fuertes: 8 · 3 · 3</text>
+</g>
+<g transform="translate(0,510.5)">
+<text x="40" y="48" font-size="11" fill="#222222">Intervalos: [3, 3, 2]</text>
+</g>
+<g transform="translate(0,510.5)">
+<text x="40" y="64" font-size="11" fill="#222222">Vector de distancias: [0, 1, 2, 0]</text>
+</g>
+<g transform="translate(0,510.5)">
+<text x="40" y="80" font-size="11" fill="#222222">Propiedades: euclídeo · profundo (Erdős)</text>
+</g>
+<g transform="translate(0,510.5)">
+<text x="40" y="96" font-size="11" fill="#222222">Simetrías por rotación: 0</text>
+</g>
+<g transform="translate(0,510.5)">
+<text x="40" y="112" font-size="11" fill="#222222">Uniformidad (Amiot): 0.805</text>
+</g>
+<g transform="translate(0,510.5)">
+<text x="40" y="128" font-size="11" fill="#222222">Contratiempo (Toussaint): 1</text>
+</g>
+<g transform="translate(0,510.5)">
+<text x="40" y="144" font-size="11" fill="#222222">Síncopa (WNBD): 1.333</text>
+</g>
+<g transform="translate(0,668.5)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Ritmos parecidos</text>
+</g>
+<g transform="translate(0,668.5)">
+<text x="40" y="32" font-size="11" fill="#222222" font-weight="bold">malfūf</text>
+<text x="86" y="32" font-size="11" fill="#222222">x..o..o.</text>
+<text x="133.1" y="32" font-size="11" fill="#222222">Distancia de intercambio: 0</text>
+</g>
+<g transform="translate(0,714.5)">
+<text x="40" y="12" font-size="14" fill="#222222" font-weight="bold">Fuentes</text>
+</g>
+<g transform="translate(0,714.5)">
+<text x="40" y="32" font-size="11" fill="#222222">Toussaint 2013</text>
+</g>
+</svg>

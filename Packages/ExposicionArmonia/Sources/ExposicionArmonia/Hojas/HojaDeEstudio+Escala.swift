@@ -1,4 +1,5 @@
 import Armonia
+import Foundation
 
 /// Una parte de la hoja de estudio de una escala, para elegir cuáles lleva: el nombre y las notas van siempre.
 public enum SeccionDeLaHoja: String, CaseIterable, Hashable, Sendable {
@@ -75,10 +76,14 @@ extension HojaDeEstudio {
                 // Las estadísticas, con el reloj al lado.
                 seccion(.estadisticas, alLado: [reloj]) { [.datos(Estudio.estadisticas(de: escala, en: notacion))] },
                 seccion(.teclados) {
-                    [
-                        .dibujos(
-                            Mano.allCases.map { ("", Estudio.teclado(de: escala, mano: $0, en: notacion)) }, porFila: 2)
-                    ]
+                    // Cada teclado, con el nombre de la mano encima.
+                    let teclados = Mano.allCases.map { mano in
+                        (
+                            titulo: notacion.texto { mano == .derecha ? $0.manoDerecha : $0.manoIzquierda },
+                            svg: Estudio.teclado(de: escala, mano: mano, conTitulo: false, en: notacion)
+                        )
+                    }
+                    return [.dibujos(teclados, porFila: 2)]
                 },
                 // El mástil entero, de lado a lado, y debajo cada posición, de dos en dos.
                 seccion(.mastil) {
@@ -127,9 +132,7 @@ extension HojaDeEstudio {
     public static func comparacion(
         _ escala: Escala, con otra: Escala, en notacion: Notacion, formato: Formato = .svg
     ) -> String {
-        formato == .svg
-            ? PresentacionDeEstudioDeEscala.comparacionSVG(escala, con: otra, en: notacion)
-            : PresentacionDeEstudioDeEscala.comparacionHTML(escala, con: otra, en: notacion)
+        escribir(PresentacionDeEstudioDeEscala.hojaDeLaComparacion(escala, con: otra, en: notacion), formato, notacion)
     }
 
     // MARK: El tamaño de una hoja
@@ -140,5 +143,39 @@ extension HojaDeEstudio {
     ///     HojaDeEstudio.tamano(deUnSVG: "<svg viewBox=\"0 0 595 800\"></svg>")?.alto   // 800
     public static func tamano(deUnSVG svg: String) -> (ancho: Double, alto: Double)? {
         Hoja.cajaDeVision(svg).map { ($0.ancho, $0.alto) }
+    }
+
+    // MARK: Las páginas de una hoja
+
+    /// Las páginas A4 de una hoja en SVG, cada una como un SVG suelto de 595 × 842 puntos (`pt`, para que un PDF salga
+    /// del tamaño de un A4): la misma hoja, recortada con su `viewBox`. Un SVG sin `data-paginas`, que no es una hoja,
+    /// sale tal cual.
+    ///
+    ///     let hoja = HojaDeEstudio.escala(Escala(.re, .dorico), en: .compacta(.espanol))
+    ///     HojaDeEstudio.paginas(deUnSVG: hoja).count   // 4
+    ///     HojaDeEstudio.paginas(deUnSVG: "<svg viewBox=\"0 0 10 10\"></svg>")   // ["<svg viewBox=\"0 0 10 10\"></svg>"]
+    public static func paginas(deUnSVG svg: String) -> [String] {
+        guard let atributo = svg.range(of: " data-paginas=\""),
+            let fin = svg[atributo.upperBound...].firstIndex(of: "\""),
+            let paginas = Int(svg[atributo.upperBound..<fin]), paginas > 0,
+            let caja = Hoja.cajaDeVision(svg), let raiz = svg.range(of: "<svg"),
+            let cierre = svg[raiz.upperBound...].firstIndex(of: ">")
+        else { return [svg] }
+        let alto = Hoja.altoDeLaPagina
+        let etiqueta = String(svg[raiz.lowerBound...cierre])
+            .replacingOccurrences(of: String(svg[atributo.lowerBound...fin]), with: "")
+            .replacingOccurrences(
+                of: " width=\"" + Hoja.numero(caja.ancho) + "\"", with: " width=\"" + Hoja.numero(caja.ancho) + "pt\""
+            )
+            .replacingOccurrences(
+                of: " height=\"" + Hoja.numero(caja.alto) + "\"", with: " height=\"" + Hoja.numero(alto) + "pt\"")
+        let resto = svg[svg.index(after: cierre)...]
+        return (0..<paginas).map { i in
+            let vista =
+                "viewBox=\"0 " + Hoja.numero(Double(i) * alto) + " " + Hoja.numero(caja.ancho) + " " + Hoja.numero(alto)
+                + "\""
+            return String(svg[..<raiz.lowerBound])
+                + etiqueta.replacingOccurrences(of: "viewBox=\"" + caja.texto + "\"", with: vista) + resto
+        }
     }
 }

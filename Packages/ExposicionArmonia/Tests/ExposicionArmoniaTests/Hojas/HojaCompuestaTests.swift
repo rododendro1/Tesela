@@ -38,8 +38,82 @@ import Testing
         #expect(html.contains("<tr><td>a</td></tr>") && html.contains("<ul><li>uno</li>"))
         #expect(html.contains("<div class=\"digitaciones\">") && html.contains("<h3>Con título</h3>"))
         #expect(html.contains("<div class=\"columnas\"><section><h2>Al lado</h2>") && !html.contains("Sin nada"))
-        #expect(Hoja.listaHTML(["a"], clase: "c") == "<ul class=\"c\"><li>a</li></ul>")
         #expect(Hoja.anchoPropio(sinAncho) == nil && Hoja.anchoPropio("<svg width=\"30\"/>") == 30)
+    }
+
+    @Test func lasPiezasDeLasComparaciones() {
+        let hoja = HojaCompuesta(
+            titulo: "Una", otroTitulo: "Otra",
+            secciones: [
+                .init(titulo: "Origen", piezas: [.leyenda([("común", .comun), ("suave", .suave)])], tono: .origen),
+                .init(
+                    titulo: "",
+                    piezas: [
+                        .tablaMarcada([
+                            [.init(texto: "1"), .init(texto: "Re", tono: .destino, negrita: true, resaltada: true)],
+                            [.init(texto: "2", resaltada: true), .init(texto: "Mi", resaltada: true)],
+                        ]), .destacado(["Resumen"]),
+                    ], alLado: [.init(titulo: "Al lado", piezas: [.lineas(["x"])])], anchoAlLado: 200),
+            ])
+        let svg = hoja.svg(en: notacion)
+        #expect(svg.contains("fill=\"#c0392b\" font-weight=\"bold\">Otra</text>"))
+        #expect(svg.contains("fill=\"#27ae60\" font-weight=\"bold\">Origen</text>"))
+        #expect(svg.contains("<circle") && svg.contains(">común</text>") && svg.contains("fill=\"#888888\""))
+        #expect(svg.contains("fill=\"#fdecea\"") && svg.contains("font-weight=\"bold\">Resumen</text>"))
+        let html = hoja.html(en: notacion)
+        #expect(html.contains("<h1 class=\"destino\">Otra</h1>") && html.contains("<h2 class=\"origen\">Origen</h2>"))
+        #expect(html.contains("<span class=\"punto comun\"></span>común") && html.contains("punto sub"))
+        #expect(html.contains("<td class=\"destino negrita resaltada\">Re</td>"))
+        #expect(html.contains("<tr class=\"cambia\"><td>2</td>"))
+        #expect(html.contains("style=\"grid-template-columns:1fr 200pt\""))
+        #expect(
+            html.contains("<p><strong>Resumen</strong></p>") && html.contains("<title>Hoja de estudio · Una → Otra"))
+    }
+
+    @Test func lasCeldasQueNoCabenSeParten() {
+        let larga = Array(repeating: "palabra", count: 40).joined(separator: " ")
+        let svg = HojaCompuesta(titulo: "Tabla", secciones: [.init(titulo: "", piezas: [.tabla([["a", larga]])])])
+            .svg(en: notacion)
+        let lineas = svg.components(separatedBy: ">palabra palabra").count - 1
+        #expect(lineas > 3)
+    }
+
+    @Test func lasPaginas() throws {
+        // Muchas líneas no caben en una página: pasan a las siguientes, cada una con su número abajo.
+        let lineas = (1...120).map { "Línea \($0)" }
+        let hoja = HojaCompuesta(
+            titulo: "Larga",
+            secciones: [
+                .init(titulo: "Primera", piezas: [.lineas(Array(lineas.prefix(21)))]),
+                .init(titulo: "Segunda", piezas: [.lineas(Array(lineas.prefix(21)))]),
+                .init(titulo: "Larga", piezas: [.lineas(lineas)]),
+                .init(titulo: "Tabla", piezas: [.tabla([["Tramo"], ["a", "b"]])]),
+            ])
+        let svg = hoja.svg(en: notacion)
+        let paginas = HojaDeEstudio.paginas(deUnSVG: svg)
+        #expect(paginas.count == 5)
+        #expect(svg.contains("data-paginas=\"5\"") && svg.contains("height=\"4210\""))
+        #expect(svg.contains(">1 / 5</text>") && svg.contains(">5 / 5</text>"))
+        #expect(
+            paginas[1].contains("viewBox=\"0 842 595 842\"") && paginas[1].contains(" width=\"595pt\" height=\"842pt\"")
+        )
+        #expect(!paginas[1].contains("data-paginas") && paginas[1].hasSuffix("</svg>"))
+        // La segunda sección, de menos de media página, no cabe entera debajo de la primera: empieza en la segunda
+        // página. La larga sí se parte.
+        func dondeEmpieza(_ texto: String) throws -> Double {
+            let antes = try #require(svg.range(of: ">" + texto + "</text>")).lowerBound
+            let traslado = try #require(svg[..<antes].range(of: "translate(0,", options: .backwards))
+            return try #require(Double(svg[traslado.upperBound...].prefix { $0 != ")" }))
+        }
+        #expect(try dondeEmpieza("Segunda") == 842 + Hoja.margen)
+        // La cabecera de un tramo no se queda sola al final de una página.
+        #expect(try dondeEmpieza("Tramo") == dondeEmpieza("a"))
+        // Una hoja corta es una página, sin número; un SVG que no es una hoja sale tal cual.
+        let corta = HojaCompuesta(titulo: "Corta", secciones: []).svg(en: notacion)
+        #expect(corta.contains("data-paginas=\"1\"") && !corta.contains(" / 1<"))
+        let sola = try #require(HojaDeEstudio.paginas(deUnSVG: corta).first)
+        #expect(HojaDeEstudio.paginas(deUnSVG: corta).count == 1 && sola.contains("viewBox=\"0 0 595 842\""))
+        #expect(HojaDeEstudio.paginas(deUnSVG: "<svg viewBox=\"0 0 10 10\"/>") == ["<svg viewBox=\"0 0 10 10\"/>"])
     }
 
     @Test func losNombresDeAntes() throws {
