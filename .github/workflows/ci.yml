@@ -272,8 +272,11 @@ jobs:
             tamanos=$(pdfinfo -f 1 -l "$paginas" "grabados/hoja-$nombre.pdf" | grep -E '^Page +[0-9]+ size' \
               | grep -vc '595 x 842 pts' || true)
             test "$tamanos" = 0 || { echo "::error::hoja $nombre: $tamanos páginas no son A4"; exit 1; }
-            pdffonts "grabados/hoja-$nombre.pdf" | grep -q LiberationSans \
-              || { echo "::error::hoja $nombre no usa Liberation Sans"; pdffonts "grabados/hoja-$nombre.pdf"; exit 1; }
+            # A un fichero, y no a grep -q por una tubería: con pipefail, grep -q cierra la tubería al encontrar y
+            # pdffonts acaba con SIGPIPE.
+            pdffonts "grabados/hoja-$nombre.pdf" > fuentes.txt
+            grep -q LiberationSans fuentes.txt \
+              || { echo "::error::hoja $nombre no usa Liberation Sans"; cat fuentes.txt; exit 1; }
             pdftoppm -png -r 50 "grabados/hoja-$nombre.pdf" "grabados/hoja-$nombre"
             echo "hoja $nombre: $paginas páginas A4"
           }
@@ -284,7 +287,8 @@ jobs:
           # Una hoja de una sola página sigue siendo un PDF de una página.
           armonia grabar hoja ritmo tresillo > grabados/hoja-tresillo.pdf
           comprobar grabados/hoja-tresillo.pdf pdf
-          pdfinfo grabados/hoja-tresillo.pdf | grep -qE '^Pages: +1$'
+          pdfinfo grabados/hoja-tresillo.pdf > info.txt
+          grep -qE '^Pages: +1$' info.txt
           # Sin MuseScore: código 1 y el mensaje que dice qué falta.
           if armonia grabar coral Do3 Mi4 Sol4 Do5 --motor musescore > /dev/null 2> error.txt; then
             echo "::error::grabar con MuseScore no debería funcionar sin MuseScore"; exit 1
