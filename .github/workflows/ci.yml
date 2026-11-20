@@ -208,11 +208,14 @@ jobs:
           nombre: grabado
           rutas: |
             Apps/ConsolaArmonia/.build
+      # Liberation Sans tiene los anchos de Helvetica y Arial, con los que las hojas de estudio miden el texto:
+      # fontconfig la pone en su lugar. Con solo DejaVu, que es más ancha, el texto se sale de sus celdas.
+      # poppler-utils da pdfinfo, pdffonts y pdftoppm, para mirar los PDF de las hojas.
       - name: Instalar LilyPond y librsvg
         run: |
           apt-get update -q
           DEBIAN_FRONTEND=noninteractive apt-get install -y -q --no-install-recommends \
-            lilypond librsvg2-bin fonts-dejavu-core
+            lilypond librsvg2-bin fonts-dejavu-core fonts-liberation poppler-utils
       - name: Compilar
         run: swift build --product armonia
       - name: Motores instalados
@@ -253,6 +256,35 @@ jobs:
           comprobar grabados/sol7.pdf pdf
           armonia grabar tonnetz escala Re dórico --formato png > grabados/tonnetz.png
           comprobar grabados/tonnetz.png png
+          # Las hojas de estudio, en un PDF de páginas A4: tantas como dice el SVG (data-paginas), de 595 × 842
+          # puntos, con el texto en Liberation Sans y una imagen de cada página en el artefacto.
+          hoja() {
+            local nombre="$1"; shift
+            armonia hoja "$@" > "grabados/hoja-$nombre.svg"
+            local paginas
+            paginas=$(grep -o 'data-paginas="[0-9]*"' "grabados/hoja-$nombre.svg" | grep -o '[0-9]*' || echo 1)
+            armonia grabar hoja "$@" > "grabados/hoja-$nombre.pdf"
+            comprobar "grabados/hoja-$nombre.pdf" pdf
+            pdfinfo "grabados/hoja-$nombre.pdf" > info.txt
+            grep -qE "^Pages: +$paginas$" info.txt \
+              || { echo "::error::hoja $nombre: $(grep Pages info.txt), y el SVG dice $paginas"; exit 1; }
+            local tamanos
+            tamanos=$(pdfinfo -f 1 -l "$paginas" "grabados/hoja-$nombre.pdf" | grep -E '^Page +[0-9]+ size' \
+              | grep -vc '595 x 842 pts' || true)
+            test "$tamanos" = 0 || { echo "::error::hoja $nombre: $tamanos páginas no son A4"; exit 1; }
+            pdffonts "grabados/hoja-$nombre.pdf" | grep -q LiberationSans \
+              || { echo "::error::hoja $nombre no usa Liberation Sans"; pdffonts "grabados/hoja-$nombre.pdf"; exit 1; }
+            pdftoppm -png -r 50 "grabados/hoja-$nombre.pdf" "grabados/hoja-$nombre"
+            echo "hoja $nombre: $paginas páginas A4"
+          }
+          hoja re-dorico Re dórico
+          hoja sol7 acorde Sol7
+          hoja ii-v-i-doce acordes Rem7 Sol7 Domaj7 --en Do mayor --doce
+          hoja ukelele Do mayor --instrumento ukelele --secciones mastil
+          # Una hoja de una sola página sigue siendo un PDF de una página.
+          armonia grabar hoja ritmo tresillo > grabados/hoja-tresillo.pdf
+          comprobar grabados/hoja-tresillo.pdf pdf
+          pdfinfo grabados/hoja-tresillo.pdf | grep -qE '^Pages: +1$'
           # Sin MuseScore: código 1 y el mensaje que dice qué falta.
           if armonia grabar coral Do3 Mi4 Sol4 Do5 --motor musescore > /dev/null 2> error.txt; then
             echo "::error::grabar con MuseScore no debería funcionar sin MuseScore"; exit 1

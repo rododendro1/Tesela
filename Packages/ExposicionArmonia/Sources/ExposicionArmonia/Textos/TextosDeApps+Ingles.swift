@@ -47,6 +47,7 @@ extension TextosDeApps {
         acordesDeLaEscala: "Chords of the scale",
         posicionesEnElMastil: "Positions on the fretboard",
         notasPorCuerda: { n in Idioma.ingles.contar(n, "note", "notes") + " per string" },
+        porCajasDeTrastes: { n in "in \(n)-fret boxes" },
         forma: "{1} shape",
         mastilDeGuitarra: "Guitar fretboard",
         pentagrama: "Staff",

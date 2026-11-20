@@ -47,6 +47,7 @@ extension TextosDeApps {
         acordesDeLaEscala: "Akkorde der Skala",
         posicionesEnElMastil: "Lagen auf dem Griffbrett",
         notasPorCuerda: { n in Idioma.aleman.contar(n, "Ton", "Töne") + " pro Saite" },
+        porCajasDeTrastes: { n in "in Kästen zu \(n) Bünden" },
         forma: "{1}-Form",
         mastilDeGuitarra: "Gitarrengriffbrett",
         pentagrama: "Notensystem",

@@ -54,6 +54,8 @@ public struct TextosDeApps: TextosTraducidos {
     public let acordesDeLaEscala: String
     public let posicionesEnElMastil: String
     public let notasPorCuerda: @Sendable (Int) -> String
+    /// «por cajas de 4 trastes»: las posiciones de una escala en un instrumento cuyas cuerdas no van de grave a aguda.
+    public let porCajasDeTrastes: @Sendable (Int) -> String
     public let forma: Plantilla  // {1} forma
     public let mastilDeGuitarra: String
     public let pentagrama: String

@@ -47,6 +47,7 @@ extension TextosDeApps {
         acordesDeLaEscala: "Skalans ackord",
         posicionesEnElMastil: "Lägen på greppbrädan",
         notasPorCuerda: { n in Idioma.sueco.contar(n, "ton", "toner") + " per sträng" },
+        porCajasDeTrastes: { n in "i lådor om \(n) band" },
         forma: "{1}-form",
         mastilDeGuitarra: "Gitarrens greppbräda",
         pentagrama: "Notsystem",

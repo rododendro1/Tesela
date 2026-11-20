@@ -47,6 +47,7 @@ extension TextosDeApps {
         acordesDeLaEscala: "Accords de la gamme",
         posicionesEnElMastil: "Positions sur le manche",
         notasPorCuerda: { n in Idioma.frances.contar(n, "note", "notes") + " par corde" },
+        porCajasDeTrastes: { n in "par boîtes de \(n) cases" },
         forma: "Forme {1}",
         mastilDeGuitarra: "Manche de guitare",
         pentagrama: "Portée",

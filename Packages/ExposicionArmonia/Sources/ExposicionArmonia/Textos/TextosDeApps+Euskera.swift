@@ -47,6 +47,7 @@ extension TextosDeApps {
         acordesDeLaEscala: "Eskalaren akordeak",
         posicionesEnElMastil: "Posizioak mastilean",
         notasPorCuerda: { n in "\(n) nota soka bakoitzeko" },
+        porCajasDeTrastes: { n in "\(n) trasteko kutxaka" },
         forma: "{1} forma",
         mastilDeGuitarra: "Gitarraren mastila",
         pentagrama: "Pentagrama",

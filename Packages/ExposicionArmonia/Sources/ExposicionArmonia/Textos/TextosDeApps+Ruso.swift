@@ -47,6 +47,7 @@ extension TextosDeApps {
         acordesDeLaEscala: "Аккорды гаммы",
         posicionesEnElMastil: "Позиции на грифе",
         notasPorCuerda: { n in "\(n) \(n == 1 ? "нота" : n < 5 ? "ноты" : "нот") на струну" },
+        porCajasDeTrastes: { n in "по ячейкам из \(n) ладов" },
         forma: "Форма {1}",
         mastilDeGuitarra: "Гриф гитары",
         pentagrama: "Нотный стан",

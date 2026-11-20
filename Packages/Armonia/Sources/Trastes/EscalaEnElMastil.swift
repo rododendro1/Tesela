@@ -35,12 +35,15 @@ public struct EscalaEnElMastil: Hashable, Sendable {
     public let mastil: Mastil
     /// Los trastes que abarca la mano (el 0 es la cuerda al aire).
     public let rangoDeTrastes: ClosedRange<Int>
-    /// Las notas, cuerda a cuerda de la grave a la aguda y, en cada una, de traste en traste.
+    /// Las notas, cuerda a cuerda de la grave a la aguda y, en cada una, de traste en traste; en las cajas de un
+    /// instrumento cuyas cuerdas no van de grave a aguda (``Mastil/posicionesPorCajas(de:ancho:)``), en el orden en
+    /// que suenan.
     public let posiciones: [PosicionEnElMastil]
     /// La forma CAGED de la posición; `nil` en las de tres (o dos) notas por cuerda.
     public let forma: FormaCAGED?
-    /// La escala que se toca, si se sabe: la que se dio a ``Mastil/posicionesCAGED(de:ancho:)`` o a
-    /// ``Mastil/posicionesPorCuerda(de:notasPorCuerda:)``. Con ella, ``partitura(de:titulo:ritmo:)`` escribe sus notas.
+    /// La escala que se toca, si se sabe: la que se dio a ``Mastil/posicionesCAGED(de:ancho:)``,
+    /// ``Mastil/posicionesPorCuerda(de:notasPorCuerda:)`` o ``Mastil/posicionesPorCajas(de:ancho:)``. Con ella,
+    /// ``partitura(de:titulo:ritmo:)`` escribe sus notas.
     public let escala: Escala?
 
     public init(
@@ -68,11 +71,14 @@ extension Mastil {
     ///     posiciones[0].rangoDeTrastes          // 0...5
     ///     posiciones[0].posiciones.count // 18: tres por cuerda
     ///
-    /// Vacío si las cuerdas no van de grave a aguda (un ukelele con el Sol agudo, por ejemplo).
+    /// Si las cuerdas no van de grave a aguda (el Sol agudo del ukelele, el charango, el banjo de cinco cuerdas),
+    /// no se puede subir cuerda a cuerda: se dan las posiciones por cajas de trastes,
+    /// ``posicionesPorCajas(de:ancho:)``.
     public func posicionesPorCuerda(de escala: Escala, notasPorCuerda: Int? = nil) -> [EscalaEnElMastil] {
+        if encordado.esReentrante { return posicionesPorCajas(de: escala) }
         let clases = Set(escala.notas.map(\.claseDeAltura))
         let cuerdas = encordado.afinacion.map(\.midi)
-        guard !clases.isEmpty, !encordado.esReentrante, let grave = cuerdas.first else { return [] }
+        guard !clases.isEmpty, let grave = cuerdas.first else { return [] }
         let porCuerda = max(1, notasPorCuerda ?? (clases.count >= 6 ? 3 : 2))
         var resultado: [EscalaEnElMastil] = []
         for inicio in 0..<12 where clases.contains(Mastil.clase(grave + inicio)) {
@@ -94,6 +100,44 @@ extension Mastil {
                 EscalaEnElMastil(mastil: self, rangoDeTrastes: menor...mayor, posiciones: posiciones, escala: escala))
         }
         return resultado
+    }
+
+    /// La escala por cajas de trastes, como se enseña en los instrumentos cuyas cuerdas no van de grave a aguda (el
+    /// ukelele con el Sol agudo): cada caja es una franja de `ancho` trastes, uno por dedo, que empieza un traste por
+    /// debajo de cada nota de la escala en la cuerda más grave (o al aire, si la nota está en los primeros trastes),
+    /// con todas las notas de la escala que caen dentro. Las notas van en el orden en que suenan, de la más grave a la
+    /// más aguda, y las que suenan igual en dos cuerdas, una vez: en la cuerda en la que se pisa más abajo. Solo se
+    /// dan las cajas que llevan todas las notas de la escala, de la más baja a la más alta.
+    ///
+    ///     let cajas = Mastil(.ukelele, numeroDeTrastes: 12).posicionesPorCajas(de: Escala(.do, .mayor))
+    ///     cajas[0].rangoDeTrastes      // 0...3
+    ///     cajas[0].alturas             // Do4 Re4 Mi4 Fa4 Sol4 La4 Si4 Do5
+    public func posicionesPorCajas(de escala: Escala, ancho: Int = 4) -> [EscalaEnElMastil] {
+        let clases = Set(escala.notas.map(\.claseDeAltura))
+        guard !clases.isEmpty, !encordado.afinacion.isEmpty else { return [] }
+        let ancho = max(1, ancho)
+        // La cuerda más grave, que no siempre es la primera.
+        let grave = encordado.afinacion.indices.min { encordado.afinacion[$0].midi < encordado.afinacion[$1].midi } ?? 0
+        let alAire = encordado.afinacion[grave].midi
+        var inicios: [Int] = []
+        for traste in trastes(deCuerda: grave) where traste < 12 && clases.contains(Mastil.clase(alAire + traste)) {
+            let inicio = max(0, min(traste <= 1 ? 0 : traste - 1, numeroDeTrastes - (ancho - 1)))
+            if !inicios.contains(inicio) { inicios.append(inicio) }
+        }
+        var vistas: Set<[PosicionEnElMastil]> = []
+        return inicios.sorted().compactMap { inicio in
+            let franja = inicio...min(numeroDeTrastes, inicio + ancho - 1)
+            let ordenadas = posiciones(deClases: clases).filter { franja.contains($0.traste) }
+                .sorted { (midi(en: $0), $0.traste) < (midi(en: $1), $1.traste) }
+            var unicas: [PosicionEnElMastil] = []
+            for posicion in ordenadas where unicas.last.map({ midi(en: $0) != midi(en: posicion) }) ?? true {
+                unicas.append(posicion)
+            }
+            guard Set(unicas.map { Mastil.clase(midi(en: $0)) }) == clases, vistas.insert(unicas).inserted else {
+                return nil
+            }
+            return EscalaEnElMastil(mastil: self, rangoDeTrastes: franja, posiciones: unicas, escala: escala)
+        }
     }
 
     /// La escala en las cinco posiciones del sistema CAGED, de la más baja a la más alta: cada una, una franja de

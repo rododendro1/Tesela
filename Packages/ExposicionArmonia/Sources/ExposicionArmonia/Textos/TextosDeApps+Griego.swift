@@ -47,6 +47,7 @@ extension TextosDeApps {
         acordesDeLaEscala: "Συγχορδίες της κλίμακας",
         posicionesEnElMastil: "Θέσεις στην ταστιέρα",
         notasPorCuerda: { n in Idioma.griego.contar(n, "νότα", "νότες") + " ανά χορδή" },
+        porCajasDeTrastes: { n in "σε κουτιά των \(n) τάστων" },
         forma: "Σχήμα {1}",
         mastilDeGuitarra: "Μπράτσο κιθάρας",
         pentagrama: "Πεντάγραμμο",

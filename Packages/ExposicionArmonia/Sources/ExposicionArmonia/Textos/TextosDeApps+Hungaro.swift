@@ -47,6 +47,7 @@ extension TextosDeApps {
         acordesDeLaEscala: "A skála akkordjai",
         posicionesEnElMastil: "Fekvések a fogólapon",
         notasPorCuerda: { n in Idioma.hungaro.contar(n, "hang") + " húronként" },
+        porCajasDeTrastes: { n in "\(n) bundos dobozokban" },
         forma: "{1}-forma",
         mastilDeGuitarra: "Gitár fogólapja",
         pentagrama: "Kottasor",

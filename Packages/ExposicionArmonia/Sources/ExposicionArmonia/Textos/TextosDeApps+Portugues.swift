@@ -47,6 +47,7 @@ extension TextosDeApps {
         acordesDeLaEscala: "Acordes da escala",
         posicionesEnElMastil: "Posições no braço",
         notasPorCuerda: { n in Idioma.portugues.contar(n, "nota", "notas") + " por corda" },
+        porCajasDeTrastes: { n in "por caixas de \(n) trastes" },
         forma: "Forma {1}",
         mastilDeGuitarra: "Braço da guitarra",
         pentagrama: "Pauta",

@@ -156,6 +156,10 @@ busca en el `PATH`, en las carpetas de Homebrew y en la de la app de MuseScore e
 Los programas se llaman sin shell, con un tiempo límite de dos minutos, y no forman parte de Tesela: se instalan
 aparte (`brew install lilypond librsvg`, `apt install lilypond librsvg2-bin`…) y cada uno tiene su licencia.
 
+Las hojas de estudio miden el texto con los anchos de Helvetica y Arial. En macOS están; en Linux, instala
+Liberation Sans (`apt install fonts-liberation`), que tiene los mismos anchos y que fontconfig pone en su lugar: con
+otra tipografía más ancha, como DejaVu, el texto se puede salir de sus celdas en el PDF.
+
 ## Documentación
 
 La documentación está en el catálogo DocC `Sources/Armonia/Armonia.docc`, que Xcode muestra
@@ -386,7 +390,9 @@ Scripts/comprobaciones/comprobar_modulos.py`, que ejecuta el CI, comprueba que l
 mínima, y 6.2) y en macOS en cada push o pull request. Con Swift 6.2 también compila la
 biblioteca con los avisos tratados como errores. Primero ejecuta las
 pruebas rápidas y después las exhaustivas, así un fallo corriente se ve antes. El job «Grabado con LilyPond y rsvg-convert» instala
-los dos programas y graba partituras y dibujos de verdad con `armonia grabar`, y deja los ficheros como artefacto.
+los dos programas y graba partituras, dibujos y hojas de estudio de verdad con `armonia grabar`: de cada hoja
+comprueba que el PDF tiene las páginas que dice su SVG, que todas son A4 y que el texto va en Liberation Sans, y deja
+los ficheros, con una imagen de cada página, como artefacto.
 
 ### Pruebas exhaustivas
 

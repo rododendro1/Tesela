@@ -62,13 +62,15 @@ import Testing
         #expect(dibujos.dropFirst().allSatisfy { $0.titulo.hasPrefix("Forma ") })
         // La tónica, en naranja; el Fa♯, escrito como en la escala.
         #expect(dibujos[0].svg.contains(DibujoDeLaHoja.tonica) && dibujos[0].svg.contains(">Fa♯</text>"))
-        // Una pentatónica, en sus cinco formas; un ukelele (con el Sol agudo), solo el mástil entero.
+        // Una pentatónica, en sus cinco formas; un ukelele (con el Sol agudo), el mástil entero y sus cajas de cuatro
+        // trastes, una por nota de la escala en la cuerda de Do.
         let pentatonica = PresentacionDeEstudioDeEscala.mastilDeLaHoja(
             de: Escala(.la, .pentatonicaMenor), en: notacion)
         #expect(pentatonica.count == 6)
         let ukelele = PresentacionDeEstudioDeEscala.mastilDeLaHoja(
             de: Escala(.do), mastil: Mastil(.ukelele, numeroDeTrastes: 15), en: notacion)
-        #expect(ukelele.count == 1 && ukelele[0].titulo.contains("ukelele"))
+        #expect(ukelele.count == 8 && ukelele[0].titulo.contains("ukelele"))
+        #expect(ukelele[1].titulo == "Trastes 0 a 3")
         // El bajo: tres notas por cuerda.
         let bajo = PresentacionDeEstudioDeEscala.mastilDeLaHoja(
             de: Escala(.do), mastil: Mastil(.bajoElectrico, numeroDeTrastes: 15), en: notacion)

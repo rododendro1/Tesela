@@ -47,6 +47,7 @@ extension TextosDeApps {
         acordesDeLaEscala: "Acordes da escala",
         posicionesEnElMastil: "Posicións no mástil",
         notasPorCuerda: { n in Idioma.gallego.contar(n, "nota", "notas") + " por corda" },
+        porCajasDeTrastes: { n in "por caixas de \(n) trastes" },
         forma: "Forma {1}",
         mastilDeGuitarra: "Mástil de guitarra",
         pentagrama: "Pentagrama",

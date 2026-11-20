@@ -47,6 +47,7 @@ extension TextosDeApps {
         acordesDeLaEscala: "Acords de l'escala",
         posicionesEnElMastil: "Posicions al mànec",
         notasPorCuerda: { n in Idioma.catalan.contar(n, "nota", "notes") + " per corda" },
+        porCajasDeTrastes: { n in "per caixes de \(n) trasts" },
         forma: "Forma {1}",
         mastilDeGuitarra: "Mànec de guitarra",
         pentagrama: "Pentagrama",
