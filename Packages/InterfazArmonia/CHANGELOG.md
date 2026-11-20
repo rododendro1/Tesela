@@ -1,5 +1,20 @@
 # Cambios
 
+## Sin publicar
+
+- Las hojas de estudio se exportan también en PDF, en páginas A4, sin programas de fuera: `PDFDeLaHoja` dibuja cada
+  página con WebKit y las junta con PDFKit. `BotonDeExportar` añade el PDF detrás del SVG de cada hoja (medio
+  segundo después de que dejen de cambiar los ficheros) y una entrada «Imprimir la hoja», con el diálogo del sistema
+  (`ImpresionDeLaHoja`).
+- `BotonDeExportar(id:_:)` hace los ficheros al aparecer el botón, para una lista con un botón por fila.
+- `ModeloDelCatalogo.ficheros(deLaTarjeta:en:)`: la hoja de estudio de una progresión (sobre la tónica elegida), de
+  un acorde con nombre que se cifra, de un ritmo o de un instrumento. En Ars Harmonica, cada tarjeta del catálogo
+  la exporta, salvo los ornamentos.
+- `ModeloDeAcordes.ficheros(digitaciones:en:)` lleva la hoja del arpegio, y las dos hojas, la del acorde y la del
+  arpegio, van en el instrumento elegido en lugar de en la guitarra.
+- En Ars Harmonica, la serie dodecafónica exporta su hoja, y las posiciones de una escala en el ukelele van por
+  cajas de cuatro trastes.
+
 ## 0.6.0 (2026-11-17)
 
 - La tarjeta de un ornamento del catálogo da cada nota con su figura sobre una negra y suena con ese ritmo

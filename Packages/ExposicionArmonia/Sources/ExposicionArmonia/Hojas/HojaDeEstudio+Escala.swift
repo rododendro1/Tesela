@@ -147,6 +147,17 @@ extension HojaDeEstudio {
 
     // MARK: Las páginas de una hoja
 
+    /// Si un SVG es una hoja de estudio, de las que van en páginas A4: si su raíz dice cuántas en `data-paginas`.
+    ///
+    ///     HojaDeEstudio.esUnaHoja(HojaDeEstudio.ritmo(.tresillo, en: .compacta(.espanol)))   // true
+    ///     HojaDeEstudio.esUnaHoja("<svg viewBox=\"0 0 10 10\"></svg>")                      // false
+    public static func esUnaHoja(_ svg: String) -> Bool {
+        guard let raiz = svg.range(of: "<svg"), let cierre = svg[raiz.upperBound...].firstIndex(of: ">") else {
+            return false
+        }
+        return svg[raiz.upperBound..<cierre].contains(" data-paginas=\"")
+    }
+
     /// Las páginas A4 de una hoja en SVG, cada una como un SVG suelto de 595 × 842 puntos (`pt`, para que un PDF salga
     /// del tamaño de un A4): la misma hoja, recortada con su `viewBox`. Un SVG sin `data-paginas`, que no es una hoja,
     /// sale tal cual.

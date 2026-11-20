@@ -408,6 +408,8 @@ extension TextosDeApps {
         partituraABC: "ABC-kotta",
         dibujoSVG: "SVG-rajz",
         paginaHTML: "HTML-oldal",
+        documentoPDF: "PDF-dokumentum (A4)",
+        imprimirLaHoja: "A lap nyomtatása",
         cuerdasDelInstrumento: "Húrok",
         ordenesYCuerdas: "{1} kórus, {2} húr",
         trastesDelInstrumento: "Bundok",

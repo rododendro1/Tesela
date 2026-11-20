@@ -408,6 +408,8 @@ extension TextosDeApps {
         partituraABC: "Partitura ABC",
         dibujoSVG: "Debuxo SVG",
         paginaHTML: "Páxina HTML",
+        documentoPDF: "Documento PDF (A4)",
+        imprimirLaHoja: "Imprimir a folla",
         cuerdasDelInstrumento: "Cordas",
         ordenesYCuerdas: "{1} ordes, {2} cordas",
         trastesDelInstrumento: "Trastes",

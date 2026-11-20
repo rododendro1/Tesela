@@ -111,4 +111,32 @@ import Testing
         modelo.texto = "ukulele"
         #expect(modelo.tarjetas(en: .compacta(.ingles)).first?.sonido.notas.map(\.midi) == [60, 64, 67, 69])
     }
+
+    @Test func cadaTarjetaTieneSuHojaDeEstudio() {
+        var modelo = ModeloDelCatalogo()
+        // Una progresión, sobre la tónica elegida.
+        modelo.tonica = .la
+        let folia = modelo.ficheros(deLaTarjeta: "folía", en: espanol)
+        #expect(folia.map(\.formato) == [.svg, .html])
+        #expect(folia.first?.esUnaHojaEnSVG == true)
+        #expect(folia.first?.nombreDeFichero.hasPrefix("Hoja de estudio") == true)
+        // Un ritmo y un instrumento.
+        modelo.lista = .ritmos
+        #expect(
+            modelo.ficheros(deLaTarjeta: "tresillo", en: espanol).map(\.nombreDeFichero)
+                == ["Hoja de estudio tresillo.svg", "Hoja de estudio tresillo.html"])
+        modelo.lista = .instrumentos
+        #expect(modelo.ficheros(deLaTarjeta: "laúd", en: espanol).count == 2)
+        // Un acorde con nombre que se cifra, sobre la tónica; los ornamentos, sin hoja.
+        modelo.lista = .acordes
+        let conTipo = modelo.tarjetas(en: espanol).first { tarjeta in
+            !modelo.ficheros(deLaTarjeta: tarjeta.id, en: espanol).isEmpty
+        }
+        #expect(conTipo != nil)
+        modelo.lista = .ornamentos
+        #expect(modelo.tarjetas(en: espanol).allSatisfy { modelo.ficheros(deLaTarjeta: $0.id, en: espanol).isEmpty })
+        // Lo que no está en la lista, sin hoja.
+        modelo.lista = .ritmos
+        #expect(modelo.ficheros(deLaTarjeta: "inventado", en: espanol).isEmpty)
+    }
 }

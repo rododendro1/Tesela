@@ -733,8 +733,10 @@ extension DigitacionTests {
         // De la más baja a la más alta, y sin pasar del último traste.
         #expect(cajas.map(\.rangoDeTrastes.lowerBound) == cajas.map(\.rangoDeTrastes.lowerBound).sorted())
         #expect(cajas.allSatisfy { $0.rangoDeTrastes.upperBound <= 12 })
-        // posicionesPorCuerda da las cajas, porque no se puede subir cuerda a cuerda.
+        // posicionesPorCuerda da las cajas, porque no se puede subir cuerda a cuerda; las formas de la pentatónica,
+        // que suben dos notas por cuerda, siguen sin darse.
         #expect(mastil.posicionesPorCuerda(de: Escala(.do, .mayor)) == cajas)
+        #expect(mastil.formasPentatonicas(de: Escala(.la, .pentatonicaMenor)).isEmpty)
     }
 
     @Test func elCharangoYElBanjoTambienVanPorCajas() {

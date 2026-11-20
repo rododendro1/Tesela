@@ -256,3 +256,18 @@ extension PresentacionDeTonalidad: HojaDeTonalidadDeAntes, HojasDeAntes {
         return antes(Self.self)
     }
 }
+
+// Qué es una hoja de estudio, de las que las apps pasan a PDF.
+@Suite struct EsUnaHojaTests {
+    @Test func unaHojaSeReconocePorSusPaginas() {
+        let notacion = Notacion.compacta(.espanol)
+        #expect(HojaDeEstudio.esUnaHoja(HojaDeEstudio.ritmo(.tresillo, en: notacion)))
+        #expect(HojaDeEstudio.esUnaHoja(HojaDeEstudio.escala(Escala(.re, .dorico), en: notacion)))
+        #expect(!HojaDeEstudio.esUnaHoja("<svg viewBox=\"0 0 10 10\"></svg>"))
+        #expect(!HojaDeEstudio.esUnaHoja(HojaDeEstudio.ritmo(.tresillo, en: notacion, formato: .html)))
+        // Un dibujo que no es una hoja (el pentagrama de un acorde) no se pasa a PDF.
+        #expect(!PentagramaPresentado(Acorde("Sol7"), en: notacion).fichero.esUnaHojaEnSVG)
+        #expect(FicheroParaExportar.svg(HojaDeEstudio.ritmo(.tresillo, en: notacion), nombre: "x").esUnaHojaEnSVG)
+        #expect(!FicheroParaExportar.html(HojaDeEstudio.ritmo(.tresillo, en: notacion), nombre: "x").esUnaHojaEnSVG)
+    }
+}

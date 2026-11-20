@@ -70,6 +70,14 @@ public enum PresentacionDeSerie {
     public static func presentar(
         _ texto: String, forma: FormaDeSerie, en notacion: Notacion
     ) throws(ErrorDeLectura) -> MatrizDeSeriePresentada {
+        try presentar(texto, forma: forma, en: notacion, conLaHoja: true)
+    }
+
+    /// Como `presentar(_:forma:en:)`; sin la hoja de estudio entre los ficheros si `conLaHoja` es `false`, que es
+    /// como la pide `HojaDeEstudio.serie(_:en:formato:)`, que se hace a partir de esto.
+    static func presentar(
+        _ texto: String, forma: FormaDeSerie, en notacion: Notacion, conLaHoja: Bool
+    ) throws(ErrorDeLectura) -> MatrizDeSeriePresentada {
         let serie = try SerieDodecafonica(leyendo: texto)
         // Lo mismo que da `armonia serie` (y su `--json`), escrito para la vista.
         let enDatos = SeriePresentada(serie, en: notacion)
@@ -97,6 +105,14 @@ public enum PresentacionDeSerie {
             notaDeCada[clase].flatMap { Altura($0, midi: 60 + clase) } ?? Altura(midi: 60 + clase)
         }
         let titulo = notacion.texto(\.serieDodecafonica) + " " + forma.description
+        // La hoja de estudio de la serie (la matriz, sus hexacordos y su pentagrama), en SVG y en HTML.
+        let nombreDeLaHoja = notacion.texto(\.hojaDeEstudio) + " " + serie.description
+        let hoja: [FicheroParaExportar] =
+            conLaHoja
+            ? [
+                .svg(HojaDeEstudio.serie(serie, en: notacion), nombre: nombreDeLaHoja),
+                .html(HojaDeEstudio.serie(serie, en: notacion, formato: .html), nombre: nombreDeLaHoja),
+            ] : []
         let voz = Voz(alturas.map { Evento($0, .negra) })
         // Sin armadura: una serie no está en ninguna tonalidad.
         let sinArmadura = Tonalidad(armadura: 0)
@@ -112,7 +128,7 @@ public enum PresentacionDeSerie {
             ficheros: FicheroParaExportar.partituras(nombre: titulo) { formato in
                 voz.partitura(encabezado: Encabezado(titulo: titulo, tonalidad: sinArmadura, tempo: tempo)).exportar(
                     como: formato)
-            })
+            } + hoja)
     }
 
     /// Qué se escribe en el campo de la serie, con un ejemplo en cifras y otro en la notación:

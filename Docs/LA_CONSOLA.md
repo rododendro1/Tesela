@@ -175,7 +175,7 @@ la entrada estándar (`armonia < ejercicios.txt`), que sale con el peor código 
 ## Para un asistente: MCP
 
 `armonia mcp` sirve el motor por el Model Context Protocol, por la entrada y la salida estándar. Cada orden que da
-JSON es una herramienta (33 en esta versión), y para añadirla a Claude Code basta con:
+JSON es una herramienta (36 en esta versión), y para añadirla a Claude Code basta con:
 
 ```sh
 claude mcp add armonia -- armonia mcp
@@ -193,3 +193,11 @@ llamadas a `escala` son la misma:
 ```
 
 Una propiedad que la orden no tiene da un error (-32602), en lugar de ignorarse.
+
+`hoja` da la hoja de estudio entera, en SVG para imprimir y en HTML para leerla en pantalla, con su título, los
+títulos de sus secciones y las páginas A4 que ocupa: un asistente puede preparar la hoja de una escala, un acorde o
+un ritmo y dársela a quien la pide para guardarla. Es lo mismo que `armonia hoja … --json`:
+
+```json
+{"name": "hoja", "arguments": {"argumentos": "acorde Sol7", "instrumento": "ukelele"}}
+```

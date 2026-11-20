@@ -408,6 +408,8 @@ extension TextosDeApps {
         partituraABC: "Παρτιτούρα ABC",
         dibujoSVG: "Σχέδιο SVG",
         paginaHTML: "Σελίδα HTML",
+        documentoPDF: "Έγγραφο PDF (A4)",
+        imprimirLaHoja: "Εκτύπωση του φύλλου",
         cuerdasDelInstrumento: "Χορδές",
         ordenesYCuerdas: "ομάδες χορδών: {1}, χορδές: {2}",
         trastesDelInstrumento: "Τάστα",

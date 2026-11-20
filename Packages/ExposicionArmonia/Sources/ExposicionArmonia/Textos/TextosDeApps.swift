@@ -453,6 +453,10 @@ public struct TextosDeApps: TextosTraducidos {
     public let partituraABC: String
     public let dibujoSVG: String
     public let paginaHTML: String
+    /// Una hoja de estudio en PDF, en páginas A4, en el menú de exportar.
+    public let documentoPDF: String
+    /// El botón que imprime la hoja de estudio.
+    public let imprimirLaHoja: String
     public let cuerdasDelInstrumento: String
     public let ordenesYCuerdas: Plantilla  // {1} órdenes, {2} cuerdas
     public let trastesDelInstrumento: String

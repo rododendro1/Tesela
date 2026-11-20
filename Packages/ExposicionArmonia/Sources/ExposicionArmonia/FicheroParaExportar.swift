@@ -19,6 +19,8 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
         case midi
         case svg
         case html
+        /// Una hoja de estudio en páginas A4. Las apps la hacen a partir de su SVG (`HojaDeEstudio.paginas(deUnSVG:)`).
+        case pdf
 
         /// El de una partitura.
         public init(_ partitura: FormatoDePartitura) {
@@ -41,12 +43,19 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             case .guido: return .guido
             case .abc: return .abc
             case .midi: return .midi
-            case .svg, .html: return nil
+            case .svg, .html, .pdf: return nil
             }
         }
 
         /// La extensión del fichero, sin el punto.
-        public var extensionDeFichero: String { partitura?.extensionDeFichero ?? (self == .html ? "html" : "svg") }
+        public var extensionDeFichero: String {
+            switch self {
+            case .html: return "html"
+            case .pdf: return "pdf"
+            case .svg: return "svg"
+            default: return partitura?.extensionDeFichero ?? rawValue
+            }
+        }
 
         /// Cómo se llama el formato en el menú.
         public var titulo: String {
@@ -59,6 +68,7 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             case .midi: return "MIDI"
             case .svg: return "Dibujo SVG"
             case .html: return "Página HTML"
+            case .pdf: return "Documento PDF (A4)"
             }
         }
 
@@ -73,6 +83,7 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
             case .midi: return "pianokeys"
             case .svg: return "photo"
             case .html: return "globe"
+            case .pdf: return "doc.richtext.fill"
             }
         }
     }
@@ -143,6 +154,16 @@ public struct FicheroParaExportar: Hashable, Sendable, Identifiable {
         FicheroParaExportar(nombre: nombre, formato: .html, datos: Data(html.utf8))
     }
 
+    /// Una hoja de estudio en PDF, con esos datos.
+    public static func pdf(_ datos: Data, nombre: String) -> FicheroParaExportar {
+        FicheroParaExportar(nombre: nombre, formato: .pdf, datos: datos)
+    }
+
+    /// Si es una hoja de estudio en SVG, de las que se pasan a un PDF de páginas A4 (`HojaDeEstudio.esUnaHoja(_:)`).
+    public var esUnaHojaEnSVG: Bool {
+        formato == .svg && HojaDeEstudio.esUnaHoja(String(decoding: datos, as: UTF8.self))
+    }
+
     public var id: String { nombreDeFichero }
 
     /// El nombre con su extensión, sin los caracteres que no admiten los sistemas de ficheros
@@ -195,6 +216,8 @@ extension FicheroParaExportar.Formato {
             traduccion = TextosDeApps.traduccion(\.dibujoSVG)
         case .html:
             traduccion = TextosDeApps.traduccion(\.paginaHTML)
+        case .pdf:
+            traduccion = TextosDeApps.traduccion(\.documentoPDF)
         }
         return traduccion.en(notacion)
     }

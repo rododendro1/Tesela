@@ -1,5 +1,25 @@
 # Cambios
 
+## Sin publicar
+
+### Novedades
+
+- `Mastil.posicionesPorCajas(de:ancho:)`: la escala en cajas de cuatro trastes, una por cada nota de la escala en la
+  cuerda más grave, con sus notas en el orden en que suenan y sin unísonos. Es como se toca por posiciones en los
+  instrumentos cuyas cuerdas no van de grave a aguda (el ukelele con el Sol agudo, el charango, el banjo de cinco
+  cuerdas), y `posicionesPorCuerda(de:notasPorCuerda:)` las da en ellos en lugar de nada: la hoja de estudio de una
+  escala, `armonia posiciones … --instrumento ukelele` («por cajas de 4 trastes») y Ars Harmonica las enseñan.
+- `armonia hoja … --json` (o `--formato json`): la hoja en SVG y en HTML, con su título, los títulos de sus secciones
+  y las páginas A4 que ocupa. Con ello, `hoja` es una herramienta más del servidor MCP.
+
+### Mejoras
+
+- El job «Grabado» de la CI graba cinco hojas de estudio en PDF con `rsvg-convert` (una escala de cuatro páginas, un
+  acorde, una progresión en las doce tonalidades, el ukelele por cajas y un ritmo de una página) y comprueba que
+  cada PDF tiene las páginas que dice su SVG, que todas son A4 y que el texto va en Liberation Sans, con los anchos
+  de Helvetica con los que se mide. Deja una imagen de cada página en el artefacto. El README dice que en Linux hay
+  que instalar `fonts-liberation`.
+
 ## 0.6.1 (2026-11-18)
 
 ### Cambios incompatibles

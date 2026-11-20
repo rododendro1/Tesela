@@ -408,6 +408,8 @@ extension TextosDeApps {
         partituraABC: "ABC-partitur",
         dibujoSVG: "SVG-bild",
         paginaHTML: "HTML-sida",
+        documentoPDF: "PDF-dokument (A4)",
+        imprimirLaHoja: "Skriv ut bladet",
         cuerdasDelInstrumento: "Strängar",
         ordenesYCuerdas: "{1} körer, {2} strängar",
         trastesDelInstrumento: "Band",

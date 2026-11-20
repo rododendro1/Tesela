@@ -408,6 +408,8 @@ extension TextosDeApps {
         partituraABC: "ABC partitura",
         dibujoSVG: "SVG marrazkia",
         paginaHTML: "HTML orria",
+        documentoPDF: "PDF dokumentua (A4)",
+        imprimirLaHoja: "Inprimatu orria",
         cuerdasDelInstrumento: "Sokak",
         ordenesYCuerdas: "ordenak: {1}, sokak: {2}",
         trastesDelInstrumento: "Trasteak",

@@ -70,7 +70,7 @@ import Testing
         let ukelele = PresentacionDeEstudioDeEscala.mastilDeLaHoja(
             de: Escala(.do), mastil: Mastil(.ukelele, numeroDeTrastes: 15), en: notacion)
         #expect(ukelele.count == 8 && ukelele[0].titulo.contains("ukelele"))
-        #expect(ukelele[1].titulo == "Trastes 0 a 3")
+        #expect(ukelele[1].titulo == "Trastes 0–3")
         // El bajo: tres notas por cuerda.
         let bajo = PresentacionDeEstudioDeEscala.mastilDeLaHoja(
             de: Escala(.do), mastil: Mastil(.bajoElectrico, numeroDeTrastes: 15), en: notacion)

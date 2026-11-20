@@ -4,6 +4,11 @@
 
 ### Lo nuevo
 
+- `FicheroParaExportar.Formato.pdf` y `FicheroParaExportar.pdf(_:nombre:)`, para una hoja de estudio en páginas A4,
+  y `esUnaHojaEnSVG`, que dice si un fichero es una hoja que se puede pasar a PDF. `HojaDeEstudio.esUnaHoja(_:)` lo
+  mira en el SVG (`data-paginas`).
+- La serie dodecafónica exporta su hoja de estudio en SVG y en HTML (`MatrizDeSeriePresentada.ficheros`).
+- `TextosDeApps.porCajasDeTrastes`, `documentoPDF` e `imprimirLaHoja`, en los trece idiomas.
 - Las hojas de estudio en SVG van en páginas A4, numeradas si hay más de una: una sección de hasta media página que
   no cabe en lo que queda de una pasa entera a la siguiente, y una más larga se parte entre línea y línea, sin dejar
   un título solo al final. `HojaDeEstudio.paginas(deUnSVG:)` da cada página como un SVG suelto, y `armonia grabar

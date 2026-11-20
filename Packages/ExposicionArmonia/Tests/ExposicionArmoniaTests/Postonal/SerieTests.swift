@@ -46,7 +46,8 @@ import Testing
         #expect((0..<12).allSatisfy { original.estaEnLaForma(fila: 0, columna: $0) })
         #expect(!original.estaEnLaForma(fila: 1, columna: 0))
         #expect(original.sonido.notas.map(\.midi) == original.clasesDeLaForma.map { 60 + $0 })
-        #expect(original.ficheros.count == 6)
+        // Las seis partituras y la hoja de estudio, en SVG y en HTML.
+        #expect(original.ficheros.count == 8)
         #expect(original.pentagrama.svg.contains("<svg"))
 
         let inversion = try PresentacionDeSerie.presentar(
@@ -81,5 +82,14 @@ import Testing
             PresentacionDeSerie.indicacion(en: .compacta(.espanol)) == "Serie (5 4 0 9 7 2 8 1 3 6 t e, o Fa Mi Do La…)"
         )
         #expect(PresentacionDeSerie.indicacion(en: .ascii(.ingles)) == "Row (5 4 0 9 7 2 8 1 3 6 t e, or F E C A…)")
+    }
+
+    @Test func laHojaDeLaSerieSeExporta() throws {
+        let presentada = try PresentacionDeSerie.presentar(
+            berg, forma: FormaDeSerie(.original, 5), en: .compacta(.espanol))
+        let hojas = presentada.ficheros.filter { $0.nombre.hasPrefix("Hoja de estudio") }
+        #expect(hojas.map(\.formato) == [.svg, .html])
+        #expect(hojas.first?.esUnaHojaEnSVG == true)
+        #expect(hojas.first?.nombreDeFichero == "Hoja de estudio 5 4 0 9 7 2 8 1 3 6 t e.svg")
     }
 }

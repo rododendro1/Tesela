@@ -51,7 +51,7 @@ extension LineaDeComandosTests {
         // `--formato` propone los formatos de cada orden.
         #expect(LineaDeComandos.valores(de: .formato, en: digitaciones) == ["musicxml", "json"])
         #expect(LineaDeComandos.valores(de: .formato, en: escala) == ["bibtex", "json"])
-        #expect(LineaDeComandos.valores(de: .formato, en: try orden("hoja")) == ["html"])
+        #expect(LineaDeComandos.valores(de: .formato, en: try orden("hoja")) == ["html", "json"])
         #expect(LineaDeComandos.valores(de: .formato, en: try orden("transponer"))?.contains("mei") == true)
         #expect(LineaDeComandos.valores(de: .formato, en: try orden("grabar")) == ["pdf", "svg", "png"])
         // Con guiones, como los demás valores, y sin repetir.
