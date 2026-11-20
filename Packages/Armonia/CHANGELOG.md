@@ -16,9 +16,9 @@
 
 - El job «Grabado» de la CI graba cinco hojas de estudio en PDF con `rsvg-convert` (una escala de cuatro páginas, un
   acorde, una progresión en las doce tonalidades, el ukelele por cajas y un ritmo de una página) y comprueba que
-  cada PDF tiene las páginas que dice su SVG, que todas son A4 y que el texto va en Liberation Sans, con los anchos
-  de Helvetica con los que se mide. Deja una imagen de cada página en el artefacto. El README dice que en Linux hay
-  que instalar `fonts-liberation`.
+  cada PDF tiene las páginas que dice su SVG, que todas son A4 y que el texto va en Liberation Sans o en Nimbus Sans,
+  con los anchos de Helvetica con los que se mide. Deja una imagen de cada página en el artefacto. El README dice que
+  en Linux hay que instalar `fonts-liberation`.
 
 ## 0.6.1 (2026-11-18)
 

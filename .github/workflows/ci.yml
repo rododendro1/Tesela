@@ -257,7 +257,8 @@ jobs:
           armonia grabar tonnetz escala Re dórico --formato png > grabados/tonnetz.png
           comprobar grabados/tonnetz.png png
           # Las hojas de estudio, en un PDF de páginas A4: tantas como dice el SVG (data-paginas), de 595 × 842
-          # puntos, con el texto en Liberation Sans y una imagen de cada página en el artefacto.
+          # puntos, con el texto en una tipografía con los anchos de Helvetica (Liberation Sans o Nimbus Sans, que trae
+          # LilyPond y fontconfig pone en lugar de Helvetica) y una imagen de cada página en el artefacto.
           hoja() {
             local nombre="$1"; shift
             armonia hoja "$@" > "grabados/hoja-$nombre.svg"
@@ -275,8 +276,8 @@ jobs:
             # A un fichero, y no a grep -q por una tubería: con pipefail, grep -q cierra la tubería al encontrar y
             # pdffonts acaba con SIGPIPE.
             pdffonts "grabados/hoja-$nombre.pdf" > fuentes.txt
-            grep -q LiberationSans fuentes.txt \
-              || { echo "::error::hoja $nombre no usa Liberation Sans"; cat fuentes.txt; exit 1; }
+            grep -qE 'LiberationSans|NimbusSans' fuentes.txt \
+              || { echo "::error::hoja $nombre no usa Liberation Sans ni Nimbus Sans"; cat fuentes.txt; exit 1; }
             pdftoppm -png -r 50 "grabados/hoja-$nombre.pdf" "grabados/hoja-$nombre"
             echo "hoja $nombre: $paginas páginas A4"
           }

@@ -391,8 +391,8 @@ mínima, y 6.2) y en macOS en cada push o pull request. Con Swift 6.2 también c
 biblioteca con los avisos tratados como errores. Primero ejecuta las
 pruebas rápidas y después las exhaustivas, así un fallo corriente se ve antes. El job «Grabado con LilyPond y rsvg-convert» instala
 los dos programas y graba partituras, dibujos y hojas de estudio de verdad con `armonia grabar`: de cada hoja
-comprueba que el PDF tiene las páginas que dice su SVG, que todas son A4 y que el texto va en Liberation Sans, y deja
-los ficheros, con una imagen de cada página, como artefacto.
+comprueba que el PDF tiene las páginas que dice su SVG, que todas son A4 y que el texto va en Liberation Sans o en
+Nimbus Sans, las dos con los anchos de Helvetica, y deja los ficheros, con una imagen de cada página, como artefacto.
 
 ### Pruebas exhaustivas
 
