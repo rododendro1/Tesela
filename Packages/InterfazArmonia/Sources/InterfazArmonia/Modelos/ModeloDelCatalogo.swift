@@ -158,36 +158,36 @@ public struct ModeloDelCatalogo: Sendable {
     ///     modelo.ficheros(deLaTarjeta: "tresillo", en: .compacta(.espanol)).map(\.nombreDeFichero)
     ///     // ["Hoja de estudio tresillo.svg", "Hoja de estudio tresillo.html"]
     public func ficheros(deLaTarjeta id: String, en notacion: Notacion) -> [FicheroParaExportar] {
-        let hoja: (titulo: String, hacer: (HojaDeEstudio.Formato) -> String)?
+        let pedida: (titulo: String, hacer: (HojaDeEstudio.Formato) -> String)?
         switch lista {
         case .progresiones:
             let tonica = self.tonica
-            hoja = ProgresionConNombre.buscar(nombre: id).map { progresion in
+            pedida = ProgresionConNombre.buscar(nombre: id).map { progresion in
                 (
                     progresion.nombre(en: notacion),
                     { HojaDeEstudio.progresion(progresion, sobre: tonica, en: notacion, formato: $0) }
                 )
             }
         case .acordes:
-            hoja = AcordeConNombre.buscar(nombre: id).flatMap(\.tipo).map { tipo in
+            pedida = AcordeConNombre.buscar(nombre: id).flatMap(\.tipo).map { tipo in
                 let acorde = Acorde(tonica, tipo)
                 return (acorde.cifrado(en: notacion), { HojaDeEstudio.acorde(acorde, en: notacion, formato: $0) })
             }
         case .ritmos:
-            hoja = RitmoConNombre.buscar(nombre: id).map { ritmo in
+            pedida = RitmoConNombre.buscar(nombre: id).map { ritmo in
                 (ritmo.nombre(en: notacion), { HojaDeEstudio.ritmo(ritmo, en: notacion, formato: $0) })
             }
         case .instrumentos:
-            hoja = Encordado.buscar(nombre: id).map { encordado in
+            pedida = Encordado.buscar(nombre: id).map { encordado in
                 (
                     encordado.nombre(en: notacion),
                     { HojaDeEstudio.instrumento(encordado, en: notacion, formato: $0) }
                 )
             }
         case .ornamentos:
-            hoja = nil
+            pedida = nil
         }
-        guard let hoja else { return [] }
+        guard let hoja = pedida else { return [] }
         let nombre = notacion.texto(\.hojaDeEstudio) + " " + hoja.titulo
         return [.svg(hoja.hacer(.svg), nombre: nombre), .html(hoja.hacer(.html), nombre: nombre)]
     }
