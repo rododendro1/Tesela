@@ -128,9 +128,10 @@ public struct ModeloDeAcordes: Sendable {
         return mastil(trastes: Self.trastesDeLasDigitaciones).digitaciones(de: acorde, exigirQuinta: false, limite: 6)
     }
 
-    /// Los pentagramas del acorde leído y de su arpegio como SVG, la hoja de estudio (en SVG y en HTML), la
-    /// disposición elegida, el arpegio en MusicXML, MEI y MIDI, y las `digitaciones` (si ya están) y el arpegio en el
-    /// mástil como tablaturas MusicXML; o nada si el texto no se lee.
+    /// Los pentagramas del acorde leído y de su arpegio como SVG, las hojas de estudio del acorde y de su arpegio en
+    /// el instrumento elegido (en SVG y en HTML; `BotonDeExportar` les añade el PDF), la disposición elegida, el
+    /// arpegio en MusicXML, MEI y MIDI, y las `digitaciones` (si ya están) y el arpegio en el mástil como tablaturas
+    /// MusicXML; o nada si el texto no se lee.
     public func ficheros(digitaciones: [Digitacion]?, en notacion: Notacion) -> [FicheroParaExportar] {
         guard let acorde else { return [] }
         let arpegio = self.arpegio(de: acorde)
@@ -138,11 +139,18 @@ public struct ModeloDeAcordes: Sendable {
             PentagramaPresentado(acorde, en: notacion).fichero,
             pentagrama(de: arpegio, en: notacion).fichero,
             FicheroParaExportar.svg(
-                HojaDeEstudio.acorde(acorde, en: notacion),
+                HojaDeEstudio.acorde(acorde, mastil: mastil(trastes: 12), en: notacion),
                 nombre: notacion.texto(\.hojaDeEstudio) + " " + acorde.cifrado(en: notacion)),
             FicheroParaExportar.html(
-                HojaDeEstudio.acorde(acorde, en: notacion, formato: .html),
+                HojaDeEstudio.acorde(acorde, mastil: mastil(trastes: 12), en: notacion, formato: .html),
                 nombre: notacion.texto(\.hojaDeEstudio) + " " + acorde.cifrado(en: notacion)),
+            // La hoja del arpegio: su pentagrama, el teclado y el mástil del instrumento elegido.
+            FicheroParaExportar.svg(
+                HojaDeEstudio.arpegio(acorde, mastil: mastil(trastes: 15), en: notacion),
+                nombre: notacion.texto(\.hojaDeEstudio) + " " + arpegio.nombre(en: notacion)),
+            FicheroParaExportar.html(
+                HojaDeEstudio.arpegio(acorde, mastil: mastil(trastes: 15), en: notacion, formato: .html),
+                nombre: notacion.texto(\.hojaDeEstudio) + " " + arpegio.nombre(en: notacion)),
         ]
         if let presentadas = PresentacionDeDisposiciones.acorde(acorde, disposicion, en: notacion) {
             ficheros.append(presentadas.pentagrama.fichero)

@@ -54,6 +54,8 @@ public struct TextosDeApps: TextosTraducidos {
     public let acordesDeLaEscala: String
     public let posicionesEnElMastil: String
     public let notasPorCuerda: @Sendable (Int) -> String
+    /// «por cajas de 4 trastes»: las posiciones de una escala en un instrumento cuyas cuerdas no van de grave a aguda.
+    public let porCajasDeTrastes: @Sendable (Int) -> String
     public let forma: Plantilla  // {1} forma
     public let mastilDeGuitarra: String
     public let pentagrama: String
@@ -451,6 +453,10 @@ public struct TextosDeApps: TextosTraducidos {
     public let partituraABC: String
     public let dibujoSVG: String
     public let paginaHTML: String
+    /// Una hoja de estudio en PDF, en páginas A4, en el menú de exportar.
+    public let documentoPDF: String
+    /// El botón que imprime la hoja de estudio.
+    public let imprimirLaHoja: String
     public let cuerdasDelInstrumento: String
     public let ordenesYCuerdas: Plantilla  // {1} órdenes, {2} cuerdas
     public let trastesDelInstrumento: String

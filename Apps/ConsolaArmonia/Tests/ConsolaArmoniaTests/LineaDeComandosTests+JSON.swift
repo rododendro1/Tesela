@@ -1,4 +1,5 @@
 import Armonia
+import ExposicionArmonia
 import Foundation
 import Testing
 
@@ -476,5 +477,26 @@ extension LineaDeComandosTests {
             #expect(mal.codigo == 2 && mal.error.contains("no da salida en JSON"), Comment(rawValue: opcion))
         }
         #expect(LineaDeComandos.ejecutar(["posiciones", "--json"]).codigo == 2)
+    }
+
+    @Test func laHojaEnJSON() throws {
+        let acorde = try #require(try json("hoja acorde Sol7 --instrumento ukelele") as? [String: Any])
+        #expect(acorde["titulo"] as? String == "Hoja de estudio · Sol7")
+        #expect((acorde["secciones"] as? [String])?.contains("Digitaciones · ukelele") == true)
+        #expect((acorde["paginas"] as? Int ?? 0) >= 1)
+        // La misma hoja que sin --json, en SVG y en HTML.
+        #expect(acorde["svg"] as? String == salida("hoja acorde Sol7 --instrumento ukelele"))
+        #expect(acorde["html"] as? String == salida("hoja acorde Sol7 --instrumento ukelele --formato html"))
+        // Una hoja de varias páginas dice cuántas.
+        let escala = try #require(try json("hoja Re dórico") as? [String: Any])
+        let svg = try #require(escala["svg"] as? String)
+        #expect(escala["paginas"] as? Int == HojaDeEstudio.paginas(deUnSVG: svg).count)
+        #expect((escala["paginas"] as? Int ?? 0) > 1)
+        #expect((escala["secciones"] as? [String])?.first == "Pentagrama")
+        // Con --formato html también: el JSON lleva los dos.
+        #expect(salida("hoja Re dórico --formato html --json") == salida("hoja Re dórico --json"))
+        let ritmo = try #require(try json("hoja ritmo tresillo") as? [String: Any])
+        #expect(ritmo["paginas"] as? Int == 1)
+        #expect(LineaDeComandos.ejecutar(["hoja", "--json"]).codigo == 2)
     }
 }

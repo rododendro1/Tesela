@@ -192,7 +192,8 @@ public enum HojaDeEstudio {
     public static func serie(_ serie: SerieDodecafonica, en notacion: Notacion, formato: Formato = .svg) -> String {
         let forma = FormaDeSerie(.original, serie.clases[0])
         // La serie ya está leída: su texto siempre se vuelve a leer.
-        let matriz = try! PresentacionDeSerie.presentar(serie.description, forma: forma, en: notacion)
+        let matriz = try! PresentacionDeSerie.presentar(
+            serie.description, forma: forma, en: notacion, conLaHoja: false)
         let datos = matriz.datos.map { DatoPresentado(nombre: $0.titulo, valor: $0.valor) }
         let hoja = HojaCompuesta(
             titulo: notacion.texto(\.serieDodecafonica), subtitulos: [serie.description, matriz.formasDistintas],

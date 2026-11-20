@@ -4,7 +4,8 @@ import SwiftUI
 
 /// Los catálogos con nombre: las progresiones, los acordes con nombre, los ritmos, los ornamentos y los
 /// instrumentos. Se buscan por su nombre en cualquier idioma; cada tarjeta dice lo que es, sus estilos y sus fuentes,
-/// se escucha y, si es una progresión o un acorde, se abre en Análisis o en Acordes.
+/// se escucha, se exporta en una hoja de estudio (salvo los ornamentos) y, si es una progresión o un acorde, se abre
+/// en Análisis o en Acordes.
 struct VistaDelCatalogo: View {
     @Environment(\.notacion) private var notacion
     @EnvironmentObject private var navegacion: Navegacion
@@ -51,6 +52,16 @@ struct VistaDelCatalogo: View {
             }
             HStack {
                 BotonDeEscuchar(tarjeta.sonido)
+                // La hoja de estudio de la tarjeta, en SVG, HTML y PDF: se hace al aparecer la fila, no antes.
+                if modelo.lista != .ornamentos {
+                    let modelo = self.modelo
+                    let notacion = self.notacion
+                    let clave = "\(modelo.lista)|\(tarjeta.id)|\(modelo.tonica.claseDeAltura)|\(notacion.clave)"
+                    BotonDeExportar(id: clave) {
+                        modelo.ficheros(deLaTarjeta: tarjeta.id, en: notacion)
+                    }
+                    .labelStyle(.iconOnly)
+                }
                 Spacer()
                 switch tarjeta.destino {
                 case .analisis(let progresion):

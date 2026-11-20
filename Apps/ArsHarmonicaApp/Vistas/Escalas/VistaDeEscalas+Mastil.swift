@@ -22,7 +22,11 @@ struct SeccionDePosiciones: View {
         Section(notacion.texto(\.posicionesEnElMastil)) {
             Picker(notacion.texto(\.posicionesEnElMastil), selection: $caged) {
                 Text("CAGED").tag(true)
-                Text(notacion.texto { $0.notasPorCuerda(porCuerda) }).tag(false)
+                // Si las cuerdas no van de grave a aguda (el ukelele), las posiciones van por cajas de trastes.
+                Text(
+                    mastil.encordado.esReentrante
+                        ? notacion.texto { $0.porCajasDeTrastes(4) } : notacion.texto { $0.notasPorCuerda(porCuerda) }
+                ).tag(false)
             }
             .pickerStyle(.segmented)
             Picker(notacion.texto(\.instrumentoYAfinacion), selection: $encordado) {

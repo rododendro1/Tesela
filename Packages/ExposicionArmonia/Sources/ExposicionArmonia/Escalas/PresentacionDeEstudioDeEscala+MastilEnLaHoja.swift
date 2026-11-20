@@ -7,8 +7,9 @@ extension PresentacionDeEstudioDeEscala {
     /// La escala en el mástil, para la hoja: primero todo el mástil, del traste 0 al 12, con todas sus notas; después
     /// cada posición. En la guitarra afinada como siempre, las cinco formas de una pentatónica
     /// (`formasPentatonicas(de:mastil:en:)`) o las cinco posiciones CAGED; en otro instrumento, las de tres notas por
-    /// cuerda (`Mastil.posicionesPorCuerda(de:notasPorCuerda:)`), si sus cuerdas van de grave a aguda. Cada dibujo es
-    /// un SVG suelto, con su título.
+    /// cuerda (`Mastil.posicionesPorCuerda(de:notasPorCuerda:)`) si sus cuerdas van de grave a aguda, y por cajas de
+    /// cuatro trastes (`Mastil.posicionesPorCajas(de:ancho:)`) si no, como en el ukelele con el Sol agudo. Cada dibujo
+    /// es un SVG suelto, con su título.
     ///
     ///     let dibujos = PresentacionDeEstudioDeEscala.mastilDeLaHoja(de: Escala(.sol), en: .compacta(.espanol))
     ///     dibujos.count   // 6: el mástil entero y las cinco posiciones CAGED

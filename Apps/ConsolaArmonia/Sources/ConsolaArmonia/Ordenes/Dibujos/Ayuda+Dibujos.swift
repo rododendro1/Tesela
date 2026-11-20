@@ -12,7 +12,9 @@ extension LineaDeComandos {
         Orden(
             nombres: ["reticulo", "lattice"], ayuda: ayudaDeReticulo, json: { try reticuloJSON($0, $1.notacion) },
             ejecutar: { try reticulo($0, $1.notacion) }),
-        Orden(nombres: ["hoja", "sheet"], ayuda: ayudaDeHoja) { try hoja($0, $1.notacion) },
+        Orden(
+            nombres: ["hoja", "sheet"], ayuda: ayudaDeHoja, json: { try hojaJSON($0, $1.notacion) },
+            ejecutar: { try hoja($0, $1.notacion) }),
         Orden(nombres: ["pentagrama", "staff"], ayuda: ayudaDePentagrama) { try pentagrama($0, $1.notacion) },
     ]
 

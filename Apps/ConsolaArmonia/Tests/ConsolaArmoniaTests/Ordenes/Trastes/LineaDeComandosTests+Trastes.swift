@@ -159,6 +159,14 @@ extension LineaDeComandosTests {
         #expect(salida("ayuda --todo").contains("digitaciones <cifrado>"))
     }
 
+    @Test func elUkeleleConElSolAgudoVaPorCajasDeTrastes() {
+        let ukelele = salida("posiciones Do mayor --instrumento ukelele")
+        #expect(
+            ukelele.hasPrefix("Do mayor · por cajas de 4 trastes · ukelele\n\n  Trastes 0–3\n    La  |--0--2--3-\n"),
+            Comment(rawValue: ukelele))
+        #expect(salida("positions C major --instrument ukulele --ingles").hasPrefix("C major · in 4-fret boxes · "))
+    }
+
     @Test func formasDeLaPentatonicaYSecuenciasEnLasPosiciones() {
         let formas = salida("posiciones La pentatónica menor --formas")
         #expect(

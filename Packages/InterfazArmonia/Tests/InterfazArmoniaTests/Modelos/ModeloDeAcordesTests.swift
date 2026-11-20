@@ -115,4 +115,15 @@ import Testing
         modelo.texto = "Xq"
         #expect(modelo.nombresDelCatalogo(en: espanol) == nil)
     }
+
+    @Test func lasHojasDelAcordeYDelArpegioVanEnElInstrumentoElegido() {
+        var modelo = ModeloDeAcordes(texto: "Sol7")
+        modelo.encordado = .ukelele
+        let ficheros = modelo.ficheros(digitaciones: nil, en: espanol)
+        let hojas = ficheros.filter(\.esUnaHojaEnSVG)
+        #expect(hojas.count == 2)
+        #expect(hojas.allSatisfy { String(decoding: $0.datos, as: UTF8.self).contains("ukelele") })
+        // Cada fichero, con su nombre: el menú los distingue por él.
+        #expect(Set(ficheros.map(\.id)).count == ficheros.count)
+    }
 }

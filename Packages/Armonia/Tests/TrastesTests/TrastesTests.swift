@@ -604,7 +604,7 @@ extension DigitacionTests {
     }
 
     @Test func fueraDeLaGuitarraNoHayPosiciones() {
-        #expect(Mastil(.ukelele).posicionesPorCuerda(de: Escala(.do, .mayor)).isEmpty)
+        #expect(Mastil(.ukelele).posicionesCAGED(de: Escala(.do, .mayor)).isEmpty)
         #expect(Mastil(.bajoElectrico).posicionesCAGED(de: Escala(.do, .mayor)).isEmpty)
         #expect(!(Mastil(.bajoElectrico).posicionesPorCuerda(de: Escala(.do, .mayor)).isEmpty))
     }
@@ -708,5 +708,43 @@ extension DigitacionTests {
         #expect(posiciones.allSatisfy { $0.posiciones.count == 18 })
         // CAGED es de la guitarra con la afinación normal.
         #expect(dadgad.posicionesCAGED(de: Escala(.re)).isEmpty)
+    }
+
+    // MARK: Cajas de trastes, en los instrumentos cuyas cuerdas no van de grave a aguda
+
+    @Test func elUkeleleConElSolAgudoVaPorCajas() {
+        let mastil = Mastil(.ukelele, numeroDeTrastes: 12)
+        let cajas = mastil.posicionesPorCajas(de: Escala(.do, .mayor))
+        // Una caja por nota de la escala en la cuerda de Do, la más grave, que no es la primera.
+        #expect(cajas.count == 7)
+        #expect(cajas[0].rangoDeTrastes == 0...3)
+        #expect(cajas[0].alturas.map(\.midi) == [60, 62, 64, 65, 67, 69, 71, 72])
+        for caja in cajas {
+            // Cuatro trastes, uno por dedo, con todas las notas de la escala, de la más grave a la más aguda y sin
+            // unísonos.
+            #expect(caja.rangoDeTrastes.count == 4)
+            #expect(caja.posiciones.allSatisfy { caja.rangoDeTrastes.contains($0.traste) })
+            let clases = Set(Escala(.do, .mayor).notas.map(\.claseDeAltura))
+            #expect(Set(caja.alturas.map { $0.nota.claseDeAltura }) == clases)
+            let midis = caja.alturas.map(\.midi)
+            #expect(midis == midis.sorted() && Set(midis).count == midis.count)
+            #expect(caja.escala == Escala(.do, .mayor))
+        }
+        // De la más baja a la más alta, y sin pasar del último traste.
+        #expect(cajas.map(\.rangoDeTrastes.lowerBound) == cajas.map(\.rangoDeTrastes.lowerBound).sorted())
+        #expect(cajas.allSatisfy { $0.rangoDeTrastes.upperBound <= 12 })
+        // posicionesPorCuerda da las cajas, porque no se puede subir cuerda a cuerda; las formas de la pentatónica,
+        // que suben dos notas por cuerda, siguen sin darse.
+        #expect(mastil.posicionesPorCuerda(de: Escala(.do, .mayor)) == cajas)
+        #expect(mastil.formasPentatonicas(de: Escala(.la, .pentatonicaMenor)).isEmpty)
+    }
+
+    @Test func elCharangoYElBanjoTambienVanPorCajas() {
+        for encordado in [Encordado.charango, .banjo] {
+            #expect(encordado.esReentrante)
+            let cajas = Mastil(encordado, numeroDeTrastes: 12).posicionesPorCuerda(de: Escala(.sol, .mayor))
+            #expect(!cajas.isEmpty)
+            #expect(cajas.allSatisfy { caja in caja.posiciones.allSatisfy { caja.mastil.contiene($0) } })
+        }
     }
 }

@@ -148,6 +148,50 @@ public struct ModeloDelCatalogo: Sendable {
             sonido: .voz(Voz(alturas.map { Evento($0, .corchea) })), destino: nil)
     }
 
+    /// La hoja de estudio de una tarjeta de la lista elegida, en SVG y en HTML (`BotonDeExportar` le añade el PDF): la
+    /// de la progresión sobre la tónica, la del acorde con nombre que se puede cifrar, la del ritmo o la del
+    /// instrumento. Los ornamentos no tienen hoja. Se pide por el `id` de la tarjeta, cuando se va a exportar, porque
+    /// hacer la hoja de todas las tarjetas a la vez tardaría.
+    ///
+    ///     var modelo = ModeloDelCatalogo()
+    ///     modelo.lista = .ritmos
+    ///     modelo.ficheros(deLaTarjeta: "tresillo", en: .compacta(.espanol)).map(\.nombreDeFichero)
+    ///     // ["Hoja de estudio tresillo.svg", "Hoja de estudio tresillo.html"]
+    public func ficheros(deLaTarjeta id: String, en notacion: Notacion) -> [FicheroParaExportar] {
+        let pedida: (titulo: String, hacer: (HojaDeEstudio.Formato) -> String)?
+        switch lista {
+        case .progresiones:
+            let tonica = self.tonica
+            pedida = ProgresionConNombre.buscar(nombre: id).map { progresion in
+                (
+                    progresion.nombre(en: notacion),
+                    { HojaDeEstudio.progresion(progresion, sobre: tonica, en: notacion, formato: $0) }
+                )
+            }
+        case .acordes:
+            pedida = AcordeConNombre.buscar(nombre: id).flatMap(\.tipo).map { tipo in
+                let acorde = Acorde(tonica, tipo)
+                return (acorde.cifrado(en: notacion), { HojaDeEstudio.acorde(acorde, en: notacion, formato: $0) })
+            }
+        case .ritmos:
+            pedida = RitmoConNombre.buscar(nombre: id).map { ritmo in
+                (ritmo.nombre(en: notacion), { HojaDeEstudio.ritmo(ritmo, en: notacion, formato: $0) })
+            }
+        case .instrumentos:
+            pedida = Encordado.buscar(nombre: id).map { encordado in
+                (
+                    encordado.nombre(en: notacion),
+                    { HojaDeEstudio.instrumento(encordado, en: notacion, formato: $0) }
+                )
+            }
+        case .ornamentos:
+            pedida = nil
+        }
+        guard let hoja = pedida else { return [] }
+        let nombre = notacion.texto(\.hojaDeEstudio) + " " + hoja.titulo
+        return [.svg(hoja.hacer(.svg), nombre: nombre), .html(hoja.hacer(.html), nombre: nombre)]
+    }
+
     /// La familia de un ritmo, sus estilos y su época con el año, los que tenga: «danza · jazz · Siglo XX (1923)».
     private static func familiaYOrigen(_ ritmo: RitmoConNombre, en notacion: Notacion) -> String {
         let presentado = RitmoPresentado(ritmo, en: notacion)

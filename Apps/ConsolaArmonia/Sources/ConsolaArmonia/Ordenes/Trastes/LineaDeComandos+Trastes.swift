@@ -183,7 +183,12 @@ extension LineaDeComandos {
             return secuenciaEnLasPosiciones(escala, secuencia, caged: caged, bajando: bajando, en: mastil, notacion)
         }
         let porCuerda = escala.notas.count >= 6 ? 3 : 2
-        let sistema = caged ? "CAGED" : notacion.texto { $0.notasPorCuerda(porCuerda) }
+        // Si las cuerdas no van de grave a aguda (el ukelele), por cajas de cuatro trastes.
+        let sistema =
+            caged
+            ? "CAGED"
+            : mastil.encordado.esReentrante
+                ? notacion.texto { $0.porCajasDeTrastes(4) } : notacion.texto { $0.notasPorCuerda(porCuerda) }
         var lineas = [escala.nombre(en: notacion) + " · " + sistema + instrumento(de: mastil, notacion)]
         let posiciones = caged ? mastil.posicionesCAGED(de: escala) : mastil.posicionesPorCuerda(de: escala)
         let cuerdas = mastil.encordado.afinacion

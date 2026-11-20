@@ -15,6 +15,9 @@ import Testing
         #expect(FicheroParaExportar.abc("", nombre: "Coral").nombreDeFichero == "Coral.abc")
         #expect(FicheroParaExportar.svg("", nombre: "  ").nombreDeFichero == "Tesela.svg")
         #expect(FicheroParaExportar.html("", nombre: "Hoja").nombreDeFichero == "Hoja.html")
+        #expect(FicheroParaExportar.pdf(Data(), nombre: "Hoja").nombreDeFichero == "Hoja.pdf")
+        #expect(FicheroParaExportar.Formato.pdf.partitura == nil)
+        #expect(FicheroParaExportar.Formato.pdf.titulo(en: .ascii(.ingles)) == "PDF document (A4)")
         #expect(FicheroParaExportar.Formato.html.partitura == nil)
         #expect(FicheroParaExportar.Formato.html.titulo(en: .ascii(.ingles)) == "HTML page")
         #expect(

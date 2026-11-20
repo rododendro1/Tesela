@@ -56,7 +56,7 @@ extension Mastil {
     ///     let formas = Mastil(.guitarra, numeroDeTrastes: 15).formasPentatonicas(de: Escala(.la, .pentatonicaMenor))
     ///     formas.map(\.rangoDeTrastes)   // [5...8, 7...10, 9...13, 0...3, 2...5]
     public func formasPentatonicas(de escala: Escala) -> [EscalaEnElMastil] {
-        guard Set(escala.notas.map(\.claseDeAltura)).count == 5 else { return [] }
+        guard Set(escala.notas.map(\.claseDeAltura)).count == 5, !encordado.esReentrante else { return [] }
         let formas = posicionesPorCuerda(de: escala, notasPorCuerda: 2)
         let tonica = escala.tonica.claseDeAltura
         guard let desde = formas.firstIndex(where: { primeraClase(de: $0) == tonica }) else { return formas }
